@@ -9,6 +9,7 @@ import { Section } from "@/components/ui/section";
 import { fmt, formatCad, getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
+import { parseOffer } from "@/lib/offer-param";
 import { getSessionContext } from "@/server/auth/session";
 import { loadDashboard } from "@/server/billing/dashboard";
 import {
@@ -20,7 +21,6 @@ import { getDb } from "@/server/db";
 import { listApiKeys } from "@/server/gateway/keys";
 import { usageByDayAndModel } from "@/server/gateway/usage";
 import { loadBillingConfig } from "@/server/ledger/config";
-import { parseOffer } from "@/lib/offer-param";
 import { getSettings } from "@/server/payments/settings";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -117,7 +117,8 @@ async function AccountContent({
   const chosenOffer =
     wanted && plans
       ? (plans.find(
-          (p) => p.code === wanted && p.stripePriceId && !ownedCodes.has(p.code),
+          (p) =>
+            p.code === wanted && p.stripePriceId && !ownedCodes.has(p.code),
         ) ?? null)
       : null;
   const errorCode = first(q.erreur);

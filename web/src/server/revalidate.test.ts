@@ -40,7 +40,11 @@ const post = (
 
 describe("planRevalidation : offres d'abonnement", () => {
   it("une offre modifiée rafraîchit la page Tarifs (étiquette et deux adresses)", () => {
-    const plan = planRevalidation({ collection: "subscription_plans", id: "p1", slugs: [] });
+    const plan = planRevalidation({
+      collection: "subscription_plans",
+      id: "p1",
+      slugs: [],
+    });
     expect(plan.tags).toEqual(["subscription-plans"]);
     expect(plan.paths).toEqual(["/tarifs", "/en/pricing"]);
   });

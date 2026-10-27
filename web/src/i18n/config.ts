@@ -32,7 +32,9 @@ export function isLang(value: string): value is Lang {
  * dossier `src/app/[lang]/…` ; `localizePath` produit l'adresse publique de la langue, `stripLangPrefix` retrouve
  * le chemin neutre, et `proxy.ts` réécrit l'adresse anglaise vers la route (puis redirige l'ancienne adresse).
  */
-export const LOCALIZED_ROUTES: Readonly<Record<string, Partial<Record<Lang, string>>>> = {
+export const LOCALIZED_ROUTES: Readonly<
+  Record<string, Partial<Record<Lang, string>>>
+> = {
   "/tarifs": { en: "/pricing" },
 };
 

@@ -105,7 +105,8 @@ const OFFERS: Offer[] = [
     credits: 150,
     fr: {
       name: "WorkStudio Affaires",
-      description: "Pour les organisations qui exigent contrôle, audit et soutien rapproché.",
+      description:
+        "Pour les organisations qui exigent contrôle, audit et soutien rapproché.",
       features: [
         "50 utilisateurs",
         "Agents actifs illimités (usage raisonnable)",
@@ -120,7 +121,8 @@ const OFFERS: Offer[] = [
     },
     en: {
       name: "WorkStudio Business",
-      description: "For organizations that need control, audit and close support.",
+      description:
+        "For organizations that need control, audit and close support.",
       features: [
         "50 users",
         "Unlimited active agents (fair use)",

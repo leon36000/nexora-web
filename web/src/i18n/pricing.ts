@@ -1,6 +1,9 @@
 import type { Lang } from "./config";
 import { pricingEnCA } from "./dictionaries/pricing-en-CA";
-import { type PricingDictionary, pricingFrCA } from "./dictionaries/pricing-fr-CA";
+import {
+  type PricingDictionary,
+  pricingFrCA,
+} from "./dictionaries/pricing-fr-CA";
 
 export type { PricingDictionary };
 

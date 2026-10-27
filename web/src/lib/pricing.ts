@@ -38,13 +38,16 @@ export function groupOffers(
 ): PricingOffer[] {
   const byFamily = new Map<string, PricingOffer>();
   for (const plan of plans) {
-    const tr = plan.translations[LOCALE[lang]] ?? plan.translations[OTHER[lang]];
+    const tr =
+      plan.translations[LOCALE[lang]] ?? plan.translations[OTHER[lang]];
     const option: PriceOption = {
       code: plan.code,
       interval: plan.interval,
       priceCents: plan.priceCents,
       perMonthCents:
-        plan.interval === "year" ? Math.round(plan.priceCents / 12) : plan.priceCents,
+        plan.interval === "year"
+          ? Math.round(plan.priceCents / 12)
+          : plan.priceCents,
       sellable: Boolean(plan.stripePriceId),
     };
     const existing = byFamily.get(plan.family);
@@ -60,7 +63,10 @@ export function groupOffers(
       });
     } else {
       existing.options[plan.interval] ??= option;
-      existing.includedCreditsCents = Math.max(existing.includedCreditsCents, plan.includedCreditsCents);
+      existing.includedCreditsCents = Math.max(
+        existing.includedCreditsCents,
+        plan.includedCreditsCents,
+      );
       existing.trialDays = Math.max(existing.trialDays, plan.trialDays);
     }
   }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { lang as getLang } from "next/root-params";
+import { Suspense } from "react";
 import { AuthShell } from "@/components/account/auth-shell";
 import { LoginForm } from "@/components/account/login-form";
 import { getAccountDictionary } from "@/i18n/account";

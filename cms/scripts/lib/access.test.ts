@@ -192,7 +192,12 @@ describe("offres d'abonnement : ce que le public et le site lisent", () => {
     for (const name of [PUBLIC_POLICY_NAME, "Lecteur site"]) {
       const fields = reads(name)?.fields as string[];
       expect(fields, name).toEqual(
-        expect.arrayContaining(["family", "trial_days", "trial_card", "price_cents"]),
+        expect.arrayContaining([
+          "family",
+          "trial_days",
+          "trial_card",
+          "price_cents",
+        ]),
       );
       expect(fields, name).not.toContain("suggested_price_cents");
       expect(fields, name).not.toContain("*");

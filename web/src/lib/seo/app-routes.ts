@@ -3,8 +3,8 @@ import { join } from "node:path";
 import { getAgentsDictionary } from "@/i18n/agents";
 import type { Lang } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
-import { getPricingDictionary } from "@/i18n/pricing";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getPricingDictionary } from "@/i18n/pricing";
 import { getVpsDictionary } from "@/i18n/vps";
 
 /**

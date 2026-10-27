@@ -249,6 +249,7 @@ async function applySettings(d: Directus) {
     { type: "module", id: "nexora-seo", enabled: true },
     { type: "module", id: "nexora-vps", enabled: true },
     { type: "module", id: "nexora-hosted-agents", enabled: true },
+    { type: "module", id: "nexora-payments", enabled: true },
     vault,
   ];
   const missing = extensionModules.filter(

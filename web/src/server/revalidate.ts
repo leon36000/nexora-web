@@ -3,7 +3,13 @@ import { z } from "zod";
 import { LANGS, localizePath } from "@/i18n/config";
 import { normalizeSlug } from "@/lib/safe-href";
 import { checkAdminAuth } from "./auth";
-import { LANG_CODES, PLANS_TAG, pageIdTag, pageSlugTag, SLUGS_TAG } from "./cms/tags";
+import {
+  LANG_CODES,
+  PLANS_TAG,
+  pageIdTag,
+  pageSlugTag,
+  SLUGS_TAG,
+} from "./cms/tags";
 
 /**
  * POST /api/revalidate : appelé par la garde de publication de Directus après une promotion acceptée

@@ -1,16 +1,16 @@
-import { Breadcrumb } from "@/components/vps/breadcrumb";
-import { JsonLd } from "@/components/vps/json-ld";
 import { PerimeterGrid } from "@/components/brand/perimeter-grid";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Breadcrumb } from "@/components/vps/breadcrumb";
+import { JsonLd } from "@/components/vps/json-ld";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { PricingDictionary } from "@/i18n/pricing";
-import { buildBreadcrumbJsonLd } from "@/lib/vps-jsonld";
 import { buildPricingJsonLd, groupOffers } from "@/lib/pricing";
 import { SITE_URL } from "@/lib/site";
+import { buildBreadcrumbJsonLd } from "@/lib/vps-jsonld";
 import type { PublicPlans } from "@/server/billing/pricing-read";
 import { OfferCard } from "./offer-card";
 
@@ -40,7 +40,12 @@ export function PricingPage({
     offers,
     labels: t.period,
   });
-  const state = data.status === "ready" && offers.length > 0 ? "ready" : data.status === "unavailable" ? "unavailable" : "empty";
+  const state =
+    data.status === "ready" && offers.length > 0
+      ? "ready"
+      : data.status === "unavailable"
+        ? "unavailable"
+        : "empty";
 
   return (
     <>
@@ -70,7 +75,9 @@ export function PricingPage({
           <h1 id="pricing-title" className="mt-4 text-h1 text-fg">
             {t.hero.title}
           </h1>
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">{t.hero.lead}</p>
+          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
+            {t.hero.lead}
+          </p>
         </header>
       </Section>
 
@@ -100,7 +107,9 @@ export function PricingPage({
             <h2 id="pricing-state-title" className="mt-4 text-h2 text-fg">
               {t.states[state].title}
             </h2>
-            <p className="mt-5 text-lead text-fg-muted">{t.states[state].text}</p>
+            <p className="mt-5 text-lead text-fg-muted">
+              {t.states[state].text}
+            </p>
             <div className="mt-8">
               <ButtonLink
                 href={`${localizePath(lang, "/contact")}?sujet=demonstration`}
@@ -114,14 +123,22 @@ export function PricingPage({
       )}
 
       <Section tone="light" aria-labelledby="more-title">
-        <SectionHeader id="more-title" title={t.more.title} lead={t.more.lead} />
+        <SectionHeader
+          id="more-title"
+          title={t.more.title}
+          lead={t.more.lead}
+        />
         <ul className="mt-12 grid gap-6 md:grid-cols-2">
           <li>
             <Card className="flex h-full flex-col">
               <h3 className="text-h3 text-fg">{t.more.vps.title}</h3>
               <p className="mt-3 text-fg-muted">{t.more.vps.text}</p>
               <div className="mt-auto pt-8">
-                <ButtonLink href={localizePath(lang, "/vps")} variant="secondary" arrow>
+                <ButtonLink
+                  href={localizePath(lang, "/vps")}
+                  variant="secondary"
+                  arrow
+                >
                   {t.more.vps.cta}
                 </ButtonLink>
               </div>
@@ -132,10 +149,17 @@ export function PricingPage({
               <h3 className="text-h3 text-fg">{t.more.credits.title}</h3>
               <p className="mt-3 text-fg-muted">{t.more.credits.text}</p>
               <div className="mt-auto flex flex-col gap-3 pt-8 sm:flex-row">
-                <ButtonLink href={localizePath(lang, "/modeles")} variant="secondary" arrow>
+                <ButtonLink
+                  href={localizePath(lang, "/modeles")}
+                  variant="secondary"
+                  arrow
+                >
                   {t.more.credits.cta}
                 </ButtonLink>
-                <ButtonLink href={localizePath(lang, "/compte/inscription")} variant="link">
+                <ButtonLink
+                  href={localizePath(lang, "/compte/inscription")}
+                  variant="link"
+                >
                   {t.more.credits.ctaSecondary}
                 </ButtonLink>
               </div>

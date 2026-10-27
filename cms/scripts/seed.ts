@@ -211,7 +211,9 @@ async function seedPlans(d: Directus) {
       continue;
     }
     await d.post("/items/subscription_plans", plan);
-    made(`${plan.code} (brouillon, prix suggéré ${plan.suggested_price_cents / 100} $)`);
+    made(
+      `${plan.code} (brouillon, prix suggéré ${plan.suggested_price_cents / 100} $)`,
+    );
   }
 }
 

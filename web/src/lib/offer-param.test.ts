@@ -7,7 +7,17 @@ describe("offre choisie sur la page Tarifs", () => {
     expect(parseOffer("equipe-2")).toBe("equipe-2");
   });
   it("refuse tout le reste (jamais une adresse, un script ni une valeur répétée)", () => {
-    for (const bad of ["", null, undefined, "A B", "../x", "x".repeat(101), "a/b", "javascript:alert(1)", "é"])
+    for (const bad of [
+      "",
+      null,
+      undefined,
+      "A B",
+      "../x",
+      "x".repeat(101),
+      "a/b",
+      "javascript:alert(1)",
+      "é",
+    ])
       expect(parseOffer(bad as never)).toBeNull();
   });
   it("ajoute le paramètre à un chemin, avec ou sans requête existante", () => {

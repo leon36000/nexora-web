@@ -138,7 +138,9 @@ describe("offres d'abonnement : essai, famille et prix suggéré (vague 2)", () 
   });
 
   test("l'essai gratuit : durée en jours (0 par défaut) et carte exigée selon le réglage général ou l'offre", () => {
-    expect(field("subscription_plans", "trial_days").schema?.default_value).toBe(0);
+    expect(
+      field("subscription_plans", "trial_days").schema?.default_value,
+    ).toBe(0);
     const card = field("subscription_plans", "trial_card");
     expect(choices(card)).toEqual(["default", "required", "not_required"]);
     expect(card.schema?.default_value).toBe("default");
@@ -151,6 +153,8 @@ describe("offres d'abonnement : essai, famille et prix suggéré (vague 2)", () 
   });
 
   test("le prix peut rester vide en brouillon : la publication sans prix est bloquée par le site (jamais à 0 $)", () => {
-    expect(field("subscription_plans", "price_cents").meta?.required).toBeFalsy();
+    expect(
+      field("subscription_plans", "price_cents").meta?.required,
+    ).toBeFalsy();
   });
 });

@@ -4,8 +4,8 @@ import { Card } from "@/components/ui/card";
 import { fmt, formatCad } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { PricingDictionary } from "@/i18n/pricing";
-import { annualSavingPercent, type PricingOffer } from "@/lib/pricing";
 import { withOffer } from "@/lib/offer-param";
+import { annualSavingPercent, type PricingOffer } from "@/lib/pricing";
 
 /**
  * Une offre : prix mensuel et/ou annuel (avant taxes), essai, crédits inclus et un bouton par période vendable
