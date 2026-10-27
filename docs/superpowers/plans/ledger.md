@@ -44,5 +44,13 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Écart connu : 313 liens internes cassés vers des pages pas encore publiées (attendu avant S3 contenu).
 - À faire : agent Diffusion (Postiz), maillage interne par embeddings, Umami, écritures réelles Search Console/DataForSEO (clés du fondateur) ; décision d'affaires sur le blocage des robots d'entraînement (bloqués par défaut).
 
+## S6 VPS et provisionnement — terminé le 27/10/2026
+- Livré : migration `0007_s6_vps` (plans, applications, serveurs Proxmox, gabarits, commandes, instances, journal en ajout seul) ; paquet `@nexora/vps` (client Proxmox à TLS vérifié ou empreinte épinglée, simulateur dérivé de l'apidoc officiel, machine à états reprenable, compensation sans remboursement automatique, suspension après 7 jours de grâce, rétention 7 jours, pare-feu par VM, port 25 sortant fermé) ; `/vps`, `/vps/<application>`, `/compte/vps`, API d'administration, module Directus « VPS » ; applications Hermes Agent, OpenClaw durci, Ollama + AnythingLLM, AnythingLLM, LibreChat (n8n, Open WebUI, Dify en fiches guide).
+- Preuves : parcours de bout en bout (coffre, simulateur, stripe-mock, Mailpit, webhooks signés, vrai worker) jusqu'à la suppression après rétention ; 10 workers concurrents → un seul clone ; axe 0 violation ; Lighthouse 95–98.
+- Contrôle orchestrateur : 1 180 tests verts ; actions client limitées à l'organisation (réinstaller et résilier réservés au propriétaire) ; variables des scripts échappées ; clé SSH du worker en dossier temporaire 0600 effacé. Module « VPS » ouvert dans le vrai Directus : données réelles par le relais (serveur simulé, jeton présent au Coffre, applications).
+- Ajout orchestrateur : fiches `/vps/<application>` publiées dans le sitemap, datées par la publication du catalogue VPS (test RED→GREEN), titre et description de `/vps` tirés du dictionnaire.
+- Non vérifié : aucun vrai Proxmox ni vraie VM (test de contrat prêt, `PROXMOX_CONTRACT_URL`) ; pas de TLS ni domaine par VPS (applications en 127.0.0.1, tunnel SSH) ; commande sans application impossible alors que les guides n8n/Open WebUI/Dify l'évoquent (renvoi au contact).
+- Ruling (S6) : plans « [DEV] » commandables en développement, badge visible — à désactiver avant publication.
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
