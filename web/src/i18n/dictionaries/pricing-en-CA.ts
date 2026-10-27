@@ -3,9 +3,9 @@ import type { PricingDictionary } from "./pricing-fr-CA";
 /** Pricing page text (en-CA). No price here: prices come from the plans published in Directus. */
 export const pricingEnCA: PricingDictionary = {
   meta: {
-    title: "Pricing | Nexora",
+    title: "Pricing | Nexora AI",
     description:
-      "Nexora subscription plans in Canadian dollars, before tax: monthly and yearly prices, free trial and included credits. Also: private servers and pay-as-you-go API credits.",
+      "Nexora AI plans in Canadian dollars, before tax: monthly and yearly prices, free trial, included credits. Also: VPS and pay-as-you-go API credits.",
   },
   nav: { home: "Home", pricing: "Pricing", breadcrumb: "Breadcrumb" },
   hero: {

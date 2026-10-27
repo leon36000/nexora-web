@@ -76,7 +76,7 @@ export async function ensureCreditsProducts(
     fr = (
       await stripe.products.create(
         {
-          name: "Crédits Nexora",
+          name: "Crédits Nexora AI",
           metadata: { nexora_kind: "credits", lang: "fr" },
         },
         { idempotencyKey: "credits-product:fr" },
@@ -86,7 +86,7 @@ export async function ensureCreditsProducts(
     en = (
       await stripe.products.create(
         {
-          name: "Nexora credits",
+          name: "Nexora AI credits",
           metadata: { nexora_kind: "credits", lang: "en" },
         },
         { idempotencyKey: "credits-product:en" },

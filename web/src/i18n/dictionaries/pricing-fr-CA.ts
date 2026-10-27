@@ -1,9 +1,9 @@
 /** Textes de la page Tarifs (fr-CA). Aucun prix ici : les prix viennent des offres publiées dans Directus. */
 export const pricingFrCA = {
   meta: {
-    title: "Tarifs | Nexora",
+    title: "Tarifs | Nexora AI",
     description:
-      "Les offres d’abonnement Nexora en dollars canadiens, avant taxes : prix mensuel et annuel, essai gratuit et crédits inclus. Aussi : serveurs privés et crédits d’API à l’usage.",
+      "Offres Nexora AI en dollars canadiens, avant taxes : prix mensuel et annuel, essai gratuit, crédits inclus. Aussi : VPS et crédits d’API à l’usage.",
   },
   nav: { home: "Accueil", pricing: "Tarifs", breadcrumb: "Fil d’Ariane" },
   hero: {
