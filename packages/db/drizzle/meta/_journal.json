@@ -50,13 +50,6 @@
       "when": 1793074774423,
       "tag": "0006_s8_autogestion",
       "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1793078686005,
-      "tag": "0007_s7_agents_heberges",
-      "breakpoints": true
     }
   ]
 }
