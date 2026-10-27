@@ -57,8 +57,16 @@ for (const path of [
       csp.includes("object-src 'none'"),
     `CSP de base sur ${path}`,
   );
+  // Seule exception : sur le tableau de bord, `form-action` nomme les pages hébergées de Stripe (destination de la
+  // redirection du formulaire d'achat, sinon bloquée par Chrome) ; jamais une source de ressources.
+  const STRIPE_FORM_ACTION =
+    "form-action 'self' https://checkout.stripe.com https://billing.stripe.com";
   say(
-    !directives.some((d) => THIRD_PARTY.test(d)),
+    !directives.some(
+      (d) =>
+        THIRD_PARTY.test(d) &&
+        !(path === "/compte" && d === STRIPE_FORM_ACTION),
+    ),
     `CSP sans origine tierce sur ${path}`,
   );
   say(
