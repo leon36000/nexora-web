@@ -32,7 +32,7 @@ function inline(raw: string): string {
   const codes: string[] = [];
   let s = raw.replace(/`([^`]+)`/g, (_m, c: string) => {
     codes.push(`<code>${escapeHtml(c)}</code>`);
-    return `\u0000${codes.length - 1}\u0000`;
+    return `\uE000${codes.length - 1}\uE001`;
   });
   s = escapeHtml(s);
   s = s.replace(
@@ -46,9 +46,8 @@ function inline(raw: string): string {
   );
   s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   s = s.replace(/(^|[^*\w])\*([^*\s][^*]*)\*(?!\w)/g, "$1<em>$2</em>");
-  // biome-ignore lint/suspicious/noControlCharactersInRegex: marqueurs internes
   return s.replace(
-    /\u0000(\d+)\u0000/g,
+    /\uE000(\d+)\uE001/g,
     (_m, i: string) => codes[Number(i)] ?? "",
   );
 }

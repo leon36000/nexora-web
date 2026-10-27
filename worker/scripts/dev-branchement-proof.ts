@@ -147,7 +147,7 @@ try {
     "empreinte SHA-256 lue, épinglage recommandé (certificat auto-signé)",
   );
   say(`  empreinte affichée : ${probe.json?.tls.fingerprintDisplay}`);
-  const code = "pve-live";
+  const code = process.env.PROOF_CODE ?? "pve-live";
 
   say(
     "\n## Jeton au Coffre puis « Connecter » (TLS épinglé AVANT d'envoyer le jeton)",
