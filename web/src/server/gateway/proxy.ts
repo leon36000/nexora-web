@@ -276,6 +276,15 @@ async function readBody(
   return { ok: true, text };
 }
 
+/** Jetons facturés quand le client annule avant la fin de la réponse : invite estimée (+ sortie demandée hors flux). */
+function abortedTokens(plan: Plan): Usage {
+  return {
+    prompt: plan.promptEstimate,
+    completion: plan.stream ? 0 : plan.maxOutput,
+    cached: 0,
+  };
+}
+
 interface Plan {
   upstreamBody: Json;
   promptEstimate: number;
@@ -839,6 +848,8 @@ async function handleInference(
         },
         body: JSON.stringify(plan.upstreamBody),
         signal,
+        // Une redirection de l'amont ne doit jamais être suivie (la garde SSRF n'a vérifié que l'adresse d'origine).
+        redirect: "error",
       });
     } catch {
       const aborted = request.signal.aborted;
@@ -846,7 +857,11 @@ async function handleInference(
         status: aborted ? "aborted" : "error",
         httpStatus: aborted ? 499 : 502,
         errorCode: aborted ? "client_closed" : "upstream_unreachable",
-        tokens: { prompt: 0, completion: 0, cached: 0 },
+        // Le client a annulé : l'amont a pu continuer à produire. On facture l'invite estimée (flux) ou l'invite plus
+        // la sortie demandée (non diffusé, bornée par max_tokens), comme pour un flux interrompu.
+        tokens: aborted
+          ? abortedTokens(plan)
+          : { prompt: 0, completion: 0, cached: 0 },
         stream: plan.stream,
       });
       return aborted
@@ -908,13 +923,18 @@ async function handleInference(
       json = null;
     }
     if (!isObject(json)) {
+      // Annulation du client pendant la lecture de la réponse : l'amont a répondu, la sortie est due.
+      const aborted = request.signal.aborted;
       await finalize({
-        status: "error",
-        httpStatus: 502,
-        errorCode: "invalid_upstream_response",
-        tokens: { prompt: 0, completion: 0, cached: 0 },
+        status: aborted ? "aborted" : "error",
+        httpStatus: aborted ? 499 : 502,
+        errorCode: aborted ? "client_closed" : "invalid_upstream_response",
+        tokens: aborted
+          ? abortedTokens(plan)
+          : { prompt: 0, completion: 0, cached: 0 },
         stream: false,
       });
+      if (aborted) return new Response(null, { status: 499 });
       return E.upstream(
         502,
         "invalid_upstream_response",

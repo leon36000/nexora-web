@@ -1031,6 +1031,117 @@ describe("flux coupé avant le bloc d'usage : ce qui a été livré ou consommé
   });
 });
 
+describe("le client annule avant la réponse de l'amont : l'amont a pu continuer, l'invite est facturée", () => {
+  const eventOf = async (org: string) =>
+    (
+      await t.db
+        .select()
+        .from(usageEvents)
+        .where(eq(usageEvents.organizationId, org))
+    )[0];
+  /** L'amont ne répond jamais ; il rejette à l'annulation du signal (comme fetch). */
+  const hangingUpstream = () => {
+    upstream = (_call, signal) =>
+      new Promise<Response>((_resolve, reject) => {
+        signal?.addEventListener("abort", () =>
+          reject(new DOMException("annulé", "AbortError")),
+        );
+      });
+  };
+  const abortable = (key: string, body: unknown, signal: AbortSignal) =>
+    new Request("http://localhost/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${key}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+      signal,
+    });
+
+  it("requête non diffusée : invite estimée + max_tokens demandé", async () => {
+    const c = await client();
+    hangingUpstream();
+    const ac = new AbortController();
+    const pending = handleChatCompletions(
+      abortable(c.key, chat({ max_tokens: 200 }), ac.signal),
+      deps(),
+    );
+    await new Promise((r) => setTimeout(r, 100));
+    ac.abort();
+    const res = await pending;
+    expect(res.status).toBe(499);
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.errorCode).toBe("client_closed");
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.completionTokens).toBe(200);
+    expect(e?.costMicro).toBe(
+      requestCost(
+        {
+          prompt: e?.promptTokens ?? 0,
+          completion: 200,
+          cached: 0,
+        },
+        PRICE,
+      ),
+    );
+    expect(e?.costMicro).toBeGreaterThan(600n);
+    expect(await getAccount(t.db, c.org)).toMatchObject({
+      balanceMicro: 10n * M - (e?.costMicro ?? 0n),
+      heldMicro: 0n,
+    });
+  });
+
+  it("flux : invite estimée seulement (rien n'a été livré)", async () => {
+    const c = await client();
+    hangingUpstream();
+    const ac = new AbortController();
+    const pending = handleChatCompletions(
+      abortable(c.key, chat({ stream: true }), ac.signal),
+      deps(),
+    );
+    await new Promise((r) => setTimeout(r, 100));
+    ac.abort();
+    expect((await pending).status).toBe(499);
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.completionTokens).toBe(0);
+    expect(e?.costMicro).toBe(
+      requestCost(
+        { prompt: e?.promptTokens ?? 0, completion: 0, cached: 0 },
+        PRICE,
+      ),
+    );
+    expect(e?.costMicro).toBeGreaterThan(0n);
+  });
+
+  it("une panne de l'amont (injoignable, sans annulation du client) reste gratuite", async () => {
+    const c = await client();
+    upstream = () => {
+      throw new TypeError("fetch failed");
+    };
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(502);
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("error");
+    expect(e?.costMicro).toBe(0n);
+  });
+
+  it("les appels à l'amont ne suivent jamais une redirection (redirect: error)", async () => {
+    const c = await client();
+    const d = deps();
+    const seen: Array<RequestInit | undefined> = [];
+    d.fetch = (async (_input, init) => {
+      seen.push(init);
+      return upstreamOk();
+    }) as typeof fetch;
+    await handleChatCompletions(post(c.key, chat()), d);
+    expect(seen[0]?.redirect).toBe("error");
+  });
+});
+
 describe("limites", () => {
   it("applique la limite de requêtes par minute de la clé (429 + Retry-After)", async () => {
     const c = await client(10n, { rpmLimit: 2 });
