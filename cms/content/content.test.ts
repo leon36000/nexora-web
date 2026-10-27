@@ -2,7 +2,7 @@
 // Ces tests protègent les règles d'AGENTS.md : aucun faux client, chiffre, prix, certification ni « conforme à la Loi 25 ».
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   type BlockFile,
@@ -339,21 +339,36 @@ describe("VÉRITÉ", () => {
           expect(t.value, t.path).not.toMatch(/loi\s*25|law\s*25|bill\s*64/i);
   });
 
+  // Toutes les pages du dossier (accueil, OPSYS-AI et pages du jalon S3) partagent le même registre.
+  const EVERY_PAGE = readdirSync(PAGES_DIR)
+    .filter((n) => n.endsWith(".fr-CA.json"))
+    .map((n) => n.slice(0, -".fr-CA.json".length));
+  const everyPair = Object.fromEntries(
+    EVERY_PAGE.map((p) => [p, readPagePair(PAGES_DIR, p)]),
+  ) as Record<string, Record<Locale, PageFile>>;
+
   test("chaque affirmation citée existe dans le registre", () => {
-    for (const page of PAGES)
+    for (const page of EVERY_PAGE)
       for (const l of LOCALES)
-        for (const b of pairs[page][l].blocks)
+        for (const b of (everyPair[page] as Record<Locale, PageFile>)[l].blocks)
           for (const c of b.claims ?? [])
             expect(CODES.has(c), `${page} ${l} : ${c}`).toBe(true);
   });
 
-  test("chaque entrée du registre est utilisée au moins une fois (aucune affirmation orpheline)", () => {
+  test("chaque entrée du registre est utilisée au moins une fois (aucune affirmation orpheline), sauf les points à compléter par le fondateur", () => {
     const used = new Set<string>();
-    for (const page of PAGES)
+    for (const page of EVERY_PAGE)
       for (const l of LOCALES)
-        for (const b of pairs[page][l].blocks)
+        for (const b of (everyPair[page] as Record<Locale, PageFile>)[l].blocks)
           for (const c of b.claims ?? []) used.add(c);
-    expect([...CODES].filter((c) => !used.has(c))).toEqual([]);
+    const toComplete = new Set(
+      claimsFile.claims
+        .filter((c) => c.kind === "a_completer")
+        .map((c) => c.id),
+    );
+    expect(
+      [...CODES].filter((c) => !used.has(c) && !toComplete.has(c)),
+    ).toEqual([]);
   });
 
   test("tout bloc qui parle de pilote, de statut, de réel ou de cible cite au moins une affirmation", () => {

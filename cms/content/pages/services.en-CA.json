@@ -1,0 +1,183 @@
+{
+  "page": "services",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "services",
+    "title": "Services",
+    "seo_title": "AI services for small businesses in Quebec",
+    "seo_description": "Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora's services for small businesses.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Hub des services : promesse et CTA.",
+      "claims": ["CL-01", "CL-80"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Services",
+        "headline": "From idea to operation. With you.",
+        "subheadline": "Nexora designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.",
+        "primary_label": "Discuss my project",
+        "primary_href": "/en/contact/",
+        "secondary_label": "Read the method",
+        "secondary_href": "/en/method/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les quatre services.",
+      "claims": ["CL-80", "CL-81", "CL-84", "CL-04"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "services"
+      },
+      "translation": {
+        "title": "Four services, one thread.",
+        "intro": "From the first conversation to daily operation, the same people follow you and the same control rules apply.",
+        "cards": [
+          {
+            "title": "The diagnosis.",
+            "text": "We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. It leads to a written estimate."
+          },
+          {
+            "title": "AI server installation.",
+            "text": "On your premises or in our infrastructure in Quebec: sizing, installation, configuration, checking of data flows.",
+            "href": "/en/services/ai-server-installation/",
+            "link_label": "See installation"
+          },
+          {
+            "title": "Custom automation.",
+            "text": "Agents and workflows built for your processes, connected to your software, tested on your real cases.",
+            "href": "/en/services/custom-automation/",
+            "link_label": "See custom work"
+          },
+          {
+            "title": "Operations.",
+            "text": "We run the system with you, track what works, adjust the rest; training for your team covers usage and supervision.",
+            "href": "/en/method/",
+            "link_label": "See the method"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qui fait varier l'estimation.",
+      "claims": ["CL-10", "CL-82", "CL-85", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "estimation"
+      },
+      "translation": {
+        "title": "What makes the estimate vary.",
+        "body": "<p>There is no public price yet, and we announce no universal timeline. After the diagnosis, we provide a written estimate that states what is included and what is not. Here is what makes it vary.</p>",
+        "items": [
+          {
+            "title": "The number of cases handled.",
+            "text": "One well-chosen case first; others afterward."
+          },
+          {
+            "title": "The volume of documents.",
+            "text": "It weighs on indexing and on storage."
+          },
+          {
+            "title": "The deployment mode.",
+            "text": "On your premises or with us: the cost items are not the same."
+          },
+          {
+            "title": "The integrations.",
+            "text": "Each piece of software to connect is qualified; some take more work than others."
+          },
+          {
+            "title": "The hardware, on your premises.",
+            "text": "It is sized according to the number of users, the volume of documents and the model chosen."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que nous ne faisons pas : limites écrites.",
+      "claims": ["CL-89", "CL-86", "CL-09"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What we do not promise.",
+        "cards": [
+          {
+            "title": "That everything can be automated.",
+            "text": "Not every computing task can be done without constraints. We say so before you commit."
+          },
+          {
+            "title": "Products that do not exist.",
+            "text": "Telephony, camera vision and specialized models are not delivered products; they can be the subject of a feasibility study."
+          },
+          {
+            "title": "An announced service level.",
+            "text": "No availability level or response time is announced today; they are set out in the contract."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions sur les services.",
+      "claims": ["CL-04", "CL-08", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Services: your questions.",
+        "items": [
+          {
+            "question": "Do we need technical staff?",
+            "answer": "No. We install, run with you and evolve the system. Your team's training covers usage and supervision, not the technical side."
+          },
+          {
+            "question": "Who handles updates?",
+            "answer": "We do, as agreed in the contract. Updates are listed among the outbound flows in the diagram we hand over."
+          },
+          {
+            "question": "What if we want to stop?",
+            "answer": "You leave with your documents, configurations and workflows: export is provided for in the contract from the start."
+          },
+          {
+            "question": "Can we start small?",
+            "answer": "That is the method: one concrete case, put into service and verified, before expanding."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : diagnostic.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's start with a diagnosis.",
+        "text": "Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.",
+        "primary_label": "Discuss my project",
+        "primary_href": "/en/contact/",
+        "secondary_label": "Request a deployment study",
+        "secondary_href": "/en/contact/?sujet=etude-deploiement"
+      }
+    }
+  ]
+}

@@ -29,6 +29,7 @@ export function htmlToMarkdown(html: string): string {
     .replace(/<strong>([^<]*)<\/strong>/g, "**$1**")
     .replace(/<em>([^<]*)<\/em>/g, "*$1*")
     .replace(/<\/p>\s*<p>/g, "\n\n")
+    .replace(/<\/p>\s*<(ul|ol)>/g, "\n\n")
     .replace(/<\/?p>/g, "")
     .replace(/<li>/g, "- ")
     .replace(/<\/li>/g, "\n")

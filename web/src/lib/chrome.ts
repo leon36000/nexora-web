@@ -42,12 +42,39 @@ const pathOf = (href: string) => {
   return neutral.length > 1 ? neutral.replace(/\/+$/, "") : neutral;
 };
 
+/**
+ * Le lien mène-t-il à une page qui existe ? Vrai pour un lien externe, une ancre, l'accueil, une page publiée dans
+ * Directus (slug de l'une ou l'autre langue) ou une route de l'application (`appRoots`, sous-chemins compris).
+ * `undefined` quand la table des pages publiées est vide (Directus muet sans instantané) : on ne sait pas, on ne
+ * masque rien.
+ */
+export function targetExists(
+  alt: Alternates,
+  appRoots: readonly string[],
+): ((href: string) => boolean) | undefined {
+  if (Object.keys(alt.fr).length + Object.keys(alt.en).length === 0)
+    return undefined;
+  const roots = appRoots.map((r) => r.replace(/^\/+|\/+$/g, ""));
+  return (href) => {
+    if (!href.startsWith("/") || href.startsWith("//")) return true;
+    const path = href.split(/[?#]/)[0] ?? "";
+    const slug = stripLangPrefix(path).replace(/^\/+|\/+$/g, "");
+    if (slug === "") return true;
+    if (alt.fr[slug] !== undefined || alt.en[slug] !== undefined) return true;
+    return roots.some((r) => slug === r || slug.startsWith(`${r}/`));
+  };
+}
+
 export function buildChrome(
   lang: Lang,
   dict: Dictionary,
   nav: readonly NavItem[],
   alt: Alternates,
+  /** Voir `targetExists` : un lien interne vers une page absente est masqué plutôt que de mener à un 404. */
+  exists?: (href: string) => boolean,
 ): Chrome {
+  const live = (n: { href: string }) =>
+    n.href !== "" && (!exists || exists(n.href));
   const link = (label: string, href: string): ChromeLink => {
     const resolved = href ? resolveHrefForLang(alt, lang, href) : "";
     return { label, href: resolved, path: pathOf(resolved) };
@@ -103,16 +130,13 @@ export function buildChrome(
     for (const n of headerRoots) {
       if (n.style !== "link") continue;
       if (n.children.length > 0) {
-        const items = n.children
-          .filter((c) => c.href !== "")
-          .map((c) => ({
-            label: c.label,
-            description: c.description ?? "",
-            href: resolveHrefForLang(alt, lang, c.href),
-          }));
+        const items = n.children.filter(live).map((c) => ({
+          label: c.label,
+          description: c.description ?? "",
+          href: resolveHrefForLang(alt, lang, c.href),
+        }));
         if (items.length > 0) nav.push({ type: "menu", label: n.label, items });
-      } else if (n.href !== "")
-        nav.push({ type: "link", ...link(n.label, n.href) });
+      } else if (live(n)) nav.push({ type: "link", ...link(n.label, n.href) });
     }
     header = {
       nav,
@@ -128,22 +152,18 @@ export function buildChrome(
             .filter((c) => c.children.length > 0)
             .map((c) => ({
               title: c.label,
-              links: c.children
-                .filter((l) => l.href !== "")
-                .map((l) => ({
-                  label: l.label,
-                  href: resolveHrefForLang(alt, lang, l.href),
-                })),
+              links: c.children.filter(live).map((l) => ({
+                label: l.label,
+                href: resolveHrefForLang(alt, lang, l.href),
+              })),
             }))
         : dictFooter.columns,
     legal:
       legalRoots.length > 0
-        ? legalRoots
-            .filter((l) => l.href !== "")
-            .map((l) => ({
-              label: l.label,
-              href: resolveHrefForLang(alt, lang, l.href),
-            }))
+        ? legalRoots.filter(live).map((l) => ({
+            label: l.label,
+            href: resolveHrefForLang(alt, lang, l.href),
+          }))
         : dictFooter.legal,
   };
 

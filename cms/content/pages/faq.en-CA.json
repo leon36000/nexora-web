@@ -1,0 +1,200 @@
+{
+  "page": "faq",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "faq",
+    "title": "Frequently asked questions",
+    "seo_title": "FAQ: AI for Quebec small businesses",
+    "seo_description": "Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora's answers to the questions small-business owners ask most often. Straight answers only.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Entrée de la FAQ.",
+      "claims": ["CL-09"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "FAQ",
+        "headline": "Your questions. Our answers.",
+        "subheadline": "The objections business owners raise most often, with true answers only: when we do not know yet, or when something is not delivered, we say so.",
+        "primary_label": "Ask a question",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See the trust center",
+        "secondary_href": "/en/trust-center/"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Données et souveraineté : sept questions.",
+      "claims": [
+        "CL-02",
+        "CL-05",
+        "CL-06",
+        "CL-07",
+        "CL-08",
+        "CL-71",
+        "CL-77",
+        "CL-L05"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "donnees"
+      },
+      "translation": {
+        "title": "Data and sovereignty.",
+        "items": [
+          {
+            "question": "Does my data leave Quebec?",
+            "answer": "It depends on the deployment mode and the models you choose, and we write it down before kickoff. On your premises, the hardware and the access are yours, and the only outbound flows are those we draw up together: updates, licences, and an external model if you choose one. With us, hosting is in our infrastructure, in Quebec, and we specify backups, logs and providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration."
+          },
+          {
+            "question": "Do you train your models on our data?",
+            "answer": "No, not without your specific authorization. Our rule: one customer's data does not serve another customer or train a model without that customer's agreement, and we put it in the contract."
+          },
+          {
+            "question": "Is a server in Quebec enough?",
+            "answer": "No. Where the machines sit says nothing about the models called, the backups, the logs or the subcontractors. That is why we look at four layers: the data, the models, the compute and the operations."
+          },
+          {
+            "question": "Are you compliant with Law 25?",
+            "answer": "We do not put it that way. A company's compliance depends on its own practices, contracts and governance: no software and no supplier confers it. We describe what we document, what the software allows and what is in preparation, in the trust center."
+          },
+          {
+            "question": "Can an external model be used?",
+            "answer": "Yes, on two conditions: you accept it in writing, and it appears on the data-flow diagram as an outbound flow. No call to an external AI service is configured without your written agreement, and the system never switches to one without telling you."
+          },
+          {
+            "question": "Does the system work offline?",
+            "answer": "We do not promise operation with no outbound flow at all: updates and licences are listed. Running with no outbound flow is decided and verified case by case."
+          },
+          {
+            "question": "What happens if we stop?",
+            "answer": "You leave with your documents, configurations and workflows: export is provided for in the contract from the start, not negotiated at the end."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Mise en œuvre et coûts : sept questions.",
+      "claims": ["CL-04", "CL-10", "CL-82", "CL-14", "CL-85", "CL-12", "CL-83"],
+      "fields": {
+        "emit_jsonld": false,
+        "tone": "sable",
+        "anchor_id": "mise-en-oeuvre"
+      },
+      "translation": {
+        "title": "Setup and cost.",
+        "items": [
+          {
+            "question": "We have no technical staff.",
+            "answer": "That is not an obstacle. We install the system, run it with you and keep it evolving; your team's training covers usage and supervision, not the technical side."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. The cost depends on the number of cases handled, the volume of documents, the deployment mode, the integrations and, on your premises, the hardware. After a diagnosis, we provide a written estimate that states what is included and what is not."
+          },
+          {
+            "question": "Do we need a powerful server?",
+            "answer": "It depends on the case. With us, you buy no server. On your premises, we size the hardware to your uses: number of users, volume of documents, chosen model. A small local model is not always enough for agents that call tools."
+          },
+          {
+            "question": "How long to get started?",
+            "answer": "We announce no universal timeline: it depends on your software, your documents and your rules. It is measured on a first case."
+          },
+          {
+            "question": "Is my current software compatible?",
+            "answer": "A broad catalogue of services connects to WorkStudio, but whether a given piece of software can be connected depends on the service concerned. We check it during the diagnosis, package by package."
+          },
+          {
+            "question": "How will my employees be trained?",
+            "answer": "In usage and supervision: reviewing, correcting, approving, refusing. Not in programming."
+          },
+          {
+            "question": "Can I see the product before committing?",
+            "answer": "Yes: we offer a demonstration on fictional data. Self-service offers (servers, a credit-based model catalogue, hosted agents) are not open yet."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "L'IA, ses erreurs et ses limites : huit questions.",
+      "claims": [
+        "CL-21",
+        "CL-128",
+        "CL-96",
+        "CL-112",
+        "CL-124",
+        "CL-28",
+        "CL-30",
+        "CL-90"
+      ],
+      "fields": {
+        "emit_jsonld": false,
+        "tone": "clair",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "AI, its mistakes, its limits.",
+        "items": [
+          {
+            "question": "Will AI replace my employees?",
+            "answer": "Our systems take the repetitive tasks; the decision stays with a person. A workflow can stop on an approval before acting, and a log keeps track of what was done."
+          },
+          {
+            "question": "Can the AI be wrong?",
+            "answer": "Yes. We reduce the risk by making it answer from your documents, citing sources, and adding a faithfulness safeguard when useful. No safeguard eliminates error, which is why a person approves whatever commits the business."
+          },
+          {
+            "question": "Who supervises what the AI does?",
+            "answer": "Your team. Every model call leaves a trace you can consult, consumption is measured, and test sets let you check that a change has not degraded anything."
+          },
+          {
+            "question": "Why not a consumer assistant like ChatGPT?",
+            "answer": "A consumer assistant answers general questions well. What Nexora adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
+          },
+          {
+            "question": "What is an AI agent?",
+            "answer": "Software that completes a task in your place, with the tools and documents you authorize, and that asks for your approval before an important action."
+          },
+          {
+            "question": "Can it answer the phone?",
+            "answer": "No. No call-answering service is delivered today. A voice message dropped in as a recording can be transcribed; live telephony is checked separately."
+          },
+          {
+            "question": "Are Nexora Code, Corpus, Quanta and Helix available?",
+            "answer": "No availability or date is announced at this stage. Only Nexora WorkStudio is available, on request."
+          },
+          {
+            "question": "Is there a solution for construction?",
+            "answer": "Yes: OPSYS-AI coordinates ten departments for construction companies and field services, each with an honest status (available, in pilot or planned)."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA final de la FAQ.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "One more question.",
+        "text": "Ask us. If we do not know the answer, or if it is not delivered yet, we will tell you.",
+        "primary_label": "Ask a question",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See the solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    }
+  ]
+}

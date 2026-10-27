@@ -149,7 +149,7 @@ Status: demonstration on request.
 An API (the door through which other software calls a service) gives access to several AI models, the engines that produce answers, in the OpenAI format, a common calling format that many tools understand. Keys, quotas (usage limits) and usage metering are managed there.
 Status: demonstration on request; the public catalogue, with its prices, is in preparation.
 
-→ [See the models](/en/models/)
+→ [See the models](/en/modeles/)
 
 #### Hosted agents.
 

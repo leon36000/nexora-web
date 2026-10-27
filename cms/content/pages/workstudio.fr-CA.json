@@ -1,0 +1,355 @@
+{
+  "page": "workstudio",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "workstudio",
+    "title": "WorkStudio",
+    "seo_title": "Nexora WorkStudio\u00a0: agents et flux de travaux",
+    "seo_description": "Concevez, connectez et pilotez des agents et des flux de travaux en français, avec validation humaine, traces, évaluations et API. Démonstration sur demande.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de WorkStudio.",
+      "claims": ["CL-20", "CL-21", "CL-110"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Produit · WorkStudio",
+        "headline": "Concevez, connectez, pilotez. En français.",
+        "subheadline": "Nexora WorkStudio réunit en un seul endroit la conception, la connexion et le pilotage d'agents et de flux de travaux. Une étape peut attendre la validation d'une personne avant d'agir.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir les solutions",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Scénario type : de la demande à la trace, six temps.",
+      "claims": ["CL-90", "CL-91", "CL-21", "CL-93", "CL-96", "CL-25"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "scenario"
+      },
+      "translation": {
+        "title": "De la demande à la trace.",
+        "intro": "Un scénario type, en six temps. Chaque temps se règle dans WorkStudio, sans écrire de code.",
+        "cards": [
+          {
+            "title": "1. Une demande arrive.",
+            "text": "Par courriel, par un formulaire, par un chat, à un horaire ou par appel d'API."
+          },
+          {
+            "title": "2. Les informations sont retrouvées.",
+            "text": "L'agent cherche dans les bases de documents que vous lui avez autorisées."
+          },
+          {
+            "title": "3. Une proposition est préparée.",
+            "text": "Un brouillon de réponse, une fiche, une écriture de pré-saisie, selon le cas."
+          },
+          {
+            "title": "4. Une validation est demandée.",
+            "text": "Le flux s'arrête sur une carte qui montre l'action prévue. Une personne approuve ou refuse."
+          },
+          {
+            "title": "5. L'action est exécutée.",
+            "text": "Une seule fois, si elle a été autorisée. Sinon, rien ne part."
+          },
+          {
+            "title": "6. Tout est tracé.",
+            "text": "Qui a demandé quoi, ce qui a été répondu, avec quel modèle, en combien de temps."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Concevoir : agents, flux, Copilote, connaissances, documents et voix.",
+      "claims": [
+        "CL-90",
+        "CL-91",
+        "CL-92",
+        "CL-25",
+        "CL-101",
+        "CL-102",
+        "CL-110"
+      ],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "concevoir"
+      },
+      "translation": {
+        "title": "Concevoir vos agents.",
+        "intro": "«\u00a0Disponible\u00a0» signifie livré dans la version actuelle et vérifié sur le serveur de test de Nexora. Cela ne veut pas dire qu'un client l'utilise déjà.",
+        "cards": [
+          {
+            "title": "Des agents.",
+            "text": "Un assistant spécialisé\u00a0: il suit vos consignes, utilise les outils et les documents que vous lui autorisez, cite ses sources et se publie dans un chat.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des flux de travaux.",
+            "text": "Un enchaînement d'étapes, visible en cartes ou sur un canevas (un écran de dessin), testé pas à pas, puis déployé par chat, horaire, événement ou appel automatique d'un autre service. Chaque déploiement est une version à laquelle on peut revenir.",
+            "status": "disponible"
+          },
+          {
+            "title": "Un Copilote.",
+            "text": "Décrivez une automatisation en français\u00a0: il prépare un flux que vous relisez avant de le créer. Des modèles de départ pour PME (devis, relances, tri des courriels, comptes rendus) sont fournis.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des connaissances.",
+            "text": "Une base de vos documents, indexée par défaut sur le serveur de l'instance\u00a0: les agents y répondent avec leurs sources.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des documents lus.",
+            "text": "Lecture de PDF scannés et d'images, extraction de champs d'une facture, d'un devis, d'un bon de commande ou d'une note de frais, avec un indicateur «\u00a0à vérifier\u00a0».",
+            "status": "disponible"
+          },
+          {
+            "title": "De la voix.",
+            "text": "Transcription d'enregistrements audio, avec les intervenants d'une réunion, et lecture d'un texte à voix haute. Aucun service de réception d'appels n'est inclus.",
+            "status": "disponible"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Contrôler : validation, garde-fous, gouvernance, lieu des modèles.",
+      "claims": [
+        "CL-21",
+        "CL-93",
+        "CL-24",
+        "CL-105",
+        "CL-22",
+        "CL-23",
+        "CL-104",
+        "CL-112"
+      ],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controler"
+      },
+      "translation": {
+        "title": "Contrôler chaque étape.",
+        "cards": [
+          {
+            "title": "Une validation humaine.",
+            "text": "Chaque outil d'action de l'agent demande par défaut l'accord d'une personne avant d'écrire ou de supprimer. Sans réponse, l'action n'a pas lieu."
+          },
+          {
+            "title": "Des garde-fous.",
+            "text": "Avant de poursuivre, on peut vérifier qu'un format est valide, que des renseignements personnels sont absents ou masqués, ou qu'une réponse reste fidèle à vos connaissances. Un garde-fou réduit l'erreur\u00a0; il ne la supprime pas."
+          },
+          {
+            "title": "Des politiques de données.",
+            "text": "Pour chaque espace\u00a0: autoriser, masquer ou refuser l'envoi de renseignements personnels à un modèle hors de l'instance. Des groupes d'accès peuvent interdire certains modèles."
+          },
+          {
+            "title": "Des organisations et des rôles.",
+            "text": "Organisations, rôles, journal d'audit et plafonds mensuels de consommation. Connexion unique avec les fournisseurs d'identité courants."
+          },
+          {
+            "title": "Le lieu de chaque modèle.",
+            "text": "Chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers. C'est un affichage documenté, pas une preuve de résidence."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Mesurer et améliorer : Playground, prompts, traces, évaluations, lots, consommation.",
+      "claims": ["CL-94", "CL-95", "CL-96", "CL-97", "CL-98", "CL-106"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "mesurer"
+      },
+      "translation": {
+        "title": "Mesurer et améliorer.",
+        "cards": [
+          {
+            "title": "Un Playground.",
+            "text": "Essayez et comparez plusieurs modèles côte à côte avant de choisir, avec le temps et les jetons (l'unité de texte que traite un modèle) de chaque réponse.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des consignes versionnées.",
+            "text": "Une consigne réutilisable a des versions et deux étiquettes, production et test. On teste une version avant de la promouvoir\u00a0; chaque changement est consigné.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des traces.",
+            "text": "Chaque appel de modèle laisse une trace\u00a0: étapes, durée, jetons, modèle. Les renseignements personnels peuvent y être masqués.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des évaluations.",
+            "text": "Des jeux de tests et des juges mesurent si un agent, une consigne ou un modèle répond bien, et comparent deux versions avant de changer.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des traitements par lot.",
+            "text": "Faites traiter une table de plusieurs centaines de lignes en arrière-plan\u00a0: progression, annulation, exportation en CSV.",
+            "status": "disponible"
+          },
+          {
+            "title": "Une consommation mesurée.",
+            "text": "Jetons, exécutions et empreinte carbone estimée, par modèle, espace et personne, avec des plafonds mensuels.",
+            "status": "disponible"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Brancher : Nexora Connect, API, site, Assistant, délégation, installation.",
+      "claims": ["CL-103", "CL-27", "CL-107", "CL-100", "CL-108", "CL-26"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "modules",
+        "anchor_id": "brancher"
+      },
+      "translation": {
+        "title": "Brancher vos outils.",
+        "cards": [
+          {
+            "title": "Des connecteurs.",
+            "text": "Nexora Connect branche un large catalogue de services\u00a0: messagerie, agenda, relation client, stockage, facturation. Chaque connexion appartient à un espace de travail et se qualifie service par service.",
+            "status": "disponible"
+          },
+          {
+            "title": "Une API au format OpenAI.",
+            "text": "Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès aux modèles et aux agents publiés, au format OpenAI que de nombreux outils comprennent déjà\u00a0: clés, quotas, mesure de la consommation.",
+            "status": "disponible"
+          },
+          {
+            "title": "Votre site.",
+            "text": "Un agent publié s'affiche sur votre site en une ligne de code (bulle de chat, cadre ou lien). WorkStudio s'installe aussi comme application depuis un navigateur compatible.",
+            "status": "disponible"
+          },
+          {
+            "title": "Un Assistant interne.",
+            "text": "Un chat où vos équipes s'adressent aux agents publiés de l'entreprise, avec leur historique et leurs fichiers joints.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des agents qui s'entraident.",
+            "text": "Un agent peut confier une demande à un autre agent publié, avec une profondeur limitée et sans boucle.",
+            "status": "disponible"
+          },
+          {
+            "title": "Une installation simple.",
+            "text": "Une commande sur un serveur Docker (un outil qui empaquette les logiciels), sous Linux ou macOS, puis des commandes de sauvegarde, de restauration et de mise à jour.",
+            "href": "/services/installation-serveurs-ia/",
+            "link_label": "Voir l'installation",
+            "status": "disponible"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Limites dites franchement.",
+      "claims": ["CL-83", "CL-109", "CL-111", "CL-110", "CL-103"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Les limites, dites franchement.",
+        "body": "<p>Un produit se juge aussi à ce qu'il écrit sur ses limites. Voici les nôtres, à la date de cette page.</p>",
+        "items": [
+          {
+            "title": "Vérifié chez nous, pas encore chez un client.",
+            "text": "WorkStudio a été vérifié sur le serveur de test de Nexora avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé."
+          },
+          {
+            "title": "Les agents à outils exigent un modèle capable.",
+            "text": "Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas."
+          },
+          {
+            "title": "Deux options sortent des sentiers battus.",
+            "text": "L'interpréteur de code est désactivé par défaut et ne s'active que par un administrateur. La recherche sur le web envoie ses requêtes hors de l'instance\u00a0: elle n'est disponible que si un administrateur l'active."
+          },
+          {
+            "title": "Les modèles de départ sont généraux.",
+            "text": "Ils ne suivent pas les règles fiscales du Québec\u00a0: taxes, formats et vocabulaire s'adaptent à votre entreprise."
+          },
+          {
+            "title": "Les connexions se qualifient.",
+            "text": "Certains services demandent qu'un administrateur enregistre d'abord une application chez le fournisseur, et une adresse HTTPS publique pour l'instance."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à WorkStudio.",
+      "claims": ["CL-12", "CL-20", "CL-26", "CL-06", "CL-27"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "WorkStudio\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Peut-on l'essayer sans engagement\u00a0?",
+            "answer": "Il n'y a pas de compte à créer pour l'instant\u00a0: les offres en libre-service ne sont pas encore ouvertes. Nous proposons une démonstration, sur des données fictives, puis nous parlons de votre cas."
+          },
+          {
+            "question": "Faut-il savoir programmer\u00a0?",
+            "answer": "Non pour l'usage courant\u00a0: un flux se lit en cartes, se règle par formulaires et se teste pas à pas. Les cas particuliers peuvent demander du code\u00a0; c'est nous qui le gérons avec vous."
+          },
+          {
+            "question": "Mes données quittent-elles mon serveur\u00a0?",
+            "answer": "Par défaut, l'indexation de vos documents se calcule sur le serveur de l'instance. Un modèle externe n'est jamais configuré sans votre accord écrit, et chaque modèle indique où il tourne."
+          },
+          {
+            "question": "Peut-on l'intégrer à nos outils\u00a0?",
+            "answer": "Oui, par des connecteurs, par une API au format OpenAI, ou en affichant un agent sur votre site. Chaque connexion se qualifie."
+          },
+          {
+            "question": "Combien de temps pour l'installer\u00a0?",
+            "answer": "L'installation tient en une commande sur un serveur Docker\u00a0; la mise en service d'un cas dépend de votre situation, sans délai universel."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-12"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voir WorkStudio travailler.",
+        "text": "Nous préparons une démonstration sur des données fictives, puis nous parlons de votre premier cas.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Lire la méthode",
+        "secondary_href": "/methode/"
+      }
+    }
+  ]
+}

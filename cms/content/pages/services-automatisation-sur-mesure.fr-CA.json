@@ -1,0 +1,220 @@
+{
+  "page": "services-automatisation-sur-mesure",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "services/automatisation-sur-mesure",
+    "title": "Automatisation sur mesure",
+    "seo_title": "Automatisation sur mesure pour PME",
+    "seo_description": "Nexora construit avec vous des agents et des flux de travaux reliés à vos logiciels, et les met à l'épreuve sur vos cas réels avant la mise en service.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du sur-mesure.",
+      "claims": ["CL-84", "CL-91"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Services · Sur mesure",
+        "headline": "Vos processus, automatisés à votre façon.",
+        "subheadline": "Quand une solution type ne suffit pas, nous construisons avec vous des agents et des flux de travaux qui relient vos logiciels et vos documents, et nous les mettons à l'épreuve sur vos cas réels avant la mise en service.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les solutions types",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Trois exemples non interchangeables de processus sur mesure.",
+      "claims": ["CL-11", "CL-84", "CL-D03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "exemples"
+      },
+      "translation": {
+        "title": "Trois processus, trois constructions.",
+        "body": "<p>Le sur-mesure commence là où les solutions types s'arrêtent. Trois exemples construits, qui ne se ressemblent pas\u00a0; ce ne sont pas des résultats de clients.</p>",
+        "items": [
+          {
+            "title": "Un entrepreneur retrouve ses soumissions.",
+            "text": "Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, et suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation avant tout envoi. Pour la construction, <a href=\"/opsys-ai/\">OPSYS-AI</a> couvre déjà une partie de ce parcours, avec ses statuts."
+          },
+          {
+            "title": "Un distributeur traite les documents de ses fournisseurs.",
+            "text": "Bons de livraison, confirmations de commande et factures arrivent dans des formats différents. Le flux les lit, les compare entre eux et signale ce qui ne concorde pas, avant toute action."
+          },
+          {
+            "title": "Un cabinet prépare des dossiers.",
+            "text": "Il rassemble des pièces autorisées, en tire un résumé et une liste de points à vérifier, puis passe la main à la personne responsable. Les droits d'accès sont définis avant la construction."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Notre façon de travailler : six temps, avec les outils de WorkStudio.",
+      "claims": ["CL-03", "CL-84", "CL-92", "CL-91", "CL-97", "CL-21"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "demarche"
+      },
+      "translation": {
+        "title": "Notre façon de travailler.",
+        "cards": [
+          {
+            "title": "1. Observer.",
+            "text": "Nous regardons comment le travail se fait\u00a0: où le temps se perd, quelles informations entrent, qui décide."
+          },
+          {
+            "title": "2. Prototyper.",
+            "text": "Nous décrivons le flux en français\u00a0; le Copilote de WorkStudio en propose une première version que nous relisons et corrigeons."
+          },
+          {
+            "title": "3. Relier.",
+            "text": "Nous raccordons vos logiciels par des connecteurs, après avoir vérifié que chacun peut l'être."
+          },
+          {
+            "title": "4. Mettre à l'épreuve.",
+            "text": "Nous construisons un jeu de tests à partir de vos cas réels et mesurons si l'agent répond bien, avant de changer quoi que ce soit."
+          },
+          {
+            "title": "5. Valider.",
+            "text": "Chaque étape qui engage l'entreprise attend une personne. Nous décidons avec vous lesquelles."
+          },
+          {
+            "title": "6. Former et exploiter.",
+            "text": "Votre équipe apprend à superviser et à corriger\u00a0; nous suivons ce qui fonctionne et ajustons le reste."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les briques de WorkStudio utilisées.",
+      "claims": [
+        "CL-90",
+        "CL-91",
+        "CL-25",
+        "CL-101",
+        "CL-103",
+        "CL-27",
+        "CL-98"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "briques"
+      },
+      "translation": {
+        "title": "Avec quoi nous construisons.",
+        "body": "<p>Tout est bâti dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, ce qui garde le système lisible et transférable. Ses composantes sont livrées\u00a0; c'est leur assemblage pour votre cas qui est sur mesure.</p>",
+        "items": [
+          {
+            "title": "Des agents.",
+            "text": "Des assistants qui suivent vos consignes, utilisent vos outils et vos documents, et citent leurs sources."
+          },
+          {
+            "title": "Des flux de travaux.",
+            "text": "Des enchaînements d'étapes, déclenchés par un courriel, un horaire, une requête, avec des validations humaines."
+          },
+          {
+            "title": "Des documents et des données.",
+            "text": "Bases de connaissances, lecture de documents scannés, tables, traitements par lot."
+          },
+          {
+            "title": "Des connecteurs et une API.",
+            "text": "Des services reliés par Nexora Connect, et des agents appelables par API au format OpenAI."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Limites : ce qui n'est pas un produit livré, ce qui se qualifie.",
+      "claims": ["CL-89", "CL-85", "CL-83", "CL-14"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce qui n'est pas promis.",
+        "cards": [
+          {
+            "title": "Une intégration promise d'avance.",
+            "text": "Un logiciel ne se relie qu'après qualification. Certaines connexions demandent un enregistrement préalable chez le fournisseur."
+          },
+          {
+            "title": "Des produits non livrés.",
+            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés\u00a0; nous pouvons en étudier la faisabilité, rien de plus à ce stade."
+          },
+          {
+            "title": "Un modèle trop petit.",
+            "text": "Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas."
+          },
+          {
+            "title": "Un délai ou un gain annoncé.",
+            "text": "Aucun délai universel et aucun gain chiffré\u00a0: tout se mesure sur un premier cas."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre au sur-mesure.",
+      "claims": ["CL-84", "CL-08", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Sur mesure\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Quelle différence avec une solution type\u00a0?",
+            "answer": "Une solution type répond à un problème courant et se configure. Le sur-mesure traite un processus propre à votre entreprise, avec ses règles et ses logiciels."
+          },
+          {
+            "question": "Le résultat m'appartient-il\u00a0?",
+            "answer": "Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit."
+          },
+          {
+            "question": "Combien cela coûte-t-il\u00a0?",
+            "answer": "Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
+          },
+          {
+            "question": "Qui maintient le système après la mise en service\u00a0?",
+            "answer": "Nous l'exploitons avec vous et le faisons évoluer. La répartition exacte est écrite au contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : projet.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Décrivez-nous votre processus.",
+        "text": "Dites-nous ce qui vous coûte du temps et avec quels logiciels. Nous vous disons si c'est faisable, comment, et par quel cas commencer.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Lire la méthode",
+        "secondary_href": "/methode/"
+      }
+    }
+  ]
+}

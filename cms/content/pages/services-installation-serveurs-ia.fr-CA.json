@@ -1,0 +1,245 @@
+{
+  "page": "services-installation-serveurs-ia",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "services/installation-serveurs-ia",
+    "title": "Installation de serveurs d'IA",
+    "seo_title": "Installation de serveurs d'IA pour PME",
+    "seo_description": "Nexora installe et configure votre serveur d'IA chez vous ou dans son infrastructure au Québec, puis l'exploite avec vous. Matériel dimensionné avant achat.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du service d'installation.",
+      "claims": ["CL-81", "CL-05"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Services · Installation",
+        "headline": "Un serveur d'IA installé. Un périmètre écrit.",
+        "subheadline": "Nous installons, configurons et exploitons avec vous le serveur qui fait tourner vos agents et vos modèles\u00a0: chez vous, ou dans notre infrastructure au Québec. Le périmètre vous est remis par écrit avant la mise en service.",
+        "primary_label": "Demander une étude de déploiement",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Comparer les deux modes",
+        "secondary_href": "/deploiement/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Définition du serveur d'IA et des deux voies.",
+      "claims": ["CL-81", "CL-02", "CL-13"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "deux-voies"
+      },
+      "translation": {
+        "title": "Deux voies, une méthode.",
+        "body": "<p>Un serveur d'IA est une machine qui exécute les modèles (les moteurs qui produisent les réponses) et les agents. Ce peut être un serveur physique, ou un serveur privé virtuel (VPS), c'est-à-dire un serveur loué rien que pour vous.</p><p>La méthode est la même dans les deux cas\u00a0: on dimensionne, on installe, on configure, on vérifie les flux, on forme, puis on exploite.</p>",
+        "items": [
+          {
+            "title": "Chez vous.",
+            "text": "Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous. Voir le <a href=\"/deploiement/sur-place/\">mode sur place</a>."
+          },
+          {
+            "title": "Chez nous, au Québec.",
+            "text": "Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel. Voir le <a href=\"/deploiement/heberge-quebec/\">mode hébergé</a>."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Six étapes, de l'étude à l'exploitation.",
+      "claims": ["CL-81", "CL-26", "CL-88", "CL-104", "CL-05", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "De l'étude à l'exploitation.",
+        "cards": [
+          {
+            "title": "1. Dimensionner.",
+            "text": "Nombre d'utilisateurs, volume de documents, modèle choisi\u00a0: le diagnostic fixe ce qu'il faut, avant tout achat."
+          },
+          {
+            "title": "2. Installer.",
+            "text": "WorkStudio s'installe en une commande sur un serveur Docker (un outil qui empaquette les logiciels pour les installer proprement), sous Linux ou macOS. Les secrets sont générés sur la machine\u00a0; des commandes de sauvegarde, de restauration et de mise à jour sont posées."
+          },
+          {
+            "title": "3. Configurer.",
+            "text": "Organisation, comptes et rôles, connexion unique avec votre fournisseur d'identité, choix du modèle, connexions à vos logiciels."
+          },
+          {
+            "title": "4. Vérifier.",
+            "text": "Nous dressons la liste de ce qui sort du réseau et nous vous remettons le schéma des flux. Puis nous testons un cas réel, avec vos validations."
+          },
+          {
+            "title": "5. Former.",
+            "text": "Votre équipe apprend à superviser, à corriger et à décider, pas à programmer."
+          },
+          {
+            "title": "6. Exploiter.",
+            "text": "Mises à jour, sauvegardes, surveillance et évolution\u00a0: ce que nous faisons et ce que vous faites est écrit au contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Facteurs de dimensionnement, sans valeur inventée.",
+      "claims": ["CL-82", "CL-83", "CL-102"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "modules",
+        "anchor_id": "dimensionnement"
+      },
+      "translation": {
+        "title": "Ce qui fait varier le matériel.",
+        "intro": "Nous ne donnons pas de configuration type\u00a0: elle dépend de ces quatre facteurs, que le diagnostic mesure avant tout achat.",
+        "cards": [
+          {
+            "title": "Le nombre d'utilisateurs.",
+            "text": "Combien de personnes interrogent le système en même temps, et à quelles heures."
+          },
+          {
+            "title": "Le volume de documents.",
+            "text": "Il détermine la taille de la base de connaissances et le temps d'indexation."
+          },
+          {
+            "title": "Le modèle choisi.",
+            "text": "Un modèle sur votre serveur demande du matériel plus puissant qu'un modèle externe. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils\u00a0: le choix se fait au diagnostic."
+          },
+          {
+            "title": "Les usages.",
+            "text": "Lire des documents scannés ou transcrire des enregistrements demande des modèles supplémentaires, donc de la mémoire et du temps de calcul."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que nous installons : WorkStudio et ses composants.",
+      "claims": ["CL-26", "CL-27", "CL-103", "CL-24", "CL-88"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "composants"
+      },
+      "translation": {
+        "title": "Ce que nous installons.",
+        "body": "<p>L'installation réunit la plateforme <a href=\"/workstudio/\">Nexora WorkStudio</a> et les services dont elle a besoin.</p>",
+        "items": [
+          {
+            "title": "WorkStudio.",
+            "text": "Le studio où se conçoivent et se pilotent agents et flux de travaux."
+          },
+          {
+            "title": "Une passerelle de modèles.",
+            "text": "Un point d'accès unique à plusieurs modèles d'IA, au format OpenAI, avec clés, quotas et mesure de la consommation."
+          },
+          {
+            "title": "Nexora Connect.",
+            "text": "Le moteur de connecteurs qui relie vos services (messagerie, agenda, stockage, facturation)."
+          },
+          {
+            "title": "Des services optionnels.",
+            "text": "Détection locale des renseignements personnels, voix locale (transcription, synthèse vocale), lecture de documents scannés."
+          },
+          {
+            "title": "Des commandes d'exploitation.",
+            "text": "Démarrer, arrêter, journaliser, sauvegarder, restaurer, mettre à jour."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que nous ne promettons pas, pour ce service.",
+      "claims": ["CL-10", "CL-14", "CL-86", "CL-77"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce que nous ne promettons pas.",
+        "cards": [
+          {
+            "title": "Aucun prix public.",
+            "text": "Une estimation écrite suit le diagnostic."
+          },
+          {
+            "title": "Aucun délai universel.",
+            "text": "La durée dépend de votre cas et se mesure sur un premier cas."
+          },
+          {
+            "title": "Aucun niveau de service annoncé.",
+            "text": "Disponibilité et délais de réponse se précisent au contrat."
+          },
+          {
+            "title": "Aucun fonctionnement sans flux sortant présumé.",
+            "text": "Mises à jour, licences, modèle externe éventuel\u00a0: tout est listé avant la mise en service."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à l'installation.",
+      "claims": ["CL-26", "CL-81", "CL-82", "CL-08"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Installation\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Faut-il acheter un serveur puissant\u00a0?",
+            "answer": "Cela dépend du cas. Le diagnostic répond à cette question avant tout achat\u00a0: il tient compte du nombre d'utilisateurs, du volume de documents et du modèle choisi."
+          },
+          {
+            "question": "Peut-on l'installer sur un serveur existant\u00a0?",
+            "answer": "Il suffit d'un serveur qui fait tourner Docker. Nous vérifions au diagnostic qu'il convient aux usages prévus."
+          },
+          {
+            "question": "Qui exploite ensuite\u00a0?",
+            "answer": "Nous, avec vous, selon ce que le contrat prévoit. Dans le mode sur place, les accès que vous nous donnez sont convenus à l'avance."
+          },
+          {
+            "question": "Peut-on changer de mode plus tard\u00a0?",
+            "answer": "L'exportation de vos documents, de vos configurations et de vos flux de travaux est prévue au contrat. Un changement de mode se planifie alors comme un projet."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : étude de déploiement.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Dimensionnons avant d'acheter.",
+        "text": "Décrivez-nous vos usages. Nous vous disons quel mode convient, ce qu'il faudrait comme matériel s'il y a lieu, et par où commencer.",
+        "primary_label": "Demander une étude de déploiement",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Voir le mode sur place",
+        "secondary_href": "/deploiement/sur-place/"
+      }
+    }
+  ]
+}

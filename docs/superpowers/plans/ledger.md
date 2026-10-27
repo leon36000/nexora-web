@@ -61,5 +61,12 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Rulings (S7) : réservation plafonnée à `run_token_cap` (32 000 jetons par défaut) — trop bas, Nexora absorbe le dépassement ; identifiant amont `agent:<nom>` faute d'identifiant de workflow dans `/v1/models` — renommer l'agent dans WorkStudio le casse tant que l'admin n'a pas saisi `agent:<id>` ; CSP avec `'unsafe-inline'` pour les scripts de Next sur les pages de la bulle.
 - À poser côté WorkStudio avant publication : `NEXORA_EMBED_ORIGINS=https://<domaine du site>` (vide aujourd'hui = toutes origines).
 
+## S3 Contenu vitrine — terminé le 27/10/2026
+- Livré (Sonnet) : 25 pages fr-CA/en-CA rédigées ; 20 publiées par la chaîne officielle (souveraineté, hub et 6 solutions, services ×2, déploiement ×2, méthode, WorkStudio, suite, entreprise, centre de confiance, FAQ) ; guide Loi 25 et 4 pages juridiques en brouillon `noindex` avec marqueurs « À COMPLÉTER PAR LE FONDATEUR ». `load-content.ts` découvre les pages et ne promeut jamais un `draft`. Registre : +76 affirmations `en_revue` (dont CL-A01 à CL-A14 pour le fondateur), 16 formulations retirées (R-21 à R-36).
+- Contrôle orchestrateur : 1 647 tests verts ; 44 liens internes du contenu → 200 ; captures 1440/390 de 4 pages relues (composition variée, rien de cassé) ; rendu public fr 22 / en 22 pages, brouillons en 404.
+- Correctif orchestrateur : la navigation masque tout lien interne vers une page ni publiée ni route de l'application (`targetExists`, test RED→GREEN) — Tarifs, Ressources, Loi 25 et mentions légales réapparaîtront à leur publication ; aucun masquage si Directus est muet sans instantané. Lien `/en/models/` de l'accueil corrigé en `/en/modeles/` et republié par approbation.
+- À confirmer par le fondateur : numéros d'articles de la Loi 25 cités de mémoire (CL-L01, L02, L04) ; FAQ publiée qui mentionne la Loi 25 sans se dire conforme ; engagements de service CL-05 à CL-08, CL-72, CL-73, CL-76, CL-128 ; pas de page Tarifs ni Ressources (prix non fixés).
+- Avant publication : les mentions légales doivent être publiées (le pied de page n'a aucun lien légal tant qu'elles sont en brouillon).
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.

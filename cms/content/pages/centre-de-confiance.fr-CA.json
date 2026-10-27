@@ -1,0 +1,293 @@
+{
+  "page": "centre-de-confiance",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "centre-de-confiance",
+    "title": "Centre de confiance",
+    "seo_title": "Centre de confiance\u00a0: engagements et preuves",
+    "seo_description": "Nos engagements vérifiables, ce que le logiciel permet déjà et la liste des documents que nous préparons avec leur statut\u00a0: tout ce qu'on peut nous demander.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du centre de confiance.",
+      "claims": ["CL-09", "CL-87"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Centre de confiance",
+        "headline": "Des engagements. Des preuves à demander.",
+        "subheadline": "Pas de grands mots ici\u00a0: ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.",
+        "primary_label": "Demander un document",
+        "primary_href": "/contact/",
+        "secondary_label": "Lire sur la souveraineté",
+        "secondary_href": "/souverainete/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Six engagements vérifiables.",
+      "claims": [
+        "CL-05",
+        "CL-06",
+        "CL-76",
+        "CL-07",
+        "CL-08",
+        "CL-21",
+        "CL-128",
+        "CL-09"
+      ],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "engagements"
+      },
+      "translation": {
+        "title": "Des engagements vérifiables.",
+        "intro": "Chacun peut être contrôlé avant et après la mise en service.",
+        "cards": [
+          {
+            "title": "Vous savez où vont vos données.",
+            "text": "Avant toute mise en service, nous vous remettons par écrit le schéma des flux\u00a0: où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent."
+          },
+          {
+            "title": "Pas de modèle externe sans accord.",
+            "text": "Aucun appel à un service d'IA externe n'est configuré sans votre accord écrit, et le système ne bascule jamais vers un tel service sans vous le dire."
+          },
+          {
+            "title": "Vos données restent les vôtres.",
+            "text": "Nous ne réutilisons pas les données d'un client, ni pour un autre client ni pour entraîner un modèle, sans son autorisation spécifique."
+          },
+          {
+            "title": "Vous pouvez partir.",
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables\u00a0; le contrat le prévoit."
+          },
+          {
+            "title": "Les décisions restent humaines.",
+            "text": "Dans les flux que nous configurons, toute action qui engage l'entreprise attend la validation d'une personne, sauf décision écrite contraire de votre part."
+          },
+          {
+            "title": "Pas d'affirmation sans preuve.",
+            "text": "Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvons pas prouver. Quand une capacité est en pilote ou prévue, nous l'écrivons."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que le logiciel permet déjà, statuts disponibles.",
+      "claims": [
+        "CL-22",
+        "CL-23",
+        "CL-24",
+        "CL-105",
+        "CL-96",
+        "CL-104",
+        "CL-113",
+        "CL-110"
+      ],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "modules",
+        "anchor_id": "logiciel"
+      },
+      "translation": {
+        "title": "Ce que le logiciel permet déjà.",
+        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora. Elles soutiennent votre démarche\u00a0; elles ne la remplacent pas.",
+        "cards": [
+          {
+            "title": "Rôles et organisations.",
+            "text": "Qui voit quoi, qui peut modifier, par espace de travail.",
+            "status": "disponible"
+          },
+          {
+            "title": "Journal d'audit et plafonds.",
+            "text": "Les actions d'administration sont consignées\u00a0; la consommation est plafonnée par mois.",
+            "status": "disponible"
+          },
+          {
+            "title": "Connexion unique.",
+            "text": "Vos équipes se connectent avec le compte de votre entreprise, chez un fournisseur d'identité courant.",
+            "status": "disponible"
+          },
+          {
+            "title": "Politique sur les renseignements personnels.",
+            "text": "Autoriser, masquer ou refuser l'envoi de renseignements personnels à un modèle hors de l'instance, par espace.",
+            "status": "disponible"
+          },
+          {
+            "title": "Traces et masquage.",
+            "text": "Chaque appel de modèle est tracé\u00a0; les noms, courriels et numéros de téléphone peuvent y être masqués.",
+            "status": "disponible"
+          },
+          {
+            "title": "Lieu de chaque modèle et secrets chiffrés.",
+            "text": "Chaque modèle indique où il tourne\u00a0; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.",
+            "status": "disponible"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Documents fournis sur demande, tous en préparation.",
+      "claims": ["CL-87", "CL-73", "CL-05"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "documents"
+      },
+      "translation": {
+        "title": "Documents sur demande.",
+        "intro": "Voici les documents que nous nous engageons à fournir. Ils sont en préparation\u00a0: aucun n'est encore disponible, et nous vous le dirons ici dès qu'un document existe.",
+        "cards": [
+          {
+            "title": "Le schéma des flux de votre installation.",
+            "text": "Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent. Le modèle de schéma est à rédiger.",
+            "status": "prevu"
+          },
+          {
+            "title": "Le contrat type et l'entente de traitement.",
+            "text": "Ce que Nexora fait des renseignements que vous lui confiez, et ce qu'elle s'interdit.",
+            "status": "prevu"
+          },
+          {
+            "title": "La liste des sous-traitants et des lieux.",
+            "text": "Qui intervient dans l'hébergement et l'exploitation, et où.",
+            "status": "prevu"
+          },
+          {
+            "title": "La preuve du lieu d'hébergement au Québec.",
+            "text": "Adresse, clause de localisation, lieu des sauvegardes et des journaux, pour le mode hébergé.",
+            "status": "prevu"
+          },
+          {
+            "title": "Un modèle d'évaluation des facteurs relatifs à la vie privée.",
+            "text": "Pour aider votre entreprise à documenter l'évaluation d'un projet d'IA.",
+            "status": "prevu"
+          },
+          {
+            "title": "Une procédure d'incident.",
+            "text": "Qui évalue, qui avise, où l'incident est consigné.",
+            "status": "prevu"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Trois plans de données distincts.",
+      "claims": ["CL-78", "CL-71"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "plans"
+      },
+      "translation": {
+        "title": "Trois plans de données.",
+        "body": "<p>Quand on parle de «\u00a0données\u00a0», on parle de trois choses différentes. Nous les traitons séparément.</p>",
+        "items": [
+          {
+            "title": "Le contenu public du site.",
+            "text": "Ce que vous lisez ici\u00a0: fait pour être publié et indexé."
+          },
+          {
+            "title": "Vos échanges avec Nexora.",
+            "text": "Formulaires, courriels, facturation\u00a0: ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira."
+          },
+          {
+            "title": "Les données de votre système.",
+            "text": "Vos documents, vos conversations, vos bases\u00a0: elles restent dans le périmètre convenu, décrit par le schéma des flux."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que nous ne revendiquons pas.",
+      "claims": ["CL-09", "CL-86", "CL-L05"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "non-revendique"
+      },
+      "translation": {
+        "title": "Ce que nous ne revendiquons pas.",
+        "cards": [
+          {
+            "title": "Aucun client cité.",
+            "text": "Nous ne publions aucun nom de client, aucun logo, aucune étude de cas tant que nous n'avons pas l'accord écrit de l'entreprise concernée."
+          },
+          {
+            "title": "Aucun chiffre sans mesure.",
+            "text": "Ni gain de temps, ni taux de réussite, ni économie\u00a0: ils se mesurent chez vous, pendant un pilote."
+          },
+          {
+            "title": "Aucun niveau de service annoncé.",
+            "text": "Disponibilité et délais de réponse se précisent au contrat."
+          },
+          {
+            "title": "Aucune conformité décrétée.",
+            "text": "La conformité d'une entreprise dépend de ses pratiques, de ses contrats et de sa gouvernance. Aucun fournisseur ne la confère."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ du centre de confiance.",
+      "claims": ["CL-87", "CL-09", "CL-06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Confiance\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Comment demander un document\u00a0?",
+            "answer": "Écrivez-nous par le formulaire de contact en nommant le document. Tant qu'il est en préparation, nous vous le disons au lieu de vous en promettre une date."
+          },
+          {
+            "question": "Avez-vous une attestation de sécurité\u00a0?",
+            "answer": "Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons."
+          },
+          {
+            "question": "Qui, chez Nexora, peut accéder à mon système\u00a0?",
+            "answer": "Seulement les accès convenus à l'avance, décrits dans l'étude de déploiement. Dans le mode sur place, vous les accordez et pouvez les retirer."
+          },
+          {
+            "question": "Utilisez-vous un modèle externe\u00a0?",
+            "answer": "Seulement si vous l'avez accepté par écrit. Il apparaît alors au schéma des flux comme un flux sortant."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : demander un document.",
+      "claims": ["CL-87"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Une preuve vous manque.",
+        "text": "Dites-nous laquelle. Nous vous répondons avec ce qui existe, ce qui est en préparation et ce que nous ne pouvons pas encore affirmer.",
+        "primary_label": "Demander un document",
+        "primary_href": "/contact/",
+        "secondary_label": "Lire la FAQ",
+        "secondary_href": "/faq/"
+      }
+    }
+  ]
+}

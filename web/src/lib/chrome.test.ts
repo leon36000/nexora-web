@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { NavItem } from "@/server/cms/model";
 import { buildAlternates } from "./alternates";
-import { buildChrome } from "./chrome";
+import { buildChrome, targetExists } from "./chrome";
 
 const item = (
   over: Partial<NavItem> & { id: string; label: string },
@@ -137,5 +137,74 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
     expect(footer.legal).toEqual([
       { label: "Confidentialité", href: "/confidentialite" },
     ]);
+  });
+});
+
+describe("liens vers des pages qui n'existent pas encore", () => {
+  const nav: NavItem[] = [
+    item({ id: "1", label: "IA souveraine", href: "/souverainete/" }),
+    item({ id: "2", label: "Tarifs", href: "/tarifs/" }),
+    item({ id: "3", label: "Externe", href: "https://exemple.ca/" }),
+    item({
+      id: "f1",
+      placement: "footer",
+      label: "Confiance",
+      href: "",
+      children: [
+        item({ id: "f1a", placement: "footer", label: "VPS", href: "/vps/" }),
+        item({
+          id: "f1b",
+          placement: "footer",
+          label: "Fiche",
+          href: "/vps/hermes-agent/",
+        }),
+        item({
+          id: "f1c",
+          placement: "footer",
+          label: "Loi 25",
+          href: "/souverainete/loi-25/",
+        }),
+      ],
+    }),
+    item({
+      id: "l1",
+      placement: "legal",
+      label: "Mentions légales",
+      href: "/mentions-legales/",
+    }),
+  ];
+
+  it("masque un lien interne qui n'est ni une page publiée ni une route de l'application", () => {
+    const exists = targetExists(alt, ["/vps", "/contact", "/compte"]);
+    const chrome = buildChrome("fr", getDictionary("fr"), nav, alt, exists);
+    expect(chrome.header.nav.map((n) => n.label)).toEqual([
+      "IA souveraine",
+      "Externe",
+    ]);
+    expect(chrome.footer.columns[0]?.links.map((l) => l.label)).toEqual([
+      "VPS",
+      "Fiche",
+    ]);
+    expect(chrome.footer.legal).toEqual([]);
+  });
+
+  it("le slug de l'autre langue compte comme une page publiée", () => {
+    const exists = targetExists(alt, []);
+    expect(exists?.("/sovereignty")).toBe(true);
+    expect(exists?.("/en/souverainete/")).toBe(true);
+    expect(exists?.("/")).toBe(true);
+    expect(exists?.("/#contenu")).toBe(true);
+  });
+
+  it("sans table des pages publiées (Directus muet), ne masque rien", () => {
+    expect(targetExists(buildAlternates([]), ["/vps"])).toBeUndefined();
+    const chrome = buildChrome(
+      "fr",
+      getDictionary("fr"),
+      nav,
+      buildAlternates([]),
+      undefined,
+    );
+    expect(chrome.footer.legal).toHaveLength(1);
   });
 });

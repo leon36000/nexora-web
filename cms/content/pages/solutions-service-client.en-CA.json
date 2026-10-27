@@ -1,0 +1,201 @@
+{
+  "page": "solutions-service-client",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/customer-service",
+    "title": "Customer service",
+    "seo_title": "AI customer service for Quebec small business",
+    "seo_description": "An agent answers your customers from your own documents, cites its sources and hands over to a person when it does not know. You stay in control. Learn how.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution service client.",
+      "claims": ["CL-122", "CL-90"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Customer service",
+        "headline": "Sourced answers. A person as backup.",
+        "subheadline": "An agent answers your customers' questions from your own documents, cites what it used and passes the request to your team when it does not know.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See all solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un distributeur de produits de plomberie.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "The same questions, every day.",
+        "body": "<p>Take a plumbing-supplies distributor that serves contractors. Every day it is asked for opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find and repeat them.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "items": [
+          {
+            "title": "An interrupted team.",
+            "text": "Simple questions break the work of the people who should be handling the hard cases."
+          },
+          {
+            "title": "Uneven answers.",
+            "text": "Depending on the person and the day, the answer changes."
+          },
+          {
+            "title": "Customers who give up.",
+            "text": "A question without a quick answer sometimes becomes a lost order."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : trois étapes, avec relais humain.",
+      "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112"],
+      "fields": {
+        "columns": "3",
+        "tone": "sombre",
+        "layout": "modules",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "What the system does.",
+        "intro": "The agent is published in WorkStudio. It can live on your website (a chat bubble) or in an internal space reserved for your team.",
+        "cards": [
+          {
+            "title": "It searches.",
+            "text": "For each question, it consults the document bases you opened to it: data sheets, guides, policies. By default, indexing is computed on the instance's own server."
+          },
+          {
+            "title": "It answers and cites.",
+            "text": "The answer numbers its sources, which a click opens. A safeguard can check that the answer stays faithful to your documents before it goes out."
+          },
+          {
+            "title": "It hands over.",
+            "text": "If it finds nothing, it offers a callback by a person and passes the request to the team with a summary."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, et le bénéfice.",
+      "claims": ["CL-96", "CL-122", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "What your team receives.",
+        "body": "<p>Simple questions get an answer without tying anyone up. The others arrive with their context: the question, what the agent already answered, a summary.</p><p>The expected benefit: fewer interruptions, more consistent answers, customers who get something sooner. No percentage is announced; the effect is measured during a pilot, on your real questions.</p>",
+        "items": [
+          {
+            "title": "Requests passed on.",
+            "text": "With the summary of the exchange, so nobody asks the question twice."
+          },
+          {
+            "title": "A conversation log.",
+            "text": "The agent's exchanges are traced: you can see what was answered, with which sources."
+          },
+          {
+            "title": "Traces to review.",
+            "text": "Questions left unanswered can be found in the traces and tell you which documents your knowledge base is missing."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, avec limites : pas de téléphone, pas de promesse de disponibilité.",
+      "claims": ["CL-124", "CL-86", "CL-109", "CL-93", "CL-128", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "What stays under your control.",
+        "cards": [
+          {
+            "title": "You choose the documents.",
+            "text": "The agent only consults the bases you open to it. An agent open to the public should never reach confidential documents: we keep the two apart."
+          },
+          {
+            "title": "Nothing irreversible without consent.",
+            "text": "If the agent has a tool that writes (create a file, send a message), the action waits for your team's approval when the chat is public."
+          },
+          {
+            "title": "No phone.",
+            "text": "No call-answering service is delivered today. The solution covers chat and written requests."
+          },
+          {
+            "title": "No availability promise.",
+            "text": "The agent answers when the system is online. No availability level is announced today; it is set in the contract."
+          },
+          {
+            "title": "The model is a written choice.",
+            "text": "On your server or in our infrastructure; an external model only with your agreement. Web search, if it were turned on for the agent, would send its queries outside the system: we do not turn it on for a public agent."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution service client.",
+      "claims": ["CL-107", "CL-122", "CL-132", "CL-112"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Customer service: your questions.",
+        "items": [
+          {
+            "question": "How does the agent appear on my website?",
+            "answer": "One line of code adds a chat bubble, or you embed a frame in a page. You limit the list of sites allowed to display it. This requires a public HTTPS address for your instance."
+          },
+          {
+            "question": "Can it make up an answer?",
+            "answer": "A model can be wrong. We reduce the risk by making it answer from your documents, cite its sources and, where needed, add a faithfulness safeguard. During the pilot we check that it says so when it finds nothing."
+          },
+          {
+            "question": "What if the customer wants to talk to someone?",
+            "answer": "The agent offers a callback by a person and passes the request on with a summary. Live chat with a human is not an announced feature."
+          },
+          {
+            "question": "Does it speak French and English?",
+            "answer": "It answers in the language of the question as far as the chosen model allows. We check both languages on your documents during the pilot."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See the agent answer.",
+        "text": "We prepare a demonstration on fictional documents, then we talk about your frequent questions and your website.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See documents",
+        "secondary_href": "/en/solutions/documents/"
+      }
+    }
+  ]
+}

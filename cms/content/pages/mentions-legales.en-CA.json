@@ -1,0 +1,156 @@
+{
+  "page": "mentions-legales",
+  "locale": "en-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "legal-notice",
+    "title": "Legal notice",
+    "seo_title": "Legal notice for the Nexora website",
+    "seo_description": "Identity of the site publisher, host, intellectual property, liability and governing law. Draft template, to be completed by the founder before publication.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Draft · Unpublished page",
+        "headline": "Legal notice.",
+        "subheadline": "Draft template: the expected headings are in place; identity information remains to be provided by the founder."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "editeur"
+      },
+      "translation": {
+        "title": "The site publisher.",
+        "items": [
+          {
+            "title": "Legal name.",
+            "text": "[TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "Legal form.",
+            "text": "[TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "Quebec enterprise number (NEQ).",
+            "text": "[TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "Registered office or place of business.",
+            "text": "[TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "Contact email and phone.",
+            "text": "[TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "Person responsible for publication.",
+            "text": "Name and title [TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "GST and QST numbers.",
+            "text": "To be displayed only if the founder decides so [TO BE COMPLETED BY THE FOUNDER]"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "hebergeur"
+      },
+      "translation": {
+        "title": "The site host.",
+        "body": "<p>Name, address and contact details of the company that hosts the public site [TO BE COMPLETED BY THE FOUNDER]. This heading concerns the site you are reading; it does not describe hosting of customers' systems, which falls under the trust center.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "propriete"
+      },
+      "translation": {
+        "title": "Intellectual property.",
+        "body": "<p>The texts, images, trademarks and software shown on this site belong to their respective owners. Any reproduction or reuse without prior written permission is prohibited, except as provided by law. Trademarks to mention, any registrations and third-party software licence notices [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "responsabilite"
+      },
+      "translation": {
+        "title": "Liability and external links.",
+        "body": "<p>The site's content is provided for information and may change. Nexora strives to keep it accurate but cannot ensure it contains no error. The site may link to third-party sites whose content Nexora does not control. Wording of the limitation of liability [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "droit"
+      },
+      "translation": {
+        "title": "Governing law and language.",
+        "body": "<p>The governing law is that of Quebec and the federal laws of Canada that apply there. Competent courts, judicial district [TO BE COMPLETED BY THE FOUNDER]. Authoritative language and status of the English version [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "To do before publishing.",
+        "body": "<p>This page is a template. It stays a draft, unpublished and not indexed, until the following points are settled.</p>",
+        "items": [
+          {
+            "title": "Fill in the markers.",
+            "text": "Every [TO BE COMPLETED BY THE FOUNDER] must be replaced with the real information; no value is invented."
+          },
+          {
+            "title": "Have a lawyer review it.",
+            "text": "The text must be reviewed by a Quebec lawyer [TO BE REVIEWED BY A QUEBEC LAWYER]."
+          },
+          {
+            "title": "Approve, then publish.",
+            "text": "Only after these two points, remove the draft status and the indexing ban."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "page": "solutions-service-client",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/service-client",
+    "title": "Service client",
+    "seo_title": "Service client par IA pour PME au Québec",
+    "seo_description": "Un agent répond à vos clients à partir de vos documents, cite ses sources et passe la main à une personne quand il ne sait pas. Vous gardez la main.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution service client.",
+      "claims": ["CL-122", "CL-90"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Service client",
+        "headline": "Des réponses sourcées. Une personne en relais.",
+        "subheadline": "Un agent répond aux questions de vos clients à partir de vos propres documents, cite ce qu'il a utilisé et transmet la demande à votre équipe quand il ne sait pas.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir toutes les solutions",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un distributeur de produits de plomberie.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "Les mêmes questions, tous les jours.",
+        "body": "<p>Prenons un distributeur de produits de plomberie qui sert des entrepreneurs. Chaque jour, on lui demande les heures d'ouverture, la politique de retour, les documents à fournir pour ouvrir un compte, les zones desservies. Les réponses existent, dans des fiches et des guides, mais il faut quelqu'un pour les retrouver et les redire.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "items": [
+          {
+            "title": "Une équipe interrompue.",
+            "text": "Les questions simples coupent le travail des personnes qui devraient traiter les cas difficiles."
+          },
+          {
+            "title": "Des réponses inégales.",
+            "text": "Selon la personne et le jour, la réponse change."
+          },
+          {
+            "title": "Des clients qui renoncent.",
+            "text": "Une question sans réponse rapide devient parfois une commande perdue."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : trois étapes, avec relais humain.",
+      "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112"],
+      "fields": {
+        "columns": "3",
+        "tone": "sombre",
+        "layout": "modules",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "Ce que fait le système.",
+        "intro": "L'agent est publié dans WorkStudio. Il peut vivre sur votre site (une bulle de chat) ou dans un espace interne réservé à votre équipe.",
+        "cards": [
+          {
+            "title": "Il cherche.",
+            "text": "À chaque question, il consulte les bases de documents que vous lui avez ouvertes\u00a0: fiches, guides, politiques. L'indexation se calcule par défaut sur le serveur de l'instance."
+          },
+          {
+            "title": "Il répond et cite.",
+            "text": "La réponse numérote ses sources, qu'un clic permet d'ouvrir. Un garde-fou peut vérifier que la réponse reste fidèle à vos documents avant qu'elle parte."
+          },
+          {
+            "title": "Il passe la main.",
+            "text": "S'il ne trouve rien, il propose un rappel par une personne et transmet la demande à l'équipe avec un résumé."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, et le bénéfice.",
+      "claims": ["CL-96", "CL-122", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "Ce que reçoit l'équipe.",
+        "body": "<p>Les questions simples trouvent une réponse sans mobiliser quelqu'un. Les autres arrivent avec leur contexte\u00a0: la question, ce que l'agent a déjà répondu, un résumé.</p><p>Le bénéfice attendu\u00a0: moins d'interruptions, des réponses plus constantes, des clients qui obtiennent quelque chose plus vite. Aucun pourcentage n'est annoncé\u00a0; l'effet se mesure pendant un pilote, sur vos vraies questions.</p>",
+        "items": [
+          {
+            "title": "Les demandes transmises.",
+            "text": "Avec le résumé de l'échange, pour ne pas poser deux fois la question."
+          },
+          {
+            "title": "Un journal des conversations.",
+            "text": "Les échanges de l'agent sont tracés\u00a0: on peut voir ce qui a été répondu, avec quelles sources."
+          },
+          {
+            "title": "Des traces à relire.",
+            "text": "Les questions restées sans réponse se repèrent dans les traces et disent quels documents manquent à votre base."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, avec limites : pas de téléphone, pas de promesse de disponibilité.",
+      "claims": ["CL-124", "CL-86", "CL-109", "CL-93", "CL-128", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "Ce qui reste sous votre contrôle.",
+        "cards": [
+          {
+            "title": "Vous choisissez les documents.",
+            "text": "L'agent ne consulte que les bases que vous lui ouvrez. Un agent accessible au public ne devrait jamais avoir accès à des documents confidentiels\u00a0: nous séparons les deux."
+          },
+          {
+            "title": "Rien d'irréversible sans accord.",
+            "text": "Si l'agent a un outil qui écrit (créer un dossier, envoyer un message), l'action attend l'approbation de votre équipe quand le chat est public."
+          },
+          {
+            "title": "Pas de téléphone.",
+            "text": "Aucun service de réception d'appels n'est livré à ce jour. La solution couvre le chat et les demandes écrites."
+          },
+          {
+            "title": "Pas de promesse de disponibilité.",
+            "text": "L'agent répond quand le système est en ligne. Aucun niveau de disponibilité n'est annoncé à ce jour\u00a0; il se précise au contrat."
+          },
+          {
+            "title": "Le modèle est un choix écrit.",
+            "text": "Sur votre serveur ou dans notre infrastructure\u00a0; un modèle externe seulement avec votre accord. La recherche sur le web, si elle était activée pour l'agent, enverrait ses requêtes hors du système\u00a0: nous ne l'activons pas pour un agent public."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution service client.",
+      "claims": ["CL-107", "CL-122", "CL-132", "CL-112"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Service client\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Comment l'agent apparaît-il sur mon site\u00a0?",
+            "answer": "Une ligne de code ajoute une bulle de chat, ou vous insérez un cadre dans une page. Vous limitez la liste des sites autorisés à l'afficher. Il faut pour cela une adresse HTTPS publique pour votre instance."
+          },
+          {
+            "question": "Peut-il inventer une réponse\u00a0?",
+            "answer": "Un modèle peut se tromper. Nous réduisons le risque en le faisant répondre à partir de vos documents, en citant ses sources et, au besoin, en ajoutant un garde-fou de fidélité. Nous vérifions pendant le pilote qu'il dit quand il ne trouve rien."
+          },
+          {
+            "question": "Et si le client veut parler à quelqu'un\u00a0?",
+            "answer": "L'agent propose un rappel par une personne et transmet la demande avec un résumé. Le chat en direct avec un humain n'est pas une fonction annoncée."
+          },
+          {
+            "question": "Parle-t-il en français et en anglais\u00a0?",
+            "answer": "Il répond dans la langue de la question dans la mesure où le modèle choisi le permet. Nous vérifions les deux langues sur vos documents pendant le pilote."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voir l'agent répondre.",
+        "text": "Nous préparons une démonstration sur des documents fictifs, puis nous parlons de vos questions fréquentes et de votre site.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir les documents",
+        "secondary_href": "/solutions/documents/"
+      }
+    }
+  ]
+}

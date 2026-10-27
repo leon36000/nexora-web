@@ -1,0 +1,156 @@
+{
+  "page": "mentions-legales",
+  "locale": "fr-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "mentions-legales",
+    "title": "Mentions légales",
+    "seo_title": "Mentions légales de Nexora, éditeur du site",
+    "seo_description": "Identité de l'éditeur du site, hébergeur, propriété intellectuelle, responsabilité et droit applicable. Gabarit en brouillon, à compléter par le fondateur.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Brouillon · Page non publiée",
+        "headline": "Mentions légales.",
+        "subheadline": "Gabarit en brouillon\u00a0: les rubriques attendues sont en place\u00a0; les informations d'identité restent à fournir par le fondateur."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "editeur"
+      },
+      "translation": {
+        "title": "L'éditeur du site.",
+        "items": [
+          {
+            "title": "Raison sociale.",
+            "text": "[À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Forme juridique.",
+            "text": "[À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Numéro d'entreprise du Québec (NEQ).",
+            "text": "[À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Adresse du siège ou de l'établissement.",
+            "text": "[À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Courriel et téléphone de contact.",
+            "text": "[À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Responsable de la publication.",
+            "text": "Nom et titre [À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Numéros de TPS et de TVQ.",
+            "text": "À afficher seulement si le fondateur le décide [À COMPLÉTER PAR LE FONDATEUR]"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "hebergeur"
+      },
+      "translation": {
+        "title": "L'hébergeur du site.",
+        "body": "<p>Nom, adresse et coordonnées de l'entreprise qui héberge le site public [À COMPLÉTER PAR LE FONDATEUR]. Cette rubrique vise le site que vous lisez\u00a0; elle ne décrit pas l'hébergement des systèmes des clients, qui relève du centre de confiance.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "propriete"
+      },
+      "translation": {
+        "title": "Propriété intellectuelle.",
+        "body": "<p>Les textes, images, marques et logiciels présentés sur ce site appartiennent à leur titulaire respectif. Toute reproduction ou réutilisation sans autorisation écrite préalable est interdite, sauf exception prévue par la loi. Marques à mentionner, dépôts éventuels et avis de licences de logiciels tiers [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "responsabilite"
+      },
+      "translation": {
+        "title": "Responsabilité et liens externes.",
+        "body": "<p>Le contenu du site est fourni à titre d'information et peut évoluer. Nexora s'efforce de le tenir exact, mais ne peut en assurer l'absence d'erreur. Le site peut renvoyer à des sites tiers dont Nexora ne contrôle pas le contenu. Formulation de la limitation de responsabilité [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "droit"
+      },
+      "translation": {
+        "title": "Droit applicable et langue.",
+        "body": "<p>Le droit applicable est celui du Québec et les lois fédérales du Canada qui s'y appliquent. Tribunaux compétents, district judiciaire [À COMPLÉTER PAR LE FONDATEUR]. Langue faisant foi et statut de la version anglaise [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "À faire avant publication.",
+        "body": "<p>Cette page est un gabarit. Elle reste en brouillon, non publiée et non indexée, tant que les points suivants ne sont pas réglés.</p>",
+        "items": [
+          {
+            "title": "Remplir les marqueurs.",
+            "text": "Chaque [À COMPLÉTER PAR LE FONDATEUR] doit être remplacé par l'information réelle\u00a0; aucune valeur n'est inventée."
+          },
+          {
+            "title": "Faire valider par un avocat.",
+            "text": "Le texte doit être relu par un avocat québécois [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]."
+          },
+          {
+            "title": "Approuver puis publier.",
+            "text": "Seulement après ces deux points, retirer le brouillon et l'interdiction d'indexation."
+          }
+        ]
+      }
+    }
+  ]
+}

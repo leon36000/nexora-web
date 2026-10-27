@@ -1,0 +1,208 @@
+{
+  "page": "methode",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "methode",
+    "title": "Méthode",
+    "seo_title": "Méthode d'accompagnement en IA pour PME",
+    "seo_description": "Comprendre, intégrer, vérifier, former, exploiter\u00a0: la méthode de Nexora, un cas à la fois. Aucun délai universel annoncé, aucun gain chiffré sans mesure.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la méthode : un cas à la fois, vérifié.",
+      "claims": ["CL-03", "CL-14"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Méthode",
+        "headline": "Cinq temps. Un cas à la fois.",
+        "subheadline": "Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Voici ce qui se passe à chaque temps, et ce que vous recevez.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les services",
+        "secondary_href": "/services/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les cinq temps, chacun avec ce que nous faisons et ce que vous recevez.",
+      "claims": ["CL-03", "CL-04", "CL-05", "CL-97", "CL-96"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "temps"
+      },
+      "translation": {
+        "title": "De la première rencontre à l'exploitation.",
+        "cards": [
+          {
+            "title": "1. Comprendre.",
+            "text": "Nous observons comment le travail se fait aujourd'hui\u00a0: où le temps se perd, quelles informations entrent, qui décide.\nVous recevez\u00a0: une description écrite du cas, de ses données et de ses contraintes."
+          },
+          {
+            "title": "2. Intégrer.",
+            "text": "Nous relions les logiciels que vous utilisez déjà, pour que l'information circule sans être retapée.\nVous recevez\u00a0: la liste des connexions retenues, après qualification de chacune."
+          },
+          {
+            "title": "3. Vérifier.",
+            "text": "Nous testons sur vos cas réels, avec vos validations, avant toute mise en service.\nVous recevez\u00a0: le schéma des flux, et des tests refaits à chaque changement."
+          },
+          {
+            "title": "4. Former.",
+            "text": "Votre équipe apprend à superviser, à corriger et à décider, pas à programmer.\nVous recevez\u00a0: une équipe qui sait relire, approuver et refuser."
+          },
+          {
+            "title": "5. Exploiter et améliorer.",
+            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.\nVous recevez\u00a0: des traces, une consommation mesurée, des ajustements décidés ensemble."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Pourquoi un cas d'abord, et ce que mesure le pilote.",
+      "claims": ["CL-14", "CL-09", "CL-10"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "un-cas"
+      },
+      "translation": {
+        "title": "Pourquoi un seul cas d'abord.",
+        "body": "<p>Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèle aussi ce que votre entreprise attend vraiment du système, ce qu'aucun schéma ne dit. Nous élargissons ensuite, sans multiplier les outils déconnectés.</p>",
+        "items": [
+          {
+            "title": "Aucun délai universel.",
+            "text": "Il dépend de votre situation\u00a0: logiciels à relier, qualité des documents, règles à écrire. Il se mesure sur un premier cas."
+          },
+          {
+            "title": "Un objectif mesuré, pas promis.",
+            "text": "Nous fixons avec vous ce que nous voulons observer pendant le pilote. Nous n'annonçons ni pourcentage, ni gain de temps avant de l'avoir mesuré chez vous."
+          },
+          {
+            "title": "Une estimation écrite.",
+            "text": "Après le diagnostic, elle indique ce qui est inclus et ce qui ne l'est pas. Il n'y a pas encore de prix public."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre points de contrôle tout au long du parcours.",
+      "claims": ["CL-05", "CL-128", "CL-21", "CL-96", "CL-08"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controles"
+      },
+      "translation": {
+        "title": "Quatre points de contrôle.",
+        "cards": [
+          {
+            "title": "Avant de commencer.",
+            "text": "Le schéma des flux\u00a0: où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent."
+          },
+          {
+            "title": "Avant la mise en service.",
+            "text": "Les cas réels sont testés avec vos validations. Chaque action qui engage l'entreprise attend une personne, sauf décision écrite contraire."
+          },
+          {
+            "title": "Pendant l'exploitation.",
+            "text": "Chaque appel de modèle laisse une trace\u00a0; la consommation est mesurée\u00a0; vous voyez ce que fait le système."
+          },
+          {
+            "title": "À la fin du contrat.",
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Comment nous mesurons : outils, pas chiffres promis.",
+      "claims": ["CL-97", "CL-96", "CL-106", "CL-94"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "mesure"
+      },
+      "translation": {
+        "title": "Mesurer sans inventer de chiffres.",
+        "body": "<p>Nous utilisons les outils de <a href=\"/workstudio/\">WorkStudio</a> pour mesurer, sur vos propres cas, ce qui fonctionne. Les résultats vous appartiennent et servent à décider\u00a0: ils ne sont jamais présentés ici comme des résultats de clients.</p>",
+        "items": [
+          {
+            "title": "Des jeux de tests.",
+            "text": "Vos vraies questions et les réponses attendues, rejouées à chaque changement de consigne ou de modèle."
+          },
+          {
+            "title": "Des traces.",
+            "text": "Ce qui a été demandé, ce qui a été répondu, avec quel modèle, en combien de temps."
+          },
+          {
+            "title": "Une consommation mesurée.",
+            "text": "Jetons, exécutions et empreinte, par modèle, espace et personne, avec des plafonds mensuels."
+          },
+          {
+            "title": "Un banc de comparaison de modèles.",
+            "text": "Le Playground compare plusieurs modèles côte à côte avant d'en choisir un."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la méthode.",
+      "claims": ["CL-14", "CL-04", "CL-03"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Méthode\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Combien de temps faut-il pour démarrer\u00a0?",
+            "answer": "Nous n'annonçons aucun délai universel\u00a0: il dépend de vos logiciels, de vos documents et de vos règles. Il se mesure sur un premier cas."
+          },
+          {
+            "question": "Que se passe-t-il si le premier cas ne fonctionne pas\u00a0?",
+            "answer": "Nous le voyons pendant le pilote, avant d'investir plus. Nous vous disons ce qui bloque, et si un autre cas, une autre approche ou rien du tout convient mieux."
+          },
+          {
+            "question": "Mon équipe devra-t-elle apprendre à programmer\u00a0?",
+            "answer": "Non. La formation porte sur l'usage et la supervision\u00a0: relire, corriger, approuver, refuser."
+          },
+          {
+            "question": "Peut-on aller plus vite en traitant plusieurs cas\u00a0?",
+            "answer": "C'est possible, mais nous le déconseillons au départ\u00a0: un cas vérifié apprend plus qu'un projet large mal borné."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : discuter du premier cas.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Choisissons votre premier cas.",
+        "text": "Décrivez-nous ce qui vous coûte du temps. Nous vous aidons à choisir le cas qui apprendra le plus.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "En savoir plus sur Nexora",
+        "secondary_href": "/entreprise/"
+      }
+    }
+  ]
+}

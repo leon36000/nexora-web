@@ -1,0 +1,195 @@
+{
+  "page": "suite",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "suite",
+    "title": "Suite logicielle",
+    "seo_title": "Suite Nexora\u00a0: WorkStudio, Code, Corpus, Quanta",
+    "seo_description": "WorkStudio est disponible sur demande. Nexora Code, Nexora Corpus et les modèles Quanta et Helix\u00a0: leur vocation, et aucune disponibilité annoncée à ce stade.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la suite : un ensemble, avec l'état réel de chaque nom.",
+      "claims": ["CL-20", "CL-28"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Suite logicielle",
+        "headline": "Une suite, pas une pile.",
+        "subheadline": "Les produits de Nexora servent la même idée\u00a0: une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. Voici l'état réel de chacun.",
+        "primary_label": "Voir WorkStudio",
+        "primary_href": "/workstudio/",
+        "secondary_label": "Discuter de mon projet",
+        "secondary_href": "/contact/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Cinq noms, cinq états honnêtes.",
+      "claims": ["CL-20", "CL-28", "CL-12"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "etats"
+      },
+      "translation": {
+        "title": "Cinq noms, cinq états.",
+        "intro": "Un seul de ces cinq noms est un produit livré. Pour les quatre autres, nous écrivons ce que nous savons et rien de plus.",
+        "cards": [
+          {
+            "title": "Nexora WorkStudio.",
+            "text": "Le studio où l'on conçoit, connecte et pilote des agents et des flux de travaux. Démonstration sur demande.",
+            "href": "/workstudio/",
+            "link_label": "Découvrir WorkStudio",
+            "status": "disponible"
+          },
+          {
+            "title": "Nexora Code.",
+            "text": "Pour le développement, la compréhension du code, les tests et la maintenance assistés par des agents. Aucune disponibilité ni date n'est annoncée à ce stade."
+          },
+          {
+            "title": "Nexora Corpus.",
+            "text": "Pour préparer vos documents et vos données. Aucune disponibilité ni date n'est annoncée à ce stade."
+          },
+          {
+            "title": "Quanta.",
+            "text": "Un nom de modèle. Aucune disponibilité ni date n'est annoncée à ce stade."
+          },
+          {
+            "title": "Helix.",
+            "text": "Un nom de modèle. Aucune disponibilité ni date n'est annoncée à ce stade."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Nexora Corpus : la vocation, deux destinations distinctes.",
+      "claims": ["CL-120", "CL-28", "CL-07"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "corpus"
+      },
+      "translation": {
+        "title": "Corpus\u00a0: deux destinations distinctes.",
+        "body": "<p>Nexora Corpus a pour vocation de transformer des fichiers hétérogènes en données plus propres, structurées, traçables et utilisables. Ce que nous décrivons ici est une intention, pas un produit livré.</p><p>Il distinguera deux destinations, qu'on ne confond pas\u00a0: mettre à jour une base documentaire et entraîner un modèle sont deux opérations différentes, avec des coûts, des risques et des validations distincts.</p>",
+        "items": [
+          {
+            "title": "Des connaissances pour retrouver.",
+            "text": "Extraction, classement, dédoublonnage, droits d'accès, provenance, versions, indexation\u00a0: de quoi retrouver une réponse dans vos documents, avec ses sources."
+          },
+          {
+            "title": "Des données pour spécialiser un modèle.",
+            "text": "Sélection, qualité, autorisations, droits d'usage, séparation entre entraînement et évaluation, contrôle des régressions."
+          },
+          {
+            "title": "Une règle de départ.",
+            "text": "Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et nous n'utilisons pas les données d'un client pour entraîner un modèle sans son autorisation spécifique."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Nexora Code : la vocation, sans autonomie annoncée.",
+      "claims": ["CL-121", "CL-28"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "code"
+      },
+      "translation": {
+        "title": "Code\u00a0: la vocation, rien de plus.",
+        "body": "<p>Nexora Code est destiné au développement assisté par agents\u00a0: comprendre un code existant, écrire et lancer des tests, faciliter la maintenance, en s'appuyant sur les projets et les connaissances de l'organisation.</p><p>Nous n'annonçons ni autonomie universelle, ni nombre d'agents travaillant ensemble, ni calendrier\u00a0: rien de cela n'est démontré à ce jour.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quanta et Helix : ce que nous ne publions pas.",
+      "claims": ["CL-122", "CL-28"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "modeles"
+      },
+      "translation": {
+        "title": "Quanta et Helix\u00a0: rien de plus.",
+        "intro": "Ce sont des noms de modèles. Tant que leurs fiches canoniques n'existent pas, nous ne publions rien qui ne soit pas établi.",
+        "cards": [
+          {
+            "title": "Aucune taille.",
+            "text": "Nous ne publions pas le nombre de paramètres."
+          },
+          {
+            "title": "Aucune performance ni aucun classement.",
+            "text": "Aucun résultat n'est présenté comme mesuré tant qu'il ne l'est pas."
+          },
+          {
+            "title": "Aucune provenance affirmée.",
+            "text": "Provenance des modèles de base, licence et modalités de déploiement seront publiées avec les fiches, pas avant."
+          },
+          {
+            "title": "Aucune disponibilité annoncée.",
+            "text": "Ni date, ni promesse de disponibilité à ce stade."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ de la suite.",
+      "claims": ["CL-28", "CL-12", "CL-07"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Suite\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Puis-je acheter Nexora Code ou Nexora Corpus\u00a0?",
+            "answer": "Pas à ce jour\u00a0: aucune disponibilité ni date n'est annoncée. Dès qu'un produit existera, cette page le dira."
+          },
+          {
+            "question": "Quanta ou Helix sont-ils meilleurs que d'autres modèles\u00a0?",
+            "answer": "Nous ne publions aucune comparaison. Ces modèles n'ont pas encore de fiche canonique avec des résultats mesurés."
+          },
+          {
+            "question": "Corpus entraînera-t-il un modèle avec mes documents\u00a0?",
+            "answer": "Non, pas sans votre autorisation spécifique. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement."
+          },
+          {
+            "question": "Que puis-je utiliser dès maintenant\u00a0?",
+            "answer": "Nexora WorkStudio, sur demande. Pour la construction et les services terrain, OPSYS-AI, avec le statut de chacun de ses départements."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : discuter, voir OPSYS-AI.",
+      "claims": ["CL-12"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Commençons par ce qui existe.",
+        "text": "WorkStudio est disponible sur demande, et OPSYS-AI couvre la construction avec un statut honnête par département.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Découvrir OPSYS-AI",
+        "secondary_href": "/opsys-ai/"
+      }
+    }
+  ]
+}

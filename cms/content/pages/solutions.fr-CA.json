@@ -1,0 +1,246 @@
+{
+  "page": "solutions",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions",
+    "title": "Solutions",
+    "seo_title": "Solutions d'IA pour PME au Québec",
+    "seo_description": "Six solutions d'IA pour PME du Québec\u00a0: courriels, factures, service client, rendez-vous, comptabilité et documents. Votre équipe garde toujours la décision.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Hub des solutions : promesse, deux CTA.",
+      "claims": ["CL-01", "CL-132"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solutions",
+        "headline": "Un problème concret. Une solution à la fois.",
+        "subheadline": "Courriels, factures, service client, rendez-vous, comptabilité, documents\u00a0: six situations où une IA bien encadrée enlève la ressaisie et laisse la décision à votre équipe.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Demander une démonstration",
+        "secondary_href": "/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Six entrées par problème, chacune vers sa page.",
+      "claims": ["CL-01", "CL-132"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "solutions"
+      },
+      "translation": {
+        "title": "Six situations, six solutions.",
+        "intro": "Choisissez celle qui ressemble à votre semaine. Chaque page suit le même fil\u00a0: le problème, ce que fait le système, ce que reçoit l'équipe, le bénéfice attendu et ce qui reste sous votre contrôle.",
+        "cards": [
+          {
+            "title": "Des courriels qui s'accumulent.",
+            "text": "Le tri, la recherche de l'historique et la première rédaction prennent la matinée. Le système classe, résume et prépare un brouillon.",
+            "href": "/solutions/courriels/",
+            "link_label": "Voir les courriels"
+          },
+          {
+            "title": "Des factures à retaper.",
+            "text": "Un fournisseur envoie un PDF, un autre une photo. Le système lit les pièces, repère les montants qui ne concordent pas et range le tout dans une table.",
+            "href": "/solutions/factures/",
+            "link_label": "Voir les factures"
+          },
+          {
+            "title": "Des clients qui attendent.",
+            "text": "Les mêmes questions reviennent. Un agent répond à partir de vos documents, cite ses sources et passe la main à une personne quand il ne sait pas.",
+            "href": "/solutions/service-client/",
+            "link_label": "Voir le service client"
+          },
+          {
+            "title": "Des rendez-vous qui se perdent.",
+            "text": "Demandes hors des heures d'ouverture, rappels faits à la main, annulations tardives. Le système propose des créneaux et rappelle, à partir de votre agenda.",
+            "href": "/solutions/rendez-vous/",
+            "link_label": "Voir les rendez-vous"
+          },
+          {
+            "title": "Des pièces à saisir.",
+            "text": "La fin de mois, c'est la saisie. Le système prépare la pré-saisie et signale les écarts\u00a0; le comptable garde la décision.",
+            "href": "/solutions/comptabilite/",
+            "link_label": "Voir la comptabilité"
+          },
+          {
+            "title": "Des documents introuvables.",
+            "text": "La bonne clause, la bonne version, la bonne procédure. Posez la question en français\u00a0; la réponse part de vos propres documents, avec ses sources.",
+            "href": "/solutions/documents/",
+            "link_label": "Voir les documents"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Comment sont bâties ces solutions : sur WorkStudio, adaptées après diagnostic.",
+      "claims": ["CL-132", "CL-85", "CL-14", "CL-90", "CL-91"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "fonctionnement"
+      },
+      "translation": {
+        "title": "Bâties sur WorkStudio, adaptées à vous.",
+        "body": "<p>Ces solutions ne sont pas des boîtes prêtes à l'emploi. Ce sont des configurations assemblées dans <a href=\"/workstudio/\">Nexora WorkStudio</a>\u00a0: des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez) reliés par des flux de travaux (des enchaînements automatisés de tâches).</p><p>Chaque mise en service commence par un diagnostic de votre cas. Nous vérifions alors que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel.</p>",
+        "items": [
+          {
+            "title": "1. Le problème.",
+            "text": "Ce qui vous coûte du temps, décrit avec vos mots."
+          },
+          {
+            "title": "2. Ce que fait le système.",
+            "text": "Les étapes, dans l'ordre, et celles qui attendent une personne."
+          },
+          {
+            "title": "3. Ce que reçoit l'équipe.",
+            "text": "Le résultat concret\u00a0: brouillons, tables, réponses sourcées."
+          },
+          {
+            "title": "4. Le bénéfice attendu.",
+            "text": "Décrit sans chiffre inventé\u00a0; il se mesure sur un premier cas."
+          },
+          {
+            "title": "5. Ce qui reste sous contrôle.",
+            "text": "Les validations, les accès, le lieu des données."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre exemples non interchangeables, étiquetés comme exemples construits.",
+      "claims": ["CL-11", "CL-D05"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "modules",
+        "anchor_id": "exemples"
+      },
+      "translation": {
+        "title": "Des besoins qui ne se ressemblent pas.",
+        "intro": "Quatre situations types. Ce sont des exemples construits, pas des résultats mesurés chez des clients.",
+        "cards": [
+          {
+            "title": "Un entrepreneur en rénovation.",
+            "text": "Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son statut.",
+            "href": "/opsys-ai/",
+            "link_label": "Découvrir OPSYS-AI"
+          },
+          {
+            "title": "Un distributeur.",
+            "text": "Il reçoit des demandes de prix par courriel et des factures de fournisseurs en formats variés. Le tri des courriels et la lecture des factures sont ses deux portes d'entrée.",
+            "href": "/solutions/courriels/",
+            "link_label": "Voir les courriels"
+          },
+          {
+            "title": "Un cabinet de services professionnels.",
+            "text": "Il cherche la bonne clause dans d'anciens dossiers et prépare des documents à partir de modèles. La recherche dans ses propres documents est sa première solution.",
+            "href": "/solutions/documents/",
+            "link_label": "Voir les documents"
+          },
+          {
+            "title": "Un petit cabinet qui prend des rendez-vous.",
+            "text": "Il perd des créneaux par oubli et par annulation tardive. Les demandes, les rappels et la gestion de l'agenda en sont le cœur.",
+            "href": "/solutions/rendez-vous/",
+            "link_label": "Voir les rendez-vous"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que ces solutions ont en commun : le contrôle.",
+      "claims": ["CL-128", "CL-21", "CL-90", "CL-96", "CL-02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "Un principe commun\u00a0: le contrôle.",
+        "body": "<p>Quelle que soit la solution, quatre règles ne changent pas.</p>",
+        "items": [
+          {
+            "title": "Une personne décide.",
+            "text": "Dans les flux que nous configurons, toute action qui engage l'entreprise (envoi, paiement, écriture) attend la validation d'une personne, sauf décision écrite contraire de votre part."
+          },
+          {
+            "title": "Les réponses citent leurs sources.",
+            "text": "Quand un agent cherche dans vos documents, il numérote et cite ce qu'il a utilisé."
+          },
+          {
+            "title": "Tout laisse une trace.",
+            "text": "Chaque appel de modèle est consultable\u00a0: ce qui a été demandé, ce qui a été répondu, avec quel modèle."
+          },
+          {
+            "title": "Vous choisissez où ça tourne.",
+            "text": "Sur votre serveur, ou dans notre infrastructure au Québec. Un modèle externe n'entre qu'avec votre accord écrit."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de départ sur les solutions.",
+      "claims": ["CL-132", "CL-85", "CL-124", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Avant de choisir\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Par où commencer\u00a0?",
+            "answer": "Par le problème qui vous coûte le plus de temps. Nous le décrivons avec vous, nous vérifions les logiciels à relier, puis nous mettons un premier cas en service avant d'élargir."
+          },
+          {
+            "question": "Faut-il changer mes logiciels\u00a0?",
+            "answer": "En général non\u00a0: le système se relie à ce que vous utilisez déjà. La possibilité de relier un logiciel dépend du service concerné\u00a0; nous la vérifions au diagnostic."
+          },
+          {
+            "question": "Est-ce prêt à l'emploi\u00a0?",
+            "answer": "Non, et c'est volontaire\u00a0: chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées."
+          },
+          {
+            "question": "Et le téléphone\u00a0?",
+            "answer": "Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit\u00a0; la téléphonie en direct se vérifie séparément, au cas par cas."
+          },
+          {
+            "question": "Combien cela coûte-t-il\u00a0?",
+            "answer": "Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration ou projet.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Parlons de votre premier cas.",
+        "text": "Décrivez-nous un problème concret. Nous vous disons laquelle de ces solutions s'y applique, dans quel mode, et par où commencer.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Demander une démonstration",
+        "secondary_href": "/contact/?sujet=demonstration"
+      }
+    }
+  ]
+}

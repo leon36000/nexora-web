@@ -1,0 +1,205 @@
+{
+  "page": "solutions-documents",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/documents",
+    "title": "Documents",
+    "seo_title": "AI search across your own documents",
+    "seo_description": "Ask a question in plain language: the answer comes from your own documents, with its sources. By default, indexing is computed on the instance's own server.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution documents.",
+      "claims": ["CL-127", "CL-25"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Documents",
+        "headline": "The right clause. The right version. Found.",
+        "subheadline": "Ask your question in plain language. The answer comes from your own documents, cites its sources and sends you back to the original passage.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See all solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un cabinet de services professionnels.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "Documents you cannot find.",
+        "body": "<p>A professional-services firm accumulates contracts, quotes, procedures and file notes, spread across several folders and several versions. Finding the clause in an old contract means digging through four folders and calling a colleague.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "items": [
+          {
+            "title": "Several versions.",
+            "text": "Which one is right? The signed one, or the last one edited?"
+          },
+          {
+            "title": "Memory in people's heads.",
+            "text": "When someone leaves, landmarks leave with them."
+          },
+          {
+            "title": "Searches to repeat.",
+            "text": "The same question, asked by three people, is searched three times."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : constituer la base, répondre avec sources, résumer, extraire.",
+      "claims": ["CL-127", "CL-25", "CL-90", "CL-101", "CL-129", "CL-112"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "What the system does.",
+        "intro": "Three WorkStudio functions, assembled for your case.",
+        "cards": [
+          {
+            "title": "A knowledge base.",
+            "text": "You drop in documents (PDF, Word, text, web pages) or connect a synchronized source. They are split and indexed (filed so they can be found quickly); by default, the computation happens on the instance's own server."
+          },
+          {
+            "title": "Answers with their sources.",
+            "text": "The agent searches the base first, answers, numbers its sources and makes them clickable. A safeguard can check that the answer is faithful to your documents."
+          },
+          {
+            "title": "Summaries and extracts.",
+            "text": "A starter template summarizes a contract (deadlines, amounts, clauses to have reviewed). It does not replace a lawyer. Scanned documents can be read too, more slowly."
+          },
+          {
+            "title": "Structured fields.",
+            "text": "When a document follows a known form (quote, purchase order), the system pulls out fields and files them in a table."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, et le bénéfice.",
+      "claims": ["CL-127", "CL-14", "CL-100"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "What your team receives.",
+        "body": "<p>A way to ask your own documents a question, in WorkStudio's internal Assistant or in a chat you publish. The expected benefit: less time searching, less dependence on one person's memory. No time saved is announced; the effect is measured during a pilot, on your real questions.</p>",
+        "items": [
+          {
+            "title": "An answer and its sources.",
+            "text": "A click opens the document or shows the excerpt used."
+          },
+          {
+            "title": "A company memory.",
+            "text": "Knowledge of the files stays in the base when someone leaves."
+          },
+          {
+            "title": "Traces to review.",
+            "text": "Questions left unanswered reveal what your documents do not say."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, avec limites.",
+      "claims": ["CL-127", "CL-25", "CL-129", "CL-109", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "What stays under your control.",
+        "cards": [
+          {
+            "title": "You choose the bases.",
+            "text": "The agent only consults the document bases you open to it. Access rights are set per base and per workspace, not document by document."
+          },
+          {
+            "title": "Your documents stay with you.",
+            "text": "By default, indexing is computed on the instance's own server and no document leaves it. An external service is a written choice."
+          },
+          {
+            "title": "No legal advice.",
+            "text": "The contract summary flags clauses to have reviewed. It replaces neither a lawyer nor a careful reading."
+          },
+          {
+            "title": "The AI can be wrong.",
+            "text": "A model can misread a passage. The cited sources let you check, and we test faithfulness to the documents during the pilot."
+          },
+          {
+            "title": "Web search stays a choice.",
+            "text": "If it is turned on for an agent, its queries leave the instance: we do not turn it on for agents that handle confidential data."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution documents.",
+      "claims": ["CL-127", "CL-25", "CL-101", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Documents: your questions.",
+        "items": [
+          {
+            "question": "Which file types?",
+            "answer": "PDFs, Word documents, text and web pages. Scanned documents are read with a reading model, more slowly."
+          },
+          {
+            "question": "Are my documents sent elsewhere?",
+            "answer": "By default, no: indexing is computed on the instance's own server. If you choose an external model to answer, the excerpts used are sent to it; we say so beforehand, in writing."
+          },
+          {
+            "question": "Does the agent say when it finds nothing?",
+            "answer": "That is the goal of the configuration, and we check it during the pilot on your documents. A faithfulness safeguard reduces unsupported answers; it does not eliminate them."
+          },
+          {
+            "question": "Can we limit what each person sees?",
+            "answer": "You limit what each agent consults, base by base. Document-by-document access rights are not announced today."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Question your documents.",
+        "text": "We prepare a demonstration on fictional documents, then we talk about yours and where they should stay.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See customer service",
+        "secondary_href": "/en/solutions/customer-service/"
+      }
+    }
+  ]
+}

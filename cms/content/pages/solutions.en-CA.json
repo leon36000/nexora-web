@@ -1,0 +1,246 @@
+{
+  "page": "solutions",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions",
+    "title": "Solutions",
+    "seo_title": "AI solutions for small businesses in Quebec",
+    "seo_description": "Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting and documents. Your team always keeps the decision.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Hub des solutions : promesse, deux CTA.",
+      "claims": ["CL-01", "CL-132"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solutions",
+        "headline": "One real problem. One solution at a time.",
+        "subheadline": "Email, invoices, customer service, appointments, accounting, documents: six situations where well-supervised AI removes the retyping and leaves the decision to your team.",
+        "primary_label": "Discuss my project",
+        "primary_href": "/en/contact/",
+        "secondary_label": "Request a demonstration",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Six entrées par problème, chacune vers sa page.",
+      "claims": ["CL-01", "CL-132"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "solutions"
+      },
+      "translation": {
+        "title": "Six situations, six solutions.",
+        "intro": "Pick the one that looks like your week. Each page follows the same thread: the problem, what the system does, what your team receives, the expected benefit and what stays under your control.",
+        "cards": [
+          {
+            "title": "Email piling up.",
+            "text": "Sorting, digging up the history and a first draft take the whole morning. The system classifies, summarizes and prepares a draft reply.",
+            "href": "/en/solutions/email/",
+            "link_label": "See email"
+          },
+          {
+            "title": "Invoices to retype.",
+            "text": "One supplier sends a PDF, another a photo. The system reads the documents, flags amounts that do not add up and files everything in a table.",
+            "href": "/en/solutions/invoices/",
+            "link_label": "See invoices"
+          },
+          {
+            "title": "Customers who wait.",
+            "text": "The same questions keep coming. An agent answers from your documents, cites its sources and hands over to a person when it does not know.",
+            "href": "/en/solutions/customer-service/",
+            "link_label": "See customer service"
+          },
+          {
+            "title": "Appointments that slip.",
+            "text": "Requests outside opening hours, reminders done by hand, late cancellations. The system proposes slots and reminds, based on your calendar.",
+            "href": "/en/solutions/appointments/",
+            "link_label": "See appointments"
+          },
+          {
+            "title": "Documents to key in.",
+            "text": "Month-end means data entry. The system prepares the pre-entry and flags discrepancies; the accountant keeps the decision.",
+            "href": "/en/solutions/accounting/",
+            "link_label": "See accounting"
+          },
+          {
+            "title": "Documents you cannot find.",
+            "text": "The right clause, the right version, the right procedure. Ask in plain language; the answer comes from your own documents, with its sources.",
+            "href": "/en/solutions/documents/",
+            "link_label": "See documents"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Comment sont bâties ces solutions : sur WorkStudio, adaptées après diagnostic.",
+      "claims": ["CL-132", "CL-85", "CL-14", "CL-90", "CL-91"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "fonctionnement"
+      },
+      "translation": {
+        "title": "Built on WorkStudio, fitted to you.",
+        "body": "<p>These solutions are not off-the-shelf boxes. They are configurations assembled in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>: agents (software that completes a task using the tools you authorize) linked by workflows (automated sequences of tasks).</p><p>Every go-live starts with a diagnosis of your case. We then check that your software can be connected, and we announce no universal timeline.</p>",
+        "items": [
+          {
+            "title": "1. The problem.",
+            "text": "What costs you time, described in your own words."
+          },
+          {
+            "title": "2. What the system does.",
+            "text": "The steps, in order, and the ones that wait for a person."
+          },
+          {
+            "title": "3. What your team receives.",
+            "text": "The concrete result: drafts, tables, sourced answers."
+          },
+          {
+            "title": "4. The expected benefit.",
+            "text": "Described without invented figures; measured on a first case."
+          },
+          {
+            "title": "5. What stays under your control.",
+            "text": "The approvals, the access, the location of the data."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre exemples non interchangeables, étiquetés comme exemples construits.",
+      "claims": ["CL-11", "CL-D05"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "modules",
+        "anchor_id": "exemples"
+      },
+      "translation": {
+        "title": "Needs that do not look alike.",
+        "intro": "Four typical situations. These are constructed examples, not results measured at customers.",
+        "cards": [
+          {
+            "title": "A renovation contractor.",
+            "text": "They want to find old quotes, organize crews and track real costs. For construction and field services, OPSYS-AI brings these needs together in ten departments, each with its own status.",
+            "href": "/en/opsys-ai/",
+            "link_label": "Discover OPSYS-AI"
+          },
+          {
+            "title": "A distributor.",
+            "text": "They receive price requests by email and supplier invoices in assorted formats. Email sorting and invoice reading are the two entry points.",
+            "href": "/en/solutions/email/",
+            "link_label": "See email"
+          },
+          {
+            "title": "A professional-services firm.",
+            "text": "It hunts for the right clause in old files and prepares documents from templates. Searching its own documents is the first solution.",
+            "href": "/en/solutions/documents/",
+            "link_label": "See documents"
+          },
+          {
+            "title": "A small practice that books appointments.",
+            "text": "It loses slots through forgetfulness and late cancellations. Requests, reminders and calendar handling are the core.",
+            "href": "/en/solutions/appointments/",
+            "link_label": "See appointments"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que ces solutions ont en commun : le contrôle.",
+      "claims": ["CL-128", "CL-21", "CL-90", "CL-96", "CL-02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "A shared principle: control.",
+        "body": "<p>Whatever the solution, four rules do not change.</p>",
+        "items": [
+          {
+            "title": "A person decides.",
+            "text": "In the workflows we set up, any action that commits the business (sending, paying, posting an entry) waits for a person's approval, unless you decide otherwise in writing."
+          },
+          {
+            "title": "Answers cite their sources.",
+            "text": "When an agent searches your documents, it numbers and cites what it used."
+          },
+          {
+            "title": "Everything leaves a trace.",
+            "text": "Every model call can be consulted: what was asked, what was answered, with which model."
+          },
+          {
+            "title": "You choose where it runs.",
+            "text": "On your server, or in our infrastructure in Quebec. An external model comes in only with your written agreement."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de départ sur les solutions.",
+      "claims": ["CL-132", "CL-85", "CL-124", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Before you choose: your questions.",
+        "items": [
+          {
+            "question": "Where do we start?",
+            "answer": "With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding."
+          },
+          {
+            "question": "Do I have to change my software?",
+            "answer": "Generally not: the system connects to what you already use. Whether a given piece of software can be connected depends on the service concerned; we check it during the diagnosis."
+          },
+          {
+            "question": "Is it ready to use?",
+            "answer": "No, and deliberately so: each solution is configured for your business, with your rules and your documents. What is delivered are the building blocks of WorkStudio."
+          },
+          {
+            "question": "What about the phone?",
+            "answer": "No call-answering service is delivered today. A voice message dropped in as a recording can be transcribed; live telephony is checked separately, case by case."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. After the diagnosis, we provide a written estimate that states what is included and what is not."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration ou projet.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's talk about your first case.",
+        "text": "Describe a concrete problem. We will tell you which of these solutions applies, in which mode, and where to start.",
+        "primary_label": "Discuss my project",
+        "primary_href": "/en/contact/",
+        "secondary_label": "Request a demonstration",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "page": "solutions-documents",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/documents",
+    "title": "Documents",
+    "seo_title": "Recherche dans vos documents par IA",
+    "seo_description": "Posez une question en français\u00a0: la réponse part de vos propres documents, avec ses sources. L'indexation se calcule par défaut sur le serveur de l'instance.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution documents.",
+      "claims": ["CL-127", "CL-25"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Documents",
+        "headline": "La bonne clause. La bonne version. Retrouvées.",
+        "subheadline": "Posez votre question en français. La réponse part de vos propres documents, cite ses sources et vous renvoie vers le passage d'origine.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir toutes les solutions",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un cabinet de services professionnels.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "Des documents introuvables.",
+        "body": "<p>Un cabinet de services professionnels accumule des contrats, des devis, des procédures et des notes de dossier, répartis dans plusieurs dossiers et plusieurs versions. Retrouver la clause d'un ancien contrat, c'est fouiller quatre dossiers et appeler un collègue.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "items": [
+          {
+            "title": "Plusieurs versions.",
+            "text": "Laquelle est la bonne\u00a0? Celle signée, ou la dernière modifiée\u00a0?"
+          },
+          {
+            "title": "Une mémoire dans les têtes.",
+            "text": "Le départ d'une personne emporte des repères."
+          },
+          {
+            "title": "Des recherches à répéter.",
+            "text": "La même question, posée par trois personnes, est cherchée trois fois."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : constituer la base, répondre avec sources, résumer, extraire.",
+      "claims": ["CL-127", "CL-25", "CL-90", "CL-101", "CL-129", "CL-112"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "Ce que fait le système.",
+        "intro": "Trois fonctions de WorkStudio, assemblées pour votre cas.",
+        "cards": [
+          {
+            "title": "Une base de connaissances.",
+            "text": "Vous y déposez des documents (PDF, Word, texte, pages web) ou vous branchez une source synchronisée. Ils sont découpés et indexés (rangés pour être retrouvés vite)\u00a0; le calcul se fait par défaut sur le serveur de l'instance."
+          },
+          {
+            "title": "Des réponses avec leurs sources.",
+            "text": "L'agent cherche d'abord dans la base, répond, numérote ses sources et les rend cliquables. Un garde-fou peut contrôler la fidélité de la réponse à vos documents."
+          },
+          {
+            "title": "Des résumés et des extraits.",
+            "text": "Un modèle de départ résume un contrat (délais, montants, clauses à faire relire). Il ne remplace pas un juriste. Les pièces scannées se lisent aussi, plus lentement."
+          },
+          {
+            "title": "Des champs structurés.",
+            "text": "Quand un document suit une forme connue (devis, bon de commande), le système en tire des champs rangés dans une table."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, et le bénéfice.",
+      "claims": ["CL-127", "CL-14", "CL-100"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "Ce que reçoit l'équipe.",
+        "body": "<p>Une façon de poser une question à ses propres documents, dans l'Assistant interne de WorkStudio ou dans un chat que vous publiez. Le bénéfice attendu\u00a0: moins de temps de recherche, moins de dépendance à la mémoire d'une personne. Aucun temps gagné n'est annoncé\u00a0; l'effet se mesure pendant un pilote, sur vos questions réelles.</p>",
+        "items": [
+          {
+            "title": "Une réponse et ses sources.",
+            "text": "Un clic ouvre le document ou affiche l'extrait utilisé."
+          },
+          {
+            "title": "Une mémoire d'entreprise.",
+            "text": "La connaissance des dossiers reste dans la base quand quelqu'un part."
+          },
+          {
+            "title": "Des traces à relire.",
+            "text": "Les questions restées sans réponse révèlent ce que vos documents ne disent pas."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, avec limites.",
+      "claims": ["CL-127", "CL-25", "CL-129", "CL-109", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "Ce qui reste sous votre contrôle.",
+        "cards": [
+          {
+            "title": "Vous choisissez les bases.",
+            "text": "L'agent ne consulte que les bases de documents que vous lui ouvrez. Les droits d'accès se règlent par base et par espace, pas document par document."
+          },
+          {
+            "title": "Vos documents restent chez vous.",
+            "text": "Par défaut, l'indexation se calcule sur le serveur de l'instance et aucun document n'en sort. Un service externe est un choix écrit."
+          },
+          {
+            "title": "Aucun avis juridique.",
+            "text": "Le résumé de contrat signale des clauses à faire relire. Il ne remplace ni un juriste, ni une lecture attentive."
+          },
+          {
+            "title": "L'IA peut se tromper.",
+            "text": "Un modèle peut mal lire un passage. Les sources citées permettent de vérifier, et nous contrôlons la fidélité aux documents pendant le pilote."
+          },
+          {
+            "title": "La recherche web reste un choix.",
+            "text": "Si elle est activée pour un agent, ses requêtes quittent l'instance\u00a0: nous ne l'activons pas pour des agents qui manipulent des données confidentielles."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution documents.",
+      "claims": ["CL-127", "CL-25", "CL-101", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Documents\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Quels types de fichiers\u00a0?",
+            "answer": "Des PDF, des documents Word, du texte et des pages web. Les documents scannés se lisent avec un modèle de lecture, plus lentement."
+          },
+          {
+            "question": "Mes documents sont-ils envoyés ailleurs\u00a0?",
+            "answer": "Par défaut, non\u00a0: l'indexation se calcule sur le serveur de l'instance. Si vous choisissez un modèle externe pour répondre, les extraits utilisés lui sont transmis\u00a0; nous l'indiquons avant, par écrit."
+          },
+          {
+            "question": "L'agent dit-il quand il ne trouve rien\u00a0?",
+            "answer": "C'est l'objectif de la configuration, et nous le vérifions pendant le pilote sur vos documents. Un garde-fou de fidélité réduit les réponses non étayées\u00a0; il ne les supprime pas."
+          },
+          {
+            "question": "Peut-on limiter ce que chaque personne voit\u00a0?",
+            "answer": "On limite ce que chaque agent consulte, base par base. Un droit d'accès document par document n'est pas annoncé à ce jour."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Interrogez vos documents.",
+        "text": "Nous préparons une démonstration sur des documents fictifs, puis nous parlons des vôtres et de l'endroit où ils doivent rester.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir le service client",
+        "secondary_href": "/solutions/service-client/"
+      }
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "page": "entreprise",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "company",
+    "title": "Company",
+    "seo_title": "Nexora: AI for Quebec small businesses",
+    "seo_description": "Nexora designs, installs and supports AI systems for Quebec small businesses. Our principles: truth first, control, reversibility, one case at a time.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Présentation de Nexora, limitée à ce qui est connu.",
+      "claims": ["CL-01", "CL-130"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Company",
+        "headline": "Nexora. AI in the service of local small business.",
+        "subheadline": "Nexora is a Quebec company. We design, install, integrate and support AI systems fitted to your trade, for businesses that want to keep control of their data.",
+        "primary_label": "Contact us",
+        "primary_href": "/en/contact/",
+        "secondary_label": "Read the method",
+        "secondary_href": "/en/method/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que fait Nexora : quatre verbes.",
+      "claims": ["CL-01", "CL-04", "CL-02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "metier"
+      },
+      "translation": {
+        "title": "What we do.",
+        "body": "<p>We start with one concrete problem, then extend the system without multiplying disconnected tools. Two installation modes structure the offer: on your premises, or in our infrastructure in Quebec.</p>",
+        "items": [
+          {
+            "title": "Design.",
+            "text": "AI systems fitted to your trade, not a catalogue of gadgets."
+          },
+          {
+            "title": "Install.",
+            "text": "On your server, or in our infrastructure in Quebec."
+          },
+          {
+            "title": "Integrate.",
+            "text": "By connecting the software you already use."
+          },
+          {
+            "title": "Support.",
+            "text": "By running the system with you and training your team in usage and supervision."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre principes de travail, vérifiables.",
+      "claims": ["CL-09", "CL-21", "CL-128", "CL-08", "CL-03"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "principes"
+      },
+      "translation": {
+        "title": "Our working principles.",
+        "cards": [
+          {
+            "title": "Truth first.",
+            "text": "We publish no testimonial, no figure and no certification that we cannot prove. When a capability is in pilot or planned, we write it."
+          },
+          {
+            "title": "Control, always.",
+            "text": "In the workflows we set up, any action that commits the business waits for a person's approval, unless you decide otherwise in writing."
+          },
+          {
+            "title": "Reversibility.",
+            "text": "Your documents, configurations and workflows stay exportable, and the contract provides for it."
+          },
+          {
+            "title": "One case at a time.",
+            "text": "One concrete problem, put into service and verified, before expanding. No universal timeline is announced."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que le lecteur peut vérifier.",
+      "claims": ["CL-09", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "verifier"
+      },
+      "translation": {
+        "title": "What you can verify.",
+        "body": "<p>A company is judged by what it lets you check. Here is where to look.</p>",
+        "items": [
+          {
+            "title": "A status for every capability.",
+            "text": "Each product and each department shows whether it is available, in pilot or planned, for example on the <a href=\"/en/opsys-ai/\">OPSYS-AI</a> page."
+          },
+          {
+            "title": "A register of proofs.",
+            "text": "Every statement on this site is kept in an internal register, with its proof, its source and its version."
+          },
+          {
+            "title": "Documents on request.",
+            "text": "The <a href=\"/en/trust-center/\">trust center</a> lists the documents we are preparing and their status."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Joindre Nexora : le formulaire, rien d'autre d'inventé.",
+      "claims": ["CL-01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "contact"
+      },
+      "translation": {
+        "title": "Get in touch.",
+        "body": "<p>The simplest way is the <a href=\"/en/contact/\">contact form</a>: describe one concrete problem, and we will reply with what is feasible and where to start.</p>"
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA final.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's talk about your first case.",
+        "text": "Describe a concrete problem. We will tell you what is feasible, in which mode, and where to start.",
+        "primary_label": "Discuss my project",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See the services",
+        "secondary_href": "/en/services/"
+      }
+    }
+  ]
+}
