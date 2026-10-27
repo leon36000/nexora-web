@@ -679,6 +679,113 @@ export function buildSchema(): {
     ),
   );
 
+  // --- abonnements (S4) : plans publiés dans Directus, lus par le site, poussés vers Stripe par « Publier vers Stripe » ---
+  add({
+    collection: "subscription_plans",
+    meta: {
+      icon: "workspace_premium",
+      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais publié sans prix. Les identifiants Stripe sont écrits par l’action « Publier vers Stripe ».",
+      display_template: "{{code}}",
+      sort_field: "sort",
+      archive_field: "status",
+      archive_value: "archived",
+      unarchive_value: "draft",
+      translations: [
+        {
+          language: "fr-CA",
+          translation: "Plans d’abonnement",
+          singular: "Plan d’abonnement",
+          plural: "Plans d’abonnement",
+        },
+      ],
+    },
+    fields: [
+      uuidPk(),
+      str("code", {
+        label: "Code",
+        required: true,
+        unique: true,
+        note: "Identifiant stable (ex. workstudio-pro), minuscules et tirets.",
+      }),
+      select(
+        "kind",
+        [
+          ["workstudio", "WorkStudio"],
+          ["api", "API et modèles"],
+          ["agents", "Agents hébergés"],
+          ["other", "Autre"],
+        ],
+        { label: "Famille", def: "other", width: "half" },
+      ),
+      select("status", STATUS_PAGES, {
+        label: "Statut",
+        def: "draft",
+        required: true,
+        width: "half",
+      }),
+      select(
+        "interval",
+        [
+          ["month", "Mensuel"],
+          ["year", "Annuel"],
+        ],
+        {
+          label: "Période de facturation",
+          def: "month",
+          required: true,
+          width: "half",
+        },
+      ),
+      int("price_cents", {
+        label: "Prix (cents CAD, avant taxes)",
+        required: true,
+        width: "half",
+        note: "Ex. 4900 pour 49,00 $. Un prix absent ou nul bloque la publication ; TPS et TVQ sont ajoutées par Stripe Tax.",
+      }),
+      int("included_credits_cents", {
+        label: "Crédits inclus par période (cents CAD)",
+        def: 0,
+        width: "half",
+        note: "Accordés à chaque facture payée, valables jusqu’à la fin de la période.",
+      }),
+      str("stripe_product_id", {
+        label: "Produit Stripe",
+        readonly: true,
+        width: "half",
+        note: "Écrit après « Publier vers Stripe » (identifiant, pas un secret).",
+      }),
+      str("stripe_price_id", {
+        label: "Prix Stripe",
+        readonly: true,
+        width: "half",
+        note: "Un prix Stripe est immuable : un changement de montant en crée un nouveau.",
+      }),
+      ts("stripe_synced_at", {
+        label: "Dernière synchronisation Stripe",
+        readonly: true,
+      }),
+      int("sort", { label: "Ordre", hidden: true }),
+      translationsAlias(),
+      dateCreated(),
+      dateUpdated(),
+    ],
+  });
+  add(
+    translationsOf(
+      "subscription_plans",
+      "Plans d’abonnement",
+      [
+        str("name", { label: "Nom", required: true }),
+        txt("description", { label: "Description" }),
+        json("features", {
+          label: "Points forts",
+          note: "Liste de textes courts, sans chiffre ni promesse non démontrée.",
+        }),
+      ],
+      relations,
+    ),
+  );
+
   // --- pages ---
   add({
     collection: "pages",

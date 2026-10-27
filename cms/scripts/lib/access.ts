@@ -137,6 +137,25 @@ export function publishedReadPerms(): Perm[] {
     // n'entre dans la table principale que par promotion approuvée ; les brouillons vivent dans directus_versions.
     ...BLOCK_TYPES.map((b) => read(b)),
     ...BLOCK_TRANSLATIONS.map((b) => read(b)),
+    read("subscription_plans", {
+      permissions: PUBLISHED,
+      fields: [
+        "id",
+        "code",
+        "kind",
+        "status",
+        "interval",
+        "price_cents",
+        "included_credits_cents",
+        "stripe_product_id",
+        "stripe_price_id",
+        "sort",
+        "translations",
+      ],
+    }),
+    read("subscription_plans_translations", {
+      permissions: { subscription_plans_id: PUBLISHED },
+    }),
     read("navigation", { permissions: PUBLISHED }),
     read("navigation_translations", {
       permissions: { navigation_id: PUBLISHED },
@@ -150,7 +169,12 @@ export function publishedReadPerms(): Perm[] {
 
 /** Lecture complète du contenu principal (éditeurs, relecteurs, agents de contenu). */
 export function contentReadPerms(): Perm[] {
-  return [...PAGE_TREE, ...SITE_COLLECTIONS].map((c) => read(c));
+  return [
+    ...PAGE_TREE,
+    ...SITE_COLLECTIONS,
+    "subscription_plans",
+    "subscription_plans_translations",
+  ].map((c) => read(c));
 }
 
 /** Écriture du contenu publié : réservée à la promotion de versions et à l'administrateur (la garde de publication contrôle). */
