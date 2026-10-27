@@ -5,14 +5,17 @@ export const MIN_TOC_ANCHORS = 3;
 
 export type TocEntry = { id: string; label: string };
 
+/** Les titres du CMS sont ponctués d'un point : le sommaire est une liste de rubriques, sans point final. */
+const noFinalPeriod = (text: string) => text.replace(/\s*[.。]\s*$/, "");
+
 function labelOf(block: Block, id: string): string {
   switch (block.type) {
     case "hero":
-      return block.eyebrow ?? block.headline;
+      return noFinalPeriod(block.eyebrow ?? block.headline);
     case "cta":
-      return block.title;
+      return noFinalPeriod(block.title);
     default:
-      return block.title?.trim() || id;
+      return noFinalPeriod(block.title?.trim() || id);
   }
 }
 

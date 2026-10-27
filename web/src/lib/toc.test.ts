@@ -46,4 +46,17 @@ describe("sommaire des pages longues", () => {
     expect(toc?.map((e) => e.id)).toEqual(["a", "b", "c"]);
     expect(toc?.[1]?.label).toBe("b");
   });
+
+  it("retire le point final des titres ponctués du CMS", () => {
+    const toc = buildToc([
+      section("a", "Les dix départements."),
+      section("b", "Vos questions. Nos réponses."),
+      section("c", "Sans point"),
+    ]);
+    expect(toc?.map((e) => e.label)).toEqual([
+      "Les dix départements",
+      "Vos questions. Nos réponses",
+      "Sans point",
+    ]);
+  });
 });

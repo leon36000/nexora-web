@@ -43,6 +43,12 @@ umask 077
   echo "STRIPE_SECRET_KEY=sk_test_stripemocklocal0123456789"
   echo "STRIPE_WEBHOOK_SECRET=whsec_local_dev_only_not_a_real_secret"
   echo "STRIPE_API_BASE_URL=http://127.0.0.1:12111"
+  # Courriel (S3) : en développement, Mailpit (SMTP 127.0.0.1:1026, interface http://127.0.0.1:8026). Les valeurs de
+  # production (SMTP_HOST, SMTP_USER, SMTP_PASSWORD_FILE, CONTACT_NOTIFY_TO) se règlent dans l'environnement du déploiement.
+  echo "SMTP_HOST=127.0.0.1"
+  echo "SMTP_PORT=1026"
+  echo "SMTP_FROM=site@nexora.dev"
+  echo "CONTACT_NOTIFY_TO=equipe@nexora.dev"
 } > "$root/.env"
 cp "$root/.env" "$root/web/.env.local"
-echo "Écrit : .env et web/.env.local (variables : DATABASE_URL, NEXORA_APP_ADMIN_TOKEN, NEXORA_VAULT_MASTER_KEY, DIRECTUS_*, NEXORA_PREVIEW_SECRET, BETTER_AUTH_SECRET, STRIPE_* de stripe-mock)"
+echo "Écrit : .env et web/.env.local (variables : DATABASE_URL, NEXORA_APP_ADMIN_TOKEN, NEXORA_VAULT_MASTER_KEY, DIRECTUS_*, NEXORA_PREVIEW_SECRET, BETTER_AUTH_SECRET, STRIPE_* de stripe-mock, SMTP_* et CONTACT_NOTIFY_TO pour Mailpit)"

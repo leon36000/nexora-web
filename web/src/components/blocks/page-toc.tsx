@@ -87,8 +87,8 @@ export function PageToc({ entries, label, openLabel }: Props) {
           </ul>
         </details>
 
-        <ul className="hidden items-center gap-1 overflow-x-auto md:flex">
-          <li className="mr-3 shrink-0 font-mono text-label uppercase text-fg-muted">
+        <ul className="hidden items-center gap-0.5 overflow-x-auto md:flex md:[mask-image:linear-gradient(to_right,black_94%,transparent)]">
+          <li className="mr-2 hidden shrink-0 font-mono text-label uppercase text-fg-muted 2xl:block">
             {label}
           </li>
           {entries.map((e) => (
@@ -97,7 +97,7 @@ export function PageToc({ entries, label, openLabel }: Props) {
                 href={`#${e.id}`}
                 aria-current={active === e.id ? "location" : undefined}
                 className={cn(
-                  "inline-flex min-h-12 items-center px-3 text-[0.9375rem] transition-colors duration-150 hover:text-fg",
+                  "inline-flex min-h-12 items-center whitespace-nowrap px-2.5 text-[0.9375rem] transition-colors duration-150 hover:text-fg",
                   active === e.id
                     ? "text-fg underline decoration-accent decoration-2 underline-offset-[10px]"
                     : "text-fg-muted",
