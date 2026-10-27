@@ -53,6 +53,7 @@ export const accountEnCA: AccountDictionary = {
     haveAccount: "Already have an account?",
     loginLink: "Sign in",
     errors: {
+      nameRequired: "Enter your name.",
       weak: "This password is too short: at least 10 characters.",
       invalidEmail: "This email address is not valid.",
       rateLimited: "Too many attempts. Wait a minute before trying again.",
@@ -72,6 +73,7 @@ export const accountEnCA: AccountDictionary = {
     done: "If an account matches this address, a reset link has just been sent. It is valid for one hour.",
     back: "Back to sign in",
     errors: {
+      invalidEmail: "This email address is not valid.",
       rateLimited: "Too many requests. Wait a minute before trying again.",
       generic: "The request failed. Try again in a moment.",
     },

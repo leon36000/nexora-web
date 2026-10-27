@@ -15,6 +15,7 @@ import {
   resetPasswordEmail,
   verificationEmail,
 } from "./emails";
+import { MIN_PASSWORD_LENGTH } from "@/lib/account-rules";
 import type { Mailer } from "./mailer";
 import { ensureUserOrganization } from "./organization";
 
@@ -33,7 +34,7 @@ export interface CreateAuthOptions {
   log?: (message: string, fields?: Record<string, unknown>) => void;
 }
 
-export const MIN_PASSWORD_LENGTH = 10;
+export { MIN_PASSWORD_LENGTH };
 
 // Deux rôles seulement (D11) : propriétaire et membre.
 const ac = createAccessControl(defaultStatements);

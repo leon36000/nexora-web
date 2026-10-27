@@ -57,6 +57,7 @@ export const accountFrCA = {
     haveAccount: "Déjà un compte ?",
     loginLink: "Se connecter",
     errors: {
+      nameRequired: "Indiquez votre nom.",
       weak: "Ce mot de passe est trop court : 10 caractères au moins.",
       invalidEmail: "Cette adresse courriel n’est pas valide.",
       rateLimited:
@@ -77,6 +78,7 @@ export const accountFrCA = {
     done: "Si un compte correspond à cette adresse, un lien de réinitialisation vient d’être envoyé. Il est valable une heure.",
     back: "Retour à la connexion",
     errors: {
+      invalidEmail: "Cette adresse courriel n’est pas valide.",
       rateLimited: "Trop de demandes. Patientez une minute avant de réessayer.",
       generic: "La demande a échoué. Réessayez dans un moment.",
     },
