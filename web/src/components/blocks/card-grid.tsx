@@ -21,3 +21,10 @@ export function cellClasses(count: number, maxColumns: number): string[] {
     cn("flex sm:max-lg:last:odd:col-span-2", SPAN[span] ?? "lg:col-span-4"),
   );
 }
+
+/**
+ * Grille à filets : les cartes sont des cellules séparées par des filets d'un pixel (le fond de la grille montre à
+ * travers l'interstice), dans un cadre à angles francs. Mêmes empans que `CARD_GRID`.
+ */
+export const CELL_GRID =
+  "grid gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-2 lg:grid-cols-12";

@@ -45,6 +45,7 @@ export default async function AgentsPage() {
     <>
       <Section tone="light" aria-labelledby="agents-title">
         <PageIntro
+          stage="braise"
           visual={<FlowEditorMock t={getVisualsDictionary(lang).flow} />}
         >
           <header className="max-w-3xl">

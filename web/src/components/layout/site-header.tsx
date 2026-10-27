@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
-import { ButtonLink } from "@/components/ui/button";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Alternates } from "@/lib/alternates";
@@ -11,7 +10,9 @@ import { NavLink } from "./nav-link";
 import { ProductsMenu } from "./products-menu";
 
 /**
- * En-tête collant, toujours sur fond sombre (thème « encre forêt »).
+ * En-tête collant, sur fond papier et cadré par des filets d'un pixel : le logo, chaque entrée de navigation et
+ * chaque action occupent une « cellule » (comme le cadran d'un instrument) ; l'action principale est la dernière
+ * cellule, pleine, en orange signal.
  * Navigation du §6 : IA souveraine · Solutions · Produits (menu) · Tarifs · Ressources ;
  * à droite : langue, « Connexion » (lien) et « Planifier un diagnostic » (bouton).
  * Les entrées viennent de Directus (`navigation`), avec repli sur les dictionnaires (voir lib/chrome.ts).
@@ -52,35 +53,35 @@ export function SiteHeader({
       alternates={alternates}
     />
   );
-  const linkClass =
-    "inline-flex min-h-11 items-center rounded-xs px-3 text-[0.9375rem] text-fg-muted transition-colors duration-150 hover:text-fg";
+  const cell =
+    "inline-flex h-full min-h-14 items-center border-l border-line px-5 text-[0.9375rem] font-medium text-fg-muted transition-colors duration-150 hover:bg-fg/[0.05] hover:text-fg aria-[current=page]:text-fg aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent-graphic)]";
 
   return (
-    <header className="theme-dark sticky top-0 z-40 border-b border-line bg-bg/90 text-fg backdrop-blur-md">
-      <div className="mx-auto flex min-h-16 w-full max-w-page items-center justify-between gap-6 px-gutter">
+    <header className="theme-light sticky top-0 z-40 border-b border-line bg-bg/95 text-fg backdrop-blur-md">
+      <div className="flex min-h-14 w-full items-stretch">
         <Link
           href={localizePath(lang, "/")}
           prefetch={false}
           aria-label={a11y.homeLink}
-          className="rounded-xs py-2"
+          className="flex items-center rounded-none px-gutter"
         >
-          <Logo tone="dark" />
+          <Logo tone="light" />
         </Link>
 
         <nav aria-label={a11y.mainNav} className="hidden nav:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex h-full items-stretch">
             {header.nav.map((item) =>
               item.type === "menu" ? (
-                <li key={`menu|${item.label}`}>
-                  <ProductsMenu label={item.label} items={item.items} />
+                <li key={`menu|${item.label}`} className="flex">
+                  <ProductsMenu
+                    label={item.label}
+                    items={item.items}
+                    className={cell}
+                  />
                 </li>
               ) : (
-                <li key={`${item.href}|${item.label}`}>
-                  <NavLink
-                    href={item.href}
-                    path={item.path}
-                    className={linkClass}
-                  >
+                <li key={`${item.href}|${item.label}`} className="flex">
+                  <NavLink href={item.href} path={item.path} className={cell}>
                     {item.label}
                   </NavLink>
                 </li>
@@ -89,14 +90,21 @@ export function SiteHeader({
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-2 nav:flex">
-            {switcher}
-            <span aria-hidden="true" className="h-5 w-px bg-line" />
-            <NavLink href={login.href} path={login.path} className={linkClass}>
+        <div className="ml-auto flex items-stretch">
+          <div className="hidden items-stretch nav:flex">
+            <div className="flex items-center border-l border-line px-3">
+              {switcher}
+            </div>
+            <NavLink href={login.href} path={login.path} className={cell}>
               {login.label}
             </NavLink>
-            <ButtonLink href={cta.href}>{cta.label}</ButtonLink>
+            <Link
+              href={cta.href}
+              prefetch={false}
+              className="inline-flex min-h-14 items-center bg-accent px-6 text-[0.9375rem] font-semibold text-on-accent transition-colors duration-150 hover:bg-ember-400"
+            >
+              {cta.label}
+            </Link>
           </div>
           <MobileMenu
             labels={{

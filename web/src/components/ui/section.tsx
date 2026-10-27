@@ -3,7 +3,7 @@ import { cn } from "@/lib/cn";
 import { Container } from "./container";
 
 type SectionProps = {
-  /** "dark" : fond encre forêt ; "light" : fond papier. Pose le thème sémantique (jetons bg, fg…). */
+  /** "dark" : fond noir profond ; "light" : fond papier. Pose le thème sémantique (jetons bg, fg…). */
   tone?: "dark" | "light";
   /** Utilise la surface du thème plutôt que son fond (alternance douce entre deux sections claires). */
   surface?: boolean;
@@ -16,13 +16,16 @@ type SectionProps = {
   joined?: "after" | "before" | "both";
   /** Contenu décoratif placé derrière le contenu (aria-hidden côté appelant). */
   background?: ReactNode;
+  /** Filets verticaux qui cadrent la colonne de la page (par défaut oui ; masqués sur téléphone). */
+  rails?: boolean;
   containerClassName?: string;
 } & Omit<ComponentPropsWithoutRef<"section">, "children"> & {
     children: ReactNode;
   };
 
 /**
- * Section pleine largeur à thème sombre ou clair. Les enfants lisent les jetons sémantiques
+ * Section pleine largeur à thème sombre ou clair, cadrée par un filet horizontal en haut et deux filets verticaux
+ * (les « rails ») le long de la colonne de la page. Les enfants lisent les jetons sémantiques
  * (text-fg, bg-surface, text-accent-text…) qui changent avec le thème.
  */
 export function Section({
@@ -31,6 +34,7 @@ export function Section({
   flush = false,
   joined,
   background,
+  rails = true,
   className,
   containerClassName,
   children,
@@ -39,7 +43,7 @@ export function Section({
   return (
     <section
       className={cn(
-        "relative isolate overflow-hidden text-fg",
+        "relative isolate overflow-hidden border-t border-line text-fg first:border-t-0",
         tone === "dark" ? "theme-dark" : "theme-light",
         surface ? "bg-surface" : "bg-bg",
         // Lueur d'accent seulement en tête d'une bande : une section qui prolonge la précédente n'en répète pas.
@@ -54,6 +58,7 @@ export function Section({
       {...props}
     >
       {background}
+      {rails ? <div aria-hidden="true" className="rails" /> : null}
       <Container className={cn("relative", containerClassName)}>
         {children}
       </Container>

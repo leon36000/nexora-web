@@ -56,7 +56,7 @@ export function SectionVisualFigure({
       const mode = DIAGRAM_MODE[visual];
       return (
         <VisualFigure alt={alt}>
-          <div className="wash-paper rounded-md border border-line bg-bg px-4 py-6 sm:px-6 sm:py-8">
+          <div className="tex-dots rounded-md border border-line bg-bg px-4 py-6 sm:px-6 sm:py-8">
             <PerimeterDiagram mode={mode} />
             <DiagramLegend
               items={
@@ -75,25 +75,25 @@ export function SectionVisualFigure({
     }
     case "flux-workstudio":
       return (
-        <VisualFigure alt={alt} caption={v.caption.mock}>
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="braise">
           <FlowEditorMock t={v.flow} />
         </VisualFigure>
       );
     case "catalogue-modeles":
       return (
-        <VisualFigure alt={alt} caption={v.caption.mock}>
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="ciel">
           <ModelCatalogMock t={v.catalog} />
         </VisualFigure>
       );
     case "console-vps":
       return (
-        <VisualFigure alt={alt} caption={v.caption.mock}>
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="or">
           <VpsConsoleMock t={v.vps} />
         </VisualFigure>
       );
     case "tableau-de-bord":
       return (
-        <VisualFigure alt={alt} caption={v.caption.mock}>
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="menthe">
           <DashboardMock t={v.dashboard} />
         </VisualFigure>
       );

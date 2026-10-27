@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { connection } from "next/server";
 import { LOGO } from "@/components/brand/logo-geometry";
+import { mosaicLayers } from "@/components/brand/mosaic";
 import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { OG_SIZE } from "@/lib/seo/og";
@@ -16,15 +17,27 @@ import { getPublicVps } from "@/server/vps/read";
  * Image Open Graph (1200 × 630) d'une page PUBLIÉE ou d'une route connue : `/og/fr`, `/og/en/opsys-ai`,
  * `/og/fr/modeles/nexora/glm-5-3`. Le titre vient de la page elle-même ; l'adresse ne peut pas injecter de texte.
  * Page inconnue ou non publiée : 404 (aucune image générique qui se ferait passer pour une page).
- * Couleurs : jetons de globals.css (ink-950, bone, ember-400) ; polices : instantanés WOFF locaux (src/fonts/og).
+ * Couleurs : jetons de globals.css (ink-950, bone, ember-400, ember-500) ; polices : instantanés WOFF locaux (src/fonts/og).
+ * Décor : la mosaïque braise (la même que sur le site) qui se dissout vers la gauche, hors de la zone du titre.
  */
-const INK = "#0e1613";
-const BONE = "#f4f1ea";
-const MIST = "#a9b3ae";
-const EMBER = "#f07a52";
-const LINE = "#2d3f38";
-const SURFACE = "#16211d";
-const EMBER_FILL = "#ce411c";
+const INK = "#0a0a0e";
+const BONE = "#f5f4ef";
+const MIST = "#a8a8b6";
+const EMBER = "#ff7a45";
+const LINE = "#2b2b38";
+const EMBER_FILL = "#ff5a1f";
+
+/** 40 × 21 cellules de 30 px : la mosaïque couvre l'image, sans toucher la colonne du titre (colonnes 0 à 26). */
+const OG_LAYERS = mosaicLayers({
+  cols: 40,
+  rows: 21,
+  seed: 11,
+  toward: "right",
+  fade: 1,
+  palette: "braise",
+  gap: 0.08,
+  keep: (c) => c.col >= 27,
+});
 
 async function loadFonts() {
   const dir = join(process.cwd(), "src", "fonts", "og");
@@ -116,16 +129,17 @@ export async function GET(
         fontFamily: fonts ? "Inter" : "sans-serif",
       }}
     >
-      {/* Grand symbole en filigrane : les deux périmètres, l'intersection orange (jamais du texte, aucune police). */}
+      {/* Mosaïque braise : décor pur, rendu en PNG par satori (jamais du texte, aucune police). */}
       {/* biome-ignore lint/a11y/noSvgWithoutTitle: dessin rendu en PNG par satori, jamais dans le DOM */}
       <svg
-        width={420}
-        height={420}
-        viewBox={LOGO.symbolBox}
-        style={{ position: "absolute", right: 56, top: 56, opacity: 0.9 }}
+        width={1200}
+        height={630}
+        viewBox="0 0 40 21"
+        style={{ position: "absolute", left: 0, top: 0 }}
       >
-        <path fill={SURFACE} d={LOGO.squares} />
-        <path fill={EMBER_FILL} d={LOGO.overlap} />
+        {OG_LAYERS.map((layer) => (
+          <path key={layer.tier} fill={layer.color} d={layer.d} />
+        ))}
       </svg>
       <div style={{ display: "flex", alignItems: "center" }}>
         {/* biome-ignore lint/a11y/noSvgWithoutTitle: dessin rendu en PNG par satori, jamais dans le DOM */}
@@ -134,8 +148,8 @@ export async function GET(
           height={56}
           viewBox={LOGO.lockupBox}
         >
-          <path fill={BONE} d={LOGO.squares} />
-          <path fill={EMBER_FILL} d={LOGO.overlap} />
+          <path fill={BONE} d={LOGO.bars} />
+          <path fill={EMBER_FILL} d={LOGO.passage} />
           <path fill={BONE} d={LOGO.nexora} />
           <path fill={EMBER} d={LOGO.ai} />
         </svg>
@@ -148,7 +162,7 @@ export async function GET(
           fontSize: size,
           lineHeight: 1.08,
           color: BONE,
-          maxWidth: 1000,
+          maxWidth: 740,
         }}
       >
         {clipped}

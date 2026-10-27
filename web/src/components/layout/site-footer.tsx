@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/brand/logo";
+import { Logo, LogoMark } from "@/components/brand/logo";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Alternates } from "@/lib/alternates";
@@ -7,9 +7,10 @@ import type { FooterModel } from "@/lib/chrome";
 import { LanguageSwitcher } from "./language-switcher";
 
 /**
- * Pied de page dense, sur fond sombre : marque, quatre colonnes de liens (produits, solutions,
- * entreprise, centre de confiance), légal et sélecteur de langue. Aucune mention légale
- * inventée : la raison sociale et les numéros officiels seront fournis par le fondateur.
+ * Pied de page dense, sur fond papier et cadré par des filets : marque, quatre colonnes de liens (produits,
+ * solutions, entreprise, centre de confiance), légal et sélecteur de langue. Aucune mention légale inventée : la
+ * raison sociale et les numéros officiels seront fournis par le fondateur. Signature : le « N » en pixels posé sur la
+ * bande braise (quatre barres franches) qu'un carré traverse lentement.
  */
 export function SiteFooter({
   lang,
@@ -27,17 +28,9 @@ export function SiteFooter({
     "inline-flex min-h-8 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4";
 
   return (
-    <footer className="theme-dark wash-dark relative isolate overflow-hidden border-t border-line bg-bg text-fg">
-      {/* Filigrane : le symbole, en très grand, ancré dans l'angle bas droit. */}
-      <svg
-        viewBox="6 6 52 52"
-        aria-hidden="true"
-        focusable="false"
-        className="pointer-events-none absolute -bottom-16 -right-10 -z-10 hidden size-[26rem] opacity-[0.06] md:block"
-      >
-        <path fill="currentColor" d="M6 6h36v36H6zM22 22h36v36H22z" />
-      </svg>
-      <div className="mx-auto w-full max-w-page px-gutter pb-8 pt-16 sm:pt-20">
+    <footer className="theme-light relative isolate overflow-hidden border-t border-line bg-bg text-fg">
+      <div aria-hidden="true" className="rails" />
+      <div className="relative mx-auto w-full max-w-page px-gutter pt-14 sm:pt-20">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)]">
           <div>
             <Link
@@ -46,7 +39,7 @@ export function SiteFooter({
               aria-label={a11y.homeLink}
               className="inline-block rounded-xs"
             >
-              <Logo tone="dark" />
+              <Logo tone="light" />
             </Link>
             <p className="mt-5 max-w-xs font-display text-h4 text-fg">
               {footer.tagline}
@@ -110,6 +103,16 @@ export function SiteFooter({
             />
             <p className="text-small text-fg-muted">{footer.copyright}</p>
           </div>
+        </div>
+      </div>
+
+      {/* Signature : le « N » en pixels sur la bande braise ; un carré la traverse (mouvement réduit : immobile). */}
+      <div aria-hidden="true" className="relative mt-10 sm:mt-14">
+        <div className="relative z-10 mx-auto w-full max-w-page px-gutter">
+          <LogoMark tone="auto" className="-mb-px block size-24 sm:size-36" />
+        </div>
+        <div className="stripes relative h-16 overflow-hidden">
+          <span className="stripe-cell absolute left-[12%] top-[25%] block size-4 bg-bone" />
         </div>
       </div>
     </footer>

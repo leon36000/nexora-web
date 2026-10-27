@@ -1,62 +1,74 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Système de design Nexora (conception §5)
+   Système de design Nexora AI — direction « Instrument » (refonte d'octobre 2026)
    Jetons primitifs -> thèmes sémantiques (sombre / clair) -> utilitaires.
+   Idées : toile papier et noir profond, filets d'un pixel qui cadrent la page (comme un instrument de mesure),
+   mosaïques de carrés « braise » (ambre -> orange -> framboise) pour la matière, un seul accent : l'orange signal.
    Les rapports de contraste sont recalculés par `bun run check:contrast`.
    ========================================================================== */
 
 @theme {
-  /* --- Palette « encre forêt » (fonds sombres) --- */
-  --color-ink-950: #0e1613; /* fond sombre */
-  --color-ink-900: #16211d; /* surface sombre */
-  --color-ink-800: #1f2d28; /* surface sombre élevée, survol */
-  --color-ink-700: #2d3f38; /* filets et séparations sombres */
+  /* --- Noirs profonds (fonds sombres) --- */
+  --color-ink-950: #0a0a0e; /* fond sombre */
+  --color-ink-900: #121218; /* surface sombre */
+  --color-ink-800: #1b1b24; /* surface sombre élevée, survol */
+  --color-ink-700: #2b2b38; /* filets et séparations sombres */
+  --color-night-900: #11112a; /* bande « nuit » (pieds de section, appels à l'action) */
 
-  /* --- Palette « papier » (fonds clairs) --- */
-  --color-paper-50: #fbf8f2; /* fond clair */
-  --color-paper-100: #f3eee4; /* surface claire */
-  --color-paper-200: #e4ddcf; /* filets et séparations claires */
+  /* --- Papier (fonds clairs) --- */
+  --color-paper-50: #fbfbf8; /* fond clair */
+  --color-paper-100: #f3f2ec; /* surface claire */
+  --color-paper-200: #e4e2d9; /* filets et séparations claires */
 
   /* --- Textes --- */
-  --color-bone: #f4f1ea; /* texte sur fond sombre */
-  --color-mist: #a9b3ae; /* texte secondaire sur fond sombre */
-  --color-forest-900: #17221e; /* texte sur fond clair */
-  --color-forest-600: #58625b; /* texte secondaire sur fond clair */
+  --color-bone: #f5f4ef; /* texte sur fond sombre */
+  --color-mist: #a8a8b6; /* texte secondaire sur fond sombre */
+  --color-graphite-900: #121218; /* texte sur fond clair */
+  --color-graphite-600: #54545f; /* texte secondaire sur fond clair */
 
-  /* --- Accent unique : l'orange Nexora --- */
-  --color-ember-600: #ce411c; /* orange du logo, fond de bouton (texte blanc) */
-  --color-ember-700: #b83a18; /* accent en texte sur fond clair, survol du bouton */
-  --color-ember-400: #f07a52; /* accent en texte sur fond sombre */
+  /* --- Accent unique : l'orange signal de Nexora --- */
+  --color-ember-500: #ff5a1f; /* remplissage de bouton (texte noir encre), graphisme sur fond sombre */
+  --color-ember-600: #f04a10; /* graphisme sur fond clair */
+  --color-ember-700: #b53a0a; /* accent en texte sur fond clair */
+  --color-ember-400: #ff7a45; /* accent en texte sur fond sombre, survol du bouton */
+
+  /* --- Rampe « braise » des mosaïques (jamais en texte) --- */
+  --color-amber-400: #ffc53d;
+  --color-flame-500: #ff8a1f;
+  --color-crimson-600: #d3201f;
+  --color-berry-700: #a8153a;
+  --color-sky-300: #a9ccff;
+  --color-sky-500: #4a87ff;
 
   /* --- Succès --- */
-  --color-moss-400: #5cc596; /* sur fond sombre */
-  --color-moss-700: #2f7d5b; /* sur fond clair */
+  --color-mint-400: #4ade9b; /* sur fond sombre */
+  --color-mint-700: #17694a; /* sur fond clair */
 
   /* --- Polices (variables posées sur <html> par next/font/local) --- */
   --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* --- Échelle typographique (titres Geist 500, interlignage serré) --- */
-  --text-display: clamp(2.5rem, 1.55rem + 4.1vw, 4.75rem);
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.035em;
+  /* --- Échelle typographique (titres Geist 500, grands et aérés) --- */
+  --text-display: clamp(2.75rem, 1.35rem + 5.6vw, 6rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
   --text-display--font-weight: 500;
 
-  --text-h1: clamp(2.25rem, 1.6rem + 2.8vw, 3.75rem);
-  --text-h1--line-height: 1.06;
-  --text-h1--letter-spacing: -0.03em;
+  --text-h1: clamp(2.5rem, 1.5rem + 3.4vw, 4.25rem);
+  --text-h1--line-height: 1.04;
+  --text-h1--letter-spacing: -0.028em;
   --text-h1--font-weight: 500;
 
-  --text-h2: clamp(1.875rem, 1.45rem + 1.9vw, 3rem);
-  --text-h2--line-height: 1.1;
-  --text-h2--letter-spacing: -0.025em;
+  --text-h2: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.024em;
   --text-h2--font-weight: 500;
 
-  --text-h3: clamp(1.375rem, 1.2rem + 0.75vw, 1.75rem);
-  --text-h3--line-height: 1.2;
-  --text-h3--letter-spacing: -0.015em;
+  --text-h3: clamp(1.4rem, 1.2rem + 0.9vw, 2rem);
+  --text-h3--line-height: 1.18;
+  --text-h3--letter-spacing: -0.018em;
   --text-h3--font-weight: 500;
 
   --text-h4: 1.125rem;
@@ -75,24 +87,24 @@
 
   --text-label: 0.75rem;
   --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.08em;
+  --text-label--letter-spacing: 0.06em;
 
   /* --- Espacements de section et largeurs --- */
-  --spacing-section: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+  --spacing-section: clamp(4rem, 2.8rem + 4.6vw, 7.5rem);
   --spacing-gutter: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
   --container-page: 80rem;
   --container-measure: 42rem;
 
-  /* --- Rayons --- */
-  --radius-xs: 0.25rem;
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1.125rem;
-  --radius-xl: 1.5rem;
+  /* --- Rayons : angles francs, comme un instrument --- */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
 
   /* --- Ombres sobres --- */
-  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.18);
-  --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 48px -16px rgb(0 0 0 / 0.55);
+  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(10 10 14 / 0.22);
+  --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -20px rgb(0 0 0 / 0.6);
 
   /* --- Point de rupture de la navigation complète --- */
   --breakpoint-nav: 72rem;
@@ -107,15 +119,17 @@
   --bg: var(--color-paper-50);
   --surface: var(--color-paper-100);
   --surface-2: var(--color-paper-200);
-  --fg: var(--color-forest-900);
-  --fg-muted: var(--color-forest-600);
+  --fg: var(--color-graphite-900);
+  --fg-muted: var(--color-graphite-600);
   --accent-text: var(--color-ember-700);
-  --accent-fill: var(--color-ember-600);
-  --success: var(--color-moss-700);
-  --line: rgb(23 34 30 / 0.14);
-  --line-strong: rgb(23 34 30 / 0.55);
+  --accent-fill: var(--color-ember-500);
+  --accent-graphic: var(--color-ember-600);
+  --on-accent: var(--color-ink-950);
+  --success: var(--color-mint-700);
+  --line: rgb(18 18 24 / 0.13);
+  --line-strong: rgb(18 18 24 / 0.58);
   --focus: var(--color-ember-700);
-  --grid-ink: rgb(23 34 30);
+  --grid-ink: rgb(18 18 24);
   color-scheme: light;
 }
 
@@ -126,12 +140,14 @@
   --fg: var(--color-bone);
   --fg-muted: var(--color-mist);
   --accent-text: var(--color-ember-400);
-  --accent-fill: var(--color-ember-600);
-  --success: var(--color-moss-400);
-  --line: rgb(244 241 234 / 0.14);
-  --line-strong: rgb(244 241 234 / 0.5);
+  --accent-fill: var(--color-ember-500);
+  --accent-graphic: var(--color-ember-500);
+  --on-accent: var(--color-ink-950);
+  --success: var(--color-mint-400);
+  --line: rgb(245 244 239 / 0.14);
+  --line-strong: rgb(245 244 239 / 0.52);
   --focus: var(--color-ember-400);
-  --grid-ink: rgb(244 241 234);
+  --grid-ink: rgb(245 244 239);
   color-scheme: dark;
 }
 
@@ -143,6 +159,8 @@
   --color-fg-muted: var(--fg-muted);
   --color-accent-text: var(--accent-text);
   --color-accent: var(--accent-fill);
+  --color-accent-graphic: var(--accent-graphic);
+  --color-on-accent: var(--on-accent);
   --color-success: var(--success);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
@@ -192,8 +210,8 @@
   }
 
   ::selection {
-    background: var(--color-ember-600);
-    color: #fff;
+    background: var(--color-ember-500);
+    color: var(--color-ink-950);
   }
 
   /* Focus visible : 2 px, contraste >= 3:1 avec le fond du thème (WCAG 2.4.7 / 2.4.11) */
@@ -214,12 +232,12 @@
   }
 
   dialog::backdrop {
-    background: rgb(14 22 19 / 0.7);
+    background: rgb(10 10 14 / 0.72);
   }
 }
 
 /* --------------------------------------------------------------------------
-   Grille de périmètre : animation discrète (signature graphique)
+   Schéma de périmètre : animation discrète (flux entre deux étapes)
    Désactivée par prefers-reduced-motion : l'état de repos est lisible seul.
    -------------------------------------------------------------------------- */
 @keyframes perimeter-trace {
@@ -300,38 +318,105 @@
 }
 
 /* --------------------------------------------------------------------------
-   Matières et mouvement des visuels (marque Nexora AI)
-   Textures : trame de points, lueur d'accent très douce. Mouvement : transform seulement (jamais d'opacité sur le
-   texte du premier écran, pour ne pas retarder le LCP) ; tout est désactivé par prefers-reduced-motion.
+   Matières (direction « Instrument »)
+   - rails : filets verticaux d'un pixel qui cadrent la colonne de la page, avec un nœud carré à chaque angle ;
+   - tex-grid : grille de mesure (filets tous les 4 rem) qui s'efface vers les bords ;
+   - tex-dots : trame de points ;
+   - wash-* : lueurs braise très douces qui coiffent une bande.
+   Mouvement : transform et opacité des décors seulement (jamais d'opacité sur du texte, pour ne pas retarder le LCP) ;
+   tout est déclaré sous prefers-reduced-motion: no-preference.
    -------------------------------------------------------------------------- */
+.rails {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-page);
+  border-inline: 1px solid var(--line);
+  pointer-events: none;
+}
+
+.rails::before,
+.rails::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  background: var(--fg);
+}
+
+.rails::before {
+  left: -2px;
+}
+
+.rails::after {
+  right: -2px;
+}
+
+@media (max-width: 47.99rem) {
+  .rails {
+    display: none;
+  }
+}
+
 @utility tex-dots {
   background-image: radial-gradient(var(--line) 1px, transparent 1.3px);
   background-size: 22px 22px;
 }
 
+@utility tex-grid {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(70% 90% at 50% 40%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(70% 90% at 50% 40%, #000 25%, transparent 78%);
+}
+
 @utility wash-dark {
-  background-image: radial-gradient(52rem 26rem at 92% -10%, rgb(206 65 28 / 0.15), transparent 62%);
+  background-image:
+    radial-gradient(46rem 24rem at 100% -8%, rgb(255 90 31 / 0.2), transparent 64%),
+    radial-gradient(34rem 20rem at 0% 110%, rgb(74 135 255 / 0.1), transparent 68%);
 }
 
 @utility wash-sand {
-  background-image: radial-gradient(48rem 18rem at 100% 0%, rgb(206 65 28 / 0.07), transparent 66%);
+  background-image: radial-gradient(46rem 18rem at 100% 0%, rgb(255 138 31 / 0.1), transparent 66%);
 }
 
 @utility wash-paper {
-  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(206 65 28 / 0.045), transparent 68%);
+  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(255 90 31 / 0.05), transparent 68%);
+}
+
+/* Bande « braise » : quatre barres franches (ambre, orange, vermillon, framboise), signature du pied de page. */
+.stripes {
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-amber-400) 0 25%,
+    var(--color-ember-500) 25% 50%,
+    var(--color-crimson-600) 50% 75%,
+    var(--color-berry-700) 75% 100%
+  );
 }
 
 /* Filet orange en pointillés qui avance : le flux entre deux étapes. */
 .flow-line {
-  background-image: linear-gradient(to bottom, var(--color-ember-600) 0 5px, transparent 5px 11px);
+  background-image: linear-gradient(to bottom, var(--color-ember-500) 0 5px, transparent 5px 11px);
   background-size: 2px 11px;
   background-repeat: repeat-y;
 }
 
 .flow-line-x {
-  background-image: linear-gradient(to right, var(--color-ember-600) 0 5px, transparent 5px 11px);
+  background-image: linear-gradient(to right, var(--color-ember-500) 0 5px, transparent 5px 11px);
   background-size: 11px 2px;
   background-repeat: repeat-x;
+}
+
+/* Mosaïque : une couche par teinte ; chaque couche respire à son rythme (opacité, jamais sur du texte). */
+.mo-layer {
+  opacity: var(--o, 1);
 }
 
 @keyframes rise-load {
@@ -358,10 +443,10 @@
 @keyframes ring-soft {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(206 65 28 / 0.4);
+    box-shadow: 0 0 0 0 rgb(255 90 31 / 0.5);
   }
   55% {
-    box-shadow: 0 0 0 7px rgb(206 65 28 / 0);
+    box-shadow: 0 0 0 7px rgb(255 90 31 / 0);
   }
 }
 
@@ -371,6 +456,34 @@
   }
   to {
     transform: none;
+  }
+}
+
+@keyframes mo-twinkle {
+  0%,
+  100% {
+    opacity: var(--o, 1);
+  }
+  50% {
+    opacity: calc(var(--o, 1) * 0.5);
+  }
+}
+
+@keyframes scan-x {
+  from {
+    transform: translateX(-12%);
+  }
+  to {
+    transform: translateX(112%);
+  }
+}
+
+@keyframes stripe-slide {
+  from {
+    transform: translateX(-4rem);
+  }
+  to {
+    transform: translateX(calc(100vw + 4rem));
   }
 }
 
@@ -396,6 +509,19 @@
     transform-origin: bottom;
     animation: bar-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(var(--d, 0) * 40ms);
+  }
+
+  .mo-animate .mo-layer {
+    animation: mo-twinkle 7s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * -1.3s);
+  }
+
+  .scan {
+    animation: scan-x 11s linear infinite;
+  }
+
+  .stripe-cell {
+    animation: stripe-slide 16s linear infinite;
   }
 
   /* Apparition au défilement : pur CSS (scroll-driven animations), sans JavaScript ; ignorée par les

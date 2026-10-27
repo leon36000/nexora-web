@@ -74,10 +74,10 @@ export function LanguageSwitcher({
               isCurrent ? "text-fg" : "text-fg-muted hover:text-fg",
               isCurrent &&
                 variant === "compact" &&
-                "underline decoration-accent decoration-2 underline-offset-[6px]",
+                "underline decoration-accent-graphic decoration-2 underline-offset-[6px]",
               isCurrent &&
                 variant === "full" &&
-                "underline decoration-accent decoration-2 underline-offset-[6px]",
+                "underline decoration-accent-graphic decoration-2 underline-offset-[6px]",
             )}
           >
             {variant === "compact" ? (

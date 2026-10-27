@@ -1,4 +1,4 @@
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
+import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -59,7 +59,7 @@ export function PricingPage({
             aria-hidden="true"
             className="absolute inset-0 -z-10 hidden opacity-40 md:block"
           >
-            <PerimeterGrid shape="wide" animated={false} />
+            <MosaicBackdrop shape="wide" animated={false} />
           </div>
         }
       >

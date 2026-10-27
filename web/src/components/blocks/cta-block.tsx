@@ -1,10 +1,10 @@
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
+import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import type { CtaBlock } from "@/server/cms/model";
 import { anchorProps, toneProps } from "./tone";
 
-/** Bandeau d'appel à l'action (sombre, clair ou sable), avec la grille de périmètre en filigrane. */
+/** Bandeau d'appel à l'action (sombre, clair ou sable), avec la mosaïque braise qui se dissout vers le texte. */
 export function CtaBlockView({
   block,
   joined,
@@ -25,13 +25,13 @@ export function CtaBlockView({
       background={
         <div
           aria-hidden="true"
-          className={`absolute inset-0 -z-10 hidden md:block ${dark ? "opacity-50" : "opacity-40"}`}
+          className={`absolute inset-0 -z-10 hidden md:block ${dark ? "" : "opacity-80"}`}
         >
-          <PerimeterGrid shape="wide" animated={false} />
+          <MosaicBackdrop shape="wide" animated={false} seed={9} rows={14} />
         </div>
       }
     >
-      <div className="max-w-2xl">
+      <div className="max-w-2xl py-6 md:py-10">
         <h2 id={titleId} className="text-h1 text-fg">
           {block.title}
         </h2>

@@ -35,7 +35,7 @@ export function VisionDiagram({ t }: { t: VisualsDictionary["vision"] }) {
           />
           {CAMERAS.map((c) => (
             <g key={c.cone}>
-              <path d={c.cone} fill="#ce411c" opacity="0.16" />
+              <path d={c.cone} fill="var(--accent-graphic)" opacity="0.16" />
               <rect
                 x={c.x - 6}
                 y={c.y - 6}
@@ -132,7 +132,7 @@ export function VisionDiagram({ t }: { t: VisualsDictionary["vision"] }) {
           />
           <path
             d="M270 130 H316"
-            stroke="#ce411c"
+            stroke="var(--accent-graphic)"
             strokeWidth="3"
             strokeLinecap="square"
             className="pg-flow"

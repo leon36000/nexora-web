@@ -9,13 +9,13 @@ export function HeroApproval({ t }: { t: VisualsDictionary["hero"] }) {
     <div className="theme-dark relative w-[19.5rem] text-fg">
       <div
         aria-hidden="true"
-        className="absolute inset-x-5 -top-3 h-full rounded-lg border border-line bg-surface/60"
+        className="absolute inset-x-5 -top-3 h-full rounded-md border border-line bg-surface/60"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-2.5 -top-1.5 h-full rounded-lg border border-line bg-surface/80"
+        className="absolute inset-x-2.5 -top-1.5 h-full rounded-md border border-line bg-surface/80"
       />
-      <div className="relative rounded-lg border border-line bg-surface p-4 shadow-pop ring-1 ring-inset ring-white/5">
+      <div className="relative rounded-md border border-line bg-surface p-4 shadow-pop ring-1 ring-inset ring-white/5">
         <div className="flex items-center justify-between gap-3">
           <span className="font-mono text-label uppercase text-accent-text">
             {t.title}
@@ -38,7 +38,7 @@ export function HeroApproval({ t }: { t: VisualsDictionary["hero"] }) {
           {t.body}
         </p>
         <div className="mt-4 flex items-center gap-2">
-          <span className="ring-soft rounded-sm bg-accent px-3.5 py-2 text-small font-medium text-white">
+          <span className="ring-soft rounded-sm bg-accent px-3.5 py-2 text-small font-semibold text-on-accent">
             {t.approve}
           </span>
           <span className="rounded-sm border border-line-strong px-3.5 py-2 text-small text-fg">

@@ -5,7 +5,7 @@ import { SectionVisualFigure } from "@/components/visuals";
 import type { Lang } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 import type { SectionBlock } from "@/server/cms/model";
-import { CARD_GRID, cellClasses } from "./card-grid";
+import { CELL_GRID, cellClasses } from "./card-grid";
 import { CmsImage } from "./cms-image";
 import { RichText } from "./rich-text";
 import { anchorProps, toneProps } from "./tone";
@@ -35,7 +35,7 @@ export function SectionBlockView({
   const media = visual ? (
     <SectionVisualFigure visual={visual} lang={lang} />
   ) : withMedia && block.media ? (
-    <div className="overflow-hidden rounded-lg border border-line">
+    <div className="overflow-hidden rounded-md border border-line">
       <CmsImage
         media={block.media}
         sizes={
@@ -98,13 +98,13 @@ export function SectionBlockView({
         </>
       )}
       {block.items.length > 0 ? (
-        <ul className={cn(CARD_GRID, "mt-12")}>
+        <ul className={cn(CELL_GRID, "mt-12")}>
           {block.items.map((item, i) => (
             <li
               key={`${item.title ?? ""}|${item.text ?? ""}`}
               className={cells[i]}
             >
-              <Card className="flex w-full flex-col">
+              <Card variant="cell" className="flex w-full flex-col">
                 {item.title ? (
                   <h3 className="text-h4 text-fg">{item.title}</h3>
                 ) : null}

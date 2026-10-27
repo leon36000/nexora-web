@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
  */
 export function DevBadge({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-xs bg-accent px-2 py-1 font-mono text-label uppercase text-white">
+    <span className="inline-flex items-center rounded-xs bg-accent px-2 py-1 font-mono text-label uppercase text-on-accent">
       {children}
     </span>
   );
