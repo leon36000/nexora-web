@@ -70,6 +70,48 @@ describe("estimation des jetons d'entrée", () => {
   });
 });
 
+describe("estimation prudente : aucune astuce de forme ne réduit la réservation", () => {
+  it("un objet type:text qui porte une clé image_url est compté comme du texte, pas au forfait média", () => {
+    const hidden = "a".repeat(30_000); // 10 000 jetons
+    const n = estimateTokens({
+      messages: [
+        {
+          role: "user",
+          content: [{ type: "text", text: hidden, image_url: "x" }],
+        },
+      ],
+    });
+    expect(n).toBeGreaterThanOrEqual(10_000);
+    const audio = estimateTokens({
+      c: [{ type: "text", text: hidden, input_audio: "x" }],
+    });
+    expect(audio).toBeGreaterThanOrEqual(10_000);
+  });
+
+  it("un vrai média compte le forfait ET tout texte qui l'accompagne", () => {
+    const text = "b".repeat(30_000);
+    const n = estimateTokens({
+      c: [{ type: "image_url", image_url: { url: "https://a.b/x.png" }, text }],
+    });
+    expect(n).toBeGreaterThanOrEqual(MEDIA_TOKENS + 10_000);
+  });
+
+  it("une imbrication de plus de 40 niveaux n'est pas comptée pour zéro", () => {
+    let deep: unknown = "c".repeat(30_000);
+    for (let i = 0; i < 80; i++) deep = { a: deep };
+    expect(estimateTokens({ messages: deep })).toBeGreaterThanOrEqual(10_000);
+    let deepArr: unknown = "d".repeat(30_000);
+    for (let i = 0; i < 80; i++) deepArr = [deepArr];
+    expect(estimateTokens(deepArr)).toBeGreaterThanOrEqual(10_000);
+  });
+
+  it("une imbrication si profonde que JSON.stringify échoue donne une estimation énorme (refus), jamais zéro", () => {
+    let deep: unknown = "e";
+    for (let i = 0; i < 100_000; i++) deep = [deep];
+    expect(estimateTokens(deep)).toBeGreaterThan(1_000_000);
+  });
+});
+
 describe("estimation de la sortie", () => {
   it("zéro caractère : zéro jeton ; sinon au moins un", () => {
     expect(estimateOutputTokens(0)).toBe(0);

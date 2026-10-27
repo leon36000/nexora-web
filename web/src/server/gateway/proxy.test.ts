@@ -540,6 +540,56 @@ describe("réservation, règlement et libération", () => {
     expect((await tooMany.json()).error.code).toBe("context_length_exceeded");
   });
 
+  it("la réservation couvre le texte caché derrière une clé image_url et les paramètres transmis (response_format, tool_choice, stop)", async () => {
+    const reservedFor = async (body: Record<string, unknown>) => {
+      const c = await client(10n);
+      const res = await handleChatCompletions(post(c.key, body), deps());
+      expect(res.status).toBe(200);
+      const [r] = await t.db
+        .select()
+        .from(creditReservations)
+        .where(eq(creditReservations.organizationId, c.org));
+      return r?.amountMicro ?? 0n;
+    };
+    const hidden = "h".repeat(30_000); // 10 000 jetons = 10 000 µCAD d'entrée
+    const base = await reservedFor(chat({ max_tokens: 1 }));
+    // 1) objet type:text portant une clé image_url (forfait média de 1 600 jetons au lieu du texte)
+    const viaImageKey = await reservedFor(
+      chat({
+        max_tokens: 1,
+        messages: [
+          {
+            role: "user",
+            content: [{ type: "text", text: hidden, image_url: "x" }],
+          },
+        ],
+      }),
+    );
+    expect(viaImageKey - base).toBeGreaterThanOrEqual(9_000n);
+    // 2) texte placé dans response_format, tool_choice et stop (transmis à l'amont, comptés jusqu'ici pour rien)
+    const viaResponseFormat = await reservedFor(
+      chat({
+        max_tokens: 1,
+        response_format: {
+          type: "json_schema",
+          json_schema: { name: "s", schema: { description: hidden } },
+        },
+      }),
+    );
+    expect(viaResponseFormat - base).toBeGreaterThanOrEqual(9_000n);
+    const viaToolChoice = await reservedFor(
+      chat({
+        max_tokens: 1,
+        tool_choice: { type: "function", function: { name: hidden } },
+      }),
+    );
+    expect(viaToolChoice - base).toBeGreaterThanOrEqual(9_000n);
+    const viaStop = await reservedFor(
+      chat({ max_tokens: 1, stop: [hidden.slice(0, 120), hidden] }),
+    );
+    expect(viaStop - base).toBeGreaterThanOrEqual(9_000n);
+  });
+
   it("facture les jetons en cache au tarif de cache", async () => {
     const org = await newOrganization(t.db);
     await credit(t.db, {

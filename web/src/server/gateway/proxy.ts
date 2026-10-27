@@ -341,11 +341,11 @@ function planChat(
   const clientWantsUsage =
     isObject(body.stream_options) && body.stream_options.include_usage === true;
 
-  const promptEstimate = estimateTokens({
-    messages: body.messages,
-    tools: body.tools,
-    functions: body.functions,
-  });
+  // Tout ce qui sera transmis à l'amont est estimé (response_format, tool_choice, stop… peuvent porter du texte).
+  const forwarded: Json = {};
+  for (const name of CHAT_PARAMS)
+    if (body[name] !== undefined) forwarded[name] = body[name];
+  const promptEstimate = estimateTokens(forwarded);
   const modelCap = Math.min(
     model.maxOutputTokens ?? deps.limits.defaultMaxOutputTokens,
     model.contextMax,
@@ -379,9 +379,7 @@ function planChat(
     maxOutput = Math.min(modelCap, room);
   }
 
-  const upstreamBody: Json = {};
-  for (const name of CHAT_PARAMS)
-    if (body[name] !== undefined) upstreamBody[name] = body[name];
+  const upstreamBody: Json = { ...forwarded };
   upstreamBody.model = model.publicId;
   // Le plafond de sortie est TOUJOURS transmis : il borne le coût au montant réservé.
   upstreamBody.max_tokens = maxOutput;

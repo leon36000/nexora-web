@@ -37,19 +37,30 @@ function textTokens(value: string): number {
   return ascii / ASCII_BYTES_PER_TOKEN + nonAscii / NON_ASCII_BYTES_PER_TOKEN;
 }
 
-const isMedia = (o: object): boolean => {
-  const rec = o as Record<string, unknown>;
-  return (
-    rec.type === "image_url" ||
-    rec.type === "input_audio" ||
-    rec.type === "image" ||
-    "image_url" in rec ||
-    "input_audio" in rec
-  );
-};
+/** Valeur « est un média » : seul `type` en décide (une clé `image_url` sur un objet `type:"text"` n'en fait pas un). */
+const MEDIA_TYPES = new Set(["image_url", "input_audio", "image"]);
+/** Clés qui portent le contenu du média (adresse, données) : jamais comptées à la longueur. */
+const MEDIA_KEYS = new Set(["image_url", "input_audio", "image"]);
+const isMedia = (rec: Record<string, unknown>): boolean =>
+  typeof rec.type === "string" && MEDIA_TYPES.has(rec.type);
+
+/** Profondeur au-delà de laquelle on cesse de descendre et on estime d'après la taille JSON. */
+const MAX_DEPTH = 40;
+/** Estimation « refusée » : dépasse tout contexte, la requête est rejetée plutôt que sous-réservée. */
+const UNBOUNDED = Number.MAX_SAFE_INTEGER;
+
+function deepTokens(value: unknown): number {
+  try {
+    const json = JSON.stringify(value);
+    return json === undefined ? 0 : textTokens(json);
+  } catch {
+    // Imbrication si profonde que la sérialisation échoue : estimation énorme, donc refus en amont.
+    return UNBOUNDED;
+  }
+}
 
 function tokensOf(value: unknown, depth = 0): number {
-  if (depth > 40) return 0;
+  if (depth > MAX_DEPTH) return deepTokens(value);
   if (typeof value === "string") return textTokens(value);
   if (typeof value === "number" || typeof value === "boolean")
     return 8 / ASCII_BYTES_PER_TOKEN;
@@ -59,19 +70,23 @@ function tokensOf(value: unknown, depth = 0): number {
       0,
     );
   if (value && typeof value === "object") {
-    // Un élément média vaut son forfait, jamais la longueur de son adresse ou de ses données.
-    if (isMedia(value)) return MEDIA_TOKENS;
-    return Object.entries(value).reduce(
+    const rec = value as Record<string, unknown>;
+    // Un élément média vaut son forfait (jamais la longueur de son adresse ou de ses données) ; tout autre champ
+    // qui l'accompagne (texte caché, par exemple) est compté normalement.
+    const media = isMedia(rec);
+    return Object.entries(rec).reduce(
       (n, [k, v]) =>
-        n + STRUCTURE_TOKENS + textTokens(k) + tokensOf(v, depth + 1),
-      0,
+        media && MEDIA_KEYS.has(k)
+          ? n
+          : n + STRUCTURE_TOKENS + textTokens(k) + tokensOf(v, depth + 1),
+      media ? MEDIA_TOKENS : 0,
     );
   }
   return 0;
 }
 
 export function estimateTokens(value: unknown): number {
-  return Math.max(1, Math.ceil(tokensOf(value)));
+  return Math.min(UNBOUNDED, Math.max(1, Math.ceil(tokensOf(value))));
 }
 
 /** Jetons de sortie estimés d'après les caractères reçus (flux interrompu sans usage). */
