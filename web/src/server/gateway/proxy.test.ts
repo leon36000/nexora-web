@@ -19,6 +19,7 @@ import {
   handleChatCompletions,
   handleEmbeddings,
   handleModels,
+  resetModelsCache,
 } from "./proxy";
 import { newOrganization, publishTestCatalog } from "./test-support";
 
@@ -1255,6 +1256,89 @@ describe("embeddings et liste des modèles", () => {
       deps(),
     );
     expect(bad.status).toBe(401);
+  });
+});
+
+describe("GET /v1/models : limite par adresse, cache HTTP et cache mémoire", () => {
+  const listFrom = (ip: string, headers: Record<string, string> = {}) =>
+    new Request("http://x/v1/models", {
+      headers: { "x-forwarded-for": `${ip}, 10.0.0.1`, ...headers },
+    });
+
+  it("répond avec un Cache-Control public de 30 s (sans clé) et Vary", async () => {
+    const res = await handleModels(listFrom("203.0.113.10"), deps());
+    expect(res.status).toBe(200);
+    const cc = res.headers.get("cache-control") ?? "";
+    expect(cc).toContain("public");
+    expect(cc).toContain("max-age=30");
+    expect(cc).not.toContain("no-store");
+    expect((res.headers.get("vary") ?? "").toLowerCase()).toContain(
+      "authorization",
+    );
+  });
+
+  it("une réponse propre à une clé n'est jamais mise en cache partagé", async () => {
+    const c = await client();
+    const res = await handleModels(
+      listFrom("203.0.113.11", { authorization: `Bearer ${c.key}` }),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    const cc = res.headers.get("cache-control") ?? "";
+    expect(cc).not.toContain("public");
+  });
+
+  it("limite les appels par adresse client (429 + Retry-After), sans toucher aux autres adresses", async () => {
+    const d = deps({ modelsPerMinute: 3 });
+    for (let i = 0; i < 3; i++)
+      expect((await handleModels(listFrom("203.0.113.20"), d)).status).toBe(
+        200,
+      );
+    const blocked = await handleModels(listFrom("203.0.113.20"), d);
+    expect(blocked.status).toBe(429);
+    expect(Number(blocked.headers.get("retry-after"))).toBeGreaterThan(0);
+    expect((await blocked.json()).error.code).toBe("rate_limit_exceeded");
+    expect((await handleModels(listFrom("203.0.113.21"), d)).status).toBe(200);
+    // Une clé invalide est aussi comptée (pas de bruteforce des clés sans limite).
+    for (let i = 0; i < 3; i++)
+      await handleModels(
+        listFrom("203.0.113.22", {
+          authorization: `Bearer nxk_${"y".repeat(43)}`,
+        }),
+        d,
+      );
+    expect(
+      (
+        await handleModels(
+          listFrom("203.0.113.22", {
+            authorization: `Bearer nxk_${"y".repeat(43)}`,
+          }),
+          d,
+        )
+      ).status,
+    ).toBe(429);
+  });
+
+  it("le catalogue est mis en cache en mémoire : le second appel ne relit pas la base", async () => {
+    resetModelsCache();
+    let reads = 0;
+    const counting = new Proxy(t.db, {
+      get(target, prop, receiver) {
+        if (prop === "select" || prop === "query" || prop === "execute")
+          reads++;
+        return Reflect.get(target, prop, receiver);
+      },
+    });
+    const d = { ...deps(), db: () => counting };
+    await handleModels(listFrom("203.0.113.30"), d);
+    const afterFirst = reads;
+    expect(afterFirst).toBeGreaterThan(0);
+    await handleModels(listFrom("203.0.113.31"), d);
+    expect(reads).toBe(afterFirst);
+    // Expire après la durée du cache.
+    const later = { ...d, now: () => new Date(Date.now() + 60_000) };
+    await handleModels(listFrom("203.0.113.32"), later);
+    expect(reads).toBeGreaterThan(afterFirst);
   });
 });
 

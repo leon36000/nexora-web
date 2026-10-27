@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import type { Database } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
@@ -44,6 +45,8 @@ export interface GatewayDeps {
     /** Durée maximale d'un flux complet. */
     streamTimeoutMs: number;
     defaultMaxOutputTokens: number;
+    /** Appels à GET /v1/models par minute et par adresse client (défaut : 120). */
+    modelsPerMinute?: number;
   };
 }
 
@@ -119,12 +122,66 @@ function findModel(
 
 // ─── GET /v1/models ─────────────────────────────────────────────────────────────
 
+/** Durée du cache mémoire de la liste (catalogue publié + agents) : borne les lectures de la base. */
+const MODELS_CACHE_MS = 20_000;
+/** Durée annoncée aux caches HTTP (secondes). */
+const MODELS_MAX_AGE_SECONDS = 30;
+const DEFAULT_MODELS_PER_MINUTE = 120;
+
+interface ModelsSource {
+  version: CatalogVersion | null;
+  agents: CallableAgent[];
+  expiresAt: number;
+}
+let modelsSources = new WeakMap<object, ModelsSource>();
+
+/** Vide le cache mémoire de la liste des modèles (tests). */
+export function resetModelsCache(): void {
+  modelsSources = new WeakMap();
+}
+
+async function readModelsSource(
+  db: Database,
+  now: Date,
+): Promise<ModelsSource> {
+  const cached = modelsSources.get(db);
+  if (cached && cached.expiresAt > now.getTime()) return cached;
+  const fresh: ModelsSource = {
+    version: await getPublishedCatalog(db),
+    agents: await listCallableAgents(db, now),
+    expiresAt: now.getTime() + MODELS_CACHE_MS,
+  };
+  modelsSources.set(db, fresh);
+  return fresh;
+}
+
+/** Empreinte courte de l'adresse du client (premier élément de x-forwarded-for) : jamais l'adresse elle-même. */
+function clientAddressKey(request: Request): string {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip")?.trim() ||
+    "inconnu";
+  return createHash("sha256")
+    .update(`gw-models|${ip}`)
+    .digest("hex")
+    .slice(0, 16);
+}
+
 export async function handleModels(
   request: Request,
   deps: GatewayDeps,
 ): Promise<Response> {
   const db = deps.db();
   try {
+    // Route publique : limite par adresse, avant toute lecture (aussi pour les clés invalides).
+    const limit = deps.limits.modelsPerMinute ?? DEFAULT_MODELS_PER_MINUTE;
+    const rl = await consumeRateLimit(
+      db,
+      `gw:models:${clientAddressKey(request)}`,
+      { limit, windowSeconds: 60, now: deps.now() },
+    );
+    if (!rl.allowed)
+      return E.rateLimited({ "retry-after": String(rl.retryAfterSeconds) });
     const header = request.headers.get("authorization");
     let key: ApiKeyRow | null = null;
     if (header) {
@@ -132,7 +189,8 @@ export async function handleModels(
       if (!auth.ok) return E.invalidKey(auth.code);
       key = auth.key;
     }
-    const version = await getPublishedCatalog(db);
+    const source = await readModelsSource(db, deps.now());
+    const version = source.version;
     const lang = (request.headers.get("accept-language") ?? "")
       .toLowerCase()
       .startsWith("en")
@@ -180,7 +238,7 @@ export async function handleModels(
         },
       }));
     // Agents hébergés : mêmes règles d'accès que les modèles (clé restreinte → sa liste ; sinon agents publics).
-    const agentData = (await listCallableAgents(db, now))
+    const agentData = source.agents
       .filter((a) =>
         key?.allowedModels
           ? key.allowedModels.includes(a.publicId)
@@ -207,7 +265,15 @@ export async function handleModels(
       }));
     return Response.json(
       { object: "list", data: [...modelData, ...agentData] },
-      { headers: { "cache-control": "no-store" } },
+      {
+        headers: {
+          // Sans clé : même liste pour tous (cache partagé de 30 s). Avec une clé, la liste lui est propre.
+          "cache-control": key
+            ? `private, max-age=${MODELS_MAX_AGE_SECONDS}`
+            : `public, max-age=${MODELS_MAX_AGE_SECONDS}`,
+          vary: "Authorization, Accept-Language",
+        },
+      },
     );
   } catch (error) {
     deps.log.error("passerelle : liste des modèles impossible", {
