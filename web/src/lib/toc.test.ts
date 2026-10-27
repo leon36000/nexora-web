@@ -11,6 +11,7 @@ const section = (anchorId: string | null, title: string | null): Block => ({
   title,
   body: null,
   media: null,
+  captions: null,
   mediaPosition: "none",
   items: [],
   anchorId,

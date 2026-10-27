@@ -5,6 +5,7 @@ import { CmsContentError } from "./errors";
 import type { LangCode } from "./lang";
 import {
   type Block,
+  type Captions,
   type CardLayout,
   type CardStatus,
   type Cta,
@@ -30,6 +31,7 @@ const FileRef = z
       width: z.number().nullish(),
       height: z.number().nullish(),
       type: z.string().nullish(),
+      duration: z.number().nullish(),
     }),
   ])
   .nullish();
@@ -72,6 +74,7 @@ const SectionItem = z.object({
         title: str,
         body: str,
         media_alt: str,
+        media_captions: FileRef,
         items: z.unknown(),
       }),
     )
@@ -192,12 +195,35 @@ function media(
 ): MediaRef | null {
   if (!file) return null;
   const f = typeof file === "string" ? { id: file } : file;
+  const mime =
+    "type" in f && typeof f.type === "string"
+      ? (f.type.split(";")[0] ?? "").trim().toLowerCase() || null
+      : null;
   return {
     id: f.id,
     width: "width" in f ? (f.width ?? null) : null,
     height: "height" in f ? (f.height ?? null) : null,
     alt: txt(alt) ?? "",
+    kind: mime?.startsWith("video/") ? "video" : "image",
+    mime,
+    durationMs:
+      "duration" in f && typeof f.duration === "number" ? f.duration : null,
   };
+}
+
+function heroImage(m: MediaRef | null): MediaRef | null {
+  return m?.kind === "image" ? m : null;
+}
+
+/** Sous-titres (fichier WebVTT de la traduction) : seulement pour une vidéo, dans la langue de la traduction. */
+function captionsOf(
+  file: z.infer<typeof FileRef>,
+  code: LangCode,
+  media: MediaRef | null,
+): Captions | null {
+  if (!file || media?.kind !== "video") return null;
+  const id = typeof file === "string" ? file : file.id;
+  return id ? { id, lang: code } : null;
 }
 
 function oneOf<T extends string>(v: unknown, allowed: readonly T[], def: T): T {
@@ -280,7 +306,8 @@ function normalizeBlock(
         anchorId: anchorOf(item.anchor_id),
         variant: toneOf(item.variant, "sombre"),
         perimeterGrid: item.perimeter_grid ?? true,
-        media: media(item.media),
+        // le héros n'affiche que des images : une vidéo n'y figure pas
+        media: heroImage(media(item.media)),
         eyebrow: txt(t.eyebrow),
         headline,
         subheadline: txt(t.subheadline),
@@ -294,6 +321,7 @@ function normalizeBlock(
       if (!t) return null;
       const body = txt(t.body);
       const parsed = body ? parseRichText(body) : [];
+      const mediaRef = media(item.media, t.media_alt);
       return {
         type: "section",
         key,
@@ -302,7 +330,8 @@ function normalizeBlock(
         visual: oneOf<SectionVisual>(item.visual, SECTION_VISUALS, "aucun"),
         title: txt(t.title),
         body: parsed.length > 0 ? parsed : null,
-        media: media(item.media, t.media_alt),
+        media: mediaRef,
+        captions: captionsOf(t.media_captions, code, mediaRef),
         mediaPosition: oneOf(
           item.media_position,
           ["none", "left", "right", "top"],

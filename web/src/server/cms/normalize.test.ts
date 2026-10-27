@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import type { LangCode } from "./lang";
 import { normalizePage, parsePageResponse } from "./normalize";
 import {
   cardsBlock,
@@ -281,5 +282,101 @@ describe("variantes de composition (S3)", () => {
     expect(one(heroBlock(1, 1, { anchor_id: "debut" }))?.anchorId).toBe(
       "debut",
     );
+  });
+});
+
+describe("vidéo et sous-titres d'une section (S10)", () => {
+  const VID = "5a1b0000-0000-4000-8000-000000000001";
+  const CAP_FR = "5a1b0000-0000-4000-8000-000000000002";
+  const CAP_EN = "5a1b0000-0000-4000-8000-000000000003";
+  const mp4 = {
+    id: VID,
+    width: 1920,
+    height: 1080,
+    type: "video/mp4",
+    duration: 75000,
+  };
+  const withTr = (media: unknown, tr: Record<string, unknown>[]) =>
+    sectionBlock(1, 1, {
+      media,
+      translations: tr.map((t) => ({
+        title: "Présentation",
+        body: null,
+        media_alt: null,
+        items: [],
+        media_captions: null,
+        ...t,
+      })),
+    });
+  const sectionOf = (block: Record<string, unknown>, code: LangCode = FR) =>
+    normalizePage(
+      parsePageResponse(pageJson("p", { fr: "x", en: "x" }, [block])),
+      code,
+    )?.blocks[0];
+
+  it("un fichier vidéo porte kind « video », son type MIME et sa durée", () => {
+    const s = sectionOf(withTr(mp4, [{ languages_code: FR }]));
+    expect(s?.type === "section" && s.media).toEqual({
+      id: VID,
+      width: 1920,
+      height: 1080,
+      alt: "",
+      kind: "video",
+      mime: "video/mp4",
+      durationMs: 75000,
+    });
+  });
+
+  it("une image reste kind « image » ; un identifiant nu (sans type) aussi", () => {
+    const img = sectionOf(
+      withTr({ id: VID, width: 10, height: 10, type: "image/webp" }, [
+        { languages_code: FR, media_alt: "Schéma" },
+      ]),
+    );
+    expect(img?.type === "section" && img.media?.kind).toBe("image");
+    expect(img?.type === "section" && img.media?.mime).toBe("image/webp");
+    const nu = sectionOf(withTr(VID, [{ languages_code: FR }]));
+    expect(nu?.type === "section" && nu.media?.kind).toBe("image");
+    expect(nu?.type === "section" && nu.media?.durationMs).toBeNull();
+  });
+
+  it("les sous-titres (fichier .vtt de la traduction) donnent l'identifiant et la langue de la traduction", () => {
+    const s = sectionOf(
+      withTr(mp4, [{ languages_code: FR, media_captions: CAP_FR }]),
+    );
+    expect(s?.type === "section" && s.captions).toEqual({
+      id: CAP_FR,
+      lang: "fr-CA",
+    });
+    const en = sectionOf(
+      withTr(mp4, [
+        { languages_code: FR, media_captions: CAP_FR },
+        { languages_code: EN, media_captions: CAP_EN },
+      ]),
+      EN,
+    );
+    expect(en?.type === "section" && en.captions).toEqual({
+      id: CAP_EN,
+      lang: "en-CA",
+    });
+  });
+
+  it("sans sous-titres, captions vaut null ; un sous-titre vide aussi", () => {
+    const none = sectionOf(withTr(mp4, [{ languages_code: FR }]));
+    expect(none?.type === "section" && none.captions).toBeNull();
+    const vide = sectionOf(
+      withTr(mp4, [{ languages_code: FR, media_captions: "" }]),
+    );
+    expect(vide?.type === "section" && vide.captions).toBeNull();
+  });
+
+  it("le héros n'affiche que des images : une vidéo y est écartée", () => {
+    const page = normalizePage(
+      parsePageResponse(
+        pageJson("p", { fr: "x" }, [heroBlock(1, 1, { media: mp4 })]),
+      ),
+      FR,
+    );
+    expect(page?.blocks[0]?.type === "hero" && page.blocks[0].media).toBeNull();
   });
 });

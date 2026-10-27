@@ -10,7 +10,7 @@ import { normalizePage, parsePageResponse } from "./normalize";
 /* -------------------------------------------------------------------------- */
 
 const FILE = (p: string) =>
-  `${p}.media.id,${p}.media.width,${p}.media.height,${p}.media.type`;
+  `${p}.media.id,${p}.media.width,${p}.media.height,${p}.media.type,${p}.media.duration`;
 
 /** Champs d'une page avec ses six types de blocs M2A (forme décrite dans docs/cms.md §3). */
 export const PAGE_FIELDS = [
@@ -40,6 +40,7 @@ export const PAGE_FIELDS = [
   "blocks.item:block_section.anchor_id",
   FILE("blocks.item:block_section"),
   "blocks.item:block_section.translations.*",
+  "blocks.item:block_section.translations.media_captions",
   "blocks.item:block_cards.id",
   "blocks.item:block_cards.columns",
   "blocks.item:block_cards.layout",

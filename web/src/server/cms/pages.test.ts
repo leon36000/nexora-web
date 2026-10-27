@@ -322,3 +322,15 @@ describe("aperçu : la version en cours, avec le jeton de publication", () => {
     expect(await fetchPageForPreview(publisher(), FR, "inconnue")).toBeNull();
   });
 });
+
+describe("champs demandés à Directus pour la vidéo (S10)", () => {
+  it("une section demande la durée et le type du fichier, et la traduction des sous-titres", async () => {
+    const { PAGE_FIELDS } = await import("./pages");
+    const fields = PAGE_FIELDS.split(",");
+    expect(fields).toContain("blocks.item:block_section.media.type");
+    expect(fields).toContain("blocks.item:block_section.media.duration");
+    expect(fields).toContain(
+      "blocks.item:block_section.translations.media_captions",
+    );
+  });
+});

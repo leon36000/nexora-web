@@ -28,13 +28,24 @@ export const SECTION_VISUALS = [
 ] as const;
 export type SectionVisual = (typeof SECTION_VISUALS)[number];
 
+/** Image (raster) ou vidéo (MP4, WebM), d'après le type du fichier Directus. */
+export type MediaKind = "image" | "video";
+
 export type MediaRef = {
   id: string;
   width: number | null;
   height: number | null;
   /** Texte alternatif ; vide = image décorative. */
   alt: string;
+  kind: MediaKind;
+  /** Type MIME du fichier (sans paramètres), si Directus le connaît. */
+  mime: string | null;
+  /** Durée d'une vidéo en millisecondes, si Directus l'a extraite. */
+  durationMs: number | null;
 };
+
+/** Sous-titres d'une vidéo (fichier WebVTT) dans la langue de la traduction. */
+export type Captions = { id: string; lang: LangCode };
 
 export type HeroBlock = Anchored & {
   type: "hero";
@@ -57,6 +68,8 @@ export type SectionBlock = Anchored & {
   title: string | null;
   body: RichNode[] | null;
   media: MediaRef | null;
+  /** Sous-titres de la vidéo `media` ; null si le média n'est pas une vidéo ou n'a pas de sous-titres. */
+  captions: Captions | null;
   mediaPosition: "none" | "left" | "right" | "top";
   items: { title: string | null; text: string | null }[];
 };
