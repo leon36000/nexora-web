@@ -1,0 +1,147 @@
+import { type Lang, localizePath, stripLangPrefix } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/get-dictionary";
+import type { NavItem } from "@/server/cms/model";
+import { type Alternates, resolveHrefForLang } from "./alternates";
+
+/**
+ * En-tête, pied de page et mentions légales : lus dans Directus (`navigation`) quand elle est disponible,
+ * avec repli sur les dictionnaires (Directus muet sans instantané, ou navigation non publiée).
+ * Tous les liens sortent localisés pour la langue d'affichage (voir `resolveHrefForLang`).
+ */
+
+export type ChromeLink = { label: string; href: string; path: string };
+export type ChromeProduct = { label: string; description: string; href: string };
+/** Entrée de la navigation principale, dans l'ordre de Directus : un lien, ou le menu « Produits ». */
+export type HeaderNavItem =
+  | ({ type: "link" } & ChromeLink)
+  | { type: "menu"; label: string; items: ChromeProduct[] };
+export type HeaderModel = {
+  nav: HeaderNavItem[];
+  login: ChromeLink;
+  cta: ChromeLink;
+};
+export type FooterModel = {
+  columns: { title: string; links: { label: string; href: string }[] }[];
+  legal: { label: string; href: string }[];
+};
+export type Chrome = {
+  header: HeaderModel;
+  footer: FooterModel;
+  /** Vrai si au moins l'en-tête vient de Directus. */
+  fromCms: boolean;
+};
+
+/** Chemin neutre (sans langue, sans barre finale) pour détecter la page courante. */
+const pathOf = (href: string) => {
+  const noQuery = href.split(/[?#]/)[0] ?? href;
+  const neutral = stripLangPrefix(noQuery);
+  return neutral.length > 1 ? neutral.replace(/\/+$/, "") : neutral;
+};
+
+export function buildChrome(
+  lang: Lang,
+  dict: Dictionary,
+  nav: readonly NavItem[],
+  alt: Alternates,
+): Chrome {
+  const link = (label: string, href: string): ChromeLink => {
+    const resolved = href ? resolveHrefForLang(alt, lang, href) : "";
+    return { label, href: resolved, path: pathOf(resolved) };
+  };
+  const dictLink = (e: { label: string; href: string }): ChromeLink => ({
+    label: e.label,
+    path: e.href,
+    href: localizePath(lang, e.href),
+  });
+
+  // --- repli : exactement les dictionnaires (S1) ---
+  const dictHeader: HeaderModel = {
+    nav: [
+      { type: "link", ...dictLink(dict.nav.sovereignty) },
+      { type: "link", ...dictLink(dict.nav.solutions) },
+      {
+        type: "menu",
+        label: dict.nav.products.label,
+        items: dict.nav.products.items.map((i) => ({
+          ...i,
+          href: localizePath(lang, i.href),
+        })),
+      },
+      { type: "link", ...dictLink(dict.nav.pricing) },
+      { type: "link", ...dictLink(dict.nav.resources) },
+    ],
+    login: dictLink(dict.nav.login),
+    cta: dictLink(dict.nav.cta),
+  };
+  const dictFooter: FooterModel = {
+    columns: dict.footer.columns.map((c) => ({
+      title: c.title,
+      links: c.links.map((l) => ({
+        label: l.label,
+        href: localizePath(lang, l.href),
+      })),
+    })),
+    legal: dict.footer.legal.map((l) => ({
+      label: l.label,
+      href: localizePath(lang, l.href),
+    })),
+  };
+
+  const headerRoots = nav.filter((n) => n.placement === "header");
+  const footerRoots = nav.filter((n) => n.placement === "footer");
+  const legalRoots = nav.filter((n) => n.placement === "legal");
+
+  let header = dictHeader;
+  if (headerRoots.length > 0) {
+    const utility = headerRoots.find((n) => n.style === "utility");
+    const button = headerRoots.find((n) => n.style === "button");
+    const nav: HeaderNavItem[] = [];
+    for (const n of headerRoots) {
+      if (n.style !== "link") continue;
+      if (n.children.length > 0) {
+        const items = n.children
+          .filter((c) => c.href !== "")
+          .map((c) => ({
+            label: c.label,
+            description: c.description ?? "",
+            href: resolveHrefForLang(alt, lang, c.href),
+          }));
+        if (items.length > 0)
+          nav.push({ type: "menu", label: n.label, items });
+      } else if (n.href !== "") nav.push({ type: "link", ...link(n.label, n.href) });
+    }
+    header = {
+      nav,
+      login: utility ? link(utility.label, utility.href) : dictHeader.login,
+      cta: button ? link(button.label, button.href) : dictHeader.cta,
+    };
+  }
+
+  const footer: FooterModel = {
+    columns:
+      footerRoots.length > 0
+        ? footerRoots
+            .filter((c) => c.children.length > 0)
+            .map((c) => ({
+              title: c.label,
+              links: c.children
+                .filter((l) => l.href !== "")
+                .map((l) => ({
+                  label: l.label,
+                  href: resolveHrefForLang(alt, lang, l.href),
+                })),
+            }))
+        : dictFooter.columns,
+    legal:
+      legalRoots.length > 0
+        ? legalRoots
+            .filter((l) => l.href !== "")
+            .map((l) => ({
+              label: l.label,
+              href: resolveHrefForLang(alt, lang, l.href),
+            }))
+        : dictFooter.legal,
+  };
+
+  return { header, footer, fromCms: headerRoots.length > 0 };
+}

@@ -2,6 +2,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { draftMode } from "next/headers";
 import type { Lang } from "@/i18n/config";
+import { type Alternates, buildAlternates, NO_ALTERNATES } from "@/lib/alternates";
 import { log } from "@/server/log";
 import { langCode } from "./lang";
 import type { NavItem, PageModel, PreviewInfo, SiteSettings } from "./model";
@@ -9,11 +10,18 @@ import {
   fetchPageForPreview,
   fetchPublishedPage,
   fetchPublishedSlugs,
+  fetchSlugPairs,
 } from "./pages";
 import { loadWithFallback } from "./resilient";
 import { previewClient, readerClient, snapshotStore } from "./runtime";
 import { fetchNavigation, fetchSiteSettings } from "./settings";
-import { NAV_TAG, pageIdTag, pageSlugTag, SITE_TAG } from "./tags";
+import {
+  NAV_TAG,
+  pageIdTag,
+  pageSlugTag,
+  SITE_TAG,
+  SLUGS_TAG,
+} from "./tags";
 
 /**
  * Lecture du contenu pour le rendu (Next 16, Cache Components).
@@ -113,6 +121,27 @@ export async function getNavigation(lang: Lang): Promise<NavItem[]> {
   } catch {
     cacheLife({ stale: 30, revalidate: 10, expire: 600 });
     return [];
+  }
+}
+
+/**
+ * Table de correspondance des slugs fr-CA ↔ en-CA des pages publiées (sélecteur de langue, liens de navigation).
+ * Vide si Directus est illisible et sans instantané : le sélecteur garde alors le même chemin dans l'autre langue.
+ */
+export async function getAlternates(): Promise<Alternates> {
+  "use cache";
+  cacheTag(SLUGS_TAG);
+  try {
+    const loaded = await loadWithFallback(snapshotStore(), "slug-pairs", () =>
+      fetchSlugPairs(readerClient()),
+    );
+    if (loaded.source === "fresh")
+      cacheLife({ stale: 60, revalidate: 300, expire: 2_592_000 });
+    else cacheLife({ stale: 30, revalidate: 10, expire: 600 });
+    return buildAlternates(loaded.value ?? []);
+  } catch {
+    cacheLife({ stale: 30, revalidate: 10, expire: 600 });
+    return NO_ALTERNATES;
   }
 }
 

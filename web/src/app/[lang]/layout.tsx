@@ -5,6 +5,8 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { HTML_LANG, isLang, LANGS } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { buildChrome } from "@/lib/chrome";
+import { getAlternates, getNavigation } from "@/server/cms/read";
 import { SITE_URL } from "@/lib/site";
 import { geist, inter, jetbrainsMono } from "../fonts";
 import "../globals.css";
@@ -26,6 +28,11 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const dict = getDictionary(lang);
+  const [nav, alternates] = await Promise.all([
+    getNavigation(lang),
+    getAlternates(),
+  ]);
+  const chrome = buildChrome(lang, dict, nav, alternates);
 
   return (
     <html
@@ -39,11 +46,21 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
         >
           {dict.a11y.skipToContent}
         </a>
-        <SiteHeader lang={lang} dict={dict} />
+        <SiteHeader
+          lang={lang}
+          dict={dict}
+          header={chrome.header}
+          alternates={alternates}
+        />
         <main id="contenu" tabIndex={-1}>
           {children}
         </main>
-        <SiteFooter lang={lang} dict={dict} />
+        <SiteFooter
+          lang={lang}
+          dict={dict}
+          model={chrome.footer}
+          alternates={alternates}
+        />
       </body>
     </html>
   );

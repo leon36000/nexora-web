@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { normalizePage, parsePageResponse } from "./normalize";
 import {
+  cardsBlock,
+  ctaBlock,
   EN,
   FR,
   faqBlock,
@@ -211,5 +213,75 @@ describe("parsePageResponse", () => {
   it("rejette une réponse qui n'a pas la forme attendue", () => {
     expect(() => parsePageResponse({ id: 12, translations: "non" })).toThrow();
     expect(() => parsePageResponse(null)).toThrow();
+  });
+});
+
+const one = (block: Record<string, unknown>) =>
+  normalizePage(
+    parsePageResponse(pageJson("p", { fr: "x" }, [block])),
+    FR,
+  )?.blocks[0];
+
+describe("variantes de composition (S3)", () => {
+  it("le ton vaut clair par défaut et refuse toute valeur inconnue", () => {
+    const sec = one(sectionBlock(1, 1));
+    expect(sec?.type === "section" && sec.tone).toBe("clair");
+    const bad = one(sectionBlock(1, 1, { tone: "fluo" }));
+    expect(bad?.type === "section" && bad.tone).toBe("clair");
+    for (const tone of ["sombre", "clair", "sable"] as const) {
+      const b = one(cardsBlock(1, 1, { tone }));
+      expect(b?.type === "cards" && b.tone).toBe(tone);
+      const f = one(faqBlock(1, 1, { tone }));
+      expect(f?.type === "faq" && f.tone).toBe(tone);
+    }
+  });
+
+  it("le héros et l'appel à l'action acceptent sable ; l'ancien « accent » devient sable", () => {
+    const h = one(heroBlock(1, 1, { variant: "sable" }));
+    expect(h?.type === "hero" && h.variant).toBe("sable");
+    const old = one(ctaBlock(1, 1, { tone: "accent" }));
+    expect(old?.type === "cta" && old.tone).toBe("sable");
+    const cta = one(ctaBlock(1, 1, { tone: "clair" }));
+    expect(cta?.type === "cta" && cta.tone).toBe("clair");
+  });
+
+  it("disposition des cartes : grille par défaut ; liste, étapes, modules ; valeur inconnue = grille", () => {
+    const d = one(cardsBlock(1, 1));
+    expect(d?.type === "cards" && d.layout).toBe("grille");
+    for (const layout of ["liste", "etapes", "modules"] as const) {
+      const b = one(cardsBlock(1, 1, { layout }));
+      expect(b?.type === "cards" && b.layout).toBe(layout);
+    }
+    const bad = one(cardsBlock(1, 1, { layout: "carrousel" }));
+    expect(bad?.type === "cards" && bad.layout).toBe("grille");
+  });
+
+  it("statut d'une carte : disponible, pilote, prevu ; le reste est ignoré (jamais d'état inventé)", () => {
+    const b = one(cardsBlock(1, 1, { layout: "modules" }));
+    expect(b?.type === "cards" && b.cards.map((c) => c.status)).toEqual([
+      "pilote",
+      null,
+      null,
+    ]);
+  });
+
+  it("schéma d'une section : aucun par défaut, valeurs connues seulement", () => {
+    const d = one(sectionBlock(1, 1));
+    expect(d?.type === "section" && d.visual).toBe("aucun");
+    const v = one(sectionBlock(1, 1, { visual: "perimetre-heberge" }));
+    expect(v?.type === "section" && v.visual).toBe("perimetre-heberge");
+    const bad = one(sectionBlock(1, 1, { visual: "<script>" }));
+    expect(bad?.type === "section" && bad.visual).toBe("aucun");
+  });
+
+  it("ancre : motif ^[a-z0-9-]{0,40}$ ; une ancre invalide ou vide est ignorée", () => {
+    const ok = one(faqBlock(1, 1, { anchor_id: "questions" }));
+    expect(ok?.anchorId).toBe("questions");
+    for (const bad of ["Questions", "a b", "x".repeat(41), "", "é", "a_b"]) {
+      expect(one(faqBlock(1, 1, { anchor_id: bad }))?.anchorId).toBeNull();
+    }
+    expect(one(heroBlock(1, 1, { anchor_id: "debut" }))?.anchorId).toBe(
+      "debut",
+    );
   });
 });

@@ -126,3 +126,52 @@ export function pageJson(
     ...over,
   };
 }
+
+export function cardsBlock(id: number, sort: number, over: Json = {}): Json {
+  return {
+    id,
+    collection: "block_cards",
+    sort,
+    item: {
+      id: `cards-${id}`,
+      columns: "3",
+      translations: [
+        {
+          languages_code: FR,
+          title: "Cartes",
+          intro: null,
+          cards: [
+            { title: "M1 — Réception.", text: "Texte", status: "pilote" },
+            { title: "M2 — Ventes.", text: "Texte", status: "n'importe quoi" },
+            { title: "Sans statut", text: "Texte" },
+          ],
+        },
+      ],
+      ...over,
+    },
+  };
+}
+
+export function ctaBlock(id: number, sort: number, over: Json = {}): Json {
+  return {
+    id,
+    collection: "block_cta",
+    sort,
+    item: {
+      id: `cta-${id}`,
+      tone: "sombre",
+      translations: [
+        {
+          languages_code: FR,
+          title: "Parlons-en.",
+          text: null,
+          primary_label: null,
+          primary_href: null,
+          secondary_label: null,
+          secondary_href: null,
+        },
+      ],
+      ...over,
+    },
+  };
+}

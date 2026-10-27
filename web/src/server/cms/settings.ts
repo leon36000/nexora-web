@@ -70,6 +70,7 @@ const RawNav = z.array(
         languages_code: z.string(),
         label: str,
         href: str,
+        description: str,
       }),
     ),
   }),
@@ -83,7 +84,7 @@ export async function fetchNavigation(
   const data = await client.get("/items/navigation", {
     filter: JSON.stringify({ status: { _eq: "published" } }),
     fields:
-      "id,placement,style,sort,parent,translations.languages_code,translations.label,translations.href",
+      "id,placement,style,sort,parent,translations.languages_code,translations.label,translations.href,translations.description",
     sort: "sort",
     limit: "-1",
   });
@@ -93,8 +94,10 @@ export async function fetchNavigation(
     for (const r of rows) {
       const t = r.translations.find((x) => x.languages_code === code);
       const label = txt(t?.label);
-      const href = safeHref(t?.href);
-      if (!label || !href) continue;
+      const rawHref = txt(t?.href);
+      // un lien saisi mais dangereux écarte l'entrée ; un lien vide est permis (parent d'un menu ou d'une colonne)
+      const href = rawHref === null ? "" : safeHref(rawHref);
+      if (!label || href === null) continue;
       if (
         r.placement !== "header" &&
         r.placement !== "footer" &&
@@ -104,10 +107,12 @@ export async function fetchNavigation(
       flat.set(r.id, {
         id: r.id,
         placement: r.placement,
-        style: r.style === "button" ? "button" : "link",
+        style:
+          r.style === "button" || r.style === "utility" ? r.style : "link",
         parent: r.parent ?? null,
         label,
         href,
+        description: txt(t?.description),
         children: [],
         sort: r.sort ?? 0,
       });
@@ -120,6 +125,15 @@ export async function fetchNavigation(
     }
     const byRank = (a: { sort: number }, b: { sort: number }) =>
       a.sort - b.sort;
+    // une entrée sans lien et sans enfant n'a rien à afficher
+    for (const item of [...flat.values()])
+      if (item.href === "" && item.children.length === 0) {
+        flat.delete(item.id);
+        const parent = item.parent ? flat.get(item.parent) : undefined;
+        if (parent) parent.children = parent.children.filter((c) => c !== item);
+        const at = roots.indexOf(item);
+        if (at !== -1) roots.splice(at, 1);
+      }
     const strip = (n: NavItem & { sort: number }): NavItem => {
       const { sort: _s, ...rest } = n;
       return {

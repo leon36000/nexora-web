@@ -9,6 +9,7 @@ import {
   localizePath,
   stripLangPrefix,
 } from "@/i18n/config";
+import { type Alternates, alternatePath, NO_ALTERNATES } from "@/lib/alternates";
 import { cn } from "@/lib/cn";
 
 type LanguageSwitcherProps = {
@@ -19,11 +20,14 @@ type LanguageSwitcherProps = {
   /** "compact" : FR / EN (en-tête, menu mobile) ; "full" : noms complets (pied de page). */
   variant?: "compact" | "full";
   className?: string;
+  /** Table de correspondance des slugs (Directus) : l'autre langue utilise le slug traduit de la page courante. */
+  alternates?: Alternates;
 };
 
 /**
  * Sélecteur de langue : un lien par langue vers la même page dans l'autre langue
- * (fr-CA à la racine, en-CA sous /en). Navigation par liens, donc fonctionnelle sans JavaScript
+ * (fr-CA à la racine, en-CA sous /en), avec le slug TRADUIT de la page quand il diffère (souverainete ↔
+ * sovereignty ; table tirée de Directus). Navigation par liens, donc fonctionnelle sans JavaScript
  * côté clic et indexable ; `lang` et `hrefLang` indiquent la langue de chaque cible.
  */
 export function LanguageSwitcher({
@@ -32,6 +36,7 @@ export function LanguageSwitcher({
   names,
   variant = "compact",
   className,
+  alternates = NO_ALTERNATES,
 }: LanguageSwitcherProps) {
   const neutral = stripLangPrefix(usePathname());
   return (
@@ -49,7 +54,10 @@ export function LanguageSwitcher({
         return (
           <Link
             key={lang}
-            href={localizePath(lang, neutral)}
+            href={localizePath(
+              lang,
+              isCurrent ? neutral : alternatePath(alternates, current, neutral),
+            )}
             prefetch={false}
             lang={HTML_LANG[lang]}
             hrefLang={HTML_LANG[lang]}

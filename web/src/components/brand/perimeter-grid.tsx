@@ -334,12 +334,15 @@ function flowLine(
  * mode « onsite » : un seul périmètre entoure données, modèles et calcul (chez le client).
  * mode « hosted » : les données du client, à l'extérieur, franchissent un point de passage
  *                   contrôlé vers le périmètre de l'infrastructure Nexora au Québec.
+ * mode « flow »   : des documents entrent par le point de passage vers le modèle ; ce qui est préparé ne
+ *                   sort qu'après un point d'approbation humaine (carré creux). Rien d'orange ne sort
+ *                   du périmètre : l'orange désigne seulement ce qui entre.
  */
 export function PerimeterDiagram({
   mode,
   className,
 }: {
-  mode: "onsite" | "hosted";
+  mode: "onsite" | "hosted" | "flow";
   className?: string;
 }) {
   const half = D.cell / 2;
@@ -355,7 +358,56 @@ export function PerimeterDiagram({
         className,
       )}
     >
-      {mode === "onsite" ? (
+      {mode === "flow" ? (
+        <>
+          {cluster("src", 1, 4, 2, 3)}
+          {boxCells("p", 5, 18, 1, 9, [5, 5])}
+          <g className="pg-gate">
+            <rect
+              x={5 * D.cell + half - gateSize / 2 - 5}
+              y={5 * D.cell + half - gateSize / 2 - 5}
+              width={gateSize + 10}
+              height={gateSize + 10}
+              className="fill-none stroke-accent"
+              strokeWidth={1.5}
+            />
+            <rect
+              x={5 * D.cell + half - gateSize / 2}
+              y={5 * D.cell + half - gateSize / 2}
+              width={gateSize}
+              height={gateSize}
+              className="fill-accent"
+            />
+          </g>
+          {cluster("model", 8, 4, 3, 3)}
+          {/* Approbation : un carré creux sur le trajet de sortie, jamais de ligne orange vers l'extérieur. */}
+          <rect
+            x={14 * D.cell + half - 9}
+            y={5 * D.cell + half - 9}
+            width={18}
+            height={18}
+            className="fill-none stroke-fg"
+            strokeWidth={2}
+          />
+          <rect
+            x={14 * D.cell + half - 3}
+            y={5 * D.cell + half - 3}
+            width={6}
+            height={6}
+            className="fill-fg"
+          />
+          {cluster("use", 16, 4, 1, 3, true)}
+          {flowLine("f1", 3 * D.cell + 4, 5 * D.cell - 14, 5)}
+          {flowLine("f2", 5 * D.cell + 18, 8 * D.cell - 4, 5)}
+          <path
+            d={`M ${11 * D.cell + 4} ${5 * D.cell + half} H ${14 * D.cell - 12}`}
+            className="fill-none stroke-fg"
+            strokeWidth={2}
+            strokeDasharray="4 5"
+            opacity={0.6}
+          />
+        </>
+      ) : mode === "onsite" ? (
         <>
           {boxCells("p", 1, 18, 1, 9)}
           {cluster("data", 3, 3, 3, 3)}

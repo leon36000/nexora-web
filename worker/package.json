@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@nexora/db": "workspace:*",
-    "@nexora/log": "workspace:*"
+    "@nexora/log": "workspace:*",
+    "nodemailer": "^10.2.1"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^8.0.2"
   }
 }

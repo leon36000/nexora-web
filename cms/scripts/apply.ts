@@ -122,6 +122,19 @@ async function ensureField(d: Directus, collection: string, f: FieldDef) {
     await d.patch(`/fields/${collection}/${f.field}`, { meta: wanted });
     changed(`champ ${collection}.${f.field} (meta)`);
   } else stats.unchanged++;
+  // Un champ devenu facultatif (ex. navigation_translations.href) doit aussi cesser d'être NOT NULL en base.
+  if (
+    cur.schema &&
+    !cur.schema.is_primary_key &&
+    cur.schema.is_nullable === false &&
+    f.schema?.is_nullable !== false &&
+    f.schema !== undefined
+  ) {
+    await d.patch(`/fields/${collection}/${f.field}`, {
+      schema: { is_nullable: true },
+    });
+    changed(`champ ${collection}.${f.field} (devenu facultatif)`);
+  }
 }
 
 async function ensureRelation(d: Directus, r: RelationDef) {

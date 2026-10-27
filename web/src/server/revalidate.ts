@@ -3,7 +3,7 @@ import { z } from "zod";
 import { LANGS } from "@/i18n/config";
 import { normalizeSlug } from "@/lib/safe-href";
 import { checkAdminAuth } from "./auth";
-import { LANG_CODES, pageIdTag, pageSlugTag } from "./cms/tags";
+import { LANG_CODES, pageIdTag, pageSlugTag, SLUGS_TAG } from "./cms/tags";
 
 /**
  * POST /api/revalidate : appelé par la garde de publication de Directus après une promotion acceptée
@@ -29,6 +29,7 @@ export function planRevalidation(body: RevalidateBody): RevalidatePlan {
   switch (body.collection) {
     case "pages": {
       tags.add(pageIdTag(body.id));
+      tags.add(SLUGS_TAG);
       for (const raw of body.slugs) {
         const slug = normalizeSlug(raw === "" ? [] : raw.split("/"));
         if (slug === null) continue; // slug douteux : écarté, les autres sont traités

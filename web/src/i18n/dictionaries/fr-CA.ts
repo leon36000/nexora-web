@@ -158,6 +158,23 @@ export const frCA = {
 
   cms: {
     priceOnRequest: "Sur demande",
+    toc: { label: "Sur cette page", open: "Afficher le sommaire" },
+    status: {
+      disponible: "Disponible",
+      pilote: "En pilote",
+      prevu: "Prévu",
+      legend: "État",
+    },
+    modules: { detail: "Voir le détail" },
+    // Textes alternatifs des schémas de section (`visual`) : le dessin décrit toujours ce que dit le texte voisin.
+    visuals: {
+      "perimetre-sur-place":
+        "Schéma : un seul périmètre entoure vos données, le modèle et le calcul, dans vos locaux. Une demande y entre par un point de passage contrôlé et y reste.",
+      "perimetre-heberge":
+        "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora, au Québec, où se trouvent le modèle et le stockage.",
+      "flux-donnees":
+        "Schéma : vos documents entrent par un point de passage contrôlé vers le modèle, à l’intérieur du périmètre. Ce que le système prépare ne sort qu’après l’approbation d’une personne.",
+    },
     preview: {
       banner: "Aperçu — non publié",
       version: "Version :",

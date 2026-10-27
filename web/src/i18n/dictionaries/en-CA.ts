@@ -154,6 +154,22 @@ export const enCA: Dictionary = {
 
   cms: {
     priceOnRequest: "On request",
+    toc: { label: "On this page", open: "Show contents" },
+    status: {
+      disponible: "Available",
+      pilote: "Pilot",
+      prevu: "Planned",
+      legend: "Status",
+    },
+    modules: { detail: "See details" },
+    visuals: {
+      "perimetre-sur-place":
+        "Diagram: a single perimeter surrounds your data, the model and the compute, on your premises. A request enters through a controlled gateway and stays inside.",
+      "perimetre-heberge":
+        "Diagram: your data crosses a controlled gateway into the perimeter of Nexora’s infrastructure in Québec, where the model and the storage are.",
+      "flux-donnees":
+        "Diagram: your documents enter through a controlled gateway to the model, inside the perimeter. What the system prepares leaves only after a person approves it.",
+    },
     preview: {
       banner: "Preview — not published",
       version: "Version:",

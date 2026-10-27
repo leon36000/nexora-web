@@ -168,6 +168,7 @@ export function MobileMenu({
               ))}
             </ul>
 
+            {products.length > 0 ? (
             <div className="mt-8">
               <Badge>{labels.products}</Badge>
               <ul className="mt-3 divide-y divide-line border-y border-line">
@@ -182,14 +183,17 @@ export function MobileMenu({
                       <span className="block text-base font-medium text-fg">
                         {item.label}
                       </span>
-                      <span className="mt-0.5 block text-small text-fg-muted">
-                        {item.description}
-                      </span>
+                      {item.description ? (
+                        <span className="mt-0.5 block text-small text-fg-muted">
+                          {item.description}
+                        </span>
+                      ) : null}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
+            ) : null}
           </nav>
 
           <div className="mt-10 flex flex-col gap-3">

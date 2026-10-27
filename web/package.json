@@ -14,11 +14,13 @@
     "capture": "bun scripts/capture.mjs"
   },
   "dependencies": {
+    "@nexora/db": "workspace:*",
+    "@nexora/log": "workspace:*",
+    "altcha": "^3.5.0",
+    "altcha-lib": "^2.8.0",
     "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "@nexora/db": "workspace:*",
-    "@nexora/log": "workspace:*",
     "zod": "^4"
   },
   "devDependencies": {
