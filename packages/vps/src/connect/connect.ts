@@ -7,6 +7,7 @@ import {
   type TlsMode,
 } from "@nexora/db";
 import { ProxmoxClient, ProxmoxError } from "../proxmox/client.ts";
+import { isLoopback } from "../proxmox/transport.ts";
 import { connectionOf } from "../servers.ts";
 import {
   type Discovery,
@@ -187,4 +188,29 @@ export async function connectServer(
     .returning();
   if (!row) throw new Error("serveur non créé");
   return { server: row, discovery, created: true };
+}
+
+/**
+ * Adresse saisie par l'opérateur : `hôte`, `hôte:port` ou `https://hôte:port`. Renvoie `null` si elle
+ * n'est pas valable. `http://` n'est admis que vers la boucle locale (simulateur, développement).
+ */
+export function parseServerAddress(
+  raw: string,
+): { host: string; port: number } | null {
+  const text = raw.trim();
+  const m = /^(?:(https?):\/\/)?([A-Za-z0-9.-]+)(?::(\d{1,5}))?\/?$/.exec(text);
+  if (!m) return null;
+  const scheme = m[1];
+  const host = (m[2] as string).toLowerCase();
+  const port = m[3] === undefined ? 8006 : Number(m[3]);
+  if (
+    !(port >= 1 && port <= 65535) ||
+    host.startsWith(".") ||
+    host.endsWith(".")
+  )
+    return null;
+  if (scheme === "http") {
+    return isLoopback(host) ? { host: `http://${host}`, port } : null;
+  }
+  return { host, port };
 }

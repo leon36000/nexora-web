@@ -4,7 +4,6 @@ import {
   enqueue,
   eq,
   type IpPool,
-  isNull,
   osTemplates,
   type ProxmoxCapacity,
   proxmoxServers,
@@ -26,7 +25,6 @@ import {
   explainProxmoxError,
 } from "./discover.ts";
 import {
-  CLOUD_IMAGES,
   type CloudImage,
   imageByCode,
   publishedChecksum,
@@ -602,7 +600,6 @@ sync
 
 async function pickTemplateVmid(
   client: ProxmoxClient,
-  node: string,
   vmidMin: number,
   taken: ReadonlySet<number>,
 ): Promise<number> {
@@ -715,7 +712,6 @@ async function stepTemplate(
       const filename = storedFilename(image, sum);
       const vmid = await pickTemplateVmid(
         client,
-        plan.node,
         server.vmidMin,
         new Set(vms.map((v) => v.vmid)),
       );
@@ -864,7 +860,7 @@ async function stepVerification(
     for (const code of plan.templates) {
       const row = rows.find((r) => r.code === code);
       const cfg = row ? await client.findConfig(plan.node, row.vmid) : null;
-      if (!row || row.state !== "ready" || !cfg || !templateIsSound(cfg))
+      if (row?.state !== "ready" || !cfg || !templateIsSound(cfg))
         throw new StepFailure(
           `Le gabarit ${code} n'est pas prêt sur le nœud.`,
           "Relancer le branchement.",
