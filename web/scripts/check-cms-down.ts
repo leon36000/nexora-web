@@ -72,6 +72,7 @@ function start(
       env: {
         ...baseEnv,
         NODE_ENV: "production",
+        NEXT_TELEMETRY_DISABLED: "1",
         PORT: String(port),
         SITE_URL: `http://localhost:${port}`,
         ...env,
@@ -298,7 +299,10 @@ try {
     },
     join(work, "D.log"),
   );
-  check(await up(basePort + 3), "le site démarre alors que Directus ne répond pas");
+  check(
+    await up(basePort + 3),
+    "le site démarre alors que Directus ne répond pas",
+  );
   const first: number[] = [];
   const sample = paths.slice(0, 6);
   for (const p of sample) {
@@ -311,9 +315,7 @@ try {
     );
   }
   const again = await get(basePort + 3, sample[0] as string);
-  say(
-    `  - même page revisitée : ${again.ms} ms`,
-  );
+  say(`  - même page revisitée : ${again.ms} ms`);
   say(
     `  - visite la plus lente : ${Math.max(...first)} ms (Directus muet n'allonge pas la réponse tant que la page est dans le cache du site ou l'instantané)`,
   );

@@ -284,6 +284,7 @@ async function startSite(): Promise<string | null> {
         ...env,
         PORT,
         NODE_ENV: "production",
+        NEXT_TELEMETRY_DISABLED: "1",
         SITE_URL: BASE,
         NEXORA_APP_INTERNAL_URL: BASE,
         // Le site tourne en mode production : le réseau interne (LiteLLM de développement sur 127.0.0.1) doit être
@@ -487,6 +488,18 @@ const md = [
     (o) =>
       `| ${o.titre} | ${o.milestone} | ${label[o.status]} | ${o.secondes} s | ${o.detail.replace(/\|/g, "/")} |`,
   ),
+  "",
+  "## Lecture et limites",
+  "",
+  "- Les parcours « inscription, crédits », « commande VPS » et « agents du site » sont des tests Vitest : ils créent **leurs propres bases jetables** (`nexora_test_xxxx`, supprimées ensuite) sur le serveur PostgreSQL de `DATABASE_URL`. Les parcours « clé et modèle », « contact » et « gardes et flux » passent par le **site de production lancé par la commande**, branché sur la base `" +
+    dbName +
+    "`.",
+  "- « Publication » exige que la garde de Directus puisse revalider un site : elle appelle `NEXORA_APP_INTERNAL_URL` (réglé sur `" +
+    PUBLICATION_BASE +
+    "` dans le Directus de développement, port de l'orchestrateur). Le parcours cible donc ce site (`E2E_PUBLICATION_BASE_URL`) et crée puis supprime une page jetable dans Directus ; il est sauté si ce site ne répond pas.",
+  "- « Agent hébergé » est sauté sans `WORKSTUDIO_KEY_FILE` (clé d'espace WorkStudio autorisant « Agents publiés », jamais dans le dépôt) : l'instance WorkStudio de test peut répondre, mais sans cette clé le parcours ne peut pas s'authentifier. Un saut n'est jamais compté comme une réussite ; `E2E_STRICT=1` le transforme en échec.",
+  "- Le brouillon d'un agent du site (S8) est couvert par `worker/src/agents/runner.test.ts` (brouillon seulement, injection ignorée, source interne refusée, budget, arrêt) ; la chaîne approbation, publication et revalidation par « Publication ».",
+  "- Le site de la commande tourne en mode `production` : le LiteLLM de développement (127.0.0.1) y est autorisé explicitement par `NEXORA_OUTBOUND_ALLOW=127.0.0.0/8`, comme le ferait un opérateur.",
   "",
 ].join("\n");
 console.log(`\n${md}`);
