@@ -30,6 +30,7 @@ import {
   log,
   parseEnvFile,
 } from "./lib/directus";
+import { PASSWORD_POLICY } from "./lib/password";
 import {
   buildSchema,
   type CollectionDef,
@@ -218,6 +219,10 @@ async function applySettings(d: Directus) {
     project_descriptor: "Administration du site",
     project_color: "#CE411C",
     default_language: "fr-CA",
+    // Politique de mot de passe : 12 caractères au moins, minuscule, majuscule et chiffre (lib/password.ts). Pas de
+    // `auth_login_attempts` : au-delà du seuil Directus SUSPEND le compte, ce qui laisserait quiconque verrouiller
+    // l'administrateur en échouant des connexions ; la limitation de débit de compose.yml suffit.
+    auth_password_policy: PASSWORD_POLICY,
   };
   const cur = await d.get<Entity>("/settings");
   if (Object.entries(wanted).some(([k, v]) => cur?.[k] !== v)) {
