@@ -1,0 +1,899 @@
+import {
+  apiKeys,
+  credit,
+  creditReservations,
+  debit,
+  deriveBalance,
+  eq,
+  getAccount,
+  usageEvents,
+} from "@nexora/db";
+import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
+import { createLogger } from "@nexora/log";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { createApiKey, revokeApiKey } from "./keys";
+import { requestCost } from "./pricing";
+import {
+  type GatewayDeps,
+  handleChatCompletions,
+  handleEmbeddings,
+  handleModels,
+} from "./proxy";
+import { newOrganization, publishTestCatalog } from "./test-support";
+
+const MASTER = "sk-master-litellm-key-1234567890";
+const PROMPT_MARKER = "CONTENU-SECRET-DU-CLIENT-À-NE-JAMAIS-JOURNALISER";
+const M = 1_000_000n;
+// 1 CAD / M en entrée, 3 CAD / M en sortie
+const PRICE = { input: 1_000_000n, output: 3_000_000n, cache: null };
+
+let t: TestDatabase;
+let lines: string[];
+let counter = 0;
+
+interface UpstreamCall {
+  url: string;
+  headers: Headers;
+  body: Record<string, unknown>;
+}
+let calls: UpstreamCall[];
+let upstream: (
+  call: UpstreamCall,
+  signal: AbortSignal | null | undefined,
+) => Response | Promise<Response>;
+
+const usageBody = {
+  prompt_tokens: 120,
+  completion_tokens: 40,
+  total_tokens: 160,
+};
+const upstreamOk = (usage: Record<string, unknown> = usageBody) =>
+  Response.json({
+    id: "gen-1",
+    object: "chat.completion",
+    created: 1,
+    model: "nexora/test-chat",
+    provider: "Wafer",
+    choices: [
+      {
+        index: 0,
+        finish_reason: "stop",
+        message: { role: "assistant", content: "Bonjour !" },
+      },
+    ],
+    usage: {
+      ...usage,
+      cost: 0.123,
+      cost_details: { upstream_inference_cost: 0.1 },
+      is_byok: false,
+    },
+  });
+
+function sse(events: string[], splitAt?: number): Response {
+  const text = events.join("");
+  const enc = new TextEncoder();
+  const parts = splitAt
+    ? [text.slice(0, splitAt), text.slice(splitAt)]
+    : [text];
+  return new Response(
+    new ReadableStream({
+      async start(c) {
+        for (const p of parts) {
+          c.enqueue(enc.encode(p));
+          await new Promise((r) => setTimeout(r, 5));
+        }
+        c.close();
+      },
+    }),
+    { headers: { "content-type": "text/event-stream" } },
+  );
+}
+const ev = (o: unknown) => `data: ${JSON.stringify(o)}\n\n`;
+const chunk = (content: string) =>
+  ev({
+    id: "g",
+    object: "chat.completion.chunk",
+    model: "nexora/test-chat",
+    provider: "Wafer",
+    choices: [{ index: 0, delta: { content }, finish_reason: null }],
+  });
+const usageChunk = (u = usageBody) =>
+  ev({
+    id: "g",
+    object: "chat.completion.chunk",
+    model: "nexora/test-chat",
+    choices: [],
+    usage: { ...u, cost: 0.5, cost_details: { upstream_inference_cost: 0.4 } },
+  });
+
+const deps = (over: Partial<GatewayDeps["limits"]> = {}): GatewayDeps => ({
+  db: () => t.db,
+  fetch: (async (input, init) => {
+    const body = JSON.parse(String(init?.body ?? "{}"));
+    const call = {
+      url: String(input),
+      headers: new Headers(init?.headers),
+      body,
+    };
+    calls.push(call);
+    return upstream(call, init?.signal);
+  }) as typeof fetch,
+  litellm: () => ({
+    baseUrl: "http://litellm.internal:4000",
+    masterKey: MASTER,
+  }),
+  log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
+  now: () => new Date(),
+  requestId: () => `req_test_${++counter}`,
+  limits: {
+    defaultRpm: 1000,
+    defaultTpm: 10_000_000,
+    maxBodyBytes: 1_000_000,
+    upstreamTimeoutMs: 10_000,
+    streamTimeoutMs: 10_000,
+    defaultMaxOutputTokens: 1000,
+    ...over,
+  },
+});
+
+const post = (key: string, body: unknown, path = "chat/completions") =>
+  new Request(`http://localhost/v1/${path}`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${key}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+const chat = (extra: Record<string, unknown> = {}) => ({
+  model: "nexora/test-chat",
+  messages: [{ role: "user", content: `Bonjour ${PROMPT_MARKER}` }],
+  max_tokens: 200,
+  ...extra,
+});
+
+async function client(
+  creditCad = 10n,
+  keyOptions: Parameters<typeof createApiKey>[1] extends infer T
+    ? Partial<T>
+    : never = {},
+) {
+  const org = await newOrganization(t.db);
+  if (creditCad > 0n)
+    await credit(t.db, {
+      organizationId: org,
+      amountMicro: creditCad * M,
+      idempotencyKey: `fund:${org}`,
+      configVersion: "t",
+      source: "test",
+    });
+  const { key, record } = await createApiKey(t.db, {
+    organizationId: org,
+    name: "test",
+    ...keyOptions,
+  });
+  return { org, key, record };
+}
+
+beforeAll(async () => {
+  t = await createTestDatabase();
+  await publishTestCatalog(t.db, [
+    { publicId: "nexora/test-chat" },
+    { publicId: "nexora/test-private", visibility: "private" },
+    {
+      publicId: "nexora/test-embed",
+      kind: "embedding",
+      sellInput: 200_000n,
+      sellOutput: 0n,
+    },
+  ]);
+});
+afterAll(async () => {
+  await t.drop();
+});
+const reset = () => {
+  lines = [];
+  calls = [];
+  upstream = () => upstreamOk();
+};
+
+import { beforeEach } from "vitest";
+
+beforeEach(reset);
+
+describe("authentification de la clé", () => {
+  it("refuse une clé inconnue, au format OpenAI, sans appeler l'amont", async () => {
+    const res = await handleChatCompletions(
+      post(`nxk_${"a".repeat(43)}`, chat()),
+      deps(),
+    );
+    expect(res.status).toBe(401);
+    expect((await res.json()).error).toMatchObject({
+      code: "invalid_api_key",
+      type: "authentication_error",
+    });
+    expect(calls).toHaveLength(0);
+  });
+
+  it("refuse une clé révoquée", async () => {
+    const c = await client();
+    expect(
+      (await handleChatCompletions(post(c.key, chat()), deps())).status,
+    ).toBe(200);
+    await revokeApiKey(t.db, c.org, c.record.id);
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(401);
+    expect((await res.json()).error.code).toBe("api_key_revoked");
+    expect(calls).toHaveLength(1);
+  });
+
+  it("refuse un modèle non autorisé pour la clé, et un modèle privé sans autorisation", async () => {
+    const restricted = await client(10n, {
+      allowedModels: ["nexora/test-embed"],
+    });
+    expect(
+      (await handleChatCompletions(post(restricted.key, chat()), deps()))
+        .status,
+    ).toBe(404);
+    const open = await client();
+    const priv = await handleChatCompletions(
+      post(open.key, chat({ model: "nexora/test-private" })),
+      deps(),
+    );
+    expect(priv.status).toBe(404);
+    const allowed = await client(10n, {
+      allowedModels: ["nexora/test-private"],
+    });
+    expect(
+      (
+        await handleChatCompletions(
+          post(allowed.key, chat({ model: "nexora/test-private" })),
+          deps(),
+        )
+      ).status,
+    ).toBe(200);
+  });
+});
+
+describe("réservation, règlement et libération", () => {
+  it("débite exactement le coût réel et libère le reste de la réservation", async () => {
+    const c = await client(10n);
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(200);
+    const expected = requestCost(
+      { prompt: 120, completion: 40, cached: 0 },
+      PRICE,
+    ); // 120 + 120
+    expect(expected).toBe(240n);
+    expect(res.headers.get("x-nexora-cost-micro")).toBe("240");
+    const acct = await getAccount(t.db, c.org);
+    expect(acct.balanceMicro).toBe(10n * M - 240n);
+    expect(acct.heldMicro).toBe(0n);
+    expect(await deriveBalance(t.db, c.org)).toEqual({
+      balanceMicro: acct.balanceMicro,
+      heldMicro: 0n,
+    });
+    const [res1] = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, c.org));
+    expect(res1).toMatchObject({ status: "settled", settledMicro: 240n });
+
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(ev).toMatchObject({
+      status: "ok",
+      endpoint: "chat.completions",
+      modelPublicId: "nexora/test-chat",
+      promptTokens: 120,
+      completionTokens: 40,
+      costMicro: 240n,
+      priceInputMicro: 1_000_000n,
+      priceOutputMicro: 3_000_000n,
+      stream: false,
+      apiKeyId: c.record.id,
+    });
+    // 120 × 0,1 + 40 × 0,2 = 20 µUSD
+    expect(ev?.upstreamCostUsdMicro).toBe(20n);
+    expect(ev?.configVersion).toMatch(/^cat_[0-9a-f]{16}$/);
+  });
+
+  it("réserve le coût maximal (entrée estimée + sortie bornée) avant l'appel et borne la sortie", async () => {
+    const c = await client(10n);
+    let heldDuringCall = 0n;
+    upstream = async () => {
+      heldDuringCall = (await getAccount(t.db, c.org)).heldMicro;
+      return upstreamOk();
+    };
+    await handleChatCompletions(post(c.key, chat({ max_tokens: 500 })), deps());
+    expect(heldDuringCall).toBeGreaterThan(500n * 3n); // au moins 500 jetons de sortie à 3 µ/jeton
+    expect(heldDuringCall).toBeLessThan(2000n);
+    expect(calls[0]?.body.max_tokens).toBe(500);
+    // sans max_tokens : le plafond du modèle est transmis
+    await handleChatCompletions(
+      post(c.key, {
+        model: "nexora/test-chat",
+        messages: [{ role: "user", content: "x" }],
+      }),
+      deps(),
+    );
+    expect(calls[1]?.body.max_tokens).toBe(1000);
+    // au-delà du plafond du modèle : refus clair
+    const tooMuch = await handleChatCompletions(
+      post(c.key, chat({ max_tokens: 5000 })),
+      deps(),
+    );
+    expect(tooMuch.status).toBe(400);
+    expect((await tooMuch.json()).error.code).toBe("invalid_max_tokens");
+  });
+
+  it("refuse en 402 (format OpenAI) quand le solde est insuffisant, sans appeler l'amont", async () => {
+    const c = await client(0n);
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(402);
+    expect((await res.json()).error).toMatchObject({
+      code: "insufficient_quota",
+      type: "insufficient_quota",
+    });
+    expect(calls).toHaveLength(0);
+    expect(
+      await t.db
+        .select()
+        .from(usageEvents)
+        .where(eq(usageEvents.organizationId, c.org)),
+    ).toHaveLength(0);
+  });
+
+  it("refuse un compte au solde négatif (remboursement ou litige)", async () => {
+    const c = await client(1n);
+    await debit(t.db, {
+      organizationId: c.org,
+      amountMicro: 2n * M,
+      idempotencyKey: `refund:${c.org}`,
+      configVersion: "t",
+      kind: "refund",
+      source: "stripe_refund",
+    });
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(402);
+    expect((await res.json()).error.code).toBe("account_blocked");
+  });
+
+  it("libère toute la réservation quand l'amont échoue : rien n'est débité", async () => {
+    const c = await client(10n);
+    upstream = () =>
+      Response.json({ error: { message: "kaboom interne" } }, { status: 500 });
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(502);
+    const acct = await getAccount(t.db, c.org);
+    expect(acct).toMatchObject({ balanceMicro: 10n * M, heldMicro: 0n });
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(ev).toMatchObject({
+      status: "error",
+      costMicro: 0n,
+      httpStatus: 502,
+    });
+    const [r] = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, c.org));
+    expect(r?.status).toBe("released");
+  });
+
+  it("20 appels concurrents ne dépassent jamais le solde", async () => {
+    const c = await client(0n);
+    // solde = 5 réservations maximales (≈ 200×3 + entrée estimée), l'amont est lent : les réservations se chevauchent
+    const probe = await client(10n);
+    let reservedOne = 0n;
+    upstream = async () => {
+      reservedOne = (await getAccount(t.db, probe.org)).heldMicro;
+      return upstreamOk();
+    };
+    await handleChatCompletions(post(probe.key, chat()), deps());
+    expect(reservedOne).toBeGreaterThan(0n);
+
+    const balance = reservedOne * 5n + reservedOne / 2n;
+    await credit(t.db, {
+      organizationId: c.org,
+      amountMicro: balance,
+      idempotencyKey: `fund2:${c.org}`,
+      configVersion: "t",
+      source: "test",
+    });
+    upstream = async () => {
+      await new Promise((r) => setTimeout(r, 400));
+      return upstreamOk();
+    };
+    const results = await Promise.all(
+      Array.from({ length: 20 }, () =>
+        handleChatCompletions(post(c.key, chat()), deps()),
+      ),
+    );
+    const statuses = results.map((r) => r.status);
+    const ok = statuses.filter((s) => s === 200).length;
+    expect(ok).toBe(5); // jamais plus que ce que le solde permet de réserver en même temps
+    expect(statuses.filter((s) => s === 402)).toHaveLength(15);
+    const acct = await getAccount(t.db, c.org);
+    expect(acct.heldMicro).toBe(0n);
+    expect(acct.balanceMicro).toBe(balance - 5n * 240n);
+    expect(acct.balanceMicro).toBeGreaterThanOrEqual(0n);
+    expect(await deriveBalance(t.db, c.org)).toEqual({
+      balanceMicro: acct.balanceMicro,
+      heldMicro: 0n,
+    });
+    const events = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(events).toHaveLength(5);
+  });
+
+  it("plafonne le règlement au montant réservé si l'amont rapporte plus que prévu", async () => {
+    const c = await client(10n);
+    upstream = () =>
+      upstreamOk({
+        prompt_tokens: 100,
+        completion_tokens: 900_000,
+        total_tokens: 900_100,
+      });
+    const res = await handleChatCompletions(
+      post(c.key, chat({ max_tokens: 50 })),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    const [r] = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, c.org));
+    expect(ev?.costMicro).toBe(r?.amountMicro);
+  });
+
+  it("facture les jetons en cache au tarif de cache", async () => {
+    const org = await newOrganization(t.db);
+    await credit(t.db, {
+      organizationId: org,
+      amountMicro: 10n * M,
+      idempotencyKey: `fund:${org}`,
+      configVersion: "t",
+      source: "test",
+    });
+    const { key } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "c",
+    });
+    upstream = () =>
+      upstreamOk({
+        prompt_tokens: 1000,
+        completion_tokens: 0,
+        total_tokens: 1000,
+        prompt_tokens_details: { cached_tokens: 400 },
+      });
+    // l'estimation d'entrée doit couvrir l'usage rapporté (elle est prudente : 1 jeton pour 3 octets)
+    const res = await handleChatCompletions(
+      post(
+        key,
+        chat({ messages: [{ role: "user", content: "x".repeat(3600) }] }),
+      ),
+      deps(),
+    );
+    // pas de tarif de cache sur nexora/test-chat : l'entrée complète s'applique
+    expect(res.headers.get("x-nexora-cost-micro")).toBe("1000");
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, org));
+    expect(ev?.cachedTokens).toBe(400);
+  });
+});
+
+describe("réponse non diffusée", () => {
+  it("renvoie le contrat OpenAI sans révéler l'amont (fournisseur, coûts, clé maîtresse)", async () => {
+    const c = await client();
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    const text = await res.text();
+    const json = JSON.parse(text);
+    expect(json.choices[0].message.content).toBe("Bonjour !");
+    expect(json.model).toBe("nexora/test-chat");
+    expect(json).not.toHaveProperty("provider");
+    expect(json.usage).not.toHaveProperty("cost");
+    expect(json.usage).not.toHaveProperty("cost_details");
+    expect(text).not.toContain(MASTER);
+    for (const [k, v] of res.headers) expect(`${k}:${v}`).not.toContain(MASTER);
+    expect(res.headers.get("x-request-id")).toMatch(/^req_test_/);
+    expect(res.headers.get("x-nexora-residency")).toBe("quebec");
+    expect(res.headers.get("x-ratelimit-limit-requests")).toBe("1000");
+  });
+
+  it("appelle LiteLLM avec la clé maîtresse et ne transmet que les paramètres connus", async () => {
+    const c = await client();
+    await handleChatCompletions(
+      post(
+        c.key,
+        chat({
+          api_base: "http://evil.example",
+          api_key: "sk-pirate",
+          metadata: { x: 1 },
+          mock_response: "gratuit",
+          temperature: 0.2,
+          n: 1,
+        }),
+      ),
+      deps(),
+    );
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.url).toBe(
+      "http://litellm.internal:4000/v1/chat/completions",
+    );
+    expect(calls[0]?.headers.get("authorization")).toBe(`Bearer ${MASTER}`);
+    expect(Object.keys(calls[0]?.body ?? {}).sort()).toEqual([
+      "max_tokens",
+      "messages",
+      "model",
+      "temperature",
+    ]);
+    expect(calls[0]?.headers.get("authorization")).not.toContain(c.key);
+  });
+
+  it("valide la requête : JSON, modèle, messages, n > 1", async () => {
+    const c = await client();
+    const r1 = await handleChatCompletions(
+      new Request("http://x/v1/chat/completions", {
+        method: "POST",
+        headers: { authorization: `Bearer ${c.key}` },
+        body: "{pas du json",
+      }),
+      deps(),
+    );
+    expect(r1.status).toBe(400);
+    expect(
+      (await handleChatCompletions(post(c.key, { messages: [] }), deps()))
+        .status,
+    ).toBe(400);
+    expect(
+      (
+        await handleChatCompletions(
+          post(c.key, chat({ model: "nexora/inconnu" })),
+          deps(),
+        )
+      ).status,
+    ).toBe(404);
+    expect(
+      (await handleChatCompletions(post(c.key, chat({ messages: [] })), deps()))
+        .status,
+    ).toBe(400);
+    expect(
+      (await handleChatCompletions(post(c.key, chat({ n: 3 })), deps())).status,
+    ).toBe(400);
+    expect(
+      (
+        await handleChatCompletions(
+          post(c.key, chat({ model: "nexora/test-embed" })),
+          deps(),
+        )
+      ).status,
+    ).toBe(400);
+    expect(calls).toHaveLength(0);
+    const big = await handleChatCompletions(
+      post(
+        c.key,
+        chat({ messages: [{ role: "user", content: "x".repeat(2000) }] }),
+      ),
+      deps({ maxBodyBytes: 500 }),
+    );
+    expect(big.status).toBe(413);
+  });
+});
+
+describe("flux SSE", () => {
+  const events = [
+    chunk("Bon"),
+    chunk("jour"),
+    usageChunk(),
+    "data: [DONE]\n\n",
+  ];
+
+  it("transmet le flux, règle au coût réel avant la fin et cache l'usage non demandé", async () => {
+    const c = await client();
+    upstream = () => sse(events);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/event-stream");
+    const body = await res.text();
+    expect(body).toContain('"content":"Bon"');
+    expect(body).toContain("data: [DONE]");
+    expect(body).not.toContain('"usage"'); // le client n'a pas demandé stream_options.include_usage
+    expect(body).not.toContain("Wafer");
+    expect(body).not.toContain("cost");
+    // l'amont a reçu include_usage
+    expect(calls[0]?.body).toMatchObject({
+      stream: true,
+      stream_options: { include_usage: true },
+    });
+    // le règlement est fait avant que le flux ne se ferme
+    const acct = await getAccount(t.db, c.org);
+    expect(acct).toMatchObject({ balanceMicro: 10n * M - 240n, heldMicro: 0n });
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(ev).toMatchObject({
+      status: "ok",
+      stream: true,
+      costMicro: 240n,
+      promptTokens: 120,
+      completionTokens: 40,
+    });
+  });
+
+  it("garde l'usage dans le flux quand le client l'a demandé, sans les coûts amont", async () => {
+    const c = await client();
+    upstream = () => sse(events);
+    const res = await handleChatCompletions(
+      post(
+        c.key,
+        chat({ stream: true, stream_options: { include_usage: true } }),
+      ),
+      deps(),
+    );
+    const body = await res.text();
+    expect(body).toContain('"prompt_tokens":120');
+    expect(body).not.toContain("cost");
+  });
+
+  it("reste correct quand un événement est coupé entre deux paquets réseau", async () => {
+    const c = await client();
+    const joined = events.join("");
+    upstream = () => sse(events, Math.floor(joined.indexOf("jour") + 2));
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    const body = await res.text();
+    expect(body).toContain('"content":"jour"');
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(ev?.costMicro).toBe(240n);
+  });
+
+  it("une erreur de l'amont avant le flux libère la réservation", async () => {
+    const c = await client();
+    upstream = () =>
+      Response.json({ error: { message: "x" } }, { status: 503 });
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    expect(res.status).toBe(502);
+    expect(await getAccount(t.db, c.org)).toMatchObject({
+      balanceMicro: 10n * M,
+      heldMicro: 0n,
+    });
+  });
+
+  it("le client qui ferme le flux : l'amont est coupé, le livré est facturé (estimé), le reste libéré", async () => {
+    const c = await client();
+    let upstreamAborted = false;
+    upstream = (_call, signal) => {
+      signal?.addEventListener("abort", () => {
+        upstreamAborted = true;
+      });
+      const enc = new TextEncoder();
+      return new Response(
+        new ReadableStream({
+          async start(ctrl) {
+            ctrl.enqueue(enc.encode(chunk("Une longue réponse ".repeat(5))));
+            await new Promise((r) => setTimeout(r, 2000)); // l'amont continue à produire
+            ctrl.close();
+          },
+          cancel() {
+            upstreamAborted = true;
+          },
+        }),
+      );
+    };
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    const reader = res.body?.getReader();
+    await reader.read();
+    await reader.cancel();
+    await new Promise((r) => setTimeout(r, 100));
+    expect(upstreamAborted).toBe(true);
+    const acct = await getAccount(t.db, c.org);
+    expect(acct.heldMicro).toBe(0n);
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(ev?.status).toBe("aborted");
+    expect(ev?.costMicro).toBeGreaterThan(0n);
+    expect(acct.balanceMicro).toBe(10n * M - (ev?.costMicro ?? 0n));
+  });
+});
+
+describe("limites", () => {
+  it("applique la limite de requêtes par minute de la clé (429 + Retry-After)", async () => {
+    const c = await client(10n, { rpmLimit: 2 });
+    expect(
+      (await handleChatCompletions(post(c.key, chat()), deps())).status,
+    ).toBe(200);
+    expect(
+      (await handleChatCompletions(post(c.key, chat()), deps())).status,
+    ).toBe(200);
+    const third = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(third.status).toBe(429);
+    expect(Number(third.headers.get("retry-after"))).toBeGreaterThan(0);
+    expect((await third.json()).error.code).toBe("rate_limit_exceeded");
+    expect(calls).toHaveLength(2);
+  });
+
+  it("applique la limite de jetons par minute", async () => {
+    const c = await client(10n, { tpmLimit: 1000 });
+    const res = await handleChatCompletions(
+      post(c.key, chat({ max_tokens: 990 })),
+      deps(),
+    );
+    expect(res.status).toBe(429);
+    expect(calls).toHaveLength(0);
+  });
+
+  it("applique le plafond de dépense de la clé, sans le dépasser sous charge", async () => {
+    // une requête réserve environ 700 µCAD ; plafond à 2 000 : au plus 2 requêtes simultanées
+    const c = await client(10n, { spendCapMicro: 2000n });
+    upstream = async () => {
+      await new Promise((r) => setTimeout(r, 200));
+      return upstreamOk();
+    };
+    const results = await Promise.all(
+      Array.from({ length: 6 }, () =>
+        handleChatCompletions(post(c.key, chat({ max_tokens: 200 })), deps()),
+      ),
+    );
+    const statuses = results.map((r) => r.status);
+    expect(statuses.filter((s) => s === 200).length).toBeLessThanOrEqual(3);
+    expect(statuses.filter((s) => s === 200).length).toBeGreaterThanOrEqual(1);
+    for (const r of results)
+      if (r.status !== 200)
+        expect((await r.json()).error.code).toBe("api_key_spend_cap_reached");
+    const [k] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.id, c.record.id));
+    const ok = statuses.filter((s) => s === 200).length;
+    expect(k?.spentMicro).toBe(BigInt(ok) * 240n);
+    expect(k?.spentMicro).toBeLessThanOrEqual(2000n);
+  });
+});
+
+describe("embeddings et liste des modèles", () => {
+  it("facture l'entrée des embeddings", async () => {
+    const c = await client();
+    upstream = () =>
+      Response.json({
+        object: "list",
+        data: [{ object: "embedding", index: 0, embedding: [0.1, 0.2] }],
+        model: "nexora/test-embed",
+        provider: "X",
+        usage: { prompt_tokens: 1000, total_tokens: 1000, cost: 1 },
+      });
+    const res = await handleEmbeddings(
+      post(
+        c.key,
+        { model: "nexora/test-embed", input: "bonjour ".repeat(500) },
+        "embeddings",
+      ),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    expect(calls[0]?.url).toBe("http://litellm.internal:4000/v1/embeddings");
+    // 1000 jetons × 0,2 CAD / M = 200 µCAD
+    expect(res.headers.get("x-nexora-cost-micro")).toBe("200");
+    expect((await res.json()).usage).not.toHaveProperty("cost");
+    expect(
+      (
+        await handleEmbeddings(
+          post(c.key, { model: "nexora/test-chat", input: "x" }, "embeddings"),
+          deps(),
+        )
+      ).status,
+    ).toBe(400);
+  });
+
+  it("liste le catalogue publié sans fuite (pas de coût amont, pas de modèle privé)", async () => {
+    const res = await handleModels(new Request("http://x/v1/models"), deps());
+    const json = await res.json();
+    const ids = json.data.map((m: { id: string }) => m.id).sort();
+    expect(ids).toEqual(["nexora/test-chat", "nexora/test-embed"]);
+    const text = JSON.stringify(json);
+    expect(text).not.toContain("upstream");
+    expect(text).not.toContain("127.0.0.1");
+    expect(text).not.toContain("llm.");
+    const chatModel = json.data.find(
+      (m: { id: string }) => m.id === "nexora/test-chat",
+    );
+    expect(chatModel.pricing).toMatchObject({
+      currency: "CAD",
+      input: "1",
+      output: "3",
+    });
+    expect(chatModel.residency).toBe("quebec");
+    const bad = await handleModels(
+      new Request("http://x/v1/models", {
+        headers: { authorization: `Bearer nxk_${"z".repeat(43)}` },
+      }),
+      deps(),
+    );
+    expect(bad.status).toBe(401);
+  });
+});
+
+describe("confidentialité", () => {
+  it("ne laisse aucune trace du contenu, de la clé client, de la clé maîtresse ni de la clé du fournisseur", async () => {
+    const c = await client();
+    upstream = () =>
+      sse([chunk("Réponse confidentielle"), usageChunk(), "data: [DONE]\n\n"]);
+    await (
+      await handleChatCompletions(post(c.key, chat({ stream: true })), deps())
+    ).text();
+    upstream = () => upstreamOk();
+    await handleChatCompletions(post(c.key, chat()), deps());
+    upstream = () =>
+      Response.json(
+        { error: { message: `échec avec ${PROMPT_MARKER}` } },
+        { status: 500 },
+      );
+    await handleChatCompletions(post(c.key, chat()), deps());
+    await handleChatCompletions(post(`nxk_${"q".repeat(43)}`, chat()), deps());
+
+    const logs = lines.join("\n");
+    expect(logs.length).toBeGreaterThan(0);
+    for (const secret of [
+      PROMPT_MARKER,
+      "Réponse confidentielle",
+      c.key,
+      c.key.slice(4),
+      MASTER,
+      "sk-upstream-secret",
+    ])
+      expect(logs).not.toContain(secret);
+
+    // aucune colonne des événements d'usage ne contient le contenu
+    const events = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(events.length).toBe(3);
+    const dump = JSON.stringify(events, (_k, v) =>
+      typeof v === "bigint" ? v.toString() : v,
+    );
+    expect(dump).not.toContain(PROMPT_MARKER);
+    expect(dump).not.toContain("Réponse confidentielle");
+    expect(dump).not.toContain(c.key.slice(4));
+  });
+});
+
+describe("passerelle non configurée", () => {
+  it("répond 503 sans toucher à la base", async () => {
+    const d = { ...deps(), litellm: () => null };
+    const res = await handleChatCompletions(
+      post(`nxk_${"a".repeat(43)}`, chat()),
+      d,
+    );
+    expect(res.status).toBe(503);
+  });
+});

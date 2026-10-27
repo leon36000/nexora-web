@@ -14,19 +14,26 @@ export interface RateLimitResult {
 export async function consumeRateLimit(
   db: Database,
   key: string,
-  options: { limit: number; windowSeconds: number; now?: Date },
+  options: {
+    limit: number;
+    windowSeconds: number;
+    now?: Date;
+    /** Unités consommées par l'appel (1 par défaut ; jetons estimés pour la passerelle). */
+    cost?: number;
+  },
 ): Promise<RateLimitResult> {
   const now = options.now ?? new Date();
+  const cost = options.cost ?? 1;
   const windowMs = options.windowSeconds * 1000;
   const expiredBefore = new Date(now.getTime() - windowMs);
   const [row] = await db
     .insert(apiRateLimits)
-    .values({ key, windowStart: now, count: 1 })
+    .values({ key, windowStart: now, count: cost })
     .onConflictDoUpdate({
       target: apiRateLimits.key,
       set: {
         windowStart: sql`CASE WHEN ${apiRateLimits.windowStart} <= ${expiredBefore.toISOString()}::timestamptz THEN ${now.toISOString()}::timestamptz ELSE ${apiRateLimits.windowStart} END`,
-        count: sql`CASE WHEN ${apiRateLimits.windowStart} <= ${expiredBefore.toISOString()}::timestamptz THEN 1 ELSE ${apiRateLimits.count} + 1 END`,
+        count: sql`CASE WHEN ${apiRateLimits.windowStart} <= ${expiredBefore.toISOString()}::timestamptz THEN ${cost} ELSE ${apiRateLimits.count} + ${cost} END`,
       },
     })
     .returning({

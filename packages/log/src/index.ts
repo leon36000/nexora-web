@@ -7,6 +7,8 @@ const SENSITIVE_KEY =
 const STRING_PATTERNS: Array<[RegExp, string]> = [
   [/(bearer\s+)[A-Za-z0-9._~+/=-]{8,}/gi, `$1${REDACTED}`],
   [/\bsk-[A-Za-z0-9_-]{8,}/g, REDACTED],
+  // Clés clientes de la passerelle (S5) : nxk_ + 256 bits en base64url.
+  [/\bnxk_[A-Za-z0-9_-]{16,}/g, REDACTED],
   [/\b(?:pk|rk|whsec|sk)_(?:live|test)_[A-Za-z0-9]{8,}/g, REDACTED],
   [/(\b[a-z][a-z0-9+.-]*:\/\/[^\s:/@]+:)[^\s@/]+@/gi, `$1${REDACTED}@`],
 ];

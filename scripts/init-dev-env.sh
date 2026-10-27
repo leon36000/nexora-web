@@ -28,6 +28,10 @@ if [ -z "$auth_secret" ] && [ -f "$root/.env" ]; then
 fi
 [ -n "$auth_secret" ] || auth_secret="$(openssl rand -hex 32)"
 
+# Passerelle de modèles (S5) : clé maîtresse de LiteLLM (variable SERVEUR, jamais exposée au client ni
+# au navigateur ; en production, secret Docker). Facultative ici : sans elle, /v1 répond 503.
+litellm_master="$(get LITELLM_MASTER_KEY)"
+
 umask 077
 {
   echo "DATABASE_URL=postgres://nexora:$(get POSTGRES_PASSWORD)@127.0.0.1:15440/app"
@@ -43,6 +47,9 @@ umask 077
   echo "STRIPE_SECRET_KEY=sk_test_stripemocklocal0123456789"
   echo "STRIPE_WEBHOOK_SECRET=whsec_local_dev_only_not_a_real_secret"
   echo "STRIPE_API_BASE_URL=http://127.0.0.1:12111"
+  # LiteLLM (passerelle S5) : réseau local seulement.
+  echo "LITELLM_BASE_URL=${LITELLM_BASE_URL:-http://127.0.0.1:4400}"
+  [ -z "$litellm_master" ] || echo "LITELLM_MASTER_KEY=$litellm_master"
 } > "$root/.env"
 cp "$root/.env" "$root/web/.env.local"
-echo "Écrit : .env et web/.env.local (variables : DATABASE_URL, NEXORA_APP_ADMIN_TOKEN, NEXORA_VAULT_MASTER_KEY, DIRECTUS_*, NEXORA_PREVIEW_SECRET, BETTER_AUTH_SECRET, STRIPE_* de stripe-mock)"
+echo "Écrit : .env et web/.env.local (variables : DATABASE_URL, NEXORA_APP_ADMIN_TOKEN, NEXORA_VAULT_MASTER_KEY, DIRECTUS_*, NEXORA_PREVIEW_SECRET, BETTER_AUTH_SECRET, STRIPE_* de stripe-mock, LITELLM_BASE_URL, LITELLM_MASTER_KEY)"
