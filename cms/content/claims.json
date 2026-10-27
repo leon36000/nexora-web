@@ -1,0 +1,801 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "note": "Registre des affirmations sensibles utilisées par les pages d'accueil et OPSYS-AI. Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`.",
+  "claims": [
+    {
+      "id": "CL-01",
+      "kind": "offre",
+      "statement": "Nexora conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier.",
+      "scope": "Services de Nexora, tous modes de déploiement.",
+      "evidence": "Offre définie par le fondateur (brief §3). Présentée comme un service, jamais comme un résultat mesuré.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-02",
+      "kind": "offre",
+      "statement": "Deux modes : installé chez vous, ou hébergé dans l'infrastructure de Nexora, située au Québec.",
+      "scope": "Déclaration d'offre. Le lieu exact, les sauvegardes, les journaux et les prestataires sont à documenter par client.",
+      "evidence": "Déclaration du fondateur (brief §3). PREUVE TECHNIQUE À PRODUIRE avant la mise en ligne publique : adresse et contrat du lieu d'hébergement, localisation des sauvegardes, des journaux et des sous-traitants (rapport 06 §4.5 et §8.3).",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3 ; Rapport docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-03",
+      "kind": "offre",
+      "statement": "La méthode tient en cinq temps : comprendre, intégrer, vérifier, former, exploiter et améliorer.",
+      "scope": "Description de la démarche de Nexora.",
+      "evidence": "Séquence définie par le brief (§5, accueil). Aucun délai ni résultat n'est annoncé.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §5",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-04",
+      "kind": "offre",
+      "statement": "Nexora installe le système, l'exploite avec vous et le fait évoluer ; la formation de votre équipe porte sur l'usage et la supervision.",
+      "scope": "Services de Nexora. Étendue exacte à fixer dans l'étude de déploiement.",
+      "evidence": "Méthode du brief (§5) et réponse à l'objection « pas de personnel technique » (rapport 06 §8.4). À confirmer par le fondateur : périmètre d'exploitation.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §5 ; Rapport docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-05",
+      "kind": "engagement",
+      "statement": "Avant la mise en service, nous vous remettons par écrit le schéma des flux : où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent.",
+      "scope": "Engagement de service. Livrable à produire par Nexora pour chaque client.",
+      "evidence": "Exigence du brief §8 (documenter prestataires, métadonnées, mises à jour) et preuve à réunir (rapport 06 §8.3 : schéma des flux par mode). MODÈLE DE SCHÉMA À RÉDIGER ; engagement à confirmer par le fondateur.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §8 ; Rapport docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026), §8.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-06",
+      "kind": "engagement",
+      "statement": "Aucun appel à un service d'IA externe n'est configuré sans votre accord écrit.",
+      "scope": "Engagement de service, tous modes.",
+      "evidence": "Exigence du brief §8 : options externes distinctes, désactivées par défaut, explicitement acceptées ; aucun basculement silencieux vers un modèle infonuagique. À confirmer par le fondateur ; à inscrire au contrat type.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §8",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-07",
+      "kind": "engagement",
+      "statement": "Nous ne réutilisons pas les données d'un client, ni pour un autre client ni pour entraîner un modèle, sans son autorisation spécifique.",
+      "scope": "Règle de Nexora. CLAUSE DU CONTRAT TYPE À RÉDIGER.",
+      "evidence": "Exigence du brief §8 (« pas de réutilisation… sans autorisation spécifique »). Rapport 06 §4.5 : formulation autorisée seulement si contractuelle, avec procédure technique.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §8 ; Rapport docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026), §4.5",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-08",
+      "kind": "engagement",
+      "statement": "Vos documents, vos configurations et vos flux de travaux restent exportables ; le contrat le prévoit.",
+      "scope": "Engagement de service (réversibilité). CLAUSE DU CONTRAT TYPE À RÉDIGER.",
+      "evidence": "Objection « que se passe-t-il si nous arrêtons » (rapport 06 §8.4 : export à prévoir au contrat) et réversibilité citée au brief §3 et §8.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3 et §8 ; Rapport docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026), §8.4",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-09",
+      "kind": "politique",
+      "statement": "Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvons pas prouver ; quand une capacité est en pilote ou prévue, nous l'écrivons.",
+      "scope": "Politique éditoriale de Nexora, toutes pages.",
+      "evidence": "AGENTS.md (« Vérité du contenu ») ; brief §3 ; rapport 07 §5.3 (chaque capacité porte son statut visible). Vérifiable par le registre des affirmations et par le test de contenu du dépôt.",
+      "evidence_url": null,
+      "source_version": "AGENTS.md ; Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3 ; Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-10",
+      "kind": "fait",
+      "statement": "Il n'y a pas encore de prix public ; une estimation écrite suit le diagnostic.",
+      "scope": "État au 26/10/2026. À RÉVISER dès que le fondateur publie des prix.",
+      "evidence": "Aucun prix n'est fixé ni publié (conception §7, point 6 ; brief §3 : ne rien inventer).",
+      "evidence_url": null,
+      "source_version": "Conception docs/superpowers/specs/2026-10-26-nexora-site-design.md et journal docs/superpowers/plans/ledger.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-11",
+      "kind": "politique",
+      "statement": "Les scénarios « avant et après » sont des exemples construits, pas des résultats mesurés chez des clients.",
+      "scope": "Page d'accueil, bloc des scénarios.",
+      "evidence": "Brief §3 : toute simulation est un exemple ou un calcul d'hypothèses ; aucun résultat client n'existe ni n'est publié.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-12",
+      "kind": "fait",
+      "statement": "Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes.",
+      "scope": "État au 26/10/2026. À RÉVISER à l'ouverture de chaque offre.",
+      "evidence": "Jalons S5 (passerelle), S6 (VPS) et S7 (agents hébergés) non livrés ; seul S1 est terminé et S2 est en cours.",
+      "evidence_url": null,
+      "source_version": "Conception docs/superpowers/specs/2026-10-26-nexora-site-design.md et journal docs/superpowers/plans/ledger.md (26/10/2026), §15",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-13",
+      "kind": "offre",
+      "statement": "Nexora prépare des serveurs privés virtuels hébergés au Québec, avec une application d'IA installée au choix.",
+      "scope": "Offre en préparation (jalon S6). Même réserve de preuve que CL-02 pour le lieu.",
+      "evidence": "Conception §10 (page VPS, parcours, applications) ; brief §3. Rien n'est commandable aujourd'hui.",
+      "evidence_url": null,
+      "source_version": "Conception docs/superpowers/specs/2026-10-26-nexora-site-design.md et journal docs/superpowers/plans/ledger.md (26/10/2026), §10",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-14",
+      "kind": "fait",
+      "statement": "Aucun délai universel de mise en service n'est annoncé : il dépend du cas et se mesure sur un pilote.",
+      "scope": "Toutes offres.",
+      "evidence": "Brief §3 (« n'invente ni prix ni délai universel ») ; rapport 07 §5.2 (« mise en service en quelques jours » : aucune preuve).",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3 ; Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-20",
+      "kind": "produit",
+      "statement": "Nexora WorkStudio réunit en un seul outil la conception, la connexion et le pilotage d'agents et de flux de travaux, en français.",
+      "scope": "Produit existant, installable ; vente par démonstration.",
+      "evidence": "README du dépôt (composants, interface en français et en anglais) ; guide docs/guide/ (agents.md, workflows.md, etapes.md, blocs.md) ; fumée complète du 26/10/2026 (docs/verification/).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-21",
+      "kind": "produit",
+      "statement": "Un flux de travaux peut s'arrêter sur la validation d'une personne, qui approuve ou refuse avant que l'action ne parte.",
+      "scope": "WorkStudio : bloc de validation humaine.",
+      "evidence": "docs/guide/blocs.md (« Validation humaine »), assistant.md (Approuver ou Refuser reprend l'exécution), agents.md (action exécutée une seule fois si autorisée).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-22",
+      "kind": "produit",
+      "statement": "WorkStudio offre des organisations, des rôles, un journal d'audit et des plafonds mensuels de consommation.",
+      "scope": "WorkStudio : gouvernance.",
+      "evidence": "README du dépôt (« La gouvernance ») ; docs/guide/gouvernance.md (journal d'audit, export), consommation.md (plafonds mensuels).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-23",
+      "kind": "produit",
+      "statement": "Dans WorkStudio, chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers.",
+      "scope": "WorkStudio : fiche de modèle (« Sur ce serveur », « Hébergé UE », « Hors instance »).",
+      "evidence": "docs/guide/gouvernance.md et modeles.md. Il s'agit d'un affichage documenté, pas d'une garantie de résidence.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-24",
+      "kind": "produit",
+      "statement": "Un service installé sur votre serveur peut repérer les noms, les courriels et les numéros de téléphone pour les masquer dans les traces ou avant un appel à un modèle externe, selon la politique choisie.",
+      "scope": "WorkStudio : détection locale, activable à l'installation.",
+      "evidence": "docs/guide/gouvernance.md (service local de détection, bloc Garde-fous, politique des espaces, masquage des traces) ; README (traces avec données personnelles masquées avant stockage).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-25",
+      "kind": "produit",
+      "statement": "Dans WorkStudio, une base de connaissances fait répondre les agents à partir de vos documents ; par défaut, l'indexation se calcule sur le serveur de l'instance.",
+      "scope": "WorkStudio : connaissances.",
+      "evidence": "docs/guide/connaissances.md (embeddings bge-m3 sur le serveur, « aucun document ne sort de l'instance » dans la configuration par défaut).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-26",
+      "kind": "produit",
+      "statement": "WorkStudio s'installe en une commande sur un serveur Docker (Linux ou macOS, amd64 ou arm64).",
+      "scope": "WorkStudio : installateur.",
+      "evidence": "README du dépôt (install.sh) ; docs/guide/installation.md ; installation d'essai du 25/10/2026 (projet nexora-itest).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-27",
+      "kind": "produit",
+      "statement": "Nexora API est une passerelle de modèles au format OpenAI, avec des clés, des quotas et la mesure de la consommation ; les agents publiés sont appelables par API.",
+      "scope": "Nexora API (services/nexora-api) et API des développeurs de WorkStudio. Le catalogue public à crédits relève du jalon S5.",
+      "evidence": "README du dépôt ; docs/guide/api-developpeurs.md et nexora-api.md.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-28",
+      "kind": "fait",
+      "statement": "Nexora Code, Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade.",
+      "scope": "Absence d'annonce, volontaire.",
+      "evidence": "Brief §6 : ni taille, ni performance, ni garantie de disponibilité tant que les fiches canoniques n'existent pas. Aucune fiche canonique n'a été fournie.",
+      "evidence_url": null,
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §6",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-30",
+      "kind": "statut",
+      "statement": "Dix départements échangent des événements sur un bus interne ; le niveau de disponibilité est indiqué pour chacun.",
+      "scope": "OPSYS-AI, plateforme.",
+      "evidence": "Rapport 07 §5.1 (bus réel, consommateurs M2 à M10, tests de cascade) ; formulation recommandée reprise.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-31",
+      "kind": "statut",
+      "statement": "Les actions engageantes (envoi, paiement, décision financière) demandent une approbation.",
+      "scope": "OPSYS-AI : approbations de niveau N0 à N5. Ne pas écrire « toute transition ».",
+      "evidence": "Rapport 07 §3 (transversal : approbations bloquantes, classe A) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-32",
+      "kind": "statut",
+      "statement": "Une estimation indique ce qui manque et refuse de chiffrer quand l'information est insuffisante.",
+      "scope": "OPSYS-AI, M3.",
+      "evidence": "Rapport 07 §3 (M3 : garde anti-précision, classe A) ; tests test_estimation_stockage et test_estimation_risquee cités au rapport.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-33",
+      "kind": "statut",
+      "statement": "La soumission générée est un brouillon, filtré de vos coûts et marges internes, qui passe par une revue et une approbation ; aucun envoi au client n'existe.",
+      "scope": "OPSYS-AI, M3.",
+      "evidence": "Rapport 07 §3 (M3 : liste blanche, revue en onze critères, approbation N4) et §5.1 (« ne pas dire envoyée »).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-34",
+      "kind": "statut",
+      "statement": "Une facture brouillon est préparée à la fin des travaux, à valider avant tout envoi ; ni PDF, ni numérotation, ni envoi n'existent encore.",
+      "scope": "OPSYS-AI, M5 (interne).",
+      "evidence": "Rapport 07 §3 (M5 : facture brouillon, classe A, interne) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-35",
+      "kind": "statut",
+      "statement": "Un journal détecte les modifications : les registres des décisions et des événements sont chaînés par hachage.",
+      "scope": "OPSYS-AI, M1 et M10. Ne pas écrire « immuable » ni « inviolable ».",
+      "evidence": "Rapport 07 §3 (M1 et M10 : registre chaîné, classe A) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-36",
+      "kind": "statut",
+      "statement": "OPSYS-AI dispose d'une console web protégée par authentification, avec approbations et budgets.",
+      "scope": "OPSYS-AI, console.",
+      "evidence": "Rapport 07 §3 (console : authentification, approbations, modes, budgets) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-37",
+      "kind": "statut",
+      "statement": "OPSYS-AI s'installe sur un serveur ou un serveur privé virtuel que vous contrôlez ; l'installation est en pilote et la procédure se qualifie avec nous.",
+      "scope": "OPSYS-AI, déploiement. Aucune installation réelle n'a été éprouvée par l'audit.",
+      "evidence": "Rapport 07 §3 (déploiement : compose, scripts d'installation, pilote) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-38",
+      "kind": "statut",
+      "statement": "La paie est préparée (heures et brut) pour votre comptable ; OPSYS-AI ne calcule pas la paie.",
+      "scope": "OPSYS-AI, M5.",
+      "evidence": "Rapport 07 §3 (M5 : brut régulier et dossier WebRAS ; retenues QC prévues, sans appelant) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-39",
+      "kind": "statut",
+      "statement": "Le rapprochement se fait à partir de relevés que vous exportez ; il n'y a aucune connexion bancaire.",
+      "scope": "OPSYS-AI, M5 (pilote).",
+      "evidence": "Rapport 07 §3 (M5 : rapprochement bancaire par CSV, pilote) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-40",
+      "kind": "statut",
+      "statement": "Le suivi va de la demande à la soumission puis à la marge, sans coût publicitaire pour l'instant.",
+      "scope": "OPSYS-AI, M2, M3, M5, M7 (pilote).",
+      "evidence": "Rapport 07 §3 (M7 : attribution, coût publicitaire et ROI à null) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-41",
+      "kind": "statut",
+      "statement": "Des propositions de contenus sont soumises à votre approbation, avec vérification du consentement ; l'exportation est manuelle.",
+      "scope": "OPSYS-AI, M7 (disponible après configuration de la marque).",
+      "evidence": "Rapport 07 §3 (M7 : usine de contenus, consentement vérifié, classe A) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-42",
+      "kind": "statut",
+      "statement": "Les décisions sont journalisées avec leur contexte.",
+      "scope": "OPSYS-AI, M10.",
+      "evidence": "Rapport 07 §3 (M10 : décisions motivées, classe A) et §5.1.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D01",
+      "kind": "statut",
+      "statement": "M1, réception : pilote. Disponible : qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote : messages vocaux transcrits. Prévu : réponse envoyée au client, réception vocale en temps réel.",
+      "scope": "OPSYS-AI, département M1",
+      "evidence": "Rapport 07 §3 (M1), matrice §2 : moteur de réception A, transport C ; pas de téléphonie ni de SIP (D).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D02",
+      "kind": "statut",
+      "statement": "M2, relation client et ventes : pilote. Disponible : création du dossier à partir d'une demande, prochaine action suggérée. En pilote : suivi du dossier, relances, dédoublonnage. Prévu : connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).",
+      "scope": "OPSYS-AI, département M2",
+      "evidence": "Rapport 07 §3 (M2) ; adaptateurs CRM tiers, kanban, scoring : prévus (E ou D).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D03",
+      "kind": "statut",
+      "statement": "M3, estimation : disponible pour le calcul et la soumission brouillon, pilote pour le reste. Prévu : mesure à partir de photos.",
+      "scope": "OPSYS-AI, département M3",
+      "evidence": "Rapport 07 §3 (M3) ; mesure photo : C et E (mesure_plan.py sans appelant).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D04",
+      "kind": "statut",
+      "statement": "M4, terrain : pilote. Disponible : intervention créée à partir d'une soumission acceptée. En pilote : cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu : géolocalisation au pointage, itinéraires routiers, répartition automatique.",
+      "scope": "OPSYS-AI, département M4",
+      "evidence": "Rapport 07 §3 (M4) et §6 point 7 (position fictive au pointage).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D05",
+      "kind": "statut",
+      "statement": "M5, FinanceCore : pilote. Disponible : facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote : prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. Prévu : envoi des factures, connexions bancaires et comptables, calcul de la paie.",
+      "scope": "OPSYS-AI, département M5",
+      "evidence": "Rapport 07 §3 (M5) ; calendrier fiscal « A_VALIDER CPA ».",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D06",
+      "kind": "statut",
+      "statement": "M6, matériel : pilote. Disponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département ne paie rien.",
+      "scope": "OPSYS-AI, département M6",
+      "evidence": "Rapport 07 §3 (M6) ; m6_marquer_po_envoye = statut seulement, aucun courriel émis.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D07",
+      "kind": "statut",
+      "statement": "M7, marketing : disponible après configuration de votre marque, en pilote pour le reste. Prévu : publication automatique sur les réseaux sociaux.",
+      "scope": "OPSYS-AI, département M7",
+      "evidence": "Rapport 07 §3 (M7) ; Postiz en simulation (dry-run), connecteurs à construire.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D08",
+      "kind": "statut",
+      "statement": "M8, analytique : pilote. Disponible : vue exécutive. En pilote : mesures par chantier. Prévu : prévisions, indice de santé.",
+      "scope": "OPSYS-AI, département M8",
+      "evidence": "Rapport 07 §3 (M8) ; wallboard, score de santé, prévisions : D.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D09",
+      "kind": "statut",
+      "statement": "M9, stratégie : pilote. Disponible : synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote : suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu : scénarios, priorités et objectifs.",
+      "scope": "OPSYS-AI, département M9",
+      "evidence": "Rapport 07 §3 (M9) ; conseil d'agents, scénarios, OKR : D. Pas de planification automatique prouvée (rapport 07 §6 point 10).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-D10",
+      "kind": "statut",
+      "statement": "M10, mémoire : disponible pour le journal des décisions et des événements ; en pilote pour la recherche dans les connaissances de l'entreprise, désactivée par défaut. Prévu : graphe de relations entre dossiers.",
+      "scope": "OPSYS-AI, département M10",
+      "evidence": "Rapport 07 §3 (M10) ; mémoire d'entreprise hybride désactivée par défaut.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-53",
+      "kind": "statut",
+      "statement": "Dans la démonstration centrale, chaque maillon porte son statut : réel, démonstration ou cible ; préparé, approuvé, envoyé et accusé de réception sont quatre états distincts.",
+      "scope": "OPSYS-AI, parcours de la demande à la facture brouillon.",
+      "evidence": "Rapport 07 §4.1 (tableau des dix maillons) et §5.3 (« envoyé » sans code d'envoi réel : jamais ; « acquitté » sans confirmation externe : jamais).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-54",
+      "kind": "statut",
+      "statement": "Dans le scénario « travaux terminés », la fin de chantier, la revue, le matériel, la facture brouillon et la mise à jour du dossier sont réels côté serveur ; l'application de l'employé est en démonstration ; le message au client est cible.",
+      "scope": "OPSYS-AI, scénario signature.",
+      "evidence": "Rapport 07 §4.2 (tableau des étapes) et §6 points 7 et 8.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-55",
+      "kind": "statut",
+      "statement": "L'application mobile existe en pilote pour l'administrateur, le vendeur et l'employé ; le profil client est prévu ; le mode hors ligne n'est pas vérifié ; il n'y a pas de notifications poussées.",
+      "scope": "OPSYS-AI, application mobile.",
+      "evidence": "Rapport 07 §3 (application mobile) et §5.2 (« application mobile complète pour quatre profils » : interdit).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-56",
+      "kind": "statut",
+      "statement": "Chaque agent a un profil, des permissions et un budget de jetons vérifié avant l'appel à un fournisseur ; le budget se compte en jetons, pas en dollars.",
+      "scope": "OPSYS-AI, plateforme (pilote).",
+      "evidence": "Rapport 07 §3 (transversal : agents configurables, budgets de tokens, pilote).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-57",
+      "kind": "statut",
+      "statement": "Le cash libre, c'est l'argent réellement disponible une fois déduites les obligations déjà connues ; il s'appuie sur votre registre interne, pas sur une connexion bancaire.",
+      "scope": "OPSYS-AI, M5 (pilote).",
+      "evidence": "Rapport 07 §3 (M5 : cash libre et prévision, registre interne).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-58",
+      "kind": "statut",
+      "statement": "Les quantités estimées sont comparées aux quantités réelles après chaque chantier ; la comparaison en minutes est en démonstration, sur données fictives.",
+      "scope": "OPSYS-AI, M3 et M6.",
+      "evidence": "Rapport 07 §3 (M6 : variance en quantités, classe A ; M3 : estimé contre réel en minutes, données fictives).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-59",
+      "kind": "statut",
+      "statement": "OPSYS-AI passe par une passerelle de modèles qui peut appeler des fournisseurs d'IA externes selon la configuration ; un mode souverain n'est pas encore défini dans le produit.",
+      "scope": "OPSYS-AI, souveraineté.",
+      "evidence": "Rapport 07 §0, §5.2 et §8 point 2 : le fichier d'exemple d'environnement liste neuf fournisseurs d'IA infonuagiques ; aucun « mode souverain » n'est défini dans le code ni dans les documents produit.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-60",
+      "kind": "statut",
+      "statement": "Les vérifications ont été faites sur des données fictives.",
+      "scope": "OPSYS-AI, toutes capacités.",
+      "evidence": "Rapport 07 §7 : aucune donnée d'exploitation réelle, aucun témoignage, aucun chiffre mesuré en usage réel ; aucun test exécuté par l'audit.",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-61",
+      "kind": "statut",
+      "statement": "Il n'y a pas d'essai gratuit en libre-service : démonstration sur données fictives, étude de déploiement, puis pilote qualifié.",
+      "scope": "OPSYS-AI, parcours commercial.",
+      "evidence": "Rapport 07 §5.3 et §5.2 (« essai gratuit », « souscrire » : interdits).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-63",
+      "kind": "statut",
+      "statement": "Des scripts de sauvegarde et de restauration sont fournis, en pilote ; une restauration complète reste à éprouver sur votre installation.",
+      "scope": "OPSYS-AI, déploiement.",
+      "evidence": "Rapport 07 §3 (sauvegarde et restauration : pilote, restauration Docker non exécutée, rapportée par les auteurs).",
+      "evidence_url": null,
+      "source_version": "Dépôt leon36000/OPSYS-AI, branche main, commit 54d89d35 (21/10/2026) ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-26",
+      "valid_until": null
+    }
+  ],
+  "retirees": [
+    {
+      "id": "R-01",
+      "formulation": "« De la réception de vos appels à l'automatisation de vos opérations » (sous-titre d'exemple du brief)",
+      "raison": "Aucun agent vocal ni réceptionniste téléphonique n'est prouvé (rapport 07 §3 M1 et §5.2 : pas de téléphonie, pas de SIP).",
+      "remplacement": "Sous-titre sans appel téléphonique ; les messages vocaux transcrits restent un détail du département M1 (pilote)."
+    },
+    {
+      "id": "R-02",
+      "formulation": "« Conçu pour faciliter votre conformité à la Loi 25 »",
+      "raison": "Formulation permise par le rapport 06 §4.5 à condition de produire un gabarit d'entente de traitement, un modèle d'EFVP et une procédure d'incident : aucun n'existe encore.",
+      "remplacement": "Aucune mention de la Loi 25 sur ces deux pages. À rétablir quand les trois documents existent."
+    },
+    {
+      "id": "R-03",
+      "formulation": "« Vos données ne quittent jamais votre infrastructure » / « aucune donnée ne quitte le Québec »",
+      "raison": "Non démontré (rapport 06 §4.5 : schéma de flux, test de sortie réseau, liste des flux sortants, mode hors ligne testé).",
+      "remplacement": "Engagement de remettre le schéma des flux par écrit (CL-05) et de ne dire « aucune donnée ne sort » qu'après vérification sur la configuration du client."
+    },
+    {
+      "id": "R-04",
+      "formulation": "« Mode souverain » d'OPSYS-AI, « 100 % souverain », « aucune donnée chez un fournisseur d'IA », « hors ligne garanti », « aucune télémétrie »",
+      "raison": "Aucun mode souverain n'est défini dans OPSYS-AI ; la passerelle peut appeler neuf fournisseurs externes (rapport 07 §5.2, §8).",
+      "remplacement": "Description honnête du périmètre réel (CL-59) et engagement de documenter les flux."
+    },
+    {
+      "id": "R-05",
+      "formulation": "Gains de temps, pourcentages, économies, taux de réussite, « en quelques jours », nombre de tests, d'outils ou de lignes de code",
+      "raison": "Aucune mesure en usage réel (rapport 07 §5.2 et §7 ; brief §3).",
+      "remplacement": "Décrire la méthode, jamais un résultat. Aucun chiffre sur ces pages."
+    },
+    {
+      "id": "R-06",
+      "formulation": "Clients, logos, témoignages, partenaires (dont Gentek, Royal Solution de Bâtiment, O.A.M., Kaycan, Synergy)",
+      "raison": "Contexte métier du dépôt, aucun accord, aucun partenariat (rapport 07 §5.2).",
+      "remplacement": "Aucun mur de logos ; aucune citation."
+    },
+    {
+      "id": "R-07",
+      "formulation": "Mention de licence (« open source », « Apache », « propriétaire ») pour OPSYS-AI",
+      "raison": "Contradiction non tranchée entre LICENSE (Apache-2.0) et l'ADR-0003 (rapport 07 §6 point 14).",
+      "remplacement": "Aucune mention de licence."
+    },
+    {
+      "id": "R-08",
+      "formulation": "Envoi automatique de soumissions, de factures, de SMS, de courriels, d'avis ; publication automatique sur les réseaux",
+      "raison": "Aucun code d'envoi réel au client (rapport 07 §5.2).",
+      "remplacement": "« Préparé, approuvé, puis transmis par votre équipe » ; maillons « envoyé » et « accusé de réception » signalés comme cibles."
+    },
+    {
+      "id": "R-09",
+      "formulation": "Noms de prestataires et d'intégrations (QuickBooks, Stripe, Plaid, banques, Google, Meta, LinkedIn, TikTok, Twilio, Telegram, WhatsApp, Slack, Teams)",
+      "raison": "Intégrations prévues ou non raccordées (rapport 07 §5.2).",
+      "remplacement": "Aucun nom ; « connexions bancaires et comptables » indiquées comme prévues."
+    },
+    {
+      "id": "R-10",
+      "formulation": "« Application mobile complète pour quatre profils », « hors ligne vérifié », notifications poussées, géolocalisation en direct, itinéraires exacts",
+      "raison": "Profil client absent, resynchronisation jamais testée contre un serveur, pas de push, position fictive (rapport 07 §3 et §6).",
+      "remplacement": "Trois profils en pilote, un prévu ; hors ligne non vérifié et dit tel quel (CL-55)."
+    },
+    {
+      "id": "R-11",
+      "formulation": "« Une photo suffit pour une estimation », mesure de dimensions depuis une photo",
+      "raison": "Aucune mesure photo (rapport 07 §3 M3, classes C et E).",
+      "remplacement": "Mesure à partir de photos indiquée comme prévue (CL-D03)."
+    },
+    {
+      "id": "R-12",
+      "formulation": "« L'IA fait votre comptabilité et vos impôts », paie calculée, déclarations",
+      "raison": "Retenues non branchées ; calendrier fiscal à valider par un comptable (rapport 07 §3 M5).",
+      "remplacement": "Préparation de dossiers pour votre comptable ; calcul de la paie prévu (CL-38)."
+    },
+    {
+      "id": "R-13",
+      "formulation": "« Apprend automatiquement de toutes vos données », « mémoire parfaite », fusion opérationnelle, avatars, apprentissage étendu, agents qui décident seuls",
+      "raison": "Calibration gouvernée seulement ; vision non livrée (rapport 07 §5.2).",
+      "remplacement": "Journal des décisions avec leur contexte (CL-42) ; aucune section « vision »."
+    },
+    {
+      "id": "R-14",
+      "formulation": "Titre « Le chantier se termine. Le suivi ne s'arrête pas. » (annexe du brief)",
+      "raison": "Acceptable seulement si chaque étape garde son statut visible ; le suivi client n'est pas livré (rapport 07 §4.2).",
+      "remplacement": "Titre « Quand les travaux se terminent. », maillon par maillon, suivi client signalé comme cible."
+    },
+    {
+      "id": "R-15",
+      "formulation": "« Essai gratuit », « souscrire », « démarrer maintenant », « diagnostic gratuit »",
+      "raison": "Pas de produit en libre-service ; gratuité du diagnostic non décidée (rapport 06 §11.4).",
+      "remplacement": "« Demander une démonstration », « Étude de déploiement », « Discuter de mon projet »."
+    },
+    {
+      "id": "R-16",
+      "formulation": "« Numéro un », « leader », superlatifs, « révolutionnaire », « magique »",
+      "raison": "Aucune source (rapport 06 §11.3).",
+      "remplacement": "Phrases nettes, sans superlatif."
+    },
+    {
+      "id": "R-17",
+      "formulation": "Tailles, performances, classements ou préentraînement intégral de Quanta et Helix ; description de la suite Code et Corpus au-delà de leur vocation",
+      "raison": "Aucune fiche canonique fournie (brief §6).",
+      "remplacement": "Noms et vocation seulement, sans date de disponibilité (CL-28)."
+    },
+    {
+      "id": "R-18",
+      "formulation": "Mode « hybride » (sur place et hébergé)",
+      "raison": "À confirmer selon l'offre (rapport 06 §9).",
+      "remplacement": "Deux modes seulement."
+    },
+    {
+      "id": "R-19",
+      "formulation": "Vision par caméra et maison intelligente sur l'accueil",
+      "raison": "Le brief demande un parcours dédié, séparé de l'entrée B2B (§5).",
+      "remplacement": "Absents de ces deux pages."
+    },
+    {
+      "id": "R-20",
+      "formulation": "« Chaque matin », « chaque semaine » (résumés, briefings, relances planifiés)",
+      "raison": "Les tâches planifiées d'OPSYS-AI ne sont lancées par aucun script de déploiement (rapport 07 §6 point 10).",
+      "remplacement": "« Briefing de direction » sans cadence annoncée."
+    }
+  ]
+}
