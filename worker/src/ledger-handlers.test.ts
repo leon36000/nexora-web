@@ -9,11 +9,11 @@ import {
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { defaultRegistry } from "./handlers.ts";
 import {
   registerLedgerHandlers,
   staleReservationAfterMs,
 } from "./ledger-handlers.ts";
-import { defaultRegistry } from "./handlers.ts";
 import { HandlerRegistry } from "./registry.ts";
 
 let t: TestDatabase;
