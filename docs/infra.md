@@ -217,3 +217,21 @@ Dans le bundle `nexora-cms` : endpoint `/nexora-catalog` (administrateurs Direct
 ### Limites connues (non livrées)
 
 Un seul fournisseur par modèle (pas de bascule automatique selon la priorité) ; pas de planificateur qui libère les réservations perdues (plantage entre réservation et règlement : `releaseStaleReservations` existe, le worker ne l'appelle pas ; la dépense de la clé reste alors gonflée) ; estimation d'entrée prudente mais sans tokenizer (si l'amont rapporte plus que le maximum réservé, le règlement est plafonné au montant réservé) ; images et audio en entrée non testés ; limites RPM/TPM par clé seulement (pas par organisation ni par adresse) ; rapprochement périodique de la dépense LiteLLM avec le grand livre (contrôle de dérive) non écrit ; pas de tableau de bord d'administration de l'usage global ; entrée « Modèles » du menu à ajouter dans la navigation Directus ; pages `/modeles`, `/docs/api` : si le CMS publie une page de même chemin, la route statique la masque.
+
+## Autogestion IA et SEO (jalon S8)
+
+Détail : `docs/autogestion.md` (agents du site, injection, budget, passerelle) et `docs/seo.md` (SEO technique, audits, indexation, adaptateurs). Tables de la migration 0006 : `seo_audits`, `seo_issues`, `seo_settings`, `seo_adapters`, `sitemap_snapshots`, `indexing_submissions`, `site_agents`, `site_agent_runs`. Le chiffrement et la lecture du Coffre vivent désormais dans `packages/vault` (`@nexora/vault`), réexportés par `web/src/server/vault/` : le worker lit les clés des agents avec le même code et la même clé maîtresse.
+
+Tâches du worker : `site-agent.run` { runId }, `seo.audit` { auditId }, `seo.index` { trigger, dryRun? }, `seo.adapter-check` { key }. Le planificateur (`worker/src/scheduler.ts`) crée l'audit de 03 h, le filet d'indexation de 04 h, la santé horaire et la veille du lundi ; `WORKER_SCHEDULER=off` le coupe. Les tâches longues renouvellent leur bail (`worker/src/keepalive.ts`).
+
+| Variable | Où | Rôle |
+|---|---|---|
+| `SITE_ENV` | site, worker | `production` rend le site indexable ; toute autre valeur : `Disallow: /`, `X-Robots-Tag: noindex`, aucune soumission aux moteurs |
+| `ROBOTS_AI_TRAINING` | site | `allow` ou `disallow` (défaut) pour les robots d'entraînement (GPTBot, ClaudeBot…) |
+| `NEXORA_APP_INTERNAL_URL` | worker | adresse du site vue du worker : passerelle `/v1` des agents, sitemap de l'audit et de l'indexation |
+| `SEO_AUDIT_BASE_URL`, `SEO_AUDIT_PERF_MAX_PAGES` | worker | adresse interrogée par l'audit (défaut : `NEXORA_APP_INTERNAL_URL`), pages mesurées par Lighthouse (6) |
+| `LYCHEE_BIN` | worker | chemin de lychee (défaut `~/.local/bin/lychee`) |
+| `POSTIZ_URL` | worker | instance Postiz (vérification de la clé `seo.postiz.api_key`) |
+| `DIRECTUS_URL`, `LITELLM_BASE_URL` | worker | écritures de brouillons (jeton de l'agent, dans le Coffre) ; sonde de vivacité de LiteLLM |
+
+Chromium : audits (axe, Lighthouse) utilisent le Chromium de Playwright (`bunx playwright install chromium`) ; `CHROME_PATH` le remplace.
