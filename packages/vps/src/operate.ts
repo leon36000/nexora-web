@@ -366,7 +366,9 @@ async function deleteVm(deps: EngineDeps, inst: Instance) {
   if (inst.serverId && inst.vmid) {
     const { client, node, vmid } = await clientOf(deps, inst);
     const cfg = await client.findConfig(node, vmid);
-    if (cfg) {
+    // Même garde que compensate et purgeOld : seule la VM portant le nom de cette instance est supprimée
+    // (le numéro a pu être réattribué, la VM renommée) ; jamais une VM étrangère.
+    if (cfg && cfg.name === inst.vmName) {
       const st = await client.vmStatus(node, vmid);
       if (st.status === "running")
         await task(deps, client, await client.stopVm(node, vmid));
@@ -375,6 +377,22 @@ async function deleteVm(deps: EngineDeps, inst: Instance) {
         client,
         await client.deleteVm(node, vmid, { skiplock: true }),
       );
+    } else if (cfg) {
+      deps.log.error(
+        "vps : suppression ignorée, la VM ne porte pas le nom attendu",
+        {
+          instanceId: inst.id,
+        },
+      );
+      await recordVpsEvent(deps.db, {
+        organizationId: inst.organizationId,
+        orderId: inst.orderId,
+        instanceId: inst.id,
+        actor: "system",
+        kind: "delete_skipped_foreign_vm",
+        message:
+          "VM non supprimée : son nom ne correspond pas à l'instance (vérification manuelle requise)",
+      });
     }
   }
   await purgeOld(deps, inst, true);

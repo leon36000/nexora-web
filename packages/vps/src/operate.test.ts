@@ -242,6 +242,34 @@ describe("résiliation, rétention de 7 jours, suppression", () => {
     }
   });
 
+  it("la suppression ne détruit jamais une VM qui ne porte pas le nom de l'instance (garde commune avec compensate et purgeOld)", async () => {
+    const w = await active();
+    try {
+      await w.sub("canceled");
+      expect(await runLifecycle(w.deps, w.inst.id, "terminate")).toEqual({
+        done: true,
+      });
+      // Le numéro de VM a été réattribué / la VM renommée : ce n'est plus celle que nous avons créée.
+      const vm = w.sim.vms.get(w.inst.vmid as number);
+      if (!vm) throw new Error("VM attendue");
+      vm.name = "vm-d-un-autre-client";
+      vm.config.name = "vm-d-un-autre-client";
+      w.clock.now = new Date(w.clock.now.getTime() + 8 * DAY);
+      expect(await runLifecycle(w.deps, w.inst.id, "delete")).toEqual({
+        done: true,
+      });
+      expect(w.sim.vms.has(w.inst.vmid as number)).toBe(true);
+      expect(w.sim.callsTo("DELETE", `/qemu/${w.inst.vmid}`)).toHaveLength(0);
+      const kinds = (await t.db.select().from(vpsEvents))
+        .filter((e) => e.instanceId === w.inst.id)
+        .map((e) => e.kind);
+      expect(kinds).toContain("delete_skipped_foreign_vm");
+      expect(await w.reload()).toMatchObject({ status: "deleted" });
+    } finally {
+      await w.close();
+    }
+  });
+
   it("le balayage met en file la suspension et la suppression dues, sans doublon", async () => {
     const w = await active();
     try {
