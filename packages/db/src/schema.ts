@@ -148,3 +148,6 @@ export const processedEvents = pgTable(
     unique("processed_events_provider_event_unique").on(t.provider, t.eventId),
   ],
 );
+
+export * from "./schema-auth.ts";
+export * from "./schema-billing.ts";
