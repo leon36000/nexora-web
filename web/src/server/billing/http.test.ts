@@ -107,6 +107,45 @@ function post(
   });
 }
 
+describe("facturation : Stripe non configuré ou indisponible", () => {
+  it("un montant hors bornes reste refusé en 422 même si Stripe n'est pas configuré", async () => {
+    const { session } = await account();
+    const s = setup(session);
+    s.deps.stripe = async () => {
+      throw new Error("Secret Stripe absent");
+    };
+    for (const amount of ["0", "9,99", "5000.01", "99999"]) {
+      const res = await handleCreditsCheckout(
+        post("/api/billing/checkout/credits", { amount }, {}, true),
+        s.deps,
+      );
+      expect(res.status, amount).toBe(422);
+      expect(await res.json()).toEqual({ error: "invalid_amount" });
+    }
+  });
+
+  it("un client Stripe impossible à construire donne 503 payment_unavailable, pas une erreur interne", async () => {
+    const { session } = await account();
+    const s = setup(session);
+    s.deps.stripe = async () => {
+      throw new Error("Secret Stripe absent");
+    };
+    for (const [path, body] of [
+      ["/api/billing/checkout/credits", { amount: "50" }],
+      ["/api/billing/checkout/subscription", { plan: "pro" }],
+      ["/api/billing/portal", {}],
+    ] as const) {
+      const res = await (path.endsWith("credits")
+        ? handleCreditsCheckout
+        : path.endsWith("subscription")
+          ? handleSubscribeCheckout
+          : handlePortal)(post(path, body, {}, true), s.deps);
+      expect(res.status, path).toBe(503);
+      expect(await res.json()).toEqual({ error: "payment_unavailable" });
+    }
+  });
+});
+
 describe("POST /api/billing/checkout/credits", () => {
   it("formulaire : redirige (303) vers la page de paiement Stripe", async () => {
     const { session } = await account();
