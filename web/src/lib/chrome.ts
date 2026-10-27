@@ -157,6 +157,8 @@ export function buildChrome(
                 href: resolveHrefForLang(alt, lang, l.href),
               })),
             }))
+            // Une colonne dont tous les liens sont masqués disparaît avec son titre.
+            .filter((c) => c.links.length > 0)
         : dictFooter.columns,
     legal:
       legalRoots.length > 0

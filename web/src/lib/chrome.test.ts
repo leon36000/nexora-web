@@ -188,6 +188,43 @@ describe("liens vers des pages qui n'existent pas encore", () => {
     expect(chrome.footer.legal).toEqual([]);
   });
 
+  it("une colonne du pied de page dont tous les liens sont masqués disparaît avec son titre", () => {
+    const withEmpty: NavItem[] = [
+      item({
+        id: "f1",
+        placement: "footer",
+        label: "Produits",
+        href: "",
+        children: [
+          item({ id: "f1a", placement: "footer", label: "VPS", href: "/vps/" }),
+        ],
+      }),
+      item({
+        id: "f2",
+        placement: "footer",
+        label: "Ressources",
+        href: "",
+        children: [
+          item({
+            id: "f2a",
+            placement: "footer",
+            label: "Guide Loi 25",
+            href: "/ressources/loi-25/",
+          }),
+          item({
+            id: "f2b",
+            placement: "footer",
+            label: "Tarifs",
+            href: "/tarifs/",
+          }),
+        ],
+      }),
+    ];
+    const exists = targetExists(alt, ["/vps"]);
+    const chrome = buildChrome("fr", getDictionary("fr"), withEmpty, alt, exists);
+    expect(chrome.footer.columns.map((c) => c.title)).toEqual(["Produits"]);
+  });
+
   it("le slug de l'autre langue compte comme une page publiée", () => {
     const exists = targetExists(alt, []);
     expect(exists?.("/sovereignty")).toBe(true);
