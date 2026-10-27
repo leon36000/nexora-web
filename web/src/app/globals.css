@@ -310,9 +310,7 @@
 }
 
 @utility wash-dark {
-  background-image:
-    radial-gradient(52rem 26rem at 92% -10%, rgb(206 65 28 / 0.15), transparent 62%),
-    radial-gradient(36rem 20rem at -6% 112%, rgb(244 241 234 / 0.045), transparent 64%);
+  background-image: radial-gradient(52rem 26rem at 92% -10%, rgb(206 65 28 / 0.15), transparent 62%);
 }
 
 @utility wash-sand {
