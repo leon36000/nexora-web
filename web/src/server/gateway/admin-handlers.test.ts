@@ -189,6 +189,33 @@ describe("flux complet de l'administration", () => {
     });
   });
 
+  it("le test du fournisseur ne suit pas les redirections (la clé du coffre ne part pas ailleurs) et les signale", async () => {
+    const seen: Array<{ url: string; redirect: RequestRedirect | undefined }> =
+      [];
+    const redirecting = (async (
+      input: RequestInfo | URL,
+      init?: RequestInit,
+    ) => {
+      seen.push({ url: String(input), redirect: init?.redirect });
+      return new Response(null, {
+        status: 302,
+        headers: { location: "http://169.254.169.254/latest/meta-data" },
+      });
+    }) as typeof fetch;
+    const r = await call(
+      "POST",
+      `providers/${providerId}/test`,
+      undefined,
+      undefined,
+      deps({ fetch: redirecting }),
+    );
+    expect(seen).toHaveLength(1);
+    expect(seen[0]?.redirect).toBe("manual");
+    expect(r.json.ok).toBe(false);
+    expect(r.json.detail).toMatch(/redirection/i);
+    expect(JSON.stringify(r.json)).not.toContain("169.254");
+  });
+
   it("crée un modèle ; publier sans prix est refusé (jamais 0 $)", async () => {
     const created = await call("POST", "models", {
       publicId: "nexora/essai-1",
