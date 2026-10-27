@@ -119,9 +119,9 @@ describe("checkPrice : tarif de cache (M3)", () => {
     marginFloorBps: 3000,
   };
   it("sans coût amont de cache, le cache amont est facturé au tarif d'entrée : le plancher s'y applique", () => {
-    expect(
-      checkPrice({ ...base, sellCacheCadMicro: 1n }, fx, "chat"),
-    ).toEqual([{ code: "below_margin_floor", field: "cache" }]);
+    expect(checkPrice({ ...base, sellCacheCadMicro: 1n }, fx, "chat")).toEqual([
+      { code: "below_margin_floor", field: "cache" },
+    ]);
     expect(
       checkPrice({ ...base, sellCacheCadMicro: 910_000n }, fx, "chat"),
     ).toEqual([]);

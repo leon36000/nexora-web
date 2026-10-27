@@ -5,7 +5,11 @@ describe("validation des formulaires de compte (avant tout appel au serveur)", (
   it("courriel : refuse le vide, les espaces et les formes impossibles ; accepte une adresse ordinaire", () => {
     for (const bad of ["", "   ", "abc", "a@b", "a b@c.d", "@c.d", "a@.d"])
       expect(validateEmail(bad), JSON.stringify(bad)).toBe("invalidEmail");
-    for (const good of ["a@b.co", " recette-1@exemple.test ", "x.y+z@sub.exemple.ca"])
+    for (const good of [
+      "a@b.co",
+      " recette-1@exemple.test ",
+      "x.y+z@sub.exemple.ca",
+    ])
       expect(validateEmail(good), good).toBeNull();
   });
 
@@ -13,8 +17,10 @@ describe("validation des formulaires de compte (avant tout appel au serveur)", (
     const ok = { name: "Ana", email: "a@b.co", password: "0123456789" };
     expect(validateSignup(ok)).toBeNull();
     expect(validateSignup({ ...ok, name: "   " })).toBe("nameRequired");
-    expect(validateSignup({ ...ok, name: "" , email: "" })).toBe("nameRequired");
-    expect(validateSignup({ ...ok, email: "pas-un-courriel" })).toBe("invalidEmail");
+    expect(validateSignup({ ...ok, name: "", email: "" })).toBe("nameRequired");
+    expect(validateSignup({ ...ok, email: "pas-un-courriel" })).toBe(
+      "invalidEmail",
+    );
     expect(validateSignup({ ...ok, password: "123456789" })).toBe("weak");
     expect(validateSignup({ ...ok, password: "" })).toBe("weak");
   });

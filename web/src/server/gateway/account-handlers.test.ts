@@ -150,7 +150,10 @@ describe("révocation", () => {
 
   it("une seconde révocation renvoie la date de la première, pas une date inventée", async () => {
     const created = await (
-      await handleCreateKey(req("POST", { name: "deux fois" }), deps(owner(orgA)))
+      await handleCreateKey(
+        req("POST", { name: "deux fois" }),
+        deps(owner(orgA)),
+      )
     ).json();
     const first = await (
       await handleRevokeKey(req("DELETE"), created.id, deps(owner(orgA)))

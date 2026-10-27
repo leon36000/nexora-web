@@ -10,12 +10,12 @@ import {
   memberAc,
   ownerAc,
 } from "better-auth/plugins/organization/access";
+import { MIN_PASSWORD_LENGTH } from "@/lib/account-rules";
 import {
   normalizeLocale,
   resetPasswordEmail,
   verificationEmail,
 } from "./emails";
-import { MIN_PASSWORD_LENGTH } from "@/lib/account-rules";
 import type { Mailer } from "./mailer";
 import { ensureUserOrganization } from "./organization";
 
