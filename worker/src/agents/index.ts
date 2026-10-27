@@ -1,5 +1,6 @@
 import type { Database } from "@nexora/db";
 import { readVaultSecret } from "@nexora/vault";
+import { keepJobAlive } from "../keepalive.ts";
 import type { JobHandler } from "../registry.ts";
 import { createAgentDirectus } from "./directus-client.ts";
 import { createGatewayClient } from "./gateway-client.ts";
@@ -49,7 +50,12 @@ export function createSiteAgentRunHandler(deps: RunnerDeps): JobHandler {
   return async (job, ctx) => {
     const runId = job.payload.runId;
     if (typeof runId !== "string") throw new Error("runId manquant");
-    const outcome = await executeRun(deps, runId, ctx.signal);
-    ctx.log.info("site-agent.run", { runId, outcome });
+    const stop = keepJobAlive(deps.db, job.id);
+    try {
+      const outcome = await executeRun(deps, runId, ctx.signal);
+      ctx.log.info("site-agent.run", { runId, outcome });
+    } finally {
+      stop();
+    }
   };
 }

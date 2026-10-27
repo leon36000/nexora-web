@@ -2,6 +2,7 @@ import { createDb } from "@nexora/db";
 import { loadRootEnv } from "@nexora/db/env";
 import { createLogger } from "@nexora/log";
 import { defaultRegistry } from "./handlers.ts";
+import { startScheduler } from "./scheduler.ts";
 import { Worker } from "./worker.ts";
 
 loadRootEnv();
@@ -21,11 +22,18 @@ const worker = new Worker({
   pollIntervalMs: Number(process.env.WORKER_POLL_MS ?? 1000),
 });
 
+// Planificateur (audit nocturne, indexation, santé des modèles, veille) : WORKER_SCHEDULER=off pour le couper.
+const scheduler =
+  process.env.WORKER_SCHEDULER === "off"
+    ? null
+    : startScheduler({ db: handle.db, log });
+
 let stopping = false;
 async function shutdown(signal: string) {
   if (stopping) return;
   stopping = true;
   log.info("signal reçu", { signal });
+  scheduler?.stop();
   const clean = await worker.stop(30_000);
   await handle.close();
   process.exit(clean ? 0 : 1);

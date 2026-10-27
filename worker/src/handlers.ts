@@ -6,6 +6,7 @@ import {
 } from "./agents/index.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { HandlerRegistry } from "./registry.ts";
+import { registerSeoHandlers } from "./seo/handlers.ts";
 
 /**
  * Gestionnaires du worker : contrôle de vie (S1) et notification des demandes de contact (S3).
@@ -30,5 +31,7 @@ export function defaultRegistry(
       "site-agent.run",
       createSiteAgentRunHandler(productionRunnerDeps(deps.db, deps.log)),
     );
+  if (deps.db && deps.log)
+    registerSeoHandlers(registry, { db: deps.db, log: deps.log });
   return registry;
 }
