@@ -327,10 +327,15 @@ export class ProxmoxClient {
   rebootVm(node: string, vmid: number): Promise<string> {
     return this.call("POST", `/nodes/${q(node)}/qemu/${vmid}/status/reboot`);
   }
-  deleteVm(node: string, vmid: number): Promise<string> {
+  deleteVm(
+    node: string,
+    vmid: number,
+    opts: { skiplock?: boolean } = {},
+  ): Promise<string> {
     return this.call("DELETE", `/nodes/${q(node)}/qemu/${vmid}`, {
       purge: true,
       "destroy-unreferenced-disks": true,
+      ...(opts.skiplock ? { skiplock: true } : {}),
     });
   }
 

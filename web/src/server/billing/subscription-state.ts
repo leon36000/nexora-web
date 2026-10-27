@@ -116,21 +116,5 @@ export function applySubscriptionEvent(
   }
 }
 
-export type AccessLevel = "full" | "grace" | "suspended" | "none";
-
-export function accessLevel(state: SubState, now: Date): AccessLevel {
-  switch (state.status) {
-    case "active":
-    case "trialing":
-      return "full";
-    case "past_due":
-      return state.graceEndsAt && state.graceEndsAt > now
-        ? "grace"
-        : "suspended";
-    case "unpaid":
-    case "paused":
-      return "suspended";
-    default:
-      return "none";
-  }
-}
+// Règle partagée avec le worker (provisionnement VPS) : définie dans @nexora/db.
+export { type AccessLevel, accessLevel } from "@nexora/db";

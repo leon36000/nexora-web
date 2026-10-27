@@ -50,6 +50,13 @@
       "when": 1793075197296,
       "tag": "0006_s6_vps",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793075784119,
+      "tag": "0007_s6_vps_reinstall",
+      "breakpoints": true
     }
   ]
 }

@@ -411,6 +411,12 @@ export const vpsInstances = pgTable(
     installScriptSha256: text("install_script_sha256"),
     sshHostKeyFingerprint: text("ssh_host_key_fingerprint"),
     lastSnapshotName: text("last_snapshot_name"),
+    /**
+     * Réinstallation : l'ancienne VM (arrêtée, détachée du réseau, avec son instantané) est gardée
+     * jusqu'à cette date (7 jours) pour qu'une erreur reste récupérable, puis supprimée.
+     */
+    previousVmid: integer("previous_vmid"),
+    previousDeleteAfter: ts("previous_delete_after"),
     /** Raison courte, nettoyée, du dernier échec. */
     lastError: text("last_error"),
     activatedAt: ts("activated_at"),
