@@ -11,6 +11,7 @@ import {
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { estimateOutputTokens } from "./estimate";
 import { createApiKey, revokeApiKey } from "./keys";
 import { requestCost } from "./pricing";
 import {
@@ -828,6 +829,155 @@ describe("flux SSE", () => {
     expect(ev?.status).toBe("aborted");
     expect(ev?.costMicro).toBeGreaterThan(0n);
     expect(acct.balanceMicro).toBe(10n * M - (ev?.costMicro ?? 0n));
+  });
+});
+
+describe("flux coupé avant le bloc d'usage : ce qui a été livré ou consommé est facturé", () => {
+  const toolDelta = (args: string, extra: Record<string, unknown> = {}) =>
+    ev({
+      id: "g",
+      object: "chat.completion.chunk",
+      model: "nexora/test-chat",
+      choices: [
+        {
+          index: 0,
+          delta: {
+            tool_calls: [
+              {
+                index: 0,
+                id: "call_1",
+                function: { name: "meteo", arguments: args },
+              },
+            ],
+            ...extra,
+          },
+          finish_reason: null,
+        },
+      ],
+    });
+  const cut = (chunks: string[]) => () => {
+    const enc = new TextEncoder();
+    return new Response(
+      new ReadableStream({
+        async start(ctrl) {
+          for (const c of chunks) {
+            ctrl.enqueue(enc.encode(c));
+            await new Promise((r) => setTimeout(r, 3));
+          }
+          ctrl.close(); // fin sans bloc d'usage ni [DONE]
+        },
+      }),
+      { headers: { "content-type": "text/event-stream" } },
+    );
+  };
+  const eventOf = async (org: string) =>
+    (
+      await t.db
+        .select()
+        .from(usageEvents)
+        .where(eq(usageEvents.organizationId, org))
+    )[0];
+
+  it("appels d'outils sans texte : l'invite estimée ET les arguments estimés sont facturés", async () => {
+    const c = await client();
+    const args = ['{"ville":', '"Québec","unite":', '"celsius"}'];
+    upstream = cut(args.map((a) => toolDelta(a)));
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    await res.text();
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.completionTokens).toBe(
+      estimateOutputTokens(args.join("").length),
+    );
+    const expected = requestCost(
+      {
+        prompt: e?.promptTokens ?? 0,
+        completion: e?.completionTokens ?? 0,
+        cached: 0,
+      },
+      PRICE,
+    );
+    expect(e?.costMicro).toBe(expected);
+    expect(expected).toBeGreaterThan(0n);
+    expect(await getAccount(t.db, c.org)).toMatchObject({
+      balanceMicro: 10n * M - expected,
+      heldMicro: 0n,
+    });
+  });
+
+  it("le raisonnement (delta.reasoning) est aussi compté", async () => {
+    const c = await client();
+    const think = "Je réfléchis à la question posée par le client. ".repeat(4);
+    upstream = cut([
+      ev({
+        id: "g",
+        object: "chat.completion.chunk",
+        model: "nexora/test-chat",
+        choices: [
+          { index: 0, delta: { reasoning: think }, finish_reason: null },
+        ],
+      }),
+    ]);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    await res.text();
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.completionTokens).toBe(estimateOutputTokens(think.length));
+  });
+
+  it("l'amont répond 200 puis le flux se termine sans rien livrer : l'invite estimée est facturée (pas zéro)", async () => {
+    const c = await client();
+    upstream = cut([]);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    await res.text();
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.completionTokens).toBe(0);
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.costMicro).toBe(
+      requestCost(
+        { prompt: e?.promptTokens ?? 0, completion: 0, cached: 0 },
+        PRICE,
+      ),
+    );
+    expect(e?.costMicro).toBeGreaterThan(0n);
+  });
+
+  it("le client coupe avant le premier fragment : l'invite estimée est facturée", async () => {
+    const c = await client();
+    upstream = () =>
+      new Response(
+        new ReadableStream({
+          async start(ctrl) {
+            await new Promise((r) => setTimeout(r, 1500));
+            ctrl.close();
+          },
+        }),
+        { headers: { "content-type": "text/event-stream" } },
+      );
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    const reader = res.body?.getReader();
+    if (!reader) throw new Error("flux attendu");
+    await reader.cancel();
+    await new Promise((r) => setTimeout(r, 100));
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.errorCode).toBe("client_closed");
+    expect(e?.costMicro).toBeGreaterThan(0n);
+    expect((await getAccount(t.db, c.org)).heldMicro).toBe(0n);
   });
 });
 
