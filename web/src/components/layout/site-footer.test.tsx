@@ -25,7 +25,7 @@ describe("pied de page : bloc légal", () => {
       legal: [],
     });
     expect(html).not.toContain(getDictionary("fr").footer.legalTitle);
-    expect(html).not.toContain("<h2 class=\"sr-only\"");
+    expect(html).not.toContain('<h2 class="sr-only"');
     // le sélecteur de langue et le droit d'auteur restent présents
     expect(html).toContain(getDictionary("fr").footer.copyright);
   });

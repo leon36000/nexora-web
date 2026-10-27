@@ -20,16 +20,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const t = getAccountVpsDictionary(lang);
-  return {
-    ...buildPageMetadata({
-      lang,
-      path: "/compte/vps",
-      title: t.meta.title,
-      description: t.meta.description,
-      siteName: "Nexora",
-    }),
-    robots: { index: false, follow: false },
-  };
+  return buildPageMetadata({
+    lang,
+    path: "/compte/vps",
+    title: t.meta.title,
+    description: t.meta.description,
+    siteName: "Nexora",
+    noindex: true,
+  });
 }
 
 type Search = Record<string, string | string[] | undefined>;

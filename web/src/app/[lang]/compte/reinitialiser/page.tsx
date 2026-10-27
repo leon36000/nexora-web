@@ -12,16 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const t = getAccountDictionary(lang);
-  return {
-    ...buildPageMetadata({
-      lang,
-      path: "/compte/reinitialiser",
-      title: t.meta.reset,
-      description: t.reset.lead,
-      siteName: "Nexora",
-    }),
-    robots: { index: false, follow: false },
-  };
+  return buildPageMetadata({
+    lang,
+    path: "/compte/reinitialiser",
+    title: t.meta.reset,
+    description: t.reset.lead,
+    siteName: "Nexora",
+    noindex: true,
+  });
 }
 
 export default async function ResetPage() {

@@ -12,16 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const t = getAccountDictionary(lang);
-  return {
-    ...buildPageMetadata({
-      lang,
-      path: "/compte/verification",
-      title: t.meta.verify,
-      description: t.verify.text,
-      siteName: "Nexora",
-    }),
-    robots: { index: false, follow: false },
-  };
+  return buildPageMetadata({
+    lang,
+    path: "/compte/verification",
+    title: t.meta.verify,
+    description: t.verify.text,
+    siteName: "Nexora",
+    noindex: true,
+  });
 }
 
 /**

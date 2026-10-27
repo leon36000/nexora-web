@@ -16,6 +16,11 @@ type PageMetadataInput = {
   title: string;
   description: string;
   siteName: string;
+  /**
+   * Page hors index (espace client) : `robots` noindex et aucune image Open Graph (la route /og ne produit pas
+   * d'image pour une page non publique).
+   */
+  noindex?: boolean;
 };
 
 /**
@@ -28,6 +33,7 @@ export function buildPageMetadata({
   title,
   description,
   siteName,
+  noindex = false,
 }: PageMetadataInput): Metadata {
   const languages: Record<string, string> = {};
   for (const l of LANGS) languages[HTML_LANG[l]] = localizePath(l, path);
@@ -49,13 +55,14 @@ export function buildPageMetadata({
       url: localizePath(lang, path),
       locale: OG_LOCALE[lang],
       alternateLocale: LANGS.filter((l) => l !== lang).map((l) => OG_LOCALE[l]),
-      images: [ogImage(lang, path, title)],
+      ...(noindex ? {} : { images: [ogImage(lang, path, title)] }),
     },
     twitter: {
-      card: "summary_large_image",
+      card: noindex ? "summary" : "summary_large_image",
       title,
       description,
-      images: [ogImage(lang, path, title).url],
+      ...(noindex ? {} : { images: [ogImage(lang, path, title).url] }),
     },
+    ...(noindex ? { robots: { index: false, follow: false } } : {}),
   };
 }

@@ -6,8 +6,10 @@ import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { OG_SIZE } from "@/lib/seo/og";
 import { resolveOgTarget, stripBrand } from "@/lib/seo/og-target";
+import { getPublicAgents } from "@/server/agents/read";
 import { getPage } from "@/server/cms/read";
 import { getPublicCatalog } from "@/server/gateway/read";
+import { getPublicVps } from "@/server/vps/read";
 
 /**
  * Image Open Graph (1200 × 630) d'une page PUBLIÉE ou d'une route connue : `/og/fr`, `/og/en/opsys-ai`,
@@ -67,6 +69,15 @@ async function titleOf(
   if (target.kind === "model") {
     const catalog = await getPublicCatalog();
     return catalog.models.find((m) => m.id === target.id)?.name ?? null;
+  }
+  if (target.kind === "vps") {
+    const vps = await getPublicVps();
+    return vps.apps.find((a) => a.code === target.code)?.name ?? null;
+  }
+  if (target.kind === "agent") {
+    const { agents } = await getPublicAgents();
+    const agent = agents.find((a) => a.slug === target.slug);
+    return agent ? (lang === "fr" ? agent.nameFr : agent.nameEn) : null;
   }
   const result = await getPage(lang, target.slug);
   return result.status === "ok" && result.preview === null

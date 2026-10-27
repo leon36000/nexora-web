@@ -221,7 +221,13 @@ describe("liens vers des pages qui n'existent pas encore", () => {
       }),
     ];
     const exists = targetExists(alt, ["/vps"]);
-    const chrome = buildChrome("fr", getDictionary("fr"), withEmpty, alt, exists);
+    const chrome = buildChrome(
+      "fr",
+      getDictionary("fr"),
+      withEmpty,
+      alt,
+      exists,
+    );
     expect(chrome.footer.columns.map((c) => c.title)).toEqual(["Produits"]);
   });
 
