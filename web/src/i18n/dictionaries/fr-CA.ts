@@ -156,6 +156,23 @@ export const frCA = {
     cta: "Retour à l’accueil",
   },
 
+  cms: {
+    priceOnRequest: "Sur demande",
+    preview: {
+      banner: "Aperçu — non publié",
+      version: "Version :",
+      noVersion: "Aucune version en cours : contenu principal de la page",
+      pageStatus: "statut",
+      exit: "Quitter l’aperçu",
+    },
+    unavailable: {
+      label: "Contenu indisponible",
+      title: "Cette page est momentanément indisponible.",
+      text: "Nous ne parvenons pas à lire le contenu pour l’instant. Réessayez dans quelques instants.",
+      cta: "Retour à l’accueil",
+    },
+  },
+
   home: {
     hero: {
       label: "IA souveraine au Québec",

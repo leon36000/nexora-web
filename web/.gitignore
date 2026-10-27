@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# instantanés de contenu (dernière version connue de Directus)
+/.cache/

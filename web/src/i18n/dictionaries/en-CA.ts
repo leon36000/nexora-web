@@ -152,6 +152,23 @@ export const enCA: Dictionary = {
     cta: "Back to the home page",
   },
 
+  cms: {
+    priceOnRequest: "On request",
+    preview: {
+      banner: "Preview — not published",
+      version: "Version:",
+      noVersion: "No version in progress: showing the page’s main content",
+      pageStatus: "status",
+      exit: "Exit preview",
+    },
+    unavailable: {
+      label: "Content unavailable",
+      title: "This page is temporarily unavailable.",
+      text: "We can’t read the content right now. Please try again in a few moments.",
+      cta: "Back to home",
+    },
+  },
+
   home: {
     hero: {
       label: "Sovereign AI in Québec",
