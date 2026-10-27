@@ -266,7 +266,7 @@ Côté WorkStudio (à poser par l'exploitant, non modifié ici) : `NEXORA_EMBED_
 
 Détail : `docs/autogestion.md` (agents du site, injection, budget, passerelle) et `docs/seo.md` (SEO technique, audits, indexation, adaptateurs). Tables de la migration 0006 : `seo_audits`, `seo_issues`, `seo_settings`, `seo_adapters`, `sitemap_snapshots`, `indexing_submissions`, `site_agents`, `site_agent_runs`. Le chiffrement et la lecture du Coffre vivent désormais dans `packages/vault` (`@nexora/vault`), réexportés par `web/src/server/vault/` : le worker lit les clés des agents avec le même code et la même clé maîtresse.
 
-Tâches du worker : `site-agent.run` { runId }, `seo.audit` { auditId }, `seo.index` { trigger, dryRun? }, `seo.adapter-check` { key }. Le planificateur (`worker/src/scheduler.ts`) crée l'audit de 03 h, le filet d'indexation de 04 h, la santé horaire et la veille du lundi ; `WORKER_SCHEDULER=off` le coupe. Les tâches longues renouvellent leur bail (`worker/src/keepalive.ts`).
+Tâches du worker : `site-agent.run` { runId }, `seo.audit` { auditId }, `seo.index` { trigger, dryRun? }, `seo.adapter-check` { key }. Le planificateur (`worker/src/scheduler.ts`) crée l'audit de 03 h, le filet d'indexation de 04 h, la santé horaire et la veille du lundi ; `WORKER_SCHEDULER=off` le coupe **en entier** : il arrête aussi `ledger.release-stale` (libération des réservations perdues, toutes les 10 minutes) et `ledger.expire` (expiration des crédits, quotidienne), qui ne sont pas du SEO ; à n'utiliser que pour un essai. Les tâches longues renouvellent leur bail (`worker/src/keepalive.ts`).
 
 | Variable | Où | Rôle |
 |---|---|---|

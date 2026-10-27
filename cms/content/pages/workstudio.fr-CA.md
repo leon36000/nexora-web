@@ -213,7 +213,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Peut-on l'essayer sans engagement ?
 
-Il n'y a pas de compte à créer pour l'instant : les offres en libre-service ne sont pas encore ouvertes. Nous proposons une démonstration, sur des données fictives, puis nous parlons de votre cas.
+Le libre-service n'est pas encore ouvert à la vente : les comptes et les paiements ne fonctionnent qu'en mode test. Nous proposons une démonstration, sur des données fictives, puis nous parlons de votre cas.
 
 #### Faut-il savoir programmer ?
 

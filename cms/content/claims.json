@@ -138,9 +138,9 @@
     {
       "id": "CL-12",
       "kind": "fait",
-      "statement": "Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes.",
-      "scope": "État au 26/10/2026. À RÉVISER à l'ouverture de chaque offre.",
-      "evidence": "Jalons S5 (passerelle), S6 (VPS) et S7 (agents hébergés) non livrés ; seul S1 est terminé et S2 est en cours.",
+      "statement": "Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes à la vente : les parcours de compte et de paiement ne fonctionnent qu'en mode test, aucun paiement réel n'est accepté et aucun prix n'est publié.",
+      "scope": "État au 27/10/2026. À RÉVISER à l'ouverture de chaque offre (accord écrit du fondateur, prix, validations juridiques et fiscales, clés Stripe de production).",
+      "evidence": "Corrigée le 27/10/2026 (écart E7 de docs/recette/flux-sortants.md). Les jalons S5 (passerelle), S6 (VPS) et S7 (agents hébergés) sont livrés, mais en mode test seulement : le code refuse toute clé Stripe de production et tout événement livemode (StripeModeError, 400), les plans VPS « [DEV] » sont les seuls commandables et aucun prix réel n'est fixé. Un compte peut donc être créé, mais aucun achat réel n'est possible.",
       "evidence_url": null,
       "source_version": "Conception docs/superpowers/specs/2026-10-26-nexora-site-design.md et journal docs/superpowers/plans/ledger.md (26/10/2026), §15",
       "approval_status": "en_revue",

@@ -79,22 +79,22 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 | `DIRECTUS_URL` | web, worker | oui | Adresse interne de Directus |
 | `DIRECTUS_READER_TOKEN`, `DIRECTUS_PUBLISHER_TOKEN` | web | oui | Jetons « Lecteur site » (lecture) et « Publication » (aperçu seulement), créés par `cms/scripts/apply.ts` |
 | `NEXORA_PREVIEW_SECRET` | web | pour l'aperçu | Signe les liens d'aperçu |
-| `NEXORA_APP_INTERNAL_URL` | Directus, worker | oui | Adresse du site vue de Directus (revalidation, Coffre) et du worker (agents) |
-| `LITELLM_BASE_URL`, `LITELLM_MASTER_KEY` | web, worker | pour `/v1` | Sans la clé maîtresse, `/v1` répond 503 |
+| `NEXORA_APP_INTERNAL_URL` | Directus, worker | oui | Adresse du site vue de Directus (revalidation, Coffre) et du worker (agents). **À poser explicitement des deux côtés, avec la même valeur** : les défauts ne valent que pour le développement (`deploy/compose.yml` : `http://host.docker.internal:3500` ; worker hors production : `http://127.0.0.1:3500`). En production, le worker refuse de démarrer sans elle (et sans `DIRECTUS_URL`) ; Directus l'accepte vide, mais journalise alors au démarrage, et à chaque publication, « revalidation ignorée » : le site n'est plus rafraîchi |
+| `LITELLM_BASE_URL`, `LITELLM_MASTER_KEY` | web (les deux), worker (adresse seule) | pour `/v1` | Sans la clé maîtresse, `/v1` répond 503. Le worker n'a pas d'adresse par défaut : sans `LITELLM_BASE_URL`, la sonde LiteLLM de l'agent Santé est notée « non configurée » dans son rapport (jamais sautée en silence) |
 | `NEXORA_OUTBOUND_ALLOW` | web | si un amont est interne | Liste (virgules) d'hôtes, adresses ou plages CIDR internes autorisés pour fournisseurs et instances WorkStudio (§8). Défaut : réseau interne refusé en production |
 | `SMTP_URL`, `MAIL_FROM` | web | oui | Courriels transactionnels. **Défaut = Mailpit local** : en production, rien ne part tant que ce n'est pas réglé |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD_FILE`, `SMTP_FROM`, `CONTACT_NOTIFY_TO`, `VPS_ALERT_TO` | worker | oui | Notification des demandes de diagnostic et alertes VPS. Mot de passe SMTP : chemin d'un secret Docker, jamais la valeur |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_REQUIRE_TLS`, `SMTP_USER`, `SMTP_PASSWORD_FILE`, `SMTP_FROM`, `CONTACT_NOTIFY_TO`, `VPS_ALERT_TO` | worker | oui | Notification des demandes de diagnostic et alertes VPS. **Mot de passe SMTP : seulement le chemin d'un secret (`SMTP_PASSWORD_FILE`)** ; une variable `SMTP_PASSWORD` en clair est refusée (le worker ne démarre pas, avec un message qui le dit : l'environnement se lit par `docker inspect`). `SMTP_SECURE=true` : TLS implicite (port 465). `SMTP_REQUIRE_TLS=true` : STARTTLS obligatoire (port 587) ; à poser avec un vrai SMTP, laissé vide avec Mailpit qui n'a pas de TLS |
 | `NEXORA_ALTCHA_SECRET` | web | non | Secret des défis anti-abus (dérivé du jeton d'administration à défaut) |
 | `ROBOTS_AI_TRAINING` | web | non | `allow` autorise les robots d'entraînement ; défaut : refusés |
 | `CMS_SNAPSHOT_DIR`, `CMS_TIMEOUT_MS` | web | recommandé | Instantanés du CMS (volume persistant) ; délai par requête vers Directus (4000) |
 | `LOG_LEVEL` | web | non | `debug` ou `info` (défaut) |
-| `WORKER_CONCURRENCY` (4), `WORKER_POLL_MS` (1000), `WORKER_SCHEDULER` | worker | non | Réglages du worker |
+| `WORKER_CONCURRENCY` (4), `WORKER_POLL_MS` (1000), `WORKER_SCHEDULER` | worker | non | Réglages du worker. **`WORKER_SCHEDULER=off` coupe tout le planificateur, pas seulement le SEO** : audit nocturne, indexation, santé des modèles, veille, **mais aussi `ledger.release-stale` (libération des réservations perdues, toutes les 10 minutes) et `ledger.expire` (expiration quotidienne des crédits)**. À n'utiliser que pour un essai ; sans le planificateur, les réservations d'un appel interrompu restent bloquées et les crédits n'expirent pas |
 | `GATEWAY_*`, `BILLING_*`, `VPS_*` | web, worker | non | Limites et durées (`docs/infra.md`) |
 | `VPS_WORKER_SSH_PUBLIC_KEY` | worker | pour les VPS | Clé publique du worker (la privée est au Coffre) |
 | `NEXT_TELEMETRY_DISABLED=1` | machine de build | oui | Désactive la télémétrie anonyme de Next.js |
 | `STRIPE_*` | web | **développement seulement** | Ignorées en production : les clés Stripe sont au Coffre (§6) |
 
-Directus (`deploy/compose.yml`) : `DIRECTUS_SECRET`, `DIRECTUS_ADMIN_EMAIL`, `DIRECTUS_ADMIN_PASSWORD`, `POSTGRES_PASSWORD`, `PUBLIC_URL`, `CORS_ORIGIN`, `TELEMETRY=false`. Les images sont épinglées **par empreinte** : ne jamais passer à `latest`. LiteLLM reste en `v1.106.2` (la 1.107.0 du 21/10/2026 était piégée).
+Directus (`deploy/compose.yml`) : `DIRECTUS_SECRET`, `DIRECTUS_ADMIN_EMAIL`, `DIRECTUS_ADMIN_PASSWORD`, `POSTGRES_PASSWORD`, `DIRECTUS_PUBLIC_URL` (devient `PUBLIC_URL`, défaut `http://localhost:8456`), `DIRECTUS_CORS_ORIGIN` (devient `CORS_ORIGIN`, même défaut), `MARKETPLACE_REGISTRY` (posé à une adresse injoignable : la Marketplace ne contacte plus `registry.directus.io`), `TELEMETRY=false`. `deploy/init-env.sh` génère les secrets de `deploy/.env`, dont `BETTER_AUTH_SECRET` ; `deploy/.env.example` liste les variables de production (commentées). Les images sont épinglées **par empreinte** : ne jamais passer à `latest`. LiteLLM reste en `v1.106.2` (la 1.107.0 du 21/10/2026 était piégée).
 
 ## 4. Le Coffre et la rotation de la clé maîtresse
 
@@ -191,8 +191,14 @@ Le site ne gère pas le TLS. Un proxy (nginx, Caddy…) termine HTTPS et transme
 Détail et preuves : `docs/recette/sauvegarde.md`.
 
 ```bash
-# Tous les jours (exemple de crontab) ; l'archive est signée et chiffrée, les clés sont dans /etc/nexora/ (mode 0400)
-17 3 * * * NEXORA_BACKUP_SIGNING_KEY_FILE=/etc/nexora/backup-sign.key NEXORA_BACKUP_ENCRYPT_KEY_FILE=/etc/nexora/backup-enc.key bash /opt/nexora/deploy/backup.sh --out /var/backups/nexora
+# Tous les jours (exemple de crontab). Le chiffrement est OBLIGATOIRE (sans clé de chiffrement, backup.sh refuse de travailler).
+# Les clés sont dans /etc/nexora/ (mode 0400). Poser aussi les noms des conteneurs : sans eux, backup.sh retombe sur les
+# noms de la pile de développement (nexorasite-db-1, nexorasite-directus-1) et sauvegarderait le mauvais serveur, ou rien.
+17 3 * * * NEXORA_DB_CONTAINER=<conteneur PostgreSQL> NEXORA_DIRECTUS_CONTAINER=<conteneur Directus> NEXORA_BACKUP_SIGNING_KEY_FILE=/etc/nexora/backup-sign.key NEXORA_BACKUP_ENCRYPT_KEY_FILE=/etc/nexora/backup-enc.key bash /opt/nexora/deploy/backup.sh --out /var/backups/nexora
+
+# Les commandes suivantes lisent les mêmes deux clés : une archive .tar.enc ne s'ouvre pas sans NEXORA_BACKUP_ENCRYPT_KEY_FILE,
+# une archive signée ne se vérifie pas sans NEXORA_BACKUP_SIGNING_KEY_FILE (ou --signature-ignoree, à éviter).
+export NEXORA_BACKUP_ENCRYPT_KEY_FILE=/etc/nexora/backup-enc.key NEXORA_BACKUP_SIGNING_KEY_FILE=/etc/nexora/backup-sign.key
 
 # Vérifier une archive sans rien restaurer
 bash deploy/restore.sh verifier /var/backups/nexora/nexora-backup-….tar.enc
@@ -206,7 +212,7 @@ bash deploy/restore.sh restaurer ARCHIVE --pg-container <conteneur> --directus-c
 
 - Copier chaque archive **hors du serveur** (autre machine, autre site) ; noter son SHA-256 (affiché) ailleurs. Rotation des archives : à la charge de l'opérateur.
 - **Conserver séparément** : clé maîtresse du Coffre, phrase de passe de chiffrement, clé de signature. Sans la clé maîtresse, les secrets de l'archive sont illisibles.
-- L'archive contient les jetons statiques Directus en clair : toujours la chiffrer.
+- L'archive contient les jetons statiques Directus en clair : **le chiffrement est obligatoire** (`--chiffrer FICHIER` ou `NEXORA_BACKUP_ENCRYPT_KEY_FILE`). Seul un essai jetable peut le refuser, explicitement, avec `--sans-chiffrement` (avertissement affiché ; détruire l'archive après l'essai).
 - Reprise après sinistre : (1) PostgreSQL et Directus démarrés, (2) `restaurer`, (3) **remettre `NEXORA_VAULT_MASTER_KEY` et `DIRECTUS_SECRET`** identiques à ceux d'origine, (4) démarrer Directus puis le site et le worker, (5) relancer « Synchroniser » du catalogue vers LiteLLM, (6) vérifier avec `GET /api/health` et la connexion d'un client.
 
 ## 11. Journaux et surveillance
@@ -286,7 +292,7 @@ Cocher dans l'ordre. Une case non cochée bloque la mise en ligne.
 - [ ] **Plans VPS « [DEV] »** (`dev-essai-1`, `dev-essai-2`, `dev-essai-4`) et le serveur simulé `dev-simule` désactivés ou supprimés (module VPS) : ils sont commandables en développement avec un badge visible.
 - [ ] Modèle et fournisseur de développement (`nexora/glm-5-3`, fournisseur `dev-litellm`, LiteLLM de pc1) retirés du catalogue publié ; **aucun crédit de test** (`dev_test_credit`) en base de production.
 - [ ] Comptes et clés d'essai, agents provisionnés par `dev-provision-agents.ts`, mots de passe d'essai supprimés ; Mailpit et stripe-mock absents de la pile de production.
-- [ ] Les dix départements d'OPSYS-AI affichés « En pilote » (choix prudent) et l'affirmation CL-12 (« offres en libre-service pas encore ouvertes ») : confirmer ou corriger.
+- [ ] Les dix départements d'OPSYS-AI affichés « En pilote » (choix prudent) et l'affirmation CL-12 (« offres en libre-service pas encore ouvertes **à la vente** », corrigée le 27/10/2026 pour dire que les parcours ne fonctionnent qu'en mode test) : l'approuver, ou la réviser le jour où une offre ouvre.
 
 **Configuration**
 
@@ -294,7 +300,7 @@ Cocher dans l'ordre. Une case non cochée bloque la mise en ligne.
 - [ ] Tous les secrets au Coffre ou en secrets Docker ; **aucun** secret de développement réutilisé ; clé maîtresse du Coffre et jeton d'administration régénérés pour la production.
 - [ ] `NEXORA_EMBED_ORIGINS=https://<domaine>` posé côté WorkStudio ; `NEXORA_OUTBOUND_ALLOW` limité au strict nécessaire.
 - [ ] SMTP réel testé (vérification de courriel, diagnostic) ; SPF/DKIM.
-- [ ] `MARKETPLACE_REGISTRY` de Directus pointé vers une adresse inatteignable (la Marketplace appelle `registry.directus.io` par défaut : écart E3 de `docs/recette/flux-sortants.md`) ; `TELEMETRY=false` conservé ; `NEXT_TELEMETRY_DISABLED=1` sur la machine de build.
+- [ ] `MARKETPLACE_REGISTRY` de Directus : posé à une adresse injoignable dans `deploy/compose.yml` (écart E3 de `docs/recette/flux-sortants.md`, fermé) ; ne pas le retirer, ne jamais poser `MARKETPLACE_TRUST=all` ; `TELEMETRY=false` conservé ; `NEXT_TELEMETRY_DISABLED=1` sur la machine de build.
 - [ ] Domaine, DNS, certificat ; liste des sous-traitants et lieu d'hébergement documentés (Stripe, SMTP, fournisseurs de modèles, outils SEO activés).
 - [ ] Serveur(s) Proxmox réel(s) branché(s) et **test de contrat** passé avant d'ouvrir les ventes de VPS.
 

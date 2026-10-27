@@ -314,7 +314,7 @@
         "items": [
           {
             "question": "Can we try it with no commitment?",
-            "answer": "There is no account to create for now: self-service offers are not open yet. We offer a demonstration, on fictional data, then we talk about your case."
+            "answer": "Self-service is not open for sale yet: accounts and payments only work in test mode. We offer a demonstration, on fictional data, then we talk about your case."
           },
           {
             "question": "Do I need to know how to code?",
