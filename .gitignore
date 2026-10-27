@@ -6,3 +6,6 @@ node_modules/
 *.log
 .DS_Store
 .data/
+.env.local
+coverage/
+*.tsbuildinfo

@@ -5,12 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "vault:rotate": "node scripts/vault-rotate.ts"
   },
   "dependencies": {
     "next": "16.4.3",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "@nexora/db": "workspace:*",
+    "@nexora/log": "workspace:*",
+    "zod": "^4"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
