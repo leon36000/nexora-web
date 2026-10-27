@@ -5,7 +5,8 @@ Site public et commercial de Nexora (IA souveraine au Québec). Conception de r�
 ## Structure
 - `web/` — Next.js 16 (App Router, React 19, TypeScript strict, Tailwind CSS 4) : site public fr-CA/en-CA, espace client, API serveur (`/v1/*` passerelle facturée, coffre, API d'administration), webhooks.
 - `worker/` — Node.js/TypeScript : file de tâches PostgreSQL (`SKIP LOCKED`), provisionnement VPS, synchronisations, agents du site.
-- `cms/` — Directus 12.5.1 : schéma et configuration (Environment Sync), extensions maison (`cms/extensions/`), script de contenu initial idempotent.
+- `cms/` — Directus 12.5.1 : schéma, rôles et politiques appliqués par `cms/scripts/apply.ts` (idempotent ; Environment Sync n'existe pas encore en 12.5), contenu initial `cms/scripts/seed.ts`. Sources des extensions dans `cms/extensions-src/` ; `cms/extensions/` (monté dans le conteneur) ne reçoit que le build via `cms/scripts/stage-extensions.sh`. Voir `docs/cms.md`.
+- **Sans clé Open Innovation Grant**, Directus refuse les règles de permission : le jeton de lecture voit aussi les brouillons ; le site filtre TOUJOURS `status = published` côté serveur.
 - `deploy/` — `compose.yml` (images épinglées par empreinte), gabarits `.env.example`.
 - `docs/` — conception, plans, ledger, recherches.
 

@@ -9,7 +9,7 @@ umask 077
 {
   echo "POSTGRES_PASSWORD=$(rnd 24)"
   echo "DIRECTUS_SECRET=$(rnd 32)"
-  echo "DIRECTUS_ADMIN_EMAIL=admin@nexora.test"
+  echo "DIRECTUS_ADMIN_EMAIL=admin@example.com"
   echo "DIRECTUS_ADMIN_PASSWORD=$(rnd 16)"
   echo "LITELLM_MASTER_KEY=sk-$(rnd 24)"
   echo "LITELLM_SALT_KEY=$(rnd 32)"
