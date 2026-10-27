@@ -75,6 +75,20 @@ describe("création, authentification, révocation", () => {
     expect(row?.lastUsedAt).toBeInstanceOf(Date);
   });
 
+  it("le schéma Bearer est insensible à la casse (RFC 7235), la clé, elle, reste sensible", async () => {
+    const { key } = await createApiKey(t.db, {
+      organizationId: ORG,
+      name: "k-casse",
+    });
+    for (const scheme of ["bearer", "BEARER", "BeArEr"])
+      expect((await authenticateApiKey(t.db, `${scheme} ${key}`)).ok).toBe(
+        true,
+      );
+    expect(
+      await authenticateApiKey(t.db, `Bearer ${key.toUpperCase()}`),
+    ).toEqual({ ok: false, code: "invalid_api_key" });
+  });
+
   it("refuse une clé inconnue, mal formée ou absente", async () => {
     for (const header of [
       null,

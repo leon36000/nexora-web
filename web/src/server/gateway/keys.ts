@@ -118,7 +118,8 @@ export type AuthResult =
       code: "invalid_api_key" | "api_key_revoked" | "api_key_expired";
     };
 
-const BEARER = /^Bearer\s+(nxk_[A-Za-z0-9_-]{43})\s*$/;
+// Le schéma d'autorisation est insensible à la casse (RFC 7235) ; la clé elle-même reste sensible.
+const BEARER = /^[Bb][Ee][Aa][Rr][Ee][Rr]\s+(nxk_[A-Za-z0-9_-]{43})\s*$/;
 
 /**
  * Authentifie `Authorization: Bearer nxk_…` : empreinte, révocation, expiration. Met à jour le
