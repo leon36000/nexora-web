@@ -173,6 +173,7 @@ export const processedEvents = pgTable(
   ],
 );
 
+export * from "./schema-agents.ts";
 export * from "./schema-auth.ts";
 export * from "./schema-billing.ts";
 export * from "./schema-gateway.ts";

@@ -287,6 +287,8 @@ export const usageEvents = pgTable(
     cachedTokens: integer("cached_tokens").notNull().default(0),
     /** Prix de vente débité (micro-CAD) et coût amont (micro-USD). */
     costMicro: micro("cost_micro").notNull().default(sql`0`),
+    /** Part de `cost_micro` facturée par exécution (agents hébergés, S7) ; 0 pour un modèle. */
+    runFeeMicro: micro("run_fee_micro").notNull().default(sql`0`),
     upstreamCostUsdMicro: micro("upstream_cost_usd_micro")
       .notNull()
       .default(sql`0`),
