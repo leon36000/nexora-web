@@ -139,6 +139,11 @@ export const vpsFrCA = {
     hostnameOptional: "facultatif",
     hostnameHint:
       "Lettres minuscules, chiffres et tirets (32 caractères au maximum).",
+    promoLabel: "Code promo",
+    promoOptional: "facultatif",
+    promoHint:
+      "Facultatif. Le rabais est vérifié au moment de la commande et apparaît sur la page de paiement.",
+    promoPlaceholder: "Votre code",
     summaryTitle: "Votre commande",
     summaryPlan: "Plan",
     summaryApp: "Application",
@@ -182,6 +187,19 @@ export const vpsFrCA = {
         "Cette commande a déjà été traitée. Consultez vos VPS dans votre espace client.",
       network: "Connexion impossible. Vérifiez votre réseau, puis réessayez.",
       generic: "La commande n’a pas pu être créée. Réessayez dans un moment.",
+      promo_unknown: "Ce code promo n’existe pas ou n’est plus valide.",
+      promo_expired: "Ce code promo est expiré.",
+      promo_exhausted:
+        "Ce code promo a atteint son nombre maximal d’utilisations.",
+      promo_wrong_scope: "Ce code ne s’applique pas à ce type d’achat.",
+      promo_staff_only: "Ce code est réservé à l’équipe de Nexora.",
+      promo_first_order_only: "Ce code est réservé à une première commande.",
+      promo_already_used: "Votre organisation a déjà utilisé ce code.",
+      promo_min_amount: "Ce code exige un montant d’achat plus élevé.",
+      promo_not_ready:
+        "Ce code n’est pas encore activé. Réessayez plus tard ou contactez-nous.",
+      promo_covers_all:
+        "Ce code couvrirait la totalité de l’achat : choisissez une autre option.",
     },
   },
 

@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { Notice } from "@/components/account/field";
 import { VpsPanel } from "@/components/account/vps-panel";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
@@ -116,6 +117,13 @@ async function AccountVpsContent({
           </ButtonLink>
         </div>
       </header>
+      {first(q.offert) === "vps" ? (
+        <div className="mt-8">
+          <Notice tone="success">
+            {getAccountDictionary(lang).promo.gifted.vps}
+          </Notice>
+        </div>
+      ) : null}
       <VpsPanel
         lang={lang}
         t={t}

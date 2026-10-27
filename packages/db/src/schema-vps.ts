@@ -56,6 +56,11 @@ export const vpsPlans = pgTable(
     /** Prix mensuel et annuel avant taxes (cents CAD) ; null = durée non offerte. */
     priceMonthlyCents: integer("price_monthly_cents"),
     priceYearlyCents: integer("price_yearly_cents"),
+    /**
+     * Prix SUGGÉRÉ par l'étude de marché, pas encore confirmé par le fondateur : la garde de
+     * publication refuse le plan tant que ce drapeau est levé. Modifier un prix ou « Confirmer les prix » le baisse.
+     */
+    priceSuggested: boolean("price_suggested").notNull().default(false),
     /** Mise en avant (« le plus choisi ») : décision commerciale du fondateur, jamais un chiffre. */
     highlighted: boolean("highlighted").notNull().default(false),
     stripeProductId: text("stripe_product_id"),

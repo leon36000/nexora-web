@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { DEFAULT_LANG } from "@/i18n/config";
+import { DEFAULT_LANG, LOCALIZED_ROUTES } from "@/i18n/config";
 import { embedCspFor } from "@/lib/embed-policy";
 import {
   API_CSP,
@@ -80,6 +80,23 @@ function route(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/en" || pathname.startsWith("/en/")) {
+    // Routes à adresse propre à la langue : /en/pricing est servi par la route /en/tarifs (une seule adresse
+    // canonique : l'ancienne adresse redirige).
+    const rest = pathname.slice(3).replace(/\/+$/, "") || "/";
+    for (const [neutral, byLang] of Object.entries(LOCALIZED_ROUTES)) {
+      const english = byLang.en;
+      if (!english) continue;
+      if (rest === english) {
+        const url = request.nextUrl.clone();
+        url.pathname = `/en${neutral}`;
+        return NextResponse.rewrite(url);
+      }
+      if (rest === neutral) {
+        const url = request.nextUrl.clone();
+        url.pathname = `/en${english}`;
+        return NextResponse.redirect(url, 308);
+      }
+    }
     return NextResponse.next();
   }
 

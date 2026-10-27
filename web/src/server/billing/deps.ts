@@ -6,6 +6,8 @@ import { getAuth } from "../auth/instance";
 import { getDb } from "../db";
 import { loadBillingConfig } from "../ledger/config";
 import { log } from "../log";
+import { resolveSessionPromotion } from "../payments/session-promotion";
+import { isLiveAllowed } from "../payments/settings";
 import type { PublishPlanRouteDeps } from "../stripe/admin-publish";
 import {
   createStripeClient,
@@ -20,21 +22,27 @@ import { lazyPlanSource, planSourceFromEnv } from "./plans";
 const secretDeps = () => ({
   env: process.env,
   getSecret: (ref: string) => getSecret(ref),
+  // Une clé de production n'est acceptée que si le fondateur a autorisé les paiements réels (module Paiements).
+  liveAllowed: () => isLiveAllowed(getDb()),
 });
 
 const cache: { client?: Stripe; key?: string; at?: number } = {};
 
-/** Client Stripe (mode test seulement). Le secret est relu du coffre au plus toutes les 60 s. */
+/**
+ * Client Stripe (mode test par défaut ; production seulement avec l'autorisation explicite du fondateur).
+ * Le secret est relu du coffre au plus toutes les 60 s.
+ */
 export async function getStripe(): Promise<Stripe> {
   const now = Date.now();
   if (cache.client && cache.at && now - cache.at < 60_000) return cache.client;
   const config = await resolveStripeConfig(secretDeps());
-  if (cache.client && cache.key === config.secretKey) {
+  const cacheKey = `${config.secretKey}|${config.allowLive ? "live" : "test"}`;
+  if (cache.client && cache.key === cacheKey) {
     cache.at = now;
     return cache.client;
   }
   cache.client = createStripeClient(config);
-  cache.key = config.secretKey;
+  cache.key = cacheKey;
   cache.at = now;
   return cache.client;
 }
@@ -66,11 +74,14 @@ export function billingHttpDeps(): BillingHttpDeps {
 export function webhookRouteDeps(): WebhookRouteDeps {
   return {
     webhookSecret: () => resolveWebhookSecret(secretDeps()),
+    liveAllowed: () => isLiveAllowed(getDb()),
     process: {
       db: getDb(),
       plans: lazyPlanSource(() => planSourceFromEnv()),
       config: loadBillingConfig(),
       log,
+      resolveSessionPromotion: async (sessionId) =>
+        resolveSessionPromotion(await getStripe(), sessionId),
     },
     log,
   };

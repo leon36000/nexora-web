@@ -1,8 +1,14 @@
 import { randomBytes } from "node:crypto";
 import {
   billingCustomers,
+  eq,
+  getAccount,
   members,
   organizations,
+  paymentSettings,
+  promoCodes,
+  promoRedemptions,
+  staffAccounts,
   subscriptions,
   users,
 } from "@nexora/db";
@@ -55,6 +61,9 @@ const PLAN: SubscriptionPlan = {
   interval: "month",
   priceCents: 4900,
   includedCreditsCents: 0,
+  family: "f",
+  trialDays: 0,
+  trialCard: "default",
   stripeProductId: "prod_1",
   stripePriceId: "price_pro",
   translations: {},
@@ -430,5 +439,276 @@ describe("POST /api/billing/portal", () => {
         )
       ).status,
     ).toBe(403);
+  });
+});
+
+describe("essai gratuit, codes promo, frais de recharge et dons du personnel", () => {
+  const sessionParams = (s: ReturnType<typeof setup>) =>
+    s.checkoutCreate.mock.calls[0]?.[0] as Record<string, any>;
+
+  async function stripePromo(code: string, over: Record<string, unknown> = {}) {
+    const { createPromo } = await import("../payments/promo");
+    const row = await createPromo(
+      t.db,
+      {
+        code,
+        kind: "percent",
+        percentOff: 20,
+        scopes: ["subscriptions", "credits"],
+        ...over,
+      },
+      "admin",
+    );
+    if (row.kind !== "staff" && row.kind !== "trial")
+      await t.db
+        .update(promoCodes)
+        .set({
+          stripeCouponId: `co_${code}`,
+          stripePromotionCodeId: `promo_${code}`,
+        })
+        .where(eq(promoCodes.id, row.id));
+    return row;
+  }
+
+  it("abonnement : l'essai de l'offre est envoyé à Stripe, et un client qui a déjà eu un abonnement à l'offre n'en a plus", async () => {
+    const trialPlan = {
+      ...PLAN,
+      code: "essai-mensuel",
+      family: "essai",
+      trialDays: 14,
+    };
+    const { session, orgId } = await account();
+    const s = setup(session);
+    s.deps.plans = () => new FakePlanSource([trialPlan]);
+    const res = await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "essai-mensuel" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(res.status).toBe(200);
+    expect(sessionParams(s).subscription_data.trial_period_days).toBe(14);
+    expect(sessionParams(s).allow_promotion_codes).toBe(true);
+    await t.db.insert(subscriptions).values({
+      organizationId: orgId,
+      stripeSubscriptionId: `sub_${id()}`,
+      stripeCustomerId: "cus_x",
+      planCode: "essai-mensuel",
+      status: "canceled",
+    });
+    const s2 = setup(session);
+    s2.deps.plans = () => new FakePlanSource([trialPlan]);
+    await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "essai-mensuel" },
+        {},
+        true,
+      ),
+      s2.deps,
+    );
+    expect(
+      sessionParams(s2).subscription_data.trial_period_days,
+    ).toBeUndefined();
+  });
+
+  it("abonnement : un code valide est appliqué par son code de promotion Stripe ; un code refusé arrête l'achat avec son motif", async () => {
+    await stripePromo("BIENVENUE-A");
+    const { session } = await account();
+    const s = setup(session);
+    const ok = await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "pro", promo: " bienvenue-a " },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(ok.status).toBe(200);
+    expect(sessionParams(s).discounts).toEqual([
+      { promotion_code: "promo_BIENVENUE-A" },
+    ]);
+    expect(sessionParams(s).allow_promotion_codes).toBeUndefined();
+    const s2 = setup(session);
+    const bad = await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "pro", promo: "NEXISTEPAS" },
+        {},
+        true,
+      ),
+      s2.deps,
+    );
+    expect(bad.status).toBe(422);
+    expect(await bad.json()).toEqual({ error: "promo_unknown" });
+    expect(s2.checkoutCreate).not.toHaveBeenCalled();
+    // formulaire : retour au tableau de bord avec le motif
+    const s3 = setup(session);
+    const form = await handleSubscribeCheckout(
+      post("/api/billing/checkout/subscription", {
+        plan: "pro",
+        promo: "NEXISTEPAS",
+      }),
+      s3.deps,
+    );
+    expect(form.headers.get("location")).toContain("erreur=promo_unknown");
+  });
+
+  it("crédits : frais de recharge déduits des crédits, produit Stripe dédié et code appliqué", async () => {
+    await t.db
+      .insert(paymentSettings)
+      .values({ id: "default", creditsFeeEnabled: true })
+      .onConflictDoUpdate({
+        target: paymentSettings.id,
+        set: { creditsFeeEnabled: true },
+      });
+    await stripePromo("CRED-10", { percentOff: 10, scopes: ["credits"] });
+    const { session } = await account();
+    const s = setup(session);
+    (s.stripe as Record<string, unknown>).products = {
+      create: vi.fn(async () => ({ id: `prod_${id()}` })),
+    };
+    const res = await handleCreditsCheckout(
+      post(
+        "/api/billing/checkout/credits",
+        { amount: "100", promo: "CRED-10" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(res.status).toBe(200);
+    const p = sessionParams(s);
+    expect(p.metadata.credits_cents).toBe("9500");
+    expect(p.line_items[0].price_data.unit_amount).toBe(10_000);
+    expect(p.line_items[0].price_data.product).toMatch(/^prod_/);
+    expect(p.discounts).toEqual([{ promotion_code: "promo_CRED-10" }]);
+    await t.db.update(paymentSettings).set({ creditsFeeEnabled: false });
+  });
+
+  it("crédits : un code en montant qui couvrirait tout l'achat est refusé", async () => {
+    await stripePromo("TOUT-20", {
+      kind: "amount",
+      percentOff: null,
+      amountOffCents: 2000,
+      scopes: ["credits"],
+    });
+    const { session } = await account();
+    const s = setup(session);
+    const res = await handleCreditsCheckout(
+      post(
+        "/api/billing/checkout/credits",
+        { amount: "20", promo: "TOUT-20" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(res.status).toBe(422);
+    expect(await res.json()).toEqual({ error: "promo_covers_all" });
+  });
+
+  async function staffAccount() {
+    const acct = await account();
+    await t.db
+      .insert(staffAccounts)
+      .values({ userId: acct.session.userId, grantedBy: "admin" });
+    return acct;
+  }
+
+  it("code du personnel : abonnement offert sans appeler Stripe, accès complet, utilisation enregistrée", async () => {
+    await stripePromo("EQUIPE-1", {
+      kind: "staff",
+      percentOff: null,
+      scopes: ["subscriptions", "credits", "vps"],
+    });
+    const { session, orgId } = await staffAccount();
+    const s = setup(session);
+    const res = await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "pro", promo: "EQUIPE-1" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toMatchObject({
+      url: expect.stringContaining("offert=abonnement"),
+    });
+    expect(s.checkoutCreate).not.toHaveBeenCalled();
+    expect(s.stripe.customers.create).not.toHaveBeenCalled();
+    const [sub] = await t.db
+      .select()
+      .from(subscriptions)
+      .where(eq(subscriptions.organizationId, orgId));
+    expect(sub).toMatchObject({ status: "gifted", planCode: "pro" });
+    const used = await t.db
+      .select()
+      .from(promoRedemptions)
+      .where(eq(promoRedemptions.organizationId, orgId));
+    expect(used[0]).toMatchObject({ source: "gift", scope: "subscriptions" });
+  });
+
+  it("code du personnel utilisé par un client ordinaire : refusé, rien n'est offert", async () => {
+    const { session, orgId } = await account();
+    const s = setup(session);
+    const res = await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "pro", promo: "EQUIPE-1" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(res.status).toBe(422);
+    expect(await res.json()).toEqual({ error: "promo_staff_only" });
+    expect(
+      await t.db
+        .select()
+        .from(subscriptions)
+        .where(eq(subscriptions.organizationId, orgId)),
+    ).toHaveLength(0);
+  });
+
+  it("code du personnel : crédits offerts dans la limite du plafond mensuel, puis refus clair", async () => {
+    await t.db
+      .update(paymentSettings)
+      .set({ staffMonthlyCreditCapCents: 5000 });
+    const { session, orgId } = await staffAccount();
+    const s = setup(session);
+    const ok = await handleCreditsCheckout(
+      post(
+        "/api/billing/checkout/credits",
+        { amount: "30", promo: "EQUIPE-1" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(ok.status).toBe(200);
+    expect(await ok.json()).toMatchObject({
+      url: expect.stringContaining("offert=credits"),
+    });
+    expect((await getAccount(t.db, orgId)).balanceMicro).toBe(30_000_000n);
+    const over = await handleCreditsCheckout(
+      post(
+        "/api/billing/checkout/credits",
+        { amount: "30", promo: "EQUIPE-1" },
+        {},
+        true,
+      ),
+      s.deps,
+    );
+    expect(over.status).toBe(409);
+    expect(await over.json()).toEqual({ error: "gift_cap_reached" });
+    expect((await getAccount(t.db, orgId)).balanceMicro).toBe(30_000_000n);
+    expect(s.checkoutCreate).not.toHaveBeenCalled();
   });
 });

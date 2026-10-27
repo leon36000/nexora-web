@@ -1,6 +1,6 @@
 {
   "name": "nexora-cms",
-  "description": "Extensions Nexora pour Directus : garde de publication (D6), Coffre (D2), modules Modèles, Agents du site, SEO et VPS (D14).",
+  "description": "Extensions Nexora pour Directus : garde de publication (D6), Coffre (D2), modules Modèles, Agents du site, SEO, VPS et Paiements (D14).",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -70,6 +70,16 @@
         "type": "module",
         "name": "nexora-vps-module",
         "source": "src/vps/module/index.ts"
+      },
+      {
+        "type": "endpoint",
+        "name": "nexora-payments",
+        "source": "src/payments/endpoint.ts"
+      },
+      {
+        "type": "module",
+        "name": "nexora-payments-module",
+        "source": "src/payments/module/index.ts"
       },
       {
         "type": "endpoint",

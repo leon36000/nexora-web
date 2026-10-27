@@ -60,6 +60,45 @@ describe("lecteur Directus des abonnements", () => {
     );
   });
 
+  it("lit l'offre (famille), l'essai gratuit et le réglage de carte ; la famille retombe sur le code", async () => {
+    const f = fetchReturning([
+      row({
+        family: "workstudio-equipe",
+        trial_days: 14,
+        trial_card: "not_required",
+      }),
+      row({ code: "seul" }),
+    ]);
+    const [a, b] = await createDirectusPlanSource(
+      cfg(f as unknown as typeof fetch),
+    ).listPublished();
+    expect(a).toMatchObject({
+      family: "workstudio-equipe",
+      trialDays: 14,
+      trialCard: "not_required",
+    });
+    expect(b).toMatchObject({
+      family: "seul",
+      trialDays: 0,
+      trialCard: "default",
+    });
+    const url = decodeURIComponent((f.mock.calls[0] as [string])[0]);
+    expect(url).toContain("trial_days");
+    // le prix suggéré n'est jamais demandé par le site
+    expect(url).not.toContain("suggested_price_cents");
+  });
+
+  it("refuse une durée d'essai hors de 0 à 365 jours (le plan reste lisible sans essai)", async () => {
+    const f = fetchReturning([
+      row({ trial_days: 9999 }),
+      row({ code: "n", trial_days: -3 }),
+    ]);
+    const plans = await createDirectusPlanSource(
+      cfg(f as unknown as typeof fetch),
+    ).listPublished();
+    expect(plans.map((p) => p.trialDays)).toEqual([0, 0]);
+  });
+
   it("refiltre côté serveur : un brouillon renvoyé par Directus (sans licence) est écarté", async () => {
     const f = fetchReturning([
       row(),
@@ -128,6 +167,9 @@ describe("version de configuration d'un plan", () => {
     interval: "month",
     priceCents: 1000,
     includedCreditsCents: 500,
+    family: "f",
+    trialDays: 0,
+    trialCard: "default",
     stripeProductId: null,
     stripePriceId: null,
     translations: {},
@@ -161,6 +203,9 @@ describe("FakePlanSource (données factices)", () => {
         interval: "year",
         priceCents: 1000,
         includedCreditsCents: 0,
+        family: "f",
+        trialDays: 0,
+        trialCard: "default",
         stripeProductId: null,
         stripePriceId: "price_p",
         translations: {},

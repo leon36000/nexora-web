@@ -94,6 +94,67 @@ describe("garde de publication du catalogue VPS", () => {
     expect(issues.map((i) => i.issue)).toContain("yearly_not_cheaper");
   });
 
+  it("refuse de publier un plan dont le prix n'est que suggéré, tant que le fondateur ne l'a pas confirmé", async () => {
+    const snap = {
+      schema: 1 as const,
+      apps: [],
+      plans: [
+        {
+          id: "1",
+          code: "p",
+          name: "p",
+          descriptionFr: "",
+          descriptionEn: "",
+          vcpu: 1,
+          ramMb: 1,
+          diskGb: 1,
+          bandwidthGb: 0,
+          region: "quebec" as const,
+          priceMonthlyCents: 1900,
+          priceYearlyCents: 19200,
+          priceSuggested: true,
+          highlighted: false,
+          templateCode: "t",
+          sort: 1,
+          isDevSample: false,
+        },
+      ],
+    };
+    expect(guardSnapshot(snap, guard).map((i) => i.issue)).toContain(
+      "price_suggested",
+    );
+    const plan = await createPlan(
+      t.db,
+      base("suggere", {
+        priceMonthlyCents: 1900,
+        priceYearlyCents: 19200,
+        priceSuggested: true,
+      }),
+    );
+    await expect(
+      updatePlan(t.db, plan.id, { status: "approved" }),
+    ).rejects.toMatchObject({
+      details: [expect.objectContaining({ issue: "price_suggested" })],
+    });
+    // Confirmer les prix (ou en saisir d'autres) lève le drapeau et débloque l'approbation.
+    const edited = await updatePlan(t.db, plan.id, { priceMonthlyCents: 2000 });
+    expect(edited.priceSuggested).toBe(false);
+    await expect(
+      updatePlan(t.db, plan.id, { status: "approved" }),
+    ).resolves.toMatchObject({ status: "approved" });
+    const other = await createPlan(
+      t.db,
+      base("suggere2", { priceMonthlyCents: 1900, priceSuggested: true }),
+    );
+    const confirmed = await updatePlan(t.db, other.id, {
+      priceSuggested: false,
+    });
+    expect(confirmed.priceMonthlyCents).toBe(1900);
+    await expect(
+      updatePlan(t.db, other.id, { status: "approved" }),
+    ).resolves.toMatchObject({ status: "approved" });
+  });
+
   it("refuse un plan de développement hors de la base de développement", () => {
     const snap = {
       schema: 1 as const,

@@ -136,6 +136,11 @@ export const vpsEnCA: VpsDictionary = {
     hostnameOptional: "optional",
     hostnameHint:
       "Lowercase letters, digits and hyphens (32 characters at most).",
+    promoLabel: "Promo code",
+    promoOptional: "optional",
+    promoHint:
+      "Optional. The discount is checked when you order and shown on the payment page.",
+    promoPlaceholder: "Your code",
     summaryTitle: "Your order",
     summaryPlan: "Plan",
     summaryApp: "Application",
@@ -178,6 +183,19 @@ export const vpsEnCA: VpsDictionary = {
         "This order has already been processed. See your VPS in your customer area.",
       network: "Connection failed. Check your network, then try again.",
       generic: "The order could not be created. Try again in a moment.",
+      promo_unknown: "This promo code does not exist or is no longer valid.",
+      promo_expired: "This promo code has expired.",
+      promo_exhausted:
+        "This promo code has reached its maximum number of uses.",
+      promo_wrong_scope: "This code does not apply to this type of purchase.",
+      promo_staff_only: "This code is reserved for the Nexora team.",
+      promo_first_order_only: "This code is reserved for a first order.",
+      promo_already_used: "Your organization has already used this code.",
+      promo_min_amount: "This code requires a higher purchase amount.",
+      promo_not_ready:
+        "This code is not active yet. Try again later or contact us.",
+      promo_covers_all:
+        "This code would cover the whole purchase: choose another option.",
     },
   },
 

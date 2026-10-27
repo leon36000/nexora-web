@@ -1,9 +1,11 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { type AccountDictionary, fmt } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
+import { parseOffer, withOffer } from "@/lib/offer-param";
 import { Field, Notice } from "./field";
 import { validateSignup } from "./validation";
 
@@ -14,6 +16,8 @@ type Props = {
 };
 
 export function SignupForm({ lang, t, common }: Props) {
+  // Offre choisie sur la page Tarifs : elle suit l'inscription, la confirmation et la connexion.
+  const offer = parseOffer(useSearchParams().get("offre"));
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
@@ -38,7 +42,7 @@ export function SignupForm({ lang, t, common }: Props) {
       name,
       locale: lang,
       company: company || undefined,
-      callbackURL: localizePath(lang, "/compte/verification"),
+      callbackURL: withOffer(localizePath(lang, "/compte/verification"), offer),
     } as Parameters<typeof authClient.signUp.email>[0];
     const { error: err } = await authClient.signUp.email(body);
     setBusy(false);

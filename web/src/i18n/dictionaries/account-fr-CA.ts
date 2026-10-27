@@ -138,6 +138,8 @@ export const accountFrCA = {
         payment_unavailable:
           "Le service de paiement ne répond pas. Réessayez dans un moment.",
         internal_error: "Une erreur est survenue. Réessayez dans un moment.",
+        gift_cap_reached: "Le plafond mensuel de crédits offerts est atteint.",
+        gift_already_gifted: "Ce don existe déjà.",
       },
     },
     balance: {
@@ -161,6 +163,8 @@ export const accountFrCA = {
         "La TPS et la TVQ sont calculées par Stripe à l’étape suivante, selon votre adresse de facturation, et s’ajoutent au montant.",
       testNote:
         "Mode test : aucun paiement réel n’est possible pour le moment.",
+      feeNote:
+        "Des frais de recharge de {percent} % (minimum {min}) sont déduits des crédits accordés.",
       limits: "De {min} à {max}.",
       ownerOnly:
         "Seul le propriétaire de l’organisation peut acheter des crédits.",
@@ -178,6 +182,8 @@ export const accountFrCA = {
         purchase: "Achat de crédits",
         subscription: "Crédits inclus (abonnement)",
         usage: "Utilisation",
+        staff_gift: "Crédits offerts par Nexora",
+        staff_gift_revoked: "Crédits offerts : reprise",
         stripe_refund: "Remboursement",
         stripe_dispute: "Litige",
         dispute_reversal: "Litige gagné : crédits rendus",
@@ -192,6 +198,8 @@ export const accountFrCA = {
       renews: "Prochaine échéance : {date}",
       cancels: "Se termine le {date}",
       graceUntil: "Paiement à régulariser avant le {date}",
+      chosen:
+        "Vous avez choisi l’offre {name}. Confirmez pour passer au paiement sécurisé.",
       statuses: {
         incomplete: "En attente du paiement",
         incomplete_expired: "Expiré",
@@ -201,6 +209,7 @@ export const accountFrCA = {
         unpaid: "Impayé",
         paused: "En pause",
         canceled: "Résilié",
+        gifted: "Offert par Nexora",
       },
       access: {
         full: "Accès complet",
@@ -213,6 +222,7 @@ export const accountFrCA = {
         empty: "Aucune offre n’est publiée pour le moment.",
         perMonth: "{amount} par mois, avant taxes",
         perYear: "{amount} par an, avant taxes",
+        trial: "Essai gratuit de {days} jours",
         included: "{amount} de crédits inclus à chaque période",
         subscribe: "Souscrire",
         ownerOnly: "Seul le propriétaire peut souscrire.",
@@ -231,6 +241,33 @@ export const accountFrCA = {
       title: "Mes VPS",
       lead: "Vos serveurs privés virtuels : état, accès SSH et opérations courantes.",
       link: "Voir mes VPS",
+    },
+  },
+  promo: {
+    label: "Code promo",
+    placeholder: "Votre code",
+    hint: "Facultatif. Le rabais est vérifié par le serveur et apparaît sur la page de paiement.",
+    trialNote:
+      "Essai gratuit de {days} jours : vous ne serez facturé qu’à la fin de l’essai.",
+    errors: {
+      unknown: "Ce code promo n’existe pas ou n’est plus valide.",
+      expired: "Ce code promo est expiré.",
+      exhausted: "Ce code promo a atteint son nombre maximal d’utilisations.",
+      wrong_scope: "Ce code ne s’applique pas à ce type d’achat.",
+      staff_only: "Ce code est réservé à l’équipe de Nexora.",
+      first_order_only: "Ce code est réservé à une première commande.",
+      already_used: "Votre organisation a déjà utilisé ce code.",
+      min_amount: "Ce code exige un montant d’achat plus élevé.",
+      not_ready:
+        "Ce code n’est pas encore activé. Réessayez plus tard ou contactez-nous.",
+      covers_all:
+        "Ce code couvrirait la totalité de l’achat de crédits : choisissez un montant plus élevé.",
+    },
+    gifted: {
+      subscription: "Abonnement offert : accès complet, sans paiement.",
+      vps: "VPS offert : il sera installé dès qu’un serveur est prêt.",
+      credits: "Crédits offerts : ils sont ajoutés à votre solde.",
+      capReached: "Le plafond mensuel de crédits offerts est atteint.",
     },
   },
 };

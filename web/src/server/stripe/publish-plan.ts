@@ -18,6 +18,11 @@ export interface PublishPlanResult {
   previousPriceArchived: boolean;
 }
 
+const isMissing = (error: unknown): boolean =>
+  typeof error === "object" &&
+  error !== null &&
+  (error as { code?: unknown }).code === "resource_missing";
+
 const short = (...parts: Array<string | number>) =>
   createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 12);
 
@@ -48,14 +53,23 @@ export async function publishPlanToStripe(
 
   let productId = plan.stripeProductId;
   let productCreated = false;
+  let staleAccount = false;
   if (productId) {
-    await stripe.products.update(productId, {
-      name,
-      ...(description ? { description } : {}),
-      metadata,
-      active: true,
-    });
-  } else {
+    try {
+      await stripe.products.update(productId, {
+        name,
+        ...(description ? { description } : {}),
+        metadata,
+        active: true,
+      });
+    } catch (error) {
+      // Identifiants d'un autre compte Stripe (test puis production) : on repart de zéro.
+      if (!isMissing(error)) throw error;
+      productId = null;
+      staleAccount = true;
+    }
+  }
+  if (!productId) {
     const product = await stripe.products.create(
       { name, ...(description ? { description } : {}), metadata },
       {
@@ -66,11 +80,16 @@ export async function publishPlanToStripe(
     productCreated = true;
   }
 
-  let priceId = plan.stripePriceId;
+  let priceId = staleAccount ? null : plan.stripePriceId;
   let priceCreated = false;
   let archived = false;
   if (priceId) {
-    const existing = await stripe.prices.retrieve(priceId);
+    const existing = await stripe.prices
+      .retrieve(priceId)
+      .catch((error: unknown) => {
+        if (isMissing(error)) return null;
+        throw error;
+      });
     const same =
       existing &&
       existing.active === true &&
@@ -80,7 +99,9 @@ export async function publishPlanToStripe(
       (typeof existing.product === "string"
         ? existing.product
         : existing.product?.id) === productId;
-    if (!same) {
+    if (!existing) {
+      priceId = null;
+    } else if (!same) {
       await stripe.prices.update(priceId, { active: false });
       archived = true;
       priceId = null;

@@ -274,6 +274,8 @@ export const SUBSCRIPTION_STATUSES = [
   "unpaid",
   "paused",
   "canceled",
+  /** Offert par l'équipe (D4) : aucun Stripe, accès complet, révocable depuis l'admin. */
+  "gifted",
 ] as const;
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];
 
@@ -309,7 +311,7 @@ export const subscriptions = pgTable(
     index("subscriptions_org_idx").on(t.organizationId),
     check(
       "subscriptions_status_check",
-      sql`${t.status} IN ('incomplete','incomplete_expired','trialing','active','past_due','unpaid','paused','canceled')`,
+      sql`${t.status} IN ('incomplete','incomplete_expired','trialing','active','past_due','unpaid','paused','canceled','gifted')`,
     ),
   ],
 );

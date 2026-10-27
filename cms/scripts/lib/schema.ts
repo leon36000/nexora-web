@@ -753,12 +753,12 @@ export function buildSchema(): {
     ),
   );
 
-  // --- abonnements (S4) : plans publiés dans Directus, lus par le site, poussés vers Stripe par POST /api/admin/stripe/publish-plan (les identifiants renvoyés se recopient dans la fiche) ---
+  // --- abonnements (S4, vague 2) : plans publiés dans Directus, lus par le site, poussés vers Stripe par le module Paiements (« Publier vers Stripe » écrit les identifiants dans la fiche) ---
   add({
     collection: "subscription_plans",
     meta: {
       icon: "workspace_premium",
-      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais publié sans prix. Les identifiants Stripe renvoyés par POST /api/admin/stripe/publish-plan se recopient dans la fiche (aucun automate ne les écrit).",
+      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais affiché ni vendu sans prix valide. « Publier vers Stripe » (module Paiements) écrit les identifiants Stripe dans la fiche.",
       display_template: "{{code}}",
       sort_field: "sort",
       archive_field: "status",
@@ -810,12 +810,40 @@ export function buildSchema(): {
           width: "half",
         },
       ),
+      str("family", {
+        label: "Offre (regroupement)",
+        note: "Les lignes mensuelle et annuelle d’une même offre partagent cette valeur (ex. workstudio-equipe) : la page Tarifs les affiche ensemble. Vide : le code de la ligne.",
+      }),
       int("price_cents", {
         label: "Prix (cents CAD, avant taxes)",
-        required: true,
         width: "half",
-        note: "Ex. 4900 pour 49,00 $. Un prix absent ou nul bloque la publication ; TPS et TVQ sont ajoutées par Stripe Tax.",
+        note: "Ex. 4900 pour 49,00 $ ; pour une ligne annuelle, le total de l’année. Vide tant que le prix n’est pas décidé : une ligne publiée sans prix valide n’est jamais affichée ni vendue (jamais à 0 $). TPS et TVQ sont ajoutées par Stripe Tax.",
       }),
+      int("suggested_price_cents", {
+        label: "Prix suggéré (cents CAD) — non publié",
+        width: "half",
+        note: "Suggestion de l’étude de marché, visible ici seulement (ni le site ni le public ne la lisent). Le module Paiements propose « Adopter le prix suggéré » ; rien n’est publié sans votre décision.",
+      }),
+      int("trial_days", {
+        label: "Essai gratuit (jours)",
+        def: 0,
+        width: "half",
+        note: "0 : aucun essai. Appliqué au paiement ; un seul essai par organisation et par offre.",
+      }),
+      select(
+        "trial_card",
+        [
+          ["default", "Selon le réglage général"],
+          ["required", "Carte exigée au départ"],
+          ["not_required", "Sans carte au départ"],
+        ],
+        {
+          label: "Carte pendant l’essai",
+          def: "default",
+          width: "half",
+          note: "Sans carte, l’abonnement est annulé à la fin de l’essai si aucune carte n’a été ajoutée.",
+        },
+      ),
       int("included_credits_cents", {
         label: "Crédits inclus par période (cents CAD)",
         def: 0,
@@ -825,12 +853,12 @@ export function buildSchema(): {
       str("stripe_product_id", {
         label: "Produit Stripe",
         width: "half",
-        note: "À recopier de la réponse de POST /api/admin/stripe/publish-plan (identifiant, pas un secret) : aucun automate ne l'écrit ici.",
+        note: "Écrit par « Publier vers Stripe » (module Paiements) ; modifiable à la main en dépannage. Identifiant, pas un secret.",
       }),
       str("stripe_price_id", {
         label: "Prix Stripe",
         width: "half",
-        note: "À recopier de la réponse de POST /api/admin/stripe/publish-plan ; un prix Stripe est immuable : un changement de montant en crée un nouveau, à recopier de même.",
+        note: "Écrit par « Publier vers Stripe » ; un prix Stripe est immuable : un changement de montant en crée un nouveau et archive l’ancien.",
       }),
       ts("stripe_synced_at", {
         label: "Dernière synchronisation Stripe",

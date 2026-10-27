@@ -5,10 +5,13 @@ import type { BillingConfig } from "../ledger/config";
 import {
   type CheckoutDeps,
   CheckoutError,
+  type CheckoutExtras,
+  discountParams,
   ensureStripeCustomer,
+  promoMeta,
 } from "./checkout";
 
-export interface VpsCheckoutInput {
+export interface VpsCheckoutInput extends CheckoutExtras {
   organizationId: string;
   orderId: string;
   /** Prix Stripe de la durée choisie, tiré de la version de catalogue publiée « appliquée ». */
@@ -50,6 +53,7 @@ export async function createVpsCheckout(
       kind: "vps",
       organization_id: input.organizationId,
       vps_order_id: input.orderId,
+      ...promoMeta(input),
     };
     const session = await deps.stripe.checkout.sessions.create(
       {
@@ -58,6 +62,10 @@ export async function createVpsCheckout(
         client_reference_id: input.organizationId,
         locale: STRIPE_LOCALE[input.lang],
         line_items: [{ price: input.priceId, quantity: 1 }],
+        ...discountParams(input),
+        ...(input.noPaymentMethodNeeded
+          ? { payment_method_collection: "if_required" as const }
+          : {}),
         automatic_tax: { enabled: true },
         billing_address_collection: "required",
         customer_update: { address: "auto", name: "auto" },
@@ -67,7 +75,9 @@ export async function createVpsCheckout(
         success_url: `${deps.siteUrl}${localizePath(input.lang, "/compte/vps")}?commande=ok&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${deps.siteUrl}${localizePath(input.lang, "/vps")}?commande=annulee`,
       } satisfies Stripe.Checkout.SessionCreateParams,
-      { idempotencyKey: `vps-checkout:${input.orderId}` },
+      {
+        idempotencyKey: `vps-checkout:${input.orderId}${input.promo ? `:${input.promo.promoCodeId}` : ""}`,
+      },
     );
     if (!session.url)
       throw new CheckoutError("stripe_error", "session sans adresse");

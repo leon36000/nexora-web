@@ -12,3 +12,5 @@ export const NAV_TAG = "nav";
 export const SITE_TAG = "site";
 /** Table de correspondance des slugs entre langues : change dès qu'une page est publiée, renommée ou dépubliée. */
 export const SLUGS_TAG = "slugs";
+/** Offres d'abonnement publiées (page Tarifs). */
+export const PLANS_TAG = "subscription-plans";

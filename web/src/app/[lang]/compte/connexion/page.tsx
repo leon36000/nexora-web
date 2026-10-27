@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
+import { Suspense } from "react";
 import { AuthShell } from "@/components/account/auth-shell";
 import { LoginForm } from "@/components/account/login-form";
 import { getAccountDictionary } from "@/i18n/account";
@@ -35,7 +36,9 @@ export default async function LoginPage() {
         label: t.login.signupLink,
       }}
     >
-      <LoginForm lang={lang} t={t.login} common={t.common} />
+      <Suspense fallback={null}>
+        <LoginForm lang={lang} t={t.login} common={t.common} />
+      </Suspense>
     </AuthShell>
   );
 }

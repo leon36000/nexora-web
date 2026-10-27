@@ -2,7 +2,7 @@
 
 Pour une personne qui n'a pas suivi le projet et qui doit **démarrer, exploiter, sauvegarder et mettre en ligne** le site. Écrit le 27/10/2026 à partir de l'état du dépôt (branche `s9-recette`). Les chemins sont relatifs à la racine du dépôt. Pour le détail technique de chaque module : `docs/infra.md`, `docs/cms.md`, `docs/seo.md`, `docs/autogestion.md` ; pour les preuves de recette : `docs/recette/`.
 
-**Règles qui ne se négocient pas** : aucun secret dans le dépôt, dans Directus, dans le navigateur ni dans un journal ; paiements en **mode test** tant que le fondateur n'a pas donné son accord explicite ; aucun agent ne publie sans approbation humaine.
+**Règles qui ne se négocient pas** : aucun secret dans le dépôt, dans Directus, dans le navigateur ni dans un journal ; paiements en **mode test** tant que le fondateur n'a pas autorisé les paiements réels dans l'administration (§6.4) ; aucun agent ne publie sans approbation humaine.
 
 ## 1. Vue d'ensemble
 
@@ -128,29 +128,57 @@ Cinq agents du site (Rédacteur, Traducteur, SEO on-page, Veille, Santé) ; chac
 
 En développement : `worker/scripts/dev-provision-agents.ts` fait tout cela avec des valeurs d'essai ; **ne jamais l'utiliser en production**.
 
-## 6. Stripe : du mode test à la production
+## 6. Stripe : de la clé collée à la première vente
 
-**État actuel : mode test seulement, imposé par le code.** Une clé `sk_live_…` ou `rk_live_…` est refusée (`StripeModeError`) et un événement `livemode: true` est rejeté (400).
+**Principe (vague 2, D1 à D4).** Tout est construit pour de vrai et s'active quand la clé Stripe est collée : aucune maquette. Le **mode test** est le mode par défaut ; la **production** (argent réel) exige un geste explicite du fondateur dans l'administration (§6.4). Tout se fait dans le module Directus **Paiements** (barre de gauche) ; les secrets, eux, se collent dans le module **Coffre**.
 
-### 6.1 Mode test (aujourd'hui)
+### 6.1 Brancher Stripe en un geste
 
-1. Créer un compte Stripe, rester en mode test.
-2. Module **Coffre** : `stripe.secret_key` (clé `sk_test_…` ou `rk_test_…`, type `payment`) et `stripe.webhook_secret` (`whsec_…` du point d'accès webhook, type `payment`).
-3. Dans Stripe, point d'accès webhook : `https://<domaine>/api/stripe/webhook`, avec **les 12 événements gérés** : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired`, `invoice.paid`, `invoice.payment_failed`, `invoice_payment.paid`, `charge.refunded`, `charge.dispute.created`, `charge.dispute.closed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted` (`web/src/server/billing/webhook.ts`). Un événement oublié est perdu en silence : sans `invoice_payment.paid`, un remboursement d'abonnement ne reprend pas les crédits inclus ; sans `charge.dispute.closed`, un litige gagné ne rend rien. Sans les secrets au Coffre, le webhook répond 503 : voulu.
-4. Publier les plans vers Stripe :
-   - **Plans VPS** : module **VPS** de Directus, bouton « Publier vers Stripe » (crée produits et prix Stripe, et écrit leurs identifiants sur la version de catalogue ; sans secret Stripe au Coffre, l'appel répond 503 `stripe_not_configured` avec la référence à déposer).
-   - **Plans d'abonnement et de crédits** (collection Directus `subscription_plans`) : **il n'y a pas de bouton**. Publier le plan dans Directus, puis `curl -X POST http://<site interne>/api/admin/stripe/publish-plan -H "Authorization: Bearer $NEXORA_APP_ADMIN_TOKEN" -H 'content-type: application/json' -d '{"code":"<code du plan>"}'`, et **recopier `stripeProductId` et `stripePriceId` de la réponse** dans les champs « Produit Stripe » et « Prix Stripe » de la fiche du plan (aucun automate ne les écrit ; sans eux, l'achat de ce plan est impossible, et un second appel plus de 24 h après en crée de nouveaux chez Stripe). Un changement de montant crée un nouveau prix : recopier le nouveau.
-5. Activer Stripe Tax (TPS, TVQ) et saisir les numéros d'inscription de Nexora **après validation d'un comptable**.
+1. Dans Stripe (mode **test** d'abord), **Développeurs → Clés API** : copier la clé secrète `sk_test_…` (ou créer une clé restreinte `rk_test_…` avec écriture sur *Webhook Endpoints*, *Produits*, *Prix*, *Coupons*, *Codes promotionnels*, *Sessions Checkout*, *Clients* et lecture sur *Compte* et *Stripe Tax*).
+2. Module **Coffre** : référence `stripe.secret_key`, type **Paiement**, coller la clé. Elle est chiffrée et ne se relit jamais.
+3. Module **Paiements → Stripe** : cliquer **« Vérifier et brancher Stripe »**. L'application :
+   - lit la clé au Coffre et détecte le **mode** (test ou production) ;
+   - interroge Stripe : **compte** (identifiant, nom), **pays** (le Canada est attendu pour la TPS et la TVQ), **Stripe Tax** (actif ou non) ;
+   - **crée le point de webhook** `https://<SITE_URL>/api/stripe/webhook` avec **exactement les 12 événements gérés** (liste affichée dans le module) et range son secret `whsec_…` au Coffre (`stripe.webhook_secret`) ;
+   - est **rejouable** : un second clic met le point à jour (événements, réactivation) et garde le secret. Si un point existe déjà à la même adresse sans que son secret soit connu (Stripe ne le montre qu'à la création), il est **remplacé** ; les points des autres adresses ne sont jamais touchés.
+4. L'état s'affiche clairement : **Branché**, **Clé manquante** (avec l'action : coller la clé), **Clé collée, à vérifier**, ou **Erreur** (message et action : clé refusée, adresse du site non publique, secret du webhook disparu du Coffre, adresse du site changée…). Les avertissements (pays autre que le Canada, Stripe Tax inactif) n'empêchent pas le branchement mais sont à traiter.
+5. Le webhook lit son secret **au Coffre en production** (la variable `STRIPE_WEBHOOK_SECRET` n'est lue qu'en développement) ; sans secret, il répond 503, ce qui est voulu.
+6. Prérequis : `SITE_URL` doit être l'adresse publique **https** (sinon Stripe ne peut pas appeler le webhook : le branchement le dit). En local, utiliser la CLI Stripe (`stripe listen --forward-to localhost:3500/api/stripe/webhook`).
+7. Dans le tableau de bord Stripe : activer **Stripe Tax**, ajouter les inscriptions TPS et TVQ de Nexora (numéros, adresse d'origine, catégorie « services numériques / logiciel-service ») **après validation d'un comptable**.
 
-### 6.2 Passage en production
+### 6.2 Offres d'abonnement, essai gratuit et « Publier vers Stripe »
 
-**Ne le faire qu'avec l'accord écrit du fondateur** et après les validations juridiques et fiscales (liste de contrôle, §13). Il faut une **modification de code** assumée, car la garde est voulue :
+Les offres vivent dans Directus (collection **Plans d'abonnement**). Chaque **ligne** est une période : une ligne mensuelle et, si voulu, une ligne annuelle qui partagent le champ **Offre (regroupement)** ; la page Tarifs les affiche ensemble.
 
-1. Lever la garde de clé dans `web/src/server/stripe/client.ts` (`assertTestModeKey`) et le refus de `livemode` dans `web/src/server/stripe/webhook-route.ts`, avec leurs tests ; relire par une seconde personne.
-2. Déposer les clés **live** au Coffre sous les mêmes références, **après** avoir sauvegardé et révoqué les clés de test.
-3. Créer le point d'accès webhook live et son secret ; republier les plans vers Stripe en mode live.
-4. Faire un paiement réel de petit montant avec remboursement, vérifier le grand livre (`credit_entries`) et la facture.
-5. Retirer les plans « [DEV] » (§13).
+1. Trois offres WorkStudio (Démarrage, Équipe, Affaires) sont préparées **en brouillon** avec un **prix suggéré** (champ non publié) : `bun run seed` les crée (rejouable, ne touche jamais une fiche existante). Aucune n'est publiée.
+2. Module **Paiements → Offres** : par ligne, **« Adopter le prix suggéré »** copie le prix suggéré dans le prix (ou saisir le prix dans la fiche). Prix en cents CAD **avant taxes** ; une ligne annuelle porte le **total de l'année** et ses crédits inclus couvrent l'année.
+3. Passer la fiche à **« Publié »** dans Directus (la garde de publication s'applique), puis **« Publier vers Stripe »** : crée ou met à jour le **produit** et le **prix** Stripe et **écrit les identifiants dans la fiche** (rejouable). Un **prix modifié** crée un **nouveau prix** Stripe et archive l'ancien (les abonnés gardent le leur). Après un changement de compte Stripe (test → production), relancer l'action : les anciens identifiants sont remplacés.
+4. **Essai gratuit** : champ **Essai gratuit (jours)** de la fiche (0 = aucun), appliqué au Checkout (`subscription_data.trial_period_days`). **Carte pendant l'essai** : réglage général (module Paiements → Stripe, défaut : carte exigée) ou décision propre à l'offre. Sans carte, l'abonnement est annulé à la fin de l'essai si aucune carte n'a été ajoutée. Un seul essai par organisation et par offre ; les crédits inclus ne sont accordés qu'à la première facture **payée** (une facture à 0 $ n'en accorde pas).
+5. Une offre publiée mais pas encore poussée vers Stripe s'affiche sur la page Tarifs avec « Bientôt disponible » (jamais un bouton qui échouerait).
+
+### 6.3 Codes promo (module Paiements → Codes promo)
+
+- **Types** : pourcentage, montant, gratuit (100 %), essai de N jours, **personnel** (§6.5). **Portée** : abonnements, crédits, VPS. **Durée** : une fois, N mois, toujours. **Limites** : utilisations maximales, expiration, première commande seulement, un seul usage par client, montant minimum.
+- **Créer un code** ou **générer un lot** (préfixe, nombre jusqu'à 5 000, longueur) ; **désactiver** / réactiver ; **statistiques** par code (utilisations, rabais accordé, mises à jour par le webhook).
+- **Synchronisation avec Stripe** : par le **serveur de l'application seulement** (coupon + code de promotion, portée limitée aux produits concernés). Un code créé seul est synchronisé tout de suite ; un lot l'est par paquets (bouton **« Synchroniser avec Stripe »**). Il faut que les offres/VPS de la portée aient été **publiés vers Stripe** d'abord (sinon l'état « Erreur » le dit). Les codes d'essai et du personnel n'existent pas chez Stripe.
+- **Où les clients le saisissent** : champ « Code promo » à l'achat de crédits, à la souscription et à la commande de VPS (validation côté serveur, message clair par motif) ; la page de paiement de Stripe garde son propre champ (`allow_promotion_codes`) tant qu'aucun code n'a été appliqué et que le réglage le permet. Le contrôle « un par client » ne s'applique qu'aux codes saisis chez Nexora.
+- Un rabais de 100 % ne peut pas viser les crédits (ils ne donneraient rien) : utiliser un code du personnel.
+
+### 6.4 Premier test, puis production
+
+1. En mode test, essayer le parcours complet avec la carte de test de Stripe `4242 4242 4242 4242` : inscription, souscription (ou crédits), vérifier le webhook (grand livre, abonnement), un code promo, un essai.
+2. **Production (argent réel)** : réservée à l'accord écrit du fondateur et aux validations juridiques et fiscales (§13). Dans le module **Paiements → Stripe**, cocher **« Autoriser les paiements réels »** (confirmation demandée, journalisée), coller la clé **live** au Coffre sous la **même** référence, puis **« Vérifier et brancher Stripe »** (nouveau compte détecté : les objets de l'ancien sont oubliés ; relancer ensuite **« Publier vers Stripe »** pour chaque offre et le catalogue VPS, puis **« Tout resynchroniser »** pour les codes). Sans l'autorisation, une clé `sk_live_…` est refusée et un événement `livemode` est rejeté (400). Faire un paiement réel de petit montant avec remboursement, vérifier le grand livre et la facture.
+
+### 6.5 Code administrateur gratuit (comptes du personnel)
+
+1. Module **Paiements → Personnel et dons** : saisir le **courriel du compte client** (la personne doit être inscrite) et **« Marquer comme personnel »**.
+2. Créer un code de type **Personnel** (portée au choix). Il n'est accepté **que** des comptes du personnel (les autres reçoivent « réservé à l'équipe »).
+3. Utilisé dans un parcours d'achat : **abonnement offert** (statut « Offert », accès complet) et **VPS offert** (même provisionnement : il attend un serveur Proxmox prêt, affiché honnêtement) **sans passer par Stripe** ; **crédits offerts** inscrits au grand livre avec leur motif, **plafonnés par mois et par compte du personnel** (réglage « Plafond mensuel », défaut 100 $, mois civil UTC).
+4. Chaque don est **journalisé** (module → Journal) et **révocable** : révoquer résilie l'abonnement ou le VPS offert (arrêt, puis rétention de 7 jours) ou reprend les crédits non utilisés.
+
+### 6.6 Frais de recharge des crédits (facultatif)
+
+Réglage **désactivé par défaut** (module Paiements → Stripe) : un taux (défaut 5 %) avec un minimum (défaut 1 $) **déduits des crédits accordés** (payer 100 $ donne 95 $). Annoncé au client dans l'espace client. La recharge minimale est de 20 $ (`BILLING_MIN_PURCHASE_CENTS`).
 
 ## 7. Serveurs Proxmox (VPS)
 
@@ -304,9 +332,9 @@ Cocher dans l'ordre. Une case non cochée bloque la mise en ligne.
 - [ ] **Licence Directus** : clé *Open Innovation Grant* demandée sur https://directus.com/oig (moins de 5 M$ de revenus et moins de 50 employés) ; licence MSCL acceptée et propriétaire du projet identifié. Sans la clé : 3 sièges, 25 collections, 5 flows, et les règles de permission sont refusées (le jeton lecteur voit les brouillons ; le site filtre `status = published`, ne jamais l'oublier).
 - [ ] Identité légale (raison sociale, NEQ, TPS, TVQ, adresse) saisie ; mentions légales, confidentialité, conditions, utilisation acceptable **relues par un avocat québécois**.
 - [ ] Registre des affirmations (`claims`) : chaque affirmation relue et **approuvée par une personne** ; les « à compléter » (CL-A01 à CL-A14) traités ; aucune affirmation de conformité à la Loi 25 sans validation.
-- [ ] Prix des plans, des modèles et des agents fixés par le fondateur ; aucun prix inventé.
+- [ ] Prix des plans, des modèles et des agents fixés par le fondateur ; aucun prix inventé (les prix des offres WorkStudio et des 4 plans VPS préparés sont des **suggestions** de l'étude : à confirmer, §6.2 ; un plan VPS dont le prix n'est que suggéré ne peut pas être approuvé).
 - [ ] **Robots d'entraînement** : décision d'affaires (par défaut refusés par `robots.txt`) ; poser `ROBOTS_AI_TRAINING=allow` seulement si le fondateur le décide.
-- [ ] Stripe : accord explicite pour passer en production (§6.2) ; comptable consulté pour TPS/TVQ.
+- [ ] Stripe : accord explicite pour passer en production (§6.4) ; comptable consulté pour TPS/TVQ.
 
 **Données de développement à retirer**
 

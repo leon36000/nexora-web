@@ -7,12 +7,23 @@ export interface WebhookRouteDeps {
   webhookSecret: () => Promise<string>;
   process: WebhookDeps;
   log: Logger;
+  /** Paiements réels autorisés par le fondateur (réglage de l'admin) ? Absent ou en échec : non. */
+  liveAllowed?: () => Promise<boolean>;
 }
 
 const MAX_BODY_BYTES = 1_000_000;
 const NO_STORE = { "cache-control": "no-store" };
 const json = (body: unknown, status = 200) =>
   Response.json(body, { status, headers: NO_STORE });
+
+async function liveAllowed(deps: WebhookRouteDeps): Promise<boolean> {
+  if (!deps.liveAllowed) return false;
+  try {
+    return (await deps.liveAllowed()) === true;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * POST /api/stripe/webhook. La signature est vérifiée sur le corps BRUT (avant tout JSON.parse) avec
@@ -49,8 +60,9 @@ export async function handleStripeWebhook(
     return json({ error: "invalid_signature" }, 400);
   }
 
-  // Les paiements réels exigent l'accord explicite du fondateur : un événement de production est refusé.
-  if (event.livemode) {
+  // Les paiements réels exigent l'accord explicite du fondateur : un événement de production est refusé tant
+  // que le réglage n'est pas levé (en cas de doute, par exemple base illisible, il reste refusé).
+  if (event.livemode && !(await liveAllowed(deps))) {
     deps.log.error("stripe : événement livemode refusé", { eventId: event.id });
     return json({ error: "livemode_refused" }, 400);
   }

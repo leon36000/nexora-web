@@ -258,6 +258,7 @@ const planFields = {
   priceMonthlyCents: cents,
   priceYearlyCents: cents,
   highlighted: z.boolean(),
+  priceSuggested: z.boolean(),
   templateCode: z.string().regex(/^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/),
   sort: int(0, 10_000),
   isDevSample: z.boolean(),

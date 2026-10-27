@@ -72,6 +72,9 @@ export async function syncVpsCatalogToStripe(
           interval,
           priceCents: cents,
           includedCreditsCents: 0,
+          family: "f",
+          trialDays: 0,
+          trialCard: "default",
           stripeProductId: productId,
           stripePriceId: known,
           translations: {

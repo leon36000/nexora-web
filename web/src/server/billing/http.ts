@@ -6,6 +6,19 @@ import { isSameOriginRequest } from "../auth/origin";
 import type { BillingConfig } from "../ledger/config";
 import { parseCadToCents } from "../ledger/money";
 import {
+  GiftError,
+  grantGiftCredits,
+  grantGiftSubscription,
+} from "../payments/gifts";
+import { ensureCreditsProducts } from "../payments/promo-sync";
+import {
+  creditFee,
+  type PromoResolution,
+  resolvePromo,
+  trialFor,
+} from "../payments/purchase";
+import { getSettings } from "../payments/settings";
+import {
   type CheckoutDeps,
   CheckoutError,
   createCreditCheckout,
@@ -30,6 +43,7 @@ export interface BillingHttpDeps {
   siteUrl: string;
   productName: (lang: Lang) => string;
   log: Logger;
+  now?: () => Date;
 }
 
 /** Statuts d'un abonnement qui court encore (en retard de paiement compris, pendant le délai de grâce). */
@@ -191,6 +205,15 @@ function checkoutFailure(
 ): Response {
   if (error instanceof OrgAccessError)
     return fail(deps, input, 403, "forbidden");
+  if (error instanceof GiftError)
+    return error.code === "cap_reached"
+      ? fail(deps, input, 409, "gift_cap_reached")
+      : fail(
+          deps,
+          input,
+          error.code === "already_gifted" ? 409 : 403,
+          `gift_${error.code}`,
+        );
   if (error instanceof CheckoutError) {
     const map: Record<string, [number, string]> = {
       invalid_amount: [422, "invalid_amount"],
@@ -235,20 +258,82 @@ export async function handleCreditsCheckout(
   )
     return fail(deps, input, 422, "invalid_amount");
   try {
-    const out = await createCreditCheckout(
-      checkoutDeps(deps, await stripeClient(deps)),
-      {
+    const now = (deps.now ?? (() => new Date()))();
+    const settings = await getSettings(deps.db);
+    const promo = await resolvePromo(deps.db, {
+      code: input.fields.promo,
+      scope: "credits",
+      organizationId: auth.organizationId,
+      userId: auth.userId,
+      amountCents: cents,
+      now,
+    });
+    const early = promoOutcome(deps, input, promo);
+    if (early) return early;
+    if (promo.kind === "gift") {
+      await grantGiftCredits(deps.db, {
         organizationId: auth.organizationId,
+        userId: auth.userId,
+        promoCodeId: promo.promo.id,
         amountCents: cents,
-        lang: input.lang,
-        productName: deps.productName(input.lang),
-        email: auth.email,
-      },
-    );
+        capCents: settings.staffMonthlyCreditCapCents,
+        config: deps.config,
+        now,
+        reason: `code ${promo.promo.code}`,
+      });
+      return done(input, giftUrl(deps, input, "credits"));
+    }
+    const stripe = await stripeClient(deps);
+    const fee = creditFee(settings, cents);
+    // Produit Stripe « Crédits » de la langue : permet à un coupon de ne viser que les crédits.
+    let productId: string | null =
+      (input.lang === "fr"
+        ? settings.creditsProductFrId
+        : settings.creditsProductEnId) ?? null;
+    if (!productId) {
+      try {
+        const [fr, en] = await ensureCreditsProducts(deps.db, stripe as never);
+        productId = input.lang === "fr" ? fr : en;
+      } catch {
+        productId = null; // repli : produit libellé à la volée, sans restriction de coupon par produit
+      }
+    }
+    const out = await createCreditCheckout(checkoutDeps(deps, stripe), {
+      organizationId: auth.organizationId,
+      amountCents: cents,
+      creditsCents: fee.creditsCents,
+      lang: input.lang,
+      productName: deps.productName(input.lang),
+      ...(productId ? { productId } : {}),
+      email: auth.email,
+      allowStripePageCodes: settings.stripePageCodes,
+      ...discountOf(promo),
+    });
     return done(input, out.url);
   } catch (error) {
     return checkoutFailure(deps, input, error);
   }
+}
+
+/** Code refusé : l'achat s'arrête avec le motif (jamais un paiement sans le rabais promis). */
+function promoOutcome(
+  deps: BillingHttpDeps,
+  input: Input,
+  promo: PromoResolution,
+): Response | null {
+  if (promo.kind === "rejected")
+    return fail(deps, input, 422, `promo_${promo.reason}`);
+  return null;
+}
+
+function discountOf(promo: PromoResolution) {
+  return promo.kind === "discount"
+    ? { promo: promo.promo, noPaymentMethodNeeded: promo.noPaymentMethodNeeded }
+    : {};
+}
+
+function giftUrl(deps: BillingHttpDeps, input: Input, kind: string): string {
+  return `${deps.siteUrl}${localizePath(input.lang, kind === "vps" ? "/compte/vps" : "/compte")}?offert=${kind === "subscription" ? "abonnement" : kind}`;
 }
 
 /** POST /api/billing/checkout/subscription : abonnement à un plan publié. Champs : `plan` (code), `lang`. */
@@ -276,6 +361,35 @@ export async function handleSubscribeCheckout(
       )
       .limit(1);
     if (running) return fail(deps, input, 409, "already_subscribed");
+    const now = (deps.now ?? (() => new Date()))();
+    const settings = await getSettings(deps.db);
+    const promo = await resolvePromo(deps.db, {
+      code: input.fields.promo,
+      scope: "subscriptions",
+      organizationId: auth.organizationId,
+      userId: auth.userId,
+      amountCents: plan.priceCents,
+      now,
+    });
+    const early = promoOutcome(deps, input, promo);
+    if (early) return early;
+    if (promo.kind === "gift") {
+      await grantGiftSubscription(deps.db, {
+        organizationId: auth.organizationId,
+        userId: auth.userId,
+        promoCodeId: promo.promo.id,
+        planCode: plan.code,
+        now,
+        reason: `code ${promo.promo.code}`,
+      });
+      return done(input, giftUrl(deps, input, "subscription"));
+    }
+    const trial = await trialFor(deps.db, {
+      plan,
+      plans: deps.plans(),
+      organizationId: auth.organizationId,
+      settings,
+    });
     const out = await createSubscriptionCheckout(
       checkoutDeps(deps, await stripeClient(deps)),
       {
@@ -283,6 +397,14 @@ export async function handleSubscribeCheckout(
         plan,
         lang: input.lang,
         email: auth.email,
+        // Un code d'essai sans essai d'offre suit le réglage général de carte.
+        trial:
+          trial ??
+          (promo.kind === "discount" && promo.promo.trialDays
+            ? { days: 0, requireCard: settings.trialRequiresCard }
+            : undefined),
+        allowStripePageCodes: settings.stripePageCodes,
+        ...discountOf(promo),
       },
     );
     return done(input, out.url);

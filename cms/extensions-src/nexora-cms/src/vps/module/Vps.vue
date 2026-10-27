@@ -301,6 +301,7 @@
 								{{ p.code }}<br /><small>{{ p.name }}</small>
 								<span v-if="p.highlighted" class="tag">mis en avant</span>
 								<span v-if="p.isDevSample" class="tag warn">plan de développement</span>
+								<span v-if="p.priceSuggested" class="tag warn">prix suggéré, à confirmer</span>
 							</td>
 							<td>{{ p.vcpu }} vCPU · {{ p.ramMb }} Mo · {{ p.diskGb }} Go<br /><small>{{ p.bandwidthGb }} Go de bande passante</small></td>
 							<td>{{ label(REGION, p.region) }}</td>
@@ -309,6 +310,7 @@
 							<td>{{ label(ITEM_STATUS, p.status) }}</td>
 							<td class="actions">
 								<v-button x-small secondary @click="editPlan(p)">Modifier</v-button>
+								<v-button v-if="p.priceSuggested" x-small :loading="busy === 'plans' + p.id + 'confirm'" @click="confirmPrices(p)">Confirmer les prix</v-button>
 								<v-button v-for="a in statusActions(p.status)" :key="a.status" x-small :secondary="a.secondary" :loading="busy === 'plans' + p.id + a.status" @click="setStatus('plans', p, a.status)">{{ a.text }}</v-button>
 							</td>
 						</tr>
@@ -729,6 +731,17 @@ function statusActions(status: string) {
 		default:
 			return [];
 	}
+}
+// Les prix d'un plan préparé en brouillon ne sont que SUGGÉRÉS (étude de marché) : tant que le fondateur ne les confirme
+// pas (ou n'en saisit pas d'autres), le plan ne peut pas être approuvé.
+async function confirmPrices(p: any) {
+	busy.value = 'plans' + p.id + 'confirm';
+	const r = await call('PATCH', `plans/${p.id}`, { priceSuggested: false });
+	if (r) {
+		info.value = `${p.code} : prix confirmés (${priceLabel(p.priceMonthlyCents)} / ${priceLabel(p.priceYearlyCents)}).`;
+		await load();
+	}
+	busy.value = '';
 }
 async function setStatus(kind: 'plans' | 'apps', item: any, status: string) {
 	busy.value = kind + item.id + status;

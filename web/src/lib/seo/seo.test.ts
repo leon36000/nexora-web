@@ -241,6 +241,25 @@ describe("sitemap", () => {
     ).toMatchObject({ "fr-CA": `${SITE}/vps/openclaw` });
   });
 
+  it("/tarifs (fr) et /en/pricing (en) : deux adresses, hreflang réciproques, x-default vers le français", () => {
+    const routes = availableAppRoutes(() => true).filter(
+      (r) => r.path === "/tarifs",
+    );
+    const sm = buildSitemap({ ...baseInput, appRoutes: routes });
+    expect(sm.map((e) => e.url)).toEqual([
+      `${SITE}/tarifs`,
+      `${SITE}/en/pricing`,
+    ]);
+    for (const e of sm)
+      expect(e.alternates?.languages).toEqual({
+        "fr-CA": `${SITE}/tarifs`,
+        "en-CA": `${SITE}/en/pricing`,
+        "x-default": `${SITE}/tarifs`,
+      });
+    // aucune date inventée : la page n'est pas datée par un catalogue
+    for (const e of sm) expect(e.lastModified).toBeUndefined();
+  });
+
   it("/vps n'est listée que si la page existe", () => {
     const without = availableAppRoutes((dir) => dir !== "vps").map(
       (r) => r.path,

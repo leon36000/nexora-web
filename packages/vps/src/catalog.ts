@@ -93,6 +93,8 @@ export interface SnapshotPlan {
   region: Region;
   priceMonthlyCents: number | null;
   priceYearlyCents: number | null;
+  /** Prix suggérés par l'étude, non confirmés : le plan n'est pas publiable (absent des anciens instantanés). */
+  priceSuggested?: boolean;
   highlighted: boolean;
   templateCode: string;
   sort: number;
@@ -146,6 +148,7 @@ const snapPlan = (p: Plan): SnapshotPlan => ({
   region: p.region,
   priceMonthlyCents: p.priceMonthlyCents,
   priceYearlyCents: p.priceYearlyCents,
+  priceSuggested: p.priceSuggested,
   highlighted: p.highlighted,
   templateCode: p.templateCode,
   sort: p.sort,
@@ -225,6 +228,13 @@ export function guardSnapshot(
         p.code,
         "yearly_not_cheaper",
         "le prix annuel doit être inférieur à 12 mois au tarif mensuel",
+      );
+    if (p.priceSuggested)
+      add(
+        "plan",
+        p.code,
+        "price_suggested",
+        "prix seulement suggéré par l'étude de marché : le fondateur doit le confirmer (« Confirmer les prix ») avant la publication",
       );
     if (p.isDevSample && !options.allowDevSamples)
       add(
@@ -359,6 +369,7 @@ export interface PlanInput {
   region?: Region;
   priceMonthlyCents?: number | null;
   priceYearlyCents?: number | null;
+  priceSuggested?: boolean;
   highlighted?: boolean;
   templateCode: string;
   sort?: number;
@@ -394,6 +405,12 @@ export async function updatePlan(
       "invalid_transition",
       `passage de « ${current.status} » à « ${patch.status} » impossible`,
     );
+  // Saisir un prix est une décision du fondateur : le drapeau « suggéré » tombe, sauf instruction contraire.
+  const priceEdited =
+    patch.priceMonthlyCents !== undefined ||
+    patch.priceYearlyCents !== undefined;
+  if (priceEdited && patch.priceSuggested === undefined)
+    patch = { ...patch, priceSuggested: false };
   if (patch.status === "approved" || patch.status === "published") {
     const merged = snapPlan({ ...current, ...patch } as Plan);
     const issues = guardSnapshot(

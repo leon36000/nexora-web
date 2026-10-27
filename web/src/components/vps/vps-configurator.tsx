@@ -152,6 +152,7 @@ export function VpsConfigurator({
   }
   const [sshKey, setSshKey] = useState("");
   const [hostname, setHostname] = useState("");
+  const [promo, setPromo] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<ErrorKey | null>(null);
   const attempt = useRef<{ fingerprint: string; id: string } | null>(null);
@@ -208,6 +209,7 @@ export function VpsConfigurator({
       sel,
       sshKey.trim(),
       hostname.trim(),
+      promo.trim(),
       lang,
     ]);
     if (attempt.current?.fingerprint !== fingerprint)
@@ -216,6 +218,7 @@ export function VpsConfigurator({
       selection: sel,
       sshKey,
       hostname,
+      promo,
       requestId: attempt.current.id,
       lang,
     });
@@ -255,6 +258,7 @@ export function VpsConfigurator({
 
   const keyError = error !== null && KEY_ERRORS.has(error);
   const hostError = error === "invalid_hostname";
+  const promoError = error?.startsWith("promo_") === true;
 
   return (
     <form
@@ -485,6 +489,41 @@ export function VpsConfigurator({
           />
           <p id="vps-hostname-hint" className="mt-1.5 text-small text-fg-muted">
             {t.hostnameHint}
+          </p>
+        </div>
+
+        <div className="max-w-md">
+          <label
+            htmlFor="vps-promo"
+            className="block text-small font-medium text-fg"
+          >
+            {t.promoLabel}
+            <span className="ml-2 font-normal text-fg-muted">
+              ({t.promoOptional})
+            </span>
+          </label>
+          <input
+            id="vps-promo"
+            name="promo"
+            type="text"
+            value={promo}
+            onChange={(e) => {
+              setPromo(e.target.value);
+              if (promoError) setError(null);
+            }}
+            maxLength={60}
+            spellCheck={false}
+            autoComplete="off"
+            autoCapitalize="characters"
+            placeholder={t.promoPlaceholder}
+            aria-invalid={promoError}
+            aria-describedby={
+              promoError ? "vps-promo-hint vps-error" : "vps-promo-hint"
+            }
+            className={INPUT_CLASS}
+          />
+          <p id="vps-promo-hint" className="mt-1.5 text-small text-fg-muted">
+            {t.promoHint}
           </p>
         </div>
       </div>

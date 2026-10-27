@@ -253,6 +253,13 @@ describe("corps de la commande", () => {
       "agent",
     );
   });
+  it("transmet le code promo saisi (sans espaces autour) et l'omet s'il est vide", () => {
+    expect(buildCheckoutBody({ ...base, promo: "  BIENVENUE-20 " }).promo).toBe(
+      "BIENVENUE-20",
+    );
+    expect("promo" in buildCheckoutBody({ ...base, promo: "   " })).toBe(false);
+    expect("promo" in buildCheckoutBody(base)).toBe(false);
+  });
   it("un UUID est un requestId accepté", () => {
     expect(REQUEST_ID.test(base.requestId)).toBe(true);
     expect(REQUEST_ID.test("court")).toBe(false);
@@ -275,6 +282,9 @@ describe("erreurs de /api/vps/checkout", () => {
     [422, "app_not_installable", "catalog_changed"],
     [503, "catalog_unavailable", "catalog_changed"],
     [409, "already_processed", "already_processed"],
+    [422, "promo_unknown", "promo_unknown"],
+    [422, "promo_wrong_scope", "promo_wrong_scope"],
+    [422, "promo_staff_only", "promo_staff_only"],
   ])("%i %s -> %s", (status, code, key) => {
     expect(orderErrorKey(status, code)).toBe(key);
   });
@@ -282,6 +292,7 @@ describe("erreurs de /api/vps/checkout", () => {
     expect(orderErrorKey(500, "internal_error")).toBe("generic");
     expect(orderErrorKey(403, "invalid_origin")).toBe("generic");
     expect(orderErrorKey(500, "constructor")).toBe("generic");
+    expect(orderErrorKey(422, "promo_inventé")).toBe("generic");
   });
   it("sans code lisible, l'état HTTP tranche les cas sans ambiguïté", () => {
     expect(orderErrorKey(401, undefined)).toBe("unauthenticated");

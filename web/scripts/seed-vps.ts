@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // Charge le catalogue VPS dans la base « app ».
 //
-//   bun web/scripts/seed-vps.ts            applications en BROUILLON seulement (rejouable, ne touche rien d'existant)
+//   bun web/scripts/seed-vps.ts            applications et 4 plans (prix SUGGÉRÉS) en BROUILLON seulement (rejouable, ne touche rien d'existant)
 //   bun web/scripts/seed-vps.ts --dev      + serveur simulé, trois plans « [DEV] » à prix symboliques, tout publié
 //   bun web/scripts/seed-vps.ts --dev --stripe   + « Publier vers Stripe » (stripe-mock en développement)
 //
@@ -10,7 +10,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { createDb } from "@nexora/db";
-import { seedApps, seedDevCatalog } from "@nexora/vps";
+import { seedApps, seedDevCatalog, seedDraftPlans } from "@nexora/vps";
 import { createStripeClient } from "../src/server/stripe/client";
 import { syncVpsCatalogToStripe } from "../src/server/vps/stripe-sync";
 
@@ -49,6 +49,10 @@ try {
     const out = await seedApps(db);
     console.log(
       `applications créées en brouillon : ${out.created.join(", ") || "aucune (déjà présentes)"}`,
+    );
+    const plans = await seedDraftPlans(db);
+    console.log(
+      `plans créés en brouillon (prix suggérés, à confirmer) : ${plans.created.join(", ") || "aucun (déjà présents)"}`,
     );
   }
 } finally {
