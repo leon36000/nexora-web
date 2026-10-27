@@ -178,6 +178,7 @@ describe("buildCmsMetadata", () => {
       siteName: "Nexora",
       preview: false,
     });
-    expect(none.openGraph?.images).toBeUndefined();
+    // aucune image saisie : image Open Graph dynamique, jamais d'image absente
+    expect(JSON.stringify(none.openGraph?.images)).toContain("/og/fr/opsys-ai");
   });
 });

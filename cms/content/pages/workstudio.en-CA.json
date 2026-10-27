@@ -223,7 +223,7 @@
       "fields": {
         "columns": "3",
         "tone": "sable",
-        "layout": "grille",
+        "layout": "modules",
         "anchor_id": "brancher"
       },
       "translation": {

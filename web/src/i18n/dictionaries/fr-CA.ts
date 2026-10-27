@@ -158,6 +158,23 @@ export const frCA = {
 
   cms: {
     priceOnRequest: "Sur demande",
+    toc: { label: "Sur cette page" },
+    status: {
+      disponible: "Disponible",
+      pilote: "En pilote",
+      prevu: "Prévu",
+      legend: "État",
+    },
+    modules: { detail: "Voir le détail" },
+    // Textes alternatifs des schémas de section (`visual`) : le dessin décrit toujours ce que dit le texte voisin.
+    visuals: {
+      "perimetre-sur-place":
+        "Schéma : un seul périmètre entoure vos données, le modèle et le calcul, dans vos locaux. Une demande y entre par un point de passage contrôlé et y reste.",
+      "perimetre-heberge":
+        "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora, au Québec, où se trouvent le modèle et le stockage.",
+      "flux-donnees":
+        "Schéma : vos documents entrent par un point de passage contrôlé vers le modèle, à l’intérieur du périmètre. Ce que le système prépare ne sort qu’après l’approbation d’une personne.",
+    },
     preview: {
       banner: "Aperçu — non publié",
       version: "Version :",
@@ -170,6 +187,120 @@ export const frCA = {
       title: "Cette page est momentanément indisponible.",
       text: "Nous ne parvenons pas à lire le contenu pour l’instant. Réessayez dans quelques instants.",
       cta: "Retour à l’accueil",
+    },
+  },
+
+  contact: {
+    meta: {
+      title: "Planifier un diagnostic | Nexora",
+      description:
+        "Décrivez votre besoin en quelques questions : Nexora enregistre votre demande et l'équipe vous écrit. Installation chez vous ou hébergement au Québec.",
+    },
+    label: "Diagnostic",
+    title: "Parlons de votre besoin.",
+    lead: "Quelques questions pour comprendre votre situation, puis vos coordonnées. Le message est facultatif.",
+    next: {
+      title: "Ce qui se passe ensuite",
+      items: [
+        "Votre demande est enregistrée dès l'envoi.",
+        "L'équipe de Nexora en est avertie par courriel.",
+        "Nous vous écrivons à l'adresse que vous indiquez.",
+      ],
+      note: "Nous n'annonçons pas de délai de réponse. Aucun engagement n'est pris par l'envoi de ce formulaire.",
+    },
+    noscript:
+      "Ce formulaire exige JavaScript : la vérification anti-abus est calculée dans votre navigateur, sans service tiers.",
+    form: {
+      label: "Demande de diagnostic",
+      step: "Étape {n} sur {total}",
+      steps: ["Votre besoin", "Vos coordonnées"],
+      required: "obligatoire",
+      optional: "facultatif",
+      next: "Continuer",
+      back: "Retour",
+      submit: "Envoyer ma demande",
+      sending: "Envoi en cours…",
+      errorsTitle: "Le formulaire contient des erreurs.",
+      need: {
+        label: "De quoi avez-vous besoin ?",
+        options: {
+          diagnostic: "Un diagnostic pour cerner mon besoin",
+          installation: "L'installation d'un serveur d'IA",
+          automatisation: "Une automatisation sur mesure",
+          "opsys-ai": "OPSYS-AI (construction et services terrain)",
+          workstudio: "Nexora WorkStudio",
+          "vps-api": "Un serveur privé virtuel, des modèles ou l'API",
+          autre: "Autre chose",
+        },
+      },
+      sector: {
+        label: "Votre secteur d'activité",
+        placeholder: "Choisir un secteur",
+        options: {
+          construction: "Construction et services terrain",
+          "services-professionnels": "Services professionnels",
+          sante: "Santé et services sociaux",
+          commerce: "Commerce et services aux clients",
+          industrie: "Industrie et fabrication",
+          technologie: "Technologie et développement",
+          autre: "Autre secteur",
+        },
+      },
+      deployment: {
+        label: "Mode de déploiement envisagé",
+        hint: "Rien n'est décidé par ce choix : il nous aide à préparer la conversation.",
+        options: {
+          "sur-place": "Chez moi, sur mon propre serveur",
+          heberge: "Hébergé au Québec par Nexora",
+          indecis: "Je ne sais pas encore",
+        },
+      },
+      name: { label: "Votre nom", autocomplete: "name" },
+      email: { label: "Votre courriel", autocomplete: "email" },
+      company: { label: "Votre entreprise", autocomplete: "organization" },
+      message: {
+        label: "Votre message",
+        hint: "Facultatif : le contexte, ce qui vous fait perdre du temps, vos outils actuels.",
+      },
+      consentMarketing: {
+        label:
+          "Je souhaite aussi recevoir des nouvelles de Nexora par courriel.",
+        hint: "Facultatif et indépendant de votre demande : laissez cette case décochée pour seulement nous écrire.",
+      },
+      privacy: {
+        before:
+          "Les renseignements saisis servent à répondre à votre demande. Voir la ",
+        link: "politique de confidentialité",
+        after: ".",
+      },
+      honeypot: "Ne pas remplir ce champ",
+      altchaLabel: "Vérification anti-abus",
+      altchaPending:
+        "Patientez : la vérification anti-abus se termine dans votre navigateur.",
+    },
+    errors: {
+      required: "Ce champ est obligatoire.",
+      invalid_email: "Ce courriel ne semble pas valide.",
+      invalid_choice: "Choisissez une des options proposées.",
+      too_long: "Ce texte est trop long.",
+      invalid_chars: "Ce champ contient des caractères non permis.",
+      altcha:
+        "La vérification anti-abus n'a pas abouti. Réessayez dans un instant.",
+      rate_limited:
+        "Trop de demandes depuis votre connexion. Réessayez dans quelques minutes.",
+      storage:
+        "Votre demande n'a pas pu être enregistrée : rien n'a été conservé. Réessayez dans un moment.",
+      network:
+        "Le serveur ne répond pas. Vérifiez votre connexion et réessayez.",
+      unavailable:
+        "Le formulaire est momentanément fermé. Réessayez plus tard.",
+    },
+    success: {
+      title: "Demande enregistrée.",
+      text: "Votre demande est enregistrée et l'équipe de Nexora en est avertie. Nous vous écrirons à l'adresse indiquée. Nous n'annonçons pas de délai de réponse.",
+      already:
+        "Cette demande était déjà enregistrée : inutile de la renvoyer. L'équipe en a été avertie.",
+      home: "Retour à l'accueil",
     },
   },
 

@@ -122,6 +122,23 @@ async function ensureField(d: Directus, collection: string, f: FieldDef) {
     await d.patch(`/fields/${collection}/${f.field}`, { meta: wanted });
     changed(`champ ${collection}.${f.field} (meta)`);
   } else stats.unchanged++;
+  // Un champ devenu facultatif (ex. navigation_translations.href) doit aussi cesser d'être NOT NULL en base.
+  const curSchema = cur.schema as
+    | { is_primary_key?: boolean; is_nullable?: boolean }
+    | null
+    | undefined;
+  if (
+    curSchema &&
+    !curSchema.is_primary_key &&
+    curSchema.is_nullable === false &&
+    f.schema?.is_nullable !== false &&
+    f.schema !== undefined
+  ) {
+    await d.patch(`/fields/${collection}/${f.field}`, {
+      schema: { is_nullable: true },
+    });
+    changed(`champ ${collection}.${f.field} (devenu facultatif)`);
+  }
 }
 
 async function ensureRelation(d: Directus, r: RelationDef) {
@@ -225,11 +242,27 @@ async function applySettings(d: Directus) {
           })),
           { type: "module", id: "settings", enabled: true, locked: true },
         ];
-  if (!bar.some((m) => m.id === vault.id)) {
-    const at = bar.findIndex((m) => m.id === "settings");
-    bar.splice(at === -1 ? bar.length : at, 0, vault);
+  // Modules maison (D14) : catalogues de l'app administrés depuis Directus, insérés avant Réglages.
+  const extensionModules = [
+    { type: "module", id: "nexora-models", enabled: true },
+    { type: "module", id: "nexora-agents", enabled: true },
+    { type: "module", id: "nexora-seo", enabled: true },
+    { type: "module", id: "nexora-vps", enabled: true },
+    { type: "module", id: "nexora-hosted-agents", enabled: true },
+    vault,
+  ];
+  const missing = extensionModules.filter(
+    (mod) => !bar.some((m) => m.id === mod.id),
+  );
+  if (missing.length) {
+    for (const mod of missing) {
+      const at = bar.findIndex((m) => m.id === "settings");
+      bar.splice(at === -1 ? bar.length : at, 0, mod);
+    }
     await d.patch("/settings", { module_bar: bar });
-    changed("barre des modules : Coffre ajouté");
+    changed(
+      `barre des modules : ${missing.map((m) => m.id).join(", ")} ajouté(s)`,
+    );
   } else stats.unchanged++;
 }
 

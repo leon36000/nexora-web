@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import type { FaqBlock } from "@/server/cms/model";
+import { anchorProps, toneProps } from "./tone";
 
 /** Réponse en paragraphes (une ligne vide sépare deux paragraphes) : le même texte alimente le JSON-LD. */
 export function answerParagraphs(answer: string): string[] {
@@ -13,17 +14,20 @@ export function answerParagraphs(answer: string): string[] {
 /** FAQ en <details>/<summary> natifs : accessible au clavier sans JavaScript. */
 export function FaqBlockView({
   block,
-  surface,
+  joined,
 }: {
   block: FaqBlock;
-  surface: boolean;
+  joined?: "after" | "before" | "both";
 }) {
   const titleId = `${block.key}-title`;
+  const anchor = anchorProps(block.anchorId);
   return (
     <Section
-      tone="light"
-      surface={surface}
+      {...toneProps(block.tone)}
+      joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
+      id={anchor.id}
+      className={anchor.className}
     >
       {block.title ? <SectionHeader id={titleId} title={block.title} /> : null}
       <div

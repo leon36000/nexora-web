@@ -39,8 +39,6 @@ Only one of these five names is a delivered product. For the other four, we writ
 
 The studio where you design, connect and run agents and workflows. Demonstration on request.
 
-Statut (champ `status`) : disponible
-
 → [Discover WorkStudio](/en/workstudio/)
 
 #### Nexora Code.

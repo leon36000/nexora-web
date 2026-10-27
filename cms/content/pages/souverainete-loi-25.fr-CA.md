@@ -121,41 +121,29 @@ Ces éléments peuvent soutenir votre démarche. Ils ne la remplacent pas, et le
 
 Organisations, rôles, journal d'audit et plafonds mensuels de consommation dans WorkStudio.
 
-Statut (champ `status`) : disponible
-
 → [Voir WorkStudio](/workstudio/)
 
 #### Le lieu de chaque modèle.
 
 Chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers : un repère utile pour l'évaluation d'une communication hors Québec.
 
-Statut (champ `status`) : disponible
-
 #### Repérage et masquage.
 
 Un service installé sur votre serveur repère noms, courriels et numéros de téléphone, et peut les masquer dans les traces ou avant un appel à un modèle externe, selon la politique choisie.
-
-Statut (champ `status`) : disponible
 
 #### Des traces consultables.
 
 Chaque appel de modèle laisse une trace : utile pour documenter ce que le système a fait et pour enquêter après un incident.
 
-Statut (champ `status`) : disponible
-
 #### Un schéma des flux par installation.
 
 Remis par écrit avant la mise en service ; le modèle de schéma reste à rédiger.
-
-Statut (champ `status`) : prevu
 
 → [Voir le centre de confiance](/centre-de-confiance/)
 
 #### Des documents types.
 
 Entente de traitement, modèle d'évaluation des facteurs relatifs à la vie privée, procédure d'incident, liste des sous-traitants et des lieux : en préparation, aucun n'est encore disponible.
-
-Statut (champ `status`) : prevu
 
 → [Voir le centre de confiance](/centre-de-confiance/)
 

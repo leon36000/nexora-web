@@ -1,0 +1,23 @@
+{
+  "name": "@nexora/vps",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./proxmox": "./src/proxmox/index.ts",
+    "./simulator": "./src/proxmox/simulator.ts",
+    "./testing": "./src/testing.ts",
+    "./install": "./src/install.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "apidoc": "node scripts/extract-apidoc.mjs"
+  },
+  "dependencies": {
+    "@nexora/db": "workspace:*",
+    "@nexora/log": "workspace:*",
+    "drizzle-orm": "^0.45.4"
+  }
+}

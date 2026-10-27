@@ -20,6 +20,18 @@ if [ -z "$preview_secret" ]; then
   preview_secret="$(printf 'nexora-preview-dev' | openssl dgst -sha256 -hmac "$(get NEXORA_APP_ADMIN_TOKEN)" | awk '{print $NF}')"
 fi
 
+# Secret de Better Auth (S4) : repris de deploy/.env s'il y est, sinon du .env local déjà écrit
+# (les sessions survivent à une réexécution), sinon généré une fois.
+auth_secret="$(get BETTER_AUTH_SECRET)"
+if [ -z "$auth_secret" ] && [ -f "$root/.env" ]; then
+  auth_secret="$({ grep -E '^BETTER_AUTH_SECRET=' "$root/.env" || true; } | head -n1 | cut -d= -f2-)"
+fi
+[ -n "$auth_secret" ] || auth_secret="$(openssl rand -hex 32)"
+
+# Passerelle de modèles (S5) : clé maîtresse de LiteLLM (variable SERVEUR, jamais exposée au client ni
+# au navigateur ; en production, secret Docker). Facultative ici : sans elle, /v1 répond 503.
+litellm_master="$(get LITELLM_MASTER_KEY)"
+
 umask 077
 {
   echo "DATABASE_URL=postgres://nexora:$(get POSTGRES_PASSWORD)@127.0.0.1:15440/app"
@@ -29,6 +41,21 @@ umask 077
   [ -z "$directus_reader" ] || echo "DIRECTUS_READER_TOKEN=$directus_reader"
   [ -z "$directus_publisher" ] || echo "DIRECTUS_PUBLISHER_TOKEN=$directus_publisher"
   echo "NEXORA_PREVIEW_SECRET=$preview_secret"
+  echo "BETTER_AUTH_SECRET=$auth_secret"
+  # Paiements en développement : stripe-mock (aucune clé réelle, aucun paiement réel). Les vraies
+  # clés de TEST se collent dans le Coffre (stripe.secret_key, stripe.webhook_secret), jamais ici.
+  echo "STRIPE_SECRET_KEY=sk_test_stripemocklocal0123456789"
+  echo "STRIPE_WEBHOOK_SECRET=whsec_local_dev_only_not_a_real_secret"
+  echo "STRIPE_API_BASE_URL=http://127.0.0.1:12111"
+  # LiteLLM (passerelle S5) : réseau local seulement.
+  echo "LITELLM_BASE_URL=${LITELLM_BASE_URL:-http://127.0.0.1:4400}"
+  [ -z "$litellm_master" ] || echo "LITELLM_MASTER_KEY=$litellm_master"
+  # Courriel (S3) : en développement, Mailpit (SMTP 127.0.0.1:1026, interface http://127.0.0.1:8026). Les valeurs de
+  # production (SMTP_HOST, SMTP_USER, SMTP_PASSWORD_FILE, CONTACT_NOTIFY_TO) se règlent dans l'environnement du déploiement.
+  echo "SMTP_HOST=127.0.0.1"
+  echo "SMTP_PORT=1026"
+  echo "SMTP_FROM=site@nexora.dev"
+  echo "CONTACT_NOTIFY_TO=equipe@nexora.dev"
 } > "$root/.env"
 cp "$root/.env" "$root/web/.env.local"
-echo "Écrit : .env et web/.env.local (variables : DATABASE_URL, NEXORA_APP_ADMIN_TOKEN, NEXORA_VAULT_MASTER_KEY, DIRECTUS_URL, DIRECTUS_READER_TOKEN, DIRECTUS_PUBLISHER_TOKEN, NEXORA_PREVIEW_SECRET)"
+echo "Écrit : .env et web/.env.local (variables : DATABASE_URL, NEXORA_APP_ADMIN_TOKEN, NEXORA_VAULT_MASTER_KEY, DIRECTUS_*, NEXORA_PREVIEW_SECRET, BETTER_AUTH_SECRET, STRIPE_* de stripe-mock, LITELLM_BASE_URL, LITELLM_MASTER_KEY, SMTP_* et CONTACT_NOTIFY_TO pour Mailpit)"

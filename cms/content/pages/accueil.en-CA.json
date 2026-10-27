@@ -34,7 +34,9 @@
       "role": "Start from the problem: five situations, each leading to its solution.",
       "claims": ["CL-01"],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "clair"
       },
       "translation": {
         "title": "Start with your problem.",
@@ -78,7 +80,9 @@
       "role": "Three before / after scenarios, labelled as examples.",
       "claims": ["CL-11", "CL-21"],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sable"
       },
       "translation": {
         "title": "Before. After. Your call.",
@@ -100,29 +104,45 @@
       }
     },
     {
-      "collection": "block_cards",
-      "role": "The two deployment modes; definition of sovereignty.",
-      "claims": ["CL-02", "CL-05", "CL-26"],
+      "collection": "block_section",
+      "role": "Souveraineté définie en une phrase ; introduit les deux modes.",
+      "claims": ["CL-26"],
       "fields": {
-        "columns": "2"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre"
       },
       "translation": {
         "title": "Your premises. Or ours.",
-        "intro": "AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora offers two ways to get there.",
-        "cards": [
-          {
-            "title": "Your premises.",
-            "text": "We install the system on your own server, in your offices or with the host of your choice. The hardware and the access are yours. Before go-live, we list what leaves the network, if anything: updates, licences, and an external model if you choose one.",
-            "href": "/en/deployment/on-premises/",
-            "link_label": "See the on-premises mode"
-          },
-          {
-            "title": "Ours, in Quebec.",
-            "text": "We host and operate the system in our infrastructure, located in Quebec. You buy no server and no hardware. Where your data, backups and logs sit, and who can access them: we put it in writing in the deployment study.",
-            "href": "/en/deployment/hosted-quebec/",
-            "link_label": "See the hosted mode"
-          }
-        ]
+        "body": "<p>AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora offers two ways to get there.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Mode sur : schéma de périmètre et lien vers le détail.",
+      "claims": ["CL-02", "CL-05"],
+      "fields": {
+        "media_position": "none",
+        "visual": "perimetre-sur-place",
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Your premises.",
+        "body": "<p>We install the system on your own server, in your offices or with the host of your choice. The hardware and the access are yours. Before go-live, we list what leaves the network, if anything: updates, licences, and an external model if you choose one.</p><p><a href=\"/en/deployment/on-premises/\">See the on-premises mode</a></p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Mode heberge : schéma de périmètre et lien vers le détail.",
+      "claims": ["CL-05"],
+      "fields": {
+        "media_position": "left",
+        "visual": "perimetre-heberge",
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Ours, in Quebec.",
+        "body": "<p>We host and operate the system in our infrastructure, located in Quebec. You buy no server and no hardware. Where your data, backups and logs sit, and who can access them: we put it in writing in the deployment study.</p><p><a href=\"/en/deployment/hosted-quebec/\">See the hosted mode</a></p>"
       }
     },
     {
@@ -130,7 +150,9 @@
       "role": "The products presented as one set, each with its real status.",
       "claims": ["CL-12", "CL-13", "CL-20", "CL-21", "CL-22", "CL-27", "CL-28"],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair"
       },
       "translation": {
         "title": "One suite, not a pile of tools.",
@@ -140,31 +162,36 @@
             "title": "Nexora WorkStudio.",
             "text": "Design, connect and run agents (software that carries out a task with the tools you authorize) and workflows (automated sequences of tasks) in one place. A step can wait for a person's approval before it acts.\nStatus: demonstration on request.",
             "href": "/en/workstudio/",
-            "link_label": "Discover WorkStudio"
+            "link_label": "Discover WorkStudio",
+            "label": "WorkStudio"
           },
           {
             "title": "Models and API.",
             "text": "An API (the door through which other software calls a service) gives access to several AI models, the engines that produce answers, in the OpenAI format, a common calling format that many tools understand. Keys, quotas (usage limits) and usage metering are managed there.\nStatus: demonstration on request; the public catalogue, with its prices, is in preparation.",
             "href": "/en/models/",
-            "link_label": "See the models"
+            "link_label": "See the models",
+            "label": "Models and API"
           },
           {
             "title": "Hosted agents.",
             "text": "The agents you publish in WorkStudio, callable through an API with your own key and subject to the same limits as everything else.\nStatus: API calls exist in WorkStudio; the online catalogue is in preparation.",
             "href": "/en/agents/",
-            "link_label": "See the agents"
+            "link_label": "See the agents",
+            "label": "Agents"
           },
           {
             "title": "VPS in Quebec.",
             "text": "A virtual private server (VPS) is a server rented for you alone. We are preparing offers hosted in Quebec, with an AI application installed of your choosing.\nStatus: in preparation; online ordering is not open.",
             "href": "/en/vps/",
-            "link_label": "See the servers"
+            "link_label": "See the servers",
+            "label": "VPS"
           },
           {
             "title": "The software suite.",
             "text": "Nexora Code for agent-assisted development, Nexora Corpus to prepare your documents and data, and the Quanta and Helix models.\nStatus: no availability and no date are announced at this stage.",
             "href": "/en/suite/",
-            "link_label": "See the suite"
+            "link_label": "See the suite",
+            "label": "Suite"
           }
         ]
       }
@@ -174,7 +201,9 @@
       "role": "Feature spot for OPSYS-AI and its construction cycle.",
       "claims": ["CL-30", "CL-31"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre"
       },
       "translation": {
         "title": "OPSYS-AI. Ten departments, one file.",
@@ -204,12 +233,26 @@
       "role": "Five-step method.",
       "claims": ["CL-03", "CL-04", "CL-14"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair"
       },
       "translation": {
         "title": "Five steps. One case at a time.",
-        "body": "<p>We start with one concrete problem, put into service and verified, before widening the scope. We announce no one-size-fits-all timeline: it depends on your situation and is measured on a first use case.</p><p><a href=\"/en/method/\">Read the method</a></p>",
-        "items": [
+        "body": "<p>We start with one concrete problem, put into service and verified, before widening the scope. We announce no one-size-fits-all timeline: it depends on your situation and is measured on a first use case.</p><p><a href=\"/en/method/\">Read the method</a></p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les cinq temps de la méthode, en frise numérotée.",
+      "claims": ["CL-03", "CL-04", "CL-14"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "clair"
+      },
+      "translation": {
+        "cards": [
           {
             "title": "Understand.",
             "text": "We observe how the work gets done today: where time is lost, what information comes in, who decides."
@@ -248,7 +291,9 @@
         "CL-31"
       ],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sombre"
       },
       "translation": {
         "title": "Commitments you can verify.",
@@ -304,7 +349,8 @@
         "CL-25"
       ],
       "fields": {
-        "emit_jsonld": true
+        "emit_jsonld": true,
+        "tone": "clair"
       },
       "translation": {
         "title": "Your questions. Our answers.",

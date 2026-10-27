@@ -147,6 +147,9 @@ describe("SEO", () => {
             expect(String(b.translation.headline)).toMatch(/\.$/);
             return;
           }
+          // une frise d'étapes sans titre prolonge le bloc de texte qui la précède (même ton, bande continue)
+          if (b.fields?.layout === "etapes" && !("title" in b.translation))
+            return;
           const title = String(b.translation.title ?? "");
           expect(title, `bloc ${i + 1}`).toMatch(/\.$/);
           const words = title.split(/\s+/).filter(Boolean).length;
@@ -407,28 +410,33 @@ describe("VÉRITÉ", () => {
     ).toEqual([]);
   });
 
-  test("les statuts d'OPSYS-AI correspondent au rapport 07 (départements)", () => {
-    const expected: Record<number, RegExp> = {
-      1: /Statut\s*: pilote/,
-      2: /Statut\s*: pilote/,
+  test("les statuts d'OPSYS-AI correspondent au rapport 07 (départements) : badge prudent, détail dans le texte", () => {
+    // Le badge porte le statut le plus prudent du département : « pilote » dès qu'une partie du département
+    // n'est que pilote (M3, M7 et M10 mêlent « disponible » et « pilote » : le détail le dit dans le texte).
+    // « disponible » n'est affiché que si TOUT le département l'est (aucun cas aujourd'hui).
+    const mixed: Record<number, RegExp> = {
       3: /Statut\s*: disponible pour le calcul/,
-      4: /Statut\s*: pilote/,
-      5: /Statut\s*: pilote/,
-      6: /Statut\s*: pilote/,
       7: /Statut\s*: disponible après configuration/,
-      8: /Statut\s*: pilote/,
-      9: /Statut\s*: pilote/,
       10: /Statut\s*: disponible pour le journal/,
     };
-    const cards = (pairs["opsys-ai"]["fr-CA"].blocks.find(
-      (b) =>
-        b.collection === "block_cards" &&
-        (b.translation.cards as unknown[]).length === 10,
-    )?.translation.cards ?? []) as { text: string }[];
-    for (const [i, c] of cards.entries())
-      expect(c.text.replace(/\u00a0/g, " "), `M${i + 1}`).toMatch(
-        expected[i + 1] as RegExp,
-      );
+    for (const l of LOCALES) {
+      const cards = (pairs["opsys-ai"][l].blocks.find(
+        (b) =>
+          b.collection === "block_cards" &&
+          ((b.translation.cards as unknown[]) ?? []).length === 10,
+      )?.translation.cards ?? []) as { text: string; status?: string }[];
+      expect(cards).toHaveLength(10);
+      for (const [i, c] of cards.entries()) {
+        expect(c.status, `M${i + 1} (${l})`).toBe("pilote");
+        const text = c.text.replace(/\u00a0/g, " ");
+        // le premier paragraphe décrit le département, le détail suit
+        expect(text.split("\n").length, `M${i + 1} (${l}) détail`).toBe(2);
+        const re = mixed[i + 1];
+        if (l === "fr-CA" && re) expect(text, `M${i + 1}`).toMatch(re);
+        // l'ancien en-tête « Statut : pilote. » est porté par le badge, plus par le texte
+        if (!re) expect(text, `M${i + 1}`).not.toMatch(/Statut\s*:/);
+      }
+    }
   });
 
   test("ce qui n'est pas livré n'est jamais écrit comme livré : pas de « envoyé automatiquement » ni de mode souverain", () => {

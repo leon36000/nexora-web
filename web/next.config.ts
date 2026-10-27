@@ -13,6 +13,17 @@ const nextConfig: NextConfig = {
     // Les images du CMS passent par /api/media/<id> (jeton lecteur côté serveur, raster seulement).
     localPatterns: [{ pathname: "/api/media/*" }],
   },
+  // Les polices des images Open Graph (route /og) sont lues sur disque : à inclure dans une sortie tracée.
+  outputFileTracingIncludes: { "/og/**": ["./src/fonts/og/**"] },
+  async rewrites() {
+    // Fichier de clé IndexNow à la racine (`/<clé de 32 hex>.txt`), servi seulement si la clé correspond.
+    return [
+      {
+        source: "/:key([a-f0-9]{32}).txt",
+        destination: "/api/seo/indexnow-key/:key",
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

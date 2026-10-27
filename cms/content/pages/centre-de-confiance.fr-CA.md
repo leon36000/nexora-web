@@ -73,43 +73,31 @@ Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora. Elles sou
 
 Qui voit quoi, qui peut modifier, par espace de travail.
 
-Statut (champ `status`) : disponible
-
 #### Journal d'audit et plafonds.
 
 Les actions d'administration sont consignées ; la consommation est plafonnée par mois.
-
-Statut (champ `status`) : disponible
 
 #### Connexion unique.
 
 Vos équipes se connectent avec le compte de votre entreprise, chez un fournisseur d'identité courant.
 
-Statut (champ `status`) : disponible
-
 #### Politique sur les renseignements personnels.
 
 Autoriser, masquer ou refuser l'envoi de renseignements personnels à un modèle hors de l'instance, par espace.
-
-Statut (champ `status`) : disponible
 
 #### Traces et masquage.
 
 Chaque appel de modèle est tracé ; les noms, courriels et numéros de téléphone peuvent y être masqués.
 
-Statut (champ `status`) : disponible
-
 #### Lieu de chaque modèle et secrets chiffrés.
 
 Chaque modèle indique où il tourne ; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.
-
-Statut (champ `status`) : disponible
 
 ### Bloc 4 — Cartes (`block_cards`)
 
 *Documents fournis sur demande, tous en préparation. · Affirmations : CL-87, CL-73, CL-05*
 
-Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=documents`
+Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=documents`
 
 ## Documents sur demande.
 
@@ -119,37 +107,25 @@ Voici les documents que nous nous engageons à fournir. Ils sont en préparation
 
 Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent. Le modèle de schéma est à rédiger.
 
-Statut (champ `status`) : prevu
-
 #### Le contrat type et l'entente de traitement.
 
 Ce que Nexora fait des renseignements que vous lui confiez, et ce qu'elle s'interdit.
-
-Statut (champ `status`) : prevu
 
 #### La liste des sous-traitants et des lieux.
 
 Qui intervient dans l'hébergement et l'exploitation, et où.
 
-Statut (champ `status`) : prevu
-
 #### La preuve du lieu d'hébergement au Québec.
 
 Adresse, clause de localisation, lieu des sauvegardes et des journaux, pour le mode hébergé.
-
-Statut (champ `status`) : prevu
 
 #### Un modèle d'évaluation des facteurs relatifs à la vie privée.
 
 Pour aider votre entreprise à documenter l'évaluation d'un projet d'IA.
 
-Statut (champ `status`) : prevu
-
 #### Une procédure d'incident.
 
 Qui évalue, qui avise, où l'incident est consigné.
-
-Statut (champ `status`) : prevu
 
 ### Bloc 5 — Section (`block_section`)
 

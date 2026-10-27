@@ -53,25 +53,17 @@ Le mode hébergé n'a de sens que s'il est prouvable. Ces documents sont ceux qu
 
 Adresse du lieu et clause de localisation au contrat.
 
-Statut (champ `status`) : prevu
-
 #### Le lieu des sauvegardes et des journaux.
 
 Où ils se trouvent, combien de temps ils sont conservés.
-
-Statut (champ `status`) : prevu
 
 #### La liste des sous-traitants.
 
 Qui intervient dans la chaîne d'hébergement, et où.
 
-Statut (champ `status`) : prevu
-
 #### Le schéma des flux.
 
 Ce qui reste dans le périmètre, ce qui en sort.
-
-Statut (champ `status`) : prevu
 
 → [Voir le centre de confiance](/centre-de-confiance/)
 

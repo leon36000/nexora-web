@@ -73,37 +73,25 @@ Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=concevoir`
 
 A specialized assistant: it follows your instructions, uses the tools and documents you authorize, cites its sources and is published in a chat.
 
-Statut (champ `status`) : disponible
-
 #### Workflows.
 
 A sequence of steps, shown as cards or on a canvas (a drawing screen), tested step by step, then deployed through chat, schedule, event or an automatic call from another service. Every deployment is a version you can return to.
-
-Statut (champ `status`) : disponible
 
 #### A Copilot.
 
 Describe an automation in plain language: it prepares a workflow you review before creating it. Starter templates for small businesses (quotes, reminders, email sorting, meeting minutes) are provided.
 
-Statut (champ `status`) : disponible
-
 #### Knowledge.
 
 A base of your documents, indexed by default on the instance's server: agents answer from it with their sources.
-
-Statut (champ `status`) : disponible
 
 #### Documents read.
 
 Reading of scanned PDFs and images, extraction of fields from an invoice, quote, purchase order or expense report, with a “to verify” flag.
 
-Statut (champ `status`) : disponible
-
 #### Voice.
 
 Transcription of audio recordings, with a meeting's speakers, and reading a text aloud. No call-answering service is included.
-
-Statut (champ `status`) : disponible
 
 ### Bloc 4 — Cartes (`block_cards`)
 
@@ -145,43 +133,31 @@ Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=mesurer`
 
 Try and compare several models side by side before choosing, with the time and tokens (the unit of text a model processes) of each answer.
 
-Statut (champ `status`) : disponible
-
 #### Versioned instructions.
 
 A reusable instruction has versions and two labels, production and test. You test a version before promoting it; every change is logged.
-
-Statut (champ `status`) : disponible
 
 #### Traces.
 
 Every model call leaves a trace: steps, duration, tokens, model. Personal information can be masked in them.
 
-Statut (champ `status`) : disponible
-
 #### Evaluations.
 
 Test sets and judges measure whether an agent, an instruction or a model answers well, and compare two versions before changing.
-
-Statut (champ `status`) : disponible
 
 #### Batch processing.
 
 Have a table of several hundred rows processed in the background: progress, cancellation, CSV export.
 
-Statut (champ `status`) : disponible
-
 #### Measured consumption.
 
 Tokens, runs and estimated carbon footprint, by model, workspace and person, with monthly caps.
-
-Statut (champ `status`) : disponible
 
 ### Bloc 6 — Cartes (`block_cards`)
 
 *Brancher : Nexora Connect, API, site, Assistant, délégation, installation. · Affirmations : CL-103, CL-27, CL-107, CL-100, CL-108, CL-26*
 
-Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=brancher`
+Réglages : `columns=3`, `tone=sable`, `layout=modules`, `anchor_id=brancher`
 
 ## Connect your tools.
 
@@ -189,37 +165,25 @@ Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=brancher`
 
 Nexora Connect plugs in a broad catalogue of services: mail, calendar, customer relations, storage, billing. Each connection belongs to a workspace and is qualified service by service.
 
-Statut (champ `status`) : disponible
-
 #### An OpenAI-format API.
 
 An API (the door through which other software calls a service) gives access to models and published agents, in the OpenAI format that many tools already understand: keys, quotas, consumption metering.
-
-Statut (champ `status`) : disponible
 
 #### Your website.
 
 A published agent shows up on your site with one line of code (chat bubble, frame or link). WorkStudio also installs as an application from a compatible browser.
 
-Statut (champ `status`) : disponible
-
 #### An internal Assistant.
 
 A chat where your teams talk to the company's published agents, with their history and attached files.
-
-Statut (champ `status`) : disponible
 
 #### Agents that help each other.
 
 An agent can hand a request to another published agent, with limited depth and no loops.
 
-Statut (champ `status`) : disponible
-
 #### A simple installation.
 
 One command on a Docker server (a tool that packages software), on Linux or macOS, then backup, restore and update commands.
-
-Statut (champ `status`) : disponible
 
 → [See installation](/en/services/ai-server-installation/)
 

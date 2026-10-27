@@ -40,7 +40,7 @@ describe("rôles et politiques", () => {
     }
   });
 
-  test("les agents n’écrivent jamais les collections de contenu : seulement des versions", () => {
+  test("les agents ne modifient jamais le contenu : des versions, plus la coquille d’une page nouvelle pour le Rédacteur", () => {
     const content = new Set([
       "pages",
       "pages_translations",
@@ -48,10 +48,26 @@ describe("rôles et politiques", () => {
       ...BLOCK_TYPES,
     ]);
     for (const a of AGENTS) {
-      const writes = byName(a.name).permissions.filter(
-        (p) => p.action !== "read" && content.has(p.collection),
+      const writes = byName(a.name)
+        .permissions.filter(
+          (p) => p.action !== "read" && content.has(p.collection),
+        )
+        .map((p) => `${p.action} ${p.collection}`)
+        .sort();
+      expect(writes).toEqual(
+        a.key === "redacteur"
+          ? ["create pages", "create pages_translations"]
+          : [],
       );
-      expect(writes).toEqual([]);
+    }
+  });
+
+  test("un agent fournit l’identifiant de l’approbation qu’il crée (il ne peut pas la relire)", () => {
+    for (const a of AGENTS) {
+      const create = byName(a.name).permissions.find(
+        (p) => p.collection === "approvals" && p.action === "create",
+      );
+      expect(create?.fields).toContain("id");
     }
   });
 

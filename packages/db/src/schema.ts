@@ -110,6 +110,14 @@ export const vaultSecrets = pgTable(
   ],
 );
 
+export const CONFIG_VERSION_STATUSES = [
+  "draft",
+  "approved",
+  "published",
+  "superseded",
+] as const;
+export type ConfigVersionStatus = (typeof CONFIG_VERSION_STATUSES)[number];
+
 /** Versions figées des configurations publiées (D3) : ce qui a été appliqué, avec son hash. */
 export const configVersions = pgTable(
   "config_versions",
@@ -119,11 +127,27 @@ export const configVersions = pgTable(
     itemId: text("item_id").notNull(),
     hash: text("hash").notNull(),
     content: jsonb("content").$type<Record<string, unknown>>().notNull(),
-    publishedAt: timestamp("published_at", { withTimezone: true })
+    /** Flux D14 : draft → approved → published → superseded. Les lignes de S1 sont `published`. */
+    status: text("status")
+      .$type<ConfigVersionStatus>()
+      .notNull()
+      .default("published"),
+    createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    /** Null tant que la version n'est pas publiée. */
+    publishedAt: timestamp("published_at", { withTimezone: true }).defaultNow(),
+    /** État « appliqué » écrit en retour par une synchronisation (LiteLLM, Stripe…). */
+    appliedAt: timestamp("applied_at", { withTimezone: true }),
+    appliedStatus: text("applied_status"),
+    appliedDetail: jsonb("applied_detail").$type<Record<string, unknown>>(),
   },
   (t) => [
+    check(
+      "config_versions_status_check",
+      sql`${t.status} IN ('draft', 'approved', 'published', 'superseded')`,
+    ),
     unique("config_versions_item_hash_unique").on(
       t.collection,
       t.itemId,
@@ -148,3 +172,11 @@ export const processedEvents = pgTable(
     unique("processed_events_provider_event_unique").on(t.provider, t.eventId),
   ],
 );
+
+export * from "./schema-agents.ts";
+export * from "./schema-auth.ts";
+export * from "./schema-billing.ts";
+export * from "./schema-gateway.ts";
+export * from "./schema-leads.ts";
+export * from "./schema-site.ts";
+export * from "./schema-vps.ts";

@@ -139,4 +139,64 @@ describe("fetchNavigation", () => {
     const en = await fetchNavigation(client, "en-CA");
     expect(en.map((n) => n.id)).toEqual(["a"]);
   });
+
+  it("garde un parent sans lien (menu, colonne), son style utilitaire et la description des entrées", async () => {
+    const { client } = stub({
+      "/items/navigation": [
+        {
+          id: "p",
+          placement: "header",
+          style: "link",
+          sort: 1,
+          parent: null,
+          translations: [
+            { languages_code: "fr-CA", label: "Produits", href: null },
+          ],
+        },
+        {
+          id: "p1",
+          placement: "header",
+          style: "link",
+          sort: 1,
+          parent: "p",
+          translations: [
+            {
+              languages_code: "fr-CA",
+              label: "VPS",
+              href: "/vps/",
+              description: "Serveurs au Québec.",
+            },
+          ],
+        },
+        {
+          id: "u",
+          placement: "header",
+          style: "utility",
+          sort: 2,
+          parent: null,
+          translations: [
+            { languages_code: "fr-CA", label: "Connexion", href: "/compte/" },
+          ],
+        },
+        {
+          id: "vide",
+          placement: "footer",
+          style: "link",
+          sort: 1,
+          parent: null,
+          translations: [{ languages_code: "fr-CA", label: "Rien", href: "" }],
+        },
+      ],
+    });
+    const fr = await fetchNavigation(client, "fr-CA");
+    expect(fr.map((n) => n.label)).toEqual(["Produits", "Connexion"]);
+    expect(fr[0]?.href).toBe("");
+    expect(fr[0]?.children[0]).toMatchObject({
+      label: "VPS",
+      description: "Serveurs au Québec.",
+    });
+    expect(fr[1]?.style).toBe("utility");
+    // un parent sans lien et sans enfant n'est pas affiché
+    expect(fr.find((n) => n.id === "vide")).toBeUndefined();
+  });
 });

@@ -3,6 +3,7 @@ import { HTML_LANG, type Lang, localizePath, OG_LOCALE } from "@/i18n/config";
 import { langOfCode } from "@/server/cms/lang";
 import type { PageModel, SiteSettings } from "@/server/cms/model";
 import { mediaPath } from "./media";
+import { ogImage } from "./seo/og";
 
 type Input = {
   page: PageModel;
@@ -48,7 +49,10 @@ export function buildCmsMetadata({
 
   const canonical = page.canonical ?? localizePath(lang, pathOf(page.slug));
   const imageId = page.seoImageId ?? settings?.ogDefaultImageId ?? null;
-  const images = imageId ? [{ url: mediaPath(imageId) }] : undefined;
+  // Sans image saisie dans Directus : image Open Graph dynamique (titre de la page publiée, rendu par /og).
+  const images = imageId
+    ? [{ url: mediaPath(imageId) }]
+    : [ogImage(lang, pathOf(page.slug), title)];
   const hidden = preview || page.noindex;
 
   return {

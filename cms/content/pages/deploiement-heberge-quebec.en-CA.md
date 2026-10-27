@@ -53,25 +53,17 @@ The hosted mode only makes sense if it can be proven. These are the documents we
 
 Address of the site and a location clause in the contract.
 
-Statut (champ `status`) : prevu
-
 #### The location of backups and logs.
 
 Where they are, how long they are kept.
-
-Statut (champ `status`) : prevu
 
 #### The list of subcontractors.
 
 Who takes part in the hosting chain, and where.
 
-Statut (champ `status`) : prevu
-
 #### The data-flow diagram.
 
 What stays inside the perimeter, what leaves it.
-
-Statut (champ `status`) : prevu
 
 → [See the trust center](/en/trust-center/)
 

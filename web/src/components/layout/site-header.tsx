@@ -3,6 +3,8 @@ import { Logo } from "@/components/brand/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Alternates } from "@/lib/alternates";
+import type { HeaderModel } from "@/lib/chrome";
 import { LanguageSwitcher } from "./language-switcher";
 import { MobileMenu } from "./mobile-menu";
 import { NavLink } from "./nav-link";
@@ -12,35 +14,42 @@ import { ProductsMenu } from "./products-menu";
  * En-tête collant, toujours sur fond sombre (thème « encre forêt »).
  * Navigation du §6 : IA souveraine · Solutions · Produits (menu) · Tarifs · Ressources ;
  * à droite : langue, « Connexion » (lien) et « Planifier un diagnostic » (bouton).
+ * Les entrées viennent de Directus (`navigation`), avec repli sur les dictionnaires (voir lib/chrome.ts).
  * Sous le point de rupture « nav » (72 rem), la navigation devient un menu modal.
  */
-export function SiteHeader({ lang, dict }: { lang: Lang; dict: Dictionary }) {
-  const { nav, a11y, language } = dict;
-  const toItem = (entry: { label: string; href: string }) => ({
-    label: entry.label,
-    path: entry.href,
-    href: localizePath(lang, entry.href),
-  });
-
-  const links = [
-    nav.sovereignty,
-    nav.solutions,
-    nav.pricing,
-    nav.resources,
-  ].map(toItem);
-  const [sovereignty, solutions, pricing, resources] = links;
-  const products = nav.products.items.map((item) => ({
-    ...item,
-    href: localizePath(lang, item.href),
-  }));
-  const login = toItem(nav.login);
-  const cta = toItem(nav.cta);
+export function SiteHeader({
+  lang,
+  dict,
+  header,
+  alternates,
+}: {
+  lang: Lang;
+  dict: Dictionary;
+  header: HeaderModel;
+  alternates: Alternates;
+}) {
+  const { a11y, language } = dict;
+  const { login, cta } = header;
+  // le menu mobile affiche les liens, puis le menu « Produits » à plat
+  const links = header.nav.flatMap((n) => (n.type === "link" ? [n] : []));
+  const menu = header.nav.find((n) => n.type === "menu");
+  const products = menu?.type === "menu" ? menu : null;
 
   const switcher = (
     <LanguageSwitcher
       current={lang}
       label={language.label}
       names={{ fr: language.fr, en: language.en }}
+      alternates={alternates}
+    />
+  );
+  // un second repère de langue (menu mobile) porte un nom distinct : deux repères identiques gêneraient la navigation
+  const mobileSwitcher = (
+    <LanguageSwitcher
+      current={lang}
+      label={`${language.label}, ${a11y.mobileNav.toLowerCase()}`}
+      names={{ fr: language.fr, en: language.en }}
+      alternates={alternates}
     />
   );
   const linkClass =
@@ -60,45 +69,23 @@ export function SiteHeader({ lang, dict }: { lang: Lang; dict: Dictionary }) {
 
         <nav aria-label={a11y.mainNav} className="hidden nav:block">
           <ul className="flex items-center gap-1">
-            <li>
-              <NavLink
-                href={sovereignty.href}
-                path={sovereignty.path}
-                className={linkClass}
-              >
-                {sovereignty.label}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                href={solutions.href}
-                path={solutions.path}
-                className={linkClass}
-              >
-                {solutions.label}
-              </NavLink>
-            </li>
-            <li>
-              <ProductsMenu label={nav.products.label} items={products} />
-            </li>
-            <li>
-              <NavLink
-                href={pricing.href}
-                path={pricing.path}
-                className={linkClass}
-              >
-                {pricing.label}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                href={resources.href}
-                path={resources.path}
-                className={linkClass}
-              >
-                {resources.label}
-              </NavLink>
-            </li>
+            {header.nav.map((item) =>
+              item.type === "menu" ? (
+                <li key={`menu|${item.label}`}>
+                  <ProductsMenu label={item.label} items={item.items} />
+                </li>
+              ) : (
+                <li key={`${item.href}|${item.label}`}>
+                  <NavLink
+                    href={item.href}
+                    path={item.path}
+                    className={linkClass}
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ),
+            )}
           </ul>
         </nav>
 
@@ -119,14 +106,14 @@ export function SiteHeader({ lang, dict }: { lang: Lang; dict: Dictionary }) {
               closeMenu: a11y.closeMenu,
               title: a11y.menuTitle,
               nav: a11y.mobileNav,
-              products: nav.products.label,
+              products: products?.label ?? "",
             }}
             links={links}
-            products={products}
+            products={products?.items ?? []}
             login={login}
             cta={cta}
             logo={<Logo tone="dark" />}
-            languageSwitcher={switcher}
+            languageSwitcher={mobileSwitcher}
           />
         </div>
       </div>

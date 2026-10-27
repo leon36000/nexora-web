@@ -73,37 +73,25 @@ Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=concevoir`
 
 Un assistant spécialisé : il suit vos consignes, utilise les outils et les documents que vous lui autorisez, cite ses sources et se publie dans un chat.
 
-Statut (champ `status`) : disponible
-
 #### Des flux de travaux.
 
 Un enchaînement d'étapes, visible en cartes ou sur un canevas (un écran de dessin), testé pas à pas, puis déployé par chat, horaire, événement ou appel automatique d'un autre service. Chaque déploiement est une version à laquelle on peut revenir.
-
-Statut (champ `status`) : disponible
 
 #### Un Copilote.
 
 Décrivez une automatisation en français : il prépare un flux que vous relisez avant de le créer. Des modèles de départ pour PME (devis, relances, tri des courriels, comptes rendus) sont fournis.
 
-Statut (champ `status`) : disponible
-
 #### Des connaissances.
 
 Une base de vos documents, indexée par défaut sur le serveur de l'instance : les agents y répondent avec leurs sources.
-
-Statut (champ `status`) : disponible
 
 #### Des documents lus.
 
 Lecture de PDF scannés et d'images, extraction de champs d'une facture, d'un devis, d'un bon de commande ou d'une note de frais, avec un indicateur « à vérifier ».
 
-Statut (champ `status`) : disponible
-
 #### De la voix.
 
 Transcription d'enregistrements audio, avec les intervenants d'une réunion, et lecture d'un texte à voix haute. Aucun service de réception d'appels n'est inclus.
-
-Statut (champ `status`) : disponible
 
 ### Bloc 4 — Cartes (`block_cards`)
 
@@ -145,43 +133,31 @@ Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=mesurer`
 
 Essayez et comparez plusieurs modèles côte à côte avant de choisir, avec le temps et les jetons (l'unité de texte que traite un modèle) de chaque réponse.
 
-Statut (champ `status`) : disponible
-
 #### Des consignes versionnées.
 
 Une consigne réutilisable a des versions et deux étiquettes, production et test. On teste une version avant de la promouvoir ; chaque changement est consigné.
-
-Statut (champ `status`) : disponible
 
 #### Des traces.
 
 Chaque appel de modèle laisse une trace : étapes, durée, jetons, modèle. Les renseignements personnels peuvent y être masqués.
 
-Statut (champ `status`) : disponible
-
 #### Des évaluations.
 
 Des jeux de tests et des juges mesurent si un agent, une consigne ou un modèle répond bien, et comparent deux versions avant de changer.
-
-Statut (champ `status`) : disponible
 
 #### Des traitements par lot.
 
 Faites traiter une table de plusieurs centaines de lignes en arrière-plan : progression, annulation, exportation en CSV.
 
-Statut (champ `status`) : disponible
-
 #### Une consommation mesurée.
 
 Jetons, exécutions et empreinte carbone estimée, par modèle, espace et personne, avec des plafonds mensuels.
-
-Statut (champ `status`) : disponible
 
 ### Bloc 6 — Cartes (`block_cards`)
 
 *Brancher : Nexora Connect, API, site, Assistant, délégation, installation. · Affirmations : CL-103, CL-27, CL-107, CL-100, CL-108, CL-26*
 
-Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=brancher`
+Réglages : `columns=3`, `tone=sable`, `layout=modules`, `anchor_id=brancher`
 
 ## Brancher vos outils.
 
@@ -189,37 +165,25 @@ Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=brancher`
 
 Nexora Connect branche un large catalogue de services : messagerie, agenda, relation client, stockage, facturation. Chaque connexion appartient à un espace de travail et se qualifie service par service.
 
-Statut (champ `status`) : disponible
-
 #### Une API au format OpenAI.
 
 Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès aux modèles et aux agents publiés, au format OpenAI que de nombreux outils comprennent déjà : clés, quotas, mesure de la consommation.
-
-Statut (champ `status`) : disponible
 
 #### Votre site.
 
 Un agent publié s'affiche sur votre site en une ligne de code (bulle de chat, cadre ou lien). WorkStudio s'installe aussi comme application depuis un navigateur compatible.
 
-Statut (champ `status`) : disponible
-
 #### Un Assistant interne.
 
 Un chat où vos équipes s'adressent aux agents publiés de l'entreprise, avec leur historique et leurs fichiers joints.
-
-Statut (champ `status`) : disponible
 
 #### Des agents qui s'entraident.
 
 Un agent peut confier une demande à un autre agent publié, avec une profondeur limitée et sans boucle.
 
-Statut (champ `status`) : disponible
-
 #### Une installation simple.
 
 Une commande sur un serveur Docker (un outil qui empaquette les logiciels), sous Linux ou macOS, puis des commandes de sauvegarde, de restauration et de mise à jour.
-
-Statut (champ `status`) : disponible
 
 → [Voir l'installation](/services/installation-serveurs-ia/)
 

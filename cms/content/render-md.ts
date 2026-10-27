@@ -98,8 +98,6 @@ function renderBlock(b: BlockFile, i: number): string {
       if (t.intro) out.push(str(t.intro));
       for (const c of list(t.cards)) {
         const lines = [`#### ${str(c.title)}`, str(c.text)];
-        if (c.status)
-          lines.push(`Statut (champ \`status\`) : ${str(c.status)}`);
         if (c.href)
           lines.push(`→ [${str(c.link_label) || str(c.href)}](${str(c.href)})`);
         out.push(lines.join("\n\n"));

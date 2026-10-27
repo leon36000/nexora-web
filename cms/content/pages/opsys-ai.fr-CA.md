@@ -29,7 +29,7 @@ Dix départements virtuels travaillent sur les mêmes dossiers, de la première 
 
 *Les problèmes du dirigeant.*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
 ## Ce qui vous coûte du temps.
 
@@ -47,7 +47,7 @@ OPSYS-AI part de ce constat : un dossier, plusieurs départements, une seule su
 
 *Parcours global : cinq temps qui regroupent les dix départements. · Affirmations : CL-30, CL-31*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
 
 ## Un dossier. Dix départements.
 
@@ -65,7 +65,7 @@ Ce que le système prépare, une personne l'approuve. Envoyer, payer, décider 
 
 *Les dix départements M1 à M10, statut honnête tiré du rapport 07. · Affirmations : CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10, CL-32, CL-33, CL-35, CL-38, CL-39, CL-40, CL-41, CL-42*
 
-Réglages : `columns=2`
+Réglages : `columns=4`, `layout=modules`, `tone=clair`, `anchor_id=departements`
 
 ## Les dix départements.
 
@@ -74,12 +74,12 @@ Chaque carte indique son statut. Disponible : le logiciel le fait aujourd'hui. 
 #### M1 — Réception.
 
 Centralise et qualifie les demandes, prépare les suivis et transfère à la bonne personne avec le contexte.
-Statut : pilote. Disponible : qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote : messages vocaux transcrits. Prévu : réponse envoyée au client, réception vocale en temps réel.
+Disponible : qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote : messages vocaux transcrits. Prévu : réponse envoyée au client, réception vocale en temps réel.
 
 #### M2 — Relation client et ventes.
 
 Suit contacts, dossiers, soumissions et relances, et suggère la prochaine action.
-Statut : pilote. Disponible : création du dossier à partir d'une demande, prochaine action suggérée. En pilote : suivi du dossier, relances, dédoublonnage. Prévu : connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).
+Disponible : création du dossier à partir d'une demande, prochaine action suggérée. En pilote : suivi du dossier, relances, dédoublonnage. Prévu : connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).
 
 #### M3 — Estimation.
 
@@ -89,17 +89,17 @@ Statut : disponible pour le calcul et la soumission brouillon, pilote pour le r
 #### M4 — Terrain.
 
 Organise équipes, horaires, interventions, temps et preuves de réalisation.
-Statut : pilote. Disponible : intervention créée à partir d'une soumission acceptée. En pilote : cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu : géolocalisation au pointage, itinéraires routiers, répartition automatique.
+Disponible : intervention créée à partir d'une soumission acceptée. En pilote : cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu : géolocalisation au pointage, itinéraires routiers, répartition automatique.
 
 #### M5 — FinanceCore.
 
 Prépare facturation, suivi financier, coûts et analyses, avec les validations appropriées.
-Statut : pilote. Disponible : facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote : prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu : envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable.
+Disponible : facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote : prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu : envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable.
 
 #### M6 — Matériel.
 
 Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.
-Statut : pilote. Disponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département ne paie rien.
+Disponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département ne paie rien.
 
 #### M7 — Marketing.
 
@@ -109,12 +109,12 @@ Statut : disponible après configuration de votre marque, en pilote pour le res
 #### M8 — Analytique.
 
 Rend les indicateurs compréhensibles, sourcés et accompagnés de leur qualité : un indicateur affiche « non calculable » quand une donnée manque.
-Statut : pilote. Disponible : vue exécutive. En pilote : mesures par chantier. Prévu : prévisions, indice de santé.
+Disponible : vue exécutive. En pilote : mesures par chantier. Prévu : prévisions, indice de santé.
 
 #### M9 — Stratégie.
 
 Réunit les informations utiles à la direction, aux priorités et au suivi des décisions.
-Statut : pilote. Disponible : synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote : suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu : scénarios, priorités et objectifs.
+Disponible : synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote : suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu : scénarios, priorités et objectifs.
 
 #### M10 — Mémoire.
 
@@ -125,7 +125,7 @@ Statut : disponible pour le journal des décisions et des événements, qui dé
 
 *Démonstration centrale, maillon par maillon : réel / démonstration / cible. · Affirmations : CL-53, CL-60, CL-32, CL-33, CL-34, CL-31*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=parcours`
 
 ## De la demande à la facture.
 
@@ -148,7 +148,7 @@ Quatre états ne se confondent jamais : préparé, approuvé, envoyé, accusé 
 
 *Scénario signature « travaux terminés », maillon par maillon. · Affirmations : CL-54, CL-34, CL-35, CL-41, CL-58, CL-60*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## Quand les travaux se terminent.
 
@@ -169,7 +169,7 @@ Le scénario signature. L'employé renseigne photos, temps, liste de contrôle e
 
 *Différenciateurs : rapprochement estimé/réel, matériel, finances, trésorerie, agents et budgets, mémoire. · Affirmations : CL-D06, CL-34, CL-35, CL-42, CL-56, CL-57, CL-58*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=clair`
 
 ## Ce qui la distingue.
 
@@ -203,7 +203,7 @@ Pourquoi ce prix, ce fournisseur, ce report ? Les décisions sont journalisées
 
 *Mobile : quatre profils, droits distincts, hors ligne non annoncé. · Affirmations : CL-55*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
 
 ## Quatre profils sur mobile.
 
@@ -220,7 +220,7 @@ Le fonctionnement hors ligne est conçu, mais il n'est pas encore vérifié cont
 
 *Déploiement et souveraineté, sans « mode souverain » inventé. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=flux-donnees`, `tone=sombre`, `anchor_id=souverainete`
 
 ## Déploiement et souveraineté, sans détour.
 
@@ -240,23 +240,43 @@ Pour aller plus loin : [les modes de déploiement](/deploiement/) et [notre app
 
 *Mise en service : étude, configuration, pilote, formation, exploitation. · Affirmations : CL-03, CL-04, CL-14*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`, `anchor_id=mise-en-service`
 
 ## De l'étude à la mise en service.
 
 Nous n'annonçons aucun délai universel. Il dépend du nombre de départements activés, de vos données et de vos intégrations, et il se mesure sur un pilote.
 
-- **Étude de déploiement.** Nous cartographions vos processus, vos outils et vos données, et choisissons les départements à activer en premier.
-- **Configuration.** Marque, barèmes, règles de qualification, destinataires des transferts : le système est réglé à votre entreprise.
-- **Pilote sur un flux.** Un seul parcours d'abord, par exemple de la demande à la soumission, avec vos approbations.
-- **Formation.** Votre équipe apprend à superviser, à approuver et à corriger.
-- **Exploitation.** Nous suivons ce qui fonctionne et élargissons, département par département.
+### Bloc 11 — Cartes (`block_cards`)
 
-### Bloc 11 — FAQ (`block_faq`)
+*Les cinq étapes de la mise en service, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
+
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`
+
+#### Étude de déploiement.
+
+Nous cartographions vos processus, vos outils et vos données, et choisissons les départements à activer en premier.
+
+#### Configuration.
+
+Marque, barèmes, règles de qualification, destinataires des transferts : le système est réglé à votre entreprise.
+
+#### Pilote sur un flux.
+
+Un seul parcours d'abord, par exemple de la demande à la soumission, avec vos approbations.
+
+#### Formation.
+
+Votre équipe apprend à superviser, à approuver et à corriger.
+
+#### Exploitation.
+
+Nous suivons ce qui fonctionne et élargissons, département par département.
+
+### Bloc 12 — FAQ (`block_faq`)
 
 *FAQ OPSYS-AI : objections et limites, réponses vraies seulement. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01*
 
-Réglages : `emit_jsonld=true`
+Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 ## Vos questions. Nos réponses.
 
@@ -308,7 +328,7 @@ Il n'y a pas de prix public. Une étude de déploiement établit, par écrit, ce
 
 Non, pas en libre-service. Nous proposons une démonstration sur données fictives, une étude de déploiement, puis un pilote qualifié.
 
-### Bloc 12 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
 *CTA final : démonstration ou étude de déploiement. · Affirmations : CL-61*
 

@@ -39,8 +39,6 @@ Un seul de ces cinq noms est un produit livré. Pour les quatre autres, nous éc
 
 Le studio où l'on conçoit, connecte et pilote des agents et des flux de travaux. Démonstration sur demande.
 
-Statut (champ `status`) : disponible
-
 → [Découvrir WorkStudio](/workstudio/)
 
 #### Nexora Code.

@@ -1,75 +1,91 @@
+import { Fragment } from "react";
 import type { Lang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import type { PageModel } from "@/server/cms/model";
+import { buildToc } from "@/lib/toc";
+import type { Block, PageModel, Tone } from "@/server/cms/model";
 import { CardsBlockView } from "./cards-block";
 import { CtaBlockView } from "./cta-block";
 import { FaqBlockView } from "./faq-block";
 import { HeroBlockView } from "./hero-block";
+import { PageToc } from "./page-toc";
 import { PricingBlockView } from "./pricing-block";
 import { SectionBlockView } from "./section-block";
 
+/** Ton d'un bloc ; défensif : un instantané antérieur à S3 n'a pas encore de ton. */
+function toneOf(block: Block): Tone {
+  if (block.type === "hero") return block.variant ?? "sombre";
+  if (block.type === "cta") return block.tone ?? "sombre";
+  return block.tone ?? "clair";
+}
+
+/** Un bloc de contenu (ni héros ni appel à l'action) peut prolonger le précédent quand leur ton est le même. */
+const joinable = (block: Block | undefined): block is Block =>
+  block !== undefined && block.type !== "hero" && block.type !== "cta";
+
 /**
- * Rend les blocs d'une page dans l'ordre. Les sections claires alternent entre fond et surface ;
- * un seul h1 par page (premier héros, sinon un h1 réservé aux lecteurs d'écran avec le titre de la page).
+ * Rend les blocs d'une page dans l'ordre, chacun à son ton (sombre, clair, sable). Deux blocs de contenu voisins
+ * du même ton ne forment qu'une bande (espacement resserré). Un seul h1 par page (premier héros, sinon un h1
+ * réservé aux lecteurs d'écran). Avec au moins trois ancres, un sommaire collant suit le premier bloc.
  */
 export function PageBlocks({ lang, page }: { lang: Lang; page: PageModel }) {
   const { cms } = getDictionary(lang);
   const hasHero = page.blocks.some((b) => b.type === "hero");
+  const toc = buildToc(page.blocks);
   let heroSeen = false;
-  let light = 0;
-  const nextSurface = () => light++ % 2 === 1;
+  const tocAfter = page.blocks[0]?.type === "hero" ? 0 : -1;
+  const tocNode = toc ? (
+    <PageToc key="toc" entries={toc} label={cms.toc.label} />
+  ) : null;
   return (
     <>
       {hasHero ? null : <h1 className="sr-only">{page.title}</h1>}
-      {page.blocks.map((block) => {
+      {tocAfter === -1 ? tocNode : null}
+      {page.blocks.map((block, i) => {
+        const prev = page.blocks[i - 1];
+        const next = page.blocks[i + 1];
+        const sameAsPrev =
+          joinable(block) && joinable(prev) && toneOf(prev) === toneOf(block);
+        const sameAsNext =
+          joinable(block) && joinable(next) && toneOf(next) === toneOf(block);
+        const joined = sameAsPrev
+          ? sameAsNext
+            ? ("both" as const)
+            : ("after" as const)
+          : sameAsNext
+            ? ("before" as const)
+            : undefined;
+        let view: React.ReactNode = null;
         switch (block.type) {
           case "hero": {
             const level = heroSeen ? 2 : 1;
             heroSeen = true;
-            light = 0;
-            return (
-              <HeroBlockView key={block.key} block={block} level={level} />
-            );
+            view = <HeroBlockView block={block} level={level} />;
+            break;
           }
           case "section":
-            return (
-              <SectionBlockView
-                key={block.key}
-                block={block}
-                surface={nextSurface()}
-              />
-            );
+            view = <SectionBlockView block={block} joined={joined} t={cms} />;
+            break;
           case "cards":
-            return (
-              <CardsBlockView
-                key={block.key}
-                block={block}
-                surface={nextSurface()}
-              />
-            );
+            view = <CardsBlockView block={block} joined={joined} t={cms} />;
+            break;
           case "pricing":
-            return (
-              <PricingBlockView
-                key={block.key}
-                block={block}
-                surface={nextSurface()}
-                t={cms}
-              />
-            );
+            view = <PricingBlockView block={block} joined={joined} t={cms} />;
+            break;
           case "faq":
-            return (
-              <FaqBlockView
-                key={block.key}
-                block={block}
-                surface={nextSurface()}
-              />
-            );
+            view = <FaqBlockView block={block} joined={joined} />;
+            break;
           case "cta":
-            light = 0;
-            return <CtaBlockView key={block.key} block={block} />;
+            view = <CtaBlockView block={block} joined={joined} />;
+            break;
           default:
-            return null;
+            view = null;
         }
+        return (
+          <Fragment key={block.key}>
+            {view}
+            {i === tocAfter ? tocNode : null}
+          </Fragment>
+        );
       })}
     </>
   );

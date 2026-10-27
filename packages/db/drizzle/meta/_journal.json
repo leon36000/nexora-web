@@ -8,6 +8,62 @@
       "when": 1793066605637,
       "tag": "0000_s1_socle",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793070456689,
+      "tag": "0001_s4_comptes_paiements",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793070456966,
+      "tag": "0002_s4_grand_livre_immuable",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793072202505,
+      "tag": "0003_s3_leads",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793073524194,
+      "tag": "0004_s5_passerelle",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793073524510,
+      "tag": "0005_s5_prix_immuables",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793074774423,
+      "tag": "0006_s8_autogestion",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793078431763,
+      "tag": "0007_s6_vps",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793079238456,
+      "tag": "0008_s7_agents_heberges",
+      "breakpoints": true
     }
   ]
 }

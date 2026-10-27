@@ -1,0 +1,23 @@
+# Module Directus « Agents hébergés » sur une instance jetable (Directus 12.5.1, base directus_s7test, port 8476)
+# Jeton statique de test posé en base jetable ; aucun mot de passe saisi ; l'app est celle du port 3541.
+
+## Extension chargée
+GET /extensions : {'bundle': 1, 'module': 6, 'endpoint': 6, 'hook': 1} tous activés
+(le bundle nexora-cms contient l'endpoint et le module « Agents hébergés » ; la barre des modules reçoit « nexora-hosted-agents » par le diff proposé, non appliqué)
+
+## Vue d'ensemble par le relais /nexora-hosted-agents (administrateur)
+instances: [('workstudio-dev', 'ok', 'workstudio.s7-dev')]
+agents: [('assistant-general', 'published', True)]
+bulle: {'enabled': True, 'origin': 'http://localhost:3200', 'pages': ['/agents', '/workstudio']}
+
+## « Tester la connexion » par le relais
+True HTTP 200 en 31 ms, 1 agent(s) publié(s) visible(s) par la clé
+
+## Liste fermée et réservation aux administrateurs
+GET /nexora-hosted-agents/../vault -> 404
+GET /nexora-hosted-agents/catalog -> 404
+DELETE /nexora-hosted-agents/instances/dc02f33c-8a93-47c7-98c2-9165ceeb4bae -> 404
+GET /nexora-hosted-agents/ sans authentification -> 401
+
+## Aucune fuite de la clé WorkStudio dans la réponse du relais
+occurrences de la clé : 0

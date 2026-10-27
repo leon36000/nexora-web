@@ -83,6 +83,9 @@ const FILE_FIELDS = [
 ];
 const USER_FIELDS = ["id", "first_name", "last_name", "avatar", "role"];
 const APPROVAL_CREATE_FIELDS = [
+  // S8 : un agent ne peut pas relire l'approbation qu'il crée (Directus répond alors sans corps) ; il fournit donc
+  // lui-même l'identifiant (UUID) pour garder la référence.
+  "id",
   "status",
   "kind",
   "collection",
@@ -137,6 +140,25 @@ export function publishedReadPerms(): Perm[] {
     // n'entre dans la table principale que par promotion approuvée ; les brouillons vivent dans directus_versions.
     ...BLOCK_TYPES.map((b) => read(b)),
     ...BLOCK_TRANSLATIONS.map((b) => read(b)),
+    read("subscription_plans", {
+      permissions: PUBLISHED,
+      fields: [
+        "id",
+        "code",
+        "kind",
+        "status",
+        "interval",
+        "price_cents",
+        "included_credits_cents",
+        "stripe_product_id",
+        "stripe_price_id",
+        "sort",
+        "translations",
+      ],
+    }),
+    read("subscription_plans_translations", {
+      permissions: { subscription_plans_id: PUBLISHED },
+    }),
     read("navigation", { permissions: PUBLISHED }),
     read("navigation_translations", {
       permissions: { navigation_id: PUBLISHED },
@@ -150,7 +172,12 @@ export function publishedReadPerms(): Perm[] {
 
 /** Lecture complète du contenu principal (éditeurs, relecteurs, agents de contenu). */
 export function contentReadPerms(): Perm[] {
-  return [...PAGE_TREE, ...SITE_COLLECTIONS].map((c) => read(c));
+  return [
+    ...PAGE_TREE,
+    ...SITE_COLLECTIONS,
+    "subscription_plans",
+    "subscription_plans_translations",
+  ].map((c) => read(c));
 }
 
 /** Écriture du contenu publié : réservée à la promotion de versions et à l'administrateur (la garde de publication contrôle). */
@@ -265,6 +292,11 @@ function agentPolicy(a: (typeof AGENTS)[number]): PolicyDef {
   } else {
     perms.push(...publishedReadPerms());
   }
+  // S8 : seul le Rédacteur crée la COQUILLE (en brouillon) d'une nouvelle page ; la garde de publication refuse toute
+  // écriture qui fixerait `status = published` ou toucherait une page publiée. Les autres n'écrivent que des versions.
+  if (a.key === "redacteur")
+    for (const c of ["pages", "pages_translations"])
+      perms.push({ collection: c, action: "create", fields: ALL });
   perms.push(
     proposeApproval(),
     read("approvals", { permissions: ownApprovals, degrade: "drop" }),

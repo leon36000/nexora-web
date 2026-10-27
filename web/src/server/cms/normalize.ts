@@ -3,7 +3,16 @@ import { parseRichText } from "@/lib/rich-text";
 import { safeHref } from "@/lib/safe-href";
 import { CmsContentError } from "./errors";
 import type { LangCode } from "./lang";
-import type { Block, Cta, MediaRef, PageModel } from "./model";
+import type {
+  Block,
+  CardLayout,
+  CardStatus,
+  Cta,
+  MediaRef,
+  PageModel,
+  SectionVisual,
+  Tone,
+} from "./model";
 
 /* -------------------------------------------------------------------------- */
 /* Schémas de la réponse Directus (forme réelle, champs nuls tolérés)           */
@@ -28,6 +37,7 @@ const Tr = { id: idLike, languages_code: z.string() };
 
 const HeroItem = z.object({
   id: idLike,
+  anchor_id: str,
   variant: str,
   perimeter_grid: z.boolean().nullish(),
   media: FileRef,
@@ -49,6 +59,9 @@ const HeroItem = z.object({
 
 const SectionItem = z.object({
   id: idLike,
+  anchor_id: str,
+  tone: str,
+  visual: str,
   media_position: str,
   media: FileRef,
   translations: z
@@ -66,6 +79,9 @@ const SectionItem = z.object({
 
 const CardsItem = z.object({
   id: idLike,
+  anchor_id: str,
+  tone: str,
+  layout: str,
   columns: z.union([z.string(), z.number()]).nullish(),
   translations: z
     .array(z.object({ ...Tr, title: str, intro: str, cards: z.unknown() }))
@@ -74,6 +90,8 @@ const CardsItem = z.object({
 
 const PricingItem = z.object({
   id: idLike,
+  anchor_id: str,
+  tone: str,
   translations: z
     .array(
       z.object({
@@ -89,6 +107,8 @@ const PricingItem = z.object({
 
 const FaqItem = z.object({
   id: idLike,
+  anchor_id: str,
+  tone: str,
   emit_jsonld: z.boolean().nullish(),
   translations: z
     .array(z.object({ ...Tr, title: str, items: z.unknown() }))
@@ -97,6 +117,7 @@ const FaqItem = z.object({
 
 const CtaItem = z.object({
   id: idLike,
+  anchor_id: str,
   tone: str,
   translations: z
     .array(
@@ -184,6 +205,17 @@ function oneOf<T extends string>(v: unknown, allowed: readonly T[], def: T): T {
     : def;
 }
 
+/** Ancre d'un bloc : seul le motif `^[a-z0-9-]{0,40}$` passe ; vide ou invalide = pas d'ancre. */
+export function anchorOf(v: unknown): string | null {
+  return typeof v === "string" && /^[a-z0-9-]{1,40}$/.test(v) ? v : null;
+}
+
+const TONE_VALUES = ["sombre", "clair", "sable"] as const;
+/** Ton d'un bloc ; l'ancienne valeur « accent » (appel à l'action, S2) se lit comme « sable ». */
+function toneOf(v: unknown, def: Tone): Tone {
+  return v === "accent" ? "sable" : oneOf(v, TONE_VALUES, def);
+}
+
 /** Liste JSON saisie dans Directus : les entrées invalides sont écartées une à une, jamais la liste entière. */
 const ListOf = <S extends z.ZodRawShape>(shape: S) => {
   const schema = z.object(shape);
@@ -199,7 +231,14 @@ const ListOf = <S extends z.ZodRawShape>(shape: S) => {
 };
 
 const SectionItems = ListOf({ title: str, text: str });
-const CardList = ListOf({ title: str, text: str, href: str, link_label: str });
+const CardList = ListOf({
+  title: str,
+  text: str,
+  href: str,
+  link_label: str,
+  label: str,
+  status: str,
+});
 const PlanList = ListOf({
   name: str,
   price_label: str,
@@ -237,7 +276,8 @@ function normalizeBlock(
       return {
         type: "hero",
         key,
-        variant: oneOf(item.variant, ["sombre", "clair"], "sombre"),
+        anchorId: anchorOf(item.anchor_id),
+        variant: toneOf(item.variant, "sombre"),
         perimeterGrid: item.perimeter_grid ?? true,
         media: media(item.media),
         eyebrow: txt(t.eyebrow),
@@ -256,6 +296,13 @@ function normalizeBlock(
       return {
         type: "section",
         key,
+        anchorId: anchorOf(item.anchor_id),
+        tone: toneOf(item.tone, "clair"),
+        visual: oneOf<SectionVisual>(
+          item.visual,
+          ["aucun", "perimetre-sur-place", "perimetre-heberge", "flux-donnees"],
+          "aucun",
+        ),
         title: txt(t.title),
         body: parsed.length > 0 ? parsed : null,
         media: media(item.media, t.media_alt),
@@ -277,6 +324,13 @@ function normalizeBlock(
       return {
         type: "cards",
         key,
+        anchorId: anchorOf(item.anchor_id),
+        tone: toneOf(item.tone, "clair"),
+        layout: oneOf<CardLayout>(
+          item.layout,
+          ["grille", "liste", "etapes", "modules"],
+          "grille",
+        ),
         columns: columns === 2 || columns === 4 ? columns : 3,
         title: txt(t.title),
         intro: txt(t.intro),
@@ -286,6 +340,13 @@ function normalizeBlock(
             text: txt(c.text),
             href: safeHref(c.href),
             linkLabel: txt(c.link_label),
+            label: txt(c.label),
+            status:
+              oneOf<CardStatus | "">(
+                c.status,
+                ["disponible", "pilote", "prevu"],
+                "",
+              ) || null,
           }))
           .filter((c) => c.title || c.text),
       };
@@ -297,6 +358,8 @@ function normalizeBlock(
       return {
         type: "pricing",
         key,
+        anchorId: anchorOf(item.anchor_id),
+        tone: toneOf(item.tone, "clair"),
         title: txt(t.title),
         intro: txt(t.intro),
         plans: PlanList.parse(t.plans).flatMap((p) => {
@@ -332,6 +395,8 @@ function normalizeBlock(
       return {
         type: "faq",
         key,
+        anchorId: anchorOf(item.anchor_id),
+        tone: toneOf(item.tone, "clair"),
         emitJsonLd: item.emit_jsonld ?? true,
         title: txt(t.title),
         items,
@@ -345,7 +410,8 @@ function normalizeBlock(
       return {
         type: "cta",
         key,
-        tone: oneOf(item.tone, ["sombre", "clair", "accent"], "sombre"),
+        anchorId: anchorOf(item.anchor_id),
+        tone: toneOf(item.tone, "sombre"),
         title,
         text: txt(t.text),
         primary: cta(t.primary_label, t.primary_href),

@@ -462,6 +462,62 @@ const rich: Opt["options"] = {
   // Texte riche contrôlé : pas d'images ni de HTML libre ; le site assainit de nouveau au rendu.
 };
 
+/** Motif de l'ancre d'un bloc (navigation ancrée des pages longues) : minuscules, chiffres, tirets, 40 au plus. */
+export const ANCHOR_PATTERN = "^[a-z0-9-]{0,40}$";
+
+/** Tons de section (S3) : sombre = fond encre forêt, clair = papier, sable = surface claire relevée. */
+export const TONES: [string, string][] = [
+  ["sombre", "Sombre"],
+  ["clair", "Clair"],
+  ["sable", "Sable"],
+];
+export const CARD_LAYOUTS: [string, string][] = [
+  ["grille", "Grille"],
+  ["liste", "Liste (rangées pleine largeur)"],
+  ["etapes", "Étapes numérotées"],
+  ["modules", "Modules numérotés (M1…)"],
+];
+export const SECTION_VISUALS: [string, string][] = [
+  ["aucun", "Aucun"],
+  ["perimetre-sur-place", "Périmètre : sur place"],
+  ["perimetre-heberge", "Périmètre : hébergé au Québec"],
+  ["flux-donnees", "Flux de données"],
+];
+/** Statut d'une carte en disposition « modules » ; vide = aucun badge. */
+export const CARD_STATUSES = ["disponible", "pilote", "prevu"] as const;
+const CARD_STATUS_LABELS: Record<(typeof CARD_STATUSES)[number], string> = {
+  disponible: "Disponible",
+  pilote: "En pilote",
+  prevu: "Prévu",
+};
+
+const tone = (def: "sombre" | "clair" | "sable", label = "Ton") =>
+  select("tone", TONES, {
+    label,
+    def,
+    width: "half",
+    note: "Sombre : fond encre forêt. Clair : papier. Sable : surface claire relevée.",
+  });
+
+const anchorId = (): FieldDef => ({
+  field: "anchor_id",
+  type: "string",
+  meta: {
+    ...meta(
+      {
+        label: "Ancre",
+        width: "half",
+        note: "Facultatif : minuscules, chiffres et tirets (40 au plus). Sert aux liens internes ; une page avec au moins trois ancres affiche un sommaire.",
+      },
+      "input",
+    ),
+    validation: { _and: [{ anchor_id: { _regex: ANCHOR_PATTERN } }] },
+    validation_message:
+      "Minuscules, chiffres et tirets seulement (40 caractères au plus).",
+  },
+  schema: { max_length: 40 },
+});
+
 const listOf = (
   fields: {
     field: string;
@@ -469,6 +525,7 @@ const listOf = (
     type: string;
     interface?: string;
     width?: string;
+    choices?: [string, string][];
   }[],
 ) => ({
   template: `{{${fields[0]?.field ?? "id"}}}`,
@@ -478,10 +535,23 @@ const listOf = (
     type: f.type,
     meta: {
       interface:
-        f.interface ?? (f.type === "text" ? "input-multiline" : "input"),
+        f.interface ??
+        (f.choices
+          ? "select-dropdown"
+          : f.type === "text"
+            ? "input-multiline"
+            : "input"),
       width: f.width ?? "full",
       field: f.field,
       type: f.type,
+      ...(f.choices
+        ? {
+            options: {
+              choices: f.choices.map(([value, text]) => ({ value, text })),
+              allowNone: true,
+            },
+          }
+        : {}),
     },
   })),
 });
@@ -637,6 +707,7 @@ export function buildSchema(): {
         [
           ["link", "Lien"],
           ["button", "Bouton"],
+          ["utility", "Lien d’utilité (à droite, ex. Connexion)"],
         ],
         { label: "Style", def: "link", width: "half" },
       ),
@@ -671,8 +742,118 @@ export function buildSchema(): {
         str("label", { label: "Libellé", required: true }),
         str("href", {
           label: "Lien",
+          note: "Chemin relatif propre à la langue (ex. /souverainete/ ou /en/sovereignty/). Vide pour un parent qui n’ouvre qu’un menu ou une colonne.",
+        }),
+        txt("description", {
+          label: "Description",
+          note: "Courte phrase affichée sous le libellé dans le menu Produits.",
+        }),
+      ],
+      relations,
+    ),
+  );
+
+  // --- abonnements (S4) : plans publiés dans Directus, lus par le site, poussés vers Stripe par « Publier vers Stripe » ---
+  add({
+    collection: "subscription_plans",
+    meta: {
+      icon: "workspace_premium",
+      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais publié sans prix. Les identifiants Stripe sont écrits par l’action « Publier vers Stripe ».",
+      display_template: "{{code}}",
+      sort_field: "sort",
+      archive_field: "status",
+      archive_value: "archived",
+      unarchive_value: "draft",
+      translations: [
+        {
+          language: "fr-CA",
+          translation: "Plans d’abonnement",
+          singular: "Plan d’abonnement",
+          plural: "Plans d’abonnement",
+        },
+      ],
+    },
+    fields: [
+      uuidPk(),
+      str("code", {
+        label: "Code",
+        required: true,
+        unique: true,
+        note: "Identifiant stable (ex. workstudio-pro), minuscules et tirets.",
+      }),
+      select(
+        "kind",
+        [
+          ["workstudio", "WorkStudio"],
+          ["api", "API et modèles"],
+          ["agents", "Agents hébergés"],
+          ["other", "Autre"],
+        ],
+        { label: "Famille", def: "other", width: "half" },
+      ),
+      select("status", STATUS_PAGES, {
+        label: "Statut",
+        def: "draft",
+        required: true,
+        width: "half",
+      }),
+      select(
+        "interval",
+        [
+          ["month", "Mensuel"],
+          ["year", "Annuel"],
+        ],
+        {
+          label: "Période de facturation",
+          def: "month",
           required: true,
-          note: "Chemin relatif propre à la langue (ex. /souverainete/ ou /en/sovereignty/).",
+          width: "half",
+        },
+      ),
+      int("price_cents", {
+        label: "Prix (cents CAD, avant taxes)",
+        required: true,
+        width: "half",
+        note: "Ex. 4900 pour 49,00 $. Un prix absent ou nul bloque la publication ; TPS et TVQ sont ajoutées par Stripe Tax.",
+      }),
+      int("included_credits_cents", {
+        label: "Crédits inclus par période (cents CAD)",
+        def: 0,
+        width: "half",
+        note: "Accordés à chaque facture payée, valables jusqu’à la fin de la période.",
+      }),
+      str("stripe_product_id", {
+        label: "Produit Stripe",
+        readonly: true,
+        width: "half",
+        note: "Écrit après « Publier vers Stripe » (identifiant, pas un secret).",
+      }),
+      str("stripe_price_id", {
+        label: "Prix Stripe",
+        readonly: true,
+        width: "half",
+        note: "Un prix Stripe est immuable : un changement de montant en crée un nouveau.",
+      }),
+      ts("stripe_synced_at", {
+        label: "Dernière synchronisation Stripe",
+        readonly: true,
+      }),
+      int("sort", { label: "Ordre", hidden: true }),
+      translationsAlias(),
+      dateCreated(),
+      dateUpdated(),
+    ],
+  });
+  add(
+    translationsOf(
+      "subscription_plans",
+      "Plans d’abonnement",
+      [
+        str("name", { label: "Nom", required: true }),
+        txt("description", { label: "Description" }),
+        json("features", {
+          label: "Points forts",
+          note: "Liste de textes courts, sans chiffre ni promesse non démontrée.",
         }),
       ],
       relations,
@@ -856,14 +1037,12 @@ export function buildSchema(): {
       "Titre d’accueil : slogan court, sous-titre, deux appels à l’action.",
     ),
     [
-      select(
-        "variant",
-        [
-          ["sombre", "Sombre"],
-          ["clair", "Clair"],
-        ],
-        { label: "Variante", def: "sombre", width: "half" },
-      ),
+      select("variant", TONES, {
+        label: "Variante",
+        def: "sombre",
+        width: "half",
+      }),
+      anchorId(),
       bool("perimeter_grid", {
         label: "Grille de périmètre",
         def: true,
@@ -915,6 +1094,14 @@ export function buildSchema(): {
         ],
         { label: "Position du média", def: "none", width: "half" },
       ),
+      select("visual", SECTION_VISUALS, {
+        label: "Schéma",
+        def: "aucun",
+        width: "half",
+        note: "Schéma SVG construit à partir de la grille de périmètre ; il prend la place du média.",
+      }),
+      tone("clair"),
+      anchorId(),
       file("media", { label: "Média" }),
     ],
     [
@@ -961,6 +1148,14 @@ export function buildSchema(): {
         ],
         { label: "Colonnes", def: "3", width: "half" },
       ),
+      select("layout", CARD_LAYOUTS, {
+        label: "Disposition",
+        def: "grille",
+        width: "half",
+        note: "Liste : rangées pleine largeur. Étapes : frise numérotée. Modules : grille compacte M1…, avec statut facultatif par carte.",
+      }),
+      tone("clair"),
+      anchorId(),
     ],
     [
       str("title", { label: "Titre" }),
@@ -974,6 +1169,17 @@ export function buildSchema(): {
           { field: "text", name: "Texte", type: "text" },
           { field: "href", name: "Lien", type: "string" },
           { field: "link_label", name: "Libellé du lien", type: "string" },
+          {
+            field: "label",
+            name: "Libellé court (liste : colonne de gauche)",
+            type: "string",
+          },
+          {
+            field: "status",
+            name: "Statut (modules)",
+            type: "string",
+            choices: CARD_STATUSES.map((v) => [v, CARD_STATUS_LABELS[v]]),
+          },
         ]),
       }),
     ],
@@ -987,7 +1193,7 @@ export function buildSchema(): {
       "Blocs tarifs",
       "Offres et tarifs. Aucun prix inventé : « Sur demande » tant que le fondateur n’a pas publié de prix.",
     ),
-    [],
+    [tone("clair"), anchorId()],
     [
       str("title", { label: "Titre" }),
       txt("intro", { label: "Introduction" }),
@@ -1025,7 +1231,11 @@ export function buildSchema(): {
       "Blocs FAQ",
       "Questions et réponses (peut produire du FAQPage JSON-LD).",
     ),
-    [bool("emit_jsonld", { label: "Produire le JSON-LD FAQPage", def: true })],
+    [
+      bool("emit_jsonld", { label: "Produire le JSON-LD FAQPage", def: true }),
+      tone("clair"),
+      anchorId(),
+    ],
     [
       str("title", { label: "Titre" }),
       json("items", {
@@ -1048,17 +1258,7 @@ export function buildSchema(): {
       "Blocs appel à l’action",
       "Bandeau d’appel à l’action.",
     ),
-    [
-      select(
-        "tone",
-        [
-          ["sombre", "Sombre"],
-          ["clair", "Clair"],
-          ["accent", "Accent"],
-        ],
-        { label: "Ton", def: "sombre", width: "half" },
-      ),
-    ],
+    [tone("sombre"), anchorId()],
     [
       str("title", { label: "Titre", required: true }),
       txt("text", { label: "Texte" }),

@@ -73,43 +73,31 @@ WorkStudio functions, verified on Nexora's test server. They support your proces
 
 Who sees what, who can edit, by workspace.
 
-Statut (champ `status`) : disponible
-
 #### Audit log and caps.
 
 Administration actions are logged; consumption is capped by month.
-
-Statut (champ `status`) : disponible
 
 #### Single sign-on.
 
 Your teams sign in with your company account, at a common identity provider.
 
-Statut (champ `status`) : disponible
-
 #### Personal-information policy.
 
 Allow, mask or refuse sending personal information to a model outside the instance, by workspace.
-
-Statut (champ `status`) : disponible
 
 #### Traces and masking.
 
 Every model call is traced; names, emails and phone numbers can be masked in them.
 
-Statut (champ `status`) : disponible
-
 #### Each model's location and encrypted secrets.
 
 Each model shows where it runs; connector credentials are encrypted and kept on your instance.
-
-Statut (champ `status`) : disponible
 
 ### Bloc 4 — Cartes (`block_cards`)
 
 *Documents fournis sur demande, tous en préparation. · Affirmations : CL-87, CL-73, CL-05*
 
-Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=documents`
+Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=documents`
 
 ## Documents on request.
 
@@ -119,37 +107,25 @@ These are the documents we commit to providing. They are in preparation: none is
 
 Where data is stored, which external services are called, which backups exist. The diagram template is yet to be written.
 
-Statut (champ `status`) : prevu
-
 #### The standard contract and data processing agreement.
 
 What Nexora does with the information you entrust to it, and what it refrains from doing.
-
-Statut (champ `status`) : prevu
 
 #### The list of subcontractors and locations.
 
 Who takes part in hosting and operations, and where.
 
-Statut (champ `status`) : prevu
-
 #### Proof of the hosting location in Quebec.
 
 Address, location clause, location of backups and logs, for the hosted mode.
-
-Statut (champ `status`) : prevu
 
 #### A privacy impact assessment template.
 
 To help your company document the assessment of an AI project.
 
-Statut (champ `status`) : prevu
-
 #### An incident procedure.
 
 Who assesses, who notifies, where the incident is recorded.
-
-Statut (champ `status`) : prevu
 
 ### Bloc 5 — Section (`block_section`)
 

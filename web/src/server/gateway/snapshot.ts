@@ -1,0 +1,244 @@
+import type {
+  ModelCapabilities,
+  ModelKind,
+  ModelVisibility,
+  ProviderType,
+  Region,
+} from "@nexora/db";
+import { checkPrice, type PriceIssue, type PriceRow } from "./pricing";
+
+/**
+ * Instantané du catalogue publié (D3/D14). C'est CE contenu, figé et hashé, que la synchronisation
+ * LiteLLM et la facturation consomment, jamais les tables de travail. Les montants (bigint) sont
+ * écrits en chaînes décimales dans le JSON.
+ */
+
+export interface SnapshotProvider {
+  id: string;
+  code: string;
+  name: string;
+  type: ProviderType;
+  baseUrl: string;
+  litellmBaseUrl: string | null;
+  secretRef: string | null;
+  region: Region;
+  dataPolicyFr: string;
+  dataPolicyEn: string;
+  priority: number;
+  enabled: boolean;
+}
+
+export interface SnapshotPrice {
+  id: string;
+  upstreamInputUsdMicro: string;
+  upstreamOutputUsdMicro: string;
+  upstreamCacheUsdMicro: string | null;
+  sellInputCadMicro: string;
+  sellOutputCadMicro: string;
+  sellCacheCadMicro: string | null;
+  marginBps: number;
+  marginFloorBps: number;
+  effectiveAt: string;
+  note: string;
+}
+
+export interface SnapshotModel {
+  id: string;
+  publicId: string;
+  name: string;
+  descriptionFr: string;
+  descriptionEn: string;
+  kind: ModelKind;
+  providerId: string;
+  upstreamId: string;
+  contextMax: number;
+  maxOutputTokens: number | null;
+  capabilities: ModelCapabilities;
+  residency: Region;
+  visibility: ModelVisibility;
+  sunsetAt: string | null;
+  price: SnapshotPrice | null;
+}
+
+export interface SnapshotFx {
+  id: string;
+  usdToCadMicro: string;
+  effectiveAt: string;
+}
+
+export interface CatalogSnapshot {
+  schema: 1;
+  fx: SnapshotFx | null;
+  providers: SnapshotProvider[];
+  models: SnapshotModel[];
+}
+
+export const EMPTY_SNAPSHOT: CatalogSnapshot = {
+  schema: 1,
+  fx: null,
+  providers: [],
+  models: [],
+};
+
+export function priceRowOf(price: SnapshotPrice): PriceRow {
+  const opt = (v: string | null) => (v === null ? null : BigInt(v));
+  return {
+    upstreamInputUsdMicro: BigInt(price.upstreamInputUsdMicro),
+    upstreamOutputUsdMicro: BigInt(price.upstreamOutputUsdMicro),
+    upstreamCacheUsdMicro: opt(price.upstreamCacheUsdMicro),
+    sellInputCadMicro: BigInt(price.sellInputCadMicro),
+    sellOutputCadMicro: BigInt(price.sellOutputCadMicro),
+    sellCacheCadMicro: opt(price.sellCacheCadMicro),
+    marginFloorBps: price.marginFloorBps,
+  };
+}
+
+export type CatalogIssue =
+  | { code: "fx_missing" }
+  | { code: "price_missing"; model: string }
+  | ({ model: string } & PriceIssue)
+  | { code: "provider_missing" | "provider_disabled"; model: string }
+  | { code: "secret_missing"; model: string; provider: string };
+
+const KEY_REQUIRED: Record<ProviderType, boolean> = {
+  openrouter: true,
+  openai_compatible: true,
+  litellm_upstream: true,
+  vllm: false,
+  ollama: false,
+};
+
+/**
+ * Garde de publication : un prix absent, nul ou sous le plancher de marge, un taux de change non
+ * approuvé, un fournisseur désactivé ou sans clé dans le coffre bloquent l'approbation et la
+ * publication. Renvoie la liste complète des problèmes (vide = publiable).
+ */
+export function guardSnapshot(
+  snapshot: CatalogSnapshot,
+  options: { secretExists: (ref: string) => boolean },
+): CatalogIssue[] {
+  const issues: CatalogIssue[] = [];
+  if (snapshot.models.length > 0 && !snapshot.fx)
+    issues.push({ code: "fx_missing" });
+  const providers = new Map(snapshot.providers.map((p) => [p.id, p]));
+  for (const m of snapshot.models) {
+    const provider = providers.get(m.providerId);
+    if (!provider) {
+      issues.push({ code: "provider_missing", model: m.publicId });
+    } else {
+      if (!provider.enabled)
+        issues.push({ code: "provider_disabled", model: m.publicId });
+      const needsKey =
+        KEY_REQUIRED[provider.type] || provider.secretRef !== null;
+      if (
+        needsKey &&
+        (!provider.secretRef || !options.secretExists(provider.secretRef))
+      )
+        issues.push({
+          code: "secret_missing",
+          model: m.publicId,
+          provider: provider.code,
+        });
+    }
+    if (!m.price) {
+      issues.push({ code: "price_missing", model: m.publicId });
+      continue;
+    }
+    if (snapshot.fx) {
+      for (const issue of checkPrice(
+        priceRowOf(m.price),
+        BigInt(snapshot.fx.usdToCadMicro),
+        m.kind,
+      ))
+        issues.push({ model: m.publicId, ...issue });
+    }
+  }
+  return issues;
+}
+
+export interface Change {
+  field: string;
+  before: unknown;
+  after: unknown;
+}
+export type DiffEntry =
+  | { kind: "model_added" | "model_removed"; model: string }
+  | { kind: "model_changed"; model: string; changes: Change[] }
+  | { kind: "fx_changed"; before: string | null; after: string | null }
+  | { kind: "provider_changed"; provider: string; changes: Change[] };
+
+function changesBetween(
+  a: Record<string, unknown>,
+  b: Record<string, unknown>,
+  ignore: readonly string[] = [],
+): Change[] {
+  const out: Change[] = [];
+  for (const key of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    if (ignore.includes(key)) continue;
+    const before = a[key];
+    const after = b[key];
+    if (JSON.stringify(before) !== JSON.stringify(after))
+      out.push({ field: key, before, after });
+  }
+  return out;
+}
+
+/** Aperçu des différences entre le catalogue publié (`before`) et un brouillon (`after`). */
+export function diffSnapshots(
+  before: CatalogSnapshot,
+  after: CatalogSnapshot,
+): DiffEntry[] {
+  const out: DiffEntry[] = [];
+  if ((before.fx?.usdToCadMicro ?? null) !== (after.fx?.usdToCadMicro ?? null))
+    out.push({
+      kind: "fx_changed",
+      before: before.fx?.usdToCadMicro ?? null,
+      after: after.fx?.usdToCadMicro ?? null,
+    });
+  const bm = new Map(before.models.map((m) => [m.publicId, m]));
+  const am = new Map(after.models.map((m) => [m.publicId, m]));
+  for (const [id, model] of am) {
+    const old = bm.get(id);
+    if (!old) {
+      out.push({ kind: "model_added", model: id });
+      continue;
+    }
+    const flat = (m: SnapshotModel) => ({
+      ...m,
+      price: undefined,
+      ...(m.price
+        ? Object.fromEntries(
+            Object.entries(m.price)
+              .filter(([k]) => k !== "id" && k !== "effectiveAt")
+              .map(([k, v]) => [`price.${k}`, v]),
+          )
+        : { "price.sellInputCadMicro": null }),
+    });
+    const changes = changesBetween(flat(old), flat(model), [
+      "id",
+      "providerId",
+    ]);
+    if (old.providerId !== model.providerId)
+      changes.push({
+        field: "providerId",
+        before: old.providerId,
+        after: model.providerId,
+      });
+    if (changes.length > 0)
+      out.push({ kind: "model_changed", model: id, changes });
+  }
+  for (const id of bm.keys())
+    if (!am.has(id)) out.push({ kind: "model_removed", model: id });
+  const bp = new Map(before.providers.map((p) => [p.id, p]));
+  for (const p of after.providers) {
+    const old = bp.get(p.id);
+    if (!old) continue;
+    const changes = changesBetween(
+      old as unknown as Record<string, unknown>,
+      p as unknown as Record<string, unknown>,
+    );
+    if (changes.length > 0)
+      out.push({ kind: "provider_changed", provider: p.code, changes });
+  }
+  return out;
+}

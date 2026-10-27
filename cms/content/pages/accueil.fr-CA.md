@@ -29,7 +29,7 @@ Nexora conçoit, installe et accompagne des systèmes d'IA adaptés à votre mé
 
 *Entrée par problème : cinq situations, chacune vers sa solution. · Affirmations : CL-01*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=clair`
 
 ## Partez de votre problème.
 
@@ -69,7 +69,7 @@ Ce qui est en cours, ce qui est bloqué, ce qui coûte plus cher que prévu : l
 
 *Trois scénarios avant / après, étiquetés comme exemples. · Affirmations : CL-11, CL-21*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=sable`
 
 ## Avant. Après. Votre décision.
 
@@ -93,33 +93,45 @@ Avant : elle attend que quelqu'un ouvre la boîte de réception.
 Après : le système la qualifie, crée le dossier et avertit la personne responsable avec un résumé.
 Votre contrôle : la réponse au client est approuvée par votre équipe avant l'envoi.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 4 — Section (`block_section`)
 
-*Les deux modes de déploiement ; définition de la souveraineté. · Affirmations : CL-02, CL-05, CL-26*
+*Souveraineté définie en une phrase ; introduit les deux modes. · Affirmations : CL-26*
 
-Réglages : `columns=2`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## Chez vous. Ou chez nous.
 
 Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora propose deux façons d'y arriver.
 
-#### Chez vous.
+### Bloc 5 — Section (`block_section`)
+
+*Mode sur : schéma de périmètre et lien vers le détail. · Affirmations : CL-02, CL-05*
+
+Réglages : `media_position=none`, `visual=perimetre-sur-place`, `tone=sombre`
+
+## Chez vous.
 
 Nous installons le système sur votre propre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous. Avant la mise en service, nous dressons la liste de ce qui sort du réseau, s'il y a lieu : mises à jour, licences, modèle externe si vous en choisissez un.
 
-→ [Voir le mode sur place](/deploiement/sur-place/)
+[Voir le mode sur place](/deploiement/sur-place/)
 
-#### Chez nous, au Québec.
+### Bloc 6 — Section (`block_section`)
+
+*Mode heberge : schéma de périmètre et lien vers le détail. · Affirmations : CL-05*
+
+Réglages : `media_position=left`, `visual=perimetre-heberge`, `tone=sombre`
+
+## Chez nous, au Québec.
 
 Nous hébergeons et exploitons le système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel. Où se trouvent vos données, vos sauvegardes et vos journaux, et qui y accède : nous l'écrivons dans l'étude de déploiement.
 
-→ [Voir le mode hébergé](/deploiement/heberge-quebec/)
+[Voir le mode hébergé](/deploiement/heberge-quebec/)
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *Les produits présentés comme un ensemble, chacun avec son état réel. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=liste`, `tone=clair`
 
 ## Une suite, pas une pile.
 
@@ -160,11 +172,11 @@ Nexora Code pour le développement assisté par agents, Nexora Corpus pour prép
 
 → [Voir la suite](/suite/)
 
-### Bloc 6 — Section (`block_section`)
+### Bloc 8 — Section (`block_section`)
 
 *Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## OPSYS-AI. Dix départements, un dossier.
 
@@ -179,11 +191,11 @@ Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) reba
 - **Facturer.** Facture brouillon, comptes à recevoir et coûts réels.
 - **Piloter.** Marketing, analytique, stratégie et mémoire des décisions.
 
-### Bloc 7 — Section (`block_section`)
+### Bloc 9 — Section (`block_section`)
 
 *Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-14*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
 ## Cinq temps. Un cas à la fois.
 
@@ -191,17 +203,37 @@ Nous commençons par un problème concret, mis en service et vérifié, avant d'
 
 [Lire la méthode](/methode/)
 
-- **Comprendre.** Nous observons comment le travail se fait aujourd'hui : où le temps se perd, quelles informations entrent, qui décide.
-- **Intégrer.** Nous relions les logiciels que vous utilisez déjà, pour que l'information circule sans être retapée.
-- **Vérifier.** Nous testons sur vos cas réels, avec vos validations, avant toute mise en service.
-- **Former.** Votre équipe apprend à superviser, à corriger et à décider, pas à programmer.
-- **Exploiter et améliorer.** Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.
+### Bloc 10 — Cartes (`block_cards`)
 
-### Bloc 8 — Cartes (`block_cards`)
+*Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
+
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`
+
+#### Comprendre.
+
+Nous observons comment le travail se fait aujourd'hui : où le temps se perd, quelles informations entrent, qui décide.
+
+#### Intégrer.
+
+Nous relions les logiciels que vous utilisez déjà, pour que l'information circule sans être retapée.
+
+#### Vérifier.
+
+Nous testons sur vos cas réels, avec vos validations, avant toute mise en service.
+
+#### Former.
+
+Votre équipe apprend à superviser, à corriger et à décider, pas à programmer.
+
+#### Exploiter et améliorer.
+
+Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.
+
+### Bloc 11 — Cartes (`block_cards`)
 
 *Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=sombre`
 
 ## Des engagements vérifiables.
 
@@ -235,11 +267,11 @@ Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvon
 
 → [Voir le centre de confiance](/centre-de-confiance/)
 
-### Bloc 9 — FAQ (`block_faq`)
+### Bloc 12 — FAQ (`block_faq`)
 
 *FAQ : les objections du rapport 06 §8.4, réponses vraies seulement. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25*
 
-Réglages : `emit_jsonld=true`
+Réglages : `emit_jsonld=true`, `tone=clair`
 
 ## Vos questions. Nos réponses.
 
@@ -279,7 +311,7 @@ Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous d
 
 Un logiciel qui accomplit une tâche à votre place, avec les outils et les documents que vous lui autorisez, et qui demande votre validation avant une action importante.
 
-### Bloc 10 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
 *CTA final. · Affirmations : CL-01*
 

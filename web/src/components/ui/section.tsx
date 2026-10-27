@@ -9,6 +9,11 @@ type SectionProps = {
   surface?: boolean;
   /** Retire l'espacement vertical (héros, sections à fond décoratif). */
   flush?: boolean;
+  /**
+   * Continuité avec les blocs voisins de même ton : « after » supprime l'espacement du haut (la section
+   * prolonge la précédente), « before » resserre le bas (la suivante prolonge celle-ci), « both » les deux.
+   */
+  joined?: "after" | "before" | "both";
   /** Contenu décoratif placé derrière le contenu (aria-hidden côté appelant). */
   background?: ReactNode;
   containerClassName?: string;
@@ -24,6 +29,7 @@ export function Section({
   tone = "light",
   surface = false,
   flush = false,
+  joined,
   background,
   className,
   containerClassName,
@@ -36,7 +42,10 @@ export function Section({
         "relative isolate overflow-hidden text-fg",
         tone === "dark" ? "theme-dark" : "theme-light",
         surface ? "bg-surface" : "bg-bg",
-        !flush && "py-section",
+        !flush && !joined && "py-section",
+        !flush && joined === "after" && "pb-section",
+        !flush && joined === "before" && "pt-section pb-12 md:pb-16",
+        !flush && joined === "both" && "pb-12 md:pb-16",
         className,
       )}
       {...props}

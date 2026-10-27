@@ -121,41 +121,29 @@ These items can support your process. They do not replace it, and the status of 
 
 Organizations, roles, an audit log and monthly consumption caps in WorkStudio.
 
-Statut (champ `status`) : disponible
-
 → [See WorkStudio](/en/workstudio/)
 
 #### Each model's location.
 
 Every model shows whether it runs on your server, in Europe or at a third party: a useful reference when assessing a transfer outside Quebec.
 
-Statut (champ `status`) : disponible
-
 #### Detection and masking.
 
 A service installed on your server detects names, emails and phone numbers, and can mask them in traces or before a call to an external model, depending on the policy you choose.
-
-Statut (champ `status`) : disponible
 
 #### Traces you can consult.
 
 Every model call leaves a trace: useful to document what the system did and to investigate after an incident.
 
-Statut (champ `status`) : disponible
-
 #### A data-flow diagram per installation.
 
 Handed over in writing before go-live; the diagram template is still to be written.
-
-Statut (champ `status`) : prevu
 
 → [See the trust center](/en/trust-center/)
 
 #### Template documents.
 
 Data processing agreement, privacy impact assessment template, incident procedure, list of subcontractors and locations: in preparation, none is available yet.
-
-Statut (champ `status`) : prevu
 
 → [See the trust center](/en/trust-center/)
 

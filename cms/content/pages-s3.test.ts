@@ -234,8 +234,14 @@ describe("S3 : champs de présentation des blocs", () => {
           for (const c of (b.translation.cards ?? []) as {
             status?: string;
           }[])
-            if (c.status !== undefined)
+            if (c.status !== undefined) {
               expect(STATUSES, `${where} statut`).toContain(c.status);
+              // le badge d'état ne s'affiche qu'en disposition « modules »
+              expect(
+                f.layout,
+                `${where} : un statut exige la disposition modules`,
+              ).toBe("modules");
+            }
         }
         if (f.visual !== undefined) {
           expect(b.collection, where).toBe("block_section");
@@ -339,6 +345,23 @@ describe("S3 : SEO", () => {
   test("les pages publiées finissent par un appel à l'action ; les gabarits non", () => {
     for (const k of PUBLISHED)
       expect(page(k, "fr-CA").blocks.at(-1)?.collection, k).toBe("block_cta");
+  });
+
+  test("titres SEO et descriptions uniques par langue, accueil et OPSYS-AI compris (contrôles @nexora/seo : titre de 15 à 60 caractères avec la marque)", () => {
+    for (const l of LOCALES) {
+      const all = [
+        ...KEYS.map((k) => page(k, l).seo),
+        ...["accueil", "opsys-ai"].map(
+          (k) => readPagePair(PAGES_DIR, k)[l].seo,
+        ),
+      ];
+      for (const field of ["seo_title", "seo_description"] as const) {
+        const values = all.map((s) => s[field]);
+        expect(new Set(values).size, `${l} ${field}`).toBe(values.length);
+      }
+      for (const s of all)
+        expect([...s.seo_title].length + 9).toBeLessThanOrEqual(60);
+    }
   });
 
   test("chaque slug est unique par langue, accueil et OPSYS-AI compris", () => {
