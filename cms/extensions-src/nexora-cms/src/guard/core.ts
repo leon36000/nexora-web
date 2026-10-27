@@ -244,6 +244,8 @@ export function prepareApprovalCreate(
     payload.reviewer = null;
     payload.applied_at = null;
     payload.comment = null;
+    // `proposed_by` est posé par Directus (champ « user-created ») ; jamais repris d'un client non administrateur.
+    delete payload.proposed_by;
   } else if (payload.status === undefined) {
     payload.status = STATUS.pending;
   }
@@ -266,6 +268,8 @@ const REVIEWER_STATES = new Set<string>([
  * Met à jour une approbation. Un non-administrateur ne modifie que état, commentaire, relecteur et date prévue,
  * ne peut choisir qu'approuvée/refusée/à_corriger, et seulement tant que l'approbation n'est ni appliquée ni périmée.
  * Approuver exige que le hash courant de la version soit encore celui de l'approbation.
+ * Séparation des tâches : un non-administrateur n'approuve pas l'approbation qu'il a lui-même proposée
+ * (`proposed_by`, posé par le serveur à la création) ; il peut encore la refuser ou la renvoyer à corriger.
  */
 export function prepareApprovalUpdate(
   input: Record<string, unknown>,
@@ -274,6 +278,7 @@ export function prepareApprovalUpdate(
     version_id: string | null;
     version_hash: string | null;
     applied_at: string | null;
+    proposed_by?: string | null;
   },
   opts: { admin: boolean; user: string | null; currentHash: string | null },
 ): { payload: Record<string, unknown>; error?: Failure } {
@@ -310,6 +315,21 @@ export function prepareApprovalUpdate(
           code: "NEXORA_APPROBATION_ETAT_INTERDIT",
           message:
             "Un relecteur choisit « approuvée », « refusée » ou « à_corriger ».",
+        },
+      };
+    }
+    if (
+      payload.status === STATUS.approved &&
+      opts.user &&
+      existing.proposed_by &&
+      existing.proposed_by === opts.user
+    ) {
+      return {
+        payload,
+        error: {
+          code: "NEXORA_AUTO_APPROBATION_INTERDITE",
+          message:
+            "Vous ne pouvez pas approuver votre propre proposition : une autre personne doit la relire.",
         },
       };
     }

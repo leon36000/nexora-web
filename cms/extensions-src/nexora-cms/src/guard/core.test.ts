@@ -357,6 +357,64 @@ describe("prepareApprovalUpdate", () => {
     ).toBe("NEXORA_APPROBATION_VERROUILLEE");
   });
 
+  test("séparation des tâches : on n'approuve pas sa propre proposition (non-administrateur)", () => {
+    const own = { ...existing, proposed_by: "u1" };
+    const r = prepareApprovalUpdate({ status: "approuvée" }, own, {
+      admin: false,
+      user: "u1",
+      currentHash: "H",
+    });
+    expect(r.error?.code).toBe("NEXORA_AUTO_APPROBATION_INTERDITE");
+  });
+
+  test("l'auteur de la proposition peut encore la refuser ou la renvoyer à corriger", () => {
+    const own = { ...existing, proposed_by: "u1" };
+    for (const status of ["refusée", "à_corriger"]) {
+      const r = prepareApprovalUpdate({ status }, own, {
+        admin: false,
+        user: "u1",
+        currentHash: "H",
+      });
+      expect(r.error, status).toBeUndefined();
+    }
+  });
+
+  test("une autre personne approuve la proposition d'un tiers", () => {
+    const r = prepareApprovalUpdate(
+      { status: "approuvée" },
+      { ...existing, proposed_by: "u1" },
+      { admin: false, user: "u2", currentHash: "H" },
+    );
+    expect(r.error).toBeUndefined();
+    expect(r.payload.reviewer).toBe("u2");
+  });
+
+  test("l'administrateur n'est pas soumis à cette règle", () => {
+    const r = prepareApprovalUpdate(
+      { status: "approuvée" },
+      { ...existing, proposed_by: "a" },
+      { admin: true, user: "a", currentHash: "H" },
+    );
+    expect(r.error).toBeUndefined();
+  });
+
+  test("l'identité du proposant ne peut jamais être fournie par le client à la création (non-administrateur)", () => {
+    const r = prepareApprovalCreate(
+      { version_id: "v1", proposed_by: "autre" },
+      {
+        admin: false,
+        version: {
+          id: "v1",
+          key: "k",
+          collection: "pages",
+          item: "p1",
+          delta: {},
+        },
+      },
+    );
+    expect("proposed_by" in r.payload).toBe(false);
+  });
+
   test("l’administrateur ne peut pas approuver une approbation dont le hash est dépassé", () => {
     const r = prepareApprovalUpdate({ status: "approuvée" }, existing, {
       admin: true,
