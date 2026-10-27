@@ -169,6 +169,31 @@ describe("POST /api/stripe/webhook", () => {
     expect(await res.json()).toMatchObject({ error: "livemode_refused" });
   });
 
+  it("accepte un événement livemode quand le fondateur a autorisé les paiements réels", async () => {
+    const id = await org();
+    const event = buildEvent("checkout.session.completed", session(id));
+    (event as { livemode: boolean }).livemode = true;
+    const res = await handleStripeWebhook(
+      webhookRequest(event),
+      deps({ liveAllowed: async () => true }),
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("un événement de test reste accepté quand les paiements réels sont autorisés, et la lecture du réglage qui échoue refuse le livemode", async () => {
+    const event = buildEvent("checkout.session.completed", session("org_x"));
+    (event as { livemode: boolean }).livemode = true;
+    const res = await handleStripeWebhook(
+      webhookRequest(event),
+      deps({
+        liveAllowed: async () => {
+          throw new Error("base indisponible");
+        },
+      }),
+    );
+    expect(res.status).toBe(400);
+  });
+
   it("refuse les autres méthodes que POST", async () => {
     const res = await handleStripeWebhook(
       new Request("http://localhost/api/stripe/webhook", { method: "GET" }),

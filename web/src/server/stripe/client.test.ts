@@ -1,10 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  assertKeyAllowed,
   assertTestModeKey,
   createStripeClient,
   resolveStripeConfig,
   resolveWebhookSecret,
   StripeModeError,
+  stripeKeyMode,
 } from "./client";
 
 describe("mode test seulement", () => {
@@ -115,5 +117,57 @@ describe("résolution des secrets", () => {
         getSecret: vault({ "stripe.secret_key": "sk_live_oups" }),
       }),
     ).rejects.toBeInstanceOf(StripeModeError);
+  });
+});
+
+describe("mode production : seulement avec l'autorisation explicite du fondateur", () => {
+  it("détecte le mode d'une clé sans la citer", () => {
+    expect(stripeKeyMode("sk_test_abc")).toBe("test");
+    expect(stripeKeyMode("rk_live_abc")).toBe("live");
+    expect(stripeKeyMode("n'importe quoi")).toBeNull();
+  });
+
+  it("refuse une clé live tant que l'autorisation n'est pas donnée, l'accepte ensuite", () => {
+    expect(() => assertKeyAllowed("sk_live_abc", false)).toThrow(
+      StripeModeError,
+    );
+    expect(() => assertKeyAllowed("sk_live_abc", true)).not.toThrow();
+    expect(() => assertKeyAllowed("sk_test_abc", false)).not.toThrow();
+    expect(() => assertKeyAllowed("pas-une-clé", true)).toThrow(
+      StripeModeError,
+    );
+  });
+
+  it("createStripeClient accepte une clé live seulement avec allowLive", () => {
+    expect(() => createStripeClient({ secretKey: "sk_live_x" })).toThrow(
+      StripeModeError,
+    );
+    expect(() =>
+      createStripeClient({ secretKey: "sk_live_x", allowLive: true }),
+    ).not.toThrow();
+  });
+
+  it("le simulateur local n'est jamais utilisé avec une clé live", () => {
+    expect(() =>
+      createStripeClient({
+        secretKey: "sk_live_x",
+        allowLive: true,
+        mockUrl: "http://127.0.0.1:12111",
+      }),
+    ).toThrow(StripeModeError);
+  });
+
+  it("resolveStripeConfig lit l'autorisation au moment de la résolution", async () => {
+    const getSecret = async () => "sk_live_vault";
+    const env = { NODE_ENV: "production" };
+    await expect(resolveStripeConfig({ env, getSecret })).rejects.toBeInstanceOf(
+      StripeModeError,
+    );
+    const cfg = await resolveStripeConfig({
+      env,
+      getSecret,
+      liveAllowed: async () => true,
+    });
+    expect(cfg).toMatchObject({ secretKey: "sk_live_vault", allowLive: true });
   });
 });
