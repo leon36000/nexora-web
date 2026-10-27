@@ -893,7 +893,9 @@ function streamResponse(ctx: {
   version: CatalogVersion;
 }): Response {
   const { plan, deps, model } = ctx;
-  const reader = ctx.upstream.body?.getReader();
+  const upstreamBody = ctx.upstream.body;
+  if (!upstreamBody) throw new Error("flux amont absent");
+  const reader = upstreamBody.getReader();
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
   let buffer = "";

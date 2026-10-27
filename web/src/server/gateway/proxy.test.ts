@@ -710,6 +710,7 @@ describe("flux SSE", () => {
       deps(),
     );
     const reader = res.body?.getReader();
+    if (!reader) throw new Error("flux attendu");
     await reader.read();
     await reader.cancel();
     await new Promise((r) => setTimeout(r, 100));
