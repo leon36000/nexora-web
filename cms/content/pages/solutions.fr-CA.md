@@ -7,7 +7,7 @@
 - Page : `solutions` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/` · slug : `solutions`
 - Titre SEO (33 caractères) : Solutions d'IA pour PME au Québec
-- Description SEO (157 caractères) : Six solutions d'IA pour PME du Québec : courriels, factures, service client, rendez-vous, comptabilité et documents. Votre équipe garde toujours la décision.
+- Description SEO (148 caractères) : Six solutions d'IA pour PME du Québec : courriels, factures, service client, rendez-vous, comptabilité et documents. Votre équipe garde la décision.
 
 ## Contenu
 
@@ -49,7 +49,7 @@ Un fournisseur envoie un PDF, un autre une photo. Le système lit les pièces, r
 
 #### Des clients qui attendent.
 
-Les mêmes questions reviennent. Un agent répond à partir de vos documents, cite ses sources et passe la main à une personne quand il ne sait pas.
+Les mêmes questions reviennent. Un agent répond à partir de vos documents, cite ses sources et transmet la demande à une personne avec un résumé quand il ne sait pas.
 
 → [Voir le service client](/solutions/service-client/)
 

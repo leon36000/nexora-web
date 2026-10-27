@@ -136,8 +136,8 @@
             "text": "L'agent ne consulte que les bases de documents que vous lui ouvrez. Les droits d'accès se règlent par base et par espace, pas document par document."
           },
           {
-            "title": "Vos documents restent chez vous.",
-            "text": "Par défaut, l'indexation se calcule sur le serveur de l'instance et aucun document n'en sort. Un service externe est un choix écrit."
+            "title": "Où vos documents sont indexés.",
+            "text": "Par défaut, l’indexation se calcule sur le serveur de l’instance\u00a0: chez vous, sur votre serveur\u00a0; en mode hébergé, dans l’infrastructure de Nexora au Québec. Un service externe est un choix écrit."
           },
           {
             "title": "Aucun avis juridique.",

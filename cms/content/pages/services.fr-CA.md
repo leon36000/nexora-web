@@ -85,7 +85,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 Toute tâche informatique n'est pas réalisable sans contraintes. Nous le disons avant de vous engager.
 
-#### Des produits qui n'existent pas.
+#### Des produits pas encore livrés.
 
 La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés ; ils peuvent faire l'objet d'une étude de faisabilité.
 

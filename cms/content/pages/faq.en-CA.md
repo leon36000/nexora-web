@@ -35,7 +35,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=donnees`
 
 #### Does my data leave Quebec?
 
-It depends on the deployment mode and the models you choose, and we write it down before kickoff. On your premises, the hardware and the access are yours, and the only outbound flows are those we draw up together: updates, licences, and an external model if you choose one. With us, hosting is in our infrastructure, in Quebec, and we specify backups, logs and providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration.
+It depends on the deployment mode and the models you choose, and we write it down before kickoff. On your premises, the hardware and the access are yours. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model. With us, hosting is in our infrastructure, in Quebec, and we specify backups, logs and providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration.
 
 #### Do you train your models on our data?
 
@@ -131,7 +131,7 @@ No. No call-answering service is delivered today. A voice message dropped in as 
 
 #### Are Nexora Code, Corpus, Quanta and Helix available?
 
-No availability or date is announced at this stage. Only Nexora WorkStudio is available, on request.
+No availability or date is announced at this stage. Nexora WorkStudio is presented as a demonstration on request; no self-service offer is open.
 
 #### Is there a solution for construction?
 

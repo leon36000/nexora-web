@@ -7,7 +7,7 @@
 - Page : `accueil` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/` · slug : ``
 - Titre SEO (44 caractères) : AI automation for small businesses in Quebec
-- Description SEO (150 caractères) : Nexora designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, always under your control. Let's talk.
+- Description SEO (143 caractères) : Nexora designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, under your control. Let's talk.
 
 ## Contenu
 
@@ -277,7 +277,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`
 
 #### Does my data leave Quebec?
 
-It depends on the deployment mode and the models you choose, and we put it in writing before we start. On your premises, the hardware and the access are yours, and the only outbound flows are the ones we list together: updates, licences, and an external model if you choose one. In our infrastructure, hosting is in Quebec, and we specify backups, logs and service providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration.
+It depends on the deployment mode and the models you choose, and we put it in writing before we start. On your premises, the hardware and the access are yours. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model. In our infrastructure, hosting is in Quebec, and we specify backups, logs and service providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration.
 
 #### Do you train your models on our data?
 

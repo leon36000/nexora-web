@@ -40,7 +40,7 @@ export const vpsFrCA = {
 
   common: {
     priceNote: "Prix en dollars canadiens (CAD), avant taxes.",
-    taxes: "TPS et TVQ calculées au paiement selon votre adresse (Stripe Tax).",
+    taxes: "TPS et TVQ calculées au paiement selon votre adresse.",
     renewal:
       "Renouvelé automatiquement au même tarif à chaque période, résiliable à tout moment (le service court jusqu’à la fin de la période payée).",
     beforeTaxes: "avant taxes",
@@ -104,7 +104,7 @@ export const vpsFrCA = {
 
   configurator: {
     title: "Configurer et commander",
-    lead: "Quatre choix, puis le paiement sécurisé par Stripe : plan, application, durée et clé SSH.",
+    lead: "Quatre choix, puis le paiement sécurisé\u00a0: plan, application, durée et clé SSH.",
     stepPlan: "1. Plan",
     stepApp: "2. Application",
     stepTerm: "3. Durée",
@@ -151,7 +151,7 @@ export const vpsFrCA = {
     submit: "Commander",
     submitting: "Redirection vers le paiement…",
     stripeNote:
-      "Le paiement se fait sur la page sécurisée de Stripe. Vous ne saisissez aucune information de carte sur ce site.",
+      "Le paiement se fait sur une page sécurisée. Vous ne saisissez aucune information de carte sur ce site.",
     loginLink: "Se connecter",
     signupLink: "Créer un compte",
     errors: {
@@ -250,7 +250,7 @@ export const vpsFrCA = {
       },
       taxes: {
         q: "Les prix incluent-ils les taxes ?",
-        a: "Non. Les prix sont en dollars canadiens, avant taxes. La TPS et la TVQ sont calculées au paiement selon votre adresse (Stripe Tax).",
+        a: "Non. Les prix sont en dollars canadiens, avant taxes. La TPS et la TVQ sont calculées au paiement selon votre adresse.",
       },
     },
   },

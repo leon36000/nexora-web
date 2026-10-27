@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # We host. You keep control.
 
-We host and run your system in our infrastructure, located in Quebec. You buy no server and no hardware, and you know in writing where your data, backups and logs are.
+We host and run your system in our infrastructure, located in Quebec. The documents that prove the location are in preparation: you will receive them in writing before go-live.
 
 [Request a deployment study](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
 

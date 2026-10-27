@@ -93,9 +93,9 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
 The agent only consults the document bases you open to it. Access rights are set per base and per workspace, not document by document.
 
-#### Your documents stay with you.
+#### Where your documents are indexed.
 
-By default, indexing is computed on the instance's own server and no document leaves it. An external service is a written choice.
+By default, indexing runs on the instance’s server: on your premises, on your own server; hosted, in Nexora’s infrastructure in Quebec. An external service is a written choice.
 
 #### No legal advice.
 

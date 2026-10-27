@@ -85,7 +85,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 Not every computing task can be done without constraints. We say so before you commit.
 
-#### Products that do not exist.
+#### Products not yet delivered.
 
 Telephony, camera vision and specialized models are not delivered products; they can be the subject of a feasibility study.
 

@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Nous hébergeons. Vous gardez le contrôle.
 
-Nous hébergeons et exploitons votre système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel, et vous savez où sont vos données, vos sauvegardes et vos journaux, par écrit.
+Nous hébergeons et exploitons votre système dans notre infrastructure, située au Québec. Les documents qui prouvent le lieu sont en préparation : vous les recevrez par écrit avant la mise en service.
 
 [Demander une étude de déploiement](/contact/?sujet=etude-deploiement) · [Comparer les deux modes](/deploiement/)
 

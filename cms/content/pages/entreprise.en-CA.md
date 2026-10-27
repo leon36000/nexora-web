@@ -52,7 +52,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=principes`
 
 We publish no testimonial, no figure and no certification that we cannot prove. When a capability is in pilot or planned, we write it.
 
-#### Control, always.
+#### Control, within the flows we configure.
 
 In the workflows we set up, any action that commits the business waits for a person's approval, unless you decide otherwise in writing.
 
@@ -75,7 +75,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=verifier`
 A company is judged by what it lets you check. Here is where to look.
 
 - **A status for every capability.** Each product and each department shows whether it is available, in pilot or planned, for example on the <a href="/en/opsys-ai/">OPSYS-AI</a> page.
-- **A register of proofs.** Every statement on this site is kept in an internal register, with its proof, its source and its version.
+- **A register of proofs.** The sensitive claims on this site are kept in an internal register, with their evidence, source and version.
 - **Documents on request.** The <a href="/en/trust-center/">trust center</a> lists the documents we are preparing and their status.
 
 ### Bloc 5 — Section (`block_section`)

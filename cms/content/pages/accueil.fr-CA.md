@@ -277,7 +277,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`
 
 #### Mes données sortent-elles du Québec ?
 
-Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous, et les seuls flux sortants sont ceux que nous dressons ensemble : mises à jour, licences, et un modèle externe si vous en choisissez un. Chez nous, l'hébergement est dans notre infrastructure, au Québec, et nous précisons par écrit les sauvegardes, les journaux et les prestataires. Dans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
+Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous. Les flux sortants sont ceux que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous le choisissez, un modèle externe. Chez nous, l'hébergement est dans notre infrastructure, au Québec, et nous précisons par écrit les sauvegardes, les journaux et les prestataires. Dans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
 
 #### Entraînez-vous vos modèles avec nos données ?
 

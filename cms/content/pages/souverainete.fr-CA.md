@@ -6,7 +6,7 @@
 
 - Page : `souverainete` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/souverainete/` · slug : `souverainete`
-- Titre SEO (44 caractères) : IA souveraine au Québec : les quatre couches
+- Titre SEO (49 caractères) : Souveraineté de l’IA : quatre couches de contrôle
 - Description SEO (154 caractères) : Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données. Les quatre couches de contrôle, les deux modes et nos limites.
 
 ## Contenu

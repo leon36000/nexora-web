@@ -161,7 +161,7 @@
           },
           {
             "title": "M6 — Materials.",
-            "text": "Links needs, availability, suppliers, orders, receipts and actual consumption.\nAvailable: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department pays nothing.",
+            "text": "Links needs, availability, suppliers, orders, receipts and actual consumption.\nAvailable: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department makes no payments.",
             "status": "pilote"
           },
           {
@@ -238,7 +238,7 @@
             "text": "Real, internally: a draft invoice is prepared, with GST and QST calculated, to be validated by your accountant. Prepared, yes; sent and acknowledged, no."
           },
           {
-            "title": "10. Analysis and learning.",
+            "title": "10. Analysis and tracking.",
             "text": "Real: executive view, management briefing, log of decisions. Demonstration: comparison of estimate and actual, on fictitious data."
           }
         ]

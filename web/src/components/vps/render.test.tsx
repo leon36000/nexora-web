@@ -166,7 +166,7 @@ describe("configurateur (rendu serveur initial)", () => {
       "Renouvelé automatiquement au même tarif à chaque période",
     );
     expect(html).toContain(
-      "TPS et TVQ calculées au paiement selon votre adresse (Stripe Tax)",
+      "TPS et TVQ calculées au paiement selon votre adresse",
     );
     expect(html).toContain("Total avant taxes");
   });

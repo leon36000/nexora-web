@@ -88,7 +88,7 @@ export const gatewayFrCA = {
     dataPolicyMissing:
       "Le fournisseur n’a pas encore déclaré de politique de données.",
     nexoraNote:
-      "La passerelle de Nexora ne conserve ni le contenu de vos requêtes ni celui des réponses : seules des métadonnées d’usage (modèle, jetons, coût, durée) sont gardées pour la facturation.",
+      "La passerelle de Nexora ne garde que des métadonnées d’usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes.",
     sunset: "Retrait prévu le {date}.",
     example: "Exemple d’appel",
     exampleLead:
@@ -175,7 +175,7 @@ export const gatewayFrCA = {
     },
     privacy: {
       title: "Confidentialité",
-      text: "La passerelle ne journalise ni ne stocke le contenu de vos requêtes ni des réponses : elle garde seulement des métadonnées d’usage. La politique de données de chaque fournisseur est affichée sur la fiche du modèle.",
+      text: "La passerelle ne garde que des métadonnées d’usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes. La politique de données de chaque fournisseur est affichée sur la fiche du modèle.",
     },
     compat: {
       title: "Compatibilité",

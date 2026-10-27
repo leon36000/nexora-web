@@ -20,14 +20,14 @@ export const gatewayEnCA: GatewayDictionary = {
   },
 
   residency: {
-    quebec: "Hosted in Québec",
+    quebec: "Hosted in Quebec",
     canada: "Hosted in Canada",
     etats_unis: "Hosted in the United States",
     europe: "Hosted in Europe",
     autre: "Hosted outside Canada",
   },
   residencyFilter: {
-    quebec: "Québec",
+    quebec: "Quebec",
     canada: "Canada",
     etats_unis: "United States",
     europe: "Europe",
@@ -83,7 +83,7 @@ export const gatewayEnCA: GatewayDictionary = {
     dataPolicy: "Data policy declared by the provider",
     dataPolicyMissing: "The provider has not declared a data policy yet.",
     nexoraNote:
-      "Nexora’s gateway does not keep the content of your requests or of the responses: only usage metadata (model, tokens, cost, duration) is kept for billing.",
+      "Nexora’s gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests.",
     sunset: "Scheduled for retirement on {date}.",
     example: "Example call",
     exampleLead:
@@ -166,7 +166,7 @@ export const gatewayEnCA: GatewayDictionary = {
     },
     privacy: {
       title: "Privacy",
-      text: "The gateway neither logs nor stores the content of your requests or of the responses: it only keeps usage metadata. Each provider’s data policy is shown on the model page.",
+      text: "The gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests. Each provider’s data policy is shown on the model page.",
     },
     compat: {
       title: "Compatibility",

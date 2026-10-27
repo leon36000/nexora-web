@@ -37,8 +37,8 @@ Un serveur d'IA est une machine qui exécute les modèles (les moteurs qui produ
 
 La méthode est la même dans les deux cas : on dimensionne, on installe, on configure, on vérifie les flux, on forme, puis on exploite.
 
-- **Chez vous.** Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous. Voir le <a href="/deploiement/sur-place/">mode sur place</a>.
-- **Chez nous, au Québec.** Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel. Voir le <a href="/deploiement/heberge-quebec/">mode hébergé</a>.
+- **Chez vous.** Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous.
+- **Chez nous, au Québec.** Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
@@ -134,7 +134,7 @@ La durée dépend de votre cas et se mesure sur un premier cas.
 
 Disponibilité et délais de réponse se précisent au contrat.
 
-#### Aucun fonctionnement sans flux sortant présumé.
+#### Aucun flux sortant n’est présumé nul.
 
 Mises à jour, licences, modèle externe éventuel : tout est listé avant la mise en service.
 
@@ -152,7 +152,7 @@ Cela dépend du cas. Le diagnostic répond à cette question avant tout achat :
 
 #### Peut-on l'installer sur un serveur existant ?
 
-Il suffit d'un serveur qui fait tourner Docker. Nous vérifions au diagnostic qu'il convient aux usages prévus.
+Il faut un serveur Linux ou macOS qui fait tourner Docker. Nous vérifions au diagnostic qu’il convient aux usages prévus.
 
 #### Qui exploite ensuite ?
 

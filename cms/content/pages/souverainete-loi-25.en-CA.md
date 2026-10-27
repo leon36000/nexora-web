@@ -215,7 +215,7 @@ The law applies to anyone who operates a business in Quebec and holds personal i
 
 #### Does hosting in Quebec settle the matter?
 
-It simplifies one point: the transfer outside Quebec no longer arises for that hosting. But the other obligations remain, and an external model called from the server still has to be assessed. The law frames transfers outside Quebec without prohibiting them.
+Hosting in Quebec can simplify certain points; transfers outside Quebec must be assessed with your legal adviser.
 
 #### Must I tell my customers that I use AI?
 

@@ -7,7 +7,7 @@
 - Page : `solutions-service-client` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/service-client/` · slug : `solutions/service-client`
 - Titre SEO (40 caractères) : Service client par IA pour PME au Québec
-- Description SEO (148 caractères) : Un agent répond à vos clients à partir de vos documents, cite ses sources et passe la main à une personne quand il ne sait pas. Vous gardez la main.
+- Description SEO (148 caractères) : Un agent répond à vos clients à partir de vos documents, cite ses sources et transmet la demande à une personne avec un résumé. Vous gardez la main.
 
 ## Contenu
 
@@ -59,7 +59,7 @@ L'agent est publié dans WorkStudio. Il peut vivre sur votre site (une bulle de 
 
 La réponse numérote ses sources, qu'un clic permet d'ouvrir. Un garde-fou peut vérifier que la réponse reste fidèle à vos documents avant qu'elle parte.
 
-#### Il passe la main.
+#### Il transmet la demande.
 
 S'il ne trouve rien, il propose un rappel par une personne et transmet la demande à l'équipe avec un résumé.
 

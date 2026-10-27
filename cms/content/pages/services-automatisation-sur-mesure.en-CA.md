@@ -35,7 +35,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=exemples`
 
 Custom work begins where standard solutions stop. Three constructed examples that do not look alike; they are not customer results.
 
-- **A contractor finds past quotes.** They want to start from comparable earlier quotes to prepare a new one, and track real costs afterward. We would connect the quote base, an estimating agent and an approval before anything is sent. For construction, <a href="/en/opsys-ai/">OPSYS-AI</a> already covers part of this path, with its statuses.
+- **A contractor finds past quotes.** They want to start from comparable earlier quotes to prepare a new one, and track real costs afterward. We would connect the quote base, an estimating agent and an approval before anything is sent. For construction, OPSYS-AI already covers part of this path, with its statuses.
 - **A distributor processes supplier documents.** Delivery slips, order confirmations and invoices arrive in different formats. The workflow reads them, compares them with each other and flags what does not match, before any action.
 - **A firm prepares case files.** It gathers authorized documents, draws a summary and a list of points to verify, then hands over to the responsible person. Access rights are defined before the build.
 

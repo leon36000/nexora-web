@@ -44,11 +44,11 @@
         "items": [
           {
             "title": "On your premises.",
-            "text": "In your offices or at a host of your choice. The hardware and the access are yours. See the <a href=\"/en/deployment/on-premises/\">on-premises mode</a>."
+            "text": "In your offices or at a host of your choice. The hardware and the access are yours."
           },
           {
             "title": "With us, in Quebec.",
-            "text": "In our infrastructure, where we run it. You buy no server and no hardware. See the <a href=\"/en/deployment/hosted-quebec/\">hosted mode</a>."
+            "text": "In our infrastructure, where we run it. You buy no server and no hardware."
           }
         ]
       }
@@ -188,7 +188,7 @@
             "text": "Availability and response times are set out in the contract."
           },
           {
-            "title": "No presumption of zero outbound traffic.",
+            "title": "We do not presume there is no outbound traffic.",
             "text": "Updates, licences, any external model: everything is listed before go-live."
           }
         ]
@@ -212,7 +212,7 @@
           },
           {
             "question": "Can it go on an existing server?",
-            "answer": "A server that runs Docker is enough. During the diagnosis we check that it suits the intended uses."
+            "answer": "A Linux or macOS server running Docker is required. We check during the assessment that it suits the intended uses."
           },
           {
             "question": "Who runs it afterwards?",

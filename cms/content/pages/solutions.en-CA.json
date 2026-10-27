@@ -7,7 +7,7 @@
     "slug": "solutions",
     "title": "Solutions",
     "seo_title": "AI solutions for small businesses in Quebec",
-    "seo_description": "Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting and documents. Your team always keeps the decision.",
+    "seo_description": "Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting and documents. Your team keeps the decision.",
     "canonical": null
   },
   "blocks": [
@@ -57,7 +57,7 @@
           },
           {
             "title": "Customers who wait.",
-            "text": "The same questions keep coming. An agent answers from your documents, cites its sources and hands over to a person when it does not know.",
+            "text": "The same questions keep coming. An agent answers from your documents, cites its sources and passes the request on to a person with a summary when it does not know.",
             "href": "/en/solutions/customer-service/",
             "link_label": "See customer service"
           },

@@ -7,7 +7,7 @@
     "slug": "solutions",
     "title": "Solutions",
     "seo_title": "Solutions d'IA pour PME au Québec",
-    "seo_description": "Six solutions d'IA pour PME du Québec\u00a0: courriels, factures, service client, rendez-vous, comptabilité et documents. Votre équipe garde toujours la décision.",
+    "seo_description": "Six solutions d'IA pour PME du Québec\u00a0: courriels, factures, service client, rendez-vous, comptabilité et documents. Votre équipe garde la décision.",
     "canonical": null
   },
   "blocks": [
@@ -57,7 +57,7 @@
           },
           {
             "title": "Des clients qui attendent.",
-            "text": "Les mêmes questions reviennent. Un agent répond à partir de vos documents, cite ses sources et passe la main à une personne quand il ne sait pas.",
+            "text": "Les mêmes questions reviennent. Un agent répond à partir de vos documents, cite ses sources et transmet la demande à une personne avec un résumé quand il ne sait pas.",
             "href": "/solutions/service-client/",
             "link_label": "Voir le service client"
           },

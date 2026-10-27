@@ -93,9 +93,9 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
 L'agent ne consulte que les bases de documents que vous lui ouvrez. Les droits d'accès se règlent par base et par espace, pas document par document.
 
-#### Vos documents restent chez vous.
+#### Où vos documents sont indexés.
 
-Par défaut, l'indexation se calcule sur le serveur de l'instance et aucun document n'en sort. Un service externe est un choix écrit.
+Par défaut, l’indexation se calcule sur le serveur de l’instance : chez vous, sur votre serveur ; en mode hébergé, dans l’infrastructure de Nexora au Québec. Un service externe est un choix écrit.
 
 #### Aucun avis juridique.
 

@@ -215,7 +215,7 @@ La loi s'applique à toute personne qui exploite une entreprise au Québec et d�
 
 #### Un hébergement au Québec règle-t-il la question ?
 
-Il simplifie un point : la communication hors Québec ne se pose plus pour cet hébergement. Mais les autres obligations demeurent, et un modèle externe appelé depuis le serveur reste à évaluer. La loi encadre les communications hors Québec sans les interdire.
+Un hébergement au Québec peut simplifier certains points ; la communication hors Québec doit être évaluée avec votre conseiller juridique.
 
 #### Dois-je dire à mes clients que j'utilise l'IA ?
 

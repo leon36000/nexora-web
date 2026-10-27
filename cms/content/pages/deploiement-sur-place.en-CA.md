@@ -127,7 +127,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Does my data stay with me?
 
-Documents, the index and conversations stay on your server. The only outbound flows are those we list together: updates, licences, and an external model if you choose one.
+By default, documents, the index and conversations stay on your server. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model.
 
 #### Does Nexora access my server?
 
