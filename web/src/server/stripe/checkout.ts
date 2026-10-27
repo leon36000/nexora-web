@@ -95,13 +95,48 @@ function wrapStripe<T>(fn: () => Promise<T>): Promise<T> {
   });
 }
 
-export interface CreditCheckoutInput {
+/** Code promo validé par le serveur (voir `payments/promo-apply.ts`), prêt à passer au Checkout. */
+export interface AppliedPromo {
+  /** Identifiant de notre fiche : voyage dans les métadonnées, relu par le webhook. */
+  promoCodeId: string;
+  /** Code de promotion Stripe (rabais) ; `null` pour un code d'essai pur. */
+  stripePromotionCodeId: string | null;
+  /** Code d'essai : jours offerts (abonnements). */
+  trialDays?: number;
+}
+
+/** Ce que tous les parcours d'achat partagent : code promo, champ de la page Stripe, essai sans carte. */
+export interface CheckoutExtras {
+  promo?: AppliedPromo;
+  /** Laisser le champ « code promo » de la page Stripe quand aucun code n'est appliqué. */
+  allowStripePageCodes?: boolean;
+  /** Rabais de 100 % pour toujours : aucune carte n'est nécessaire. */
+  noPaymentMethodNeeded?: boolean;
+}
+
+/** Remise et champ de code d'une session : `discounts` et `allow_promotion_codes` s'excluent chez Stripe. */
+function discountParams(extras: CheckoutExtras) {
+  const id = extras.promo?.stripePromotionCodeId;
+  if (id) return { discounts: [{ promotion_code: id }] };
+  if (!extras.promo && extras.allowStripePageCodes)
+    return { allow_promotion_codes: true };
+  return {};
+}
+
+const promoMeta = (extras: CheckoutExtras) =>
+  extras.promo ? { promo_code_id: extras.promo.promoCodeId } : {};
+
+export interface CreditCheckoutInput extends CheckoutExtras {
   organizationId: string;
   /** Montant avant taxes, en cents CAD. */
   amountCents: number;
   lang: Lang;
+  /** Crédits accordés (cents), nets des frais de recharge ; défaut : le montant payé. */
+  creditsCents?: number;
   /** Libellé de la ligne sur la page de paiement (dictionnaire de la langue). */
   productName: string;
+  /** Produit Stripe « Crédits » de la langue : permet de limiter un coupon aux crédits. */
+  productId?: string;
   email?: string;
 }
 
@@ -124,6 +159,16 @@ export async function createCreditCheckout(
       "invalid_amount",
       `montant hors bornes (${minPurchaseCents} à ${maxPurchaseCents} cents)`,
     );
+  const creditsCents = input.creditsCents ?? input.amountCents;
+  if (
+    !Number.isSafeInteger(creditsCents) ||
+    creditsCents <= 0 ||
+    creditsCents > input.amountCents
+  )
+    throw new CheckoutError(
+      "invalid_amount",
+      "les crédits accordés ne peuvent pas dépasser le montant payé",
+    );
   const customer = await wrapStripe(() =>
     ensureStripeCustomer(deps, input.organizationId, input.email),
   );
@@ -140,10 +185,13 @@ export async function createCreditCheckout(
             currency,
             unit_amount: input.amountCents,
             tax_behavior: "exclusive",
-            product_data: { name: input.productName },
+            ...(input.productId
+              ? { product: input.productId }
+              : { product_data: { name: input.productName } }),
           },
         },
       ],
+      ...discountParams(input),
       automatic_tax: { enabled: true },
       billing_address_collection: "required",
       customer_update: { address: "auto", name: "auto" },
@@ -152,8 +200,9 @@ export async function createCreditCheckout(
       metadata: {
         kind: "credits",
         organization_id: input.organizationId,
-        credits_cents: String(input.amountCents),
+        credits_cents: String(creditsCents),
         config_version: configVersion(deps.config),
+        ...promoMeta(input),
       },
       success_url: accountUrl(
         deps,
@@ -168,11 +217,18 @@ export async function createCreditCheckout(
   return { url: session.url, sessionId: session.id };
 }
 
-export interface SubscriptionCheckoutInput {
+export interface SubscriptionCheckoutInput extends CheckoutExtras {
   organizationId: string;
   plan: SubscriptionPlan;
   lang: Lang;
   email?: string;
+  /** Essai gratuit de l'offre, décidé par l'appelant (aucun essai si le client en a déjà eu un). */
+  trial?: { days: number; requireCard: boolean };
+}
+
+/** Durée d'essai effective : le plus long de l'offre et du code d'essai. */
+export function effectiveTrialDays(input: SubscriptionCheckoutInput): number {
+  return Math.max(input.trial?.days ?? 0, input.promo?.trialDays ?? 0);
 }
 
 /** Abonnement : mode `subscription`, prix Stripe du plan publié (créé par « Publier vers Stripe »). */
@@ -191,7 +247,14 @@ export async function createSubscriptionCheckout(
   const meta = {
     organization_id: input.organizationId,
     plan_code: input.plan.code,
+    ...promoMeta(input),
   };
+  const trialDays = effectiveTrialDays(input);
+  // Sans carte seulement si le réglage (général ou de l'offre) le décide ; un rabais de 100 % pour toujours
+  // n'en demande jamais.
+  const cardOptional =
+    input.noPaymentMethodNeeded === true ||
+    (trialDays > 0 && input.trial?.requireCard === false);
   const session = await wrapStripe(() =>
     deps.stripe.checkout.sessions.create({
       mode: "subscription",
@@ -199,6 +262,8 @@ export async function createSubscriptionCheckout(
       client_reference_id: input.organizationId,
       locale: STRIPE_LOCALE[input.lang],
       line_items: [{ price: input.plan.stripePriceId as string, quantity: 1 }],
+      ...discountParams(input),
+      ...(cardOptional ? { payment_method_collection: "if_required" as const } : {}),
       automatic_tax: { enabled: true },
       billing_address_collection: "required",
       customer_update: { address: "auto", name: "auto" },
@@ -208,7 +273,21 @@ export async function createSubscriptionCheckout(
         ...meta,
         config_version: planConfigVersion(input.plan),
       },
-      subscription_data: { metadata: meta },
+      subscription_data: {
+        metadata: meta,
+        ...(trialDays > 0
+          ? {
+              trial_period_days: trialDays,
+              ...(cardOptional && input.noPaymentMethodNeeded !== true
+                ? {
+                    trial_settings: {
+                      end_behavior: { missing_payment_method: "cancel" as const },
+                    },
+                  }
+                : {}),
+            }
+          : {}),
+      },
       success_url: accountUrl(
         deps,
         input.lang,

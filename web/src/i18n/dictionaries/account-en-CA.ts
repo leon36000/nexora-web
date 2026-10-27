@@ -192,6 +192,7 @@ export const accountEnCA: AccountDictionary = {
         unpaid: "Unpaid",
         paused: "Paused",
         canceled: "Cancelled",
+        gifted: "Provided by Nexora",
       },
       access: {
         full: "Full access",

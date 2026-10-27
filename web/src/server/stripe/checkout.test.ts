@@ -61,6 +61,9 @@ const PLAN: SubscriptionPlan = {
   interval: "month",
   priceCents: 4900,
   includedCreditsCents: 1000,
+  family: "f",
+  trialDays: 0,
+  trialCard: "default",
   stripeProductId: "prod_1",
   stripePriceId: "price_pro",
   translations: {},
@@ -142,7 +145,7 @@ describe("achat de crédits (paiement unique)", () => {
   it("refuse un montant hors bornes, non entier ou non numérique", async () => {
     const stripe = fakeStripe();
     const org = await newOrg();
-    for (const amountCents of [0, 999, 500_001, 10.5, Number.NaN, -1000]) {
+    for (const amountCents of [0, 1999, 500_001, 10.5, Number.NaN, -1000]) {
       await expect(
         createCreditCheckout(base(stripe), {
           organizationId: org,
@@ -162,7 +165,7 @@ describe("achat de crédits (paiement unique)", () => {
       Array.from({ length: 5 }, () =>
         createCreditCheckout(base(stripe), {
           organizationId: org,
-          amountCents: 1000,
+          amountCents: 2000,
           lang: "fr",
           productName: "x",
         }),
@@ -232,13 +235,124 @@ describe("abonnement (séparé des crédits)", () => {
   });
 });
 
+describe("essai gratuit, codes promo et crédits nets (extras de paiement)", () => {
+  const sub = async (extras: Record<string, unknown>, plan = PLAN) => {
+    const stripe = fakeStripe();
+    const org = await newOrg();
+    await createSubscriptionCheckout(base(stripe), {
+      organizationId: org,
+      plan,
+      lang: "fr",
+      ...extras,
+    } as never);
+    return stripe.sessions.create.mock.calls[0]?.[0] as Record<string, any>;
+  };
+
+  it("applique la durée d'essai de l'offre au Checkout, carte exigée par défaut", async () => {
+    const p = await sub({ trial: { days: 14, requireCard: true } });
+    expect(p.subscription_data.trial_period_days).toBe(14);
+    expect(p.payment_method_collection).toBeUndefined();
+    expect(p.subscription_data.trial_settings).toBeUndefined();
+  });
+
+  it("essai sans carte : paiement « si nécessaire » et annulation si aucune carte à la fin", async () => {
+    const p = await sub({ trial: { days: 7, requireCard: false } });
+    expect(p.subscription_data.trial_period_days).toBe(7);
+    expect(p.payment_method_collection).toBe("if_required");
+    expect(p.subscription_data.trial_settings).toEqual({
+      end_behavior: { missing_payment_method: "cancel" },
+    });
+  });
+
+  it("sans essai : aucune durée envoyée", async () => {
+    const p = await sub({});
+    expect(p.subscription_data.trial_period_days).toBeUndefined();
+  });
+
+  it("un code validé s'applique par son code de promotion Stripe et se retrouve dans les métadonnées ; le champ de la page Stripe est alors retiré", async () => {
+    const p = await sub({
+      promo: { promoCodeId: "pc-uuid", stripePromotionCodeId: "promo_1" },
+      allowStripePageCodes: true,
+    });
+    expect(p.discounts).toEqual([{ promotion_code: "promo_1" }]);
+    expect(p.allow_promotion_codes).toBeUndefined();
+    expect(p.metadata.promo_code_id).toBe("pc-uuid");
+    expect(p.subscription_data.metadata.promo_code_id).toBe("pc-uuid");
+  });
+
+  it("sans code saisi, la page Stripe garde son champ « code promo » si le réglage le permet", async () => {
+    expect((await sub({ allowStripePageCodes: true })).allow_promotion_codes).toBe(true);
+    expect((await sub({ allowStripePageCodes: false })).allow_promotion_codes).toBeUndefined();
+  });
+
+  it("un code d'essai remplace la durée de l'offre ; le plus long gagne", async () => {
+    const p = await sub({
+      trial: { days: 14, requireCard: true },
+      promo: { promoCodeId: "pc", stripePromotionCodeId: null, trialDays: 30 },
+    });
+    expect(p.subscription_data.trial_period_days).toBe(30);
+    expect(p.discounts).toBeUndefined();
+    const court = await sub({
+      trial: { days: 14, requireCard: true },
+      promo: { promoCodeId: "pc", stripePromotionCodeId: null, trialDays: 5 },
+    });
+    expect(court.subscription_data.trial_period_days).toBe(14);
+    const seul = await sub({
+      promo: { promoCodeId: "pc", stripePromotionCodeId: null, trialDays: 10 },
+    });
+    expect(seul.subscription_data.trial_period_days).toBe(10);
+  });
+
+  it("gratuit pour toujours : aucune carte exigée", async () => {
+    const p = await sub({
+      promo: { promoCodeId: "pc", stripePromotionCodeId: "promo_free" },
+      noPaymentMethodNeeded: true,
+    });
+    expect(p.payment_method_collection).toBe("if_required");
+  });
+
+  it("crédits : produit Stripe dédié, crédits nets des frais en métadonnée, code et champ de la page", async () => {
+    const stripe = fakeStripe();
+    const org = await newOrg();
+    await createCreditCheckout(base(stripe), {
+      organizationId: org,
+      amountCents: 10_000,
+      creditsCents: 9_500,
+      lang: "fr",
+      productName: "Crédits Nexora",
+      productId: "prod_credits_fr",
+      promo: { promoCodeId: "pc", stripePromotionCodeId: "promo_2" },
+    } as never);
+    const p = stripe.sessions.create.mock.calls[0]?.[0] as Record<string, any>;
+    expect(p.line_items[0].price_data.product).toBe("prod_credits_fr");
+    expect(p.line_items[0].price_data.product_data).toBeUndefined();
+    expect(p.line_items[0].price_data.unit_amount).toBe(10_000);
+    expect(p.metadata.credits_cents).toBe("9500");
+    expect(p.discounts).toEqual([{ promotion_code: "promo_2" }]);
+  });
+
+  it("crédits : un montant de crédits supérieur au montant payé est refusé", async () => {
+    const stripe = fakeStripe();
+    const org = await newOrg();
+    await expect(
+      createCreditCheckout(base(stripe), {
+        organizationId: org,
+        amountCents: 5_000,
+        creditsCents: 5_001,
+        lang: "fr",
+        productName: "x",
+      } as never),
+    ).rejects.toMatchObject({ code: "invalid_amount" });
+  });
+});
+
 describe("portail client", () => {
   it("ouvre le portail du client Stripe de l'organisation", async () => {
     const stripe = fakeStripe();
     const org = await newOrg();
     await createCreditCheckout(base(stripe), {
       organizationId: org,
-      amountCents: 1000,
+      amountCents: 2000,
       lang: "fr",
       productName: "x",
     });

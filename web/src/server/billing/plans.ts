@@ -21,6 +21,8 @@ export interface SubscriptionPlan {
   id: string;
   code: string;
   kind: string;
+  /** Offre commerciale : les lignes mensuelle et annuelle d'une même offre partagent la famille (défaut : le code). */
+  family: string;
   interval: "month" | "year";
   /** Prix récurrent avant taxes, en cents CAD. Toujours > 0. */
   priceCents: number;
@@ -28,6 +30,10 @@ export interface SubscriptionPlan {
   includedCreditsCents: number;
   stripeProductId: string | null;
   stripePriceId: string | null;
+  /** Essai gratuit en jours (0 = aucun), appliqué au Checkout. */
+  trialDays: number;
+  /** Carte exigée au départ de l'essai : réglage général (`default`) ou décision propre à l'offre. */
+  trialCard: "default" | "required" | "not_required";
   /** Par code de langue BCP 47 (fr-CA, en-CA). */
   translations: Record<string, PlanTranslation>;
 }
@@ -42,6 +48,9 @@ const rowSchema = z.object({
   id: z.string(),
   code: z.string().min(1),
   kind: z.string().default("other"),
+  family: z.string().nullish(),
+  trial_days: z.number().int().nullish(),
+  trial_card: z.enum(["default", "required", "not_required"]).nullish().catch("default"),
   status: z.string(),
   interval: z.enum(["month", "year"]),
   price_cents: z.number().int().positive(),
@@ -87,6 +96,9 @@ const FIELDS = [
   "id",
   "code",
   "kind",
+  "family",
+  "trial_days",
+  "trial_card",
   "status",
   "interval",
   "price_cents",
@@ -135,11 +147,17 @@ export function createDirectusPlanSource(
         id: r.id,
         code: r.code,
         kind: r.kind,
+        family: r.family || r.code,
         interval: r.interval,
         priceCents: r.price_cents,
         includedCreditsCents: r.included_credits_cents ?? 0,
         stripeProductId: r.stripe_product_id ?? null,
         stripePriceId: r.stripe_price_id ?? null,
+        trialDays:
+          r.trial_days != null && r.trial_days >= 0 && r.trial_days <= 365
+            ? r.trial_days
+            : 0,
+        trialCard: r.trial_card ?? "default",
         translations: Object.fromEntries(
           (r.translations ?? []).map((t) => [
             t.languages_code,

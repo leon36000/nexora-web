@@ -188,7 +188,7 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
   const stripe = deps.createClient(key, mode === "live");
   let account: Stripe.Account;
   try {
-    account = await stripe.accounts.retrieve();
+    account = await stripe.accounts.retrieve({});
   } catch (e) {
     deps.log.warn("stripe : clé refusée au branchement", { type: errorType(e) });
     return fail(

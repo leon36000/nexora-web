@@ -201,6 +201,7 @@ export const accountFrCA = {
         unpaid: "Impayé",
         paused: "En pause",
         canceled: "Résilié",
+        gifted: "Offert par Nexora",
       },
       access: {
         full: "Accès complet",

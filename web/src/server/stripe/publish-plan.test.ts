@@ -14,6 +14,9 @@ const PLAN: SubscriptionPlan = {
   interval: "month",
   priceCents: 4900,
   includedCreditsCents: 1000,
+  family: "f",
+  trialDays: 0,
+  trialCard: "default",
   stripeProductId: null,
   stripePriceId: null,
   translations: {
