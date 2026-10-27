@@ -3,7 +3,7 @@ export * from "./engine-core.ts";
 export * from "./events.ts";
 export * from "./firewall.ts";
 export * from "./guard.ts";
-export * from "./install.ts";
+export type { InstallInput, InstallResult, InstallRunner } from "./install.ts";
 export * from "./ips.ts";
 export * from "./lifecycle.ts";
 export * from "./operate.ts";

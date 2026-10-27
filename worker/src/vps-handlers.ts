@@ -10,7 +10,6 @@ import type { Logger } from "@nexora/log";
 import { loadKeyring } from "@nexora/vault/crypto";
 import { readSecret } from "@nexora/vault/store";
 import {
-  createSshRunner,
   type EngineDeps,
   enqueueContinuation,
   type LifecycleAction,
@@ -23,6 +22,7 @@ import {
   settingsFromEnv,
   sweep,
 } from "@nexora/vps";
+import { createSshRunner } from "@nexora/vps/install";
 import type { Mailer } from "./contact-notify.ts";
 import type { HandlerRegistry, JobHandler } from "./registry.ts";
 
