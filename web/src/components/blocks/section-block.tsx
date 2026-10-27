@@ -1,38 +1,52 @@
 import { Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 import type { SectionBlock } from "@/server/cms/model";
+import { CARD_GRID, cellClasses } from "./card-grid";
 import { CmsImage } from "./cms-image";
 import { RichText } from "./rich-text";
+import { SectionVisualFigure } from "./section-visual";
+import { anchorProps, toneProps } from "./tone";
 
-/** Section : titre, texte riche, média (gauche, droite ou au-dessus) et liste de points. */
+/**
+ * Section : titre, texte riche, média ou schéma (gauche, droite ou au-dessus) et liste de points.
+ * Un schéma (`visual`) prend la place du média ; sans position, il se place à droite.
+ */
 export function SectionBlockView({
   block,
-  surface,
+  joined,
+  t,
 }: {
   block: SectionBlock;
-  surface: boolean;
+  joined?: "after" | "before" | "both";
+  t: Dictionary["cms"];
 }) {
   const titleId = `${block.key}-title`;
-  const withMedia = block.media && block.mediaPosition !== "none";
+  const anchor = anchorProps(block.anchorId);
+  const visual = block.visual && block.visual !== "aucun" ? block.visual : null;
+  const withMedia = !visual && block.media && block.mediaPosition !== "none";
   const side =
-    withMedia &&
-    (block.mediaPosition === "left" || block.mediaPosition === "right");
-  const media =
-    withMedia && block.media ? (
-      <div className="overflow-hidden rounded-lg border border-line">
-        <CmsImage
-          media={block.media}
-          sizes={
-            side
-              ? "(min-width: 1024px) 560px, 100vw"
-              : "(min-width: 1280px) 1100px, 100vw"
-          }
-          className="h-auto w-full"
-        />
-      </div>
-    ) : null;
+    Boolean(visual) ||
+    (withMedia &&
+      (block.mediaPosition === "left" || block.mediaPosition === "right"));
+  const left = block.mediaPosition === "left";
+  const media = visual ? (
+    <SectionVisualFigure visual={visual} t={t.visuals} />
+  ) : withMedia && block.media ? (
+    <div className="overflow-hidden rounded-lg border border-line">
+      <CmsImage
+        media={block.media}
+        sizes={
+          side
+            ? "(min-width: 1024px) 560px, 100vw"
+            : "(min-width: 1280px) 1100px, 100vw"
+        }
+        className="h-auto w-full"
+      />
+    </div>
+  ) : null;
   const text = (
     <div>
       {block.title ? (
@@ -50,31 +64,33 @@ export function SectionBlockView({
       ) : null}
     </div>
   );
+  const cells = cellClasses(block.items.length, 3);
   return (
     <Section
-      tone="light"
-      surface={surface}
+      {...toneProps(block.tone)}
+      joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
+      id={anchor.id}
+      className={anchor.className}
     >
       {side ? (
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className={cn(block.mediaPosition === "left" && "lg:order-2")}>
-            {text}
-          </div>
-          <div className={cn(block.mediaPosition === "left" && "lg:order-1")}>
-            {media}
-          </div>
+          <div className={cn(left && "lg:order-2")}>{text}</div>
+          <div className={cn(left && "lg:order-1")}>{media}</div>
         </div>
       ) : (
         <>
-          {withMedia ? <div className="mb-10 max-w-4xl">{media}</div> : null}
+          {media ? <div className="mb-10 max-w-4xl">{media}</div> : null}
           {text}
         </>
       )}
       {block.items.length > 0 ? (
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {block.items.map((item) => (
-            <li key={`${item.title ?? ""}|${item.text ?? ""}`} className="flex">
+        <ul className={cn(CARD_GRID, "mt-12")}>
+          {block.items.map((item, i) => (
+            <li
+              key={`${item.title ?? ""}|${item.text ?? ""}`}
+              className={cells[i]}
+            >
               <Card className="flex w-full flex-col">
                 {item.title ? (
                   <h3 className="text-h4 text-fg">{item.title}</h3>

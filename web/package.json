@@ -16,6 +16,8 @@
   "dependencies": {
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
+    "altcha": "^3.5.0",
+    "altcha-lib": "^2.8.0",
     "better-auth": "1.7.14",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",

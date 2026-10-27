@@ -52,6 +52,8 @@ describe("planRevalidation", () => {
         "page-slug:fr-CA:opsys-ai",
         "page-slug:en-CA:",
         "page-slug:en-CA:opsys-ai",
+        // la table de correspondance des slugs (sélecteur de langue, liens de navigation) change avec toute page
+        "slugs",
       ]),
     );
     expect(plan.paths.sort()).toEqual([

@@ -2,19 +2,26 @@ import { PerimeterGrid } from "@/components/brand/perimeter-grid";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import type { CtaBlock } from "@/server/cms/model";
+import { anchorProps, toneProps } from "./tone";
 
-/** Bandeau d'appel à l'action. « accent » : fond papier relevé d'un filet orange (jamais de texte courant sur l'orange). */
-export function CtaBlockView({ block }: { block: CtaBlock }) {
+/** Bandeau d'appel à l'action (sombre, clair ou sable), avec la grille de périmètre en filigrane. */
+export function CtaBlockView({
+  block,
+  joined,
+}: {
+  block: CtaBlock;
+  joined?: "after" | "before" | "both";
+}) {
   const titleId = `${block.key}-title`;
   const dark = block.tone === "sombre";
+  const anchor = anchorProps(block.anchorId);
   return (
     <Section
-      tone={dark ? "dark" : "light"}
-      surface={!dark}
+      {...toneProps(block.tone)}
+      joined={joined}
       aria-labelledby={titleId}
-      className={
-        block.tone === "accent" ? "border-t-4 border-accent" : undefined
-      }
+      id={anchor.id}
+      className={anchor.className}
       background={
         <div
           aria-hidden="true"

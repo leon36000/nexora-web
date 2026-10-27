@@ -92,9 +92,11 @@ export function ProductsMenu({ label, items }: ProductsMenuProps) {
                 <span className="block text-[0.9375rem] font-medium text-fg">
                   {item.label}
                 </span>
-                <span className="mt-0.5 block text-small text-fg-muted">
-                  {item.description}
-                </span>
+                {item.description ? (
+                  <span className="mt-0.5 block text-small text-fg-muted">
+                    {item.description}
+                  </span>
+                ) : null}
               </Link>
             </li>
           ))}

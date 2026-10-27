@@ -34,7 +34,9 @@
       "role": "Entrée par problème\u00a0: cinq situations, chacune vers sa solution.",
       "claims": ["CL-01"],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "clair"
       },
       "translation": {
         "title": "Partez de votre problème.",
@@ -78,7 +80,9 @@
       "role": "Trois scénarios avant / après, étiquetés comme exemples.",
       "claims": ["CL-11", "CL-21"],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sable"
       },
       "translation": {
         "title": "Avant. Après. Votre décision.",
@@ -100,29 +104,45 @@
       }
     },
     {
-      "collection": "block_cards",
-      "role": "Les deux modes de déploiement\u00a0; définition de la souveraineté.",
-      "claims": ["CL-02", "CL-05", "CL-26"],
+      "collection": "block_section",
+      "role": "Souveraineté définie en une phrase ; introduit les deux modes.",
+      "claims": ["CL-26"],
       "fields": {
-        "columns": "2"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre"
       },
       "translation": {
         "title": "Chez vous. Ou chez nous.",
-        "intro": "Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora propose deux façons d'y arriver.",
-        "cards": [
-          {
-            "title": "Chez vous.",
-            "text": "Nous installons le système sur votre propre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous. Avant la mise en service, nous dressons la liste de ce qui sort du réseau, s'il y a lieu\u00a0: mises à jour, licences, modèle externe si vous en choisissez un.",
-            "href": "/deploiement/sur-place/",
-            "link_label": "Voir le mode sur place"
-          },
-          {
-            "title": "Chez nous, au Québec.",
-            "text": "Nous hébergeons et exploitons le système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel. Où se trouvent vos données, vos sauvegardes et vos journaux, et qui y accède\u00a0: nous l'écrivons dans l'étude de déploiement.",
-            "href": "/deploiement/heberge-quebec/",
-            "link_label": "Voir le mode hébergé"
-          }
-        ]
+        "body": "<p>Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora propose deux façons d'y arriver.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Mode sur : schéma de périmètre et lien vers le détail.",
+      "claims": ["CL-02", "CL-05"],
+      "fields": {
+        "media_position": "none",
+        "visual": "perimetre-sur-place",
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Chez vous.",
+        "body": "<p>Nous installons le système sur votre propre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous. Avant la mise en service, nous dressons la liste de ce qui sort du réseau, s'il y a lieu\u00a0: mises à jour, licences, modèle externe si vous en choisissez un.</p><p><a href=\"/deploiement/sur-place/\">Voir le mode sur place</a></p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Mode heberge : schéma de périmètre et lien vers le détail.",
+      "claims": ["CL-05"],
+      "fields": {
+        "media_position": "left",
+        "visual": "perimetre-heberge",
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Chez nous, au Québec.",
+        "body": "<p>Nous hébergeons et exploitons le système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel. Où se trouvent vos données, vos sauvegardes et vos journaux, et qui y accède\u00a0: nous l'écrivons dans l'étude de déploiement.</p><p><a href=\"/deploiement/heberge-quebec/\">Voir le mode hébergé</a></p>"
       }
     },
     {
@@ -130,7 +150,9 @@
       "role": "Les produits présentés comme un ensemble, chacun avec son état réel.",
       "claims": ["CL-12", "CL-13", "CL-20", "CL-21", "CL-22", "CL-27", "CL-28"],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair"
       },
       "translation": {
         "title": "Une suite, pas une pile.",
@@ -140,31 +162,36 @@
             "title": "Nexora WorkStudio.",
             "text": "Concevez, connectez et pilotez des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez) et des flux de travaux (des enchaînements automatisés de tâches), au même endroit et en français. Une étape peut attendre la validation d'une personne avant d'agir.\nÉtat\u00a0: démonstration sur demande.",
             "href": "/workstudio/",
-            "link_label": "Découvrir WorkStudio"
+            "link_label": "Découvrir WorkStudio",
+            "label": "WorkStudio"
           },
           {
             "title": "Modèles et API.",
             "text": "Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès à plusieurs modèles d'IA, les moteurs qui produisent les réponses, au format OpenAI, un format d'appel courant que de nombreux outils comprennent. Clés, quotas (des limites d'usage) et mesure de la consommation y sont gérés.\nÉtat\u00a0: démonstration sur demande\u00a0; le catalogue public, avec ses prix, est en préparation.",
             "href": "/modeles/",
-            "link_label": "Voir les modèles"
+            "link_label": "Voir les modèles",
+            "label": "Modèles et API"
           },
           {
             "title": "Agents hébergés.",
             "text": "Les agents que vous publiez dans WorkStudio, appelables par API avec votre propre clé et soumis aux mêmes limites que le reste.\nÉtat\u00a0: l'appel par API existe dans WorkStudio\u00a0; le catalogue en ligne est en préparation.",
             "href": "/agents/",
-            "link_label": "Voir les agents"
+            "link_label": "Voir les agents",
+            "label": "Agents"
           },
           {
             "title": "VPS au Québec.",
             "text": "Un serveur privé virtuel (VPS) est un serveur loué rien que pour vous. Nous préparons des offres hébergées au Québec, avec une application d'IA installée au choix.\nÉtat\u00a0: en préparation\u00a0; la commande en ligne n'est pas ouverte.",
             "href": "/vps/",
-            "link_label": "Voir les serveurs"
+            "link_label": "Voir les serveurs",
+            "label": "VPS"
           },
           {
             "title": "La suite logicielle.",
             "text": "Nexora Code pour le développement assisté par agents, Nexora Corpus pour préparer vos documents et vos données, et les modèles Quanta et Helix.\nÉtat\u00a0: aucune disponibilité ni date n'est annoncée à ce stade.",
             "href": "/suite/",
-            "link_label": "Voir la suite"
+            "link_label": "Voir la suite",
+            "label": "Suite"
           }
         ]
       }
@@ -174,7 +201,9 @@
       "role": "Mise en avant d'OPSYS-AI et de son cycle construction.",
       "claims": ["CL-30", "CL-31"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre"
       },
       "translation": {
         "title": "OPSYS-AI. Dix départements, un dossier.",
@@ -204,12 +233,26 @@
       "role": "Méthode en cinq temps.",
       "claims": ["CL-03", "CL-04", "CL-14"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair"
       },
       "translation": {
         "title": "Cinq temps. Un cas à la fois.",
-        "body": "<p>Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel\u00a0: il dépend de votre situation et se mesure sur un premier cas.</p><p><a href=\"/methode/\">Lire la méthode</a></p>",
-        "items": [
+        "body": "<p>Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel\u00a0: il dépend de votre situation et se mesure sur un premier cas.</p><p><a href=\"/methode/\">Lire la méthode</a></p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les cinq temps de la méthode, en frise numérotée.",
+      "claims": ["CL-03", "CL-04", "CL-14"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "clair"
+      },
+      "translation": {
+        "cards": [
           {
             "title": "Comprendre.",
             "text": "Nous observons comment le travail se fait aujourd'hui\u00a0: où le temps se perd, quelles informations entrent, qui décide."
@@ -248,7 +291,9 @@
         "CL-31"
       ],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sombre"
       },
       "translation": {
         "title": "Des engagements vérifiables.",
@@ -304,7 +349,8 @@
         "CL-25"
       ],
       "fields": {
-        "emit_jsonld": true
+        "emit_jsonld": true,
+        "tone": "clair"
       },
       "translation": {
         "title": "Vos questions. Nos réponses.",

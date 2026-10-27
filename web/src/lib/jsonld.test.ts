@@ -5,6 +5,8 @@ import { buildFaqJsonLd, jsonLdString } from "./jsonld";
 const faq = (over: Partial<Extract<Block, { type: "faq" }>> = {}): Block => ({
   type: "faq",
   key: "k",
+  anchorId: null,
+  tone: "clair",
   emitJsonLd: true,
   title: "Questions",
   items: [
@@ -19,6 +21,7 @@ const faq = (over: Partial<Extract<Block, { type: "faq" }>> = {}): Block => ({
 const hero: Block = {
   type: "hero",
   key: "h",
+  anchorId: null,
   variant: "sombre",
   perimeterGrid: true,
   media: null,

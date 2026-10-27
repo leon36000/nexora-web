@@ -2,7 +2,7 @@ import { ZodError, z } from "zod";
 import type { CmsClient } from "./client";
 import { CmsContentError } from "./errors";
 import type { LangCode } from "./lang";
-import type { PageModel, PreviewInfo } from "./model";
+import type { PageModel, PreviewInfo, SlugPair } from "./model";
 import { normalizePage, parsePageResponse } from "./normalize";
 
 /* -------------------------------------------------------------------------- */
@@ -29,23 +29,35 @@ export const PAGE_FIELDS = [
   "blocks.sort",
   "blocks.item:block_hero.id",
   "blocks.item:block_hero.variant",
+  "blocks.item:block_hero.anchor_id",
   "blocks.item:block_hero.perimeter_grid",
   FILE("blocks.item:block_hero"),
   "blocks.item:block_hero.translations.*",
   "blocks.item:block_section.id",
   "blocks.item:block_section.media_position",
+  "blocks.item:block_section.tone",
+  "blocks.item:block_section.visual",
+  "blocks.item:block_section.anchor_id",
   FILE("blocks.item:block_section"),
   "blocks.item:block_section.translations.*",
   "blocks.item:block_cards.id",
   "blocks.item:block_cards.columns",
+  "blocks.item:block_cards.layout",
+  "blocks.item:block_cards.tone",
+  "blocks.item:block_cards.anchor_id",
   "blocks.item:block_cards.translations.*",
   "blocks.item:block_pricing.id",
+  "blocks.item:block_pricing.tone",
+  "blocks.item:block_pricing.anchor_id",
   "blocks.item:block_pricing.translations.*",
   "blocks.item:block_faq.id",
   "blocks.item:block_faq.emit_jsonld",
+  "blocks.item:block_faq.tone",
+  "blocks.item:block_faq.anchor_id",
   "blocks.item:block_faq.translations.*",
   "blocks.item:block_cta.id",
   "blocks.item:block_cta.tone",
+  "blocks.item:block_cta.anchor_id",
   "blocks.item:block_cta.translations.*",
 ].join(",");
 
@@ -152,6 +164,44 @@ export async function fetchPublishedSlugs(
       ? [{ code: r.languages_code as LangCode, slug: r.slug }]
       : [],
   );
+}
+
+/**
+ * Slugs de chaque page publiée dans chaque langue, regroupés par page (accueil compris, slug vide) :
+ * table de correspondance du sélecteur de langue et des liens de navigation.
+ */
+export async function fetchSlugPairs(client: CmsClient): Promise<SlugPair[]> {
+  const data = await client.get("/items/pages_translations", {
+    filter: JSON.stringify({ pages_id: PUBLISHED }),
+    fields: "pages_id,languages_code,slug",
+    limit: "-1",
+  });
+  let rows: {
+    pages_id: string;
+    languages_code: string;
+    slug?: string | null;
+  }[];
+  try {
+    rows = z
+      .array(
+        z.object({
+          pages_id: z.string(),
+          languages_code: z.string(),
+          slug: z.string().nullish(),
+        }),
+      )
+      .parse(data);
+  } catch (e) {
+    return asContentError(e);
+  }
+  const byPage = new Map<string, SlugPair>();
+  for (const r of rows) {
+    if (r.languages_code !== "fr-CA" && r.languages_code !== "en-CA") continue;
+    const pair = byPage.get(r.pages_id) ?? {};
+    pair[r.languages_code] = r.slug ?? "";
+    byPage.set(r.pages_id, pair);
+  }
+  return [...byPage.values()];
 }
 
 /* -------------------------------------------------------------------------- */

@@ -5,6 +5,8 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { PricingBlock } from "@/server/cms/model";
+import { CARD_GRID, cellClasses } from "./card-grid";
+import { anchorProps, toneProps } from "./tone";
 
 /**
  * Offres et tarifs. Aucun prix n'est inventé : on affiche ce que le CMS publie, et « Sur demande » (dictionnaire)
@@ -12,26 +14,30 @@ import type { PricingBlock } from "@/server/cms/model";
  */
 export function PricingBlockView({
   block,
-  surface,
+  joined,
   t,
 }: {
   block: PricingBlock;
-  surface: boolean;
+  joined?: "after" | "before" | "both";
   t: Dictionary["cms"];
 }) {
   const titleId = `${block.key}-title`;
+  const anchor = anchorProps(block.anchorId);
+  const cells = cellClasses(block.plans.length, 3);
   return (
     <Section
-      tone="light"
-      surface={surface}
+      {...toneProps(block.tone)}
+      joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
+      id={anchor.id}
+      className={anchor.className}
     >
       {block.title ? (
         <SectionHeader id={titleId} title={block.title} lead={block.intro} />
       ) : null}
-      <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {block.plans.map((plan) => (
-          <li key={plan.name} className="flex">
+      <ul className={`${CARD_GRID} mt-12`}>
+        {block.plans.map((plan, i) => (
+          <li key={plan.name} className={cells[i]}>
             <Card className="flex w-full flex-col">
               <h3 className="text-h3 text-fg">{plan.name}</h3>
               <p className="mt-5 font-display text-h2 text-fg">

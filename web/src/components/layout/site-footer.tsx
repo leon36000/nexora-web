@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import type { Alternates } from "@/lib/alternates";
+import type { FooterModel } from "@/lib/chrome";
 import { LanguageSwitcher } from "./language-switcher";
 
 /**
@@ -9,7 +11,17 @@ import { LanguageSwitcher } from "./language-switcher";
  * entreprise, centre de confiance), légal et sélecteur de langue. Aucune mention légale
  * inventée : la raison sociale et les numéros officiels seront fournis par le fondateur.
  */
-export function SiteFooter({ lang, dict }: { lang: Lang; dict: Dictionary }) {
+export function SiteFooter({
+  lang,
+  dict,
+  model,
+  alternates,
+}: {
+  lang: Lang;
+  dict: Dictionary;
+  model: FooterModel;
+  alternates: Alternates;
+}) {
   const { footer, a11y, language } = dict;
   const linkClass =
     "inline-flex min-h-8 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4";
@@ -37,16 +49,16 @@ export function SiteFooter({ lang, dict }: { lang: Lang; dict: Dictionary }) {
             aria-label={a11y.footerNav}
             className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4"
           >
-            {footer.columns.map((column) => (
+            {model.columns.map((column) => (
               <div key={column.title}>
                 <h2 className="font-mono text-label uppercase text-fg-muted">
                   {column.title}
                 </h2>
                 <ul className="mt-4 flex flex-col">
                   {column.links.map((link) => (
-                    <li key={link.href}>
+                    <li key={`${link.href}|${link.label}`}>
                       <Link
-                        href={localizePath(lang, link.href)}
+                        href={link.href}
                         prefetch={false}
                         className={linkClass}
                       >
@@ -64,13 +76,9 @@ export function SiteFooter({ lang, dict }: { lang: Lang; dict: Dictionary }) {
           <div>
             <h2 className="sr-only">{footer.legalTitle}</h2>
             <ul className="flex flex-wrap gap-x-6">
-              {footer.legal.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={localizePath(lang, link.href)}
-                    prefetch={false}
-                    className={linkClass}
-                  >
+              {model.legal.map((link) => (
+                <li key={`${link.href}|${link.label}`}>
+                  <Link href={link.href} prefetch={false} className={linkClass}>
                     {link.label}
                   </Link>
                 </li>
@@ -83,6 +91,7 @@ export function SiteFooter({ lang, dict }: { lang: Lang; dict: Dictionary }) {
               variant="full"
               label={`${language.label}, ${a11y.footerNav.toLowerCase()}`}
               names={{ fr: language.fr, en: language.en }}
+              alternates={alternates}
             />
             <p className="text-small text-fg-muted">{footer.copyright}</p>
           </div>

@@ -1,95 +1,287 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { ArrowIcon } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 import { isExternalHref } from "@/lib/safe-href";
 import type { CardsBlock } from "@/server/cms/model";
+import { CARD_GRID, cellClasses } from "./card-grid";
+import { CardText, textLines } from "./card-text";
+import { StatusBadge } from "./status-badge";
+import { anchorProps, toneProps } from "./tone";
 
-const COLUMNS = {
-  2: "sm:grid-cols-2",
-  3: "sm:grid-cols-2 lg:grid-cols-3",
-  4: "sm:grid-cols-2 lg:grid-cols-4",
-} as const;
+type CardItem = CardsBlock["cards"][number];
+type Joined = "after" | "before" | "both" | undefined;
+
+/** Lien d'une carte : <Link> interne ou <a> externe ; la zone cliquable couvre toute la carte (`CARD_LINK`). */
+function CardAnchor({ card, label }: { card: CardItem; label: string }) {
+  if (!card.href) return null;
+  return card.href.startsWith("/") ? (
+    <Link href={card.href} className={CARD_LINK}>
+      {label}
+    </Link>
+  ) : (
+    <a
+      href={card.href}
+      className={CARD_LINK}
+      {...(isExternalHref(card.href) ? { rel: "noopener noreferrer" } : {})}
+    >
+      {label}
+    </a>
+  );
+}
+
+const cardKey = (card: CardItem) =>
+  `${card.title ?? ""}|${card.text ?? ""}|${card.href ?? ""}`;
 
 /** Grille de cartes (titre, texte, lien). Une carte avec lien est entièrement cliquable (un seul arrêt de tabulation). */
+function Grid({ block }: { block: CardsBlock }) {
+  const cells = cellClasses(block.cards.length, block.columns);
+  return (
+    <ul className={cn(CARD_GRID, (block.title || block.intro) && "mt-12")}>
+      {block.cards.map((card, i) => {
+        const label = card.title ?? card.linkLabel ?? "";
+        const link = <CardAnchor card={card} label={label} />;
+        return (
+          <li key={cardKey(card)} className={cells[i]}>
+            <Card
+              interactive={Boolean(card.href)}
+              className="flex w-full flex-col"
+            >
+              {card.title ? (
+                <h3 className="text-h3 text-fg">
+                  {card.href ? link : card.title}
+                </h3>
+              ) : null}
+              {card.text ? (
+                <CardText text={card.text} first={Boolean(card.title)} />
+              ) : null}
+              {card.href && card.linkLabel && card.title ? (
+                <span className="mt-6 inline-flex items-center gap-2 text-[0.9375rem] font-medium text-accent-text">
+                  {card.linkLabel}
+                  <ArrowIcon />
+                </span>
+              ) : null}
+              {card.href && !card.title ? (
+                <h3 className="text-h4 text-fg">{link}</h3>
+              ) : null}
+            </Card>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/** Liste éditoriale : une rangée pleine largeur par carte, libellé mono à gauche (comme « La suite » du squelette S1). */
+function List({ block }: { block: CardsBlock }) {
+  return (
+    <ul
+      className={cn(
+        "border-t border-line",
+        (block.title || block.intro) && "mt-12",
+      )}
+    >
+      {block.cards.map((card, i) => {
+        const label = card.title ?? card.linkLabel ?? "";
+        return (
+          <li
+            key={cardKey(card)}
+            className="group/row relative grid items-start gap-3 border-b border-line py-7 transition-colors duration-150 hover:bg-surface has-[a:focus-visible]:bg-surface sm:grid-cols-[10rem_minmax(0,1fr)_auto] sm:gap-8 sm:px-4 sm:py-8"
+          >
+            <Badge>{card.label ?? String(i + 1).padStart(2, "0")}</Badge>
+            <div>
+              {card.title ? (
+                <h3 className="text-h3 text-fg">
+                  {card.href ? (
+                    <CardAnchor card={card} label={label} />
+                  ) : (
+                    card.title
+                  )}
+                </h3>
+              ) : null}
+              {card.text ? (
+                <CardText
+                  text={card.text}
+                  first={Boolean(card.title)}
+                  className="max-w-xl"
+                />
+              ) : null}
+            </div>
+            {card.href ? (
+              <span
+                aria-hidden="true"
+                className="hidden self-center text-accent-text sm:block"
+              >
+                <ArrowIcon className="size-5 transition-transform duration-150 motion-safe:group-hover/row:translate-x-1" />
+              </span>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+const STEP_COLUMNS: Record<number, string> = {
+  1: "lg:grid-cols-1",
+  2: "lg:grid-cols-2",
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+  5: "lg:grid-cols-5",
+  6: "lg:grid-cols-6",
+};
+
+/** Étapes numérotées : frise horizontale en bureau (filet haut et repère carré), verticale en mobile (filet à gauche). */
+function Steps({ block }: { block: CardsBlock }) {
+  const columns = STEP_COLUMNS[block.cards.length] ?? "lg:grid-cols-3";
+  return (
+    <ol
+      className={cn(
+        "grid gap-0 lg:gap-6",
+        columns,
+        (block.title || block.intro) && "mt-14",
+      )}
+    >
+      {block.cards.map((card, i) => (
+        <li
+          key={cardKey(card)}
+          className="relative border-l border-line-strong pb-10 pl-6 last:pb-0 lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pt-6"
+        >
+          <span
+            aria-hidden="true"
+            className="absolute -left-[5px] top-1 size-[9px] bg-accent lg:-top-[5px] lg:left-0"
+          />
+          <Badge>{String(i + 1).padStart(2, "0")}</Badge>
+          {card.title ? (
+            <h3 className="mt-3 text-h3 text-fg lg:mt-4">
+              {card.href ? (
+                <CardAnchor card={card} label={card.title} />
+              ) : (
+                card.title
+              )}
+            </h3>
+          ) : null}
+          {card.text ? (
+            <CardText text={card.text} first={Boolean(card.title)} />
+          ) : null}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+const MODULE_TITLE_PREFIX = /^M\d+\s*[—–-]\s*/;
+
+/**
+ * Modules numérotés (M1…) en grille compacte, avec un badge de statut facultatif par carte. Le premier
+ * paragraphe décrit le module ; les lignes suivantes (détail des capacités) se déplient à la demande.
+ */
+function Modules({ block, t }: { block: CardsBlock; t: Dictionary["cms"] }) {
+  const cells = cellClasses(block.cards.length, block.columns);
+  return (
+    <ul
+      className={cn(
+        "grid gap-3 sm:grid-cols-2 lg:grid-cols-12",
+        (block.title || block.intro) && "mt-12",
+      )}
+    >
+      {block.cards.map((card, i) => {
+        const [lead, ...detail] = textLines(card.text ?? "");
+        const title = (card.title ?? "").replace(MODULE_TITLE_PREFIX, "");
+        return (
+          <li key={cardKey(card)} className={cells[i]}>
+            <Card
+              as="article"
+              className="flex w-full flex-col p-5 sm:p-5"
+              aria-label={`M${i + 1} ${title}`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="font-mono text-label uppercase text-accent-text">
+                  M{i + 1}
+                </span>
+                {card.status ? (
+                  <StatusBadge status={card.status} t={t.status} />
+                ) : null}
+              </div>
+              <h3 className="mt-3 font-display text-h4 text-fg">
+                {card.href ? <CardAnchor card={card} label={title} /> : title}
+              </h3>
+              {lead ? (
+                <p className="mt-2 text-small text-fg-muted">{lead}</p>
+              ) : null}
+              {detail.length > 0 ? (
+                <details className="mt-3 border-t border-line pt-3 text-small">
+                  <summary className="inline-flex min-h-8 cursor-pointer items-center text-accent-text underline underline-offset-4">
+                    {t.modules.detail}
+                  </summary>
+                  <div className="mt-2 space-y-2 text-fg-muted">
+                    {detail.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
+                </details>
+              ) : null}
+            </Card>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 export function CardsBlockView({
   block,
-  surface,
+  joined,
+  t,
 }: {
   block: CardsBlock;
-  surface: boolean;
+  joined?: Joined;
+  t: Dictionary["cms"];
 }) {
   const titleId = `${block.key}-title`;
+  const anchor = anchorProps(block.anchorId);
+  const layout = block.layout ?? "grille";
+  const present = (["disponible", "pilote", "prevu"] as const).filter((s) =>
+    block.cards.some((c) => c.status === s),
+  );
+  const legend =
+    layout === "modules" && present.length > 0 ? (
+      <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-small text-fg-muted">
+        <span className="font-mono text-label uppercase">
+          {t.status.legend}
+        </span>
+        {present.map((s) => (
+          <StatusBadge key={s} status={s} t={t.status} />
+        ))}
+      </p>
+    ) : null;
   return (
     <Section
-      tone="light"
-      surface={surface}
+      {...toneProps(block.tone)}
+      joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
+      id={anchor.id}
+      className={anchor.className}
     >
       {block.title ? (
         <SectionHeader id={titleId} title={block.title} lead={block.intro} />
       ) : block.intro ? (
         <p className="max-w-2xl text-lead text-fg-muted">{block.intro}</p>
       ) : null}
-      <ul
-        className={cn(
-          "grid gap-4",
-          (block.title || block.intro) && "mt-12",
-          COLUMNS[block.columns],
-        )}
-      >
-        {block.cards.map((card) => {
-          const label = card.title ?? card.linkLabel ?? "";
-          const link = card.href ? (
-            card.href.startsWith("/") ? (
-              <Link href={card.href} className={CARD_LINK}>
-                {label}
-              </Link>
-            ) : (
-              <a
-                href={card.href}
-                className={CARD_LINK}
-                {...(isExternalHref(card.href)
-                  ? { rel: "noopener noreferrer" }
-                  : {})}
-              >
-                {label}
-              </a>
-            )
-          ) : null;
-          return (
-            <li
-              key={`${card.title ?? ""}|${card.text ?? ""}|${card.href ?? ""}`}
-              className="flex"
-            >
-              <Card
-                interactive={Boolean(card.href)}
-                className="flex w-full flex-col"
-              >
-                {card.title ? (
-                  <h3 className="text-h3 text-fg">{link ?? card.title}</h3>
-                ) : null}
-                {card.text ? (
-                  <p className={cn("text-fg-muted", card.title && "mt-3")}>
-                    {card.text}
-                  </p>
-                ) : null}
-                {card.href && card.linkLabel && card.title ? (
-                  <span className="mt-6 inline-flex items-center gap-2 text-[0.9375rem] font-medium text-accent-text">
-                    {card.linkLabel}
-                    <ArrowIcon />
-                  </span>
-                ) : null}
-                {card.href && !card.title ? (
-                  <h3 className="text-h4 text-fg">{link}</h3>
-                ) : null}
-              </Card>
-            </li>
-          );
-        })}
-      </ul>
+      {legend}
+      {layout === "liste" ? (
+        <List block={block} />
+      ) : layout === "etapes" ? (
+        <Steps block={block} />
+      ) : layout === "modules" ? (
+        <Modules block={block} t={t} />
+      ) : (
+        <Grid block={block} />
+      )}
     </Section>
   );
 }

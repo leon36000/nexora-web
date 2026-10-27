@@ -263,3 +263,28 @@ Code : `web/src/server/cms/` (lecture), `web/src/components/blocks/` (six blocs)
 - **Preuves** : `docs/captures/s2/e2e-publication.md` (script `web/scripts/e2e-publication.ts`, 25/25 sur une page jetable et sur l'accueil), `docs/captures/s2/lighthouse-axe.md`.
 
 Variables du site : `DIRECTUS_URL`, `DIRECTUS_READER_TOKEN`, `DIRECTUS_PUBLISHER_TOKEN`, `NEXORA_PREVIEW_SECRET`, `CMS_SNAPSHOT_DIR`, `CMS_TIMEOUT_MS` (`scripts/init-dev-env.sh` les écrit dans `web/.env.local`).
+
+## 10. Composition des pages (S3) : tons, dispositions, schémas, ancres
+
+Les six types de blocs restent les mêmes (D5) ; S3 ajoute des **champs de composition** (schéma : `cms/scripts/lib/schema.ts`, test : `schema.test.ts` ; appliqués au Directus partagé par `apply.ts`, idempotent : deuxième exécution `0 créés, 0 modifiés`).
+
+| Champ | Blocs | Valeurs (défaut) | Rendu |
+|---|---|---|---|
+| `tone` | section, cartes, tarifs, FAQ ; CTA (déjà là) | `sombre`, `clair`, `sable` (`clair` ; CTA : `sombre`) | sombre = fond encre forêt ; clair = papier ; sable = surface claire relevée. L'ancienne valeur « accent » du CTA se lit « sable ». |
+| `variant` | héros | `sombre`, `clair`, `sable` (`sombre`) | idem |
+| `layout` | cartes | `grille`, `liste`, `etapes`, `modules` (`grille`) | liste = rangées pleine largeur, libellé mono à gauche (champ de carte `label`, sinon 01, 02…) ; étapes = frise numérotée (horizontale en bureau, verticale en mobile) ; modules = grille compacte M1…, badge de statut facultatif par carte (champ de carte `status` : `disponible`, `pilote`, `prevu` ; texte + forme, jamais la couleur seule), premier paragraphe visible et détail déplié (`<details>`). |
+| `visual` | section | `aucun`, `perimetre-sur-place`, `perimetre-heberge`, `flux-donnees` (`aucun`) | schéma SVG tiré de la grille de périmètre, dans une colonne (à droite, à gauche si `media_position = left`) ; `role="img"` avec texte alternatif traduit (`dict.cms.visuals`). Dans `flux-donnees`, rien d'orange ne sort du périmètre (l'approbation humaine est un carré creux). |
+| `anchor_id` | les six | `^[a-z0-9-]{0,40}$` (validation Directus + contrôle côté site) | `id` de la section ; avec **au moins trois** ancres, sommaire collant sous l'en-tête (bureau) ou menu déroulant `<details>` (mobile), section courante marquée (`aria-current="location"`). Le libellé est le titre du bloc, sans point final. |
+| carte `status`, `label` | cartes (JSON) | — | voir `layout`. Une valeur inconnue est ignorée (jamais d'état inventé). |
+
+- **Bande continue.** Deux blocs de contenu voisins du même ton (hors héros et CTA) forment une seule bande : espacement resserré à la jonction.
+- **Cartes orphelines.** Grille de 12 colonnes (`web/src/lib/card-layout.ts`, testé) : 5 cartes sur 3 colonnes = 3 + 2 (empans 4 et 6), 7 sur 3 = 3 + 2 + 2, 3 sur 2 colonnes = 3 ; jamais une carte seule sur sa rangée en bureau ; en tablette, la dernière carte d'un nombre impair occupe la rangée. S'applique aux grilles de cartes, de modules, de tarifs et aux listes d'une section.
+- **Statuts d'OPSYS-AI.** Le badge porte le statut le plus **prudent** du département : `pilote` dès qu'une partie n'est qu'en pilote (M3, M7 et M10 mêlent « disponible » et « pilote » ; le détail le dit). Aucun département n'est 100 % « disponible » aujourd'hui (rapport 07). Test : `cms/content/content.test.ts`.
+- **Anciens instantanés.** Un instantané enregistré avant S3 n'a pas ces champs : le rendu a des valeurs par défaut (aucune page ne casse pendant une panne).
+
+### Navigation, pied de page et sélecteur de langue lus depuis Directus
+
+- `navigation` (`placement` : `header`, `footer`, `legal` ; `style` : `link`, `button`, `utility` = lien d'utilité à droite, ex. Connexion ; parent sans lien = menu « Produits » ou colonne du pied de page ; `description` = phrase du menu Produits). Arbre du §6 : `cms/scripts/lib/navigation.ts` ; `seed.ts` crée les entrées absentes, `seed.ts --aligner-navigation` réaligne style, rang, statut et textes des entrées connues (les traductions sont envoyées en forme `{create, update}` : un simple tableau supprimerait les traductions omises).
+- Lecture : `getNavigation(lang)` (étiquette `nav`, instantané en cas de panne) puis `buildChrome()` (`web/src/lib/chrome.ts`). **Repli sur les dictionnaires** quand la navigation est absente (Directus muet sans instantané, rien de publié) : en-tête, pied de page et légal sont alors ceux de S1.
+- **Table des slugs** (`getAlternates()`, étiquette `slugs`, revalidée avec toute page) : pour chaque page publiée, son slug fr-CA et son slug en-CA. Le sélecteur de langue lie vers le slug TRADUIT de la page courante (`/souverainete` ↔ `/en/sovereignty`), vers l'accueil si la page n'existe que dans une langue, vers le même chemin pour une route de l'application (`/contact`, `/compte`). Les liens de navigation écrits avec le slug de l'autre langue sont corrigés au rendu (`/en/souverainete/` devient `/en/sovereignty`) : pas de 404 pour une simple différence de slug. Tests : `web/src/lib/alternates.test.ts`, `chrome.test.ts`.
+- Deux repères de langue distincts (en-tête : « Langue » ; menu mobile : « Langue, navigation mobile » ; pied de page : « Langue, pied de page »).

@@ -13,6 +13,11 @@ import {
   log,
   parseEnvFile,
 } from "./lib/directus";
+import {
+  type ExistingNav,
+  flattenNavigation,
+  planNavigation,
+} from "./lib/navigation";
 import { LANGS } from "./lib/schema";
 
 export const MESSAGE_DIRECTEUR = {
@@ -71,72 +76,70 @@ async function seedSettings(d: Directus) {
   made("site_settings (fr-CA, en-CA)");
 }
 
-const NAV = [
-  {
-    placement: "header",
-    style: "link",
-    sort: 1,
-    fr: ["IA souveraine", "/souverainete/"],
-    en: ["Sovereign AI", "/en/sovereignty/"],
-  },
-  {
-    placement: "header",
-    style: "link",
-    sort: 2,
-    fr: ["Solutions", "/solutions/"],
-    en: ["Solutions", "/en/solutions/"],
-  },
-  {
-    placement: "header",
-    style: "link",
-    sort: 3,
-    fr: ["Tarifs", "/tarifs/"],
-    en: ["Pricing", "/en/pricing/"],
-  },
-  {
-    placement: "header",
-    style: "link",
-    sort: 4,
-    fr: ["Ressources", "/ressources/"],
-    en: ["Resources", "/en/resources/"],
-  },
-  {
-    placement: "header",
-    style: "button",
-    sort: 5,
-    fr: ["Planifier un diagnostic", "/contact/"],
-    en: ["Book a diagnostic", "/en/contact/"],
-  },
-] as const;
+/** `--aligner-navigation` : réaligne style, rang, statut et textes des entrées connues (sinon, seules les absentes sont créées). */
+const ALIGN_NAV = process.argv.includes("--aligner-navigation");
 
 async function seedNavigation(d: Directus) {
-  log("Navigation");
-  for (const n of NAV) {
-    const found = await d.get<Entity[]>(
-      `/items/navigation_translations?filter[languages_code][_eq]=fr-CA&filter[label][_eq]=${encodeURIComponent(n.fr[0])}&fields=navigation_id&limit=1`,
-    );
-    if (found?.length) {
-      kept(`navigation « ${n.fr[0]} »`);
-      continue;
-    }
-    await d.post("/items/navigation", {
-      placement: n.placement,
-      style: n.style,
-      sort: n.sort,
+  log(`Navigation (conception §6)${ALIGN_NAV ? " — réalignement" : ""}`);
+  const existing =
+    (await d.get<ExistingNav[]>(
+      "/items/navigation?fields=id,placement,style,sort,status,parent,translations.id,translations.languages_code,translations.label,translations.href,translations.description&limit=-1",
+    )) ?? [];
+  const { creates, updates } = planNavigation(
+    existing,
+    flattenNavigation(),
+    ALIGN_NAV,
+  );
+  const ids = new Map<string, string>(); // « emplacement|libellé fr » d'un parent -> id
+  for (const n of existing)
+    if (!n.parent)
+      ids.set(
+        `${n.placement}|${n.translations.find((t) => t.languages_code === "fr-CA")?.label ?? ""}`,
+        n.id,
+      );
+  for (const c of creates) {
+    const parent = c.parentLabel
+      ? (ids.get(`${c.placement}|${c.parentLabel}`) ?? null)
+      : null;
+    if (c.parentLabel && !parent)
+      throw new Error(`parent « ${c.parentLabel} » introuvable`);
+    const row = await d.post<Entity>("/items/navigation", {
+      placement: c.placement,
+      style: c.style,
+      sort: c.sort,
       status: "published",
+      parent,
       translations: [
-        { languages_code: "fr-CA", label: n.fr[0], href: n.fr[1] },
-        { languages_code: "en-CA", label: n.en[0], href: n.en[1] },
+        {
+          languages_code: "fr-CA",
+          label: c.fr.label,
+          href: c.fr.href || null,
+          description: c.fr.description ?? null,
+        },
+        {
+          languages_code: "en-CA",
+          label: c.en.label,
+          href: c.en.href || null,
+          description: c.en.description ?? null,
+        },
       ],
     });
-    made(`navigation « ${n.fr[0]} »`);
+    if (!c.parentLabel) ids.set(`${c.placement}|${c.fr.label}`, String(row.id));
+    made(`navigation ${c.placement} « ${c.fr.label} »`);
   }
+  for (const u of updates) {
+    await d.patch(`/items/navigation/${u.id}`, u.body);
+    log(`  ~ navigation ${u.id} réalignée`);
+  }
+  const untouched = existing.length - updates.length;
+  if (untouched > 0) kept(`${untouched} entrée(s) de navigation inchangée(s)`);
 }
 
 async function seedHome(d: Directus) {
   log(`Page d'accueil (brouillon)`);
   const found = await d.get<Entity[]>(
-    "/items/pages_translations?filter[slug_key][_eq]=fr-CA:&fields=pages_id&limit=1",
+    // slug_key n'est pas calculée pour un slug vide : l'accueil se cherche par langue + slug vide
+    "/items/pages_translations?filter[languages_code][_eq]=fr-CA&filter[slug][_empty]=true&fields=pages_id&limit=1",
   );
   if (found?.length) return kept(`page d'accueil fr-CA`);
   await d.post("/items/pages", {

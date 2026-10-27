@@ -13,6 +13,7 @@ import {
   fetchPageForPreview,
   fetchPublishedPage,
   fetchPublishedSlugs,
+  fetchSlugPairs,
 } from "./pages";
 import { loadWithFallback } from "./resilient";
 import { createSnapshotStore } from "./snapshots";
@@ -146,6 +147,30 @@ describe("fetchPublishedSlugs", () => {
     );
     expect(slugs.find((s) => s.slug === "brouillon")).toBeUndefined();
     expect(slugs.find((s) => s.slug === "")).toBeUndefined();
+  });
+});
+
+describe("fetchSlugPairs", () => {
+  it("regroupe les slugs fr et en d'une même page (accueil compris), sans les brouillons", async () => {
+    dx.pages = [
+      home(),
+      pageJson("s", { fr: "souverainete", en: "sovereignty" }, [
+        heroBlock(1, 1),
+      ]) as FakePage,
+      pageJson("l", { fr: "mentions-legales" }, [heroBlock(1, 1)]) as FakePage,
+      pageJson("b", { fr: "brouillon", en: "draft" }, [heroBlock(1, 1)], {
+        status: "draft",
+      }) as FakePage,
+    ];
+    const pairs = await fetchSlugPairs(reader());
+    expect(pairs).toEqual(
+      expect.arrayContaining([
+        { "fr-CA": "", "en-CA": "" },
+        { "fr-CA": "souverainete", "en-CA": "sovereignty" },
+        { "fr-CA": "mentions-legales" },
+      ]),
+    );
+    expect(pairs).toHaveLength(3);
   });
 });
 
