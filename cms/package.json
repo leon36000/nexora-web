@@ -1,0 +1,19 @@
+{
+  "name": "cms",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "apply": "bun run scripts/apply.ts",
+    "seed": "bun run scripts/seed.ts",
+    "essai": "bun run scripts/essai-garde.ts",
+    "stub": "bun run scripts/stub-app.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "build:ext": "bun --cwd extensions/nexora-cms run build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "packageManager": "bun@1.4.2"
+}

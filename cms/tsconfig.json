@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["bun"],
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["scripts/**/*.ts", "extensions/nexora-cms/src/**/*.ts"],
+  "exclude": ["node_modules", "extensions/nexora-cms/dist"]
+}
