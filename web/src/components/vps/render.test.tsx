@@ -78,6 +78,16 @@ describe("offres en préparation / indisponible : aucun prix", () => {
       renderToStaticMarkup(<CatalogNotice lang="fr" kind="empty" t={fr} />),
     ).toContain("Nos offres VPS sont en préparation");
   });
+  it("la coque de chargement n'ajoute ni second h1 ni second fil d'Ariane au HTML diffusé", () => {
+    const html = renderToStaticMarkup(
+      <VpsHero lang="fr" t={fr} withActions={false} skeleton />,
+    );
+    expect(html).not.toContain("<h1");
+    expect(html).not.toContain("<nav");
+    expect(html).not.toContain("aria-labelledby");
+    // le texte du titre reste visible pendant le chargement (pas de saut de mise en page)
+    expect(html).toContain(fr.hero.title);
+  });
   it("le héros sans plans n'annonce ni prix ni ancres absentes", () => {
     const html = renderToStaticMarkup(
       <VpsHero lang="fr" t={fr} withActions={false} />,

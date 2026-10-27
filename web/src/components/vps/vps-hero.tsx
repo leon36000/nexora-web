@@ -15,15 +15,23 @@ export function VpsHero({
   lang,
   t,
   withActions,
+  skeleton = false,
 }: {
   lang: Lang;
   t: VpsDictionary;
   withActions: boolean;
+  /**
+   * Coque de chargement (frontière Suspense) : Next diffuse la coque ET le contenu final dans le même HTML ; sans
+   * cette option la page contiendrait deux h1 et deux fils d'Ariane. La coque reprend l'aspect du titre sans le
+   * structurer.
+   */
+  skeleton?: boolean;
 }) {
+  const Title = skeleton ? "p" : "h1";
   return (
     <Section
       tone="light"
-      aria-labelledby="vps-title"
+      aria-labelledby={skeleton ? undefined : "vps-title"}
       background={
         <div
           aria-hidden="true"
@@ -33,18 +41,23 @@ export function VpsHero({
         </div>
       }
     >
-      <Breadcrumb
-        label={t.nav.breadcrumb}
-        items={[
-          { name: t.nav.home, href: localizePath(lang, "/") },
-          { name: t.nav.vps },
-        ]}
-      />
+      {skeleton ? null : (
+        <Breadcrumb
+          label={t.nav.breadcrumb}
+          items={[
+            { name: t.nav.home, href: localizePath(lang, "/") },
+            { name: t.nav.vps },
+          ]}
+        />
+      )}
       <header className="mt-4 max-w-3xl">
         <Badge tone="accent">{t.hero.label}</Badge>
-        <h1 id="vps-title" className="mt-4 text-h1 text-fg">
+        <Title
+          id={skeleton ? undefined : "vps-title"}
+          className="mt-4 text-h1 text-fg"
+        >
           {t.hero.title}
-        </h1>
+        </Title>
         <p className="mt-5 max-w-2xl text-lead text-fg-muted">{t.hero.lead}</p>
         {withActions ? (
           <p className="mt-4 max-w-2xl text-small text-fg-muted">

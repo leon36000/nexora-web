@@ -75,7 +75,7 @@ function VpsFallback({ lang }: { lang: Lang }) {
   const t = getVpsDictionary(lang);
   return (
     <>
-      <VpsHero lang={lang} t={t} withActions={false} />
+      <VpsHero lang={lang} t={t} withActions={false} skeleton />
       <Section tone="light" surface aria-hidden="true">
         <div className="min-h-[32rem]" />
       </Section>
