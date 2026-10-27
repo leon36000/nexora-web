@@ -141,6 +141,31 @@ describe("rôles et politiques", () => {
   });
 });
 
+describe("fichiers : remplacer un fichier d'autrui", () => {
+  test("avec licence, l'Éditeur et le Relecteur ne modifient que les fichiers qu'ils ont téléversés", () => {
+    for (const name of ["Éditeur", "Relecteur"]) {
+      const upd = byName(name).permissions.find(
+        (p) => p.collection === "directus_files" && p.action === "update",
+      );
+      expect(upd?.permissions, name).toEqual({
+        uploaded_by: { _eq: "$CURRENT_USER" },
+      });
+    }
+  });
+
+  test("sans licence, aucun rôle non administrateur n'obtient la mise à jour de directus_files (le filtre « uploaded_by » est impossible)", () => {
+    for (const p of buildAccess()) {
+      const stripped = withoutRules(p.permissions);
+      expect(
+        stripped.filter(
+          (x) => x.collection === "directus_files" && x.action === "update",
+        ),
+        p.name,
+      ).toEqual([]);
+    }
+  });
+});
+
 describe("schéma", () => {
   const { collections, relations } = buildSchema();
   const names = collections.map((c) => c.collection);

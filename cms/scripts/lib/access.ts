@@ -208,6 +208,9 @@ const filesPerms = (): Perm[] => [
     action: "update",
     fields: ALL,
     permissions: { uploaded_by: { _eq: "$CURRENT_USER" } },
+    // Sans licence le filtre « uploaded_by » est refusé : la permission sans filtre laisserait remplacer le contenu de
+    // N'IMPORTE QUEL fichier (image publiée servie par /api/media) hors de la garde de publication. On la retire.
+    degrade: "drop",
   },
   read("directus_folders"),
 ];
