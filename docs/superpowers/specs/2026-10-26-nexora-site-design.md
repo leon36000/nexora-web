@@ -43,7 +43,7 @@ Il vend aussi les **services** de Nexora (installation de serveurs IA et configu
 - **Langue :** français québécois d'abord (fr-CA), anglais canadien ensuite (en-CA), adaptations relues, hreflang réciproque. Lexique OQLF (rapport 06 §11).
 - **Souveraineté :** les promesses sont démontrables mode par mode (sur place / hébergé au Québec). Le site distingue modèles hébergés au Québec et modèles infonuagiques externes (OpenRouter) avec un **badge de résidence des données** par modèle ; jamais de bascule silencieuse vers un modèle externe.
 - **Licences :**
-  - Directus 12 est sous MSCL-1.0-GPL. L'auto-hébergement complet est gratuit sous l'**Open Innovation Grant** (moins de 5 M$ de revenus et moins de 50 employés, vérifié sur directus.com/pricing le 26/10). Sans subvention, le palier Core payant est limité à 3 sièges, 25 collections et 5 flows. **Action du fondateur :** demander la clé sur https://directus.com/oig. La conception reste raisonnable en nombre de collections.
+  - Directus 12 est sous MSCL-1.0-GPL. L'auto-hébergement complet est gratuit sous l'**Open Innovation Grant** (moins de 5 M$ de revenus et moins de 50 employés, vérifié sur directus.com/pricing le 26/10). Sans subvention, le palier Core (gratuit en auto-hébergement, payant en infonuagique) est limité à 3 sièges, 25 collections et 5 flows. **Action du fondateur :** demander la clé sur https://directus.com/oig. Plan B : palier Team (499 $ à 588 $ US/mois selon la page). Le modèle de données reste sobre (D5).
   - Pas de revente de n8n, Open WebUI au-delà de 50 utilisateurs, ni Dify sans accord : ces applications sont proposées « installées sur votre VPS, sous votre licence », pas revendues. Flowise est écarté (fin de vie).
   - AGPL (Proxmox, Lago, Postiz) : utilisés sans modification, ou isolés.
 - **Sécurité de la chaîne d'approvisionnement :** LiteLLM 1.107.0 (21/10/2026) était piégé. Toute image est épinglée par **empreinte** (jamais `latest`) ; LiteLLM tourne isolé, sans accès aux autres secrets.
@@ -80,13 +80,23 @@ Il vend aussi les **services** de Nexora (installation de serveurs IA et configu
 | Auth clients | Better Auth (MIT) dans Next.js | Courriel + mot de passe, vérification, 2FA plus tard ; distinct des comptes Directus |
 | Analytique | Umami (MIT), sans témoins | Mesure respectueuse de la Loi 25 |
 
-**Clés secrètes saisies dans l'admin** (demande du fondateur : coller une clé OpenRouter dans le panneau). Un module Directus « Coffre » envoie la clé au service concerné (passerelle LiteLLM pour les fournisseurs de modèles, coffre chiffré de l'app pour Stripe, Proxmox et Coolify), puis ne garde dans Directus que la **référence** et les **4 derniers caractères**. Une clé n'est jamais relisible depuis l'admin, seulement remplaçable ou révocable.
+**Clés secrètes saisies dans l'admin** (le fondateur veut coller une clé OpenRouter dans le panneau) : voir la décision D2 (§17). Le module « Coffre » de Directus est un simple formulaire. Il envoie la clé **directement** au service coffre de l'app, sans l'écrire dans une collection, l'activité, les révisions ou les journaux de Directus. Directus ne reçoit en retour que la référence, les 4 derniers caractères et l'état. Une clé n'est jamais relisible, seulement remplaçable ou révocable.
 
 ## 5. Identité visuelle (Nexora, à la manière de Mistral sans la copier)
 
 Audit : `docs/recherche/00-audit-visuel-mistral.md`.
 
-- **Palette :** sections sombres « encre forêt » `#0E1613` (fond) / `#16211D` (surface), et sections claires « papier » `#FBF8F2`. Texte clair `#F4F1EA`, texte foncé `#17221E`. **Accent unique** orange Nexora `#CE411C` (déjà au logo), avec une teinte claire `#F6DCC8`. Succès `#2F7D5B`. Contrastes AA vérifiés.
+- **Palette (contrastes WCAG calculés le 26/10) :**
+
+  | Usage | Fond sombre `#0E1613` (surface `#16211D`) | Fond clair « papier » `#FBF8F2` |
+  |---|---|---|
+  | Texte | `#F4F1EA` (16,3:1) | `#17221E` (15,4:1) |
+  | Texte secondaire | `#A9B3AE` (8,5:1) | `#58625B` (6,0:1) |
+  | Accent en texte | `#F07A52` (6,7:1) | `#B83A18` (5,4:1) |
+  | Bouton d'accent | — | orange Nexora `#CE411C` (celui du logo), texte blanc `#FFFFFF` (4,8:1) |
+  | Succès | `#5CC596` (8,7:1) | `#2F7D5B` (4,7:1) |
+
+  Une seule teinte d'accent, l'orange Nexora. Sur fond sombre, l'orange `#CE411C` ne sert jamais à du texte courant (3,9:1).
 - **Typographies libres, servies localement :** titres en **Geist** (OFL), graisse 500, interlignage serré ; texte en **Inter** ; libellés techniques en **JetBrains Mono**.
 - **Signature graphique :** une **grille de périmètre**, des carrés qui dessinent une frontière, celle de vos données. Elle sert de motif d'arrière-plan, d'animation discrète et d'illustration des flux. Jamais de cerveau lumineux ni de robot décoratif.
 - **Logo :** les trois barres inclinées existantes (`NexoraWeb/web/src/app/icon.svg`).
@@ -232,23 +242,26 @@ Les agents publiés dans Nexora WorkStudio sont exposés au client par l'API de 
   - l'orchestrateur relit chaque livraison d'agent : code, tests, rendu et vérité du contenu ;
   - une revue indépendante de bout en bout (sécurité, paiements, isolation des clés) a lieu avant de déclarer la version terminée.
 
-## 15. Jalons
+## 15. Jalons (révisés après la relecture du 26/10)
+
+Chaque « Terminé quand » est vérifiable par une commande, un test ou une capture datée.
 
 | Jalon | Contenu | « Terminé quand » |
 |---|---|---|
-| S1 Socle | Monorepo, compose (PostgreSQL, Directus, LiteLLM et web épinglés), système de design (tokens, polices, grille de périmètre), mise en page fr/en, schéma Directus versionné, coffre | Accueil squelette servi en fr et en, Directus joignable, schéma appliqué par script, tests et lint verts |
-| S2 Vitrine | Accueil, souveraineté, solutions, services, déploiement, méthode, WorkStudio (widget), suite, OPSYS-AI, entreprise, contact, légal ; contenus dans Directus ; revalidation | Pages rendues depuis Directus, formulaire de contact stocké une fois, revue visuelle à 4 largeurs |
-| S3 Comptes et paiements | Better Auth, organisations, Stripe Billing, Tax et Checkout (test), webhooks, portail, plans depuis Directus, « Publier vers Stripe » | Abonnement test de bout en bout, webhook signé, facture test avec TPS et TVQ |
-| S4 Passerelle | Catalogue de modèles, fiches, fournisseurs et coffre, synchronisation LiteLLM, crédits, clés, usage, documentation API | Crédits test → clé → appel réel d'un modèle → décompte rapproché |
-| S5 VPS | Offres, configurateur, commande, worker de provisionnement, client Proxmox et simulateur, espace client VPS | Commande test → VPS simulé actif → arrêt et démarrage → suspension |
-| S6 Agents hébergés | Catalogue d'agents WorkStudio, appel par la passerelle, page `/agents/` | Appel d'un agent WorkStudio publié avec une clé cliente |
-| S7 Autogestion et SEO | Versions et approbations, garde de publication, agents du site, SEO technique, audits planifiés, adaptateurs off-page, Umami | Brouillon d'agent → approbation → publication → revalidation ; sitemap, hreflang et JSON-LD valides ; audit nocturne |
-| S8 Recette | Tests bout en bout, accessibilité, performance, sécurité, revue visuelle, guide opérateur | Tous les « Terminé quand » repassés, revue indépendante sans critique ouverte |
+| S1 Socle | Monorepo (`web/`, `cms/`, `worker/`, `deploy/`), compose (PostgreSQL 17 + pgvector, Directus 12.5.1, LiteLLM v1.106.2, Mailpit), toutes les images épinglées par empreinte. Système de design (tokens, polices locales, grille de périmètre). Mise en page fr-CA/en-CA. Schéma Directus par Environment Sync + script de contenu initial idempotent. Service coffre. **Essai de la garde de publication** (voir D4). CI locale (lint, types, tests) | `docker compose up` sain ; accueil squelette en fr et en ; `bun run check` vert ; essai de garde consigné (versions, M2A, contournement) ; une clé collée dans le coffre est introuvable dans l'activité, les révisions et les journaux de Directus (test) |
+| S2 Tranche verticale | Accueil complet et page OPSYS-AI branchés à Directus ; matrice de couverture du dépôt `leon36000/OPSYS-AI` et registre des capacités ; chaîne brouillon → prévisualisation → approbation (hash de version) → publication → revalidation | Un brouillon reste invisible ; une approbation devenue périmée bloque la publication ; la page publiée est exacte ; Lighthouse mobile ≥ 95 et axe sans violation sur les deux pages ; captures à 390/768/1024/1440 |
+| S3 Vitrine | Souveraineté (+ Loi 25), solutions (6), services, déploiement, méthode, WorkStudio (widget), suite, entreprise, contact (Altcha, stockage unique, Mailpit), centre de confiance, FAQ, légal ; contenus et traductions relues | Toutes les routes de §6 hors commerce rendues depuis Directus en fr et en ; formulaire de contact testé (doublon, abus, échec d'envoi) ; lychee sans lien cassé ; Lighthouse ≥ 95 sur 5 pages clés |
+| S4 Comptes et paiements | Better Auth (dernière version épinglée), organisations, Stripe en mode test : Checkout, Billing, Tax, portail ; table des événements traités (idempotence par `event.id`) ; achat de crédits (paiement unique) distinct des abonnements ; remboursements et litiges ; « Publier vers Stripe » depuis l'admin | Avec Stripe CLI : abonnement test et achat de crédits de bout en bout, webhook rejoué sans double effet, remboursement qui débite le grand livre ; facture test avec TPS et TVQ |
+| S5 Passerelle de modèles | Couche Nexora de facturation devant LiteLLM (D1) ; fournisseurs et coffre ; synchronisation versionnée Directus → LiteLLM (D3) ; catalogue `/modeles/` et fiches ; clés clientes ; usage ; documentation `/docs/` | Crédits test → clé Nexora → appel réel de `cloud-glm-5-3` (via le LiteLLM de pc1 comme fournisseur amont) → débit exact du grand livre ; 20 appels concurrents ne dépassent pas le solde ; clé révoquée refusée |
+| S6 VPS | Offres, configurateur, commande, machine à états de provisionnement idempotente (clé de commande → `vmid`, suivi UPID, compensation), client Proxmox, simulateur dérivé du schéma OpenAPI de Proxmox, espace client VPS, suspension et résiliation (instantané avant réinstallation, rétention 7 jours) | Commande test → VPS simulé actif → arrêt, démarrage, réinstallation → suspension après échec de paiement ; test de contrat contre un vrai Proxmox dès qu'un serveur est branché |
+| S7 Agents hébergés | Catalogue des agents WorkStudio publiés (API développeur de WorkStudio, format OpenAI), appel par la passerelle avec la clé du client et son décompte, page `/agents/` | Appel d'un agent WorkStudio publié avec une clé cliente, débit au grand livre |
+| S8 Autogestion IA et SEO | Agents du site (D9), SEO technique natif, audits planifiés (Lighthouse CI, Unlighthouse, lychee, axe), indexation (IndexNow, Bing), adaptateurs off-page à état honnête, Umami (base séparée) | Brouillon d'agent → approbation → publication → revalidation ; test d'injection (une consigne malveillante dans une source ne publie rien et n'élargit aucun droit) ; sitemap, hreflang et JSON-LD valides |
+| S9 Recette | Bout en bout complet, accessibilité, performance, sécurité, inventaire des flux sortants comparé aux promesses, CMS indisponible (le site sert son cache), sauvegarde et restauration isolées, guide opérateur | Toutes les preuves du §16 du brief consignées ; revue indépendante sans point bloquant ni important ouvert |
 
 **Équipe :**
-- l'orchestrateur (conception, contrôle qualité, fusions) ;
-- jusqu'à 3 agents Sonnet 5.5 en effort élevé (gros chantiers en parallèle, chacun dans son worktree) ;
-- jusqu'à 3 agents Haiku 5.5 (traductions, métadonnées, contrôles) ;
+- l'orchestrateur (conception, contrôle qualité, fusions, **seul propriétaire du schéma Directus**) ;
+- jusqu'à 3 agents Sonnet 5.5 en effort élevé, chacun dans son worktree ;
+- jusqu'à 3 agents Haiku 5.5 pour les tâches mécaniques ;
 - les agents Haiku de recherche ne sont pas plafonnés.
 
 ## 16. Ce qui reste au fondateur
@@ -262,3 +275,46 @@ Les agents publiés dans Nexora WorkStudio sont exposés au client par l'API de 
 7. **Vérifier le LiteLLM de pc1** (incident 1.107.0).
 8. **Validations juridiques et fiscales :** Loi 25, LCAP, Loi sur la protection du consommateur, TPS et TVQ, licences.
 9. **Publication** du site.
+
+## 17. Décisions après la relecture constructeur (26/10)
+
+Relecture indépendante (agent Sonnet 5.5) : 4 points bloquants, 11 importants. Décisions de l'orchestrateur, que le fondateur peut renverser :
+
+- **D1 — Facturation des modèles.** Une couche Nexora (dans `web/`, route `/v1/*`) se place devant LiteLLM. Elle authentifie la clé cliente (256 bits aléatoires, empreinte SHA-256, préfixe affiché), **réserve atomiquement** le coût maximal estimé dans le grand livre PostgreSQL (micro-unités CAD entières), appelle LiteLLM sur le réseau interne, puis règle au coût réel (jetons × prix de vente publié). La dépense de LiteLLM n'est qu'un contrôle de dérive. Les coûts amont en USD sont convertis par un taux de change approuvé dans l'admin. Le client ne voit jamais de clé LiteLLM. Le contrat OpenAI garde Nexora API comme remplaçant possible du moteur.
+- **D2 — Coffre.** Le service coffre fait partie de l'app. Il chiffre par enveloppe (AES-256-GCM, clé maîtresse en secret Docker, rotation documentée) et pousse les clés de fournisseurs de modèles dans LiteLLM. Le module Directus n'écrit rien dans une collection. Critère de test en S1.
+- **D3 — Synchronisation Directus → LiteLLM et Stripe.** Elle ne consomme que des versions publiées. Elle montre un aperçu des différences et écrit en retour l'état « appliqué » et sa date. Le coût amont et le prix de vente restent deux champs distincts. Un prix absent bloque la publication (jamais 0 $). Un plancher de marge bloque aussi. `LITELLM_SALT_KEY` est fixé une fois pour toutes. Chaque commande et chaque ligne du grand livre enregistre la `config_version` utilisée.
+- **D4 — Frontière Directus / app.** Directus ne contient que des catalogues et configurations publiés, versionnés et approuvés. Tout ce qui porte un identifiant client ou un montant vit dans la base app. L'admin consulte les opérations par un **module Directus « Opérations »** qui interroge l'API d'administration de l'app (rien n'est stocké dans Directus).
+- **D5 — Collections et blocs.** Six types de blocs seulement : héros, section (texte, média, liste), cartes, tarifs, FAQ, CTA. Schéma et configuration par Environment Sync (rôles, politiques, flows), contenu par script idempotent.
+- **D6 — Garde de publication.** Un hook filtre `items.promote` refuse toute promotion sans approbation portant sur le hash exact de la version. Le même hook déclenche la revalidation de Next.js. Essai en S1 : écriture directe sur l'élément publié, versionnement des blocs M2A, contournement par l'API.
+- **D7 — Paiements.**
+  - Achat de crédits : paiement unique. Abonnements : séparés.
+  - Remboursement ou litige : débit du grand livre. Un solde négatif bloque l'API.
+  - Expiration des crédits : 12 mois par défaut, réglable.
+  - TPS et TVQ appliquées aux crédits par prudence, à faire confirmer par un comptable. La TVQ reste déclarée par Nexora (le dépôt simplifié de Stripe ne la couvre pas).
+  - Mode test jusqu'à l'accord du fondateur.
+- **D8 — VPS.**
+  - Machine à états idempotente.
+  - Un VPS par client, pare-feu par machine, port 25 sortant fermé par défaut, limites d'abus.
+  - Applications installées par le worker : seulement des projets à licence permissive vérifiée (Hermes Agent, OpenClaw durci, Ollama, LibreChat, AnythingLLM…).
+  - n8n, Open WebUI et Dify : guides d'installation par le client, jamais revendus ni installés par le worker.
+  - Secrets et rôles distincts par fonction du worker.
+- **D9 — Agents du site et injection.**
+  - L'ingestion (agents sans outil d'écriture) est séparée de l'écriture (outil unique `create_draft`, validé par schéma sur des collections autorisées).
+  - Un jeton par agent, sortie réseau restreinte.
+  - JSON-LD généré par code ; aucun LLM sur le chemin de publication.
+  - Le MCP Directus est réservé à l'opérateur humain, suppressions désactivées.
+- **D10 — Clientèle.** Entreprises seulement par défaut (B2B), ce qui allège les obligations de la Loi sur la protection du consommateur ; à renverser si le fondateur vise aussi les particuliers. Responsable de la protection des renseignements personnels : la personne ayant la plus haute autorité (règle par défaut de la Loi 25), à confirmer.
+- **D11 — Sécurité de la chaîne.**
+  - LiteLLM `v1.106.2` épinglé par empreinte, réseau interne seulement ; relire l'avis annoncé pour le 27/10.
+  - Next.js 16.4.3 ou plus, SVG désactivé dans `next/image`.
+  - Better Auth à la dernière version, gardes d'organisation testées.
+- **D12 — Modèle « réel » de développement.** Le LiteLLM du site utilise le LiteLLM de pc1 (`cloud-glm-5-3`) comme fournisseur amont. Une clé OpenRouter du fondateur pourra être ajoutée par le coffre. Pour afficher la résidence d'un modèle OpenRouter, le fournisseur doit être fixé (« provider pinning »).
+- **D13 — Divers.**
+  - File de tâches : PostgreSQL `SKIP LOCKED`.
+  - Antiabus : Altcha.
+  - Courriel : Mailpit en développement, SMTP interchangeable.
+  - Médias : volume local sauvegardé.
+  - Umami : base dédiée.
+  - Navigation : OPSYS-AI et Souveraineté restent visibles au premier niveau.
+  - Next.js 16 : `proxy.ts`, `revalidateTag(tag, profil)`.
+
