@@ -6,8 +6,8 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { HTML_LANG, isLang, LANGS } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { buildChrome } from "@/lib/chrome";
-import { getAlternates, getNavigation } from "@/server/cms/read";
 import { SITE_URL } from "@/lib/site";
+import { getAlternates, getNavigation } from "@/server/cms/read";
 import { geist, inter, jetbrainsMono } from "../fonts";
 import "../globals.css";
 

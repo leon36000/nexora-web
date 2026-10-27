@@ -20,9 +20,9 @@ describe("navigation du §6", () => {
       "Connexion",
       "Planifier un diagnostic",
     ]);
-    expect(header.find((n) => n.fr.label === "Produits")?.children).toHaveLength(
-      6,
-    );
+    expect(
+      header.find((n) => n.fr.label === "Produits")?.children,
+    ).toHaveLength(6);
     expect(header.find((n) => n.fr.label === "Connexion")?.style).toBe(
       "utility",
     );
@@ -102,7 +102,11 @@ describe("rapprochement avec l'existant", () => {
       (f) => f.parentLabel === "Produits" && f.fr.label === "VPS",
     );
     expect(iProduits).toBeLessThan(iVps);
-    expect(flat.filter((f) => f.parentLabel === null && f.placement === "header").map((f) => f.sort)).toEqual([10, 20, 30, 40, 50, 60, 70]);
+    expect(
+      flat
+        .filter((f) => f.parentLabel === null && f.placement === "header")
+        .map((f) => f.sort),
+    ).toEqual([10, 20, 30, 40, 50, 60, 70]);
   });
 
   test("sans alignement, seules les entrées absentes sont créées ; rien n'est modifié", () => {
@@ -110,7 +114,9 @@ describe("rapprochement avec l'existant", () => {
     expect(plan.updates).toEqual([]);
     expect(plan.creates.length).toBe(flat.length - 1);
     expect(
-      plan.creates.some((c) => c.fr.label === "Tarifs" && c.placement === "header"),
+      plan.creates.some(
+        (c) => c.fr.label === "Tarifs" && c.placement === "header",
+      ),
     ).toBe(false);
   });
 
@@ -121,9 +127,8 @@ describe("rapprochement avec l'existant", () => {
     expect(JSON.stringify(upd?.body.translations)).toContain("/en/tarifs/");
     // jamais un simple tableau (il remplacerait toutes les traductions et supprimerait les absentes)
     expect(Array.isArray(upd?.body.translations)).toBe(false);
-    expect(
-      (upd?.body.translations as { delete: unknown[] }).delete,
-    ).toEqual([]);
+    const tr = upd?.body.translations as { delete: unknown[] } | undefined;
+    expect(tr?.delete).toEqual([]);
     const aligned: ExistingNav = {
       ...existingTarifs,
       sort: 40,

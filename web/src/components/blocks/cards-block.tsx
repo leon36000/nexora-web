@@ -13,11 +13,11 @@ import { CardText, textLines } from "./card-text";
 import { StatusBadge } from "./status-badge";
 import { anchorProps, toneProps } from "./tone";
 
-type Card = CardsBlock["cards"][number];
+type CardItem = CardsBlock["cards"][number];
 type Joined = "after" | "before" | "both" | undefined;
 
 /** Lien d'une carte : <Link> interne ou <a> externe ; la zone cliquable couvre toute la carte (`CARD_LINK`). */
-function CardAnchor({ card, label }: { card: Card; label: string }) {
+function CardAnchor({ card, label }: { card: CardItem; label: string }) {
   if (!card.href) return null;
   return card.href.startsWith("/") ? (
     <Link href={card.href} className={CARD_LINK}>
@@ -34,7 +34,7 @@ function CardAnchor({ card, label }: { card: Card; label: string }) {
   );
 }
 
-const cardKey = (card: Card) =>
+const cardKey = (card: CardItem) =>
   `${card.title ?? ""}|${card.text ?? ""}|${card.href ?? ""}`;
 
 /** Grille de cartes (titre, texte, lien). Une carte avec lien est entièrement cliquable (un seul arrêt de tabulation). */
@@ -52,7 +52,9 @@ function Grid({ block }: { block: CardsBlock }) {
               className="flex w-full flex-col"
             >
               {card.title ? (
-                <h3 className="text-h3 text-fg">{card.href ? link : card.title}</h3>
+                <h3 className="text-h3 text-fg">
+                  {card.href ? link : card.title}
+                </h3>
               ) : null}
               {card.text ? (
                 <CardText text={card.text} first={Boolean(card.title)} />
@@ -178,13 +180,7 @@ const MODULE_TITLE_PREFIX = /^M\d+\s*[—–-]\s*/;
  * Modules numérotés (M1…) en grille compacte, avec un badge de statut facultatif par carte. Le premier
  * paragraphe décrit le module ; les lignes suivantes (détail des capacités) se déplient à la demande.
  */
-function Modules({
-  block,
-  t,
-}: {
-  block: CardsBlock;
-  t: Dictionary["cms"];
-}) {
+function Modules({ block, t }: { block: CardsBlock; t: Dictionary["cms"] }) {
   const cells = cellClasses(block.cards.length, block.columns);
   return (
     <ul
@@ -214,7 +210,9 @@ function Modules({
               <h3 className="mt-3 font-display text-h4 text-fg">
                 {card.href ? <CardAnchor card={card} label={title} /> : title}
               </h3>
-              {lead ? <p className="mt-2 text-small text-fg-muted">{lead}</p> : null}
+              {lead ? (
+                <p className="mt-2 text-small text-fg-muted">{lead}</p>
+              ) : null}
               {detail.length > 0 ? (
                 <details className="mt-3 border-t border-line pt-3 text-small">
                   <summary className="inline-flex min-h-8 cursor-pointer items-center text-accent-text underline underline-offset-4">
@@ -247,12 +245,16 @@ export function CardsBlockView({
   const titleId = `${block.key}-title`;
   const anchor = anchorProps(block.anchorId);
   const layout = block.layout ?? "grille";
+  const present = (["disponible", "pilote", "prevu"] as const).filter((s) =>
+    block.cards.some((c) => c.status === s),
+  );
   const legend =
-    layout === "modules" &&
-    block.cards.some((c) => c.status !== null) ? (
+    layout === "modules" && present.length > 0 ? (
       <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-small text-fg-muted">
-        <span className="font-mono text-label uppercase">{t.status.legend}</span>
-        {(["disponible", "pilote", "prevu"] as const).map((s) => (
+        <span className="font-mono text-label uppercase">
+          {t.status.legend}
+        </span>
+        {present.map((s) => (
           <StatusBadge key={s} status={s} t={t.status} />
         ))}
       </p>

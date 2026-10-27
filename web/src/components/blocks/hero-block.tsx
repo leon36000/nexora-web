@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/cn";
 import type { HeroBlock } from "@/server/cms/model";
 import { CmsImage } from "./cms-image";
+import { anchorProps, toneProps } from "./tone";
 
 /** Héros du CMS : surtitre, titre, sous-titre, deux appels à l'action, grille de périmètre en signature. */
 export function HeroBlockView({
@@ -17,12 +18,14 @@ export function HeroBlockView({
 }) {
   const H = level === 1 ? "h1" : "h2";
   const titleId = `${block.key}-title`;
+  const anchor = anchorProps(block.anchorId);
   return (
     <Section
-      tone={block.variant === "clair" ? "light" : "dark"}
+      {...toneProps(block.variant)}
       flush
       aria-labelledby={titleId}
-      className="pb-20 pt-14 md:pb-32 md:pt-28"
+      id={anchor.id}
+      className={cn("pb-20 pt-14 md:pb-32 md:pt-28", anchor.className)}
       background={
         block.perimeterGrid ? (
           <div

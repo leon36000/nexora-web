@@ -79,11 +79,15 @@ describe("variantes de composition (S3)", () => {
   test("le statut d'une carte : disponible, pilote, prévu ou vide", () => {
     expect(CARD_STATUSES).toEqual(["disponible", "pilote", "prevu"]);
     const cards = field("block_cards_translations", "cards");
-    const listFields = (
-      cards.meta?.options as {
-        fields: { field: string; meta: { options?: { choices: unknown[] } } }[];
-      }
-    ).fields;
+    const options = cards.meta?.options as
+      | {
+          fields: {
+            field: string;
+            meta: { options?: { choices: unknown[] } };
+          }[];
+        }
+      | undefined;
+    const listFields = options?.fields ?? [];
     const status = listFields.find((x) => x.field === "status");
     expect(status).toBeDefined();
     expect(JSON.stringify(status?.meta.options?.choices)).toContain("prevu");

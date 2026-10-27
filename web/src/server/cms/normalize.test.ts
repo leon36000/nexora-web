@@ -217,10 +217,8 @@ describe("parsePageResponse", () => {
 });
 
 const one = (block: Record<string, unknown>) =>
-  normalizePage(
-    parsePageResponse(pageJson("p", { fr: "x" }, [block])),
-    FR,
-  )?.blocks[0];
+  normalizePage(parsePageResponse(pageJson("p", { fr: "x" }, [block])), FR)
+    ?.blocks[0];
 
 describe("variantes de composition (S3)", () => {
   it("le ton vaut clair par défaut et refuse toute valeur inconnue", () => {

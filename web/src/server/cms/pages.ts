@@ -176,7 +176,11 @@ export async function fetchSlugPairs(client: CmsClient): Promise<SlugPair[]> {
     fields: "pages_id,languages_code,slug",
     limit: "-1",
   });
-  let rows: { pages_id: string; languages_code: string; slug?: string | null }[];
+  let rows: {
+    pages_id: string;
+    languages_code: string;
+    slug?: string | null;
+  }[];
   try {
     rows = z
       .array(

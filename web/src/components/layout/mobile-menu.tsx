@@ -169,30 +169,30 @@ export function MobileMenu({
             </ul>
 
             {products.length > 0 ? (
-            <div className="mt-8">
-              <Badge>{labels.products}</Badge>
-              <ul className="mt-3 divide-y divide-line border-y border-line">
-                {products.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      prefetch={false}
-                      onClick={closeMenu}
-                      className="block py-3.5"
-                    >
-                      <span className="block text-base font-medium text-fg">
-                        {item.label}
-                      </span>
-                      {item.description ? (
-                        <span className="mt-0.5 block text-small text-fg-muted">
-                          {item.description}
+              <div className="mt-8">
+                <Badge>{labels.products}</Badge>
+                <ul className="mt-3 divide-y divide-line border-y border-line">
+                  {products.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        prefetch={false}
+                        onClick={closeMenu}
+                        className="block py-3.5"
+                      >
+                        <span className="block text-base font-medium text-fg">
+                          {item.label}
                         </span>
-                      ) : null}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                        {item.description ? (
+                          <span className="mt-0.5 block text-small text-fg-muted">
+                            {item.description}
+                          </span>
+                        ) : null}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ) : null}
           </nav>
 

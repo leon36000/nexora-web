@@ -65,4 +65,3 @@ export function resolveHrefForLang(
   }
   return `${localizePath(lang, `/${target}`)}${suffix}`;
 }
-

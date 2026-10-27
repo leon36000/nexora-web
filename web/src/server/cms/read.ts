@@ -2,7 +2,11 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { draftMode } from "next/headers";
 import type { Lang } from "@/i18n/config";
-import { type Alternates, buildAlternates, NO_ALTERNATES } from "@/lib/alternates";
+import {
+  type Alternates,
+  buildAlternates,
+  NO_ALTERNATES,
+} from "@/lib/alternates";
 import { log } from "@/server/log";
 import { langCode } from "./lang";
 import type { NavItem, PageModel, PreviewInfo, SiteSettings } from "./model";
@@ -15,13 +19,7 @@ import {
 import { loadWithFallback } from "./resilient";
 import { previewClient, readerClient, snapshotStore } from "./runtime";
 import { fetchNavigation, fetchSiteSettings } from "./settings";
-import {
-  NAV_TAG,
-  pageIdTag,
-  pageSlugTag,
-  SITE_TAG,
-  SLUGS_TAG,
-} from "./tags";
+import { NAV_TAG, pageIdTag, pageSlugTag, SITE_TAG, SLUGS_TAG } from "./tags";
 
 /**
  * Lecture du contenu pour le rendu (Next 16, Cache Components).

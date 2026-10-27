@@ -107,8 +107,7 @@ export async function fetchNavigation(
       flat.set(r.id, {
         id: r.id,
         placement: r.placement,
-        style:
-          r.style === "button" || r.style === "utility" ? r.style : "link",
+        style: r.style === "button" || r.style === "utility" ? r.style : "link",
         parent: r.parent ?? null,
         label,
         href,

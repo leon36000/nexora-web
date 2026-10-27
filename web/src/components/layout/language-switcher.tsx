@@ -9,7 +9,11 @@ import {
   localizePath,
   stripLangPrefix,
 } from "@/i18n/config";
-import { type Alternates, alternatePath, NO_ALTERNATES } from "@/lib/alternates";
+import {
+  type Alternates,
+  alternatePath,
+  NO_ALTERNATES,
+} from "@/lib/alternates";
 import { cn } from "@/lib/cn";
 
 type LanguageSwitcherProps = {

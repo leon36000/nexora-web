@@ -10,7 +10,11 @@ import { type Alternates, resolveHrefForLang } from "./alternates";
  */
 
 export type ChromeLink = { label: string; href: string; path: string };
-export type ChromeProduct = { label: string; description: string; href: string };
+export type ChromeProduct = {
+  label: string;
+  description: string;
+  href: string;
+};
 /** Entrée de la navigation principale, dans l'ordre de Directus : un lien, ou le menu « Produits ». */
 export type HeaderNavItem =
   | ({ type: "link" } & ChromeLink)
@@ -106,9 +110,9 @@ export function buildChrome(
             description: c.description ?? "",
             href: resolveHrefForLang(alt, lang, c.href),
           }));
-        if (items.length > 0)
-          nav.push({ type: "menu", label: n.label, items });
-      } else if (n.href !== "") nav.push({ type: "link", ...link(n.label, n.href) });
+        if (items.length > 0) nav.push({ type: "menu", label: n.label, items });
+      } else if (n.href !== "")
+        nav.push({ type: "link", ...link(n.label, n.href) });
     }
     header = {
       nav,

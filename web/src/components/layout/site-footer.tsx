@@ -78,11 +78,7 @@ export function SiteFooter({
             <ul className="flex flex-wrap gap-x-6">
               {model.legal.map((link) => (
                 <li key={`${link.href}|${link.label}`}>
-                  <Link
-                    href={link.href}
-                    prefetch={false}
-                    className={linkClass}
-                  >
+                  <Link href={link.href} prefetch={false} className={linkClass}>
                     {link.label}
                   </Link>
                 </li>

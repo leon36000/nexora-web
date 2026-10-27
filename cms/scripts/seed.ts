@@ -13,7 +13,11 @@ import {
   log,
   parseEnvFile,
 } from "./lib/directus";
-import { type ExistingNav, flattenNavigation, planNavigation } from "./lib/navigation";
+import {
+  type ExistingNav,
+  flattenNavigation,
+  planNavigation,
+} from "./lib/navigation";
 import { LANGS } from "./lib/schema";
 
 export const MESSAGE_DIRECTEUR = {

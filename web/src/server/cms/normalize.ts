@@ -341,11 +341,12 @@ function normalizeBlock(
             href: safeHref(c.href),
             linkLabel: txt(c.link_label),
             label: txt(c.label),
-            status: oneOf<CardStatus | "">(
-              c.status,
-              ["disponible", "pilote", "prevu"],
-              "",
-            ) || null,
+            status:
+              oneOf<CardStatus | "">(
+                c.status,
+                ["disponible", "pilote", "prevu"],
+                "",
+              ) || null,
           }))
           .filter((c) => c.title || c.text),
       };

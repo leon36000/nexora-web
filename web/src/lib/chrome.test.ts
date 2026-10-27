@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { getDictionary } from "@/i18n/get-dictionary";
+import type { NavItem } from "@/server/cms/model";
 import { buildAlternates } from "./alternates";
 import { buildChrome } from "./chrome";
-import type { NavItem } from "@/server/cms/model";
 
-const item = (over: Partial<NavItem> & { id: string; label: string }): NavItem => ({
+const item = (
+  over: Partial<NavItem> & { id: string; label: string },
+): NavItem => ({
   placement: "header",
   style: "link",
   parent: null,
@@ -14,7 +16,9 @@ const item = (over: Partial<NavItem> & { id: string; label: string }): NavItem =
   ...over,
 });
 
-const alt = buildAlternates([{ "fr-CA": "souverainete", "en-CA": "sovereignty" }]);
+const alt = buildAlternates([
+  { "fr-CA": "souverainete", "en-CA": "sovereignty" },
+]);
 
 describe("en-tête, pied de page et légal depuis Directus", () => {
   it("sans navigation (Directus muet), reprend exactement les dictionnaires", () => {
@@ -45,14 +49,29 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
         label: "Produits",
         href: "",
         children: [
-          item({ id: "2a", label: "VPS", href: "/vps", description: "Au Québec." }),
-          item({ id: "2b", label: "OPSYS-AI", href: "/opsys-ai", description: "Équipe." }),
+          item({
+            id: "2a",
+            label: "VPS",
+            href: "/vps",
+            description: "Au Québec.",
+          }),
+          item({
+            id: "2b",
+            label: "OPSYS-AI",
+            href: "/opsys-ai",
+            description: "Équipe.",
+          }),
         ],
       }),
       item({ id: "3", label: "Compte", style: "utility", href: "/compte" }),
       item({ id: "4", label: "Diagnostic", style: "button", href: "/contact" }),
     ];
-    const { header, fromCms } = buildChrome("fr", getDictionary("fr"), nav, alt);
+    const { header, fromCms } = buildChrome(
+      "fr",
+      getDictionary("fr"),
+      nav,
+      alt,
+    );
     expect(fromCms).toBe(true);
     expect(header.nav.map((n) => `${n.type}:${n.label}`)).toEqual([
       "link:IA souveraine",
@@ -83,7 +102,9 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
   });
 
   it("garde le bouton et Connexion du dictionnaire s'ils manquent dans Directus", () => {
-    const nav: NavItem[] = [item({ id: "1", label: "Solutions", href: "/solutions" })];
+    const nav: NavItem[] = [
+      item({ id: "1", label: "Solutions", href: "/solutions" }),
+    ];
     const dict = getDictionary("fr");
     const { header } = buildChrome("fr", dict, nav, alt);
     expect(header.cta.label).toBe(dict.nav.cta.label);
@@ -102,12 +123,19 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
           item({ id: "f1a", placement: "footer", label: "VPS", href: "/vps" }),
         ],
       }),
-      item({ id: "l1", placement: "legal", label: "Confidentialité", href: "/confidentialite" }),
+      item({
+        id: "l1",
+        placement: "legal",
+        label: "Confidentialité",
+        href: "/confidentialite",
+      }),
     ];
     const { footer } = buildChrome("fr", getDictionary("fr"), nav, alt);
     expect(footer.columns).toEqual([
       { title: "Produits", links: [{ label: "VPS", href: "/vps" }] },
     ]);
-    expect(footer.legal).toEqual([{ label: "Confidentialité", href: "/confidentialite" }]);
+    expect(footer.legal).toEqual([
+      { label: "Confidentialité", href: "/confidentialite" },
+    ]);
   });
 });

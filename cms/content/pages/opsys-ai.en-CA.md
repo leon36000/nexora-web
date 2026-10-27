@@ -29,7 +29,7 @@ Ten virtual departments work on the same files, from the first request to the pr
 
 *The owner's problems.*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
 ## What costs you time.
 
@@ -47,7 +47,7 @@ OPSYS-AI starts from that observation: one file, several departments, one logica
 
 *Overall journey: five stages that group the ten departments. · Affirmations : CL-30, CL-31*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
 
 ## One file. Ten departments.
 
@@ -65,7 +65,7 @@ What the system prepares, a person approves. Sending, paying, deciding: these ac
 
 *The ten departments M1 to M10, with the honest status taken from report 07. · Affirmations : CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10, CL-32, CL-33, CL-35, CL-38, CL-39, CL-40, CL-41, CL-42*
 
-Réglages : `columns=2`
+Réglages : `columns=4`, `layout=modules`, `tone=clair`, `anchor_id=departements`
 
 ## The ten departments.
 
@@ -74,12 +74,12 @@ Each card states its status. Available: the software does it today. Pilot: it wo
 #### M1 — Intake.
 
 Centralizes and qualifies requests, prepares follow-ups and hands off to the right person with the context.
-Status: pilot. Available: request qualification (to be configured for your company), handoffs to a human, missed calls logged by your team. Pilot: transcribed voicemails. Planned: replies sent to the customer, real-time voice intake.
+Available: request qualification (to be configured for your company), handoffs to a human, missed calls logged by your team. Pilot: transcribed voicemails. Planned: replies sent to the customer, real-time voice intake.
 
 #### M2 — Customer relations and sales.
 
 Tracks contacts, files, quotes and follow-ups, and suggests the next action.
-Status: pilot. Available: file creation from a request, suggested next action. Pilot: file tracking, follow-ups, duplicate detection. Planned: connection to an external customer relationship management (CRM) system, visual tracking board (kanban).
+Available: file creation from a request, suggested next action. Pilot: file tracking, follow-ups, duplicate detection. Planned: connection to an external customer relationship management (CRM) system, visual tracking board (kanban).
 
 #### M3 — Estimating.
 
@@ -89,17 +89,17 @@ Status: available for the calculation and the draft quote, pilot for the rest. Q
 #### M4 — Field operations.
 
 Organizes crews, schedules, jobs, time and proof of completion.
-Status: pilot. Available: a job created from an accepted quote. Pilot: scheduling by route, clock-in at server time, after photos, signature and checklist. Planned: location at clock-in, road routing, automatic dispatch.
+Available: a job created from an accepted quote. Pilot: scheduling by route, clock-in at server time, after photos, signature and checklist. Planned: location at clock-in, road routing, automatic dispatch.
 
 #### M5 — FinanceCore.
 
 Prepares invoicing, financial tracking, costs and analyses, with appropriate approvals.
-Status: pilot. Available: draft invoice after the job, accounts receivable, accounts payable entered by your team. Pilot: cash-flow forecast, actual cost per job, reconciliation from exported statements. Payroll is prepared (hours and gross pay) for your accountant, without payroll calculation. Planned: sending invoices, bank and accounting connections. The tax calendar must be validated by your accountant.
+Available: draft invoice after the job, accounts receivable, accounts payable entered by your team. Pilot: cash-flow forecast, actual cost per job, reconciliation from exported statements. Payroll is prepared (hours and gross pay) for your accountant, without payroll calculation. Planned: sending invoices, bank and accounting connections. The tax calendar must be validated by your accountant.
 
 #### M6 — Materials.
 
 Links needs, availability, suppliers, orders, receipts and actual consumption.
-Status: pilot. Available: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department pays nothing.
+Available: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department pays nothing.
 
 #### M7 — Marketing.
 
@@ -109,12 +109,12 @@ Status: available once your brand is configured, pilot for the rest. Proposals a
 #### M8 — Analytics.
 
 Makes indicators understandable, sourced and accompanied by their quality: an indicator shows “not calculable” when data is missing.
-Status: pilot. Available: executive view. Pilot: per-job measures. Planned: forecasts, health score.
+Available: executive view. Pilot: per-job measures. Planned: forecasts, health score.
 
 #### M9 — Strategy.
 
 Gathers the information that management needs for priorities and for tracking decisions.
-Status: pilot. Available: management briefing and strategic reading, which inform without advising. Pilot: tracking a decision under the owner's approval, which executes nothing. Planned: scenarios, priorities and objectives.
+Available: management briefing and strategic reading, which inform without advising. Pilot: tracking a decision under the owner's approval, which executes nothing. Planned: scenarios, priorities and objectives.
 
 #### M10 — Memory.
 
@@ -125,7 +125,7 @@ Status: available for the log of decisions and events, which detects any modific
 
 *Central demonstration, link by link: real / demonstration / target. · Affirmations : CL-53, CL-60, CL-32, CL-33, CL-34, CL-31*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=parcours`
 
 ## From request to invoice.
 
@@ -148,7 +148,7 @@ Four states are never confused: prepared, approved, sent, acknowledged. Verifica
 
 *Signature scenario “job completed”, link by link. · Affirmations : CL-54, CL-34, CL-35, CL-41, CL-58, CL-60*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## When the job is done.
 
@@ -169,7 +169,7 @@ The signature scenario. The employee enters photos, time, checklist and material
 
 *Differentiators: estimate versus actual, materials, finance, cash, agents and budgets, memory. · Affirmations : CL-D06, CL-34, CL-35, CL-42, CL-56, CL-57, CL-58*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=clair`
 
 ## What sets it apart.
 
@@ -203,7 +203,7 @@ Why this price, this supplier, this delay? Decisions are logged with their conte
 
 *Mobile: four profiles, distinct rights, offline not announced. · Affirmations : CL-55*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
 
 ## Four profiles on mobile.
 
@@ -220,7 +220,7 @@ Offline operation is designed, but it has not yet been verified against a server
 
 *Deployment and sovereignty, with no invented “sovereign mode”. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=flux-donnees`, `tone=sombre`, `anchor_id=souverainete`
 
 ## Deployment and sovereignty, plainly.
 
@@ -240,23 +240,43 @@ To go further: [the deployment modes](/en/deployment/) and [our approach to sove
 
 *Going live: study, configuration, pilot, training, operation. · Affirmations : CL-03, CL-04, CL-14*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`, `anchor_id=mise-en-service`
 
 ## From study to go-live.
 
 We announce no one-size-fits-all timeline. It depends on the number of departments activated, on your data and on your integrations, and it is measured on a pilot.
 
-- **Deployment study.** We map your processes, tools and data, and choose which departments to activate first.
-- **Configuration.** Brand, rate schedules, qualification rules, handoff recipients: the system is tuned to your company.
-- **Pilot on one flow.** A single journey first, for example from request to quote, with your approvals.
-- **Training.** Your team learns to supervise, approve and correct.
-- **Operation.** We follow what works and widen the scope, department by department.
+### Bloc 11 — Cartes (`block_cards`)
 
-### Bloc 11 — FAQ (`block_faq`)
+*Les cinq étapes de la mise en service, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
+
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`
+
+#### Deployment study.
+
+We map your processes, tools and data, and choose which departments to activate first.
+
+#### Configuration.
+
+Brand, rate schedules, qualification rules, handoff recipients: the system is tuned to your company.
+
+#### Pilot on one flow.
+
+A single journey first, for example from request to quote, with your approvals.
+
+#### Training.
+
+Your team learns to supervise, approve and correct.
+
+#### Operation.
+
+We follow what works and widen the scope, department by department.
+
+### Bloc 12 — FAQ (`block_faq`)
 
 *OPSYS-AI FAQ: objections and limits, true answers only. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01*
 
-Réglages : `emit_jsonld=true`
+Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 ## Your questions. Our answers.
 
@@ -308,7 +328,7 @@ There is no public price. A deployment study establishes, in writing, what is in
 
 No, not as self-service. We offer a demonstration on fictitious data, a deployment study, then a qualified pilot.
 
-### Bloc 12 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
 *Final call to action: demonstration or deployment study. · Affirmations : CL-61*
 

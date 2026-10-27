@@ -1037,11 +1037,11 @@ export function buildSchema(): {
       "Titre d’accueil : slogan court, sous-titre, deux appels à l’action.",
     ),
     [
-      select(
-        "variant",
-        TONES,
-        { label: "Variante", def: "sombre", width: "half" },
-      ),
+      select("variant", TONES, {
+        label: "Variante",
+        def: "sombre",
+        width: "half",
+      }),
       anchorId(),
       bool("perimeter_grid", {
         label: "Grille de périmètre",
@@ -1258,10 +1258,7 @@ export function buildSchema(): {
       "Blocs appel à l’action",
       "Bandeau d’appel à l’action.",
     ),
-    [
-      tone("sombre"),
-      anchorId(),
-    ],
+    [tone("sombre"), anchorId()],
     [
       str("title", { label: "Titre", required: true }),
       txt("text", { label: "Texte" }),

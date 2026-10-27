@@ -37,11 +37,20 @@ const top = (
   style: NavEntry["style"],
   entry: Omit<NavEntry, "placement" | "style" | "children">,
   children?: NavEntry["children"],
-): NavEntry => ({ placement, style, ...entry, ...(children ? { children } : {}) });
+): NavEntry => ({
+  placement,
+  style,
+  ...entry,
+  ...(children ? { children } : {}),
+});
 
 export const NAVIGATION: NavEntry[] = [
   // --- en-tête : IA souveraine · Solutions · Produits (menu) · Tarifs · Ressources ; Connexion ; bouton ---
-  top("header", "link", both("IA souveraine", "Sovereign AI", "/souverainete/")),
+  top(
+    "header",
+    "link",
+    both("IA souveraine", "Sovereign AI", "/souverainete/"),
+  ),
   top("header", "link", both("Solutions", "Solutions", "/solutions/")),
   top(
     "header",
@@ -108,7 +117,10 @@ export const NAVIGATION: NavEntry[] = [
   top(
     "footer",
     "link",
-    { fr: { label: "Produits", href: "" }, en: { label: "Products", href: "" } },
+    {
+      fr: { label: "Produits", href: "" },
+      en: { label: "Products", href: "" },
+    },
     [
       both("VPS", "VPS", "/vps/"),
       both("Modèles et API", "Models and API", "/modeles/"),
@@ -172,7 +184,11 @@ export const NAVIGATION: NavEntry[] = [
   ),
 
   // --- mentions légales ---
-  top("legal", "link", both("Mentions légales", "Legal notice", "/mentions-legales/")),
+  top(
+    "legal",
+    "link",
+    both("Mentions légales", "Legal notice", "/mentions-legales/"),
+  ),
   top("legal", "link", both("Confidentialité", "Privacy", "/confidentialite/")),
   top(
     "legal",
@@ -182,7 +198,11 @@ export const NAVIGATION: NavEntry[] = [
   top(
     "legal",
     "link",
-    both("Utilisation acceptable", "Acceptable use", "/utilisation-acceptable/"),
+    both(
+      "Utilisation acceptable",
+      "Acceptable use",
+      "/utilisation-acceptable/",
+    ),
   ),
 ];
 
@@ -258,13 +278,17 @@ export function planNavigation(
   existing: ExistingNav[],
   desired: Flat[] = flattenNavigation(),
   align = false,
-): { creates: Flat[]; updates: { id: string; body: Record<string, unknown> }[] } {
+): {
+  creates: Flat[];
+  updates: { id: string; body: Record<string, unknown> }[];
+} {
   const creates: Flat[] = [];
   const updates: { id: string; body: Record<string, unknown> }[] = [];
   const byId = new Map(existing.map((n) => [n.id, n]));
   const find = (d: Flat) =>
     existing.find((n) => {
-      if (n.placement !== d.placement || frLabel(n) !== d.fr.label) return false;
+      if (n.placement !== d.placement || frLabel(n) !== d.fr.label)
+        return false;
       const parent = n.parent ? byId.get(n.parent) : undefined;
       return (parent ? frLabel(parent) : null) === d.parentLabel;
     });
