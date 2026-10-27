@@ -41,6 +41,7 @@ mkdir -p "$work/bin"
 cat > "$work/bin/psql" << 'FAKE'
 #!/usr/bin/env bash
 { printf 'ARGS: %s\n' "$*"; cat; printf -- '-----\n'; } >> "$PSQL_LOG"
+printf 'DIRECTUS=%s LITELLM=%s UMAMI=%s\n' "${DIRECTUS_DB_PASSWORD-}" "${LITELLM_DB_PASSWORD-}" "${UMAMI_DB_PASSWORD-}" >> "$PSQL_LOG.env"
 FAKE
 chmod +x "$work/bin/psql"
 run_init() { # run_init LOG [VAR=valeur ...]
@@ -60,6 +61,15 @@ has "$log" "NOREPLICATION" && has "$log" "NOBYPASSRLS" && ok "rôles sans REPLIC
 has "$log" "REVOKE CONNECT ON DATABASE app FROM PUBLIC" && ok "REVOKE CONNECT sur app pour PUBLIC" || ko "REVOKE CONNECT ON DATABASE app FROM PUBLIC absent"
 grep -E 'CREATE DATABASE' "$log" | grep -qiE 'OWNER[^;]*(nexora|POSTGRES_USER)' && ko "une base reste détenue par le superutilisateur" || ok "aucune base supplémentaire n'est détenue par le superutilisateur"
 grep -qE 'secret-[dlu]-[123]' "$log" && ko "un mot de passe apparaît dans le SQL ou les arguments de psql" || ok "aucun mot de passe dans le SQL ni dans les arguments (lu par \\getenv)"
+# secrets Docker : <VAR>_FILE (production, compose.prod.yml)
+printf 'depuis-fichier-d' > "$work/sd"
+printf 'depuis-fichier-l' > "$work/sl"
+printf 'depuis-fichier-u' > "$work/su"
+rm -f "$work/psql3.log.env"
+run_init "$work/psql3.log" DIRECTUS_DB_PASSWORD_FILE="$work/sd" LITELLM_DB_PASSWORD_FILE="$work/sl" UMAMI_DB_PASSWORD_FILE="$work/su" \
+  && ok "le script accepte <VAR>_FILE (secrets Docker)" || ko "le script refuse <VAR>_FILE : $(head -c 200 "$work/init.out")"
+grep -q 'DIRECTUS=depuis-fichier-d LITELLM=depuis-fichier-l UMAMI=depuis-fichier-u' "$work/psql3.log.env" 2> /dev/null && ok "le mot de passe lu dans le fichier parvient à psql (\\getenv)" || ko "le mot de passe du fichier n'est pas transmis à psql"
+grep -qE 'depuis-fichier' "$work/psql3.log" && ko "un mot de passe lu dans un fichier apparaît dans le SQL" || ok "aucun mot de passe de fichier dans le SQL"
 run_init "$work/psql2.log" DIRECTUS_DB_PASSWORD=x LITELLM_DB_PASSWORD=y && ko "le script réussit sans UMAMI_DB_PASSWORD" || ok "refus clair quand un mot de passe manque"
 grep -q 'UMAMI_DB_PASSWORD' "$work/init.out" && ok "le message nomme la variable manquante" || ko "le message ne nomme pas la variable manquante"
 
