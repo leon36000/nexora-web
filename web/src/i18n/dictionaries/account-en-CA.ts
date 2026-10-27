@@ -143,6 +143,9 @@ export const accountEnCA: AccountDictionary = {
         gift_cap_reached:
           "The monthly cap on provided credits has been reached.",
         gift_already_gifted: "This gift already exists.",
+        gift_code_exhausted:
+          "This code has reached its maximum number of uses.",
+        gift_code_expired: "This code has expired.",
         gift_two_factor_required:
           "Turn on two-factor authentication for your account (Security page) to provide a service.",
       },

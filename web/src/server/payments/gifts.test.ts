@@ -392,3 +392,62 @@ describe("liste des dons", () => {
     );
   });
 });
+
+describe("dons simultanés (courses)", () => {
+  it("un code à une seule utilisation ne sert qu'une fois, même demandé cinq fois en parallèle", async () => {
+    const p = await createPromo(
+      t.db,
+      {
+        code: "UNE-SEULE",
+        kind: "staff",
+        scopes: ["subscriptions"],
+        maxRedemptions: 1,
+      },
+      "admin",
+    );
+    const orgs = [1, 2, 3, 4, 5].map((n) => `o-race-${n}`);
+    await t.db
+      .insert(organizations)
+      .values(orgs.map((id) => ({ id, name: id, slug: id })));
+    const results = await Promise.allSettled(
+      orgs.map((organizationId) =>
+        grantGiftSubscription(t.db, {
+          organizationId,
+          userId: "u-staff",
+          planCode: "workstudio-equipe",
+          promoCodeId: p.id,
+          now: NOW,
+        }),
+      ),
+    );
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const refused = results.filter((r) => r.status === "rejected");
+    expect(refused).toHaveLength(4);
+    expect((refused[0] as PromiseRejectedResult).reason).toMatchObject({
+      code: "code_exhausted",
+    });
+  });
+
+  it("deux dons identiques simultanés à la même organisation : un seul actif", async () => {
+    await t.db
+      .insert(organizations)
+      .values({ id: "o-dup", name: "Dup", slug: "o-dup" });
+    const results = await Promise.allSettled(
+      Array.from({ length: 5 }, () =>
+        grantGiftSubscription(t.db, {
+          organizationId: "o-dup",
+          userId: "u-staff",
+          planCode: "workstudio-equipe",
+          promoCodeId: null,
+          now: NOW,
+        }),
+      ),
+    );
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const active = await t.db
+      .select()
+      .from(giftGrants)
+      .where(eq(giftGrants.organizationId, "o-dup"));
+    expect(active.filter((g) => g.status === "active")).toHaveLength(1);
+  });
+});

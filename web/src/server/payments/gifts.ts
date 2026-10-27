@@ -12,6 +12,7 @@ import {
   giftGrants,
   gte,
   lt,
+  promoCodes,
   promoRedemptions,
   sql,
   staffAccounts,
@@ -31,6 +32,8 @@ export type GiftErrorCode =
   | "not_found"
   | "not_staff"
   | "two_factor_required"
+  | "code_exhausted"
+  | "code_expired"
   | "already_gifted"
   | "cap_reached"
   | "invalid_amount";
@@ -120,6 +123,38 @@ export interface GiftBase {
   reason?: string;
 }
 
+/**
+ * Réserve une utilisation du code : à appeler EN PREMIER dans la transaction du don, avant tout insert qui
+ * référence le code (une clé étrangère prend un verrou partagé sur sa ligne ; deux transactions qui le
+ * porteraient ensuite en verrou exclusif s'interbloqueraient). Limites revérifiées SOUS VERROU de la ligne du
+ * code : la validation faite avant le don ne suffit pas face à des demandes simultanées (cinq dons d'un code à une
+ * seule utilisation passaient tous).
+ */
+async function lockPromoSlot(tx: Executor, base: GiftBase) {
+  if (!base.promoCodeId) return;
+  const [promo] = await tx
+    .select({
+      maxRedemptions: promoCodes.maxRedemptions,
+      expiresAt: promoCodes.expiresAt,
+    })
+    .from(promoCodes)
+    .where(eq(promoCodes.id, base.promoCodeId))
+    .for("update");
+  if (promo?.expiresAt && promo.expiresAt <= base.now)
+    throw new GiftError("code_expired", "Ce code est expiré.");
+  if (promo?.maxRedemptions != null) {
+    const [{ used } = { used: 0 }] = await tx
+      .select({ used: sql<number>`count(*)::int` })
+      .from(promoRedemptions)
+      .where(eq(promoRedemptions.promoCodeId, base.promoCodeId));
+    if (used >= promo.maxRedemptions)
+      throw new GiftError(
+        "code_exhausted",
+        "Ce code a atteint son nombre maximal d'utilisations.",
+      );
+  }
+}
+
 async function recordGiftRedemption(
   tx: Executor,
   base: GiftBase,
@@ -161,6 +196,12 @@ export async function grantGiftSubscription(
 ): Promise<GiftRow> {
   return db.transaction(async (tx) => {
     await assertStaff(tx, input.userId);
+    // Sérialise les dons d'une même offre à une même organisation : sans verrou, deux demandes simultanées créent
+    // deux dons actifs (le contrôle « déjà offert » ci-dessous ne voit pas l'autre transaction).
+    await tx.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext(${`gift-sub:${input.organizationId}:${input.planCode}`}))`,
+    );
+    await lockPromoSlot(tx, input);
     const [running] = await tx
       .select({ id: giftGrants.id })
       .from(giftGrants)
@@ -222,6 +263,7 @@ export async function grantGiftVps(
     allowUnsynced: true,
   });
   return db.transaction(async (tx) => {
+    await lockPromoSlot(tx, input);
     const [existing] = await tx
       .select()
       .from(giftGrants)
@@ -315,6 +357,7 @@ export async function grantGiftCredits(
     await tx.execute(
       sql`SELECT pg_advisory_xact_lock(hashtext(${`staff-gift:${input.userId}`}))`,
     );
+    await lockPromoSlot(tx, input);
     const used = await monthlyGiftedCents(tx, input.userId, input.now);
     const remaining = Math.max(input.capCents - used, 0);
     if (input.amountCents > remaining)

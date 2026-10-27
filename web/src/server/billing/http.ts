@@ -238,7 +238,11 @@ function checkoutFailure(
       : fail(
           deps,
           input,
-          error.code === "already_gifted" ? 409 : 403,
+          error.code === "already_gifted" ||
+            error.code === "code_exhausted" ||
+            error.code === "code_expired"
+            ? 409
+            : 403,
           `gift_${error.code}`,
         );
   if (error instanceof CheckoutError) {

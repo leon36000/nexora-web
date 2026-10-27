@@ -149,6 +149,9 @@ export const accountFrCA = {
           "Le service de paiement ne répond pas. Réessayez dans un moment.",
         internal_error: "Une erreur est survenue. Réessayez dans un moment.",
         gift_cap_reached: "Le plafond mensuel de crédits offerts est atteint.",
+        gift_code_exhausted:
+          "Ce code a atteint son nombre maximal d’utilisations.",
+        gift_code_expired: "Ce code est expiré.",
         gift_two_factor_required:
           "Activez la double authentification de votre compte (page Sécurité) pour offrir un service.",
         gift_already_gifted: "Ce don existe déjà.",
