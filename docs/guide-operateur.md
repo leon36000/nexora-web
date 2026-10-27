@@ -100,7 +100,7 @@ Directus (`deploy/compose.yml`) : `DIRECTUS_SECRET`, `DIRECTUS_ADMIN_EMAIL`, `DI
 
 Le Coffre chiffre chaque secret (AES-256-GCM, clé de données aléatoire par secret, elle-même chiffrée par la clé maîtresse). **Une valeur n'est jamais relisible** : elle est remplaçable ou révocable.
 
-- **Déposer un secret** : module Directus **Coffre** (« Coller une clé »), ou `POST /api/admin/vault` avec le jeton d'administration. Choisir le bon **type** : `llm_provider` (clé d'un fournisseur de modèles), `payment` (Stripe), `proxmox` (jeton Proxmox), `other` (clé d'espace WorkStudio, jetons des agents, clés SEO). Le type compte : **un secret n'est envoyé vers une adresse saisie que si son type convient** (fournisseur : `llm_provider` ; instance WorkStudio : `llm_provider` ou `other` ; Proxmox : `proxmox`). Les références `stripe.*`, `site-agent.*`, `seo.*`, `directus.*` ne peuvent jamais être utilisées comme clé de fournisseur, d'instance ou de Proxmox.
+- **Déposer un secret** : module Directus **Coffre** (« Coller une clé »), ou `POST /api/admin/vault` avec le jeton d'administration. Choisir le bon **type** : `llm_provider` (clé d'un fournisseur de modèles), `payment` (Stripe), `proxmox` (jeton Proxmox), `other` (clé d'espace WorkStudio, jetons des agents, clés SEO). Le type compte : **un secret n'est envoyé vers une adresse saisie que si son type convient** (fournisseur : `llm_provider` ; instance WorkStudio : `llm_provider` ou `other` ; Proxmox : `proxmox`). Les références `stripe.*`, `site-agent.*`, `seo.*`, `directus.*`, `vps.*` (dont la clé SSH du worker) ne peuvent jamais être utilisées comme clé de fournisseur, d'instance ou de Proxmox.
 - **Références usuelles** : `stripe.secret_key`, `stripe.webhook_secret`, `proxmox.<code du serveur>`, `vps.worker_ssh_key`, `site-agent.<agent>.directus` et `.gateway`, `seo.bing.api_key`, `seo.searchconsole.credentials`, `seo.dataforseo.credentials`, `seo.postiz.api_key`.
 - **Où garder la clé maîtresse** : dans un secret Docker ou le gestionnaire de l'hébergeur, **et** une copie hors serveur (gestionnaire de mots de passe d'équipe). Elle n'est jamais dans une sauvegarde de la base.
 
@@ -174,7 +174,7 @@ Module **Modèles** : ajouter un fournisseur (adresse, **région**, politique de
 2. Module **Agents hébergés** : créer l'instance (adresse interne, ou publique en https), coller la clé au Coffre (type `other`), « Tester », « Découvrir » (les agents arrivent en brouillon), compléter chacun (description, **prix**), publier.
 3. Côté WorkStudio, avant publication : **`NEXORA_EMBED_ORIGINS=https://<domaine du site>`**. Vide, l'instance accepte toutes les origines pour la bulle.
 4. Bulle `/embed.js` : réglage dans le module (pages choisies) ; la CSP n'ouvre alors que l'origine configurée, sur ces pages seulement.
-5. Limites : la réservation d'un appel est plafonnée à `run_token_cap` (32 000 jetons par défaut) ; renommer un agent dans WorkStudio change son identifiant amont `agent:<nom>` (le ressaisir dans le module) ; le coût amont de WorkStudio n'est pas suivi.
+5. Limites : la réservation d'un appel est calculée sur `run_token_cap` (32 000 jetons par défaut), mais le règlement est au coût réel (un dépassement est facturé et peut rendre le solde négatif) ; renommer un agent dans WorkStudio change son identifiant amont `agent:<nom>` (le ressaisir dans le module) ; le coût amont de WorkStudio n'est pas suivi.
 
 ## 9. Proxy frontal (HTTPS)
 

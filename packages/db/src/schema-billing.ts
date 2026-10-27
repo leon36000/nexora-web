@@ -65,6 +65,7 @@ export const ENTRY_KINDS = [
   "refund",
   "dispute",
   "expire",
+  "overage",
 ] as const;
 export type EntryKind = (typeof ENTRY_KINDS)[number];
 
@@ -113,10 +114,11 @@ export const creditEntries = pgTable(
     index("credit_entries_purchase_idx").on(t.purchaseId),
     check(
       "credit_entries_kind_check",
-      sql`${t.kind} IN ('credit','reserve','settle','release','refund','dispute','expire')`,
+      sql`${t.kind} IN ('credit','reserve','settle','release','refund','dispute','expire','overage')`,
     ),
-    // Un solde disponible négatif n'est permis que par remboursement ou litige (D7) : jamais par
-    // une réservation ni par une expiration, quelle que soit la logique applicative.
+    // Un solde disponible négatif n'est permis que par remboursement, litige ou dépassement de
+    // réservation « overage » (D1/D7 : le coût réel est dû) : jamais par une réservation ni par
+    // une expiration, quelle que soit la logique applicative.
     check(
       "credit_entries_no_overdraft_check",
       sql`(${t.kind} NOT IN ('reserve','expire') OR ${t.balanceAfterMicro} - ${t.heldAfterMicro} >= 0)`,
@@ -129,7 +131,7 @@ export const creditEntries = pgTable(
         (${t.kind} = 'reserve' AND ${t.balanceDeltaMicro} = 0 AND ${t.heldDeltaMicro} > 0) OR
         (${t.kind} = 'settle'  AND ${t.balanceDeltaMicro} <= 0 AND ${t.heldDeltaMicro} < 0 AND ${t.balanceDeltaMicro} >= ${t.heldDeltaMicro}) OR
         (${t.kind} = 'release' AND ${t.balanceDeltaMicro} = 0 AND ${t.heldDeltaMicro} < 0) OR
-        (${t.kind} IN ('refund','dispute','expire') AND ${t.balanceDeltaMicro} < 0 AND ${t.heldDeltaMicro} = 0)
+        (${t.kind} IN ('refund','dispute','expire','overage') AND ${t.balanceDeltaMicro} < 0 AND ${t.heldDeltaMicro} = 0)
       )`,
     ),
   ],
@@ -147,8 +149,13 @@ export const creditReservations = pgTable(
       .notNull()
       .references(() => organizations.id, { onDelete: "restrict" }),
     amountMicro: micro("amount_micro").notNull(),
+    /** Coût réel facturé (règlement plafonné à la réservation + dépassement éventuel). */
     settledMicro: micro("settled_micro"),
     status: text("status").$type<ReservationStatus>().notNull().default("open"),
+    /** Clé API qui a émis la requête (null : appel interne). Sert à rendre ou ajuster `spent_micro`. */
+    apiKeyId: uuid("api_key_id"),
+    /** Le montant a aussi été retenu sur le plafond de dépense de la clé (clé plafonnée). */
+    keySpendHeld: boolean("key_spend_held").notNull().default(false),
     idempotencyKey: text("idempotency_key").notNull(),
     configVersion: text("config_version").notNull(),
     createdAt: ts("created_at").notNull().defaultNow(),
@@ -203,6 +210,58 @@ export const creditPurchases = pgTable(
       "credit_purchases_status_check",
       sql`${t.status} IN ('paid','partially_refunded','refunded','disputed')`,
     ),
+  ],
+);
+
+/**
+ * Crédits inclus accordés par UNE facture d'abonnement payée (I2). Sert de « source » de reprise,
+ * comme `credit_purchases` pour un achat : les remboursements et litiges de cette facture débitent
+ * le grand livre au prorata de `amount_paid_cents` (taxes comprises). L'écriture de crédit et les
+ * débits portent l'identifiant de cette ligne dans `credit_entries.purchase_id` (colonne sans clé
+ * étrangère : elle désigne la source de paiement, achat ou facture). Une ligne n'existe que si la
+ * facture a réellement encaissé de l'argent (`amount_paid_cents > 0`, M4).
+ */
+export const subscriptionCreditGrants = pgTable(
+  "subscription_credit_grants",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    stripeInvoiceId: text("stripe_invoice_id").notNull(),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    /** Montant encaissé par la facture, taxes comprises : dénominateur du prorata. */
+    amountPaidCents: integer("amount_paid_cents").notNull(),
+    creditsMicro: micro("credits_micro").notNull(),
+    configVersion: text("config_version").notNull(),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("subscription_credit_grants_invoice_unique").on(
+      t.stripeInvoiceId,
+    ),
+    index("subscription_credit_grants_org_idx").on(t.organizationId),
+    check("subscription_credit_grants_credits_pos", sql`${t.creditsMicro} > 0`),
+    check("subscription_credit_grants_paid_pos", sql`${t.amountPaidCents} > 0`),
+  ],
+);
+
+/**
+ * Lien facture ↔ paiement Stripe. Depuis l'API 2025+, ni la facture ni la charge ne se
+ * référencent mutuellement : seul l'événement `invoice_payment.paid` les relie. Une ligne par
+ * facture ; elle peut arriver avant ou après `invoice.paid`.
+ */
+export const stripeInvoicePayments = pgTable(
+  "stripe_invoice_payments",
+  {
+    stripeInvoiceId: text("stripe_invoice_id").primaryKey(),
+    stripePaymentIntentId: text("stripe_payment_intent_id"),
+    stripeChargeId: text("stripe_charge_id"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("stripe_invoice_payments_pi_idx").on(t.stripePaymentIntentId),
+    index("stripe_invoice_payments_charge_idx").on(t.stripeChargeId),
   ],
 );
 

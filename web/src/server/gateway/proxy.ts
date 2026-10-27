@@ -15,7 +15,7 @@ import { type ApiKeyRow, authenticateApiKey } from "./keys";
 import { costMicro, formatMicro, type PerMillion } from "./pricing";
 import { type PublicModel, toPublicModel } from "./public";
 import type { SnapshotModel, SnapshotProvider } from "./snapshot";
-import { finalizeRequest, releaseKeySpend, reserveKeySpend } from "./usage";
+import { finalizeRequest } from "./usage";
 
 /**
  * Couche publique `/v1/*` compatible OpenAI (D1) : authentifie la clé Nexora, réserve le coût
@@ -593,11 +593,9 @@ async function handleInference(
   let db: Database | undefined;
   let key: ApiKeyRow | undefined;
   let reservation: { id: string; amount: bigint } | undefined;
-  let keyReserved = false;
   let settled = false;
   let target: Target | undefined;
   let streamHandedOff = false;
-  let pendingAmount: bigint | undefined;
 
   const finalize = async (input: {
     status: "ok" | "error" | "aborted";
@@ -623,11 +621,21 @@ async function handleInference(
       upstreamPrice: target.upstreamPrice,
       runFeeMicro: target.runFee,
       reservationId: reservation.id,
-      reservedMicro: reservation.amount,
-      keyReserved,
       latencyMs: Math.round(performance.now() - started),
     });
     settled = true;
+    // Dérive de l'estimation : le coût réel (facturé en entier) dépasse fortement la réservation. Aucun contenu.
+    if (!result.replayed && result.costMicro > reservation.amount * 2n)
+      deps.log.warn("passerelle : coût réel très supérieur à la réservation", {
+        requestId,
+        apiKeyId: key.id,
+        organizationId: key.organizationId,
+        model: target.publicId,
+        endpoint,
+        reservedMicro: reservation.amount.toString(),
+        costMicro: result.costMicro.toString(),
+        overageMicro: result.overageMicro.toString(),
+      });
     return result;
   };
 
@@ -725,7 +733,8 @@ async function handleInference(
         upstreamPrice: { input: 0n, output: 0n, cache: null },
         runFee: price.perRunCadMicro,
       };
-      // Le plafond d'exécution borne le montant réservé : exécution + plafond de jetons au prix le plus élevé.
+      // Le plafond d'exécution borne le montant RÉSERVÉ : exécution + plafond de jetons au prix le plus élevé. Le
+      // règlement est au coût réel : un dépassement du plafond est facturé (ruling S7 « Nexora absorbe » abandonné).
       reserveMicro =
         price.perRunCadMicro +
         costMicro(
@@ -783,28 +792,23 @@ async function handleInference(
       costMicro(plan.promptEstimate, price.input) +
         costMicro(plan.maxOutput, price.output);
     const amount = maxCost > 0n ? maxCost : 1n;
-    pendingAmount = amount;
 
-    if (key.spendCapMicro !== null) {
-      keyReserved = await reserveKeySpend(db, key.id, amount);
-      if (!keyReserved) return E.keyCap(rateHeaders);
-    }
+    // Plafond de la clé et grand livre dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
     const reserved = await reserve(db, {
       organizationId: key.organizationId,
       amountMicro: amount,
       idempotencyKey: `gw:${requestId}`,
       configVersion: served.configVersion,
+      apiKeyId: key.id,
     });
+    if (reserved.status === "key_cap_exceeded") return E.keyCap(rateHeaders);
     if (
       reserved.status === "insufficient_funds" ||
       reserved.status === "blocked"
-    ) {
-      if (keyReserved) await releaseKeySpend(db, key.id, amount);
-      keyReserved = false;
+    )
       return reserved.status === "blocked"
         ? E.blocked(rateHeaders)
         : E.insufficient(rateHeaders);
-    }
     reservation = { id: reserved.reservation.id, amount };
 
     const headers: Record<string, string> = {
@@ -989,16 +993,6 @@ async function handleInference(
           errorName: errorName(e),
         });
       }
-    } else if (
-      !streamHandedOff &&
-      !settled &&
-      db &&
-      key &&
-      keyReserved &&
-      !reservation &&
-      pendingAmount
-    ) {
-      await releaseKeySpend(db, key.id, pendingAmount).catch(() => undefined);
     }
     return openAiError(
       500,
@@ -1010,13 +1004,31 @@ async function handleInference(
   }
 }
 
+/**
+ * Caractères livrés par un message complet ou par un fragment (`delta`) : texte, raisonnement (`reasoning_content`,
+ * `reasoning`) et arguments des appels d'outils (`tool_calls[].function.arguments`, `function_call.arguments`).
+ * Sert au repli de facturation quand l'usage de l'amont manque.
+ */
+function deliveredChars(part: Json): number {
+  const text = (v: unknown) => (typeof v === "string" ? v.length : 0);
+  let n = 0;
+  for (const f of ["content", "reasoning_content", "reasoning"] as const)
+    n += text(part[f]);
+  if (Array.isArray(part.content))
+    for (const p of part.content) if (isObject(p)) n += text(p.text);
+  if (Array.isArray(part.tool_calls))
+    for (const call of part.tool_calls)
+      if (isObject(call) && isObject(call.function))
+        n += text(call.function.arguments);
+  if (isObject(part.function_call)) n += text(part.function_call.arguments);
+  return n;
+}
+
 function contentChars(json: Json): number {
   const choices = Array.isArray(json.choices) ? json.choices : [];
   let n = 0;
   for (const c of choices) {
-    const msg = isObject(c) && isObject(c.message) ? c.message : {};
-    for (const f of ["content", "reasoning_content"] as const)
-      if (typeof msg[f] === "string") n += (msg[f] as string).length;
+    if (isObject(c) && isObject(c.message)) n += deliveredChars(c.message);
   }
   return n;
 }
@@ -1158,10 +1170,15 @@ function streamResponse(ctx: {
   let chars = 0;
   let closed = false;
   let sawDone = false;
+  /** Le client a fermé la connexion : prime sur la fin de lecture que cette fermeture provoque elle-même. */
+  let clientCancelled = false;
+  /** L'amont a signalé une erreur dans le flux (événement « error ») : un échec déclaré, pas une coupure. */
+  let upstreamError = false;
 
   const settle = async (outcome: "done" | "cancelled" | "failed") => {
     if (closed) return;
     closed = true;
+    if (clientCancelled && outcome !== "done") outcome = "cancelled";
     try {
       let status: "ok" | "error" | "aborted";
       let tokens: Usage;
@@ -1174,20 +1191,23 @@ function streamResponse(ctx: {
       if (usage && !reportedUnusable) {
         status = outcome === "done" ? "ok" : "aborted";
         tokens = usage;
-      } else if (chars > 0) {
-        // Flux interrompu sans usage (ou usage inexploitable) : on facture ce qui a été livré, estimé par prudence.
+      } else if (upstreamError && chars === 0 && !usage) {
+        // Échec déclaré par l'amont avant toute livraison : rien n'est facturé, la réservation est libérée.
+        status = "error";
+        tokens = { prompt: 0, completion: 0, cached: 0 };
+      } else {
+        // Flux interrompu sans usage (ou usage inexploitable) : l'amont a répondu 200, donc l'invite a été consommée.
+        // On facture au minimum l'invite estimée, plus ce qui a été livré (texte, raisonnement, arguments d'outils),
+        // même si le client coupe ou si rien n'a été reçu : l'état « erreur à zéro » ne vaut que pour un échec avant
+        // la première réponse de l'amont.
         status = reportedUnusable && outcome === "done" ? "ok" : "aborted";
         tokens = {
           prompt: plan.promptEstimate,
           completion: estimateOutputTokens(chars),
           cached: 0,
         };
-      } else {
-        // Rien n'a été livré : rien n'est facturé, la réservation est libérée.
-        status = "error";
-        tokens = { prompt: 0, completion: 0, cached: 0 };
       }
-      const result = await ctx.finalize({
+      const finalInput = {
         status,
         httpStatus: status === "error" ? 502 : 200,
         errorCode:
@@ -1198,7 +1218,20 @@ function streamResponse(ctx: {
               : "upstream_interrupted",
         tokens,
         stream: true,
-      });
+      };
+      // Le règlement est idempotent (par requête) : on réessaie après une panne brève de la base avant de
+      // laisser la libération périodique rendre la réservation (le coût ne serait alors facturé que par un
+      // règlement tardif, qui n'aura jamais lieu).
+      let result: Awaited<ReturnType<typeof ctx.finalize>> = null;
+      for (let attempt = 1; ; attempt++) {
+        try {
+          result = await ctx.finalize(finalInput);
+          break;
+        } catch (error) {
+          if (attempt >= 3) throw error;
+          await new Promise((r) => setTimeout(r, attempt * 250));
+        }
+      }
       logDone(deps, {
         requestId: ctx.requestId,
         key: ctx.key,
@@ -1237,13 +1270,13 @@ function streamResponse(ctx: {
       return null; // fragment illisible : on ne transmet pas ce qu'on ne comprend pas
     }
     if (!isObject(obj)) return null;
+    if (isObject(obj.error)) upstreamError = true;
     const u = readUsage(obj.usage);
     if (u) usage = u;
     const choices = Array.isArray(obj.choices) ? obj.choices : [];
     for (const c of choices) {
       const delta = isObject(c) && isObject(c.delta) ? c.delta : {};
-      for (const f of ["content", "reasoning_content"] as const)
-        if (typeof delta[f] === "string") chars += (delta[f] as string).length;
+      chars += deliveredChars(delta);
     }
     // Le client n'a pas demandé l'usage : on garde pour nous le dernier fragment (sans choix).
     if (u && choices.length === 0 && !plan.clientWantsUsage) return null;
@@ -1299,6 +1332,7 @@ function streamResponse(ctx: {
     },
     async cancel() {
       // Le client a fermé la connexion : on coupe l'amont (le coût s'arrête) puis on règle.
+      clientCancelled = true;
       ctx.upstreamAbort.abort();
       await reader.cancel().catch(() => undefined);
       await settle("cancelled");

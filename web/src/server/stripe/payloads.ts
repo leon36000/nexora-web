@@ -38,6 +38,11 @@ export const invoiceSchema = z.object({
   id: z.string(),
   customer: ref.nullish(),
   billing_reason: z.string().nullish(),
+  /** Montant réellement encaissé, taxes comprises (0 : facture couverte par un solde ou un rabais). */
+  amount_paid: z.number().int().nullish(),
+  /** Anciennes versions d'API : la facture porte son paiement (supprimé depuis 2025, voir `invoicePaymentSchema`). */
+  payment_intent: ref.nullish(),
+  charge: ref.nullish(),
   /** API récente : la facture pointe vers l'abonnement par `parent`. */
   parent: z
     .object({
@@ -69,6 +74,21 @@ export const invoiceSchema = z.object({
     .nullish(),
 });
 export type InvoicePayload = z.infer<typeof invoiceSchema>;
+
+/** `invoice_payment.paid` : relie une facture à son PaymentIntent (ou à sa charge). */
+export const invoicePaymentSchema = z.object({
+  id: z.string(),
+  invoice: ref,
+  status: z.string().nullish(),
+  payment: z
+    .object({
+      type: z.string().nullish(),
+      payment_intent: ref.nullish(),
+      charge: ref.nullish(),
+    })
+    .nullish(),
+});
+export type InvoicePaymentPayload = z.infer<typeof invoicePaymentSchema>;
 
 export const subscriptionSchema = z.object({
   id: z.string(),

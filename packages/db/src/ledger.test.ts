@@ -1,9 +1,11 @@
 import { randomBytes } from "node:crypto";
+import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   credit,
   debit,
   deriveBalance,
+  expireAllDue,
   expireDue,
   getAccount,
   LedgerError,
@@ -13,7 +15,12 @@ import {
   reserve,
   settleReservation,
 } from "./ledger.ts";
-import { creditEntries, organizations } from "./schema.ts";
+import {
+  apiKeys,
+  creditEntries,
+  creditReservations,
+  organizations,
+} from "./schema.ts";
 import { createTestDatabase, type TestDatabase } from "./testing.ts";
 
 let t: TestDatabase;
@@ -241,7 +248,7 @@ describe("réservation, règlement, libération", () => {
     });
   });
 
-  it("règle une seule fois : un second règlement renvoie le premier, un règlement après libération est refusé", async () => {
+  it("règle une seule fois : un second règlement renvoie le premier, libérer une réservation réglée est refusé", async () => {
     const org = await newOrg();
     await fund(org, 5n);
     const r = await reserve(t.db, {
@@ -272,13 +279,13 @@ describe("réservation, règlement, libération", () => {
     ).rejects.toMatchObject({ code: "reservation_closed" });
   });
 
-  it("plafonne le règlement au montant réservé et note le dépassement", async () => {
+  it("règle au coût RÉEL : le dépassement est un débit supplémentaire, le solde devient négatif et bloque l'API", async () => {
     const org = await newOrg();
-    await fund(org, 5n);
+    await fund(org, 1n);
     const r = await reserve(t.db, {
       organizationId: org,
-      amountMicro: M,
-      idempotencyKey: "req:cap",
+      amountMicro: 600_000n,
+      idempotencyKey: "req:over",
       configVersion: CFG,
     });
     if (r.status !== "reserved") throw new Error("réservation attendue");
@@ -287,8 +294,121 @@ describe("réservation, règlement, libération", () => {
       reservationId: r.reservation.id,
       actualMicro: 1_400_000n,
     });
-    expect(s.entry.balanceDeltaMicro).toBe(-M);
-    expect(s.entry.metadata).toMatchObject({ overageMicro: "400000" });
+    expect(s.chargedMicro).toBe(1_400_000n);
+    expect(s.entry).toMatchObject({
+      kind: "settle",
+      balanceDeltaMicro: -600_000n,
+      heldDeltaMicro: -600_000n,
+    });
+    expect(s.overageEntry).toMatchObject({
+      kind: "overage",
+      balanceDeltaMicro: -800_000n,
+      heldDeltaMicro: 0n,
+      idempotencyKey: `overage:${r.reservation.id}`,
+    });
+    expect(await getAccount(t.db, org)).toMatchObject({
+      balanceMicro: -400_000n,
+      heldMicro: 0n,
+      blocked: true,
+    });
+    const next = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 1n,
+      idempotencyKey: "req:after-over",
+      configVersion: CFG,
+    });
+    expect(next.status).toBe("blocked");
+    const derived = await deriveBalance(t.db, org);
+    expect(derived.balanceMicro).toBe(-400_000n);
+  });
+
+  it("le règlement au réel est idempotent : un rejeu (même concurrent) ne débite pas deux fois", async () => {
+    const org = await newOrg();
+    await fund(org, 2n);
+    const r = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 500_000n,
+      idempotencyKey: "req:over-replay",
+      configVersion: CFG,
+    });
+    if (r.status !== "reserved") throw new Error("réservation attendue");
+    const input = {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 1_500_000n,
+    };
+    const outs = await Promise.all([
+      settleReservation(t.db, input),
+      settleReservation(t.db, input),
+      settleReservation(t.db, input),
+    ]);
+    expect(outs.filter((o) => !o.replayed)).toHaveLength(1);
+    for (const o of outs) expect(o.chargedMicro).toBe(1_500_000n);
+    expect(outs.every((o) => o.overageEntry !== null)).toBe(true);
+    expect((await getAccount(t.db, org)).balanceMicro).toBe(500_000n);
+    const entries = (await listEntries(t.db, org)).filter(
+      (e) => e.kind === "settle" || e.kind === "overage",
+    );
+    expect(entries).toHaveLength(2);
+  });
+
+  it("un règlement qui arrive APRÈS la libération de la réservation est facturé au réel, une seule fois", async () => {
+    const org = await newOrg();
+    await fund(org, 2n);
+    const r = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 600_000n,
+      idempotencyKey: "req:late",
+      configVersion: CFG,
+    });
+    if (r.status !== "reserved") throw new Error("réservation attendue");
+    await releaseReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+    });
+    const input = {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 250_000n,
+    };
+    const late = await settleReservation(t.db, input);
+    expect(late.replayed).toBe(false);
+    expect(late.chargedMicro).toBe(250_000n);
+    expect(late.entry).toMatchObject({
+      kind: "overage",
+      balanceDeltaMicro: -250_000n,
+      heldDeltaMicro: 0n,
+    });
+    const again = await settleReservation(t.db, input);
+    expect(again.replayed).toBe(true);
+    expect(again.chargedMicro).toBe(250_000n);
+    expect(await getAccount(t.db, org)).toMatchObject({
+      balanceMicro: 2n * M - 250_000n,
+      heldMicro: 0n,
+    });
+  });
+
+  it("un règlement à zéro après libération ne crée aucune écriture", async () => {
+    const org = await newOrg();
+    await fund(org, 1n);
+    const r = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 100n,
+      idempotencyKey: "req:late-zero",
+      configVersion: CFG,
+    });
+    if (r.status !== "reserved") throw new Error("réservation attendue");
+    await releaseReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+    });
+    const out = await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 0n,
+    });
+    expect(out.chargedMicro).toBe(0n);
+    expect((await getAccount(t.db, org)).balanceMicro).toBe(M);
   });
 
   it("une organisation ne peut pas régler ni libérer la réservation d'une autre", async () => {
@@ -326,6 +446,210 @@ describe("réservation, règlement, libération", () => {
     });
     expect(n).toBeGreaterThanOrEqual(1);
     expect((await getAccount(t.db, org)).heldMicro).toBe(0n);
+  });
+});
+
+describe("libération périodique des réservations perdues", () => {
+  const ago = (ms: number) => new Date(Date.now() - ms);
+  async function reserveAt(
+    org: string,
+    key: string,
+    amount: bigint,
+    createdAt: Date,
+  ) {
+    const r = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: amount,
+      idempotencyKey: key,
+      configVersion: CFG,
+    });
+    if (r.status !== "reserved") throw new Error("réservation attendue");
+    await t.db
+      .update(creditReservations)
+      .set({ createdAt })
+      .where(eq(creditReservations.id, r.reservation.id));
+    return r.reservation.id;
+  }
+
+  it("ne touche pas une réservation récente ; libère celle qui dépasse le délai, dont le montant redevient disponible", async () => {
+    const org = await newOrg();
+    await fund(org, 5n);
+    const fresh = await reserveAt(org, "stale:fresh", M, ago(60_000));
+    const old = await reserveAt(org, "stale:old", 2n * M, ago(3_600_000));
+    expect((await getAccount(t.db, org)).availableMicro).toBe(2n * M);
+    const n = await releaseStaleReservations(t.db, {
+      olderThan: ago(30 * 60_000),
+    });
+    expect(n).toBeGreaterThanOrEqual(1);
+    expect(await getAccount(t.db, org)).toMatchObject({
+      heldMicro: M,
+      availableMicro: 4n * M,
+    });
+    const rows = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, org));
+    expect(rows.find((r) => r.id === fresh)?.status).toBe("open");
+    expect(rows.find((r) => r.id === old)?.status).toBe("released");
+    // Rejeu : rien de plus à libérer pour cette organisation.
+    await releaseStaleReservations(t.db, { olderThan: ago(30 * 60_000) });
+    expect((await getAccount(t.db, org)).heldMicro).toBe(M);
+  });
+
+  it("rend aussi le plafond de la clé ; le règlement tardif facture ensuite le coût réel sans double compte", async () => {
+    const org = await newOrg();
+    await fund(org, 5n);
+    const [key] = await t.db
+      .insert(apiKeys)
+      .values({
+        organizationId: org,
+        name: "k",
+        prefix: "nxk_test",
+        keyHash: `h_${randomBytes(8).toString("hex")}`,
+        spendCapMicro: 3n * M,
+      })
+      .returning();
+    if (!key) throw new Error("clé attendue");
+    const r = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 2n * M,
+      idempotencyKey: "stale:key",
+      configVersion: CFG,
+      apiKeyId: key.id,
+    });
+    if (r.status !== "reserved") throw new Error("réservation attendue");
+    const spent = async () =>
+      (await t.db.select().from(apiKeys).where(eq(apiKeys.id, key.id)))[0]
+        ?.spentMicro;
+    expect(await spent()).toBe(2n * M);
+    await t.db
+      .update(creditReservations)
+      .set({ createdAt: ago(3_600_000) })
+      .where(eq(creditReservations.id, r.reservation.id));
+    await releaseStaleReservations(t.db, { olderThan: ago(30 * 60_000) });
+    expect(await spent()).toBe(0n);
+    const late = await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 700_000n,
+    });
+    expect(late.chargedMicro).toBe(700_000n);
+    expect(await spent()).toBe(700_000n);
+    await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 700_000n,
+    });
+    expect(await spent()).toBe(700_000n);
+    expect((await getAccount(t.db, org)).balanceMicro).toBe(5n * M - 700_000n);
+  });
+});
+
+describe("plafond de dépense de la clé, dans la transaction du grand livre", () => {
+  async function newKey(org: string, cap: bigint | null) {
+    const [key] = await t.db
+      .insert(apiKeys)
+      .values({
+        organizationId: org,
+        name: "k",
+        prefix: "nxk_test",
+        keyHash: `h_${randomBytes(8).toString("hex")}`,
+        spendCapMicro: cap,
+      })
+      .returning();
+    if (!key) throw new Error("clé attendue");
+    return key;
+  }
+  const spentOf = async (id: string) =>
+    (await t.db.select().from(apiKeys).where(eq(apiKeys.id, id)))[0]
+      ?.spentMicro;
+
+  it("retient le montant sur la clé plafonnée, refuse au-delà du plafond sans rien écrire, rend le surplus au règlement", async () => {
+    const org = await newOrg();
+    await fund(org, 10n);
+    const key = await newKey(org, 3n * M);
+    const a = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 2n * M,
+      idempotencyKey: "cap:a",
+      configVersion: CFG,
+      apiKeyId: key.id,
+    });
+    expect(a.status).toBe("reserved");
+    expect(await spentOf(key.id)).toBe(2n * M);
+    const b = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 2n * M,
+      idempotencyKey: "cap:b",
+      configVersion: CFG,
+      apiKeyId: key.id,
+    });
+    expect(b.status).toBe("key_cap_exceeded");
+    expect((await getAccount(t.db, org)).heldMicro).toBe(2n * M); // rien d'écrit pour b
+    if (a.status !== "reserved") return;
+    await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: a.reservation.id,
+      actualMicro: 500_000n,
+    });
+    expect(await spentOf(key.id)).toBe(500_000n);
+  });
+
+  it("une clé sans plafond cumule seulement le coût réglé, y compris le dépassement", async () => {
+    const org = await newOrg();
+    await fund(org, 10n);
+    const key = await newKey(org, null);
+    const a = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 100_000n,
+      idempotencyKey: "nocap:a",
+      configVersion: CFG,
+      apiKeyId: key.id,
+    });
+    if (a.status !== "reserved") throw new Error("réservation attendue");
+    expect(await spentOf(key.id)).toBe(0n);
+    await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: a.reservation.id,
+      actualMicro: 900_000n,
+    });
+    expect(await spentOf(key.id)).toBe(900_000n);
+  });
+
+  it("le dépassement de réservation s'ajoute à la dépense de la clé plafonnée (réel, pas réservé)", async () => {
+    const org = await newOrg();
+    await fund(org, 10n);
+    const key = await newKey(org, 3n * M);
+    const a = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 100_000n,
+      idempotencyKey: "cap:over",
+      configVersion: CFG,
+      apiKeyId: key.id,
+    });
+    if (a.status !== "reserved") throw new Error("réservation attendue");
+    await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: a.reservation.id,
+      actualMicro: 2n * M,
+    });
+    expect(await spentOf(key.id)).toBe(2n * M);
+  });
+
+  it("refuse la clé d'une autre organisation", async () => {
+    const a = await newOrg();
+    const b = await newOrg();
+    await fund(a, 1n);
+    const key = await newKey(b, null);
+    await expect(
+      reserve(t.db, {
+        organizationId: a,
+        amountMicro: 10n,
+        idempotencyKey: "cap:cross",
+        configVersion: CFG,
+        apiKeyId: key.id,
+      }),
+    ).rejects.toMatchObject({ code: "not_found" });
   });
 });
 
@@ -506,6 +830,23 @@ describe("expiration à 12 mois", () => {
     const acct = await getAccount(t.db, org);
     expect(acct.availableMicro).toBe(0n);
     expect(acct.balanceMicro).toBe(6n * M);
+  });
+
+  it("expireAllDue expire toutes les organisations concernées, une seule fois, sans toucher les autres", async () => {
+    const a = await newOrg();
+    const b = await newOrg();
+    const c = await newOrg();
+    await lot(a, 4n, expiryOf(12), "all:a");
+    await lot(b, 3n, expiryOf(12), "all:b");
+    await lot(c, 2n, new Date(T0.getTime() + 400 * day * 10), "all:c"); // loin dans le futur
+    const now = new Date(expiryOf(12).getTime() + day);
+    const first = await expireAllDue(t.db, { now, configVersion: CFG });
+    expect(first.expiredMicro).toBeGreaterThanOrEqual(7n * M);
+    expect((await getAccount(t.db, a)).balanceMicro).toBe(0n);
+    expect((await getAccount(t.db, b)).balanceMicro).toBe(0n);
+    expect((await getAccount(t.db, c)).balanceMicro).toBe(2n * M);
+    const second = await expireAllDue(t.db, { now, configVersion: CFG });
+    expect(second.expiredMicro).toBe(0n);
   });
 
   it("ignore les crédits sans échéance", async () => {

@@ -12,7 +12,7 @@ import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createApiKey } from "./keys";
 import { newOrganization } from "./test-support";
-import { finalizeRequest, reserveKeySpend, usageByDayAndModel } from "./usage";
+import { finalizeRequest, usageByDayAndModel } from "./usage";
 
 let t: TestDatabase;
 beforeAll(async () => {
@@ -44,9 +44,9 @@ async function setup() {
     amountMicro: 1000n,
     idempotencyKey: `gw:${org}`,
     configVersion: "cat_x",
+    apiKeyId: record.id,
   });
   if (reserved.status !== "reserved") throw new Error("réservation attendue");
-  await reserveKeySpend(t.db, record.id, 1000n);
   return { org, keyId: record.id, reservationId: reserved.reservation.id };
 }
 
@@ -64,8 +64,6 @@ const input = (s: Awaited<ReturnType<typeof setup>>, requestId: string) => ({
   price,
   upstreamPrice: { input: 100_000n, output: 200_000n, cache: null },
   reservationId: s.reservationId,
-  reservedMicro: 1000n,
-  keyReserved: true,
   latencyMs: 12,
 });
 
@@ -74,8 +72,16 @@ describe("usage idempotent", () => {
     const s = await setup();
     const first = await finalizeRequest(t.db, input(s, "req_idem_1"));
     const second = await finalizeRequest(t.db, input(s, "req_idem_1"));
-    expect(first).toEqual({ costMicro: 250n, replayed: false });
-    expect(second).toEqual({ costMicro: 250n, replayed: true });
+    expect(first).toEqual({
+      costMicro: 250n,
+      overageMicro: 0n,
+      replayed: false,
+    });
+    expect(second).toEqual({
+      costMicro: 250n,
+      overageMicro: 0n,
+      replayed: true,
+    });
     const events = await t.db
       .select()
       .from(usageEvents)
@@ -137,6 +143,79 @@ describe("usage idempotent", () => {
     expect(k?.spentMicro).toBe(0n);
   });
 
+  it("réservation sous-estimée : règlement au coût réel, solde négatif, puis l'appel suivant est bloqué", async () => {
+    const org = await newOrganization(t.db);
+    await credit(t.db, {
+      organizationId: org,
+      amountMicro: 1_000n,
+      idempotencyKey: `f:${org}`,
+      configVersion: "t",
+      source: "test",
+    });
+    const { record } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "k",
+      spendCapMicro: 10n * M,
+    });
+    const reserved = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 400n, // estimation trop basse
+      idempotencyKey: `gw:${org}`,
+      configVersion: "cat_x",
+      apiKeyId: record.id,
+    });
+    if (reserved.status !== "reserved") throw new Error("réservation attendue");
+    const s = { org, keyId: record.id, reservationId: reserved.reservation.id };
+    // 100 000 jetons d'entrée à 1 CAD/M = 100 000 µCAD : bien au-delà des 400 réservés et des 1 000 du solde.
+    const bill = {
+      ...input(s, "req_over_1"),
+      tokens: { prompt: 100_000, completion: 0, cached: 0 },
+    };
+    const first = await finalizeRequest(t.db, bill);
+    expect(first).toEqual({
+      costMicro: 100_000n,
+      overageMicro: 99_600n,
+      replayed: false,
+    });
+    expect(await getAccount(t.db, org)).toMatchObject({
+      balanceMicro: 1_000n - 100_000n,
+      heldMicro: 0n,
+      blocked: true,
+    });
+    const [k] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.id, record.id));
+    expect(k?.spentMicro).toBe(100_000n); // plafond de la clé : coût réel, pas réservé
+    const [event] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.requestId, "req_over_1"));
+    expect(event?.costMicro).toBe(100_000n);
+
+    // Rejeu idempotent : aucun second débit.
+    const replay = await finalizeRequest(t.db, bill);
+    expect(replay).toMatchObject({ costMicro: 100_000n, replayed: true });
+    expect((await getAccount(t.db, org)).balanceMicro).toBe(1_000n - 100_000n);
+    const kinds = (
+      await t.db
+        .select()
+        .from(creditEntries)
+        .where(eq(creditEntries.organizationId, org))
+    ).map((e) => e.kind);
+    expect(kinds.filter((x) => x === "overage")).toHaveLength(1);
+
+    // L'appel suivant est refusé : le compte est bloqué.
+    const next = await reserve(t.db, {
+      organizationId: org,
+      amountMicro: 1n,
+      idempotencyKey: `gw:next:${org}`,
+      configVersion: "cat_x",
+      apiKeyId: record.id,
+    });
+    expect(next.status).toBe("blocked");
+  });
+
   it("la base refuse de modifier ou de supprimer un événement d'usage", async () => {
     const s = await setup();
     await finalizeRequest(t.db, input(s, "req_immutable_1"));
@@ -162,10 +241,28 @@ describe("plafond de dépense de la clé", () => {
       name: "k",
       spendCapMicro: 5000n,
     });
+    await credit(t.db, {
+      organizationId: org,
+      amountMicro: 5n * M,
+      idempotencyKey: `f:${org}`,
+      configVersion: "t",
+      source: "test",
+    });
     const results = await Promise.all(
-      Array.from({ length: 20 }, () => reserveKeySpend(t.db, record.id, 1000n)),
+      Array.from({ length: 20 }, (_, i) =>
+        reserve(t.db, {
+          organizationId: org,
+          amountMicro: 1000n,
+          idempotencyKey: `cap:${org}:${i}`,
+          configVersion: "cat_x",
+          apiKeyId: record.id,
+        }),
+      ),
     );
-    expect(results.filter(Boolean)).toHaveLength(5);
+    expect(results.filter((r) => r.status === "reserved")).toHaveLength(5);
+    expect(results.filter((r) => r.status === "key_cap_exceeded")).toHaveLength(
+      15,
+    );
     const [k] = await t.db
       .select()
       .from(apiKeys)

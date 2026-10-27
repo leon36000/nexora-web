@@ -60,7 +60,8 @@ function route(request: NextRequest): NextResponse {
 }
 
 export const config = {
-  // Exclut /api, /v1, /_next et tout chemin contenant un point (fichiers statiques, robots.txt, sitemap.xml…).
+  // Exclut /api, /v1, /og, /_next et les fichiers À LA RACINE (robots.txt, sitemap.xml, icon.svg, clé IndexNow…).
+  // Un point plus loin dans le chemin reste une page : fiche d'un modèle `/modeles/openai/gpt-4.1`.
   // Tout nouveau préfixe non localisé (webhooks, etc.) doit être ajouté ici.
-  matcher: ["/((?!api|v1|og/|_next|.*\\..*).*)"],
+  matcher: ["/((?!api|v1|og/|_next|[^/]+\\.[a-zA-Z0-9]+$).*)"],
 };
