@@ -1,0 +1,17 @@
+{
+  "name": "@nexora/vault",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./crypto": "./src/crypto.ts",
+    "./store": "./src/store.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nexora/db": "workspace:*"
+  }
+}

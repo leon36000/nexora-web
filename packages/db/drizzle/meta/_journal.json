@@ -43,6 +43,13 @@
       "when": 1793073524510,
       "tag": "0005_s5_prix_immuables",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793074774423,
+      "tag": "0006_s8_autogestion",
+      "breakpoints": true
     }
   ]
 }
