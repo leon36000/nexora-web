@@ -109,6 +109,16 @@ describe("variantes de composition (S3)", () => {
   });
 });
 
+describe("plans d'abonnement : identifiants Stripe", () => {
+  test("aucun automate n'écrit les identifiants Stripe dans Directus : ils ne sont pas en lecture seule pour l'administrateur", () => {
+    for (const f of ["stripe_product_id", "stripe_price_id"]) {
+      const def = field("subscription_plans", f);
+      expect(def.meta?.readonly ?? false).toBe(false);
+      expect(String(def.meta?.note)).toContain("publish-plan");
+    }
+  });
+});
+
 describe("navigation", () => {
   test("un lien d'utilité (Connexion) et une description de menu sont possibles", () => {
     expect(choices(field("navigation", "style"))).toEqual([

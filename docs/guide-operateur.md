@@ -134,7 +134,9 @@ En développement : `worker/scripts/dev-provision-agents.ts` fait tout cela avec
 1. Créer un compte Stripe, rester en mode test.
 2. Module **Coffre** : `stripe.secret_key` (clé `sk_test_…` ou `rk_test_…`, type `payment`) et `stripe.webhook_secret` (`whsec_…` du point d'accès webhook, type `payment`).
 3. Dans Stripe, point d'accès webhook : `https://<domaine>/api/stripe/webhook`, avec les 10 événements gérés (`docs/infra.md`, section Stripe). Sans les secrets au Coffre, le webhook répond 503 : voulu.
-4. Module **Paiements/Modèles/VPS** : « Publier vers Stripe » pour les plans (crée produits et prix Stripe, écrit leurs identifiants).
+4. Publier les plans vers Stripe :
+   - **Plans VPS** : module **VPS** de Directus, bouton « Publier vers Stripe » (crée produits et prix Stripe, et écrit leurs identifiants sur la version de catalogue ; sans secret Stripe au Coffre, l'appel répond 503 `stripe_not_configured` avec la référence à déposer).
+   - **Plans d'abonnement et de crédits** (collection Directus `subscription_plans`) : **il n'y a pas de bouton**. Publier le plan dans Directus, puis `curl -X POST http://<site interne>/api/admin/stripe/publish-plan -H "Authorization: Bearer $NEXORA_APP_ADMIN_TOKEN" -H 'content-type: application/json' -d '{"code":"<code du plan>"}'`, et **recopier `stripeProductId` et `stripePriceId` de la réponse** dans les champs « Produit Stripe » et « Prix Stripe » de la fiche du plan (aucun automate ne les écrit ; sans eux, l'achat de ce plan est impossible, et un second appel plus de 24 h après en crée de nouveaux chez Stripe). Un changement de montant crée un nouveau prix : recopier le nouveau.
 5. Activer Stripe Tax (TPS, TVQ) et saisir les numéros d'inscription de Nexora **après validation d'un comptable**.
 
 ### 6.2 Passage en production
