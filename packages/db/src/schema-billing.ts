@@ -213,6 +213,58 @@ export const creditPurchases = pgTable(
   ],
 );
 
+/**
+ * Crédits inclus accordés par UNE facture d'abonnement payée (I2). Sert de « source » de reprise,
+ * comme `credit_purchases` pour un achat : les remboursements et litiges de cette facture débitent
+ * le grand livre au prorata de `amount_paid_cents` (taxes comprises). L'écriture de crédit et les
+ * débits portent l'identifiant de cette ligne dans `credit_entries.purchase_id` (colonne sans clé
+ * étrangère : elle désigne la source de paiement, achat ou facture). Une ligne n'existe que si la
+ * facture a réellement encaissé de l'argent (`amount_paid_cents > 0`, M4).
+ */
+export const subscriptionCreditGrants = pgTable(
+  "subscription_credit_grants",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    stripeInvoiceId: text("stripe_invoice_id").notNull(),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    /** Montant encaissé par la facture, taxes comprises : dénominateur du prorata. */
+    amountPaidCents: integer("amount_paid_cents").notNull(),
+    creditsMicro: micro("credits_micro").notNull(),
+    configVersion: text("config_version").notNull(),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("subscription_credit_grants_invoice_unique").on(
+      t.stripeInvoiceId,
+    ),
+    index("subscription_credit_grants_org_idx").on(t.organizationId),
+    check("subscription_credit_grants_credits_pos", sql`${t.creditsMicro} > 0`),
+    check("subscription_credit_grants_paid_pos", sql`${t.amountPaidCents} > 0`),
+  ],
+);
+
+/**
+ * Lien facture ↔ paiement Stripe. Depuis l'API 2025+, ni la facture ni la charge ne se
+ * référencent mutuellement : seul l'événement `invoice_payment.paid` les relie. Une ligne par
+ * facture ; elle peut arriver avant ou après `invoice.paid`.
+ */
+export const stripeInvoicePayments = pgTable(
+  "stripe_invoice_payments",
+  {
+    stripeInvoiceId: text("stripe_invoice_id").primaryKey(),
+    stripePaymentIntentId: text("stripe_payment_intent_id"),
+    stripeChargeId: text("stripe_charge_id"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("stripe_invoice_payments_pi_idx").on(t.stripePaymentIntentId),
+    index("stripe_invoice_payments_charge_idx").on(t.stripeChargeId),
+  ],
+);
+
 export const SUBSCRIPTION_STATUSES = [
   "incomplete",
   "incomplete_expired",

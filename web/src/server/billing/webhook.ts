@@ -9,10 +9,13 @@ import {
   type Executor,
   eq,
   minBigint,
+  or,
   organizations,
   recordEventOnce,
   SUBSCRIPTION_STATUSES,
   sql,
+  stripeInvoicePayments,
+  subscriptionCreditGrants,
   subscriptions,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
@@ -29,7 +32,9 @@ import {
   chargeSchema,
   checkoutSessionSchema,
   disputeSchema,
+  type InvoicePayload,
   idOf,
+  invoicePaymentSchema,
   invoiceSchema,
   subscriptionIdOfInvoice,
   subscriptionSchema,
@@ -63,6 +68,7 @@ export const HANDLED_EVENT_TYPES = [
   "checkout.session.async_payment_succeeded",
   "invoice.paid",
   "invoice.payment_failed",
+  "invoice_payment.paid",
   "charge.refunded",
   "charge.dispute.created",
   "charge.dispute.closed",
@@ -130,6 +136,8 @@ async function dispatch(ctx: Ctx, event: Stripe.Event): Promise<HandlerResult> {
         invoiceSchema.parse(object),
         "invoice_payment_failed",
       );
+    case "invoice_payment.paid":
+      return onInvoicePayment(ctx, invoicePaymentSchema.parse(object));
     case "charge.refunded":
       return onChargeRefunded(ctx, chargeSchema.parse(object));
     case "charge.dispute.created":
@@ -286,18 +294,83 @@ async function onCheckoutSession(
 // Remboursements et litiges
 // ---------------------------------------------------------------------------------------------
 
-async function purchaseByPaymentIntent(tx: Executor, paymentIntent: string) {
-  const [row] = await tx
-    .select()
-    .from(creditPurchases)
-    .where(eq(creditPurchases.stripePaymentIntentId, paymentIntent));
-  return row;
+/**
+ * Ce qu'un paiement a fait entrer au grand livre : un achat de crédits ou les crédits inclus d'une
+ * facture d'abonnement (I2). Les débits portent `id` dans `credit_entries.purchase_id`.
+ */
+interface CreditSource {
+  id: string;
+  organizationId: string;
+  creditsMicro: bigint;
+  /** Montant payé, taxes comprises : dénominateur du prorata. */
+  paidCents: number;
+  /** `source` de l'écriture de crédit d'origine (porte l'échéance du lot). */
+  lotSource: "purchase" | "subscription";
+  /** Renseigné pour un achat : son statut suit les remboursements et litiges. */
+  purchase?: typeof creditPurchases.$inferSelect;
 }
 
-/** Crédits déjà retirés (remboursements et litiges) pour un achat, nets des litiges gagnés. */
+/**
+ * Retrouve la source d'un paiement. La ligne trouvée est VERROUILLÉE jusqu'à la fin de la
+ * transaction : deux événements simultanés sur le même paiement (remboursement partiel puis total)
+ * calculent leur débit l'un après l'autre, sans dépasser les crédits accordés.
+ */
+async function creditSourceFor(
+  tx: Executor,
+  refs: { paymentIntent: string | null; charge: string | null },
+): Promise<CreditSource | null> {
+  if (refs.paymentIntent) {
+    const [purchase] = await tx
+      .select()
+      .from(creditPurchases)
+      .where(eq(creditPurchases.stripePaymentIntentId, refs.paymentIntent))
+      .for("update");
+    if (purchase)
+      return {
+        id: purchase.id,
+        organizationId: purchase.organizationId,
+        creditsMicro: purchase.creditsMicro,
+        paidCents: purchase.amountTotalCents,
+        lotSource: "purchase",
+        purchase,
+      };
+  }
+  const links = [
+    refs.paymentIntent
+      ? eq(stripeInvoicePayments.stripePaymentIntentId, refs.paymentIntent)
+      : undefined,
+    refs.charge
+      ? eq(stripeInvoicePayments.stripeChargeId, refs.charge)
+      : undefined,
+  ].filter((c) => c !== undefined);
+  if (links.length === 0) return null;
+  const [row] = await tx
+    .select({ grant: subscriptionCreditGrants })
+    .from(subscriptionCreditGrants)
+    .innerJoin(
+      stripeInvoicePayments,
+      eq(
+        stripeInvoicePayments.stripeInvoiceId,
+        subscriptionCreditGrants.stripeInvoiceId,
+      ),
+    )
+    .where(or(...links))
+    .limit(1)
+    .for("update", { of: subscriptionCreditGrants });
+  if (!row) return null;
+  return {
+    id: row.grant.id,
+    organizationId: row.grant.organizationId,
+    creditsMicro: row.grant.creditsMicro,
+    paidCents: row.grant.amountPaidCents,
+    lotSource: "subscription",
+  };
+}
+
+/** Crédits déjà retirés (remboursements et litiges) pour une source, nets des litiges gagnés. */
 async function netDebitedMicro(
   tx: Executor,
-  purchaseId: string,
+  sourceId: string,
 ): Promise<bigint> {
   const [row] = await tx
     .select({
@@ -306,8 +379,8 @@ async function netDebitedMicro(
     .from(creditEntries)
     .where(
       and(
-        eq(creditEntries.purchaseId, purchaseId),
-        sql`${creditEntries.source} <> 'purchase'`,
+        eq(creditEntries.purchaseId, sourceId),
+        sql`${creditEntries.source} NOT IN ('purchase', 'subscription')`,
       ),
     );
   return BigInt(row?.total ?? "0");
@@ -318,40 +391,41 @@ async function onChargeRefunded(
   charge: ChargePayload,
 ): Promise<HandlerResult> {
   const { tx } = ctx;
-  if (!charge.payment_intent) return "ignored";
-  const purchase = await purchaseByPaymentIntent(
-    tx,
-    idOf(charge.payment_intent),
-  );
-  if (!purchase) return "ignored";
+  const source = await creditSourceFor(tx, {
+    paymentIntent: charge.payment_intent ? idOf(charge.payment_intent) : null,
+    charge: charge.id,
+  });
+  if (!source) return "ignored";
 
-  const already = await netDebitedMicro(tx, purchase.id);
+  const already = await netDebitedMicro(tx, source.id);
   const delta = creditsToDebitForRefund({
-    creditsMicro: purchase.creditsMicro,
-    amountTotalCents: purchase.amountTotalCents,
+    creditsMicro: source.creditsMicro,
+    amountTotalCents: source.paidCents,
     cumulativeRefundedCents: charge.amount_refunded,
     alreadyDebitedMicro: already,
   });
   if (delta > 0n) {
     await debit(tx, {
-      organizationId: purchase.organizationId,
+      organizationId: source.organizationId,
       kind: "refund",
       amountMicro: delta,
-      idempotencyKey: `refund:${purchase.id}:${charge.amount_refunded}:${delta}`,
+      idempotencyKey: `refund:${source.id}:${charge.amount_refunded}:${delta}`,
       configVersion: ctx.cfgVersion,
       source: "stripe_refund",
-      purchaseId: purchase.id,
+      purchaseId: source.id,
       externalRef: charge.id,
     });
   }
-  const status =
-    charge.amount_refunded >= purchase.amountTotalCents
-      ? "refunded"
-      : "partially_refunded";
-  if (purchase.status !== "disputed")
+  const { purchase } = source;
+  if (purchase && purchase.status !== "disputed")
     await tx
       .update(creditPurchases)
-      .set({ status })
+      .set({
+        status:
+          charge.amount_refunded >= purchase.amountTotalCents
+            ? "refunded"
+            : "partially_refunded",
+      })
       .where(eq(creditPurchases.id, purchase.id));
   return "processed";
 }
@@ -361,38 +435,38 @@ async function onDisputeCreated(
   dispute: ReturnType<typeof disputeSchema.parse>,
 ): Promise<HandlerResult> {
   const { tx } = ctx;
-  if (!dispute.payment_intent) return "ignored";
-  const purchase = await purchaseByPaymentIntent(
-    tx,
-    idOf(dispute.payment_intent),
-  );
-  if (!purchase) return "ignored";
+  const source = await creditSourceFor(tx, {
+    paymentIntent: dispute.payment_intent ? idOf(dispute.payment_intent) : null,
+    charge: idOf(dispute.charge),
+  });
+  if (!source) return "ignored";
 
-  const already = await netDebitedMicro(tx, purchase.id);
+  const already = await netDebitedMicro(tx, source.id);
   const wanted = creditsToDebitForRefund({
-    creditsMicro: purchase.creditsMicro,
-    amountTotalCents: purchase.amountTotalCents,
+    creditsMicro: source.creditsMicro,
+    amountTotalCents: source.paidCents,
     cumulativeRefundedCents: dispute.amount,
     alreadyDebitedMicro: 0n,
   });
-  const room = purchase.creditsMicro - already;
+  const room = source.creditsMicro - already;
   const amount = minBigint(wanted, room);
   if (amount > 0n) {
     await debit(tx, {
-      organizationId: purchase.organizationId,
+      organizationId: source.organizationId,
       kind: "dispute",
       amountMicro: amount,
       idempotencyKey: `dispute:${dispute.id}`,
       configVersion: ctx.cfgVersion,
       source: "stripe_dispute",
-      purchaseId: purchase.id,
+      purchaseId: source.id,
       externalRef: dispute.id,
     });
   }
-  await tx
-    .update(creditPurchases)
-    .set({ status: "disputed" })
-    .where(eq(creditPurchases.id, purchase.id));
+  if (source.purchase)
+    await tx
+      .update(creditPurchases)
+      .set({ status: "disputed" })
+      .where(eq(creditPurchases.id, source.purchase.id));
   return "processed";
 }
 
@@ -401,12 +475,12 @@ async function onDisputeClosed(
   dispute: ReturnType<typeof disputeSchema.parse>,
 ): Promise<HandlerResult> {
   const { tx, deps } = ctx;
-  if (dispute.status !== "won" || !dispute.payment_intent) return "processed";
-  const purchase = await purchaseByPaymentIntent(
-    tx,
-    idOf(dispute.payment_intent),
-  );
-  if (!purchase) return "ignored";
+  if (dispute.status !== "won") return "processed";
+  const source = await creditSourceFor(tx, {
+    paymentIntent: dispute.payment_intent ? idOf(dispute.payment_intent) : null,
+    charge: idOf(dispute.charge),
+  });
+  if (!source) return "ignored";
   const [withdrawn] = await tx
     .select()
     .from(creditEntries)
@@ -417,27 +491,29 @@ async function onDisputeClosed(
     .from(creditEntries)
     .where(
       and(
-        eq(creditEntries.purchaseId, purchase.id),
-        eq(creditEntries.source, "purchase"),
+        eq(creditEntries.purchaseId, source.id),
+        eq(creditEntries.source, source.lotSource),
       ),
     );
   await credit(tx, {
-    organizationId: purchase.organizationId,
+    organizationId: source.organizationId,
     amountMicro: -withdrawn.balanceDeltaMicro,
     idempotencyKey: `dispute-won:${dispute.id}`,
     configVersion: ctx.cfgVersion,
     source: "dispute_reversal",
-    // Les crédits rendus gardent l'échéance de l'achat d'origine.
+    // Les crédits rendus gardent l'échéance du lot d'origine.
     expiresAt:
       lot?.expiresAt ?? addMonths(ctx.at, deps.config.creditExpiryMonths),
-    purchaseId: purchase.id,
+    purchaseId: source.id,
     externalRef: dispute.id,
   });
-  const stillOut = await netDebitedMicro(tx, purchase.id);
-  await tx
-    .update(creditPurchases)
-    .set({ status: stillOut > 0n ? "partially_refunded" : "paid" })
-    .where(eq(creditPurchases.id, purchase.id));
+  if (source.purchase) {
+    const stillOut = await netDebitedMicro(tx, source.id);
+    await tx
+      .update(creditPurchases)
+      .set({ status: stillOut > 0n ? "partially_refunded" : "paid" })
+      .where(eq(creditPurchases.id, source.purchase.id));
+  }
   return "processed";
 }
 
@@ -572,6 +648,15 @@ async function onInvoice(
     vpsOrderId: isVps ? (meta.vps_order_id ?? null) : null,
   });
 
+  // Le paiement d'une facture est relié à son PaymentIntent (anciennes API : porté par la facture).
+  if (type === "invoice_paid")
+    await linkInvoicePayment(tx, invoice.id, {
+      paymentIntent: invoice.payment_intent
+        ? idOf(invoice.payment_intent)
+        : null,
+      charge: invoice.charge ? idOf(invoice.charge) : null,
+    });
+
   if (
     !isVps &&
     type === "invoice_paid" &&
@@ -583,20 +668,113 @@ async function onInvoice(
         invoiceId: invoice.id,
         planCode: meta.plan_code ?? null,
       });
+    } else if ((invoice.amount_paid ?? 0) <= 0) {
+      // M4 : une facture à 0 $ (solde client, rabais total, essai) est « payée » sans qu'un sou ait
+      // été encaissé : annuler puis se réabonner ne doit jamais redonner de crédits gratuits.
+      deps.log.warn(
+        "stripe : facture sans paiement, crédits inclus non accordés",
+        {
+          invoiceId: invoice.id,
+        },
+      );
     } else if (plan.includedCreditsCents > 0) {
-      await credit(tx, {
-        organizationId: orgId,
-        amountMicro: centsToMicro(plan.includedCreditsCents),
-        idempotencyKey: `sub-credit:${invoice.id}`,
-        configVersion: planConfigVersion(plan),
-        source: "subscription",
-        // Crédits offerts : valables jusqu'à la fin de la période payée.
+      await grantIncludedCredits(ctx, {
+        orgId,
+        invoice,
+        subscriptionId: subId,
+        plan,
+        paidCents: invoice.amount_paid ?? 0,
         expiresAt: period ? new Date(period.end * 1000) : addMonths(ctx.at, 1),
-        externalRef: invoice.id,
       });
     }
   }
   return "processed";
+}
+
+/** Enregistre (ou complète) le lien facture ↔ paiement ; sans effet si rien n'est connu. */
+async function linkInvoicePayment(
+  tx: Executor,
+  invoiceId: string,
+  refs: { paymentIntent: string | null; charge: string | null },
+): Promise<boolean> {
+  if (!refs.paymentIntent && !refs.charge) return false;
+  await tx
+    .insert(stripeInvoicePayments)
+    .values({
+      stripeInvoiceId: invoiceId,
+      stripePaymentIntentId: refs.paymentIntent,
+      stripeChargeId: refs.charge,
+    })
+    .onConflictDoUpdate({
+      target: stripeInvoicePayments.stripeInvoiceId,
+      set: {
+        stripePaymentIntentId: sql`COALESCE(${stripeInvoicePayments.stripePaymentIntentId}, excluded.stripe_payment_intent_id)`,
+        stripeChargeId: sql`COALESCE(${stripeInvoicePayments.stripeChargeId}, excluded.stripe_charge_id)`,
+      },
+    });
+  return true;
+}
+
+/**
+ * Crédits inclus d'un abonnement, reliés à la facture payée (I2) : la ligne `subscription_credit_grants`
+ * sert de source aux remboursements et litiges de cette facture.
+ */
+async function grantIncludedCredits(
+  ctx: Ctx,
+  input: {
+    orgId: string;
+    invoice: InvoicePayload;
+    subscriptionId: string;
+    plan: SubscriptionPlan;
+    paidCents: number;
+    expiresAt: Date;
+  },
+): Promise<void> {
+  const { tx } = ctx;
+  const creditsMicro = centsToMicro(input.plan.includedCreditsCents);
+  const version = planConfigVersion(input.plan);
+  await tx
+    .insert(subscriptionCreditGrants)
+    .values({
+      organizationId: input.orgId,
+      stripeInvoiceId: input.invoice.id,
+      stripeSubscriptionId: input.subscriptionId,
+      amountPaidCents: input.paidCents,
+      creditsMicro,
+      configVersion: version,
+    })
+    .onConflictDoNothing({ target: subscriptionCreditGrants.stripeInvoiceId });
+  const [grant] = await tx
+    .select()
+    .from(subscriptionCreditGrants)
+    .where(eq(subscriptionCreditGrants.stripeInvoiceId, input.invoice.id));
+  if (!grant) throw new Error("octroi introuvable après insertion");
+  await credit(tx, {
+    organizationId: input.orgId,
+    amountMicro: creditsMicro,
+    idempotencyKey: `sub-credit:${input.invoice.id}`,
+    configVersion: version,
+    source: "subscription",
+    // Crédits inclus : valables jusqu'à la fin de la période payée.
+    expiresAt: input.expiresAt,
+    externalRef: input.invoice.id,
+    purchaseId: grant.id,
+  });
+}
+
+/** `invoice_payment.paid` : mémorise quel paiement a réglé quelle facture (avant ou après `invoice.paid`). */
+async function onInvoicePayment(
+  ctx: Ctx,
+  payment: ReturnType<typeof invoicePaymentSchema.parse>,
+): Promise<HandlerResult> {
+  if (payment.status && payment.status !== "paid") return "ignored";
+  const linked = await linkInvoicePayment(ctx.tx, idOf(payment.invoice), {
+    paymentIntent: payment.payment?.payment_intent
+      ? idOf(payment.payment.payment_intent)
+      : null,
+    charge: payment.payment?.charge ? idOf(payment.payment.charge) : null,
+  });
+  return linked ? "processed" : "ignored";
 }
 
 async function onSubscription(

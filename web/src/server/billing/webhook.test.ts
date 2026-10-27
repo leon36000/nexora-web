@@ -232,6 +232,7 @@ describe("achat de crédits : checkout.session.completed", () => {
       id: `in_${randomBytes(4).toString("hex")}`,
       customer: org.customer,
       billing_reason: "subscription_create",
+      amount_paid: PLAN.priceCents,
       parent: {
         subscription_details: {
           subscription: "sub_fail",
@@ -390,6 +391,33 @@ describe("remboursements : charge.refunded", () => {
     expect(acct.blocked).toBe(true);
   });
 
+  it("deux remboursements simultanés du même achat ne reprennent jamais plus que les crédits achetés", async () => {
+    const org = await newOrg();
+    const session = await purchaseFor(org, {
+      amount_subtotal: 10_000,
+      amount_total: 11_000,
+    });
+    await Promise.all([
+      processStripeEvent(
+        deps(),
+        buildEvent(
+          "charge.refunded",
+          charge(session, { amount: 11_000, amount_refunded: 5_500 }),
+          { created: EVT_TIME + 10 },
+        ),
+      ),
+      processStripeEvent(
+        deps(),
+        buildEvent(
+          "charge.refunded",
+          charge(session, { amount: 11_000, amount_refunded: 11_000 }),
+          { created: EVT_TIME + 11 },
+        ),
+      ),
+    ]);
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
   it("une charge sans achat de crédits connu est ignorée", async () => {
     const out = await processStripeEvent(
       deps(),
@@ -484,6 +512,7 @@ function invoice(
     id: `in_${randomBytes(5).toString("hex")}`,
     customer: org.customer,
     billing_reason: "subscription_create",
+    amount_paid: PLAN.priceCents,
     parent: {
       subscription_details: {
         subscription: subId,
@@ -808,6 +837,451 @@ describe("abonnements : invoice.paid, invoice.payment_failed, customer.subscript
       ),
     );
     expect(out.status).toBe("ignored");
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+// I2 : remboursement et litige sur une facture d'abonnement ; M4 : crédits seulement si payé
+// ---------------------------------------------------------------------------------------------
+
+/** `invoice_payment.paid` : seul événement qui relie une facture à son paiement (API 2026-09-30). */
+function invoicePayment(
+  inv: { id: string },
+  over: Record<string, unknown> = {},
+) {
+  return {
+    id: `inpay_${randomBytes(5).toString("hex")}`,
+    object: "invoice_payment",
+    invoice: inv.id,
+    status: "paid",
+    currency: "cad",
+    amount_paid: PLAN.priceCents,
+    payment: { type: "payment_intent", payment_intent: `pi_${inv.id}` },
+    ...over,
+  };
+}
+
+const paymentIntentOf = (inv: { id: string }) => `pi_${inv.id}`;
+
+/** Abonnement payé : facture + lien paiement ; renvoie la facture. */
+async function paidSubscription(
+  org: { id: string; customer: string },
+  subId: string,
+  over: Record<string, unknown> = {},
+) {
+  const inv = invoice(org, subId, over);
+  await processStripeEvent(
+    deps(),
+    buildEvent("invoice.paid", inv, { created: EVT_TIME }),
+  );
+  await processStripeEvent(
+    deps(),
+    buildEvent("invoice_payment.paid", invoicePayment(inv), {
+      created: EVT_TIME,
+    }),
+  );
+  return inv;
+}
+
+const subCharge = (
+  inv: { id: string },
+  amountRefunded: number,
+  over: Record<string, unknown> = {},
+) => ({
+  id: `ch_${inv.id}`,
+  payment_intent: paymentIntentOf(inv),
+  amount: PLAN.priceCents,
+  amount_refunded: amountRefunded,
+  currency: "cad",
+  ...over,
+});
+
+async function spend(orgId: string, micro: bigint) {
+  const { reserve, settleReservation } = await import("@nexora/db");
+  const r = await reserve(t.db, {
+    organizationId: orgId,
+    amountMicro: micro,
+    idempotencyKey: `use:${orgId}:${micro}`,
+    configVersion: "cfg_x",
+  });
+  if (r.status !== "reserved") throw new Error("réservation attendue");
+  await settleReservation(t.db, {
+    organizationId: orgId,
+    reservationId: r.reservation.id,
+    actualMicro: micro,
+  });
+}
+
+describe("I2 : remboursement d'une facture d'abonnement", () => {
+  it("un remboursement total reprend les crédits inclus", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r1");
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(10_000_000n);
+    const out = await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect(out.status).toBe("processed");
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+    const refund = (await listEntries(t.db, org.id)).find(
+      (e) => e.kind === "refund",
+    );
+    expect(refund).toMatchObject({
+      source: "stripe_refund",
+      balanceDeltaMicro: -10_000_000n,
+    });
+  });
+
+  it("un remboursement partiel donne un débit proportionnel, puis le complément sans double compte", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r2");
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 1_225), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    // 1 225 / 4 900 = 25 % de 10 $ = 2,50 $
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(7_500_000n);
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 20,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("la proportion se calcule sur le montant payé, taxes comprises", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r3", { amount_paid: 5_634 });
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "invoice_payment.paid",
+        invoicePayment(inv, { amount_paid: 5_634 }),
+        { created: EVT_TIME },
+      ),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 2_817, { amount: 5_634 }), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(5_000_000n);
+  });
+
+  it("rejeu (même événement ou même cumul sous un autre événement) : un seul débit", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r4");
+    const event = buildEvent("charge.refunded", subCharge(inv, 4_900), {
+      created: EVT_TIME + 10,
+    });
+    await processStripeEvent(deps(), event);
+    await processStripeEvent(deps(), event);
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 30,
+      }),
+    );
+    expect(
+      (await listEntries(t.db, org.id)).filter((e) => e.kind === "refund"),
+    ).toHaveLength(1);
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("crédits consommés : le solde devient négatif et le compte est bloqué (D7)", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r5");
+    await spend(org.id, 8_000_000n);
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    const acct = await getAccount(t.db, org.id);
+    expect(acct.balanceMicro).toBe(-8_000_000n);
+    expect(acct.blocked).toBe(true);
+  });
+
+  it("le lien paiement peut arriver avant la facture", async () => {
+    const org = await newOrg();
+    const inv = invoice(org, "sub_r6");
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice_payment.paid", invoicePayment(inv), {
+        created: EVT_TIME,
+      }),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", inv, { created: EVT_TIME + 1 }),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("le lien paiement par une charge (sans PaymentIntent) permet aussi la reprise", async () => {
+    const org = await newOrg();
+    const inv = invoice(org, "sub_r7");
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", inv, { created: EVT_TIME }),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "invoice_payment.paid",
+        invoicePayment(inv, { payment: { type: "charge", charge: "ch_old" } }),
+        { created: EVT_TIME },
+      ),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "charge.refunded",
+        {
+          id: "ch_old",
+          payment_intent: null,
+          amount: 4_900,
+          amount_refunded: 4_900,
+          currency: "cad",
+        },
+        { created: EVT_TIME + 10 },
+      ),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("n'affecte pas un achat de crédits de la même organisation", async () => {
+    const org = await newOrg();
+    await purchaseFor(org);
+    const inv = await paidSubscription(org, "sub_r8");
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(100_000_000n);
+  });
+
+  it("la relecture de invoice_payment.paid ne crée ni crédit ni débit de plus", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r9");
+    const link = buildEvent("invoice_payment.paid", invoicePayment(inv), {
+      created: EVT_TIME + 2,
+    });
+    await processStripeEvent(deps(), link);
+    await processStripeEvent(deps(), link);
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(10_000_000n);
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("anciennes versions d'API : la facture porte son PaymentIntent, sans invoice_payment.paid", async () => {
+    const org = await newOrg();
+    const inv = invoice(org, "sub_r10");
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "invoice.paid",
+        { ...inv, payment_intent: paymentIntentOf(inv) },
+        { created: EVT_TIME },
+      ),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 4_900), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("deux événements simultanés sur le même paiement ne reprennent jamais plus que les crédits accordés", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_r11");
+    await Promise.all([
+      processStripeEvent(
+        deps(),
+        buildEvent("charge.refunded", subCharge(inv, 2_450), {
+          created: EVT_TIME + 10,
+        }),
+      ),
+      processStripeEvent(
+        deps(),
+        buildEvent("charge.refunded", subCharge(inv, 4_900), {
+          created: EVT_TIME + 11,
+        }),
+      ),
+    ]);
+    // Quel que soit l'ordre : au plus 10 $ repris au total (le prorata de 50 % puis le complément).
+    const debited = (await listEntries(t.db, org.id))
+      .filter((e) => e.kind === "refund")
+      .reduce((sum, e) => sum - e.balanceDeltaMicro, 0n);
+    expect(debited).toBeLessThanOrEqual(10_000_000n);
+    expect(
+      (await getAccount(t.db, org.id)).balanceMicro,
+    ).toBeGreaterThanOrEqual(0n);
+  });
+});
+
+describe("I2 : litige sur une facture d'abonnement", () => {
+  const subDispute = (
+    inv: { id: string },
+    over: Record<string, unknown> = {},
+  ) => ({
+    id: `dp_${inv.id}`,
+    charge: `ch_${inv.id}`,
+    payment_intent: paymentIntentOf(inv),
+    amount: PLAN.priceCents,
+    status: "needs_response",
+    ...over,
+  });
+
+  it("l'ouverture d'un litige reprend les crédits inclus, une seule fois", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_d1");
+    const event = buildEvent("charge.dispute.created", subDispute(inv), {
+      created: EVT_TIME + 10,
+    });
+    await processStripeEvent(deps(), event);
+    await processStripeEvent(deps(), event);
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+    expect(
+      (await listEntries(t.db, org.id)).filter((e) => e.kind === "dispute"),
+    ).toHaveLength(1);
+  });
+
+  it("crédits consommés : solde négatif ; litige gagné : crédits restitués avec la même échéance", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_d2");
+    await spend(org.id, 8_000_000n);
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.dispute.created", subDispute(inv), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(-8_000_000n);
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.dispute.closed", subDispute(inv, { status: "won" }), {
+        created: EVT_TIME + 99,
+      }),
+    );
+    const entries = await listEntries(t.db, org.id);
+    const back = entries.find((e) => e.source === "dispute_reversal");
+    expect(back?.balanceDeltaMicro).toBe(10_000_000n);
+    expect(back?.expiresAt?.getTime()).toBe((EVT_TIME + 30 * 86_400) * 1000);
+    // Les 8 $ consommés restent consommés : seuls les crédits retirés reviennent.
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(2_000_000n);
+  });
+
+  it("un litige perdu ne retire rien de plus", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_d3");
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.dispute.created", subDispute(inv), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.dispute.closed", subDispute(inv, { status: "lost" }), {
+        created: EVT_TIME + 99,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("remboursement puis litige sur la même facture : plafonné aux crédits inclus", async () => {
+    const org = await newOrg();
+    const inv = await paidSubscription(org, "sub_d4");
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.refunded", subCharge(inv, 2_450), {
+        created: EVT_TIME + 10,
+      }),
+    );
+    await processStripeEvent(
+      deps(),
+      buildEvent("charge.dispute.created", subDispute(inv), {
+        created: EVT_TIME + 20,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+});
+
+describe("M4 : les crédits inclus ne s'accordent que sur une facture payée", () => {
+  it("une facture d'abonnement à 0 $ (solde client, rabais total) n'accorde rien", async () => {
+    const org = await newOrg();
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", invoice(org, "sub_m1", { amount_paid: 0 }), {
+        created: EVT_TIME,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+    // L'abonnement est tout de même actif : seuls les crédits dépendent du paiement.
+    expect((await subRow(org.id))?.status).toBe("active");
+  });
+
+  it("un montant payé absent de la facture n'accorde rien", async () => {
+    const org = await newOrg();
+    const { amount_paid: _omit, ...inv } = invoice(org, "sub_m2");
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", inv, { created: EVT_TIME }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
+  it("annuler puis se réabonner : seul le nouvel abonnement payé accorde des crédits", async () => {
+    const org = await newOrg();
+    await paidSubscription(org, "sub_m3a");
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "customer.subscription.deleted",
+        subscriptionObject(org, "sub_m3a", { status: "canceled" }),
+        { created: EVT_TIME + 100 },
+      ),
+    );
+    // Réabonnement couvert par un solde client : facture à 0 $, pas de nouveaux crédits.
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", invoice(org, "sub_m3b", { amount_paid: 0 }), {
+        created: EVT_TIME + 200,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(10_000_000n);
+    // Réabonnement réellement payé : les crédits sont accordés.
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", invoice(org, "sub_m3c"), {
+        created: EVT_TIME + 300,
+      }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(20_000_000n);
   });
 });
 
