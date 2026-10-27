@@ -1,0 +1,15 @@
+# Les modèles sont poussés par la synchronisation Directus -> LiteLLM (décision D3), stockés en base.
+# Seul le fournisseur amont de développement (D12) est déclaré ici.
+model_list:
+  - model_name: dev/cloud-glm-5-3
+    litellm_params:
+      model: openai/cloud-glm-5-3
+      api_base: os.environ/PC1_UPSTREAM_URL
+      api_key: os.environ/PC1_UPSTREAM_KEY
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  disable_spend_logs: false
+  store_prompts_in_spend_logs: false
+litellm_settings:
+  drop_params: true
+  turn_off_message_logging: true

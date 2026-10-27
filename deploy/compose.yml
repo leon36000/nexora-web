@@ -1,0 +1,99 @@
+# Pile de développement du site Nexora (pc6). Images épinglées par empreinte (index multi-architecture).
+# Démarrer : bash deploy/init-env.sh (une fois), puis
+#   docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d
+name: nexorasite
+
+services:
+  db:
+    image: pgvector/pgvector:pg17@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nexora
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD}
+      POSTGRES_DB: app
+      # Bases supplémentaires créées par initdb/01-databases.sh
+      EXTRA_DATABASES: directus litellm umami
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:15440:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexora -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  directus:
+    image: directus/directus:12.5.1@sha256:ef6fc027605ea659a972356e0c35fd7f88b02118b0b3a322dafbec3cc709fdab
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SECRET: ${DIRECTUS_SECRET:?définir DIRECTUS_SECRET}
+      DB_CLIENT: pg
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_DATABASE: directus
+      DB_USER: nexora
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:?définir DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:?définir DIRECTUS_ADMIN_PASSWORD}
+      PUBLIC_URL: http://localhost:8456
+      TELEMETRY: "false"
+      EXTENSIONS_AUTO_RELOAD: "true"
+      # Le site (localhost:3500) appelle Directus côté serveur seulement ; CORS limité au module « Coffre ».
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: http://localhost:8456
+      EMAIL_TRANSPORT: smtp
+      EMAIL_FROM: no-reply@nexora.test
+      EMAIL_SMTP_HOST: mailpit
+      EMAIL_SMTP_PORT: "1025"
+      # Adresse interne de l'app (coffre, API d'administration, revalidation) vue depuis Directus.
+      NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL:-http://host.docker.internal:3500}
+      NEXORA_APP_ADMIN_TOKEN: ${NEXORA_APP_ADMIN_TOKEN:?définir NEXORA_APP_ADMIN_TOKEN}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - uploads:/directus/uploads
+      - ../cms/extensions:/directus/extensions
+    ports:
+      - "127.0.0.1:8456:8055"
+
+  litellm:
+    # v1.106.2 : dernière version saine avant l'incident 1.107.0 du 21/10/2026. Réseau interne seulement.
+    image: ghcr.io/berriai/litellm:v1.106.2@sha256:7294b90f868c5c38c99b83021c7ba46f9b439e95f8e32964c925c7d2563a03f7
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    environment:
+      DATABASE_URL: postgresql://nexora:${POSTGRES_PASSWORD}@db:5432/litellm
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?définir LITELLM_MASTER_KEY}
+      LITELLM_SALT_KEY: ${LITELLM_SALT_KEY:?définir LITELLM_SALT_KEY}
+      STORE_MODEL_IN_DB: "True"
+      LITELLM_LOG: ERROR
+      DISABLE_ADMIN_UI: "True"
+      # Fournisseur amont de développement (D12) : LiteLLM de pc1 via le tunnel de pc6.
+      PC1_UPSTREAM_URL: ${PC1_UPSTREAM_URL:-http://host.docker.internal:18090/v1}
+      PC1_UPSTREAM_KEY: ${PC1_UPSTREAM_KEY:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./litellm/config.yaml:/app/config.yaml:ro
+    ports:
+      # Exposé seulement sur la boucle locale pour le développement (la couche Nexora /v1 l'appelle).
+      - "127.0.0.1:4400:4000"
+
+  mailpit:
+    image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8026:8025"
+      - "127.0.0.1:1026:1025"
+
+volumes:
+  db:
+  uploads:
