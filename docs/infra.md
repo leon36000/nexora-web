@@ -235,3 +235,88 @@ Tâches du worker : `site-agent.run` { runId }, `seo.audit` { auditId }, `seo.in
 | `DIRECTUS_URL`, `LITELLM_BASE_URL` | worker | écritures de brouillons (jeton de l'agent, dans le Coffre) ; sonde de vivacité de LiteLLM |
 
 Chromium : audits (axe, Lighthouse) utilisent le Chromium de Playwright (`bunx playwright install chromium`) ; `CHROME_PATH` le remplace.
+
+## VPS (jalon S6)
+
+Conception : §10, §11, §15 (S6) et D2, D3, D4, D7, D8, D13, D14 de `docs/superpowers/specs/2026-10-26-nexora-site-design.md` ; recherche `docs/recherche/04-vps-facturation-paiements.md`. Preuve de bout en bout : `docs/captures/s6/e2e-vps.md`. Code : `packages/vps` (`@nexora/vps` : client Proxmox, simulateur, catalogue, commandes, moteur), `packages/vault` (`@nexora/vault` : chiffrement et lecture du Coffre, désormais partagés par le site et le worker ; `web/src/server/vault/{crypto,store}.ts` ne sont plus que des réexportations), `packages/db/src/schema-vps.ts` (migrations 0006 et 0007), `worker/src/vps-handlers.ts`, `web/src/server/vps/`, `web/src/server/stripe/vps-checkout.ts`, pages `/vps`, `/vps/<application>`, `/compte/vps`, module Directus `cms/extensions-src/nexora-cms/src/vps/`.
+
+```
+client ──▶ /vps (configurateur) ──▶ POST /api/vps/checkout ──▶ commande « awaiting_payment » + Checkout (abonnement)
+Stripe ──▶ webhook signé ──▶ vps_orders « paid » + tâche vps.provision (clé vps-provision:<commande>, unique)
+worker ──▶ placement → clone → configure → firewall → start → await_agent → install → verify ──▶ instance « active »
+                 └─ Proxmox VE (API REST, jeton du Coffre)         └─ script versionné, SHA-256 vérifié, exécuté par SSH
+```
+
+### Variables
+
+| Variable | Rôle |
+|---|---|
+| `NEXORA_VAULT_MASTER_KEY` (+ `_VERSION`) | **Aussi pour le worker** : il lit le jeton Proxmox et la clé SSH d'installation dans le Coffre. Sans elle, le worker désactive les tâches VPS (avertissement au démarrage). |
+| `VPS_WORKER_SSH_PUBLIC_KEY` | Clé publique du worker, ajoutée à cloud-init le temps de l'installation puis retirée (authorized_keys et configuration). La clé privée est dans le Coffre : référence `vps.worker_ssh_key` (type `other`). |
+| `VPS_MAX_PER_ORG` (5) | Plafond de VPS par organisation (anti-abus). |
+| `VPS_RETENTION_DAYS` (7) | Rétention après résiliation et d'une ancienne VM de réinstallation. |
+| `VPS_AGENT_TIMEOUT_MS` (600000), `VPS_INSTALL_TIMEOUT_MS` (900000) | Délais d'attente de l'agent invité et de l'installation. |
+| `VPS_ALERT_TO` (à défaut `CONTACT_NOTIFY_TO`) | Destinataire du courriel d'intervention (échec de provisionnement, manque de capacité). SMTP comme `contact.notify`. |
+| `PROXMOX_CONTRACT_URL`, `PROXMOX_CONTRACT_TOKEN`, `PROXMOX_CONTRACT_NODE`, `PROXMOX_CONTRACT_FINGERPRINT`, `PROXMOX_CONTRACT_TEMPLATE_VMID`, `PROXMOX_CONTRACT_MUTATE=1` | Test de contrat contre un VRAI Proxmox (voir plus bas). Sans `PROXMOX_CONTRACT_URL` : ignoré, avec un avertissement. |
+
+### Tables (base `app`)
+
+`vps_plans` (taille, prix mensuel et annuel en **cents CAD** avant taxes, gabarit, statut `draft → approved → published → retired`, `is_dev_sample`), `vps_apps` (application ou fiche guide, version épinglée, licence SPDX + URL, avertissements, ports, script d'installation versionné et **somme SHA-256 contrainte en base** : `sha256(script)` doit égaler la colonne), `proxmox_servers` (hôte, nœud, région, capacité, pool d'adresses, **référence** du jeton dans le Coffre, TLS `verify` ou `pinned` + empreinte, état `draft/ready/maintenance/offline`, dernier contrôle), `os_templates` (gabarit cloud-init par serveur : vmid, utilisateur), `vps_orders` (clé d'idempotence fournie par le formulaire, prix et version de catalogue figés, clé SSH publique, ids Stripe), `vps_instances` (serveur, vmid, IP, état, étape, bail d'exécution, ancienne VM gardée), `vps_events` (journal **en ajout seulement**, déclencheur SQL). Les plans et applications se publient par version de catalogue (`config_versions`, collection `vps_catalog`, même flux que les modèles : brouillon → approuvé → publié, contenu figé, aperçu des différences). La version publiée « appliquée » porte les prix Stripe (`applied_detail.stripe`) : une commande n'utilise jamais qu'un prix de la version publiée ; ajouter une application conserve les prix, en changer un exige de relancer « Publier vers Stripe ».
+
+**Garde de publication** : prix présent et > 0 (jamais 0 $), annuel < 12 mois, gabarit prêt sur un serveur prêt de la région, plan de développement refusé si `NODE_ENV=production`, application installable = licence permissive (MIT, Apache-2.0, BSD, ISC), script présent avec somme exacte, version épinglée, jamais n8n / Open WebUI / Dify (fiches guide seulement avec avertissement de licence, D8).
+
+### Applications du catalogue (licences vérifiées le 27/10/2026 sur les dépôts officiels)
+
+| Code | Licence | Version | Image (version + empreinte) |
+|---|---|---|---|
+| `hermes-agent` | MIT (Nous Research) | v0.22.5 | `nousresearch/hermes-agent:v0.22.5@sha256:9c556157…238d` |
+| `openclaw` (durci : 1 port en 127.0.0.1, jeton, `cap_drop ALL`, pas de socket Docker) | MIT (OpenClaw Foundation) | 2026.10.7 | `ghcr.io/openclaw/openclaw:2026.10.7@sha256:fb26f084…1afa` |
+| `ollama-anythingllm` | MIT / MIT | 0.40.11 / 1.19.0 | Ollama en réseau interne seulement (aucune authentification) |
+| `anythingllm` | MIT (Mintplex Labs) | 1.19.0 | `mintplexlabs/anythingllm:1.19.0@sha256:daf5a6ae…833e` |
+| `librechat` | MIT | v0.8.8 | + MongoDB 8.0.20 ; **sans** le service `admin-panel` du compose officiel (AGPL-3.0) |
+
+Guides (jamais installés ni revendus) : `n8n` (Sustainable Use License), `open-webui` (clause de marque), `dify` (multi-locataire et logo). Les applications sont chargées en **brouillon** (`bun run --cwd web vps:seed`) ; le fondateur les approuve et les publie. Tous les ports d'application sont en `127.0.0.1` (accès par **tunnel SSH**) : le moteur sait ouvrir un port `public` au pare-feu, mais aucune application du catalogue n'en déclare (pas de TLS par VPS). Le client trouve ses accès générés dans `~/nexora-acces.txt` (0600). **Les scripts n'ont pas été exécutés sur une vraie VM** : syntaxe vérifiée (`bash -n`) et exécution à blanc avec Docker simulé (tests `packages/vps/src/seed/scripts.test.ts`) ; à éprouver sur la première VM réelle. `shellcheck` n'est pas installé sur pc6. Non vérifié : mémoire minimale réelle d'Ollama et de LibreChat ; avis NVD (seulement GHSA GitHub) ; OpenClaw a 722 avis GHSA en 2026 — la version proposée est postérieure à tous les correctifs publiés, VPS dédié obligatoire.
+
+### Client Proxmox, simulateur et test de contrat
+
+- **Client** (`packages/vps/src/proxmox/`) : `fetch`-like sur `node:https`, jeton `Authorization: PVEAPIToken=…` lu du Coffre à chaque appel (jamais gardé ni journalisé ; les messages d'erreur sont courts et nettoyés). TLS : `verify` (chaîne du système) ou `pinned` (certificat auto-signé accepté seulement avec l'empreinte SHA-256 enregistrée ; la connexion est vérifiée **avant** d'écrire l'en-tête d'autorisation) ; HTTP en clair refusé hors boucle locale. Opérations : `nextid`, clone complet (`newid`, `name`, `description`, `storage`, `pool`), configuration cloud-init par `PUT /config` (synchrone chez Proxmox : `ciuser`, `sshkeys` URL-encodées, `ipconfig0`, `nameserver`, jamais de `cipassword`), redimensionnement, démarrage / arrêt propre / arrêt forcé / redémarrage, suppression (`purge`), instantanés, pare-feu (options, règles, ipset anti-usurpation), agent invité (adresse IPv4), suivi des tâches par **UPID**.
+- **Simulateur** (`proxmox/simulator.ts`) : serveur HTTP local en mémoire. **Source : `apidoc.js` officiel** de https://pve.proxmox.com/pve-docs/api-viewer/ (en-tête `Last-Modified` du 24/09/2026, somme SHA-256 de la source enregistrée ; Proxmox ne publie pas de numéro de version dans ce fichier — la version simulée répond « 9.0.3 » à titre indicatif). 27 chemins en sont extraits par `bun run --cwd packages/vps apidoc` vers `apidoc-subset.json`. Chaque requête est validée contre ce schéma (propriétés inconnues refusées, obligatoires, types, bornes, énumérations, propriétés à indice `ipconfig[n]`), comme le fait Proxmox (400) ; les réponses sont validées contre `returns` dans les tests (cela a déjà détecté des champs manquants). Le schéma ne décrit pas : messages d'erreur d'exécution, verrous (`clone`, `snapshot`), délai de l'agent, démarrer une VM déjà démarrée — reproduits de mémoire, **à confirmer par le test de contrat**.
+- **Test de contrat** (`proxmox/contract.test.ts`) : la même suite tourne toujours contre le simulateur et, si `PROXMOX_CONTRACT_URL` est défini, contre un vrai serveur (lectures seules ; le cycle de vie complet — clone d'un gabarit, cloud-init, démarrage, instantané, suppression d'une VM `nexora-contract-*` — seulement avec `PROXMOX_CONTRACT_MUTATE=1`). Non exécuté contre un vrai Proxmox à ce jour.
+
+### Brancher un serveur Proxmox (administration)
+
+1. Dans Proxmox : créer un utilisateur/jeton API dédié (ex. `nexora@pve!provision`) à droits restreints au pool ou au nœud (clone, configuration, alimentation, instantanés, pare-feu, stockage — liste exacte à confirmer par le test de contrat), avec le certificat du serveur (ou son empreinte SHA-256 si auto-signé).
+2. Préparer un **gabarit cloud-init** (image Debian 12 ou Ubuntu 24.04 avec agent invité `qemu-guest-agent`, disque `scsi0`, lecteur cloud-init) et noter son vmid ; le VM doit exposer AVX2 (type de CPU `host`) pour AnythingLLM.
+3. Dans Directus, module **VPS** : créer le serveur (hôte, nœud, capacité allouable, pool d'adresses, stockage), « Coller le jeton Proxmox » (→ Coffre, référence `proxmox.<code>`, type `proxmox`), ajouter le gabarit, **« Tester la connexion »** : le serveur passe à « prêt » si Proxmox répond, que le nœud existe et (pour chaque gabarit) que la VM modèle existe avec `template: 1`.
+4. Générer la paire de clés SSH du worker (`ssh-keygen -t ed25519 -C nexora-worker`), coller la clé privée dans le Coffre (`vps.worker_ssh_key`, type `other`) et mettre la clé publique dans `VPS_WORKER_SSH_PUBLIC_KEY`.
+
+### Machine à états du provisionnement (`packages/vps/src/provision.ts`)
+
+`placement → clone → configure → firewall → start → await_agent → install → verify → done` (réinstallation : `snapshot` à la place de `placement`). Idempotente et reprenable à chaque étape :
+- **Un seul worker par instance** : bail d'exécution en base (`lease_until`, temps de la base) ; un second worker reçoit « occupé » (testé avec 10 workers concurrents : un clone, une installation).
+- **Clé de commande → vmid** : le vmid est réservé en base (verrou consultatif par serveur, index unique) avant tout appel ; la VM est reconnue à son **nom** (`nx-<commande>`) : à la reprise, un clone existant n'est pas recréé (testé : plantage entre le clonage et la suite). Une VM étrangère sur le vmid réservé fait passer au vmid suivant.
+- **Placement** : serveur prêt de la région, avec gabarit prêt, capacité (vCPU, RAM, disque déclarés moins les instances vivantes) et adresse libre ; sinon la commande **attend** (reprise toutes les 5 min, un courriel à l'opérateur une seule fois, échec après 24 h).
+- **Budget d'exécution** (150 s, sous le bail de 5 min de la file) : au-delà, ou quand l'agent tarde, l'exécution rend la main et une tâche de continuation (`vps-provision:<commande>:c<n>`) reprend à l'étape.
+- **Compensation** : à la dernière tentative ou sur échec définitif (somme du script incorrecte, application retirée) : VM partielle supprimée (seulement si elle porte notre nom), adresse libérée, commande et instance « failed », événement `provision_failed`, courriel à l'opérateur (`vps.alert`). **Aucun remboursement automatique** : l'opérateur décide dans Stripe.
+- **Installation** : script de la version de catalogue de la commande, SHA-256 recalculé avant exécution, envoyé sur l'entrée standard de `bash -s` par SSH (`sudo -n`), clé d'hôte enregistrée à la première connexion ; la clé du worker est ensuite retirée d'`authorized_keys` et de cloud-init.
+- **Pare-feu Proxmox par VM** : politique d'entrée DROP, SSH (22) + ICMP + ports d'application déclarés publics ; **port 25 sortant fermé** ; `ipfilter` (ipset de l'adresse attribuée) et `macfilter`, pas de DHCP ni d'annonces de routeur ; règles marquées `nexora:` (rejouables, jamais de règle manuelle touchée). Limites d'abus : plafond par organisation, limitation de débit des routes, un VPS isolé par client.
+
+### Cycle de vie et abonnement (D7)
+
+Le webhook S4 appelle `reconcileVpsSubscription` dans la **même transaction** après chaque transition d'abonnement (`web/src/server/billing/webhook.ts`) : première facture payée → commande « paid » + tâche de provisionnement unique ; la métadonnée `vps_order_id` relie la commande même si la facture précède la fin de session ; un abonnement VPS ne consulte ni Directus ni les crédits inclus. Règles (`lifecycle.ts`, testées) : `past_due` dans le délai de grâce (7 jours, S4) = service intact ; grâce écoulée, `unpaid` ou `paused` = **suspension** (arrêt propre, données gardées) ; retour à `active` = **reprise** ; `canceled` = **résiliation** (VM arrêtée, rétention de 7 jours, puis suppression). Aucun événement Stripe ne marque la fin d'une grâce ni d'une rétention : le **balayage** `vps.sweep` (toutes les minutes, se replanifie, premier balayage au démarrage du worker) met en file les suspensions et suppressions dues, reprend les provisionnements abandonnés et fait expirer les commandes impayées de plus de 24 h. Chaque tâche revérifie l'état courant avant d'agir. **Réinstallation** : instantané `avant-reinstall-…` de l'ancienne VM, arrêt, renommage `<nom>-old`, carte réseau retirée, conservation 7 jours (supprimée ensuite par le balayage), nouvelle VM clonée avec la **même adresse**. Le client « résilie » à la fin de la période payée (`cancel_at_period_end` chez Stripe).
+
+### API
+
+Administration (`Authorization: Bearer <NEXORA_APP_ADMIN_TOKEN>`) `/api/admin/vps/*` : `GET /` ; `GET|POST /servers`, `GET|PATCH /servers/{id}`, `POST /servers/{id}/test`, `GET|POST /servers/{id}/templates`, `PATCH /templates/{id}` ; `GET|POST /plans`, `GET|PATCH /plans/{id}` ; `GET|POST /apps`, `GET|PATCH /apps/{id}` ; `GET|POST /versions`, `GET /versions/{id}`, `POST /versions/{id}/approve|publish` ; `POST /stripe/publish` (« Publier vers Stripe » : produit et prix mensuel/annuel hors taxes par plan publié, réutilise `publishPlanToStripe`) ; lectures seules `GET /orders`, `/instances`, `/events?instanceId=` (identifiants techniques seulement : ni clé SSH, ni courriel, ni nom d'organisation). L'état « prêt » d'un serveur ne se modifie pas à la main. Client (session, origine contrôlée, organisation tirée de la session) : `POST /api/vps/checkout` (propriétaire ; `plan`, `app`, `term`, `sshKey`, `requestId`, `lang`), `POST /api/account/vps/{id}/action` (`start|stop|reboot` : tout membre ; `reinstall|cancel` : propriétaire + `confirm: true`).
+
+### Module Directus « VPS » (D14)
+
+Dans le bundle `nexora-cms` : endpoint relais `nexora-vps` (administrateurs Directus seulement, liste fermée de chemins, rien de persisté) et module « VPS » (serveurs avec « Coller le jeton Proxmox » → Coffre et « Tester la connexion », gabarits, plans et applications avec Approuver / Publier / Retirer, versions avec aperçu des différences et « Publier vers Stripe », vue en lecture seule des commandes, instances et journal). **Pour qu'il apparaisse dans la barre de Directus** : appliquer `docs/propositions/s6-cms-module-vps.diff` (ajoute `nexora-vps` à `module_bar` de `cms/scripts/apply.ts`) puis `apply.ts` — non fait ici, par consigne. Le composant Vue n'a pas été ouvert dans un Directus réel.
+
+### Preuve et vérifications
+
+`WRITE_CAPTURE=1 bun run --cwd web vitest run src/server/vps/e2e.test.ts` (pile de développement requise : PostgreSQL, Mailpit, stripe-mock) rejoue tout le parcours avec le vrai worker, le simulateur, des webhooks signés et une horloge simulée ; compte rendu : `docs/captures/s6/e2e-vps.md`. Tests de concurrence : `packages/vps/src/engine.test.ts` (10 workers, une seule VM), `worker/src/vps-handlers.test.ts` (deux workers réels, tâches de continuation).
+
+### Limites connues (non livrées)
+
+Aucun serveur Proxmox réel branché : client, simulateur et scripts d'installation n'ont jamais parlé à un vrai Proxmox ni à une vraie VM (le test de contrat est prêt) ; pas de TLS ni de domaine par VPS (accès aux applications par tunnel SSH) ; pas de console web ni de sauvegardes en libre-service (la récupération d'une ancienne VM de réinstallation passe par l'opérateur) ; pas de remboursement automatique (par conception) ; pas de limitation de bande passante ni de quota mensuel appliqué (`bandwidthGb` est informatif) ; un seul serveur par commande, pas de migration entre serveurs ; l'application « Aucune application » (VPS vierge) n'existe pas — les guides n8n / Open WebUI / Dify renvoient au contact ; Postfix/courriel sortant autre que le port 25 non filtré ; Coolify non utilisé ; entrée « VPS » de la navigation et URL du sitemap à ajouter (voir le compte rendu) ; les prix, la garantie, les SLA, l'adresse légale restent au fondateur.

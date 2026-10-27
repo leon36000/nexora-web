@@ -16,6 +16,7 @@ import {
   subscriptions,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { onVpsCheckoutCompleted, reconcileVpsSubscription } from "@nexora/vps";
 import type Stripe from "stripe";
 import { type BillingConfig, configVersion } from "../ledger/config";
 import {
@@ -78,6 +79,8 @@ interface Ctx {
   /** Instant de l'événement chez Stripe : les délais (grâce, échéances) en dépendent, pas de l'horloge locale. */
   at: Date;
   created: number;
+  /** Identifiant de l'événement Stripe : sert de clé aux tâches VPS qu'il déclenche. */
+  eventId: string;
   cfgVersion: string;
 }
 
@@ -100,6 +103,7 @@ export async function processStripeEvent(
       deps,
       at: new Date(event.created * 1000),
       created: event.created,
+      eventId: event.id,
       cfgVersion: configVersion(deps.config),
     };
     const result = await dispatch(ctx, event);
@@ -217,6 +221,15 @@ async function onCheckoutSession(
         lastEventCreated: 0,
       })
       .onConflictDoNothing();
+    // VPS (S6) : la commande est reliée à la session et à l'abonnement ; le provisionnement attend
+    // le paiement confirmé (`invoice.paid`), jamais la seule fin de la session.
+    if (session.metadata.kind === "vps" && session.metadata.vps_order_id)
+      await onVpsCheckoutCompleted(tx, {
+        orderId: session.metadata.vps_order_id,
+        organizationId: orgId,
+        sessionId: session.id,
+        subscriptionId: subId,
+      });
     return "processed";
   }
 
@@ -443,6 +456,8 @@ interface SubUpdate {
   periodEnd?: Date | null;
   cancelAtPeriodEnd?: boolean;
   configVersion?: string | null;
+  /** Commande VPS portée par la métadonnée de l'abonnement (S6). */
+  vpsOrderId?: string | null;
 }
 
 /** Verrouille (ou crée) la ligne d'abonnement, applique la machine à états et enregistre le résultat. */
@@ -497,6 +512,15 @@ async function updateSubscription(ctx: Ctx, u: SubUpdate): Promise<SubState> {
       updatedAt: sql`now()`,
     })
     .where(eq(subscriptions.id, row.id));
+  // VPS (S6) : provisionne, suspend, reprend ou résilie selon le nouvel état (même transaction).
+  await reconcileVpsSubscription(tx, {
+    stripeSubscriptionId: u.stripeSubscriptionId,
+    organizationId: u.orgId,
+    linkOrderId: u.vpsOrderId,
+    state: { status: next.status, graceEndsAt: next.graceEndsAt },
+    eventId: ctx.eventId,
+    now: ctx.at,
+  });
   return next;
 }
 
@@ -531,7 +555,9 @@ async function onInvoice(
   const line = invoice.lines?.data[0];
   const priceId = line?.pricing?.price_details?.price ?? null;
   const period = line?.period ?? null;
-  const plan = await findPlan(deps, meta.plan_code, priceId);
+  const isVps = meta.kind === "vps";
+  // Un abonnement VPS n'est pas un plan Directus : pas de recherche de plan ni de crédits inclus.
+  const plan = isVps ? null : await findPlan(deps, meta.plan_code, priceId);
 
   await updateSubscription(ctx, {
     stripeSubscriptionId: subId,
@@ -543,9 +569,11 @@ async function onInvoice(
     periodStart: period ? new Date(period.start * 1000) : null,
     periodEnd: period ? new Date(period.end * 1000) : null,
     configVersion: plan ? planConfigVersion(plan) : null,
+    vpsOrderId: isVps ? (meta.vps_order_id ?? null) : null,
   });
 
   if (
+    !isVps &&
     type === "invoice_paid" &&
     invoice.billing_reason &&
     GRANTING_REASONS.has(invoice.billing_reason)
@@ -589,9 +617,10 @@ async function onSubscription(
 
   const item = sub.items?.data[0];
   const priceId = item?.price?.id ?? null;
+  const isVps = sub.metadata.kind === "vps";
   let planCode: string | null = sub.metadata.plan_code ?? null;
   let cfg: string | null = null;
-  if (!planCode && priceId) {
+  if (!isVps && !planCode && priceId) {
     try {
       const plan = await deps.plans.getByPriceId(priceId);
       planCode = plan?.code ?? null;
@@ -618,6 +647,7 @@ async function onSubscription(
       : null,
     cancelAtPeriodEnd: sub.cancel_at_period_end ?? false,
     configVersion: cfg,
+    vpsOrderId: isVps ? (sub.metadata.vps_order_id ?? null) : null,
   });
   return "processed";
 }

@@ -11,13 +11,15 @@
     "vault:rotate": "bun scripts/vault-rotate.ts",
     "check:contrast": "bun scripts/contrast.mjs",
     "verify:ui": "bun scripts/verify-ui.mjs",
-    "capture": "bun scripts/capture.mjs"
+    "capture": "bun scripts/capture.mjs",
+    "vps:seed": "bun scripts/seed-vps.ts"
   },
   "dependencies": {
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
     "@nexora/seo": "workspace:*",
     "@nexora/vault": "workspace:*",
+    "@nexora/vps": "workspace:*",
     "altcha": "^3.5.0",
     "altcha-lib": "^2.8.0",
     "better-auth": "1.7.14",

@@ -71,6 +71,8 @@ const baseInput = {
   appRoutes: [] as AppRoute[],
   modelIds: [] as string[],
   catalogPublishedAt: null as string | null,
+  vpsAppCodes: [] as string[],
+  vpsPublishedAt: null as string | null,
 };
 
 describe("sitemap", () => {
@@ -186,6 +188,28 @@ describe("sitemap", () => {
       sm.find((e) => e.url === `${SITE}/en/modeles/nexora/glm-5-3`)?.alternates
         ?.languages,
     ).toMatchObject({ "fr-CA": `${SITE}/modeles/nexora/glm-5-3` });
+  });
+
+  it("/vps et ses fiches d'application publiées, datées par la publication du catalogue VPS", () => {
+    const vps = availableAppRoutes(() => true).filter((r) => r.path === "/vps");
+    const sm = buildSitemap({
+      ...baseInput,
+      appRoutes: vps,
+      vpsAppCodes: ["openclaw"],
+      vpsPublishedAt: "2026-10-27T09:00:00.000Z",
+    });
+    expect(sm.map((e) => e.url)).toEqual([
+      `${SITE}/vps`,
+      `${SITE}/en/vps`,
+      `${SITE}/vps/openclaw`,
+      `${SITE}/en/vps/openclaw`,
+    ]);
+    for (const e of sm)
+      expect(e.lastModified).toEqual(new Date("2026-10-27T09:00:00.000Z"));
+    expect(
+      sm.find((e) => e.url === `${SITE}/en/vps/openclaw`)?.alternates
+        ?.languages,
+    ).toMatchObject({ "fr-CA": `${SITE}/vps/openclaw` });
   });
 
   it("/vps n'est listée que si la page existe", () => {

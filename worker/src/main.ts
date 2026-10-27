@@ -1,8 +1,9 @@
-import { createDb } from "@nexora/db";
+import { createDb, enqueue } from "@nexora/db";
 import { loadRootEnv } from "@nexora/db/env";
 import { createLogger } from "@nexora/log";
 import { defaultRegistry } from "./handlers.ts";
 import { startScheduler } from "./scheduler.ts";
+import { SWEEP_EVERY_MS, vpsDepsFromEnv } from "./vps-handlers.ts";
 import { Worker } from "./worker.ts";
 
 loadRootEnv();
@@ -14,9 +15,18 @@ if (!url) {
 }
 
 const handle = createDb(url, { max: 10 });
+const vps = vpsDepsFromEnv(handle.db, log);
+if (!vps)
+  log.warn("VPS : NEXORA_VAULT_MASTER_KEY absente, provisionnement désactivé");
+// Premier balayage ; chaque balayage planifie le suivant (clé unique par tranche de temps).
+else
+  await enqueue(handle.db, {
+    type: "vps.sweep",
+    idempotencyKey: `vps-sweep:${Math.floor(Date.now() / SWEEP_EVERY_MS)}`,
+  });
 const worker = new Worker({
   db: handle.db,
-  registry: defaultRegistry({ db: handle.db, log }),
+  registry: defaultRegistry({ db: handle.db, log, vps }),
   logger: log,
   concurrency: Number(process.env.WORKER_CONCURRENCY ?? 4),
   pollIntervalMs: Number(process.env.WORKER_POLL_MS ?? 1000),

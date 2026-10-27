@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import {
@@ -9,7 +9,7 @@ import {
   formatDate,
   formatMicroCad,
 } from "@/i18n/account";
-import type { Lang } from "@/i18n/config";
+import { type Lang, localizePath } from "@/i18n/config";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { SubscriptionPlan } from "@/server/billing/plans";
 import type { BillingConfig } from "@/server/ledger/config";
@@ -166,6 +166,23 @@ export function Dashboard({
           )}
         </Card>
       </div>
+
+      {/* VPS */}
+      <section aria-labelledby="dashboard-vps-title" className="mt-16">
+        <h2 id="dashboard-vps-title" className="text-h3 text-fg">
+          {d.vps.title}
+        </h2>
+        <p className="mt-3 max-w-2xl text-body text-fg-muted">{d.vps.lead}</p>
+        <div className="mt-5">
+          <ButtonLink
+            href={localizePath(lang, "/compte/vps")}
+            variant="secondary"
+            arrow
+          >
+            {d.vps.link}
+          </ButtonLink>
+        </div>
+      </section>
 
       {/* Abonnements */}
       <section aria-labelledby="subs-title" className="mt-16">

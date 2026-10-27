@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import type { Database } from "./client.ts";
+import type { Executor } from "./ledger.ts";
 import { jobs } from "./schema.ts";
 
 export type Job = typeof jobs.$inferSelect;
@@ -14,7 +14,7 @@ export interface EnqueueInput {
 }
 
 /** Ajoute une tâche à la file. Idempotent lorsque `idempotencyKey` est fournie. */
-export async function enqueue(db: Database, input: EnqueueInput): Promise<Job> {
+export async function enqueue(db: Executor, input: EnqueueInput): Promise<Job> {
   const values = {
     type: input.type,
     payload: input.payload ?? {},

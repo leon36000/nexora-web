@@ -214,5 +214,10 @@ export const accountEnCA: AccountDictionary = {
       button: "Open the billing portal",
       none: "The portal will be available after your first payment.",
     },
+    vps: {
+      title: "My VPS",
+      lead: "Your virtual private servers: status, SSH access and everyday operations.",
+      link: "See my VPS",
+    },
   },
 };

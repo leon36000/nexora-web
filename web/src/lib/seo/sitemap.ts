@@ -15,6 +15,10 @@ export type SitemapInput = {
   modelIds: readonly string[];
   /** Date de publication de la version de catalogue affichée ; null si inconnue. */
   catalogPublishedAt: string | null;
+  /** Applications VPS publiées (codes publics de /vps/<application>). */
+  vpsAppCodes: readonly string[];
+  /** Date de publication du catalogue VPS affiché ; null si inconnue. */
+  vpsPublishedAt: string | null;
 };
 
 const pathOf = (slug: string) => (slug === "" ? "/" : `/${slug}`);
@@ -81,10 +85,20 @@ export function buildSitemap(input: SitemapInput): MetadataRoute.Sitemap {
         alternates: { languages },
       });
   };
+  const vpsDate = realDate(input.vpsPublishedAt);
   for (const route of input.appRoutes) {
-    appEntry(route.path, route.dated === "catalog" ? catalogDate : undefined);
+    appEntry(
+      route.path,
+      route.dated === "catalog"
+        ? catalogDate
+        : route.dated === "vps"
+          ? vpsDate
+          : undefined,
+    );
     if (route.path === "/modeles")
       for (const id of input.modelIds) appEntry(`/modeles/${id}`, catalogDate);
+    if (route.path === "/vps")
+      for (const code of input.vpsAppCodes) appEntry(`/vps/${code}`, vpsDate);
   }
   return out;
 }

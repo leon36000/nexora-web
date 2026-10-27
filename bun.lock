@@ -58,6 +58,15 @@
         "@nexora/db": "workspace:*",
       },
     },
+    "packages/vps": {
+      "name": "@nexora/vps",
+      "version": "0.1.0",
+      "dependencies": {
+        "@nexora/db": "workspace:*",
+        "@nexora/log": "workspace:*",
+        "drizzle-orm": "^0.45.4",
+      },
+    },
     "web": {
       "name": "web",
       "version": "0.1.0",
@@ -66,6 +75,7 @@
         "@nexora/log": "workspace:*",
         "@nexora/seo": "workspace:*",
         "@nexora/vault": "workspace:*",
+        "@nexora/vps": "workspace:*",
         "altcha": "^3.5.0",
         "altcha-lib": "^2.8.0",
         "better-auth": "1.7.14",
@@ -100,6 +110,7 @@
         "@nexora/log": "workspace:*",
         "@nexora/seo": "workspace:*",
         "@nexora/vault": "workspace:*",
+        "@nexora/vps": "workspace:*",
         "chrome-launcher": "^1.2.2",
         "lighthouse": "^13.5.0",
         "node-html-parser": "^9.0.5",
@@ -389,6 +400,8 @@
     "@nexora/seo": ["@nexora/seo@workspace:packages/seo"],
 
     "@nexora/vault": ["@nexora/vault@workspace:packages/vault"],
+
+    "@nexora/vps": ["@nexora/vps@workspace:packages/vps"],
 
     "@nexora/worker": ["@nexora/worker@workspace:worker"],
 

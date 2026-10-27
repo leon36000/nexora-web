@@ -3,6 +3,7 @@ import { join } from "node:path";
 import type { Lang } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getVpsDictionary } from "@/i18n/vps";
 
 /**
  * Routes de l'APPLICATION (pas des pages Directus) à lister dans le sitemap et llms.txt. Une route n'y entre que si
@@ -16,8 +17,8 @@ export type AppRoute = {
   path: string;
   /** Dossier sous `src/app/[lang]/` qui porte la page. */
   dir: string;
-  /** Daté par la publication du catalogue (/modeles). */
-  dated: "catalog" | null;
+  /** Daté par la publication du catalogue de modèles (/modeles) ou du catalogue VPS (/vps). */
+  dated: "catalog" | "vps" | null;
   meta: (lang: Lang) => { title: string; description: string | null } | null;
 };
 
@@ -50,11 +51,14 @@ export const APP_ROUTES: readonly AppRoute[] = [
     },
   },
   {
-    // Jalon VPS : listée seulement si la page existe. Aucun texte inventé ici.
+    // Jalon VPS : listée seulement si la page existe.
     path: "/vps",
     dir: "vps",
-    dated: null,
-    meta: () => ({ title: "VPS | Nexora", description: null }),
+    dated: "vps",
+    meta: (lang) => {
+      const m = getVpsDictionary(lang).meta.vps;
+      return { title: m.title, description: m.description };
+    },
   },
 ];
 
