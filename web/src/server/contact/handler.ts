@@ -52,8 +52,17 @@ export async function handleContactSubmit(
   request: Request,
   deps: ContactDeps,
 ): Promise<Response> {
-  if (!(request.headers.get("content-type") ?? "").includes("application/json"))
+  // Type exact : « text/plain;application/json » est une requête CORS « simple » (sans prévol) qu'un site tiers peut faire envoyer.
+  if (
+    !/^application\/json\s*(?:;|$)/i.test(
+      request.headers.get("content-type") ?? "",
+    )
+  )
     return json({ error: "unsupported_media_type" }, 415);
+  // Corps annoncé trop gros : refusé sans le lire.
+  const announced = Number(request.headers.get("content-length"));
+  if (Number.isFinite(announced) && announced > MAX_BODY_CHARS * 4)
+    return json({ error: "payload_too_large" }, 413);
   const raw = await request.text();
   if (raw.length > MAX_BODY_CHARS)
     return json({ error: "payload_too_large" }, 413);

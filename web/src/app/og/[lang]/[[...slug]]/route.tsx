@@ -6,7 +6,7 @@ import { LOGO } from "@/components/brand/logo-geometry";
 import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { OG_SIZE } from "@/lib/seo/og";
-import { resolveOgTarget, stripBrand } from "@/lib/seo/og-target";
+import { ogSafeTitle, resolveOgTarget, stripBrand } from "@/lib/seo/og-target";
 import { getPublicAgents } from "@/server/agents/read";
 import { getPage } from "@/server/cms/read";
 import { getPublicCatalog } from "@/server/gateway/read";
@@ -95,8 +95,9 @@ export async function GET(
   await connection();
   const { lang, slug } = await ctx.params;
   if (!isLang(lang)) return new Response("Not found", { status: 404 });
-  const title = await titleOf(lang, slug);
-  if (!title) return new Response("Not found", { status: 404 });
+  const rawTitle = await titleOf(lang, slug);
+  if (!rawTitle) return new Response("Not found", { status: 404 });
+  const title = ogSafeTitle(rawTitle) || "Nexora AI";
 
   const clipped = title.length > 110 ? `${title.slice(0, 107)}…` : title;
   const size = clipped.length > 70 ? 56 : clipped.length > 40 ? 68 : 84;

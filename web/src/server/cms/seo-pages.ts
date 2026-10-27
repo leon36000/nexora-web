@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { cleanSlug } from "@/lib/safe-href";
 import type { CmsClient } from "./client";
 import { CmsContentError } from "./errors";
 
@@ -74,7 +75,8 @@ export async function fetchSeoPages(client: CmsClient): Promise<SeoPage[]> {
       updatedAt: r.date_updated ?? null,
       translations: (r.translations ?? []).flatMap((t) =>
         (t.languages_code === "fr-CA" || t.languages_code === "en-CA") &&
-        t.title
+        t.title &&
+        cleanSlug(t.slug) !== null
           ? [
               {
                 code: t.languages_code as "fr-CA" | "en-CA",

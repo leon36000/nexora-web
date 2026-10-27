@@ -167,6 +167,45 @@ describe("POST /api/contact : validation, anti-abus, enregistrement unique", () 
     ).toBe(413);
   });
 
+  it("le type de contenu doit être application/json : « text/plain;application/json » (requête CORS simple, sans prévol) est refusé", async () => {
+    for (const type of [
+      "text/plain;application/json",
+      "text/plain; charset=utf-8, application/json",
+      "multipart/form-data; boundary=application/json",
+      "application/jsonp",
+    ])
+      expect((await post(form(), { "content-type": type })).status, type).toBe(
+        415,
+      );
+    expect(
+      (
+        await post(form({ altcha: await proof() }), {
+          "content-type": "Application/JSON; charset=UTF-8",
+        })
+      ).status,
+    ).toBe(200);
+  });
+
+  it("refuse sans la lire un corps annoncé trop gros par Content-Length (413)", async () => {
+    let read = false;
+    const request = new Request("http://localhost:3500/api/contact", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "content-length": "9000000",
+      },
+      body: "{}",
+    });
+    const text = request.text.bind(request);
+    request.text = async () => {
+      read = true;
+      return text();
+    };
+    const res = await handleContactSubmit(request, deps);
+    expect(res.status).toBe(413);
+    expect(read).toBe(false);
+  });
+
   it("une panne de la base : 500 sans détail, la demande n'est pas perdue en silence (le visiteur peut réessayer)", async () => {
     const broken = {
       ...deps,

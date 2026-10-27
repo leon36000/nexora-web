@@ -26,10 +26,17 @@ export function normalizeEmbedOrigin(input: string): string | null {
   return url.origin;
 }
 
+/**
+ * Pages où la bulle (donc un script tiers) est INTERDITE : l'espace client (session, paiements, clés API) et les
+ * adresses techniques. Une instance WorkStudio compromise ou un jeton d'administration volé n'y exécutera rien.
+ */
+const FORBIDDEN_EMBED_PAGE = /^\/(?:compte|api|v1|admin|og|_next)(?:\/|$)/;
+
 /** Chemin du site (sans langue) : `/agents`, `/solutions/courriels`. Pas de requête ni de joker. */
 export function normalizeEmbedPage(input: string): string | null {
   const value = input.trim().toLowerCase().replace(/\/+$/, "");
   if (value === "") return "/";
+  if (FORBIDDEN_EMBED_PAGE.test(value)) return null;
   return /^\/[a-z0-9][a-z0-9/-]{0,80}$/.test(value) && !value.includes("//")
     ? value
     : null;
@@ -54,7 +61,8 @@ export function embedAppliesTo(
   pages: readonly string[],
   pathname: string,
 ): boolean {
-  return pages.includes(stripLangPrefix(pathname));
+  const path = stripLangPrefix(pathname);
+  return !FORBIDDEN_EMBED_PAGE.test(path) && pages.includes(path);
 }
 
 /**

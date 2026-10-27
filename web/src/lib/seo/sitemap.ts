@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { HTML_LANG, LANGS, type Lang, localizePath } from "@/i18n/config";
+import { cleanSlug } from "@/lib/safe-href";
 import { langOfCode } from "@/server/cms/lang";
 import type { SeoPage } from "@/server/cms/seo-pages";
 import type { AppRoute } from "./app-routes";
@@ -53,6 +54,8 @@ export function buildSitemap(input: SitemapInput): MetadataRoute.Sitemap {
     for (const t of page.translations) {
       const lang = langOfCode(t.code);
       if (!lang) continue;
+      // Un slug saisi dans Directus qui n'est pas propre ne devient jamais une adresse (le XML n'échappe rien).
+      if (cleanSlug(t.slug) === null) continue;
       const url = abs(localizePath(lang, pathOf(t.slug)));
       const canonical = t.canonical?.replace(/\/+$/, "");
       if (canonical && canonical !== url.replace(/\/+$/, "")) continue;

@@ -22,7 +22,7 @@ import {
 } from "./jsonld";
 import { buildLlmsTxt } from "./llms";
 import { ogPath } from "./og";
-import { resolveOgTarget, stripBrand } from "./og-target";
+import { ogSafeTitle, resolveOgTarget, stripBrand } from "./og-target";
 import { pageSchemaType } from "./page-schema";
 import {
   buildRobots,
@@ -83,6 +83,52 @@ const baseInput = {
   agentSlugs: [] as string[],
   agentsPublishedAt: null as string | null,
 };
+
+describe("image Open Graph : aucune requête réseau pour un emoji", () => {
+  it("retire les emoji, drapeaux, séquences ZWJ et variantes d'affichage du titre (satori irait les chercher sur un CDN)", () => {
+    expect(ogSafeTitle("Lancement 🚀 de l’IA 🇨🇦 souveraine")).toBe(
+      "Lancement de l’IA souveraine",
+    );
+    expect(ogSafeTitle("Équipe 👩‍💻 prête ✅ 1️⃣")).toBe("Équipe prête 1");
+    expect(ogSafeTitle("Titre normal – accentué é à ç")).toBe(
+      "Titre normal – accentué é à ç",
+    );
+    expect(ogSafeTitle("🚀🚀")).toBe("");
+  });
+});
+
+describe("sitemap : slugs hostiles saisis dans Directus", () => {
+  it("n'écrit jamais un slug qui n'est pas propre (injection XML, URL relative au protocole, majuscules)", () => {
+    for (const slug of [
+      "a</loc><loc>https://evil.example",
+      "/evil.com",
+      "//evil.com",
+      "a&b",
+      "A-Majuscule",
+      "../etc",
+      "a b",
+    ]) {
+      const sm = buildSitemap({
+        ...baseInput,
+        pages: [
+          page({
+            translations: [
+              {
+                code: "fr-CA",
+                slug,
+                title: "T",
+                seoTitle: null,
+                seoDescription: null,
+                canonical: null,
+              },
+            ],
+          }),
+        ],
+      });
+      expect(sm, slug).toEqual([]);
+    }
+  });
+});
 
 describe("sitemap", () => {
   it("une page traduite : deux entrées avec hreflang réciproques, x-default vers le français, lastmod réel", () => {

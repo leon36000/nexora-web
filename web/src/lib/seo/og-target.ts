@@ -48,6 +48,21 @@ export function resolveOgTarget(
   return slug === null || slug === "" ? null : { kind: "page", slug };
 }
 
+/**
+ * Titre sans emoji. Le moteur d'images (satori) va chercher chaque emoji sur un CDN tiers (jsdelivr) : flux sortant
+ * non déclaré, adresse du serveur divulguée, image cassée si la sortie est filtrée. Le texte ne garde que des lettres,
+ * chiffres et ponctuation.
+ */
+export function ogSafeTitle(title: string): string {
+  return title
+    .replace(
+      /[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{FE0F}\u{FE0E}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,
+      "",
+    )
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 /** Retire le suffixe de marque des titres de métadonnées (« Modèles | Nexora » -> « Modèles »). */
 export function stripBrand(title: string, siteName: string): string {
   return title.replace(new RegExp(`\\s*[|—-]\\s*${siteName}$`), "").trim();

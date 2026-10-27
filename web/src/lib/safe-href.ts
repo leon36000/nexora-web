@@ -75,3 +75,12 @@ export function normalizeSlug(
   for (const s of segments) if (!SLUG_SEGMENT.test(s)) return null;
   return segments.join("/");
 }
+
+/**
+ * Slug lu dans Directus (`""` pour l'accueil, `x/y` pour une page imbriquée) : `null` s'il n'est pas propre. Tout
+ * chemin construit à partir d'un slug du CMS (sitemap XML, sélecteur de langue) passe par ici.
+ */
+export function cleanSlug(slug: string | null | undefined): string | null {
+  if (slug === undefined || slug === null || slug === "") return "";
+  return normalizeSlug(slug.split("/"));
+}
