@@ -21,7 +21,10 @@ import {
  * dispositions de cartes, sur le vrai chemin de rendu des blocs. Répond 404 hors développement : seule la variable
  * NEXORA_GALERIE_MARQUE=1 l'ouvre. Jamais dans le sitemap, jamais indexée.
  */
-export const metadata: Metadata = { robots: { index: false, follow: false } };
+export const metadata: Metadata = {
+  title: "Galerie de la marque",
+  robots: { index: false, follow: false },
+};
 
 async function Gallery() {
   await connection();
