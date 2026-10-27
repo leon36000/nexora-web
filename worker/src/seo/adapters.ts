@@ -312,6 +312,8 @@ async function checkSearchConsole(
   };
 }
 
+const GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token";
+
 export async function googleAccessToken(
   doFetch: typeof fetch,
   credentials: string,
@@ -320,30 +322,29 @@ export async function googleAccessToken(
   const sa = JSON.parse(credentials) as {
     client_email?: string;
     private_key?: string;
-    token_uri?: string;
   };
   if (!sa.client_email || !sa.private_key)
     throw new Error("compte de service illisible (client_email / private_key)");
+  // L'assertion signée ne part que vers le point d'accès officiel de Google : un `token_uri` collé dans le fichier
+  // (ou falsifié) ne doit pas la livrer à un autre hôte, qui pourrait la rejouer chez Google pendant sa validité.
+  const tokenUri = GOOGLE_TOKEN_URI;
   const b64 = (v: unknown) =>
     Buffer.from(JSON.stringify(v)).toString("base64url");
   const now = Math.floor(Date.now() / 1000);
-  const unsigned = `${b64({ alg: "RS256", typ: "JWT" })}.${b64({ iss: sa.client_email, scope, aud: sa.token_uri ?? "https://oauth2.googleapis.com/token", iat: now, exp: now + 3000 })}`;
+  const unsigned = `${b64({ alg: "RS256", typ: "JWT" })}.${b64({ iss: sa.client_email, scope, aud: tokenUri, iat: now, exp: now + 3000 })}`;
   const signature = createSign("RSA-SHA256")
     .update(unsigned)
     .sign(sa.private_key)
     .toString("base64url");
-  const res = await doFetch(
-    sa.token_uri ?? "https://oauth2.googleapis.com/token",
-    {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion: `${unsigned}.${signature}`,
-      }),
-      signal: AbortSignal.timeout(15_000),
-    },
-  );
+  const res = await doFetch(tokenUri, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: `${unsigned}.${signature}`,
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
   const json = (await res.json().catch(() => null)) as {
     access_token?: string;
   } | null;

@@ -8,6 +8,7 @@
 //   5. formulaire de contact -> base -> tâche -> courriel                   (web/scripts/e2e-contact.ts, S3)
 //   6. agent hébergé WorkStudio -> appel avec la clé du client -> débit     (web/scripts/e2e-agents.ts, S7)
 //   7. agents du site : brouillon seulement, injection, budget              (worker/src/agents/runner.test.ts, S8)
+//   8. gardes d'accès, en-têtes de sécurité, flux sortants dans un navigateur  (web/scripts/check-guards.ts et audit-flux.ts, S9)
 //
 // Les parcours 2, 5 et 6 passent par un site de production lancé ici (`next start`, port E2E_PORT) sur la base
 // DATABASE_URL du .env racine. Refus de tourner sur la base « app » (E2E_ALLOW_APP=1 pour passer outre). Les
@@ -407,6 +408,21 @@ await parcours({
   milestone: "S3",
   needs: [pg, mailpit, siteNeed],
   exec: (log) => scriptStep("scripts/e2e-contact.ts", {}, log),
+});
+await parcours({
+  id: "gardes-et-flux",
+  titre:
+    "Gardes d'accès (401/403 sans identification sur toutes les routes), en-têtes de sécurité, aucune requête hors origine dans un navigateur réel",
+  milestone: "S9",
+  needs: [siteNeed],
+  exec: (log) => {
+    const a = scriptStep("scripts/check-guards.ts", {}, log);
+    const b = scriptStep("scripts/audit-flux.ts", {}, `${log}.flux`);
+    return {
+      ok: a.ok && b.ok,
+      detail: `gardes : ${a.detail} ; flux : ${b.detail}`,
+    };
+  },
 });
 const wsKey = env.WORKSTUDIO_KEY_FILE ?? "";
 const wsUrl = env.WORKSTUDIO_URL ?? "http://localhost:3200";
