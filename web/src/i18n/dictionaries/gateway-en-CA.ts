@@ -13,7 +13,7 @@ export const gatewayEnCA: GatewayDictionary = {
         "Model page for {name}: price per million tokens in Canadian dollars, context window, hosting and an example call.",
     },
     docs: {
-      title: "API | Nexora",
+      title: "API documentation | Nexora",
       description:
         "Quickstart for the Nexora API, which is OpenAI-compatible: key, first call, streaming, errors and limits.",
     },

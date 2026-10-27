@@ -9,12 +9,12 @@ export const vpsFrCA = {
     vps: {
       title: "VPS au Québec pour vos agents d’IA | Nexora",
       description:
-        "Serveurs privés virtuels (VPS) hébergés au Québec pour faire tourner vos agents et vos outils d’IA : plans comparés, applications prêtes à installer, prix en dollars canadiens avant taxes.",
+        "VPS hébergés au Québec pour vos agents et outils d’IA : plans comparés, applications prêtes à installer, prix en dollars canadiens avant taxes.",
     },
     app: {
       title: "{name} sur un VPS au Québec | Nexora",
       description:
-        "{tagline} Version {version}, licence {license}. VPS hébergé au Québec, prix en dollars canadiens avant taxes.",
+        "{tagline} Version {version}, licence {license}. VPS au Québec, prix en $ CA avant taxes.",
     },
     guide: {
       title: "Installer {name} sur votre VPS | Nexora",

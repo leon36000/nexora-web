@@ -6,7 +6,7 @@ export const agentsEnCA: AgentsDictionary = {
     list: {
       title: "Hosted agents | Nexora",
       description:
-        "Agents built in Nexora WorkStudio and callable through the Nexora API with your key: one credit balance, prices in Canadian dollars and the instance hosting location shown.",
+        "Agents built in Nexora WorkStudio, callable through the API with your key: one credit balance, prices in Canadian dollars, hosting location shown.",
     },
     agent: {
       description:

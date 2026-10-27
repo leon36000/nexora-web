@@ -9,7 +9,7 @@ export const agentsFrCA = {
     list: {
       title: "Agents hébergés | Nexora",
       description:
-        "Des agents conçus dans Nexora WorkStudio, appelables par l’API de Nexora avec votre clé : un seul décompte de crédits, des prix en dollars canadiens et l’hébergement de l’instance indiqué.",
+        "Agents conçus dans Nexora WorkStudio, appelables par l’API avec votre clé : un seul solde de crédits, prix en dollars canadiens, hébergement indiqué.",
     },
     agent: {
       description:

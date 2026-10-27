@@ -6,12 +6,12 @@ export const vpsEnCA: VpsDictionary = {
     vps: {
       title: "VPS in Quebec for your AI agents | Nexora",
       description:
-        "Virtual private servers (VPS) hosted in Quebec to run your AI agents and tools: compared plans, ready-to-install applications, prices in Canadian dollars before taxes.",
+        "VPS hosted in Quebec for your AI agents and tools: compared plans, ready-to-install applications, prices in Canadian dollars before taxes.",
     },
     app: {
       title: "{name} on a VPS in Quebec | Nexora",
       description:
-        "{tagline} Version {version}, {license} license. VPS hosted in Quebec, prices in Canadian dollars before taxes.",
+        "{tagline} Version {version}, {license} license. VPS in Quebec, prices in CAD before taxes.",
     },
     guide: {
       title: "Install {name} on your VPS | Nexora",

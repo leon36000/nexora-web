@@ -16,7 +16,7 @@ export const gatewayFrCA = {
         "Fiche du modèle {name} : prix par million de jetons en dollars canadiens, contexte, hébergement et exemple d’appel.",
     },
     docs: {
-      title: "API | Nexora",
+      title: "Documentation de l’API | Nexora",
       description:
         "Démarrage rapide de l’API de Nexora, compatible OpenAI : clé, premier appel, diffusion en continu, erreurs et limites.",
     },
