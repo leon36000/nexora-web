@@ -1,4 +1,4 @@
-import { models } from "@nexora/db";
+import { getAgentDefinition, models } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { probeHealth } from "./sante.ts";
@@ -56,5 +56,11 @@ describe("Santé des modèles : sondes gratuites, aucun appel de modèle", () =>
       status: "missing",
     });
     expect(rows.at(-1)?.detail).toContain("LITELLM_BASE_URL");
+  });
+
+  it("la mission affichée dans le module Directus dit ce que l'agent fait : des sondes, aucun appel de modèle", () => {
+    const mission = getAgentDefinition("sante")?.mission ?? "";
+    expect(mission).not.toMatch(/appel minimal/i);
+    expect(mission).toMatch(/sans appeler/i);
   });
 });
