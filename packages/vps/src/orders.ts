@@ -112,71 +112,88 @@ export async function createOrder(db: Database, input: CreateOrderInput) {
   if (hostname && !HOST.test(hostname))
     throw new OrderError("invalid_hostname", "nom d'hôte invalide");
 
-  const active = await db
-    .select({ n: sql<number>`count(*)::int` })
-    .from(vpsOrders)
-    .where(
-      and(
-        eq(vpsOrders.organizationId, input.organizationId),
-        inArray(vpsOrders.status, [
-          "awaiting_payment",
-          "paid",
-          "provisioning",
-          "fulfilled",
-        ]),
-      ),
+  // Décompte du quota et insertion dans UNE transaction, sous un verrou par organisation : des commandes
+  // simultanées (clés d'idempotence différentes) ne peuvent plus passer toutes le contrôle avant l'insertion.
+  return db.transaction(async (tx) => {
+    await tx.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext(${`vps-quota:${input.organizationId}`}))`,
     );
-  if ((active[0]?.n ?? 0) >= input.maxPerOrganization)
-    throw new OrderError(
-      "limit_reached",
-      "nombre maximal de VPS atteint pour cette organisation",
-    );
-
-  const id = crypto.randomUUID();
-  const [order] = await db
-    .insert(vpsOrders)
-    .values({
-      id,
-      organizationId: input.organizationId,
-      createdBy: input.userId ?? null,
-      idempotencyKey: input.idempotencyKey,
-      planId: plan.id,
-      planCode: plan.code,
-      appId: app.id,
-      appCode: app.code,
-      term: input.term,
-      region: plan.region as Region,
-      priceCents: price,
-      catalogVersionId: catalog.id,
-      catalogVersion: catalog.short,
-      sshPublicKey: key.normalized,
-      sshKeyFingerprint: key.fingerprint,
-      hostname: hostname || `vps-${id.slice(0, 8)}`,
-    })
-    .onConflictDoNothing({ target: vpsOrders.idempotencyKey })
-    .returning();
-  if (!order) {
-    const [existing] = await db
+    // Une demande identique arrivée entre-temps (même clé) gagne : on la rend telle quelle.
+    const [dup] = await tx
       .select()
       .from(vpsOrders)
       .where(eq(vpsOrders.idempotencyKey, input.idempotencyKey));
-    if (!existing) throw new Error("commande introuvable après conflit");
-    return { order: existing, created: false as const };
-  }
-  await recordVpsEvent(db, {
-    organizationId: order.organizationId,
-    orderId: order.id,
-    actor: "customer",
-    kind: "order_created",
-    message: `commande ${plan.code} / ${app.code}`,
-    detail: {
-      plan: plan.code,
-      app: app.code,
-      term: input.term,
-      catalog: catalog.short,
-    },
+    if (dup) {
+      if (dup.organizationId !== input.organizationId)
+        throw new OrderError("limit_reached", "clé de commande déjà utilisée");
+      return { order: dup, created: false as const };
+    }
+    const active = await tx
+      .select({ n: sql<number>`count(*)::int` })
+      .from(vpsOrders)
+      .where(
+        and(
+          eq(vpsOrders.organizationId, input.organizationId),
+          inArray(vpsOrders.status, [
+            "awaiting_payment",
+            "paid",
+            "provisioning",
+            "fulfilled",
+          ]),
+        ),
+      );
+    if ((active[0]?.n ?? 0) >= input.maxPerOrganization)
+      throw new OrderError(
+        "limit_reached",
+        "nombre maximal de VPS atteint pour cette organisation",
+      );
+
+    const id = crypto.randomUUID();
+    const [order] = await tx
+      .insert(vpsOrders)
+      .values({
+        id,
+        organizationId: input.organizationId,
+        createdBy: input.userId ?? null,
+        idempotencyKey: input.idempotencyKey,
+        planId: plan.id,
+        planCode: plan.code,
+        appId: app.id,
+        appCode: app.code,
+        term: input.term,
+        region: plan.region as Region,
+        priceCents: price,
+        catalogVersionId: catalog.id,
+        catalogVersion: catalog.short,
+        sshPublicKey: key.normalized,
+        sshKeyFingerprint: key.fingerprint,
+        hostname: hostname || `vps-${id.slice(0, 8)}`,
+      })
+      .onConflictDoNothing({ target: vpsOrders.idempotencyKey })
+      .returning();
+    if (!order) {
+      const [existing] = await tx
+        .select()
+        .from(vpsOrders)
+        .where(eq(vpsOrders.idempotencyKey, input.idempotencyKey));
+      if (!existing) throw new Error("commande introuvable après conflit");
+      return { order: existing, created: false as const };
+    }
+    await recordVpsEvent(tx, {
+      organizationId: order.organizationId,
+      orderId: order.id,
+      actor: "customer",
+      kind: "order_created",
+      message: `commande ${plan.code} / ${app.code}`,
+      detail: {
+        plan: plan.code,
+        app: app.code,
+        term: input.term,
+        catalog: catalog.short,
+      },
+    });
+    return { order, created: true as const };
   });
-  return { order, created: true as const };
 }
 
 export interface SubscriptionState {

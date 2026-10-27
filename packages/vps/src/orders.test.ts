@@ -2,6 +2,7 @@ import {
   eq,
   jobs,
   proxmoxServers,
+  sql,
   vpsEvents,
   vpsInstances,
   vpsOrders,
@@ -220,6 +221,36 @@ describe("création d'une commande", () => {
       createOrder(t.db, input({ organizationId: org, maxPerOrganization: 2 })),
       "limit_reached",
     );
+  });
+});
+
+describe("quota de commandes sous concurrence", () => {
+  it("des commandes simultanées (clés d'idempotence différentes) ne dépassent jamais le plafond", async () => {
+    const org = await newOrg(t.db);
+    const results = await Promise.allSettled(
+      Array.from({ length: 10 }, () =>
+        createOrder(
+          t.db,
+          input({ organizationId: org, maxPerOrganization: 3 }),
+        ),
+      ),
+    );
+    const ok = results.filter((r) => r.status === "fulfilled");
+    const refused = results.filter(
+      (r): r is PromiseRejectedResult => r.status === "rejected",
+    );
+    expect(ok).toHaveLength(3);
+    expect(refused).toHaveLength(7);
+    for (const r of refused)
+      expect(r.reason).toMatchObject({
+        name: "OrderError",
+        code: "limit_reached",
+      });
+    const [row] = await t.db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(vpsOrders)
+      .where(eq(vpsOrders.organizationId, org));
+    expect(row?.n).toBe(3);
   });
 });
 
