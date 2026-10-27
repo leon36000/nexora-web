@@ -1,0 +1,205 @@
+{
+  "page": "solutions-rendez-vous",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/appointments",
+    "title": "Appointments",
+    "seo_title": "AI-assisted appointment booking for small business",
+    "seo_description": "A system takes requests, proposes slots from your calendar, reminds your clients and releases cancelled slots. No slot is confirmed without being checked.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution rendez-vous.",
+      "claims": ["CL-123", "CL-124"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Appointments",
+        "headline": "Slots proposed. Reminders sent.",
+        "subheadline": "The system takes appointment requests, proposes slots from your calendar and reminds your clients. It never confirms an availability it has not checked.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See all solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un petit cabinet qui perd des créneaux.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "Slots that slip away.",
+        "body": "<p>A small practice receives appointment requests by email and by form, often outside opening hours. Confirmations are done by hand, reminders too, and a last-minute cancellation leaves a hole in the day.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "items": [
+          {
+            "title": "Requests that wait.",
+            "text": "They arrive in the evening; the reply leaves the next day, sometimes too late."
+          },
+          {
+            "title": "Forgotten reminders.",
+            "text": "Each one is a risk of a no-show."
+          },
+          {
+            "title": "Late cancellations.",
+            "text": "The freed slot does not get filled."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système, selon l'agenda connecté.",
+      "claims": ["CL-123", "CL-103", "CL-91", "CL-21", "CL-85"],
+      "fields": {
+        "columns": "4",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "What the system does.",
+        "intro": "Everything rests on a calendar actually connected to WorkStudio. Without that connection, the system is limited to recording a slot request, confirming nothing.",
+        "cards": [
+          {
+            "title": "It receives.",
+            "text": "A request arrives by email or by form. The system pulls out the need and the preferences."
+          },
+          {
+            "title": "It proposes.",
+            "text": "It looks for open slots in the connected calendar and prepares a reply with two or three options."
+          },
+          {
+            "title": "It confirms after checking.",
+            "text": "The event is created only once availability is verified in the calendar, and after a person's approval if you decide so."
+          },
+          {
+            "title": "It reminds.",
+            "text": "A scheduled workflow sends a reminder before the appointment and handles cancellations."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, bénéfice, et limites vocales.",
+      "claims": ["CL-123", "CL-124", "CL-102", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "What your team receives.",
+        "body": "<p>A calendar that fills while the team works, reminders sent without anyone remembering, cancellations handled. The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate and no gain is announced: it is measured during a pilot.</p><p>The phone is not included. No call-answering service is delivered today; a voice message dropped in as a recording can be transcribed, and live telephony is checked separately.</p>",
+        "items": [
+          {
+            "title": "Requests received.",
+            "text": "A clear queue: to handle, proposed, confirmed."
+          },
+          {
+            "title": "Prepared reminders.",
+            "text": "The wording is yours, approved once."
+          },
+          {
+            "title": "Visible cancellations.",
+            "text": "The freed slot shows up in the calendar at once."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé.",
+      "claims": ["CL-123", "CL-131", "CL-128", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "What stays under your control.",
+        "cards": [
+          {
+            "title": "No invented slot, ever.",
+            "text": "Without a connected calendar, the system records a slot request. It does not confirm an unchecked availability."
+          },
+          {
+            "title": "You decide on confirmation.",
+            "text": "You choose which appointment types are confirmed on their own and which wait for a person."
+          },
+          {
+            "title": "Limited information.",
+            "text": "For a health or wellness practice, we recommend limiting the system to administrative information (date, time, appointment type). We qualify no clinical use."
+          },
+          {
+            "title": "Reminders are yours.",
+            "text": "The wording, the timing and the channel are approved by you. Reminders relate to an existing appointment; they are not for prospecting."
+          },
+          {
+            "title": "The location of the data is written.",
+            "text": "The calendar and the requests stay inside the agreed perimeter; an external service is a disclosed choice."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution rendez-vous.",
+      "claims": ["CL-123", "CL-124", "CL-85", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Appointments: your questions.",
+        "items": [
+          {
+            "question": "Which calendars does it work with?",
+            "answer": "Those that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider."
+          },
+          {
+            "question": "Can it answer the phone?",
+            "answer": "No. No call-answering service is delivered today. The solution handles written requests (email, form)."
+          },
+          {
+            "question": "What happens when two people want the same slot?",
+            "answer": "It checks the calendar at the moment of confirming. If the slot is taken, it proposes another option rather than confirming a double booking."
+          },
+          {
+            "question": "Can it be used for care?",
+            "answer": "For administration only: request, slot, reminder. We qualify no clinical use and we recommend not routing health information through it."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See the calendar fill.",
+        "text": "We prepare a demonstration on a fictional calendar, then we talk about yours and your confirmation rules.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See customer service",
+        "secondary_href": "/en/solutions/customer-service/"
+      }
+    }
+  ]
+}

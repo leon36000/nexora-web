@@ -1,0 +1,205 @@
+{
+  "page": "deploiement-sur-place",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "deploiement/sur-place",
+    "title": "Déploiement sur place",
+    "seo_title": "Serveur d'IA sur place pour PME",
+    "seo_description": "Nexora installe le système d'IA sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Matériel et accès à vous, flux sortants listés par écrit.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du mode sur place.",
+      "claims": ["CL-72", "CL-26"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Déploiement · Sur place",
+        "headline": "L'IA sur votre serveur. Les accès sont à vous.",
+        "subheadline": "Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Ce qui sort de votre réseau, s'il y a lieu, vous est remis par écrit avant la mise en service.",
+        "primary_label": "Demander une étude de déploiement",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Comparer les deux modes",
+        "secondary_href": "/deploiement/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Périmètre sur place : schéma et liste de ce qui reste dedans et de ce qui peut sortir.",
+      "claims": ["CL-72", "CL-05", "CL-77", "CL-79"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "visual": "perimetre-sur-place",
+        "anchor_id": "perimetre"
+      },
+      "translation": {
+        "title": "Le périmètre, chez vous.",
+        "body": "<p>Le schéma montre un périmètre type\u00a0: votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel\u00a0; le schéma de votre installation vous est remis par écrit.</p>",
+        "items": [
+          {
+            "title": "Ce qui reste dans vos murs.",
+            "text": "Les documents, l'index de recherche, les conversations, les journaux et, si vous le choisissez, les modèles."
+          },
+          {
+            "title": "Ce qui peut en sortir.",
+            "text": "Les mises à jour, les vérifications de licence, et un modèle externe seulement si vous l'avez accepté par écrit."
+          },
+          {
+            "title": "Ce que nous vérifions.",
+            "text": "Chaque flux sortant est listé. Nous n'écrivons «\u00a0aucune donnée ne sort\u00a0» que si nous l'avons vérifié sur votre configuration."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Étapes de la mise en place sur place.",
+      "claims": ["CL-81", "CL-26", "CL-104", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "De l'étude à l'exploitation.",
+        "cards": [
+          {
+            "title": "Dimensionner.",
+            "text": "Le diagnostic mesure vos usages et fixe le matériel nécessaire, avant tout achat."
+          },
+          {
+            "title": "Installer.",
+            "text": "L'installation se fait en une commande sur un serveur Docker (un outil qui empaquette les logiciels), sous Linux ou macOS."
+          },
+          {
+            "title": "Configurer.",
+            "text": "Comptes, rôles, connexion unique avec votre fournisseur d'identité, modèle, connexions à vos logiciels."
+          },
+          {
+            "title": "Vérifier.",
+            "text": "Liste des flux sortants, schéma remis par écrit, test d'un cas réel."
+          },
+          {
+            "title": "Former.",
+            "text": "Usage et supervision, pour votre équipe."
+          },
+          {
+            "title": "Exploiter.",
+            "text": "Partage des tâches écrit au contrat\u00a0: mises à jour, sauvegardes, surveillance."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Qui fait quoi dans le mode sur place.",
+      "claims": ["CL-72", "CL-04", "CL-08"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "modules",
+        "anchor_id": "repartition"
+      },
+      "translation": {
+        "title": "Qui fait quoi.",
+        "cards": [
+          {
+            "title": "Vous.",
+            "text": "Vous possédez le matériel.\nVous détenez les accès et les accordez à Nexora au besoin.\nVous placez et conservez les sauvegardes.\nVous décidez des modèles et de toute option externe."
+          },
+          {
+            "title": "Nexora.",
+            "text": "Nous dimensionnons, installons et configurons.\nNous listons les flux sortants et remettons le schéma.\nNous formons votre équipe.\nNous exploitons avec vous, selon le contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Limites du mode sur place.",
+      "claims": ["CL-77", "CL-83", "CL-86", "CL-82"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Limites à connaître.",
+        "cards": [
+          {
+            "title": "Hors ligne n'est pas présumé.",
+            "text": "Un serveur chez vous peut tout de même recevoir des mises à jour ou vérifier une licence. Tout est listé."
+          },
+          {
+            "title": "Le matériel doit suivre.",
+            "text": "Un modèle sur votre serveur demande du matériel adapté. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils."
+          },
+          {
+            "title": "Pas de niveau de service annoncé.",
+            "text": "Disponibilité et délais de réponse se précisent au contrat."
+          },
+          {
+            "title": "Le matériel est dimensionné avant d'être acheté.",
+            "text": "Pas de configuration type\u00a0: elle dépend du nombre d'utilisateurs, du volume de documents et du modèle."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre au mode sur place.",
+      "claims": ["CL-72", "CL-77", "CL-08"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Sur place\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Mes données restent-elles chez moi\u00a0?",
+            "answer": "Les documents, l'index et les conversations restent sur votre serveur. Les seuls flux sortants sont ceux que nous dressons ensemble\u00a0: mises à jour, licences, et un modèle externe si vous en choisissez un."
+          },
+          {
+            "question": "Nexora accède-t-elle à mon serveur\u00a0?",
+            "answer": "Seulement par les accès que vous accordez, convenus à l'avance. Vous pouvez les retirer."
+          },
+          {
+            "question": "Puis-je l'installer chez un hébergeur de mon choix\u00a0?",
+            "answer": "Oui\u00a0: «\u00a0chez vous\u00a0» signifie sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur que vous choisissez. Son lieu figure alors au schéma des flux."
+          },
+          {
+            "question": "Et si je veux partir\u00a0?",
+            "answer": "Vous gardez votre serveur, vos documents, vos configurations et vos flux de travaux\u00a0: l'exportation est prévue au contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : étude de déploiement.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Étudions votre serveur.",
+        "text": "Dites-nous vos usages et vos contraintes. Nous vous disons ce qu'il faudrait installer, où, et ce qui sortirait du réseau.",
+        "primary_label": "Demander une étude de déploiement",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Voir le mode hébergé",
+        "secondary_href": "/deploiement/heberge-quebec/"
+      }
+    }
+  ]
+}

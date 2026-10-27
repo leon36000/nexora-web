@@ -1,0 +1,326 @@
+{
+  "page": "souverainete-loi-25",
+  "locale": "fr-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "souverainete/loi-25",
+    "title": "Loi 25 et IA",
+    "seo_title": "Loi 25 et IA en PME\u00a0: ce que la loi demande",
+    "seo_description": "Guide pour dirigeants\u00a0: ce que la Loi 25 exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora peut fournir et ce qui reste à votre entreprise.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Guide pédagogique : promesse honnête, pas un avis juridique.",
+      "claims": ["CL-L06", "CL-L05"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Souveraineté · Guide",
+        "headline": "Loi 25 et IA\u00a0: ce que la loi demande.",
+        "subheadline": "Un guide pour dirigeants non juristes\u00a0: ce que la loi exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora peut vous fournir et ce qui reste à votre entreprise. Ce n'est pas un avis juridique.",
+        "primary_label": "Parler à notre équipe",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir la souveraineté",
+        "secondary_href": "/souverainete/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Avertissement : portée du guide et position de Nexora.",
+      "claims": ["CL-L05", "CL-L06"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "avertissement"
+      },
+      "translation": {
+        "title": "À lire d'abord.",
+        "body": "<p>On appelle «\u00a0Loi 25\u00a0» la loi qui a modernisé, en 2021, les règles sur les renseignements personnels au Québec. Pour une entreprise privée, ces règles sont réunies dans la <a href=\"https://www.legisquebec.gouv.qc.ca/fr/document/lc/p-39.1\">Loi sur la protection des renseignements personnels dans le secteur privé</a>.</p><p>Ce guide résume ce que ces textes prévoient, tels que nous les avons lus sur les sites officiels. Il peut contenir des erreurs ou être dépassé. Pour votre situation, consultez un avocat ou la Commission d'accès à l'information.</p>",
+        "items": [
+          {
+            "title": "Ce guide informe.",
+            "text": "Il explique des obligations en langage courant. Les numéros d'articles servent de repères\u00a0: seul le texte de la loi fait foi."
+          },
+          {
+            "title": "Nexora ne vous rend pas conforme.",
+            "text": "Aucun logiciel et aucun fournisseur ne le fait. La responsabilité de protéger les renseignements personnels reste celle de l'entreprise qui les détient."
+          },
+          {
+            "title": "Nexora ne se déclare pas conforme non plus.",
+            "text": "Nous ne revendiquons ni attestation ni label en la matière. Nous décrivons ce que nous fournissons, et ce qui est encore en préparation."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les obligations utiles à une entreprise qui adopte l'IA, avec le repère d'article.",
+      "claims": ["CL-L01", "CL-L02", "CL-L03", "CL-L04"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "obligations"
+      },
+      "translation": {
+        "title": "Ce que la loi exige d'une entreprise.",
+        "intro": "La loi s'adresse à toute personne qui exploite une entreprise au Québec. Voici les obligations qui touchent le plus directement un projet d'IA.",
+        "cards": [
+          {
+            "title": "Un responsable désigné (art. 3.1).",
+            "text": "Par défaut, c'est la personne qui a la plus haute autorité dans l'entreprise\u00a0; elle peut déléguer la fonction par écrit. Son titre et ses coordonnées doivent être publiés sur le site de l'entreprise."
+          },
+          {
+            "title": "Des règles de gouvernance publiées (art. 3.2).",
+            "text": "Conservation et destruction des renseignements, rôles du personnel, traitement des plaintes. Ces règles se publient en termes simples sur le site."
+          },
+          {
+            "title": "Une évaluation avant le projet (art. 3.3).",
+            "text": "Tout projet d'acquisition, de développement ou de refonte d'un système d'information qui touche des renseignements personnels exige une évaluation des facteurs relatifs à la vie privée (EFVP), proportionnée à la sensibilité des renseignements. Le responsable y est consulté dès le début."
+          },
+          {
+            "title": "Un encadrement des fournisseurs (art. 18.3).",
+            "text": "Quand un fournisseur reçoit des renseignements pour exécuter un mandat ou un contrat de service, un contrat écrit doit prévoir les mesures de protection, un usage limité à ce mandat et l'obligation d'aviser en cas de violation."
+          },
+          {
+            "title": "Un encadrement hors Québec (art. 17).",
+            "text": "Avant de communiquer un renseignement à l'extérieur du Québec, il faut une EFVP. La communication est possible si l'évaluation démontre une protection adéquate, et elle fait l'objet d'une entente écrite qui en tient compte."
+          },
+          {
+            "title": "Des incidents traités (art. 3.5 à 3.8).",
+            "text": "Mesures pour limiter le préjudice, avis à la Commission et aux personnes touchées si le risque de préjudice est sérieux, et registre tenu pour tous les incidents."
+          },
+          {
+            "title": "Des personnes informées (art. 8 et 8.1).",
+            "text": "Information au moment de la collecte\u00a0; information et moyens d'activation quand une technologie permet d'identifier, de localiser ou de profiler une personne."
+          },
+          {
+            "title": "Des décisions automatisées expliquées (art. 12.1).",
+            "text": "Quand une décision repose exclusivement sur un traitement automatisé, la personne en est informée, peut connaître les raisons et les principaux facteurs, et peut présenter ses observations à quelqu'un en mesure de réviser."
+          },
+          {
+            "title": "Des droits à respecter (art. 27 et suivants).",
+            "text": "Accès et rectification\u00a0: toute personne peut demander ses renseignements\u00a0; l'entreprise doit répondre dans le délai que la loi fixe."
+          },
+          {
+            "title": "Des sanctions possibles.",
+            "text": "La loi prévoit des sanctions administratives pécuniaires et des peines pénales. Leurs montants se lisent dans le texte de la loi."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Où l'IA touche la loi : cinq moments typiques d'un projet.",
+      "claims": ["CL-L01", "CL-L02", "CL-L04"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "moments"
+      },
+      "translation": {
+        "title": "Où l'IA rencontre la loi.",
+        "body": "<p>Une IA qui lit vos courriels, vos factures ou vos dossiers clients traite des renseignements personnels. Voici les cinq moments où les obligations ci-dessus se présentent le plus souvent.</p>",
+        "items": [
+          {
+            "title": "Choisir le système.",
+            "text": "C'est le moment de l'évaluation des facteurs relatifs à la vie privée\u00a0: quels renseignements, pour quelle finalité, où, qui y accède."
+          },
+          {
+            "title": "Choisir un modèle.",
+            "text": "Un modèle qui tourne hors du Québec est une communication hors Québec\u00a0: évaluation préalable et entente écrite. Un modèle sur votre serveur évite cette question."
+          },
+          {
+            "title": "Confier l'hébergement ou l'exploitation.",
+            "text": "Un fournisseur qui héberge ou exploite le système pour vous reçoit des renseignements\u00a0: le contrat écrit et ses mesures de protection s'appliquent."
+          },
+          {
+            "title": "Laisser le système décider.",
+            "text": "Dès qu'une décision sur une personne repose uniquement sur un traitement automatisé, l'information et la possibilité de révision s'imposent."
+          },
+          {
+            "title": "Gérer un incident.",
+            "text": "Il faut savoir qui évalue, qui avise et où l'incident est consigné. Mieux vaut le décider avant qu'il arrive."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que Nexora peut fournir : fonctions du logiciel (disponibles) et documents types (prévus).",
+      "claims": [
+        "CL-22",
+        "CL-23",
+        "CL-24",
+        "CL-105",
+        "CL-96",
+        "CL-87",
+        "CL-05",
+        "CL-73"
+      ],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "nexora"
+      },
+      "translation": {
+        "title": "Ce que Nexora peut fournir.",
+        "intro": "Ces éléments peuvent soutenir votre démarche. Ils ne la remplacent pas, et le statut de chacun est indiqué.",
+        "cards": [
+          {
+            "title": "Rôles, journal d'audit et plafonds.",
+            "text": "Organisations, rôles, journal d'audit et plafonds mensuels de consommation dans WorkStudio.",
+            "href": "/workstudio/",
+            "link_label": "Voir WorkStudio",
+            "status": "disponible"
+          },
+          {
+            "title": "Le lieu de chaque modèle.",
+            "text": "Chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers\u00a0: un repère utile pour l'évaluation d'une communication hors Québec.",
+            "status": "disponible"
+          },
+          {
+            "title": "Repérage et masquage.",
+            "text": "Un service installé sur votre serveur repère noms, courriels et numéros de téléphone, et peut les masquer dans les traces ou avant un appel à un modèle externe, selon la politique choisie.",
+            "status": "disponible"
+          },
+          {
+            "title": "Des traces consultables.",
+            "text": "Chaque appel de modèle laisse une trace\u00a0: utile pour documenter ce que le système a fait et pour enquêter après un incident.",
+            "status": "disponible"
+          },
+          {
+            "title": "Un schéma des flux par installation.",
+            "text": "Remis par écrit avant la mise en service\u00a0; le modèle de schéma reste à rédiger.",
+            "href": "/centre-de-confiance/",
+            "link_label": "Voir le centre de confiance",
+            "status": "prevu"
+          },
+          {
+            "title": "Des documents types.",
+            "text": "Entente de traitement, modèle d'évaluation des facteurs relatifs à la vie privée, procédure d'incident, liste des sous-traitants et des lieux\u00a0: en préparation, aucun n'est encore disponible.",
+            "href": "/centre-de-confiance/",
+            "link_label": "Voir le centre de confiance",
+            "status": "prevu"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste à l'entreprise : sept décisions et obligations non délégables.",
+      "claims": ["CL-L05", "CL-L01"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "entreprise"
+      },
+      "translation": {
+        "title": "Ce qui reste à votre entreprise.",
+        "intro": "Nexora peut fournir des informations techniques et des outils. Ces responsabilités, elles, restent les vôtres.",
+        "cards": [
+          {
+            "title": "Désigner et publier.",
+            "text": "Nommer le responsable de la protection des renseignements personnels, publier son titre et ses coordonnées, publier vos règles de gouvernance."
+          },
+          {
+            "title": "Évaluer.",
+            "text": "Mener l'évaluation des facteurs relatifs à la vie privée de votre projet. Nous pouvons en décrire les aspects techniques\u00a0; la conclusion et la décision sont les vôtres."
+          },
+          {
+            "title": "Contracter.",
+            "text": "Signer les ententes écrites exigées avec vos fournisseurs, dont Nexora, et avec tout service situé hors du Québec."
+          },
+          {
+            "title": "Informer.",
+            "text": "Informer vos clients, vos employés et vos prospects de ce que vous recueillez, pourquoi, et du recours éventuel à une technologie qui les identifie ou les profile."
+          },
+          {
+            "title": "Répondre.",
+            "text": "Traiter les demandes d'accès, de rectification et de plainte, dans les délais de la loi."
+          },
+          {
+            "title": "Consigner.",
+            "text": "Tenir le registre des incidents et décider, avec votre responsable, de ce qui doit être déclaré."
+          },
+          {
+            "title": "Conseiller.",
+            "text": "Faire valider votre démarche par un avocat ou un conseiller en protection des renseignements personnels."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Sources officielles citées, avec date de consultation.",
+      "claims": ["CL-L06"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "sources"
+      },
+      "translation": {
+        "title": "Sources officielles.",
+        "body": "<p>Textes et pages consultés le 26 octobre 2026.</p><ul><li><a href=\"https://www.legisquebec.gouv.qc.ca/fr/document/lc/p-39.1\">Loi sur la protection des renseignements personnels dans le secteur privé</a> (LégisQuébec, RLRQ, chapitre P-39.1), texte à jour des modifications de la loi de 2021.</li><li><a href=\"https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25\">Principaux changements apportés par la Loi 25</a> (Commission d'accès à l'information).</li><li><a href=\"https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees\">Entreprises et organisations privées</a>\u00a0: responsabilités, incidents, évaluations (Commission d'accès à l'information).</li><li><a href=\"https://www.cai.gouv.qc.ca/uploads/pdfs/CAI_GU_EFVP.pdf\">Réaliser une évaluation des facteurs relatifs à la vie privée</a> (guide de la Commission, version 3.1, avril 2024).</li><li><a href=\"https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/incidents-confidentialite-mesures-securite-entreprises\">Incidents de confidentialité et mesures de sécurité</a> (Commission d'accès à l'information).</li></ul>"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions fréquentes sur la loi et l'IA.",
+      "claims": ["CL-L01", "CL-L02", "CL-L05", "CL-87"],
+      "fields": {
+        "emit_jsonld": false,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Loi 25\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Ma PME est-elle visée\u00a0?",
+            "answer": "La loi s'applique à toute personne qui exploite une entreprise au Québec et détient des renseignements personnels. Si vous traitez des renseignements sur des clients, des employés ou des fournisseurs, elle vous concerne."
+          },
+          {
+            "question": "Un hébergement au Québec règle-t-il la question\u00a0?",
+            "answer": "Il simplifie un point\u00a0: la communication hors Québec ne se pose plus pour cet hébergement. Mais les autres obligations demeurent, et un modèle externe appelé depuis le serveur reste à évaluer. La loi encadre les communications hors Québec sans les interdire."
+          },
+          {
+            "question": "Dois-je dire à mes clients que j'utilise l'IA\u00a0?",
+            "answer": "Cela dépend de ce que le système fait\u00a0: collecte, profilage, décision automatisée. Les règles d'information sont décrites plus haut. La réponse exacte pour votre cas revient à votre responsable et à votre conseiller juridique."
+          },
+          {
+            "question": "Nexora est-elle conforme\u00a0?",
+            "answer": "Nous ne nous prononçons pas ainsi\u00a0: la conformité n'est pas un état que se décerne un fournisseur. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation."
+          },
+          {
+            "question": "Où trouver les documents types promis\u00a0?",
+            "answer": "Ils sont en préparation et ne sont pas encore disponibles. Le centre de confiance en liste le statut."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : parler à l'équipe (le modèle d'EFVP n'existe pas encore).",
+      "claims": ["CL-87"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Un projet d'IA à évaluer.",
+        "text": "Parlez-nous de votre cas. Nous vous disons ce que nous documentons pour chaque mode de déploiement, et ce qu'il vous reste à décider avec votre responsable.",
+        "primary_label": "Parler à notre équipe",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir le centre de confiance",
+        "secondary_href": "/centre-de-confiance/"
+      }
+    }
+  ]
+}

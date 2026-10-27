@@ -1,0 +1,204 @@
+{
+  "page": "deploiement-heberge-quebec",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "deploiement/heberge-quebec",
+    "title": "Hébergé au Québec",
+    "seo_title": "IA hébergée au Québec pour PME",
+    "seo_description": "Nexora héberge et exploite votre système d'IA dans son infrastructure, située au Québec. Lieu, sauvegardes, journaux et sous-traitants précisés par écrit.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du mode hébergé.",
+      "claims": ["CL-02", "CL-73"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Déploiement · Hébergé",
+        "headline": "Nous hébergeons. Vous gardez le contrôle.",
+        "subheadline": "Nous hébergeons et exploitons votre système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel, et vous savez où sont vos données, vos sauvegardes et vos journaux, par écrit.",
+        "primary_label": "Demander une étude de déploiement",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Comparer les deux modes",
+        "secondary_href": "/deploiement/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Périmètre hébergé : schéma et liste.",
+      "claims": ["CL-73", "CL-05", "CL-77", "CL-79"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "visual": "perimetre-heberge",
+        "anchor_id": "perimetre"
+      },
+      "translation": {
+        "title": "Le périmètre, chez nous.",
+        "body": "<p>Le schéma montre un périmètre type\u00a0: votre équipe, notre infrastructure au Québec, vos documents. C'est un exemple, pas la configuration d'un client réel\u00a0; le schéma de votre installation vous est remis par écrit.</p>",
+        "items": [
+          {
+            "title": "Ce qui reste dans notre infrastructure.",
+            "text": "Les documents, l'index de recherche, les conversations et les journaux de votre système."
+          },
+          {
+            "title": "Ce qui peut en sortir.",
+            "text": "Les mises à jour, les vérifications de licence, et un modèle externe seulement si vous l'avez accepté par écrit."
+          },
+          {
+            "title": "Ce que nous précisons.",
+            "text": "Le lieu de l'hébergement, celui des sauvegardes et des journaux, et la liste des sous-traitants\u00a0: par écrit, avant la mise en service."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Documents remis par écrit : statuts honnêtes (en préparation).",
+      "claims": ["CL-73", "CL-87", "CL-05"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "documents"
+      },
+      "translation": {
+        "title": "Ce que nous vous remettons.",
+        "intro": "Le mode hébergé n'a de sens que s'il est prouvable. Ces documents sont ceux que nous vous remettrons avant la mise en service\u00a0; ils sont en préparation.",
+        "cards": [
+          {
+            "title": "Le lieu de l'hébergement.",
+            "text": "Adresse du lieu et clause de localisation au contrat.",
+            "status": "prevu"
+          },
+          {
+            "title": "Le lieu des sauvegardes et des journaux.",
+            "text": "Où ils se trouvent, combien de temps ils sont conservés.",
+            "status": "prevu"
+          },
+          {
+            "title": "La liste des sous-traitants.",
+            "text": "Qui intervient dans la chaîne d'hébergement, et où.",
+            "status": "prevu"
+          },
+          {
+            "title": "Le schéma des flux.",
+            "text": "Ce qui reste dans le périmètre, ce qui en sort.",
+            "href": "/centre-de-confiance/",
+            "link_label": "Voir le centre de confiance",
+            "status": "prevu"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Qui fait quoi dans le mode hébergé.",
+      "claims": ["CL-73", "CL-04", "CL-08", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "modules",
+        "anchor_id": "repartition"
+      },
+      "translation": {
+        "title": "Qui fait quoi.",
+        "cards": [
+          {
+            "title": "Vous.",
+            "text": "Vous décidez des cas d'usage et des documents.\nVous validez les actions qui engagent l'entreprise.\nVous acceptez, ou non, tout modèle externe.\nVous pouvez exporter vos documents, vos configurations et vos flux de travaux."
+          },
+          {
+            "title": "Nexora.",
+            "text": "Nous hébergeons et exploitons le système.\nNous appliquons les mises à jour et surveillons.\nNous précisons par écrit lieux, sauvegardes, journaux et sous-traitants.\nNous formons votre équipe à l'usage et à la supervision."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Limites du mode hébergé.",
+      "claims": ["CL-75", "CL-77", "CL-86", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Limites à connaître.",
+        "cards": [
+          {
+            "title": "Au Québec ne veut pas dire sans conditions.",
+            "text": "Un hébergement au Québec n'écarte pas, à lui seul, les lois qui s'appliquent à vous et à vos fournisseurs."
+          },
+          {
+            "title": "Les modèles comptent autant que le lieu.",
+            "text": "Un modèle externe appelé depuis notre infrastructure est un flux sortant. Il n'est configuré qu'avec votre accord écrit."
+          },
+          {
+            "title": "Pas de niveau de service annoncé.",
+            "text": "Disponibilité et délais de réponse se précisent au contrat."
+          },
+          {
+            "title": "Pas de bascule silencieuse.",
+            "text": "Si un modèle local est indisponible, le système ne se tourne jamais vers un service externe sans vous le dire."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre au mode hébergé.",
+      "claims": ["CL-02", "CL-73", "CL-07", "CL-08"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Hébergé\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Où sont exactement mes données\u00a0?",
+            "answer": "Dans notre infrastructure, située au Québec. Le lieu précis, celui des sauvegardes et des journaux et la liste des sous-traitants vous sont remis par écrit avant la mise en service."
+          },
+          {
+            "question": "Mes données sont-elles séparées de celles des autres clients\u00a0?",
+            "answer": "Nous décrivons la séparation entre clients dans l'étude de déploiement, pour que vous puissiez la faire vérifier. Nous n'affirmons rien à ce sujet avant de l'avoir documenté pour votre cas."
+          },
+          {
+            "question": "Utilisez-vous mes données pour entraîner un modèle\u00a0?",
+            "answer": "Non, pas sans votre autorisation spécifique. Nous ne réutilisons pas les données d'un client, ni pour un autre client ni pour entraîner un modèle, et nous l'inscrivons au contrat."
+          },
+          {
+            "question": "Et si je veux partir\u00a0?",
+            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux\u00a0: l'exportation est prévue au contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : étude de déploiement.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Étudions votre hébergement.",
+        "text": "Dites-nous vos usages et vos exigences. Nous vous disons ce que nous documenterions\u00a0: lieu, sauvegardes, journaux, sous-traitants.",
+        "primary_label": "Demander une étude de déploiement",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Voir le centre de confiance",
+        "secondary_href": "/centre-de-confiance/"
+      }
+    }
+  ]
+}

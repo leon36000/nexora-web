@@ -1,0 +1,155 @@
+{
+  "page": "conditions",
+  "locale": "en-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "terms",
+    "title": "Terms of use",
+    "seo_title": "Terms of use for the Nexora site and services",
+    "seo_description": "Purpose, accounts, offers, prices and taxes, termination, export, liability and governing law. Draft template, to be completed and reviewed before publication.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Draft · Unpublished page",
+        "headline": "Terms of use.",
+        "subheadline": "Draft template: the headings are in place; the commercial terms are for the founder to set."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "objet"
+      },
+      "translation": {
+        "title": "Purpose and acceptance.",
+        "body": "<p>These terms govern use of Nexora's site and services. The services are aimed at businesses; confirm whether they are also aimed at individuals, which changes the applicable rules [TO BE REVIEWED BY A QUEBEC LAWYER]. Method of acceptance (click, signature) [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "comptes"
+      },
+      "translation": {
+        "title": "Accounts and access.",
+        "body": "<p>Account creation and security, accuracy of information, responsibility for credentials. To be specified when the customer area opens [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "services"
+      },
+      "translation": {
+        "title": "Services and offers.",
+        "body": "<p>Description of the services (diagnosis, installation, automation, operations) and of self-service offers once they open. No self-service offer is open today. Status of each offer [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "prix"
+      },
+      "translation": {
+        "title": "Prices, taxes and payment.",
+        "body": "<p>Prices shown, before or after tax, applicable GST and QST, payment methods, billing, taxes on credits, renewals and refund terms [TO BE COMPLETED BY THE FOUNDER]. No price is set today. Text [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "resiliation"
+      },
+      "translation": {
+        "title": "Termination and export.",
+        "body": "<p>Termination terms for each party. At the end of the contract, the customer's documents, configurations and workflows remain exportable: formats, time frames and erasure of data [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 6 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "responsabilite"
+      },
+      "translation": {
+        "title": "Our liability.",
+        "body": "<p>Extent and limits of Nexora's liability, human supervision of AI outputs, force majeure [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 7 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "droit"
+      },
+      "translation": {
+        "title": "Governing law and amendments.",
+        "body": "<p>Quebec law and applicable federal laws; competent courts [TO BE COMPLETED BY THE FOUNDER]. Language of the contract documents [TO BE REVIEWED BY A QUEBEC LAWYER]. How the terms may be amended [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "To do before publishing.",
+        "body": "<p>This page is a template. It stays a draft, unpublished and not indexed, until the following points are settled.</p>",
+        "items": [
+          {
+            "title": "Fill in the markers.",
+            "text": "Every [TO BE COMPLETED BY THE FOUNDER] must be replaced with the real information; no value is invented."
+          },
+          {
+            "title": "Have a lawyer review it.",
+            "text": "The text must be reviewed by a Quebec lawyer [TO BE REVIEWED BY A QUEBEC LAWYER]."
+          },
+          {
+            "title": "Approve, then publish.",
+            "text": "Only after these two points, remove the draft status and the indexing ban."
+          }
+        ]
+      }
+    }
+  ]
+}

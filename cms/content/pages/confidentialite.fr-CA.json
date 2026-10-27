@@ -1,0 +1,208 @@
+{
+  "page": "confidentialite",
+  "locale": "fr-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "confidentialite",
+    "title": "Politique de confidentialité",
+    "seo_title": "Politique de confidentialité de Nexora",
+    "seo_description": "Responsable, renseignements recueillis, finalités, partage, conservation, droits, témoins, incidents. Gabarit en brouillon à compléter et à faire valider.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Brouillon · Page non publiée",
+        "headline": "Politique de confidentialité.",
+        "subheadline": "Gabarit en brouillon structuré selon les rubriques attendues au Québec\u00a0; chaque information propre à Nexora reste à fournir par le fondateur."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "responsable"
+      },
+      "translation": {
+        "title": "Le responsable de la protection.",
+        "body": "<p>Titre et coordonnées de la personne responsable de la protection des renseignements personnels, publiés sur le site [À COMPLÉTER PAR LE FONDATEUR]. Par défaut, c'est la personne qui a la plus haute autorité dans l'entreprise\u00a0; la désignation d'une autre personne se fait par écrit [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "recueillis"
+      },
+      "translation": {
+        "title": "Les renseignements recueillis.",
+        "items": [
+          {
+            "title": "Formulaire de contact.",
+            "text": "Nom, courriel, entreprise, besoin, mode de déploiement envisagé, message. Liste exacte [À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Compte client.",
+            "text": "Si un espace client ouvre\u00a0: renseignements d'inscription et de facturation [À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Paiement.",
+            "text": "Traité par un prestataire de paiement [À COMPLÉTER PAR LE FONDATEUR]. Précisez ce que Nexora conserve ou non [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]"
+          },
+          {
+            "title": "Journaux techniques.",
+            "text": "Adresse IP, date, pages consultées, pour la sécurité et le bon fonctionnement. Durée [À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Mesure d'audience.",
+            "text": "Outil retenu et configuration (avec ou sans témoins) [À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Données des systèmes des clients.",
+            "text": "Traitées selon l'entente conclue avec le client\u00a0; elles ne relèvent pas de cette politique."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "finalites"
+      },
+      "translation": {
+        "title": "Pourquoi nous les utilisons.",
+        "body": "<p>Répondre à votre demande, fournir et facturer le service, assurer la sécurité du site, améliorer son contenu. Les communications commerciales ne sont envoyées qu'avec un consentement, sans case précochée, et chacune permet de se désabonner. Réponse à une demande et inscription marketing sont deux choses séparées. Finalités exactes [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "partage"
+      },
+      "translation": {
+        "title": "Avec qui nous les partageons.",
+        "body": "<p>Prestataires de la chaîne de service (hébergement du site, courriel, paiement, mesure d'audience), chacun avec son rôle et son lieu [À COMPLÉTER PAR LE FONDATEUR]. Pour toute communication de renseignements à l'extérieur du Québec, une évaluation préalable et une entente écrite sont requises [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Nexora ne vend pas de renseignements personnels [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "conservation"
+      },
+      "translation": {
+        "title": "Combien de temps nous les gardons.",
+        "body": "<p>Durée de conservation de chaque catégorie, puis destruction ou anonymisation [À COMPLÉTER PAR LE FONDATEUR]. Les règles de conservation et de destruction font partie des politiques de gouvernance que la loi demande de publier [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 6 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "droits"
+      },
+      "translation": {
+        "title": "Vos droits.",
+        "body": "<p>Accéder à vos renseignements, les faire rectifier, retirer votre consentement, vous désabonner, obtenir vos renseignements dans un format technologique structuré et courant lorsque la loi le prévoit, et déposer une plainte auprès de l'entreprise puis de la Commission d'accès à l'information. Marche à suivre et adresse de la demande [À COMPLÉTER PAR LE FONDATEUR]. Délais [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 7 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "temoins"
+      },
+      "translation": {
+        "title": "Témoins et technologies de suivi.",
+        "body": "<p>Liste des témoins et des technologies utilisés, leur finalité, et la façon de les refuser. Toute technologie qui permet d'identifier, de localiser ou de profiler une personne exige une information préalable et un choix d'activation. Configuration retenue (essentiels seulement, ou autres) [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 8 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "incidents"
+      },
+      "translation": {
+        "title": "En cas d'incident.",
+        "body": "<p>Description de la procédure\u00a0: évaluation du risque de préjudice, avis à la Commission d'accès à l'information et aux personnes concernées lorsque le risque est sérieux, tenue d'un registre des incidents [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 9 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "modifications"
+      },
+      "translation": {
+        "title": "Modifications et date.",
+        "body": "<p>Date de la dernière mise à jour et mode d'information en cas de changement important [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "À faire avant publication.",
+        "body": "<p>Cette page est un gabarit. Elle reste en brouillon, non publiée et non indexée, tant que les points suivants ne sont pas réglés.</p>",
+        "items": [
+          {
+            "title": "Remplir les marqueurs.",
+            "text": "Chaque [À COMPLÉTER PAR LE FONDATEUR] doit être remplacé par l'information réelle\u00a0; aucune valeur n'est inventée."
+          },
+          {
+            "title": "Faire valider par un avocat.",
+            "text": "Le texte doit être relu par un avocat québécois [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]."
+          },
+          {
+            "title": "Approuver puis publier.",
+            "text": "Seulement après ces deux points, retirer le brouillon et l'interdiction d'indexation."
+          }
+        ]
+      }
+    }
+  ]
+}

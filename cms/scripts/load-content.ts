@@ -6,14 +6,19 @@
 //   NEXORA_ENV_FILE=/chemin/.env DIRECTUS_URL=http://localhost:8456 bun run cms/scripts/load-content.ts
 //   … load-content.ts --approuver-et-publier     approuve (Relecteur) puis promeut (Publication) : respecte la garde
 //   … load-content.ts --a-blanc                  calcule et affiche, n'écrit rien
-//   … load-content.ts --seulement=accueil        limite à une page
+//   … load-content.ts --seulement=accueil        limite à une page (ou plusieurs, séparées par une virgule)
+//   … load-content.ts --ignorer-champs-absents   retire les champs de bloc que le schéma ne connaît pas encore
+//                                                 (à republier ensuite, sans l'option, une fois le schéma à jour)
+//
+// Les pages sont découvertes dans cms/content/pages. Seules celles au statut « published » sont promues ; les gabarits
+// juridiques et le guide Loi 25 sont au statut « draft » : le script n'en approuve ni n'en promeut aucune.
 //
 // Aucun secret n'est affiché. Les comptes Éditeur et Relecteur sont créés au besoin (mot de passe aléatoire écrit
 // dans le fichier .env, jamais affiché). Les affirmations (`claims.json`) sont chargées en « en_revue » : seule une
 // personne habilitée les approuve.
 
 import { randomBytes } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -23,7 +28,11 @@ import {
   canonical,
   claimUuid,
   type DesiredPage,
+  type Locale,
+  type ManagedFields,
+  managedFields,
   mergePage,
+  type PageFile,
   readPagePair,
 } from "./lib/content";
 import {
@@ -41,12 +50,67 @@ const CONTENT_DIR = join(
   "..",
   "content",
 );
-const PAGES = ["accueil", "opsys-ai"];
+
+/** Pages du dossier `content/pages` (un fichier `<page>.fr-CA.json` par page), l'accueil et OPSYS-AI d'abord. */
+export function discoverPages(dir: string): string[] {
+  const first = ["accueil", "opsys-ai"];
+  const all = readdirSync(dir)
+    .filter((n) => n.endsWith(".fr-CA.json"))
+    .map((n) => n.slice(0, -".fr-CA.json".length))
+    .sort();
+  return [
+    ...first.filter((k) => all.includes(k)),
+    ...all.filter((k) => !first.includes(k)),
+  ];
+}
+
+/**
+ * Seule une page dont le fichier dit `published` peut être approuvée et promue par ce script.
+ * Les gabarits juridiques et la page `souverainete/loi-25` restent en brouillon (statut `draft`) : une personne les publie.
+ */
+export function isPublishable(page: Pick<DesiredPage, "status">): boolean {
+  return page.status === "published";
+}
+
+/**
+ * Retire des fichiers de page les champs de bloc que le schéma ne connaît pas encore (par exemple `tone`, `layout`,
+ * `visual`, `anchor_id` tant que les blocs enrichis ne sont pas fusionnés). Renvoie les champs retirés avec leur nombre.
+ * Sans effet quand le schéma les connaît : le contenu est alors validé en entier.
+ */
+export function stripUnknownFields(
+  pair: Record<Locale, PageFile>,
+  managed: ManagedFields = managedFields(),
+): { pair: Record<Locale, PageFile>; removed: Record<string, number> } {
+  const removed: Record<string, number> = {};
+  const strip = (f: PageFile): PageFile => ({
+    ...f,
+    blocks: f.blocks.map((b) => {
+      const m = managed[b.collection];
+      if (!m || !b.fields) return b;
+      const fields = Object.fromEntries(
+        Object.entries(b.fields).filter(([k]) => {
+          if (m.base.includes(k)) return true;
+          if (f.locale === "fr-CA") {
+            const key = `${b.collection}.${k}`;
+            removed[key] = (removed[key] ?? 0) + 1;
+          }
+          return false;
+        }),
+      );
+      return { ...b, fields };
+    }),
+  });
+  return {
+    pair: { "fr-CA": strip(pair["fr-CA"]), "en-CA": strip(pair["en-CA"]) },
+    removed,
+  };
+}
 
 const argv = process.argv.slice(2);
 export const OPTIONS = {
   publish: argv.includes("--approuver-et-publier"),
   dryRun: argv.includes("--a-blanc"),
+  ignoreMissingFields: argv.includes("--ignorer-champs-absents"),
   only: argv
     .find((a) => a.startsWith("--seulement="))
     ?.slice("--seulement=".length)
@@ -280,7 +344,19 @@ async function processPage(
     reader: Directus;
   },
 ) {
-  const want = mergePage(readPagePair(join(CONTENT_DIR, "pages"), key));
+  let pair = readPagePair(join(CONTENT_DIR, "pages"), key);
+  if (OPTIONS.ignoreMissingFields) {
+    const stripped = stripUnknownFields(pair);
+    pair = stripped.pair;
+    const list = Object.entries(stripped.removed)
+      .map(([k, n]) => `${k} ×${n}`)
+      .join(", ");
+    if (list)
+      log(
+        `  champs absents du schéma ignorés (à republier une fois le schéma à jour) : ${list}`,
+      );
+  }
+  const want = mergePage(pair);
   log(`Page « ${key} »`);
   let id = await findPageId(ctx.admin, want);
   if (!id) {
@@ -381,6 +457,12 @@ async function processPage(
     );
     return;
   }
+  if (!isPublishable(want)) {
+    log(
+      `  page au statut « ${want.status} » : jamais approuvée ni promue par ce script, elle reste en brouillon`,
+    );
+    return;
+  }
 
   // --- approbation par le Relecteur, promotion par le compte Publication ---
   if (approval.status !== "approuvée") {
@@ -463,7 +545,7 @@ async function main() {
   ) as ClaimsFile;
   await loadClaims(admin, claims);
 
-  for (const key of PAGES)
+  for (const key of discoverPages(join(CONTENT_DIR, "pages")))
     if (!OPTIONS.only || OPTIONS.only.includes(key))
       await processPage(key, ctx);
   log("Terminé");

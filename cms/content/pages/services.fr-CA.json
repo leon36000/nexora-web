@@ -1,0 +1,183 @@
+{
+  "page": "services",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "services",
+    "title": "Services",
+    "seo_title": "Services d'IA pour PME au Québec",
+    "seo_description": "Diagnostic, installation de serveurs d'IA chez vous ou au Québec, automatisation sur mesure et exploitation\u00a0: les services de Nexora pour les PME.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Hub des services : promesse et CTA.",
+      "claims": ["CL-01", "CL-80"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Services",
+        "headline": "De l'idée à l'exploitation. Avec vous.",
+        "subheadline": "Nexora conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas mis en service.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Lire la méthode",
+        "secondary_href": "/methode/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les quatre services.",
+      "claims": ["CL-80", "CL-81", "CL-84", "CL-04"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "services"
+      },
+      "translation": {
+        "title": "Quatre services, un fil conducteur.",
+        "intro": "Du premier échange à l'exploitation quotidienne, les mêmes personnes vous suivent et les mêmes règles de contrôle s'appliquent.",
+        "cards": [
+          {
+            "title": "Le diagnostic.",
+            "text": "Nous décrivons avec vous le cas visé, vos logiciels, vos volumes, le mode de déploiement envisagé et les intégrations nécessaires. Il débouche sur une estimation écrite."
+          },
+          {
+            "title": "L'installation de serveurs d'IA.",
+            "text": "Chez vous ou dans notre infrastructure au Québec\u00a0: dimensionnement, installation, configuration, vérification des flux.",
+            "href": "/services/installation-serveurs-ia/",
+            "link_label": "Voir l'installation"
+          },
+          {
+            "title": "L'automatisation sur mesure.",
+            "text": "Des agents et des flux de travaux construits pour vos processus, reliés à vos logiciels, mis à l'épreuve sur vos cas réels.",
+            "href": "/services/automatisation-sur-mesure/",
+            "link_label": "Voir le sur-mesure"
+          },
+          {
+            "title": "L'exploitation.",
+            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne, ajustons le reste\u00a0; la formation de votre équipe porte sur l'usage et la supervision.",
+            "href": "/methode/",
+            "link_label": "Voir la méthode"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qui fait varier l'estimation.",
+      "claims": ["CL-10", "CL-82", "CL-85", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "estimation"
+      },
+      "translation": {
+        "title": "Ce qui fait varier l'estimation.",
+        "body": "<p>Il n'y a pas encore de prix public, et nous n'annonçons aucun délai universel. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas. Voici ce qui la fait varier.</p>",
+        "items": [
+          {
+            "title": "Le nombre de cas traités.",
+            "text": "Un cas bien choisi d'abord\u00a0; d'autres ensuite."
+          },
+          {
+            "title": "Le volume de documents.",
+            "text": "Il pèse sur l'indexation et sur le stockage."
+          },
+          {
+            "title": "Le mode de déploiement.",
+            "text": "Chez vous ou chez nous\u00a0: les postes de coût ne sont pas les mêmes."
+          },
+          {
+            "title": "Les intégrations.",
+            "text": "Chaque logiciel à relier se qualifie\u00a0; certains demandent plus de travail que d'autres."
+          },
+          {
+            "title": "Le matériel, chez vous.",
+            "text": "Il se dimensionne selon le nombre d'utilisateurs, le volume de documents et le modèle choisi."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que nous ne faisons pas : limites écrites.",
+      "claims": ["CL-89", "CL-86", "CL-09"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce que nous ne promettons pas.",
+        "cards": [
+          {
+            "title": "Que tout soit automatisable.",
+            "text": "Toute tâche informatique n'est pas réalisable sans contraintes. Nous le disons avant de vous engager."
+          },
+          {
+            "title": "Des produits qui n'existent pas.",
+            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés\u00a0; ils peuvent faire l'objet d'une étude de faisabilité."
+          },
+          {
+            "title": "Un niveau de service annoncé.",
+            "text": "Aucun niveau de disponibilité ni délai de réponse n'est annoncé à ce jour\u00a0; ils se précisent au contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions sur les services.",
+      "claims": ["CL-04", "CL-08", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Services\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Faut-il du personnel technique chez nous\u00a0?",
+            "answer": "Non. Nous installons, exploitons avec vous et faisons évoluer le système. La formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
+          },
+          {
+            "question": "Qui s'occupe des mises à jour\u00a0?",
+            "answer": "Nous, selon ce qui est convenu au contrat. Les mises à jour sont listées parmi les flux sortants dans le schéma que nous vous remettons."
+          },
+          {
+            "question": "Et si nous voulons arrêter\u00a0?",
+            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux\u00a0: l'exportation est prévue au contrat dès le départ."
+          },
+          {
+            "question": "Peut-on commencer petit\u00a0?",
+            "answer": "C'est même la méthode\u00a0: un cas concret, mis en service et vérifié, avant d'élargir."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : diagnostic.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Commençons par un diagnostic.",
+        "text": "Décrivez-nous votre premier cas. Nous vous disons ce qui est faisable, dans quel mode, et ce qu'il faudrait pour l'installer.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Demander une étude de déploiement",
+        "secondary_href": "/contact/?sujet=etude-deploiement"
+      }
+    }
+  ]
+}

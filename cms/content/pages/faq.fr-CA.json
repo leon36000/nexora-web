@@ -1,0 +1,200 @@
+{
+  "page": "faq",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "faq",
+    "title": "Questions fréquentes",
+    "seo_title": "Questions fréquentes sur l'IA pour PME",
+    "seo_description": "Vos données, le coût, la mise en service, les erreurs de l'IA, la Loi 25\u00a0: les réponses de Nexora aux questions les plus fréquentes des dirigeants de PME.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Entrée de la FAQ.",
+      "claims": ["CL-09"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Questions fréquentes",
+        "headline": "Vos questions. Nos réponses.",
+        "subheadline": "Les objections que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement\u00a0: quand nous ne savons pas encore, ou que ce n'est pas livré, nous l'écrivons.",
+        "primary_label": "Poser une question",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir le centre de confiance",
+        "secondary_href": "/centre-de-confiance/"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Données et souveraineté : sept questions.",
+      "claims": [
+        "CL-02",
+        "CL-05",
+        "CL-06",
+        "CL-07",
+        "CL-08",
+        "CL-71",
+        "CL-77",
+        "CL-L05"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "donnees"
+      },
+      "translation": {
+        "title": "Données et souveraineté.",
+        "items": [
+          {
+            "question": "Mes données sortent-elles du Québec\u00a0?",
+            "answer": "Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous, et les seuls flux sortants sont ceux que nous dressons ensemble\u00a0: mises à jour, licences, et un modèle externe si vous en choisissez un. Chez nous, l'hébergement est dans notre infrastructure, au Québec, et nous précisons par écrit les sauvegardes, les journaux et les prestataires. Dans les deux cas, nous n'écrivons «\u00a0aucune donnée ne sort\u00a0» que si nous l'avons vérifié sur votre configuration."
+          },
+          {
+            "question": "Entraînez-vous vos modèles avec nos données\u00a0?",
+            "answer": "Non, pas sans votre autorisation spécifique. Notre règle\u00a0: les données d'un client ne servent ni à un autre client ni à entraîner un modèle sans son accord, et nous l'inscrivons au contrat."
+          },
+          {
+            "question": "Un serveur au Québec suffit-il\u00a0?",
+            "answer": "Non. La localisation des machines ne dit rien des modèles appelés, des sauvegardes, des journaux ni des sous-traitants. C'est pourquoi nous examinons quatre couches\u00a0: les données, les modèles, le calcul et l'exploitation."
+          },
+          {
+            "question": "Êtes-vous conformes à la Loi 25\u00a0?",
+            "answer": "Nous ne nous prononçons pas ainsi. La conformité d'une entreprise dépend de ses propres pratiques, de ses contrats et de sa gouvernance\u00a0: aucun logiciel et aucun fournisseur ne la confère. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation, au centre de confiance."
+          },
+          {
+            "question": "Peut-on utiliser un modèle externe\u00a0?",
+            "answer": "Oui, à deux conditions\u00a0: vous l'acceptez par écrit, et il apparaît au schéma des flux comme un flux sortant. Aucun appel à un service d'IA externe n'est configuré sans votre accord écrit, et le système ne bascule jamais vers un tel service sans vous le dire."
+          },
+          {
+            "question": "Le système fonctionne-t-il hors ligne\u00a0?",
+            "answer": "Nous ne promettons pas un fonctionnement sans aucun flux sortant\u00a0: mises à jour et licences sont listées. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas."
+          },
+          {
+            "question": "Que se passe-t-il si nous arrêtons\u00a0?",
+            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux\u00a0: l'exportation est prévue au contrat dès le départ, pas négociée à la fin."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Mise en œuvre et coûts : sept questions.",
+      "claims": ["CL-04", "CL-10", "CL-82", "CL-14", "CL-85", "CL-12", "CL-83"],
+      "fields": {
+        "emit_jsonld": false,
+        "tone": "sable",
+        "anchor_id": "mise-en-oeuvre"
+      },
+      "translation": {
+        "title": "Mise en œuvre et coûts.",
+        "items": [
+          {
+            "question": "Nous n'avons pas de personnel technique.",
+            "answer": "Ce n'est pas un obstacle. Nous installons le système, l'exploitons avec vous et le faisons évoluer\u00a0; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
+          },
+          {
+            "question": "Combien cela coûte-t-il\u00a0?",
+            "answer": "Il n'y a pas encore de prix public. Le coût dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel. Après un diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
+          },
+          {
+            "question": "Faut-il un serveur puissant\u00a0?",
+            "answer": "Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous dimensionnons le matériel selon vos usages\u00a0: nombre d'utilisateurs, volume de documents, modèle choisi. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils."
+          },
+          {
+            "question": "Combien de temps pour démarrer\u00a0?",
+            "answer": "Nous n'annonçons aucun délai universel\u00a0: il dépend de vos logiciels, de vos documents et de vos règles. Il se mesure sur un premier cas."
+          },
+          {
+            "question": "Mes logiciels actuels sont-ils compatibles\u00a0?",
+            "answer": "Un large catalogue de services se connecte à WorkStudio, mais la possibilité de relier un logiciel dépend du service concerné. Nous la vérifions au diagnostic, logiciel par logiciel."
+          },
+          {
+            "question": "Comment mes employés seront-ils formés\u00a0?",
+            "answer": "À l'usage et à la supervision\u00a0: relire, corriger, approuver, refuser. Pas à programmer."
+          },
+          {
+            "question": "Peut-on voir le produit avant de s'engager\u00a0?",
+            "answer": "Oui\u00a0: nous proposons une démonstration sur des données fictives. Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "L'IA, ses erreurs et ses limites : huit questions.",
+      "claims": [
+        "CL-21",
+        "CL-128",
+        "CL-96",
+        "CL-112",
+        "CL-124",
+        "CL-28",
+        "CL-30",
+        "CL-90"
+      ],
+      "fields": {
+        "emit_jsonld": false,
+        "tone": "clair",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "L'IA, ses erreurs, ses limites.",
+        "items": [
+          {
+            "question": "L'IA va-t-elle remplacer mes employés\u00a0?",
+            "answer": "Nos systèmes prennent les tâches répétitives\u00a0; la décision reste à une personne. Un flux de travaux peut s'arrêter sur une validation avant d'agir, et un journal garde la trace de ce qui a été fait."
+          },
+          {
+            "question": "L'IA peut-elle se tromper\u00a0?",
+            "answer": "Oui. Nous réduisons le risque en la faisant répondre à partir de vos documents, en citant les sources, et en ajoutant un garde-fou de fidélité quand c'est utile. Aucun garde-fou ne supprime l'erreur, c'est pourquoi une personne approuve ce qui engage l'entreprise."
+          },
+          {
+            "question": "Qui supervise ce que fait l'IA\u00a0?",
+            "answer": "Votre équipe. Chaque appel de modèle laisse une trace consultable, la consommation est mesurée, et des jeux de tests permettent de vérifier qu'un changement n'a rien dégradé."
+          },
+          {
+            "question": "Pourquoi pas un assistant grand public comme ChatGPT\u00a0?",
+            "answer": "Un assistant grand public répond bien aux questions générales. Ce que Nexora ajoute\u00a0: le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire."
+          },
+          {
+            "question": "Qu'est-ce qu'un agent IA\u00a0?",
+            "answer": "Un logiciel qui accomplit une tâche à votre place, avec les outils et les documents que vous lui autorisez, et qui demande votre validation avant une action importante."
+          },
+          {
+            "question": "Peut-il répondre au téléphone\u00a0?",
+            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit\u00a0; la téléphonie en direct se vérifie séparément."
+          },
+          {
+            "question": "Nexora Code, Corpus, Quanta et Helix sont-ils disponibles\u00a0?",
+            "answer": "Aucune disponibilité ni date n'est annoncée à ce stade. Seul Nexora WorkStudio est disponible, sur demande."
+          },
+          {
+            "question": "Existe-t-il une solution pour la construction\u00a0?",
+            "answer": "Oui\u00a0: OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un statut honnête (disponible, en pilote ou prévu)."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA final de la FAQ.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Une question de plus.",
+        "text": "Posez-la-nous. Si nous ne connaissons pas la réponse, ou si ce n'est pas encore livré, nous vous le dirons.",
+        "primary_label": "Poser une question",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les solutions",
+        "secondary_href": "/solutions/"
+      }
+    }
+  ]
+}

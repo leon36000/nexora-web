@@ -1,0 +1,223 @@
+{
+  "page": "solutions-factures",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/invoices",
+    "title": "Invoices",
+    "seo_title": "Automated invoice processing for small business",
+    "seo_description": "A system reads your supplier invoices, extracts the amounts, flags what does not add up and files everything in a table. A person approves before anything else.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution factures.",
+      "claims": ["CL-101", "CL-121"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Invoices",
+        "headline": "Invoices read. Discrepancies flagged.",
+        "subheadline": "The system reads your suppliers' invoices, extracts the fields you defined and shows you what looks doubtful first. Payment and bookkeeping stay in a person's hands.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See all solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : exemple d'un atelier qui reçoit des formats variés.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "The same entry, twice.",
+        "body": "<p>Picture a machine shop. A metal supplier emails a PDF, a carrier sends a photo taken on the dock, another sends an invoice scanned crooked. Someone retypes the numbers, dates and amounts, then looks for who must approve.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "items": [
+          {
+            "title": "Assorted formats.",
+            "text": "Digital PDF, scan, photo: each reads differently."
+          },
+          {
+            "title": "Typing errors.",
+            "text": "A transposed amount makes it through approval, even payment."
+          },
+          {
+            "title": "A queue nobody can see.",
+            "text": "No one can tell at a glance what is received, checked, approved."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : lecture, extraction, vérification, rangement.",
+      "claims": ["CL-101", "CL-121", "CL-21"],
+      "fields": {
+        "columns": "4",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "What the system does.",
+        "intro": "The steps are those of a WorkStudio workflow: a file goes in, a table row comes out.",
+        "cards": [
+          {
+            "title": "It reads.",
+            "text": "A digital PDF is read directly; an image or a scanned PDF goes through a document-reading model. Scans read more slowly."
+          },
+          {
+            "title": "It extracts.",
+            "text": "You define the fields (number, date, supplier, amounts, taxes, project number); the system looks for them in each document."
+          },
+          {
+            "title": "It checks.",
+            "text": "A missing required field, an unreadable value or a total that does not add up: the document is marked “to verify”, with the reason."
+          },
+          {
+            "title": "It files.",
+            "text": "One row per document in a table, ready for what follows. What follows waits for a person."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe.",
+      "claims": ["CL-101", "CL-121"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "What your team receives.",
+        "body": "<p>The team opens a table, not a pile of emails. Reliable documents scan quickly; doubtful ones rise to the top.</p>",
+        "items": [
+          {
+            "title": "A table of documents.",
+            "text": "One row per invoice, with the fields you chose."
+          },
+          {
+            "title": "A “to verify” flag.",
+            "text": "With the reason: missing field, unreadable value, total that does not add up."
+          },
+          {
+            "title": "A simple conclusion.",
+            "text": "The starter template “supplier invoice check” concludes “to pay” or “to verify”."
+          },
+          {
+            "title": "The text as read.",
+            "text": "The document as it was read is kept, so you can compare with the original."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre.",
+      "claims": ["CL-14", "CL-09"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "The expected benefit.",
+        "body": "<p>Less retyping, errors caught before approval rather than after payment, a clear view of what remains to process. We announce no accuracy percentage and no time saved: reading quality depends on your documents and is measured during a pilot, on your own invoices.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, y compris les limites.",
+      "claims": ["CL-128", "CL-21", "CL-125", "CL-111", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "What stays under your control.",
+        "cards": [
+          {
+            "title": "No automatic payment.",
+            "text": "The system pays nothing. Approval and payment stay with a person."
+          },
+          {
+            "title": "No posting without approval.",
+            "text": "Posting to your accounting software goes through a connector to be qualified, after approval. Not all software connects the same way."
+          },
+          {
+            "title": "Your fields, your taxes.",
+            "text": "The starter templates are general and do not follow Quebec tax rules: your fields (GST, QST, project number) are defined with us, then checked on your documents."
+          },
+          {
+            "title": "A person reviews the doubts.",
+            "text": "Everything marked “to verify” goes under someone's eyes."
+          },
+          {
+            "title": "Where documents are read is a choice.",
+            "text": "A reading model on your server keeps documents with you; an external service is a written, disclosed choice."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution factures.",
+      "claims": ["CL-101", "CL-125", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Invoices: your questions.",
+        "items": [
+          {
+            "question": "Does it read invoices scanned crooked?",
+            "answer": "It reads images and scanned PDFs with a document-reading model, more slowly than a digital PDF. Quality depends on how clear the scan is; anything doubtful is marked “to verify”."
+          },
+          {
+            "question": "Does it connect to my accounting software?",
+            "answer": "Possibly: it depends on the software. We check during the diagnosis. Without a connection, the table can serve as the basis for faster entry, approved by your accountant."
+          },
+          {
+            "question": "What about Quebec taxes?",
+            "answer": "They are not handled by default. We define with you the tax fields to extract and the checks to run, then test them on your documents."
+          },
+          {
+            "question": "Can it also handle quotes and expense reports?",
+            "answer": "Starter templates exist for quotes, purchase orders and expense reports. They are customized the same way as the invoice one."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See your invoices read.",
+        "text": "We prepare a demonstration on fictional invoices, then we talk about your documents, your fields and your bookkeeping.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See accounting",
+        "secondary_href": "/en/solutions/accounting/"
+      }
+    }
+  ]
+}

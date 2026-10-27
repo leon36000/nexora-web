@@ -1,0 +1,156 @@
+{
+  "page": "utilisation-acceptable",
+  "locale": "en-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "acceptable-use",
+    "title": "Acceptable use",
+    "seo_title": "Nexora acceptable use policy for the services",
+    "seo_description": "Permitted and prohibited uses, security and abuse prevention, generated content, monitoring, measures, reporting. Draft template, to be completed and reviewed.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Draft · Unpublished page",
+        "headline": "Acceptable use.",
+        "subheadline": "Draft template: the usage rules expected of a hosting and AI service; each technical rule remains to be confirmed by the founder."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "principe"
+      },
+      "translation": {
+        "title": "The principle.",
+        "body": "<p>Nexora's services are for legitimate business uses. Using the service unlawfully, harmfully to others or contrary to these rules may lead to measures described below [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "interdits"
+      },
+      "translation": {
+        "title": "Prohibited uses.",
+        "items": [
+          {
+            "title": "Illegal activities.",
+            "text": "Any activity contrary to applicable law [TO BE REVIEWED BY A QUEBEC LAWYER]"
+          },
+          {
+            "title": "Security breaches.",
+            "text": "Intrusion, denial of service, circumventing protections, unauthorized network scanning."
+          },
+          {
+            "title": "Unsolicited messages.",
+            "text": "Sending commercial email without consent or an unsubscribe option, contrary to the anti-spam law [TO BE REVIEWED BY A QUEBEC LAWYER]"
+          },
+          {
+            "title": "Unlawful or deceptive content.",
+            "text": "Illegal content, impersonation, fake reviews, phishing."
+          },
+          {
+            "title": "Intrusive collection.",
+            "text": "Mass or covert collection of personal information."
+          },
+          {
+            "title": "Circumventing limits.",
+            "text": "Circumventing quotas, rate limits or billing; reselling access [TO BE COMPLETED BY THE FOUNDER]"
+          },
+          {
+            "title": "High-risk uses.",
+            "text": "To be decided: uses Nexora does not accept, for example decisions about people without human supervision [TO BE COMPLETED BY THE FOUNDER]"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "securite"
+      },
+      "translation": {
+        "title": "Security and abuse prevention.",
+        "body": "<p>Technical measures applied to virtual private servers and API access: per-machine firewall, outbound mail closed by default, rate and abuse limits. Actual list of measures in force [TO BE COMPLETED BY THE FOUNDER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "contenus"
+      },
+      "translation": {
+        "title": "AI-generated content.",
+        "body": "<p>A model's answers can be inaccurate. The user remains responsible for how they use them and for human supervision of decisions that commit their business [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "mesures"
+      },
+      "translation": {
+        "title": "Monitoring, reporting, measures.",
+        "body": "<p>How Nexora detects abuse without reading customers' business data, reporting address, prior notice, suspension and termination, right of reply [TO BE COMPLETED BY THE FOUNDER]. Text [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "To do before publishing.",
+        "body": "<p>This page is a template. It stays a draft, unpublished and not indexed, until the following points are settled.</p>",
+        "items": [
+          {
+            "title": "Fill in the markers.",
+            "text": "Every [TO BE COMPLETED BY THE FOUNDER] must be replaced with the real information; no value is invented."
+          },
+          {
+            "title": "Have a lawyer review it.",
+            "text": "The text must be reviewed by a Quebec lawyer [TO BE REVIEWED BY A QUEBEC LAWYER]."
+          },
+          {
+            "title": "Approve, then publish.",
+            "text": "Only after these two points, remove the draft status and the indexing ban."
+          }
+        ]
+      }
+    }
+  ]
+}

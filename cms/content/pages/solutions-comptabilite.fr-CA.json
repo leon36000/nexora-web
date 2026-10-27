@@ -1,0 +1,205 @@
+{
+  "page": "solutions-comptabilite",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/comptabilite",
+    "title": "Comptabilité",
+    "seo_title": "Pré-saisie comptable par IA pour PME",
+    "seo_description": "Le système lit vos pièces, prépare la pré-saisie, signale les écarts et laisse la décision à votre comptable. Le rapprochement bancaire n'est pas livré.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution comptabilité.",
+      "claims": ["CL-125", "CL-101"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Comptabilité",
+        "headline": "Une pré-saisie prête. Le comptable décide.",
+        "subheadline": "Le système lit vos pièces, prépare la pré-saisie et signale les écarts. Votre comptable relit, corrige et valide\u00a0: l'IA prépare, elle ne comptabilise pas.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir toutes les solutions",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un cabinet comptable en fin de mois.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "La fin de mois, c'est la saisie.",
+        "body": "<p>Un petit cabinet comptable reçoit de ses clients des factures, des notes de frais et des relevés, dans toutes les formes possibles. Une grande part du temps de fin de mois passe à relire des montants et à retaper des lignes, plutôt qu'à conseiller.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "items": [
+          {
+            "title": "Des pièces dans tous les formats.",
+            "text": "Courriels, photos, scans, PDF."
+          },
+          {
+            "title": "Des contrôles à répéter.",
+            "text": "Les montants hors taxes, les taxes et le total doivent concorder."
+          },
+          {
+            "title": "Du temps de conseil perdu.",
+            "text": "Ce que le client paie vraiment, c'est le jugement du comptable."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : lecture, contrôles de cohérence, table, relecture.",
+      "claims": ["CL-101", "CL-121", "CL-125", "CL-21"],
+      "fields": {
+        "columns": "4",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "Ce que fait le système.",
+        "intro": "Le comptable définit les champs et les règles de contrôle\u00a0; le système les applique pièce par pièce.",
+        "cards": [
+          {
+            "title": "Il lit les pièces.",
+            "text": "Factures, devis, bons de commande, notes de frais\u00a0: des modèles de départ existent pour ces quatre types."
+          },
+          {
+            "title": "Il contrôle.",
+            "text": "Il vérifie que le hors taxes et les taxes donnent le total, à quelques sous près, et marque les pièces douteuses."
+          },
+          {
+            "title": "Il prépare.",
+            "text": "Une ligne de pré-saisie par pièce, avec les champs convenus avec le comptable (catégorie, fournisseur, projet)."
+          },
+          {
+            "title": "Il attend.",
+            "text": "Le comptable relit les lignes, corrige et valide. Rien n'est enregistré avant."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, bénéfice, et OPSYS-AI pour la construction.",
+      "claims": ["CL-125", "CL-14", "CL-D05"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "Ce que reçoit l'équipe.",
+        "body": "<p>Une table de pièces prêtes à relire, avec les écarts en tête. Le bénéfice attendu\u00a0: moins de ressaisie et des erreurs repérées plus tôt. Aucun gain chiffré n'est annoncé\u00a0; il se mesure pendant un pilote, sur vos propres dossiers.</p><p>Pour les entreprises de construction, <a href=\"/opsys-ai/\">OPSYS-AI</a> va plus loin\u00a0: sa comptabilité interne (département M5) prépare une facture brouillon après les travaux et suit les comptes à recevoir. Ce département est en pilote, et ni l'envoi des factures ni le calcul de la paie ne sont livrés.</p>",
+        "items": [
+          {
+            "title": "Une table de pré-saisie.",
+            "text": "Une ligne par pièce, avec l'indicateur «\u00a0à vérifier\u00a0»."
+          },
+          {
+            "title": "Les motifs des écarts.",
+            "text": "Champ manquant, valeur illisible, total qui ne concorde pas."
+          },
+          {
+            "title": "Un dossier relu, pas ressaisi.",
+            "text": "Le comptable consacre son temps au jugement."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire).",
+      "claims": ["CL-125", "CL-126", "CL-128", "CL-111"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "Ce qui reste sous votre contrôle.",
+        "cards": [
+          {
+            "title": "Le comptable garde la décision.",
+            "text": "Aucune écriture n'est enregistrée sans sa validation."
+          },
+          {
+            "title": "Aucun lien bancaire.",
+            "text": "Le rapprochement bancaire n'est pas livré dans WorkStudio. Il peut être étudié sur mesure, à partir de relevés que vous exportez, sans connexion à votre banque."
+          },
+          {
+            "title": "Votre logiciel, à qualifier.",
+            "text": "L'écriture dans votre logiciel comptable passe par un connecteur qui se qualifie au diagnostic, logiciel par logiciel."
+          },
+          {
+            "title": "Vos règles fiscales.",
+            "text": "Les modèles de départ sont généraux. Taxes, catégories et plan comptable du Québec se définissent avec vous et se vérifient sur vos pièces."
+          },
+          {
+            "title": "Aucun conseil comptable.",
+            "text": "Le système prépare et contrôle\u00a0; il ne conseille pas. Les décisions restent celles de votre comptable."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution comptabilité.",
+      "claims": ["CL-125", "CL-126", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Comptabilité\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "L'IA fait-elle la comptabilité\u00a0?",
+            "answer": "Non. Elle prépare la pré-saisie et signale les écarts. Les écritures et les décisions restent à votre comptable."
+          },
+          {
+            "question": "Peut-on automatiser le rapprochement bancaire\u00a0?",
+            "answer": "Pas avec un produit livré à ce jour. Une étude sur mesure est possible, à partir de relevés exportés, sans connexion bancaire."
+          },
+          {
+            "question": "Mon comptable doit-il changer d'outil\u00a0?",
+            "answer": "Non, en principe\u00a0: la pré-saisie se range dans une table, et la suite dépend du logiciel qu'il utilise, que nous qualifions avec lui."
+          },
+          {
+            "question": "Mes pièces quittent-elles mon serveur\u00a0?",
+            "answer": "Pas si la lecture se fait avec un modèle sur votre serveur. Un service externe de lecture est possible, seulement avec votre accord écrit, et il est indiqué."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : diagnostic.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Parlons de votre fin de mois.",
+        "text": "Décrivez-nous vos pièces et votre logiciel. Nous vous disons ce qui se prépare, ce qui se relie et ce qui reste à votre comptable.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les factures",
+        "secondary_href": "/solutions/factures/"
+      }
+    }
+  ]
+}

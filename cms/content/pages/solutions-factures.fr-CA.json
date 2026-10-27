@@ -1,0 +1,223 @@
+{
+  "page": "solutions-factures",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/factures",
+    "title": "Factures",
+    "seo_title": "Traitement automatisé des factures en PME",
+    "seo_description": "Un système lit vos factures fournisseurs, extrait les montants, signale ce qui ne concorde pas et range tout dans une table. Une personne approuve ensuite.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution factures.",
+      "claims": ["CL-101", "CL-121"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Factures",
+        "headline": "Des factures lues. Des écarts signalés.",
+        "subheadline": "Le système lit les factures de vos fournisseurs, extrait les champs que vous avez définis et vous montre d'abord ce qui est douteux. Le paiement et la comptabilité restent entre les mains d'une personne.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir toutes les solutions",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : exemple d'un atelier qui reçoit des formats variés.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "La même saisie, deux fois.",
+        "body": "<p>Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée en travers. Quelqu'un retape les numéros, les dates et les montants, puis cherche qui doit approuver.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "items": [
+          {
+            "title": "Des formats variés.",
+            "text": "PDF numérique, scan, photo\u00a0: chacun se lit différemment."
+          },
+          {
+            "title": "Des erreurs de frappe.",
+            "text": "Un montant inversé passe jusqu'à l'approbation, voire au paiement."
+          },
+          {
+            "title": "Une file sans visibilité.",
+            "text": "Personne ne voit d'un coup d'œil ce qui est reçu, vérifié, approuvé."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système : lecture, extraction, vérification, rangement.",
+      "claims": ["CL-101", "CL-121", "CL-21"],
+      "fields": {
+        "columns": "4",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "Ce que fait le système.",
+        "intro": "Les étapes sont celles d'un flux de travaux WorkStudio\u00a0: un fichier entre, une ligne de table en sort.",
+        "cards": [
+          {
+            "title": "Il lit.",
+            "text": "Un PDF numérique est lu directement\u00a0; une image ou un PDF scanné passe par un modèle de lecture de documents. Les scans se lisent plus lentement."
+          },
+          {
+            "title": "Il extrait.",
+            "text": "Vous définissez les champs (numéro, date, fournisseur, montants, taxes, numéro de projet)\u00a0; le système les cherche dans chaque pièce."
+          },
+          {
+            "title": "Il vérifie.",
+            "text": "Un champ obligatoire manquant, une valeur illisible ou un total qui ne concorde pas\u00a0: la pièce est marquée «\u00a0à vérifier\u00a0», avec le motif."
+          },
+          {
+            "title": "Il range.",
+            "text": "Une ligne par pièce dans une table, prête pour la suite. La suite attend une personne."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe.",
+      "claims": ["CL-101", "CL-121"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "Ce que reçoit l'équipe.",
+        "body": "<p>L'équipe ouvre une table, pas une pile de courriels. Les pièces sûres se parcourent vite\u00a0; celles qui sont douteuses remontent en tête.</p>",
+        "items": [
+          {
+            "title": "Une table de pièces.",
+            "text": "Une ligne par facture, avec les champs que vous avez choisis."
+          },
+          {
+            "title": "Un indicateur «\u00a0à vérifier\u00a0».",
+            "text": "Avec le motif\u00a0: champ manquant, valeur illisible, total qui ne concorde pas."
+          },
+          {
+            "title": "Une conclusion simple.",
+            "text": "Le modèle de départ «\u00a0contrôle d'une facture fournisseur\u00a0» conclut «\u00a0à payer\u00a0» ou «\u00a0à vérifier\u00a0»."
+          },
+          {
+            "title": "Le texte lu.",
+            "text": "Le document tel qu'il a été lu est conservé, pour comparer avec l'original."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre.",
+      "claims": ["CL-14", "CL-09"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "Le bénéfice attendu.",
+        "body": "<p>Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Nous n'annonçons aucun pourcentage de précision ni aucun temps gagné\u00a0: la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, y compris les limites.",
+      "claims": ["CL-128", "CL-21", "CL-125", "CL-111", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "Ce qui reste sous votre contrôle.",
+        "cards": [
+          {
+            "title": "Aucun paiement automatique.",
+            "text": "Le système ne paie rien. L'approbation et le paiement restent à une personne."
+          },
+          {
+            "title": "Aucune écriture sans validation.",
+            "text": "L'écriture dans votre logiciel comptable passe par un connecteur à qualifier, après validation. Tous les logiciels ne se relient pas de la même façon."
+          },
+          {
+            "title": "Vos champs, vos taxes.",
+            "text": "Les modèles de départ sont généraux et ne suivent pas les règles fiscales du Québec\u00a0: vos champs (TPS, TVQ, numéro de projet) se définissent avec nous, puis se vérifient sur vos pièces."
+          },
+          {
+            "title": "Une personne relit les doutes.",
+            "text": "Tout ce qui est marqué «\u00a0à vérifier\u00a0» passe sous les yeux de quelqu'un."
+          },
+          {
+            "title": "Le lieu de lecture est un choix.",
+            "text": "Un modèle de lecture sur votre serveur garde les documents chez vous\u00a0; un service externe est un choix écrit et indiqué."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution factures.",
+      "claims": ["CL-101", "CL-125", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Factures\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Lit-il les factures scannées de travers\u00a0?",
+            "answer": "Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan\u00a0; ce qui est douteux est marqué «\u00a0à vérifier\u00a0»."
+          },
+          {
+            "question": "Se relie-t-il à mon logiciel comptable\u00a0?",
+            "answer": "Peut-être\u00a0: cela dépend du logiciel. Nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable."
+          },
+          {
+            "question": "Et les taxes du Québec\u00a0?",
+            "answer": "Elles ne sont pas gérées par défaut. Nous définissons avec vous les champs de taxes à extraire et les vérifications à faire, puis nous les mettons à l'épreuve sur vos pièces."
+          },
+          {
+            "question": "Peut-on aussi traiter devis et notes de frais\u00a0?",
+            "answer": "Des modèles de départ existent pour les devis, les bons de commande et les notes de frais. Ils se personnalisent comme celui des factures."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voir vos factures lues.",
+        "text": "Nous préparons une démonstration sur des factures fictives, puis nous parlons de vos pièces, de vos champs et de votre comptabilité.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir la comptabilité",
+        "secondary_href": "/solutions/comptabilite/"
+      }
+    }
+  ]
+}

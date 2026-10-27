@@ -1,0 +1,205 @@
+{
+  "page": "solutions-rendez-vous",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/rendez-vous",
+    "title": "Rendez-vous",
+    "seo_title": "Prise de rendez-vous automatisée par IA",
+    "seo_description": "Un système reçoit les demandes, propose des créneaux selon votre agenda, rappelle vos clients et libère les annulations. Rien n'est confirmé sans vérification.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la solution rendez-vous.",
+      "claims": ["CL-123", "CL-124"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Solution · Rendez-vous",
+        "headline": "Des créneaux proposés. Des rappels envoyés.",
+        "subheadline": "Le système reçoit les demandes de rendez-vous, propose des créneaux à partir de votre agenda et rappelle vos clients. Il ne confirme jamais une disponibilité qu'il n'a pas vérifiée.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir toutes les solutions",
+        "secondary_href": "/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Problème : un petit cabinet qui perd des créneaux.",
+      "claims": ["CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "probleme"
+      },
+      "translation": {
+        "title": "Des créneaux qui se perdent.",
+        "body": "<p>Un petit cabinet reçoit des demandes de rendez-vous par courriel et par formulaire, souvent en dehors des heures d'ouverture. Les confirmations se font à la main, les rappels aussi, et une annulation de dernière minute laisse un trou dans la journée.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "items": [
+          {
+            "title": "Des demandes qui attendent.",
+            "text": "Elles arrivent le soir\u00a0; la réponse part le lendemain, parfois trop tard."
+          },
+          {
+            "title": "Des rappels oubliés.",
+            "text": "Chaque oubli est un risque d'absence."
+          },
+          {
+            "title": "Des annulations tardives.",
+            "text": "Le créneau libéré n'est pas rempli."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait le système, selon l'agenda connecté.",
+      "claims": ["CL-123", "CL-103", "CL-91", "CL-21", "CL-85"],
+      "fields": {
+        "columns": "4",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "systeme"
+      },
+      "translation": {
+        "title": "Ce que fait le système.",
+        "intro": "Tout repose sur un agenda réellement relié à WorkStudio. Sans cette connexion, le système se limite à enregistrer une demande de créneau, sans rien confirmer.",
+        "cards": [
+          {
+            "title": "Il reçoit.",
+            "text": "Une demande arrive par courriel ou par formulaire. Le système en extrait le besoin et les préférences."
+          },
+          {
+            "title": "Il propose.",
+            "text": "Il cherche des créneaux libres dans l'agenda connecté et prépare une réponse avec deux ou trois options."
+          },
+          {
+            "title": "Il confirme après vérification.",
+            "text": "L'événement n'est créé qu'une fois la disponibilité vérifiée dans l'agenda, et après l'accord d'une personne si vous le décidez."
+          },
+          {
+            "title": "Il rappelle.",
+            "text": "Un flux planifié envoie un rappel avant le rendez-vous et traite les annulations."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que reçoit l'équipe, bénéfice, et limites vocales.",
+      "claims": ["CL-123", "CL-124", "CL-102", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "Ce que reçoit l'équipe.",
+        "body": "<p>Un agenda qui se remplit pendant que l'équipe travaille, des rappels envoyés sans y penser, des annulations traitées. Le bénéfice attendu\u00a0: moins de créneaux perdus et moins de temps passé à confirmer à la main. Aucun taux d'absence ni gain n'est annoncé\u00a0: cela se mesure pendant un pilote.</p><p>Le téléphone n'est pas inclus. Aucun service de réception d'appels n'est livré à ce jour\u00a0; un message vocal déposé comme enregistrement peut être transcrit, et la téléphonie en direct se vérifie séparément.</p>",
+        "items": [
+          {
+            "title": "Les demandes reçues.",
+            "text": "Une file claire\u00a0: à traiter, proposées, confirmées."
+          },
+          {
+            "title": "Des rappels préparés.",
+            "text": "Le texte est le vôtre, validé une fois."
+          },
+          {
+            "title": "Les annulations visibles.",
+            "text": "Le créneau libéré apparaît tout de suite dans l'agenda."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé.",
+      "claims": ["CL-123", "CL-131", "CL-128", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "controle"
+      },
+      "translation": {
+        "title": "Ce qui reste sous votre contrôle.",
+        "cards": [
+          {
+            "title": "Jamais de créneau inventé.",
+            "text": "Sans agenda connecté, le système enregistre une demande de créneau. Il ne confirme pas une disponibilité non vérifiée."
+          },
+          {
+            "title": "Vous décidez de la confirmation.",
+            "text": "Vous choisissez quels types de rendez-vous se confirment seuls et lesquels attendent une personne."
+          },
+          {
+            "title": "Des informations limitées.",
+            "text": "Pour un cabinet de santé ou de bien-être, nous recommandons de limiter le système aux informations administratives (date, heure, type de rendez-vous). Nous ne qualifions aucun usage clinique."
+          },
+          {
+            "title": "Les rappels sont les vôtres.",
+            "text": "Le texte, le moment et le canal sont validés par vous. Les rappels répondent à un rendez-vous existant\u00a0; ils ne servent pas à de la prospection."
+          },
+          {
+            "title": "Le lieu des données est écrit.",
+            "text": "L'agenda et les demandes restent dans le périmètre convenu\u00a0; un service externe est un choix indiqué."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à la solution rendez-vous.",
+      "claims": ["CL-123", "CL-124", "CL-85", "CL-132"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Rendez-vous\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Avec quel agenda ça fonctionne\u00a0?",
+            "answer": "Avec les agendas qui se relient à WorkStudio par un connecteur. Chaque agenda se qualifie au diagnostic, et certaines connexions demandent un enregistrement préalable chez le fournisseur."
+          },
+          {
+            "question": "Peut-il répondre au téléphone\u00a0?",
+            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. La solution traite les demandes écrites (courriel, formulaire)."
+          },
+          {
+            "question": "Que fait-il quand deux personnes veulent le même créneau\u00a0?",
+            "answer": "Il vérifie l'agenda au moment de confirmer. Si le créneau est pris, il propose une autre option plutôt que de confirmer un doublon."
+          },
+          {
+            "question": "Peut-on l'utiliser pour des soins\u00a0?",
+            "answer": "Pour l'administratif seulement\u00a0: demande, créneau, rappel. Nous ne qualifions pas d'usage clinique et nous recommandons de ne pas y faire transiter de renseignements de santé."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voir l'agenda se remplir.",
+        "text": "Nous préparons une démonstration sur un agenda fictif, puis nous parlons du vôtre et de vos règles de confirmation.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir le service client",
+        "secondary_href": "/solutions/service-client/"
+      }
+    }
+  ]
+}

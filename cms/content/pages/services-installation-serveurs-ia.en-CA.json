@@ -1,0 +1,245 @@
+{
+  "page": "services-installation-serveurs-ia",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "services/ai-server-installation",
+    "title": "AI server installation",
+    "seo_title": "AI server installation for small businesses",
+    "seo_description": "Nexora installs and configures your AI server on your premises or in its infrastructure in Quebec, then runs it with you. Sizing comes before any purchase.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du service d'installation.",
+      "claims": ["CL-81", "CL-05"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Services · Installation",
+        "headline": "An AI server installed. A perimeter in writing.",
+        "subheadline": "We install, configure and run with you the server that powers your agents and models: on your premises, or in our infrastructure in Quebec. The perimeter is handed over in writing before go-live.",
+        "primary_label": "Request a deployment study",
+        "primary_href": "/en/contact/?sujet=etude-deploiement",
+        "secondary_label": "Compare the two modes",
+        "secondary_href": "/en/deployment/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Définition du serveur d'IA et des deux voies.",
+      "claims": ["CL-81", "CL-02", "CL-13"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "deux-voies"
+      },
+      "translation": {
+        "title": "Two paths, one method.",
+        "body": "<p>An AI server is a machine that runs the models (the engines that produce the answers) and the agents. It can be a physical server, or a virtual private server (VPS), meaning a server rented just for you.</p><p>The method is the same in both cases: size, install, configure, check the flows, train, then operate.</p>",
+        "items": [
+          {
+            "title": "On your premises.",
+            "text": "In your offices or at a host of your choice. The hardware and the access are yours. See the <a href=\"/en/deployment/on-premises/\">on-premises mode</a>."
+          },
+          {
+            "title": "With us, in Quebec.",
+            "text": "In our infrastructure, where we run it. You buy no server and no hardware. See the <a href=\"/en/deployment/hosted-quebec/\">hosted mode</a>."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Six étapes, de l'étude à l'exploitation.",
+      "claims": ["CL-81", "CL-26", "CL-88", "CL-104", "CL-05", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "From study to operation.",
+        "cards": [
+          {
+            "title": "1. Size.",
+            "text": "Number of users, volume of documents, chosen model: the diagnosis sets what is needed, before any purchase."
+          },
+          {
+            "title": "2. Install.",
+            "text": "WorkStudio installs with one command on a Docker server (a tool that packages software so it installs cleanly), on Linux or macOS. Secrets are generated on the machine; backup, restore and update commands are put in place."
+          },
+          {
+            "title": "3. Configure.",
+            "text": "Organization, accounts and roles, single sign-on with your identity provider, choice of model, connections to your software."
+          },
+          {
+            "title": "4. Verify.",
+            "text": "We list what leaves the network and hand over the data-flow diagram. Then we test a real case, with your approvals."
+          },
+          {
+            "title": "5. Train.",
+            "text": "Your team learns to supervise, correct and decide, not to program."
+          },
+          {
+            "title": "6. Operate.",
+            "text": "Updates, backups, monitoring and evolution: what we do and what you do is written in the contract."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Facteurs de dimensionnement, sans valeur inventée.",
+      "claims": ["CL-82", "CL-83", "CL-102"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "modules",
+        "anchor_id": "dimensionnement"
+      },
+      "translation": {
+        "title": "What makes the hardware vary.",
+        "intro": "We give no standard configuration: it depends on these four factors, which the diagnosis measures before any purchase.",
+        "cards": [
+          {
+            "title": "The number of users.",
+            "text": "How many people query the system at the same time, and at what hours."
+          },
+          {
+            "title": "The volume of documents.",
+            "text": "It sets the size of the knowledge base and the indexing time."
+          },
+          {
+            "title": "The chosen model.",
+            "text": "A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the diagnosis."
+          },
+          {
+            "title": "The uses.",
+            "text": "Reading scanned documents or transcribing recordings calls for additional models, hence memory and compute time."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que nous installons : WorkStudio et ses composants.",
+      "claims": ["CL-26", "CL-27", "CL-103", "CL-24", "CL-88"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "composants"
+      },
+      "translation": {
+        "title": "What we install.",
+        "body": "<p>The installation brings together the <a href=\"/en/workstudio/\">Nexora WorkStudio</a> platform and the services it needs.</p>",
+        "items": [
+          {
+            "title": "WorkStudio.",
+            "text": "The studio where agents and workflows are designed and run."
+          },
+          {
+            "title": "A model gateway.",
+            "text": "A single access point to several AI models, in the OpenAI format, with keys, quotas and consumption metering."
+          },
+          {
+            "title": "Nexora Connect.",
+            "text": "The connector engine that links your services (mail, calendar, storage, billing)."
+          },
+          {
+            "title": "Optional services.",
+            "text": "Local detection of personal information, local voice (transcription, speech synthesis), reading of scanned documents."
+          },
+          {
+            "title": "Operating commands.",
+            "text": "Start, stop, log, back up, restore, update."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que nous ne promettons pas, pour ce service.",
+      "claims": ["CL-10", "CL-14", "CL-86", "CL-77"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What we do not promise.",
+        "cards": [
+          {
+            "title": "No public price.",
+            "text": "A written estimate follows the diagnosis."
+          },
+          {
+            "title": "No universal timeline.",
+            "text": "The duration depends on your case and is measured on a first case."
+          },
+          {
+            "title": "No announced service level.",
+            "text": "Availability and response times are set out in the contract."
+          },
+          {
+            "title": "No presumption of zero outbound traffic.",
+            "text": "Updates, licences, any external model: everything is listed before go-live."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ propre à l'installation.",
+      "claims": ["CL-26", "CL-81", "CL-82", "CL-08"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Installation: your questions.",
+        "items": [
+          {
+            "question": "Do I need to buy a powerful server?",
+            "answer": "It depends on the case. The diagnosis answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model."
+          },
+          {
+            "question": "Can it go on an existing server?",
+            "answer": "A server that runs Docker is enough. During the diagnosis we check that it suits the intended uses."
+          },
+          {
+            "question": "Who runs it afterwards?",
+            "answer": "We do, with you, as the contract provides. In the on-premises mode, the access you give us is agreed in advance."
+          },
+          {
+            "question": "Can we change mode later?",
+            "answer": "Export of your documents, configurations and workflows is provided for in the contract. A change of mode is then planned as a project."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : étude de déploiement.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's size before buying.",
+        "text": "Describe your uses. We will tell you which mode fits, what hardware it would take if any, and where to start.",
+        "primary_label": "Request a deployment study",
+        "primary_href": "/en/contact/?sujet=etude-deploiement",
+        "secondary_label": "See the on-premises mode",
+        "secondary_href": "/en/deployment/on-premises/"
+      }
+    }
+  ]
+}

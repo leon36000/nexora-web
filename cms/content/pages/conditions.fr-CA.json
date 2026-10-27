@@ -1,0 +1,155 @@
+{
+  "page": "conditions",
+  "locale": "fr-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "conditions",
+    "title": "Conditions d'utilisation",
+    "seo_title": "Conditions d'utilisation du site et des services",
+    "seo_description": "Objet, comptes, offres, prix et taxes, résiliation, exportation, responsabilité et droit applicable. Gabarit en brouillon, à compléter et à faire valider.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Brouillon · Page non publiée",
+        "headline": "Conditions d'utilisation.",
+        "subheadline": "Gabarit en brouillon\u00a0: les rubriques sont en place\u00a0; les conditions commerciales sont à fixer par le fondateur."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "objet"
+      },
+      "translation": {
+        "title": "Objet et acceptation.",
+        "body": "<p>Ces conditions encadrent l'utilisation du site et des services de Nexora. Les services s'adressent à des entreprises\u00a0; confirmer s'ils s'adressent aussi à des particuliers, ce qui change les règles applicables [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Mode d'acceptation (clic, signature) [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "comptes"
+      },
+      "translation": {
+        "title": "Comptes et accès.",
+        "body": "<p>Création et sécurité d'un compte, exactitude des renseignements, responsabilité des identifiants. À préciser quand l'espace client ouvrira [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "services"
+      },
+      "translation": {
+        "title": "Services et offres.",
+        "body": "<p>Description des services (diagnostic, installation, automatisation, exploitation) et des offres en libre-service lorsqu'elles ouvriront. Aucune offre en libre-service n'est ouverte à ce jour. Statut de chaque offre [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "prix"
+      },
+      "translation": {
+        "title": "Prix, taxes et paiement.",
+        "body": "<p>Prix affichés, avant ou après taxes, TPS et TVQ applicables, moyens de paiement, facturation, taxes sur les crédits, renouvellements et conditions de remboursement [À COMPLÉTER PAR LE FONDATEUR]. Aucun prix n'est fixé à ce jour. Texte [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "resiliation"
+      },
+      "translation": {
+        "title": "Résiliation et exportation.",
+        "body": "<p>Conditions de résiliation par chaque partie. À la fin du contrat, les documents, configurations et flux de travaux du client restent exportables\u00a0: formats, délais et effacement des données [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 6 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "responsabilite"
+      },
+      "translation": {
+        "title": "Notre responsabilité.",
+        "body": "<p>Étendue et limites de la responsabilité de Nexora, supervision humaine des résultats produits par l'IA, force majeure [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 7 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "droit"
+      },
+      "translation": {
+        "title": "Droit applicable et modifications.",
+        "body": "<p>Droit du Québec et lois fédérales applicables\u00a0; tribunaux compétents [À COMPLÉTER PAR LE FONDATEUR]. Langue des documents contractuels [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Modalités de modification des conditions [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "À faire avant publication.",
+        "body": "<p>Cette page est un gabarit. Elle reste en brouillon, non publiée et non indexée, tant que les points suivants ne sont pas réglés.</p>",
+        "items": [
+          {
+            "title": "Remplir les marqueurs.",
+            "text": "Chaque [À COMPLÉTER PAR LE FONDATEUR] doit être remplacé par l'information réelle\u00a0; aucune valeur n'est inventée."
+          },
+          {
+            "title": "Faire valider par un avocat.",
+            "text": "Le texte doit être relu par un avocat québécois [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]."
+          },
+          {
+            "title": "Approuver puis publier.",
+            "text": "Seulement après ces deux points, retirer le brouillon et l'interdiction d'indexation."
+          }
+        ]
+      }
+    }
+  ]
+}

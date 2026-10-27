@@ -1,0 +1,207 @@
+{
+  "page": "deploiement",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "deployment",
+    "title": "Deployment",
+    "seo_title": "AI deployment: on-premises or in Quebec",
+    "seo_description": "An honest comparison of Nexora's two deployment modes: on your own server or hosted in Quebec. Who controls what, point by point, and how to choose.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Hub du déploiement : deux modes, qui contrôle quoi.",
+      "claims": ["CL-02", "CL-70"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Deployment",
+        "headline": "On your premises, or with us in Quebec.",
+        "subheadline": "Both modes serve the same principle: knowing where everything is. Here, point by point, is who controls what, and how to choose.",
+        "primary_label": "Request a deployment study",
+        "primary_href": "/en/contact/?sujet=etude-deploiement",
+        "secondary_label": "Read about sovereignty",
+        "secondary_href": "/en/sovereignty/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les deux modes, résumés, avec liens vers les pages détaillées.",
+      "claims": ["CL-02", "CL-72", "CL-73"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "modes"
+      },
+      "translation": {
+        "title": "Two modes, side by side.",
+        "cards": [
+          {
+            "title": "On your premises.",
+            "text": "We install the system on your server, in your offices or at a host of your choice. The hardware, the access and the backups are yours.",
+            "href": "/en/deployment/on-premises/",
+            "link_label": "See the on-premises mode"
+          },
+          {
+            "title": "With us, in Quebec.",
+            "text": "We host and run the system in our infrastructure, located in Quebec. You buy no server and no hardware.",
+            "href": "/en/deployment/hosted-quebec/",
+            "link_label": "See the hosted mode"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Tableau comparatif sous forme de liste : qui contrôle quoi.",
+      "claims": ["CL-72", "CL-73", "CL-05", "CL-06", "CL-08", "CL-77"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "qui-controle"
+      },
+      "translation": {
+        "title": "Who controls what.",
+        "body": "<p>Eight points, from hardware to contract exit. In each case, the answer is written before go-live.</p>",
+        "items": [
+          {
+            "title": "The hardware.",
+            "text": "On your premises: it belongs to you. With us: it belongs to our infrastructure; you buy nothing."
+          },
+          {
+            "title": "The data.",
+            "text": "On your premises: on your server. With us: in our infrastructure in Quebec, at the locations specified in writing."
+          },
+          {
+            "title": "The models.",
+            "text": "In both cases: on the server concerned, or external only if you accepted them in writing. Each model shows where it runs."
+          },
+          {
+            "title": "The backups.",
+            "text": "On your premises: wherever you put them. With us: at the locations named in the contract, with the list of subcontractors."
+          },
+          {
+            "title": "The updates.",
+            "text": "Listed in both modes as outbound flows. On your premises, their timing is agreed; with us, we apply them."
+          },
+          {
+            "title": "Nexora's access.",
+            "text": "On your premises: only what you grant, agreed in advance. With us: what operations require, described in the study."
+          },
+          {
+            "title": "The operations.",
+            "text": "On your premises: shared according to the contract. With us: provided by Nexora with you."
+          },
+          {
+            "title": "Contract exit.",
+            "text": "In both modes: your documents, configurations and workflows stay exportable."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Comment choisir : cinq critères.",
+      "claims": ["CL-82", "CL-85", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "choisir"
+      },
+      "translation": {
+        "title": "How to choose your mode.",
+        "intro": "There is no right mode in itself. These are the questions that steer the answer.",
+        "cards": [
+          {
+            "title": "How sensitive the data is.",
+            "text": "The more sensitive it is, the more physical control of a server on your premises is worth."
+          },
+          {
+            "title": "In-house skills.",
+            "text": "Without a technical team, the hosted mode removes monitoring and updates from your workload."
+          },
+          {
+            "title": "Hardware and space.",
+            "text": "On your premises, you need a server, a suitable room and network. With us, none of that."
+          },
+          {
+            "title": "The investment.",
+            "text": "Buying hardware is an investment; hosting is a service. The cost of each option is estimated in writing after the diagnosis."
+          },
+          {
+            "title": "Your customers' requirements.",
+            "text": "Some customers, public bodies in particular, may require hosting in Quebec: to be checked in each contract or tender."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Le mode mixte : à étudier, aucune offre définie.",
+      "claims": ["CL-74"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "mixte"
+      },
+      "translation": {
+        "title": "The case of a mixed mode.",
+        "body": "<p>Some companies will want to keep sensitive data in-house and entrust the rest to our infrastructure. A combination of the two modes can be studied case by case. No mixed offer is defined today: so we do not present its scope or terms before studying it with you.</p>"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ du hub déploiement.",
+      "claims": ["CL-02", "CL-06", "CL-08"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Deployment: your questions.",
+        "items": [
+          {
+            "question": "Which mode should I start with?",
+            "answer": "The one that matches how sensitive your data is and your in-house skills. The deployment study compares the two options for your case."
+          },
+          {
+            "question": "Can we change mode later?",
+            "answer": "Export of your documents, configurations and workflows is provided for in the contract. A change of mode is then planned as a project."
+          },
+          {
+            "question": "Does my data leave Quebec?",
+            "answer": "It depends on the mode and the models chosen; we write it down before kickoff. An external model is never configured without your written agreement."
+          },
+          {
+            "question": "Is there an offline mode?",
+            "answer": "We do not promise operation with no outbound flow at all: updates and licences are listed. Running with no outbound flow is decided and verified case by case."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : étude de déploiement.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's choose your mode together.",
+        "text": "A deployment study compares the two options for your case: data, skills, hardware, your customers' requirements.",
+        "primary_label": "Request a deployment study",
+        "primary_href": "/en/contact/?sujet=etude-deploiement",
+        "secondary_label": "See the trust center",
+        "secondary_href": "/en/trust-center/"
+      }
+    }
+  ]
+}

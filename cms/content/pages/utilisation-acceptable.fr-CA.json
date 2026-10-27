@@ -1,0 +1,156 @@
+{
+  "page": "utilisation-acceptable",
+  "locale": "fr-CA",
+  "status": "draft",
+  "noindex": true,
+  "seo": {
+    "slug": "utilisation-acceptable",
+    "title": "Utilisation acceptable",
+    "seo_title": "Politique d'utilisation acceptable de Nexora",
+    "seo_description": "Usages permis et interdits, sécurité, prévention des abus, contenus générés, surveillance, mesures, signalement. Gabarit en brouillon à compléter et à valider.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "claims": [],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false
+      },
+      "translation": {
+        "eyebrow": "Brouillon · Page non publiée",
+        "headline": "Utilisation acceptable.",
+        "subheadline": "Gabarit en brouillon\u00a0: les règles d'usage attendues d'un service d'hébergement et d'IA\u00a0; chaque règle technique reste à confirmer par le fondateur."
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 1 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "principe"
+      },
+      "translation": {
+        "title": "Le principe.",
+        "body": "<p>Les services de Nexora servent à des usages légitimes d'entreprise. Utiliser le service de manière illicite, nuisible pour d'autres ou contraire à ces règles peut mener à des mesures décrites plus bas [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 2 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "interdits"
+      },
+      "translation": {
+        "title": "Usages interdits.",
+        "items": [
+          {
+            "title": "Activités illégales.",
+            "text": "Toute activité contraire aux lois applicables [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]"
+          },
+          {
+            "title": "Atteinte à la sécurité.",
+            "text": "Intrusion, déni de service, contournement de protections, analyse non autorisée de réseaux."
+          },
+          {
+            "title": "Messages non sollicités.",
+            "text": "Envoi de courriels commerciaux sans consentement ni désabonnement, en contradiction avec la loi anti-pourriel [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]"
+          },
+          {
+            "title": "Contenu illicite ou trompeur.",
+            "text": "Contenu illégal, usurpation d'identité, faux avis, hameçonnage."
+          },
+          {
+            "title": "Collecte intrusive.",
+            "text": "Collecte massive ou clandestine de renseignements personnels."
+          },
+          {
+            "title": "Contournement des limites.",
+            "text": "Contournement des quotas, des limites de débit ou de la facturation\u00a0; revente de l'accès [À COMPLÉTER PAR LE FONDATEUR]"
+          },
+          {
+            "title": "Usages à haut risque.",
+            "text": "À décider\u00a0: usages que Nexora n'accepte pas, par exemple décisions sur des personnes sans supervision humaine [À COMPLÉTER PAR LE FONDATEUR]"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 3 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "securite"
+      },
+      "translation": {
+        "title": "Sécurité et prévention des abus.",
+        "body": "<p>Mesures techniques appliquées aux serveurs privés virtuels et aux accès par API\u00a0: pare-feu par machine, fermeture par défaut du courrier sortant, limites de débit et d'abus. Liste réelle des mesures en vigueur [À COMPLÉTER PAR LE FONDATEUR].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 4 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "contenus"
+      },
+      "translation": {
+        "title": "Contenus générés par l'IA.",
+        "body": "<p>Les réponses d'un modèle peuvent être inexactes. L'utilisateur reste responsable de l'usage qu'il en fait et de la supervision humaine des décisions qui engagent son entreprise [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Rubrique 5 du gabarit.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "mesures"
+      },
+      "translation": {
+        "title": "Surveillance, signalement, mesures.",
+        "body": "<p>Comment Nexora détecte un abus sans lire les données métier des clients, adresse de signalement, avis préalable, suspension et résiliation, droit de réponse [À COMPLÉTER PAR LE FONDATEUR]. Texte [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "a-completer"
+      },
+      "translation": {
+        "title": "À faire avant publication.",
+        "body": "<p>Cette page est un gabarit. Elle reste en brouillon, non publiée et non indexée, tant que les points suivants ne sont pas réglés.</p>",
+        "items": [
+          {
+            "title": "Remplir les marqueurs.",
+            "text": "Chaque [À COMPLÉTER PAR LE FONDATEUR] doit être remplacé par l'information réelle\u00a0; aucune valeur n'est inventée."
+          },
+          {
+            "title": "Faire valider par un avocat.",
+            "text": "Le texte doit être relu par un avocat québécois [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]."
+          },
+          {
+            "title": "Approuver puis publier.",
+            "text": "Seulement après ces deux points, retirer le brouillon et l'interdiction d'indexation."
+          }
+        ]
+      }
+    }
+  ]
+}

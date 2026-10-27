@@ -1,0 +1,155 @@
+{
+  "page": "entreprise",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "entreprise",
+    "title": "Entreprise",
+    "seo_title": "Nexora\u00a0: IA pour les PME du Québec",
+    "seo_description": "Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME du Québec. Nos principes\u00a0: vérité d'abord, contrôle, réversibilité, un cas à la fois.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Présentation de Nexora, limitée à ce qui est connu.",
+      "claims": ["CL-01", "CL-130"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Entreprise",
+        "headline": "Nexora. L'IA au service des PME d'ici.",
+        "subheadline": "Nexora est une entreprise du Québec. Nous concevons, installons, intégrons et accompagnons des systèmes d'IA adaptés à votre métier, pour des entreprises qui veulent garder la maîtrise de leurs données.",
+        "primary_label": "Nous joindre",
+        "primary_href": "/contact/",
+        "secondary_label": "Lire la méthode",
+        "secondary_href": "/methode/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que fait Nexora : quatre verbes.",
+      "claims": ["CL-01", "CL-04", "CL-02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "metier"
+      },
+      "translation": {
+        "title": "Ce que nous faisons.",
+        "body": "<p>Nous commençons par un problème concret, puis nous étendons le système sans multiplier les outils déconnectés. Deux modes d'installation structurent l'offre\u00a0: chez vous, ou dans notre infrastructure au Québec.</p>",
+        "items": [
+          {
+            "title": "Concevoir.",
+            "text": "Des systèmes d'IA adaptés à votre métier, pas un catalogue de gadgets."
+          },
+          {
+            "title": "Installer.",
+            "text": "Sur votre serveur, ou dans notre infrastructure au Québec."
+          },
+          {
+            "title": "Intégrer.",
+            "text": "En reliant les logiciels que vous utilisez déjà."
+          },
+          {
+            "title": "Accompagner.",
+            "text": "En exploitant le système avec vous et en formant votre équipe à l'usage et à la supervision."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre principes de travail, vérifiables.",
+      "claims": ["CL-09", "CL-21", "CL-128", "CL-08", "CL-03"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "principes"
+      },
+      "translation": {
+        "title": "Nos principes de travail.",
+        "cards": [
+          {
+            "title": "La vérité d'abord.",
+            "text": "Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvons pas prouver. Quand une capacité est en pilote ou prévue, nous l'écrivons."
+          },
+          {
+            "title": "Le contrôle, toujours.",
+            "text": "Dans les flux que nous configurons, toute action qui engage l'entreprise attend la validation d'une personne, sauf décision écrite contraire de votre part."
+          },
+          {
+            "title": "La réversibilité.",
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit."
+          },
+          {
+            "title": "Un cas à la fois.",
+            "text": "Un problème concret, mis en service et vérifié, avant d'élargir. Aucun délai universel n'est annoncé."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que le lecteur peut vérifier.",
+      "claims": ["CL-09", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "verifier"
+      },
+      "translation": {
+        "title": "Ce que vous pouvez vérifier.",
+        "body": "<p>Une entreprise se juge à ce qu'elle laisse vérifier. Voici où regarder.</p>",
+        "items": [
+          {
+            "title": "Un état pour chaque capacité.",
+            "text": "Chaque produit et chaque département indique s'il est disponible, en pilote ou prévu, par exemple sur la page <a href=\"/opsys-ai/\">OPSYS-AI</a>."
+          },
+          {
+            "title": "Un registre de preuves.",
+            "text": "Chaque affirmation de ce site est tenue dans un registre interne, avec sa preuve, sa source et sa version."
+          },
+          {
+            "title": "Des documents sur demande.",
+            "text": "Le <a href=\"/centre-de-confiance/\">centre de confiance</a> liste les documents que nous préparons et leur statut."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Joindre Nexora : le formulaire, rien d'autre d'inventé.",
+      "claims": ["CL-01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "contact"
+      },
+      "translation": {
+        "title": "Nous joindre.",
+        "body": "<p>Le plus simple est le <a href=\"/contact/\">formulaire de contact</a>\u00a0: décrivez un problème concret, nous vous répondons avec ce qui est faisable et par où commencer.</p>"
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA final.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Parlons de votre premier cas.",
+        "text": "Décrivez-nous un problème concret. Nous vous disons ce qui est faisable, dans quel mode, et par où commencer.",
+        "primary_label": "Discuter de mon projet",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les services",
+        "secondary_href": "/services/"
+      }
+    }
+  ]
+}
