@@ -10,6 +10,27 @@ import { extractStrings } from "./translator-keys.ts";
 const UUID = z.uuid();
 const Answer = z.record(z.string(), z.string());
 
+/** Regroupe les chaînes par lots dont la taille totale reste sous `maxChars` (une chaîne trop longue forme son propre lot). */
+export function batchStrings(
+  source: Record<string, string>,
+  maxChars: number,
+): Record<string, string>[] {
+  const batches: Record<string, string>[] = [];
+  let current: Record<string, string> = {};
+  let size = 0;
+  for (const [k, v] of Object.entries(source)) {
+    if (size > 0 && size + v.length > maxChars) {
+      batches.push(current);
+      current = {};
+      size = 0;
+    }
+    current[k] = v;
+    size += v.length;
+  }
+  if (Object.keys(current).length) batches.push(current);
+  return batches;
+}
+
 export function slugify(input: string): string {
   return input
     .normalize("NFD")
@@ -38,15 +59,33 @@ export const traducteur: AgentImpl = async (ctx) => {
   if (keys.length === 0) throw new Error("aucune chaîne française à traduire");
   ctx.event("info", `${keys.length} chaîne(s) à traduire`);
 
-  const answer = await completeJson(
-    ctx,
-    Answer,
-    [
-      { role: "system", content: TRADUCTEUR_SYSTEM },
-      { role: "user", content: JSON.stringify(source) },
-    ],
-    { maxTokens: 12_000 },
+  // La sortie d'un appel est plafonnée (raisonnement compris) : on traduit par lots de taille bornée.
+  const answer: Record<string, string> = {};
+  const batches = batchStrings(
+    source,
+    Number(ctx.agent.config.batchChars) || 2600,
   );
+  ctx.event("info", `${batches.length} lot(s) de traduction`);
+  for (const [index, batch] of batches.entries()) {
+    const part = await completeJson(
+      ctx,
+      Answer,
+      [
+        { role: "system", content: TRADUCTEUR_SYSTEM },
+        {
+          role: "user",
+          content:
+            index === 0
+              ? JSON.stringify(batch)
+              : `${JSON.stringify(batch)}\n(Suite de la même page : n'ajoute pas de clé spéciale.)`,
+        },
+      ],
+      { maxTokens: 4096 },
+    );
+    for (const [k, v] of Object.entries(part))
+      if (k in batch || (index === 0 && (k === "_slug" || k === "_summary")))
+        answer[k] = v;
+  }
   const { _slug, _summary, ...strings } = answer;
   const title = strings["p.title"] ?? "";
   const slugCandidate = slugSchema.safeParse(_slug ?? "");

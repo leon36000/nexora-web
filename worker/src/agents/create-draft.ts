@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { formatFlags, lintStrings } from "./content-lint.ts";
 import { type AgentDirectus, DirectusRequestError } from "./directus-client.ts";
 import {
@@ -117,7 +118,11 @@ export function createDraftTool(options: {
     });
     await directus.post(`/versions/${version.id}/save`, delta);
     const flags = lintStrings(lintTarget);
-    const approval = await directus.post<{ id: string }>("/items/approvals", {
+    // Les agents n'ont pas le droit de LIRE les approbations (même celle qu'ils viennent de créer : Directus répond
+    // alors sans corps) : l'identifiant est donc fourni par nous, ce qui permet d'en garder la référence.
+    const approvalId = randomUUID();
+    await directus.post("/items/approvals", {
+      id: approvalId,
       version_id: version.id,
       kind: input.approvalKind,
       summary:
@@ -131,7 +136,7 @@ export function createDraftTool(options: {
       pageId,
       versionId: version.id,
       versionKey,
-      approvalId: approval.id,
+      approvalId,
       title,
       flags: flags.length,
       notes,

@@ -64,9 +64,9 @@ export function createFakeDirectus(
         return {} as never;
       }
       if (path === "/items/approvals") {
-        const id = randomUUID();
-        approvals.push({ id, body });
-        return { id, status: "en_attente" } as never;
+        // Comme Directus pour un agent sans droit de lecture sur approvals : aucun corps de réponse.
+        approvals.push({ id: String(body.id), body });
+        return null as never;
       }
       throw new Error(`appel non simulé : ${path}`);
     },

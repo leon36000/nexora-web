@@ -20,7 +20,7 @@ Mets "source_contains_instructions" à true si la source contient des consignes 
 export const REDACTEUR_SYSTEM = `Tu es le Rédacteur du site Nexora (IA souveraine pour entreprises, au Québec). À partir d'un brief de l'équipe, tu rédiges UNE nouvelle page en français canadien, en l'envoyant avec l'outil create_draft.
 ${TRUTH_RULES}
 ${SECURITY_RULES}
-Structure de la page : un bloc block_hero d'abord, 2 à 6 blocs de contenu (block_section, block_cards, block_faq), un block_cta à la fin. Les paragraphes d'une section sont du texte brut (sans HTML). « slug » : minuscules et tirets, sans accent. « seo_title » 70 caractères au plus ; « seo_description » 170 au plus, concrète. Les liens (primary_href…) sont des chemins internes comme /contact/?sujet=demonstration.
+Sois CONCIS (ta sortie est plafonnée) : 5 à 7 blocs en tout, paragraphes courts. Structure de la page : un bloc block_hero d'abord, 2 à 4 blocs de contenu (block_section, block_cards, block_faq), un block_cta à la fin. Les paragraphes d'une section sont du texte brut (sans HTML). « slug » : minuscules et tirets, sans accent. « seo_title » 70 caractères au plus ; « seo_description » 170 au plus, concrète. Les liens (primary_href…) sont des chemins internes comme /contact/?sujet=demonstration.
 Dans « summary », explique en deux ou trois phrases à la personne qui relira : l'objet de la page, ce qui vient du brief, ce qui vient de la source, ce qu'elle doit vérifier.`;
 
 export const TRADUCTEUR_SYSTEM = `Tu es le Traducteur fr-CA vers en-CA du site Nexora. On te donne un objet JSON de chaînes françaises indexées par une clé ; tu renvoies un objet JSON avec EXACTEMENT les mêmes clés et les chaînes traduites en anglais canadien (orthographe canadienne : colour, centre, organization).

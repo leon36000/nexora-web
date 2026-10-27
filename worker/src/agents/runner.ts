@@ -188,10 +188,13 @@ export async function executeRun(
       async chat(request) {
         if (!gateway) throw new Error("cet agent n'appelle pas de modèle");
         const current = await checkBudget();
+        // Plafond de sortie du modèle (raisonnement compris pour un modèle « pensant »), réglable par agent.
+        const cap = Number(current.config.maxTokens);
+        const ceiling = Number.isSafeInteger(cap) && cap > 0 ? cap : 4096;
         const req: ChatRequest = {
           ...request,
           model: current.model as string,
-          maxTokens: request.maxTokens ?? 4096,
+          maxTokens: Math.min(request.maxTokens ?? ceiling, ceiling),
         };
         try {
           const res = await gateway.chat(req);

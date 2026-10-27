@@ -51,6 +51,10 @@ export async function completeJson<S extends z.ZodType>(
       temperature: 0.2,
     });
     try {
+      if (res.finishReason === "length" && !res.text.includes("}"))
+        throw new Error(
+          "réponse tronquée par la limite de sortie du modèle (raisonnement compris)",
+        );
       const parsed = schema.safeParse(extractJsonObject(res.text));
       if (parsed.success) return parsed.data;
       lastProblem = `champs invalides : ${parsed.error.issues
@@ -103,6 +107,10 @@ export async function completeWithTool(
       throw new ModelOutputError("arguments de l'outil illisibles");
     }
   }
+  if (res.finishReason === "length")
+    throw new ModelOutputError(
+      "réponse tronquée par la limite de sortie du modèle (raisonnement compris) : demander une page plus courte ou augmenter la limite de l'agent",
+    );
   try {
     return extractJsonObject(res.text);
   } catch {
