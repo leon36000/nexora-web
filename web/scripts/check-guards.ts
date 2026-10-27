@@ -38,6 +38,45 @@ for (const g of ROUTE_GUARDS) {
 
 const THIRD_PARTY = /https?:\/\/|\/\/|\*/;
 const need = (h: Headers, name: string) => h.get(name) ?? "";
+// Sur le tableau de bord, `form-action` nomme les pages hébergées de Stripe (destination de la redirection du formulaire
+// d'achat, sinon bloquée par Chrome) ; jamais une source de ressources.
+const STRIPE_FORM_ACTION =
+  "form-action 'self' https://checkout.stripe.com https://billing.stripe.com";
+const NONE_CSP = "default-src 'none'; frame-ancestors 'none'";
+
+/** En-têtes exigés de TOUTE réponse, quel que soit son type. */
+function commonHeaders(res: Response, label: string) {
+  say(
+    need(res.headers, "x-content-type-options") === "nosniff",
+    `nosniff : ${label}`,
+  );
+  say(
+    need(res.headers, "x-frame-options") === "DENY",
+    `X-Frame-Options : ${label}`,
+  );
+  say(
+    need(res.headers, "referrer-policy") === "strict-origin-when-cross-origin",
+    `Referrer-Policy : ${label}`,
+  );
+  say(
+    /max-age=31536000/.test(need(res.headers, "strict-transport-security")),
+    `HSTS : ${label}`,
+  );
+  say(
+    need(res.headers, "cross-origin-opener-policy") === "same-origin",
+    `Cross-Origin-Opener-Policy : ${label}`,
+  );
+  say(
+    /camera=\(\)/.test(need(res.headers, "permissions-policy")),
+    `Permissions-Policy : ${label}`,
+  );
+  say(
+    res.headers.get("x-powered-by") === null,
+    `pas de X-Powered-By : ${label}`,
+  );
+}
+
+// Pages (200, 404, redirections) : CSP de base, sans origine tierce, sans gestionnaire d'événement en ligne.
 for (const path of [
   "/",
   "/en",
@@ -45,63 +84,77 @@ for (const path of [
   "/vps",
   "/agents",
   "/compte",
-  "/inconnu-s9",
+  "/compte/connexion",
+  "/compte/securite",
+  "/fr/agents", // 308 vers /agents
+  "/inconnu-s9", // 404
 ]) {
   const res = await fetch(BASE + path, { redirect: "manual" });
   await res.body?.cancel();
+  const label = `page ${path} (HTTP ${res.status})`;
   const csp = need(res.headers, "content-security-policy");
   const directives = csp.split(";").map((d) => d.trim());
   say(
     csp.includes("default-src 'self'") &&
       csp.includes("frame-ancestors 'none'") &&
-      csp.includes("object-src 'none'"),
-    `CSP de base sur ${path}`,
+      csp.includes("object-src 'none'") &&
+      csp.includes("script-src-attr 'none'"),
+    `CSP de base : ${label}`,
   );
-  // Seule exception : sur le tableau de bord, `form-action` nomme les pages hébergées de Stripe (destination de la
-  // redirection du formulaire d'achat, sinon bloquée par Chrome) ; jamais une source de ressources.
-  const STRIPE_FORM_ACTION =
-    "form-action 'self' https://checkout.stripe.com https://billing.stripe.com";
   say(
     !directives.some(
       (d) =>
         THIRD_PARTY.test(d) &&
         !(path === "/compte" && d === STRIPE_FORM_ACTION),
     ),
-    `CSP sans origine tierce sur ${path}`,
+    `CSP sans origine tierce : ${label}`,
   );
-  say(
-    need(res.headers, "x-content-type-options") === "nosniff",
-    `nosniff sur ${path}`,
-  );
-  say(
-    need(res.headers, "x-frame-options") === "DENY",
-    `X-Frame-Options sur ${path}`,
-  );
-  say(
-    need(res.headers, "referrer-policy") === "strict-origin-when-cross-origin",
-    `Referrer-Policy sur ${path}`,
-  );
-  say(
-    /max-age=31536000/.test(need(res.headers, "strict-transport-security")),
-    `HSTS sur ${path}`,
-  );
-  say(
-    res.headers.get("x-powered-by") === null,
-    `pas de X-Powered-By sur ${path}`,
-  );
+  commonHeaders(res, label);
 }
-for (const path of ["/api/health", "/v1/models"]) {
-  const res = await fetch(BASE + path);
+
+// Réponses qui ne sont pas des pages : API, passerelle, images, texte, XML, icônes, manifeste, erreurs d'adresse.
+const homeHtml = await (await fetch(`${BASE}/`)).text();
+const asset =
+  /\/_next\/static\/[^"'\s]+\.js/.exec(homeHtml)?.[0] ??
+  "/_next/static/absent.js";
+for (const path of [
+  "/api/health",
+  "/v1/models",
+  "/api/media/00000000-0000-0000-0000-000000000000",
+  "/og/fr",
+  "/llms.txt",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/icon.svg",
+  "/manifest.webmanifest",
+  "/%E0%A4%A", // adresse mal formée : 400
+  asset,
+]) {
+  const res = await fetch(BASE + path, { redirect: "manual" });
   await res.body?.cancel();
-  say(
-    need(res.headers, "content-security-policy") ===
-      "default-src 'none'; frame-ancestors 'none'",
-    `CSP « rien » sur ${path}`,
-  );
-  say(
-    need(res.headers, "x-content-type-options") === "nosniff",
-    `nosniff sur ${path}`,
-  );
+  const label = `${path.startsWith("/_next") ? "ressource statique" : path} (HTTP ${res.status})`;
+  commonHeaders(res, label);
+  if (!path.startsWith("/_next"))
+    say(
+      need(res.headers, "content-security-policy") === NONE_CSP,
+      `CSP « rien » : ${label}`,
+      need(res.headers, "content-security-policy"),
+    );
+  if (path.startsWith("/api/") || path.startsWith("/v1/"))
+    say(
+      need(res.headers, "cross-origin-resource-policy") === "same-origin" ||
+        path.startsWith("/api/media/"),
+      `Cross-Origin-Resource-Policy : ${label}`,
+    );
+}
+// Un POST refusé (403, 401, 400…) porte les mêmes en-têtes qu'une réponse normale.
+{
+  const res = await fetch(`${BASE}/api/contact`, {
+    method: "POST",
+    body: "{}",
+  });
+  await res.body?.cancel();
+  commonHeaders(res, `POST /api/contact (HTTP ${res.status})`);
 }
 // Réponses d'erreur de la passerelle et de l'API : jamais de trace de pile ni de chemin de fichier.
 for (const [m, p] of [

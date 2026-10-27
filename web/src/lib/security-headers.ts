@@ -20,10 +20,23 @@ export const SECURITY_HEADERS: HeaderPair[] = [
   {
     key: "Permissions-Policy",
     value:
-      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), browsing-topics=(), accelerometer=(), gyroscope=(), magnetometer=(), display-capture=(), bluetooth=(), serial=(), hid=(), midi=()",
   },
   { key: "Strict-Transport-Security", value: "max-age=31536000" },
+  // Isole le contexte de navigation : aucune fenêtre d'un autre site ne garde de référence vers la nôtre (Spectre, tabnabbing).
+  // Les redirections vers Stripe sont des navigations de premier niveau : non touchées.
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
 ];
+
+/**
+ * L'API et la passerelle ne sont jamais embarquées par un autre site (pas de CORS non plus) : leurs réponses ne se
+ * chargent pas en `no-cors` depuis une autre origine. Pas sur `/api/media` : ce sont des images de pages publiques.
+ */
+export const API_CORP: HeaderPair = {
+  key: "Cross-Origin-Resource-Policy",
+  value: "same-origin",
+};
 
 /** Directives de la CSP des pages (sans `script-src`, qui dépend du mode). */
 export const PAGE_CSP_DIRECTIVES = [
@@ -39,11 +52,22 @@ export const PAGE_CSP_DIRECTIVES = [
   "frame-ancestors 'none'",
 ] as const;
 
-export function pageCsp(options: { dev?: boolean } = {}): string {
+/**
+ * `script-src-attr 'none'` : aucun gestionnaire d'événement en ligne (`<img onerror=…>`, `onclick=…`) ne s'exécute,
+ * même si `script-src` garde `'unsafe-inline'` (voir ci-dessus). `https: true` ajoute `upgrade-insecure-requests`
+ * (le site est servi en HTTPS : toute sous-ressource en HTTP est montée en HTTPS).
+ */
+export function pageCsp(
+  options: { dev?: boolean; https?: boolean } = {},
+): string {
   const script = `script-src 'self' 'unsafe-inline'${options.dev ? " 'unsafe-eval'" : ""}`;
-  return [PAGE_CSP_DIRECTIVES[0], script, ...PAGE_CSP_DIRECTIVES.slice(1)].join(
-    "; ",
-  );
+  return [
+    PAGE_CSP_DIRECTIVES[0],
+    script,
+    "script-src-attr 'none'",
+    ...PAGE_CSP_DIRECTIVES.slice(1),
+    ...(options.https ? ["upgrade-insecure-requests"] : []),
+  ].join("; ");
 }
 
 export function parseCsp(csp: string): Map<string, string[]> {

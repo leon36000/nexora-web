@@ -8,6 +8,8 @@ import {
   pageCsp,
 } from "@/lib/security-headers";
 import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
+import { SITE_URL } from "@/lib/site";
+import { ADMIN_PATH, throttleAdminFailures } from "@/server/admin-throttle";
 
 /**
  * Routage des langues (Next.js 16 : `proxy.ts` remplace `middleware.ts`).
@@ -49,6 +51,14 @@ export async function proxy(request: NextRequest) {
         "content-security-policy": API_CSP,
       },
     });
+  // API d'administration : trop de jetons faux depuis une même adresse -> 429 (un jeton valide passe toujours).
+  if (ADMIN_PATH.test(pathname)) {
+    const limited = throttleAdminFailures(
+      request,
+      process.env.NEXORA_APP_ADMIN_TOKEN,
+    );
+    if (limited) return limited;
+  }
   // /api, /v1 et /og ne passent ici que pour le contrôle ci-dessus : ni langue, ni CSP de page (la leur vient de next.config).
   if (API_PREFIX.test(pathname)) return NextResponse.next();
   const response = route(request);
@@ -69,7 +79,7 @@ export async function proxy(request: NextRequest) {
   response.headers.set(
     "content-security-policy",
     mergeCsp(
-      mergeCsp(pageCsp({ dev }), embed),
+      mergeCsp(pageCsp({ dev, https: SITE_URL.startsWith("https://") }), embed),
       billingFormCsp(request.nextUrl.pathname),
     ),
   );
