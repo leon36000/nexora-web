@@ -4,6 +4,8 @@
 # Usage : cms/scripts/test-instance.sh up|down|reset|destroy   (aucun secret n'est affiché)
 #   ENV_FILE  fichier .env source (défaut : /home/pc6/Desktop/NexoraSite/deploy/.env)
 #   EXT_DIR   dossier d'extensions monté (défaut : <dépôt>/cms/extensions)
+#   TEST_NAME, TEST_DB, TEST_PORT  nom du conteneur, base et port (défauts : nexora-cms-test, directus_cmstest, 8466) :
+#                                  à changer quand plusieurs personnes essaient en même temps, sans quoi elles se marchent dessus
 #   STUB_URL  adresse du service de l'app vue depuis le conteneur (défaut : http://host.docker.internal:3599)
 set -euo pipefail
 
@@ -11,8 +13,8 @@ ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 ENV_FILE="${ENV_FILE:-/home/pc6/Desktop/NexoraSite/deploy/.env}"
 EXT_DIR="${EXT_DIR:-$ROOT/cms/extensions}"
 STUB_URL="${STUB_URL:-http://host.docker.internal:3599}"
-NAME="nexora-cms-test"
-DB="directus_cmstest"
+NAME="${TEST_NAME:-nexora-cms-test}"
+DB="${TEST_DB:-directus_cmstest}"
 PORT="${TEST_PORT:-8466}"
 IMAGE="directus/directus:12.5.1@sha256:ef6fc027605ea659a972356e0c35fd7f88b02118b0b3a322dafbec3cc709fdab"
 

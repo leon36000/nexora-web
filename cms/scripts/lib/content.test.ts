@@ -249,6 +249,45 @@ describe("buildDelta", () => {
   });
 });
 
+describe("buildDelta : valeurs par défaut du schéma (relance sans effet)", () => {
+  const withDefaults: ManagedFields = {
+    block_hero: {
+      base: ["variant", "visual"],
+      tr: ["headline", "subheadline"],
+      defaults: { visual: "aucun" },
+    },
+  };
+  const withVisual = (visual: string | null): CurrentPage => {
+    const c = cur();
+    (c.blocks[0]?.item as Record<string, unknown>).visual = visual;
+    return c;
+  };
+
+  test("un champ absent du fichier dont Directus a posé la valeur par défaut ne produit aucun changement", () => {
+    expect(buildDelta(withVisual("aucun"), want(), withDefaults).delta).toBeNull();
+  });
+
+  test("un champ absent du fichier mais modifié à la main (autre que le défaut) est ramené à vide", () => {
+    const { delta } = buildDelta(withVisual("schema-x"), want(), withDefaults);
+    expect(delta?.blocks?.update[0]?.item).toMatchObject({ visual: null });
+  });
+
+  test("un champ présent dans le fichier reste comparé tel quel, défaut ou non", () => {
+    const w = want();
+    (w.blocks[0] as { fields: Record<string, unknown> }).fields.visual =
+      "aucun";
+    expect(buildDelta(withVisual("aucun"), w, withDefaults).delta).toBeNull();
+    expect(
+      buildDelta(withVisual("schema-x"), w, withDefaults).delta?.blocks
+        ?.update[0]?.item,
+    ).toMatchObject({ visual: "aucun" });
+  });
+
+  test("managedFields() relève les valeurs par défaut du schéma réel (block_section.visual = aucun)", () => {
+    expect(managedFields().block_section?.defaults?.visual).toBe("aucun");
+  });
+});
+
 describe("canonical", () => {
   test("ignore l'ordre des clés et les estampilles _user et _date", () => {
     expect(canonical({ b: 1, a: { d: 2, c: 3 }, _user: "x" })).toBe(
