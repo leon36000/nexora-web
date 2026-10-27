@@ -12,6 +12,7 @@ import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   BusyError,
+  MIN_REINSTALL_INTERVAL_MS,
   requestReinstall,
   runLifecycle,
   runPowerAction,
@@ -338,6 +339,122 @@ describe("réinstallation avec instantané préalable", () => {
       expect(w.sim.callsTo("POST", `/qemu/${oldVmid}/snapshot`)).toHaveLength(
         1,
       );
+    } finally {
+      await w.close();
+    }
+  });
+});
+
+describe("réinstallations en chaîne : ni VM orpheline ni stockage saturé", () => {
+  const reinstallJobs = async (instanceId: string) =>
+    (await t.db.select().from(jobs)).filter((j) =>
+      j.idempotencyKey?.startsWith(`vps-reinstall:${instanceId}:`),
+    );
+
+  it("refuse une nouvelle réinstallation tant que l'ancienne VM n'est pas purgée (reinstall_pending_purge)", async () => {
+    const w = await active();
+    try {
+      const firstVmid = w.inst.vmid as number;
+      expect(await requestReinstall(w.deps, w.inst.id, "chain-1")).toEqual({
+        accepted: true,
+      });
+      expect(await provisionOrder(w.deps, w.orderId)).toEqual({
+        outcome: "done",
+      });
+      const after = await w.reload();
+      expect(after.previousVmid).toBe(firstVmid);
+
+      const second = await requestReinstall(w.deps, w.inst.id, "chain-2");
+      expect(second).toMatchObject({
+        accepted: false,
+        code: "reinstall_pending_purge",
+      });
+      // Rien n'a changé : instance active, ancienne VM toujours référencée, aucune tâche en file.
+      expect(await w.reload()).toMatchObject({
+        status: "active",
+        previousVmid: firstVmid,
+      });
+      expect(await reinstallJobs(w.inst.id)).toHaveLength(1);
+      expect(w.sim.vms.has(firstVmid)).toBe(true);
+
+      // Après la purge (rétention écoulée) et le délai minimal, c'est de nouveau possible.
+      w.clock.now = new Date(w.clock.now.getTime() + 8 * DAY);
+      expect(await runLifecycle(w.deps, w.inst.id, "purge_old")).toEqual({
+        done: true,
+      });
+      expect(await requestReinstall(w.deps, w.inst.id, "chain-3")).toEqual({
+        accepted: true,
+      });
+    } finally {
+      await w.close();
+    }
+  });
+
+  it("impose un délai minimal de 24 h entre deux réinstallations, même sans ancienne VM à purger", async () => {
+    expect(MIN_REINSTALL_INTERVAL_MS).toBe(24 * 3_600_000);
+    const w = await active();
+    try {
+      expect(await requestReinstall(w.deps, w.inst.id, "gap-1")).toEqual({
+        accepted: true,
+      });
+      expect(await provisionOrder(w.deps, w.orderId)).toEqual({
+        outcome: "done",
+      });
+      // L'ancienne VM a disparu (purge manuelle, par exemple) : seul le délai protège encore.
+      await t.db
+        .update(vpsInstances)
+        .set({ previousVmid: null, previousDeleteAfter: null })
+        .where(eq(vpsInstances.id, w.inst.id));
+      expect(await requestReinstall(w.deps, w.inst.id, "gap-2")).toMatchObject({
+        accepted: false,
+        code: "reinstall_too_soon",
+      });
+      w.clock.now = new Date(
+        w.clock.now.getTime() + MIN_REINSTALL_INTERVAL_MS + 60_000,
+      );
+      expect(await requestReinstall(w.deps, w.inst.id, "gap-3")).toEqual({
+        accepted: true,
+      });
+    } finally {
+      await w.close();
+    }
+  });
+
+  it("un état incohérent (VM courante ET ancienne VM) n'écrase pas previousVmid et ne détruit pas la VM du client", async () => {
+    const w = await active();
+    try {
+      const liveVmid = w.inst.vmid as number;
+      // Simule une demande acceptée avant ce garde-fou : instance en réinstallation avec une ancienne VM déjà retenue.
+      await t.db
+        .update(vpsInstances)
+        .set({
+          status: "reinstalling",
+          step: "snapshot",
+          pendingAction: "reinstall",
+          previousVmid: 987_654,
+          previousDeleteAfter: new Date(w.clock.now.getTime() + 3 * DAY),
+        })
+        .where(eq(vpsInstances.id, w.inst.id));
+      const out = await provisionOrder(w.deps, w.orderId);
+      expect(out).toMatchObject({
+        outcome: "skipped",
+        reason: "reinstall_pending_purge",
+      });
+      const after = await w.reload();
+      expect(after).toMatchObject({
+        status: "active",
+        step: "done",
+        vmid: liveVmid,
+        previousVmid: 987_654,
+        pendingAction: null,
+      });
+      expect(w.sim.vms.get(liveVmid)?.status).toBe("running");
+      const kinds = (await t.db.select().from(vpsEvents))
+        .filter((e) => e.instanceId === w.inst.id)
+        .map((e) => e.kind);
+      expect(kinds).toContain("reinstall_refused");
+      expect(kinds).not.toContain("provision_failed");
+      expect(kinds).not.toContain("reinstall_failed");
     } finally {
       await w.close();
     }

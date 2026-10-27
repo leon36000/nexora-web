@@ -58,6 +58,16 @@ const ORDER = [
 type Step = (typeof ORDER)[number];
 
 type StepResult = "advance" | { wait: number };
+
+/** Réinstallation refusée avant tout effet : l'instance redevient active, sans compensation. */
+class ReinstallRefusedError extends Error {
+  readonly code: string;
+  constructor(code: string) {
+    super(code);
+    this.name = "ReinstallRefusedError";
+    this.code = code;
+  }
+}
 interface Ctx {
   deps: EngineDeps;
   startedAt: number;
@@ -164,6 +174,26 @@ export async function provisionOrder(
     try {
       return await advance(ctx, held.id);
     } catch (error) {
+      if (error instanceof ReinstallRefusedError) {
+        // La VM courante reste en service : l'instance redevient « active », rien n'est compensé.
+        const cur = await loadInstance(deps, held.id);
+        await setInstance(deps, held.id, {
+          status: "active",
+          step: "done",
+          pendingAction: null,
+          lastError: error.code,
+        });
+        await recordVpsEvent(deps.db, {
+          organizationId: cur.organizationId,
+          orderId,
+          instanceId: held.id,
+          actor: "worker",
+          kind: "reinstall_refused",
+          message: `réinstallation refusée : ${error.code}`,
+          detail: { code: error.code },
+        });
+        return { outcome: "skipped" as const, reason: error.code };
+      }
       const permanent = error instanceof PermanentError;
       const last = tries.attempt >= tries.maxAttempts;
       const cur = await loadInstance(deps, held.id);
@@ -711,6 +741,10 @@ async function stepRetireOld(ctx: Ctx, inst: Instance): Promise<StepResult> {
     if (inst.previousVmid) return "advance";
     throw new PermanentError("réinstallation sans VM à remplacer");
   }
+  // Une ancienne VM est déjà conservée : l'écraser la rendrait orpheline (jamais supprimée, stockage perdu).
+  // Refus SANS compensation : la VM courante est celle du client, elle ne doit pas être détruite.
+  if (inst.previousVmid)
+    throw new ReinstallRefusedError("reinstall_pending_purge");
   const server = await loadServer(deps, inst.serverId);
   const client = await deps.proxmox(server);
   const snapName =
