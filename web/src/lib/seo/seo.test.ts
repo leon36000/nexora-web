@@ -445,7 +445,9 @@ describe("JSON-LD", () => {
     });
     expect(product).toBeTruthy();
     const offers = (
-      product as { offers: { price: string; priceCurrency: string }[] }
+      product as unknown as {
+        offers: { price: string; priceCurrency: string }[];
+      }
     ).offers;
     expect(offers.map((o) => o.price)).toEqual(["0.42", "1.68"]);
     expect(offers.every((o) => o.priceCurrency === "CAD")).toBe(true);

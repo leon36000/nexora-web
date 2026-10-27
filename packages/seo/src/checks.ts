@@ -27,6 +27,9 @@ const DEFAULTS = {
   descriptionMax: 160,
 } as const;
 
+/** Les doublons se cherchent DANS UNE LANGUE : le même titre en fr-CA et en en-CA (nom de produit) est légitime. */
+const langOf = (p: PageSeo) => (p.lang ?? "").toLowerCase();
+
 /**
  * Contrôles SEO d'un ensemble de pages RENDUES (récupérées par HTTP ou fixtures) : titres et descriptions uniques
  * et de longueur correcte, canonical, hreflang réciproques, noindex, un seul h1, JSON-LD lisible, connu et conforme.
@@ -79,7 +82,7 @@ export function checkSite(
           message: `Titre trop long (${n} caractères, maximum ${o.titleMax}) : il sera tronqué.`,
           detail: { length: n },
         });
-      const key = normalizeText(p.title);
+      const key = `${langOf(p)}|${normalizeText(p.title)}`;
       titles.set(key, [...(titles.get(key) ?? []), p.url]);
     }
     if (!p.description)
@@ -106,7 +109,7 @@ export function checkSite(
           message: `Description trop longue (${n} caractères, maximum ${o.descriptionMax}).`,
           detail: { length: n },
         });
-      const key = normalizeText(p.description);
+      const key = `${langOf(p)}|${normalizeText(p.description)}`;
       descriptions.set(key, [...(descriptions.get(key) ?? []), p.url]);
     }
   }

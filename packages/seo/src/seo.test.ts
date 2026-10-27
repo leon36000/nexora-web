@@ -108,6 +108,7 @@ describe("checkSite", () => {
     const [fr, en] = pair(
       {},
       {
+        lang: "fr-CA",
         title: "Solutions d'IA souveraine au Québec",
         description:
           "Des solutions d'intelligence artificielle hébergées au Québec pour les entreprises qui veulent garder la maîtrise de leurs données.",
@@ -116,6 +117,20 @@ describe("checkSite", () => {
     const r = rules(checkSite([fr as never, en as never]));
     expect(r).toContain("title.duplicate");
     expect(r).toContain("description.duplicate");
+  });
+
+  it("le même titre dans deux langues n'est pas un doublon", () => {
+    const [fr, en] = pair(
+      {},
+      {
+        title: "Solutions d'IA souveraine au Québec",
+        description:
+          "Des solutions d'intelligence artificielle hébergées au Québec pour les entreprises qui veulent garder la maîtrise de leurs données.",
+      },
+    );
+    expect(rules(checkSite([fr as never, en as never]))).not.toContain(
+      "title.duplicate",
+    );
   });
 
   it("signale les longueurs hors bornes et l'absence de titre", () => {
