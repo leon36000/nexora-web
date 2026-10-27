@@ -11,6 +11,9 @@ import {
   minBigint,
   or,
   organizations,
+  type PromoScope,
+  promoCodes,
+  promoRedemptions,
   recordEventOnce,
   SUBSCRIPTION_STATUSES,
   sql,
@@ -56,6 +59,11 @@ export interface WebhookDeps {
   plans: PlanSource;
   config: BillingConfig;
   log: Logger;
+  /**
+   * Retrouve le code de promotion Stripe appliqué à une session quand le client l'a saisi sur la page de
+   * Stripe (aucune métadonnée de chez nous). Facultatif et sans effet sur le paiement : un échec est ignoré.
+   */
+  resolveSessionPromotion?: (sessionId: string) => Promise<string | null>;
 }
 
 export interface WebhookOutcome {
@@ -210,6 +218,53 @@ async function resolveOrg(
 // Achat de crédits
 // ---------------------------------------------------------------------------------------------
 
+/** Utilisation d'un code promo par une session payée : une ligne par (code, session), rejouable. */
+async function recordPromoRedemption(
+  ctx: Ctx,
+  session: ReturnType<typeof checkoutSessionSchema.parse>,
+  orgId: string,
+  scope: PromoScope,
+  subscriptionId: string | null,
+): Promise<void> {
+  const { tx, deps } = ctx;
+  const discount = Math.max(session.total_details?.amount_discount ?? 0, 0);
+  let promoId: string | null = session.metadata.promo_code_id ?? null;
+  if (promoId) {
+    const [known] = await tx
+      .select({ id: promoCodes.id })
+      .from(promoCodes)
+      .where(eq(promoCodes.id, promoId));
+    if (!known) promoId = null;
+  }
+  if (!promoId && discount > 0 && deps.resolveSessionPromotion) {
+    try {
+      const stripePromo = await deps.resolveSessionPromotion(session.id);
+      if (stripePromo) {
+        const [found] = await tx
+          .select({ id: promoCodes.id })
+          .from(promoCodes)
+          .where(eq(promoCodes.stripePromotionCodeId, stripePromo));
+        promoId = found?.id ?? null;
+      }
+    } catch {
+      // Statistique seulement : le paiement ne dépend jamais de cette résolution.
+    }
+  }
+  if (!promoId) return;
+  await tx
+    .insert(promoRedemptions)
+    .values({
+      promoCodeId: promoId,
+      organizationId: orgId,
+      scope,
+      source: "stripe",
+      stripeSessionId: session.id,
+      stripeSubscriptionId: subscriptionId,
+      discountCents: discount,
+    })
+    .onConflictDoNothing();
+}
+
 async function onCheckoutSession(
   ctx: Ctx,
   session: ReturnType<typeof checkoutSessionSchema.parse>,
@@ -243,6 +298,13 @@ async function onCheckoutSession(
         sessionId: session.id,
         subscriptionId: subId,
       });
+    await recordPromoRedemption(
+      ctx,
+      session,
+      orgId,
+      session.metadata.kind === "vps" ? "vps" : "subscriptions",
+      subId,
+    );
     return "processed";
   }
 
@@ -256,7 +318,12 @@ async function onCheckoutSession(
   if (!subtotal || subtotal <= 0 || !total || total <= 0) return "ignored";
 
   if (customerId) await linkCustomer(tx, orgId, customerId);
-  const creditsMicro = centsToMicro(subtotal);
+  // Crédits accordés : le montant avant taxes et avant rabais, net des frais de recharge éventuels (métadonnée
+  // posée par notre Checkout) ; jamais plus que le montant payé avant rabais.
+  const wanted = Number(session.metadata.credits_cents);
+  const creditsCents =
+    Number.isSafeInteger(wanted) && wanted > 0 ? Math.min(wanted, subtotal) : subtotal;
+  const creditsMicro = centsToMicro(creditsCents);
   const paymentIntent = session.payment_intent
     ? idOf(session.payment_intent)
     : null;
@@ -292,6 +359,7 @@ async function onCheckoutSession(
     externalRef: session.id,
     purchaseId: purchase.id,
   });
+  await recordPromoRedemption(ctx, session, orgId, "credits", null);
   return "processed";
 }
 

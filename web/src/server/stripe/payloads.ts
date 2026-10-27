@@ -27,7 +27,12 @@ export const checkoutSessionSchema = z.object({
   amount_subtotal: z.number().int().nullish(),
   amount_total: z.number().int().nullish(),
   currency: z.string().nullish(),
-  total_details: z.object({ amount_tax: z.number().int().nullish() }).nullish(),
+  total_details: z
+    .object({
+      amount_tax: z.number().int().nullish(),
+      amount_discount: z.number().int().nullish(),
+    })
+    .nullish(),
   metadata,
 });
 export type CheckoutSessionPayload = z.infer<typeof checkoutSessionSchema>;

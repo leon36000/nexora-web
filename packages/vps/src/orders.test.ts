@@ -169,6 +169,13 @@ describe("création d'une commande", () => {
       createOrder(t.db, input({ planCode: "gros" })),
       "plan_not_synced",
     );
+    // Un VPS offert par l'équipe ne passe pas par Stripe : aucun prix Stripe n'est exigé.
+    const gift = await createOrder(
+      t.db,
+      input({ planCode: "gros", allowUnsynced: true }),
+    );
+    expect(gift.created).toBe(true);
+    expect(gift.order.status).toBe("awaiting_payment");
     await markCatalogApplied(t.db, v.id, {
       status: "applied",
       detail: {

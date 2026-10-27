@@ -132,13 +132,13 @@ export async function syncPromo(deps: SyncDeps, promo: PromoRow): Promise<SyncOu
   const everywhere = promo.scopes.length === 3;
   let appliesTo: string[] | null = null;
   if (!everywhere) {
-    const lacking = promo.scopes.filter((s) => scopeProducts[s].length === 0);
+    const lacking = (promo.scopes as PromoScope[]).filter((s) => scopeProducts[s].length === 0);
     if (lacking.length > 0) {
       const message = `Aucun produit Stripe pour la portée (${lacking.join(", ")}) : lancez d'abord « Publier vers Stripe » pour les offres concernées, puis resynchronisez.`;
       await record({ stripeSyncError: message });
       return { state: "error", code: "no_products", message };
     }
-    appliesTo = [...new Set(promo.scopes.flatMap((s) => scopeProducts[s]))].sort();
+    appliesTo = [...new Set((promo.scopes as PromoScope[]).flatMap((s) => scopeProducts[s]))].sort();
   }
   const fp = fingerprint({
     coupon: couponParams(promo, appliesTo),

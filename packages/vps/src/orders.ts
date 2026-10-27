@@ -59,6 +59,8 @@ export interface CreateOrderInput {
   hostname?: string;
   /** Plafond de VPS par organisation (anti-abus). */
   maxPerOrganization: number;
+  /** Don du personnel : aucun prix Stripe n'est exigé (la commande ne passera pas par Stripe). */
+  allowUnsynced?: boolean;
 }
 
 const HOST = /^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$/;
@@ -101,7 +103,7 @@ export async function createOrder(db: Database, input: CreateOrderInput) {
     input.term === "month" ? plan.priceMonthlyCents : plan.priceYearlyCents;
   if (!price)
     throw new OrderError("term_unavailable", "durée non offerte pour ce plan");
-  if (!stripePriceFor(catalog, plan.code, input.term))
+  if (!input.allowUnsynced && !stripePriceFor(catalog, plan.code, input.term))
     throw new OrderError(
       "plan_not_synced",
       "prix Stripe absent : lancer « Publier vers Stripe »",

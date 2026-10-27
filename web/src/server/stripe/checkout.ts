@@ -123,7 +123,7 @@ function discountParams(extras: CheckoutExtras) {
   return {};
 }
 
-const promoMeta = (extras: CheckoutExtras) =>
+const promoMeta = (extras: CheckoutExtras): Record<string, string> =>
   extras.promo ? { promo_code_id: extras.promo.promoCodeId } : {};
 
 export interface CreditCheckoutInput extends CheckoutExtras {

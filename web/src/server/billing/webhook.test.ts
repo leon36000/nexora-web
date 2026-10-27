@@ -13,7 +13,8 @@ import {
   subscriptions,
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { promoCodes, promoRedemptions } from "@nexora/db";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { DEFAULT_BILLING_CONFIG } from "../ledger/config";
 import { buildEvent } from "../stripe/testing";
 import {
@@ -125,6 +126,29 @@ describe("achat de crédits : checkout.session.completed", () => {
       creditsMicro: 100_000_000n,
       status: "paid",
     });
+  });
+
+  it("accorde les crédits NETS de la métadonnée quand des frais de recharge s'appliquent (jamais plus que le montant payé)", async () => {
+    const org = await newOrg();
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "checkout.session.completed",
+        creditSession(org, { metadata: { kind: "credits", organization_id: org.id, credits_cents: "9500" } }),
+        { created: EVT_TIME },
+      ),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(95_000_000n);
+    const other = await newOrg();
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "checkout.session.completed",
+        creditSession(other, { metadata: { kind: "credits", organization_id: other.id, credits_cents: "99999999" } }),
+        { created: EVT_TIME },
+      ),
+    );
+    expect((await getAccount(t.db, other.id)).balanceMicro).toBe(100_000_000n);
   });
 
   it("rejouer le même événement ne double rien", async () => {
@@ -1319,5 +1343,96 @@ describe("cohérence globale", () => {
       .from(creditEntries)
       .where(and(eq(creditEntries.source, "purchase")));
     for (const e of orphan) expect(e.externalRef).toMatch(/^cs_/);
+  });
+});
+
+
+describe("codes promo : enregistrement des utilisations", () => {
+  async function promo(code: string, stripePromotionCodeId: string | null = null) {
+    const [row] = await t.db
+      .insert(promoCodes)
+      .values({ code, kind: "percent", percentOff: 20, scopes: ["credits", "subscriptions", "vps"], stripePromotionCodeId })
+      .returning();
+    return row!;
+  }
+
+  it("un achat de crédits avec un code enregistre l'utilisation et le rabais, une seule fois même si l'événement est rejoué", async () => {
+    const org = await newOrg();
+    const p = await promo(`WH-${org.n}`);
+    const session = creditSession(org, {
+      amount_subtotal: 10_000,
+      amount_total: 9_200,
+      total_details: { amount_tax: 1_200, amount_discount: 2_000 },
+      metadata: { kind: "credits", organization_id: org.id, promo_code_id: p.id },
+    });
+    const evt = buildEvent("checkout.session.completed", session, { created: EVT_TIME });
+    await processStripeEvent(deps(), evt);
+    await processStripeEvent(deps(), evt);
+    const rows = await t.db.select().from(promoRedemptions).where(eq(promoRedemptions.promoCodeId, p.id));
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ organizationId: org.id, scope: "credits", source: "stripe", discountCents: 2_000, stripeSessionId: session.id });
+    // les crédits valent toujours le montant avant rabais et taxes
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(100_000_000n);
+  });
+
+  it("un abonnement (essai ou rabais) enregistre l'utilisation à la fin de la session", async () => {
+    const org = await newOrg();
+    const p = await promo(`WS-${org.n}`);
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "checkout.session.completed",
+        {
+          id: `cs_sub_${org.n}`,
+          mode: "subscription",
+          payment_status: "no_payment_required",
+          client_reference_id: org.id,
+          customer: org.customer,
+          subscription: `sub_${org.n}`,
+          total_details: { amount_discount: 0 },
+          metadata: { kind: "subscription", organization_id: org.id, plan_code: "workstudio-pro", promo_code_id: p.id },
+        },
+        { created: EVT_TIME },
+      ),
+    );
+    const [r] = await t.db.select().from(promoRedemptions).where(eq(promoRedemptions.promoCodeId, p.id));
+    expect(r).toMatchObject({ scope: "subscriptions", stripeSubscriptionId: `sub_${org.n}`, discountCents: 0 });
+  });
+
+  it("un code saisi sur la page Stripe est retrouvé par son code de promotion Stripe (résolution facultative)", async () => {
+    const org = await newOrg();
+    const p = await promo(`WP-${org.n}`, `promo_page_${org.n}`);
+    const resolve = vi.fn(async () => `promo_page_${org.n}`);
+    await processStripeEvent(
+      deps({ resolveSessionPromotion: resolve }),
+      buildEvent(
+        "checkout.session.completed",
+        creditSession(org, {
+          total_details: { amount_tax: 1_000, amount_discount: 1_000 },
+          amount_total: 10_000,
+        }),
+        { created: EVT_TIME },
+      ),
+    );
+    expect(resolve).toHaveBeenCalledTimes(1);
+    const rows = await t.db.select().from(promoRedemptions).where(eq(promoRedemptions.promoCodeId, p.id));
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.discountCents).toBe(1_000);
+  });
+
+  it("sans rabais ni code : rien n'est enregistré et la résolution n'est pas appelée ; un échec de résolution ne bloque jamais le paiement", async () => {
+    const org = await newOrg();
+    const resolve = vi.fn(async () => {
+      throw new Error("réseau");
+    });
+    await processStripeEvent(deps({ resolveSessionPromotion: resolve }), buildEvent("checkout.session.completed", creditSession(org), { created: EVT_TIME }));
+    expect(resolve).not.toHaveBeenCalled();
+    const org2 = await newOrg();
+    const out = await processStripeEvent(
+      deps({ resolveSessionPromotion: resolve }),
+      buildEvent("checkout.session.completed", creditSession(org2, { total_details: { amount_tax: 1_000, amount_discount: 500 } }), { created: EVT_TIME }),
+    );
+    expect(out.status).toBe("processed");
+    expect((await getAccount(t.db, org2.id)).balanceMicro).toBe(100_000_000n);
   });
 });

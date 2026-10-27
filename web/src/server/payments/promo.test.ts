@@ -24,7 +24,7 @@ afterAll(async () => {
 const base = {
   kind: "percent",
   percentOff: 25,
-  scopes: ["subscriptions"],
+  scopes: ["subscriptions"] as ("subscriptions" | "credits" | "vps")[],
 } as const;
 
 describe("normalisation d'un code saisi", () => {
