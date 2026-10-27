@@ -362,3 +362,13 @@ Dans le bundle `nexora-cms` : endpoint relais `nexora-vps` (administrateurs Dire
 ### Limites connues (non livrées)
 
 Aucun serveur Proxmox réel branché : client, simulateur et scripts d'installation n'ont jamais parlé à un vrai Proxmox ni à une vraie VM (le test de contrat est prêt) ; pas de TLS ni de domaine par VPS (accès aux applications par tunnel SSH) ; pas de console web ni de sauvegardes en libre-service (la récupération d'une ancienne VM de réinstallation passe par l'opérateur) ; pas de remboursement automatique (par conception) ; pas de limitation de bande passante ni de quota mensuel appliqué (`bandwidthGb` est informatif) ; un seul serveur par commande, pas de migration entre serveurs ; l'application « Aucune application » (VPS vierge) n'existe pas — les guides n8n / Open WebUI / Dify renvoient au contact ; Postfix/courriel sortant autre que le port 25 non filtré ; Coolify non utilisé ; entrée « VPS » de la navigation et URL du sitemap à ajouter (voir le compte rendu) ; les prix, la garantie, les SLA, l'adresse légale restent au fondateur.
+
+## Sécurité et exploitation (jalon S9)
+
+Recette et preuves : `docs/recette/` ; mode d'emploi : `docs/guide-operateur.md`. Ajouts qui touchent la configuration :
+
+- **En-têtes** : `web/src/lib/security-headers.ts` (CSP sans origine tierce, HSTS, `nosniff`, `frame-ancestors 'none'`), posés par `next.config.ts` et `proxy.ts`.
+- **Adresses saisies en administration** (fournisseurs, instances WorkStudio, serveurs Proxmox) : garde `@nexora/net`. En production, le réseau interne est refusé sauf liste `NEXORA_OUTBOUND_ALLOW` (hôtes, adresses ou plages CIDR, séparés par des virgules) ; lien local et métadonnées du nuage toujours refusés.
+- **Portée des secrets** : `@nexora/vault/scope` ; un secret ne part vers une adresse saisie que si son type convient.
+- **Sauvegarde** : `deploy/backup.sh`, `deploy/restore.sh` ; **e2e regroupés** : `bun run e2e`.
+- **Écoute du serveur** : `next start -H localhost` (ou `0.0.0.0` en conteneur), jamais `127.0.0.1`.
