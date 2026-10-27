@@ -17,8 +17,8 @@ import {
   uuidParam,
 } from "../site-agents/http";
 import {
-  addAgentPrice,
   AgentError,
+  addAgentPrice,
   agentIssues,
   applyDiscovery,
   createInstance,

@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import { availableAppRoutes } from "@/lib/seo/app-routes";
 import { buildSitemap } from "@/lib/seo/sitemap";
 import { SITE_URL } from "@/lib/site";
+import { getPublicAgents } from "@/server/agents/read";
 import { getSeoPages } from "@/server/cms/seo-read";
 import { getPublicCatalog } from "@/server/gateway/read";
 import { getPublicVps } from "@/server/vps/read";
@@ -14,10 +15,11 @@ import { getPublicVps } from "@/server/vps/read";
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connection();
-  const [pages, catalog, vps] = await Promise.all([
+  const [pages, catalog, vps, agents] = await Promise.all([
     getSeoPages(),
     getPublicCatalog(),
     getPublicVps(),
+    getPublicAgents(),
   ]);
   return buildSitemap({
     siteUrl: SITE_URL,
@@ -27,5 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     catalogPublishedAt: catalog.publishedAt,
     vpsAppCodes: vps.apps.map((a) => a.code),
     vpsPublishedAt: vps.publishedAt,
+    agentSlugs: agents.agents.map((a) => a.slug),
+    agentsPublishedAt: agents.publishedAt,
   });
 }

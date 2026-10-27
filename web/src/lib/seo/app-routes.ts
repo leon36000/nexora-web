@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { getAgentsDictionary } from "@/i18n/agents";
 import type { Lang } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -18,7 +19,7 @@ export type AppRoute = {
   /** Dossier sous `src/app/[lang]/` qui porte la page. */
   dir: string;
   /** Daté par la publication du catalogue de modèles (/modeles) ou du catalogue VPS (/vps). */
-  dated: "catalog" | "vps" | null;
+  dated: "catalog" | "vps" | "agents" | null;
   meta: (lang: Lang) => { title: string; description: string | null } | null;
 };
 
@@ -47,6 +48,16 @@ export const APP_ROUTES: readonly AppRoute[] = [
     dated: null,
     meta: (lang) => {
       const m = getGatewayDictionary(lang).meta.docs;
+      return { title: m.title, description: m.description };
+    },
+  },
+  {
+    // Jalon agents hébergés : listée seulement si la page existe.
+    path: "/agents",
+    dir: "agents",
+    dated: "agents",
+    meta: (lang) => {
+      const m = getAgentsDictionary(lang).meta.list;
       return { title: m.title, description: m.description };
     },
   },

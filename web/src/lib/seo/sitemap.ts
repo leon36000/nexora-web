@@ -19,6 +19,10 @@ export type SitemapInput = {
   vpsAppCodes: readonly string[];
   /** Date de publication du catalogue VPS affiché ; null si inconnue. */
   vpsPublishedAt: string | null;
+  /** Agents hébergés publiés et listés (identifiants de /agents/<slug>). */
+  agentSlugs: readonly string[];
+  /** Dernière publication parmi les agents affichés ; null si inconnue. */
+  agentsPublishedAt: string | null;
 };
 
 const pathOf = (slug: string) => (slug === "" ? "/" : `/${slug}`);
@@ -86,6 +90,7 @@ export function buildSitemap(input: SitemapInput): MetadataRoute.Sitemap {
       });
   };
   const vpsDate = realDate(input.vpsPublishedAt);
+  const agentsDate = realDate(input.agentsPublishedAt);
   for (const route of input.appRoutes) {
     appEntry(
       route.path,
@@ -93,10 +98,15 @@ export function buildSitemap(input: SitemapInput): MetadataRoute.Sitemap {
         ? catalogDate
         : route.dated === "vps"
           ? vpsDate
-          : undefined,
+          : route.dated === "agents"
+            ? agentsDate
+            : undefined,
     );
     if (route.path === "/modeles")
       for (const id of input.modelIds) appEntry(`/modeles/${id}`, catalogDate);
+    if (route.path === "/agents")
+      for (const slug of input.agentSlugs)
+        appEntry(`/agents/${slug}`, agentsDate);
     if (route.path === "/vps")
       for (const code of input.vpsAppCodes) appEntry(`/vps/${code}`, vpsDate);
   }

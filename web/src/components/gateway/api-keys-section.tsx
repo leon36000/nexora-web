@@ -1,3 +1,4 @@
+import { AgentUsage, isAgentUsage } from "@/components/agents/agent-usage";
 import { Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import { formatDate, formatMicroCad } from "@/i18n/account";
@@ -34,7 +35,9 @@ export function ApiKeysSection({
   const now = new Date();
   const th = "px-4 py-3 font-medium";
   const scroller = "mt-6 overflow-x-auto rounded-md border border-line";
-  const totals = usage.reduce(
+  // Les modèles et les agents ont chacun leur tableau (les agents : `agent/<identifiant>`).
+  const modelUsage = usage.filter((r) => !isAgentUsage(r));
+  const totals = modelUsage.reduce(
     (a, r) => ({
       requests: a.requests + r.requests,
       input: a.input + r.promptTokens,
@@ -152,7 +155,7 @@ export function ApiKeysSection({
           {t.usageTitle}
         </h3>
         <p className="mt-3 max-w-2xl text-body text-fg-muted">{t.usageLead}</p>
-        {usage.length === 0 ? (
+        {modelUsage.length === 0 ? (
           <Card className="mt-6" variant="outline">
             <p className="text-body text-fg-muted">{t.usageEmpty}</p>
           </Card>
@@ -188,7 +191,7 @@ export function ApiKeysSection({
                 </tr>
               </thead>
               <tbody>
-                {usage.map((r) => (
+                {modelUsage.map((r) => (
                   <tr
                     key={`${r.day}|${r.model}`}
                     className="border-b border-line"
@@ -239,6 +242,7 @@ export function ApiKeysSection({
           </section>
         )}
       </section>
+      <AgentUsage lang={lang} usage={usage} />
     </Section>
   );
 }

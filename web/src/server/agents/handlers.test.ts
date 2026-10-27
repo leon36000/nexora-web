@@ -1,7 +1,10 @@
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { type HostedAgentsAdminDeps, handleHostedAgentsAdmin } from "./handlers";
+import {
+  type HostedAgentsAdminDeps,
+  handleHostedAgentsAdmin,
+} from "./handlers";
 
 const TOKEN = "jeton-admin-de-test-0123456789abcdef-0123";
 const WS_KEY = "sk-nexora-CLE-WORKSTUDIO-SECRETE-0123456789abcdef";
@@ -12,7 +15,9 @@ let changes: number;
 let wsFetch: (url: string) => Response | Promise<Response>;
 let vault: Map<string, string>;
 
-const deps = (over: Partial<HostedAgentsAdminDeps> = {}): HostedAgentsAdminDeps => ({
+const deps = (
+  over: Partial<HostedAgentsAdminDeps> = {},
+): HostedAgentsAdminDeps => ({
   db: () => t.db,
   adminToken: TOKEN,
   getSecret: async (ref) => {
@@ -29,7 +34,12 @@ const deps = (over: Partial<HostedAgentsAdminDeps> = {}): HostedAgentsAdminDeps 
   ...over,
 });
 
-async function call(method: string, path: string, body?: unknown, token: string | null = TOKEN) {
+async function call(
+  method: string,
+  path: string,
+  body?: unknown,
+  token: string | null = TOKEN,
+) {
   const segments = path.split("/").filter(Boolean);
   const res = await handleHostedAgentsAdmin(
     new Request(`http://localhost/api/admin/hosted-agents/${path}`, {
@@ -60,7 +70,11 @@ beforeEach(() => {
   wsFetch = () =>
     Response.json({
       data: [
-        { id: "agent:Assistant général", name: "Assistant général", description: "Répond." },
+        {
+          id: "agent:Assistant général",
+          name: "Assistant général",
+          description: "Répond.",
+        },
       ],
     });
 });
@@ -84,7 +98,9 @@ describe("authentification", () => {
     expect((await call("GET", "", undefined, null)).status).toBe(401);
     expect((await call("GET", "", undefined, `${TOKEN}x`)).status).toBe(401);
     const res = await handleHostedAgentsAdmin(
-      new Request("http://localhost/x", { headers: { authorization: `Bearer ${TOKEN}` } }),
+      new Request("http://localhost/x", {
+        headers: { authorization: `Bearer ${TOKEN}` },
+      }),
       [],
       deps({ adminToken: undefined }),
     );
@@ -99,7 +115,9 @@ describe("instances", () => {
     const list = await call("GET", "instances");
     expect(list.status).toBe(200);
     expect(list.text).not.toContain(WS_KEY);
-    expect(list.json.instances[0]).toMatchObject({ secretRef: "workstudio.essai" });
+    expect(list.json.instances[0]).toMatchObject({
+      secretRef: "workstudio.essai",
+    });
   });
 
   it("refuse une adresse, un code ou des champs invalides", async () => {
@@ -108,7 +126,12 @@ describe("instances", () => {
       { code: "ok-code", name: "x", baseUrl: "ftp://a.b" },
       { code: "ok-code", name: "x", baseUrl: "http://u:p@a.b" },
       { code: "ok-code", name: "x", baseUrl: "http://a.b", extra: 1 },
-      { code: "ok-code", name: "x", baseUrl: "http://a.b", secretRef: "Pas Valide" },
+      {
+        code: "ok-code",
+        name: "x",
+        baseUrl: "http://a.b",
+        secretRef: "Pas Valide",
+      },
     ])
       expect((await call("POST", "instances", body)).status).toBe(422);
   });
@@ -125,7 +148,8 @@ describe("instances", () => {
     expect(ok.status).toBe(200);
     expect(ok.json).toMatchObject({ ok: true });
     expect(ok.json.instance.healthState).toBe("ok");
-    wsFetch = () => Response.json({ error: { message: `refus ${WS_KEY}` } }, { status: 401 });
+    wsFetch = () =>
+      Response.json({ error: { message: `refus ${WS_KEY}` } }, { status: 401 });
     const ko = await call("POST", `instances/${inst.id}/test`);
     expect(ko.json.ok).toBe(false);
     expect(ko.json.instance.healthState).toBe("error");
@@ -141,29 +165,47 @@ describe("découverte et publication", () => {
     expect(found.status).toBe(200);
     expect(found.json.created).toHaveLength(1);
     const agent = found.json.created[0];
-    expect(agent).toMatchObject({ status: "draft", slug: "assistant-general", nameEn: "" });
+    expect(agent).toMatchObject({
+      status: "draft",
+      slug: "assistant-general",
+      nameEn: "",
+    });
 
     // Redécouvrir ne recrée rien.
     const again = await call("POST", `instances/${inst.id}/discover`);
     expect(again.json.created).toHaveLength(0);
     expect(again.json.seen).toHaveLength(1);
 
-    const refused = await call("PATCH", `agents/${agent.id}`, { status: "published" });
+    const refused = await call("PATCH", `agents/${agent.id}`, {
+      status: "published",
+    });
     expect(refused.status).toBe(422);
     expect(refused.json.error).toBe("publication_refused");
-    expect(refused.json.issues.map((i: { code: string }) => i.code).sort()).toEqual([
-      "description_en_missing",
-      "name_en_missing",
-      "price_missing",
-    ]);
+    expect(
+      refused.json.issues.map((i: { code: string }) => i.code).sort(),
+    ).toEqual(["description_en_missing", "name_en_missing", "price_missing"]);
 
     expect(
-      (await call("PATCH", `agents/${agent.id}`, { nameEn: "General assistant", descriptionEn: "Answers.", category: "general" })).status,
+      (
+        await call("PATCH", `agents/${agent.id}`, {
+          nameEn: "General assistant",
+          descriptionEn: "Answers.",
+          category: "general",
+        })
+      ).status,
     ).toBe(200);
-    const price = await call("POST", `agents/${agent.id}/prices`, { perRunCadMicro: "50000", inputCadMicro: 1_000_000 });
+    const price = await call("POST", `agents/${agent.id}/prices`, {
+      perRunCadMicro: "50000",
+      inputCadMicro: 1_000_000,
+    });
     expect(price.status).toBe(201);
-    expect(price.json).toMatchObject({ perRunCadMicro: "50000", isTrial: true });
-    const published = await call("PATCH", `agents/${agent.id}`, { status: "published" });
+    expect(price.json).toMatchObject({
+      perRunCadMicro: "50000",
+      isTrial: true,
+    });
+    const published = await call("PATCH", `agents/${agent.id}`, {
+      status: "published",
+    });
     expect(published.status).toBe(200);
     expect(published.json).toMatchObject({ status: "published", issues: [] });
     expect(published.json.currentPrice).toMatchObject({ isTrial: true });
@@ -181,14 +223,30 @@ describe("découverte et publication", () => {
     const inst = await newInstance();
     const found = await call("POST", `instances/${inst.id}/discover`);
     const id = found.json.created[0]?.id ?? found.json.seen[0]?.id;
-    expect((await call("POST", `agents/${id}/prices`, { perRunCadMicro: "0" })).status).toBe(422);
-    expect((await call("POST", `agents/${id}/prices`, { perRunCadMicro: 1, prixAmont: 1 })).status).toBe(422);
-    expect((await call("PATCH", `agents/${id}`, { slug: "autre" })).status).toBe(422);
-    expect((await call("PATCH", `agents/${id}`, { upstreamId: "gpt-4" })).status).toBe(422);
+    expect(
+      (await call("POST", `agents/${id}/prices`, { perRunCadMicro: "0" }))
+        .status,
+    ).toBe(422);
+    expect(
+      (
+        await call("POST", `agents/${id}/prices`, {
+          perRunCadMicro: 1,
+          prixAmont: 1,
+        })
+      ).status,
+    ).toBe(422);
+    expect(
+      (await call("PATCH", `agents/${id}`, { slug: "autre" })).status,
+    ).toBe(422);
+    expect(
+      (await call("PATCH", `agents/${id}`, { upstreamId: "gpt-4" })).status,
+    ).toBe(422);
   });
 
   it("répond 404 pour un identifiant inconnu ou une route inconnue, 405 pour une méthode refusée", async () => {
-    expect((await call("GET", "agents/00000000-0000-4000-8000-000000000000")).status).toBe(404);
+    expect(
+      (await call("GET", "agents/00000000-0000-4000-8000-000000000000")).status,
+    ).toBe(404);
     expect((await call("GET", "agents/pas-un-uuid")).status).toBe(404);
     expect((await call("GET", "inconnu")).status).toBe(404);
     expect((await call("DELETE", "instances")).status).toBe(405);
@@ -205,14 +263,25 @@ describe("bulle WorkStudio", () => {
       enabled: true,
     });
     expect(saved.status).toBe(200);
-    expect(saved.json).toMatchObject({ enabled: true, origin: "http://localhost:3200" });
-    expect((await call("PATCH", "embed", { origin: "https://*.exemple.ca" })).status).toBe(422);
-    expect((await call("PATCH", "embed", { pages: ["pas-un-chemin"] })).status).toBe(422);
+    expect(saved.json).toMatchObject({
+      enabled: true,
+      origin: "http://localhost:3200",
+    });
+    expect(
+      (await call("PATCH", "embed", { origin: "https://*.exemple.ca" })).status,
+    ).toBe(422);
+    expect(
+      (await call("PATCH", "embed", { pages: ["pas-un-chemin"] })).status,
+    ).toBe(422);
     expect((await call("PATCH", "embed", { enabled: "oui" })).status).toBe(422);
   });
 
   it("la vue d'ensemble regroupe instances, agents et bulle", async () => {
     const res = await call("GET", "");
-    expect(Object.keys(res.json).sort()).toEqual(["agents", "embed", "instances"]);
+    expect(Object.keys(res.json).sort()).toEqual([
+      "agents",
+      "embed",
+      "instances",
+    ]);
   });
 });

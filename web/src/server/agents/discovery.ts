@@ -69,7 +69,10 @@ export async function discoverAgents(
   try {
     json = await res.json();
   } catch {
-    return { ok: false, detail: "réponse de l'instance illisible (JSON attendu)" };
+    return {
+      ok: false,
+      detail: "réponse de l'instance illisible (JSON attendu)",
+    };
   }
   const list = isObject(json) && Array.isArray(json.data) ? json.data : null;
   if (!list) return { ok: false, detail: "réponse de l'instance inattendue" };

@@ -1,6 +1,5 @@
 import type { Region } from "@nexora/db";
 import { Badge } from "@/components/ui/badge";
-import type { GatewayDictionary } from "@/i18n/gateway";
 
 /** Lieu d'hébergement du modèle : « Hébergé au Québec » est mis en avant (couleur d'accent). */
 export function ResidencyBadge({
@@ -8,7 +7,8 @@ export function ResidencyBadge({
   t,
 }: {
   region: Region;
-  t: GatewayDictionary;
+  /** Tout dictionnaire qui porte les libellés de lieu (modèles ou agents). */
+  t: { residency: Record<Region, string> };
 }) {
   return (
     <Badge tone={region === "quebec" ? "accent" : "outline"}>

@@ -73,6 +73,8 @@ const baseInput = {
   catalogPublishedAt: null as string | null,
   vpsAppCodes: [] as string[],
   vpsPublishedAt: null as string | null,
+  agentSlugs: [] as string[],
+  agentsPublishedAt: null as string | null,
 };
 
 describe("sitemap", () => {
@@ -188,6 +190,26 @@ describe("sitemap", () => {
       sm.find((e) => e.url === `${SITE}/en/modeles/nexora/glm-5-3`)?.alternates
         ?.languages,
     ).toMatchObject({ "fr-CA": `${SITE}/modeles/nexora/glm-5-3` });
+  });
+
+  it("/agents et les fiches d'agents publiés, datées par leur dernière publication", () => {
+    const agents = availableAppRoutes(() => true).filter(
+      (r) => r.path === "/agents",
+    );
+    const sm = buildSitemap({
+      ...baseInput,
+      appRoutes: agents,
+      agentSlugs: ["assistant-general"],
+      agentsPublishedAt: "2026-10-27T10:00:00.000Z",
+    });
+    expect(sm.map((e) => e.url)).toEqual([
+      `${SITE}/agents`,
+      `${SITE}/en/agents`,
+      `${SITE}/agents/assistant-general`,
+      `${SITE}/en/agents/assistant-general`,
+    ]);
+    for (const e of sm)
+      expect(e.lastModified).toEqual(new Date("2026-10-27T10:00:00.000Z"));
   });
 
   it("/vps et ses fiches d'application publiées, datées par la publication du catalogue VPS", () => {
