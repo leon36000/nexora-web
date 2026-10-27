@@ -21,7 +21,9 @@ export async function getPublicPlans(): Promise<PublicPlans> {
     cacheLife({ stale: 30, revalidate: 60, expire: 3_600 });
     return { status: plans.length > 0 ? "ready" : "empty", plans };
   } catch {
-    cacheLife({ stale: 5, revalidate: 10, expire: 60 });
+    // `expire` d'au moins 5 minutes : une entrée plus courte ne peut pas être préparée au rendu statique (Next échoue
+    // sur « cache miss » au préchauffage). Le rafraîchissement en arrière-plan toutes les 10 s reprend la lecture.
+    cacheLife({ stale: 10, revalidate: 10, expire: 600 });
     return { status: "unavailable", plans: [] };
   }
 }
