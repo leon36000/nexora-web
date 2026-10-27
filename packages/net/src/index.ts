@@ -154,14 +154,19 @@ export type OutboundCheck =
   | { ok: true; url: URL; addresses: string[] }
   | { ok: false; reason: string };
 
-/** Noms qui désignent le lien local ou les métadonnées du nuage : refusés sans exception, même en `literalOnly`. */
+/**
+ * Noms qui désignent le lien local ou les métadonnées du nuage : refusés sans exception, même en `literalOnly`.
+ * Les autres noms en `.internal` (`host.docker.internal`, `passerelle.interne`…) restent admis : ce sont les adresses
+ * documentées d'une passerelle sur l'hôte ou le réseau Docker, que seul le réseau de LiteLLM sait résoudre.
+ */
 function isLinkLocalName(host: string): boolean {
   const h = host.toLowerCase().replace(/\.$/, "");
   return (
-    h.endsWith(".internal") ||
     h.endsWith(".local") ||
+    h === "instance-data" ||
     h === "metadata" ||
-    h.startsWith("metadata.")
+    h.startsWith("metadata.") ||
+    h.includes(".metadata.")
   );
 }
 

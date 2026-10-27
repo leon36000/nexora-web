@@ -233,10 +233,11 @@ describe("checkOutboundUrl (production : réseau interne refusé par défaut)", 
     const dev = policyFromEnv({ NODE_ENV: "development" });
     const interdits = [
       "metadata.google.internal",
+      "METADATA.google.internal.",
       "metadata",
       "metadata.tencentyun.com",
-      "foo.internal",
-      "FOO.Internal.",
+      "instance-data",
+      "vm.metadata.azure.example",
       "imprimante.local",
     ];
     for (const policy of [prod, dev]) {
@@ -282,6 +283,20 @@ describe("checkOutboundUrl (production : réseau interne refusé par défaut)", 
         })
       ).ok,
     ).toBe(true);
+    // Les noms documentés d'une passerelle sur l'hôte ou le réseau Docker continuent de passer.
+    for (const ok of [
+      "host.docker.internal",
+      "passerelle.internal",
+      "litellm-amont.interne",
+    ])
+      expect(
+        (
+          await checkOutboundUrl(`http://${ok}:4000/v1`, prod, {
+            literalOnly: true,
+          })
+        ).ok,
+        ok,
+      ).toBe(true);
     // Un nom ordinaire continue de passer.
     expect(
       (
