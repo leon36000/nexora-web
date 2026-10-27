@@ -4,7 +4,7 @@ import { getStripe } from "../billing/deps";
 import { getDb } from "../db";
 import { loadBillingConfig } from "../ledger/config";
 import { log } from "../log";
-import { getSecret } from "../vault";
+import { getSecretForScope } from "../vault";
 import type { VpsAdminDeps } from "./admin-handlers";
 import type { VpsCustomerDeps } from "./customer-handlers";
 import { VPS_CATALOG_TAG } from "./read";
@@ -18,7 +18,7 @@ export function vpsAdminDeps(): VpsAdminDeps {
   return {
     db: getDb,
     adminToken: process.env.NEXORA_APP_ADMIN_TOKEN,
-    getSecret: (ref) => getSecret(ref),
+    getSecret: (ref) => getSecretForScope("proxmox", ref),
     stripe: () => getStripe(),
     log,
     now: () => new Date(),

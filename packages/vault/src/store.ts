@@ -18,6 +18,7 @@ import {
   rewrapDataKey,
   VaultError,
 } from "./crypto.ts";
+import { type SecretScope, secretScopeProblem } from "./scope.ts";
 
 export interface StoredSecretSummary {
   ref: string;
@@ -120,6 +121,37 @@ export async function readSecret(
   if (!row) throw new VaultError("not_found", "secret introuvable");
   if (row.revokedAt) throw new VaultError("revoked", "secret révoqué");
   return decryptSecret(row as unknown as EncryptedRecord, ref, keyring);
+}
+
+/** Type d'un secret du coffre (null si la référence n'existe pas encore). Jamais la valeur. */
+export async function secretKindOf(
+  db: Database,
+  ref: string,
+): Promise<VaultKind | null> {
+  const [row] = await db
+    .select({ kind: vaultSecrets.kind })
+    .from(vaultSecrets)
+    .where(eq(vaultSecrets.ref, ref));
+  return row?.kind ?? null;
+}
+
+/**
+ * Déchiffre un secret pour un usage PRÉCIS (voir scope.ts) : refuse les références réservées à la plateforme et les
+ * secrets d'un autre type. À utiliser dès qu'une clé part vers une adresse saisie dans l'administration.
+ */
+export async function readSecretForScope(
+  db: Database,
+  keyring: Keyring,
+  ref: string,
+  scope: SecretScope,
+): Promise<string> {
+  const [row] = await db
+    .select({ kind: vaultSecrets.kind })
+    .from(vaultSecrets)
+    .where(eq(vaultSecrets.ref, ref));
+  const problem = secretScopeProblem(scope, ref, row?.kind ?? null);
+  if (problem) throw new VaultError("scope_denied", problem);
+  return readSecret(db, keyring, ref);
 }
 
 /**

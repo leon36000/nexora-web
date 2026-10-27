@@ -31,6 +31,17 @@ describe("ingestion : adresses", () => {
   ])("%s est non publique", (ip) => {
     expect(isNonPublicAddress(ip)).toBe(true);
   });
+  it.each([
+    "::ffff:7f00:1", // 127.0.0.1 en IPv4 inscrite, forme hexadécimale
+    "::ffff:a9fe:a9fe", // 169.254.169.254 (métadonnées du nuage)
+    "::ffff:c0a8:1", // 192.168.0.1
+    "febf::1", // lien local fe80::/10
+    "198.18.0.1",
+    "192.0.0.8",
+    "240.0.0.1",
+  ])("%s (forme détournée) est non publique", (ip) => {
+    expect(isNonPublicAddress(ip)).toBe(true);
+  });
   it("une adresse publique passe", () => {
     expect(isNonPublicAddress("93.184.216.34")).toBe(false);
     expect(isNonPublicAddress("2606:4700::1111")).toBe(false);

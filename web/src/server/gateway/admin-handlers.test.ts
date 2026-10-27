@@ -1,7 +1,9 @@
 import { randomBytes } from "node:crypto";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
+import { checkOutboundUrl, policyFromEnv } from "@nexora/net";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import type { OutboundGuard } from "../security/outbound";
 import { loadKeyring } from "../vault/crypto";
 import { putSecret, readSecret } from "../vault/store";
 import { type CatalogAdminDeps, handleCatalogAdmin } from "./admin-handlers";
@@ -44,6 +46,8 @@ const deps = (over: Partial<CatalogAdminDeps> = {}): CatalogAdminDeps => ({
       fetch: fetchFn,
     }),
   getSecret: (ref) => readSecret(t.db, keyring, ref),
+  // Les adresses fictives des essais (« provider.test ») ne se résolvent pas : garde permissive, sauf essais dédiés.
+  outbound: async (raw) => ({ ok: true, url: new URL(raw), addresses: [] }),
   fetch: fetchFn,
   log: createLogger({ name: "test", sink: () => {} }),
   now: () => new Date(),
@@ -307,5 +311,133 @@ describe("flux complet de l'administration", () => {
     expect((await call("GET", "models/pas-un-uuid")).status).toBe(404);
     expect((await call("GET", "nimportequoi")).status).toBe(404);
     expect((await call("DELETE", "providers")).status).toBe(405);
+  });
+});
+
+// ─── SSRF : adresses saisies dans l'administration (S9) ─────────────────────────────────────────────────────────
+const DNS: Record<string, string[]> = {
+  "api.exemple.ca": ["93.184.216.34"],
+  "interne.exemple.ca": ["10.20.0.9"],
+  "rebond.exemple.ca": ["169.254.169.254"],
+};
+const prodGuard: OutboundGuard = (raw, options) =>
+  checkOutboundUrl(raw, policyFromEnv({ NODE_ENV: "production" }), {
+    resolve: async (h) => DNS[h] ?? [],
+    ...options,
+  });
+
+describe("fournisseurs : adresses saisies (SSRF)", () => {
+  const strict = () => deps({ outbound: prodGuard });
+  const create = (baseUrl: string, extra: Record<string, unknown> = {}) =>
+    call(
+      "POST",
+      "providers",
+      {
+        code: `ssrf-${Math.random().toString(36).slice(2, 8)}`,
+        name: "SSRF",
+        type: "openai_compatible",
+        baseUrl,
+        region: "canada",
+        ...extra,
+      },
+      undefined,
+      strict(),
+    );
+
+  it("refuse métadonnées du nuage, réseau interne et boucle locale à la création", async () => {
+    for (const u of [
+      "http://169.254.169.254/latest/meta-data",
+      "http://10.20.0.5:11434/v1",
+      "http://127.0.0.1:4400/v1",
+      "http://interne.exemple.ca/v1",
+      "http://rebond.exemple.ca/v1",
+      "http://introuvable.exemple.ca/v1",
+    ]) {
+      const r = await create(u);
+      expect(r.status, u).toBe(422);
+      expect(r.json.error, u).toBe("url_blocked");
+    }
+  });
+
+  it("accepte une adresse publique et vérifie aussi l'adresse vue par LiteLLM (littérale seulement)", async () => {
+    expect((await create("https://api.exemple.ca/v1")).status).toBe(201);
+    const r = await create("https://api.exemple.ca/v1", {
+      litellmBaseUrl: "http://169.254.169.254/v1",
+    });
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("url_blocked");
+    // un nom que seul le réseau de LiteLLM sait résoudre reste permis
+    const ok = await create("https://api.exemple.ca/v1", {
+      litellmBaseUrl: "http://host.docker.internal:18090/v1",
+    });
+    expect(ok.status).toBe(201);
+  });
+
+  it("refuse la modification vers une adresse interne", async () => {
+    const created = await create("https://api.exemple.ca/v1");
+    const r = await call(
+      "PATCH",
+      `providers/${created.json.id}`,
+      { baseUrl: "http://169.254.169.254/" },
+      undefined,
+      strict(),
+    );
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("url_blocked");
+  });
+
+  it("refuse une référence de secret réservée à la plateforme (le coffre ne les envoie pas ailleurs)", async () => {
+    for (const ref of [
+      "stripe.secret_key",
+      "site-agent.redacteur.directus",
+      "seo.bing.api_key",
+    ]) {
+      const r = await create("https://api.exemple.ca/v1", { secretRef: ref });
+      expect(r.status, ref).toBe(422);
+      expect(r.json.error, ref).toBe("secret_scope");
+    }
+  });
+
+  it("« Tester » ne contacte PAS une adresse devenue interne depuis l'enregistrement (rebond DNS) et n'envoie aucune clé", async () => {
+    await putSecret(t.db, keyring, {
+      ref: "llm.rebond",
+      value: "sk-rebond-secret-0001",
+      kind: "llm_provider",
+    });
+    const created = await call(
+      "POST",
+      "providers",
+      {
+        code: "rebond-1",
+        name: "Rebond",
+        type: "openai_compatible",
+        baseUrl: "https://api.exemple.ca/v1",
+        secretRef: "llm.rebond",
+        region: "canada",
+      },
+      undefined,
+      strict(),
+    );
+    expect(created.status).toBe(201);
+    DNS["api.exemple.ca"] = ["169.254.169.254"]; // l'enregistrement DNS change après coup
+    let contacted = 0;
+    const r = await call(
+      "POST",
+      `providers/${created.json.id}/test`,
+      undefined,
+      undefined,
+      deps({
+        outbound: prodGuard,
+        fetch: (async () => {
+          contacted += 1;
+          return Response.json({ data: [] });
+        }) as typeof fetch,
+      }),
+    );
+    DNS["api.exemple.ca"] = ["93.184.216.34"];
+    expect(r.json.ok).toBe(false);
+    expect(r.json.detail).toMatch(/refus/);
+    expect(contacted).toBe(0);
+    expect(JSON.stringify(r.json)).not.toContain("sk-rebond");
   });
 });

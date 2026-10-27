@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { DEFAULT_LANG } from "@/i18n/config";
 import { embedCspFor } from "@/lib/embed-policy";
+import { mergeCsp, pageCsp } from "@/lib/security-headers";
 import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
 
 /**
@@ -14,8 +15,8 @@ import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
  * En aperçu (cookie du Draft Mode), l'en-tête `X-Robots-Tag: noindex` est ajouté à toute réponse.
  * Hors production (`SITE_ENV` différent de « production », ou absent) : `X-Robots-Tag: noindex, nofollow` sur
  * toute page, en plus du `Disallow: /` de robots.txt (voir lib/seo/site-env.ts).
- * Bulle WorkStudio : sur les pages choisies dans l'administration, ajoute une CSP qui n'ouvre que l'origine
- * configurée (voir lib/embed-policy.ts). Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
+ * CSP : politique de base sur toutes les pages (voir lib/security-headers.ts) ; sur les pages de la bulle WorkStudio,
+ * l'origine configurée s'y ajoute (voir lib/embed-policy.ts). Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
  */
 export async function proxy(request: NextRequest) {
   const response = route(request);
@@ -24,16 +25,19 @@ export async function proxy(request: NextRequest) {
     response.headers.set("x-robots-tag", "noindex, nofollow, noarchive");
   else if (!isIndexableEnvironment())
     response.headers.set("x-robots-tag", NOINDEX_HEADER);
-  // Pages qui accueillent la bulle WorkStudio : CSP limitée à l'origine configurée (aucun en-tête ailleurs).
+  // CSP des pages : politique de base (aucune origine tierce) sur toute réponse du proxy. Sur les pages qui accueillent
+  // la bulle WorkStudio, l'origine configurée s'y ajoute (script, cadre, connexion), jamais ailleurs.
+  const dev = process.env.NODE_ENV !== "production";
+  let embed: string | null = null;
   if (
     (request.method === "GET" || request.method === "HEAD") &&
     response.status < 300
-  ) {
-    const csp = await embedCspFor(request.nextUrl.pathname, {
-      dev: process.env.NODE_ENV !== "production",
-    });
-    if (csp) response.headers.set("content-security-policy", csp);
-  }
+  )
+    embed = await embedCspFor(request.nextUrl.pathname, { dev });
+  response.headers.set(
+    "content-security-policy",
+    mergeCsp(pageCsp({ dev }), embed),
+  );
   return response;
 }
 

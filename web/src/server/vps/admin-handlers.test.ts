@@ -133,6 +133,40 @@ describe("serveurs Proxmox", () => {
     expect(bad.status).toBe(422);
   });
 
+  it("refuse un hôte Proxmox qui vise les métadonnées du nuage ou un lien local (SSRF), à la création comme à la modification", async () => {
+    for (const host of ["169.254.169.254", "https://169.254.1.1", "0.0.0.0"]) {
+      const bad = await call("POST", "servers", {
+        code: "ssrf-1",
+        name: "x",
+        host,
+        node: "pve1",
+        capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+        ipPool: SIM_POOL,
+      });
+      expect(bad.status, host).toBe(422);
+      expect(bad.body.error, host).toBe("url_blocked");
+    }
+    const patch = await call("PATCH", `servers/${serverId}`, {
+      host: "169.254.169.254",
+    });
+    expect(patch.status).toBe(422);
+    expect(patch.body.error).toBe("url_blocked");
+  });
+
+  it("refuse un jeton qui n'est pas de type « proxmox » ou une référence réservée", async () => {
+    const r = await call("POST", "servers", {
+      code: "ssrf-2",
+      name: "x",
+      host: "http://127.0.0.1",
+      node: "pve1",
+      capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+      ipPool: SIM_POOL,
+      tokenRef: "stripe.secret_key",
+    });
+    expect(r.status).toBe(422);
+    expect(r.body.error).toBe("secret_scope");
+  });
+
   it("l'état « prêt » ne s'obtient pas par modification directe", async () => {
     const r = await call("PATCH", `servers/${serverId}`, { state: "ready" });
     expect(r.status).toBe(422);

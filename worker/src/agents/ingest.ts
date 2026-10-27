@@ -1,5 +1,6 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
+import { isNonPublicAddress } from "@nexora/net";
 import { parse } from "node-html-parser";
 
 /**
@@ -32,36 +33,8 @@ export interface IngestedSource {
 const MAX_BYTES = 400_000;
 const MAX_CHARS = 12_000;
 
-function ipv4Parts(ip: string): number[] | null {
-  const m = ip.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
-  return m ? m.slice(1).map(Number) : null;
-}
-
-/** Vrai si l'adresse n'est pas une adresse publique routable. */
-export function isNonPublicAddress(ip: string): boolean {
-  const v4 = ipv4Parts(ip.replace(/^::ffff:/i, ""));
-  if (v4) {
-    const [a, b] = v4 as [number, number, number, number];
-    return (
-      a === 0 ||
-      a === 10 ||
-      a === 127 ||
-      (a === 169 && b === 254) ||
-      (a === 172 && b >= 16 && b <= 31) ||
-      (a === 192 && b === 168) ||
-      (a === 100 && b >= 64 && b <= 127) ||
-      a >= 224
-    );
-  }
-  const low = ip.toLowerCase();
-  return (
-    low === "::1" ||
-    low === "::" ||
-    low.startsWith("fc") ||
-    low.startsWith("fd") ||
-    low.startsWith("fe80")
-  );
-}
+/** Vrai si l'adresse n'est pas une adresse publique routable (garde partagée : @nexora/net). */
+export { isNonPublicAddress };
 
 export interface IngestOptions {
   fetchImpl?: typeof fetch;

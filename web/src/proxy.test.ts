@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { embedCspFor } from "@/lib/embed-policy";
+import { parseCsp } from "@/lib/security-headers";
 import { config, proxy } from "./proxy";
 
 vi.mock("@/lib/embed-policy", () => ({ embedCspFor: vi.fn(async () => null) }));
@@ -78,35 +79,51 @@ describe("proxy : matcher", () => {
   });
 });
 
-describe("proxy : CSP de la bulle WorkStudio", () => {
-  it("ne pose aucune politique tant qu'aucune bulle n'est configurée pour la page", async () => {
+describe("proxy : CSP des pages et de la bulle WorkStudio", () => {
+  it("pose la CSP de base sur toute page, sans origine tierce, même sans bulle", async () => {
     vi.stubEnv("SITE_ENV", "production");
-    const res = await proxy(req("/agents"));
-    expect(res.headers.get("content-security-policy")).toBeNull();
+    vi.stubEnv("NODE_ENV", "production");
+    for (const path of ["/agents", "/en/agents", "/", "/fr/agents"]) {
+      const csp = parseCsp(
+        (await proxy(req(path))).headers.get("content-security-policy") ?? "",
+      );
+      expect(csp.get("default-src"), path).toEqual(["'self'"]);
+      expect(csp.get("frame-ancestors"), path).toEqual(["'none'"]);
+      expect(csp.get("script-src"), path).toEqual([
+        "'self'",
+        "'unsafe-inline'",
+      ]);
+    }
   });
-  it("pose la politique renvoyée pour la page, en français comme en anglais", async () => {
+  it("ajoute l'origine de la bulle (script, cadre, connexion) à la CSP de base, en français comme en anglais", async () => {
     vi.stubEnv("SITE_ENV", "production");
     vi.mocked(embedCspFor).mockResolvedValue("frame-src https://ia.exemple.ca");
     for (const path of ["/agents", "/en/agents"]) {
-      const res = await proxy(req(path));
-      expect(res.headers.get("content-security-policy")).toBe(
-        "frame-src https://ia.exemple.ca",
+      const csp = parseCsp(
+        (await proxy(req(path))).headers.get("content-security-policy") ?? "",
       );
+      expect(csp.get("frame-src")).toEqual(["https://ia.exemple.ca"]);
+      expect(csp.get("frame-ancestors")).toEqual(["'none'"]);
+      expect(csp.get("default-src")).toEqual(["'self'"]);
     }
-    // HEAD porte la même politique que GET ; POST n'en porte pas.
+    // HEAD porte la même politique que GET.
     const head = await proxy(
       new NextRequest("http://localhost:3500/agents", { method: "HEAD" }),
     );
-    expect(head.headers.get("content-security-policy")).toBe(
+    expect(head.headers.get("content-security-policy")).toContain(
       "frame-src https://ia.exemple.ca",
     );
+    // POST et redirection : jamais l'origine de la bulle, mais toujours la CSP de base.
     const post = await proxy(
       new NextRequest("http://localhost:3500/agents", { method: "POST" }),
     );
-    expect(post.headers.get("content-security-policy")).toBeNull();
-    // Une redirection (/fr/…) ne porte pas de politique.
+    expect(post.headers.get("content-security-policy")).not.toContain(
+      "ia.exemple.ca",
+    );
     const redirect = await proxy(req("/fr/agents"));
-    expect(redirect.headers.get("content-security-policy")).toBeNull();
+    expect(redirect.headers.get("content-security-policy")).not.toContain(
+      "ia.exemple.ca",
+    );
     vi.mocked(embedCspFor).mockResolvedValue(null);
   });
 });

@@ -7,8 +7,11 @@ import {
   REGIONS,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { secretScopeProblem } from "@nexora/vault/scope";
+import { secretKindOf } from "@nexora/vault/store";
 import { z } from "zod";
 import { checkAdminAuth } from "../auth";
+import { envOutboundGuard, type OutboundGuard } from "../security/outbound";
 import {
   addFxRate,
   addPrice,
@@ -49,6 +52,8 @@ export interface CatalogAdminDeps {
   /** null : LiteLLM non configuré (la synchronisation répond 503). */
   litellm: () => LitellmClient | null;
   getSecret: (ref: string) => Promise<string>;
+  /** Garde des adresses saisies (SSRF) ; défaut : politique de l'environnement (voir @nexora/net). */
+  outbound?: OutboundGuard;
   fetch: typeof fetch;
   log: Logger;
   now: () => Date;
@@ -207,6 +212,44 @@ class HttpError extends Error {
   }
 }
 
+/** Adresses du fournisseur (SSRF) et portée de la clé : refus 422 avant toute écriture. */
+async function assertProviderTargets(
+  db: Database,
+  deps: CatalogAdminDeps,
+  input: {
+    baseUrl?: string;
+    litellmBaseUrl?: string | null;
+    secretRef?: string | null;
+  },
+): Promise<void> {
+  const guard = deps.outbound ?? envOutboundGuard;
+  if (input.baseUrl !== undefined) {
+    const r = await guard(input.baseUrl);
+    if (!r.ok)
+      throw new HttpError(422, "url_blocked", {
+        message: r.reason,
+        field: "baseUrl",
+      });
+  }
+  if (input.litellmBaseUrl) {
+    // Adresse vue par LiteLLM (autre réseau) : seules les adresses littérales sont classées.
+    const r = await guard(input.litellmBaseUrl, { literalOnly: true });
+    if (!r.ok)
+      throw new HttpError(422, "url_blocked", {
+        message: r.reason,
+        field: "litellmBaseUrl",
+      });
+  }
+  if (input.secretRef) {
+    const problem = secretScopeProblem(
+      "model-provider",
+      input.secretRef,
+      await secretKindOf(db, input.secretRef),
+    );
+    if (problem) throw new HttpError(422, "secret_scope", { message: problem });
+  }
+}
+
 const STATUS_OF: Record<string, number> = {
   not_found: 404,
   conflict: 409,
@@ -347,6 +390,7 @@ async function route(
       allowed("GET", "POST");
       if (method === "GET") return ok({ providers: await listProviders(db) });
       const input = await body(request, providerCreate);
+      await assertProviderTargets(db, deps, input);
       const created = await createProvider(db, input);
       deps.log.info("catalogue : fournisseur créé", {
         code: created.code,
@@ -358,10 +402,16 @@ async function route(
     if (c === "test") {
       allowed("POST");
       const provider = await getProvider(db, providerId);
-      const check = await testProvider(provider, {
-        getSecret: deps.getSecret,
-        fetch: deps.fetch,
-      });
+      // L'adresse est revérifiée à chaque test : elle a pu changer de destination depuis l'enregistrement.
+      const target = await (deps.outbound ?? envOutboundGuard)(
+        provider.baseUrl,
+      );
+      const check = target.ok
+        ? await testProvider(provider, {
+            getSecret: deps.getSecret,
+            fetch: deps.fetch,
+          })
+        : { ok: false, detail: `adresse refusée : ${target.reason}` };
       const updated = await recordProviderCheck(db, providerId, check, now);
       deps.log.info("catalogue : fournisseur testé", {
         code: provider.code,
@@ -372,9 +422,9 @@ async function route(
     if (c) throw new HttpError(404, "not_found");
     allowed("GET", "PATCH");
     if (method === "GET") return ok(await getProvider(db, providerId));
-    return ok(
-      await updateProvider(db, providerId, await body(request, providerPatch)),
-    );
+    const patch = await body(request, providerPatch);
+    await assertProviderTargets(db, deps, patch);
+    return ok(await updateProvider(db, providerId, patch));
   }
 
   if (a === "models") {

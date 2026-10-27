@@ -14,8 +14,11 @@ import {
   vpsOrders,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { secretScopeProblem } from "@nexora/vault/scope";
+import { secretKindOf } from "@nexora/vault/store";
 import {
   approveCatalogVersion,
+  connectionOf,
   createApp,
   createDraftVersion,
   createPlan,
@@ -45,6 +48,7 @@ import {
 import type Stripe from "stripe";
 import { z } from "zod";
 import { checkAdminAuth } from "../auth";
+import { lanOutboundGuard, type OutboundGuard } from "../security/outbound";
 import { syncVpsCatalogToStripe, VpsSyncError } from "./stripe-sync";
 
 /**
@@ -55,6 +59,8 @@ import { syncVpsCatalogToStripe, VpsSyncError } from "./stripe-sync";
  * constant. Consommée par le module Directus « VPS ».
  */
 export interface VpsAdminDeps {
+  /** Garde des adresses saisies (SSRF) ; défaut : réseau de l'opérateur admis, jamais lien local ni métadonnées. */
+  outbound?: OutboundGuard;
   db: () => Database;
   adminToken: string | undefined;
   getSecret: (ref: string) => Promise<string>;
@@ -64,6 +70,33 @@ export interface VpsAdminDeps {
   env?: Record<string, string | undefined>;
   /** Appelé après une publication ou une synchronisation (revalidation des pages publiques). */
   onPublished?: () => void;
+}
+
+/** Hôte Proxmox (SSRF) et portée du jeton : refus 422 avant toute écriture. */
+async function assertServerTargets(
+  db: Database,
+  deps: VpsAdminDeps,
+  input: { host?: string; port?: number; tokenRef?: string | null },
+): Promise<void> {
+  if (input.host !== undefined) {
+    const c = connectionOf({ host: input.host, port: input.port ?? 8006 });
+    const r = await (deps.outbound ?? lanOutboundGuard)(
+      `${c.protocol}://${c.host}:${c.port}/`,
+    );
+    if (!r.ok)
+      throw new HttpError(422, "url_blocked", {
+        message: r.reason,
+        field: "host",
+      });
+  }
+  if (input.tokenRef) {
+    const problem = secretScopeProblem(
+      "proxmox",
+      input.tokenRef,
+      await secretKindOf(db, input.tokenRef),
+    );
+    if (problem) throw new HttpError(422, "secret_scope", { message: problem });
+  }
 }
 
 const NO_STORE = { "cache-control": "no-store" };
@@ -428,7 +461,9 @@ async function route(
       allowed("GET", "POST");
       if (method === "GET")
         return ok({ servers: (await listServers(db)).map(publicServer) });
-      const created = await createServer(db, await body(request, serverCreate));
+      const input = await body(request, serverCreate);
+      await assertServerTargets(db, deps, input);
+      const created = await createServer(db, input);
       deps.log.info("vps : serveur créé", { code: created.code });
       return ok(publicServer(created), 201);
     }
@@ -465,11 +500,9 @@ async function route(
         ...publicServer(await getServer(db, serverId)),
         templates: await listTemplates(db, serverId),
       });
-    return ok(
-      publicServer(
-        await updateServer(db, serverId, await body(request, serverPatch)),
-      ),
-    );
+    const serverInput = await body(request, serverPatch);
+    await assertServerTargets(db, deps, serverInput);
+    return ok(publicServer(await updateServer(db, serverId, serverInput)));
   }
 
   if (a === "templates") {

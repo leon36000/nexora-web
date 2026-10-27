@@ -2,7 +2,7 @@ import "server-only";
 import { revalidateTag } from "next/cache";
 import { getDb } from "../db";
 import { log } from "../log";
-import { getSecret } from "../vault";
+import { getSecretForScope } from "../vault";
 import type { HostedAgentsAdminDeps } from "./handlers";
 import { AGENTS_TAG } from "./tag";
 
@@ -11,7 +11,7 @@ export function hostedAgentsAdminDeps(): HostedAgentsAdminDeps {
   return {
     db: getDb,
     adminToken: process.env.NEXORA_APP_ADMIN_TOKEN,
-    getSecret: (ref) => getSecret(ref),
+    getSecret: (ref) => getSecretForScope("workstudio-instance", ref),
     fetch,
     log,
     now: () => new Date(),

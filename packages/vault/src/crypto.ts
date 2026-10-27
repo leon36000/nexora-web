@@ -15,7 +15,8 @@ export type VaultErrorCode =
   | "decrypt_failed"
   | "key_version"
   | "not_found"
-  | "revoked";
+  | "revoked"
+  | "scope_denied";
 
 export class VaultError extends Error {
   readonly code: VaultErrorCode;

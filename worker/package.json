@@ -12,6 +12,7 @@
     "@axe-core/playwright": "^4.14.0",
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
+    "@nexora/net": "workspace:*",
     "@nexora/seo": "workspace:*",
     "@nexora/vault": "workspace:*",
     "@nexora/vps": "workspace:*",

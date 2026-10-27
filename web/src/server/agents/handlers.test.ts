@@ -1,6 +1,8 @@
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
+import { checkOutboundUrl, policyFromEnv } from "@nexora/net";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import type { OutboundGuard } from "../security/outbound";
 import {
   type HostedAgentsAdminDeps,
   handleHostedAgentsAdmin,
@@ -25,6 +27,8 @@ const deps = (
     if (!v) throw new Error("absent");
     return v;
   },
+  // Les adresses fictives des essais (« a.b ») ne se résolvent pas : garde permissive, sauf essais dédiés.
+  outbound: async (raw) => ({ ok: true, url: new URL(raw), addresses: [] }),
   fetch: (async (url) => wsFetch(String(url))) as typeof fetch,
   log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
   now: () => new Date(),
@@ -39,6 +43,7 @@ async function call(
   path: string,
   body?: unknown,
   token: string | null = TOKEN,
+  d: HostedAgentsAdminDeps = deps(),
 ) {
   const segments = path.split("/").filter(Boolean);
   const res = await handleHostedAgentsAdmin(
@@ -51,7 +56,7 @@ async function call(
       body: body === undefined ? undefined : JSON.stringify(body),
     }),
     segments,
-    deps(),
+    d,
   );
   const text = await res.text();
   return { status: res.status, text, json: text ? JSON.parse(text) : null };
@@ -283,5 +288,83 @@ describe("bulle WorkStudio", () => {
       "embed",
       "instances",
     ]);
+  });
+});
+
+// ─── SSRF : adresse d'instance saisie dans l'administration (S9) ───────────────────────────────────────────────────
+describe("instances : adresses saisies (SSRF)", () => {
+  const DNS: Record<string, string[]> = {
+    "ws.exemple.ca": ["93.184.216.34"],
+    "interne.exemple.ca": ["10.20.0.9"],
+  };
+  const prodGuard: OutboundGuard = (raw, options) =>
+    checkOutboundUrl(raw, policyFromEnv({ NODE_ENV: "production" }), {
+      resolve: async (h) => DNS[h] ?? [],
+      ...options,
+    });
+  const strict = () => deps({ outbound: prodGuard });
+  const create = (baseUrl: string, extra: Record<string, unknown> = {}) =>
+    call(
+      "POST",
+      "instances",
+      {
+        code: `ssrf-${Math.random().toString(36).slice(2, 8)}`,
+        name: "SSRF",
+        baseUrl,
+        ...extra,
+      },
+      TOKEN,
+      strict(),
+    );
+
+  it("refuse métadonnées du nuage, réseau interne et boucle locale", async () => {
+    for (const u of [
+      "http://169.254.169.254",
+      "http://10.20.0.5:3200",
+      "http://127.0.0.1:3200",
+      "http://interne.exemple.ca:3200",
+    ]) {
+      const r = await create(u);
+      expect(r.status, u).toBe(422);
+      expect(r.json.error, u).toBe("url_blocked");
+    }
+    expect((await create("https://ws.exemple.ca")).status).toBe(201);
+  });
+
+  it("refuse une référence de secret réservée à la plateforme", async () => {
+    const r = await create("https://ws.exemple.ca", {
+      secretRef: "stripe.secret_key",
+    });
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("secret_scope");
+  });
+
+  it("test et découverte ne contactent pas une adresse devenue interne, et n'envoient pas la clé", async () => {
+    const inst = await create("https://ws.exemple.ca", {
+      secretRef: "workstudio.essai",
+    });
+    expect(inst.status).toBe(201);
+    DNS["ws.exemple.ca"] = ["169.254.169.254"];
+    let contacted = 0;
+    const d = deps({
+      outbound: prodGuard,
+      fetch: (async () => {
+        contacted += 1;
+        return Response.json({ data: [] });
+      }) as typeof fetch,
+    });
+    for (const action of ["test", "discover"]) {
+      const r = await call(
+        "POST",
+        `instances/${inst.json.id}/${action}`,
+        undefined,
+        TOKEN,
+        d,
+      );
+      expect(JSON.stringify(r.json), action).toMatch(/refus/);
+      expect(JSON.stringify(r.json)).not.toContain(WS_KEY);
+    }
+    DNS["ws.exemple.ca"] = ["93.184.216.34"];
+    expect(contacted).toBe(0);
   });
 });

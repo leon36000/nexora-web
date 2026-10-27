@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { getDb } from "../db";
 import { log } from "../log";
-import { getSecret } from "../vault";
+import { getSecretForScope } from "../vault";
 import type { CatalogAdminDeps } from "./admin-handlers";
 import { createLitellmClient } from "./litellm";
 import type { GatewayDeps } from "./proxy";
@@ -32,7 +32,7 @@ export function gatewayDeps(): GatewayDeps {
     fetch,
     litellm: litellmConfig,
     // Clé d'espace WorkStudio des agents hébergés : lue du coffre à chaque appel (jamais en cache ni en variable).
-    getSecret: (ref) => getSecret(ref),
+    getSecret: (ref) => getSecretForScope("workstudio-instance", ref),
     log,
     now: () => new Date(),
     requestId: () => `req_${randomUUID().replaceAll("-", "")}`,
@@ -58,7 +58,7 @@ export function catalogAdminDeps(): CatalogAdminDeps {
       const config = litellmConfig();
       return config ? createLitellmClient(config) : null;
     },
-    getSecret: (ref) => getSecret(ref),
+    getSecret: (ref) => getSecretForScope("model-provider", ref),
     fetch,
     log,
     now: () => new Date(),

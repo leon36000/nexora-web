@@ -8,7 +8,7 @@ import {
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { loadKeyring } from "@nexora/vault/crypto";
-import { readSecret } from "@nexora/vault/store";
+import { readSecret, readSecretForScope } from "@nexora/vault/store";
 import {
   type EngineDeps,
   enqueueContinuation,
@@ -150,7 +150,10 @@ export function vpsDepsFromEnv(
   const getSecret = (ref: string) => readSecret(db, keyring, ref);
   return {
     db,
-    proxmox: proxmoxClientFactory({ getSecret }),
+    // Le jeton Proxmox n'est lu que s'il est de type « proxmox » (portée du coffre) : une autre clé ne part jamais vers un serveur.
+    proxmox: proxmoxClientFactory({
+      getSecret: (ref) => readSecretForScope(db, keyring, ref, "proxmox"),
+    }),
     runner: createSshRunner({
       privateKey: () => getSecret("vps.worker_ssh_key"),
     }),

@@ -29,6 +29,10 @@
         "vue": "3.5.43",
       },
     },
+    "deploy": {
+      "name": "@nexora/deploy",
+      "version": "0.1.0",
+    },
     "packages/db": {
       "name": "@nexora/db",
       "version": "0.1.0",
@@ -42,6 +46,10 @@
     },
     "packages/log": {
       "name": "@nexora/log",
+      "version": "0.1.0",
+    },
+    "packages/net": {
+      "name": "@nexora/net",
       "version": "0.1.0",
     },
     "packages/seo": {
@@ -73,6 +81,7 @@
       "dependencies": {
         "@nexora/db": "workspace:*",
         "@nexora/log": "workspace:*",
+        "@nexora/net": "workspace:*",
         "@nexora/seo": "workspace:*",
         "@nexora/vault": "workspace:*",
         "@nexora/vps": "workspace:*",
@@ -108,6 +117,7 @@
         "@axe-core/playwright": "^4.14.0",
         "@nexora/db": "workspace:*",
         "@nexora/log": "workspace:*",
+        "@nexora/net": "workspace:*",
         "@nexora/seo": "workspace:*",
         "@nexora/vault": "workspace:*",
         "@nexora/vps": "workspace:*",
@@ -395,7 +405,11 @@
 
     "@nexora/db": ["@nexora/db@workspace:packages/db"],
 
+    "@nexora/deploy": ["@nexora/deploy@workspace:deploy"],
+
     "@nexora/log": ["@nexora/log@workspace:packages/log"],
+
+    "@nexora/net": ["@nexora/net@workspace:packages/net"],
 
     "@nexora/seo": ["@nexora/seo@workspace:packages/seo"],
 

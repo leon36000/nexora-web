@@ -20,14 +20,21 @@
 // E2E_ONLY=id1,id2 (sous-ensemble), E2E_LOG_DIR (journaux complets, défaut .data/e2e/<horodatage>).
 // Option : --ecrire docs/recette/e2e.md (compte rendu daté).
 import { type ChildProcess, spawn, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, openSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  openSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const web = join(root, "web");
 const argv = process.argv.slice(2);
 const writeIdx = argv.indexOf("--ecrire");
-const reportPath = writeIdx >= 0 ? resolve(root, argv[writeIdx + 1] ?? "") : null;
+const reportPath =
+  writeIdx >= 0 ? resolve(root, argv[writeIdx + 1] ?? "") : null;
 
 // ── Environnement (.env racine ; jamais affiché) ─────────────────────────────
 function readEnv(path: string): Record<string, string> {
@@ -42,7 +49,9 @@ function readEnv(path: string): Record<string, string> {
 const fileEnv = readEnv(join(root, ".env"));
 const env: Record<string, string> = {
   ...(process.env as Record<string, string>),
-  ...Object.fromEntries(Object.entries(fileEnv).filter(([k]) => !(k in process.env))),
+  ...Object.fromEntries(
+    Object.entries(fileEnv).filter(([k]) => !(k in process.env)),
+  ),
 };
 const DATABASE_URL = env.DATABASE_URL ?? "";
 if (!DATABASE_URL) {
@@ -61,12 +70,16 @@ const stamp = new Date().toISOString().replace(/[:.]/g, "-");
 const logDir = env.E2E_LOG_DIR ?? join(root, ".data", "e2e", stamp);
 mkdirSync(logDir, { recursive: true });
 const PORT = env.E2E_PORT ?? "3790";
-let BASE = env.E2E_BASE_URL ?? `http://localhost:${PORT}`;
-const PUBLICATION_BASE = env.E2E_PUBLICATION_BASE_URL ?? "http://localhost:3500";
+const BASE = env.E2E_BASE_URL ?? `http://localhost:${PORT}`;
+const PUBLICATION_BASE =
+  env.E2E_PUBLICATION_BASE_URL ?? "http://localhost:3500";
 const only = env.E2E_ONLY ? new Set(env.E2E_ONLY.split(",")) : null;
 
 // ── Aides ─────────────────────────────────────────────────────────────────────
-async function reachable(url: string, ok: (s: number) => boolean = (s) => s < 500): Promise<boolean> {
+async function reachable(
+  url: string,
+  ok: (s: number) => boolean = (s) => s < 500,
+): Promise<boolean> {
   try {
     const r = await fetch(url, { signal: AbortSignal.timeout(2500) });
     return ok(r.status);
@@ -78,7 +91,11 @@ async function pgReachable(): Promise<boolean> {
   const u = new URL(DATABASE_URL);
   return await new Promise<boolean>((done) => {
     import("node:net").then(({ connect }) => {
-      const s = connect({ host: u.hostname, port: Number(u.port || 5432), timeout: 2000 });
+      const s = connect({
+        host: u.hostname,
+        port: Number(u.port || 5432),
+        timeout: 2000,
+      });
       s.once("connect", () => (s.destroy(), done(true)));
       s.once("error", () => done(false));
       s.once("timeout", () => (s.destroy(), done(false)));
@@ -86,10 +103,27 @@ async function pgReachable(): Promise<boolean> {
   });
 }
 
-type Outcome = { id: string; titre: string; milestone: string; status: "ok" | "echec" | "saute"; detail: string; secondes: number; log: string };
+type Outcome = {
+  id: string;
+  titre: string;
+  milestone: string;
+  status: "ok" | "echec" | "saute";
+  detail: string;
+  secondes: number;
+  log: string;
+};
 const outcomes: Outcome[] = [];
 
-function run(cmd: string, args: string[], opts: { cwd: string; env?: Record<string, string>; log: string; timeoutMs?: number }): number {
+function run(
+  cmd: string,
+  args: string[],
+  opts: {
+    cwd: string;
+    env?: Record<string, string>;
+    log: string;
+    timeoutMs?: number;
+  },
+): number {
   const r = spawnSync(cmd, args, {
     cwd: opts.cwd,
     env: { ...env, ...opts.env },
@@ -97,14 +131,29 @@ function run(cmd: string, args: string[], opts: { cwd: string; env?: Record<stri
     timeout: opts.timeoutMs ?? 900_000,
     maxBuffer: 64 * 1024 * 1024,
   });
-  writeFileSync(opts.log, `${r.stdout ?? ""}\n${r.stderr ?? ""}`, { mode: 0o600 });
+  writeFileSync(opts.log, `${r.stdout ?? ""}\n${r.stderr ?? ""}`, {
+    mode: 0o600,
+  });
   return r.status ?? 1;
 }
 
-function vitestSummary(jsonFile: string): { passed: number; failed: number; skipped: number } {
+function vitestSummary(jsonFile: string): {
+  passed: number;
+  failed: number;
+  skipped: number;
+} {
   try {
-    const j = JSON.parse(readFileSync(jsonFile, "utf8")) as { numPassedTests: number; numFailedTests: number; numPendingTests: number; numTodoTests: number };
-    return { passed: j.numPassedTests, failed: j.numFailedTests, skipped: j.numPendingTests + (j.numTodoTests ?? 0) };
+    const j = JSON.parse(readFileSync(jsonFile, "utf8")) as {
+      numPassedTests: number;
+      numFailedTests: number;
+      numPendingTests: number;
+      numTodoTests: number;
+    };
+    return {
+      passed: j.numPassedTests,
+      failed: j.numFailedTests,
+      skipped: j.numPendingTests + (j.numTodoTests ?? 0),
+    };
   } catch {
     return { passed: 0, failed: 1, skipped: 0 };
   }
@@ -112,7 +161,11 @@ function vitestSummary(jsonFile: string): { passed: number; failed: number; skip
 
 function tail(logFile: string, n = 6): string {
   try {
-    return readFileSync(logFile, "utf8").trim().split("\n").slice(-n).join("\n");
+    return readFileSync(logFile, "utf8")
+      .trim()
+      .split("\n")
+      .slice(-n)
+      .join("\n");
   } catch {
     return "";
   }
@@ -130,7 +183,15 @@ async function parcours(p: {
   const t0 = Date.now();
   for (const n of p.needs) {
     if (!(await n.ok())) {
-      outcomes.push({ id: p.id, titre: p.titre, milestone: p.milestone, status: "saute", detail: `prérequis manquant : ${n.label}`, secondes: 0, log });
+      outcomes.push({
+        id: p.id,
+        titre: p.titre,
+        milestone: p.milestone,
+        status: "saute",
+        detail: `prérequis manquant : ${n.label}`,
+        secondes: 0,
+        log,
+      });
       console.log(`SAUTÉ  ${p.id} — ${p.titre} (${n.label})`);
       return;
     }
@@ -138,35 +199,98 @@ async function parcours(p: {
   console.log(`…      ${p.id} — ${p.titre}`);
   const r = p.exec(log);
   const secondes = Math.round((Date.now() - t0) / 100) / 10;
-  outcomes.push({ id: p.id, titre: p.titre, milestone: p.milestone, status: r.ok ? "ok" : "echec", detail: r.detail, secondes, log });
-  console.log(`${r.ok ? "OK    " : "ÉCHEC "} ${p.id} — ${r.detail} (${secondes} s)`);
+  outcomes.push({
+    id: p.id,
+    titre: p.titre,
+    milestone: p.milestone,
+    status: r.ok ? "ok" : "echec",
+    detail: r.detail,
+    secondes,
+    log,
+  });
+  console.log(
+    `${r.ok ? "OK    " : "ÉCHEC "} ${p.id} — ${r.detail} (${secondes} s)`,
+  );
   if (!r.ok) console.log(tail(log, 12));
 }
 
 // ── Pile et site ──────────────────────────────────────────────────────────────
 const pg = { label: "PostgreSQL (DATABASE_URL)", ok: pgReachable };
-const mailpit = { label: "Mailpit (127.0.0.1:8026)", ok: () => reachable("http://127.0.0.1:8026/api/v1/info") };
-const stripeMock = { label: "stripe-mock (127.0.0.1:12111)", ok: () => reachable("http://127.0.0.1:12111/v1/customers", (s) => s < 500 || s === 401) };
-const litellm = { label: "LiteLLM (LITELLM_BASE_URL)", ok: () => reachable(`${env.LITELLM_BASE_URL ?? "http://127.0.0.1:4400"}/health/liveliness`) };
-const directus = { label: "Directus (DIRECTUS_URL)", ok: () => reachable(`${env.DIRECTUS_URL ?? "http://localhost:8456"}/server/ping`) };
-const site = { label: `site de production sur ${BASE}`, ok: () => reachable(`${BASE}/api/health`) };
+const mailpit = {
+  label: "Mailpit (127.0.0.1:8026)",
+  ok: () => reachable("http://127.0.0.1:8026/api/v1/info"),
+};
+const stripeMock = {
+  label: "stripe-mock (127.0.0.1:12111)",
+  ok: () =>
+    reachable(
+      "http://127.0.0.1:12111/v1/customers",
+      (s) => s < 500 || s === 401,
+    ),
+};
+const litellm = {
+  label: "LiteLLM (LITELLM_BASE_URL)",
+  ok: () =>
+    reachable(
+      `${env.LITELLM_BASE_URL ?? "http://127.0.0.1:4400"}/health/liveliness`,
+    ),
+};
+const directus = {
+  label: "Directus (DIRECTUS_URL)",
+  ok: () =>
+    reachable(`${env.DIRECTUS_URL ?? "http://localhost:8456"}/server/ping`),
+};
+const site = {
+  label: `site de production sur ${BASE}`,
+  ok: () => reachable(`${BASE}/api/health`),
+};
 
 let server: ChildProcess | null = null;
 async function startSite(): Promise<string | null> {
-  if (env.E2E_BASE_URL) return (await reachable(`${BASE}/api/health`)) ? null : `E2E_BASE_URL ne répond pas (${BASE})`;
+  if (env.E2E_BASE_URL)
+    return (await reachable(`${BASE}/api/health`))
+      ? null
+      : `E2E_BASE_URL ne répond pas (${BASE})`;
   if (!existsSync(join(web, ".next", "BUILD_ID"))) {
     console.log("Pas de build : `next build` (quelques minutes)…");
-    if (run("bun", ["run", "build"], { cwd: web, log: join(logDir, "build.log") }) !== 0) return "build impossible (voir build.log)";
+    if (
+      run("bun", ["run", "build"], {
+        cwd: web,
+        log: join(logDir, "build.log"),
+      }) !== 0
+    )
+      return "build impossible (voir build.log)";
   }
-  run("bun", ["run", "--cwd", join(root, "packages", "db"), "migrate"], { cwd: root, log: join(logDir, "migrate.log") });
+  run("bun", ["run", "--cwd", join(root, "packages", "db"), "migrate"], {
+    cwd: root,
+    log: join(logDir, "migrate.log"),
+  });
   const out = join(logDir, "site.log");
   const fd = openSync(out, "a", 0o600);
-  server = spawn(process.execPath, [join(web, "node_modules", "next", "dist", "bin", "next"), "start", "-p", PORT], {
-    cwd: web,
-    env: { ...env, PORT, NODE_ENV: "production", CMS_SNAPSHOT_DIR: join(logDir, "snapshots") },
-    stdio: ["ignore", fd, fd],
-  });
-  console.log(`Site de production lancé sur le port ${PORT} (PID ${server.pid}, base ${dbName}).`);
+  server = spawn(
+    process.execPath,
+    [
+      join(web, "node_modules", "next", "dist", "bin", "next"),
+      "start",
+      "-H",
+      "localhost",
+      "-p",
+      PORT,
+    ],
+    {
+      cwd: web,
+      env: {
+        ...env,
+        PORT,
+        NODE_ENV: "production",
+        CMS_SNAPSHOT_DIR: join(logDir, "snapshots"),
+      },
+      stdio: ["ignore", fd, fd],
+    },
+  );
+  console.log(
+    `Site de production lancé sur le port ${PORT} (PID ${server.pid}, base ${dbName}).`,
+  );
   for (let i = 0; i < 60; i++) {
     if (await reachable(`${BASE}/api/health`)) return null;
     await new Promise((r) => setTimeout(r, 500));
@@ -187,57 +311,99 @@ process.on("exit", stopSite);
 
 // ── Parcours ──────────────────────────────────────────────────────────────────
 const siteError = await startSite();
-const siteNeed = { label: siteError ?? site.label, ok: async () => siteError === null };
+const siteNeed = {
+  label: siteError ?? site.label,
+  ok: async () => siteError === null,
+};
 
 function vitestStep(files: string[], cwd: string, log: string) {
   const json = `${log}.json`;
-  const code = run("bunx", ["vitest", "run", ...files, "--reporter=json", `--outputFile=${json}`], { cwd, log });
+  const code = run(
+    "bunx",
+    ["vitest", "run", ...files, "--reporter=json", `--outputFile=${json}`],
+    { cwd, log },
+  );
   const s = vitestSummary(json);
-  if (s.passed === 0 && s.failed === 0 && s.skipped > 0) return { ok: false, detail: `tests sautés (${s.skipped}) : prérequis de la pile absents` };
-  return { ok: code === 0 && s.failed === 0 && s.passed > 0, detail: `${s.passed} test(s) réussi(s), ${s.failed} échec(s), ${s.skipped} sauté(s)` };
+  if (s.passed === 0 && s.failed === 0 && s.skipped > 0)
+    return {
+      ok: false,
+      detail: `tests sautés (${s.skipped}) : prérequis de la pile absents`,
+    };
+  return {
+    ok: code === 0 && s.failed === 0 && s.passed > 0,
+    detail: `${s.passed} test(s) réussi(s), ${s.failed} échec(s), ${s.skipped} sauté(s)`,
+  };
 }
-function scriptStep(script: string, extraEnv: Record<string, string>, log: string) {
-  const code = run("bun", ["run", script], { cwd: web, env: { BASE_URL: BASE, ...extraEnv }, log });
+function scriptStep(
+  script: string,
+  extraEnv: Record<string, string>,
+  log: string,
+) {
+  const code = run("bun", ["run", script], {
+    cwd: web,
+    env: { BASE_URL: BASE, ...extraEnv },
+    log,
+  });
   const txt = tail(log, 400);
   const ok = code === 0;
   const last = txt.trim().split("\n").filter(Boolean).at(-1) ?? "";
-  return { ok, detail: ok ? (/TOUT EST VERT|\d+\/\d+|OK/i.test(txt) ? `terminé, code 0 (${last.slice(0, 90)})` : "terminé, code 0") : `code ${code} (${last.slice(0, 120)})` };
+  return {
+    ok,
+    detail: ok
+      ? /TOUT EST VERT|\d+\/\d+|OK/i.test(txt)
+        ? `terminé, code 0 (${last.slice(0, 90)})`
+        : "terminé, code 0"
+      : `code ${code} (${last.slice(0, 120)})`,
+  };
 }
 
 await parcours({
   id: "inscription-credits",
-  titre: "Inscription, vérification par courriel, achat de crédits, webhook signé, rejeu sans double effet, remboursement, 20 réservations concurrentes",
+  titre:
+    "Inscription, vérification par courriel, achat de crédits, webhook signé, rejeu sans double effet, remboursement, 20 réservations concurrentes",
   milestone: "S4",
   needs: [pg, mailpit, stripeMock],
   exec: (log) => vitestStep(["src/server/billing/e2e.test.ts"], web, log),
 });
 await parcours({
   id: "cle-et-modele",
-  titre: "Catalogue publié, crédits, clé nxk_, appels réels non diffusé et diffusé, débit exact, révocation (401)",
+  titre:
+    "Catalogue publié, crédits, clé nxk_, appels réels non diffusé et diffusé, débit exact, révocation (401)",
   milestone: "S5",
   needs: [pg, litellm, siteNeed],
   exec: (log) => scriptStep("scripts/e2e-gateway.ts", {}, log),
 });
 await parcours({
   id: "commande-vps",
-  titre: "Commande VPS, Checkout, webhook, vrai worker, simulateur Proxmox, actif, arrêt/démarrage, réinstallation, suspension, résiliation, suppression",
+  titre:
+    "Commande VPS, Checkout, webhook, vrai worker, simulateur Proxmox, actif, arrêt/démarrage, réinstallation, suspension, résiliation, suppression",
   milestone: "S6",
   needs: [pg, mailpit, stripeMock],
   exec: (log) => vitestStep(["src/server/vps/e2e.test.ts"], web, log),
 });
 await parcours({
   id: "publication",
-  titre: "Brouillon -> aperçu signé -> approbation sur le hash exact -> publication -> revalidation -> page publique exacte",
+  titre:
+    "Brouillon -> aperçu signé -> approbation sur le hash exact -> publication -> revalidation -> page publique exacte",
   milestone: "S2",
   needs: [
     directus,
-    { label: `site qui reçoit la revalidation de la garde (${PUBLICATION_BASE})`, ok: () => reachable(`${PUBLICATION_BASE}/api/health`) },
+    {
+      label: `site qui reçoit la revalidation de la garde (${PUBLICATION_BASE})`,
+      ok: () => reachable(`${PUBLICATION_BASE}/api/health`),
+    },
   ],
-  exec: (log) => scriptStep("scripts/e2e-publication.ts", { BASE_URL: PUBLICATION_BASE }, log),
+  exec: (log) =>
+    scriptStep(
+      "scripts/e2e-publication.ts",
+      { BASE_URL: PUBLICATION_BASE },
+      log,
+    ),
 });
 await parcours({
   id: "contact",
-  titre: "Formulaire de contact (ALTCHA réel), ligne en base, tâche, échec d'envoi repris, un seul courriel, abus refusés",
+  titre:
+    "Formulaire de contact (ALTCHA réel), ligne en base, tâche, échec d'envoi repris, un seul courriel, abus refusés",
   milestone: "S3",
   needs: [pg, mailpit, siteNeed],
   exec: (log) => scriptStep("scripts/e2e-contact.ts", {}, log),
@@ -246,22 +412,37 @@ const wsKey = env.WORKSTUDIO_KEY_FILE ?? "";
 const wsUrl = env.WORKSTUDIO_URL ?? "http://localhost:3200";
 await parcours({
   id: "agent-heberge",
-  titre: "Agent WorkStudio publié, découverte, clé du client, appels agent/<slug> non diffusé et diffusé, débit, 402, révocation, retrait",
+  titre:
+    "Agent WorkStudio publié, découverte, clé du client, appels agent/<slug> non diffusé et diffusé, débit, 402, révocation, retrait",
   milestone: "S7",
   needs: [
-    { label: "WORKSTUDIO_KEY_FILE (clé d'espace WorkStudio autorisant « Agents publiés ») non défini ou absent", ok: async () => wsKey !== "" && existsSync(wsKey) },
-    { label: `WorkStudio (${wsUrl})`, ok: () => reachable(`${wsUrl}/api/health`) },
+    {
+      label:
+        "WORKSTUDIO_KEY_FILE (clé d'espace WorkStudio autorisant « Agents publiés ») non défini ou absent",
+      ok: async () => wsKey !== "" && existsSync(wsKey),
+    },
+    {
+      label: `WorkStudio (${wsUrl})`,
+      ok: () => reachable(`${wsUrl}/api/health`),
+    },
     litellm,
     siteNeed,
   ],
-  exec: (log) => scriptStep("scripts/e2e-agents.ts", { WORKSTUDIO_KEY_FILE: wsKey, WORKSTUDIO_URL: wsUrl }, log),
+  exec: (log) =>
+    scriptStep(
+      "scripts/e2e-agents.ts",
+      { WORKSTUDIO_KEY_FILE: wsKey, WORKSTUDIO_URL: wsUrl },
+      log,
+    ),
 });
 await parcours({
   id: "agents-du-site",
-  titre: "Agents du site : brouillon + approbation (rien de publié), injection ignorée, source interne refusée, budget, arrêt",
+  titre:
+    "Agents du site : brouillon + approbation (rien de publié), injection ignorée, source interne refusée, budget, arrêt",
   milestone: "S8",
   needs: [pg],
-  exec: (log) => vitestStep(["src/agents/runner.test.ts"], join(root, "worker"), log),
+  exec: (log) =>
+    vitestStep(["src/agents/runner.test.ts"], join(root, "worker"), log),
 });
 
 stopSite();
@@ -280,7 +461,10 @@ const md = [
   "",
   "| Parcours | Jalon | Résultat | Durée | Détail |",
   "|---|---|---|---|---|",
-  ...outcomes.map((o) => `| ${o.titre} | ${o.milestone} | ${label[o.status]} | ${o.secondes} s | ${o.detail.replace(/\|/g, "/")} |`),
+  ...outcomes.map(
+    (o) =>
+      `| ${o.titre} | ${o.milestone} | ${label[o.status]} | ${o.secondes} s | ${o.detail.replace(/\|/g, "/")} |`,
+  ),
   "",
 ].join("\n");
 console.log(`\n${md}`);

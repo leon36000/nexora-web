@@ -7,7 +7,10 @@ import {
   REGIONS,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { secretScopeProblem } from "@nexora/vault/scope";
+import { secretKindOf } from "@nexora/vault/store";
 import { z } from "zod";
+import { envOutboundGuard, type OutboundGuard } from "../security/outbound";
 import {
   allowMethods,
   HttpError,
@@ -46,6 +49,8 @@ export interface HostedAgentsAdminDeps {
   db: () => Database;
   adminToken: string | undefined;
   getSecret: (ref: string) => Promise<string>;
+  /** Garde des adresses saisies (SSRF) ; défaut : politique de l'environnement (voir @nexora/net). */
+  outbound?: OutboundGuard;
   fetch: typeof fetch;
   log: Logger;
   now: () => Date;
@@ -86,6 +91,30 @@ const instanceFields = {
   region: z.enum(REGIONS),
   enabled: z.boolean(),
 };
+/** Adresse de l'instance (SSRF) et portée de la clé : refus 422 avant toute écriture. */
+async function assertInstanceTargets(
+  db: Database,
+  deps: HostedAgentsAdminDeps,
+  input: { baseUrl?: string; secretRef?: string | null },
+): Promise<void> {
+  if (input.baseUrl !== undefined) {
+    const r = await (deps.outbound ?? envOutboundGuard)(input.baseUrl);
+    if (!r.ok)
+      throw new HttpError(422, "url_blocked", {
+        message: r.reason,
+        field: "baseUrl",
+      });
+  }
+  if (input.secretRef) {
+    const problem = secretScopeProblem(
+      "workstudio-instance",
+      input.secretRef,
+      await secretKindOf(db, input.secretRef),
+    );
+    if (problem) throw new HttpError(422, "secret_scope", { message: problem });
+  }
+}
+
 const instanceCreate = z
   .object({
     code: z.string().regex(/^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/),
@@ -213,10 +242,9 @@ async function route(
     if (!b) {
       const method = allowMethods(request, "GET", "POST");
       if (method === "GET") return ok({ instances: await listInstances(db) });
-      const created = await createInstance(
-        db,
-        await readBody(request, instanceCreate),
-      );
+      const input = await readBody(request, instanceCreate);
+      await assertInstanceTargets(db, deps, input);
+      const created = await createInstance(db, input);
       deps.log.info("agents hébergés : instance créée", { code: created.code });
       return ok(created, 201);
     }
@@ -225,6 +253,25 @@ async function route(
       allowMethods(request, "POST");
       const instance = await getInstance(db, id);
       const reach = { getSecret: deps.getSecret, fetch: deps.fetch };
+      // L'adresse est revérifiée à chaque appel : elle a pu changer de destination depuis l'enregistrement.
+      const target = await (deps.outbound ?? envOutboundGuard)(
+        instance.baseUrl,
+      );
+      if (!target.ok) {
+        const detail = `adresse refusée : ${target.reason}`;
+        const updated = await recordInstanceCheck(
+          db,
+          id,
+          { ok: false, detail },
+          now,
+        );
+        return ok(
+          c === "test"
+            ? { ok: false, detail, instance: updated }
+            : { ok: false, detail },
+          c === "test" ? 200 : 502,
+        );
+      }
       if (c === "test") {
         const check = await checkInstance(instance, reach);
         const updated = await recordInstanceCheck(db, id, check, now);
@@ -255,11 +302,9 @@ async function route(
     if (c) throw new HttpError(404, "not_found");
     const method = allowMethods(request, "GET", "PATCH");
     if (method === "GET") return ok(await getInstance(db, id));
-    const updated = await updateInstance(
-      db,
-      id,
-      await readBody(request, instancePatch),
-    );
+    const patch = await readBody(request, instancePatch);
+    await assertInstanceTargets(db, deps, patch);
+    const updated = await updateInstance(db, id, patch);
     changed();
     return ok(updated);
   }
