@@ -52,13 +52,13 @@ export const accountFrCA = {
     company: "Nom de l’entreprise",
     companyHint:
       "Il nommera votre organisation. Sans entreprise, nous utiliserons votre nom.",
-    passwordHint: "10 caractères au moins.",
+    passwordHint: "12 caractères au moins.",
     submit: "Créer mon compte",
     haveAccount: "Déjà un compte ?",
     loginLink: "Se connecter",
     errors: {
       nameRequired: "Indiquez votre nom.",
-      weak: "Ce mot de passe est trop court : 10 caractères au moins.",
+      weak: "Ce mot de passe est trop court : 12 caractères au moins.",
       invalidEmail: "Cette adresse courriel n’est pas valide.",
       rateLimited:
         "Trop de tentatives. Patientez une minute avant de réessayer.",
@@ -86,14 +86,14 @@ export const accountFrCA = {
 
   reset: {
     title: "Nouveau mot de passe.",
-    lead: "Choisissez un mot de passe d’au moins 10 caractères. Vos autres sessions seront fermées.",
+    lead: "Choisissez un mot de passe d’au moins 12 caractères. Vos autres sessions seront fermées.",
     password: "Nouveau mot de passe",
     submit: "Enregistrer le mot de passe",
     done: "Votre mot de passe est changé. Vous pouvez vous connecter.",
     goLogin: "Aller à la connexion",
     errors: {
       invalidToken: "Ce lien est invalide ou expiré. Demandez-en un nouveau.",
-      weak: "Ce mot de passe est trop court : 10 caractères au moins.",
+      weak: "Ce mot de passe est trop court : 12 caractères au moins.",
       generic: "Le changement a échoué. Réessayez dans un moment.",
     },
     askAgain: "Demander un nouveau lien",

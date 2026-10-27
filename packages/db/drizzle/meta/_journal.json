@@ -99,6 +99,13 @@
       "when": 1793137190449,
       "tag": "0013_s2_paiements_vague2",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1793143883306,
+      "tag": "0014_s10_securite_2fa",
+      "breakpoints": true
     }
   ]
 }

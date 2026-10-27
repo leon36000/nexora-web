@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/site";
 import { getDb } from "../db";
 import { log } from "../log";
 import { createAuth, createSmtpMailer, type NexoraAuth } from "./index";
+import { breachCheckEnabled, createBreachChecker } from "./password-policy";
 
 const g = globalThis as unknown as { __nexoraAuth?: NexoraAuth };
 
@@ -24,6 +25,10 @@ export function getAuth(): NexoraAuth {
         from: process.env.MAIL_FROM ?? "Nexora AI <no-reply@nexora.test>",
       }),
       secureCookies: SITE_URL.startsWith("https://"),
+      // k-anonymat HIBP : activé en production (NEXORA_PASSWORD_BREACH_CHECK=off pour le couper, hors ligne).
+      breachCheck: breachCheckEnabled()
+        ? createBreachChecker({ log: (message, fields) => log.warn(message, fields) })
+        : undefined,
       log: (message, fields) => log.warn(message, fields),
     });
   }

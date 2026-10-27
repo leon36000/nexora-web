@@ -27,6 +27,8 @@ export const users = pgTable(
     locale: text("locale").notNull().default("fr"),
     /** Nom de l'entreprise saisi à l'inscription (nom de l'organisation créée). */
     company: text("company"),
+    /** Double authentification activée (TOTP vérifié) : exigée des comptes du personnel (plugin `twoFactor`). */
+    twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -182,3 +184,45 @@ export const authRateLimits = pgTable(
   },
   (t) => [uniqueIndex("auth_rate_limits_key_unique").on(t.key)],
 );
+
+/**
+ * Double authentification (plugin `twoFactor` de Better Auth) : secret TOTP et codes de secours, tous deux
+ * CHIFFRÉS par Better Auth avec `BETTER_AUTH_SECRET` (jamais en clair en base). `verified` reste faux tant que
+ * le premier code n'a pas été saisi ; `failedVerificationCount` / `lockedUntil` : verrouillage du compte après
+ * des échecs consécutifs de vérification.
+ */
+export const twoFactors = pgTable(
+  "two_factors",
+  {
+    id: text("id").primaryKey(),
+    secret: text("secret").notNull(),
+    backupCodes: text("backup_codes").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    verified: boolean("verified").notNull().default(true),
+    failedVerificationCount: integer("failed_verification_count")
+      .notNull()
+      .default(0),
+    lockedUntil: timestamp("locked_until", { withTimezone: true }),
+  },
+  (t) => [
+    index("two_factors_user_idx").on(t.userId),
+    index("two_factors_secret_idx").on(t.secret),
+  ],
+);
+
+/**
+ * Verrouillage progressif des connexions par courriel (empreinte SHA-256 du courriel en minuscules : la table
+ * ne contient jamais d'adresse, et existe aussi pour des adresses sans compte, donc aucune énumération).
+ * Après 5 échecs consécutifs, le délai double à chaque échec de plus (1 min, 2 min… plafonné à 30 min) ; une
+ * connexion réussie remet le compteur à zéro.
+ */
+export const authLockouts = pgTable("auth_lockouts", {
+  key: text("key").primaryKey(),
+  failures: integer("failures").notNull().default(0),
+  lockedUntil: timestamp("locked_until", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});

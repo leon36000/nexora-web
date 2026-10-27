@@ -48,13 +48,13 @@ export const accountEnCA: AccountDictionary = {
     company: "Company name",
     companyHint:
       "It will name your organization. Without a company, we will use your name.",
-    passwordHint: "At least 10 characters.",
+    passwordHint: "At least 12 characters.",
     submit: "Create my account",
     haveAccount: "Already have an account?",
     loginLink: "Sign in",
     errors: {
       nameRequired: "Enter your name.",
-      weak: "This password is too short: at least 10 characters.",
+      weak: "This password is too short: at least 12 characters.",
       invalidEmail: "This email address is not valid.",
       rateLimited: "Too many attempts. Wait a minute before trying again.",
       generic: "Account creation failed. Try again in a moment.",
@@ -81,14 +81,14 @@ export const accountEnCA: AccountDictionary = {
 
   reset: {
     title: "New password.",
-    lead: "Choose a password of at least 10 characters. Your other sessions will be signed out.",
+    lead: "Choose a password of at least 12 characters. Your other sessions will be signed out.",
     password: "New password",
     submit: "Save the password",
     done: "Your password has been changed. You can now sign in.",
     goLogin: "Go to sign in",
     errors: {
       invalidToken: "This link is invalid or has expired. Ask for a new one.",
-      weak: "This password is too short: at least 10 characters.",
+      weak: "This password is too short: at least 12 characters.",
       generic: "The change failed. Try again in a moment.",
     },
     askAgain: "Ask for a new link",

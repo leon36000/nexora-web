@@ -101,7 +101,7 @@ export function SignupForm({ lang, t, common }: Props) {
         label={common.password}
         type="password"
         autoComplete="new-password"
-        minLength={10}
+        minLength={12}
         required
         hint={t.passwordHint}
         value={password}
