@@ -34,7 +34,7 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
       dict.nav.resources.label,
     ]);
     const menu = chrome.header.nav.find((n) => n.type === "menu");
-    expect(menu?.type === "menu" && menu.items).toHaveLength(6);
+    expect(menu?.type === "menu" && menu.items).toHaveLength(8);
     expect(chrome.header.login.href).toBe("/compte");
     expect(chrome.header.cta.href).toBe("/contact");
     expect(chrome.footer.columns).toHaveLength(4);
