@@ -378,3 +378,70 @@ describe("validation contre le schéma réel", () => {
     );
   });
 });
+
+describe("vidéo : fichiers référencés par une section (S10)", () => {
+  const page = (
+    locale: "fr-CA" | "en-CA",
+    over: Partial<PageFile> = {},
+  ): PageFile => ({
+    page: "opsys-ai",
+    locale,
+    status: "published",
+    seo: {
+      slug: "opsys-ai",
+      title: "OPSYS-AI",
+      seo_title: "S",
+      seo_description: "D",
+    },
+    blocks: [
+      {
+        collection: "block_section",
+        fields: { media: { asset: "video-opsys.mp4" }, visual: "aucun" },
+        translation: {
+          title: "Présentation",
+          media_captions: { asset: `video-opsys.${locale}.vtt` },
+        },
+      },
+    ],
+    ...over,
+  });
+
+  test("managedFields : le média est un champ du bloc, les sous-titres un champ de la traduction", () => {
+    const m = managedFields().block_section;
+    expect(m?.base).toContain("media");
+    expect(m?.tr).toContain("media_captions");
+  });
+
+  test("une section qui référence sa vidéo et ses sous-titres par nom est valide", () => {
+    expect(validatePageFile(page("fr-CA"))).toEqual([]);
+    expect(validatePageFile(page("en-CA"))).toEqual([]);
+  });
+
+  test("une référence d'actif mal formée (chemin, format non admis) est refusée dès la validation hors ligne", () => {
+    const bad = page("fr-CA");
+    bad.blocks[0] = {
+      collection: "block_section",
+      fields: { media: { asset: "../secret.mp4" } },
+      translation: { media_captions: { asset: "page.html" } },
+    };
+    const errs = validatePageFile(bad);
+    expect(errs.join("\n")).toMatch(/actif « media » mal formé/);
+    expect(errs.join("\n")).toMatch(/actif « media_captions » mal formé/);
+  });
+
+  test("la fusion garde les références telles quelles : elles ne sont résolues qu'au chargement", () => {
+    const merged = mergePage({
+      "fr-CA": page("fr-CA"),
+      "en-CA": page("en-CA"),
+    });
+    expect(merged.blocks[0]?.fields.media).toEqual({
+      asset: "video-opsys.mp4",
+    });
+    expect(merged.blocks[0]?.translations["fr-CA"]?.media_captions).toEqual({
+      asset: "video-opsys.fr-CA.vtt",
+    });
+    expect(merged.blocks[0]?.translations["en-CA"]?.media_captions).toEqual({
+      asset: "video-opsys.en-CA.vtt",
+    });
+  });
+});

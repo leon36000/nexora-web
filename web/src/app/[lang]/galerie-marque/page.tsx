@@ -66,6 +66,7 @@ async function Gallery() {
       title: visual,
       body: null,
       media: null,
+      captions: null,
       mediaPosition: "none",
       items: [],
     });

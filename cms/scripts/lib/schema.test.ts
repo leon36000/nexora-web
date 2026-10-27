@@ -181,3 +181,35 @@ describe("offres d'abonnement : essai, famille et prix suggéré (vague 2)", () 
     ).toBeFalsy();
   });
 });
+
+describe("vidéo : sous-titres et média vidéo d'une section (S10)", () => {
+  test("la traduction d'une section porte les sous-titres (fichier, « Sous-titres (.vtt) »)", () => {
+    const f = field("block_section_translations", "media_captions");
+    expect(f.type).toBe("uuid");
+    expect(f.meta?.special).toEqual(["file"]);
+    expect(f.meta?.translations).toContainEqual(
+      expect.objectContaining({ translation: "Sous-titres (.vtt)" }),
+    );
+  });
+
+  test("les sous-titres sont une relation vers les fichiers Directus, sans effacer la traduction", () => {
+    const { relations } = buildSchema();
+    const rel = relations.find(
+      (r) =>
+        r.collection === "block_section_translations" &&
+        r.field === "media_captions",
+    );
+    expect(rel?.related_collection).toBe("directus_files");
+    expect(rel?.schema?.on_delete).toBe("SET NULL");
+  });
+
+  test("le média d'une section accepte une vidéo (note d'aide)", () => {
+    expect(String(field("block_section", "media").meta?.note)).toMatch(
+      /vidéo/i,
+    );
+  });
+
+  test("aucune collection ajoutée : Directus sans licence est plafonné à 25 (24 utilisées)", () => {
+    expect(collections.map((c) => c.collection)).toHaveLength(24);
+  });
+});

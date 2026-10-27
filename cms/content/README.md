@@ -321,6 +321,22 @@ Idempotence : un contenu déjà publié et identique ne produit ni version ni ap
 
 **Garde de publication et mention de l'approbateur.** Le commentaire d'approbation écrit par le script dit qu'il agit à la demande du fondateur, par l'option explicite ; en production, la relecture et l'approbation devraient être faites par des personnes dans l'interface Directus (le script sert à l'amorçage et aux essais).
 
+**Vidéos et sous-titres (fichiers référencés).** Une section peut afficher une vidéo à la place d'une image, avec des sous-titres par langue. Dans le fichier de page, le bloc section porte une référence par nom, et la traduction porte les sous-titres :
+
+```json
+"fields": { "media": { "asset": "video-opsys.mp4" }, "visual": "aucun", … },
+"translation": { "title": "…", "media_captions": { "asset": "video-opsys.fr-CA.vtt" }, … }
+```
+
+Au chargement (`cms/scripts/lib/assets.ts`), chaque nom devient l'identifiant d'un fichier Directus :
+
+- **Petits fichiers versionnés** (ex. les sous-titres `.vtt`) : lus dans `cms/content/assets/<nom>`. Téléversés dans Directus s'ils n'y existent pas déjà avec la même empreinte SHA-256 (rangée dans `description` sous la forme `sha256:<hex>`) ; sinon réutilisés. Relancer ne téléverse rien de nouveau.
+- **Gros fichiers absents du dépôt** (ex. `video-opsys.mp4`, 26 Mo) : doivent **déjà exister dans Directus** sous ce `filename_download` (téléversés une fois, dans la bibliothèque de fichiers). Le chargeur les retrouve par leur nom et échoue en nommant le fichier s'il est introuvable.
+- Formats admis : `.mp4`, `.webm` (vidéo), `.vtt` (sous-titres WebVTT). Les noms sont simples (pas de chemin). La validation hors ligne refuse une référence mal formée avant tout appel à Directus.
+- `--a-blanc` n'envoie rien : il indique « à téléverser » pour chaque fichier absent.
+
+Le site lit ces fichiers par `/api/media/<id>` (relais avec plages d'octets, pour la lecture vidéo) et affiche une façade légère : aucun octet de vidéo n'est chargé avant le clic. Le champ `media` du bloc section accepte une image ou une vidéo ; l'interface de Directus est généraliste pour cette raison.
+
 **Remarques pour le moteur de rendu (S2 web).**
 
 - `text` d'une carte peut contenir des sauts de ligne (`\n`) : utiliser `white-space: pre-line` (scénarios « Avant / Après / Votre contrôle », « Statut : … »).

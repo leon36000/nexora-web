@@ -22,6 +22,13 @@ import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  type AssetAction,
+  type AssetStore,
+  directusAssetStore,
+  resolveAsset,
+  resolveAssetRefs,
+} from "./lib/assets";
+import {
   buildDelta,
   type ClaimsFile,
   type CurrentPage,
@@ -50,6 +57,15 @@ const CONTENT_DIR = join(
   "..",
   "content",
 );
+/** Petits fichiers versionnés référencés par le contenu (sous-titres, affiches). Les gros fichiers n'y sont pas. */
+const ASSETS_DIR = join(CONTENT_DIR, "assets");
+
+const ASSET_ACTION: Record<AssetAction, string> = {
+  televerse: "téléversé dans Directus",
+  reutilise: "déjà dans Directus (réutilisé)",
+  existant: "trouvé dans Directus (absent du dépôt)",
+  "a-televerser": "à téléverser (aucun envoi, --a-blanc)",
+};
 
 /** Pages du dossier `content/pages` (un fichier `<page>.fr-CA.json` par page), l'accueil et OPSYS-AI d'abord. */
 export function discoverPages(dir: string): string[] {
@@ -338,6 +354,7 @@ async function processPage(
   ctx: {
     url: string;
     admin: Directus;
+    assets: AssetStore;
     editor: () => Promise<Directus>;
     reviewer: () => Promise<Directus>;
     publisher: Directus;
@@ -356,8 +373,18 @@ async function processPage(
         `  champs absents du schéma ignorés (à republier une fois le schéma à jour) : ${list}`,
       );
   }
-  const want = mergePage(pair);
+  const merged = mergePage(pair);
   log(`Page « ${key} »`);
+  // vidéos et sous-titres : chaque référence `{ asset }` devient l'identifiant d'un fichier Directus
+  const want = await resolveAssetRefs(merged, async (name) => {
+    const r = await resolveAsset(name, {
+      store: ctx.assets,
+      dir: ASSETS_DIR,
+      dryRun: OPTIONS.dryRun,
+    });
+    log(`  fichier « ${name} » : ${ASSET_ACTION[r.action]}`);
+    return r.id;
+  });
   let id = await findPageId(ctx.admin, want);
   if (!id) {
     if (OPTIONS.dryRun) {
@@ -526,6 +553,7 @@ async function main() {
   const ctx = {
     url,
     admin,
+    assets: directusAssetStore(admin),
     editor: async () =>
       (editor ??= new Directus(
         url,

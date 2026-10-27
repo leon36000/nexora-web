@@ -21,6 +21,11 @@ export const PAGES_DIR = join(dirname(fileURLToPath(import.meta.url)), "pages");
 const str = (v: Json | undefined): string => (typeof v === "string" ? v : "");
 const list = (v: Json | undefined): Fields[] =>
   Array.isArray(v) ? (v as Fields[]) : [];
+/** Nom d'un actif référencé (`{ "asset": "…" }`), ou null. */
+const assetOf = (v: Json | undefined): string | null =>
+  v && typeof v === "object" && !Array.isArray(v) && typeof v.asset === "string"
+    ? v.asset
+    : null;
 
 /** HTML contrôlé des blocs de texte -> Markdown lisible. */
 export function htmlToMarkdown(html: string): string {
@@ -83,6 +88,14 @@ function renderBlock(b: BlockFile, i: number): string {
     }
     case "block_section": {
       if (t.title) out.push(`## ${str(t.title)}`);
+      // vidéo ou image référencée par son nom (fichier de cms/content/assets, ou déjà dans Directus)
+      const asset = assetOf(b.fields?.media);
+      if (asset) {
+        const cap = assetOf(t.media_captions);
+        out.push(
+          `Média : \`${asset}\`${cap ? ` · sous-titres : \`${cap}\`` : ""}`,
+        );
+      }
       if (t.body) out.push(htmlToMarkdown(str(t.body)));
       const items = list(t.items);
       if (items.length)

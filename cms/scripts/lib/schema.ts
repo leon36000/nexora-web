@@ -1150,7 +1150,12 @@ export function buildSchema(): {
       }),
       tone("clair"),
       anchorId(),
-      file("media", { label: "Média" }),
+      file("media", {
+        label: "Média",
+        // sélecteur généraliste : l'interface « image » ne propose pas les vidéos
+        interface: "file",
+        note: "Image (PNG, JPEG, WebP, AVIF, GIF) ou vidéo (MP4, WebM). Une vidéo s’affiche derrière une façade : elle ne se charge qu’au clic.",
+      }),
     ],
     [
       str("title", { label: "Titre" }),
@@ -1165,6 +1170,11 @@ export function buildSchema(): {
         schema: {},
       },
       str("media_alt", { label: "Texte alternatif du média" }),
+      file("media_captions", {
+        label: "Sous-titres (.vtt)",
+        interface: "file",
+        note: "Fichier WebVTT (.vtt) dans la langue de cette traduction, pour une vidéo.",
+      }),
       json("items", {
         label: "Liste",
         interface: "list",
@@ -1177,6 +1187,7 @@ export function buildSchema(): {
     ],
   );
   toFiles("block_section", "media");
+  toFiles("block_section_translations", "media_captions");
 
   block(
     "block_cards",

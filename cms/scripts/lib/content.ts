@@ -157,6 +157,21 @@ export function readPagePair(dir: string, page: string) {
 
 const same = (a: unknown, b: unknown) => canonical(a) === canonical(b);
 
+/** Nom d'un fichier de contenu : nom simple, format vidéo ou sous-titres (voir assets.ts). */
+const ASSET_FILE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(mp4|webm|vtt)$/;
+
+/**
+ * Référence `{ "asset": "<nom>" }` d'une valeur de bloc : le nom, `null` si la valeur n'est pas une référence,
+ * `"invalide"` si la forme est mauvaise (clé en trop, nom absent).
+ */
+export function assetRefName(v: Json | undefined): string | null | "invalide" {
+  if (!v || typeof v !== "object" || Array.isArray(v) || !("asset" in v))
+    return null;
+  const keys = Object.keys(v);
+  if (keys.length !== 1 || typeof v.asset !== "string") return "invalide";
+  return v.asset;
+}
+
 /** Valide un fichier de page contre le schéma ; renvoie la liste des erreurs (vide si tout va bien). */
 export function validatePageFile(
   f: PageFile,
@@ -182,6 +197,18 @@ export function validatePageFile(
     for (const k of Object.keys(b.translation))
       if (!m.tr.includes(k))
         at(`${where} : champ traduit « ${k} » absent du schéma`);
+    const refs: [string, Json | undefined][] = [
+      ...Object.entries(b.fields ?? {}),
+      ...Object.entries(b.translation),
+    ];
+    for (const [k, v] of refs) {
+      const name = assetRefName(v);
+      if (name === null) continue;
+      if (name === "invalide" || !ASSET_FILE.test(name))
+        at(
+          `${where} : actif « ${k} » mal formé (${name === "invalide" ? "clé en trop" : name}) : nom simple en .mp4, .webm ou .vtt`,
+        );
+    }
   }
   return errs;
 }
