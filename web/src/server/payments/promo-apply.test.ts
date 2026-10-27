@@ -17,15 +17,23 @@ beforeAll(async () => {
   t = await createTestDatabase();
   await t.db.insert(users).values([
     { id: "u-client", name: "Client", email: "client@example.com" },
-    { id: "u-staff", name: "Équipe", email: "equipe@example.com" },
+    {
+      id: "u-staff",
+      name: "Équipe",
+      email: "equipe@example.com",
+      twoFactorEnabled: true,
+    },
+    // Compte du personnel qui n'a pas encore activé sa double authentification.
+    { id: "u-staff-nofa", name: "Sans 2FA", email: "sans2fa@example.com" },
   ]);
   await t.db.insert(organizations).values([
     { id: "o-client", name: "Client", slug: "o-client" },
     { id: "o-staff", name: "Équipe", slug: "o-staff" },
   ]);
-  await t.db
-    .insert(staffAccounts)
-    .values({ userId: "u-staff", grantedBy: "admin" });
+  await t.db.insert(staffAccounts).values([
+    { userId: "u-staff", grantedBy: "admin" },
+    { userId: "u-staff-nofa", grantedBy: "admin" },
+  ]);
 });
 afterAll(async () => {
   await t.drop();
@@ -118,7 +126,8 @@ describe("validation côté serveur d'un code saisi", () => {
       },
       false,
     );
-    expect(await ask(p.code)).toEqual({ ok: false, reason: "staff_only" });
+    // Pour qui n'est pas du personnel, le code est indiscernable d'un code qui n'existe pas.
+    expect(await ask(p.code)).toEqual({ ok: false, reason: "unknown" });
     const r = await ask(p.code, {
       organizationId: "o-staff",
       userId: "u-staff",
@@ -130,9 +139,19 @@ describe("validation côté serveur d'un code saisi", () => {
       await ask(p.code, { organizationId: "o-staff", userId: "u-staff" }),
     ).toEqual({
       ok: false,
-      reason: "staff_only",
+      reason: "unknown",
     });
     await t.db.update(staffAccounts).set({ revokedAt: null });
+  });
+
+  it("un compte du personnel sans double authentification ne peut pas utiliser un code du personnel", async () => {
+    const p = await promo(
+      { kind: "staff", percentOff: null, scopes: ["subscriptions"] },
+      false,
+    );
+    expect(
+      await ask(p.code, { organizationId: "o-staff", userId: "u-staff-nofa" }),
+    ).toEqual({ ok: false, reason: "two_factor_required" });
   });
 
   it("« un par client » : refuse une deuxième utilisation par la même organisation", async () => {

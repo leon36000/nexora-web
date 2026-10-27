@@ -329,6 +329,7 @@ describe("codes promo et VPS offert", () => {
       id: "u-staff-vps",
       name: "Équipe",
       email: "equipe-vps@example.com",
+      twoFactorEnabled: true,
     });
     staffOrg = await newOrg(t.db);
     await t.db

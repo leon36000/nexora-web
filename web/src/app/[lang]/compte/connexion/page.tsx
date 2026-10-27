@@ -8,6 +8,7 @@ import { LoginForm } from "@/components/account/login-form";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getSecurityDictionary } from "@/i18n/security";
 import { buildPageMetadata } from "@/lib/metadata";
 import { SITE_NAME } from "@/lib/site";
 
@@ -41,7 +42,12 @@ export default async function LoginPage() {
       }}
     >
       <Suspense fallback={null}>
-        <LoginForm lang={lang} t={t.login} common={t.common} />
+        <LoginForm
+          lang={lang}
+          t={t.login}
+          common={t.common}
+          security={getSecurityDictionary(lang)}
+        />
       </Suspense>
     </AuthShell>
   );

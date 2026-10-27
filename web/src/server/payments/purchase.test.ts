@@ -11,7 +11,12 @@ beforeAll(async () => {
   t = await createTestDatabase();
   await t.db.insert(users).values([
     { id: "u1", name: "A", email: "a@example.com" },
-    { id: "u-staff", name: "S", email: "s@example.com" },
+    {
+      id: "u-staff",
+      name: "S",
+      email: "s@example.com",
+      twoFactorEnabled: true,
+    },
   ]);
   await t.db.insert(organizations).values([
     { id: "o1", name: "A", slug: "o1" },
@@ -124,7 +129,7 @@ describe("résolution d'un code saisi dans un parcours d'achat", () => {
     );
     expect(await resolvePromo(t.db, { ...base, code: "EQUIPE" })).toEqual({
       kind: "rejected",
-      reason: "staff_only",
+      reason: "unknown",
     });
     const r = await resolvePromo(t.db, {
       ...base,

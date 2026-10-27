@@ -301,7 +301,9 @@ export async function handleVpsCheckout(
       return fail(
         deps,
         input,
-        error.code === "not_staff" ? 403 : 409,
+        error.code === "not_staff" || error.code === "two_factor_required"
+          ? 403
+          : 409,
         `gift_${error.code}`,
       );
     if (error instanceof CheckoutError) {
@@ -394,7 +396,7 @@ export async function handleVpsAction(
         requestId,
         "customer",
       );
-      if (!res.accepted) return fail(deps, input, 409, "not_active", back);
+      if (!res.accepted) return fail(deps, input, 409, res.code, back);
       return ok();
     }
     // Résiliation : à la fin de la période payée (Stripe), puis arrêt, 7 jours de rétention et suppression.

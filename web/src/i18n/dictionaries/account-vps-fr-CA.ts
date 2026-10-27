@@ -223,6 +223,12 @@ export const accountVpsFrCA = {
   errors: {
     not_active:
       "Cette opération n’est possible que lorsque le VPS est actif et libre.",
+    reinstall_pending_purge:
+      "Une réinstallation précédente est encore conservée par sécurité : attendez sa purge avant d’en demander une autre.",
+    reinstall_too_soon:
+      "Une réinstallation a déjà été faite récemment : réessayez dans 24 heures.",
+    gift_two_factor_required:
+      "Activez la double authentification de votre compte (page Sécurité) pour offrir un service.",
     confirmation_required: "Une confirmation est nécessaire.",
     forbidden:
       "Seul le propriétaire de l’organisation peut effectuer cette action.",

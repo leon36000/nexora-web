@@ -1,5 +1,5 @@
 import "server-only";
-import type { OrgRole } from "@nexora/db";
+import { and, eq, isNull, type OrgRole, staffAccounts } from "@nexora/db";
 import { getDb } from "../db";
 import { resolveOrgContext } from "./guards";
 import { getAuth } from "./instance";
@@ -12,6 +12,10 @@ export interface SessionContext {
   organizationId: string;
   role: OrgRole;
   emailVerified: boolean;
+  /** Double authentification activée sur le compte. */
+  twoFactorEnabled: boolean;
+  /** Compte du personnel (drapeau actif) : la double authentification est alors obligatoire. */
+  isStaff: boolean;
 }
 
 /**
@@ -29,7 +33,20 @@ export async function getSessionContext(
   if (!ctx) return null;
   const locale =
     (session.user as { locale?: string }).locale === "en" ? "en" : "fr";
+  const [staff] = await getDb()
+    .select({ userId: staffAccounts.userId })
+    .from(staffAccounts)
+    .where(
+      and(
+        eq(staffAccounts.userId, session.user.id),
+        isNull(staffAccounts.revokedAt),
+      ),
+    );
   return {
+    twoFactorEnabled: Boolean(
+      (session.user as { twoFactorEnabled?: boolean }).twoFactorEnabled,
+    ),
+    isStaff: Boolean(staff),
     userId: session.user.id,
     email: session.user.email,
     name: session.user.name,

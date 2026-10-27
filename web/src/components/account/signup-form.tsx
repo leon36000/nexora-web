@@ -52,6 +52,12 @@ export function SignupForm({ lang, t, common }: Props) {
     }
     if (err.status === 429) setError("rateLimited");
     else if (err.code === "PASSWORD_TOO_SHORT") setError("weak");
+    else if (
+      err.code === "PASSWORD_TOO_COMMON" ||
+      err.code === "PASSWORD_PERSONAL"
+    )
+      setError("common");
+    else if (err.code === "PASSWORD_COMPROMISED") setError("breached");
     else if (err.code === "INVALID_EMAIL") setError("invalidEmail");
     else setError("generic");
   }

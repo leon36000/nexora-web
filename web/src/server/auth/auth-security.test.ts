@@ -167,7 +167,8 @@ describe("nom d'affichage : aucune injection dans les courriels", () => {
 });
 
 describe("politique des mots de passe", () => {
-  const code = async (res: Response) => ((await res.json()) as { code?: string }).code;
+  const code = async (res: Response) =>
+    ((await res.json()) as { code?: string }).code;
 
   it("refuse moins de 12 caractères", async () => {
     const { res } = await signUp({ password: "Abcdef-1234" });
@@ -176,7 +177,12 @@ describe("politique des mots de passe", () => {
   });
 
   it("refuse un mot de passe courant, même allongé de chiffres", async () => {
-    for (const password of ["motdepasse123", "Password1234!", "123456789012", "aaaaaaaaaaaa"]) {
+    for (const password of [
+      "motdepasse123",
+      "Password1234!",
+      "123456789012",
+      "aaaaaaaaaaaa",
+    ]) {
       const { res } = await signUp({ password });
       expect(res.status, password).toBe(400);
       expect(await code(res), password).toBe("PASSWORD_TOO_COMMON");
@@ -195,10 +201,16 @@ describe("politique des mots de passe", () => {
     const breached = makeAuth({
       breachCheck: async (p) => (p === "Fuite-Connue-Longue-77" ? true : null),
     });
-    const { res } = await signUp({ password: "Fuite-Connue-Longue-77" }, breached);
+    const { res } = await signUp(
+      { password: "Fuite-Connue-Longue-77" },
+      breached,
+    );
     expect(res.status).toBe(400);
     expect(await code(res)).toBe("PASSWORD_COMPROMISED");
-    const { res: ok } = await signUp({ password: "Autre-Phrase-Longue-88" }, breached);
+    const { res: ok } = await signUp(
+      { password: "Autre-Phrase-Longue-88" },
+      breached,
+    );
     expect(ok.status).toBe(200);
   });
 
@@ -293,8 +305,7 @@ describe("double authentification", () => {
       .where(eq(twoFactors.userId, userId));
     expect(row?.verified).toBe(false);
     expect(row?.secret).not.toContain(secret);
-    for (const c of body.backupCodes)
-      expect(row?.backupCodes).not.toContain(c);
+    for (const c of body.backupCodes) expect(row?.backupCodes).not.toContain(c);
     await call("/two-factor/verify-totp", {
       cookie,
       body: { code: await currentCode(body.totpURI) },
@@ -335,7 +346,10 @@ describe("double authentification", () => {
       cookie: cookiesOf(good),
       body: { email, password: PASSWORD },
     });
-    expect(((await again.json()) as { twoFactorRedirect?: boolean }).twoFactorRedirect).toBe(true);
+    expect(
+      ((await again.json()) as { twoFactorRedirect?: boolean })
+        .twoFactorRedirect,
+    ).toBe(true);
   });
 
   it("accepte un code de secours une seule fois", async () => {
@@ -443,7 +457,9 @@ describe("avertissement de connexion inhabituelle", () => {
     });
     await new Promise((r) => setTimeout(r, 50));
     expect(count()).toBe(1);
-    const mail = mailer.sentTo(email).find((m) => /Nouvelle connexion/.test(m.subject));
+    const mail = mailer
+      .sentTo(email)
+      .find((m) => /Nouvelle connexion/.test(m.subject));
     expect(mail?.text).toContain("192.0.2.44");
     expect(mail?.text).not.toMatch(/https?:\/\//);
     const rows = await t.db.select().from(sessions);

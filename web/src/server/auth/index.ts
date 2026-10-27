@@ -1,5 +1,5 @@
-import { and, type Database, eq, isNull, ne } from "@nexora/db";
 import * as schema from "@nexora/db";
+import { and, type Database, eq, isNull, ne } from "@nexora/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import {
@@ -92,7 +92,10 @@ const PASSWORD_ERRORS: Record<PasswordProblem, [string, string]> = {
   too_long: ["PASSWORD_TOO_LONG", "Mot de passe trop long."],
   common: ["PASSWORD_TOO_COMMON", "Mot de passe trop courant."],
   personal: ["PASSWORD_PERSONAL", "Mot de passe tiré de vos informations."],
-  breached: ["PASSWORD_COMPROMISED", "Mot de passe vu dans une fuite de données."],
+  breached: [
+    "PASSWORD_COMPROMISED",
+    "Mot de passe vu dans une fuite de données.",
+  ],
 };
 
 function passwordError(problem: PasswordProblem): APIError {
@@ -312,7 +315,9 @@ export function createAuth(options: CreateAuthOptions) {
           ctx.path === "/two-factor/verify-otp"
         ) {
           if (body.trustDevice)
-            return { context: { ...ctx, body: { ...body, trustDevice: false } } };
+            return {
+              context: { ...ctx, body: { ...body, trustDevice: false } },
+            };
           return;
         }
         // Les comptes du personnel ne peuvent pas retirer leur double authentification.
@@ -396,7 +401,11 @@ export function createAuth(options: CreateAuthOptions) {
       twoFactor({
         issuer: "Nexora AI",
         totpOptions: { digits: 6, period: 30 },
-        backupCodeOptions: { amount: 10, length: 10, storeBackupCodes: "encrypted" },
+        backupCodeOptions: {
+          amount: 10,
+          length: 10,
+          storeBackupCodes: "encrypted",
+        },
       }),
       organization({
         ac,

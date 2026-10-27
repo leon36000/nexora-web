@@ -37,8 +37,18 @@ let promoId: string;
 beforeAll(async () => {
   t = await createTestDatabase();
   await t.db.insert(users).values([
-    { id: "u-staff", name: "Équipe", email: "equipe@example.com" },
-    { id: "u-client", name: "Client", email: "client@example.com" },
+    {
+      id: "u-staff",
+      name: "Équipe",
+      email: "equipe@example.com",
+      twoFactorEnabled: true,
+    },
+    {
+      id: "u-client",
+      name: "Client",
+      email: "client@example.com",
+      twoFactorEnabled: true,
+    },
   ]);
   await t.db
     .insert(organizations)
@@ -96,6 +106,31 @@ describe("drapeau « personnel »", () => {
     expect(actions).toEqual(
       expect.arrayContaining(["staff.grant", "staff.revoke"]),
     );
+  });
+});
+
+describe("double authentification obligatoire pour le personnel", () => {
+  it("un compte du personnel sans double authentification ne peut rien offrir (abonnement, crédits, VPS)", async () => {
+    await t.db.insert(users).values({
+      id: "u-staff-nofa",
+      name: "Sans 2FA",
+      email: "sans2fa@example.com",
+    });
+    await t.db
+      .insert(staffAccounts)
+      .values({ userId: "u-staff-nofa", grantedBy: "admin" });
+    await expect(
+      grantGiftSubscription(t.db, {
+        organizationId: "o-staff",
+        userId: "u-staff-nofa",
+        planCode: "workstudio-equipe",
+        promoCodeId: promoId,
+        now: NOW,
+      }),
+    ).rejects.toMatchObject({ code: "two_factor_required" });
+    await t.db
+      .delete(staffAccounts)
+      .where(eq(staffAccounts.userId, "u-staff-nofa"));
   });
 });
 

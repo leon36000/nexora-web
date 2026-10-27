@@ -37,6 +37,8 @@ export const accountEnCA: AccountDictionary = {
       unverified:
         "Your email is not confirmed yet. Open the message we sent you, or ask for a new one.",
       rateLimited: "Too many attempts. Wait a minute before trying again.",
+      locked:
+        "Too many failed sign-ins for this address: access is suspended for a few minutes. Try again later, or reset your password.",
       generic: "Sign-in failed. Try again in a moment.",
     },
   },
@@ -55,6 +57,10 @@ export const accountEnCA: AccountDictionary = {
     errors: {
       nameRequired: "Enter your name.",
       weak: "This password is too short: at least 12 characters.",
+      common:
+        "This password is too common or too close to your details. Choose a longer passphrase.",
+      breached:
+        "This password appears in known data breaches. Choose another one.",
       invalidEmail: "This email address is not valid.",
       rateLimited: "Too many attempts. Wait a minute before trying again.",
       generic: "Account creation failed. Try again in a moment.",
@@ -89,6 +95,9 @@ export const accountEnCA: AccountDictionary = {
     errors: {
       invalidToken: "This link is invalid or has expired. Ask for a new one.",
       weak: "This password is too short: at least 12 characters.",
+      common: "This password is too common. Choose a longer passphrase.",
+      breached:
+        "This password appears in known data breaches. Choose another one.",
       generic: "The change failed. Try again in a moment.",
     },
     askAgain: "Ask for a new link",
@@ -134,6 +143,8 @@ export const accountEnCA: AccountDictionary = {
         gift_cap_reached:
           "The monthly cap on provided credits has been reached.",
         gift_already_gifted: "This gift already exists.",
+        gift_two_factor_required:
+          "Turn on two-factor authentication for your account (Security page) to provide a service.",
       },
     },
     balance: {
@@ -247,6 +258,8 @@ export const accountEnCA: AccountDictionary = {
       exhausted: "This promo code has reached its maximum number of uses.",
       wrong_scope: "This code does not apply to this type of purchase.",
       staff_only: "This code is reserved for the Nexora team.",
+      two_factor_required:
+        "Turn on two-factor authentication for your account (Security page) to use a team code.",
       first_order_only: "This code is reserved for a first order.",
       already_used: "Your organization has already used this code.",
       min_amount: "This code requires a higher purchase amount.",

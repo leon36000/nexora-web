@@ -11,6 +11,7 @@ import {
   sql,
   staffAccounts,
   subscriptions,
+  users,
   vpsOrders,
 } from "@nexora/db";
 import { normalizeCode, type PromoRow } from "./promo";
@@ -26,6 +27,7 @@ export const PROMO_MESSAGE_KEYS = [
   "exhausted",
   "wrong_scope",
   "staff_only",
+  "two_factor_required",
   "first_order_only",
   "already_used",
   "min_amount",
@@ -63,6 +65,26 @@ export async function isStaffUser(
       and(eq(staffAccounts.userId, userId), isNull(staffAccounts.revokedAt)),
     );
   return Boolean(row);
+}
+
+/**
+ * Compte du personnel utilisable pour les privilèges (codes `staff`, dons) : drapeau actif ET double
+ * authentification activée (ASVS niveau 3 pour les comptes privilégiés). `needs_two_factor` : drapeau posé, mais le
+ * compte n'a pas encore activé sa double authentification (page /compte/securite) ; `none` : pas du personnel.
+ */
+export async function staffStatus(
+  db: Database,
+  userId: string,
+): Promise<"none" | "needs_two_factor" | "ok"> {
+  const [row] = await db
+    .select({ twoFactor: users.twoFactorEnabled })
+    .from(staffAccounts)
+    .innerJoin(users, eq(users.id, staffAccounts.userId))
+    .where(
+      and(eq(staffAccounts.userId, userId), isNull(staffAccounts.revokedAt)),
+    );
+  if (!row) return "none";
+  return row.twoFactor ? "ok" : "needs_two_factor";
 }
 
 /** Cette organisation a-t-elle déjà payé quelque chose ? (don du personnel et commande impayée exclus) */
@@ -126,8 +148,12 @@ export async function validatePromo(
   if (!promo.scopes.includes(input.scope)) return reject("wrong_scope");
 
   const gift = promo.kind === "staff";
-  if (gift && !(await isStaffUser(db, input.userId)))
-    return reject("staff_only");
+  if (gift) {
+    const status = await staffStatus(db, input.userId);
+    // Un code du personnel est invisible pour qui ne l'est pas : même réponse qu'un code qui n'existe pas.
+    if (status === "none") return reject("unknown");
+    if (status === "needs_two_factor") return reject("two_factor_required");
+  }
 
   const [{ used } = { used: 0 }] = await db
     .select({ used: sql<number>`count(*)::int` })

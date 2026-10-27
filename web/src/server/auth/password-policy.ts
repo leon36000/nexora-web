@@ -36,10 +36,7 @@ const COMMON_BASES = new Set(
 
 /** Réduit un mot de passe à sa « base » : minuscules, sans accents, sans chiffres ni symboles en queue. */
 function baseOf(password: string): string {
-  const folded = password
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+  const folded = password.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   return folded.replace(/[^a-z]+$/g, "").replace(/^[^a-z0-9]+/g, "");
 }
 
@@ -49,8 +46,7 @@ function isTrivialPattern(password: string): boolean {
   const chars = [...password.toLowerCase()];
   if (chars.length < 4) return false;
   const step = (a: string, b: string): number | null => {
-    if (/\d/.test(a) && /\d/.test(b))
-      return (Number(b) - Number(a) + 10) % 10;
+    if (/\d/.test(a) && /\d/.test(b)) return (Number(b) - Number(a) + 10) % 10;
     if (/[a-z]/.test(a) && /[a-z]/.test(b))
       return (b.charCodeAt(0) - a.charCodeAt(0) + 26) % 26;
     return null;
@@ -105,12 +101,18 @@ export function createBreachChecker(options: {
   const endpoint = options.endpoint ?? "https://api.pwnedpasswords.com/range/";
   const timeoutMs = options.timeoutMs ?? 3000;
   return async (password) => {
-    const sha1 = createHash("sha1").update(password).digest("hex").toUpperCase();
+    const sha1 = createHash("sha1")
+      .update(password)
+      .digest("hex")
+      .toUpperCase();
     const prefix = sha1.slice(0, 5);
     const suffix = sha1.slice(5);
     try {
       const res = await doFetch(`${endpoint}${prefix}`, {
-        headers: { "Add-Padding": "true", "User-Agent": "Nexora-AI-PasswordCheck" },
+        headers: {
+          "Add-Padding": "true",
+          "User-Agent": "Nexora-AI-PasswordCheck",
+        },
         signal: AbortSignal.timeout(timeoutMs),
         redirect: "error",
         cache: "no-store",

@@ -615,6 +615,10 @@ describe("essai gratuit, codes promo, frais de recharge et dons du personnel", (
   async function staffAccount() {
     const acct = await account();
     await t.db
+      .update(users)
+      .set({ twoFactorEnabled: true })
+      .where(eq(users.id, acct.session.userId));
+    await t.db
       .insert(staffAccounts)
       .values({ userId: acct.session.userId, grantedBy: "admin" });
     return acct;
@@ -668,7 +672,7 @@ describe("essai gratuit, codes promo, frais de recharge et dons du personnel", (
       s.deps,
     );
     expect(res.status).toBe(422);
-    expect(await res.json()).toEqual({ error: "promo_staff_only" });
+    expect(await res.json()).toEqual({ error: "promo_unknown" });
     expect(
       await t.db
         .select()

@@ -36,6 +36,8 @@ export function ResetForm({ lang, t, common }: Props) {
     setBusy(false);
     if (!err) return setDone(true);
     if (err.code === "PASSWORD_TOO_SHORT") setError("weak");
+    else if (err.code === "PASSWORD_TOO_COMMON") setError("common");
+    else if (err.code === "PASSWORD_COMPROMISED") setError("breached");
     else if (err.status === 400) setError("invalidToken");
     else setError("generic");
   }

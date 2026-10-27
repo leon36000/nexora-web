@@ -35,6 +35,8 @@ export interface DashboardProps {
   /** Offre choisie sur la page Tarifs (`?offre=`), publiée, vendable et pas déjà en cours. */
   chosenOffer?: SubscriptionPlan | null;
   flash: { kind: "success" | "info" | "error"; message: string } | null;
+  /** Lien vers la page de sécurité du compte (double authentification). */
+  securityLink?: { href: string; label: string };
 }
 
 const NEGATIVE = "text-accent-text";
@@ -86,6 +88,7 @@ export function Dashboard({
   payment,
   chosenOffer,
   flash,
+  securityLink,
 }: DashboardProps) {
   const d = t.dashboard;
   const { account } = data;
@@ -108,7 +111,14 @@ export function Dashboard({
           </h1>
           <p className="mt-4 max-w-2xl text-lead text-fg-muted">{d.lead}</p>
         </div>
-        <SignOutButton lang={lang} label={d.signOut} />
+        <div className="flex flex-wrap items-center gap-3">
+          {securityLink ? (
+            <ButtonLink href={securityLink.href} variant="secondary">
+              {securityLink.label}
+            </ButtonLink>
+          ) : null}
+          <SignOutButton lang={lang} label={d.signOut} />
+        </div>
       </header>
 
       {flash ? (

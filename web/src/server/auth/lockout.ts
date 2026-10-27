@@ -18,9 +18,7 @@ export const LOCKOUT_MAX_MS = 30 * 60_000;
 export const LOCKOUT_FORGET_MS = 24 * 3_600_000;
 
 export function lockoutKey(email: string): string {
-  return createHash("sha256")
-    .update(email.trim().toLowerCase())
-    .digest("hex");
+  return createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
 }
 
 /** Durée du verrouillage après `failures` échecs consécutifs. */
@@ -87,7 +85,10 @@ export async function clearLoginFailures(
 export function sanitizeDisplayName(name: unknown): string | null {
   if (typeof name !== "string") return null;
   const flat = name
-    .replace(/[\p{Cc}\u2028\u2029\u200B\u202A-\u202E\u2066-\u2069\uFEFF]+/gu, " ")
+    .replace(
+      /[\p{Cc}\u2028\u2029\u200B\u202A-\u202E\u2066-\u2069\uFEFF]+/gu,
+      " ",
+    )
     .replace(/\s+/g, " ")
     .trim();
   if (!flat) return null;

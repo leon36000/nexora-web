@@ -30,6 +30,7 @@ import { auditPayment } from "./settings";
 export type GiftErrorCode =
   | "not_found"
   | "not_staff"
+  | "two_factor_required"
   | "already_gifted"
   | "cap_reached"
   | "invalid_amount";
@@ -91,13 +92,23 @@ export async function setStaffFlag(
 
 async function assertStaff(tx: Executor, userId: string): Promise<void> {
   const [row] = await tx
-    .select({ revokedAt: staffAccounts.revokedAt })
+    .select({
+      revokedAt: staffAccounts.revokedAt,
+      twoFactor: users.twoFactorEnabled,
+    })
     .from(staffAccounts)
+    .innerJoin(users, eq(users.id, staffAccounts.userId))
     .where(eq(staffAccounts.userId, userId));
   if (!row || row.revokedAt)
     throw new GiftError(
       "not_staff",
       "Ce compte n'est pas un compte du personnel.",
+    );
+  // Privilège sensible : la double authentification est obligatoire pour un compte du personnel.
+  if (!row.twoFactor)
+    throw new GiftError(
+      "two_factor_required",
+      "Un compte du personnel doit activer la double authentification.",
     );
 }
 

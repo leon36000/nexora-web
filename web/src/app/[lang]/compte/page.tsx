@@ -8,6 +8,7 @@ import { ApiKeysSection } from "@/components/gateway/api-keys-section";
 import { Section } from "@/components/ui/section";
 import { fmt, formatCad, getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
+import { getSecurityDictionary } from "@/i18n/security";
 import { buildPageMetadata } from "@/lib/metadata";
 import { parseOffer } from "@/lib/offer-param";
 import { SITE_NAME } from "@/lib/site";
@@ -79,6 +80,9 @@ async function AccountContent({
 }) {
   const session = await getSessionContext(await headers());
   if (!session) redirect(localizePath(lang, "/compte/connexion"));
+  // Compte du personnel : la double authentification est obligatoire, la page de sécurité d'abord.
+  if (session.isStaff && !session.twoFactorEnabled)
+    redirect(localizePath(lang, "/compte/securite"));
 
   const t = getAccountDictionary(lang);
   const config = loadBillingConfig();
@@ -180,6 +184,10 @@ async function AccountContent({
         payment={payment}
         chosenOffer={chosenOffer}
         flash={flash}
+        securityLink={{
+          href: localizePath(lang, "/compte/securite"),
+          label: getSecurityDictionary(lang).dashboard.link,
+        }}
       />
       <ApiKeysSection
         lang={lang}

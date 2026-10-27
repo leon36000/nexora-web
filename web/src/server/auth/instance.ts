@@ -27,7 +27,9 @@ export function getAuth(): NexoraAuth {
       secureCookies: SITE_URL.startsWith("https://"),
       // k-anonymat HIBP : activé en production (NEXORA_PASSWORD_BREACH_CHECK=off pour le couper, hors ligne).
       breachCheck: breachCheckEnabled()
-        ? createBreachChecker({ log: (message, fields) => log.warn(message, fields) })
+        ? createBreachChecker({
+            log: (message, fields) => log.warn(message, fields),
+          })
         : undefined,
       log: (message, fields) => log.warn(message, fields),
     });
