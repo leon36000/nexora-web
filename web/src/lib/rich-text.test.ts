@@ -167,3 +167,36 @@ describe("richTextToPlain", () => {
     ).toBe("T un a b");
   });
 });
+
+describe("parseRichText : entrée hostile (temps borné)", () => {
+  it("traite en temps quasi linéaire une suite de balises jamais fermées (ReDoS)", () => {
+    const hostile = "<a ".repeat(30_000);
+    const start = performance.now();
+    parseRichText(hostile);
+    expect(performance.now() - start).toBeLessThan(250);
+  });
+
+  it("traite en temps borné des attributs en nombre démesuré et des guillemets jamais fermés", () => {
+    for (const hostile of [
+      `<a ${'x="1" '.repeat(15_000)}`,
+      `<a x="${"y ".repeat(40_000)}`,
+      `<p ${"<b ".repeat(30_000)}>`,
+    ]) {
+      const start = performance.now();
+      parseRichText(hostile);
+      expect(performance.now() - start).toBeLessThan(250);
+    }
+  });
+
+  it("garde le même résultat pour les balises normales (liens, guillemets, auto-fermantes)", () => {
+    expect(
+      show(
+        parseRichText(
+          `<p>a<br/>b <a href="https://exemple.ca/x?a=1&amp;b=2" title="x>y">lien</a> <b class=c>g</b></p>`,
+        ),
+      ),
+    ).toBe(
+      `<p>a<br></br>b <a href=https://exemple.ca/x?a=1&b=2>lien</a> <strong>g</strong></p>`,
+    );
+  });
+});
