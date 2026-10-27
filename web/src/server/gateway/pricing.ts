@@ -81,7 +81,7 @@ export interface PriceRow {
 }
 
 export type PriceIssue =
-  | { code: "price_zero"; field: "input" | "output" }
+  | { code: "price_zero"; field: "input" | "output" | "cache" }
   | { code: "below_margin_floor"; field: "input" | "output" | "cache" };
 
 /**
@@ -111,12 +111,20 @@ export function checkPrice(
     !floor(price.upstreamOutputUsdMicro, price.sellOutputCadMicro)
   )
     issues.push({ code: "below_margin_floor", field: "output" });
-  if (
-    price.sellCacheCadMicro !== null &&
-    price.upstreamCacheUsdMicro !== null &&
-    !floor(price.upstreamCacheUsdMicro, price.sellCacheCadMicro)
-  )
-    issues.push({ code: "below_margin_floor", field: "cache" });
+  if (price.sellCacheCadMicro !== null) {
+    // Jamais 0 $, même si l'amont offre le cache gratuitement (M3).
+    if (price.sellCacheCadMicro <= 0n)
+      issues.push({ code: "price_zero", field: "cache" });
+    // Sans tarif de cache amont, l'amont facture le cache au tarif d'entrée (voir `requestCost`) :
+    // le plancher s'applique alors à ce coût-là.
+    else if (
+      !floor(
+        price.upstreamCacheUsdMicro ?? price.upstreamInputUsdMicro,
+        price.sellCacheCadMicro,
+      )
+    )
+      issues.push({ code: "below_margin_floor", field: "cache" });
+  }
   return issues;
 }
 

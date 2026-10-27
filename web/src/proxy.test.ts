@@ -84,6 +84,46 @@ describe("proxy : matcher", () => {
   });
 });
 
+describe("proxy : CSP et formulaires qui redirigent vers Stripe", () => {
+  // Chrome applique `form-action` aussi aux REDIRECTIONS d'un formulaire : le 303 vers la page de paiement hébergée
+  // de Stripe est bloqué si la directive ne nomme pas cette origine (constaté au navigateur, espace client).
+  it("l'espace client autorise les pages hébergées de Stripe en form-action, et elles seules", async () => {
+    for (const path of [
+      "/compte",
+      "/compte/vps",
+      "/en/compte",
+      "/en/compte/vps",
+    ]) {
+      const csp = parseCsp(
+        (await proxy(req(path))).headers.get("content-security-policy") ?? "",
+      );
+      expect(csp.get("form-action"), path).toEqual([
+        "'self'",
+        "https://checkout.stripe.com",
+        "https://billing.stripe.com",
+      ]);
+      expect(csp.get("default-src"), path).toEqual(["'self'"]);
+      expect(csp.get("connect-src"), path).toEqual(["'self'"]);
+    }
+  });
+
+  it("les autres pages gardent form-action 'self' (aucune origine tierce)", async () => {
+    for (const path of [
+      "/",
+      "/contact",
+      "/en/contact",
+      "/compte/connexion-x",
+      "/agents",
+      "/vps",
+    ]) {
+      const csp = parseCsp(
+        (await proxy(req(path))).headers.get("content-security-policy") ?? "",
+      );
+      expect(csp.get("form-action"), path).toEqual(["'self'"]);
+    }
+  });
+});
+
 describe("proxy : CSP des pages et de la bulle WorkStudio", () => {
   it("pose la CSP de base sur toute page, sans origine tierce, même sans bulle", async () => {
     vi.stubEnv("SITE_ENV", "production");

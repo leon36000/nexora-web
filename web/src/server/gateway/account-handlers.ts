@@ -141,18 +141,18 @@ export async function handleRevokeKey(
     if (!/^[0-9a-f-]{36}$/i.test(keyId))
       return json({ error: "not_found" }, 404);
     const now = deps.now();
-    const done = await revokeApiKey(
+    const revokedAt = await revokeApiKey(
       deps.db(),
       auth.ctx.organizationId,
       keyId,
       now,
     );
-    if (!done) return json({ error: "not_found" }, 404);
+    if (!revokedAt) return json({ error: "not_found" }, 404);
     deps.log.info("clé API révoquée", {
       apiKeyId: keyId,
       organizationId: auth.ctx.organizationId,
     });
-    return json({ id: keyId, revokedAt: now.toISOString() });
+    return json({ id: keyId, revokedAt: revokedAt.toISOString() });
   } catch (error) {
     deps.log.error("clé API : erreur interne", {
       errorName: error instanceof Error ? error.name : typeof error,

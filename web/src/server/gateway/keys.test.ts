@@ -75,6 +75,20 @@ describe("création, authentification, révocation", () => {
     expect(row?.lastUsedAt).toBeInstanceOf(Date);
   });
 
+  it("le schéma Bearer est insensible à la casse (RFC 7235), la clé, elle, reste sensible", async () => {
+    const { key } = await createApiKey(t.db, {
+      organizationId: ORG,
+      name: "k-casse",
+    });
+    for (const scheme of ["bearer", "BEARER", "BeArEr"])
+      expect((await authenticateApiKey(t.db, `${scheme} ${key}`)).ok).toBe(
+        true,
+      );
+    expect(
+      await authenticateApiKey(t.db, `Bearer ${key.toUpperCase()}`),
+    ).toEqual({ ok: false, code: "invalid_api_key" });
+  });
+
   it("refuse une clé inconnue, mal formée ou absente", async () => {
     for (const header of [
       null,
@@ -95,7 +109,7 @@ describe("création, authentification, révocation", () => {
       name: "k2",
     });
     expect((await authenticateApiKey(t.db, `Bearer ${key}`)).ok).toBe(true);
-    expect(await revokeApiKey(t.db, ORG, record.id)).toBe(true);
+    expect(await revokeApiKey(t.db, ORG, record.id)).toBeInstanceOf(Date);
     expect(await authenticateApiKey(t.db, `Bearer ${key}`)).toEqual({
       ok: false,
       code: "api_key_revoked",
@@ -131,7 +145,7 @@ describe("création, authentification, révocation", () => {
       organizationId: ORG,
       name: "k4",
     });
-    expect(await revokeApiKey(t.db, OTHER, record.id)).toBe(false);
+    expect(await revokeApiKey(t.db, OTHER, record.id)).toBeNull();
     expect((await authenticateApiKey(t.db, `Bearer ${key}`)).ok).toBe(true);
     const others = await listApiKeys(t.db, OTHER);
     expect(others.find((k) => k.id === record.id)).toBeUndefined();
@@ -158,8 +172,9 @@ describe("création, authentification, révocation", () => {
       organizationId: ORG,
       name: "k5",
     });
-    expect(await revokeApiKey(t.db, ORG, record.id)).toBe(true);
-    expect(await revokeApiKey(t.db, ORG, record.id)).toBe(true);
+    const first = await revokeApiKey(t.db, ORG, record.id);
+    expect(first).toBeInstanceOf(Date);
+    expect(await revokeApiKey(t.db, ORG, record.id)).toEqual(first);
     const [row] = await t.db
       .select()
       .from(apiKeys)

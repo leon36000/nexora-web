@@ -53,6 +53,7 @@ export const accountEnCA: AccountDictionary = {
     haveAccount: "Already have an account?",
     loginLink: "Sign in",
     errors: {
+      nameRequired: "Enter your name.",
       weak: "This password is too short: at least 10 characters.",
       invalidEmail: "This email address is not valid.",
       rateLimited: "Too many attempts. Wait a minute before trying again.",
@@ -72,6 +73,7 @@ export const accountEnCA: AccountDictionary = {
     done: "If an account matches this address, a reset link has just been sent. It is valid for one hour.",
     back: "Back to sign in",
     errors: {
+      invalidEmail: "This email address is not valid.",
       rateLimited: "Too many requests. Wait a minute before trying again.",
       generic: "The request failed. Try again in a moment.",
     },
@@ -123,6 +125,7 @@ export const accountEnCA: AccountDictionary = {
         no_customer:
           "You have not made a payment yet: the portal is not available.",
         plan_not_found: "This plan is no longer available.",
+        already_subscribed: "You are already subscribed to this plan.",
         plan_not_synced: "This plan is not ready for sale yet.",
         rate_limited: "Too many requests. Wait a minute before trying again.",
         payment_unavailable:
@@ -206,6 +209,7 @@ export const accountEnCA: AccountDictionary = {
         ownerOnly: "Only the owner can subscribe.",
         unavailable: "Plans cannot be displayed at the moment.",
         notReady: "Coming soon",
+        current: "Your current plan",
       },
     },
     portal: {

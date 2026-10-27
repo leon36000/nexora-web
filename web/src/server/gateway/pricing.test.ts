@@ -107,6 +107,43 @@ describe("marge et plancher", () => {
   });
 });
 
+describe("checkPrice : tarif de cache (M3)", () => {
+  const fx = 1_400_000n;
+  const base = {
+    upstreamInputUsdMicro: 500_000n,
+    upstreamOutputUsdMicro: 500_000n,
+    upstreamCacheUsdMicro: null as bigint | null,
+    sellInputCadMicro: 910_000n,
+    sellOutputCadMicro: 910_000n,
+    sellCacheCadMicro: null as bigint | null,
+    marginFloorBps: 3000,
+  };
+  it("sans coût amont de cache, le cache amont est facturé au tarif d'entrée : le plancher s'y applique", () => {
+    expect(checkPrice({ ...base, sellCacheCadMicro: 1n }, fx, "chat")).toEqual([
+      { code: "below_margin_floor", field: "cache" },
+    ]);
+    expect(
+      checkPrice({ ...base, sellCacheCadMicro: 910_000n }, fx, "chat"),
+    ).toEqual([]);
+  });
+  it("un coût amont de cache nul n'autorise pas un tarif de vente de cache à 0 $", () => {
+    expect(
+      checkPrice(
+        { ...base, upstreamCacheUsdMicro: 0n, sellCacheCadMicro: 0n },
+        fx,
+        "chat",
+      ),
+    ).toEqual([{ code: "price_zero", field: "cache" }]);
+    expect(
+      checkPrice(
+        { ...base, upstreamCacheUsdMicro: 0n, sellCacheCadMicro: 1n },
+        fx,
+        "chat",
+      ),
+    ).toEqual([]);
+  });
+});
+
 describe("formatMicro", () => {
   it("écrit un décimal exact", async () => {
     const { formatMicro } = await import("./pricing");

@@ -111,7 +111,8 @@ export async function loadDashboard(
         now,
       ),
       cancelAtPeriodEnd: s.cancelAtPeriodEnd,
-      currentPeriodEnd: s.currentPeriodEnd,
+      // Un abonnement résilié ne se renouvelle plus : pas de « prochaine échéance ».
+      currentPeriodEnd: s.status === "canceled" ? null : s.currentPeriodEnd,
       graceEndsAt: s.graceEndsAt,
     })),
     hasStripeCustomer: customer.length > 0,

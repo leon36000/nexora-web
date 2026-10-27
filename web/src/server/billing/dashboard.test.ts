@@ -113,4 +113,30 @@ describe("tableau de bord de facturation", () => {
       access: "grace",
     });
   });
+  it("un abonnement résilié n'affiche aucune prochaine échéance (elle contredirait « Résilié · Aucun accès »)", async () => {
+    const a = await org("Epsilon");
+    await t.db.insert(subscriptions).values({
+      organizationId: a,
+      stripeSubscriptionId: `sub_${a}`,
+      stripeCustomerId: `cus_${a}`,
+      status: "canceled",
+      planCode: "pro",
+      currentPeriodEnd: new Date(Date.now() + 20 * 86_400_000),
+    });
+    const active = await org("Zeta");
+    await t.db.insert(subscriptions).values({
+      organizationId: active,
+      stripeSubscriptionId: `sub_${active}`,
+      stripeCustomerId: `cus_${active}`,
+      status: "active",
+      planCode: "pro",
+      currentPeriodEnd: new Date(Date.now() + 20 * 86_400_000),
+    });
+    expect(
+      (await loadDashboard(t.db, a)).subscriptions[0]?.currentPeriodEnd,
+    ).toBeNull();
+    expect(
+      (await loadDashboard(t.db, active)).subscriptions[0]?.currentPeriodEnd,
+    ).toBeInstanceOf(Date);
+  });
 });

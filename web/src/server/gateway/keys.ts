@@ -118,7 +118,8 @@ export type AuthResult =
       code: "invalid_api_key" | "api_key_revoked" | "api_key_expired";
     };
 
-const BEARER = /^Bearer\s+(nxk_[A-Za-z0-9_-]{43})\s*$/;
+// Le schéma d'autorisation est insensible à la casse (RFC 7235) ; la clé elle-même reste sensible.
+const BEARER = /^[Bb][Ee][Aa][Rr][Ee][Rr]\s+(nxk_[A-Za-z0-9_-]{43})\s*$/;
 
 /**
  * Authentifie `Authorization: Bearer nxk_…` : empreinte, révocation, expiration. Met à jour le
@@ -148,13 +149,16 @@ export async function authenticateApiKey(
   return { ok: true, key: row };
 }
 
-/** Révoque une clé de l'organisation (effet immédiat). Renvoie false si elle n'appartient pas à l'organisation. */
+/**
+ * Révoque une clé de l'organisation (effet immédiat) et renvoie sa date de révocation : celle de la
+ * première révocation si elle l'était déjà. `null` si elle n'appartient pas à l'organisation.
+ */
 export async function revokeApiKey(
   db: Database,
   organizationId: string,
   keyId: string,
   now: Date = new Date(),
-): Promise<boolean> {
+): Promise<Date | null> {
   const [row] = await db
     .select({ id: apiKeysTable.id })
     .from(apiKeysTable)
@@ -164,12 +168,16 @@ export async function revokeApiKey(
         eq(apiKeysTable.organizationId, organizationId),
       ),
     );
-  if (!row) return false;
+  if (!row) return null;
   await db
     .update(apiKeysTable)
     .set({ revokedAt: now })
     .where(and(eq(apiKeysTable.id, keyId), isNull(apiKeysTable.revokedAt)));
-  return true;
+  const [after] = await db
+    .select({ revokedAt: apiKeysTable.revokedAt })
+    .from(apiKeysTable)
+    .where(eq(apiKeysTable.id, keyId));
+  return after?.revokedAt ?? now;
 }
 
 export async function listApiKeys(

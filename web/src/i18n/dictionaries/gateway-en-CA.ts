@@ -136,11 +136,15 @@ export const gatewayEnCA: GatewayDictionary = {
       lead: "Errors follow OpenAI’s format: an error object with message, type and code.",
       columns: { status: "Status", code: "Code", meaning: "Meaning" },
       rows: [
-        ["401", "invalid_api_key", "Missing, unknown, revoked or expired key."],
+        [
+          "401",
+          "invalid_api_key · api_key_revoked · api_key_expired",
+          "Missing or unknown key, revoked key, expired key.",
+        ],
         [
           "402",
-          "insufficient_quota",
-          "Insufficient balance, blocked account or key spending cap reached.",
+          "insufficient_quota · account_blocked · api_key_spend_cap_reached",
+          "Insufficient balance, blocked account (negative balance) or key spending cap reached.",
         ],
         [
           "404",
@@ -149,9 +153,10 @@ export const gatewayEnCA: GatewayDictionary = {
         ],
         [
           "400",
-          "invalid_request",
-          "Invalid request (parameter, context exceeded, max_tokens).",
+          "invalid_json · missing_model · invalid_messages · invalid_input · invalid_max_tokens · context_length_exceeded · model_not_supported · unsupported_parameter",
+          "Invalid request (JSON, missing model, messages, max_tokens, context exceeded, unsupported parameter). The param field names the faulty parameter.",
         ],
+        ["413", "request_too_large", "Request body too large."],
         [
           "429",
           "rate_limit_exceeded",
@@ -159,8 +164,8 @@ export const gatewayEnCA: GatewayDictionary = {
         ],
         [
           "502 / 503",
-          "upstream_error",
-          "The model provider is unavailable: try again.",
+          "upstream_error · upstream_unavailable · upstream_overloaded · gateway_unavailable",
+          "The model provider is unavailable or overloaded: try again (see Retry-After). Nothing is charged.",
         ],
       ],
     },

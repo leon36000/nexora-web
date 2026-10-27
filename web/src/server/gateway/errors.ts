@@ -104,3 +104,14 @@ export const E = {
       headers,
     ),
 };
+
+/** Adresse inconnue sous `/v1` : 404 au format OpenAI plutôt que la page HTML de Next.js. */
+export function handleUnknownEndpoint(request: Request): Response {
+  const path = new URL(request.url).pathname.slice(0, 80);
+  return openAiError(
+    404,
+    "unknown_url",
+    `Adresse inconnue : ${request.method} ${path}. Adresses prises en charge : /v1/models, /v1/chat/completions, /v1/embeddings.`,
+    "invalid_request_error",
+  );
+}

@@ -1,5 +1,11 @@
 import { randomBytes } from "node:crypto";
-import { billingCustomers, members, organizations, users } from "@nexora/db";
+import {
+  billingCustomers,
+  members,
+  organizations,
+  subscriptions,
+  users,
+} from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { DEFAULT_BILLING_CONFIG } from "../ledger/config";
@@ -106,6 +112,45 @@ function post(
     body: json ? JSON.stringify(body) : new URLSearchParams(body).toString(),
   });
 }
+
+describe("facturation : Stripe non configuré ou indisponible", () => {
+  it("un montant hors bornes reste refusé en 422 même si Stripe n'est pas configuré", async () => {
+    const { session } = await account();
+    const s = setup(session);
+    s.deps.stripe = async () => {
+      throw new Error("Secret Stripe absent");
+    };
+    for (const amount of ["0", "9,99", "5000.01", "99999"]) {
+      const res = await handleCreditsCheckout(
+        post("/api/billing/checkout/credits", { amount }, {}, true),
+        s.deps,
+      );
+      expect(res.status, amount).toBe(422);
+      expect(await res.json()).toEqual({ error: "invalid_amount" });
+    }
+  });
+
+  it("un client Stripe impossible à construire donne 503 payment_unavailable, pas une erreur interne", async () => {
+    const { session } = await account();
+    const s = setup(session);
+    s.deps.stripe = async () => {
+      throw new Error("Secret Stripe absent");
+    };
+    for (const [path, body] of [
+      ["/api/billing/checkout/credits", { amount: "50" }],
+      ["/api/billing/checkout/subscription", { plan: "pro" }],
+      ["/api/billing/portal", {}],
+    ] as const) {
+      const res = await (path.endsWith("credits")
+        ? handleCreditsCheckout
+        : path.endsWith("subscription")
+          ? handleSubscribeCheckout
+          : handlePortal)(post(path, body, {}, true), s.deps);
+      expect(res.status, path).toBe(503);
+      expect(await res.json()).toEqual({ error: "payment_unavailable" });
+    }
+  });
+});
 
 describe("POST /api/billing/checkout/credits", () => {
   it("formulaire : redirige (303) vers la page de paiement Stripe", async () => {
@@ -290,6 +335,47 @@ describe("POST /api/billing/checkout/subscription", () => {
       setup(session).deps,
     );
     expect(unsynced.status).toBe(409);
+  });
+});
+
+describe("POST /api/billing/checkout/subscription : pas de double abonnement", () => {
+  const sub = (orgId: string, status: string, plan = "pro") =>
+    t.db.insert(subscriptions).values({
+      organizationId: orgId,
+      stripeSubscriptionId: `sub_${id()}`,
+      stripeCustomerId: `cus_${id()}`,
+      status: status as never,
+      planCode: plan,
+    });
+
+  it("409 already_subscribed quand l'organisation a déjà ce plan actif ou en retard de paiement", async () => {
+    for (const status of ["active", "trialing", "past_due"]) {
+      const { session, orgId } = await account();
+      await sub(orgId, status);
+      const s = setup(session);
+      const res = await handleSubscribeCheckout(
+        post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+        s.deps,
+      );
+      expect(res.status, status).toBe(409);
+      expect(await res.json()).toEqual({ error: "already_subscribed" });
+      expect(s.checkoutCreate).not.toHaveBeenCalled();
+    }
+  });
+
+  it("autorise un plan résilié, un autre plan, ou l'abonnement d'une autre organisation", async () => {
+    const { session, orgId } = await account();
+    await sub(orgId, "canceled");
+    await sub(orgId, "active", "autre-plan");
+    const other = await account();
+    await sub(other.orgId, "active");
+    const s = setup(session);
+    const res = await handleSubscribeCheckout(
+      post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+      s.deps,
+    );
+    expect(res.status).toBe(200);
+    expect(s.checkoutCreate).toHaveBeenCalledOnce();
   });
 });
 

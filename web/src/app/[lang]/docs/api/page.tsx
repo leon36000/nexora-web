@@ -149,8 +149,12 @@ export default async function ApiDocsPage() {
                     <td className="whitespace-nowrap px-4 py-3 tabular-nums text-fg">
                       {status}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 font-mono text-fg">
-                      {code}
+                    <td className="px-4 py-3 font-mono text-fg">
+                      {code.split(" · ").map((c) => (
+                        <div key={c} className="break-words">
+                          {c}
+                        </div>
+                      ))}
                     </td>
                     <td className="px-4 py-3 text-fg-muted">{meaning}</td>
                   </tr>

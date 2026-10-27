@@ -50,6 +50,11 @@ export function Dashboard({
   const d = t.dashboard;
   const { account } = data;
   const isOwner = role === "owner";
+  const ownedPlans = new Set(
+    data.subscriptions
+      .filter((s) => s.access === "full" || s.access === "grace")
+      .map((s) => s.planCode),
+  );
   const min = formatCad(lang, config.minPurchaseCents);
   const max = formatCad(lang, config.maxPurchaseCents);
 
@@ -234,6 +239,7 @@ export function Dashboard({
           </ul>
         )}
 
+        {/* Un plan déjà en cours (accès complet ou délai de grâce) ne se souscrit pas une seconde fois. */}
         <h3 className="mt-10 text-h4 text-fg">
           {d.subscriptions.available.title}
         </h3>
@@ -278,6 +284,10 @@ export function Dashboard({
                       {!plan.stripePriceId ? (
                         <p className="text-small text-fg-muted">
                           {d.subscriptions.available.notReady}
+                        </p>
+                      ) : ownedPlans.has(plan.code) ? (
+                        <p className="text-small text-fg-muted">
+                          {d.subscriptions.available.current}
                         </p>
                       ) : isOwner ? (
                         <form

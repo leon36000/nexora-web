@@ -9,7 +9,9 @@ export type CheckoutErrorCode =
   | "invalid_amount"
   | "plan_not_synced"
   | "no_customer"
-  | "stripe_error";
+  | "stripe_error"
+  /** Client Stripe impossible à construire (secret absent du coffre, clé non test…). */
+  | "stripe_unavailable";
 
 export class CheckoutError extends Error {
   readonly code: CheckoutErrorCode;

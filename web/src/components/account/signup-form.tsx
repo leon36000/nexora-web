@@ -5,6 +5,7 @@ import { type AccountDictionary, fmt } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
 import { Field, Notice } from "./field";
+import { validateSignup } from "./validation";
 
 type Props = {
   lang: Lang;
@@ -23,8 +24,13 @@ export function SignupForm({ lang, t, common }: Props) {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    setBusy(true);
     setError(null);
+    const invalid = validateSignup({ name, email, password });
+    if (invalid) {
+      setError(invalid);
+      return;
+    }
+    setBusy(true);
     // `locale` et `company` sont des champs additionnels déclarés côté serveur.
     const body = {
       email,

@@ -6,6 +6,7 @@ import type { AccountDictionary } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
 import { Field, Notice } from "./field";
+import { validateEmail } from "./validation";
 
 type Props = {
   lang: Lang;
@@ -21,8 +22,13 @@ export function ForgotForm({ lang, t, common }: Props) {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    setBusy(true);
     setError(null);
+    const invalid = validateEmail(email);
+    if (invalid) {
+      setError(invalid);
+      return;
+    }
+    setBusy(true);
     const { error: err } = await authClient.requestPasswordReset({
       email,
       redirectTo: localizePath(lang, "/compte/reinitialiser"),

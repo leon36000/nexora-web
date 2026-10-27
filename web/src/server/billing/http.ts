@@ -1,4 +1,4 @@
-import type { Database } from "@nexora/db";
+import { and, type Database, eq, inArray, subscriptions } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { DEFAULT_LANG, isLang, type Lang, localizePath } from "@/i18n/config";
 import { OrgAccessError, resolveOrgContext } from "../auth/guards";
@@ -31,6 +31,13 @@ export interface BillingHttpDeps {
   productName: (lang: Lang) => string;
   log: Logger;
 }
+
+/** Statuts d'un abonnement qui court encore (en retard de paiement compris, pendant le délai de grâce). */
+export const LIVE_SUBSCRIPTION_STATUSES = [
+  "active",
+  "trialing",
+  "past_due",
+] as ("active" | "trialing" | "past_due")[];
 
 const NO_STORE = { "cache-control": "no-store" };
 /** 10 créations de paiement ou de portail par minute et par utilisateur. */
@@ -156,6 +163,20 @@ async function authorize(
   };
 }
 
+/** Client Stripe : un secret absent ou invalide n'est pas une erreur interne mais un service indisponible. */
+async function stripeClient(
+  deps: BillingHttpDeps,
+): Promise<CheckoutDeps["stripe"]> {
+  try {
+    return await deps.stripe();
+  } catch {
+    throw new CheckoutError(
+      "stripe_unavailable",
+      "client Stripe indisponible (secret absent ou invalide)",
+    );
+  }
+}
+
 function checkoutDeps(
   deps: BillingHttpDeps,
   stripe: CheckoutDeps["stripe"],
@@ -176,9 +197,10 @@ function checkoutFailure(
       plan_not_synced: [409, "plan_not_synced"],
       no_customer: [409, "no_customer"],
       stripe_error: [502, "payment_unavailable"],
+      stripe_unavailable: [503, "payment_unavailable"],
     };
     const [status, code] = map[error.code] ?? [500, "internal_error"];
-    if (error.code === "stripe_error")
+    if (error.code === "stripe_error" || error.code === "stripe_unavailable")
       deps.log.error("facturation : Stripe a refusé la requête", {
         code: error.code,
       });
@@ -206,10 +228,15 @@ export async function handleCreditsCheckout(
   if ("response" in auth) return auth.response;
   const { input } = auth;
   const cents = parseCadToCents(input.fields.amount ?? "");
-  if (cents === null) return fail(deps, input, 422, "invalid_amount");
+  if (
+    cents === null ||
+    cents < deps.config.minPurchaseCents ||
+    cents > deps.config.maxPurchaseCents
+  )
+    return fail(deps, input, 422, "invalid_amount");
   try {
     const out = await createCreditCheckout(
-      checkoutDeps(deps, await deps.stripe()),
+      checkoutDeps(deps, await stripeClient(deps)),
       {
         organizationId: auth.organizationId,
         amountCents: cents,
@@ -236,8 +263,21 @@ export async function handleSubscribeCheckout(
     // Seuls les plans PUBLIÉS dans Directus sont achetables.
     const plan = await deps.plans().getByCode(input.fields.plan ?? "");
     if (!plan) return fail(deps, input, 404, "plan_not_found");
+    // Pas de second abonnement au même plan tant que le premier court : le client paierait deux fois.
+    const [running] = await deps.db
+      .select({ id: subscriptions.id })
+      .from(subscriptions)
+      .where(
+        and(
+          eq(subscriptions.organizationId, auth.organizationId),
+          eq(subscriptions.planCode, plan.code),
+          inArray(subscriptions.status, LIVE_SUBSCRIPTION_STATUSES),
+        ),
+      )
+      .limit(1);
+    if (running) return fail(deps, input, 409, "already_subscribed");
     const out = await createSubscriptionCheckout(
-      checkoutDeps(deps, await deps.stripe()),
+      checkoutDeps(deps, await stripeClient(deps)),
       {
         organizationId: auth.organizationId,
         plan,
@@ -261,7 +301,7 @@ export async function handlePortal(
   const { input } = auth;
   try {
     const out = await createPortalSession(
-      checkoutDeps(deps, await deps.stripe()),
+      checkoutDeps(deps, await stripeClient(deps)),
       {
         organizationId: auth.organizationId,
         lang: input.lang,
