@@ -302,7 +302,11 @@ const diffFields = (
     const w = norm(want[k]);
     if (!same(norm(cur[k]), w)) {
       // champ absent du fichier et resté à la valeur par défaut posée par Directus : rien à changer
-      if (want[k] === undefined && k in defaults && same(norm(cur[k]), defaults[k]))
+      if (
+        want[k] === undefined &&
+        k in defaults &&
+        same(norm(cur[k]), defaults[k])
+      )
         continue;
       out[k] = w;
     }

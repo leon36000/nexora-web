@@ -595,9 +595,7 @@ async function route(
     const stripe = await deps.stripe().catch((error: unknown) => {
       throw new HttpError(503, "stripe_not_configured", {
         message:
-          error instanceof Error
-            ? error.message
-            : "Stripe n'est pas configuré",
+          error instanceof Error ? error.message : "Stripe n'est pas configuré",
       });
     });
     const { version, result } = await syncVpsCatalogToStripe(db, stripe, now);

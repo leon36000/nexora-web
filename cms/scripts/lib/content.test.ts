@@ -264,7 +264,9 @@ describe("buildDelta : valeurs par défaut du schéma (relance sans effet)", () 
   };
 
   test("un champ absent du fichier dont Directus a posé la valeur par défaut ne produit aucun changement", () => {
-    expect(buildDelta(withVisual("aucun"), want(), withDefaults).delta).toBeNull();
+    expect(
+      buildDelta(withVisual("aucun"), want(), withDefaults).delta,
+    ).toBeNull();
   });
 
   test("un champ absent du fichier mais modifié à la main (autre que le défaut) est ramené à vide", () => {
