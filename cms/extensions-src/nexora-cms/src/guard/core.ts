@@ -115,13 +115,17 @@ export function evaluatePromotion(
 /**
  * Billets de promotion. Quand une promotion est acceptée, Directus enchaîne des écritures sur l'élément et ses
  * enfants avec l'accountability de l'utilisateur ; le billet les distingue d'une écriture directe.
- * Il est libéré par l'action `items.promote` et expire de toute façon après `ttlMs`.
+ * Il est libéré par l'action `items.promote` et expire de toute façon après `ttlMs` (Directus n'émet aucun événement
+ * quand la promotion échoue après le filtre : le billet reste alors jusqu'à l'expiration). Il est LIÉ À L'ÉLÉMENT promu :
+ * `covers` n'accepte une écriture que sur les pages que le billet désigne, jamais sur une autre page publiée.
  */
+export const DEFAULT_TICKET_TTL_MS = 15_000;
+
 export class PromotionTickets {
   private tickets = new Map<string, number>();
 
   constructor(
-    private ttlMs = 30_000,
+    private ttlMs = DEFAULT_TICKET_TTL_MS,
     private now: () => number = () => Date.now(),
   ) {}
 
@@ -135,6 +139,22 @@ export class PromotionTickets {
 
   release(user: string, collection: string, item: string | null) {
     this.tickets.delete(this.key(user, collection, item));
+  }
+
+  /** Vrai si l'utilisateur détient un billet actif pour CHACUN des éléments donnés (liste vide : faux). */
+  covers(user: string, collection: string, ids: string[]): boolean {
+    if (ids.length === 0) return false;
+    const now = this.now();
+    return ids.every((id) => {
+      const k = this.key(user, collection, id);
+      const expires = this.tickets.get(k);
+      if (expires === undefined) return false;
+      if (expires <= now) {
+        this.tickets.delete(k);
+        return false;
+      }
+      return true;
+    });
   }
 
   isActive(user: string): boolean {
