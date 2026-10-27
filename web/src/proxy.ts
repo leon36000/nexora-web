@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { DEFAULT_LANG } from "@/i18n/config";
 import { embedCspFor } from "@/lib/embed-policy";
-import { mergeCsp, pageCsp } from "@/lib/security-headers";
+import { billingFormCsp, mergeCsp, pageCsp } from "@/lib/security-headers";
 import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
 
 /**
@@ -16,7 +16,8 @@ import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
  * Hors production (`SITE_ENV` différent de « production », ou absent) : `X-Robots-Tag: noindex, nofollow` sur
  * toute page, en plus du `Disallow: /` de robots.txt (voir lib/seo/site-env.ts).
  * CSP : politique de base sur toutes les pages (voir lib/security-headers.ts) ; sur les pages de la bulle WorkStudio,
- * l'origine configurée s'y ajoute (voir lib/embed-policy.ts). Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
+ * l'origine configurée s'y ajoute (voir lib/embed-policy.ts) ; sur le tableau de bord et la carte VPS de l'espace client,
+ * les pages hébergées de Stripe s'ajoutent à `form-action` seulement (voir `billingFormCsp`). Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
  */
 export async function proxy(request: NextRequest) {
   const response = route(request);
@@ -36,7 +37,10 @@ export async function proxy(request: NextRequest) {
     embed = await embedCspFor(request.nextUrl.pathname, { dev });
   response.headers.set(
     "content-security-policy",
-    mergeCsp(pageCsp({ dev }), embed),
+    mergeCsp(
+      mergeCsp(pageCsp({ dev }), embed),
+      billingFormCsp(request.nextUrl.pathname),
+    ),
   );
   return response;
 }
