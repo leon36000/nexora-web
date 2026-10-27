@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "bash tests/manifest.test.sh && bash tests/backup-guards.test.sh && bash tests/env.test.sh"
+    "test": "bash tests/manifest.test.sh && bash tests/backup-guards.test.sh && bash tests/env.test.sh && bash tests/db-roles.test.sh"
   }
 }
