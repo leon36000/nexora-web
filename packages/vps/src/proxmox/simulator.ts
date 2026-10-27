@@ -41,7 +41,72 @@ export interface SimOptions {
   maxVms?: number;
   /** HTTPS (pour tester l'épinglage du certificat). */
   tls?: { key: string; cert: string };
+  /** Version annoncée de Proxmox VE (défaut 9.0.3). */
+  version?: string;
+  /**
+   * Stockages du nœud. Défaut : ceux d'une installation neuve de Proxmox (`local` en répertoire
+   * SANS le type « import », `local-lvm` en LVM-thin pour les disques de VM).
+   */
+  storages?: SimStorage[];
+  /** Ponts réseau du nœud (défaut : `vmbr0` sur 192.168.1.10/24, passerelle 192.168.1.1). */
+  bridges?: SimBridge[];
+  /** Serveurs DNS du nœud. */
+  dns?: { dns1?: string; dns2?: string; search?: string };
+  /**
+   * Droits du jeton (ACL). Absent : tous les droits partout. Présent : un droit n'existe que sur
+   * le chemin de l'entrée (ou en dessous si `propagate`), comme le calcul des droits de Proxmox.
+   */
+  acl?: { path: string; privileges: string[]; propagate?: boolean }[];
+  /** Fichiers téléchargeables par `download-url` (adresse → sommes, taille). Une adresse inconnue donne 404. */
+  remoteFiles?: Record<
+    string,
+    { sha256?: string; sha512?: string; size?: number }
+  >;
+  /** Pools Proxmox existants (une VM créée dans un pool absent est refusée). */
+  pools?: string[];
 }
+
+export interface SimStorage {
+  storage: string;
+  type: string;
+  content: string;
+  /** Octets. */
+  total?: number;
+  used?: number;
+}
+export interface SimBridge {
+  name: string;
+  cidr?: string;
+  gateway?: string;
+  ports?: string;
+}
+
+/** Tous les privilèges connus du simulateur (pour « tous les droits » quand aucune ACL n'est donnée). */
+export const ALL_PRIVILEGES = [
+  "Datastore.Allocate",
+  "Datastore.AllocateSpace",
+  "Datastore.AllocateTemplate",
+  "Datastore.Audit",
+  "Pool.Audit",
+  "SDN.Use",
+  "Sys.AccessNetwork",
+  "Sys.Audit",
+  "VM.Allocate",
+  "VM.Audit",
+  "VM.Clone",
+  "VM.Config.CDROM",
+  "VM.Config.CPU",
+  "VM.Config.Cloudinit",
+  "VM.Config.Disk",
+  "VM.Config.HWType",
+  "VM.Config.Memory",
+  "VM.Config.Network",
+  "VM.Config.Options",
+  "VM.GuestAgent.Audit",
+  "VM.PowerMgmt",
+  "VM.Snapshot",
+  "VM.Snapshot.Rollback",
+] as const;
 
 export interface SimVm {
   vmid: number;
@@ -64,6 +129,17 @@ export interface SimVm {
   agentWait: number;
   /** Invité injoignable : l'agent ne répond jamais (test d'échec d'attente). */
   agentDead: boolean;
+  /** L'agent invité est installé dans l'image (faux pour une image cloud brute importée). */
+  agentInstalled: boolean;
+  /** Pool Proxmox de la VM. */
+  pool?: string;
+}
+
+export interface SimVolume {
+  volid: string;
+  content: string;
+  format: string;
+  size: number;
 }
 
 export interface SimCall {
@@ -94,6 +170,9 @@ export interface FailureRule {
   /** Nombre de fois (défaut : une seule). */
   times?: number;
 }
+
+/** Échec d'une tâche asynchrone : son message devient l'« exitstatus » de la tâche. */
+class SimTaskError extends Error {}
 
 class HttpFail extends Error {
   readonly status: number;
@@ -136,6 +215,8 @@ export class ProxmoxSimulator {
   private seq = 1;
   private clock = Date.now();
   private readonly handlers = new Map<string, Handler>();
+  /** Volumes présents dans les stockages (téléchargés par `download-url`). */
+  readonly volumes = new Map<string, SimVolume[]>();
 
   constructor(opts: SimOptions) {
     this.opts = opts;
@@ -162,6 +243,7 @@ export class ProxmoxSimulator {
         firewall: { options: {}, rules: [], ipsets: {} },
         agentWait: 0,
         agentDead: false,
+        agentInstalled: true,
       });
     }
     this.registerHandlers();
@@ -354,7 +436,14 @@ export class ProxmoxSimulator {
     t.done = true;
     const failure = this.taskFail.get(t.type);
     if (failure) t.exitstatus = failure;
-    else t.effect?.();
+    else {
+      try {
+        t.effect?.();
+      } catch (e) {
+        if (!(e instanceof SimTaskError)) throw e;
+        t.exitstatus = `ERROR: ${e.message}`;
+      }
+    }
     // Le verrou de VM tombe quand la tâche se termine (qu'elle réussisse ou non).
     const locked =
       t.lockVmid === undefined ? undefined : this.vms.get(t.lockVmid);
@@ -380,12 +469,50 @@ export class ProxmoxSimulator {
     return vm;
   }
 
+  // ─── Stockages et droits ──────────────────────────────────────────────────────
+
+  private storages(): SimStorage[] {
+    return (
+      this.opts.storages ?? [
+        { storage: "local", type: "dir", content: "iso,vztmpl,backup" },
+        { storage: "local-lvm", type: "lvmthin", content: "images,rootdir" },
+      ]
+    );
+  }
+  private storageOf(id: string): SimStorage {
+    const st = this.storages().find((x) => x.storage === id);
+    if (!st) throw fail500(`storage '${id}' does not exist`);
+    return st;
+  }
+  /** Droits effectifs sur un chemin : entrées du chemin et des ancêtres qui se propagent. */
+  private effective(path: string): Set<string> {
+    const acl = this.opts.acl;
+    if (!acl) return new Set(ALL_PRIVILEGES);
+    const out = new Set<string>();
+    for (const e of acl) {
+      const here = e.path === path;
+      const inherited =
+        e.propagate !== false &&
+        (e.path === "/" || path.startsWith(`${e.path.replace(/\/$/, "")}/`));
+      if (here || inherited) for (const x of e.privileges) out.add(x);
+    }
+    return out;
+  }
+  private can(path: string, priv: string): boolean {
+    return this.effective(path).has(priv);
+  }
+  private need(path: string, priv: string) {
+    if (!this.can(path, priv))
+      throw new HttpFail(403, `Permission check failed (${path}, ${priv})`);
+  }
+
   private registerHandlers() {
     const on = (key: string, h: Handler) => this.handlers.set(key, h);
 
+    const version = this.opts.version ?? "9.0.3";
     on("GET /version", () => ({
-      version: "9.0.3",
-      release: "9.0",
+      version,
+      release: version.split(".").slice(0, 2).join("."),
       repoid: "simulated",
     }));
     on("GET /cluster/nextid", ({ p }) => {
@@ -408,44 +535,195 @@ export class ProxmoxSimulator {
         id: `node/${this.node}`,
       },
     ]);
-    on("GET /nodes/{node}/status", () => ({
-      uptime: 86_400,
-      cpu: 0.03,
-      loadavg: ["0.10", "0.08", "0.05"],
-      "boot-info": { mode: "efi", secureboot: false },
-      cpuinfo: { cpus: 32, cores: 16, model: "Simulated CPU", sockets: 1 },
-      "current-kernel": {
-        sysname: "Linux",
-        release: "6.14.8-2-pve",
-        version: "#1 SMP PREEMPT_DYNAMIC",
-        machine: "x86_64",
+    on("GET /nodes/{node}/status", ({ node }) => {
+      this.need(`/nodes/${node}`, "Sys.Audit");
+      return {
+        uptime: 86_400,
+        cpu: 0.03,
+        loadavg: ["0.10", "0.08", "0.05"],
+        "boot-info": { mode: "efi", secureboot: false },
+        cpuinfo: { cpus: 32, cores: 16, model: "Simulated CPU", sockets: 1 },
+        "current-kernel": {
+          sysname: "Linux",
+          release: "6.14.8-2-pve",
+          version: "#1 SMP PREEMPT_DYNAMIC",
+          machine: "x86_64",
+        },
+        memory: {
+          total: 137_438_953_472,
+          used: 8_589_934_592,
+          free: 128_849_018_880,
+          available: 128_849_018_880,
+        },
+        rootfs: {
+          total: 100_000_000_000,
+          used: 10_000_000_000,
+          free: 90_000_000_000,
+          avail: 90_000_000_000,
+        },
+        pveversion: `pve-manager/${version}/simulated`,
+      };
+    });
+    on("GET /nodes/{node}/storage", ({ p }) =>
+      this.storages()
+        .filter(
+          (st) =>
+            this.can(`/storage/${st.storage}`, "Datastore.Audit") ||
+            this.can(`/storage/${st.storage}`, "Datastore.AllocateSpace"),
+        )
+        .filter(
+          (st) =>
+            p.content === undefined ||
+            st.content.split(",").includes(String(p.content)),
+        )
+        .filter((st) => p.storage === undefined || st.storage === p.storage)
+        .map((st) => ({
+          storage: st.storage,
+          type: st.type,
+          content: st.content,
+          active: 1,
+          enabled: 1,
+          shared: 0,
+          total: st.total ?? 2_000_000_000_000,
+          used: st.used ?? 100_000_000_000,
+          avail: (st.total ?? 2_000_000_000_000) - (st.used ?? 100_000_000_000),
+        })),
+    );
+    on("GET /nodes/{node}/storage/{storage}/content", ({ p, path }) => {
+      const sid = String(path.storage);
+      this.storageOf(sid);
+      if (
+        !this.can(`/storage/${sid}`, "Datastore.Audit") &&
+        !this.can(`/storage/${sid}`, "Datastore.AllocateSpace")
+      )
+        throw new HttpFail(
+          403,
+          `Permission check failed (/storage/${sid}, Datastore.Audit|Datastore.AllocateSpace)`,
+        );
+      return (this.volumes.get(sid) ?? [])
+        .filter((v) => p.content === undefined || v.content === p.content)
+        .map((v) => ({
+          volid: v.volid,
+          format: v.format,
+          size: v.size,
+          content: v.content,
+          ctime: Math.floor(this.clock / 1000),
+        }));
+    });
+    on(
+      "POST /nodes/{node}/storage/{storage}/download-url",
+      ({ p, path, node }) => {
+        const sid = String(path.storage);
+        const st = this.storageOf(sid);
+        this.need(`/storage/${sid}`, "Datastore.AllocateTemplate");
+        this.need(`/nodes/${node}`, "Sys.AccessNetwork");
+        const content = String(p.content);
+        if (!st.content.split(",").includes(content))
+          throw fail500(
+            `storage '${sid}' is not configured for content-type '${content}'`,
+          );
+        const filename = String(p.filename);
+        if (
+          content === "import" &&
+          !/^[A-Za-z0-9_.+-]+\.(ova|ovf|qcow2|raw|vmdk)$/.test(filename)
+        )
+          throw fail500("invalid filename or wrong extension");
+        const volid = `${sid}:${content}/${filename}`;
+        const url = String(p.url);
+        const remote = this.opts.remoteFiles?.[url];
+        return this.newTask("download", filename, () => {
+          const fail = (m: string) => {
+            throw new SimTaskError(m);
+          };
+          if (!remote) fail("download failed: 404 Not Found");
+          if (p.checksum !== undefined) {
+            const algo = String(p["checksum-algorithm"]);
+            const have = (remote as Record<string, unknown>)?.[algo];
+            if (typeof have !== "string" || have !== p.checksum)
+              fail(
+                `checksum verification failed - expected ${String(p.checksum).slice(0, 16)}…`,
+              );
+          }
+          const list = this.volumes.get(sid) ?? [];
+          if (!list.some((v) => v.volid === volid))
+            list.push({
+              volid,
+              content,
+              format: filename.endsWith(".qcow2") ? "qcow2" : "raw",
+              size: remote?.size ?? 2 * 1024 ** 3,
+            });
+          this.volumes.set(sid, list);
+        });
       },
-      memory: {
-        total: 137_438_953_472,
-        used: 8_589_934_592,
-        free: 128_849_018_880,
-        available: 128_849_018_880,
-      },
-      rootfs: {
-        total: 100_000_000_000,
-        used: 10_000_000_000,
-        free: 90_000_000_000,
-        avail: 90_000_000_000,
-      },
-      pveversion: "pve-manager/9.0.3/simulated",
+    );
+    on("GET /nodes/{node}/network", ({ p }) => {
+      const bridges = this.opts.bridges ?? [
+        {
+          name: "vmbr0",
+          cidr: "192.168.1.10/24",
+          gateway: "192.168.1.1",
+          ports: "eno1",
+        },
+      ];
+      const type = p.type === undefined ? undefined : String(p.type);
+      const wantBridges =
+        type === undefined ||
+        ["bridge", "any_bridge", "any_local_bridge", "include_sdn"].includes(
+          type,
+        );
+      const out: Record<string, unknown>[] = [];
+      if (wantBridges)
+        for (const b of bridges)
+          out.push({
+            iface: b.name,
+            type: "bridge",
+            active: 1,
+            autostart: 1,
+            exists: 1,
+            method: b.cidr ? "static" : "manual",
+            families: ["inet"],
+            priority: 4,
+            bridge_ports: b.ports ?? "",
+            ...(b.cidr
+              ? {
+                  cidr: b.cidr,
+                  address: b.cidr.split("/")[0],
+                  netmask: prefixToMask(Number(b.cidr.split("/")[1])),
+                }
+              : {}),
+            ...(b.gateway ? { gateway: b.gateway } : {}),
+          });
+      if (type === undefined || type === "eth")
+        out.push({
+          iface: "eno1",
+          type: "eth",
+          active: 1,
+          exists: 1,
+          method: "manual",
+          families: ["inet"],
+          priority: 3,
+        });
+      return out;
+    });
+    on("GET /nodes/{node}/dns", () => ({
+      dns1: this.opts.dns?.dns1 ?? "192.168.1.1",
+      ...(this.opts.dns?.dns2 ? { dns2: this.opts.dns.dns2 } : {}),
+      search: this.opts.dns?.search ?? "lan",
     }));
-    on("GET /nodes/{node}/storage", () => [
-      {
-        storage: "local-lvm",
-        type: "lvmthin",
-        content: "images,rootdir",
-        active: 1,
-        enabled: 1,
-        total: 2_000_000_000_000,
-        used: 100_000_000_000,
-        avail: 1_900_000_000_000,
-      },
-    ]);
+    on("GET /access/permissions", ({ p }) => {
+      const path = p.path === undefined ? undefined : String(p.path);
+      if (path !== undefined) {
+        const out: Record<string, number> = {};
+        for (const priv of this.effective(path)) out[priv] = 1;
+        return { [path]: out };
+      }
+      const tree: Record<string, Record<string, number>> = {};
+      for (const e of this.opts.acl ?? [
+        { path: "/", privileges: [...ALL_PRIVILEGES], propagate: true },
+      ])
+        tree[e.path] = Object.fromEntries(e.privileges.map((x) => [x, 1]));
+      return tree;
+    });
     on("GET /nodes/{node}/qemu", () =>
       [...this.vms.values()].map((v) => ({
         vmid: v.vmid,
@@ -456,6 +734,106 @@ export class ProxmoxSimulator {
         ...(typeof v.config.tags === "string" ? { tags: v.config.tags } : {}),
       })),
     );
+
+    on("POST /nodes/{node}/qemu", ({ p, node }) => {
+      const vmid = Number(p.vmid);
+      const pool = p.pool === undefined ? undefined : String(p.pool);
+      if (pool === undefined) this.need(`/vms/${vmid}`, "VM.Allocate");
+      else if (!this.can(`/vms/${vmid}`, "VM.Allocate"))
+        this.need(`/pool/${pool}`, "VM.Allocate");
+      if (this.vms.has(vmid))
+        throw fail500(
+          `unable to create VM ${vmid} - VM ${vmid} already exists on node '${node}'`,
+        );
+      if (pool !== undefined && !(this.opts.pools ?? []).includes(pool))
+        throw fail500(`pool '${pool}' does not exist`);
+      const config: Record<string, string | number | boolean> = {};
+      let agentInstalled = true;
+      for (const [k, raw] of Object.entries(p)) {
+        if (["vmid", "node", "pool", "start", "template"].includes(k)) continue;
+        let val: string | number | boolean = raw;
+        if (typeof val === "boolean") val = val ? 1 : 0;
+        if (/^(scsi|virtio|sata|ide)\d+$/.test(k) && typeof val === "string") {
+          const [file = "", ...rest] = val.split(",");
+          const m = /^([A-Za-z0-9_.-]+):(\S+)$/.exec(file);
+          if (!m) {
+            config[k] = val;
+            continue;
+          }
+          const sid = m[1] as string;
+          const what = m[2] as string;
+          this.storageOf(sid);
+          this.need(`/storage/${sid}`, "Datastore.AllocateSpace");
+          if (what === "cloudinit") {
+            config[k] = `${sid}:vm-${vmid}-cloudinit,media=cdrom`;
+            continue;
+          }
+          const imp = rest.find((r) => r.startsWith("import-from="));
+          const options = rest.filter((r) => !r.startsWith("import-from="));
+          let gib = Number(what);
+          if (imp) {
+            const source = imp.slice("import-from=".length);
+            const vol = [...this.volumes.values()]
+              .flat()
+              .find((v) => v.volid === source);
+            if (!vol) throw fail500(`volume '${source}' does not exist`);
+            gib = Math.ceil(vol.size / 1024 ** 3);
+            agentInstalled = false;
+          }
+          config[k] = [
+            `${sid}:vm-${vmid}-disk-${Object.keys(config).filter((c) => /^(scsi|virtio|sata|ide)\d+$/.test(c) && String(config[c]).includes("-disk-")).length}`,
+            ...options,
+            `size=${gib}G`,
+          ].join(",");
+          continue;
+        }
+        if (/^net\d+$/.test(k) && typeof val === "string")
+          val = val.replace(/^([a-z0-9]+)(?=,|$)/, `$1=${randomMac(vmid)}`);
+        config[k] = val;
+      }
+      if (typeof config.name !== "string") config.name = `VM ${vmid}`;
+      config.sockets = config.sockets ?? 1;
+      const vm: SimVm = {
+        vmid,
+        name: String(config.name),
+        template: false,
+        status: "stopped",
+        lock: "create",
+        config,
+        snapshots: [],
+        firewall: { options: {}, rules: [], ipsets: {} },
+        agentWait: 0,
+        agentDead: false,
+        agentInstalled,
+        pool,
+      };
+      this.vms.set(vmid, vm);
+      return this.newTask("qmcreate", String(vmid), undefined, vmid);
+    });
+    on("POST /nodes/{node}/qemu/{vmid}/template", ({ path, vm }) => {
+      const v = vm();
+      this.need(`/vms/${path.vmid}`, "VM.Allocate");
+      if (v.template)
+        throw fail500("you can't convert a template to a template");
+      if (v.status === "running") throw fail500("VM is running");
+      if (v.lock) throw fail500(`VM is locked (${v.lock})`);
+      v.lock = "template";
+      return this.newTask(
+        "qmtemplate",
+        String(v.vmid),
+        () => {
+          v.template = true;
+          v.config.template = 1;
+          for (const [k, val] of Object.entries(v.config))
+            if (typeof val === "string" && val.includes(`vm-${v.vmid}-disk-`))
+              v.config[k] = val.replace(
+                `vm-${v.vmid}-disk-`,
+                `base-${v.vmid}-disk-`,
+              );
+        },
+        v.vmid,
+      );
+    });
 
     on("POST /nodes/{node}/qemu/{vmid}/clone", ({ p, vm }) => {
       this.cloneRequests++;
@@ -486,6 +864,8 @@ export class ProxmoxSimulator {
         firewall: { options: {}, rules: [], ipsets: {} },
         agentWait: 0,
         agentDead: false,
+        agentInstalled: src.agentInstalled,
+        pool: p.pool === undefined ? undefined : String(p.pool),
       };
       this.vms.set(newid, clone);
       return this.newTask("qmclone", String(src.vmid), undefined, newid);
@@ -762,7 +1142,8 @@ export class ProxmoxSimulator {
 
     const agentReady = (v: SimVm) => {
       if (v.status !== "running") throw fail500("VM is not running");
-      if (v.agentDead) throw fail500("QEMU guest agent is not running");
+      if (v.agentDead || !v.agentInstalled)
+        throw fail500("QEMU guest agent is not running");
       if (v.agentWait > 0) {
         v.agentWait -= 1;
         throw fail500("QEMU guest agent is not running");
@@ -845,6 +1226,17 @@ export class ProxmoxSimulator {
   static schemaSource() {
     return APIDOC_META;
   }
+}
+
+function prefixToMask(prefix: number): string {
+  const n = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
+  return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join(".");
+}
+
+/** Adresse MAC stable de la VM (préfixe BC:24:11 de Proxmox). */
+function randomMac(vmid: number): string {
+  const hex = (vmid % 0x1000000).toString(16).padStart(6, "0").toUpperCase();
+  return `BC:24:11:${hex.slice(0, 2)}:${hex.slice(2, 4)}:${hex.slice(4, 6)}`;
 }
 
 function digestOf(v: SimVm): string {

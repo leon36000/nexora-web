@@ -339,6 +339,508 @@
         }
       }
     },
+    "/nodes/{node}/storage/{storage}/content": {
+      "GET": {
+        "name": "index",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "content": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-storage-content"
+          },
+          "node": {
+            "type": "string",
+            "format": "pve-node"
+          },
+          "storage": {
+            "type": "string",
+            "format": "pve-storage-id"
+          },
+          "vmid": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 100,
+            "maximum": 999999999,
+            "format": "pve-vmid"
+          }
+        },
+        "returns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "approximate-size": {
+                "type": "integer",
+                "optional": 1
+              },
+              "ctime": {
+                "type": "integer",
+                "optional": 1
+              },
+              "encrypted": {
+                "type": "string",
+                "optional": 1
+              },
+              "format": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string",
+                "optional": 1
+              },
+              "parent": {
+                "type": "string",
+                "optional": 1
+              },
+              "protected": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "size": {
+                "type": "integer",
+                "optional": 1
+              },
+              "used": {
+                "type": "integer",
+                "optional": 1
+              },
+              "verification": {
+                "type": "object",
+                "optional": 1,
+                "properties": {
+                  "state": {
+                    "type": "string"
+                  },
+                  "upid": {
+                    "type": "string"
+                  }
+                }
+              },
+              "vmid": {
+                "type": "integer",
+                "optional": 1
+              },
+              "volid": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{node}/storage/{storage}/download-url": {
+      "POST": {
+        "name": "download_url",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "checksum": {
+            "type": "string",
+            "optional": 1
+          },
+          "checksum-algorithm": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "md5",
+              "sha1",
+              "sha224",
+              "sha256",
+              "sha384",
+              "sha512"
+            ]
+          },
+          "compression": {
+            "type": "string",
+            "optional": 1,
+            "enum": null
+          },
+          "content": {
+            "type": "string",
+            "enum": [
+              "iso",
+              "vztmpl",
+              "import"
+            ],
+            "format": "pve-storage-content"
+          },
+          "filename": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "node": {
+            "type": "string",
+            "format": "pve-node"
+          },
+          "storage": {
+            "type": "string",
+            "format": "pve-storage-id"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "https?://.*"
+          },
+          "verify-certificates": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          }
+        },
+        "returns": {
+          "type": "string"
+        }
+      }
+    },
+    "/nodes/{node}/network": {
+      "GET": {
+        "name": "index",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "node": {
+            "type": "string",
+            "format": "pve-node"
+          },
+          "type": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "bridge",
+              "bond",
+              "eth",
+              "alias",
+              "vlan",
+              "fabric",
+              "OVSBridge",
+              "OVSBond",
+              "OVSPort",
+              "OVSIntPort",
+              "vnet",
+              "any_bridge",
+              "any_local_bridge",
+              "include_sdn"
+            ]
+          }
+        },
+        "returns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "active": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "address": {
+                "type": "string",
+                "optional": 1
+              },
+              "address6": {
+                "type": "string",
+                "optional": 1
+              },
+              "autostart": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "bond-primary": {
+                "type": "string",
+                "optional": 1
+              },
+              "bond_mode": {
+                "type": "string",
+                "enum": [
+                  "balance-rr",
+                  "active-backup",
+                  "balance-xor",
+                  "broadcast",
+                  "802.3ad",
+                  "balance-tlb",
+                  "balance-alb",
+                  "balance-slb",
+                  "lacp-balance-slb",
+                  "lacp-balance-tcp"
+                ],
+                "optional": 1
+              },
+              "bond_xmit_hash_policy": {
+                "type": "string",
+                "enum": [
+                  "layer2",
+                  "layer2+3",
+                  "layer3+4"
+                ],
+                "optional": 1
+              },
+              "bridge-access": {
+                "type": "integer",
+                "optional": 1
+              },
+              "bridge-arp-nd-suppress": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "bridge-learning": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "bridge-multicast-flood": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "bridge-unicast-flood": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "bridge_ports": {
+                "type": "string",
+                "optional": 1
+              },
+              "bridge_vids": {
+                "type": "string",
+                "optional": 1
+              },
+              "bridge_vlan_aware": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "cidr": {
+                "type": "string",
+                "optional": 1
+              },
+              "cidr6": {
+                "type": "string",
+                "optional": 1
+              },
+              "comments": {
+                "type": "string",
+                "optional": 1
+              },
+              "comments6": {
+                "type": "string",
+                "optional": 1
+              },
+              "exists": {
+                "type": "boolean",
+                "optional": 1
+              },
+              "families": {
+                "type": "array",
+                "optional": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "inet",
+                    "inet6"
+                  ]
+                }
+              },
+              "gateway": {
+                "type": "string",
+                "optional": 1
+              },
+              "gateway6": {
+                "type": "string",
+                "optional": 1
+              },
+              "iface": {
+                "type": "string"
+              },
+              "link-type": {
+                "type": "string",
+                "optional": 1
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "loopback",
+                  "dhcp",
+                  "manual",
+                  "static",
+                  "auto"
+                ],
+                "optional": 1
+              },
+              "method6": {
+                "type": "string",
+                "enum": [
+                  "loopback",
+                  "dhcp",
+                  "manual",
+                  "static",
+                  "auto"
+                ],
+                "optional": 1
+              },
+              "mtu": {
+                "type": "integer",
+                "optional": 1
+              },
+              "netmask": {
+                "type": "string",
+                "optional": 1
+              },
+              "netmask6": {
+                "type": "integer",
+                "optional": 1
+              },
+              "options": {
+                "type": "array",
+                "optional": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "options6": {
+                "type": "array",
+                "optional": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ovs_bonds": {
+                "type": "string",
+                "optional": 1
+              },
+              "ovs_bridge": {
+                "type": "string",
+                "optional": 1
+              },
+              "ovs_options": {
+                "type": "string",
+                "optional": 1
+              },
+              "ovs_ports": {
+                "type": "string",
+                "optional": 1
+              },
+              "ovs_tag": {
+                "type": "integer",
+                "optional": 1
+              },
+              "priority": {
+                "type": "integer",
+                "optional": 1
+              },
+              "slaves": {
+                "type": "string",
+                "optional": 1
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "bridge",
+                  "bond",
+                  "eth",
+                  "alias",
+                  "vlan",
+                  "fabric",
+                  "OVSBridge",
+                  "OVSBond",
+                  "OVSPort",
+                  "OVSIntPort",
+                  "vnet",
+                  "unknown"
+                ]
+              },
+              "uplink-id": {
+                "type": "string",
+                "optional": 1
+              },
+              "vlan-id": {
+                "type": "integer",
+                "optional": 1
+              },
+              "vlan-protocol": {
+                "type": "string",
+                "enum": [
+                  "802.1ad",
+                  "802.1q"
+                ],
+                "optional": 1
+              },
+              "vlan-raw-device": {
+                "type": "string",
+                "optional": 1
+              },
+              "vxlan-id": {
+                "type": "integer",
+                "optional": 1
+              },
+              "vxlan-local-tunnelip": {
+                "type": "string",
+                "optional": 1
+              },
+              "vxlan-physdev": {
+                "type": "string",
+                "optional": 1
+              },
+              "vxlan-svcnodeip": {
+                "type": "string",
+                "optional": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nodes/{node}/dns": {
+      "GET": {
+        "name": "dns",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "node": {
+            "type": "string",
+            "format": "pve-node"
+          }
+        },
+        "returns": {
+          "type": "object",
+          "properties": {
+            "dns1": {
+              "type": "string",
+              "optional": 1
+            },
+            "dns2": {
+              "type": "string",
+              "optional": 1
+            },
+            "dns3": {
+              "type": "string",
+              "optional": 1
+            },
+            "search": {
+              "type": "string",
+              "optional": 1
+            }
+          }
+        }
+      }
+    },
+    "/access/permissions": {
+      "GET": {
+        "name": "permissions",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "path": {
+            "type": "string",
+            "optional": 1
+          },
+          "userid": {
+            "type": "string",
+            "optional": 1,
+            "pattern": "(?^:^(?^:[^\\s:/]+)\\@(?^:[A-Za-z][A-Za-z0-9\\.\\-_]+)(?:!(?^:[A-Za-z][A-Za-z0-9\\.\\-_]+))?$)"
+          }
+        },
+        "returns": {
+          "type": "object"
+        }
+      }
+    },
     "/nodes/{node}/qemu": {
       "GET": {
         "name": "vmlist",
@@ -475,6 +977,564 @@
               }
             }
           }
+        }
+      },
+      "POST": {
+        "name": "create_vm",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "acpi": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          },
+          "affinity": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-cpuset"
+          },
+          "agent": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "allow-ksm": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          },
+          "amd-sev": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qemu-sev-fmt"
+          },
+          "arch": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "x86_64",
+              "aarch64"
+            ]
+          },
+          "archive": {
+            "type": "string",
+            "optional": 1,
+            "maxLength": 255
+          },
+          "args": {
+            "type": "string",
+            "optional": 1
+          },
+          "audio0": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "autostart": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "balloon": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 0
+          },
+          "bios": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "seabios",
+              "ovmf"
+            ],
+            "default": "seabios"
+          },
+          "boot": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-boot"
+          },
+          "bootdisk": {
+            "type": "string",
+            "optional": 1,
+            "pattern": "(ide|sata|scsi|virtio)\\d+",
+            "format": "pve-qm-bootdisk"
+          },
+          "bwlimit": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": "0",
+            "default": "restore limit from datacenter or storage config"
+          },
+          "cdrom": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-ide"
+          },
+          "cicustom": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-cicustom"
+          },
+          "cipassword": {
+            "type": "string",
+            "optional": 1
+          },
+          "citype": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "configdrive2",
+              "nocloud",
+              "opennebula"
+            ]
+          },
+          "ciupgrade": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          },
+          "ciuser": {
+            "type": "string",
+            "optional": 1
+          },
+          "cores": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 1,
+            "default": 1
+          },
+          "cpu": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-vm-cpu-conf"
+          },
+          "cpulimit": {
+            "type": "number",
+            "optional": 1,
+            "minimum": 0,
+            "maximum": 128,
+            "default": 0
+          },
+          "cpuunits": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 1,
+            "maximum": 262144,
+            "default": "cgroup v1: 1024, cgroup v2: 100"
+          },
+          "description": {
+            "type": "string",
+            "optional": 1,
+            "maxLength": 8192
+          },
+          "efidisk0": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "force": {
+            "type": "boolean",
+            "optional": 1
+          },
+          "freeze": {
+            "type": "boolean",
+            "optional": 1
+          },
+          "ha-managed": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "hookscript": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-volume-id"
+          },
+          "hostpci[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-hostpci"
+          },
+          "hotplug": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-hotplug-features",
+            "default": "network,disk,usb"
+          },
+          "hugepages": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "any",
+              "2",
+              "1024"
+            ]
+          },
+          "ide[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "import-working-storage": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-storage-id"
+          },
+          "intel-tdx": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qemu-tdx-fmt"
+          },
+          "ipconfig[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-ipconfig"
+          },
+          "ivshmem": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "keephugepages": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "keyboard": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "de",
+              "de-ch",
+              "da",
+              "en-gb",
+              "en-us",
+              "es",
+              "fi",
+              "fr",
+              "fr-be",
+              "fr-ca",
+              "fr-ch",
+              "hu",
+              "is",
+              "it",
+              "ja",
+              "lt",
+              "mk",
+              "nl",
+              "no",
+              "pl",
+              "pt",
+              "pt-br",
+              "sv",
+              "sl",
+              "tr"
+            ]
+          },
+          "kvm": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          },
+          "live-restore": {
+            "type": "boolean",
+            "optional": 1
+          },
+          "localtime": {
+            "type": "boolean",
+            "optional": 1
+          },
+          "lock": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "backup",
+              "clone",
+              "create",
+              "migrate",
+              "rollback",
+              "snapshot",
+              "snapshot-delete",
+              "suspending",
+              "suspended"
+            ]
+          },
+          "machine": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "memory": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "migrate_downtime": {
+            "type": "number",
+            "optional": 1,
+            "minimum": 0,
+            "default": 0.1
+          },
+          "migrate_speed": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 0,
+            "default": 0
+          },
+          "name": {
+            "type": "string",
+            "optional": 1,
+            "format": "dns-name"
+          },
+          "nameserver": {
+            "type": "string",
+            "optional": 1,
+            "format": "address-list"
+          },
+          "net[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "node": {
+            "type": "string",
+            "format": "pve-node"
+          },
+          "numa": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "numa[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "onboot": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "ostype": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "other",
+              "wxp",
+              "w2k",
+              "w2k3",
+              "w2k8",
+              "wvista",
+              "win7",
+              "win8",
+              "win10",
+              "win11",
+              "l24",
+              "l26",
+              "solaris"
+            ],
+            "default": "other"
+          },
+          "parallel[n]": {
+            "type": "string",
+            "optional": 1,
+            "pattern": "/dev/parport\\d+|/dev/usb/lp\\d+"
+          },
+          "pool": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-poolid"
+          },
+          "protection": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "reboot": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          },
+          "rng0": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-rng"
+          },
+          "sata[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "scsi[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "scsihw": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "lsi",
+              "lsi53c810",
+              "virtio-scsi-pci",
+              "virtio-scsi-single",
+              "megasas",
+              "pvscsi"
+            ],
+            "default": "lsi"
+          },
+          "searchdomain": {
+            "type": "string",
+            "optional": 1
+          },
+          "serial[n]": {
+            "type": "string",
+            "optional": 1,
+            "pattern": "(/dev/[^,]+|socket)"
+          },
+          "shares": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 0,
+            "maximum": 50000,
+            "default": 1000
+          },
+          "smbios1": {
+            "type": "string",
+            "optional": 1,
+            "maxLength": 512,
+            "format": "pve-qm-smbios1"
+          },
+          "smp": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 1,
+            "default": 1
+          },
+          "sockets": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 1,
+            "default": 1
+          },
+          "spice_enhancements": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "sshkeys": {
+            "type": "string",
+            "optional": 1,
+            "format": "urlencoded"
+          },
+          "start": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "startdate": {
+            "type": "string",
+            "optional": 1,
+            "pattern": "(now|\\d{4}-\\d{1,2}-\\d{1,2}(T\\d{1,2}:\\d{1,2}:\\d{1,2})?)",
+            "default": "now"
+          },
+          "startup": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-startup-order"
+          },
+          "storage": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-storage-id"
+          },
+          "tablet": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 1
+          },
+          "tags": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-tag-list"
+          },
+          "tdf": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "template": {
+            "type": "boolean",
+            "optional": 1,
+            "default": 0
+          },
+          "tpmstate0": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "unique": {
+            "type": "boolean",
+            "optional": 1
+          },
+          "unused[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "usb[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "vcpus": {
+            "type": "integer",
+            "optional": 1,
+            "minimum": 1,
+            "default": 0
+          },
+          "vga": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "virtio[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "virtiofs[n]": {
+            "type": "string",
+            "optional": 1,
+            "format": "structured"
+          },
+          "vmgenid": {
+            "type": "string",
+            "optional": 1,
+            "pattern": "(?:[a-fA-F0-9]{8}(?:-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}|[01])",
+            "default": "1 (autogenerated)"
+          },
+          "vmid": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 999999999,
+            "format": "pve-vmid"
+          },
+          "vmstatestorage": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-storage-id"
+          },
+          "watchdog": {
+            "type": "string",
+            "optional": 1,
+            "format": "pve-qm-watchdog"
+          }
+        },
+        "returns": {
+          "type": "string"
         }
       }
     },
@@ -1678,6 +2738,93 @@
           "skiplock": {
             "type": "boolean",
             "optional": 1
+          },
+          "vmid": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 999999999,
+            "format": "pve-vmid"
+          }
+        },
+        "returns": {
+          "type": "string"
+        }
+      }
+    },
+    "/nodes/{node}/qemu/{vmid}/template": {
+      "POST": {
+        "name": "template",
+        "allowtoken": true,
+        "additionalProperties": false,
+        "parameters": {
+          "disk": {
+            "type": "string",
+            "optional": 1,
+            "enum": [
+              "ide0",
+              "ide1",
+              "ide2",
+              "ide3",
+              "scsi0",
+              "scsi1",
+              "scsi2",
+              "scsi3",
+              "scsi4",
+              "scsi5",
+              "scsi6",
+              "scsi7",
+              "scsi8",
+              "scsi9",
+              "scsi10",
+              "scsi11",
+              "scsi12",
+              "scsi13",
+              "scsi14",
+              "scsi15",
+              "scsi16",
+              "scsi17",
+              "scsi18",
+              "scsi19",
+              "scsi20",
+              "scsi21",
+              "scsi22",
+              "scsi23",
+              "scsi24",
+              "scsi25",
+              "scsi26",
+              "scsi27",
+              "scsi28",
+              "scsi29",
+              "scsi30",
+              "virtio0",
+              "virtio1",
+              "virtio2",
+              "virtio3",
+              "virtio4",
+              "virtio5",
+              "virtio6",
+              "virtio7",
+              "virtio8",
+              "virtio9",
+              "virtio10",
+              "virtio11",
+              "virtio12",
+              "virtio13",
+              "virtio14",
+              "virtio15",
+              "sata0",
+              "sata1",
+              "sata2",
+              "sata3",
+              "sata4",
+              "sata5",
+              "efidisk0",
+              "tpmstate0"
+            ]
+          },
+          "node": {
+            "type": "string",
+            "format": "pve-node"
           },
           "vmid": {
             "type": "integer",

@@ -725,3 +725,321 @@ export function buildAppBody(
   if (mode === "create") body.code = blank(f.code);
   return { ok: true, body };
 }
+
+// ─── Connecter un serveur (parcours guidé) ───────────────────────────────────────
+
+/** Systèmes que le branchement sait préparer (codes de gabarit de l'app). */
+export const TEMPLATE_CHOICES: { code: string; text: string }[] = [
+  { code: "debian-12-ci", text: "Debian 12" },
+  { code: "ubuntu-24-04-ci", text: "Ubuntu 24.04 LTS" },
+];
+
+const TOKEN_FORMAT = /^[^\s@!]+@[^\s@!]+![^\s=]+=[0-9a-fA-F-]{8,}$/;
+
+/**
+ * Contrôle de forme du jeton Proxmox avant son envoi au Coffre. Le message montre le format attendu
+ * mais ne recopie JAMAIS ce qui a été saisi. `null` = forme correcte.
+ */
+export function checkProxmoxToken(raw: string): string | null {
+  if (/^PVEAPIToken=/i.test(raw.trim()))
+    return "Jeton invalide : retirer le préfixe « PVEAPIToken= » ; le format attendu est utilisateur@realm!nom=secret.";
+  return TOKEN_FORMAT.test(raw.trim())
+    ? null
+    : "Jeton invalide : le format est utilisateur@realm!nom=secret (par exemple nexora@pve!provision=…), tel qu’affiché une seule fois par Proxmox à la création du jeton.";
+}
+
+const ADDRESS = /^(?:https?:\/\/)?[A-Za-z0-9.-]+(?::\d{1,5})?\/?$/;
+
+export function buildProbeBody(address: string): Built<{ address: string }> {
+  const a = blank(address);
+  if (!a || !ADDRESS.test(a) || /^http:\/\//i.test(a))
+    return fail(
+      "Adresse invalide : saisir le nom ou l’adresse du serveur, avec le port si ce n’est pas 8006 (ex. pve.exemple.ca:8006).",
+    );
+  return { ok: true, body: { address: a } };
+}
+
+export function fingerprintAdvice(p: {
+  trusted: boolean;
+  hostnameMatches: boolean;
+  expired: boolean;
+  selfSigned: boolean;
+}): string {
+  if (p.expired)
+    return "Le certificat est expiré : le renouveler sur Proxmox, ou l’épingler en connaissance de cause.";
+  if (p.trusted && p.hostnameMatches)
+    return "Certificat reconnu par une autorité : la vérification classique suffit, l’épinglage n’est pas nécessaire.";
+  if (!p.hostnameMatches)
+    return "Le nom saisi ne figure pas dans le certificat : vérifier l’adresse, ou épingler l’empreinte après l’avoir comparée.";
+  return "Certificat auto-signé (cas d’une installation neuve de Proxmox) : comparer cette empreinte à celle affichée dans Proxmox (Nœud ▸ Système ▸ Certificats), puis confirmer pour l’épingler.";
+}
+
+export interface ConnectForm {
+  address: string;
+  code: string;
+  name: string;
+  region: string;
+  tlsMode: string;
+  tlsFingerprint: string;
+  /** L’opérateur a comparé et confirmé l’empreinte (obligatoire pour épingler). */
+  confirmed: boolean;
+}
+
+/** Corps de « Connecter ». Le jeton n’y figure jamais : il va au Coffre, seule sa référence est envoyée. */
+export function buildConnectBody(
+  f: ConnectForm,
+): Built<Record<string, string | null>> {
+  const probe = buildProbeBody(f.address);
+  if (!probe.ok) return probe;
+  if (!CODE.test(blank(f.code)))
+    return fail(`Identifiant du serveur invalide : ${CODE_HINT}.`);
+  if (f.tlsMode !== "verify" && f.tlsMode !== "pinned")
+    return fail("Mode TLS invalide.");
+  const fingerprint = blank(f.tlsFingerprint);
+  if (f.tlsMode === "pinned") {
+    if (!/^([0-9a-fA-F]{2}:?){32}$/.test(fingerprint))
+      return fail(
+        "Empreinte du certificat mal formée : relancer la vérification.",
+      );
+    if (!f.confirmed)
+      return fail(
+        "Confirmer l’empreinte du certificat avant de continuer : le jeton ne sera envoyé qu’à un serveur dont l’empreinte est celle-ci.",
+      );
+  }
+  const body: Record<string, string | null> = {
+    address: probe.body.address,
+    code: blank(f.code),
+    tlsMode: f.tlsMode,
+    tlsFingerprint: f.tlsMode === "pinned" ? fingerprint : null,
+    tokenRef: proxmoxRef(blank(f.code)),
+  };
+  // Un champ vide n'est pas envoyé (l'API n'accepte pas de valeur nulle pour le libellé ni la région).
+  if (blank(f.name)) body.name = blank(f.name);
+  if (blank(f.region)) body.region = blank(f.region);
+  return { ok: true, body };
+}
+
+/** Échec du parcours : cause puis action (réponses `connect_failed` et `probe_failed` de l’app). */
+export function connectFailureText(data: unknown): string | null {
+  const d = data as { cause?: unknown; action?: unknown } | undefined;
+  if (!d || typeof d.cause !== "string") return null;
+  return typeof d.action === "string" && d.action
+    ? `${d.cause} À faire : ${d.action}`
+    : d.cause;
+}
+
+export interface DiscoveryView {
+  node: string | null;
+  nodes: string[];
+  vmStorage: string | null;
+  importStorage: string | null;
+  bridge: string | null;
+  pool: string | null;
+  capacity: { vcpu: number; ramMb: number; diskGb: number };
+  network: { prefix: number | null; gateway: string | null; dns: string[] };
+  problems: { id: string; severity: string; message: string; action: string }[];
+}
+
+export interface SetupForm {
+  name: string;
+  region: string;
+  node: string;
+  vmStorage: string;
+  importStorage: string;
+  pool: string;
+  vcpu: string | number;
+  ramMb: string | number;
+  diskGb: string | number;
+  ranges: string;
+  prefix: string | number;
+  gateway: string;
+  dns: string;
+  bridge: string;
+  templates: string[];
+}
+
+/** Valeurs proposées d’après la découverte ; les plages d’adresses restent à saisir (Proxmox ne sait pas lesquelles sont libres). */
+export function setupFormFrom(
+  d: DiscoveryView,
+  base: { name: string; region: string },
+): SetupForm {
+  return {
+    name: base.name,
+    region: base.region,
+    node: d.node ?? "",
+    vmStorage: d.vmStorage ?? "",
+    importStorage: d.importStorage ?? "",
+    pool: d.pool ?? "",
+    vcpu: d.capacity.vcpu,
+    ramMb: d.capacity.ramMb,
+    diskGb: d.capacity.diskGb,
+    ranges: "",
+    prefix: d.network.prefix ?? 24,
+    gateway: d.network.gateway ?? "",
+    dns: d.network.dns.join(", "),
+    bridge: d.bridge ?? "",
+    templates: ["debian-12-ci"],
+  };
+}
+
+export function buildSetupBody(f: SetupForm): Built<Record<string, unknown>> {
+  if (!blank(f.name)) return fail("Le nom est obligatoire.");
+  if (!blank(f.node)) return fail("Le nœud Proxmox est obligatoire.");
+  if (!blank(f.vmStorage))
+    return fail("Le stockage des disques de VM est obligatoire.");
+  if (!blank(f.importStorage))
+    return fail("Le stockage d’import des images est obligatoire.");
+  if (!blank(f.bridge))
+    return fail("Le pont réseau est obligatoire (ex. vmbr0).");
+  const vcpu = intIn(f.vcpu, 1, 4096);
+  const ramMb = intIn(f.ramMb, 1, 16_000_000);
+  const diskGb = intIn(f.diskGb, 1, 10_000_000);
+  if (vcpu === null || ramMb === null || diskGb === null)
+    return fail(
+      "Capacité invalide : vCPU, RAM (Mo) et disque (Go) doivent être des entiers positifs.",
+    );
+  if (/dhcp/i.test(f.ranges))
+    return fail(
+      "DHCP n’est pas pris en charge : chaque VPS vendu reçoit une adresse IPv4 dédiée et stable (son pare-feu y est lié). Réserver un bloc d’adresses hors de la plage DHCP du réseau et le saisir ici.",
+    );
+  const ranges = parseRanges(f.ranges);
+  if (!ranges || ranges.length === 0 || ranges.length > 20)
+    return fail(
+      "Plages d’adresses invalides : une par ligne, « 192.168.1.100 - 192.168.1.150 » (1 à 20).",
+    );
+  const prefix = intIn(f.prefix, 8, 30);
+  if (prefix === null)
+    return fail("Masque invalide : préfixe de 8 à 30 (24 pour 255.255.255.0).");
+  if (!isIPv4(blank(f.gateway)))
+    return fail("Passerelle invalide (adresse IPv4).");
+  const dns = parseDns(f.dns);
+  if (!dns || dns.length === 0 || dns.length > 4)
+    return fail(
+      "DNS invalide : 1 à 4 adresses IPv4 séparées par des virgules.",
+    );
+  const known = TEMPLATE_CHOICES.map((t) => t.code);
+  if (
+    !Array.isArray(f.templates) ||
+    f.templates.length === 0 ||
+    !f.templates.every((t) => known.includes(t))
+  )
+    return fail(
+      "Choisir au moins un système à préparer (Debian 12, Ubuntu 24.04).",
+    );
+  return {
+    ok: true,
+    body: {
+      name: blank(f.name),
+      node: blank(f.node),
+      region: f.region,
+      vmStorage: blank(f.vmStorage),
+      importStorage: blank(f.importStorage),
+      pool: orNull(f.pool),
+      capacity: { vcpu, ramMb, diskGb },
+      network: {
+        ranges,
+        prefix,
+        gateway: blank(f.gateway),
+        dns,
+        bridge: blank(f.bridge),
+      },
+      templates: [...f.templates],
+    },
+  };
+}
+
+export const describeProblem = (p: {
+  message: string;
+  action: string;
+}): string => `${p.message} À faire : ${p.action}`;
+
+export interface SetupStepView {
+  id: string;
+  label: string;
+  status: "pending" | "running" | "ok" | "skipped" | "failed";
+  detail?: string;
+  cause?: string;
+  action?: string;
+}
+
+/** Libellé honnête d’une étape : jamais « réussi » sans l’être, toujours la cause et l’action d’un échec. */
+export function describeSetupStep(s: SetupStepView): {
+  tone: "wait" | "run" | "ok" | "warn";
+  text: string;
+} {
+  switch (s.status) {
+    case "pending":
+      return { tone: "wait", text: "en attente" };
+    case "running":
+      return {
+        tone: "run",
+        text: `en cours${s.detail ? ` — ${s.detail}` : ""}`,
+      };
+    case "ok":
+      return { tone: "ok", text: `réussi${s.detail ? ` — ${s.detail}` : ""}` };
+    case "skipped":
+      return {
+        tone: "ok",
+        text: `rien à refaire${s.detail ? ` — ${s.detail}` : ""}`,
+      };
+    default:
+      return {
+        tone: "warn",
+        text: `échec — ${s.cause ?? "cause inconnue"}${s.action ? ` À faire : ${s.action}` : ""}`,
+      };
+  }
+}
+
+export function summarizeSetup(
+  setup: { status: string; steps: SetupStepView[] } | null | undefined,
+): { tone: "wait" | "run" | "ok" | "warn"; text: string } {
+  if (!setup) return { tone: "wait", text: "Aucun branchement lancé." };
+  switch (setup.status) {
+    case "pending":
+      return { tone: "run", text: "Branchement en attente du worker…" };
+    case "running":
+      return { tone: "run", text: "Branchement en cours…" };
+    case "succeeded":
+      return {
+        tone: "ok",
+        text: "Serveur prêt : toutes les vérifications ont réussi, il peut recevoir des commandes.",
+      };
+    default: {
+      const bad = setup.steps.find((s) => s.status === "failed");
+      return {
+        tone: "warn",
+        text: `Branchement interrompu${bad ? ` à l’étape « ${bad.label} »` : ""} : le serveur n’est pas prêt.`,
+      };
+    }
+  }
+}
+
+/**
+ * Texte d’une erreur de l’API de branchement quand elle porte sa propre explication (cause et action,
+ * prérequis manquants, bloc d’adresses invalide, adresse invalide) ; `null` sinon (alors `errorText`).
+ */
+export function apiFailureText(data: unknown): string | null {
+  const d = data as
+    | {
+        error?: string;
+        problems?: { message: string; action: string }[];
+        details?: unknown;
+        message?: unknown;
+      }
+    | undefined;
+  if (!d || typeof d !== "object") return null;
+  if (d.error === "prerequisites" && Array.isArray(d.problems))
+    return `Des prérequis manquent sur Proxmox. ${d.problems.map(describeProblem).join(" ")}`;
+  if (d.error === "invalid_network" && Array.isArray(d.details))
+    return `Bloc d’adresses invalide : ${d.details.map(String).join(" ")}`;
+  const failure = connectFailureText(d);
+  if (failure) return failure;
+  if (
+    ["invalid_address", "url_blocked", "secret_scope"].includes(
+      d.error ?? "",
+    ) &&
+    typeof d.message === "string"
+  )
+    return d.message;
+  return null;
+}

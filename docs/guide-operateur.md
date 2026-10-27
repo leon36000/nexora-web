@@ -154,14 +154,30 @@ En développement : `worker/scripts/dev-provision-agents.ts` fait tout cela avec
 
 ## 7. Serveurs Proxmox (VPS)
 
-1. Dans Proxmox : utilisateur et jeton API dédiés (par exemple `nexora@pve!provision`), droits limités au pool ou au nœud ; certificat valide ou **empreinte SHA-256** du certificat auto-signé.
-2. Préparer un gabarit cloud-init (Debian 12 ou Ubuntu 24.04, agent invité, CPU `host` pour AVX2) et noter son vmid.
-3. Dans Directus, module **VPS** : créer le serveur (hôte, port, nœud, capacité, pool d'adresses, stockage), « Coller le jeton Proxmox » (type `proxmox`, référence `proxmox.<code>`), ajouter le gabarit, **« Tester la connexion »** : le serveur passe à « prêt » si Proxmox répond, que le nœud existe et que le gabarit est un modèle.
-4. Clé SSH du worker : `ssh-keygen -t ed25519 -C nexora-worker` ; clé privée au Coffre (`vps.worker_ssh_key`, type `other`), clé publique dans `VPS_WORKER_SSH_PUBLIC_KEY`.
-5. **Réseau** : un Proxmox est sur le réseau de l'opérateur ; l'adresse est acceptée (sauf lien local et métadonnées du nuage, toujours refusés). Le TLS est vérifié ou épinglé **avant** l'envoi du jeton ; `http://` n'est admis que sur la boucle locale (simulateur).
-6. Pare-feu par VM (SSH seulement), port 25 sortant fermé : appliqués par le moteur.
+Brancher un serveur Proxmox se fait **en un seul parcours** dans Directus : vous saisissez l'adresse du serveur et son jeton API, Nexora découvre le reste (nœud, version, capacité, stockages, pont réseau, DNS), prépare lui-même le gabarit du système et ne déclare le serveur « prêt » qu'une fois tout vérifié. Seuls les prérequis impossibles à automatiser restent à faire, et ils sont tous dans un **guide PDF pour le personnel**, téléchargeable depuis le module VPS (bouton **Guide de branchement (PDF)**). Sa source est `docs/vps/guide-branchement-proxmox.md` ; le PDF (`docs/vps/guide-branchement-proxmox.pdf`) se régénère avec `bun run guide:vps`, et un test échoue s'il est plus vieux que sa source.
 
-Non vérifié à ce jour : aucun vrai Proxmox n'a été branché (le simulateur couvre le parcours). Dès qu'un serveur réel existe : lancer le test de contrat (`PROXMOX_CONTRACT_URL`… dans `docs/infra.md`) avant d'ouvrir les ventes.
+**Prérequis, une fois par serveur** (commandes `pveum` exactes et chemins de l'interface web dans le guide) :
+
+1. **Proxmox VE 9.0 ou plus récent** (le branchement refuse une version plus ancienne).
+2. Un compte dédié `nexora@pve`, un rôle `NexoraProvision` aux **21 privilèges** exacts, un pool `nexora`, les droits sur le pool, les stockages utilisés, le nœud et `/sdn/zones/localnetwork`, et un **jeton API** sans séparation de privilèges. Jamais `root`.
+3. Un **bloc d'adresses IPv4 fixes** réservé aux VPS (plage, masque, passerelle, DNS), **hors de la plage DHCP**. Pas de DHCP : chaque VPS vendu garde une adresse stable (son pare-feu y est lié).
+4. Le port **8006** ouvert depuis le worker vers Proxmox, **SSH (22)** du worker vers le bloc d'adresses, et l'accès Internet (443) de Proxmox, du bloc et du worker vers `cloud.debian.org` / `cloud-images.ubuntu.com`.
+5. Le type de contenu **« Import »** activé sur un stockage de type répertoire (`local`) : sa modification exigerait un droit qui permet aussi de supprimer des volumes, elle reste donc manuelle.
+
+**Une fois par installation** : la paire de clés SSH du worker (`ssh-keygen -t ed25519 -C nexora-worker`), clé privée au Coffre (`vps.worker_ssh_key`, type `other`), clé publique dans `VPS_WORKER_SSH_PUBLIC_KEY`. Aucune image cloud officielle ne contient l'agent invité de Proxmox : le worker l'installe dans une VM temporaire par SSH avant de la convertir en gabarit.
+
+**Le parcours** (module **VPS** ▸ **Serveurs Proxmox** ▸ **Connecter un serveur Proxmox**) :
+
+1. **Adresse** (`hôte[:port]`) puis **Vérifier le serveur** : Nexora lit le certificat (poignée de main TLS seulement, aucun jeton) et montre son **empreinte SHA-256**. Un certificat reconnu publiquement se vérifie normalement ; un certificat auto-signé s'**épingle** après que vous avez comparé l'empreinte à celle de Proxmox et confirmé.
+2. **Jeton API** (`utilisateur@realm!nom=secret`) puis **Connecter** : le jeton va au Coffre (`proxmox.<code>`, type `proxmox`), puis Nexora se connecte en épinglant l'empreinte confirmée (le jeton ne part jamais avant la vérification du TLS) et crée la fiche en brouillon. Rejouable : même adresse et même port retombent sur la même fiche, sans doublon.
+3. **Valeurs découvertes**, préremplies (nœud, stockage des disques, stockage d'import, pont, capacité vendable, masque, passerelle, DNS) ; les problèmes bloquants et les droits manquants du jeton sont listés avec **la cause et l'action à faire**. Vous saisissez le **bloc d'adresses**, choisissez les systèmes (Debian 12, Ubuntu 24.04) et validez. Un bloc incohérent est refusé avec ses raisons (passerelle hors réseau, plage qui sort du sous-réseau, adresse du réseau ou de diffusion, adresse du serveur Proxmox, chevauchement).
+4. **Valider et préparer le serveur** : tâche `vps.server_setup` du worker. Pour chaque système, Proxmox télécharge **lui-même** l'image cloud officielle avec la **somme SHA-512 (Debian) ou SHA-256 (Ubuntu) publiée par l'éditeur** (lue par le worker sur HTTPS, gardes SSRF) ; le worker crée la VM en important le disque, ajoute cloud-init, active l'agent, fixe le processeur à `host`, installe l'agent invité dans la VM par SSH, nettoie la VM (clé du worker, identité), la convertit en gabarit et enregistre le gabarit. Chaque étape affiche son état réel — en attente, en cours, réussi, rien à refaire, ou **échec avec cause et action** — et le serveur ne devient « prêt » que si **toutes** les étapes réussissent (un gabarit prêt et un bloc d'adresses valide, en plus du test final). **Réessayer** reprend là où cela s'est arrêté : rien n'est retéléchargé ni recréé en double, et Nexora ne modifie ni ne supprime jamais une VM qu'il n'a pas créée.
+
+Le formulaire « Nouveau serveur » (saisie à la main, gabarit préparé à la main, « Tester la connexion ») reste disponible pour un serveur déjà préparé autrement ; « Tester la connexion » ne rend désormais « prêt » un serveur que s'il a au moins un gabarit prêt et un bloc d'adresses valide.
+
+**Réseau** : un Proxmox est sur le réseau de l'opérateur ; l'adresse est acceptée (sauf lien local et métadonnées du nuage, toujours refusés par `@nexora/net`). Le TLS est vérifié ou épinglé **avant** l'envoi du jeton ; `http://` n'est admis que sur la boucle locale (simulateur). Les références du Coffre réservées à la plateforme sont refusées comme jeton. Pare-feu par VM (SSH seulement), port 25 sortant fermé : appliqués par le moteur.
+
+**Non vérifié à ce jour** : aucun vrai Proxmox n'a été branché ; tout le parcours (découverte, téléchargement avec somme, création de VM, agent, gabarit, étapes, reprise) est prouvé de bout en bout **sur le simulateur** de Proxmox, dont les réponses sont validées contre le schéma officiel de l'API, mais ni le téléchargement réel d'une image, ni l'installation de l'agent dans une vraie VM, ni le chemin SDN `/sdn/zones/localnetwork`, ni le comportement exact de Proxmox sur certaines erreurs n'ont été confirmés. Au premier serveur réel : suivre le guide, puis lancer le test de contrat (`PROXMOX_CONTRACT_URL`… dans `docs/infra.md`) avant d'ouvrir les ventes.
 
 ## 8. Fournisseurs de modèles, LiteLLM, WorkStudio
 

@@ -4,6 +4,11 @@
 		<template #title-outer:prepend>
 			<v-button class="header-icon" rounded disabled icon secondary><v-icon name="dns" /></v-button>
 		</template>
+		<template #actions>
+			<v-button secondary :loading="busy === 'guide'" @click="downloadGuide">
+				<v-icon name="picture_as_pdf" left />Guide de branchement (PDF)
+			</v-button>
+		</template>
 
 		<div class="vps">
 			<v-notice type="info">
@@ -26,6 +31,129 @@
 
 			<!-- Serveurs Proxmox -->
 			<section v-if="tab === 'servers'">
+				<div class="connect">
+					<h3>Connecter un serveur Proxmox</h3>
+					<p class="lead">
+						Saisissez l’adresse du serveur et son jeton API : Nexora vérifie le certificat, découvre le nœud, la capacité, les stockages et le réseau, puis prépare seul
+						le gabarit. Prérequis incontournables (version, droits du jeton, port 8006) : <strong>Guide de branchement (PDF)</strong>, en haut à droite.
+					</p>
+
+					<!-- 1. Adresse et empreinte du certificat -->
+					<form class="form" autocomplete="off" @submit.prevent="probeServer">
+						<label>
+							Adresse du serveur
+							<v-input v-model="cn.address" placeholder="pve.exemple.ca:8006" :disabled="cn.step === 'discovered'" />
+							<small>Nom ou adresse IP, avec le port si ce n’est pas 8006.</small>
+						</label>
+						<label>Libellé (facultatif)<v-input v-model="cn.name" placeholder="Québec 1" :disabled="cn.step === 'discovered'" /></label>
+						<label>Région<v-select v-model="cn.region" :items="regionItems" :disabled="cn.step === 'discovered'" /></label>
+						<div v-if="cn.step === 'address' || cn.step === 'confirm'" class="actions">
+							<v-button type="submit" :loading="busy === 'probe'">Vérifier le serveur</v-button>
+						</div>
+					</form>
+
+					<!-- 2. Confirmation de l'empreinte puis jeton -->
+					<div v-if="cn.probe && cn.step !== 'discovered'" class="form">
+						<v-notice type="info">
+							<div>
+								<strong>Empreinte SHA-256 du certificat :</strong>
+								<code class="fp">{{ cn.probe.tls.fingerprintDisplay }}</code>
+								<br /><small>Sujet : {{ cn.probe.tls.subject }} · émetteur : {{ cn.probe.tls.issuer }} · valable jusqu’au {{ fd(cn.probe.tls.validTo) }}</small>
+								<br />{{ fingerprintText }}
+							</div>
+						</v-notice>
+						<div v-if="cn.tlsMode === 'pinned'" class="checks">
+							<v-checkbox v-model="cn.confirmed" label="J’ai comparé cette empreinte à celle de mon serveur et je la confirme" />
+						</div>
+						<label>
+							Jeton API Proxmox (masqué)
+							<v-input v-model="cn.token" type="password" autocomplete="new-password" placeholder="utilisateur@realm!nom=secret" />
+							<small>
+								Envoyé au Coffre (type « Proxmox ») sous <code>{{ proxmoxRef(cn.code) }}</code>, puis effacé d’ici. Il ne part vers Proxmox qu’après la vérification du
+								certificat ci-dessus.
+							</small>
+						</label>
+						<div class="actions">
+							<v-button :loading="busy === 'connect'" :disabled="!cn.token" @click="connectServer">Connecter</v-button>
+						</div>
+					</div>
+
+					<!-- 3. Valeurs découvertes à valider -->
+					<div v-if="cn.step === 'discovered' && cn.discovery" class="form">
+						<v-notice type="success">
+							Connecté à Proxmox VE {{ cn.discovery.version }} (nœud {{ cn.discovery.node }}). Vérifiez les valeurs découvertes, saisissez le bloc d’adresses, puis validez.
+						</v-notice>
+						<div v-for="(p, n) in cn.discovery.problems" :key="n">
+							<v-notice :type="p.severity === 'blocking' ? 'danger' : 'warning'">{{ describeProblem(p) }}</v-notice>
+						</div>
+						<div v-if="cn.discovery.privileges && cn.discovery.privileges.missing.length">
+							<strong>Droits manquants :</strong>
+							<ul class="diff">
+								<li v-for="(m, n) in cn.discovery.privileges.missing" :key="n"><code>{{ m.privilege }}</code> sur <code>{{ m.path }}</code></li>
+							</ul>
+						</div>
+
+						<label>Nom<v-input v-model="sup.name" /></label>
+						<label>Nœud<v-select v-model="sup.node" :items="nodeItems" @update:model-value="rediscover" /></label>
+						<label>Stockage des disques de VM<v-select v-model="sup.vmStorage" :items="diskStorageItems" allow-other @update:model-value="rediscover" /></label>
+						<label>
+							Stockage d’import des images
+							<v-select v-model="sup.importStorage" :items="importStorageItems" allow-other @update:model-value="rediscover" />
+							<small>Doit avoir le type de contenu « Import » (guide, § Stockage).</small>
+						</label>
+						<label>Pont réseau<v-select v-model="sup.bridge" :items="bridgeItems" allow-other @update:model-value="rediscover" /></label>
+						<label>Pool Proxmox (détecté, facultatif)<v-input v-model="sup.pool" /></label>
+						<fieldset>
+							<legend>Capacité vendable (proposée d’après le nœud)</legend>
+							<label>vCPU<v-input v-model="sup.vcpu" type="number" /></label>
+							<label>RAM (Mo)<v-input v-model="sup.ramMb" type="number" /></label>
+							<label>Disque (Go)<v-input v-model="sup.diskGb" type="number" /></label>
+						</fieldset>
+						<fieldset>
+							<legend>Bloc d’adresses IPv4 dédiées aux VPS</legend>
+							<label>
+								Plages (une par ligne)
+								<v-textarea v-model="sup.ranges" placeholder="192.168.1.100 - 192.168.1.150" />
+								<small>Adresses libres, réservées à Nexora (hors plage DHCP du réseau). Pas de DHCP : chaque VPS reçoit une adresse fixe.</small>
+							</label>
+							<label>Masque (préfixe ; 24 = 255.255.255.0)<v-input v-model="sup.prefix" type="number" /></label>
+							<label>Passerelle<v-input v-model="sup.gateway" /></label>
+							<label>DNS (séparés par des virgules)<v-input v-model="sup.dns" /></label>
+						</fieldset>
+						<fieldset>
+							<legend>Systèmes à préparer (gabarits)</legend>
+							<div class="checks">
+								<v-checkbox
+									v-for="t in templateChoices"
+									:key="t.code"
+									:model-value="sup.templates.includes(t.code)"
+									:label="t.text"
+									@update:model-value="toggleTemplate(t.code, $event)"
+								/>
+							</div>
+							<small>Image cloud officielle téléchargée par Proxmox lui-même, vérifiée par la somme que l’éditeur publie.</small>
+						</fieldset>
+						<div class="actions">
+							<v-button :loading="busy === 'setup'" :disabled="settingUp" @click="startSetup">Valider et préparer le serveur</v-button>
+							<v-button secondary @click="resetConnect">Annuler / autre serveur</v-button>
+						</div>
+					</div>
+
+					<!-- 4. Suivi honnête des étapes -->
+					<div v-if="cn.setup" class="steps">
+						<v-notice :type="summary.tone === 'ok' ? 'success' : summary.tone === 'warn' ? 'danger' : 'info'">{{ summary.text }}</v-notice>
+						<ol>
+							<li v-for="st in cn.setup.steps" :key="st.id" :class="'step ' + describeSetupStep(st).tone">
+								<strong>{{ st.label }}</strong> — {{ describeSetupStep(st).text }}
+								<template v-if="st.status === 'failed' && st.detail"><br /><small>Détail : {{ st.detail }}</small></template>
+							</li>
+						</ol>
+						<div v-if="cn.setup.status === 'failed'" class="actions">
+							<v-button :loading="busy === 'setup'" @click="startSetup">Réessayer (reprend là où ça s’est arrêté)</v-button>
+						</div>
+					</div>
+				</div>
+
 				<table class="grid">
 					<thead>
 						<tr><th>Code</th><th>Serveur</th><th>Région</th><th>État</th><th>Dernier contrôle</th><th>Proxmox</th><th>Jeton</th><th /></tr>
@@ -46,6 +174,7 @@
 							<td>{{ s.pveVersion || '—' }}</td>
 							<td>{{ s.tokenRef ? 'présent' : 'absent' }}</td>
 							<td class="actions">
+								<v-button v-if="s.setup" x-small secondary @click="followSetup(s)">Branchement</v-button>
 								<v-button x-small secondary @click="editServer(s)">Modifier</v-button>
 								<v-button x-small secondary :loading="busy === 'test' + s.id" @click="testServer(s)">Tester la connexion</v-button>
 							</td>
@@ -416,16 +545,24 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useApi } from '@directus/extensions-sdk';
 import {
+	apiFailureText,
 	appBadges,
 	appliedLabel,
 	buildAppBody,
+	buildConnectBody,
 	buildPlanBody,
+	buildProbeBody,
 	buildServerBody,
+	buildSetupBody,
 	buildTemplateBody,
+	checkProxmoxToken,
 	describeDiff,
 	describeIssue,
+	describeProblem,
+	describeSetupStep,
 	describeStripePlans,
 	errorText,
+	fingerprintAdvice,
 	formatCents,
 	formatDate,
 	formatRanges,
@@ -439,8 +576,11 @@ import {
 	proxmoxRef,
 	REGION,
 	SERVER_STATE,
+	setupFormFrom,
 	STEP,
+	summarizeSetup,
 	summarizeTest,
+	TEMPLATE_CHOICES,
 	TEMPLATE_STATE,
 	TERM,
 	VERSION_STATUS,
@@ -522,8 +662,8 @@ async function call(method: string, path: string, body?: unknown, opts: { quiet?
 		const found: any[] = Array.isArray(d?.issues) ? d.issues : [];
 		if (!opts.quiet) issues.value = found;
 		if (found.length) guardIssues.value = { ...guardIssues.value, ...indexIssues(found) };
-		// Jamais l'erreur brute : elle contient la requête.
-		error.value = errorText(e?.response?.status, code);
+		// Jamais l'erreur brute : elle contient la requête. Les erreurs de branchement portent leur propre explication.
+		error.value = apiFailureText(d) ?? errorText(e?.response?.status, code);
 		return null;
 	}
 }
@@ -561,9 +701,15 @@ async function refresh() {
 onMounted(load);
 watch(tab, (t) => {
 	if (t === 'ops') loadOps();
-	if (t !== 'servers') cancelToken();
+	if (t !== 'servers') {
+		cancelToken();
+		stopPolling();
+	}
 });
-onBeforeUnmount(cancelToken);
+onBeforeUnmount(() => {
+	cancelToken();
+	stopPolling();
+});
 
 const badgesOf = (code: string) => appBadges(guardIssues.value[`app:${code}`]);
 const templateCodes = computed(() => [...new Set<string>(data.templates.filter((t: any) => t.state !== 'retired').map((t: any) => t.code))].map((c) => ({ text: c, value: c })));
@@ -742,6 +888,172 @@ async function retireTemplate(t: any) {
 	if (await call('PATCH', `templates/${t.id}`, { state: 'retired' })) {
 		info.value = `Gabarit ${t.code} retiré.`;
 		await load();
+	}
+	busy.value = '';
+}
+
+// ─── Connecter un serveur (parcours guidé) ───────────────────────────────────────────
+
+const emptyConnect = () => ({
+	step: 'address' as 'address' | 'confirm' | 'discovered',
+	address: '',
+	name: '',
+	region: 'quebec',
+	code: '',
+	probe: null as any,
+	tlsMode: 'pinned',
+	confirmed: false,
+	token: '',
+	serverId: '',
+	discovery: null as any,
+	setup: null as any,
+});
+const cn = reactive<any>(emptyConnect());
+const sup = reactive<any>({ name: '', region: 'quebec', node: '', vmStorage: '', importStorage: '', pool: '', vcpu: '', ramMb: '', diskGb: '', ranges: '', prefix: 24, gateway: '', dns: '', bridge: '', templates: ['debian-12-ci'] });
+const templateChoices = TEMPLATE_CHOICES;
+const summary = computed(() => summarizeSetup(cn.setup));
+const settingUp = computed(() => cn.setup && (cn.setup.status === 'pending' || cn.setup.status === 'running'));
+const fingerprintText = computed(() => (cn.probe ? fingerprintAdvice(cn.probe.tls) : ''));
+const nodeItems = computed(() => (cn.discovery?.nodes ?? []).map((n: string) => ({ text: n, value: n })));
+const diskStorageItems = computed(() => (cn.discovery?.storages ?? []).filter((x: any) => x.usableForDisks).map((x: any) => ({ text: `${x.storage} (${x.type}, ${x.availGb} Go libres)`, value: x.storage })));
+const importStorageItems = computed(() => (cn.discovery?.storages ?? []).filter((x: any) => x.usableForImport).map((x: any) => ({ text: `${x.storage} (${x.type})`, value: x.storage })));
+const bridgeItems = computed(() => (cn.discovery?.bridges ?? []).map((b: any) => ({ text: b.cidr ? `${b.name} (${b.cidr})` : b.name, value: b.name })));
+
+function resetConnect() {
+	stopPolling();
+	Object.assign(cn, emptyConnect());
+	Object.assign(sup, { name: '', node: '', vmStorage: '', importStorage: '', pool: '', vcpu: '', ramMb: '', diskGb: '', ranges: '', prefix: 24, gateway: '', dns: '', bridge: '', templates: ['debian-12-ci'] });
+}
+function toggleTemplate(code: string, on: unknown) {
+	const set = new Set<string>(sup.templates);
+	if (on) set.add(code);
+	else set.delete(code);
+	sup.templates = [...set];
+}
+
+/** Étape 1 : lire le certificat du serveur (poignée de main TLS seulement, aucun jeton). */
+async function probeServer() {
+	const built = buildProbeBody(cn.address);
+	if (!built.ok) return invalid(built.error);
+	busy.value = 'probe';
+	const r = await call('POST', 'connect/probe', built.body);
+	if (r) {
+		cn.probe = r;
+		cn.code = r.code;
+		cn.tlsMode = r.recommendation;
+		cn.confirmed = false;
+		cn.step = 'confirm';
+	}
+	busy.value = '';
+}
+
+/** Étape 2 : jeton au Coffre, puis « Connecter » (le TLS est vérifié avant tout envoi de jeton à Proxmox). */
+async function connectServer() {
+	const tokenError = checkProxmoxToken(cn.token);
+	if (tokenError) return invalid(tokenError);
+	const built = buildConnectBody({
+		address: cn.address,
+		code: cn.code,
+		name: cn.name,
+		region: cn.region,
+		tlsMode: cn.tlsMode,
+		tlsFingerprint: cn.probe?.tls?.fingerprint ?? '',
+		confirmed: cn.confirmed,
+	});
+	if (!built.ok) return invalid(built.error);
+	const value = cn.token.trim();
+	cn.token = ''; // la valeur quitte l'état du composant avant même l'envoi
+	busy.value = 'connect';
+	error.value = '';
+	info.value = '';
+	issues.value = [];
+	try {
+		await api.post('/nexora-vault/secrets', { ref: built.body.tokenRef, value, kind: 'proxmox' });
+	} catch {
+		// L'erreur brute contient la requête (donc le jeton) : jamais affichée.
+		error.value = 'Le Coffre a refusé le jeton.';
+		busy.value = '';
+		return;
+	}
+	const r = await call('POST', 'connect', built.body);
+	if (r) {
+		cn.serverId = r.server.id;
+		cn.discovery = r.discovery;
+		Object.assign(sup, setupFormFrom(r.discovery, { name: r.server.name, region: r.server.region }));
+		cn.step = 'discovered';
+		if (r.server.setup) cn.setup = r.server.setup;
+		info.value = r.created ? 'Serveur connecté.' : 'Serveur déjà connu : fiche retrouvée, aucun doublon.';
+		await load();
+	}
+	busy.value = '';
+}
+
+/** Relit le serveur avec les choix de l'opérateur (nœud, stockages, pont) : problèmes et droits à jour. */
+async function rediscover() {
+	if (!cn.serverId) return;
+	const r = await call('POST', `servers/${cn.serverId}/discover`, { node: sup.node || undefined, vmStorage: sup.vmStorage || undefined, importStorage: sup.importStorage || undefined, bridge: sup.bridge || undefined }, { quiet: true });
+	if (r?.discovery) cn.discovery = r.discovery;
+}
+
+/** Étape 3 : valider le plan ; le worker télécharge l'image et fabrique le gabarit. */
+async function startSetup() {
+	const built = buildSetupBody(sup as any);
+	if (!built.ok) return invalid(built.error);
+	busy.value = 'setup';
+	const r = await call('POST', `servers/${cn.serverId}/setup`, built.body);
+	if (r) {
+		cn.setup = r.setup;
+		info.value = r.warnings?.length ? r.warnings.join(' ') : 'Branchement lancé : le worker prépare le gabarit.';
+		startPolling();
+	}
+	busy.value = '';
+}
+
+// Suivi des étapes : relecture toutes les 3 s tant que le branchement est actif.
+let timer: ReturnType<typeof setInterval> | undefined;
+function stopPolling() {
+	if (timer) clearInterval(timer);
+	timer = undefined;
+}
+function startPolling() {
+	stopPolling();
+	timer = setInterval(async () => {
+		if (!cn.serverId) return stopPolling();
+		const r = await call('GET', `servers/${cn.serverId}/setup`, undefined, { quiet: true });
+		if (!r?.setup) return;
+		cn.setup = r.setup;
+		if (r.setup.status === 'succeeded' || r.setup.status === 'failed') {
+			stopPolling();
+			await load();
+		}
+	}, 3000);
+}
+/** Reprend le suivi d'un serveur déjà branché (ou en cours de branchement). */
+function followSetup(s: any) {
+	resetConnect();
+	cn.serverId = s.id;
+	cn.setup = s.setup;
+	cn.step = 'address';
+	if (s.setup && (s.setup.status === 'pending' || s.setup.status === 'running')) startPolling();
+}
+
+/** Guide de branchement (PDF) : récupéré par l'endpoint relais, puis proposé en téléchargement. */
+async function downloadGuide() {
+	busy.value = 'guide';
+	error.value = '';
+	info.value = '';
+	try {
+		const res = await api.get(`${base}/guide`, { responseType: 'blob' });
+		const url = URL.createObjectURL(res.data as Blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'guide-branchement-proxmox.pdf';
+		document.body.appendChild(a);
+		a.click();
+		a.remove();
+		URL.revokeObjectURL(url);
+	} catch (e: any) {
+		error.value = e?.response?.status === 404 ? 'Le PDF du guide n’a pas été généré : lancer « bun run guide:vps » dans le dépôt.' : errorText(e?.response?.status, '');
 	}
 	busy.value = '';
 }
@@ -1009,6 +1321,36 @@ small {
 }
 .state.offline {
 	color: var(--theme--danger);
+}
+.connect {
+	display: grid;
+	gap: 16px;
+	padding: 16px;
+	border: 1px solid var(--theme--border-color-subdued);
+	border-radius: var(--theme--border-radius);
+}
+.connect .lead {
+	max-width: 760px;
+}
+.fp {
+	display: block;
+	word-break: break-all;
+	font-size: 13px;
+	margin: 6px 0;
+}
+.steps ol {
+	padding-left: 20px;
+	display: grid;
+	gap: 8px;
+}
+.step.ok {
+	color: var(--theme--success);
+}
+.step.warn {
+	color: var(--theme--danger);
+}
+.step.run {
+	color: var(--theme--primary);
 }
 .mono :deep(textarea) {
 	font-family: var(--theme--fonts--monospace--font-family, monospace);

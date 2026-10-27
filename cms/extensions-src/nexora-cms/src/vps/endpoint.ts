@@ -3,7 +3,7 @@
 // couple « méthode chemin : statut » est journalisé, jamais un corps de requête ni un paramètre.
 
 import { defineEndpoint } from "@directus/extensions-sdk";
-import { isAllowed, normalizePath, relayToVps } from "./contract";
+import { fetchGuide, isAllowed, normalizePath, relayToVps } from "./contract";
 
 type VpsRequest = {
   accountability?: { user?: string | null; admin?: boolean } | null;
@@ -14,7 +14,11 @@ type VpsRequest = {
 };
 type VpsResponse = {
   set: (field: string, value: string) => unknown;
-  status: (code: number) => { json: (body: unknown) => unknown };
+  send: (body: unknown) => unknown;
+  status: (code: number) => {
+    json: (body: unknown) => unknown;
+    send: (body: unknown) => unknown;
+  };
 };
 
 const deny = (
@@ -39,6 +43,19 @@ export default defineEndpoint({
         );
       if (acct.admin !== true)
         return deny(res, 403, "FORBIDDEN", "Réservé aux administrateurs.");
+      // Guide de branchement (PDF) : seul appel qui rend du binaire.
+      if (req.method === "GET" && normalizePath(req.path) === "guide") {
+        const g = await fetchGuide({ env });
+        logger.info(`[nexora-vps] GET /guide : ${g.status}`);
+        if (!g.ok) return res.status(g.status).json(g.body);
+        res.set("Content-Type", g.contentType);
+        res.set(
+          "Content-Disposition",
+          'attachment; filename="guide-branchement-proxmox.pdf"',
+        );
+        res.set("X-Content-Type-Options", "nosniff");
+        return res.status(200).send(Buffer.from(g.body));
+      }
       const relayed = await relayToVps(
         {
           method: req.method,

@@ -8,6 +8,7 @@ import {
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
+import { CLOUD_IMAGES, connectServer, startSetup } from "@nexora/vps";
 import { ProxmoxSimulator } from "@nexora/vps/simulator";
 import {
   createSimRunner,
@@ -274,6 +275,92 @@ describe("tâche longue : le bail de la file est renouvelé (I4)", () => {
       expect(ko.outcome).toBe("erreur");
       expect(ko.mid).not.toBeNull();
       expect(ko.after).toBeNull();
+    } finally {
+      await s.close();
+    }
+  });
+});
+
+describe("branchement d'un serveur (vps.server_setup)", () => {
+  it("le worker consomme la tâche créée par la demande de branchement : serveur prêt, gabarit fabriqué", async () => {
+    const image = CLOUD_IMAGES[0];
+    const sum = "d".repeat(128);
+    const sim = new ProxmoxSimulator({
+      token: SIM_TOKEN,
+      templates: [],
+      storages: [
+        { storage: "local", type: "dir", content: "iso,vztmpl,backup,import" },
+        { storage: "local-lvm", type: "lvmthin", content: "images,rootdir" },
+      ],
+      remoteFiles: {
+        [image?.imageUrl as string]: { sha512: sum, size: 3 * 1024 ** 3 },
+      },
+    });
+    const s = await sim.start();
+    try {
+      const guest = createSimRunner(sim);
+      const deps = engineDeps(t.db, guest.runner);
+      const connected = await connectServer(
+        t.db,
+        { getSecret: async () => SIM_TOKEN },
+        {
+          code: "pve-worker",
+          host: "http://127.0.0.1",
+          port: s.port,
+          tokenRef: "proxmox.pve-worker",
+          tlsMode: "verify",
+          tlsFingerprint: null,
+        },
+      );
+      const started = await startSetup(
+        t.db,
+        connected.server.id,
+        {
+          name: "Serveur worker",
+          node: "pve1",
+          region: "quebec",
+          vmStorage: "local-lvm",
+          importStorage: "local",
+          pool: null,
+          capacity: { vcpu: 8, ramMb: 16_384, diskGb: 500 },
+          network: {
+            ranges: [{ from: "192.168.1.100", to: "192.168.1.120" }],
+            prefix: 24,
+            gateway: "192.168.1.1",
+            dns: ["192.168.1.1"],
+            bridge: "vmbr0",
+          },
+          templates: ["debian-12-ci"],
+        },
+        { client: deps.proxmox },
+      );
+      const worker = new Worker({
+        db: t.db,
+        registry: registerVpsHandlers(new HandlerRegistry(), deps, {
+          fetchText: async () => `${sum}  ${image?.remoteName}\n`,
+        }),
+        logger: silent,
+        concurrency: 1,
+        pollIntervalMs: 20,
+      });
+      worker.start();
+      await until(async () => {
+        const [row] = await t.db
+          .select()
+          .from(proxmoxServers)
+          .where(eq(proxmoxServers.id, connected.server.id));
+        return (
+          row?.setup?.status === "succeeded" || row?.setup?.status === "failed"
+        );
+      });
+      await worker.stop(5_000);
+      const [row] = await t.db
+        .select()
+        .from(proxmoxServers)
+        .where(eq(proxmoxServers.id, connected.server.id));
+      expect(row?.setup?.runId).toBe(started.setup.runId);
+      expect(row?.setup?.status).toBe("succeeded");
+      expect(row?.state).toBe("ready");
     } finally {
       await s.close();
     }

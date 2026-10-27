@@ -18,13 +18,19 @@ import { secretScopeProblem } from "@nexora/vault/scope";
 import { secretKindOf } from "@nexora/vault/store";
 import {
   approveCatalogVersion,
+  availableServerCode,
+  CLOUD_IMAGES,
+  ConnectError,
   connectionOf,
+  connectServer,
   createApp,
   createDraftVersion,
   createPlan,
   createServer,
   createTemplate,
   diffCatalogVersion,
+  discoverServer,
+  explainProxmoxError,
   getApp,
   getPlan,
   getPublishedCatalog,
@@ -35,9 +41,16 @@ import {
   listPlans,
   listServers,
   listTemplates,
+  ProxmoxError,
+  parseServerAddress,
+  probeTls,
   proxmoxClientFactory,
   publishCatalogVersion,
   ServerError,
+  SetupError,
+  startSetup,
+  suggestServerCode,
+  TlsProbeError,
   testServerConnection,
   updateApp,
   updatePlan,
@@ -49,6 +62,7 @@ import type Stripe from "stripe";
 import { z } from "zod";
 import { checkAdminAuth } from "../auth";
 import { lanOutboundGuard, type OutboundGuard } from "../security/outbound";
+import { GUIDE_FILENAME, readGuidePdf } from "./guide";
 import { syncVpsCatalogToStripe, VpsSyncError } from "./stripe-sync";
 
 /**
@@ -70,6 +84,10 @@ export interface VpsAdminDeps {
   env?: Record<string, string | undefined>;
   /** Appelé après une publication ou une synchronisation (revalidation des pages publiques). */
   onPublished?: () => void;
+  /** Lecture du certificat au premier contact (remplaçable dans les tests). */
+  probe?: typeof probeTls;
+  /** Contenu du guide PDF (remplaçable dans les tests) ; défaut : fichier du dépôt. */
+  guidePdf?: () => Promise<Uint8Array | null>;
 }
 
 /** Hôte Proxmox (SSRF) et portée du jeton : refus 422 avant toute écriture. */
@@ -321,6 +339,45 @@ const appCreate = z
   .strict();
 const appPatch = z.object(appFields).partial().strict();
 
+const addressField = text(300).min(1);
+const connectBody = z
+  .object({
+    address: addressField,
+    code: code.optional(),
+    name: text(100).nullable().optional(),
+    region: z.enum(REGIONS).nullable().optional(),
+    tlsMode: z.enum(TLS_MODES),
+    tlsFingerprint: text(100).nullable().optional(),
+    tokenRef: z.string().regex(REF),
+  })
+  .strict();
+const discoverBody = z
+  .object({
+    node: text(60),
+    vmStorage: text(60),
+    importStorage: text(60),
+    bridge: text(20),
+    pool: text(60).nullable(),
+  })
+  .partial()
+  .strict();
+const setupBody = z
+  .object({
+    name: text(100).min(1),
+    node: text(60).min(1),
+    region: z.enum(REGIONS),
+    vmStorage: text(60).min(1),
+    importStorage: text(60).min(1),
+    pool: text(60).nullable(),
+    capacity,
+    network: ipPool,
+    templates: z
+      .array(z.enum(CLOUD_IMAGES.map((i) => i.code) as [string, ...string[]]))
+      .min(1)
+      .max(CLOUD_IMAGES.length),
+  })
+  .strict();
+
 const STATUS_OF: Record<string, number> = {
   not_found: 404,
   conflict: 409,
@@ -395,6 +452,48 @@ export async function handleVpsAdmin(
       );
     if (error instanceof VpsSyncError)
       return json({ error: error.code, message: error.message }, 409);
+    // Branchement d'un serveur : toujours une cause lisible et une action, jamais de détail brut.
+    if (error instanceof ConnectError)
+      return json(
+        {
+          error: "connect_failed",
+          code: error.code,
+          cause: error.cause_,
+          action: error.action,
+        },
+        422,
+      );
+    if (error instanceof TlsProbeError)
+      return json(
+        {
+          error: "probe_failed",
+          kind: error.kind,
+          cause: error.message,
+          action:
+            error.kind === "tls"
+              ? "Vérifier l'adresse et le port : l'interface web de Proxmox répond en HTTPS sur le port 8006."
+              : "Vérifier l'adresse, que le serveur est allumé et que le port 8006 est ouvert depuis le worker (pare-feu). Guide, § Réseau.",
+        },
+        422,
+      );
+    if (error instanceof SetupError) {
+      const base = { error: error.code, message: error.message };
+      if (error.code === "not_found") return json(base, 404);
+      if (error.code === "prerequisites")
+        return json({ ...base, problems: error.details }, 422);
+      if (error.code === "invalid_network")
+        return json({ ...base, details: error.details }, 422);
+      if (error.code === "unreachable")
+        return json(
+          {
+            error: "connect_failed",
+            cause: error.message,
+            action: (error.details as { action?: string } | undefined)?.action,
+          },
+          422,
+        );
+      return json({ ...base, details: error.details }, 422);
+    }
     deps.log.error("vps : erreur d'administration", {
       route: path.join("/"),
       errorName: error instanceof Error ? error.name : typeof error,
@@ -456,6 +555,102 @@ async function route(
     });
   }
 
+  // Guide de branchement (PDF) : document public de l'équipe, sans secret ; réservé aux administrateurs.
+  if (a === "guide" && !b) {
+    allowed("GET");
+    const pdf = await (deps.guidePdf ?? readGuidePdf)();
+    if (!pdf)
+      return json(
+        {
+          error: "guide_unavailable",
+          message:
+            "Le PDF du guide n'a pas été généré : lancer « bun run guide:vps » dans le dépôt.",
+        },
+        404,
+      );
+    return new Response(new Uint8Array(pdf), {
+      status: 200,
+      headers: {
+        "content-type": "application/pdf",
+        "content-disposition": `attachment; filename="${GUIDE_FILENAME}"`,
+        "content-length": String(pdf.byteLength),
+        "x-content-type-options": "nosniff",
+        ...NO_STORE,
+      },
+    });
+  }
+
+  if (a === "connect") {
+    allowed("POST");
+    if (b === "probe" && !c) {
+      const { address } = await body(
+        request,
+        z.object({ address: addressField }).strict(),
+      );
+      const parsed = parseServerAddress(address);
+      if (!parsed || parsed.host.startsWith("http://"))
+        throw new HttpError(422, "invalid_address", {
+          message:
+            "Adresse invalide : saisir le nom ou l'adresse du serveur, avec le port si ce n'est pas 8006 (ex. pve.exemple.ca:8006).",
+          field: "address",
+        });
+      await assertServerTargets(db, deps, parsed);
+      const tls = await (deps.probe ?? probeTls)({
+        host: parsed.host,
+        port: parsed.port,
+        timeoutMs: 10_000,
+      });
+      return ok({
+        address: parsed,
+        code: await availableServerCode(db, parsed.host, parsed.port),
+        tls,
+        recommendation:
+          tls.trusted && tls.hostnameMatches ? "verify" : "pinned",
+      });
+    }
+    if (!b) {
+      const input = await body(request, connectBody);
+      const parsed = parseServerAddress(input.address);
+      if (!parsed)
+        throw new HttpError(422, "invalid_address", {
+          message: "Adresse invalide (hôte[:port]).",
+          field: "address",
+        });
+      await assertServerTargets(db, deps, {
+        host: parsed.host,
+        port: parsed.port,
+        tokenRef: input.tokenRef,
+      });
+      const r = await connectServer(
+        db,
+        { getSecret: deps.getSecret, now: () => now },
+        {
+          code: input.code ?? suggestServerCode(parsed.host),
+          host: parsed.host,
+          port: parsed.port,
+          tokenRef: input.tokenRef,
+          tlsMode: input.tlsMode,
+          tlsFingerprint: input.tlsFingerprint ?? null,
+          name: input.name ?? undefined,
+          region: input.region ?? undefined,
+        },
+      );
+      deps.log.info("vps : serveur connecté", {
+        code: r.server.code,
+        created: r.created,
+      });
+      return ok(
+        {
+          created: r.created,
+          server: publicServer(r.server),
+          discovery: r.discovery,
+        },
+        r.created ? 201 : 200,
+      );
+    }
+    throw new HttpError(404, "not_found");
+  }
+
   if (a === "servers") {
     if (!b) {
       allowed("GET", "POST");
@@ -482,6 +677,49 @@ async function route(
         templates: check.templates,
         server: publicServer(check.server),
       });
+    }
+    if (c === "discover") {
+      allowed("POST");
+      const options = await body(request, discoverBody);
+      const server = await getServer(db, serverId);
+      try {
+        const client = await proxmoxClientFactory({
+          getSecret: deps.getSecret,
+        })(server);
+        return ok({ discovery: await discoverServer(client, options) });
+      } catch (e) {
+        if (!(e instanceof ProxmoxError)) throw e;
+        const x = explainProxmoxError(e);
+        throw new HttpError(422, "connect_failed", {
+          cause: x.cause,
+          action: x.action,
+        });
+      }
+    }
+    if (c === "setup") {
+      allowed("GET", "POST");
+      if (method === "GET") {
+        const server = await getServer(db, serverId);
+        return ok({ setup: server.setup, server: publicServer(server) });
+      }
+      const input = await body(request, setupBody);
+      const started = await startSetup(db, serverId, input, {
+        client: proxmoxClientFactory({ getSecret: deps.getSecret }),
+        now: () => now,
+      });
+      deps.log.info("vps : branchement demandé", {
+        serverId,
+        run: started.setup.runId.slice(0, 8),
+      });
+      return ok(
+        {
+          setup: started.setup,
+          server: publicServer(started.server),
+          warnings: started.warnings,
+          discovery: started.discovery,
+        },
+        202,
+      );
     }
     if (c === "templates") {
       allowed("GET", "POST");

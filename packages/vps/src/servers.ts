@@ -307,9 +307,17 @@ export async function testServerConnection(
           .where(eq(osTemplates.id, t.id));
     }
     const readyCount = results.filter((r) => r.ok).length;
-    const detail = `Proxmox VE ${v.version}, nœud ${server.node}, ${readyCount}/${results.length} gabarit(s) prêt(s)`;
+    const poolProblems = validatePool(server.ipPool);
+    // « Prêt » ne se donne que si tout est vérifié : un gabarit prêt ET un bloc d'adresses valide.
+    const blocker =
+      readyCount === 0
+        ? "aucun gabarit prêt : le serveur reste en brouillon"
+        : poolProblems.length > 0
+          ? "bloc d'adresses incomplet : le serveur reste en brouillon"
+          : null;
+    const detail = `Proxmox VE ${v.version}, nœud ${server.node}, ${readyCount}/${results.length} gabarit(s) prêt(s)${blocker ? ` — ${blocker}` : ""}`;
     const next: ProxmoxServerState =
-      server.state === "draft" || server.state === "offline"
+      !blocker && (server.state === "draft" || server.state === "offline")
         ? "ready"
         : server.state;
     return {
