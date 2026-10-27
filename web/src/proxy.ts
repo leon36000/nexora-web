@@ -9,9 +9,18 @@ import { DEFAULT_LANG } from "@/i18n/config";
  * - tout le reste (`/`, `/solutions`…) : réécrit en interne vers `/fr/…` (fr-CA par défaut).
  *
  * Aucune détection de `Accept-Language` : l'URL fait foi (référencement, partage de liens).
+ * En aperçu (cookie du Draft Mode), l'en-tête `X-Robots-Tag: noindex` est ajouté à toute réponse.
  * Les fichiers statiques (avec extension), `/api`, `/v1` et `/_next` ne passent pas ici (matcher).
  */
 export function proxy(request: NextRequest) {
+  const response = route(request);
+  // Aperçu (Draft Mode, cookie posé par /api/preview) : jamais indexable, quelle que soit la page.
+  if (request.cookies.has("__prerender_bypass"))
+    response.headers.set("x-robots-tag", "noindex, nofollow, noarchive");
+  return response;
+}
+
+function route(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/en" || pathname.startsWith("/en/")) {

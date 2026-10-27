@@ -46,6 +46,9 @@ type Scene = {
   gateRow: number;
 };
 
+/** Nombre de carrés de la traînée d'entrée, à l'intérieur du périmètre. */
+const TRAIL = 4;
+
 const WIDE: Scene = {
   cols: 30,
   rows: 16,
@@ -108,16 +111,19 @@ function SceneArt({ scene, id }: { scene: Scene; id: string }) {
     </g>
   );
 
-  // Flux entrant vers le point de passage : carrés décroissants, de plus en plus marqués.
-  for (let k = 1; k <= 4; k++) {
-    const c = box.c0 - k;
-    if (c < 0) break;
-    const s = Math.round(cell * (0.34 - k * 0.04));
+  // Demande qui ENTRE et reste à l'intérieur : une traînée orange part du point de passage vers l'intérieur
+  // du périmètre, de plus en plus marquée (carrés croissants, opacité croissante). La tête de la traînée est
+  // la plus avancée dans le périmètre ; rien d'orange ne se trouve à l'extérieur, donc rien ne se lit comme
+  // une donnée qui sort (correction demandée par le contrôle qualité de S1).
+  for (let k = 1; k <= TRAIL; k++) {
+    const c = box.c0 + k;
+    if (c >= box.c1) break;
+    const s = Math.round(cell * (0.1 + k * 0.06));
     nodes.push(
       <rect
         key={`in-${k}`}
         className="fill-accent"
-        opacity={0.85 - k * 0.14}
+        opacity={0.3 + k * 0.14}
         x={c * cell + half - s / 2}
         y={gy - s / 2}
         width={s}
@@ -126,7 +132,7 @@ function SceneArt({ scene, id }: { scene: Scene; id: string }) {
     );
   }
 
-  // Données à l'intérieur du périmètre (denses) et à l'extérieur (rares, très discrètes).
+  // Données à l'intérieur du périmètre (denses) et à l'extérieur (rares, très discrètes, jamais orange).
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const onBorder =
@@ -137,6 +143,7 @@ function SceneArt({ scene, id }: { scene: Scene; id: string }) {
         (c === box.c0 || c === box.c1 || r === box.r0 || r === box.r1);
       if (onBorder) continue;
       const inside = c > box.c0 && c < box.c1 && r > box.r0 && r < box.r1;
+      if (inside && r === gateRow && c <= box.c0 + TRAIL) continue; // réservé à la traînée d'entrée
       const h = hash(c, r);
       if (inside && h < 22) {
         const s = h < 7 ? Math.round(cell * 0.3) : Math.round(cell * 0.18);

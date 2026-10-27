@@ -81,7 +81,7 @@ export function SiteFooter({ lang, dict }: { lang: Lang; dict: Dictionary }) {
             <LanguageSwitcher
               current={lang}
               variant="full"
-              label={language.label}
+              label={`${language.label}, ${a11y.footerNav.toLowerCase()}`}
               names={{ fr: language.fr, en: language.en }}
             />
             <p className="text-small text-fg-muted">{footer.copyright}</p>
