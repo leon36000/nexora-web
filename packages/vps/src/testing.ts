@@ -4,6 +4,7 @@ import {
   enqueue,
   eq,
   organizations,
+  osTemplates,
   vpsOrders,
 } from "@nexora/db";
 import { createLogger } from "@nexora/log";
@@ -66,6 +67,8 @@ export function createSimRunner(sim: ProxmoxSimulator) {
         );
       if (vm?.status !== "running")
         return { ok: false, exitCode: 255, tail: "ssh : connexion refusée" };
+      // Préparation d'un gabarit : l'agent invité s'installe dans l'image importée.
+      if (input.script.includes("qemu-guest-agent")) vm.agentInstalled = true;
       if (state.failNext > 0) {
         state.failNext -= 1;
         return { ok: false, exitCode: 1, tail: state.failMessage };
@@ -126,6 +129,8 @@ export interface SeedOptions {
     ramMb?: number;
   };
   withPorts?: boolean;
+  /** Serveur déjà branché (gabarit `debian-12-ci` prêt) : aucun serveur ni gabarit n'est créé. */
+  serverId?: string;
 }
 
 /** Serveur prêt + gabarit + plan et application publiés (version « appliquée » côté Stripe). */
@@ -134,28 +139,40 @@ export async function seedFixture(
   opts: SeedOptions,
 ): Promise<Fixture> {
   const organizationId = await newOrg(db);
-  const code = `srv-${randomBytes(3).toString("hex")}`;
-  const server = await createServer(db, {
-    code,
-    name: "Serveur d'essai",
-    host: "http://127.0.0.1",
-    port: opts.simPort,
-    node: opts.node ?? "pve1",
-    capacity: opts.capacity ?? { vcpu: 32, ramMb: 131_072, diskGb: 2_000 },
-    ipPool: SIM_POOL,
-    tokenRef: "proxmox.test",
-  });
-  await updateServer(db, server.id, { state: "ready" });
-  const tpl = await createTemplate(db, {
-    serverId: server.id,
-    code: "debian-12-ci",
-    name: "Debian 12 cloud-init",
-    os: "debian",
-    osVersion: "12",
-    vmid: 9000,
-    ciUser: "debian",
-  });
-  await updateTemplate(db, tpl.id, { state: "ready" });
+  let server: { id: string };
+  let tpl: { id: string };
+  if (opts.serverId) {
+    server = { id: opts.serverId };
+    const [row] = await db
+      .select()
+      .from(osTemplates)
+      .where(eq(osTemplates.serverId, opts.serverId));
+    if (!row) throw new Error("le serveur n'a aucun gabarit");
+    tpl = row;
+  } else {
+    const code = `srv-${randomBytes(3).toString("hex")}`;
+    server = await createServer(db, {
+      code,
+      name: "Serveur d'essai",
+      host: "http://127.0.0.1",
+      port: opts.simPort,
+      node: opts.node ?? "pve1",
+      capacity: opts.capacity ?? { vcpu: 32, ramMb: 131_072, diskGb: 2_000 },
+      ipPool: SIM_POOL,
+      tokenRef: "proxmox.test",
+    });
+    await updateServer(db, server.id, { state: "ready" });
+    tpl = await createTemplate(db, {
+      serverId: server.id,
+      code: "debian-12-ci",
+      name: "Debian 12 cloud-init",
+      os: "debian",
+      osVersion: "12",
+      vmid: 9000,
+      ciUser: "debian",
+    });
+    await updateTemplate(db, tpl.id, { state: "ready" });
+  }
   const planCode = `essai-${randomBytes(2).toString("hex")}`;
   const plan = await createPlan(db, {
     code: planCode,

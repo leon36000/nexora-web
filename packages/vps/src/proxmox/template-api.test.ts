@@ -8,7 +8,8 @@ import { ProxmoxSimulator } from "./simulator.ts";
  * simulateur est validée contre le schéma OFFICIEL de l'API (apidoc.js) : forme identique à Proxmox.
  */
 const TOKEN = "nexora@pve!provision=11111111-2222-3333-4444-555555555555";
-const URL_OK = "https://cloud.debian.org/images/cloud/bookworm/latest/img.qcow2";
+const URL_OK =
+  "https://cloud.debian.org/images/cloud/bookworm/latest/img.qcow2";
 const SUM = "a".repeat(128);
 
 function conformant(template: string, method: string, data: unknown) {
@@ -53,9 +54,9 @@ describe("lectures de découverte (conformes au schéma officiel)", () => {
     const local = storages.find((s) => s.storage === "local");
     expect(local?.content).toContain("iso");
     expect(local?.content).not.toContain("import");
-    expect(
-      storages.find((s) => s.storage === "local-lvm")?.content,
-    ).toContain("images");
+    expect(storages.find((s) => s.storage === "local-lvm")?.content).toContain(
+      "images",
+    );
   });
 
   it("filtre les stockages par type de contenu", async () => {
@@ -157,7 +158,9 @@ describe("téléchargement, création de la VM et conversion en gabarit", () => 
     await env.client.waitTask(upid);
     const content = await env.client.storageContent("pve1", "local", "import");
     conformant("/nodes/{node}/storage/{storage}/content", "GET", content);
-    expect(content.map((v) => v.volid)).toContain("local:import/debian-12.qcow2");
+    expect(content.map((v) => v.volid)).toContain(
+      "local:import/debian-12.qcow2",
+    );
   });
 
   it("une somme différente de celle publiée fait échouer la tâche, sans laisser de fichier", async () => {

@@ -112,7 +112,13 @@ export interface DownloadUrlParams {
   content: "iso" | "vztmpl" | "import";
   filename: string;
   checksum?: string;
-  checksumAlgorithm?: "md5" | "sha1" | "sha224" | "sha256" | "sha384" | "sha512";
+  checksumAlgorithm?:
+    | "md5"
+    | "sha1"
+    | "sha224"
+    | "sha256"
+    | "sha384"
+    | "sha512";
   /** Vérifie le certificat du serveur d'images (défaut Proxmox : oui). */
   verifyCertificates?: boolean;
 }
@@ -274,7 +280,12 @@ export class ProxmoxClient {
   }
   nodeStatus(node: string): Promise<{
     memory?: { total: number; used: number };
-    cpuinfo?: { cpus: number; cores?: number; sockets?: number; model?: string };
+    cpuinfo?: {
+      cpus: number;
+      cores?: number;
+      sockets?: number;
+      model?: string;
+    };
     rootfs?: { total: number; used: number; avail?: number };
     pveversion?: string;
     uptime?: number;
@@ -343,8 +354,13 @@ export class ProxmoxClient {
   permissions(path?: string): Promise<Record<string, Record<string, number>>> {
     return this.call("GET", "/access/permissions", path ? { path } : undefined);
   }
-  nextId(): Promise<number> {
-    return this.call<number | string>("GET", "/cluster/nextid").then(Number);
+  /** Prochain identifiant libre ; avec `vmid`, vérifie que celui-ci est libre (sinon Proxmox répond par une erreur). */
+  nextId(vmid?: number): Promise<number> {
+    return this.call<number | string>(
+      "GET",
+      "/cluster/nextid",
+      vmid === undefined ? undefined : { vmid },
+    ).then(Number);
   }
   listVms(node: string): Promise<VmSummary[]> {
     return this.call("GET", `/nodes/${q(node)}/qemu`);

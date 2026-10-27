@@ -185,6 +185,50 @@ export interface IpPool {
   bridge: string;
 }
 
+export const SETUP_STEP_STATUSES = [
+  "pending",
+  "running",
+  "ok",
+  "skipped",
+  "failed",
+] as const;
+export type SetupStepStatus = (typeof SETUP_STEP_STATUSES)[number];
+
+/** Une étape du branchement, avec son état honnête : en cours, réussie, ou échec avec cause et action. */
+export interface SetupStep {
+  id: string;
+  label: string;
+  status: SetupStepStatus;
+  detail?: string;
+  /** Échec : ce qui ne va pas, en français. */
+  cause?: string;
+  /** Échec : ce que l'opérateur doit faire. */
+  action?: string;
+  updatedAt: string;
+}
+
+/** Choix validés par l'opérateur pour un branchement. */
+export interface SetupPlan {
+  node: string;
+  vmStorage: string;
+  importStorage: string;
+  bridge: string;
+  pool: string | null;
+  /** Codes des gabarits à préparer (debian-12, ubuntu-24-04). */
+  templates: string[];
+}
+
+/** Branchement guidé d'un serveur : exécution (worker) et résultat, rejouable. */
+export interface ServerSetup {
+  runId: string;
+  status: "pending" | "running" | "succeeded" | "failed";
+  requestedAt: string;
+  startedAt?: string;
+  finishedAt?: string;
+  plan: SetupPlan;
+  steps: SetupStep[];
+}
+
 /** Serveur Proxmox VE branché depuis l'administration. Le jeton n'est qu'une RÉFÉRENCE du coffre. */
 export const proxmoxServers = pgTable(
   "proxmox_servers",
@@ -214,6 +258,8 @@ export const proxmoxServers = pgTable(
     /** Résumé court (jamais de corps de réponse ni de secret). */
     lastCheckDetail: text("last_check_detail"),
     pveVersion: text("pve_version"),
+    /** Dernier branchement guidé (étapes et résultat) ; null pour un serveur saisi à la main. */
+    setup: jsonb("setup").$type<ServerSetup>(),
     createdAt: ts("created_at").notNull().defaultNow(),
     updatedAt: ts("updated_at").notNull().defaultNow(),
   },

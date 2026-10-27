@@ -503,10 +503,7 @@ export class ProxmoxSimulator {
   }
   private need(path: string, priv: string) {
     if (!this.can(path, priv))
-      throw new HttpFail(
-        403,
-        `Permission check failed (${path}, ${priv})`,
-      );
+      throw new HttpFail(403, `Permission check failed (${path}, ${priv})`);
   }
 
   private registerHandlers() {
@@ -541,30 +538,30 @@ export class ProxmoxSimulator {
     on("GET /nodes/{node}/status", ({ node }) => {
       this.need(`/nodes/${node}`, "Sys.Audit");
       return {
-      uptime: 86_400,
-      cpu: 0.03,
-      loadavg: ["0.10", "0.08", "0.05"],
-      "boot-info": { mode: "efi", secureboot: false },
-      cpuinfo: { cpus: 32, cores: 16, model: "Simulated CPU", sockets: 1 },
-      "current-kernel": {
-        sysname: "Linux",
-        release: "6.14.8-2-pve",
-        version: "#1 SMP PREEMPT_DYNAMIC",
-        machine: "x86_64",
-      },
-      memory: {
-        total: 137_438_953_472,
-        used: 8_589_934_592,
-        free: 128_849_018_880,
-        available: 128_849_018_880,
-      },
-      rootfs: {
-        total: 100_000_000_000,
-        used: 10_000_000_000,
-        free: 90_000_000_000,
-        avail: 90_000_000_000,
-      },
-      pveversion: `pve-manager/${version}/simulated`,
+        uptime: 86_400,
+        cpu: 0.03,
+        loadavg: ["0.10", "0.08", "0.05"],
+        "boot-info": { mode: "efi", secureboot: false },
+        cpuinfo: { cpus: 32, cores: 16, model: "Simulated CPU", sockets: 1 },
+        "current-kernel": {
+          sysname: "Linux",
+          release: "6.14.8-2-pve",
+          version: "#1 SMP PREEMPT_DYNAMIC",
+          machine: "x86_64",
+        },
+        memory: {
+          total: 137_438_953_472,
+          used: 8_589_934_592,
+          free: 128_849_018_880,
+          available: 128_849_018_880,
+        },
+        rootfs: {
+          total: 100_000_000_000,
+          used: 10_000_000_000,
+          free: 90_000_000_000,
+          avail: 90_000_000_000,
+        },
+        pveversion: `pve-manager/${version}/simulated`,
       };
     });
     on("GET /nodes/{node}/storage", ({ p }) =>
@@ -816,7 +813,8 @@ export class ProxmoxSimulator {
     on("POST /nodes/{node}/qemu/{vmid}/template", ({ path, vm }) => {
       const v = vm();
       this.need(`/vms/${path.vmid}`, "VM.Allocate");
-      if (v.template) throw fail500("you can't convert a template to a template");
+      if (v.template)
+        throw fail500("you can't convert a template to a template");
       if (v.status === "running") throw fail500("VM is running");
       if (v.lock) throw fail500(`VM is locked (${v.lock})`);
       v.lock = "template";

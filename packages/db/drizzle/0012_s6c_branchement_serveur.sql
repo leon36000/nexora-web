@@ -1,0 +1,1 @@
+ALTER TABLE "proxmox_servers" ADD COLUMN "setup" jsonb;
