@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildPageMetadata } from "./metadata";
+import { buildPageMetadata, notFoundMetadata } from "./metadata";
 
 const base = {
   lang: "fr" as const,
@@ -22,5 +22,15 @@ describe("buildPageMetadata", () => {
     expect(JSON.stringify(m)).not.toContain("/og/");
     expect(m.robots).toEqual({ index: false, follow: false });
     expect(m.alternates?.canonical).toBe("/compte/connexion");
+  });
+});
+
+describe("notFoundMetadata", () => {
+  it("titre localisé de la page 404 et noindex, sans lever d'erreur", () => {
+    expect(notFoundMetadata("fr")).toEqual({
+      title: "Page introuvable | Nexora",
+      robots: { index: false, follow: false },
+    });
+    expect(notFoundMetadata("en").title).toMatch(/not found/i);
   });
 });

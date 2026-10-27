@@ -17,7 +17,7 @@ import {
   getGatewayDictionary,
 } from "@/i18n/gateway";
 import { apiSamples } from "@/lib/api-samples";
-import { buildPageMetadata } from "@/lib/metadata";
+import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { type PriceOffer, productJsonLd } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
@@ -48,7 +48,7 @@ export async function generateMetadata(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const model = await findModel((await props.params).id);
-  if (!model) notFound();
+  if (!model) return notFoundMetadata(lang);
   const t = getGatewayDictionary(lang);
   return buildPageMetadata({
     lang,

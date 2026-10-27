@@ -6,6 +6,7 @@ import {
   localizePath,
   OG_LOCALE,
 } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { ogImage } from "./seo/og";
 import { SITE_URL } from "./site";
 
@@ -64,5 +65,18 @@ export function buildPageMetadata({
       ...(noindex ? {} : { images: [ogImage(lang, path, title).url] }),
     },
     ...(noindex ? { robots: { index: false, follow: false } } : {}),
+  };
+}
+
+/**
+ * Métadonnées d'une page qui n'existe pas (ou plus). `generateMetadata` ne lève PAS `notFound()` : avec les composants
+ * en cache, une erreur levée là fait servir une coquille d'erreur vide (ni titre, ni `lang`, ni contenu avant
+ * l'hydratation). La page appelle `notFound()` elle-même : la mise en page, l'en-tête et la page 404 sont alors rendus
+ * côté serveur, avec ce titre et `noindex`.
+ */
+export function notFoundMetadata(lang: Lang): Metadata {
+  return {
+    title: getDictionary(lang).meta.notFound.title,
+    robots: { index: false, follow: false },
   };
 }

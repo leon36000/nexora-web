@@ -46,6 +46,23 @@ describe("en-têtes de sécurité (S9)", () => {
     expect(parseCsp(API_CSP).get("frame-ancestors")).toEqual(["'none'"]);
   });
 
+  it("les réponses qui ne sont pas des pages (images /og, llms.txt, sitemap, robots, icône) portent aussi la CSP restrictive", async () => {
+    const rules = (await nextConfig.headers?.()) ?? [];
+    for (const source of [
+      "/og/:path*",
+      "/llms.txt",
+      "/sitemap.xml",
+      "/robots.txt",
+      "/icon.svg",
+    ]) {
+      const rule = rules.find((r) => r.source === source);
+      const csp = rule?.headers.find(
+        (x) => x.key.toLowerCase() === "content-security-policy",
+      )?.value;
+      expect(csp, source).toBe(API_CSP);
+    }
+  });
+
   it("n'expose pas la technologie du serveur", () => {
     expect(nextConfig.poweredByHeader).toBe(false);
   });

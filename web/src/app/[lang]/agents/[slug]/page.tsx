@@ -14,7 +14,7 @@ import { getAgentsDictionary } from "@/i18n/agents";
 import { isLang, localizePath } from "@/i18n/config";
 import { formatInteger } from "@/i18n/gateway";
 import { agentSamples, agentStreamingSample } from "@/lib/agent-samples";
-import { buildPageMetadata } from "@/lib/metadata";
+import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_URL } from "@/lib/site";
 import { getPublicAgents } from "@/server/agents/read";
@@ -41,7 +41,7 @@ export async function generateMetadata(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const agent = await findAgent((await props.params).slug);
-  if (!agent) notFound();
+  if (!agent) return notFoundMetadata(lang);
   const t = getAgentsDictionary(lang);
   const name = lang === "fr" ? agent.nameFr : agent.nameEn;
   return buildPageMetadata({
