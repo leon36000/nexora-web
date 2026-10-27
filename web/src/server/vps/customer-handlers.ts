@@ -299,16 +299,19 @@ export async function handleVpsAction(
       if (inst.status !== "active")
         return fail(deps, input, 409, "not_active", back);
       await db.transaction(async (tx) => {
-        await tx
-          .update(vpsInstances)
-          .set({ pendingAction: action, updatedAt: deps.now() })
-          .where(eq(vpsInstances.id, inst.id));
-        await enqueue(tx, {
+        const job = await enqueue(tx, {
           type: "vps.action",
           payload: { instanceId: inst.id, action },
           idempotencyKey: `vps-action:${inst.id}:${requestId}`,
           maxAttempts: 8,
         });
+        // Même requestId rejoué après la fin de la tâche (double envoi, retour arrière) : la tâche existante est
+        // terminée et n'effacera plus l'action en cours ; la poser laisserait l'instance « en cours » pour toujours.
+        if (job.status === "pending" || job.status === "running")
+          await tx
+            .update(vpsInstances)
+            .set({ pendingAction: action, updatedAt: deps.now() })
+            .where(eq(vpsInstances.id, inst.id));
       });
       return ok();
     }
