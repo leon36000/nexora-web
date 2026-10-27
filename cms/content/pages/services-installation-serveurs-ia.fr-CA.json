@@ -44,11 +44,11 @@
         "items": [
           {
             "title": "Chez vous.",
-            "text": "Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous. Voir le <a href=\"/deploiement/sur-place/\">mode sur place</a>."
+            "text": "Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous."
           },
           {
             "title": "Chez nous, au Québec.",
-            "text": "Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel. Voir le <a href=\"/deploiement/heberge-quebec/\">mode hébergé</a>."
+            "text": "Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel."
           }
         ]
       }
@@ -188,7 +188,7 @@
             "text": "Disponibilité et délais de réponse se précisent au contrat."
           },
           {
-            "title": "Aucun fonctionnement sans flux sortant présumé.",
+            "title": "Aucun flux sortant n’est présumé nul.",
             "text": "Mises à jour, licences, modèle externe éventuel\u00a0: tout est listé avant la mise en service."
           }
         ]
@@ -212,7 +212,7 @@
           },
           {
             "question": "Peut-on l'installer sur un serveur existant\u00a0?",
-            "answer": "Il suffit d'un serveur qui fait tourner Docker. Nous vérifions au diagnostic qu'il convient aux usages prévus."
+            "answer": "Il faut un serveur Linux ou macOS qui fait tourner Docker. Nous vérifions au diagnostic qu’il convient aux usages prévus."
           },
           {
             "question": "Qui exploite ensuite\u00a0?",

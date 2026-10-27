@@ -37,8 +37,8 @@ An AI server is a machine that runs the models (the engines that produce the ans
 
 The method is the same in both cases: size, install, configure, check the flows, train, then operate.
 
-- **On your premises.** In your offices or at a host of your choice. The hardware and the access are yours. See the <a href="/en/deployment/on-premises/">on-premises mode</a>.
-- **With us, in Quebec.** In our infrastructure, where we run it. You buy no server and no hardware. See the <a href="/en/deployment/hosted-quebec/">hosted mode</a>.
+- **On your premises.** In your offices or at a host of your choice. The hardware and the access are yours.
+- **With us, in Quebec.** In our infrastructure, where we run it. You buy no server and no hardware.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
@@ -134,7 +134,7 @@ The duration depends on your case and is measured on a first case.
 
 Availability and response times are set out in the contract.
 
-#### No presumption of zero outbound traffic.
+#### We do not presume there is no outbound traffic.
 
 Updates, licences, any external model: everything is listed before go-live.
 
@@ -152,7 +152,7 @@ It depends on the case. The diagnosis answers that before any purchase: it takes
 
 #### Can it go on an existing server?
 
-A server that runs Docker is enough. During the diagnosis we check that it suits the intended uses.
+A Linux or macOS server running Docker is required. We check during the assessment that it suits the intended uses.
 
 #### Who runs it afterwards?
 
