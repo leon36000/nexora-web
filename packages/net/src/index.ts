@@ -53,9 +53,17 @@ const RESERVED = list([
   ["::", 128, "ipv6"],
   ["ff00::", 8, "ipv6"],
   ["2001:db8::", 32, "ipv6"],
-  ["64:ff9b::", 96, "ipv6"],
+  ["64:ff9b::", 96, "ipv6"], // NAT64 : refusé en bloc (l'IPv4 embarquée n'est pas classée)
+  ["64:ff9b:1::", 48, "ipv6"], // NAT64 à usage local (RFC 8215)
+  ["2002::", 16, "ipv6"], // 6to4 : IPv4 embarquée, refusé en bloc
+  ["fec0::", 10, "ipv6"], // site-local obsolète (RFC 3879)
   ["100::", 64, "ipv6"],
 ]);
+/**
+ * ::a.b.c.d (IPv4-compatible, obsolète) : refusé comme réservé. ::1 en est exclu : c'est la boucle locale, classée
+ * comme telle pour que la politique « développement » continue de s'y appliquer.
+ */
+const IPV4_COMPATIBLE = list([["::", 96, "ipv6"]]);
 
 /** ::ffff:a.b.c.d ou ::ffff:xxxx:yyyy -> a.b.c.d (null si ce n'est pas une IPv4 inscrite). */
 function unmap(ip: string): string | null {
@@ -80,6 +88,9 @@ export function classifyAddress(address: string): AddressClass {
   const type = mapped || family === 4 ? "ipv4" : "ipv6";
   if (LINK_LOCAL.check(target, type)) return "link-local";
   if (RESERVED.check(target, type)) return "reserved";
+  if (type === "ipv6" && !LOOPBACK.check(target, type)) {
+    if (IPV4_COMPATIBLE.check(target, type)) return "reserved";
+  }
   if (LOOPBACK.check(target, type)) return "loopback";
   if (PRIVATE.check(target, type)) return "private";
   return "public";
@@ -143,6 +154,23 @@ export type OutboundCheck =
   | { ok: true; url: URL; addresses: string[] }
   | { ok: false; reason: string };
 
+/** Noms qui désignent le lien local ou les métadonnées du nuage : refusés sans exception, même en `literalOnly`. */
+function isLinkLocalName(host: string): boolean {
+  const h = host.toLowerCase().replace(/\.$/, "");
+  return (
+    h.endsWith(".internal") ||
+    h.endsWith(".local") ||
+    h === "metadata" ||
+    h.startsWith("metadata.")
+  );
+}
+
+/** localhost et *.localhost : boucle locale (RFC 6761), soumise à la même politique que 127.0.0.1. */
+function isLoopbackName(host: string): boolean {
+  const h = host.toLowerCase().replace(/\.$/, "");
+  return h === "localhost" || h.endsWith(".localhost");
+}
+
 export interface OutboundOptions {
   resolve?: (host: string) => Promise<string[]>;
   /**
@@ -174,8 +202,27 @@ export async function checkOutboundUrl(
   if (url.username || url.password)
     return { ok: false, reason: "URL avec identifiants refusée" };
   const host = url.hostname.replace(/^\[|\]$/g, "");
-  if (options.literalOnly && !isIP(host))
+  if (options.literalOnly && !isIP(host)) {
+    if (isLinkLocalName(host))
+      return {
+        ok: false,
+        reason:
+          "adresse refusée (métadonnées du nuage, lien local ou réservée)",
+      };
+    if (isLoopbackName(host)) {
+      if (
+        policy.allowInternal ||
+        allowedByList(host, ["127.0.0.1"], policy.allow)
+      )
+        return { ok: true, url, addresses: [] };
+      return {
+        ok: false,
+        reason:
+          "adresse du réseau interne refusée (à autoriser par l'opérateur : NEXORA_OUTBOUND_ALLOW)",
+      };
+    }
     return { ok: true, url, addresses: [] };
+  }
   let addresses: string[];
   try {
     addresses = isIP(host)
