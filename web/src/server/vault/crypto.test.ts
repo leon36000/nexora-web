@@ -71,6 +71,44 @@ describe("chiffrement par enveloppe AES-256-GCM", () => {
     ).toThrow(VaultError);
   });
 
+  it("refuse une étiquette GCM tronquée (4 octets) et un IV de longueur inattendue", () => {
+    const keyring = ring();
+    const rec = encryptSecret("abcdefghijkl", "ref.t", keyring.current);
+    const tag = Buffer.from(rec.authTag, "base64");
+    expect(tag.length).toBe(16);
+    // Un préfixe valide de l'étiquette ne doit pas suffire.
+    for (const n of [4, 8, 12]) {
+      expect(() =>
+        decryptSecret(
+          { ...rec, authTag: tag.subarray(0, n).toString("base64") },
+          "ref.t",
+          keyring,
+        ),
+      ).toThrow(VaultError);
+    }
+    // Même chose pour l'étiquette de la clé de données enveloppée.
+    const [iv, wtag, wct] = rec.dataKeyEncrypted.split(".");
+    const shortWrapped = [
+      iv,
+      Buffer.from(wtag as string, "base64")
+        .subarray(0, 4)
+        .toString("base64"),
+      wct,
+    ].join(".");
+    expect(() =>
+      decryptSecret(
+        { ...rec, dataKeyEncrypted: shortWrapped },
+        "ref.t",
+        keyring,
+      ),
+    ).toThrow(VaultError);
+    // IV de 8 octets au lieu de 12.
+    const iv8 = Buffer.from(rec.iv, "base64").subarray(0, 8).toString("base64");
+    expect(() => decryptSecret({ ...rec, iv: iv8 }, "ref.t", keyring)).toThrow(
+      VaultError,
+    );
+  });
+
   it("lie le secret à sa référence : un enregistrement copié sous une autre référence est refusé", () => {
     const keyring = ring();
     const rec = encryptSecret("abcdefghijkl", "ref.a", keyring.current);

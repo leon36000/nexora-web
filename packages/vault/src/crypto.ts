@@ -28,6 +28,8 @@ export class VaultError extends Error {
 }
 
 export const ALGORITHM = "aes-256-gcm";
+const IV_BYTES = 12;
+const TAG_BYTES = 16;
 
 export interface MasterKey {
   version: number;
@@ -117,8 +119,10 @@ const keyAad = (ref: string, version: number) =>
   Buffer.from(`nexora-vault/v1/datakey/${ref}/${version}`);
 
 function seal(key: Buffer, plaintext: Buffer, aad: Buffer) {
-  const iv = randomBytes(12);
-  const cipher = createCipheriv(ALGORITHM, key, iv);
+  const iv = randomBytes(IV_BYTES);
+  const cipher = createCipheriv(ALGORITHM, key, iv, {
+    authTagLength: TAG_BYTES,
+  });
   cipher.setAAD(aad);
   const ciphertext = Buffer.concat([cipher.update(plaintext), cipher.final()]);
   return { iv, ciphertext, tag: cipher.getAuthTag() };
@@ -131,7 +135,14 @@ function open(
   tag: Buffer,
   aad: Buffer,
 ): Buffer {
-  const decipher = createDecipheriv(ALGORITHM, key, iv);
+  // Un tag GCM tronqué (4 octets) serait accepté par Node si on ne fixe pas
+  // la longueur : on impose 16 octets et un IV de 12 octets partout.
+  if (tag.length !== TAG_BYTES || iv.length !== IV_BYTES) {
+    throw new Error("étiquette ou IV de longueur invalide");
+  }
+  const decipher = createDecipheriv(ALGORITHM, key, iv, {
+    authTagLength: TAG_BYTES,
+  });
   decipher.setAAD(aad);
   decipher.setAuthTag(tag);
   return Buffer.concat([decipher.update(ciphertext), decipher.final()]);
