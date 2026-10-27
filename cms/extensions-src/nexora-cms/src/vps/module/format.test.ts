@@ -632,3 +632,12 @@ describe("corps de l'application", () => {
       ]).toEqual([over, false]);
   });
 });
+
+describe("« Publier vers Stripe » sans Stripe configuré", () => {
+  test("le module explique quoi déposer au Coffre au lieu d'une erreur générique", () => {
+    const text = errorText(503, "stripe_not_configured");
+    expect(text).toContain("stripe.secret_key");
+    expect(text).toContain("Coffre");
+    expect(text).not.toBe(errorText(500, "autre"));
+  });
+});

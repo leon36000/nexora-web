@@ -377,6 +377,8 @@ const ERROR_TEXT: Labels = {
   publication_refused: "Refusé par la garde de publication.",
   stale_version:
     "Le catalogue publié a changé depuis ce brouillon : créez-en un nouveau.",
+  stripe_not_configured:
+    "Stripe n’est pas configuré : collez la clé de test (sk_test_…) sous « stripe.secret_key » dans le Coffre, puis réessayez.",
   no_published_catalog: "Aucun catalogue publié.",
   nothing_to_sync: "Aucun plan publié à synchroniser.",
   payload_too_large: "Les données envoyées sont trop volumineuses.",
