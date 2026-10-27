@@ -5,7 +5,9 @@
   "workspaces": [
     "web",
     "worker",
-    "packages/*"
+    "packages/*",
+    "cms",
+    "cms/extensions-src/*"
   ],
   "scripts": {
     "lint": "biome check .",
