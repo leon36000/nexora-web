@@ -83,6 +83,9 @@ const FILE_FIELDS = [
 ];
 const USER_FIELDS = ["id", "first_name", "last_name", "avatar", "role"];
 const APPROVAL_CREATE_FIELDS = [
+  // S8 : un agent ne peut pas relire l'approbation qu'il crée (Directus répond alors sans corps) ; il fournit donc
+  // lui-même l'identifiant (UUID) pour garder la référence.
+  "id",
   "status",
   "kind",
   "collection",
@@ -289,6 +292,11 @@ function agentPolicy(a: (typeof AGENTS)[number]): PolicyDef {
   } else {
     perms.push(...publishedReadPerms());
   }
+  // S8 : seul le Rédacteur crée la COQUILLE (en brouillon) d'une nouvelle page ; la garde de publication refuse toute
+  // écriture qui fixerait `status = published` ou toucherait une page publiée. Les autres n'écrivent que des versions.
+  if (a.key === "redacteur")
+    for (const c of ["pages", "pages_translations"])
+      perms.push({ collection: c, action: "create", fields: ALL });
   perms.push(
     proposeApproval(),
     read("approvals", { permissions: ownApprovals, degrade: "drop" }),
