@@ -85,6 +85,8 @@ describe("en-têtes de sécurité (S9)", () => {
     expect(csp.get("form-action")).toEqual(["'self'"]);
     expect(csp.get("script-src")).not.toContain("'unsafe-eval'");
     expect(csp.get("connect-src")).toEqual(["'self'"]);
+    // vidéos et sous-titres du CMS : seulement depuis le site (/api/media)
+    expect(csp.get("media-src")).toEqual(["'self'"]);
     expect(PAGE_CSP_DIRECTIVES.length).toBeGreaterThan(8);
   });
 

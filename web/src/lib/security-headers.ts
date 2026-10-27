@@ -30,6 +30,7 @@ export const PAGE_CSP_DIRECTIVES = [
   "default-src 'self'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
+  "media-src 'self'",
   "font-src 'self'",
   "connect-src 'self'",
   "worker-src 'self' blob:",
