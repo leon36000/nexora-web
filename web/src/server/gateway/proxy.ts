@@ -902,6 +902,7 @@ function streamResponse(ctx: {
   let usage: Usage | null = null;
   let chars = 0;
   let closed = false;
+  let sawDone = false;
 
   const settle = async (outcome: "done" | "cancelled" | "failed") => {
     if (closed) return;
@@ -965,7 +966,10 @@ function streamResponse(ctx: {
       .map((l) => l.slice(5).replace(/^ /, ""));
     if (dataLines.length === 0) return `${event}\n\n`;
     const payload = dataLines.join("\n");
-    if (payload.trim() === "[DONE]") return "data: [DONE]\n\n";
+    if (payload.trim() === "[DONE]") {
+      sawDone = true;
+      return "data: [DONE]\n\n";
+    }
     let obj: unknown;
     try {
       obj = JSON.parse(payload);
@@ -992,11 +996,9 @@ function streamResponse(ctx: {
         const { done, value } = await reader.read();
         if (done) {
           buffer += decoder.decode();
-          if (buffer.trim().length > 0) {
-            const out = processEvent(buffer);
-            if (out) controller.enqueue(encoder.encode(out));
-          }
+          const last = buffer.trim().length > 0 ? processEvent(buffer) : null;
           await settle(usage ? "done" : "failed");
+          if (last) controller.enqueue(encoder.encode(last));
           controller.close();
           return;
         }
@@ -1009,6 +1011,8 @@ function streamResponse(ctx: {
           const piece = processEvent(part);
           if (piece) out += piece;
         }
+        // Le règlement précède l'envoi de [DONE] : quand le client voit la fin du flux, le grand livre est à jour.
+        if (sawDone) await settle(usage ? "done" : "failed");
         if (out) controller.enqueue(encoder.encode(out));
       } catch {
         // Coupure de l'amont en cours de flux.

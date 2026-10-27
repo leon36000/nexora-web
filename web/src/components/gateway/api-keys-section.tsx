@@ -65,7 +65,7 @@ export function ApiKeysSection({
           <p className="mt-4 text-body text-fg-muted">{t.empty}</p>
         ) : (
           <section
-            aria-label={t.list}
+            aria-label={`${t.list} (${t.tableLabel})`}
             // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
             tabIndex={0}
             className={scroller}

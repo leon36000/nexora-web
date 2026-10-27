@@ -115,6 +115,7 @@ export const gatewayFrCA = {
         "Faites votre premier appel avec l’un des exemples ci-dessous.",
       ],
     },
+    code: "code",
     firstCall: "Premier appel",
     streaming: "Diffusion en continu",
     streamingText:
@@ -136,6 +137,7 @@ export const gatewayFrCA = {
     },
     errors: {
       title: "Erreurs",
+      tableLabel: "tableau",
       lead: "Les erreurs suivent le format d’OpenAI : un objet error avec message, type et code.",
       columns: { status: "Statut", code: "Code", meaning: "Signification" },
       rows: [
@@ -205,6 +207,7 @@ export const gatewayFrCA = {
     copy: "Copier la clé",
     copied: "Clé copiée",
     close: "J’ai copié la clé",
+    tableLabel: "tableau",
     list: "Vos clés",
     empty: "Aucune clé pour le moment.",
     columns: {

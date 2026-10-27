@@ -52,7 +52,7 @@ export default async function ApiDocsPage() {
             {d.baseUrlTitle}
           </h2>
           <p className={p}>{fmt(d.baseUrlText, { url: baseUrl })}</p>
-          <CodeBlock label={d.baseUrlTitle} code={baseUrl} />
+          <CodeBlock label={`${d.baseUrlTitle} (${d.code})`} code={baseUrl} />
         </section>
 
         <section aria-labelledby="docs-steps">
@@ -80,7 +80,7 @@ export default async function ApiDocsPage() {
             {d.streaming}
           </h2>
           <p className={p}>{d.streamingText}</p>
-          <CodeBlock label={d.streaming} code={streamingSample(example)} />
+          <CodeBlock label={`${d.streaming} (${d.code})`} code={streamingSample(example)} />
         </section>
 
         <section aria-labelledby="docs-models">
@@ -88,7 +88,7 @@ export default async function ApiDocsPage() {
             {d.models}
           </h2>
           <p className={p}>{d.modelsText}</p>
-          <CodeBlock label={d.models} code={`curl ${baseUrl}/models`} />
+          <CodeBlock label={`${d.models} (${d.code})`} code={`curl ${baseUrl}/models`} />
         </section>
 
         <section aria-labelledby="docs-embeddings">
@@ -115,7 +115,7 @@ export default async function ApiDocsPage() {
           </h2>
           <p className={p}>{d.errors.lead}</p>
           <section
-            aria-label={d.errors.title}
+            aria-label={`${d.errors.title} (${d.errors.tableLabel})`}
             // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
             tabIndex={0}
             className="mt-6 overflow-x-auto rounded-md border border-line"

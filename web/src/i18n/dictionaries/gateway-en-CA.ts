@@ -110,6 +110,7 @@ export const gatewayEnCA: GatewayDictionary = {
         "Make your first call with one of the examples below.",
       ],
     },
+    code: "code",
     firstCall: "First call",
     streaming: "Streaming",
     streamingText:
@@ -131,6 +132,7 @@ export const gatewayEnCA: GatewayDictionary = {
     },
     errors: {
       title: "Errors",
+      tableLabel: "table",
       lead: "Errors follow OpenAI’s format: an error object with message, type and code.",
       columns: { status: "Status", code: "Code", meaning: "Meaning" },
       rows: [
@@ -195,6 +197,7 @@ export const gatewayEnCA: GatewayDictionary = {
     copy: "Copy key",
     copied: "Key copied",
     close: "I have copied the key",
+    tableLabel: "table",
     list: "Your keys",
     empty: "No keys yet.",
     columns: {

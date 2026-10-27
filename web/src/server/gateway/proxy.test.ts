@@ -637,6 +637,25 @@ describe("flux SSE", () => {
     });
   });
 
+  it("le grand livre est à jour dès que le client lit [DONE], sans attendre la fermeture du flux", async () => {
+    const c = await client();
+    upstream = () => sse(events);
+    const res = await handleChatCompletions(post(c.key, chat({ stream: true })), deps());
+    const reader = res.body?.getReader();
+    if (!reader) throw new Error("flux attendu");
+    const decoder = new TextDecoder();
+    let seen = "";
+    while (!seen.includes("[DONE]")) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      seen += decoder.decode(value);
+    }
+    expect(seen).toContain("[DONE]");
+    const acct = await getAccount(t.db, c.org);
+    expect(acct).toMatchObject({ balanceMicro: 10n * M - 240n, heldMicro: 0n });
+    await reader.cancel();
+  });
+
   it("garde l'usage dans le flux quand le client l'a demandé, sans les coûts amont", async () => {
     const c = await client();
     upstream = () => sse(events);

@@ -33,6 +33,7 @@
     "@types/nodemailer": "8.0.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "openai": "7.45.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
