@@ -29,7 +29,7 @@ Nexora designs, installs and supports AI systems built around how you work: runn
 
 *Start from the problem: five situations, each leading to its solution. · Affirmations : CL-01*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=clair`
 
 ## Start with your problem.
 
@@ -69,7 +69,7 @@ What is in progress, what is blocked, what costs more than planned: the informat
 
 *Three before / after scenarios, labelled as examples. · Affirmations : CL-11, CL-21*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=sable`
 
 ## Before. After. Your call.
 
@@ -93,33 +93,45 @@ Before: it waits until someone opens the inbox.
 After: the system qualifies it, creates the file and alerts the person in charge with a summary.
 Your control: your team approves the reply to the customer before it is sent.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 4 — Section (`block_section`)
 
-*The two deployment modes; definition of sovereignty. · Affirmations : CL-02, CL-05, CL-26*
+*Souveraineté définie en une phrase ; introduit les deux modes. · Affirmations : CL-26*
 
-Réglages : `columns=2`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## Your premises. Or ours.
 
 AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora offers two ways to get there.
 
-#### Your premises.
+### Bloc 5 — Section (`block_section`)
+
+*Mode sur : schéma de périmètre et lien vers le détail. · Affirmations : CL-02, CL-05*
+
+Réglages : `media_position=none`, `visual=perimetre-sur-place`, `tone=sombre`
+
+## Your premises.
 
 We install the system on your own server, in your offices or with the host of your choice. The hardware and the access are yours. Before go-live, we list what leaves the network, if anything: updates, licences, and an external model if you choose one.
 
-→ [See the on-premises mode](/en/deployment/on-premises/)
+[See the on-premises mode](/en/deployment/on-premises/)
 
-#### Ours, in Quebec.
+### Bloc 6 — Section (`block_section`)
+
+*Mode heberge : schéma de périmètre et lien vers le détail. · Affirmations : CL-05*
+
+Réglages : `media_position=left`, `visual=perimetre-heberge`, `tone=sombre`
+
+## Ours, in Quebec.
 
 We host and operate the system in our infrastructure, located in Quebec. You buy no server and no hardware. Where your data, backups and logs sit, and who can access them: we put it in writing in the deployment study.
 
-→ [See the hosted mode](/en/deployment/hosted-quebec/)
+[See the hosted mode](/en/deployment/hosted-quebec/)
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *The products presented as one set, each with its real status. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=liste`, `tone=clair`
 
 ## One suite, not a pile of tools.
 
@@ -160,11 +172,11 @@ Status: no availability and no date are announced at this stage.
 
 → [See the suite](/en/suite/)
 
-### Bloc 6 — Section (`block_section`)
+### Bloc 8 — Section (`block_section`)
 
 *Feature spot for OPSYS-AI and its construction cycle. · Affirmations : CL-30, CL-31*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## OPSYS-AI. Ten departments, one file.
 
@@ -179,11 +191,11 @@ It is not a chatbot, a renamed customer relationship management (CRM) tool or te
 - **Invoice.** Draft invoice, receivables and actual costs.
 - **Steer.** Marketing, analytics, strategy and a memory of decisions.
 
-### Bloc 7 — Section (`block_section`)
+### Bloc 9 — Section (`block_section`)
 
 *Five-step method. · Affirmations : CL-03, CL-04, CL-14*
 
-Réglages : `media_position=none`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
 ## Five steps. One case at a time.
 
@@ -191,17 +203,37 @@ We start with one concrete problem, put into service and verified, before wideni
 
 [Read the method](/en/method/)
 
-- **Understand.** We observe how the work gets done today: where time is lost, what information comes in, who decides.
-- **Integrate.** We connect the software you already use, so information flows without being retyped.
-- **Verify.** We test on your real cases, with your approvals, before anything goes live.
-- **Train.** Your team learns to supervise, correct and decide, not to program.
-- **Operate and improve.** We run the system with you, keep what works and adjust the rest.
+### Bloc 10 — Cartes (`block_cards`)
 
-### Bloc 8 — Cartes (`block_cards`)
+*Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
+
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`
+
+#### Understand.
+
+We observe how the work gets done today: where time is lost, what information comes in, who decides.
+
+#### Integrate.
+
+We connect the software you already use, so information flows without being retyped.
+
+#### Verify.
+
+We test on your real cases, with your approvals, before anything goes live.
+
+#### Train.
+
+Your team learns to supervise, correct and decide, not to program.
+
+#### Operate and improve.
+
+We run the system with you, keep what works and adjust the rest.
+
+### Bloc 11 — Cartes (`block_cards`)
 
 *Trust: verifiable commitments, no figures and no customers. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31*
 
-Réglages : `columns=3`
+Réglages : `columns=3`, `layout=grille`, `tone=sombre`
 
 ## Commitments you can verify.
 
@@ -235,11 +267,11 @@ We publish no testimonial, figure or certification that we cannot prove. When a 
 
 → [See the trust centre](/en/trust-center/)
 
-### Bloc 9 — FAQ (`block_faq`)
+### Bloc 12 — FAQ (`block_faq`)
 
 *FAQ: the objections from report 06 §8.4, true answers only. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25*
 
-Réglages : `emit_jsonld=true`
+Réglages : `emit_jsonld=true`, `tone=clair`
 
 ## Your questions. Our answers.
 
@@ -279,7 +311,7 @@ It depends on the use case. With us, you buy no server. On your premises, we siz
 
 Software that carries out a task for you, with the tools and documents you authorize, and that asks for your approval before an important action.
 
-### Bloc 10 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
 *Final call to action. · Affirmations : CL-01*
 

@@ -154,6 +154,22 @@ export const enCA: Dictionary = {
 
   cms: {
     priceOnRequest: "On request",
+    toc: { label: "On this page" },
+    status: {
+      disponible: "Available",
+      pilote: "Pilot",
+      prevu: "Planned",
+      legend: "Status",
+    },
+    modules: { detail: "See details" },
+    visuals: {
+      "perimetre-sur-place":
+        "Diagram: a single perimeter surrounds your data, the model and the compute, on your premises. A request enters through a controlled gateway and stays inside.",
+      "perimetre-heberge":
+        "Diagram: your data crosses a controlled gateway into the perimeter of Nexora’s infrastructure in Québec, where the model and the storage are.",
+      "flux-donnees":
+        "Diagram: your documents enter through a controlled gateway to the model, inside the perimeter. What the system prepares leaves only after a person approves it.",
+    },
     preview: {
       banner: "Preview — not published",
       version: "Version:",
@@ -166,6 +182,118 @@ export const enCA: Dictionary = {
       title: "This page is temporarily unavailable.",
       text: "We can’t read the content right now. Please try again in a few moments.",
       cta: "Back to home",
+    },
+  },
+
+  contact: {
+    meta: {
+      title: "Book a diagnostic | Nexora",
+      description:
+        "Describe your need in a few questions: Nexora records your request and the team writes back. Installed on your premises or hosted in Québec.",
+    },
+    label: "Diagnostic",
+    title: "Let’s talk about your need.",
+    lead: "A few questions to understand your situation, then your contact details. The message is optional.",
+    next: {
+      title: "What happens next",
+      items: [
+        "Your request is recorded as soon as you send it.",
+        "The Nexora team is notified by email.",
+        "We write to the address you give us.",
+      ],
+      note: "We do not announce a response time. Sending this form commits you to nothing.",
+    },
+    noscript:
+      "This form requires JavaScript: the anti-abuse check is computed in your browser, with no third-party service.",
+    form: {
+      label: "Diagnostic request",
+      step: "Step {n} of {total}",
+      steps: ["Your need", "Your details"],
+      required: "required",
+      optional: "optional",
+      next: "Continue",
+      back: "Back",
+      submit: "Send my request",
+      sending: "Sending…",
+      errorsTitle: "The form contains errors.",
+      need: {
+        label: "What do you need?",
+        options: {
+          diagnostic: "A diagnostic to pin down my need",
+          installation: "Installation of an AI server",
+          automatisation: "Custom automation",
+          "opsys-ai": "OPSYS-AI (construction and field services)",
+          workstudio: "Nexora WorkStudio",
+          "vps-api": "A virtual private server, models or the API",
+          autre: "Something else",
+        },
+      },
+      sector: {
+        label: "Your line of business",
+        placeholder: "Choose a sector",
+        options: {
+          construction: "Construction and field services",
+          "services-professionnels": "Professional services",
+          sante: "Health and social services",
+          commerce: "Retail and customer services",
+          industrie: "Industry and manufacturing",
+          technologie: "Technology and development",
+          autre: "Other sector",
+        },
+      },
+      deployment: {
+        label: "Deployment mode you have in mind",
+        hint: "This choice decides nothing: it helps us prepare the conversation.",
+        options: {
+          "sur-place": "On my premises, on my own server",
+          heberge: "Hosted in Québec by Nexora",
+          indecis: "I don’t know yet",
+        },
+      },
+      name: { label: "Your name", autocomplete: "name" },
+      email: { label: "Your email", autocomplete: "email" },
+      company: { label: "Your company", autocomplete: "organization" },
+      message: {
+        label: "Your message",
+        hint: "Optional: the context, where you lose time, the tools you use today.",
+      },
+      consentMarketing: {
+        label: "I would also like to receive news from Nexora by email.",
+        hint: "Optional and separate from your request: leave this box unchecked to simply write to us.",
+      },
+      privacy: {
+        before:
+          "The information you enter is used to answer your request. See the ",
+        link: "privacy policy",
+        after: ".",
+      },
+      honeypot: "Do not fill in this field",
+      altchaLabel: "Anti-abuse check",
+      altchaPending:
+        "Please wait: the anti-abuse check is finishing in your browser.",
+    },
+    errors: {
+      required: "This field is required.",
+      invalid_email: "This email address doesn’t look valid.",
+      invalid_choice: "Choose one of the options offered.",
+      too_long: "This text is too long.",
+      invalid_chars: "This field contains characters that are not allowed.",
+      altcha:
+        "The anti-abuse check did not succeed. Please try again in a moment.",
+      rate_limited:
+        "Too many requests from your connection. Please try again in a few minutes.",
+      storage:
+        "Your request could not be recorded: nothing was kept. Please try again in a moment.",
+      network:
+        "The server isn’t responding. Check your connection and try again.",
+      unavailable: "The form is temporarily closed. Please try again later.",
+    },
+    success: {
+      title: "Request recorded.",
+      text: "Your request is recorded and the Nexora team has been notified. We will write to the address you gave us. We do not announce a response time.",
+      already:
+        "This request was already recorded: there is no need to send it again. The team has been notified.",
+      home: "Back to home",
     },
   },
 

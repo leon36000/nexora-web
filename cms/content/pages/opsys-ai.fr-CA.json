@@ -34,7 +34,9 @@
       "role": "Les problèmes du dirigeant.",
       "claims": [],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair"
       },
       "translation": {
         "title": "Ce qui vous coûte du temps.",
@@ -68,7 +70,9 @@
       "role": "Parcours global\u00a0: cinq temps qui regroupent les dix départements.",
       "claims": ["CL-30", "CL-31"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable"
       },
       "translation": {
         "title": "Un dossier. Dix départements.",
@@ -121,7 +125,10 @@
         "CL-42"
       ],
       "fields": {
-        "columns": "2"
+        "columns": "4",
+        "layout": "modules",
+        "tone": "clair",
+        "anchor_id": "departements"
       },
       "translation": {
         "title": "Les dix départements.",
@@ -129,43 +136,53 @@
         "cards": [
           {
             "title": "M1 — Réception.",
-            "text": "Centralise et qualifie les demandes, prépare les suivis et transfère à la bonne personne avec le contexte.\nStatut\u00a0: pilote. Disponible\u00a0: qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote\u00a0: messages vocaux transcrits. Prévu\u00a0: réponse envoyée au client, réception vocale en temps réel."
+            "text": "Centralise et qualifie les demandes, prépare les suivis et transfère à la bonne personne avec le contexte.\nDisponible\u00a0: qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote\u00a0: messages vocaux transcrits. Prévu\u00a0: réponse envoyée au client, réception vocale en temps réel.",
+            "status": "pilote"
           },
           {
             "title": "M2 — Relation client et ventes.",
-            "text": "Suit contacts, dossiers, soumissions et relances, et suggère la prochaine action.\nStatut\u00a0: pilote. Disponible\u00a0: création du dossier à partir d'une demande, prochaine action suggérée. En pilote\u00a0: suivi du dossier, relances, dédoublonnage. Prévu\u00a0: connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban)."
+            "text": "Suit contacts, dossiers, soumissions et relances, et suggère la prochaine action.\nDisponible\u00a0: création du dossier à partir d'une demande, prochaine action suggérée. En pilote\u00a0: suivi du dossier, relances, dédoublonnage. Prévu\u00a0: connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).",
+            "status": "pilote"
           },
           {
             "title": "M3 — Estimation.",
-            "text": "Prépare une estimation et une soumission à partir des informations fournies, expose ce qui manque et refuse de chiffrer quand l'information est insuffisante.\nStatut\u00a0: disponible pour le calcul et la soumission brouillon, pilote pour le reste. Les quantités et les prix sont saisis par votre équipe. La soumission est un brouillon, filtré de vos coûts et marges internes. Prévu\u00a0: mesure à partir de photos."
+            "text": "Prépare une estimation et une soumission à partir des informations fournies, expose ce qui manque et refuse de chiffrer quand l'information est insuffisante.\nStatut\u00a0: disponible pour le calcul et la soumission brouillon, pilote pour le reste. Les quantités et les prix sont saisis par votre équipe. La soumission est un brouillon, filtré de vos coûts et marges internes. Prévu\u00a0: mesure à partir de photos.",
+            "status": "pilote"
           },
           {
             "title": "M4 — Terrain.",
-            "text": "Organise équipes, horaires, interventions, temps et preuves de réalisation.\nStatut\u00a0: pilote. Disponible\u00a0: intervention créée à partir d'une soumission acceptée. En pilote\u00a0: cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu\u00a0: géolocalisation au pointage, itinéraires routiers, répartition automatique."
+            "text": "Organise équipes, horaires, interventions, temps et preuves de réalisation.\nDisponible\u00a0: intervention créée à partir d'une soumission acceptée. En pilote\u00a0: cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu\u00a0: géolocalisation au pointage, itinéraires routiers, répartition automatique.",
+            "status": "pilote"
           },
           {
             "title": "M5 — FinanceCore.",
-            "text": "Prépare facturation, suivi financier, coûts et analyses, avec les validations appropriées.\nStatut\u00a0: pilote. Disponible\u00a0: facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote\u00a0: prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu\u00a0: envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable."
+            "text": "Prépare facturation, suivi financier, coûts et analyses, avec les validations appropriées.\nDisponible\u00a0: facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote\u00a0: prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu\u00a0: envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable.",
+            "status": "pilote"
           },
           {
             "title": "M6 — Matériel.",
-            "text": "Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.\nStatut\u00a0: pilote. Disponible\u00a0: besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote\u00a0: bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu\u00a0: envoi de la commande au fournisseur. Ce département ne paie rien."
+            "text": "Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.\nDisponible\u00a0: besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote\u00a0: bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu\u00a0: envoi de la commande au fournisseur. Ce département ne paie rien.",
+            "status": "pilote"
           },
           {
             "title": "M7 — Marketing.",
-            "text": "Transforme les informations autorisées en propositions de contenus et suit d'où viennent vos clients.\nStatut\u00a0: disponible après configuration de votre marque, en pilote pour le reste. Les propositions sont soumises à votre approbation et le consentement est vérifié\u00a0; l'exportation vers vos canaux est manuelle. En pilote\u00a0: suivi de la demande jusqu'à la soumission et à la marge, sans coût publicitaire pour l'instant. Les demandes d'avis restent des brouillons. Prévu\u00a0: publication automatique sur les réseaux sociaux."
+            "text": "Transforme les informations autorisées en propositions de contenus et suit d'où viennent vos clients.\nStatut\u00a0: disponible après configuration de votre marque, en pilote pour le reste. Les propositions sont soumises à votre approbation et le consentement est vérifié\u00a0; l'exportation vers vos canaux est manuelle. En pilote\u00a0: suivi de la demande jusqu'à la soumission et à la marge, sans coût publicitaire pour l'instant. Les demandes d'avis restent des brouillons. Prévu\u00a0: publication automatique sur les réseaux sociaux.",
+            "status": "pilote"
           },
           {
             "title": "M8 — Analytique.",
-            "text": "Rend les indicateurs compréhensibles, sourcés et accompagnés de leur qualité\u00a0: un indicateur affiche «\u00a0non calculable\u00a0» quand une donnée manque.\nStatut\u00a0: pilote. Disponible\u00a0: vue exécutive. En pilote\u00a0: mesures par chantier. Prévu\u00a0: prévisions, indice de santé."
+            "text": "Rend les indicateurs compréhensibles, sourcés et accompagnés de leur qualité\u00a0: un indicateur affiche «\u00a0non calculable\u00a0» quand une donnée manque.\nDisponible\u00a0: vue exécutive. En pilote\u00a0: mesures par chantier. Prévu\u00a0: prévisions, indice de santé.",
+            "status": "pilote"
           },
           {
             "title": "M9 — Stratégie.",
-            "text": "Réunit les informations utiles à la direction, aux priorités et au suivi des décisions.\nStatut\u00a0: pilote. Disponible\u00a0: synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote\u00a0: suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu\u00a0: scénarios, priorités et objectifs."
+            "text": "Réunit les informations utiles à la direction, aux priorités et au suivi des décisions.\nDisponible\u00a0: synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote\u00a0: suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu\u00a0: scénarios, priorités et objectifs.",
+            "status": "pilote"
           },
           {
             "title": "M10 — Mémoire.",
-            "text": "Retrouve les décisions et les connaissances autorisées, avec leur contexte et leurs sources.\nStatut\u00a0: disponible pour le journal des décisions et des événements, qui détecte toute modification\u00a0; en pilote pour la recherche dans les connaissances de l'entreprise, désactivée par défaut. Prévu\u00a0: graphe de relations entre dossiers."
+            "text": "Retrouve les décisions et les connaissances autorisées, avec leur contexte et leurs sources.\nStatut\u00a0: disponible pour le journal des décisions et des événements, qui détecte toute modification\u00a0; en pilote pour la recherche dans les connaissances de l'entreprise, désactivée par défaut. Prévu\u00a0: graphe de relations entre dossiers.",
+            "status": "pilote"
           }
         ]
       }
@@ -175,7 +192,10 @@
       "role": "Démonstration centrale, maillon par maillon\u00a0: réel / démonstration / cible.",
       "claims": ["CL-53", "CL-60", "CL-32", "CL-33", "CL-34", "CL-31"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre",
+        "anchor_id": "parcours"
       },
       "translation": {
         "title": "De la demande à la facture.",
@@ -229,7 +249,9 @@
       "role": "Scénario signature «\u00a0travaux terminés\u00a0», maillon par maillon.",
       "claims": ["CL-54", "CL-34", "CL-35", "CL-41", "CL-58", "CL-60"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre"
       },
       "translation": {
         "title": "Quand les travaux se terminent.",
@@ -291,7 +313,9 @@
         "CL-58"
       ],
       "fields": {
-        "columns": "3"
+        "columns": "3",
+        "layout": "grille",
+        "tone": "clair"
       },
       "translation": {
         "title": "Ce qui la distingue.",
@@ -329,7 +353,9 @@
       "role": "Mobile\u00a0: quatre profils, droits distincts, hors ligne non annoncé.",
       "claims": ["CL-55"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable"
       },
       "translation": {
         "title": "Quatre profils sur mobile.",
@@ -359,7 +385,10 @@
       "role": "Déploiement et souveraineté, sans «\u00a0mode souverain\u00a0» inventé.",
       "claims": ["CL-02", "CL-05", "CL-06", "CL-37", "CL-59", "CL-63", "CL-36"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "flux-donnees",
+        "tone": "sombre",
+        "anchor_id": "souverainete"
       },
       "translation": {
         "title": "Déploiement et souveraineté, sans détour.",
@@ -393,12 +422,27 @@
       "role": "Mise en service\u00a0: étude, configuration, pilote, formation, exploitation.",
       "claims": ["CL-03", "CL-04", "CL-14"],
       "fields": {
-        "media_position": "none"
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
+        "anchor_id": "mise-en-service"
       },
       "translation": {
         "title": "De l'étude à la mise en service.",
-        "body": "<p>Nous n'annonçons aucun délai universel. Il dépend du nombre de départements activés, de vos données et de vos intégrations, et il se mesure sur un pilote.</p>",
-        "items": [
+        "body": "<p>Nous n'annonçons aucun délai universel. Il dépend du nombre de départements activés, de vos données et de vos intégrations, et il se mesure sur un pilote.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les cinq étapes de la mise en service, en frise numérotée.",
+      "claims": ["CL-03", "CL-04", "CL-14"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "clair"
+      },
+      "translation": {
+        "cards": [
           {
             "title": "Étude de déploiement.",
             "text": "Nous cartographions vos processus, vos outils et vos données, et choisissons les départements à activer en premier."
@@ -442,7 +486,9 @@
         "CL-D01"
       ],
       "fields": {
-        "emit_jsonld": true
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
       },
       "translation": {
         "title": "Vos questions. Nos réponses.",

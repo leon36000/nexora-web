@@ -10,3 +10,5 @@ export const pageSlugTag = (code: LangCode, slug: string) =>
   `page-slug:${code}:${slug}`;
 export const NAV_TAG = "nav";
 export const SITE_TAG = "site";
+/** Table de correspondance des slugs entre langues : change dès qu'une page est publiée, renommée ou dépubliée. */
+export const SLUGS_TAG = "slugs";

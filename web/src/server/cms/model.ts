@@ -5,6 +5,19 @@ import type { LangCode } from "./lang";
 
 export type Cta = { label: string; href: string };
 
+/** Ton d'une section : sombre (encre forêt), clair (papier) ou sable (surface claire relevée). */
+export type Tone = "sombre" | "clair" | "sable";
+export const TONES = ["sombre", "clair", "sable"] as const;
+/** Ancre facultative d'un bloc (`^[a-z0-9-]{0,40}$`), commune à tous les blocs. */
+export type Anchored = { anchorId: string | null };
+export type CardLayout = "grille" | "liste" | "etapes" | "modules";
+export type CardStatus = "disponible" | "pilote" | "prevu";
+export type SectionVisual =
+  | "aucun"
+  | "perimetre-sur-place"
+  | "perimetre-heberge"
+  | "flux-donnees";
+
 export type MediaRef = {
   id: string;
   width: number | null;
@@ -13,10 +26,10 @@ export type MediaRef = {
   alt: string;
 };
 
-export type HeroBlock = {
+export type HeroBlock = Anchored & {
   type: "hero";
   key: string;
-  variant: "sombre" | "clair";
+  variant: Tone;
   perimeterGrid: boolean;
   media: MediaRef | null;
   eyebrow: string | null;
@@ -26,9 +39,11 @@ export type HeroBlock = {
   secondary: Cta | null;
 };
 
-export type SectionBlock = {
+export type SectionBlock = Anchored & {
   type: "section";
   key: string;
+  tone: Tone;
+  visual: SectionVisual;
   title: string | null;
   body: RichNode[] | null;
   media: MediaRef | null;
@@ -36,9 +51,11 @@ export type SectionBlock = {
   items: { title: string | null; text: string | null }[];
 };
 
-export type CardsBlock = {
+export type CardsBlock = Anchored & {
   type: "cards";
   key: string;
+  tone: Tone;
+  layout: CardLayout;
   columns: 2 | 3 | 4;
   title: string | null;
   intro: string | null;
@@ -47,12 +64,17 @@ export type CardsBlock = {
     text: string | null;
     href: string | null;
     linkLabel: string | null;
+    /** Libellé court (disposition « liste » : colonne de gauche). */
+    label: string | null;
+    /** Statut (disposition « modules »). */
+    status: CardStatus | null;
   }[];
 };
 
-export type PricingBlock = {
+export type PricingBlock = Anchored & {
   type: "pricing";
   key: string;
+  tone: Tone;
   title: string | null;
   intro: string | null;
   plans: {
@@ -66,18 +88,19 @@ export type PricingBlock = {
   note: string | null;
 };
 
-export type FaqBlock = {
+export type FaqBlock = Anchored & {
   type: "faq";
   key: string;
+  tone: Tone;
   emitJsonLd: boolean;
   title: string | null;
   items: { question: string; answer: string }[];
 };
 
-export type CtaBlock = {
+export type CtaBlock = Anchored & {
   type: "cta";
   key: string;
-  tone: "sombre" | "clair" | "accent";
+  tone: Tone;
   title: string;
   text: string | null;
   primary: Cta | null;
@@ -129,9 +152,14 @@ export type SiteSettings = {
 export type NavItem = {
   id: string;
   placement: "header" | "footer" | "legal";
-  style: "link" | "button";
+  style: "link" | "button" | "utility";
   parent: string | null;
   label: string;
+  /** Vide pour un parent qui n'ouvre qu'un menu ou une colonne. */
   href: string;
+  description: string | null;
   children: NavItem[];
 };
+
+/** Slugs d'une même page dans chaque langue (table de correspondance des pages publiées). */
+export type SlugPair = { "fr-CA"?: string; "en-CA"?: string };
