@@ -113,6 +113,7 @@ export const ORDER_STATUS: Labels = {
   failed: "échouée",
   canceled: "annulée",
   expired: "expirée",
+  late_payment: "payée après expiration (à traiter)",
 };
 export const INSTANCE_STATUS: Labels = {
   provisioning: "en cours de création",

@@ -6,16 +6,24 @@ import {
   enqueue,
   eq,
   inArray,
+  isNull,
+  or,
   type Region,
   type SubscriptionStatus,
   sql,
+  subscriptions,
   type VpsTerm,
   vpsInstances,
   vpsOrders,
 } from "@nexora/db";
-import { getPublishedCatalog, stripePriceFor } from "./catalog.ts";
+import {
+  getCatalogVersionById,
+  getPublishedCatalog,
+  stripePriceFor,
+} from "./catalog.ts";
 import { recordVpsEvent } from "./events.ts";
 import { decideLifecycle, orderPaymentAction } from "./lifecycle.ts";
+import { findPlacement } from "./placement.ts";
 import { parseSshPublicKey } from "./ssh-key.ts";
 
 export type OrderErrorCode =
@@ -212,6 +220,141 @@ export async function onVpsCheckoutCompleted(
 }
 
 /**
+ * Webhook `checkout.session.expired` : Stripe fait foi de l'expiration d'une commande jamais payée
+ * (le balayage de 24 h n'est qu'un filet). N'expire que la commande en attente dont CETTE session est
+ * la session courante (ou sans session enregistrée) et dont aucun abonnement n'est encore relié :
+ * l'expiration d'une ancienne session, ou d'un Checkout terminé, ne touche à rien.
+ */
+export async function onVpsCheckoutExpired(
+  tx: Executor,
+  input: { orderId: string; organizationId: string; sessionId: string },
+): Promise<boolean> {
+  const [order] = await tx
+    .update(vpsOrders)
+    .set({ status: "expired", updatedAt: new Date() })
+    .where(
+      and(
+        eq(vpsOrders.id, input.orderId),
+        eq(vpsOrders.organizationId, input.organizationId),
+        eq(vpsOrders.status, "awaiting_payment"),
+        isNull(vpsOrders.stripeSubscriptionId),
+        or(
+          isNull(vpsOrders.stripeCheckoutSessionId),
+          eq(vpsOrders.stripeCheckoutSessionId, input.sessionId),
+        ),
+      ),
+    )
+    .returning({ id: vpsOrders.id });
+  if (order)
+    await recordVpsEvent(tx, {
+      organizationId: input.organizationId,
+      orderId: input.orderId,
+      actor: "stripe",
+      kind: "checkout_expired",
+      message: "session de paiement expirée sans paiement",
+    });
+  return Boolean(order);
+}
+
+type OrderRow = typeof vpsOrders.$inferSelect;
+
+/** Besoins de la commande, tels que figés dans sa version de catalogue ; `null` si le plan a disparu. */
+async function orderNeeds(tx: Executor, order: OrderRow) {
+  try {
+    const version = await getCatalogVersionById(tx, order.catalogVersionId);
+    const plan = version.snapshot.plans.find((p) => p.code === order.planCode);
+    return plan
+      ? {
+          templateCode: plan.templateCode,
+          vcpu: plan.vcpu,
+          ramMb: plan.ramMb,
+          diskGb: plan.diskGb,
+        }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Paiement confirmé sur une commande EXPIRÉE (ou déjà en attente d'une décision). Le client a payé :
+ *  - une capacité est disponible → la commande est reprise (« paid ») et le provisionnement mis en file ;
+ *  - sinon → « late_payment » : événement visible dans l'administration et alerte de l'opérateur.
+ * Jamais de remboursement automatique (l'opérateur décide depuis Stripe). Idempotente : les gardes
+ * d'état et les clés de tâche font que le rejeu ne change rien.
+ */
+export async function resumeExpiredOrder(
+  tx: Executor,
+  order: OrderRow,
+  now: Date,
+): Promise<"resumed" | "held" | "unchanged"> {
+  if (order.status !== "expired" && order.status !== "late_payment")
+    return "unchanged";
+  const needs = await orderNeeds(tx, order);
+  const slot = needs
+    ? await findPlacement(tx, { region: order.region, ...needs })
+    : null;
+  if (slot) {
+    const [moved] = await tx
+      .update(vpsOrders)
+      .set({
+        status: "paid",
+        paidAt: order.paidAt ?? now,
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(vpsOrders.id, order.id),
+          inArray(vpsOrders.status, ["expired", "late_payment"]),
+        ),
+      )
+      .returning({ id: vpsOrders.id });
+    if (!moved) return "unchanged";
+    await recordVpsEvent(tx, {
+      organizationId: order.organizationId,
+      orderId: order.id,
+      actor: "stripe",
+      kind: "resumed_after_expiry",
+      message:
+        "paiement confirmé après l'expiration de la commande : commande reprise, provisionnement lancé",
+    });
+    await enqueue(tx, {
+      type: "vps.provision",
+      payload: { orderId: order.id },
+      idempotencyKey: `vps-provision:${order.id}`,
+      maxAttempts: 6,
+    });
+    return "resumed";
+  }
+  const [held] = await tx
+    .update(vpsOrders)
+    .set({
+      status: "late_payment",
+      paidAt: order.paidAt ?? now,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(vpsOrders.id, order.id), eq(vpsOrders.status, "expired")))
+    .returning({ id: vpsOrders.id });
+  if (held) {
+    await recordVpsEvent(tx, {
+      organizationId: order.organizationId,
+      orderId: order.id,
+      actor: "stripe",
+      kind: "paid_after_expiry",
+      message:
+        "paiement confirmé après l'expiration de la commande, sans capacité disponible : intervention de l'opérateur requise (aucun remboursement automatique)",
+      detail: { refund: "manual_review" },
+    });
+    await enqueue(tx, {
+      type: "vps.alert",
+      payload: { orderId: order.id, reason: "late_payment" },
+      idempotencyKey: `vps-alert:${order.id}:late_payment`,
+    });
+  }
+  return "held";
+}
+
+/**
  * Appelée dans la transaction du webhook, après chaque transition d'abonnement : provisionne une
  * commande dont l'abonnement donne accès, et met en file la suspension, la reprise ou la résiliation
  * des services existants. Idempotente (clés de tâche dérivées de l'événement).
@@ -226,7 +369,7 @@ export async function reconcileVpsSubscription(
     eventId: string;
     now: Date;
   },
-): Promise<{ provisioned: string[]; lifecycle: string[] }> {
+): Promise<{ provisioned: string[]; held: string[]; lifecycle: string[] }> {
   if (input.linkOrderId)
     await tx
       .update(vpsOrders)
@@ -246,10 +389,16 @@ export async function reconcileVpsSubscription(
     .from(vpsOrders)
     .where(eq(vpsOrders.stripeSubscriptionId, input.stripeSubscriptionId));
   const provisioned: string[] = [];
+  const held: string[] = [];
   const lifecycle: string[] = [];
   const access = accessLevel(input.state, input.now);
   for (const order of orders) {
-    if (orderPaymentAction(order.status, access) === "provision") {
+    const action = orderPaymentAction(order.status, access);
+    if (action === "resume") {
+      const outcome = await resumeExpiredOrder(tx, order, input.now);
+      if (outcome === "resumed") provisioned.push(order.id);
+      else if (outcome === "held") held.push(order.id);
+    } else if (action === "provision") {
       await tx
         .update(vpsOrders)
         .set({
@@ -279,9 +428,10 @@ export async function reconcileVpsSubscription(
       });
       provisioned.push(order.id);
     } else if (
-      order.status === "awaiting_payment" &&
-      (input.state.status === "canceled" ||
-        input.state.status === "incomplete_expired")
+      (order.status === "awaiting_payment" &&
+        (input.state.status === "canceled" ||
+          input.state.status === "incomplete_expired")) ||
+      (order.status === "late_payment" && input.state.status === "canceled")
     ) {
       await tx
         .update(vpsOrders)
@@ -311,5 +461,53 @@ export async function reconcileVpsSubscription(
       lifecycle.push(`${inst.id}:${decision.kind}`);
     }
   }
-  return { provisioned, lifecycle };
+  return { provisioned, held, lifecycle };
+}
+
+/**
+ * Balayage : reprend les commandes « late_payment » dont l'abonnement donne toujours accès et pour
+ * lesquelles une capacité est revenue ; clôt celles dont l'abonnement a été résilié entre-temps.
+ */
+export async function retryLatePayments(
+  db: Database,
+  now: Date,
+): Promise<{ resumed: number; canceled: number }> {
+  const rows = await db
+    .select({
+      order: vpsOrders,
+      status: subscriptions.status,
+      graceEndsAt: subscriptions.graceEndsAt,
+    })
+    .from(vpsOrders)
+    .leftJoin(
+      subscriptions,
+      eq(subscriptions.stripeSubscriptionId, vpsOrders.stripeSubscriptionId),
+    )
+    .where(eq(vpsOrders.status, "late_payment"));
+  let resumed = 0;
+  let canceled = 0;
+  for (const { order, status, graceEndsAt } of rows) {
+    if (!status) continue;
+    if (status === "canceled") {
+      const done = await db
+        .update(vpsOrders)
+        .set({ status: "canceled", updatedAt: new Date() })
+        .where(
+          and(eq(vpsOrders.id, order.id), eq(vpsOrders.status, "late_payment")),
+        )
+        .returning({ id: vpsOrders.id });
+      canceled += done.length;
+      continue;
+    }
+    const access = accessLevel(
+      { status, graceEndsAt: graceEndsAt ?? null },
+      now,
+    );
+    if (orderPaymentAction(order.status, access) !== "resume") continue;
+    const out = await db.transaction((tx) =>
+      resumeExpiredOrder(tx, order, now),
+    );
+    if (out === "resumed") resumed++;
+  }
+  return { resumed, canceled };
 }

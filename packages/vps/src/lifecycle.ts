@@ -74,12 +74,23 @@ export function retentionEnd(from: Date, days: number): Date {
   return new Date(from.getTime() + days * 86_400_000);
 }
 
-/** Une commande se provisionne quand son abonnement donne accès au service, et une seule fois. */
+/**
+ * Ce que le paiement confirmé d'un abonnement fait d'une commande.
+ *   provision : commande en attente ou payée → on provisionne (une seule fois, clé de tâche fixe)
+ *   resume    : commande EXPIRÉE (ou déjà en attente d'une décision) mais payée → on la reprend si une
+ *               capacité est disponible, sinon l'opérateur est alerté (jamais de remboursement automatique)
+ *   wait      : rien à faire
+ */
+export type OrderPaymentAction = "provision" | "resume" | "wait";
+
 export function orderPaymentAction(
   orderStatus: VpsOrderStatus,
   access: AccessLevel,
-): "provision" | "wait" {
-  if (orderStatus !== "awaiting_payment" && orderStatus !== "paid")
-    return "wait";
-  return access === "full" || access === "grace" ? "provision" : "wait";
+): OrderPaymentAction {
+  const paying = access === "full" || access === "grace";
+  if (orderStatus === "awaiting_payment" || orderStatus === "paid")
+    return paying ? "provision" : "wait";
+  if (orderStatus === "expired" || orderStatus === "late_payment")
+    return paying ? "resume" : "wait";
+  return "wait";
 }

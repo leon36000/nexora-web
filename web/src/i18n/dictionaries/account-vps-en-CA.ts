@@ -177,6 +177,7 @@ export const accountVpsEnCA: AccountVpsDictionary = {
       failed: "Our team is on it",
       canceled: "Cancelled",
       expired: "Expired",
+      late_payment: "Payment received, under review",
     },
     hints: {
       awaiting_payment:
@@ -187,6 +188,8 @@ export const accountVpsEnCA: AccountVpsDictionary = {
       failed: "Our team is working on this.",
       canceled: "This order was cancelled.",
       expired: "This order expired without payment.",
+      late_payment:
+        "Your payment was received, but the order had expired. Our team has been alerted and is handling it.",
     },
   },
 
@@ -262,6 +265,9 @@ export const accountVpsEnCA: AccountVpsDictionary = {
       provision_started: "Preparation started",
       placed: "Server assigned",
       no_capacity: "Waiting for capacity",
+      checkout_expired: "Payment session expired",
+      resumed_after_expiry: "Payment received after expiry: order resumed",
+      paid_after_expiry: "Payment received after expiry: under review",
       clone_started: "Creating the machine",
       vm_started: "Machine started",
       app_installed: "Application installed",

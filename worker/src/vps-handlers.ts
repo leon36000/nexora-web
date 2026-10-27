@@ -42,6 +42,11 @@ function uuid(payload: Record<string, unknown>, key: string): string {
 }
 
 export const SWEEP_EVERY_MS = 60_000;
+
+const ALERT_SUBJECT: Record<string, string> = {
+  provision_failed: "Échec de provisionnement",
+  late_payment: "Paiement reçu après expiration, sans capacité",
+};
 const bucket = (ms: number, now = Date.now()) => Math.floor(now / ms);
 
 export function registerVpsHandlers(
@@ -115,7 +120,9 @@ export function registerVpsHandlers(
       "",
       reason === "provision_failed"
         ? "Aucun remboursement automatique n'a été fait : décider depuis Stripe (annulation de l'abonnement, remboursement)."
-        : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
+        : reason === "late_payment"
+          ? "Le client a payé APRÈS l'expiration de sa commande et aucune capacité n'est disponible. Aucune VM n'existe. Aucun remboursement automatique n'a été fait : brancher un serveur (le balayage reprend la commande seul) ou décider depuis Stripe (annulation de l'abonnement, remboursement)."
+          : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
     ];
     ctx.log.error("vps : intervention de l'opérateur requise", {
       orderId,
@@ -126,7 +133,7 @@ export function registerVpsHandlers(
       from: options.alertFrom ?? "vps@localhost",
       to: options.alertTo,
       replyTo: options.alertFrom ?? "vps@localhost",
-      subject: `[Nexora VPS] ${reason === "provision_failed" ? "Échec de provisionnement" : "Capacité insuffisante"} — ${orderId.slice(0, 8)}`,
+      subject: `[Nexora VPS] ${ALERT_SUBJECT[reason] ?? "Capacité insuffisante"} — ${orderId.slice(0, 8)}`,
       text: lines.join("\n"),
     });
   };

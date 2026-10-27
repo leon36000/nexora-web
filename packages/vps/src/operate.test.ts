@@ -17,9 +17,11 @@ import {
   runPowerAction,
   sweep,
 } from "./operate.ts";
+import { createOrder } from "./orders.ts";
 import { provisionOrder } from "./provision.ts";
 import { ProxmoxSimulator } from "./proxmox/simulator.ts";
 import {
+  CUSTOMER_KEY,
   createSimRunner,
   engineDeps,
   paidOrder,
@@ -336,6 +338,96 @@ describe("réinstallation avec instantané préalable", () => {
       expect(w.sim.callsTo("POST", `/qemu/${oldVmid}/snapshot`)).toHaveLength(
         1,
       );
+    } finally {
+      await w.close();
+    }
+  });
+});
+
+describe("balayage : commandes impayées et paiements tardifs (I3)", () => {
+  async function world() {
+    const sim = new ProxmoxSimulator({ token: SIM_TOKEN });
+    const s = await sim.start();
+    const fx = await seedFixture(t.db, { simPort: s.port });
+    const clock = { now: new Date() };
+    const deps = engineDeps(t.db, createSimRunner(sim).runner, {
+      now: () => clock.now,
+    });
+    const order = async (subscriptionId: string | null) => {
+      const { order } = await createOrder(t.db, {
+        organizationId: fx.organizationId,
+        idempotencyKey: `sweep-${Math.random()}`,
+        planCode: fx.planCode,
+        appCode: fx.appCode,
+        term: "month",
+        sshPublicKey: CUSTOMER_KEY,
+        maxPerOrganization: 99,
+      });
+      await t.db
+        .update(vpsOrders)
+        .set({
+          stripeSubscriptionId: subscriptionId,
+          createdAt: new Date(clock.now.getTime() - 25 * 3_600_000),
+        })
+        .where(eq(vpsOrders.id, order.id));
+      return order.id;
+    };
+    const status = async (id: string) =>
+      (await t.db.select().from(vpsOrders).where(eq(vpsOrders.id, id)))[0]
+        ?.status;
+    const server = (state: "ready" | "offline") =>
+      t.db
+        .update(proxmoxServers)
+        .set({ state })
+        .where(eq(proxmoxServers.id, fx.serverId));
+    const close = async () => {
+      await server("offline");
+      await s.close();
+    };
+    return { fx, deps, clock, order, status, server, close };
+  }
+
+  it("filet de 24 h : expire seulement une commande sans abonnement relié ; Stripe fait foi dès que le Checkout est terminé", async () => {
+    const w = await world();
+    try {
+      const abandoned = await w.order(null);
+      const processing = await w.order(`sub_proc_${Math.random()}`);
+      const out = await sweep(w.deps);
+      expect(out.expired).toBeGreaterThanOrEqual(1);
+      expect(await w.status(abandoned)).toBe("expired");
+      expect(await w.status(processing)).toBe("awaiting_payment");
+    } finally {
+      await w.close();
+    }
+  });
+
+  it("reprend une commande « payée après expiration » dès que la capacité revient et que l'abonnement est actif", async () => {
+    const w = await world();
+    try {
+      const subId = `sub_late_${Math.random()}`;
+      const id = await w.order(subId);
+      await t.db
+        .update(vpsOrders)
+        .set({ status: "late_payment" })
+        .where(eq(vpsOrders.id, id));
+      await t.db.insert(subscriptions).values({
+        organizationId: w.fx.organizationId,
+        stripeSubscriptionId: subId,
+        stripeCustomerId: "cus_late",
+        status: "active",
+      });
+      await w.server("offline");
+      await sweep(w.deps);
+      expect(await w.status(id)).toBe("late_payment"); // toujours sans capacité
+      await w.server("ready");
+      await sweep(w.deps);
+      expect(await w.status(id)).toBe("paid");
+      await sweep(w.deps); // rejeu : une seule tâche de provisionnement
+      const queued = (await t.db.select().from(jobs)).filter(
+        (j) =>
+          j.type === "vps.provision" && JSON.stringify(j.payload).includes(id),
+      );
+      expect(queued).toHaveLength(1);
     } finally {
       await w.close();
     }

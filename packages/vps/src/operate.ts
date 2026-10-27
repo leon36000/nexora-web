@@ -3,6 +3,7 @@ import {
   enqueue,
   eq,
   isNotNull,
+  isNull,
   lt,
   ne,
   subscriptions,
@@ -24,6 +25,7 @@ import {
   type LifecycleDecision,
   retentionEnd,
 } from "./lifecycle.ts";
+import { retryLatePayments } from "./orders.ts";
 import type { ProxmoxClient } from "./proxmox/client.ts";
 
 /**
@@ -393,6 +395,7 @@ export async function sweep(deps: EngineDeps): Promise<{
   resumed: number;
   purged: number;
   expired: number;
+  lateResumed: number;
 }> {
   const now = deps.now();
   const live = await deps.db
@@ -447,15 +450,26 @@ export async function sweep(deps: EngineDeps): Promise<{
       idempotencyKey: `vps-lifecycle:${id}:purge_old:sweep:${bucket(now, 600_000)}`,
       maxAttempts: 8,
     });
+  // Filet seulement : Stripe fait expirer la commande (`checkout.session.expired`). Une commande dont
+  // l'abonnement est déjà relié (Checkout terminé, prélèvement en cours de confirmation) relève de
+  // Stripe : elle n'expire que par ses événements, jamais par ce balayage.
   const expired = await deps.db
     .update(vpsOrders)
     .set({ status: "expired", updatedAt: new Date() })
     .where(
       and(
         eq(vpsOrders.status, "awaiting_payment"),
+        isNull(vpsOrders.stripeSubscriptionId),
         lt(vpsOrders.createdAt, new Date(now.getTime() - 24 * 3_600_000)),
       ),
     )
     .returning({ id: vpsOrders.id });
-  return { lifecycle, resumed, purged: dueOld.length, expired: expired.length };
+  const late = await retryLatePayments(deps.db, now);
+  return {
+    lifecycle,
+    resumed,
+    purged: dueOld.length,
+    expired: expired.length,
+    lateResumed: late.resumed,
+  };
 }

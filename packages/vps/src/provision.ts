@@ -30,7 +30,7 @@ import {
 } from "./engine-core.ts";
 import { recordVpsEvent, safeError } from "./events.ts";
 import { buildFirewallPlan, diffFirewallRules } from "./firewall.ts";
-import { pickFreeIp } from "./ips.ts";
+import { findPlacement } from "./placement.ts";
 import { ProxmoxError } from "./proxmox/client.ts";
 
 /**
@@ -261,67 +261,13 @@ async function stepPlacement(ctx: Ctx, inst: Instance): Promise<StepResult> {
     await tx.execute(
       sql`SELECT pg_advisory_xact_lock(hashtext(${`vps-placement:${order.region}`}))`,
     );
-    const servers = await tx
-      .select()
-      .from(proxmoxServers)
-      .where(
-        and(
-          eq(proxmoxServers.state, "ready"),
-          eq(proxmoxServers.region, order.region),
-        ),
-      )
-      .orderBy(asc(proxmoxServers.code));
-    let best: { server: Server; ip: string; free: number } | null = null;
-    for (const s of servers) {
-      const [tpl] = await tx
-        .select({ id: osTemplates.id })
-        .from(osTemplates)
-        .where(
-          and(
-            eq(osTemplates.serverId, s.id),
-            eq(osTemplates.code, plan.templateCode),
-            eq(osTemplates.state, "ready"),
-          ),
-        );
-      if (!tpl) continue;
-      const live = await tx
-        .select({
-          vcpu: vpsInstances.vcpu,
-          ramMb: vpsInstances.ramMb,
-          diskGb: vpsInstances.diskGb,
-          ipv4: vpsInstances.ipv4,
-        })
-        .from(vpsInstances)
-        .where(
-          and(
-            eq(vpsInstances.serverId, s.id),
-            isNull(vpsInstances.deletedAt),
-            ne(vpsInstances.status, "failed"),
-          ),
-        );
-      const used = live.reduce(
-        (a, r) => ({
-          vcpu: a.vcpu + r.vcpu,
-          ramMb: a.ramMb + r.ramMb,
-          diskGb: a.diskGb + r.diskGb,
-        }),
-        { vcpu: 0, ramMb: 0, diskGb: 0 },
-      );
-      const cap = s.capacity;
-      if (
-        cap.vcpu - used.vcpu < inst.vcpu ||
-        cap.ramMb - used.ramMb < inst.ramMb ||
-        cap.diskGb - used.diskGb < inst.diskGb
-      )
-        continue;
-      const ip = pickFreeIp(
-        s.ipPool,
-        new Set(live.map((r) => r.ipv4).filter((v): v is string => Boolean(v))),
-      );
-      if (!ip) continue;
-      const free = (cap.ramMb - used.ramMb) / cap.ramMb;
-      if (!best || free > best.free) best = { server: s, ip, free };
-    }
+    const best = await findPlacement(tx, {
+      region: order.region,
+      templateCode: plan.templateCode,
+      vcpu: inst.vcpu,
+      ramMb: inst.ramMb,
+      diskGb: inst.diskGb,
+    });
     if (!best) return null;
     await tx
       .update(vpsInstances)

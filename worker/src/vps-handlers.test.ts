@@ -1,4 +1,4 @@
-import { enqueue, eq, jobs, vpsInstances } from "@nexora/db";
+import { enqueue, eq, jobs, vpsInstances, vpsOrders } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { ProxmoxSimulator } from "@nexora/vps/simulator";
@@ -88,6 +88,52 @@ describe("tâches VPS exécutées par le vrai worker", () => {
       expect(all.filter((j) => j.idempotencyKey === key)).toHaveLength(1);
       expect(all.length).toBeGreaterThan(1); // continuations
       expect(all.every((j) => j.status === "succeeded")).toBe(true);
+    } finally {
+      await s.close();
+    }
+  });
+});
+
+describe("alerte de l'opérateur (vps.alert)", () => {
+  it("un paiement reçu après l'expiration, sans capacité, dit qu'aucune VM n'existe et qu'il n'y a aucun remboursement automatique", async () => {
+    const sim = new ProxmoxSimulator({ token: SIM_TOKEN });
+    const s = await sim.start();
+    try {
+      const fx = await seedFixture(t.db, { simPort: s.port });
+      const orderId = await paidOrder(t.db, fx);
+      await t.db
+        .update(vpsOrders)
+        .set({ status: "late_payment" })
+        .where(eq(vpsOrders.id, orderId));
+      const sent: { subject: string; text: string }[] = [];
+      const registry = registerVpsHandlers(
+        new HandlerRegistry(),
+        engineDeps(t.db, createSimRunner(sim).runner),
+        {
+          alertTo: "operateur@example.test",
+          mailer: {
+            async send(m: { subject: string; text: string }) {
+              sent.push(m);
+            },
+          } as never,
+        },
+      );
+      const handler = registry.get("vps.alert");
+      await handler?.(
+        {
+          id: "j",
+          type: "vps.alert",
+          payload: { orderId, reason: "late_payment" },
+          attempt: 1,
+          maxAttempts: 1,
+        },
+        { log: silent, signal: new AbortController().signal },
+      );
+      expect(sent).toHaveLength(1);
+      expect(sent[0]?.subject).toContain("Paiement reçu après expiration");
+      expect(sent[0]?.text).toContain("Aucune VM");
+      expect(sent[0]?.text).toContain("Aucun remboursement automatique");
+      expect(sent[0]?.text).not.toContain("capacité : brancher");
     } finally {
       await s.close();
     }

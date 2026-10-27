@@ -131,6 +131,7 @@ export const OPAQUE_MESSAGE_KINDS: ReadonlySet<string> = new Set([
   "reinstall_failed",
   "cleanup_failed",
   "no_capacity",
+  "paid_after_expiry",
   "placed",
   "old_vm_retained",
 ]);

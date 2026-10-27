@@ -182,6 +182,7 @@ export const accountVpsFrCA = {
       failed: "Intervention en cours",
       canceled: "Annulée",
       expired: "Expirée",
+      late_payment: "Paiement reçu, en traitement",
     },
     hints: {
       awaiting_payment:
@@ -192,6 +193,8 @@ export const accountVpsFrCA = {
       failed: "Une intervention de notre équipe est en cours.",
       canceled: "Cette commande a été annulée.",
       expired: "Cette commande a expiré sans paiement.",
+      late_payment:
+        "Votre paiement est bien reçu, mais la commande avait expiré. Notre équipe a été avertie et s’en occupe.",
     },
   },
 
@@ -270,6 +273,9 @@ export const accountVpsFrCA = {
       provision_started: "Préparation démarrée",
       placed: "Serveur attribué",
       no_capacity: "En attente de capacité",
+      checkout_expired: "Session de paiement expirée",
+      resumed_after_expiry: "Paiement reçu après expiration : commande reprise",
+      paid_after_expiry: "Paiement reçu après expiration : en traitement",
       clone_started: "Création de la machine",
       vm_started: "Machine démarrée",
       app_installed: "Application installée",
