@@ -135,7 +135,7 @@ export async function runPowerAction(
 
 /** Demande de réinstallation : l'instance passe en « reinstalling » et la tâche de provisionnement est mise en file. */
 export async function requestReinstall(
-  deps: EngineDeps,
+  deps: Pick<EngineDeps, "db">,
   instanceId: string,
   requestId: string,
   actor: "customer" | "operator" = "customer",

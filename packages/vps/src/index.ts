@@ -12,3 +12,4 @@ export * from "./proxmox/index.ts";
 export * from "./public.ts";
 export * from "./servers.ts";
 export * from "./ssh-key.ts";
+export * from "./guard.ts";

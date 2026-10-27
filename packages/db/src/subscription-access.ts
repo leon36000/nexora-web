@@ -8,10 +8,9 @@ import type { SubscriptionStatus } from "./schema-billing.ts";
  */
 export type AccessLevel = "full" | "grace" | "suspended" | "none";
 
-export function accessLevel(
-  state: { status: SubscriptionStatus; graceEndsAt: Date | null },
-  now: Date,
-): AccessLevel {
+export function accessLevel<
+  T extends { status: SubscriptionStatus; graceEndsAt: Date | null },
+>(state: T, now: Date): AccessLevel {
   switch (state.status) {
     case "active":
     case "trialing":
