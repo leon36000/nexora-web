@@ -390,12 +390,10 @@ describe("POST /api/account/vps/{id}/action", () => {
 
   it("une instance d'une autre organisation n'existe pas pour l'utilisateur (404) ; origine et session contrôlées", async () => {
     const other = await newOrg(t.db);
-    await t.db
-      .insert(billingCustomers)
-      .values({
-        organizationId: other,
-        stripeCustomerId: `cus_${randomBytes(3).toString("hex")}`,
-      });
+    await t.db.insert(billingCustomers).values({
+      organizationId: other,
+      stripeCustomerId: `cus_${randomBytes(3).toString("hex")}`,
+    });
     const { id } = await instance(other);
     expect((await act(id, { action: "stop" }, deps(owner()))).status).toBe(404);
     expect(

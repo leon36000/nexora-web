@@ -284,16 +284,26 @@ export async function runLifecycle(
       });
     } else {
       await deleteVm(deps, inst);
-      await deps.db
-        .update(vpsInstances)
-        .set({
-          status: "deleted",
-          deletedAt: deps.now(),
-          power: "stopped",
-          updatedAt: new Date(),
-        })
-        .where(eq(vpsInstances.id, inst.id));
-      await ev("deleted", "VM supprimée à la fin de la rétention");
+      // État et événement dans une même transaction : l'un ne se voit jamais sans l'autre.
+      await deps.db.transaction(async (tx) => {
+        await tx
+          .update(vpsInstances)
+          .set({
+            status: "deleted",
+            deletedAt: deps.now(),
+            power: "stopped",
+            updatedAt: new Date(),
+          })
+          .where(eq(vpsInstances.id, inst.id));
+        await recordVpsEvent(tx, {
+          organizationId: inst.organizationId,
+          orderId: inst.orderId,
+          instanceId: inst.id,
+          actor: "system",
+          kind: "deleted",
+          message: "VM supprimée à la fin de la rétention",
+        });
+      });
     }
     return { done: true };
   });

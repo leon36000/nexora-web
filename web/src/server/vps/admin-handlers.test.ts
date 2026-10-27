@@ -343,16 +343,14 @@ describe("vues en lecture seule : aucun renseignement personnel", () => {
         vmName: "nx-x",
       })
       .returning();
-    await t.db
-      .insert(vpsEvents)
-      .values({
-        organizationId: org,
-        orderId: order?.id,
-        instanceId: inst?.id,
-        actor: "system",
-        kind: "x",
-        message: "test",
-      });
+    await t.db.insert(vpsEvents).values({
+      organizationId: org,
+      orderId: order?.id,
+      instanceId: inst?.id,
+      actor: "system",
+      kind: "x",
+      message: "test",
+    });
     for (const path of ["orders", "instances", "events"]) {
       const r = await call("GET", path);
       expect(r.status).toBe(200);

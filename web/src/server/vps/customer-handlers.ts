@@ -33,9 +33,7 @@ import { createVpsCheckout } from "../stripe/vps-checkout";
 export interface VpsCustomerDeps {
   db: () => Database;
   siteUrl: string;
-  getContext: (
-    headers: Headers,
-  ) => Promise<{
+  getContext: (headers: Headers) => Promise<{
     userId: string;
     email: string;
     organizationId: string;
