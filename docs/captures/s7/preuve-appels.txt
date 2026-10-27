@@ -1,0 +1,28 @@
+OK     clé d'espace WorkStudio déposée dans le Coffre (ni relue ni renvoyée) — se termine par ioNP
+OK     « Tester la connexion » réussie — HTTP 200 en 8 ms, 1 agent(s) publié(s) visible(s) par la clé
+OK     « Découvrir les agents » : agents publiés trouvés, créés en brouillon — 0 créé(s), 1 déjà connu(s)
+OK     aucune publication automatique : l'agent découvert reste un brouillon — statut published
+OK     clé cliente nxk_ créée — préfixe nxk_1k7U2Jv
+OK     GET /v1/models liste l'agent pour cette clé — agent/assistant-general
+OK     agent/<slug> (non diffusé) : réponse de l'agent WorkStudio — « Je suis l'assistant interne de votre entreprise, conçu pour vous aider dans vos tâches quo »
+OK     la réponse porte l'identifiant public et ne révèle pas l'identifiant amont
+OK     débit du grand livre = règlement (non diffusé) — 50240 µCAD = jetons (168 + 24) + exécution 50000
+OK     aucun montant resté réservé
+OK     agent/<slug> (diffusé) : flux SSE complet avec usage — 5 fragments, « Bonjour, ravi de vous aider ! »
+OK     débit du grand livre = règlement (diffusé) — 50193 µCAD
+OK     aucun montant resté réservé
+OK     deux événements d'usage (métadonnées seulement)
+OK     événement 1 cohérent avec le débit — coût 50240 µCAD dont 50000 par exécution, 629 ms, agent_price_507fa9c13b02
+OK     événement 2 cohérent avec le débit — coût 50193 µCAD, 664 ms
+OK     le solde dérivé du journal égale le solde du compte — 9799110 µCAD
+OK     même requête sans crédit : 402 insufficient_quota — HTTP 402
+OK     aucun événement d'usage, aucune exécution facturée pour la requête refusée
+OK     clé révoquée : 401 api_key_revoked — HTTP 401
+OK     clé WorkStudio absente du coffre : 503 agent_unavailable, sans fuite — HTTP 503
+OK     agent retiré : 404 model_not_found — HTTP 404
+OK     agent remis en ligne après la preuve (brouillon puis publié)
+
+TOUT EST OK
+
+Côté WorkStudio (clé « site Nexora S7 (dev) », requêtes et jetons du mois) : requêtes / jetons : avant 3 / 579, après 5 / 944.
+Les deux exécutions réussies s'y ajoutent ; la requête refusée en 402, la clé révoquée, la clé absente du coffre et l'agent retiré n'ont produit aucun appel (le compteur n'a bougé que de 2 requêtes).

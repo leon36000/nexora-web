@@ -67,108 +67,117 @@ export default async function AgentPage(
   const description = lang === "fr" ? agent.descriptionFr : agent.descriptionEn;
   const baseUrl = `${SITE_URL}/v1`;
   return (
-    <Section tone="light" aria-labelledby="agent-title">
-      <nav aria-label={d.back}>
-        <Link
-          href={localizePath(lang, "/agents")}
-          className="inline-flex min-h-11 items-center rounded-xs text-small text-accent-text underline underline-offset-4"
-        >
-          {d.back}
-        </Link>
-      </nav>
-      <header className="mt-4 max-w-3xl">
-        <ResidencyBadge region={agent.region} t={t} />
-        <h1 id="agent-title" className="mt-4 text-h1 text-fg">
-          {name}
-        </h1>
-        <p className="mt-2 font-mono text-body text-fg-muted">{agent.id}</p>
-        <p className="mt-2 text-small text-fg-muted">
-          {d.category} : {t.categories[agent.category]}
-        </p>
-        {description ? (
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
-            {description}
+    <>
+      <Section tone="light" aria-labelledby="agent-title">
+        <nav aria-label={d.back}>
+          <Link
+            href={localizePath(lang, "/agents")}
+            className="inline-flex min-h-11 items-center rounded-xs text-small text-accent-text underline underline-offset-4"
+          >
+            {d.back}
+          </Link>
+        </nav>
+        <header className="mt-4 max-w-3xl">
+          <ResidencyBadge region={agent.region} t={t} />
+          <h1 id="agent-title" className="mt-4 text-h1 text-fg">
+            {name}
+          </h1>
+          <p className="mt-2 font-mono text-body text-fg-muted">{agent.id}</p>
+          <p className="mt-2 text-small text-fg-muted">
+            {d.category} : {t.categories[agent.category]}
           </p>
-        ) : null}
-      </header>
+          {description ? (
+            <p className="mt-5 max-w-2xl text-lead text-fg-muted">
+              {description}
+            </p>
+          ) : null}
+        </header>
 
-      <div className="mt-12 grid gap-10 lg:grid-cols-2">
-        <section aria-labelledby="pricing-title">
-          <h2 id="pricing-title" className="text-h3 text-fg">
-            {d.pricing}
+        <div className="mt-12 grid gap-10 lg:grid-cols-2">
+          <section aria-labelledby="pricing-title">
+            <h2 id="pricing-title" className="text-h3 text-fg">
+              {d.pricing}
+            </h2>
+            <p className="mt-3 max-w-xl text-body text-fg-muted">
+              {d.pricingLead}
+            </p>
+            <div className="mt-6">
+              <AgentPricing agent={agent} lang={lang} t={t} large />
+            </div>
+            <p className="mt-4 text-small text-fg-muted">
+              {t.catalog.priceNote}
+            </p>
+            {agent.trial ? (
+              <>
+                <p className="mt-3 font-mono text-label uppercase text-fg-muted">
+                  {t.catalog.trialBadge}
+                </p>
+                <p className="mt-1 text-small text-accent-text">
+                  {d.trialLead}
+                </p>
+              </>
+            ) : null}
+          </section>
+
+          <section aria-labelledby="limits-title">
+            <h2 id="limits-title" className="text-h3 text-fg">
+              {d.limits}
+            </h2>
+            <ul className="mt-4 grid max-w-xl list-disc gap-3 pl-5 text-body text-fg-muted">
+              <li>
+                {fmt(d.runCap, {
+                  tokens: formatInteger(lang, agent.runTokenCap),
+                })}
+              </li>
+              <li>{d.textOnly}</li>
+              <li>{d.systemIgnored}</li>
+              <li>{d.noTuning}</li>
+            </ul>
+          </section>
+        </div>
+      </Section>
+      <Section tone="dark" aria-labelledby="example-title">
+        <section>
+          <Badge tone="accent">{d.example}</Badge>
+          <h2 id="example-title" className="mt-3 text-h3 text-fg">
+            {d.example}
           </h2>
-          <p className="mt-3 max-w-xl text-body text-fg-muted">
-            {d.pricingLead}
+          <p className="mt-3 max-w-2xl text-body text-fg-muted">
+            {fmt(d.exampleLead, { url: baseUrl })}
           </p>
           <div className="mt-6">
-            <AgentPricing agent={agent} lang={lang} t={t} large />
+            <CodeSamples samples={agentSamples(baseUrl, agent.id)} />
           </div>
-          <p className="mt-4 text-small text-fg-muted">{t.catalog.priceNote}</p>
-          {agent.trial ? (
-            <>
-              <p className="mt-3 font-mono text-label uppercase text-fg-muted">
-                {t.catalog.trialBadge}
-              </p>
-              <p className="mt-1 text-small text-accent-text">{d.trialLead}</p>
-            </>
-          ) : null}
+          <h3 className="mt-10 text-h4 text-fg">{d.streamTitle}</h3>
+          <p className="mt-2 max-w-2xl text-body text-fg-muted">
+            {d.streamLead}
+          </p>
+          <CodeBlock
+            label={d.streamTitle}
+            code={agentStreamingSample(agent.id)}
+          />
+          <div className="mt-10 flex flex-wrap gap-4">
+            <ButtonLink href={localizePath(lang, "/compte")} arrow>
+              {d.createKey}
+            </ButtonLink>
+            <ButtonLink
+              href={localizePath(lang, "/docs/api")}
+              variant="secondary"
+            >
+              {d.docs}
+            </ButtonLink>
+          </div>
         </section>
-
-        <section aria-labelledby="limits-title">
-          <h2 id="limits-title" className="text-h3 text-fg">
-            {d.limits}
-          </h2>
-          <ul className="mt-4 grid max-w-xl list-disc gap-3 pl-5 text-body text-fg-muted">
-            <li>
-              {fmt(d.runCap, {
-                tokens: formatInteger(lang, agent.runTokenCap),
-              })}
-            </li>
-            <li>{d.textOnly}</li>
-            <li>{d.systemIgnored}</li>
-            <li>{d.noTuning}</li>
-          </ul>
-        </section>
-      </div>
-
-      <section aria-labelledby="example-title" className="mt-16">
-        <Badge tone="accent">{d.example}</Badge>
-        <h2 id="example-title" className="mt-3 text-h3 text-fg">
-          {d.example}
-        </h2>
-        <p className="mt-3 max-w-2xl text-body text-fg-muted">
-          {fmt(d.exampleLead, { url: baseUrl })}
-        </p>
-        <div className="mt-6">
-          <CodeSamples samples={agentSamples(baseUrl, agent.id)} />
-        </div>
-        <h3 className="mt-10 text-h4 text-fg">{d.streamTitle}</h3>
-        <p className="mt-2 max-w-2xl text-body text-fg-muted">{d.streamLead}</p>
-        <CodeBlock
-          label={d.streamTitle}
-          code={agentStreamingSample(agent.id)}
+        <JsonLd
+          data={appBreadcrumb(lang, [
+            {
+              name: t.meta.list.title.replace(/ \| Nexora$/, ""),
+              path: "/agents",
+            },
+            { name, path: `/agents/${agent.slug}` },
+          ])}
         />
-        <div className="mt-10 flex flex-wrap gap-4">
-          <ButtonLink href={localizePath(lang, "/compte")} arrow>
-            {d.createKey}
-          </ButtonLink>
-          <ButtonLink
-            href={localizePath(lang, "/docs/api")}
-            variant="secondary"
-          >
-            {d.docs}
-          </ButtonLink>
-        </div>
-      </section>
-      <JsonLd
-        data={appBreadcrumb(lang, [
-          {
-            name: t.meta.list.title.replace(/ \| Nexora$/, ""),
-            path: "/agents",
-          },
-          { name, path: `/agents/${agent.slug}` },
-        ])}
-      />
-    </Section>
+      </Section>
+    </>
   );
 }

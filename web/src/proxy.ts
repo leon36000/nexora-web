@@ -25,7 +25,10 @@ export async function proxy(request: NextRequest) {
   else if (!isIndexableEnvironment())
     response.headers.set("x-robots-tag", NOINDEX_HEADER);
   // Pages qui accueillent la bulle WorkStudio : CSP limitée à l'origine configurée (aucun en-tête ailleurs).
-  if (request.method === "GET" && response.status < 300) {
+  if (
+    (request.method === "GET" || request.method === "HEAD") &&
+    response.status < 300
+  ) {
     const csp = await embedCspFor(request.nextUrl.pathname, {
       dev: process.env.NODE_ENV !== "production",
     });

@@ -218,6 +218,48 @@ Dans le bundle `nexora-cms` : endpoint `/nexora-catalog` (administrateurs Direct
 
 Un seul fournisseur par modèle (pas de bascule automatique selon la priorité) ; pas de planificateur qui libère les réservations perdues (plantage entre réservation et règlement : `releaseStaleReservations` existe, le worker ne l'appelle pas ; la dépense de la clé reste alors gonflée) ; estimation d'entrée prudente mais sans tokenizer (si l'amont rapporte plus que le maximum réservé, le règlement est plafonné au montant réservé) ; images et audio en entrée non testés ; limites RPM/TPM par clé seulement (pas par organisation ni par adresse) ; rapprochement périodique de la dépense LiteLLM avec le grand livre (contrôle de dérive) non écrit ; pas de tableau de bord d'administration de l'usage global ; entrée « Modèles » du menu à ajouter dans la navigation Directus ; pages `/modeles`, `/docs/api` : si le CMS publie une page de même chemin, la route statique la masque.
 
+## Agents hébergés (jalon S7)
+
+Les agents publiés dans **Nexora WorkStudio** sont vendus par la passerelle sous `agent/<slug>`, avec la clé `nxk_` du client, la réservation au grand livre avant l'appel et le règlement sur l'usage réel (D1). Catalogue dans la base `app` (migration `0008_s7_agents_heberges`), administré par le module Directus « Agents hébergés » (D14) : aucune collection Directus ajoutée.
+
+### Tables
+- `hosted_agent_instances` : instance WorkStudio (adresse interne, **référence** du coffre de la clé d'espace `sk-nexora-…`, hébergement déclaré, état du dernier test). Jamais la clé en base.
+- `hosted_agents` : slug public, identifiant amont (`agent:<id du workflow>` ou `agent:<nom>`), noms et descriptions fr/en, catégorie, statut (brouillon, publié, retiré), visibilité (public, non listé, privé), plafond de jetons par exécution.
+- `hosted_agent_prices` : prix **immuables** (déclencheur SQL) en micro-CAD : par million de jetons (entrée, sortie) et/ou par exécution ; jamais 0 $ ; `is_trial` (vrai par défaut) marque une valeur d'essai.
+- `workstudio_embed_settings` : réglage de la bulle (une ligne `main`).
+- `usage_events.run_fee_micro` : part du coût facturée par exécution (0 pour un modèle).
+
+### Clé WorkStudio et découverte
+1. Dans WorkStudio : Réglages › Clés d'API Nexora, créer une clé d'espace avec « Agents publiés » autorisés.
+2. Module Coffre : la déposer sous une référence (type « autre »), par exemple `workstudio.mon-instance`.
+3. Module « Agents hébergés » › Instances : ajouter l'instance (adresse sans `/v1`, référence), « Tester la connexion », « Découvrir les agents ».
+La découverte lit `GET /v1/models` et crée un **brouillon** par agent inconnu (français prérempli, anglais vide) ; elle ne publie ni ne retire jamais. `GET /v1/models` ne donne que `agent:<nom>` : pour un identifiant stable, remplacer l'identifiant amont par `agent:<id du workflow>` (bouton « Code » de l'agent dans WorkStudio) ; la découverte retrouve l'agent par son nom.
+Publication (garde) : noms et descriptions fr/en, prix en vigueur, instance active avec une clé.
+
+### Appel `POST /v1/chat/completions` avec `model: "agent/<slug>"`
+- Même authentification `nxk_`, mêmes limites (requêtes et jetons par minute, plafond de dépense de la clé), même 402 (`insufficient_quota`) avant tout appel amont ; clé révoquée 401 ; agent absent, retiré, brouillon ou interdit à la clé : 404 `model_not_found` ; clé WorkStudio absente ou révoquée du coffre : 503 `agent_unavailable` (aucune réservation, rien de la référence ni de la clé dans la réponse ni les journaux) ; refus de l'instance (clé d'espace refusée, agent introuvable) : 502 `agent_upstream_refused`.
+- **Réservation** = prix par exécution + `run_token_cap` jetons au plus élevé des deux prix par million (par défaut 32 000). WorkStudio ne borne pas la sortie et un agent consomme bien plus que le message reçu (consignes, connaissances, outils) : le plafond borne ce que le client peut devoir ; le règlement est plafonné au montant réservé (le dépassement éventuel est absorbé par Nexora).
+- **Règlement** = jetons réels × prix + frais par exécution, d'après l'`usage` de WorkStudio (non diffusé et diffusé). Aucun frais si l'exécution échoue avant de livrer quoi que ce soit (réservation libérée).
+- **Règle de repli** quand l'usage manque : usage absent, ou à zéro alors qu'une réponse a été livrée → entrée estimée (3 octets par jeton) + réponse livrée estimée ; un usage explicitement à zéro avec une réponse vide ne coûte que les frais par exécution.
+- Les messages `system` et `developer` de l'appelant sont **ignorés** (retirés avant l'appel : l'agent garde ses consignes) ; texte seulement ; seuls `messages` et `stream` sont transmis (température, outils, `max_tokens`… sans effet). Aucun en-tête CORS.
+- `GET /v1/models` ajoute les agents accessibles à la clé (`type: "agent"`, `residency`, `pricing.per_run`, `pricing.trial`), même règle d'accès que les modèles.
+- Un agent est appelable tant qu'il est publié, que son instance est active et qu'un prix est en vigueur ; « non listé » : appelable, absent de `/agents` ; « privé » : seulement une clé dont la liste explicite l'inclut.
+
+### API d'administration `/api/admin/hosted-agents/*` (jeton `NEXORA_APP_ADMIN_TOKEN`)
+`GET /` ; `GET|POST /instances`, `GET|PATCH /instances/{id}`, `POST /instances/{id}/test|discover` ; `GET /agents`, `GET|PATCH /agents/{id}`, `GET|POST /agents/{id}/prices` ; `GET|PATCH /embed`. Module Directus « Agents hébergés » : relais à liste fermée `/nexora-hosted-agents` (administrateurs seulement). Diff de la barre des modules : `docs/propositions/s7-cms-modules.diff`.
+
+### Pages publiques et espace client
+`/agents`, `/agents/<slug>` (et `/en/…`) : agents publiés et publics, prix (marqués « essai » tant que `is_trial`), exemples cURL, Python (`openai`) et TypeScript, garde-fous, lien vers la création de clé ; sitemap daté par la dernière publication. `/compte` : tableau « Consommation des agents » (lecture de `usage_events`, lignes `agent/…`) à côté de celui des modèles.
+
+### Bulle WorkStudio sur le site
+Réglage `workstudio_embed_settings` (module › « Bulle sur le site ») : origine publique de l'instance (https ; `http` seulement pour `localhost`), identifiant du chat public de l'agent, pages (une par ligne, sans la langue), côté, couleur, libellés. Le composant charge `/embed.js` après l'événement `load` puis au repos du navigateur, seulement sur ces pages, et retire la bulle quand on les quitte. Le proxy ajoute sur ces pages seulement une CSP qui n'ouvre que l'origine configurée (`script-src` avec `'unsafe-inline'` pour les scripts de démarrage de Next.js, `frame-src`, `connect-src`, `object-src 'none'`, `base-uri 'self'`) ; sans bulle, aucun en-tête. Le réglage est relu avec un cache de 10 s.
+Côté WorkStudio (à poser par l'exploitant, non modifié ici) : `NEXORA_EMBED_ORIGINS=https://<domaine du site>` (en développement, ajouter `http://localhost:3541` ou le port du site). L'agent du chat doit être « Accessible sans compte (lien public) », sinon le cadre reste vide.
+
+### Limites connues (non livrées)
+- Prix : valeurs d'essai seulement ; aucun prix public n'est fixé. Le coût amont de WorkStudio n'est pas suivi (`upstream_cost_usd_micro` = 0) : pas de plancher de marge.
+- Pas de rapprochement avec la consommation côté WorkStudio ; pas de pièces jointes ni d'outils côté appelant ; une instance par clé d'espace.
+- Le module Directus n'a pas été vu dans un navigateur connecté (voir `docs/captures/s7/module-directus-api.txt` pour la preuve par le relais).
+
 ## Autogestion IA et SEO (jalon S8)
 
 Détail : `docs/autogestion.md` (agents du site, injection, budget, passerelle) et `docs/seo.md` (SEO technique, audits, indexation, adaptateurs). Tables de la migration 0006 : `seo_audits`, `seo_issues`, `seo_settings`, `seo_adapters`, `sitemap_snapshots`, `indexing_submissions`, `site_agents`, `site_agent_runs`. Le chiffrement et la lecture du Coffre vivent désormais dans `packages/vault` (`@nexora/vault`), réexportés par `web/src/server/vault/` : le worker lit les clés des agents avec le même code et la même clé maîtresse.

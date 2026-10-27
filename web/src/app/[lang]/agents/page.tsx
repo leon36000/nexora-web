@@ -82,7 +82,7 @@ export default async function AgentsPage() {
         )}
       </Section>
 
-      <Section tone="light" surface aria-labelledby="how-title">
+      <Section tone="dark" aria-labelledby="how-title">
         <h2 id="how-title" className="text-h2 text-fg">
           {t.catalog.howTitle}
         </h2>
@@ -107,7 +107,7 @@ export default async function AgentsPage() {
         </div>
       </Section>
 
-      <Section tone="light" aria-labelledby="guard-title">
+      <Section tone="light" surface aria-labelledby="guard-title">
         <h2 id="guard-title" className="text-h2 text-fg">
           {g.title}
         </h2>

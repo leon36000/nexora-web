@@ -93,6 +93,17 @@ describe("proxy : CSP de la bulle WorkStudio", () => {
         "frame-src https://ia.exemple.ca",
       );
     }
+    // HEAD porte la même politique que GET ; POST n'en porte pas.
+    const head = await proxy(
+      new NextRequest("http://localhost:3500/agents", { method: "HEAD" }),
+    );
+    expect(head.headers.get("content-security-policy")).toBe(
+      "frame-src https://ia.exemple.ca",
+    );
+    const post = await proxy(
+      new NextRequest("http://localhost:3500/agents", { method: "POST" }),
+    );
+    expect(post.headers.get("content-security-policy")).toBeNull();
     // Une redirection (/fr/…) ne porte pas de politique.
     const redirect = await proxy(req("/fr/agents"));
     expect(redirect.headers.get("content-security-policy")).toBeNull();

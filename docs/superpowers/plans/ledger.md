@@ -52,5 +52,11 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Non vérifié : aucun vrai Proxmox ni vraie VM (test de contrat prêt, `PROXMOX_CONTRACT_URL`) ; pas de TLS ni domaine par VPS (applications en 127.0.0.1, tunnel SSH) ; commande sans application impossible alors que les guides n8n/Open WebUI/Dify l'évoquent (renvoi au contact).
 - Ruling (S6) : plans « [DEV] » commandables en développement, badge visible — à désactiver avant publication.
 
+## S7 Agents hébergés — livré le 27/10/2026 (en attente de fusion)
+- Livré : migration `0008_s7_agents_heberges` (instances WorkStudio, agents, prix immuables, réglage de la bulle, `usage_events.run_fee_micro`) ; `agent/<slug>` dans `/v1/chat/completions` et `/v1/models` (réservation plafonnée par exécution, règlement exact, repli sans usage, 402, 401, 404, 503 propre) ; découverte `GET /v1/models` de WorkStudio (brouillons seulement) ; `/agents` et fiches fr/en ; consommation par agent dans `/compte` ; module Directus « Agents hébergés » ; bulle `/embed.js` administrable avec CSP limitée à l'origine configurée.
+- Preuves : `docs/captures/s7/` (appels réels GLM 5.3 via WorkStudio, flux et non-flux, débit = règlement ; axe 0 ; bulle sans erreur de CSP).
+- Correctif S5 au passage : un paquet SSE entièrement masqué (usage non demandé) laissait la lecture en attente.
+- Non fait : vue du module dans un Directus connecté ; prix réels ; rapprochement avec la consommation WorkStudio.
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
