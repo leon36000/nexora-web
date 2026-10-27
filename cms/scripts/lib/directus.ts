@@ -87,6 +87,30 @@ export async function loginFailure(
   return `Connexion administrateur refusée (${res.status})`;
 }
 
+/**
+ * Réessaie une requête refusée par la limitation de débit de Directus (429, RATE_LIMITER_*) : attend le délai
+ * `Retry-After` (secondes) ou, à défaut, un délai court croissant, puis recommence. Rend le dernier 429 après
+ * `maxRetries` nouvelles tentatives. Les autres réponses (succès comme erreurs) sont rendues telles quelles.
+ */
+export async function withRateLimitRetry(
+  attempt: () => Promise<Response>,
+  sleep: (ms: number) => Promise<void> = (ms) =>
+    new Promise((r) => setTimeout(r, ms)),
+  maxRetries = 8,
+): Promise<Response> {
+  let res = await attempt();
+  for (let n = 0; res.status === 429 && n < maxRetries; n++) {
+    const header = Number(res.headers.get("retry-after"));
+    await sleep(
+      Number.isFinite(header) && header >= 0 && res.headers.has("retry-after")
+        ? header * 1000
+        : 250 * (n + 1),
+    );
+    res = await attempt();
+  }
+  return res;
+}
+
 export class Directus {
   constructor(
     public url: string,
@@ -128,14 +152,16 @@ export class Directus {
     body?: unknown,
     token = this.token,
   ): Promise<Response> {
-    return fetch(`${this.url}${path}`, {
-      method,
-      headers: {
-        authorization: `Bearer ${token}`,
-        ...(body !== undefined ? { "content-type": "application/json" } : {}),
-      },
-      body: body !== undefined ? JSON.stringify(body) : undefined,
-    });
+    return withRateLimitRetry(() =>
+      fetch(`${this.url}${path}`, {
+        method,
+        headers: {
+          authorization: `Bearer ${token}`,
+          ...(body !== undefined ? { "content-type": "application/json" } : {}),
+        },
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+      }),
+    );
   }
 
   /** Requête ; renvoie `data` ou lève DirectusError. `allow` liste les statuts HTTP tolérés (renvoie alors null). */

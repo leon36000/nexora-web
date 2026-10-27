@@ -23,6 +23,8 @@ import {
 const url = process.env.DIRECTUS_URL ?? "http://localhost:8466";
 const DB = process.env.ESSAI_DB ?? "directus_cmstest";
 const CONTAINER = process.env.ESSAI_CONTAINER ?? "nexora-cms-test";
+// Conteneur PostgreSQL où l'essai lit et altère `ESSAI_DB` (altérations « hors API » volontaires) : à changer pour viser un cluster jetable.
+const DB_CONTAINER = process.env.ESSAI_DB_CONTAINER ?? "nexorasite-db-1";
 const STUB = process.env.STUB_URL ?? "http://localhost:3599";
 const env = parseEnvFile(envFilePath());
 const WITNESS = `TEMOIN-factice-${randomBytes(6).toString("hex")}-ne-pas-utiliser`;
@@ -93,7 +95,7 @@ function psql(sql: string): string {
       "exec",
       "-e",
       `PGPASSWORD=${pw}`,
-      "nexorasite-db-1",
+      DB_CONTAINER,
       "psql",
       "-U",
       "nexora",
@@ -392,6 +394,26 @@ async function main() {
     b3,
     "403",
     b3.status === 403,
+  );
+  // séparation des tâches : le Relecteur qui propose ne peut pas approuver sa propre proposition
+  const own = await call(R, "POST", "/items/approvals", {
+    version_id: vid,
+    kind: "contenu",
+    summary: "Proposition du relecteur lui-même",
+  });
+  const b3b = own.data?.id
+    ? await call(R, "PATCH", `/items/approvals/${String(own.data.id)}`, {
+        status: "approuvée",
+      })
+    : own;
+  step(
+    "b3b",
+    "Relecteur",
+    "PATCH",
+    "/items/approvals/{propre proposition} (s’auto-approuver)",
+    b3b,
+    "403 NEXORA_AUTO_APPROBATION_INTERDITE",
+    b3b.status === 403 && b3b.code === "NEXORA_AUTO_APPROBATION_INTERDITE",
   );
   const b4 = await call(P, "POST", `/versions/${vid}/promote`, {
     mainHash: mh,
