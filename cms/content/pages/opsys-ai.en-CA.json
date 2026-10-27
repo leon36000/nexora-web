@@ -30,6 +30,27 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Vidéo de présentation d'OPSYS-AI (75 s, sous-titrée), juste après le héros.",
+      "claims": ["CL-O03"],
+      "fields": {
+        "media": {
+          "asset": "video-opsys.mp4"
+        },
+        "media_position": "top",
+        "visual": "aucun",
+        "tone": "sombre",
+        "anchor_id": "video"
+      },
+      "translation": {
+        "title": "OPSYS-AI in 75 seconds.",
+        "body": "<p>A request here, a quote there, information everywhere… What if everything finally worked together? Discover the OPSYS-AI vision: connecting reception, sales, the field, finance and your decisions, with specialized agents and human approvals.</p>",
+        "media_captions": {
+          "asset": "video-opsys.en-CA.vtt"
+        }
+      }
+    },
+    {
       "collection": "block_cards",
       "role": "Statut global « partiel » et les quatre niveaux de disponibilité (brochure p. 34).",
       "claims": ["CL-O01", "CL-O02", "CL-30"],

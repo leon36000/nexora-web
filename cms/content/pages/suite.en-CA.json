@@ -119,12 +119,12 @@
             "text": "Extraction, classification, deduplication, access rights, provenance, versions, indexing: what it takes to find an answer in your documents, with its sources."
           },
           {
-            "title": "Data to specialize a model.",
+            "title": "Data to specialize your own model.",
             "text": "Selection, quality, authorizations, usage rights, separation between training and evaluation, regression control."
           },
           {
             "title": "A starting rule.",
-            "text": "An imported document does not authorize its use for training. No data goes automatically to both destinations, and Nexora AI never uses your data to train or fine-tune a model."
+            "text": "An imported document does not authorize its use for training. No data goes automatically to both destinations, and Nexora AI never uses your data to train or fine-tune a model, except your own, at your written request."
           }
         ]
       }
@@ -198,7 +198,7 @@
           },
           {
             "question": "Will Corpus train a model on my documents?",
-            "answer": "No, never. Importing a document into a knowledge base does not authorize its use for training, and Nexora AI never uses your data to train or fine-tune a model."
+            "answer": "No, never. Importing a document into a knowledge base does not authorize its use for training, and Nexora AI never uses your data to train or fine-tune a model, except your own, at your written request."
           },
           {
             "question": "What can I use right now?",

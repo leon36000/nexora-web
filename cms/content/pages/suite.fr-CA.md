@@ -89,8 +89,8 @@ Nexora Corpus a pour vocation de transformer des fichiers hétérogènes en donn
 Il distinguera deux destinations, qu'on ne confond pas : mettre à jour une base documentaire et entraîner un modèle sont deux opérations différentes, avec des coûts, des risques et des validations distincts.
 
 - **Des connaissances pour retrouver.** Extraction, classement, dédoublonnage, droits d'accès, provenance, versions, indexation : de quoi retrouver une réponse dans vos documents, avec ses sources.
-- **Des données pour spécialiser un modèle.** Sélection, qualité, autorisations, droits d'usage, séparation entre entraînement et évaluation, contrôle des régressions.
-- **Une règle de départ.** Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle.
+- **Des données pour spécialiser votre propre modèle.** Sélection, qualité, autorisations, droits d'usage, séparation entre entraînement et évaluation, contrôle des régressions.
+- **Une règle de départ.** Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle, sauf le vôtre, sur votre demande écrite.
 
 ### Bloc 5 — Section (`block_section`)
 
@@ -148,7 +148,7 @@ Nous ne publions aucune comparaison. Ces modèles n'ont pas encore de fiche cano
 
 #### Corpus entraînera-t-il un modèle avec mes documents ?
 
-Non, jamais. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle.
+Non, jamais. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle, sauf le vôtre, sur votre demande écrite.
 
 #### Que puis-je utiliser dès maintenant ?
 

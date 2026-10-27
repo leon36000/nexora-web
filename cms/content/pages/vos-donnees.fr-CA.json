@@ -71,7 +71,7 @@
           {
             "title": "Jamais d'entraînement.",
             "label": "Engagement 3",
-            "text": "Nous n'utilisons jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers."
+            "text": "Nous n'utilisons jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers : seule exception, un modèle qui vous appartient, ajusté avec Corpus sur votre demande écrite."
           },
           {
             "title": "Jamais vendues.",
@@ -270,7 +270,7 @@
         "items": [
           {
             "question": "Mes données servent-elles à entraîner une IA ?",
-            "answer": "Jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers."
+            "answer": "Jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers : seule exception, un modèle qui vous appartient, ajusté avec Corpus sur votre demande écrite."
           },
           {
             "question": "Vendez-vous mes données ?",

@@ -71,7 +71,7 @@
           {
             "title": "Never used for training.",
             "label": "Commitment 3",
-            "text": "We never use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's."
+            "text": "We never use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request."
           },
           {
             "title": "Never sold.",
@@ -270,7 +270,7 @@
         "items": [
           {
             "question": "Is my data used to train an AI?",
-            "answer": "Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's."
+            "answer": "Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request."
           },
           {
             "question": "Do you sell my data?",

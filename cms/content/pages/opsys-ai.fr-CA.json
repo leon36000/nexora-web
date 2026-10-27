@@ -30,6 +30,27 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Vidéo de présentation d'OPSYS-AI (75 s, sous-titrée), juste après le héros.",
+      "claims": ["CL-O03"],
+      "fields": {
+        "media": {
+          "asset": "video-opsys.mp4"
+        },
+        "media_position": "top",
+        "visual": "aucun",
+        "tone": "sombre",
+        "anchor_id": "video"
+      },
+      "translation": {
+        "title": "OPSYS-AI en 75 secondes.",
+        "body": "<p>Une demande ici, un devis là, des informations partout… Et si tout travaillait enfin ensemble ? Découvrez la vision d'OPSYS-AI : relier l'accueil, les ventes, le terrain, les finances et vos décisions, avec des agents spécialisés et des validations humaines.</p>",
+        "media_captions": {
+          "asset": "video-opsys.fr-CA.vtt"
+        }
+      }
+    },
+    {
       "collection": "block_cards",
       "role": "Statut global « partiel » et les quatre niveaux de disponibilité (brochure p. 34).",
       "claims": ["CL-O01", "CL-O02", "CL-30"],

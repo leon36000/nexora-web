@@ -57,7 +57,7 @@ Quand nous hébergeons le système, vos données sont stockées et traitées dan
 
 #### Jamais d'entraînement.
 
-Nous n'utilisons jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers.
+Nous n'utilisons jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers : seule exception, un modèle qui vous appartient, ajusté avec Corpus sur votre demande écrite.
 
 #### Jamais vendues.
 
@@ -179,7 +179,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Mes données servent-elles à entraîner une IA ?
 
-Jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers.
+Jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers : seule exception, un modèle qui vous appartient, ajusté avec Corpus sur votre demande écrite.
 
 #### Vendez-vous mes données ?
 

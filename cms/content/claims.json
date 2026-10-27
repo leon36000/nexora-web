@@ -1410,7 +1410,7 @@
     {
       "id": "CL-E03",
       "kind": "engagement",
-      "statement": "Nexora AI n'utilise jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers.",
+      "statement": "Nexora AI n'utilise jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers ; seule exception, un modèle qui appartient au client, ajusté avec Corpus sur sa demande écrite.",
       "scope": "Tous les produits et modes de déploiement. Les clauses des fournisseurs de modèles doivent être au moins aussi strictes (recherche 10 §6.5, point 4) ; les journaux techniques de sécurité sont expliqués dans la politique de confidentialité.",
       "evidence": "Engagement du fondateur (D7, engagement 3). « Jamais » n'est vrai que si le contrat et l'architecture le garantissent : clause à rédiger (CL-A06) et clauses des fournisseurs à vérifier.",
       "evidence_url": null,

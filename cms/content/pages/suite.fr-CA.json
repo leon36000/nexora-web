@@ -119,12 +119,12 @@
             "text": "Extraction, classement, dédoublonnage, droits d'accès, provenance, versions, indexation : de quoi retrouver une réponse dans vos documents, avec ses sources."
           },
           {
-            "title": "Des données pour spécialiser un modèle.",
+            "title": "Des données pour spécialiser votre propre modèle.",
             "text": "Sélection, qualité, autorisations, droits d'usage, séparation entre entraînement et évaluation, contrôle des régressions."
           },
           {
             "title": "Une règle de départ.",
-            "text": "Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle."
+            "text": "Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle, sauf le vôtre, sur votre demande écrite."
           }
         ]
       }
@@ -198,7 +198,7 @@
           },
           {
             "question": "Corpus entraînera-t-il un modèle avec mes documents ?",
-            "answer": "Non, jamais. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle."
+            "answer": "Non, jamais. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle, sauf le vôtre, sur votre demande écrite."
           },
           {
             "question": "Que puis-je utiliser dès maintenant ?",

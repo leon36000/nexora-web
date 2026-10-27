@@ -89,8 +89,8 @@ Nexora Corpus is meant to turn assorted files into cleaner, structured, traceabl
 It will distinguish two destinations that must not be confused: updating a document base and training a model are two different operations, with distinct costs, risks and approvals.
 
 - **Knowledge for retrieval.** Extraction, classification, deduplication, access rights, provenance, versions, indexing: what it takes to find an answer in your documents, with its sources.
-- **Data to specialize a model.** Selection, quality, authorizations, usage rights, separation between training and evaluation, regression control.
-- **A starting rule.** An imported document does not authorize its use for training. No data goes automatically to both destinations, and Nexora AI never uses your data to train or fine-tune a model.
+- **Data to specialize your own model.** Selection, quality, authorizations, usage rights, separation between training and evaluation, regression control.
+- **A starting rule.** An imported document does not authorize its use for training. No data goes automatically to both destinations, and Nexora AI never uses your data to train or fine-tune a model, except your own, at your written request.
 
 ### Bloc 5 — Section (`block_section`)
 
@@ -148,7 +148,7 @@ We publish no comparison. These models do not yet have a canonical sheet with me
 
 #### Will Corpus train a model on my documents?
 
-No, never. Importing a document into a knowledge base does not authorize its use for training, and Nexora AI never uses your data to train or fine-tune a model.
+No, never. Importing a document into a knowledge base does not authorize its use for training, and Nexora AI never uses your data to train or fine-tune a model, except your own, at your written request.
 
 #### What can I use right now?
 

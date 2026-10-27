@@ -25,7 +25,19 @@ Giving small businesses the capabilities of a large company: an augmented team, 
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [Deployment study](/en/contact/?sujet=etude-deploiement)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
+
+*Vidéo de présentation d'OPSYS-AI (75 s, sous-titrée), juste après le héros. · Affirmations : CL-O03*
+
+Réglages : `media=[object Object]`, `media_position=top`, `visual=aucun`, `tone=sombre`, `anchor_id=video`
+
+## OPSYS-AI in 75 seconds.
+
+Média : `video-opsys.mp4` · sous-titres : `video-opsys.en-CA.vtt`
+
+A request here, a quote there, information everywhere… What if everything finally worked together? Discover the OPSYS-AI vision: connecting reception, sales, the field, finance and your decisions, with specialized agents and human approvals.
+
+### Bloc 3 — Cartes (`block_cards`)
 
 *Statut global « partiel » et les quatre niveaux de disponibilité (brochure p. 34). · Affirmations : CL-O01, CL-O02, CL-30*
 
@@ -51,7 +63,7 @@ Photo and geospatial measurement, complete document assimilation, accounting and
 
 Real providers, delivery of communications, authorizations, operational security, backup and recovery, performance, browsers and full deployment: each environment brings its own proof.
 
-### Bloc 3 — Section (`block_section`)
+### Bloc 4 — Section (`block_section`)
 
 *L'ambition : des capacités de grande entreprise pour une PME ; exemple de la rénovation. · Affirmations : CL-O03, CL-O10*
 
@@ -68,7 +80,7 @@ OPSYS-AI aims to bring these moments into a shared environment: reception, sales
 - **Human controls.** For decisions, commitments and sensitive actions.
 - **A system that learns with method.** From validated sources and results, never silently.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
 *Parcours en cinq temps (brochure p. 4) ; exemple illustratif, sans certification de bout en bout. · Affirmations : CL-O04*
 
@@ -98,7 +110,7 @@ The field records progress and variances. Useful facts feed the follow-up of the
 
 Dashboards tie results back to their sources; leadership examines the variances, the priorities and the lessons learned.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Cartes (`block_cards`)
 
 *Les dix départements : promesse en une ligne, exemple qualifié localement, cible à compléter (matrice p. 33). · Affirmations : CL-30, CL-O02, CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10*
 
@@ -168,7 +180,7 @@ Find knowledge, evidence and lessons learned: keep useful context and improve pr
 Locally qualified: local memory building blocks and slices.
 To complete or qualify: complete multimodal assimilation, recall and quality on your company's data, which remain to be assessed.
 
-### Bloc 6 — Section (`block_section`)
+### Bloc 7 — Section (`block_section`)
 
 *La console et le CRM visuel : poste de travail central visé ; vues administratives qualifiées localement ; reste en développement. · Affirmations : CL-O05, CL-30*
 
@@ -186,7 +198,7 @@ Some administrative views are locally qualified; the overall experience, real co
 - **Lists, filters and day views.** Work by customer, team or task.
 - **Proposals to approve.** Actions and drafts the user can examine before they go out.
 
-### Bloc 7 — Cartes (`block_cards`)
+### Bloc 8 — Cartes (`block_cards`)
 
 *Agents configurables par responsabilité (brochure p. 17). · Affirmations : CL-O06*
 
@@ -216,7 +228,7 @@ Context volume, number of steps, retries and concurrency.
 
 Triggers, supervision, and handover to a person when the situation calls for it.
 
-### Bloc 8 — Section (`block_section`)
+### Bloc 9 — Section (`block_section`)
 
 *Automatisation sous permissions : l'autonomie se règle sur le niveau de confiance et l'action demandée. · Affirmations : CL-O07, CL-31*
 
@@ -234,7 +246,7 @@ A "prepared", "approved" or "sent" state is always distinct from actual delivery
 - **A person approves.** Payments, sensitive external commitments, publications and other reserved operations.
 - **Escalation.** When the situation goes beyond the rules, the rights or the data available.
 
-### Bloc 9 — Section (`block_section`)
+### Bloc 10 — Section (`block_section`)
 
 *Sécurité, gouvernance et observabilité visées ; aucune certification ; engagements sur les données. · Affirmations : CL-O08, CL-E01, CL-E03, CL-E04*
 
@@ -252,7 +264,7 @@ Compliance depends on the configuration, the deployment, the business's practice
 - **Confidentiality and retention.** Confidentiality, retention and deletion settings to define according to context.
 - **Monitoring of limits.** Budgets, quotas and availability of tools and providers.
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Connecteurs, hébergement et mobilité : options visées ; mobile et déploiement complet non présentés comme livrés. · Affirmations : CL-O09, CL-77*
 
@@ -270,7 +282,7 @@ A configured integration is not necessarily authenticated, working or authorized
 - **A mobile app, in the last phase.** Administrator, salesperson, employee and client profiles, with the ambition of offline operation. Nothing is delivered.
 - **Backup and recovery.** To be defined and verified in the chosen environment.
 
-### Bloc 11 — Section (`block_section`)
+### Bloc 12 — Section (`block_section`)
 
 *Pour qui : PME ; rénovation extérieure au Québec comme contexte de départ ; cinq publics. · Affirmations : CL-O10*
 
@@ -286,7 +298,7 @@ OPSYS-AI is for small businesses that want to coordinate requests, sales, crews 
 - **Field and operations.** Organize days, jobs and materials.
 - **Administration and finance.** Reconcile information and prepare controls.
 
-### Bloc 12 — Cartes (`block_cards`)
+### Bloc 13 — Cartes (`block_cards`)
 
 *Démarche réaliste en quatre étapes (brochure p. 21) ; aucun délai annoncé. · Affirmations : CL-O10, CL-14, CL-80*
 
@@ -312,7 +324,7 @@ Who prepares, who approves, who is notified.
 
 In the target environment, with your data, before widening.
 
-### Bloc 13 — FAQ (`block_faq`)
+### Bloc 14 — FAQ (`block_faq`)
 
 *FAQ alignée sur la brochure : statut, niveaux, envois, remplacement d'un logiciel, serveur, données, secteurs, mobile, délai, prix, essai. · Affirmations : CL-O01, CL-O02, CL-O07, CL-31, CL-O05, CL-O09, CL-O10, CL-E03, CL-E04, CL-14, CL-10, CL-61*
 
@@ -364,7 +376,7 @@ There is no public price. A deployment study sets out in writing what is include
 
 No, not as self-service. We offer a demonstration, a deployment study, then a qualified pilot.
 
-### Bloc 14 — Appel à l'action (`block_cta`)
+### Bloc 15 — Appel à l'action (`block_cta`)
 
 *CTA : démonstration ou étude de déploiement. · Affirmations : CL-61, CL-O01*
 

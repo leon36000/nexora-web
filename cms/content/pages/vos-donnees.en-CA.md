@@ -57,7 +57,7 @@ When we host the system, your data is stored and processed in our infrastructure
 
 #### Never used for training.
 
-We never use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's.
+We never use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request.
 
 #### Never sold.
 
@@ -179,7 +179,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Is my data used to train an AI?
 
-Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's.
+Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request.
 
 #### Do you sell my data?
 
