@@ -67,11 +67,18 @@ export interface VpsAdminDeps {
 }
 
 const NO_STORE = { "cache-control": "no-store" };
-const json = (body: unknown, status = 200, extra: Record<string, string> = {}) =>
-  new Response(JSON.stringify(body, (_k, v) => (typeof v === "bigint" ? v.toString() : v)), {
-    status,
-    headers: { "content-type": "application/json", ...NO_STORE, ...extra },
-  });
+const json = (
+  body: unknown,
+  status = 200,
+  extra: Record<string, string> = {},
+) =>
+  new Response(
+    JSON.stringify(body, (_k, v) => (typeof v === "bigint" ? v.toString() : v)),
+    {
+      status,
+      headers: { "content-type": "application/json", ...NO_STORE, ...extra },
+    },
+  );
 
 class HttpError extends Error {
   constructor(
@@ -91,14 +98,25 @@ const cents = int(1, 100_000_00).nullable();
 
 const ipPool = z
   .object({
-    ranges: z.array(z.object({ from: z.string().max(15), to: z.string().max(15) }).strict()).min(1).max(20),
+    ranges: z
+      .array(
+        z.object({ from: z.string().max(15), to: z.string().max(15) }).strict(),
+      )
+      .min(1)
+      .max(20),
     prefix: int(8, 30),
     gateway: z.string().max(15),
     dns: z.array(z.string().max(15)).min(1).max(4),
     bridge: z.string().max(20),
   })
   .strict();
-const capacity = z.object({ vcpu: int(1, 4096), ramMb: int(1, 16_000_000), diskGb: int(1, 10_000_000) }).strict();
+const capacity = z
+  .object({
+    vcpu: int(1, 4096),
+    ramMb: int(1, 16_000_000),
+    diskGb: int(1, 10_000_000),
+  })
+  .strict();
 
 const serverFields = {
   name: text(100).min(1),
@@ -135,7 +153,13 @@ const serverCreate = z
   })
   .strict();
 // L'état « prêt » ne s'obtient que par un test de connexion réussi, jamais par un PATCH.
-const serverPatch = z.object({ ...serverFields, state: z.enum(["draft", "maintenance", "offline"]) }).partial().strict();
+const serverPatch = z
+  .object({
+    ...serverFields,
+    state: z.enum(["draft", "maintenance", "offline"]),
+  })
+  .partial()
+  .strict();
 
 const templateCreate = z
   .object({
@@ -144,8 +168,15 @@ const templateCreate = z
     os: text(40).min(1),
     osVersion: text(40).min(1),
     vmid: int(100, 999_999_999),
-    ciUser: z.string().regex(/^[a-z_][a-z0-9_-]{0,31}$/).optional(),
-    imageSha256: z.string().regex(/^[0-9a-f]{64}$/).nullable().optional(),
+    ciUser: z
+      .string()
+      .regex(/^[a-z_][a-z0-9_-]{0,31}$/)
+      .optional(),
+    imageSha256: z
+      .string()
+      .regex(/^[0-9a-f]{64}$/)
+      .nullable()
+      .optional(),
   })
   .strict();
 const templatePatch = z
@@ -155,7 +186,10 @@ const templatePatch = z
     osVersion: text(40).min(1),
     vmid: int(100, 999_999_999),
     ciUser: z.string().regex(/^[a-z_][a-z0-9_-]{0,31}$/),
-    imageSha256: z.string().regex(/^[0-9a-f]{64}$/).nullable(),
+    imageSha256: z
+      .string()
+      .regex(/^[0-9a-f]{64}$/)
+      .nullable(),
     state: z.enum(["draft", "retired"]),
   })
   .partial()
@@ -280,7 +314,10 @@ async function body<T>(request: Request, schema: z.ZodType<T>): Promise<T> {
   const result = schema.safeParse(parsed);
   if (!result.success)
     throw new HttpError(422, "invalid_request", {
-      issues: result.error.issues.map((i) => ({ path: i.path.join("."), code: i.code })),
+      issues: result.error.issues.map((i) => ({
+        path: i.path.join("."),
+        code: i.code,
+      })),
     });
   return result.data;
 }
@@ -292,7 +329,10 @@ const id = (v: string | undefined) => {
 };
 
 /** Fiche serveur sans rien de secret : seule la RÉFÉRENCE du coffre est renvoyée. */
-const publicServer = (s: typeof proxmoxServers.$inferSelect) => ({ ...s, tokenRef: s.tokenRef });
+const publicServer = (s: typeof proxmoxServers.$inferSelect) => ({
+  ...s,
+  tokenRef: s.tokenRef,
+});
 
 export async function handleVpsAdmin(
   request: Request,
@@ -300,16 +340,24 @@ export async function handleVpsAdmin(
   deps: VpsAdminDeps,
 ): Promise<Response> {
   const auth = checkAdminAuth(request, deps.adminToken);
-  if (auth === "not_configured") return json({ error: "admin_not_configured" }, 503);
+  if (auth === "not_configured")
+    return json({ error: "admin_not_configured" }, 503);
   if (auth === "unauthorized")
-    return json({ error: "unauthorized" }, 401, { "www-authenticate": 'Bearer realm="nexora-admin"' });
+    return json({ error: "unauthorized" }, 401, {
+      "www-authenticate": 'Bearer realm="nexora-admin"',
+    });
   try {
     return await route(request, path, deps);
   } catch (error) {
-    if (error instanceof HttpError) return json({ error: error.code, ...error.extra }, error.status);
+    if (error instanceof HttpError)
+      return json({ error: error.code, ...error.extra }, error.status);
     if (error instanceof VpsCatalogError || error instanceof ServerError)
       return json(
-        { error: error.code, message: error.message, ...(error.details ? { issues: error.details } : {}) },
+        {
+          error: error.code,
+          message: error.message,
+          ...(error.details ? { issues: error.details } : {}),
+        },
         STATUS_OF[error.code] ?? 400,
       );
     if (error instanceof VpsSyncError)
@@ -322,26 +370,32 @@ export async function handleVpsAdmin(
   }
 }
 
-async function route(request: Request, path: string[], deps: VpsAdminDeps): Promise<Response> {
+async function route(
+  request: Request,
+  path: string[],
+  deps: VpsAdminDeps,
+): Promise<Response> {
   const db = deps.db();
   const now = deps.now();
   const method = request.method.toUpperCase();
   const [a, b, c] = path;
   const ok = (data: unknown, status = 200) => json(data, status);
   const allowed = (...methods: string[]) => {
-    if (!methods.includes(method)) throw new HttpError(405, "method_not_allowed");
+    if (!methods.includes(method))
+      throw new HttpError(405, "method_not_allowed");
   };
 
   if (!a) {
     allowed("GET");
-    const [servers, templates, plans, apps, versions, published] = await Promise.all([
-      listServers(db),
-      listTemplates(db),
-      listPlans(db),
-      listApps(db),
-      listCatalogVersions(db, 10),
-      getPublishedCatalog(db),
-    ]);
+    const [servers, templates, plans, apps, versions, published] =
+      await Promise.all([
+        listServers(db),
+        listTemplates(db),
+        listPlans(db),
+        listApps(db),
+        listCatalogVersions(db, 10),
+        getPublishedCatalog(db),
+      ]);
     const counts = await db
       .select({ status: vpsInstances.status, n: sql<number>`count(*)::int` })
       .from(vpsInstances)
@@ -350,10 +404,19 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
       servers: servers.map(publicServer),
       templates,
       plans,
-      apps: apps.map(({ installScript: _s, ...rest }) => ({ ...rest, hasScript: Boolean(_s) })),
+      apps: apps.map(({ installScript: _s, ...rest }) => ({
+        ...rest,
+        hasScript: Boolean(_s),
+      })),
       versions: versions.map(({ snapshot: _s, ...v }) => v),
       published: published
-        ? { id: published.id, short: published.short, publishedAt: published.publishedAt, appliedAt: published.appliedAt, appliedStatus: published.appliedStatus }
+        ? {
+            id: published.id,
+            short: published.short,
+            publishedAt: published.publishedAt,
+            appliedAt: published.appliedAt,
+            appliedStatus: published.appliedStatus,
+          }
         : null,
       instanceCounts: Object.fromEntries(counts.map((r) => [r.status, r.n])),
       devSamplesAllowed: (deps.env ?? process.env).NODE_ENV !== "production",
@@ -363,7 +426,8 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
   if (a === "servers") {
     if (!b) {
       allowed("GET", "POST");
-      if (method === "GET") return ok({ servers: (await listServers(db)).map(publicServer) });
+      if (method === "GET")
+        return ok({ servers: (await listServers(db)).map(publicServer) });
       const created = await createServer(db, await body(request, serverCreate));
       deps.log.info("vps : serveur créé", { code: created.code });
       return ok(publicServer(created), 201);
@@ -376,24 +440,44 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
         now: () => now,
       });
       deps.log.info("vps : serveur testé", { serverId, ok: check.ok });
-      return ok({ ok: check.ok, detail: check.detail, version: check.version, templates: check.templates, server: publicServer(check.server) });
+      return ok({
+        ok: check.ok,
+        detail: check.detail,
+        version: check.version,
+        templates: check.templates,
+        server: publicServer(check.server),
+      });
     }
     if (c === "templates") {
       allowed("GET", "POST");
-      if (method === "GET") return ok({ templates: await listTemplates(db, serverId) });
-      const created = await createTemplate(db, { serverId, ...(await body(request, templateCreate)) });
+      if (method === "GET")
+        return ok({ templates: await listTemplates(db, serverId) });
+      const created = await createTemplate(db, {
+        serverId,
+        ...(await body(request, templateCreate)),
+      });
       return ok(created, 201);
     }
     if (c) throw new HttpError(404, "not_found");
     allowed("GET", "PATCH");
-    if (method === "GET") return ok({ ...publicServer(await getServer(db, serverId)), templates: await listTemplates(db, serverId) });
-    return ok(publicServer(await updateServer(db, serverId, await body(request, serverPatch))));
+    if (method === "GET")
+      return ok({
+        ...publicServer(await getServer(db, serverId)),
+        templates: await listTemplates(db, serverId),
+      });
+    return ok(
+      publicServer(
+        await updateServer(db, serverId, await body(request, serverPatch)),
+      ),
+    );
   }
 
   if (a === "templates") {
     const templateId = id(b);
     allowed("PATCH");
-    return ok(await updateTemplate(db, templateId, await body(request, templatePatch)));
+    return ok(
+      await updateTemplate(db, templateId, await body(request, templatePatch)),
+    );
   }
 
   if (a === "plans") {
@@ -405,13 +489,21 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
     const planId = id(b);
     allowed("GET", "PATCH");
     if (method === "GET") return ok(await getPlan(db, planId));
-    return ok(await updatePlan(db, planId, await body(request, planPatch), now));
+    return ok(
+      await updatePlan(db, planId, await body(request, planPatch), now),
+    );
   }
 
   if (a === "apps") {
     if (!b) {
       allowed("GET", "POST");
-      if (method === "GET") return ok({ apps: (await listApps(db)).map(({ installScript, ...r }) => ({ ...r, hasScript: Boolean(installScript) })) });
+      if (method === "GET")
+        return ok({
+          apps: (await listApps(db)).map(({ installScript, ...r }) => ({
+            ...r,
+            hasScript: Boolean(installScript),
+          })),
+        });
       return ok(await createApp(db, await body(request, appCreate)), 201);
     }
     const appId = id(b);
@@ -428,10 +520,17 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
     };
     if (!b) {
       allowed("GET", "POST");
-      if (method === "GET") return ok({ versions: (await listCatalogVersions(db)).map(strip) });
+      if (method === "GET")
+        return ok({ versions: (await listCatalogVersions(db)).map(strip) });
       const draft = await createDraftVersion(db, guard);
       return ok(
-        { version: strip(draft.version), created: draft.created, unchanged: draft.unchanged, diff: draft.diff, issues: draft.issues },
+        {
+          version: strip(draft.version),
+          created: draft.created,
+          unchanged: draft.unchanged,
+          diff: draft.diff,
+          issues: draft.issues,
+        },
         draft.created ? 201 : 200,
       );
     }
@@ -461,7 +560,10 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
     allowed("POST");
     const stripe = await deps.stripe();
     const { version, result } = await syncVpsCatalogToStripe(db, stripe, now);
-    deps.log.info("vps : catalogue publié vers Stripe", { version: version.short, plans: Object.keys(result.plans).length });
+    deps.log.info("vps : catalogue publié vers Stripe", {
+      version: version.short,
+      plans: Object.keys(result.plans).length,
+    });
     deps.onPublished?.();
     return ok({ status: "applied", appliedAt: version.appliedAt, ...result });
   }
@@ -521,9 +623,21 @@ async function route(request: Request, path: string[], deps: VpsAdminDeps): Prom
     const url = new URL(request.url);
     const instanceId = url.searchParams.get("instanceId");
     const rows = await db
-      .select({ id: vpsEvents.id, instanceId: vpsEvents.instanceId, orderId: vpsEvents.orderId, actor: vpsEvents.actor, kind: vpsEvents.kind, message: vpsEvents.message, createdAt: vpsEvents.createdAt })
+      .select({
+        id: vpsEvents.id,
+        instanceId: vpsEvents.instanceId,
+        orderId: vpsEvents.orderId,
+        actor: vpsEvents.actor,
+        kind: vpsEvents.kind,
+        message: vpsEvents.message,
+        createdAt: vpsEvents.createdAt,
+      })
       .from(vpsEvents)
-      .where(instanceId && UUID.test(instanceId) ? eq(vpsEvents.instanceId, instanceId) : undefined)
+      .where(
+        instanceId && UUID.test(instanceId)
+          ? eq(vpsEvents.instanceId, instanceId)
+          : undefined,
+      )
       .orderBy(desc(vpsEvents.createdAt))
       .limit(100);
     return ok({ events: rows });

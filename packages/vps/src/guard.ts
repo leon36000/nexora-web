@@ -1,4 +1,10 @@
-import { and, type Database, eq, osTemplates, proxmoxServers } from "@nexora/db";
+import {
+  and,
+  type Database,
+  eq,
+  osTemplates,
+  proxmoxServers,
+} from "@nexora/db";
 import type { GuardOptions } from "./catalog.ts";
 
 /**
@@ -14,7 +20,9 @@ export async function guardOptions(
     .select({ code: osTemplates.code, region: proxmoxServers.region })
     .from(osTemplates)
     .innerJoin(proxmoxServers, eq(proxmoxServers.id, osTemplates.serverId))
-    .where(and(eq(osTemplates.state, "ready"), eq(proxmoxServers.state, "ready")));
+    .where(
+      and(eq(osTemplates.state, "ready"), eq(proxmoxServers.state, "ready")),
+    );
   const ready = new Set(rows.map((r) => `${r.region}:${r.code}`));
   return {
     allowDevSamples: env.NODE_ENV !== "production",

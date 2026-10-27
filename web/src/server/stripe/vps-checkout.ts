@@ -2,7 +2,11 @@ import type { Database } from "@nexora/db";
 import type Stripe from "stripe";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { BillingConfig } from "../ledger/config";
-import { type CheckoutDeps, CheckoutError, ensureStripeCustomer } from "./checkout";
+import {
+  type CheckoutDeps,
+  CheckoutError,
+  ensureStripeCustomer,
+} from "./checkout";
 
 export interface VpsCheckoutInput {
   organizationId: string;
@@ -33,7 +37,12 @@ export async function createVpsCheckout(
 ): Promise<{ url: string; sessionId: string }> {
   try {
     const customer = await ensureStripeCustomer(
-      { db: deps.db, stripe: deps.stripe, config: deps.config, siteUrl: deps.siteUrl },
+      {
+        db: deps.db,
+        stripe: deps.stripe,
+        config: deps.config,
+        siteUrl: deps.siteUrl,
+      },
       input.organizationId,
       input.email,
     );
@@ -60,7 +69,8 @@ export async function createVpsCheckout(
       } satisfies Stripe.Checkout.SessionCreateParams,
       { idempotencyKey: `vps-checkout:${input.orderId}` },
     );
-    if (!session.url) throw new CheckoutError("stripe_error", "session sans adresse");
+    if (!session.url)
+      throw new CheckoutError("stripe_error", "session sans adresse");
     return { url: session.url, sessionId: session.id };
   } catch (error) {
     if (error instanceof CheckoutError) throw error;
@@ -68,6 +78,9 @@ export async function createVpsCheckout(
       typeof error === "object" && error && "type" in error
         ? String((error as { type: unknown }).type)
         : "unknown";
-    throw new CheckoutError("stripe_error", `Stripe a refusé la requête (${type})`);
+    throw new CheckoutError(
+      "stripe_error",
+      `Stripe a refusé la requête (${type})`,
+    );
   }
 }

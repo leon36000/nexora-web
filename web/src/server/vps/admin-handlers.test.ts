@@ -15,15 +15,23 @@ let secretToken = SIM_TOKEN;
 const stripePrices: Record<string, number> = {};
 const stripe = {
   products: {
-    create: vi.fn(async (p: { name: string }) => ({ id: `prod_${p.name.replace(/\W/g, "")}` })),
+    create: vi.fn(async (p: { name: string }) => ({
+      id: `prod_${p.name.replace(/\W/g, "")}`,
+    })),
     update: vi.fn(async (id: string) => ({ id })),
   },
   prices: {
-    create: vi.fn(async (p: { unit_amount: number; recurring: { interval: string }; product: string }) => {
-      const id = `price_${p.recurring.interval}_${p.unit_amount}`;
-      stripePrices[id] = p.unit_amount;
-      return { id };
-    }),
+    create: vi.fn(
+      async (p: {
+        unit_amount: number;
+        recurring: { interval: string };
+        product: string;
+      }) => {
+        const id = `price_${p.recurring.interval}_${p.unit_amount}`;
+        stripePrices[id] = p.unit_amount;
+        return { id };
+      },
+    ),
     retrieve: vi.fn(),
     update: vi.fn(),
   },
@@ -45,17 +53,29 @@ function deps(over: Partial<VpsAdminDeps> = {}): VpsAdminDeps {
     ...over,
   };
 }
-async function call(method: string, path: string, body?: unknown, over: Partial<VpsAdminDeps> = {}, token: string | null = ADMIN) {
+async function call(
+  method: string,
+  path: string,
+  body?: unknown,
+  over: Partial<VpsAdminDeps> = {},
+  token: string | null = ADMIN,
+) {
   const res = await handleVpsAdmin(
     new Request(`http://localhost/api/admin/vps/${path}`, {
       method,
-      headers: { ...(token ? { authorization: `Bearer ${token}` } : {}), "content-type": "application/json" },
+      headers: {
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
+        "content-type": "application/json",
+      },
       body: body === undefined ? undefined : JSON.stringify(body),
     }),
     path.split("/").filter(Boolean),
     deps(over),
   );
-  return { status: res.status, body: (await res.json()) as Record<string, any> };
+  return {
+    status: res.status,
+    body: (await res.json()) as Record<string, any>,
+  };
 }
 
 beforeAll(async () => {
@@ -73,8 +93,12 @@ afterAll(async () => {
 describe("authentification", () => {
   it("refuse sans jeton (401), avec un mauvais jeton (401) et répond 503 si le jeton d'administration n'est pas configuré", async () => {
     expect((await call("GET", "", undefined, {}, null)).status).toBe(401);
-    expect((await call("GET", "", undefined, {}, "b".repeat(40))).status).toBe(401);
-    expect((await call("GET", "", undefined, { adminToken: undefined })).status).toBe(503);
+    expect((await call("GET", "", undefined, {}, "b".repeat(40))).status).toBe(
+      401,
+    );
+    expect(
+      (await call("GET", "", undefined, { adminToken: undefined })).status,
+    ).toBe(503);
   });
 });
 
@@ -82,14 +106,30 @@ let serverId = "";
 describe("serveurs Proxmox", () => {
   it("crée une fiche en brouillon, sans jamais renvoyer de secret, et refuse le HTTP en clair hors boucle locale", async () => {
     const created = await call("POST", "servers", {
-      code: "mtl-1", name: "Montréal 1", host: "http://127.0.0.1", port: simPort, node: "pve1",
-      capacity: { vcpu: 32, ramMb: 131072, diskGb: 2000 }, ipPool: SIM_POOL, tokenRef: "proxmox.main",
+      code: "mtl-1",
+      name: "Montréal 1",
+      host: "http://127.0.0.1",
+      port: simPort,
+      node: "pve1",
+      capacity: { vcpu: 32, ramMb: 131072, diskGb: 2000 },
+      ipPool: SIM_POOL,
+      tokenRef: "proxmox.main",
     });
     expect(created.status).toBe(201);
-    expect(created.body).toMatchObject({ state: "draft", tokenRef: "proxmox.main" });
+    expect(created.body).toMatchObject({
+      state: "draft",
+      tokenRef: "proxmox.main",
+    });
     expect(JSON.stringify(created.body)).not.toContain(SIM_TOKEN);
     serverId = created.body.id;
-    const bad = await call("POST", "servers", { code: "mtl-2", name: "x", host: "http://pve.exemple.ca", node: "pve1", capacity: { vcpu: 1, ramMb: 1, diskGb: 1 }, ipPool: SIM_POOL });
+    const bad = await call("POST", "servers", {
+      code: "mtl-2",
+      name: "x",
+      host: "http://pve.exemple.ca",
+      node: "pve1",
+      capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+      ipPool: SIM_POOL,
+    });
     expect(bad.status).toBe(422);
   });
 
@@ -106,10 +146,20 @@ describe("serveurs Proxmox", () => {
     expect(JSON.stringify(bad.body)).not.toContain("99999999");
 
     secretToken = SIM_TOKEN;
-    const tpl = await call("POST", `servers/${serverId}/templates`, { code: "debian-12-ci", name: "Debian 12", os: "debian", osVersion: "12", vmid: 9000 });
+    const tpl = await call("POST", `servers/${serverId}/templates`, {
+      code: "debian-12-ci",
+      name: "Debian 12",
+      os: "debian",
+      osVersion: "12",
+      vmid: 9000,
+    });
     expect(tpl.status).toBe(201);
     const ok = await call("POST", `servers/${serverId}/test`);
-    expect(ok.body).toMatchObject({ ok: true, server: { state: "ready" }, templates: [{ code: "debian-12-ci", ok: true }] });
+    expect(ok.body).toMatchObject({
+      ok: true,
+      server: { state: "ready" },
+      templates: [{ code: "debian-12-ci", ok: true }],
+    });
     expect(ok.body.version).toMatch(/^\d/);
     const listed = await call("GET", `servers/${serverId}`);
     expect(listed.body.templates[0].state).toBe("ready");
@@ -132,23 +182,64 @@ describe("serveurs Proxmox", () => {
 
 describe("plans, applications, versions, Stripe", () => {
   it("refuse de publier une version avec un plan sans prix, une licence non permissive ou un script altéré", async () => {
-    const plan = await call("POST", "plans", { code: "kvm-1", name: "KVM 1", vcpu: 1, ramMb: 2048, diskGb: 20, bandwidthGb: 1000, templateCode: "debian-12-ci", isDevSample: true });
+    const plan = await call("POST", "plans", {
+      code: "kvm-1",
+      name: "KVM 1",
+      vcpu: 1,
+      ramMb: 2048,
+      diskGb: 20,
+      bandwidthGb: 1000,
+      templateCode: "debian-12-ci",
+      isDevSample: true,
+    });
     expect(plan.status).toBe(201);
-    const noPrice = await call("PATCH", `plans/${plan.body.id}`, { status: "approved" });
+    const noPrice = await call("PATCH", `plans/${plan.body.id}`, {
+      status: "approved",
+    });
     expect(noPrice.status).toBe(422);
     expect(noPrice.body.issues[0].issue).toBe("price_missing");
-    await call("PATCH", `plans/${plan.body.id}`, { priceMonthlyCents: 1200, priceYearlyCents: 12000 });
-    expect((await call("PATCH", `plans/${plan.body.id}`, { status: "approved" })).status).toBe(200);
-    expect((await call("PATCH", `plans/${plan.body.id}`, { status: "published" })).status).toBe(200);
+    await call("PATCH", `plans/${plan.body.id}`, {
+      priceMonthlyCents: 1200,
+      priceYearlyCents: 12000,
+    });
+    expect(
+      (await call("PATCH", `plans/${plan.body.id}`, { status: "approved" }))
+        .status,
+    ).toBe(200);
+    expect(
+      (await call("PATCH", `plans/${plan.body.id}`, { status: "published" }))
+        .status,
+    ).toBe(200);
 
-    const gpl = await call("POST", "apps", { code: "gplapp", name: "GPL", version: "1.0.0", upstreamUrl: "https://github.com/x/y", license: "GPL-3.0", licenseUrl: "https://github.com/x/y/blob/main/LICENSE", installScript: INSTALL_SCRIPT });
-    expect((await call("PATCH", `apps/${gpl.body.id}`, { status: "approved" })).status).toBe(422);
+    const gpl = await call("POST", "apps", {
+      code: "gplapp",
+      name: "GPL",
+      version: "1.0.0",
+      upstreamUrl: "https://github.com/x/y",
+      license: "GPL-3.0",
+      licenseUrl: "https://github.com/x/y/blob/main/LICENSE",
+      installScript: INSTALL_SCRIPT,
+    });
+    expect(
+      (await call("PATCH", `apps/${gpl.body.id}`, { status: "approved" }))
+        .status,
+    ).toBe(422);
     // Le script n'est jamais renvoyé par les listes (il peut être long et n'a pas à circuler).
     const listed = await call("GET", "apps");
     expect(JSON.stringify(listed.body)).not.toContain("nexora-installed");
     expect(listed.body.apps[0].hasScript).toBe(true);
 
-    const app = await call("POST", "apps", { code: "agentia", name: "Agent IA", version: "0.22.5", upstreamUrl: "https://github.com/NousResearch/hermes-agent", license: "MIT", licenseUrl: "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/LICENSE", installScript: INSTALL_SCRIPT, minRamMb: 2048 });
+    const app = await call("POST", "apps", {
+      code: "agentia",
+      name: "Agent IA",
+      version: "0.22.5",
+      upstreamUrl: "https://github.com/NousResearch/hermes-agent",
+      license: "MIT",
+      licenseUrl:
+        "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/LICENSE",
+      installScript: INSTALL_SCRIPT,
+      minRamMb: 2048,
+    });
     expect(app.body.installScriptSha256).toMatch(/^[0-9a-f]{64}$/);
     await call("PATCH", `apps/${app.body.id}`, { status: "approved" });
     await call("PATCH", `apps/${app.body.id}`, { status: "published" });
@@ -157,27 +248,48 @@ describe("plans, applications, versions, Stripe", () => {
   it("un plan de développement n'est pas publiable en production", async () => {
     const draft = await call("POST", "versions");
     expect(draft.status).toBe(201);
-    const prod = await call("POST", `versions/${draft.body.version.id}/approve`, undefined, { env: { NODE_ENV: "production" } });
+    const prod = await call(
+      "POST",
+      `versions/${draft.body.version.id}/approve`,
+      undefined,
+      { env: { NODE_ENV: "production" } },
+    );
     expect(prod.status).toBe(422);
-    expect(prod.body.issues.map((i: { issue: string }) => i.issue)).toContain("dev_sample");
+    expect(prod.body.issues.map((i: { issue: string }) => i.issue)).toContain(
+      "dev_sample",
+    );
   });
 
   it("brouillon → approbation → publication ; « Publier vers Stripe » écrit les identifiants sur la version", async () => {
     const draft = await call("POST", "versions");
-    expect(draft.body.diff.map((d: { code: string }) => d.code)).toEqual(expect.arrayContaining(["kvm-1", "agentia"]));
+    expect(draft.body.diff.map((d: { code: string }) => d.code)).toEqual(
+      expect.arrayContaining(["kvm-1", "agentia"]),
+    );
     const id = draft.body.version.id;
     expect((await call("POST", `versions/${id}/publish`)).status).toBe(409); // pas approuvée
     expect((await call("POST", `versions/${id}/approve`)).status).toBe(200);
     const onPublished = vi.fn();
-    const published = await call("POST", `versions/${id}/publish`, undefined, { onPublished });
+    const published = await call("POST", `versions/${id}/publish`, undefined, {
+      onPublished,
+    });
     expect(published.status).toBe(200);
     expect(onPublished).toHaveBeenCalledOnce();
 
     const sync = await call("POST", "stripe/publish");
     expect(sync.status).toBe(200);
-    expect(sync.body.plans["kvm-1"]).toMatchObject({ monthly: "price_month_1200", yearly: "price_year_12000" });
+    expect(sync.body.plans["kvm-1"]).toMatchObject({
+      monthly: "price_month_1200",
+      yearly: "price_year_12000",
+    });
     // Prix hors taxes, en dollars canadiens, par durée.
-    expect(stripe.prices.create).toHaveBeenCalledWith(expect.objectContaining({ currency: "cad", unit_amount: 1200, tax_behavior: "exclusive" }), expect.anything());
+    expect(stripe.prices.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        currency: "cad",
+        unit_amount: 1200,
+        tax_behavior: "exclusive",
+      }),
+      expect.anything(),
+    );
     const overview = await call("GET", "");
     expect(overview.body.published).toMatchObject({ appliedStatus: "applied" });
     expect(overview.body.devSamplesAllowed).toBe(true);
@@ -187,22 +299,71 @@ describe("plans, applications, versions, Stripe", () => {
 describe("vues en lecture seule : aucun renseignement personnel", () => {
   it("les commandes et instances ne contiennent ni clé SSH, ni courriel, ni empreinte de clé", async () => {
     const org = `org_${randomBytes(4).toString("hex")}`;
-    await t.db.insert(organizations).values({ id: org, name: "Acme Inc. — Jeanne Tremblay", slug: org });
-    const [plan] = await t.db.select().from((await import("@nexora/db")).vpsPlans);
-    const [app] = await t.db.select().from((await import("@nexora/db")).vpsApps);
-    const [order] = await t.db.insert(vpsOrders).values({
-      organizationId: org, idempotencyKey: `k-${org}`, planId: plan?.id as string, planCode: "kvm-1", appId: app?.id as string, appCode: "agentia",
-      term: "month", region: "quebec", priceCents: 1200, catalogVersionId: crypto.randomUUID(), catalogVersion: "vps_x",
-      sshPublicKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIsecretkeybodyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx jeanne@acme.ca", sshKeyFingerprint: "SHA256:abcdef", hostname: "vps-acme",
-    }).returning();
-    const [inst] = await t.db.insert(vpsInstances).values({ orderId: order?.id as string, organizationId: org, vcpu: 1, ramMb: 2048, diskGb: 20, planCode: "kvm-1", appCode: "agentia", appVersion: "0.22.5", catalogVersionId: crypto.randomUUID(), vmName: "nx-x" }).returning();
-    await t.db.insert(vpsEvents).values({ organizationId: org, orderId: order?.id, instanceId: inst?.id, actor: "system", kind: "x", message: "test" });
+    await t.db
+      .insert(organizations)
+      .values({ id: org, name: "Acme Inc. — Jeanne Tremblay", slug: org });
+    const [plan] = await t.db
+      .select()
+      .from((await import("@nexora/db")).vpsPlans);
+    const [app] = await t.db
+      .select()
+      .from((await import("@nexora/db")).vpsApps);
+    const [order] = await t.db
+      .insert(vpsOrders)
+      .values({
+        organizationId: org,
+        idempotencyKey: `k-${org}`,
+        planId: plan?.id as string,
+        planCode: "kvm-1",
+        appId: app?.id as string,
+        appCode: "agentia",
+        term: "month",
+        region: "quebec",
+        priceCents: 1200,
+        catalogVersionId: crypto.randomUUID(),
+        catalogVersion: "vps_x",
+        sshPublicKey:
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIsecretkeybodyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx jeanne@acme.ca",
+        sshKeyFingerprint: "SHA256:abcdef",
+        hostname: "vps-acme",
+      })
+      .returning();
+    const [inst] = await t.db
+      .insert(vpsInstances)
+      .values({
+        orderId: order?.id as string,
+        organizationId: org,
+        vcpu: 1,
+        ramMb: 2048,
+        diskGb: 20,
+        planCode: "kvm-1",
+        appCode: "agentia",
+        appVersion: "0.22.5",
+        catalogVersionId: crypto.randomUUID(),
+        vmName: "nx-x",
+      })
+      .returning();
+    await t.db
+      .insert(vpsEvents)
+      .values({
+        organizationId: org,
+        orderId: order?.id,
+        instanceId: inst?.id,
+        actor: "system",
+        kind: "x",
+        message: "test",
+      });
     for (const path of ["orders", "instances", "events"]) {
       const r = await call("GET", path);
       expect(r.status).toBe(200);
       const text = JSON.stringify(r.body);
-      expect(text).not.toMatch(/secretkeybody|jeanne|acme\.ca|SHA256:abcdef|Tremblay/i);
+      expect(text).not.toMatch(
+        /secretkeybody|jeanne|acme\.ca|SHA256:abcdef|Tremblay/i,
+      );
     }
-    expect((await call("GET", "orders")).body.orders[0]).toMatchObject({ planCode: "kvm-1", status: "awaiting_payment" });
+    expect((await call("GET", "orders")).body.orders[0]).toMatchObject({
+      planCode: "kvm-1",
+      status: "awaiting_payment",
+    });
   });
 });

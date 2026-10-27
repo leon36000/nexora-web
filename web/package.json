@@ -11,7 +11,8 @@
     "vault:rotate": "bun scripts/vault-rotate.ts",
     "check:contrast": "bun scripts/contrast.mjs",
     "verify:ui": "bun scripts/verify-ui.mjs",
-    "capture": "bun scripts/capture.mjs"
+    "capture": "bun scripts/capture.mjs",
+    "vps:seed": "bun scripts/seed-vps.ts"
   },
   "dependencies": {
     "@nexora/db": "workspace:*",

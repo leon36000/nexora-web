@@ -36,7 +36,12 @@ export async function vpsCustomerDeps(): Promise<VpsCustomerDeps> {
     getContext: async (headers) => {
       const ctx = await getSessionContext(headers);
       return ctx
-        ? { userId: ctx.userId, email: ctx.email, organizationId: ctx.organizationId, role: ctx.role }
+        ? {
+            userId: ctx.userId,
+            email: ctx.email,
+            organizationId: ctx.organizationId,
+            role: ctx.role,
+          }
         : null;
     },
     stripe: () => getStripe(),

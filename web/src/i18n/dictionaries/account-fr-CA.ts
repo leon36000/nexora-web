@@ -223,6 +223,11 @@ export const accountFrCA = {
       button: "Ouvrir le portail de facturation",
       none: "Le portail sera disponible après votre premier paiement.",
     },
+    vps: {
+      title: "Mes VPS",
+      lead: "Vos serveurs privés virtuels : état, accès SSH et opérations courantes.",
+      link: "Voir mes VPS",
+    },
   },
 };
 

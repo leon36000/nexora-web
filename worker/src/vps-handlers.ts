@@ -7,9 +7,12 @@ import {
   vpsOrders,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { loadKeyring } from "@nexora/vault/crypto";
+import { readSecret } from "@nexora/vault/store";
 import {
   createSshRunner,
   type EngineDeps,
+  enqueueContinuation,
   type LifecycleAction,
   type PowerAction,
   provisionOrder,
@@ -19,10 +22,7 @@ import {
   safeError,
   settingsFromEnv,
   sweep,
-  enqueueContinuation,
 } from "@nexora/vps";
-import { loadKeyring } from "@nexora/vault/crypto";
-import { readSecret } from "@nexora/vault/store";
 import type { Mailer } from "./contact-notify.ts";
 import type { HandlerRegistry, JobHandler } from "./registry.ts";
 
@@ -32,8 +32,7 @@ import type { HandlerRegistry, JobHandler } from "./registry.ts";
  * `vps.sweep` (balayage périodique, se replanifie lui-même) et `vps.alert` (courriel à l'opérateur).
  * Chaque gestionnaire est idempotent : la file peut le rejouer (bail de 5 minutes, redémarrage).
  */
-const UUID =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function uuid(payload: Record<string, unknown>, key: string): string {
   const v = payload[key];
@@ -48,7 +47,11 @@ const bucket = (ms: number, now = Date.now()) => Math.floor(now / ms);
 export function registerVpsHandlers(
   registry: HandlerRegistry,
   deps: EngineDeps,
-  options: { mailer?: Mailer | null; alertTo?: string; alertFrom?: string } = {},
+  options: {
+    mailer?: Mailer | null;
+    alertTo?: string;
+    alertFrom?: string;
+  } = {},
 ): HandlerRegistry {
   const provision: JobHandler = async (job) => {
     const orderId = uuid(job.payload, "orderId");
@@ -62,7 +65,11 @@ export function registerVpsHandlers(
   const lifecycle: JobHandler = async (job) => {
     const instanceId = uuid(job.payload, "instanceId");
     const action = String(job.payload.action) as LifecycleAction;
-    if (!["suspend", "resume", "terminate", "delete", "purge_old"].includes(action))
+    if (
+      !["suspend", "resume", "terminate", "delete", "purge_old"].includes(
+        action,
+      )
+    )
       throw new Error("action de cycle de vie inconnue");
     // Instance occupée (BusyError) : l'erreur remonte, la file réessaie plus tard.
     await runLifecycle(deps, instanceId, action);
@@ -91,8 +98,14 @@ export function registerVpsHandlers(
   const alert: JobHandler = async (job, ctx) => {
     const orderId = uuid(job.payload, "orderId");
     const reason = String(job.payload.reason ?? "inconnu").slice(0, 40);
-    const [order] = await deps.db.select().from(vpsOrders).where(eq(vpsOrders.id, orderId));
-    const [inst] = await deps.db.select().from(vpsInstances).where(eq(vpsInstances.orderId, orderId));
+    const [order] = await deps.db
+      .select()
+      .from(vpsOrders)
+      .where(eq(vpsOrders.id, orderId));
+    const [inst] = await deps.db
+      .select()
+      .from(vpsInstances)
+      .where(eq(vpsInstances.orderId, orderId));
     // Aucun renseignement personnel : identifiants techniques, plan, étape, raison nettoyée.
     const lines = [
       `Commande : ${orderId}`,
@@ -104,7 +117,10 @@ export function registerVpsHandlers(
         ? "Aucun remboursement automatique n'a été fait : décider depuis Stripe (annulation de l'abonnement, remboursement)."
         : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
     ];
-    ctx.log.error("vps : intervention de l'opérateur requise", { orderId, reason });
+    ctx.log.error("vps : intervention de l'opérateur requise", {
+      orderId,
+      reason,
+    });
     if (!options.mailer || !options.alertTo) return;
     await options.mailer.send({
       from: options.alertFrom ?? "vps@localhost",
@@ -135,11 +151,12 @@ export function vpsDepsFromEnv(
   return {
     db,
     proxmox: proxmoxClientFactory({ getSecret }),
-    runner: createSshRunner({ privateKey: () => getSecret("vps.worker_ssh_key") }),
+    runner: createSshRunner({
+      privateKey: () => getSecret("vps.worker_ssh_key"),
+    }),
     log,
     now: () => new Date(),
     settings: settingsFromEnv(env),
     workerId: `worker-${randomBytes(4).toString("hex")}`,
   };
 }
-

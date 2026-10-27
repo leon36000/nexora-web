@@ -15,9 +15,10 @@ if (!url) {
 
 const handle = createDb(url, { max: 10 });
 const vps = vpsDepsFromEnv(handle.db, log);
-if (!vps) log.warn("VPS : NEXORA_VAULT_MASTER_KEY absente, provisionnement désactivé");
+if (!vps)
+  log.warn("VPS : NEXORA_VAULT_MASTER_KEY absente, provisionnement désactivé");
+// Premier balayage ; chaque balayage planifie le suivant (clé unique par tranche de temps).
 else
-  // Premier balayage ; chaque balayage planifie le suivant (clé unique par tranche de temps).
   await enqueue(handle.db, {
     type: "vps.sweep",
     idempotencyKey: `vps-sweep:${Math.floor(Date.now() / SWEEP_EVERY_MS)}`,

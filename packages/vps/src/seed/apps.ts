@@ -37,7 +37,8 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     version: "0.22.5",
     upstreamUrl: "https://github.com/NousResearch/hermes-agent",
     license: "MIT",
-    licenseUrl: "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/LICENSE",
+    licenseUrl:
+      "https://raw.githubusercontent.com/NousResearch/hermes-agent/main/LICENSE",
     installScript: hermesScript,
     ports: [
       tunnel(9119, "Tableau de bord", "Dashboard"),
@@ -58,9 +59,12 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     version: "2026.10.7",
     upstreamUrl: "https://github.com/openclaw/openclaw",
     license: "MIT",
-    licenseUrl: "https://raw.githubusercontent.com/openclaw/openclaw/main/LICENSE",
-    licenseWarningFr: "Le projet n'est pas conçu comme une frontière multi-locataire : un VPS par client, jamais partagé.",
-    licenseWarningEn: "The project is not designed as a multi-tenant boundary: one VPS per customer, never shared.",
+    licenseUrl:
+      "https://raw.githubusercontent.com/openclaw/openclaw/main/LICENSE",
+    licenseWarningFr:
+      "Le projet n'est pas conçu comme une frontière multi-locataire : un VPS par client, jamais partagé.",
+    licenseWarningEn:
+      "The project is not designed as a multi-tenant boundary: one VPS per customer, never shared.",
     installScript: openclawScript,
     ports: [tunnel(18789, "Interface de contrôle", "Control UI")],
     minRamMb: 4096,
@@ -69,8 +73,10 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
   {
     code: "ollama-anythingllm",
     name: "Ollama + AnythingLLM",
-    taglineFr: "Vos modèles locaux et leur interface de chat, sans rien envoyer dehors.",
-    taglineEn: "Your local models and their chat interface, with nothing sent out.",
+    taglineFr:
+      "Vos modèles locaux et leur interface de chat, sans rien envoyer dehors.",
+    taglineEn:
+      "Your local models and their chat interface, with nothing sent out.",
     descriptionFr:
       "Ollama exécute des modèles sur le processeur du VPS ; AnythingLLM en fait un espace de discussion avec vos documents. Ollama n'a aucune authentification : il reste sur un réseau interne et n'est jamais publié. AnythingLLM est protégé par un mot de passe généré à l'installation. Sans carte graphique, seuls de petits modèles sont raisonnables : choisissez un plan avec assez de mémoire.",
     descriptionEn:
@@ -78,9 +84,12 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     version: "1.19.0",
     upstreamUrl: "https://github.com/Mintplex-Labs/anything-llm",
     license: "MIT",
-    licenseUrl: "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/LICENSE",
-    licenseWarningFr: "Les modèles téléchargés avec Ollama ont chacun leur propre licence : vérifiez-la avant tout usage commercial.",
-    licenseWarningEn: "Models pulled with Ollama each carry their own license: check it before any commercial use.",
+    licenseUrl:
+      "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/LICENSE",
+    licenseWarningFr:
+      "Les modèles téléchargés avec Ollama ont chacun leur propre licence : vérifiez-la avant tout usage commercial.",
+    licenseWarningEn:
+      "Models pulled with Ollama each carry their own license: check it before any commercial use.",
     installScript: ollamaAnythingScript,
     ports: [tunnel(3001, "AnythingLLM", "AnythingLLM")],
     minRamMb: 4096,
@@ -98,7 +107,8 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     version: "1.19.0",
     upstreamUrl: "https://github.com/Mintplex-Labs/anything-llm",
     license: "MIT",
-    licenseUrl: "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/LICENSE",
+    licenseUrl:
+      "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/LICENSE",
     installScript: anythingllmScript,
     ports: [tunnel(3001, "AnythingLLM", "AnythingLLM")],
     minRamMb: 2048,
@@ -107,7 +117,8 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
   {
     code: "librechat",
     name: "LibreChat",
-    taglineFr: "Une interface de chat multi-fournisseurs pour toute votre équipe.",
+    taglineFr:
+      "Une interface de chat multi-fournisseurs pour toute votre équipe.",
     taglineEn: "A multi-provider chat interface for your whole team.",
     descriptionFr:
       "LibreChat réunit plusieurs fournisseurs de modèles dans une interface de chat, avec comptes d'utilisateurs. Nexora l'installe avec sa base MongoDB (jamais publiée) et sans le panneau d'administration optionnel, sous licence AGPL. L'inscription est ouverte le temps de créer votre compte, puis à fermer (la commande figure dans votre fichier d'accès).",
@@ -116,9 +127,12 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     version: "0.8.8",
     upstreamUrl: "https://github.com/LibreChat-AI/LibreChat",
     license: "MIT",
-    licenseUrl: "https://raw.githubusercontent.com/LibreChat-AI/LibreChat/main/LICENSE",
-    licenseWarningFr: "Le panneau d'administration de LibreChat (dépôt distinct) est sous licence AGPL-3.0 : il n'est pas installé.",
-    licenseWarningEn: "LibreChat's admin panel (separate repository) is AGPL-3.0 licensed: it is not installed.",
+    licenseUrl:
+      "https://raw.githubusercontent.com/LibreChat-AI/LibreChat/main/LICENSE",
+    licenseWarningFr:
+      "Le panneau d'administration de LibreChat (dépôt distinct) est sous licence AGPL-3.0 : il n'est pas installé.",
+    licenseWarningEn:
+      "LibreChat's admin panel (separate repository) is AGPL-3.0 licensed: it is not installed.",
     installScript: librechatScript,
     ports: [tunnel(3080, "LibreChat", "LibreChat")],
     minRamMb: 4096,
@@ -132,7 +146,8 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     code: "n8n",
     name: "n8n",
     kind: "guide",
-    taglineFr: "Automatisation de flux de travail : à installer vous-même sur votre VPS.",
+    taglineFr:
+      "Automatisation de flux de travail : à installer vous-même sur votre VPS.",
     taglineEn: "Workflow automation: install it yourself on your VPS.",
     descriptionFr:
       "n8n est publié sous la Sustainable Use License : usage interne ou non commercial, sans mise à disposition payante à des tiers. Nexora ne l'installe donc pas et ne le revend pas. Vous commandez un VPS vierge et installez n8n sous VOTRE licence, en suivant le guide.",
@@ -142,8 +157,10 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     upstreamUrl: "https://github.com/n8n-io/n8n",
     license: "Sustainable-Use-1.0",
     licenseUrl: "https://github.com/n8n-io/n8n/blob/master/LICENSE.md",
-    licenseWarningFr: "Licence « Sustainable Use » (fair-code, non OSI) : usage interne ou non commercial. Vérifiez qu'elle convient à votre usage avant d'installer.",
-    licenseWarningEn: "Sustainable Use License (fair-code, not OSI): internal or non-commercial use. Check that it fits your use before installing.",
+    licenseWarningFr:
+      "Licence « Sustainable Use » (fair-code, non OSI) : usage interne ou non commercial. Vérifiez qu'elle convient à votre usage avant d'installer.",
+    licenseWarningEn:
+      "Sustainable Use License (fair-code, not OSI): internal or non-commercial use. Check that it fits your use before installing.",
     guideFr:
       "1. Commandez un VPS sans application.\n2. Connectez-vous en SSH avec votre clé.\n3. Installez Docker, puis suivez la documentation officielle de n8n (docs.n8n.io) pour un déploiement Docker Compose.\n4. Placez n8n derrière un proxy TLS avec authentification : n'exposez jamais son port directement.\n5. Sauvegardez le volume de données.",
     guideEn:
@@ -165,8 +182,10 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     upstreamUrl: "https://github.com/open-webui/open-webui",
     license: "Open-WebUI-License",
     licenseUrl: "https://github.com/open-webui/open-webui/blob/main/LICENSE",
-    licenseWarningFr: "Clause de marque : à partir de 50 utilisateurs finaux, conservez la marque ou obtenez une licence entreprise.",
-    licenseWarningEn: "Branding clause: beyond 50 end users, keep the branding or obtain an enterprise license.",
+    licenseWarningFr:
+      "Clause de marque : à partir de 50 utilisateurs finaux, conservez la marque ou obtenez une licence entreprise.",
+    licenseWarningEn:
+      "Branding clause: beyond 50 end users, keep the branding or obtain an enterprise license.",
     guideFr:
       "1. Commandez un VPS sans application.\n2. Installez Docker.\n3. Suivez la documentation officielle d'Open WebUI (docs.openwebui.com) ; le mode « Ollama » peut tourner sur le même VPS.\n4. Liez le port à 127.0.0.1 et accédez-y par tunnel SSH, ou placez un proxy TLS avec authentification.",
     guideEn:
@@ -178,8 +197,10 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     code: "dify",
     name: "Dify",
     kind: "guide",
-    taglineFr: "Plateforme d'applications d'IA : une instance dédiée, installée par vous.",
-    taglineEn: "AI application platform: a dedicated instance, installed by you.",
+    taglineFr:
+      "Plateforme d'applications d'IA : une instance dédiée, installée par vous.",
+    taglineEn:
+      "AI application platform: a dedicated instance, installed by you.",
     descriptionFr:
       "Dify est sous licence Apache 2.0 modifiée : exploitation multi-locataire interdite sans accord écrit, retrait du logo interdit. Un VPS dédié pour votre propre organisation est compatible ; Nexora ne l'installe pas.",
     descriptionEn:
@@ -188,8 +209,10 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     upstreamUrl: "https://github.com/langgenius/dify",
     license: "Dify-Open-Source-License",
     licenseUrl: "https://github.com/langgenius/dify/blob/main/LICENSE",
-    licenseWarningFr: "Apache 2.0 modifiée : pas de multi-locataire sans accord écrit, logo et droit d'auteur à conserver.",
-    licenseWarningEn: "Modified Apache 2.0: no multi-tenant without written agreement; keep the logo and copyright.",
+    licenseWarningFr:
+      "Apache 2.0 modifiée : pas de multi-locataire sans accord écrit, logo et droit d'auteur à conserver.",
+    licenseWarningEn:
+      "Modified Apache 2.0: no multi-tenant without written agreement; keep the logo and copyright.",
     guideFr:
       "1. Commandez un VPS d'au moins 8 Go de mémoire, sans application.\n2. Installez Docker.\n3. Suivez la documentation officielle de Dify (docs.dify.ai) pour un déploiement Docker Compose.\n4. N'exposez pas ses ports : tunnel SSH ou proxy TLS avec authentification.",
     guideEn:

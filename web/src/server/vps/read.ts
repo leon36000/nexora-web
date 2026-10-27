@@ -1,6 +1,11 @@
 import "server-only";
+import {
+  getPublishedCatalog,
+  type PublicVpsApp,
+  type PublicVpsPlan,
+  publicVpsCatalog,
+} from "@nexora/vps";
 import { cacheLife, cacheTag } from "next/cache";
-import { getPublishedCatalog, type PublicVpsApp, type PublicVpsPlan, publicVpsCatalog } from "@nexora/vps";
 import { getDb } from "../db";
 
 /** Étiquette de cache du catalogue VPS public (/vps et /vps/<application>). */
@@ -25,7 +30,14 @@ export async function getPublicVps(): Promise<PublicVps> {
   try {
     const version = await getPublishedCatalog(getDb());
     cacheLife({ stale: 60, revalidate: 300, expire: 86_400 });
-    if (!version) return { plans: [], apps: [], version: null, publishedAt: null, available: true };
+    if (!version)
+      return {
+        plans: [],
+        apps: [],
+        version: null,
+        publishedAt: null,
+        available: true,
+      };
     const pub = publicVpsCatalog(version.snapshot);
     return {
       ...pub,
@@ -35,6 +47,12 @@ export async function getPublicVps(): Promise<PublicVps> {
     };
   } catch {
     cacheLife({ stale: 10, revalidate: 10, expire: 60 });
-    return { plans: [], apps: [], version: null, publishedAt: null, available: false };
+    return {
+      plans: [],
+      apps: [],
+      version: null,
+      publishedAt: null,
+      available: false,
+    };
   }
 }

@@ -1,0 +1,16 @@
+diff --git a/cms/scripts/apply.ts b/cms/scripts/apply.ts
+index 0000000..0000000 100644
+--- a/cms/scripts/apply.ts
++++ b/cms/scripts/apply.ts
+@@ -242,9 +242,10 @@
+           })),
+           { type: "module", id: "settings", enabled: true, locked: true },
+         ];
+-  // Modules maison (D14) : catalogues de l'app administrés depuis Directus, insérés avant Réglages.
++  // Modules maison (D14) : catalogues et infrastructure de l'app (Modèles, VPS) administrés depuis Directus, insérés avant Réglages.
+   const extensionModules = [
+     { type: "module", id: "nexora-models", enabled: true },
++    { type: "module", id: "nexora-vps", enabled: true },
+     vault,
+   ];
+   const missing = extensionModules.filter(

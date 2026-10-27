@@ -2,7 +2,13 @@ import { enqueue, eq, jobs, vpsInstances } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { ProxmoxSimulator } from "@nexora/vps/simulator";
-import { createSimRunner, engineDeps, paidOrder, SIM_TOKEN, seedFixture } from "@nexora/vps/testing";
+import {
+  createSimRunner,
+  engineDeps,
+  paidOrder,
+  SIM_TOKEN,
+  seedFixture,
+} from "@nexora/vps/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { HandlerRegistry } from "./registry.ts";
 import { registerVpsHandlers } from "./vps-handlers.ts";
@@ -28,7 +34,11 @@ async function until(cond: () => Promise<boolean>, ms = 20_000) {
 
 describe("tâches VPS exécutées par le vrai worker", () => {
   it("deux workers consomment la file : une commande payée devient un VPS actif, une seule fois, avec reprise par tâche de continuation", async () => {
-    const sim = new ProxmoxSimulator({ token: SIM_TOKEN, taskPolls: 2, agentPolls: 6 });
+    const sim = new ProxmoxSimulator({
+      token: SIM_TOKEN,
+      taskPolls: 2,
+      agentPolls: 6,
+    });
     const s = await sim.start();
     try {
       const fx = await seedFixture(t.db, { simPort: s.port });
@@ -39,7 +49,9 @@ describe("tâches VPS exécutées par le vrai worker", () => {
           db: t.db,
           registry: registerVpsHandlers(
             new HandlerRegistry(),
-            engineDeps(t.db, guest.runner, { settings: { budgetMs: 5, agentRetryMs: 30 } }),
+            engineDeps(t.db, guest.runner, {
+              settings: { budgetMs: 5, agentRetryMs: 30 },
+            }),
           ),
           logger: silent,
           concurrency: 3,
@@ -50,15 +62,29 @@ describe("tâches VPS exécutées par le vrai worker", () => {
       const orderId = await paidOrder(t.db, fx);
       // Même tâche demandée plusieurs fois (événements Stripe répétés) : une seule existe.
       const key = `vps-provision:${orderId}`;
-      await Promise.all(Array.from({ length: 4 }, () => enqueue(t.db, { type: "vps.provision", payload: { orderId }, idempotencyKey: key, maxAttempts: 6 })));
+      await Promise.all(
+        Array.from({ length: 4 }, () =>
+          enqueue(t.db, {
+            type: "vps.provision",
+            payload: { orderId },
+            idempotencyKey: key,
+            maxAttempts: 6,
+          }),
+        ),
+      );
       await until(async () => {
-        const [i] = await t.db.select().from(vpsInstances).where(eq(vpsInstances.orderId, orderId));
+        const [i] = await t.db
+          .select()
+          .from(vpsInstances)
+          .where(eq(vpsInstances.orderId, orderId));
         return i?.status === "active";
       });
       for (const w of workers) await w.stop(5_000);
       expect(sim.cloneRequests).toBe(1);
       expect(guest.installs).toHaveLength(1);
-      const all = (await t.db.select().from(jobs)).filter((j) => j.type === "vps.provision");
+      const all = (await t.db.select().from(jobs)).filter(
+        (j) => j.type === "vps.provision",
+      );
       expect(all.filter((j) => j.idempotencyKey === key)).toHaveLength(1);
       expect(all.length).toBeGreaterThan(1); // continuations
       expect(all.every((j) => j.status === "succeeded")).toBe(true);

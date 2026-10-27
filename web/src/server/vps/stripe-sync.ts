@@ -1,8 +1,4 @@
-import {
-  type Database,
-  eq,
-  vpsPlans,
-} from "@nexora/db";
+import { type Database, eq, vpsPlans } from "@nexora/db";
 import {
   getPublishedCatalog,
   markCatalogApplied,
@@ -22,7 +18,10 @@ import { publishPlanToStripe } from "../stripe/publish-plan";
  */
 export interface VpsStripeSyncResult {
   version: string;
-  plans: Record<string, { productId: string; monthly?: string; yearly?: string; created: number }>;
+  plans: Record<
+    string,
+    { productId: string; monthly?: string; yearly?: string; created: number }
+  >;
 }
 
 export class VpsSyncError extends Error {
@@ -40,7 +39,11 @@ export async function syncVpsCatalogToStripe(
   now: Date = new Date(),
 ): Promise<{ version: VpsCatalogVersion; result: VpsStripeSyncResult }> {
   const published = await getPublishedCatalog(db);
-  if (!published) throw new VpsSyncError("no_published_catalog", "aucun catalogue VPS publié");
+  if (!published)
+    throw new VpsSyncError(
+      "no_published_catalog",
+      "aucun catalogue VPS publié",
+    );
   if (published.snapshot.plans.length === 0)
     throw new VpsSyncError("nothing_to_sync", "aucun plan publié");
 
@@ -48,9 +51,14 @@ export async function syncVpsCatalogToStripe(
   const applied: StripeApplied = { plans: {} };
   try {
     for (const plan of published.snapshot.plans) {
-      const [row] = await db.select().from(vpsPlans).where(eq(vpsPlans.id, plan.id));
+      const [row] = await db
+        .select()
+        .from(vpsPlans)
+        .where(eq(vpsPlans.id, plan.id));
       let productId = row?.stripeProductId ?? null;
-      const entry: { productId: string; monthly?: string; yearly?: string } = { productId: "" };
+      const entry: { productId: string; monthly?: string; yearly?: string } = {
+        productId: "",
+      };
       let created = 0;
       for (const [interval, cents, known] of [
         ["month", plan.priceMonthlyCents, row?.stripePriceMonthlyId ?? null],
@@ -67,8 +75,16 @@ export async function syncVpsCatalogToStripe(
           stripeProductId: productId,
           stripePriceId: known,
           translations: {
-            "fr-CA": { name: `VPS ${plan.name}`, description: plan.descriptionFr || null, features: [] },
-            "en-CA": { name: `VPS ${plan.name}`, description: plan.descriptionEn || null, features: [] },
+            "fr-CA": {
+              name: `VPS ${plan.name}`,
+              description: plan.descriptionFr || null,
+              features: [],
+            },
+            "en-CA": {
+              name: `VPS ${plan.name}`,
+              description: plan.descriptionEn || null,
+              features: [],
+            },
           },
         };
         const out = await publishPlanToStripe(stripe, asSub);
@@ -91,13 +107,23 @@ export async function syncVpsCatalogToStripe(
         .where(eq(vpsPlans.id, plan.id));
     }
   } catch (error) {
-    await markCatalogApplied(db, published.id, {
-      status: "failed",
-      detail: { error: error instanceof Error ? error.name : "erreur" },
-    }, now);
+    await markCatalogApplied(
+      db,
+      published.id,
+      {
+        status: "failed",
+        detail: { error: error instanceof Error ? error.name : "erreur" },
+      },
+      now,
+    );
     throw error;
   }
-  await markCatalogApplied(db, published.id, { status: "applied", detail: { stripe: applied } }, now);
+  await markCatalogApplied(
+    db,
+    published.id,
+    { status: "applied", detail: { stripe: applied } },
+    now,
+  );
   const updated = await getPublishedCatalog(db);
   return { version: updated ?? published, result };
 }
