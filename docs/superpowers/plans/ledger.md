@@ -20,5 +20,11 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Ruling : `partialPrefetching: false` pour obtenir un vrai 404 sur URL inconnue.
 - En attente du fondateur : affirmations commerciales « en revue » (schéma des flux écrit, aucun modèle externe sans accord, non-réutilisation des données, exportation au contrat, hébergement au Québec).
 
+## S4 Comptes et paiements — terminé le 27/10/2026
+- Sonnet : Better Auth 1.7.14 (courriel vérifié, organisations, CSRF forcé, limitation de débit), grand livre en micro-unités CAD (écritures immuables par déclencheur, contrainte SQL anti-découvert, réservation sous verrou, idempotence, `config_version`, expiration 12 mois), Stripe en mode test (Checkout crédits et abonnements séparés, Stripe Tax, portail, webhook signé idempotent dans la même transaction, 10 événements, `sk_live_`/`livemode` refusés), `/compte` fr/en, stripe-mock épinglé. Preuves : e2e inscription → achat → webhook → crédit, rejeu sans double crédit, remboursement, 20 réservations concurrentes sans dépassement.
+- Contrôle orchestrateur : 504 tests verts après fusion, signature et garde livemode relues, contraintes SQL relues ; conflit `init-dev-env.sh` résolu ; `subscription_plans` appliquée à Directus (24/25 collections).
+- Décisions de l'agent retenues (à confirmer par le fondateur) : crédits = montant avant taxes ; délai de grâce 7 jours ; seul le propriétaire achète. Non livré : invitations de membres, expiration planifiée par le worker.
+- Ruling D14 : catalogues commerciaux et infrastructure dans l'app, administrés par modules Directus (limite de 25 collections sans licence).
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
