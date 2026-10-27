@@ -26,5 +26,15 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Décisions de l'agent retenues (à confirmer par le fondateur) : crédits = montant avant taxes ; délai de grâce 7 jours ; seul le propriétaire achète. Non livré : invitations de membres, expiration planifiée par le worker.
 - Ruling D14 : catalogues commerciaux et infrastructure dans l'app, administrés par modules Directus (limite de 25 collections sans licence).
 
+## S3 (composition et parcours) — fusionné le 27/10/2026
+- Sonnet : champs `tone`/`layout`/`visual`/`anchor_id` (+ `label`, `status` de carte), rendu varié (bandes sombre/clair/sable, schémas de périmètre, liste, étapes, modules, sommaire collant), navigation et pied de page depuis Directus (45 entrées), sélecteur par slug traduit, formulaire de diagnostic (Altcha auto-hébergé, `leads` 0003, file de tâches, Mailpit). Preuves : axe 0, Lighthouse 96–98, e2e contact 17/17.
+- Contrôle orchestrateur : captures relues — composition riche retrouvée ; 605 tests verts après fusion.
+- Ruling : les dix départements OPSYS-AI affichés « En pilote » (choix prudent quand le rapport 07 mêle disponible/pilote) — à confirmer par le fondateur.
+
+## S5 Passerelle de modèles — terminé le 27/10/2026
+- Sonnet : tables `model_providers`, `models`, `model_prices` (immuables), `fx_rates`, `api_keys`, `usage_events` (0004/0005) ; catalogue versionné (publié seulement ; refus prix absent/0 $, sous plancher, taux non approuvé, clé absente du coffre) ; `/api/admin/catalog/*` ; `/v1/models|chat/completions|embeddings` avec réservation au grand livre, 402 au format OpenAI, clé maîtresse jamais exposée, aucun contenu journalisé ; `/modeles`, fiches, `/docs/api`, clés et usage dans `/compte` ; module Directus « Modèles ». Preuves : e2e réel GLM 5.3 (débits exacts 42/40 µCAD, révocation → 401), 20 appels concurrents sans dépassement, axe 0, Lighthouse /modeles médiane 95 (machine chargée).
+- Contrôle orchestrateur : 704 tests verts, clé maîtresse lue en un seul point serveur, aucun secret ; module ajouté à la barre Directus par `apply.ts`.
+- À faire : bascule multi-fournisseurs, libération des réservations perdues par le worker, rapprochement périodique LiteLLM ↔ grand livre, entrée « Modèles » dans la navigation.
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
