@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseServerAddress } from "./connect.ts";
+import { parseServerAddress, suggestServerCode } from "./connect.ts";
 
 describe("adresse saisie : hôte[:port]", () => {
   it.each([
@@ -33,5 +33,31 @@ describe("adresse saisie : hôte[:port]", () => {
     "ftp://pve",
   ])("refuse %j", (raw) => {
     expect(parseServerAddress(raw)).toBeNull();
+  });
+});
+
+describe("identifiant proposé d'après l'adresse", () => {
+  it.each([
+    ["pve.exemple.ca", "pve-exemple-ca"],
+    ["PVE1.Exemple.CA", "pve1-exemple-ca"],
+    ["192.168.1.10", "pve-192-168-1-10"],
+    ["http://127.0.0.1", "pve-127-0-0-1"],
+    ["https://pve.exemple.ca", "pve-exemple-ca"],
+  ])("%s → %s", (host, code) => {
+    expect(suggestServerCode(host)).toBe(code);
+  });
+
+  it("donne toujours un identifiant valide (3 à 40 caractères, minuscules, chiffres, tirets)", () => {
+    for (const host of [
+      "a",
+      "x".repeat(200),
+      "un-nom-de-serveur-tres-tres-long.exemple-de-domaine.ca",
+      "1",
+      "--",
+      "é",
+    ])
+      expect(suggestServerCode(host), host).toMatch(
+        /^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/,
+      );
   });
 });

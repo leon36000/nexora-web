@@ -155,6 +155,51 @@ describe("premier contact : empreinte du certificat", () => {
     });
   });
 
+  it("propose l'identifiant du serveur déjà connu à cette adresse (« Connecter » rejoué), ou un identifiant libre", async () => {
+    await call("POST", "servers", {
+      code: "serveur-reel",
+      name: "x",
+      host: "pve.reel.exemple",
+      node: "pve1",
+      capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+      ipPool: {
+        ranges: [{ from: "10.0.0.10", to: "10.0.0.20" }],
+        prefix: 24,
+        gateway: "10.0.0.1",
+        dns: ["10.0.0.2"],
+        bridge: "vmbr0",
+      },
+    });
+    const known = await call("POST", "connect/probe", {
+      address: "pve.reel.exemple",
+    });
+    expect(known.body.code).toBe("serveur-reel");
+    // Même nom, autre port : identifiant libre, jamais en collision.
+    const other = await call("POST", "connect/probe", {
+      address: "pve.reel.exemple:9000",
+    });
+    expect(other.body.code).toBe("pve-reel-exemple");
+    await call("POST", "servers", {
+      code: "pve-reel-exemple",
+      name: "y",
+      host: "pve.reel.exemple",
+      port: 9000,
+      node: "pve1",
+      capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+      ipPool: {
+        ranges: [{ from: "10.0.0.10", to: "10.0.0.20" }],
+        prefix: 24,
+        gateway: "10.0.0.1",
+        dns: ["10.0.0.2"],
+        bridge: "vmbr0",
+      },
+    });
+    const third = await call("POST", "connect/probe", {
+      address: "pve.reel.exemple:9001",
+    });
+    expect(third.body.code).toBe("pve-reel-exemple-2");
+  });
+
   it("recommande la vérification classique quand le certificat est reconnu", async () => {
     const r = await call(
       "POST",
@@ -225,6 +270,19 @@ describe("« Connecter » : fiche créée, serveur découvert", () => {
     });
     expect(JSON.stringify(r.body)).not.toContain(SIM_TOKEN);
     serverId = r.body.server.id;
+  });
+
+  it("accepte un libellé et une région nuls ou absents (formulaire vide)", async () => {
+    for (const extra of [{ name: null, region: null }, {}]) {
+      const r = await call("POST", "connect", {
+        address: `http://127.0.0.1:${simPort}`,
+        code: "pve-essai",
+        tlsMode: "verify",
+        tokenRef: "proxmox.pve-essai",
+        ...extra,
+      });
+      expect([200, 201]).toContain(r.status);
+    }
   });
 
   it("rejouer retombe sur la même fiche, sans doublon", async () => {

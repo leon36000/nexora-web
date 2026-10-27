@@ -662,8 +662,8 @@ async function call(method: string, path: string, body?: unknown, opts: { quiet?
 		const found: any[] = Array.isArray(d?.issues) ? d.issues : [];
 		if (!opts.quiet) issues.value = found;
 		if (found.length) guardIssues.value = { ...guardIssues.value, ...indexIssues(found) };
-		// Jamais l'erreur brute : elle contient la requête.
-		error.value = errorText(e?.response?.status, code);
+		// Jamais l'erreur brute : elle contient la requête. Les erreurs de branchement portent leur propre explication.
+		error.value = apiFailureText(d) ?? errorText(e?.response?.status, code);
 		return null;
 	}
 }

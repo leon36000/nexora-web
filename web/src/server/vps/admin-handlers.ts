@@ -18,6 +18,7 @@ import { secretScopeProblem } from "@nexora/vault/scope";
 import { secretKindOf } from "@nexora/vault/store";
 import {
   approveCatalogVersion,
+  availableServerCode,
   CLOUD_IMAGES,
   ConnectError,
   connectionOf,
@@ -343,8 +344,8 @@ const connectBody = z
   .object({
     address: addressField,
     code: code.optional(),
-    name: text(100).optional(),
-    region: z.enum(REGIONS).optional(),
+    name: text(100).nullable().optional(),
+    region: z.enum(REGIONS).nullable().optional(),
     tlsMode: z.enum(TLS_MODES),
     tlsFingerprint: text(100).nullable().optional(),
     tokenRef: z.string().regex(REF),
@@ -601,7 +602,7 @@ async function route(
       });
       return ok({
         address: parsed,
-        code: suggestServerCode(parsed.host),
+        code: await availableServerCode(db, parsed.host, parsed.port),
         tls,
         recommendation:
           tls.trusted && tls.hostnameMatches ? "verify" : "pinned",
@@ -630,8 +631,8 @@ async function route(
           tokenRef: input.tokenRef,
           tlsMode: input.tlsMode,
           tlsFingerprint: input.tlsFingerprint ?? null,
-          name: input.name,
-          region: input.region,
+          name: input.name ?? undefined,
+          region: input.region ?? undefined,
         },
       );
       deps.log.info("vps : serveur connecté", {

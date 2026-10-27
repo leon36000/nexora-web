@@ -107,6 +107,14 @@ describe("étape 2 : connecter", () => {
     });
     expect(JSON.stringify(r.body)).not.toContain("11111111");
   });
+  test("un libellé vide n'est pas envoyé du tout (l'API refuse un champ nul)", () => {
+    const r = buildConnectBody({ ...connectForm, name: "  ", region: "" });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect("name" in r.body).toBe(false);
+    expect("region" in r.body).toBe(false);
+    for (const v of Object.values(r.body)) expect(v).not.toBeUndefined();
+  });
   test("exige la confirmation de l'empreinte avant d'épingler", () => {
     const r = buildConnectBody({ ...connectForm, confirmed: false });
     expect(r.ok).toBe(false);

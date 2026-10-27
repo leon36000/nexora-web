@@ -60,7 +60,9 @@ export function suggestServerCode(host: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 36);
-  return CODE.test(slug) ? slug : `pve-${slug || "serveur"}`.slice(0, 39);
+  // Une adresse IP (ou tout nom commençant par un chiffre) reçoit le préfixe « pve- » : lisible et sans ambiguïté.
+  const named = /^[a-z]/.test(slug) ? slug : `pve-${slug || "serveur"}`;
+  return CODE.test(named) ? named : "pve-serveur";
 }
 
 /**
@@ -213,4 +215,34 @@ export function parseServerAddress(
     return isLoopback(host) ? { host: `http://${host}`, port } : null;
   }
   return { host, port };
+}
+
+/**
+ * Identifiant proposé pour une adresse : celui du serveur déjà connu à cette adresse et ce port (donc
+ * « Connecter » rejoué retombe sur la même fiche), sinon celui tiré de l'adresse, suffixé `-2`, `-3`…
+ * s'il est déjà pris par un autre serveur.
+ */
+export async function availableServerCode(
+  db: Database,
+  host: string,
+  port: number,
+): Promise<string> {
+  const [known] = await db
+    .select({ code: proxmoxServers.code })
+    .from(proxmoxServers)
+    .where(and(eq(proxmoxServers.host, host), eq(proxmoxServers.port, port)));
+  if (known) return known.code;
+  const base = suggestServerCode(host);
+  for (let n = 1; n < 100; n++) {
+    const code =
+      n === 1
+        ? base
+        : `${base.slice(0, 40 - `-${n}`.length)}-${n}`.replace(/-+$/, "");
+    const [taken] = await db
+      .select({ id: proxmoxServers.id })
+      .from(proxmoxServers)
+      .where(eq(proxmoxServers.code, code));
+    if (!taken && CODE.test(code)) return code;
+  }
+  throw new Error("aucun identifiant libre");
 }

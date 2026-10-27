@@ -806,18 +806,17 @@ export function buildConnectBody(
         "Confirmer l’empreinte du certificat avant de continuer : le jeton ne sera envoyé qu’à un serveur dont l’empreinte est celle-ci.",
       );
   }
-  return {
-    ok: true,
-    body: {
-      address: probe.body.address,
-      code: blank(f.code),
-      name: blank(f.name) || null,
-      region: f.region || null,
-      tlsMode: f.tlsMode,
-      tlsFingerprint: f.tlsMode === "pinned" ? fingerprint : null,
-      tokenRef: proxmoxRef(blank(f.code)),
-    },
+  const body: Record<string, string | null> = {
+    address: probe.body.address,
+    code: blank(f.code),
+    tlsMode: f.tlsMode,
+    tlsFingerprint: f.tlsMode === "pinned" ? fingerprint : null,
+    tokenRef: proxmoxRef(blank(f.code)),
   };
+  // Un champ vide n'est pas envoyé (l'API n'accepte pas de valeur nulle pour le libellé ni la région).
+  if (blank(f.name)) body.name = blank(f.name);
+  if (blank(f.region)) body.region = blank(f.region);
+  return { ok: true, body };
 }
 
 /** Échec du parcours : cause puis action (réponses `connect_failed` et `probe_failed` de l’app). */
