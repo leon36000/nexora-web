@@ -1,4 +1,4 @@
-import type { Database } from "@nexora/db";
+import { and, type Database, eq, inArray, subscriptions } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { DEFAULT_LANG, isLang, type Lang, localizePath } from "@/i18n/config";
 import { OrgAccessError, resolveOrgContext } from "../auth/guards";
@@ -31,6 +31,13 @@ export interface BillingHttpDeps {
   productName: (lang: Lang) => string;
   log: Logger;
 }
+
+/** Statuts d'un abonnement qui court encore (en retard de paiement compris, pendant le délai de grâce). */
+export const LIVE_SUBSCRIPTION_STATUSES = [
+  "active",
+  "trialing",
+  "past_due",
+] as ("active" | "trialing" | "past_due")[];
 
 const NO_STORE = { "cache-control": "no-store" };
 /** 10 créations de paiement ou de portail par minute et par utilisateur. */
@@ -256,6 +263,19 @@ export async function handleSubscribeCheckout(
     // Seuls les plans PUBLIÉS dans Directus sont achetables.
     const plan = await deps.plans().getByCode(input.fields.plan ?? "");
     if (!plan) return fail(deps, input, 404, "plan_not_found");
+    // Pas de second abonnement au même plan tant que le premier court : le client paierait deux fois.
+    const [running] = await deps.db
+      .select({ id: subscriptions.id })
+      .from(subscriptions)
+      .where(
+        and(
+          eq(subscriptions.organizationId, auth.organizationId),
+          eq(subscriptions.planCode, plan.code),
+          inArray(subscriptions.status, LIVE_SUBSCRIPTION_STATUSES),
+        ),
+      )
+      .limit(1);
+    if (running) return fail(deps, input, 409, "already_subscribed");
     const out = await createSubscriptionCheckout(
       checkoutDeps(deps, await stripeClient(deps)),
       {

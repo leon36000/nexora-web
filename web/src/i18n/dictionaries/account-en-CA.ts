@@ -125,6 +125,7 @@ export const accountEnCA: AccountDictionary = {
         no_customer:
           "You have not made a payment yet: the portal is not available.",
         plan_not_found: "This plan is no longer available.",
+        already_subscribed: "You are already subscribed to this plan.",
         plan_not_synced: "This plan is not ready for sale yet.",
         rate_limited: "Too many requests. Wait a minute before trying again.",
         payment_unavailable:
@@ -208,6 +209,7 @@ export const accountEnCA: AccountDictionary = {
         ownerOnly: "Only the owner can subscribe.",
         unavailable: "Plans cannot be displayed at the moment.",
         notReady: "Coming soon",
+        current: "Your current plan",
       },
     },
     portal: {

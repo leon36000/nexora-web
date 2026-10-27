@@ -1,5 +1,11 @@
 import { randomBytes } from "node:crypto";
-import { billingCustomers, members, organizations, users } from "@nexora/db";
+import {
+  billingCustomers,
+  members,
+  organizations,
+  subscriptions,
+  users,
+} from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { DEFAULT_BILLING_CONFIG } from "../ledger/config";
@@ -329,6 +335,47 @@ describe("POST /api/billing/checkout/subscription", () => {
       setup(session).deps,
     );
     expect(unsynced.status).toBe(409);
+  });
+});
+
+describe("POST /api/billing/checkout/subscription : pas de double abonnement", () => {
+  const sub = (orgId: string, status: string, plan = "pro") =>
+    t.db.insert(subscriptions).values({
+      organizationId: orgId,
+      stripeSubscriptionId: `sub_${id()}`,
+      stripeCustomerId: `cus_${id()}`,
+      status: status as never,
+      planCode: plan,
+    });
+
+  it("409 already_subscribed quand l'organisation a déjà ce plan actif ou en retard de paiement", async () => {
+    for (const status of ["active", "trialing", "past_due"]) {
+      const { session, orgId } = await account();
+      await sub(orgId, status);
+      const s = setup(session);
+      const res = await handleSubscribeCheckout(
+        post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+        s.deps,
+      );
+      expect(res.status, status).toBe(409);
+      expect(await res.json()).toEqual({ error: "already_subscribed" });
+      expect(s.checkoutCreate).not.toHaveBeenCalled();
+    }
+  });
+
+  it("autorise un plan résilié, un autre plan, ou l'abonnement d'une autre organisation", async () => {
+    const { session, orgId } = await account();
+    await sub(orgId, "canceled");
+    await sub(orgId, "active", "autre-plan");
+    const other = await account();
+    await sub(other.orgId, "active");
+    const s = setup(session);
+    const res = await handleSubscribeCheckout(
+      post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+      s.deps,
+    );
+    expect(res.status).toBe(200);
+    expect(s.checkoutCreate).toHaveBeenCalledOnce();
   });
 });
 

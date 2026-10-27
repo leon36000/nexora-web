@@ -131,6 +131,7 @@ export const accountFrCA = {
         no_customer:
           "Vous n’avez pas encore effectué de paiement : le portail n’est pas disponible.",
         plan_not_found: "Cette offre n’est plus disponible.",
+        already_subscribed: "Vous êtes déjà abonné à cette offre.",
         plan_not_synced: "Cette offre n’est pas encore prête à la vente.",
         rate_limited:
           "Trop de demandes. Patientez une minute avant de réessayer.",
@@ -217,6 +218,7 @@ export const accountFrCA = {
         ownerOnly: "Seul le propriétaire peut souscrire.",
         unavailable: "Les offres ne peuvent pas être affichées pour le moment.",
         notReady: "Bientôt disponible",
+        current: "Votre offre actuelle",
       },
     },
     portal: {
