@@ -17,7 +17,7 @@ import {
 } from "./vps-logic";
 
 const TONE_BOX = {
-  success: "border-success text-success",
+  success: "border-success text-fg",
   accent: "border-accent-text text-accent-text",
   muted: "border-line-strong text-fg-muted",
 } as const;

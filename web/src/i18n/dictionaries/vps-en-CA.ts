@@ -87,7 +87,7 @@ export const vpsEnCA: VpsDictionary = {
     bandwidth: "Bandwidth",
     location: "Location",
     choose: "Choose this plan",
-    chooseLabel: "Choose the {name} plan",
+    chooseLabel: "Choose this plan: {name}",
   },
 
   table: {

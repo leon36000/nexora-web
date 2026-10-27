@@ -235,7 +235,7 @@ export function VpsCard({
 
       {i.status === "suspended" ? (
         <section
-          aria-label={t.suspended.title}
+          aria-label={`${t.suspended.title} — ${i.hostname}`}
           className="mt-6 rounded-md border border-accent-text px-4 py-4"
         >
           <h4 className="text-h4 text-accent-text">{t.suspended.title}</h4>
@@ -255,7 +255,7 @@ export function VpsCard({
 
       {i.status === "canceled" ? (
         <section
-          aria-label={t.canceled.title}
+          aria-label={`${t.canceled.title} — ${i.hostname}`}
           className="mt-6 rounded-md border border-line-strong px-4 py-4"
         >
           <h4 className="text-h4 text-fg">{t.canceled.title}</h4>
@@ -269,7 +269,7 @@ export function VpsCard({
 
       {i.status === "failed" ? (
         <section
-          aria-label={t.failed.title}
+          aria-label={`${t.failed.title} — ${i.hostname}`}
           className="mt-6 rounded-md border border-accent-text px-4 py-4"
         >
           <h4 className="text-h4 text-accent-text">{t.failed.title}</h4>
@@ -291,7 +291,7 @@ export function VpsCard({
 
       {showAccess && ssh ? (
         <section
-          aria-label={t.access.title}
+          aria-label={`${t.access.title} — ${i.hostname}`}
           className="mt-8 border-t border-line pt-6"
         >
           <h4 className="text-h4 text-fg">{t.access.title}</h4>
@@ -390,7 +390,7 @@ export function VpsCard({
 
       {live ? (
         <section
-          aria-label={t.actions.title}
+          aria-label={`${t.actions.title} — ${i.hostname}`}
           className="mt-8 border-t border-line pt-6"
         >
           <h4 className="text-h4 text-fg">{t.actions.title}</h4>

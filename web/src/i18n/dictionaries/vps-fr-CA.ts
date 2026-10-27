@@ -89,7 +89,7 @@ export const vpsFrCA = {
     bandwidth: "Bande passante",
     location: "Lieu",
     choose: "Choisir ce plan",
-    chooseLabel: "Choisir le plan {name}",
+    chooseLabel: "Choisir ce plan : {name}",
   },
 
   table: {
