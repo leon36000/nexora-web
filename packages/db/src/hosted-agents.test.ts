@@ -33,7 +33,7 @@ async function newAgent(slug: string) {
   return agent;
 }
 
-describe("agents hébergés (migration 0007)", () => {
+describe("agents hébergés (migration 0008)", () => {
   it("applique les valeurs par défaut sûres : brouillon, public, plafond d'exécution", async () => {
     const agent = await newAgent("defauts");
     expect(agent).toMatchObject({
