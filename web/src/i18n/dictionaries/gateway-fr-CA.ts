@@ -143,13 +143,13 @@ export const gatewayFrCA = {
       rows: [
         [
           "401",
-          "invalid_api_key",
-          "Clé absente, inconnue, révoquée ou expirée.",
+          "invalid_api_key · api_key_revoked · api_key_expired",
+          "Clé absente ou inconnue, clé révoquée, clé expirée.",
         ],
         [
           "402",
-          "insufficient_quota",
-          "Solde insuffisant, compte bloqué ou plafond de la clé atteint.",
+          "insufficient_quota · account_blocked · api_key_spend_cap_reached",
+          "Solde insuffisant, compte bloqué (solde négatif) ou plafond de dépense de la clé atteint.",
         ],
         [
           "404",
@@ -158,9 +158,10 @@ export const gatewayFrCA = {
         ],
         [
           "400",
-          "invalid_request",
-          "Requête invalide (paramètre, contexte dépassé, max_tokens).",
+          "invalid_json · missing_model · invalid_messages · invalid_input · invalid_max_tokens · context_length_exceeded · model_not_supported · unsupported_parameter",
+          "Requête invalide (JSON, modèle absent, messages, max_tokens, contexte dépassé, paramètre non pris en charge). Le champ param nomme le paramètre fautif.",
         ],
+        ["413", "request_too_large", "Corps de requête trop volumineux."],
         [
           "429",
           "rate_limit_exceeded",
@@ -168,8 +169,8 @@ export const gatewayFrCA = {
         ],
         [
           "502 / 503",
-          "upstream_error",
-          "Le fournisseur du modèle est indisponible : réessayez.",
+          "upstream_error · upstream_unavailable · upstream_overloaded · gateway_unavailable",
+          "Le fournisseur du modèle est indisponible ou surchargé : réessayez (voir Retry-After). Rien n’est débité.",
         ],
       ],
     },
