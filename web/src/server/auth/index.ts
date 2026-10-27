@@ -25,8 +25,10 @@ import {
 import {
   clearLoginFailures,
   lockedForMs,
+  markTotpUsed,
   recordLoginFailure,
   sanitizeDisplayName,
+  totpAlreadyUsed,
 } from "./lockout";
 import type { Mailer } from "./mailer";
 import { ensureUserOrganization } from "./organization";
@@ -308,6 +310,15 @@ export function createAuth(options: CreateAuthOptions) {
             );
           return;
         }
+        // Un code TOTP déjà accepté ne sert plus (rejeu).
+        if (ctx.path === "/two-factor/verify-totp") {
+          const code = String(body.code ?? "").replace(/\s+/g, "");
+          if (code && (await totpAlreadyUsed(db, code, now())))
+            throw new APIError("UNAUTHORIZED", {
+              message: "Code invalide.",
+              code: "INVALID_CODE",
+            });
+        }
         // Un appareil « de confiance » contournerait la double authentification pendant 30 jours : refusé.
         if (
           ctx.path === "/two-factor/verify-totp" ||
@@ -333,6 +344,14 @@ export function createAuth(options: CreateAuthOptions) {
         }
       }),
       after: createAuthMiddleware(async (ctx) => {
+        if (ctx.path === "/two-factor/verify-totp") {
+          const code = String(
+            (ctx.body as { code?: unknown } | undefined)?.code ?? "",
+          ).replace(/\s+/g, "");
+          if (code && !isApiErrorLike(ctx.context.returned))
+            await markTotpUsed(db, code, now());
+          return;
+        }
         if (ctx.path !== "/sign-in/email") return;
         const email = (ctx.body as { email?: unknown } | undefined)?.email;
         if (typeof email !== "string") return;

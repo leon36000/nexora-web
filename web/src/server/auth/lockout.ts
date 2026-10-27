@@ -1,5 +1,15 @@
-import { createHash } from "node:crypto";
-import { authLockouts, type Database, eq, sql } from "@nexora/db";
+import { createHash, randomBytes } from "node:crypto";
+import {
+  and,
+  authLockouts,
+  type Database,
+  eq,
+  gt,
+  like,
+  lt,
+  sql,
+  verifications,
+} from "@nexora/db";
 
 /**
  * Verrouillage progressif des connexions par courriel (ASVS 2.2.1 : défense contre le bourrage d'identifiants et
@@ -75,6 +85,54 @@ export async function clearLoginFailures(
   email: string,
 ): Promise<void> {
   await db.delete(authLockouts).where(eq(authLockouts.key, lockoutKey(email)));
+}
+
+/**
+ * Un code TOTP ne sert qu'une fois (RFC 6238 §5.2, ASVS 2.8.4) : après un succès, son empreinte est gardée 2 minutes
+ * (la fenêtre de validité d'un code est de 90 s avec la tolérance d'une période). Rangé dans la table des
+ * vérifications de Better Auth ; la clé est l'empreinte du code seul (une collision entre deux comptes dans la même
+ * fenêtre est de l'ordre de 1 sur 10^6 et se règle en attendant la période suivante).
+ */
+const totpKey = (code: string) =>
+  `totp-used:${createHash("sha256").update(code).digest("hex")}`;
+const TOTP_MEMORY_MS = 120_000;
+
+export async function totpAlreadyUsed(
+  db: Database,
+  code: string,
+  now: number,
+): Promise<boolean> {
+  const [row] = await db
+    .select({ id: verifications.id })
+    .from(verifications)
+    .where(
+      and(
+        eq(verifications.identifier, totpKey(code)),
+        gt(verifications.expiresAt, new Date(now)),
+      ),
+    );
+  return Boolean(row);
+}
+
+export async function markTotpUsed(
+  db: Database,
+  code: string,
+  now: number,
+): Promise<void> {
+  await db
+    .delete(verifications)
+    .where(
+      and(
+        like(verifications.identifier, "totp-used:%"),
+        lt(verifications.expiresAt, new Date(now)),
+      ),
+    );
+  await db.insert(verifications).values({
+    id: randomBytes(16).toString("hex"),
+    identifier: totpKey(code),
+    value: "1",
+    expiresAt: new Date(now + TOTP_MEMORY_MS),
+  });
 }
 
 /**

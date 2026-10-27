@@ -1,4 +1,4 @@
-import { randomBytes } from "node:crypto";
+import { createHmac, randomBytes } from "node:crypto";
 import { eq, sessions, staffAccounts, twoFactors, users } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -115,7 +115,7 @@ async function verifiedUser(ip = "203.0.113.7") {
   return { email, cookie: cookiesOf(res), userId: user?.id as string };
 }
 
-function base32Decode(input: string): string {
+function base32Bytes(input: string): Buffer {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
   let bits = "";
   for (const c of input.replace(/=+$/, "").toUpperCase())
@@ -123,15 +123,22 @@ function base32Decode(input: string): string {
   const bytes: number[] = [];
   for (let i = 0; i + 8 <= bits.length; i += 8)
     bytes.push(Number.parseInt(bits.slice(i, i + 8), 2));
-  return Buffer.from(bytes).toString("utf8");
+  return Buffer.from(bytes);
 }
 
-async function currentCode(totpURI: string): Promise<string> {
+/** Code TOTP (RFC 6238, SHA-1, 6 chiffres) de la période courante décalée de `steps` périodes de 30 s. */
+async function currentCode(totpURI: string, steps = 0): Promise<string> {
   const secret = new URL(totpURI).searchParams.get("secret") as string;
-  const out = await auth.api.generateTOTP({
-    body: { secret: base32Decode(secret) },
-  });
-  return out.code;
+  const counter = Buffer.alloc(8);
+  counter.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30_000) + steps));
+  const h = createHmac("sha1", base32Bytes(secret)).update(counter).digest();
+  const o = (h[19] as number) & 0xf;
+  const code =
+    (((h[o] as number) & 0x7f) << 24) |
+    (((h[o + 1] as number) & 0xff) << 16) |
+    (((h[o + 2] as number) & 0xff) << 8) |
+    ((h[o + 3] as number) & 0xff);
+  return String(code % 1_000_000).padStart(6, "0");
 }
 
 describe("nom d'affichage : aucune injection dans les courriels", () => {
@@ -279,7 +286,7 @@ describe("double authentification", () => {
     };
     const verify = await call("/two-factor/verify-totp", {
       cookie,
-      body: { code: await currentCode(body.totpURI) },
+      body: { code: await currentCode(body.totpURI, -1) },
     });
     expect(verify.status).toBe(200);
     return { ...body, cookie: cookiesOf(verify) || cookie };
@@ -308,7 +315,7 @@ describe("double authentification", () => {
     for (const c of body.backupCodes) expect(row?.backupCodes).not.toContain(c);
     await call("/two-factor/verify-totp", {
       cookie,
-      body: { code: await currentCode(body.totpURI) },
+      body: { code: await currentCode(body.totpURI, -1) },
     });
     [user] = await t.db.select().from(users).where(eq(users.id, userId));
     expect(user?.twoFactorEnabled).toBe(true);
@@ -335,7 +342,7 @@ describe("double authentification", () => {
     expect(bad.status).toBe(401);
     const good = await call("/two-factor/verify-totp", {
       cookie: pending,
-      body: { code: await currentCode(totpURI), trustDevice: true },
+      body: { code: await currentCode(totpURI, 1), trustDevice: true },
     });
     expect(good.status).toBe(200);
     expect(
@@ -350,6 +357,32 @@ describe("double authentification", () => {
       ((await again.json()) as { twoFactorRedirect?: boolean })
         .twoFactorRedirect,
     ).toBe(true);
+  });
+
+  it("un code TOTP ne sert qu'une fois : le rejeu du même code est refusé (ASVS 2.8.4)", async () => {
+    const { email, cookie } = await verifiedUser();
+    const { totpURI } = await enable(cookie);
+    const login = async () =>
+      cookiesOf(
+        await call("/sign-in/email", { body: { email, password: PASSWORD } }),
+      );
+    const code = await currentCode(totpURI, 1);
+    const first = await call("/two-factor/verify-totp", {
+      cookie: await login(),
+      body: { code },
+    });
+    expect(first.status).toBe(200);
+    const replay = await call("/two-factor/verify-totp", {
+      cookie: await login(),
+      body: { code },
+    });
+    expect(replay.status).toBe(401);
+    // Un code différent, de la période voisine, reste accepté.
+    const other = await call("/two-factor/verify-totp", {
+      cookie: await login(),
+      body: { code: await currentCode(totpURI, 0) },
+    });
+    expect(other.status).toBe(200);
   });
 
   it("accepte un code de secours une seule fois", async () => {
@@ -407,7 +440,7 @@ describe("double authentification", () => {
     const staffSignIn = await call("/sign-in/email", {
       body: { email: staff.email, password: PASSWORD },
     });
-    const staffCode = await currentCode(staffTwoFactor.totpURI);
+    const staffCode = await currentCode(staffTwoFactor.totpURI, 1);
     const verified = await call("/two-factor/verify-totp", {
       cookie: cookiesOf(staffSignIn),
       body: { code: staffCode },
