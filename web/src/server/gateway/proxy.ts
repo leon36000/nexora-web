@@ -1,6 +1,12 @@
 import type { Database } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import {
+  AGENT_PUBLIC_PREFIX,
+  type CallableAgent,
+  findCallableAgent,
+  listCallableAgents,
+} from "../agents/catalog";
 import { consumeRateLimit } from "../billing/rate-limit";
 import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
@@ -24,6 +30,8 @@ export interface GatewayDeps {
   fetch: typeof fetch;
   /** null : passerelle non configurée (503). La clé maîtresse ne quitte jamais ce module. */
   litellm: () => { baseUrl: string; masterKey: string } | null;
+  /** Valeur d'un secret du coffre (clé d'espace WorkStudio des agents hébergés) ; absent : agents indisponibles. */
+  getSecret?: (ref: string) => Promise<string>;
   log: Logger;
   now: () => Date;
   requestId: () => string;
@@ -138,7 +146,7 @@ export async function handleModels(
       (version?.publishedAt ?? version?.createdAt ?? now).getTime() / 1000,
     );
     // Sans clé : modèles publics. Avec une clé restreinte : ses modèles. Un modèle privé n'est jamais listé sans autorisation.
-    const data = (version?.snapshot.models ?? [])
+    const modelData = (version?.snapshot.models ?? [])
       .filter((m) => {
         if (!m.price) return false;
         if (m.sunsetAt && Date.parse(m.sunsetAt) <= now.getTime()) return false;
@@ -171,8 +179,34 @@ export async function handleModels(
             : {}),
         },
       }));
+    // Agents hébergés : mêmes règles d'accès que les modèles (clé restreinte → sa liste ; sinon agents publics).
+    const agentData = (await listCallableAgents(db, now))
+      .filter((a) =>
+        key?.allowedModels
+          ? key.allowedModels.includes(a.publicId)
+          : a.visibility === "public",
+      )
+      .map((a) => ({
+        id: a.publicId,
+        object: "model",
+        created: Math.floor((a.publishedAt ?? now).getTime() / 1000),
+        owned_by: "nexora",
+        name: lang === "en" ? a.nameEn : a.nameFr,
+        description: lang === "en" ? a.descriptionEn : a.descriptionFr,
+        type: "agent",
+        residency: a.region,
+        pricing: {
+          currency: "CAD",
+          unit: "per_million_tokens",
+          input: formatMicro(a.price.inputCadMicro),
+          output: formatMicro(a.price.outputCadMicro),
+          per_run: formatMicro(a.price.perRunCadMicro),
+          // Valeur d'essai : jamais une offre commerciale.
+          trial: a.price.isTrial,
+        },
+      }));
     return Response.json(
-      { object: "list", data },
+      { object: "list", data: [...modelData, ...agentData] },
       { headers: { "cache-control": "no-store" } },
     );
   } catch (error) {
@@ -413,6 +447,137 @@ function planEmbedding(
   };
 }
 
+/** Ce qu'une requête appelle : un modèle (via LiteLLM) ou un agent hébergé (via une instance WorkStudio). */
+interface Target {
+  kind: "model" | "agent";
+  publicId: string;
+  residency: string;
+  configVersion: string;
+  price: PerMillion;
+  upstreamPrice: PerMillion;
+  /** Frais par exécution (agents), en plus des jetons. */
+  runFee: bigint;
+}
+
+const IGNORED_ROLES = new Set(["system", "developer"]);
+
+function agentKeyMayUse(key: ApiKeyRow, agent: CallableAgent): boolean {
+  if (key.allowedModels) return key.allowedModels.includes(agent.publicId);
+  return agent.visibility !== "private";
+}
+
+const textOfContent = (content: unknown): string => {
+  if (typeof content === "string") return content;
+  if (!Array.isArray(content)) return "";
+  return content
+    .map((part) =>
+      isObject(part) && part.type === "text" && typeof part.text === "string"
+        ? part.text
+        : "",
+    )
+    .join("");
+};
+
+/**
+ * Plan d'un appel d'agent. WorkStudio ignore les messages `system` et `developer` de l'appelant (l'agent garde
+ * ses propres consignes) : ils sont retirés ici, avant l'estimation et l'appel. Seuls `messages` et `stream`
+ * sont transmis ; les autres paramètres (température, outils…) n'ont pas de sens pour un agent publié.
+ */
+function planAgentChat(
+  body: Json,
+  agent: CallableAgent,
+  deps: GatewayDeps,
+  rid: Record<string, string>,
+): Plan | Response {
+  if (
+    !Array.isArray(body.messages) ||
+    body.messages.length === 0 ||
+    body.messages.length > 2000 ||
+    !body.messages.every((m) => isObject(m) && typeof m.role === "string")
+  )
+    return E.badRequest(
+      "« messages » doit être une liste non vide de messages ayant un « role ».",
+      "invalid_messages",
+      "messages",
+      rid,
+    );
+  if (body.n !== undefined && body.n !== 1)
+    return E.badRequest(
+      "Seul n = 1 est pris en charge.",
+      "unsupported_parameter",
+      "n",
+      rid,
+    );
+  if (body.stream !== undefined && typeof body.stream !== "boolean")
+    return E.badRequest(
+      "« stream » doit être un booléen.",
+      "invalid_stream",
+      "stream",
+      rid,
+    );
+  const messages = (body.messages as Json[]).filter(
+    (m) => !IGNORED_ROLES.has(m.role as string),
+  );
+  const lastUser = [...messages].reverse().find((m) => m.role === "user");
+  if (!lastUser || textOfContent(lastUser.content).trim().length === 0)
+    return E.badRequest(
+      "Envoyez au moins un message « user » non vide : les messages « system » sont ignorés par les agents.",
+      "invalid_messages",
+      "messages",
+      rid,
+    );
+  const stream = body.stream === true;
+  const clientWantsUsage =
+    isObject(body.stream_options) && body.stream_options.include_usage === true;
+  const promptEstimate = estimateTokens({ messages });
+  if (promptEstimate > agent.runTokenCap)
+    return E.badRequest(
+      `La requête dépasse le plafond de cet agent (${agent.runTokenCap} jetons par exécution).`,
+      "context_length_exceeded",
+      "messages",
+      rid,
+    );
+  const upstreamBody: Json = { model: agent.upstreamId, messages };
+  if (stream) upstreamBody.stream = true;
+  return {
+    upstreamBody,
+    promptEstimate,
+    // Sert seulement à la limite de jetons par minute : le montant réservé vient du plafond d'exécution.
+    maxOutput: Math.min(agent.runTokenCap, deps.limits.defaultMaxOutputTokens),
+    stream,
+    clientWantsUsage,
+  };
+}
+
+/**
+ * Adresse et clé de l'instance WorkStudio d'un agent. La clé d'espace vient du coffre à chaque appel et ne quitte
+ * jamais ce module ; null (référence absente, secret introuvable ou révoqué) : l'agent est indisponible.
+ */
+async function agentCredentials(
+  deps: GatewayDeps,
+  agent: CallableAgent,
+  requestId: string,
+): Promise<{ url: string; authorization: string } | null> {
+  const ref = agent.instance.secretRef;
+  if (!ref || !deps.getSecret) return null;
+  try {
+    const value = await deps.getSecret(ref);
+    if (!value) return null;
+    return {
+      url: `${agent.instance.baseUrl.replace(/\/+$/, "")}/v1/chat/completions`,
+      authorization: `Bearer ${value}`,
+    };
+  } catch (error) {
+    // Ni la référence ni l'erreur ne sont journalisées : seulement l'agent concerné.
+    deps.log.error("passerelle : clé d'instance d'agents indisponible", {
+      requestId,
+      agentId: agent.id,
+      errorName: errorName(error),
+    });
+    return null;
+  }
+}
+
 async function handleInference(
   request: Request,
   deps: GatewayDeps,
@@ -430,8 +595,7 @@ async function handleInference(
   let reservation: { id: string; amount: bigint } | undefined;
   let keyReserved = false;
   let settled = false;
-  let version: CatalogVersion | undefined;
-  let model: SnapshotModel | undefined;
+  let target: Target | undefined;
   let streamHandedOff = false;
   let pendingAmount: bigint | undefined;
 
@@ -442,22 +606,22 @@ async function handleInference(
     tokens: Usage;
     stream: boolean;
   }) => {
-    if (settled || !db || !key || !reservation || !version || !model)
-      return null;
+    if (settled || !db || !key || !reservation || !target) return null;
     const result = await finalizeRequest(db, {
       requestId,
       organizationId: key.organizationId,
       apiKeyId: key.id,
-      modelPublicId: model.publicId,
+      modelPublicId: target.publicId,
       endpoint,
-      configVersion: version.short,
+      configVersion: target.configVersion,
       stream: input.stream,
       status: input.status,
       httpStatus: input.httpStatus,
       errorCode: input.errorCode,
       tokens: input.tokens,
-      price: perMillionOf(model),
-      upstreamPrice: upstreamPerMillionOf(model),
+      price: target.price,
+      upstreamPrice: target.upstreamPrice,
+      runFeeMicro: target.runFee,
       reservationId: reservation.id,
       reservedMicro: reservation.amount,
       keyReserved,
@@ -521,18 +685,79 @@ async function handleInference(
         rateHeaders,
       );
 
-    version = (await getPublishedCatalog(db)) ?? undefined;
-    const found = version
-      ? findModel(version, key, parsed.model, deps.now())
-      : null;
-    if (!version || !found) return E.modelNotFound(parsed.model, rateHeaders);
-    model = found.model;
-
-    const plan =
-      endpoint === "chat.completions"
-        ? planChat(parsed, model, deps, rateHeaders)
-        : planEmbedding(parsed, model, rateHeaders);
-    if (plan instanceof Response) return plan;
+    // Cible de la requête : un agent hébergé (`agent/<slug>`) ou un modèle du catalogue.
+    let plan: Plan;
+    let upstreamUrl: string;
+    let upstreamAuthorization: string;
+    let reserveMicro: bigint | null = null;
+    if (
+      endpoint === "chat.completions" &&
+      parsed.model.startsWith(AGENT_PUBLIC_PREFIX)
+    ) {
+      const agent = await findCallableAgent(db, parsed.model, deps.now());
+      if (!agent || !agentKeyMayUse(key, agent))
+        return E.modelNotFound(parsed.model, rateHeaders);
+      const planned = planAgentChat(parsed, agent, deps, rateHeaders);
+      if (planned instanceof Response) return planned;
+      plan = planned;
+      const creds = await agentCredentials(deps, agent, requestId);
+      if (!creds)
+        return E.upstream(
+          503,
+          "agent_unavailable",
+          "Cet agent n'est pas disponible pour le moment.",
+          rateHeaders,
+        );
+      upstreamUrl = creds.url;
+      upstreamAuthorization = creds.authorization;
+      const { price } = agent;
+      const perToken: PerMillion = {
+        input: price.inputCadMicro,
+        output: price.outputCadMicro,
+        cache: null,
+      };
+      target = {
+        kind: "agent",
+        publicId: agent.publicId,
+        residency: agent.region,
+        configVersion: `agent_price_${price.id.replaceAll("-", "").slice(0, 12)}`,
+        price: perToken,
+        upstreamPrice: { input: 0n, output: 0n, cache: null },
+        runFee: price.perRunCadMicro,
+      };
+      // Le plafond d'exécution borne le montant réservé : exécution + plafond de jetons au prix le plus élevé.
+      reserveMicro =
+        price.perRunCadMicro +
+        costMicro(
+          agent.runTokenCap,
+          perToken.input > perToken.output ? perToken.input : perToken.output,
+        );
+    } else {
+      const version = (await getPublishedCatalog(db)) ?? undefined;
+      const found = version
+        ? findModel(version, key, parsed.model, deps.now())
+        : null;
+      if (!version || !found) return E.modelNotFound(parsed.model, rateHeaders);
+      const model = found.model;
+      const planned =
+        endpoint === "chat.completions"
+          ? planChat(parsed, model, deps, rateHeaders)
+          : planEmbedding(parsed, model, rateHeaders);
+      if (planned instanceof Response) return planned;
+      plan = planned;
+      upstreamUrl = `${lit.baseUrl.replace(/\/+$/, "")}/v1/${endpoint === "chat.completions" ? "chat/completions" : "embeddings"}`;
+      upstreamAuthorization = `Bearer ${lit.masterKey}`;
+      target = {
+        kind: "model",
+        publicId: model.publicId,
+        residency: model.residency,
+        configVersion: version.short,
+        price: perMillionOf(model),
+        upstreamPrice: upstreamPerMillionOf(model),
+        runFee: 0n,
+      };
+    }
+    const served = target;
 
     const tpm = key.tpmLimit ?? deps.limits.defaultTpm;
     const estimatedTokens = plan.promptEstimate + plan.maxOutput;
@@ -551,11 +776,12 @@ async function handleInference(
         "x-ratelimit-reset-tokens": `${tl.retryAfterSeconds}s`,
       });
 
-    // Coût maximal : jetons d'entrée estimés + sortie bornée, au prix publié.
-    const price = perMillionOf(model);
+    // Coût maximal : jetons d'entrée estimés + sortie bornée, au prix publié (agents : plafond d'exécution).
+    const price = served.price;
     const maxCost =
+      reserveMicro ??
       costMicro(plan.promptEstimate, price.input) +
-      costMicro(plan.maxOutput, price.output);
+        costMicro(plan.maxOutput, price.output);
     const amount = maxCost > 0n ? maxCost : 1n;
     pendingAmount = amount;
 
@@ -567,7 +793,7 @@ async function handleInference(
       organizationId: key.organizationId,
       amountMicro: amount,
       idempotencyKey: `gw:${requestId}`,
-      configVersion: version.short,
+      configVersion: served.configVersion,
     });
     if (
       reserved.status === "insufficient_funds" ||
@@ -583,12 +809,13 @@ async function handleInference(
 
     const headers: Record<string, string> = {
       ...rateHeaders,
-      "x-nexora-model": model.publicId,
-      "x-nexora-residency": model.residency,
-      "x-nexora-catalog-version": version.short,
+      "x-nexora-model": served.publicId,
+      "x-nexora-residency": served.residency,
+      "x-nexora-catalog-version": served.configVersion,
     };
 
-    // Appel de LiteLLM (réseau interne, clé maîtresse). Le client ne la voit jamais.
+    // Appel de l'amont (LiteLLM avec la clé maîtresse, ou l'instance WorkStudio avec sa clé d'espace). Le client
+    // ne voit jamais ces clés.
     const upstreamAbort = new AbortController();
     const signal = AbortSignal.any([
       request.signal,
@@ -601,19 +828,16 @@ async function handleInference(
     ]);
     let upstream: Response;
     try {
-      upstream = await deps.fetch(
-        `${lit.baseUrl.replace(/\/+$/, "")}/v1/${endpoint === "chat.completions" ? "chat/completions" : "embeddings"}`,
-        {
-          method: "POST",
-          headers: {
-            authorization: `Bearer ${lit.masterKey}`,
-            "content-type": "application/json",
-            accept: plan.stream ? "text/event-stream" : "application/json",
-          },
-          body: JSON.stringify(plan.upstreamBody),
-          signal,
+      upstream = await deps.fetch(upstreamUrl, {
+        method: "POST",
+        headers: {
+          authorization: upstreamAuthorization,
+          "content-type": "application/json",
+          accept: plan.stream ? "text/event-stream" : "application/json",
         },
-      );
+        body: JSON.stringify(plan.upstreamBody),
+        signal,
+      });
     } catch {
       const aborted = request.signal.aborted;
       await finalize({
@@ -628,14 +852,26 @@ async function handleInference(
         : E.upstream(
             502,
             "upstream_unavailable",
-            "Le fournisseur du modèle est injoignable.",
+            served.kind === "agent"
+              ? "L'instance de l'agent est injoignable."
+              : "Le fournisseur du modèle est injoignable.",
             headers,
           );
     }
 
     if (!upstream.ok) {
       const text = await upstream.text().catch(() => "");
-      const mapped = mapUpstreamFailure(upstream.status, text, headers);
+      const mapped = mapUpstreamFailure(
+        upstream.status,
+        text,
+        headers,
+        served.kind,
+      );
+      if (served.kind === "agent" && upstream.status >= 401)
+        deps.log.warn("passerelle : refus de l'instance d'agents", {
+          requestId,
+          upstreamStatus: upstream.status,
+        });
       await finalize({
         status: "error",
         httpStatus: mapped.status,
@@ -653,13 +889,12 @@ async function handleInference(
         plan,
         deps,
         headers,
-        model,
+        target: served,
         finalize,
         upstreamAbort,
         started,
         requestId,
         key,
-        version,
       });
     }
 
@@ -681,27 +916,42 @@ async function handleInference(
       return E.upstream(
         502,
         "invalid_upstream_response",
-        "Réponse invalide du fournisseur du modèle.",
+        served.kind === "agent"
+          ? "Réponse invalide de l'instance de l'agent."
+          : "Réponse invalide du fournisseur du modèle.",
         headers,
       );
     }
-    const usage = readUsage(json.usage) ?? {
-      prompt: plan.promptEstimate,
-      completion: estimateOutputTokens(contentChars(json)),
-      cached: 0,
-    };
+    // Règle de repli (agents et modèles) : usage absent → entrée estimée + réponse livrée. Agents : un usage à
+    // zéro avec une réponse livrée compte aussi comme absent (WorkStudio ne relève pas toujours les jetons).
+    const delivered = contentChars(json);
+    const reported = readUsage(json.usage);
+    const usable =
+      reported !== null &&
+      !(
+        served.kind === "agent" &&
+        reported.prompt + reported.completion === 0 &&
+        delivered > 0
+      );
+    const usage: Usage =
+      usable && reported
+        ? reported
+        : {
+            prompt: plan.promptEstimate,
+            completion: estimateOutputTokens(delivered),
+            cached: 0,
+          };
     const result = await finalize({
       status: "ok",
       httpStatus: 200,
       tokens: usage,
       stream: false,
     });
-    const clean = sanitize(json, model.publicId);
+    const clean = sanitize(json, served.publicId);
     logDone(deps, {
       requestId,
       key,
-      model,
-      version,
+      target: served,
       endpoint,
       status: "ok",
       httpStatus: 200,
@@ -724,15 +974,7 @@ async function handleInference(
       errorName: errorName(error),
     });
     // Compensation : rien ne doit rester réservé si l'on n'a pas pu servir la requête.
-    if (
-      !streamHandedOff &&
-      !settled &&
-      db &&
-      key &&
-      reservation &&
-      version &&
-      model
-    ) {
+    if (!streamHandedOff && !settled && db && key && reservation && target) {
       try {
         await finalize({
           status: "error",
@@ -783,6 +1025,7 @@ function mapUpstreamFailure(
   status: number,
   text: string,
   headers: Record<string, string>,
+  kind: "model" | "agent" = "model",
 ): Response {
   let message = "";
   try {
@@ -805,6 +1048,18 @@ function mapUpstreamFailure(
         headers,
       ),
       "upstream_rejected",
+    );
+  // Agents : un refus de la clé d'espace (401, 402, 403) ou un agent introuvable chez WorkStudio relève de
+  // la configuration de Nexora, jamais de la faute du client ; le détail amont n'est pas transmis.
+  if (kind === "agent" && [401, 402, 403, 404, 409].includes(status))
+    return tag(
+      E.upstream(
+        502,
+        "agent_upstream_refused",
+        "L'instance de l'agent a refusé la requête. Réessayez plus tard ou contactez le soutien de Nexora.",
+        headers,
+      ),
+      "agent_upstream_refused",
     );
   if (status === 404)
     return tag(
@@ -830,7 +1085,9 @@ function mapUpstreamFailure(
     E.upstream(
       502,
       "upstream_error",
-      "Le fournisseur du modèle a répondu par une erreur.",
+      kind === "agent"
+        ? "L'instance de l'agent a répondu par une erreur."
+        : "Le fournisseur du modèle a répondu par une erreur.",
       headers,
     ),
     "upstream_error",
@@ -842,8 +1099,7 @@ function logDone(
   f: {
     requestId: string;
     key: ApiKeyRow;
-    model: SnapshotModel;
-    version: CatalogVersion;
+    target: Target;
     endpoint: Endpoint;
     status: string;
     httpStatus: number;
@@ -857,9 +1113,9 @@ function logDone(
     requestId: f.requestId,
     apiKeyId: f.key.id,
     organizationId: f.key.organizationId,
-    model: f.model.publicId,
+    model: f.target.publicId,
     endpoint: f.endpoint,
-    catalog: f.version.short,
+    catalog: f.target.configVersion,
     status: f.status,
     httpStatus: f.httpStatus,
     promptTokens: f.usage.prompt,
@@ -878,7 +1134,7 @@ function streamResponse(ctx: {
   plan: Plan;
   deps: GatewayDeps;
   headers: Record<string, string>;
-  model: SnapshotModel;
+  target: Target;
   finalize: (i: {
     status: "ok" | "error" | "aborted";
     httpStatus: number;
@@ -890,9 +1146,8 @@ function streamResponse(ctx: {
   started: number;
   requestId: string;
   key: ApiKeyRow;
-  version: CatalogVersion;
 }): Response {
-  const { plan, deps, model } = ctx;
+  const { plan, deps, target } = ctx;
   const upstreamBody = ctx.upstream.body;
   if (!upstreamBody) throw new Error("flux amont absent");
   const reader = upstreamBody.getReader();
@@ -910,12 +1165,18 @@ function streamResponse(ctx: {
     try {
       let status: "ok" | "error" | "aborted";
       let tokens: Usage;
-      if (usage) {
+      // Agents : un usage à zéro avec une réponse livrée compte comme absent (règle de repli, voir handleInference).
+      const reportedUnusable =
+        usage !== null &&
+        target.kind === "agent" &&
+        usage.prompt + usage.completion === 0 &&
+        chars > 0;
+      if (usage && !reportedUnusable) {
         status = outcome === "done" ? "ok" : "aborted";
         tokens = usage;
       } else if (chars > 0) {
-        // Flux interrompu sans usage : on facture ce qui a été livré, estimé par prudence.
-        status = "aborted";
+        // Flux interrompu sans usage (ou usage inexploitable) : on facture ce qui a été livré, estimé par prudence.
+        status = reportedUnusable && outcome === "done" ? "ok" : "aborted";
         tokens = {
           prompt: plan.promptEstimate,
           completion: estimateOutputTokens(chars),
@@ -941,8 +1202,7 @@ function streamResponse(ctx: {
       logDone(deps, {
         requestId: ctx.requestId,
         key: ctx.key,
-        model,
-        version: ctx.version,
+        target,
         endpoint: "chat.completions",
         status,
         httpStatus: 200,
@@ -987,33 +1247,40 @@ function streamResponse(ctx: {
     }
     // Le client n'a pas demandé l'usage : on garde pour nous le dernier fragment (sans choix).
     if (u && choices.length === 0 && !plan.clientWantsUsage) return null;
-    return `data: ${JSON.stringify(sanitize(obj, model.publicId))}\n\n`;
+    return `data: ${JSON.stringify(sanitize(obj, target.publicId))}\n\n`;
   };
 
   const body = new ReadableStream<Uint8Array>({
     async pull(controller) {
       try {
-        const { done, value } = await reader.read();
-        if (done) {
-          buffer += decoder.decode();
-          const last = buffer.trim().length > 0 ? processEvent(buffer) : null;
-          await settle(usage ? "done" : "failed");
-          if (last) controller.enqueue(encoder.encode(last));
-          controller.close();
-          return;
+        // Boucle jusqu'à produire du texte : un paquet entièrement masqué (usage non demandé) ne doit pas laisser
+        // la lecture en attente, car `pull` n'est rappelé qu'après un `enqueue`.
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) {
+            buffer += decoder.decode();
+            const last = buffer.trim().length > 0 ? processEvent(buffer) : null;
+            await settle(usage ? "done" : "failed");
+            if (last) controller.enqueue(encoder.encode(last));
+            controller.close();
+            return;
+          }
+          buffer += decoder.decode(value, { stream: true });
+          const parts = buffer.split(/\r?\n\r?\n/);
+          buffer = parts.pop() ?? "";
+          let out = "";
+          for (const part of parts) {
+            if (part.trim().length === 0) continue;
+            const piece = processEvent(part);
+            if (piece) out += piece;
+          }
+          // Le règlement précède l'envoi de [DONE] : quand le client voit la fin du flux, le grand livre est à jour.
+          if (sawDone) await settle(usage ? "done" : "failed");
+          if (out) {
+            controller.enqueue(encoder.encode(out));
+            return;
+          }
         }
-        buffer += decoder.decode(value, { stream: true });
-        const parts = buffer.split(/\r?\n\r?\n/);
-        buffer = parts.pop() ?? "";
-        let out = "";
-        for (const part of parts) {
-          if (part.trim().length === 0) continue;
-          const piece = processEvent(part);
-          if (piece) out += piece;
-        }
-        // Le règlement précède l'envoi de [DONE] : quand le client voit la fin du flux, le grand livre est à jour.
-        if (sawDone) await settle(usage ? "done" : "failed");
-        if (out) controller.enqueue(encoder.encode(out));
       } catch {
         // Coupure de l'amont en cours de flux.
         const failed = usage === null;

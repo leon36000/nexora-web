@@ -36,9 +36,11 @@ export function normalizeEmbedPage(input: string): string | null {
 }
 
 /** Identifiant du chat public d'un agent WorkStudio (minuscules, chiffres, tirets). */
-export const isChatIdentifier = (v: string) => /^[a-z0-9][a-z0-9-]{0,80}$/.test(v);
+export const isChatIdentifier = (v: string) =>
+  /^[a-z0-9][a-z0-9-]{0,80}$/.test(v);
 
-export const isHexColor = (v: string) => /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v);
+export const isHexColor = (v: string) =>
+  /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v);
 
 /** Retire le préfixe de langue (`/en`) d'un chemin public. */
 export function stripLangPrefix(pathname: string): string {
@@ -48,7 +50,10 @@ export function stripLangPrefix(pathname: string): string {
 }
 
 /** La bulle s'affiche-t-elle sur ce chemin (avec ou sans préfixe de langue) ? */
-export function embedAppliesTo(pages: readonly string[], pathname: string): boolean {
+export function embedAppliesTo(
+  pages: readonly string[],
+  pathname: string,
+): boolean {
   return pages.includes(stripLangPrefix(pathname));
 }
 
@@ -59,7 +64,10 @@ export function embedAppliesTo(pages: readonly string[], pathname: string): bool
  * `'unsafe-inline'` reste nécessaire aux scripts de démarrage de Next.js (aucun nonce avec les pages statiques) ;
  * `'unsafe-eval'` n'est ajouté qu'en développement (rechargement à chaud).
  */
-export function embedCsp(origin: string, options: { dev?: boolean } = {}): string {
+export function embedCsp(
+  origin: string,
+  options: { dev?: boolean } = {},
+): string {
   const dev = options.dev === true;
   return [
     `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} ${origin}`,

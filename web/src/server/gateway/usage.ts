@@ -32,6 +32,11 @@ export interface FinalizeInput {
   price: PerMillion;
   upstreamPrice: PerMillion;
   reservationId: string;
+  /**
+   * Frais par exécution (agents hébergés, S7), en plus des jetons ; 0 pour un modèle. Dus dès qu'une exécution a
+   * eu lieu (statut « ok » ou « aborted »), jamais sur un échec.
+   */
+  runFeeMicro?: bigint;
   /** Montant réservé au grand livre et, le cas échéant, sur le plafond de la clé. */
   reservedMicro: bigint;
   keyReserved: boolean;
@@ -49,13 +54,14 @@ export async function finalizeRequest(
 ): Promise<FinalizeResult> {
   return db.transaction(async (tx) => {
     let charged = 0n;
+    const runFee = input.status === "error" ? 0n : (input.runFeeMicro ?? 0n);
     if (input.status === "error") {
       await releaseReservation(tx, {
         organizationId: input.organizationId,
         reservationId: input.reservationId,
       });
     } else {
-      const wanted = requestCost(input.tokens, input.price);
+      const wanted = requestCost(input.tokens, input.price) + runFee;
       const { entry } = await settleReservation(tx, {
         organizationId: input.organizationId,
         reservationId: input.reservationId,
@@ -84,6 +90,7 @@ export async function finalizeRequest(
         completionTokens: input.tokens.completion,
         cachedTokens: input.tokens.cached,
         costMicro: charged,
+        runFeeMicro: runFee < charged ? runFee : charged,
         upstreamCostUsdMicro: upstreamUsd,
         priceInputMicro: input.price.input,
         priceOutputMicro: input.price.output,

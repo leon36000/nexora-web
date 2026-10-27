@@ -149,7 +149,10 @@ export const hostedAgents = pgTable(
       "hosted_agents_category_check",
       sql`${t.category} IN (${inList(AGENT_CATEGORIES)})`,
     ),
-    check("hosted_agents_cap_check", sql`${t.runTokenCap} BETWEEN 1 AND 1000000`),
+    check(
+      "hosted_agents_cap_check",
+      sql`${t.runTokenCap} BETWEEN 1 AND 1000000`,
+    ),
   ],
 );
 
@@ -203,7 +206,10 @@ export const workstudioEmbedSettings = pgTable(
     chatIdentifier: text("chat_identifier"),
     /** Chemins du site (sans langue) où la bulle s'affiche, ex. `/agents`. */
     pages: jsonb("pages").$type<string[]>().notNull().default([]),
-    position: text("position").$type<EmbedPosition>().notNull().default("right"),
+    position: text("position")
+      .$type<EmbedPosition>()
+      .notNull()
+      .default("right"),
     /** Couleur hexadécimale (`#4F46E5`) ; null = couleur par défaut de la bulle. */
     color: text("color"),
     labelFr: text("label_fr"),
@@ -218,4 +224,3 @@ export const workstudioEmbedSettings = pgTable(
     ),
   ],
 );
-

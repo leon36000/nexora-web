@@ -19,8 +19,12 @@ describe("normalizeEmbedOrigin", () => {
     );
   });
   it("n'accepte http que pour un hôte local", () => {
-    expect(normalizeEmbedOrigin("http://localhost:3200")).toBe("http://localhost:3200");
-    expect(normalizeEmbedOrigin("http://127.0.0.1:3200")).toBe("http://127.0.0.1:3200");
+    expect(normalizeEmbedOrigin("http://localhost:3200")).toBe(
+      "http://localhost:3200",
+    );
+    expect(normalizeEmbedOrigin("http://127.0.0.1:3200")).toBe(
+      "http://127.0.0.1:3200",
+    );
     expect(normalizeEmbedOrigin("http://ia.exemple.ca")).toBeNull();
   });
   it.each([
@@ -41,7 +45,9 @@ describe("normalizeEmbedOrigin", () => {
 describe("pages, chat et couleur", () => {
   it("normalise les chemins", () => {
     expect(normalizeEmbedPage("/Agents/")).toBe("/agents");
-    expect(normalizeEmbedPage("/solutions/courriels")).toBe("/solutions/courriels");
+    expect(normalizeEmbedPage("/solutions/courriels")).toBe(
+      "/solutions/courriels",
+    );
     expect(normalizeEmbedPage("")).toBe("/");
     expect(normalizeEmbedPage("agents")).toBeNull();
     expect(normalizeEmbedPage("/a?b=1")).toBeNull();
@@ -72,7 +78,9 @@ describe("embedCsp", () => {
   it("n'ouvre que l'origine configurée, sans joker", () => {
     const csp = embedCsp("https://ia.exemple.ca");
     expect(csp).toContain("frame-src https://ia.exemple.ca");
-    expect(csp).toContain("script-src 'self' 'unsafe-inline' https://ia.exemple.ca");
+    expect(csp).toContain(
+      "script-src 'self' 'unsafe-inline' https://ia.exemple.ca",
+    );
     expect(csp).toContain("object-src 'none'");
     expect(csp).not.toContain("*");
     expect(csp).not.toContain("unsafe-eval");

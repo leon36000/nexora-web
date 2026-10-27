@@ -2,8 +2,8 @@ import { hostedAgents, sql } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
-  addAgentPrice,
   AgentError,
+  addAgentPrice,
   agentIssues,
   applyDiscovery,
   createInstance,
@@ -42,7 +42,13 @@ async function draftAgent(name = "Assistant général") {
   const found = await applyDiscovery(
     t.db,
     inst.id,
-    [{ upstreamId: `agent:${name}`, name, description: "Répond aux questions." }],
+    [
+      {
+        upstreamId: `agent:${name}`,
+        name,
+        description: "Répond aux questions.",
+      },
+    ],
     new Date(),
   );
   const agent = found.created[0];
@@ -71,7 +77,11 @@ describe("découverte des agents", () => {
       t.db,
       inst.id,
       [
-        { upstreamId: "agent:Factures", name: "Factures", description: "Lit les factures." },
+        {
+          upstreamId: "agent:Factures",
+          name: "Factures",
+          description: "Lit les factures.",
+        },
         { upstreamId: "agent:Courriels", name: "Courriels", description: "" },
       ],
       new Date(),
@@ -96,7 +106,13 @@ describe("découverte des agents", () => {
     const again = await applyDiscovery(
       t.db,
       inst.id,
-      [{ upstreamId: "agent:Idempotent", name: "Idempotent", description: "Autre texte" }],
+      [
+        {
+          upstreamId: "agent:Idempotent",
+          name: "Idempotent",
+          description: "Autre texte",
+        },
+      ],
       new Date(),
     );
     expect(again.created).toEqual([]);
@@ -162,14 +178,27 @@ describe("prix", () => {
     await addAgentPrice(
       t.db,
       agent.id,
-      { perRunCadMicro: 20_000n, effectiveAt: new Date("2026-06-01T00:00:00Z") },
+      {
+        perRunCadMicro: 20_000n,
+        effectiveAt: new Date("2026-06-01T00:00:00Z"),
+      },
       t0,
     );
-    const march = await currentAgentPrice(t.db, agent.id, new Date("2026-03-01T00:00:00Z"));
-    const july = await currentAgentPrice(t.db, agent.id, new Date("2026-07-01T00:00:00Z"));
+    const march = await currentAgentPrice(
+      t.db,
+      agent.id,
+      new Date("2026-03-01T00:00:00Z"),
+    );
+    const july = await currentAgentPrice(
+      t.db,
+      agent.id,
+      new Date("2026-07-01T00:00:00Z"),
+    );
     expect(march?.perRunCadMicro).toBe(10_000n);
     expect(july?.perRunCadMicro).toBe(20_000n);
-    expect(await currentAgentPrice(t.db, agent.id, new Date("2025-01-01T00:00:00Z"))).toBeNull();
+    expect(
+      await currentAgentPrice(t.db, agent.id, new Date("2025-01-01T00:00:00Z")),
+    ).toBeNull();
   });
 
   it("refuse un prix à 0 $ et marque l'essai par défaut", async () => {
@@ -219,10 +248,20 @@ describe("publication", () => {
     await addAgentPrice(
       t.db,
       agent.id,
-      { inputCadMicro: 1_000_000n, outputCadMicro: 3_000_000n, perRunCadMicro: 50_000n, effectiveAt: new Date(now.getTime() - 1000) },
+      {
+        inputCadMicro: 1_000_000n,
+        outputCadMicro: 3_000_000n,
+        perRunCadMicro: 50_000n,
+        effectiveAt: new Date(now.getTime() - 1000),
+      },
       now,
     );
-    const published = await updateAgent(t.db, agent.id, { status: "published" }, now);
+    const published = await updateAgent(
+      t.db,
+      agent.id,
+      { status: "published" },
+      now,
+    );
     expect(published.status).toBe("published");
     expect(published.publishedAt).not.toBeNull();
 
@@ -241,21 +280,36 @@ describe("publication", () => {
     expect(callable?.instance.secretRef).toMatch(/^workstudio\./);
 
     await updateAgent(t.db, agent.id, { status: "retired" }, now);
-    expect(await findCallableAgent(t.db, `agent/${agent.slug}`, now)).toBeNull();
+    expect(
+      await findCallableAgent(t.db, `agent/${agent.slug}`, now),
+    ).toBeNull();
   });
 
   it("n'expose pas un agent publié dont l'instance est désactivée ou dont le prix n'est pas encore en vigueur", async () => {
     const { inst, agent } = await draftAgent("Instance coupée");
     await updateAgent(t.db, agent.id, complete);
     const now = new Date();
-    await addAgentPrice(t.db, agent.id, { perRunCadMicro: 5_000n, effectiveAt: new Date(now.getTime() - 1000) }, now);
+    await addAgentPrice(
+      t.db,
+      agent.id,
+      { perRunCadMicro: 5_000n, effectiveAt: new Date(now.getTime() - 1000) },
+      now,
+    );
     await updateAgent(t.db, agent.id, { status: "published" }, now);
-    expect(await findCallableAgent(t.db, `agent/${agent.slug}`, now)).not.toBeNull();
+    expect(
+      await findCallableAgent(t.db, `agent/${agent.slug}`, now),
+    ).not.toBeNull();
     await t.sql`UPDATE hosted_agent_instances SET enabled = false WHERE id = ${inst.id}`;
-    expect(await findCallableAgent(t.db, `agent/${agent.slug}`, now)).toBeNull();
+    expect(
+      await findCallableAgent(t.db, `agent/${agent.slug}`, now),
+    ).toBeNull();
     await t.sql`UPDATE hosted_agent_instances SET enabled = true WHERE id = ${inst.id}`;
     expect(
-      await findCallableAgent(t.db, `agent/${agent.slug}`, new Date(now.getTime() - 3_600_000)),
+      await findCallableAgent(
+        t.db,
+        `agent/${agent.slug}`,
+        new Date(now.getTime() - 3_600_000),
+      ),
     ).toBeNull();
   });
 
@@ -304,9 +358,9 @@ describe("réglage de la bulle WorkStudio", () => {
       "https://user:pw@ia.exemple.ca",
       "javascript:alert(1)",
     ])
-      await expect(
-        saveEmbedSettings(t.db, { origin }),
-      ).rejects.toMatchObject({ code: "invalid_request" });
+      await expect(saveEmbedSettings(t.db, { origin })).rejects.toMatchObject({
+        code: "invalid_request",
+      });
     await expect(
       saveEmbedSettings(t.db, { pages: ["agents"] }),
     ).rejects.toMatchObject({ code: "invalid_request" });
@@ -319,7 +373,11 @@ describe("réglage de la bulle WorkStudio", () => {
   });
 
   it("refuse d'activer la bulle sans origine ni identifiant de chat", async () => {
-    await saveEmbedSettings(t.db, { enabled: false, origin: null, chatIdentifier: null });
+    await saveEmbedSettings(t.db, {
+      enabled: false,
+      origin: null,
+      chatIdentifier: null,
+    });
     await expect(
       saveEmbedSettings(t.db, { enabled: true }),
     ).rejects.toMatchObject({ code: "invalid_request" });

@@ -6,8 +6,8 @@ import {
   asc,
   type Database,
   desc,
-  eq,
   type EmbedPosition,
+  eq,
   type HealthState,
   hostedAgentInstances,
   hostedAgentPrices,
@@ -109,7 +109,10 @@ export async function updateInstance(
 }
 
 export const listInstances = (db: Database): Promise<HostedInstance[]> =>
-  db.select().from(hostedAgentInstances).orderBy(asc(hostedAgentInstances.code));
+  db
+    .select()
+    .from(hostedAgentInstances)
+    .orderBy(asc(hostedAgentInstances.code));
 
 export async function getInstance(
   db: Database,
@@ -300,8 +303,10 @@ export async function agentIssues(
   const issues: AgentIssue[] = [];
   if (!agent.nameFr.trim()) issues.push({ code: "name_fr_missing" });
   if (!agent.nameEn.trim()) issues.push({ code: "name_en_missing" });
-  if (!agent.descriptionFr.trim()) issues.push({ code: "description_fr_missing" });
-  if (!agent.descriptionEn.trim()) issues.push({ code: "description_en_missing" });
+  if (!agent.descriptionFr.trim())
+    issues.push({ code: "description_fr_missing" });
+  if (!agent.descriptionEn.trim())
+    issues.push({ code: "description_en_missing" });
   if (!price) issues.push({ code: "price_missing" });
   if (!instance.enabled || !instance.secretRef)
     issues.push({ code: "instance_unavailable" });
@@ -315,8 +320,14 @@ export async function updateAgent(
   now: Date = new Date(),
 ): Promise<HostedAgent> {
   const current = await getAgent(db, id);
-  if (patch.upstreamId !== undefined && !/^agent:\S.{0,199}$/.test(patch.upstreamId))
-    throw new AgentError("invalid_request", "identifiant amont : « agent:… » attendu");
+  if (
+    patch.upstreamId !== undefined &&
+    !/^agent:\S.{0,199}$/.test(patch.upstreamId)
+  )
+    throw new AgentError(
+      "invalid_request",
+      "identifiant amont : « agent:… » attendu",
+    );
   if (patch.status && !NEXT_STATUS[current.status].includes(patch.status))
     throw new AgentError(
       "invalid_transition",
@@ -331,7 +342,8 @@ export async function updateAgent(
         !(
           (i.code === "name_fr_missing" && merged.nameFr.trim()) ||
           (i.code === "name_en_missing" && merged.nameEn.trim()) ||
-          (i.code === "description_fr_missing" && merged.descriptionFr.trim()) ||
+          (i.code === "description_fr_missing" &&
+            merged.descriptionFr.trim()) ||
           (i.code === "description_en_missing" && merged.descriptionEn.trim())
         ),
     );
@@ -380,7 +392,12 @@ export async function addAgentPrice(
   const input$ = input.inputCadMicro ?? 0n;
   const output = input.outputCadMicro ?? 0n;
   const perRun = input.perRunCadMicro ?? 0n;
-  if (input$ < 0n || output < 0n || perRun < 0n || input$ + output + perRun <= 0n)
+  if (
+    input$ < 0n ||
+    output < 0n ||
+    perRun < 0n ||
+    input$ + output + perRun <= 0n
+  )
     throw new AgentError(
       "invalid_request",
       "un prix doit avoir au moins une composante positive (jamais 0 $)",
@@ -409,7 +426,10 @@ export const listAgentPrices = (
     .select()
     .from(hostedAgentPrices)
     .where(eq(hostedAgentPrices.agentId, agentId))
-    .orderBy(desc(hostedAgentPrices.effectiveAt), desc(hostedAgentPrices.createdAt));
+    .orderBy(
+      desc(hostedAgentPrices.effectiveAt),
+      desc(hostedAgentPrices.createdAt),
+    );
 
 /** Prix en vigueur à `now` : la ligne la plus récente dont la date d'effet est atteinte. */
 export async function currentAgentPrice(
@@ -426,7 +446,10 @@ export async function currentAgentPrice(
         sql`${hostedAgentPrices.effectiveAt} <= ${now.toISOString()}::timestamptz`,
       ),
     )
-    .orderBy(desc(hostedAgentPrices.effectiveAt), desc(hostedAgentPrices.createdAt))
+    .orderBy(
+      desc(hostedAgentPrices.effectiveAt),
+      desc(hostedAgentPrices.createdAt),
+    )
     .limit(1);
   return row ?? null;
 }
@@ -495,7 +518,10 @@ export async function listCallableAgents(
         sql`${hostedAgentPrices.effectiveAt} <= ${now.toISOString()}::timestamptz`,
       ),
     )
-    .orderBy(desc(hostedAgentPrices.effectiveAt), desc(hostedAgentPrices.createdAt));
+    .orderBy(
+      desc(hostedAgentPrices.effectiveAt),
+      desc(hostedAgentPrices.createdAt),
+    );
   const latest = new Map<string, HostedAgentPrice>();
   for (const p of prices) if (!latest.has(p.agentId)) latest.set(p.agentId, p);
   const out: CallableAgent[] = [];
@@ -581,7 +607,10 @@ export async function getEmbedSettings(db: Database): Promise<EmbedSettings> {
 }
 
 export type EmbedPatch = Partial<
-  Omit<EmbedSettings, "updatedAt" | "pages" | "origin" | "chatIdentifier" | "color"> & {
+  Omit<
+    EmbedSettings,
+    "updatedAt" | "pages" | "origin" | "chatIdentifier" | "color"
+  > & {
     origin: string | null;
     chatIdentifier: string | null;
     color: string | null;
@@ -611,7 +640,10 @@ export async function saveEmbedSettings(
     }
   }
   if (patch.chatIdentifier !== undefined) {
-    if (patch.chatIdentifier !== null && !isChatIdentifier(patch.chatIdentifier))
+    if (
+      patch.chatIdentifier !== null &&
+      !isChatIdentifier(patch.chatIdentifier)
+    )
       throw bad("chatIdentifier");
     next.chatIdentifier = patch.chatIdentifier;
   }
@@ -626,8 +658,10 @@ export async function saveEmbedSettings(
     if (patch.color !== null && !isHexColor(patch.color)) throw bad("color");
     next.color = patch.color;
   }
-  if (patch.labelFr !== undefined) next.labelFr = patch.labelFr?.slice(0, 80) || null;
-  if (patch.labelEn !== undefined) next.labelEn = patch.labelEn?.slice(0, 80) || null;
+  if (patch.labelFr !== undefined)
+    next.labelFr = patch.labelFr?.slice(0, 80) || null;
+  if (patch.labelEn !== undefined)
+    next.labelEn = patch.labelEn?.slice(0, 80) || null;
   if (patch.enabled !== undefined) next.enabled = patch.enabled;
   if (next.enabled && (!next.origin || !next.chatIdentifier))
     throw bad("enabled");
