@@ -18,7 +18,7 @@ export function StatusBadge({
       className={cn(
         "inline-flex items-center gap-2 whitespace-nowrap rounded-xs border px-2 py-0.5 font-mono text-label uppercase",
         status === "disponible"
-          ? "border-success text-success"
+          ? "border-success text-fg" // texte : vert sur sable < 4,5:1 ; le vert reste sur le filet et le carré
           : status === "pilote"
             ? "border-line-strong text-fg"
             : "border-line border-dashed text-fg-muted",
@@ -28,7 +28,10 @@ export function StatusBadge({
         viewBox="0 0 8 8"
         aria-hidden="true"
         focusable="false"
-        className="size-2 shrink-0"
+        className={cn(
+          "size-2 shrink-0",
+          status === "disponible" && "text-success",
+        )}
       >
         <rect
           x="0.75"

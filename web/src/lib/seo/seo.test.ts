@@ -1,8 +1,15 @@
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { checkJsonLdConformity } from "@nexora/seo";
 import { describe, expect, it } from "vitest";
 import type { Block, PageModel } from "@/server/cms/model";
 import type { SeoPage } from "@/server/cms/seo-pages";
-import { type AppRoute, availableAppRoutes } from "./app-routes";
+import {
+  type AppRoute,
+  appRouteExists,
+  availableAppRoutes,
+} from "./app-routes";
 import { buildCmsJsonLd } from "./cms-jsonld";
 import {
   articleJsonLd,
@@ -617,5 +624,34 @@ describe("images Open Graph", () => {
       "Planifier un diagnostic",
     );
     expect(stripBrand("Sans marque", "Nexora")).toBe("Sans marque");
+  });
+});
+
+describe("appRouteExists : route de l'application présente dans ce déploiement", () => {
+  const tmp = () => mkdtempSync(join(tmpdir(), "nexora-routes-"));
+
+  it("lit le manifeste de Next quand il existe", () => {
+    const dir = tmp();
+    mkdirSync(join(dir, ".next", "server"), { recursive: true });
+    writeFileSync(
+      join(dir, ".next", "server", "app-paths-manifest.json"),
+      JSON.stringify({ "/[lang]/vps/page": "app/[lang]/vps/page.js" }),
+    );
+    expect(appRouteExists("vps", dir)).toBe(true);
+    expect(appRouteExists("agents", dir)).toBe(false);
+  });
+
+  it("lit les sources en développement", () => {
+    const dir = tmp();
+    mkdirSync(join(dir, "src", "app", "[lang]", "contact"), {
+      recursive: true,
+    });
+    writeFileSync(join(dir, "src", "app", "[lang]", "contact", "page.tsx"), "");
+    expect(appRouteExists("contact", dir)).toBe(true);
+    expect(appRouteExists("vps", dir)).toBe(false);
+  });
+
+  it("répertoire courant étranger (ni manifeste ni sources) : ne retire aucune route", () => {
+    expect(appRouteExists("vps", tmp())).toBe(true);
   });
 });

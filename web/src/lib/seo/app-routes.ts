@@ -92,7 +92,12 @@ export function appRouteExists(
   } catch {
     // manifeste illisible : on se rabat sur le fichier source
   }
-  return existsSync(join(cwd, "src", "app", "[lang]", dir, "page.tsx"));
+  const sources = join(cwd, "src", "app", "[lang]");
+  // Ni manifeste ni sources : le serveur tourne depuis un autre répertoire (`next start <dossier>`). On ne sait pas :
+  // retirer les routes viderait le sitemap, llms.txt et la navigation des pages de l'application.
+  if (!existsSync(sources) && !existsSync(join(cwd, ".next", "server")))
+    return true;
+  return existsSync(join(sources, dir, "page.tsx"));
 }
 
 export function availableAppRoutes(
