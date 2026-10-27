@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexora AI — trois pistes de logo</title>
+<style>
+@font-face { font-family: "Geist"; src: url("../../web/src/fonts/geist-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Inter"; src: url("../../web/src/fonts/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; }
+:root { --ink:#0e1613; --ink2:#16211d; --bone:#f4f1ea; --paper:#fbf8f2; --sand:#f3eee4; --forest:#17221e; --muted:#58625b; --ember:#ce411c; --ember7:#b83a18; --ember4:#f07a52; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: Inter, system-ui, sans-serif; background: var(--paper); color: var(--forest); line-height:1.55; }
+main { max-width: 1180px; margin: 0 auto; padding: 56px 24px 96px; }
+h1 { font-family: Geist, sans-serif; font-weight:500; font-size: 2.6rem; letter-spacing:-.03em; line-height:1.05; margin: 0 0 12px; }
+h2 { font-family: Geist, sans-serif; font-weight:500; font-size: 1.6rem; letter-spacing:-.02em; margin: 0 0 6px; }
+p { max-width: 62ch; margin: 0 0 12px; color: var(--muted); }
+.piste { margin-top: 64px; padding-top: 32px; border-top: 1px solid rgb(23 34 30 / .14); }
+.tag { font: 500 .75rem/1.4 "JetBrains Mono", ui-monospace, monospace; letter-spacing:.08em; text-transform: uppercase; color: var(--ember7); }
+.board { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 24px; }
+.cell { border-radius: 16px; padding: 28px; display:flex; flex-direction: column; gap: 22px; min-height: 220px; justify-content:center; }
+.cell.light { background: var(--paper); border:1px solid rgb(23 34 30 / .14); color: var(--forest); }
+.cell.sand { background: var(--sand); color: var(--forest); }
+.cell.dark { background: var(--ink); color: var(--bone); }
+.row { display:flex; align-items:center; gap: 24px; flex-wrap: wrap; }
+.lock { display:inline-flex; align-items:center; gap: .5em; font-family: Geist, sans-serif; font-weight:500; letter-spacing:-.035em; line-height:1; }
+.lock .ai { color: var(--ember7); }
+.dark .lock .ai { color: var(--ember4); }
+.lock.big { font-size: 3rem; }
+.lock.mid { font-size: 1.5rem; }
+.small { font-size: .8125rem; color: inherit; opacity:.7; font-family: "JetBrains Mono", monospace; }
+.verdict { margin-top: 20px; padding: 16px 20px; border-left: 3px solid var(--ember); background: var(--sand); max-width: 76ch; border-radius: 0 12px 12px 0; }
+.verdict p { color: var(--forest); margin: 0; }
+.choice { background: var(--ink); color: var(--bone); padding: 24px 28px; border-radius: 16px; margin-top: 28px; }
+.choice p { color: #a9b3ae; }
+.choice h2 { color: var(--bone); }
+svg { display:block; flex: none; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Piste 1 : Passage (N en deux murs et un flux orange) -->
+    <symbol id="p1" viewBox="0 0 64 64">
+      <rect x="9" y="8" width="11" height="48" fill="currentColor"/>
+      <rect x="44" y="8" width="11" height="48" fill="currentColor"/>
+      <path d="M20 8h11.5L44 56H32.5z" fill="#ce411c"/>
+    </symbol>
+    <!-- Piste 2 : Périmètres entrelacés (deux cadres ouverts, centre orange) -->
+    <symbol id="p2" viewBox="0 0 64 64">
+      <rect x="24" y="24" width="19" height="19" fill="#ce411c"/>
+      <path d="M43 8H8v35h16M21 56h35V21H40" fill="none" stroke="currentColor" stroke-width="7"/>
+    </symbol>
+    <!-- Piste 3 : Nexus (deux périmètres qui se recouvrent, intersection orange) -->
+    <symbol id="p3" viewBox="0 0 64 64">
+      <rect x="6" y="6" width="36" height="36" fill="currentColor"/>
+      <rect x="22" y="22" width="36" height="36" fill="currentColor"/>
+      <rect x="22" y="22" width="20" height="20" fill="#ce411c"/>
+    </symbol>
+  </defs>
+</svg>
+<main>
+  <p class="tag">Nexora AI · identité de marque</p>
+  <h1>Trois pistes de logo</h1>
+  <p>Chaque piste est dessinée sur une grille de 64 unités, avec l'orange Nexora <code>#CE411C</code> comme seul accent et la grille de périmètre comme idée directrice : des carrés qui dessinent une frontière. On les juge sur cinq critères : lisibilité à 16 px, tenue en clair et en sombre, lien avec le périmètre, mémorabilité, distance avec les marques voisines (le « M » en blocs de Mistral AI, les nœuds d'OpenAI, l'astérisque d'Anthropic).</p>
+
+  <section class="piste" aria-labelledby="t1">
+    <p class="tag">Piste 1</p><h2 id="t1">Passage : un N entre deux murs</h2>
+    <p>Deux murs verticaux (le périmètre) et une diagonale orange qui les traverse (la demande qui entre). Une lettre, donc immédiatement lisible.</p>
+    
+    <div class="board">
+      <div class="cell light">
+        <div class="row"><svg width="112" height="112" role="img" aria-label="Symbole"><use href="#p1"/></svg>
+        <span class="lock big"><svg width="52" height="52" aria-hidden="true"><use href="#p1"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="32" height="32" aria-hidden="true"><use href="#p1"/></svg><svg width="24" height="24" aria-hidden="true"><use href="#p1"/></svg><svg width="16" height="16" aria-hidden="true"><use href="#p1"/></svg><span class="small">64, 32, 24 et 16 px</span></div>
+      </div>
+      <div class="cell dark">
+        <div class="row"><svg width="112" height="112" aria-hidden="true" style="color:#f4f1ea"><use href="#p1"/></svg>
+        <span class="lock big"><svg width="52" height="52" aria-hidden="true" style="color:#f4f1ea"><use href="#p1"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="32" height="32" aria-hidden="true"><use href="#p1"/></svg><svg width="24" height="24" aria-hidden="true"><use href="#p1"/></svg><svg width="16" height="16" aria-hidden="true"><use href="#p1"/></svg><span class="small">sur encre forêt</span></div>
+      </div>
+      <div class="cell sand">
+        <div class="row"><span class="lock mid"><svg width="30" height="30" aria-hidden="true"><use href="#p1"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="64" height="64" aria-hidden="true" style="color:#17221e"><g><use href="#p1"/></g></svg><span class="small">sur sable</span></div>
+      </div>
+    </div>
+    <div class="verdict"><p><strong>Forces :</strong> lecture évidente du N, très net à 16 px. <strong>Limites :</strong> les monogrammes N sont nombreux (Netflix, Nike, NASA, Notion) et la diagonale orange à elle seule ne raconte pas le périmètre ; plus générique que les deux autres.</p></div>
+  </section>
+
+  <section class="piste" aria-labelledby="t2">
+    <p class="tag">Piste 2</p><h2 id="t2">Périmètres entrelacés : deux cadres ouverts</h2>
+    <p>Deux cadres dont les coins s'ouvrent en deux points de passage, autour d'un carré orange. C'est le motif de la grille de périmètre, presque tel quel.</p>
+    
+    <div class="board">
+      <div class="cell light">
+        <div class="row"><svg width="112" height="112" role="img" aria-label="Symbole"><use href="#p2"/></svg>
+        <span class="lock big"><svg width="52" height="52" aria-hidden="true"><use href="#p2"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="32" height="32" aria-hidden="true"><use href="#p2"/></svg><svg width="24" height="24" aria-hidden="true"><use href="#p2"/></svg><svg width="16" height="16" aria-hidden="true"><use href="#p2"/></svg><span class="small">64, 32, 24 et 16 px</span></div>
+      </div>
+      <div class="cell dark">
+        <div class="row"><svg width="112" height="112" aria-hidden="true" style="color:#f4f1ea"><use href="#p2"/></svg>
+        <span class="lock big"><svg width="52" height="52" aria-hidden="true" style="color:#f4f1ea"><use href="#p2"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="32" height="32" aria-hidden="true"><use href="#p2"/></svg><svg width="24" height="24" aria-hidden="true"><use href="#p2"/></svg><svg width="16" height="16" aria-hidden="true"><use href="#p2"/></svg><span class="small">sur encre forêt</span></div>
+      </div>
+      <div class="cell sand">
+        <div class="row"><span class="lock mid"><svg width="30" height="30" aria-hidden="true"><use href="#p2"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="64" height="64" aria-hidden="true" style="color:#17221e"><g><use href="#p2"/></g></svg><span class="small">sur sable</span></div>
+      </div>
+    </div>
+    <div class="verdict"><p><strong>Forces :</strong> le plus proche de la signature graphique du site, très distinctif en grand format. <strong>Limites :</strong> les traits fins de 7 unités et les ouvertures se bouchent sous 24 px ; à 16 px, on lit un carré orné, pas un cadre ouvert ; coûteux à réduire.</p></div>
+  </section>
+
+  <section class="piste" aria-labelledby="t3">
+    <p class="tag">Piste 3</p><h2 id="t3">Nexus : deux périmètres qui se recouvrent</h2>
+    <p>Deux carrés pleins, décalés. Le premier est le vôtre (chez vous), le second le nôtre (chez nous, au Québec) ; leur intersection, en orange, est l'endroit où Nexora travaille : un point de passage contrôlé, jamais une fuite.</p>
+    
+    <div class="board">
+      <div class="cell light">
+        <div class="row"><svg width="112" height="112" role="img" aria-label="Symbole"><use href="#p3"/></svg>
+        <span class="lock big"><svg width="52" height="52" aria-hidden="true"><use href="#p3"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="32" height="32" aria-hidden="true"><use href="#p3"/></svg><svg width="24" height="24" aria-hidden="true"><use href="#p3"/></svg><svg width="16" height="16" aria-hidden="true"><use href="#p3"/></svg><span class="small">64, 32, 24 et 16 px</span></div>
+      </div>
+      <div class="cell dark">
+        <div class="row"><svg width="112" height="112" aria-hidden="true" style="color:#f4f1ea"><use href="#p3"/></svg>
+        <span class="lock big"><svg width="52" height="52" aria-hidden="true" style="color:#f4f1ea"><use href="#p3"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="32" height="32" aria-hidden="true"><use href="#p3"/></svg><svg width="24" height="24" aria-hidden="true"><use href="#p3"/></svg><svg width="16" height="16" aria-hidden="true"><use href="#p3"/></svg><span class="small">sur encre forêt</span></div>
+      </div>
+      <div class="cell sand">
+        <div class="row"><span class="lock mid"><svg width="30" height="30" aria-hidden="true"><use href="#p3"/></svg>Nexora <span class="ai">AI</span></span></div>
+        <div class="row"><svg width="64" height="64" aria-hidden="true" style="color:#17221e"><g><use href="#p3"/></g></svg><span class="small">sur sable</span></div>
+      </div>
+    </div>
+    <div class="verdict"><p><strong>Forces :</strong> trois formes seulement, donc nette à 16 px et facile en monochrome (l'intersection devient un évidement) ; porte l'idée centrale du site (les deux modes de déploiement, le passage contrôlé) ; aucun cousinage avec le « M » pixelisé de Mistral AI, car aucun dégradé et aucune grille de petits blocs. <strong>Limites :</strong> aucune lettre ; le logotype « Nexora AI » porte donc le nom.</p></div>
+  </section>
+
+  <div class="choice">
+    <p class="tag" style="color:#f07a52">Choix retenu</p>
+    <h2>Piste 3, Nexus.</h2>
+    <p>Elle est la seule des trois à réussir tous les critères : lisible à 16 px, solide en clair, en sombre et en monochrome, fidèle à la grille de périmètre et surtout porteuse d'un sens que l'on peut expliquer en une phrase au client : <em>vos données sont à vous ; l'intelligence artificielle travaille à l'intersection, sous votre contrôle</em>. Le logotype « Nexora AI » est composé en Geist, graisse 500, avec « AI » dans l'accent orange (texte à 5,4:1 sur fond clair, 6,7:1 sur fond sombre). La charte, les zones de protection et les usages interdits sont dans <code>charte.md</code>.</p>
+  </div>
+</main>
+</body>
+</html>

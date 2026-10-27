@@ -100,7 +100,7 @@
       },
       "translation": {
         "title": "What the software already allows.",
-        "intro": "WorkStudio functions, verified on Nexora's test server. They support your process; they do not replace it.",
+        "intro": "WorkStudio functions, verified on Nexora AI's test server. They support your process; they do not replace it.",
         "cards": [
           {
             "title": "Roles and organizations.",
@@ -156,7 +156,7 @@
           },
           {
             "title": "The standard contract and data processing agreement.",
-            "text": "What Nexora does with the information you entrust to it, and what it refrains from doing.",
+            "text": "What Nexora AI does with the information you entrust to it, and what it refrains from doing.",
             "status": "prevu"
           },
           {
@@ -200,7 +200,7 @@
             "text": "What you read here: made to be published and indexed."
           },
           {
-            "title": "Your exchanges with Nexora.",
+            "title": "Your exchanges with Nexora AI.",
             "text": "Forms, emails, billing: they serve only to answer you and to serve you. The site's privacy policy, in preparation, will describe them."
           },
           {
@@ -263,7 +263,7 @@
             "answer": "We claim none today. We describe what the software allows and what we document."
           },
           {
-            "question": "Who at Nexora can access my system?",
+            "question": "Who at Nexora AI can access my system?",
             "answer": "Only the access agreed in advance, described in the deployment study. In the on-premises mode, you grant it and can withdraw it."
           },
           {

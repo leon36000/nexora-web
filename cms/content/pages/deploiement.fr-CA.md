@@ -7,7 +7,7 @@
 - Page : `deploiement` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/deploiement/` · slug : `deploiement`
 - Titre SEO (41 caractères) : Déploiement d'IA : sur place ou au Québec
-- Description SEO (157 caractères) : Comparaison honnête des deux modes de déploiement de Nexora : sur votre serveur ou hébergé au Québec. Qui contrôle quoi, point par point, et comment choisir.
+- Description SEO (160 caractères) : Comparaison honnête des deux modes de déploiement de Nexora AI : sur votre serveur ou hébergé au Québec. Qui contrôle quoi, point par point, et comment choisir.
 
 ## Contenu
 
@@ -60,8 +60,8 @@ Huit points, du matériel à la sortie du contrat. Dans chaque cas, la réponse 
 - **Les modèles.** Dans les deux cas : sur le serveur concerné, ou externes seulement si vous les avez acceptés par écrit. Chaque modèle indique où il tourne.
 - **Les sauvegardes.** Chez vous : où vous les placez. Chez nous : dans les lieux nommés au contrat, avec la liste des sous-traitants.
 - **Les mises à jour.** Listées dans les deux modes comme flux sortants. Chez vous, leur déclenchement se convient ; chez nous, nous les appliquons.
-- **Les accès de Nexora.** Chez vous : seulement ceux que vous accordez, convenus à l'avance. Chez nous : ceux qu'exige l'exploitation, décrits dans l'étude.
-- **L'exploitation.** Chez vous : partagée selon le contrat. Chez nous : assurée par Nexora avec vous.
+- **Les accès de Nexora AI.** Chez vous : seulement ceux que vous accordez, convenus à l'avance. Chez nous : ceux qu'exige l'exploitation, décrits dans l'étude.
+- **L'exploitation.** Chez vous : partagée selon le contrat. Chez nous : assurée par Nexora AI avec vous.
 - **La sortie du contrat.** Dans les deux modes : vos documents, vos configurations et vos flux de travaux restent exportables.
 
 ### Bloc 4 — Cartes (`block_cards`)

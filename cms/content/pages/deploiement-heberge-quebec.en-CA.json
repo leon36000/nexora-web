@@ -7,7 +7,7 @@
     "slug": "deployment/hosted-quebec",
     "title": "Hosted in Quebec",
     "seo_title": "AI hosted in Quebec for small businesses",
-    "seo_description": "Nexora hosts and runs your AI system in its infrastructure, located in Quebec. Location, backups, logs and subcontractors are specified in writing beforehand.",
+    "seo_description": "Nexora AI hosts and runs your AI system in its infrastructure, located in Quebec. Location, backups, logs and subcontractors are specified in writing.",
     "canonical": null
   },
   "blocks": [
@@ -115,7 +115,7 @@
             "text": "You decide the use cases and the documents.\nYou approve the actions that commit the business.\nYou accept, or not, any external model.\nYou can export your documents, configurations and workflows."
           },
           {
-            "title": "Nexora.",
+            "title": "Nexora AI.",
             "text": "We host and run the system.\nWe apply updates and monitor.\nWe specify in writing locations, backups, logs and subcontractors.\nWe train your team in usage and supervision."
           }
         ]

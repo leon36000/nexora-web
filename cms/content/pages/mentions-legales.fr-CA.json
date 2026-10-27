@@ -6,7 +6,7 @@
   "seo": {
     "slug": "mentions-legales",
     "title": "Mentions légales",
-    "seo_title": "Mentions légales de Nexora, éditeur du site",
+    "seo_title": "Mentions légales de Nexora AI, éditeur du site",
     "seo_description": "Identité de l'éditeur du site, hébergeur, propriété intellectuelle, responsabilité et droit applicable. Gabarit en brouillon, à compléter par le fondateur.",
     "canonical": null
   },
@@ -107,7 +107,7 @@
       },
       "translation": {
         "title": "Responsabilité et liens externes.",
-        "body": "<p>Le contenu du site est fourni à titre d'information et peut évoluer. Nexora s'efforce de le tenir exact, mais ne peut en assurer l'absence d'erreur. Le site peut renvoyer à des sites tiers dont Nexora ne contrôle pas le contenu. Formulation de la limitation de responsabilité [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+        "body": "<p>Le contenu du site est fourni à titre d'information et peut évoluer. Nexora AI s'efforce de le tenir exact, mais ne peut en assurer l'absence d'erreur. Le site peut renvoyer à des sites tiers dont Nexora AI ne contrôle pas le contenu. Formulation de la limitation de responsabilité [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
       }
     },
     {

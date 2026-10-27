@@ -4,13 +4,13 @@ import type { AgentsDictionary } from "./agents-fr-CA";
 export const agentsEnCA: AgentsDictionary = {
   meta: {
     list: {
-      title: "Hosted agents | Nexora",
+      title: "Hosted agents | Nexora AI",
       description:
         "Agents built in Nexora WorkStudio, callable through the API with your key: one credit balance, prices in Canadian dollars, hosting location shown.",
     },
     agent: {
       description:
-        "Page for the {name} agent: API call with your Nexora key, pricing, instance hosting, limits and code examples.",
+        "Page for the {name} agent: API call with your Nexora AI key, pricing, instance hosting, limits and code examples.",
     },
   },
 
@@ -34,10 +34,10 @@ export const agentsEnCA: AgentsDictionary = {
   catalog: {
     label: "Hosted agents",
     title: "Agents ready to call.",
-    lead: "An agent is built and published in Nexora WorkStudio. You call it through the Nexora API, with your key and your credit balance, the same way you call a model.",
+    lead: "An agent is built and published in Nexora WorkStudio. You call it through the Nexora AI API, with your key and your credit balance, the same way you call a model.",
     count: "{count} published agent(s)",
     empty:
-      "No agent is published yet. The catalogue fills up as Nexora publishes its agents.",
+      "No agent is published yet. The catalogue fills up as Nexora AI publishes its agents.",
     unavailable:
       "The catalogue is temporarily unavailable. Please try again in a moment.",
     trialNote:
@@ -53,7 +53,7 @@ export const agentsEnCA: AgentsDictionary = {
     howTitle: "How it works",
     howSteps: [
       "Create an API key in your customer area and top up your credits.",
-      "Call the Nexora API with the model “agent/<identifier>”, exactly as you would for a model.",
+      "Call the Nexora AI API with the model “agent/<identifier>”, exactly as you would for a model.",
       "Follow each agent’s consumption in your customer area.",
     ],
   },
@@ -90,10 +90,10 @@ export const agentsEnCA: AgentsDictionary = {
     lead: "What the gateway does, and what it does not do.",
     hostingTitle: "Hosting",
     hosting:
-      "Your request is processed by the Nexora WorkStudio instance shown on the agent’s page (hosting declared by Nexora), then by the language model that instance uses. A model’s region can be checked in the model catalogue; the instance hosting says nothing more than what is declared.",
+      "Your request is processed by the Nexora WorkStudio instance shown on the agent’s page (hosting declared by Nexora AI), then by the language model that instance uses. A model’s region can be checked in the model catalogue; the instance hosting says nothing more than what is declared.",
     retentionTitle: "Content of your exchanges",
     retention:
-      "The Nexora gateway keeps only usage metadata (agent, tokens, cost, duration), never the content of your requests.",
+      "The Nexora AI gateway keeps only usage metadata (agent, tokens, cost, duration), never the content of your requests.",
     billingTitle: "Billing",
     billing:
       "Each call first reserves its maximum cost on your balance, then is settled at the actual cost. Without enough balance, the API answers 402 before calling the agent. You can cap the spending of a key.",

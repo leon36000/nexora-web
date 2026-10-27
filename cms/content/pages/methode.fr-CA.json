@@ -7,7 +7,7 @@
     "slug": "methode",
     "title": "Méthode",
     "seo_title": "Méthode d'accompagnement en IA pour PME",
-    "seo_description": "Comprendre, intégrer, vérifier, former, exploiter\u00a0: la méthode de Nexora, un cas à la fois. Aucun délai universel annoncé, aucun gain chiffré sans mesure.",
+    "seo_description": "Comprendre, intégrer, vérifier, former, exploiter\u00a0: la méthode de Nexora AI, un cas à la fois. Aucun délai universel annoncé, aucun gain chiffré sans mesure.",
     "canonical": null
   },
   "blocks": [
@@ -200,7 +200,7 @@
         "text": "Décrivez-nous ce qui vous coûte du temps. Nous vous aidons à choisir le cas qui apprendra le plus.",
         "primary_label": "Discuter de mon projet",
         "primary_href": "/contact/",
-        "secondary_label": "En savoir plus sur Nexora",
+        "secondary_label": "En savoir plus sur Nexora AI",
         "secondary_href": "/entreprise/"
       }
     }

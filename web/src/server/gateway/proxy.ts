@@ -1068,7 +1068,7 @@ function mapUpstreamFailure(
       E.upstream(
         502,
         "agent_upstream_refused",
-        "L'instance de l'agent a refusé la requête. Réessayez plus tard ou contactez le soutien de Nexora.",
+        "L'instance de l'agent a refusé la requête. Réessayez plus tard ou contactez le soutien de Nexora AI.",
         headers,
       ),
       "agent_upstream_refused",

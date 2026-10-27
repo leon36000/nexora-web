@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { AuthPanel } from "@/components/account/auth-panel";
 import { AuthShell } from "@/components/account/auth-shell";
 import { ButtonLink } from "@/components/ui/button";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata } from "@/lib/metadata";
 import { parseOffer, withOffer } from "@/lib/offer-param";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -18,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/verification",
     title: t.meta.verify,
     description: t.verify.text,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }
@@ -65,6 +68,7 @@ function VerifyResult({
   const t = getAccountDictionary(lang);
   return (
     <AuthShell
+      panel={<AuthPanel tagline={getDictionary(lang).footer.tagline} />}
       title={failed ? t.verify.errorTitle : t.verify.title}
       lead={failed ? t.verify.errorText : t.verify.text}
     >

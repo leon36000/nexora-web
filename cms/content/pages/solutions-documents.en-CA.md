@@ -95,7 +95,7 @@ The agent only consults the document bases you open to it. Access rights are set
 
 #### Where your documents are indexed.
 
-By default, indexing runs on the instance’s server: on your premises, on your own server; hosted, in Nexora’s infrastructure in Quebec. An external service is a written choice.
+By default, indexing runs on the instance’s server: on your premises, on your own server; hosted, in Nexora AI’s infrastructure in Quebec. An external service is a written choice.
 
 #### No legal advice.
 

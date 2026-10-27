@@ -28,7 +28,7 @@ describe("buildPageMetadata", () => {
 describe("notFoundMetadata", () => {
   it("titre localisé de la page 404 et noindex, sans lever d'erreur", () => {
     expect(notFoundMetadata("fr")).toEqual({
-      title: "Page introuvable | Nexora",
+      title: "Page introuvable | Nexora AI",
       robots: { index: false, follow: false },
     });
     expect(notFoundMetadata("en").title).toMatch(/not found/i);

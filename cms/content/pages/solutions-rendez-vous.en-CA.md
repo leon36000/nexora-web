@@ -6,7 +6,7 @@
 
 - Page : `solutions-rendez-vous` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/appointments/` · slug : `solutions/appointments`
-- Titre SEO (50 caractères) : AI-assisted appointment booking for small business
+- Titre SEO (43 caractères) : AI appointment booking for small businesses
 - Description SEO (154 caractères) : A system takes requests, proposes slots from your calendar, reminds your clients and releases cancelled slots. No slot is confirmed without being checked.
 
 ## Contenu

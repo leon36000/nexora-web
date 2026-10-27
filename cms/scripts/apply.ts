@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// Applique le schéma, les rôles, les politiques et les comptes de service de Nexora sur un Directus (idempotent).
+// Applique le schéma, les rôles, les politiques et les comptes de service de Nexora AI sur un Directus (idempotent).
 //
 //   NEXORA_ENV_FILE=/chemin/.env DIRECTUS_URL=http://localhost:8456 bun run cms/scripts/apply.ts
 //
@@ -211,7 +211,7 @@ async function applySchema(d: Directus) {
 async function applySettings(d: Directus) {
   log("Réglages du projet");
   const wanted = {
-    project_name: "Nexora",
+    project_name: "Nexora AI",
     project_descriptor: "Administration du site",
     project_color: "#CE411C",
     default_language: "fr-CA",

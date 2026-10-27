@@ -1,13 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
-import type { Dictionary } from "@/i18n/get-dictionary";
+import { SectionVisualFigure } from "@/components/visuals";
+import type { Lang } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 import type { SectionBlock } from "@/server/cms/model";
 import { CARD_GRID, cellClasses } from "./card-grid";
 import { CmsImage } from "./cms-image";
 import { RichText } from "./rich-text";
-import { SectionVisualFigure } from "./section-visual";
 import { anchorProps, toneProps } from "./tone";
 
 /**
@@ -17,11 +17,11 @@ import { anchorProps, toneProps } from "./tone";
 export function SectionBlockView({
   block,
   joined,
-  t,
+  lang,
 }: {
   block: SectionBlock;
   joined?: "after" | "before" | "both";
-  t: Dictionary["cms"];
+  lang: Lang;
 }) {
   const titleId = `${block.key}-title`;
   const anchor = anchorProps(block.anchorId);
@@ -33,7 +33,7 @@ export function SectionBlockView({
       (block.mediaPosition === "left" || block.mediaPosition === "right"));
   const left = block.mediaPosition === "left";
   const media = visual ? (
-    <SectionVisualFigure visual={visual} t={t.visuals} />
+    <SectionVisualFigure visual={visual} lang={lang} />
   ) : withMedia && block.media ? (
     <div className="overflow-hidden rounded-lg border border-line">
       <CmsImage
@@ -65,6 +65,19 @@ export function SectionBlockView({
     </div>
   );
   const cells = cellClasses(block.items.length, 3);
+  // Bloc « visuel seul » : ni titre, ni texte, ni points. La maquette occupe la bande, centrée (vitrine d'un produit).
+  if (visual && !block.title && !block.body && block.items.length === 0) {
+    return (
+      <Section
+        {...toneProps(block.tone)}
+        joined={joined}
+        id={anchor.id}
+        className={anchor.className}
+      >
+        <div className="mx-auto max-w-4xl">{media}</div>
+      </Section>
+    );
+  }
   return (
     <Section
       {...toneProps(block.tone)}

@@ -6,7 +6,7 @@
   "seo": {
     "slug": "suite",
     "title": "Software suite",
-    "seo_title": "Nexora suite: WorkStudio, Code, Corpus, Quanta",
+    "seo_title": "The suite: WorkStudio, Code, Corpus, Quanta",
     "seo_description": "Nexora WorkStudio: a demonstration on request, no self-service offer. Nexora Code, Nexora Corpus, Quanta and Helix: their purpose, no availability announced.",
     "canonical": null
   },
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Software suite",
         "headline": "A suite, not a pile.",
-        "subheadline": "Nexora's products serve the same idea: AI that works for you, with the access, budgets and logs you control. Here is the real state of each one.",
+        "subheadline": "Nexora AI's products serve the same idea: AI that works for you, with the access, budgets and logs you control. Here is the real state of each one.",
         "primary_label": "See WorkStudio",
         "primary_href": "/en/workstudio/",
         "secondary_label": "Discuss my project",

@@ -53,9 +53,9 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     taglineFr: "Un assistant personnel multicanal, isolé et verrouillé.",
     taglineEn: "A multi-channel personal assistant, isolated and locked down.",
     descriptionFr:
-      "OpenClaw est un assistant personnel multicanal. Nexora l'installe dans la configuration la plus prudente : un seul port, lié à 127.0.0.1, jeton obligatoire, aucune capacité Linux superflue, aucun accès au socket Docker. Le projet a publié de nombreux avis de sécurité en 2026 ; la version proposée est postérieure à tous les correctifs connus à la date de vérification, mais un VPS dédié, des mises à jour suivies et une exposition nulle restent obligatoires. À réserver à un usage averti.",
+      "OpenClaw est un assistant personnel multicanal. Nexora AI l'installe dans la configuration la plus prudente : un seul port, lié à 127.0.0.1, jeton obligatoire, aucune capacité Linux superflue, aucun accès au socket Docker. Le projet a publié de nombreux avis de sécurité en 2026 ; la version proposée est postérieure à tous les correctifs connus à la date de vérification, mais un VPS dédié, des mises à jour suivies et une exposition nulle restent obligatoires. À réserver à un usage averti.",
     descriptionEn:
-      "OpenClaw is a multi-channel personal assistant. Nexora installs it in the most cautious configuration: a single port bound to 127.0.0.1, mandatory token, no extra Linux capabilities, no Docker socket access. The project published many security advisories in 2026; the offered version postdates every fix known at the verification date, but a dedicated VPS, tracked updates and zero exposure remain mandatory. Intended for informed use.",
+      "OpenClaw is a multi-channel personal assistant. Nexora AI installs it in the most cautious configuration: a single port bound to 127.0.0.1, mandatory token, no extra Linux capabilities, no Docker socket access. The project published many security advisories in 2026; the offered version postdates every fix known at the verification date, but a dedicated VPS, tracked updates and zero exposure remain mandatory. Intended for informed use.",
     version: "2026.10.7",
     upstreamUrl: "https://github.com/openclaw/openclaw",
     license: "MIT",
@@ -101,9 +101,9 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
     taglineFr: "Discutez avec vos documents, avec les modèles de votre choix.",
     taglineEn: "Chat with your documents, using the models you choose.",
     descriptionFr:
-      "AnythingLLM est un espace de travail pour interroger vos documents avec le fournisseur de modèles de votre choix (par exemple la passerelle de Nexora). Un seul conteneur, base vectorielle intégrée, protégé par un mot de passe généré à l'installation, lié à 127.0.0.1.",
+      "AnythingLLM est un espace de travail pour interroger vos documents avec le fournisseur de modèles de votre choix (par exemple la passerelle de Nexora AI). Un seul conteneur, base vectorielle intégrée, protégé par un mot de passe généré à l'installation, lié à 127.0.0.1.",
     descriptionEn:
-      "AnythingLLM is a workspace to query your documents with the model provider of your choice (for example Nexora's gateway). A single container, built-in vector database, protected by a password generated at install time, bound to 127.0.0.1.",
+      "AnythingLLM is a workspace to query your documents with the model provider of your choice (for example Nexora AI's gateway). A single container, built-in vector database, protected by a password generated at install time, bound to 127.0.0.1.",
     version: "1.19.0",
     upstreamUrl: "https://github.com/Mintplex-Labs/anything-llm",
     license: "MIT",
@@ -121,9 +121,9 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
       "Une interface de chat multi-fournisseurs pour toute votre équipe.",
     taglineEn: "A multi-provider chat interface for your whole team.",
     descriptionFr:
-      "LibreChat réunit plusieurs fournisseurs de modèles dans une interface de chat, avec comptes d'utilisateurs. Nexora l'installe avec sa base MongoDB (jamais publiée) et sans le panneau d'administration optionnel, sous licence AGPL. L'inscription est ouverte le temps de créer votre compte, puis à fermer (la commande figure dans votre fichier d'accès).",
+      "LibreChat réunit plusieurs fournisseurs de modèles dans une interface de chat, avec comptes d'utilisateurs. Nexora AI l'installe avec sa base MongoDB (jamais publiée) et sans le panneau d'administration optionnel, sous licence AGPL. L'inscription est ouverte le temps de créer votre compte, puis à fermer (la commande figure dans votre fichier d'accès).",
     descriptionEn:
-      "LibreChat brings several model providers into one chat interface, with user accounts. Nexora installs it with its MongoDB database (never published) and without the optional admin panel, which is AGPL-licensed. Sign-up stays open just long enough to create your account, then must be closed (the command is in your access file).",
+      "LibreChat brings several model providers into one chat interface, with user accounts. Nexora AI installs it with its MongoDB database (never published) and without the optional admin panel, which is AGPL-licensed. Sign-up stays open just long enough to create your account, then must be closed (the command is in your access file).",
     version: "0.8.8",
     upstreamUrl: "https://github.com/LibreChat-AI/LibreChat",
     license: "MIT",
@@ -140,7 +140,7 @@ export const SEED_INSTALLABLE_APPS: AppInput[] = [
   },
 ];
 
-/** Fiches « guide d'installation par le client » (D8) : jamais installées ni revendues par Nexora. */
+/** Fiches « guide d'installation par le client » (D8) : jamais installées ni revendues par Nexora AI. */
 export const SEED_GUIDE_APPS: AppInput[] = [
   {
     code: "n8n",
@@ -150,9 +150,9 @@ export const SEED_GUIDE_APPS: AppInput[] = [
       "Automatisation de flux de travail : à installer vous-même sur votre VPS.",
     taglineEn: "Workflow automation: install it yourself on your VPS.",
     descriptionFr:
-      "n8n est publié sous la Sustainable Use License : usage interne ou non commercial, sans mise à disposition payante à des tiers. Nexora ne l'installe donc pas et ne le revend pas. Vous commandez un VPS vierge et installez n8n sous VOTRE licence, en suivant le guide.",
+      "n8n est publié sous la Sustainable Use License : usage interne ou non commercial, sans mise à disposition payante à des tiers. Nexora AI ne l'installe donc pas et ne le revend pas. Vous commandez un VPS vierge et installez n8n sous VOTRE licence, en suivant le guide.",
     descriptionEn:
-      "n8n is published under the Sustainable Use License: internal or non-commercial use, with no paid provision to third parties. Nexora therefore neither installs nor resells it. You order a blank VPS and install n8n under YOUR license by following the guide.",
+      "n8n is published under the Sustainable Use License: internal or non-commercial use, with no paid provision to third parties. Nexora AI therefore neither installs nor resells it. You order a blank VPS and install n8n under YOUR license by following the guide.",
     version: "guide",
     upstreamUrl: "https://github.com/n8n-io/n8n",
     license: "Sustainable-Use-1.0",
@@ -175,9 +175,9 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     taglineFr: "Interface de chat pour modèles : à installer vous-même.",
     taglineEn: "Chat interface for models: install it yourself.",
     descriptionFr:
-      "La licence d'Open WebUI impose de conserver sa marque au-delà de 50 utilisateurs finaux sur 30 jours (sauf licence entreprise). Nexora ne l'installe pas : à vous de l'installer et de respecter sa licence.",
+      "La licence d'Open WebUI impose de conserver sa marque au-delà de 50 utilisateurs finaux sur 30 jours (sauf licence entreprise). Nexora AI ne l'installe pas : à vous de l'installer et de respecter sa licence.",
     descriptionEn:
-      "Open WebUI's license requires keeping its branding beyond 50 end users over 30 days (unless you hold an enterprise license). Nexora does not install it: you install it and you comply with its license.",
+      "Open WebUI's license requires keeping its branding beyond 50 end users over 30 days (unless you hold an enterprise license). Nexora AI does not install it: you install it and you comply with its license.",
     version: "guide",
     upstreamUrl: "https://github.com/open-webui/open-webui",
     license: "Open-WebUI-License",
@@ -202,9 +202,9 @@ export const SEED_GUIDE_APPS: AppInput[] = [
     taglineEn:
       "AI application platform: a dedicated instance, installed by you.",
     descriptionFr:
-      "Dify est sous licence Apache 2.0 modifiée : exploitation multi-locataire interdite sans accord écrit, retrait du logo interdit. Un VPS dédié pour votre propre organisation est compatible ; Nexora ne l'installe pas.",
+      "Dify est sous licence Apache 2.0 modifiée : exploitation multi-locataire interdite sans accord écrit, retrait du logo interdit. Un VPS dédié pour votre propre organisation est compatible ; Nexora AI ne l'installe pas.",
     descriptionEn:
-      "Dify is under a modified Apache 2.0 license: multi-tenant operation is forbidden without written agreement, and removing the logo is forbidden. A dedicated VPS for your own organization is compatible; Nexora does not install it.",
+      "Dify is under a modified Apache 2.0 license: multi-tenant operation is forbidden without written agreement, and removing the logo is forbidden. A dedicated VPS for your own organization is compatible; Nexora AI does not install it.",
     version: "guide",
     upstreamUrl: "https://github.com/langgenius/dify",
     license: "Dify-Open-Source-License",

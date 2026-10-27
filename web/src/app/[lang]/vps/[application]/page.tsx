@@ -22,7 +22,7 @@ import { fmt } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { getVpsDictionary } from "@/i18n/vps";
 import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import {
   buildBreadcrumbJsonLd,
   buildSoftwareApplicationJsonLd,
@@ -70,7 +70,7 @@ export async function generateMetadata(
       version: app.version,
       license: app.license,
     }),
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 

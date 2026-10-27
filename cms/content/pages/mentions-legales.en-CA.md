@@ -6,7 +6,7 @@
 
 - Page : `mentions-legales` · langue : `en-CA` · statut visé : `draft` · noindex : oui
 - Route : `/en/legal-notice/` · slug : `legal-notice`
-- Titre SEO (35 caractères) : Legal notice for the Nexora website
+- Titre SEO (38 caractères) : Legal notice for the Nexora AI website
 - Description SEO (156 caractères) : Identity of the site publisher, host, intellectual property, liability and governing law. Draft template, to be completed by the founder before publication.
 
 ## Contenu
@@ -69,7 +69,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=responsabilite`
 
 ## Liability and external links.
 
-The site's content is provided for information and may change. Nexora strives to keep it accurate but cannot ensure it contains no error. The site may link to third-party sites whose content Nexora does not control. Wording of the limitation of liability [TO BE REVIEWED BY A QUEBEC LAWYER].
+The site's content is provided for information and may change. Nexora AI strives to keep it accurate but cannot ensure it contains no error. The site may link to third-party sites whose content Nexora AI does not control. Wording of the limitation of liability [TO BE REVIEWED BY A QUEBEC LAWYER].
 
 ### Bloc 6 — Section (`block_section`)
 

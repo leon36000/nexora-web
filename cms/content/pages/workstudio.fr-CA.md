@@ -67,7 +67,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=concevoir`
 
 ## Concevoir vos agents.
 
-« Disponible » signifie livré dans la version actuelle et vérifié sur le serveur de test de Nexora. Cela ne veut pas dire qu'un client l'utilise déjà.
+« Disponible » signifie livré dans la version actuelle et vérifié sur le serveur de test de Nexora AI. Cela ne veut pas dire qu'un client l'utilise déjà.
 
 #### Des agents.
 
@@ -197,7 +197,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
 
 Un produit se juge aussi à ce qu'il écrit sur ses limites. Voici les nôtres, à la date de cette page.
 
-- **Vérifié chez nous, pas encore chez un client.** WorkStudio a été vérifié sur le serveur de test de Nexora avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé.
+- **Vérifié chez nous, pas encore chez un client.** WorkStudio a été vérifié sur le serveur de test de Nexora AI avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé.
 - **Les agents à outils exigent un modèle capable.** Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas.
 - **Deux options sortent des sentiers battus.** L'interpréteur de code est désactivé par défaut et ne s'active que par un administrateur. La recherche sur le web envoie ses requêtes hors de l'instance : elle n'est disponible que si un administrateur l'active.
 - **Les modèles de départ sont généraux.** Ils ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise.

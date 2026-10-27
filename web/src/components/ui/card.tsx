@@ -27,7 +27,7 @@ export function Card<T extends ElementType = "div">({
         "relative rounded-lg border border-line p-6 sm:p-7",
         variant === "surface" ? "bg-surface" : "bg-transparent",
         interactive &&
-          "transition-colors duration-150 hover:border-line-strong hover:bg-surface-2 has-[a:focus-visible]:border-line-strong",
+          "transition-[transform,border-color,background-color,box-shadow] duration-200 hover:border-line-strong hover:bg-surface-2 hover:shadow-card has-[a:focus-visible]:border-line-strong motion-safe:hover:-translate-y-0.5",
         className,
       )}
       {...props}

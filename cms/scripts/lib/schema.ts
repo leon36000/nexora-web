@@ -1,4 +1,4 @@
-// Schéma Directus de Nexora (S1–S2) : collections, champs et relations, déclarés en TypeScript.
+// Schéma Directus de Nexora AI (S1–S2) : collections, champs et relations, déclarés en TypeScript.
 // Appliqué par scripts/apply.ts (idempotent). 22 collections utilisateur au total (limite du palier Core : 25).
 
 export type FieldDef = {
@@ -476,12 +476,20 @@ export const CARD_LAYOUTS: [string, string][] = [
   ["liste", "Liste (rangées pleine largeur)"],
   ["etapes", "Étapes numérotées"],
   ["modules", "Modules numérotés (M1…)"],
+  ["bento", "Mosaïque (tuiles de tailles variées)"],
 ];
 export const SECTION_VISUALS: [string, string][] = [
   ["aucun", "Aucun"],
   ["perimetre-sur-place", "Périmètre : sur place"],
   ["perimetre-heberge", "Périmètre : hébergé au Québec"],
   ["flux-donnees", "Flux de données"],
+  ["flux-workstudio", "Maquette : éditeur de flux WorkStudio"],
+  ["catalogue-modeles", "Maquette : catalogue de modèles"],
+  ["console-vps", "Maquette : console d’un VPS"],
+  ["tableau-de-bord", "Maquette : tableau de bord du compte"],
+  ["vision-sur-place", "Schéma : analyse vidéo sur place (Nexora Vision)"],
+  ["croissance-canaux", "Schéma : canaux de croissance (Nexora Croissance)"],
+  ["engagements-donnees", "Schéma : les cinq engagements sur les données"],
 ];
 /** Statut d'une carte en disposition « modules » ; vide = aucun badge. */
 export const CARD_STATUSES = ["disponible", "pilote", "prevu"] as const;
@@ -646,7 +654,11 @@ export function buildSchema(): {
     },
     fields: [
       uuidPk(),
-      str("site_name", { label: "Nom du site", def: "Nexora", required: true }),
+      str("site_name", {
+        label: "Nom du site",
+        def: "Nexora AI",
+        required: true,
+      }),
       file("og_default_image", {
         label: "Image Open Graph par défaut",
         note: "Utilisée quand une page n’a pas sa propre image.",
@@ -664,8 +676,8 @@ export function buildSchema(): {
         str("tagline", { label: "Accroche" }),
         str("seo_title_template", {
           label: "Gabarit du titre SEO",
-          note: "Ex. « %s — Nexora »",
-          def: "%s — Nexora",
+          note: "Ex. « %s — Nexora AI »",
+          def: "%s — Nexora AI",
         }),
         txt("seo_description", { label: "Description SEO par défaut" }),
         txt("footer_note", { label: "Note de pied de page" }),
@@ -1124,7 +1136,7 @@ export function buildSchema(): {
         label: "Schéma",
         def: "aucun",
         width: "half",
-        note: "Schéma SVG construit à partir de la grille de périmètre ; il prend la place du média.",
+        note: "Schéma ou maquette d’interface construits en composants (jamais une image) ; il prend la place du média.",
       }),
       tone("clair"),
       anchorId(),

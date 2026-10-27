@@ -7,7 +7,7 @@
 - Page : `souverainete-loi-25` · langue : `en-CA` · statut visé : `draft` · noindex : oui
 - Route : `/en/sovereignty/data-protection-law/` · slug : `sovereignty/data-protection-law`
 - Titre SEO (41 caractères) : Quebec's Law 25 and AI: what the law asks
-- Description SEO (158 caractères) : A guide for business owners: what Quebec's Law 25 requires of a company using AI, what Nexora can provide and what stays with your business. Not legal advice.
+- Description SEO (145 caractères) : A guide for business owners: what Quebec's Law 25 requires when you use AI, what Nexora AI can provide and what stays with you. Not legal advice.
 
 ## Contenu
 
@@ -21,13 +21,13 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Law 25 and AI: what the law asks.
 
-A guide for business owners who are not lawyers: what Quebec law requires of a company that uses AI, what Nexora can provide and what stays with your business. This is not legal advice.
+A guide for business owners who are not lawyers: what Quebec law requires of a company that uses AI, what Nexora AI can provide and what stays with your business. This is not legal advice.
 
 [Talk to our team](/en/contact/) · [See sovereignty](/en/sovereignty/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Avertissement : portée du guide et position de Nexora. · Affirmations : CL-L05, CL-L06*
+*Avertissement : portée du guide et position de Nexora AI. · Affirmations : CL-L05, CL-L06*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=avertissement`
 
@@ -38,8 +38,8 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=avertissement`
 This guide summarizes what those texts provide, as we read them on the official sites. It may contain mistakes or be out of date. For your own situation, consult a lawyer or Quebec's Commission d'accès à l'information.
 
 - **This guide informs.** It explains obligations in plain language. Article numbers are landmarks: only the text of the law is authoritative.
-- **Nexora does not make you compliant.** No software and no supplier does. Protecting personal information remains the responsibility of the business that holds it.
-- **Nexora does not claim compliance either.** We claim no attestation or label on this subject. We describe what we provide, and what is still in preparation.
+- **Nexora AI does not make you compliant.** No software and no supplier does. Protecting personal information remains the responsibility of the business that holds it.
+- **Nexora AI does not claim compliance either.** We claim no attestation or label on this subject. We describe what we provide, and what is still in preparation.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
@@ -109,11 +109,11 @@ An AI that reads your emails, invoices or customer files processes personal info
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Ce que Nexora peut fournir : fonctions du logiciel (disponibles) et documents types (prévus). · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-87, CL-05, CL-73*
+*Ce que Nexora AI peut fournir : fonctions du logiciel (disponibles) et documents types (prévus). · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-87, CL-05, CL-73*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=nexora`
 
-## What Nexora can provide.
+## What Nexora AI can provide.
 
 These items can support your process. They do not replace it, and the status of each one is shown.
 
@@ -155,7 +155,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=etapes`, `anchor_id=entreprise`
 
 ## What stays with your business.
 
-Nexora can supply technical information and tools. These responsibilities remain yours.
+Nexora AI can supply technical information and tools. These responsibilities remain yours.
 
 #### Designate and publish.
 
@@ -167,7 +167,7 @@ Carry out the privacy impact assessment of your project. We can describe the tec
 
 #### Contract.
 
-Sign the written agreements required with your suppliers, Nexora included, and with any service located outside Quebec.
+Sign the written agreements required with your suppliers, Nexora AI included, and with any service located outside Quebec.
 
 #### Inform.
 
@@ -221,7 +221,7 @@ Hosting in Quebec can simplify certain points; transfers outside Quebec must be 
 
 It depends on what the system does: collection, profiling, automated decisions. The information rules are described above. The exact answer for your case belongs to your officer and your legal adviser.
 
-#### Is Nexora compliant?
+#### Is Nexora AI compliant?
 
 We do not put it that way: compliance is not a state a supplier awards itself. We describe what we document, what the software allows and what is in preparation.
 

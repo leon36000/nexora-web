@@ -177,7 +177,7 @@ export function registerVpsHandlers(
       from: options.alertFrom ?? "vps@localhost",
       to: options.alertTo,
       replyTo: options.alertFrom ?? "vps@localhost",
-      subject: `[Nexora VPS] ${ALERT_SUBJECT[reason] ?? "Capacité insuffisante"} — ${orderId.slice(0, 8)}`,
+      subject: `[Nexora AI VPS] ${ALERT_SUBJECT[reason] ?? "Capacité insuffisante"} — ${orderId.slice(0, 8)}`,
       text: lines.join("\n"),
     });
   };

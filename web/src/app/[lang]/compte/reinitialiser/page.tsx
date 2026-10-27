@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { AuthPanel } from "@/components/account/auth-panel";
 import { AuthShell } from "@/components/account/auth-shell";
 import { ResetForm } from "@/components/account/reset-form";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata } from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -17,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/reinitialiser",
     title: t.meta.reset,
     description: t.reset.lead,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }
@@ -27,7 +30,11 @@ export default async function ResetPage() {
   if (!isLang(lang)) notFound();
   const t = getAccountDictionary(lang);
   return (
-    <AuthShell title={t.reset.title} lead={t.reset.lead}>
+    <AuthShell
+      panel={<AuthPanel tagline={getDictionary(lang).footer.tagline} />}
+      title={t.reset.title}
+      lead={t.reset.lead}
+    >
       {/* useSearchParams exige une frontière Suspense pour la génération statique. */}
       <Suspense>
         <ResetForm lang={lang} t={t.reset} common={t.common} />

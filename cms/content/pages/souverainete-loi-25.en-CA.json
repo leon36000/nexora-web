@@ -7,7 +7,7 @@
     "slug": "sovereignty/data-protection-law",
     "title": "Quebec privacy law and AI",
     "seo_title": "Quebec's Law 25 and AI: what the law asks",
-    "seo_description": "A guide for business owners: what Quebec's Law 25 requires of a company using AI, what Nexora can provide and what stays with your business. Not legal advice.",
+    "seo_description": "A guide for business owners: what Quebec's Law 25 requires when you use AI, what Nexora AI can provide and what stays with you. Not legal advice.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Sovereignty · Guide",
         "headline": "Law 25 and AI: what the law asks.",
-        "subheadline": "A guide for business owners who are not lawyers: what Quebec law requires of a company that uses AI, what Nexora can provide and what stays with your business. This is not legal advice.",
+        "subheadline": "A guide for business owners who are not lawyers: what Quebec law requires of a company that uses AI, what Nexora AI can provide and what stays with your business. This is not legal advice.",
         "primary_label": "Talk to our team",
         "primary_href": "/en/contact/",
         "secondary_label": "See sovereignty",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Avertissement : portée du guide et position de Nexora.",
+      "role": "Avertissement : portée du guide et position de Nexora AI.",
       "claims": ["CL-L05", "CL-L06"],
       "fields": {
         "media_position": "none",
@@ -47,11 +47,11 @@
             "text": "It explains obligations in plain language. Article numbers are landmarks: only the text of the law is authoritative."
           },
           {
-            "title": "Nexora does not make you compliant.",
+            "title": "Nexora AI does not make you compliant.",
             "text": "No software and no supplier does. Protecting personal information remains the responsibility of the business that holds it."
           },
           {
-            "title": "Nexora does not claim compliance either.",
+            "title": "Nexora AI does not claim compliance either.",
             "text": "We claim no attestation or label on this subject. We describe what we provide, and what is still in preparation."
           }
         ]
@@ -152,7 +152,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que Nexora peut fournir : fonctions du logiciel (disponibles) et documents types (prévus).",
+      "role": "Ce que Nexora AI peut fournir : fonctions du logiciel (disponibles) et documents types (prévus).",
       "claims": [
         "CL-22",
         "CL-23",
@@ -170,7 +170,7 @@
         "anchor_id": "nexora"
       },
       "translation": {
-        "title": "What Nexora can provide.",
+        "title": "What Nexora AI can provide.",
         "intro": "These items can support your process. They do not replace it, and the status of each one is shown.",
         "cards": [
           {
@@ -224,7 +224,7 @@
       },
       "translation": {
         "title": "What stays with your business.",
-        "intro": "Nexora can supply technical information and tools. These responsibilities remain yours.",
+        "intro": "Nexora AI can supply technical information and tools. These responsibilities remain yours.",
         "cards": [
           {
             "title": "Designate and publish.",
@@ -236,7 +236,7 @@
           },
           {
             "title": "Contract.",
-            "text": "Sign the written agreements required with your suppliers, Nexora included, and with any service located outside Quebec."
+            "text": "Sign the written agreements required with your suppliers, Nexora AI included, and with any service located outside Quebec."
           },
           {
             "title": "Inform.",
@@ -296,7 +296,7 @@
             "answer": "It depends on what the system does: collection, profiling, automated decisions. The information rules are described above. The exact answer for your case belongs to your officer and your legal adviser."
           },
           {
-            "question": "Is Nexora compliant?",
+            "question": "Is Nexora AI compliant?",
             "answer": "We do not put it that way: compliance is not a state a supplier awards itself. We describe what we document, what the software allows and what is in preparation."
           },
           {

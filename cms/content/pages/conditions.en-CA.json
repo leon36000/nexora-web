@@ -6,7 +6,7 @@
   "seo": {
     "slug": "terms",
     "title": "Terms of use",
-    "seo_title": "Terms of use for the Nexora site and services",
+    "seo_title": "Terms of use for the Nexora AI site and services",
     "seo_description": "Purpose, accounts, offers, prices and taxes, termination, export, liability and governing law. Draft template, to be completed and reviewed before publication.",
     "canonical": null
   },
@@ -36,7 +36,7 @@
       },
       "translation": {
         "title": "Purpose and acceptance.",
-        "body": "<p>These terms govern use of Nexora's site and services. The services are aimed at businesses; confirm whether they are also aimed at individuals, which changes the applicable rules [TO BE REVIEWED BY A QUEBEC LAWYER]. Method of acceptance (click, signature) [TO BE COMPLETED BY THE FOUNDER].</p>"
+        "body": "<p>These terms govern use of Nexora AI's site and services. The services are aimed at businesses; confirm whether they are also aimed at individuals, which changes the applicable rules [TO BE REVIEWED BY A QUEBEC LAWYER]. Method of acceptance (click, signature) [TO BE COMPLETED BY THE FOUNDER].</p>"
       }
     },
     {
@@ -106,7 +106,7 @@
       },
       "translation": {
         "title": "Our liability.",
-        "body": "<p>Extent and limits of Nexora's liability, human supervision of AI outputs, force majeure [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "body": "<p>Extent and limits of Nexora AI's liability, human supervision of AI outputs, force majeure [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
       }
     },
     {

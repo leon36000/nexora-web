@@ -156,12 +156,19 @@ const route = (l: Locale, slug: string) =>
     : `/en/${slug}${slug ? "/" : ""}`;
 
 const TONES = ["sombre", "clair", "sable"];
-const LAYOUTS = ["grille", "liste", "etapes", "modules"];
+const LAYOUTS = ["grille", "liste", "etapes", "modules", "bento"];
 const VISUALS = [
   "aucun",
   "perimetre-sur-place",
   "perimetre-heberge",
   "flux-donnees",
+  "flux-workstudio",
+  "catalogue-modeles",
+  "console-vps",
+  "tableau-de-bord",
+  "vision-sur-place",
+  "croissance-canaux",
+  "engagements-donnees",
 ];
 const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);
@@ -306,10 +313,10 @@ describe("S3 : SEO", () => {
   for (const k of KEYS)
     for (const l of LOCALES) {
       const f = page(k, l);
-      test(`${k} ${l} : titre de 30 à 51 caractères, description de 140 à 160, slug attendu`, () => {
+      test(`${k} ${l} : titre de 30 à 48 caractères (60 avec le suffixe « — Nexora AI »), description de 140 à 160, slug attendu`, () => {
         const t = [...f.seo.seo_title].length;
         expect(t).toBeGreaterThanOrEqual(30);
-        expect(t).toBeLessThanOrEqual(51);
+        expect(t).toBeLessThanOrEqual(48);
         const d = [...f.seo.seo_description].length;
         expect(d).toBeGreaterThanOrEqual(140);
         expect(d).toBeLessThanOrEqual(160);
@@ -680,7 +687,7 @@ describe("S3 : VÉRITÉ", () => {
 
   test("les pages de souveraineté, de déploiement et de services nomment leurs limites", () => {
     const need: Record<string, RegExp> = {
-      souverainete: /Ce que Nexora ne promet pas/,
+      souverainete: /Ce que Nexora AI ne promet pas/,
       "deploiement-sur-place": /Limites/,
       "deploiement-heberge-quebec": /Limites/,
       workstudio: /limites/i,

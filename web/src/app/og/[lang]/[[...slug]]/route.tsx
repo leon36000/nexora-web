@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { connection } from "next/server";
+import { LOGO } from "@/components/brand/logo-geometry";
 import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { OG_SIZE } from "@/lib/seo/og";
@@ -22,6 +23,8 @@ const BONE = "#f4f1ea";
 const MIST = "#a9b3ae";
 const EMBER = "#f07a52";
 const LINE = "#2d3f38";
+const SURFACE = "#16211d";
+const EMBER_FILL = "#ce411c";
 
 async function loadFonts() {
   const dir = join(process.cwd(), "src", "fonts", "og");
@@ -95,7 +98,6 @@ export async function GET(
   const title = await titleOf(lang, slug);
   if (!title) return new Response("Not found", { status: 404 });
 
-  const siteName = getDictionary(lang).meta.siteName;
   const clipped = title.length > 110 ? `${title.slice(0, 107)}…` : title;
   const size = clipped.length > 70 ? 56 : clipped.length > 40 ? 68 : 84;
   const fonts = await loadFonts();
@@ -110,24 +112,33 @@ export async function GET(
         justifyContent: "space-between",
         background: INK,
         padding: "64px 72px",
+        position: "relative",
         fontFamily: fonts ? "Inter" : "sans-serif",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <div
-          style={{ width: 20, height: 20, background: EMBER, display: "flex" }}
-        />
-        <div
-          style={{
-            display: "flex",
-            fontFamily: fonts ? "Geist" : "sans-serif",
-            fontWeight: 500,
-            fontSize: 38,
-            color: BONE,
-          }}
+      {/* Grand symbole en filigrane : les deux périmètres, l'intersection orange (jamais du texte, aucune police). */}
+      {/* biome-ignore lint/a11y/noSvgWithoutTitle: dessin rendu en PNG par satori, jamais dans le DOM */}
+      <svg
+        width={420}
+        height={420}
+        viewBox={LOGO.symbolBox}
+        style={{ position: "absolute", right: 56, top: 56, opacity: 0.9 }}
+      >
+        <path fill={SURFACE} d={LOGO.squares} />
+        <path fill={EMBER_FILL} d={LOGO.overlap} />
+      </svg>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {/* biome-ignore lint/a11y/noSvgWithoutTitle: dessin rendu en PNG par satori, jamais dans le DOM */}
+        <svg
+          width={Math.round(56 * LOGO.lockupRatio)}
+          height={56}
+          viewBox={LOGO.lockupBox}
         >
-          {siteName}
-        </div>
+          <path fill={BONE} d={LOGO.squares} />
+          <path fill={EMBER_FILL} d={LOGO.overlap} />
+          <path fill={BONE} d={LOGO.nexora} />
+          <path fill={EMBER} d={LOGO.ai} />
+        </svg>
       </div>
       <div
         style={{

@@ -7,7 +7,7 @@
     "slug": "deployment",
     "title": "Deployment",
     "seo_title": "AI deployment: on-premises or in Quebec",
-    "seo_description": "An honest comparison of Nexora's two deployment modes: on your own server or hosted in Quebec. Who controls what, point by point, and how to choose.",
+    "seo_description": "An honest comparison of Nexora AI's two deployment modes: on your own server or hosted in Quebec. Who controls what, point by point, and how to choose.",
     "canonical": null
   },
   "blocks": [
@@ -91,12 +91,12 @@
             "text": "Listed in both modes as outbound flows. On your premises, their timing is agreed; with us, we apply them."
           },
           {
-            "title": "Nexora's access.",
+            "title": "Nexora AI's access.",
             "text": "On your premises: only what you grant, agreed in advance. With us: what operations require, described in the study."
           },
           {
             "title": "The operations.",
-            "text": "On your premises: shared according to the contract. With us: provided by Nexora with you."
+            "text": "On your premises: shared according to the contract. With us: provided by Nexora AI with you."
           },
           {
             "title": "Contract exit.",

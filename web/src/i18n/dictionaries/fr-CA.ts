@@ -1,7 +1,7 @@
 /**
  * Dictionnaire d'interface fr-CA (langue première).
  *
- * Règles (docs/recherche/06 §11) : vouvoiement, « nous » pour Nexora, titres de 3 à 7 mots
+ * Règles (docs/recherche/06 §11) : vouvoiement, « nous » pour Nexora AI, titres de 3 à 7 mots
  * ponctués d'un point, lexique OQLF, aucun chiffre, client, certification ou prix inventé,
  * jamais « conforme à la Loi 25 ». Le contenu éditorial réel viendra de Directus au jalon S2 ;
  * ce dictionnaire porte l'interface et les intitulés du squelette.
@@ -10,20 +10,20 @@
  */
 export const frCA = {
   meta: {
-    siteName: "Nexora",
+    siteName: "Nexora AI",
     home: {
-      title: "Nexora | IA souveraine pour votre entreprise, au Québec",
+      title: "Nexora AI | IA souveraine pour votre entreprise, au Québec",
       description:
-        "Nexora conçoit des systèmes d’IA pour votre entreprise, installés chez vous ou hébergés au Québec. Vous gardez la maîtrise de vos données et de vos accès.",
+        "Nexora AI conçoit des systèmes d’IA pour votre entreprise, installés chez vous ou hébergés au Québec. Vous gardez la maîtrise de vos données et de vos accès.",
     },
     notFound: {
-      title: "Page introuvable | Nexora",
+      title: "Page introuvable | Nexora AI",
     },
   },
 
   a11y: {
     skipToContent: "Aller au contenu",
-    homeLink: "Nexora, retour à l’accueil",
+    homeLink: "Nexora AI, retour à l’accueil",
     mainNav: "Navigation principale",
     mobileNav: "Navigation mobile",
     footerNav: "Pied de page",
@@ -146,7 +146,7 @@ export const frCA = {
       { label: "Conditions d’utilisation", href: "/conditions" },
       { label: "Utilisation acceptable", href: "/utilisation-acceptable" },
     ],
-    copyright: "© Nexora. Tous droits réservés.",
+    copyright: "© Nexora AI. Tous droits réservés.",
   },
 
   notFound: {
@@ -171,9 +171,23 @@ export const frCA = {
       "perimetre-sur-place":
         "Schéma : un seul périmètre entoure vos données, le modèle et le calcul, dans vos locaux. Une demande y entre par un point de passage contrôlé et y reste.",
       "perimetre-heberge":
-        "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora, au Québec, où se trouvent le modèle et le stockage.",
+        "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora AI, au Québec, où se trouvent le modèle et le stockage.",
       "flux-donnees":
         "Schéma : vos documents entrent par un point de passage contrôlé vers le modèle, à l’intérieur du périmètre. Ce que le système prépare ne sort qu’après l’approbation d’une personne.",
+      "flux-workstudio":
+        "Maquette de l’éditeur de flux de Nexora WorkStudio : un flux de facture fournisseur, de la réception du courriel à l’écriture en comptabilité, qui attend l’approbation d’une personne avant d’écrire.",
+      "catalogue-modeles":
+        "Maquette du catalogue de modèles : recherche, filtres par capacité et par lieu d’hébergement, quelques modèles et un exemple d’appel compatible avec OpenAI.",
+      "console-vps":
+        "Maquette de la console d’un serveur privé virtuel au Québec : état actif, région, accès par clé, pare-feu, terminal et courbes d’utilisation.",
+      "tableau-de-bord":
+        "Maquette du tableau de bord du compte : solde de crédits, plafond du mois, appels par jour et clés d’API masquées.",
+      "vision-sur-place":
+        "Schéma de principe : des caméras sont reliées à un serveur installé sur le site. Les images y restent ; seule une alerte écrite sort par le point de passage.",
+      "croissance-canaux":
+        "Schéma de principe : votre métier et votre région entrent dans Nexora Croissance, qui fait travailler ensemble site, référencement, annonces Google et Microsoft, réseaux sociaux et analyse de marché, pour produire des demandes de clients.",
+      "engagements-donnees":
+        "Les cinq engagements sur vos données : elles restent chez vous ou au Québec, ne servent jamais à entraîner un modèle, ne sont jamais vendues, et aucun modèle externe n’est utilisé sans votre accord écrit.",
     },
     preview: {
       banner: "Aperçu — non publié",
@@ -192,9 +206,9 @@ export const frCA = {
 
   contact: {
     meta: {
-      title: "Planifier un diagnostic | Nexora",
+      title: "Planifier un diagnostic | Nexora AI",
       description:
-        "Décrivez votre besoin en quelques questions : Nexora enregistre votre demande et l'équipe vous écrit. Installation chez vous ou hébergement au Québec.",
+        "Décrivez votre besoin en quelques questions : Nexora AI enregistre votre demande et l'équipe vous écrit. Installation chez vous ou hébergement au Québec.",
     },
     label: "Diagnostic",
     title: "Parlons de votre besoin.",
@@ -203,7 +217,7 @@ export const frCA = {
       title: "Ce qui se passe ensuite",
       items: [
         "Votre demande est enregistrée dès l'envoi.",
-        "L'équipe de Nexora en est avertie par courriel.",
+        "L'équipe de Nexora AI en est avertie par courriel.",
         "Nous vous écrivons à l'adresse que vous indiquez.",
       ],
       note: "Nous n'annonçons pas de délai de réponse. Aucun engagement n'est pris par l'envoi de ce formulaire.",
@@ -251,7 +265,7 @@ export const frCA = {
         hint: "Rien n'est décidé par ce choix : il nous aide à préparer la conversation.",
         options: {
           "sur-place": "Chez vous, sur votre propre serveur",
-          heberge: "Hébergé au Québec par Nexora",
+          heberge: "Hébergé au Québec par Nexora AI",
           indecis: "Je ne sais pas encore",
         },
       },
@@ -264,7 +278,7 @@ export const frCA = {
       },
       consentMarketing: {
         label:
-          "Je souhaite aussi recevoir des nouvelles de Nexora par courriel.",
+          "Je souhaite aussi recevoir des nouvelles de Nexora AI par courriel.",
         hint: "Facultatif et indépendant de votre demande : laissez cette case décochée pour seulement nous écrire.",
       },
       privacy: {
@@ -297,7 +311,7 @@ export const frCA = {
     },
     success: {
       title: "Demande enregistrée.",
-      text: "Votre demande est enregistrée et l'équipe de Nexora en est avertie. Nous vous écrirons à l'adresse indiquée. Nous n'annonçons pas de délai de réponse.",
+      text: "Votre demande est enregistrée et l'équipe de Nexora AI en est avertie. Nous vous écrirons à l'adresse indiquée. Nous n'annonçons pas de délai de réponse.",
       already:
         "Cette demande était déjà enregistrée : inutile de la renvoyer. L'équipe en a été avertie.",
       home: "Retour à l'accueil",
@@ -309,7 +323,7 @@ export const frCA = {
       label: "IA souveraine au Québec",
       title: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
       subtitle:
-        "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora conçoit des systèmes IA adaptés à votre métier.",
+        "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora AI conçoit des systèmes IA adaptés à votre métier.",
       primary: "Planifier un diagnostic",
       secondary: "Voir les solutions",
     },
@@ -317,7 +331,7 @@ export const frCA = {
     problems: {
       label: "Par où commencer",
       title: "Partez d’un problème concret.",
-      lead: "Chaque système Nexora commence par une tâche précise de votre quotidien, puis s’étend sans multiplier les outils déconnectés.",
+      lead: "Chaque système Nexora AI commence par une tâche précise de votre quotidien, puis s’étend sans multiplier les outils déconnectés.",
       items: [
         {
           title: "Demandes dispersées",
@@ -356,10 +370,10 @@ export const frCA = {
       },
       hosted: {
         label: "Au Québec",
-        title: "Hébergement chez Nexora",
+        title: "Hébergement chez Nexora AI",
         text: "Nous exploitons le système dans notre parc IA situé au Québec, avec les accès et les usages que vous autorisez.",
         diagram:
-          "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora au Québec.",
+          "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora AI au Québec.",
       },
       cta: "Comparer les deux modes",
     },

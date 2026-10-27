@@ -6,7 +6,7 @@
   "seo": {
     "slug": "acceptable-use",
     "title": "Acceptable use",
-    "seo_title": "Nexora acceptable use policy for the services",
+    "seo_title": "Nexora AI acceptable use policy for the services",
     "seo_description": "Permitted and prohibited uses, security and abuse prevention, generated content, monitoring, measures, reporting. Draft template, to be completed and reviewed.",
     "canonical": null
   },
@@ -36,7 +36,7 @@
       },
       "translation": {
         "title": "The principle.",
-        "body": "<p>Nexora's services are for legitimate business uses. Using the service unlawfully, harmfully to others or contrary to these rules may lead to measures described below [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "body": "<p>Nexora AI's services are for legitimate business uses. Using the service unlawfully, harmfully to others or contrary to these rules may lead to measures described below [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
       }
     },
     {
@@ -77,7 +77,7 @@
           },
           {
             "title": "High-risk uses.",
-            "text": "To be decided: uses Nexora does not accept, for example decisions about people without human supervision [TO BE COMPLETED BY THE FOUNDER]"
+            "text": "To be decided: uses Nexora AI does not accept, for example decisions about people without human supervision [TO BE COMPLETED BY THE FOUNDER]"
           }
         ]
       }
@@ -121,7 +121,7 @@
       },
       "translation": {
         "title": "Monitoring, reporting, measures.",
-        "body": "<p>How Nexora detects abuse without reading customers' business data, reporting address, prior notice, suspension and termination, right of reply [TO BE COMPLETED BY THE FOUNDER]. Text [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "body": "<p>How Nexora AI detects abuse without reading customers' business data, reporting address, prior notice, suspension and termination, right of reply [TO BE COMPLETED BY THE FOUNDER]. Text [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
       }
     },
     {

@@ -12,6 +12,7 @@ import { getAccountDictionary } from "@/i18n/account";
 import { getAccountVpsDictionary } from "@/i18n/account-vps";
 import { isLang, type Lang, localizePath } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/site";
 import { getAuth } from "@/server/auth/instance";
 import { getSessionContext } from "@/server/auth/session";
 import { getDb } from "@/server/db";
@@ -26,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/vps",
     title: t.meta.title,
     description: t.meta.description,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }

@@ -6,7 +6,7 @@
 
 - Page : `suite` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/suite/` · slug : `suite`
-- Titre SEO (46 caractères) : Nexora suite: WorkStudio, Code, Corpus, Quanta
+- Titre SEO (43 caractères) : The suite: WorkStudio, Code, Corpus, Quanta
 - Description SEO (157 caractères) : Nexora WorkStudio: a demonstration on request, no self-service offer. Nexora Code, Nexora Corpus, Quanta and Helix: their purpose, no availability announced.
 
 ## Contenu
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # A suite, not a pile.
 
-Nexora's products serve the same idea: AI that works for you, with the access, budgets and logs you control. Here is the real state of each one.
+Nexora AI's products serve the same idea: AI that works for you, with the access, budgets and logs you control. Here is the real state of each one.
 
 [See WorkStudio](/en/workstudio/) · [Discuss my project](/en/contact/)
 

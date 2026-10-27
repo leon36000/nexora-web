@@ -7,7 +7,7 @@
 - Page : `services` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/services/` · slug : `services`
 - Titre SEO (32 caractères) : Services d'IA pour PME au Québec
-- Description SEO (146 caractères) : Diagnostic, installation de serveurs d'IA chez vous ou au Québec, automatisation sur mesure et exploitation : les services de Nexora pour les PME.
+- Description SEO (149 caractères) : Diagnostic, installation de serveurs d'IA chez vous ou au Québec, automatisation sur mesure et exploitation : les services de Nexora AI pour les PME.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # De l'idée à l'exploitation. Avec vous.
 
-Nexora conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas mis en service.
+Nexora AI conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas mis en service.
 
 [Discuter de mon projet](/contact/) · [Lire la méthode](/methode/)
 

@@ -6,7 +6,7 @@
   "seo": {
     "slug": "confidentialite",
     "title": "Politique de confidentialité",
-    "seo_title": "Politique de confidentialité de Nexora",
+    "seo_title": "Politique de confidentialité de Nexora AI",
     "seo_description": "Responsable, renseignements recueillis, finalités, partage, conservation, droits, témoins, incidents. Gabarit en brouillon à compléter et à faire valider.",
     "canonical": null
   },
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Brouillon · Page non publiée",
         "headline": "Politique de confidentialité.",
-        "subheadline": "Gabarit en brouillon structuré selon les rubriques attendues au Québec\u00a0; chaque information propre à Nexora reste à fournir par le fondateur."
+        "subheadline": "Gabarit en brouillon structuré selon les rubriques attendues au Québec\u00a0; chaque information propre à Nexora AI reste à fournir par le fondateur."
       }
     },
     {
@@ -61,7 +61,7 @@
           },
           {
             "title": "Paiement.",
-            "text": "Traité par un prestataire de paiement [À COMPLÉTER PAR LE FONDATEUR]. Précisez ce que Nexora conserve ou non [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]"
+            "text": "Traité par un prestataire de paiement [À COMPLÉTER PAR LE FONDATEUR]. Précisez ce que Nexora AI conserve ou non [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]"
           },
           {
             "title": "Journaux techniques.",
@@ -103,7 +103,7 @@
       },
       "translation": {
         "title": "Avec qui nous les partageons.",
-        "body": "<p>Prestataires de la chaîne de service (hébergement du site, courriel, paiement, mesure d'audience), chacun avec son rôle et son lieu [À COMPLÉTER PAR LE FONDATEUR]. Pour toute communication de renseignements à l'extérieur du Québec, une évaluation préalable et une entente écrite sont requises [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Nexora ne vend pas de renseignements personnels [À COMPLÉTER PAR LE FONDATEUR].</p>"
+        "body": "<p>Prestataires de la chaîne de service (hébergement du site, courriel, paiement, mesure d'audience), chacun avec son rôle et son lieu [À COMPLÉTER PAR LE FONDATEUR]. Pour toute communication de renseignements à l'extérieur du Québec, une évaluation préalable et une entente écrite sont requises [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Nexora AI ne vend pas de renseignements personnels [À COMPLÉTER PAR LE FONDATEUR].</p>"
       }
     },
     {

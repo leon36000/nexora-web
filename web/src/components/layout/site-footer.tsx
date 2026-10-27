@@ -27,7 +27,16 @@ export function SiteFooter({
     "inline-flex min-h-8 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4";
 
   return (
-    <footer className="theme-dark border-t border-line bg-bg text-fg">
+    <footer className="theme-dark wash-dark relative isolate overflow-hidden border-t border-line bg-bg text-fg">
+      {/* Filigrane : le symbole, en très grand, ancré dans l'angle bas droit. */}
+      <svg
+        viewBox="6 6 52 52"
+        aria-hidden="true"
+        focusable="false"
+        className="pointer-events-none absolute -bottom-16 -right-10 -z-10 hidden size-[26rem] opacity-[0.06] md:block"
+      >
+        <path fill="currentColor" d="M6 6h36v36H6zM22 22h36v36H22z" />
+      </svg>
       <div className="mx-auto w-full max-w-page px-gutter pb-8 pt-16 sm:pt-20">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)]">
           <div>

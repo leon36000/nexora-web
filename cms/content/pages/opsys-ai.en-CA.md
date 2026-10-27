@@ -233,7 +233,7 @@ To go further: [the deployment modes](/en/deployment/) and [our approach to sove
 - **What we do.** For your configuration, we describe in writing where the data is, who can access it, which flows are configured and which are disabled.
 - **What stays your decision.** Which models to use, local or external. No external service is configured without your written consent.
 - **Backup and recovery.** Backup and restore scripts are provided (pilot). A full restore still has to be proven on your installation.
-- **Hosting in Quebec.** Under consideration in Nexora's infrastructure, located in Quebec. To be qualified during the deployment study.
+- **Hosting in Quebec.** Under consideration in Nexora AI's infrastructure, located in Quebec. To be qualified during the deployment study.
 - **A protected console.** Approvals, modes and budgets are managed in a web console protected by authentication.
 
 ### Bloc 10 — Section (`block_section`)

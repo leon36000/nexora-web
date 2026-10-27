@@ -3,12 +3,12 @@ import type { AccountDictionary } from "./account-fr-CA";
 /** Customer area dictionary (en-CA): same structure as fr-CA, checked by the `AccountDictionary` type. */
 export const accountEnCA: AccountDictionary = {
   meta: {
-    login: "Sign in | Nexora",
-    signup: "Create an account | Nexora",
-    forgot: "Forgot your password | Nexora",
-    reset: "New password | Nexora",
-    verify: "Email confirmation | Nexora",
-    dashboard: "My account | Nexora",
+    login: "Sign in | Nexora AI",
+    signup: "Create an account | Nexora AI",
+    forgot: "Forgot your password | Nexora AI",
+    reset: "New password | Nexora AI",
+    verify: "Email confirmation | Nexora AI",
+    dashboard: "My account | Nexora AI",
   },
 
   common: {
@@ -148,7 +148,7 @@ export const accountEnCA: AccountDictionary = {
     },
     buy: {
       title: "Buy credits",
-      productName: "Nexora credits",
+      productName: "Nexora AI credits",
       lead: "One-time payment, no subscription. You receive the pre-tax amount as credits.",
       amount: "Amount in Canadian dollars",
       choose: "Suggested amounts",

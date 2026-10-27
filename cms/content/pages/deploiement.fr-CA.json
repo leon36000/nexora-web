@@ -7,7 +7,7 @@
     "slug": "deploiement",
     "title": "Déploiement",
     "seo_title": "Déploiement d'IA\u00a0: sur place ou au Québec",
-    "seo_description": "Comparaison honnête des deux modes de déploiement de Nexora\u00a0: sur votre serveur ou hébergé au Québec. Qui contrôle quoi, point par point, et comment choisir.",
+    "seo_description": "Comparaison honnête des deux modes de déploiement de Nexora AI\u00a0: sur votre serveur ou hébergé au Québec. Qui contrôle quoi, point par point, et comment choisir.",
     "canonical": null
   },
   "blocks": [
@@ -91,12 +91,12 @@
             "text": "Listées dans les deux modes comme flux sortants. Chez vous, leur déclenchement se convient\u00a0; chez nous, nous les appliquons."
           },
           {
-            "title": "Les accès de Nexora.",
+            "title": "Les accès de Nexora AI.",
             "text": "Chez vous\u00a0: seulement ceux que vous accordez, convenus à l'avance. Chez nous\u00a0: ceux qu'exige l'exploitation, décrits dans l'étude."
           },
           {
             "title": "L'exploitation.",
-            "text": "Chez vous\u00a0: partagée selon le contrat. Chez nous\u00a0: assurée par Nexora avec vous."
+            "text": "Chez vous\u00a0: partagée selon le contrat. Chez nous\u00a0: assurée par Nexora AI avec vous."
           },
           {
             "title": "La sortie du contrat.",

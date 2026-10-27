@@ -67,7 +67,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=modules`, `anchor_id=logiciel`
 
 ## Ce que le logiciel permet déjà.
 
-Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora. Elles soutiennent votre démarche ; elles ne la remplacent pas.
+Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche ; elles ne la remplacent pas.
 
 #### Rôles et organisations.
 
@@ -109,7 +109,7 @@ Où les données sont stockées, quels services externes sont appelés, quelles 
 
 #### Le contrat type et l'entente de traitement.
 
-Ce que Nexora fait des renseignements que vous lui confiez, et ce qu'elle s'interdit.
+Ce que Nexora AI fait des renseignements que vous lui confiez, et ce qu'elle s'interdit.
 
 #### La liste des sous-traitants et des lieux.
 
@@ -138,7 +138,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 Quand on parle de « données », on parle de trois choses différentes. Nous les traitons séparément.
 
 - **Le contenu public du site.** Ce que vous lisez ici : fait pour être publié et indexé.
-- **Vos échanges avec Nexora.** Formulaires, courriels, facturation : ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira.
+- **Vos échanges avec Nexora AI.** Formulaires, courriels, facturation : ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira.
 - **Les données de votre système.** Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux.
 
 ### Bloc 6 — Cartes (`block_cards`)
@@ -181,7 +181,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons.
 
-#### Qui, chez Nexora, peut accéder à mon système ?
+#### Qui, chez Nexora AI, peut accéder à mon système ?
 
 Seulement les accès convenus à l'avance, décrits dans l'étude de déploiement. Dans le mode sur place, vous les accordez et pouvez les retirer.
 

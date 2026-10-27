@@ -7,7 +7,7 @@
 - Page : `services-installation-serveurs-ia` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/services/ai-server-installation/` · slug : `services/ai-server-installation`
 - Titre SEO (43 caractères) : AI server installation for small businesses
-- Description SEO (155 caractères) : Nexora installs and configures your AI server on your premises or in its infrastructure in Quebec, then runs it with you. Sizing comes before any purchase.
+- Description SEO (158 caractères) : Nexora AI installs and configures your AI server on your premises or in its infrastructure in Quebec, then runs it with you. Sizing comes before any purchase.
 
 ## Contenu
 

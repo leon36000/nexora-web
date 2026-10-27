@@ -7,7 +7,7 @@
 - Page : `souverainete-loi-25` · langue : `fr-CA` · statut visé : `draft` · noindex : oui
 - Route : `/souverainete/loi-25/` · slug : `souverainete/loi-25`
 - Titre SEO (43 caractères) : Loi 25 et IA en PME : ce que la loi demande
-- Description SEO (154 caractères) : Guide pour dirigeants : ce que la Loi 25 exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora peut fournir et ce qui reste à votre entreprise.
+- Description SEO (157 caractères) : Guide pour dirigeants : ce que la Loi 25 exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora AI peut fournir et ce qui reste à votre entreprise.
 
 ## Contenu
 
@@ -21,13 +21,13 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Loi 25 et IA : ce que la loi demande.
 
-Un guide pour dirigeants non juristes : ce que la loi exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora peut vous fournir et ce qui reste à votre entreprise. Ce n'est pas un avis juridique.
+Un guide pour dirigeants non juristes : ce que la loi exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora AI peut vous fournir et ce qui reste à votre entreprise. Ce n'est pas un avis juridique.
 
 [Parler à notre équipe](/contact/) · [Voir la souveraineté](/souverainete/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Avertissement : portée du guide et position de Nexora. · Affirmations : CL-L05, CL-L06*
+*Avertissement : portée du guide et position de Nexora AI. · Affirmations : CL-L05, CL-L06*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=avertissement`
 
@@ -38,8 +38,8 @@ On appelle « Loi 25 » la loi qui a modernisé, en 2021, les règles sur les 
 Ce guide résume ce que ces textes prévoient, tels que nous les avons lus sur les sites officiels. Il peut contenir des erreurs ou être dépassé. Pour votre situation, consultez un avocat ou la Commission d'accès à l'information.
 
 - **Ce guide informe.** Il explique des obligations en langage courant. Les numéros d'articles servent de repères : seul le texte de la loi fait foi.
-- **Nexora ne vous rend pas conforme.** Aucun logiciel et aucun fournisseur ne le fait. La responsabilité de protéger les renseignements personnels reste celle de l'entreprise qui les détient.
-- **Nexora ne se déclare pas conforme non plus.** Nous ne revendiquons ni attestation ni label en la matière. Nous décrivons ce que nous fournissons, et ce qui est encore en préparation.
+- **Nexora AI ne vous rend pas conforme.** Aucun logiciel et aucun fournisseur ne le fait. La responsabilité de protéger les renseignements personnels reste celle de l'entreprise qui les détient.
+- **Nexora AI ne se déclare pas conforme non plus.** Nous ne revendiquons ni attestation ni label en la matière. Nous décrivons ce que nous fournissons, et ce qui est encore en préparation.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
@@ -109,11 +109,11 @@ Une IA qui lit vos courriels, vos factures ou vos dossiers clients traite des re
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Ce que Nexora peut fournir : fonctions du logiciel (disponibles) et documents types (prévus). · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-87, CL-05, CL-73*
+*Ce que Nexora AI peut fournir : fonctions du logiciel (disponibles) et documents types (prévus). · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-87, CL-05, CL-73*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=nexora`
 
-## Ce que Nexora peut fournir.
+## Ce que Nexora AI peut fournir.
 
 Ces éléments peuvent soutenir votre démarche. Ils ne la remplacent pas, et le statut de chacun est indiqué.
 
@@ -155,7 +155,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=etapes`, `anchor_id=entreprise`
 
 ## Ce qui reste à votre entreprise.
 
-Nexora peut fournir des informations techniques et des outils. Ces responsabilités, elles, restent les vôtres.
+Nexora AI peut fournir des informations techniques et des outils. Ces responsabilités, elles, restent les vôtres.
 
 #### Désigner et publier.
 
@@ -167,7 +167,7 @@ Mener l'évaluation des facteurs relatifs à la vie privée de votre projet. Nou
 
 #### Contracter.
 
-Signer les ententes écrites exigées avec vos fournisseurs, dont Nexora, et avec tout service situé hors du Québec.
+Signer les ententes écrites exigées avec vos fournisseurs, dont Nexora AI, et avec tout service situé hors du Québec.
 
 #### Informer.
 
@@ -221,7 +221,7 @@ Un hébergement au Québec peut simplifier certains points ; la communication h
 
 Cela dépend de ce que le système fait : collecte, profilage, décision automatisée. Les règles d'information sont décrites plus haut. La réponse exacte pour votre cas revient à votre responsable et à votre conseiller juridique.
 
-#### Nexora est-elle conforme ?
+#### Nexora AI est-elle conforme ?
 
 Nous ne nous prononçons pas ainsi : la conformité n'est pas un état que se décerne un fournisseur. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation.
 

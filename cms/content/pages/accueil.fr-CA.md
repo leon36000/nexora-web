@@ -7,7 +7,7 @@
 - Page : `accueil` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/` · slug : ``
 - Titre SEO (36 caractères) : Automatisation IA pour PME au Québec
-- Description SEO (150 caractères) : Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME : chez vous ou hébergés au Québec, sous votre contrôle. Parlons de votre projet.
+- Description SEO (153 caractères) : Nexora AI conçoit, installe et accompagne des systèmes d'IA pour les PME : chez vous ou hébergés au Québec, sous votre contrôle. Parlons de votre projet.
 
 ## Contenu
 
@@ -17,11 +17,11 @@
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
-**Nexora · IA pour les PME du Québec**
+**Nexora AI · IA pour les PME du Québec**
 
 # L'IA qui travaille pour votre entreprise. Sous votre contrôle.
 
-Nexora conçoit, installe et accompagne des systèmes d'IA adaptés à votre métier : installés chez vous, ou hébergés dans notre infrastructure au Québec.
+Nexora AI conçoit, installe et accompagne des systèmes d'IA adaptés à votre métier : installés chez vous, ou hébergés dans notre infrastructure au Québec.
 
 [Discuter de mon projet](/contact/) · [Voir les solutions](/solutions/)
 
@@ -29,7 +29,7 @@ Nexora conçoit, installe et accompagne des systèmes d'IA adaptés à votre mé
 
 *Entrée par problème : cinq situations, chacune vers sa solution. · Affirmations : CL-01*
 
-Réglages : `columns=3`, `layout=grille`, `tone=clair`
+Réglages : `columns=3`, `layout=bento`, `tone=clair`
 
 ## Partez de votre problème.
 
@@ -101,7 +101,7 @@ Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## Chez vous. Ou chez nous.
 
-Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora propose deux façons d'y arriver.
+Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora AI propose deux façons d'y arriver.
 
 ### Bloc 5 — Section (`block_section`)
 
@@ -233,7 +233,7 @@ Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le 
 
 *Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31*
 
-Réglages : `columns=3`, `layout=grille`, `tone=sombre`
+Réglages : `columns=3`, `layout=bento`, `tone=sombre`
 
 ## Des engagements vérifiables.
 
@@ -301,7 +301,7 @@ Nos systèmes prennent les tâches répétitives ; la décision reste à une pe
 
 #### Pourquoi pas un assistant grand public comme ChatGPT ?
 
-Un assistant grand public répond bien aux questions générales. Ce que Nexora ajoute : le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire.
+Un assistant grand public répond bien aux questions générales. Ce que Nexora AI ajoute : le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire.
 
 #### Faut-il un serveur puissant ?
 

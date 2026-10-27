@@ -71,7 +71,7 @@ export function createAuth(options: CreateAuthOptions) {
   };
 
   return betterAuth({
-    appName: "Nexora",
+    appName: "Nexora AI",
     baseURL: options.baseURL,
     secret: options.secret,
     trustedOrigins: options.trustedOrigins ?? [options.baseURL],

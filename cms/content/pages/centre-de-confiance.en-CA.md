@@ -67,7 +67,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=modules`, `anchor_id=logiciel`
 
 ## What the software already allows.
 
-WorkStudio functions, verified on Nexora's test server. They support your process; they do not replace it.
+WorkStudio functions, verified on Nexora AI's test server. They support your process; they do not replace it.
 
 #### Roles and organizations.
 
@@ -109,7 +109,7 @@ Where data is stored, which external services are called, which backups exist. T
 
 #### The standard contract and data processing agreement.
 
-What Nexora does with the information you entrust to it, and what it refrains from doing.
+What Nexora AI does with the information you entrust to it, and what it refrains from doing.
 
 #### The list of subcontractors and locations.
 
@@ -138,7 +138,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 When we say “data”, we mean three different things. We treat them separately.
 
 - **The site's public content.** What you read here: made to be published and indexed.
-- **Your exchanges with Nexora.** Forms, emails, billing: they serve only to answer you and to serve you. The site's privacy policy, in preparation, will describe them.
+- **Your exchanges with Nexora AI.** Forms, emails, billing: they serve only to answer you and to serve you. The site's privacy policy, in preparation, will describe them.
 - **Your system's data.** Your documents, conversations and databases: they stay inside the agreed perimeter, described by the data-flow diagram.
 
 ### Bloc 6 — Cartes (`block_cards`)
@@ -181,7 +181,7 @@ Write to us through the contact form and name the document. While it is in prepa
 
 We claim none today. We describe what the software allows and what we document.
 
-#### Who at Nexora can access my system?
+#### Who at Nexora AI can access my system?
 
 Only the access agreed in advance, described in the deployment study. In the on-premises mode, you grant it and can withdraw it.
 

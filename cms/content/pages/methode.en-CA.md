@@ -7,7 +7,7 @@
 - Page : `methode` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/method/` · slug : `method`
 - Titre SEO (46 caractères) : Our method for bringing AI into small business
-- Description SEO (155 caractères) : Understand, integrate, verify, train, operate: Nexora's method, one case at a time. No universal timeline announced and no gain quoted without measurement.
+- Description SEO (158 caractères) : Understand, integrate, verify, train, operate: Nexora AI's method, one case at a time. No universal timeline announced and no gain quoted without measurement.
 
 ## Contenu
 
@@ -145,4 +145,4 @@ Réglages : `tone=sombre`
 
 Describe what costs you time. We will help you pick the case that will teach the most.
 
-[Discuss my project](/en/contact/) · [Learn more about Nexora](/en/company/)
+[Discuss my project](/en/contact/) · [Learn more about Nexora AI](/en/company/)

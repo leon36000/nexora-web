@@ -7,7 +7,7 @@
     "slug": "method",
     "title": "Method",
     "seo_title": "Our method for bringing AI into small business",
-    "seo_description": "Understand, integrate, verify, train, operate: Nexora's method, one case at a time. No universal timeline announced and no gain quoted without measurement.",
+    "seo_description": "Understand, integrate, verify, train, operate: Nexora AI's method, one case at a time. No universal timeline announced and no gain quoted without measurement.",
     "canonical": null
   },
   "blocks": [
@@ -200,7 +200,7 @@
         "text": "Describe what costs you time. We will help you pick the case that will teach the most.",
         "primary_label": "Discuss my project",
         "primary_href": "/en/contact/",
-        "secondary_label": "Learn more about Nexora",
+        "secondary_label": "Learn more about Nexora AI",
         "secondary_href": "/en/company/"
       }
     }

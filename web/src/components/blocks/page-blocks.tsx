@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import type { Lang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getVisualsDictionary } from "@/i18n/visuals";
 import { buildToc } from "@/lib/toc";
 import type { Block, PageModel, Tone } from "@/server/cms/model";
 import { CardsBlockView } from "./cards-block";
@@ -29,6 +30,7 @@ const joinable = (block: Block | undefined): block is Block =>
  */
 export function PageBlocks({ lang, page }: { lang: Lang; page: PageModel }) {
   const { cms } = getDictionary(lang);
+  const visuals = getVisualsDictionary(lang);
   const hasHero = page.blocks.some((b) => b.type === "hero");
   const toc = buildToc(page.blocks);
   let heroSeen = false;
@@ -59,11 +61,19 @@ export function PageBlocks({ lang, page }: { lang: Lang; page: PageModel }) {
           case "hero": {
             const level = heroSeen ? 2 : 1;
             heroSeen = true;
-            view = <HeroBlockView block={block} level={level} />;
+            view = (
+              <HeroBlockView
+                block={block}
+                level={level}
+                showcase={page.slug === "" ? visuals.hero : undefined}
+              />
+            );
             break;
           }
           case "section":
-            view = <SectionBlockView block={block} joined={joined} t={cms} />;
+            view = (
+              <SectionBlockView block={block} joined={joined} lang={lang} />
+            );
             break;
           case "cards":
             view = <CardsBlockView block={block} joined={joined} t={cms} />;

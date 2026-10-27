@@ -7,7 +7,7 @@
 - Page : `accueil` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/` · slug : ``
 - Titre SEO (44 caractères) : AI automation for small businesses in Quebec
-- Description SEO (143 caractères) : Nexora designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, under your control. Let's talk.
+- Description SEO (146 caractères) : Nexora AI designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, under your control. Let's talk.
 
 ## Contenu
 
@@ -17,11 +17,11 @@
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
-**Nexora · AI for Quebec businesses**
+**Nexora AI · AI for Quebec businesses**
 
 # AI that works for your business. Under your control.
 
-Nexora designs, installs and supports AI systems built around how you work: running on your own server, or hosted in our infrastructure in Quebec.
+Nexora AI designs, installs and supports AI systems built around how you work: running on your own server, or hosted in our infrastructure in Quebec.
 
 [Talk about my project](/en/contact/) · [See the solutions](/en/solutions/)
 
@@ -29,7 +29,7 @@ Nexora designs, installs and supports AI systems built around how you work: runn
 
 *Start from the problem: five situations, each leading to its solution. · Affirmations : CL-01*
 
-Réglages : `columns=3`, `layout=grille`, `tone=clair`
+Réglages : `columns=3`, `layout=bento`, `tone=clair`
 
 ## Start with your problem.
 
@@ -101,7 +101,7 @@ Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## Your premises. Or ours.
 
-AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora offers two ways to get there.
+AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora AI offers two ways to get there.
 
 ### Bloc 5 — Section (`block_section`)
 
@@ -233,7 +233,7 @@ We run the system with you, keep what works and adjust the rest.
 
 *Trust: verifiable commitments, no figures and no customers. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31*
 
-Réglages : `columns=3`, `layout=grille`, `tone=sombre`
+Réglages : `columns=3`, `layout=bento`, `tone=sombre`
 
 ## Commitments you can verify.
 
@@ -301,7 +301,7 @@ Our systems take over repetitive tasks; the decision stays with a person. A work
 
 #### Why not a general-purpose assistant such as ChatGPT?
 
-A general-purpose assistant answers general questions well. What Nexora adds: a choice of where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it.
+A general-purpose assistant answers general questions well. What Nexora AI adds: a choice of where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it.
 
 #### Do we need a powerful server?
 

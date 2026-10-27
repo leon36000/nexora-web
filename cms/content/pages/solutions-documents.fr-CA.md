@@ -95,7 +95,7 @@ L'agent ne consulte que les bases de documents que vous lui ouvrez. Les droits d
 
 #### Où vos documents sont indexés.
 
-Par défaut, l’indexation se calcule sur le serveur de l’instance : chez vous, sur votre serveur ; en mode hébergé, dans l’infrastructure de Nexora au Québec. Un service externe est un choix écrit.
+Par défaut, l’indexation se calcule sur le serveur de l’instance : chez vous, sur votre serveur ; en mode hébergé, dans l’infrastructure de Nexora AI au Québec. Un service externe est un choix écrit.
 
 #### Aucun avis juridique.
 

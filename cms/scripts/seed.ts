@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// Contenu initial de Nexora (S1) : langues, réglages du site, navigation minimale, page d'accueil EN BROUILLON.
+// Contenu initial de Nexora AI (S1) : langues, réglages du site, navigation minimale, page d'accueil EN BROUILLON.
 // Idempotent : crée ce qui manque et ne modifie jamais un contenu existant (le contenu éditorial appartient à l'équipe).
 // Vérité du contenu : aucun chiffre, client, certification, prix ni promesse de conformité (voir AGENTS.md).
 //
@@ -58,19 +58,19 @@ async function seedSettings(d: Directus) {
   );
   if (cur && (cur.id || cur.length)) return kept("site_settings");
   await d.patch("/items/site_settings", {
-    site_name: "Nexora",
+    site_name: "Nexora AI",
     translations: [
       {
         languages_code: "fr-CA",
         tagline: MESSAGE_DIRECTEUR["fr-CA"],
-        seo_title_template: "%s — Nexora",
-        seo_description: `Nexora est une entreprise québécoise qui installe et configure des systèmes d'IA au service du travail de votre équipe.`,
+        seo_title_template: "%s — Nexora AI",
+        seo_description: `Nexora AI est une entreprise québécoise qui installe et configure des systèmes d'IA au service du travail de votre équipe.`,
       },
       {
         languages_code: "en-CA",
         tagline: MESSAGE_DIRECTEUR["en-CA"],
-        seo_title_template: "%s — Nexora",
-        seo_description: `Nexora is a Quebec-based company that installs and configures AI systems to support your team's work.`,
+        seo_title_template: "%s — Nexora AI",
+        seo_description: `Nexora AI is a Quebec-based company that installs and configures AI systems to support your team's work.`,
       },
     ],
   });
@@ -151,14 +151,14 @@ async function seedHome(d: Directus) {
         slug: "",
         title: "Accueil",
         seo_title: MESSAGE_DIRECTEUR["fr-CA"],
-        seo_description: `Nexora installe et configure des systèmes d'IA qui automatisent le travail de votre équipe, sous votre contrôle.`,
+        seo_description: `Nexora AI installe et configure des systèmes d'IA qui automatisent le travail de votre équipe, sous votre contrôle.`,
       },
       {
         languages_code: "en-CA",
         slug: "",
         title: "Home",
         seo_title: MESSAGE_DIRECTEUR["en-CA"],
-        seo_description: `Nexora installs and configures AI systems that automate your team's work, under your control.`,
+        seo_description: `Nexora AI installs and configures AI systems that automate your team's work, under your control.`,
       },
     ],
     blocks: [
@@ -172,7 +172,7 @@ async function seedHome(d: Directus) {
             {
               languages_code: "fr-CA",
               headline: MESSAGE_DIRECTEUR["fr-CA"],
-              subheadline: `Nexora installe et configure des systèmes d'IA qui automatisent le travail de votre équipe.`,
+              subheadline: `Nexora AI installe et configure des systèmes d'IA qui automatisent le travail de votre équipe.`,
               primary_label: "Planifier un diagnostic",
               primary_href: "/contact/",
               secondary_label: "Comprendre la souveraineté",
@@ -181,7 +181,7 @@ async function seedHome(d: Directus) {
             {
               languages_code: "en-CA",
               headline: MESSAGE_DIRECTEUR["en-CA"],
-              subheadline: `Nexora installs and configures AI systems that automate your team's work.`,
+              subheadline: `Nexora AI installs and configures AI systems that automate your team's work.`,
               primary_label: "Book a diagnostic",
               primary_href: "/en/contact/",
               secondary_label: "Understand sovereignty",

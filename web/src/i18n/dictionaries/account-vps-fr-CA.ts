@@ -6,7 +6,7 @@
  */
 export const accountVpsFrCA = {
   meta: {
-    title: "Mes VPS | Nexora",
+    title: "Mes VPS | Nexora AI",
     description:
       "Vos serveurs privés virtuels : état, accès SSH, démarrage, réinstallation et résiliation.",
   },
@@ -240,7 +240,7 @@ export const accountVpsFrCA = {
     reinstall: {
       title: "Réinstaller ce VPS ?",
       warning:
-        "Toutes les données du disque seront effacées. Nexora garde un instantané de l’ancienne machine pendant 7 jours à des fins de récupération par notre équipe ; ce n’est pas une sauvegarde en libre-service.",
+        "Toutes les données du disque seront effacées. Nexora AI garde un instantané de l’ancienne machine pendant 7 jours à des fins de récupération par notre équipe ; ce n’est pas une sauvegarde en libre-service.",
       unavailable: "Le VPS sera indisponible pendant la réinstallation.",
       ack: "J’ai compris",
       ackRequired: "Cochez la case pour confirmer.",
@@ -262,7 +262,7 @@ export const accountVpsFrCA = {
     actors: {
       system: "Système",
       customer: "Vous",
-      operator: "Équipe Nexora",
+      operator: "Équipe Nexora AI",
       stripe: "Paiement",
       worker: "Système",
     },

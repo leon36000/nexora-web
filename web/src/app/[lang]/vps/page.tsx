@@ -28,7 +28,7 @@ import { VpsHero } from "@/components/vps/vps-hero";
 import { isLang, type Lang, localizePath } from "@/i18n/config";
 import { getVpsDictionary } from "@/i18n/vps";
 import { buildPageMetadata } from "@/lib/metadata";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import {
   buildBreadcrumbJsonLd,
   buildPlanProductsJsonLd,
@@ -44,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/vps",
     title: t.meta.vps.title,
     description: t.meta.vps.description,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 

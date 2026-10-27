@@ -10,6 +10,7 @@ import { fmt, formatCad, getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
 import { parseOffer } from "@/lib/offer-param";
+import { SITE_NAME } from "@/lib/site";
 import { getSessionContext } from "@/server/auth/session";
 import { loadDashboard } from "@/server/billing/dashboard";
 import {
@@ -32,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte",
     title: t.meta.dashboard,
     description: t.dashboard.lead,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }

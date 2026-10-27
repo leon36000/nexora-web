@@ -3,15 +3,16 @@ import { parseRichText } from "@/lib/rich-text";
 import { safeHref } from "@/lib/safe-href";
 import { CmsContentError } from "./errors";
 import type { LangCode } from "./lang";
-import type {
-  Block,
-  CardLayout,
-  CardStatus,
-  Cta,
-  MediaRef,
-  PageModel,
-  SectionVisual,
-  Tone,
+import {
+  type Block,
+  type CardLayout,
+  type CardStatus,
+  type Cta,
+  type MediaRef,
+  type PageModel,
+  SECTION_VISUALS,
+  type SectionVisual,
+  type Tone,
 } from "./model";
 
 /* -------------------------------------------------------------------------- */
@@ -298,11 +299,7 @@ function normalizeBlock(
         key,
         anchorId: anchorOf(item.anchor_id),
         tone: toneOf(item.tone, "clair"),
-        visual: oneOf<SectionVisual>(
-          item.visual,
-          ["aucun", "perimetre-sur-place", "perimetre-heberge", "flux-donnees"],
-          "aucun",
-        ),
+        visual: oneOf<SectionVisual>(item.visual, SECTION_VISUALS, "aucun"),
         title: txt(t.title),
         body: parsed.length > 0 ? parsed : null,
         media: media(item.media, t.media_alt),
@@ -328,7 +325,7 @@ function normalizeBlock(
         tone: toneOf(item.tone, "clair"),
         layout: oneOf<CardLayout>(
           item.layout,
-          ["grille", "liste", "etapes", "modules"],
+          ["grille", "liste", "etapes", "modules", "bento"],
           "grille",
         ),
         columns: columns === 2 || columns === 4 ? columns : 3,

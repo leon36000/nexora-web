@@ -7,7 +7,7 @@
     "slug": "souverainete/loi-25",
     "title": "Loi 25 et IA",
     "seo_title": "Loi 25 et IA en PME\u00a0: ce que la loi demande",
-    "seo_description": "Guide pour dirigeants\u00a0: ce que la Loi 25 exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora peut fournir et ce qui reste à votre entreprise.",
+    "seo_description": "Guide pour dirigeants\u00a0: ce que la Loi 25 exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora AI peut fournir et ce qui reste à votre entreprise.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Souveraineté · Guide",
         "headline": "Loi 25 et IA\u00a0: ce que la loi demande.",
-        "subheadline": "Un guide pour dirigeants non juristes\u00a0: ce que la loi exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora peut vous fournir et ce qui reste à votre entreprise. Ce n'est pas un avis juridique.",
+        "subheadline": "Un guide pour dirigeants non juristes\u00a0: ce que la loi exige d'une entreprise du Québec qui utilise l'IA, ce que Nexora AI peut vous fournir et ce qui reste à votre entreprise. Ce n'est pas un avis juridique.",
         "primary_label": "Parler à notre équipe",
         "primary_href": "/contact/",
         "secondary_label": "Voir la souveraineté",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Avertissement : portée du guide et position de Nexora.",
+      "role": "Avertissement : portée du guide et position de Nexora AI.",
       "claims": ["CL-L05", "CL-L06"],
       "fields": {
         "media_position": "none",
@@ -47,11 +47,11 @@
             "text": "Il explique des obligations en langage courant. Les numéros d'articles servent de repères\u00a0: seul le texte de la loi fait foi."
           },
           {
-            "title": "Nexora ne vous rend pas conforme.",
+            "title": "Nexora AI ne vous rend pas conforme.",
             "text": "Aucun logiciel et aucun fournisseur ne le fait. La responsabilité de protéger les renseignements personnels reste celle de l'entreprise qui les détient."
           },
           {
-            "title": "Nexora ne se déclare pas conforme non plus.",
+            "title": "Nexora AI ne se déclare pas conforme non plus.",
             "text": "Nous ne revendiquons ni attestation ni label en la matière. Nous décrivons ce que nous fournissons, et ce qui est encore en préparation."
           }
         ]
@@ -152,7 +152,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que Nexora peut fournir : fonctions du logiciel (disponibles) et documents types (prévus).",
+      "role": "Ce que Nexora AI peut fournir : fonctions du logiciel (disponibles) et documents types (prévus).",
       "claims": [
         "CL-22",
         "CL-23",
@@ -170,7 +170,7 @@
         "anchor_id": "nexora"
       },
       "translation": {
-        "title": "Ce que Nexora peut fournir.",
+        "title": "Ce que Nexora AI peut fournir.",
         "intro": "Ces éléments peuvent soutenir votre démarche. Ils ne la remplacent pas, et le statut de chacun est indiqué.",
         "cards": [
           {
@@ -224,7 +224,7 @@
       },
       "translation": {
         "title": "Ce qui reste à votre entreprise.",
-        "intro": "Nexora peut fournir des informations techniques et des outils. Ces responsabilités, elles, restent les vôtres.",
+        "intro": "Nexora AI peut fournir des informations techniques et des outils. Ces responsabilités, elles, restent les vôtres.",
         "cards": [
           {
             "title": "Désigner et publier.",
@@ -236,7 +236,7 @@
           },
           {
             "title": "Contracter.",
-            "text": "Signer les ententes écrites exigées avec vos fournisseurs, dont Nexora, et avec tout service situé hors du Québec."
+            "text": "Signer les ententes écrites exigées avec vos fournisseurs, dont Nexora AI, et avec tout service situé hors du Québec."
           },
           {
             "title": "Informer.",
@@ -296,7 +296,7 @@
             "answer": "Cela dépend de ce que le système fait\u00a0: collecte, profilage, décision automatisée. Les règles d'information sont décrites plus haut. La réponse exacte pour votre cas revient à votre responsable et à votre conseiller juridique."
           },
           {
-            "question": "Nexora est-elle conforme\u00a0?",
+            "question": "Nexora AI est-elle conforme\u00a0?",
             "answer": "Nous ne nous prononçons pas ainsi\u00a0: la conformité n'est pas un état que se décerne un fournisseur. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation."
           },
           {

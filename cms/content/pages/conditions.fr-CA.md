@@ -33,7 +33,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=objet`
 
 ## Objet et acceptation.
 
-Ces conditions encadrent l'utilisation du site et des services de Nexora. Les services s'adressent à des entreprises ; confirmer s'ils s'adressent aussi à des particuliers, ce qui change les règles applicables [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Mode d'acceptation (clic, signature) [À COMPLÉTER PAR LE FONDATEUR].
+Ces conditions encadrent l'utilisation du site et des services de Nexora AI. Les services s'adressent à des entreprises ; confirmer s'ils s'adressent aussi à des particuliers, ce qui change les règles applicables [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Mode d'acceptation (clic, signature) [À COMPLÉTER PAR LE FONDATEUR].
 
 ### Bloc 3 — Section (`block_section`)
 
@@ -83,7 +83,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=responsabilite`
 
 ## Notre responsabilité.
 
-Étendue et limites de la responsabilité de Nexora, supervision humaine des résultats produits par l'IA, force majeure [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
+Étendue et limites de la responsabilité de Nexora AI, supervision humaine des résultats produits par l'IA, force majeure [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
 
 ### Bloc 8 — Section (`block_section`)
 

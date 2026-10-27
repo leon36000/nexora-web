@@ -6,7 +6,7 @@
 
 - Page : `utilisation-acceptable` · langue : `fr-CA` · statut visé : `draft` · noindex : oui
 - Route : `/utilisation-acceptable/` · slug : `utilisation-acceptable`
-- Titre SEO (44 caractères) : Politique d'utilisation acceptable de Nexora
+- Titre SEO (47 caractères) : Politique d'utilisation acceptable de Nexora AI
 - Description SEO (159 caractères) : Usages permis et interdits, sécurité, prévention des abus, contenus générés, surveillance, mesures, signalement. Gabarit en brouillon à compléter et à valider.
 
 ## Contenu
@@ -33,7 +33,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=principe`
 
 ## Le principe.
 
-Les services de Nexora servent à des usages légitimes d'entreprise. Utiliser le service de manière illicite, nuisible pour d'autres ou contraire à ces règles peut mener à des mesures décrites plus bas [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
+Les services de Nexora AI servent à des usages légitimes d'entreprise. Utiliser le service de manière illicite, nuisible pour d'autres ou contraire à ces règles peut mener à des mesures décrites plus bas [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
 
 ### Bloc 3 — Section (`block_section`)
 
@@ -49,7 +49,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=interdits`
 - **Contenu illicite ou trompeur.** Contenu illégal, usurpation d'identité, faux avis, hameçonnage.
 - **Collecte intrusive.** Collecte massive ou clandestine de renseignements personnels.
 - **Contournement des limites.** Contournement des quotas, des limites de débit ou de la facturation ; revente de l'accès [À COMPLÉTER PAR LE FONDATEUR]
-- **Usages à haut risque.** À décider : usages que Nexora n'accepte pas, par exemple décisions sur des personnes sans supervision humaine [À COMPLÉTER PAR LE FONDATEUR]
+- **Usages à haut risque.** À décider : usages que Nexora AI n'accepte pas, par exemple décisions sur des personnes sans supervision humaine [À COMPLÉTER PAR LE FONDATEUR]
 
 ### Bloc 4 — Section (`block_section`)
 
@@ -79,7 +79,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=mesures`
 
 ## Surveillance, signalement, mesures.
 
-Comment Nexora détecte un abus sans lire les données métier des clients, adresse de signalement, avis préalable, suspension et résiliation, droit de réponse [À COMPLÉTER PAR LE FONDATEUR]. Texte [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
+Comment Nexora AI détecte un abus sans lire les données métier des clients, adresse de signalement, avis préalable, suspension et résiliation, droit de réponse [À COMPLÉTER PAR LE FONDATEUR]. Texte [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
 
 ### Bloc 7 — Section (`block_section`)
 

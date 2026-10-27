@@ -7,7 +7,7 @@
     "slug": "",
     "title": "Home",
     "seo_title": "AI automation for small businesses in Quebec",
-    "seo_description": "Nexora designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, under your control. Let's talk.",
+    "seo_description": "Nexora AI designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, under your control. Let's talk.",
     "canonical": null
   },
   "blocks": [
@@ -20,9 +20,9 @@
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Nexora · AI for Quebec businesses",
+        "eyebrow": "Nexora AI · AI for Quebec businesses",
         "headline": "AI that works for your business. Under your control.",
-        "subheadline": "Nexora designs, installs and supports AI systems built around how you work: running on your own server, or hosted in our infrastructure in Quebec.",
+        "subheadline": "Nexora AI designs, installs and supports AI systems built around how you work: running on your own server, or hosted in our infrastructure in Quebec.",
         "primary_label": "Talk about my project",
         "primary_href": "/en/contact/",
         "secondary_label": "See the solutions",
@@ -35,7 +35,7 @@
       "claims": ["CL-01"],
       "fields": {
         "columns": "3",
-        "layout": "grille",
+        "layout": "bento",
         "tone": "clair"
       },
       "translation": {
@@ -114,7 +114,7 @@
       },
       "translation": {
         "title": "Your premises. Or ours.",
-        "body": "<p>AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora offers two ways to get there.</p>"
+        "body": "<p>AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora AI offers two ways to get there.</p>"
       }
     },
     {
@@ -292,7 +292,7 @@
       ],
       "fields": {
         "columns": "3",
-        "layout": "grille",
+        "layout": "bento",
         "tone": "sombre"
       },
       "translation": {
@@ -381,7 +381,7 @@
           },
           {
             "question": "Why not a general-purpose assistant such as ChatGPT?",
-            "answer": "A general-purpose assistant answers general questions well. What Nexora adds: a choice of where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
+            "answer": "A general-purpose assistant answers general questions well. What Nexora AI adds: a choice of where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
           },
           {
             "question": "Do we need a powerful server?",
