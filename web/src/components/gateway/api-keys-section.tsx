@@ -129,7 +129,7 @@ export function ApiKeysSection({
                           : formatMicroCad(lang, k.spendCapMicro)}
                       </td>
                       <td
-                        className={`whitespace-nowrap px-4 py-3 ${status === "active" ? "text-success" : "text-accent-text"}`}
+                        className={`whitespace-nowrap px-4 py-3 ${status === "active" ? "text-fg" : "text-accent-text"}`}
                       >
                         {t.status[status]}
                       </td>

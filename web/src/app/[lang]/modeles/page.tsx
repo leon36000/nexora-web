@@ -50,13 +50,7 @@ export default async function ModelsPage({
           {t.catalog.lead}
         </p>
       </header>
-      <Suspense
-        fallback={
-          <p className="mt-10 text-fg-muted" role="status">
-            …
-          </p>
-        }
-      >
+      <Suspense fallback={<CatalogSkeleton lang={lang} />}>
         <CatalogList lang={lang} searchParams={searchParams} />
       </Suspense>
     </Section>
@@ -96,7 +90,7 @@ async function CatalogList({
         action={localizePath(lang, "/modeles")}
         className="mt-10"
       />
-      <p className="mt-8 text-small text-fg-muted" role="status">
+      <p className="mt-8 min-h-[4rem] text-small text-fg-muted" role="status">
         {fmt(t.catalog.count, { count: models.length })}
         {" · "}
         {t.catalog.priceNote}
@@ -119,6 +113,36 @@ async function CatalogList({
           ))}
         </ul>
       )}
+    </>
+  );
+}
+
+/**
+ * Coque affichée pendant la lecture des filtres de l'URL : mêmes filtres et même gabarit que la liste,
+ * pour éviter tout saut de mise en page (CLS) à l'arrivée du contenu.
+ */
+function CatalogSkeleton({ lang }: { lang: Lang }) {
+  const t = getGatewayDictionary(lang);
+  return (
+    <>
+      <CatalogFilters
+        t={t}
+        values={{ residency: "", capability: "", kind: "" }}
+        action={localizePath(lang, "/modeles")}
+        className="mt-10"
+      />
+      <p
+        className="mt-8 min-h-[4rem] text-small text-fg-muted"
+        aria-hidden="true"
+      >
+        {t.catalog.priceNote}
+      </p>
+      <div
+        aria-hidden="true"
+        className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        <div className="min-h-[22rem] rounded-lg border border-line bg-surface" />
+      </div>
     </>
   );
 }

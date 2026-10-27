@@ -109,7 +109,7 @@ export function CreateKeyForm({ t }: { t: AccountText }) {
           >
             {t.close}
           </Button>
-          <span role="status" className="text-small text-success">
+          <span role="status" className="text-small text-fg">
             {copied ? t.copied : ""}
           </span>
         </div>
