@@ -37,8 +37,7 @@ export const vpsEnCA: VpsDictionary = {
 
   common: {
     priceNote: "Prices in Canadian dollars (CAD), before taxes.",
-    taxes:
-      "GST and QST calculated at checkout based on your address (Stripe Tax).",
+    taxes: "GST and QST calculated at checkout based on your address.",
     renewal:
       "Renews automatically at the same rate each period, cancellable at any time (service runs until the end of the paid period).",
     beforeTaxes: "before taxes",
@@ -102,7 +101,7 @@ export const vpsEnCA: VpsDictionary = {
 
   configurator: {
     title: "Configure and order",
-    lead: "Four choices, then secure payment through Stripe: plan, application, term and SSH key.",
+    lead: "Four choices, then secure payment: plan, application, term and SSH key.",
     stepPlan: "1. Plan",
     stepApp: "2. Application",
     stepTerm: "3. Term",
@@ -149,7 +148,7 @@ export const vpsEnCA: VpsDictionary = {
     submit: "Order",
     submitting: "Redirecting to payment…",
     stripeNote:
-      "Payment takes place on Stripe’s secure page. You enter no card details on this site.",
+      "Payment takes place on a secure page. You enter no card details on this site.",
     loginLink: "Sign in",
     signupLink: "Create an account",
     errors: {
@@ -247,7 +246,7 @@ export const vpsEnCA: VpsDictionary = {
       },
       taxes: {
         q: "Do prices include taxes?",
-        a: "No. Prices are in Canadian dollars, before taxes. GST and QST are calculated at checkout based on your address (Stripe Tax).",
+        a: "No. Prices are in Canadian dollars, before taxes. GST and QST are calculated at checkout based on your address.",
       },
     },
   },
