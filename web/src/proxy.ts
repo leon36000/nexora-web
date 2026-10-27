@@ -1,7 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { DEFAULT_LANG } from "@/i18n/config";
 import { embedCspFor } from "@/lib/embed-policy";
-import { billingFormCsp, mergeCsp, pageCsp } from "@/lib/security-headers";
+import {
+  API_CSP,
+  billingFormCsp,
+  mergeCsp,
+  pageCsp,
+} from "@/lib/security-headers";
 import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
 
 /**
@@ -17,9 +22,35 @@ import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
  * toute page, en plus du `Disallow: /` de robots.txt (voir lib/seo/site-env.ts).
  * CSP : politique de base sur toutes les pages (voir lib/security-headers.ts) ; sur les pages de la bulle WorkStudio,
  * l'origine configurée s'y ajoute (voir lib/embed-policy.ts) ; sur le tableau de bord et la carte VPS de l'espace client,
- * les pages hébergées de Stripe s'ajoutent à `form-action` seulement (voir `billingFormCsp`). Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
+ * les pages hébergées de Stripe s'ajoutent à `form-action` seulement (voir `billingFormCsp`). Les fichiers statiques (avec extension) et `/_next` ne passent pas ici (matcher) ;
+ * `/api`, `/v1` et `/og` n'y passent que pour le contrôle des adresses mal formées (400).
  */
+
+/** Pourcentage invalide (`%E0%A4%A`, `%ff`) ou octet nul : Next répond 500 « Internal Server Error » à ces adresses. */
+function isMalformedPath(pathname: string): boolean {
+  try {
+    return decodeURIComponent(pathname).includes("\0");
+  } catch {
+    return true;
+  }
+}
+
+const API_PREFIX = /^\/(?:api|v1|og)(?:\/|$)/;
+
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  // Adresse mal formée : 400 net, avant tout routage (aucune page, aucune écriture de cache, aucun journal d'erreur).
+  if (isMalformedPath(pathname))
+    return new NextResponse("Bad Request", {
+      status: 400,
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "cache-control": "no-store",
+        "content-security-policy": API_CSP,
+      },
+    });
+  // /api, /v1 et /og ne passent ici que pour le contrôle ci-dessus : ni langue, ni CSP de page (la leur vient de next.config).
+  if (API_PREFIX.test(pathname)) return NextResponse.next();
   const response = route(request);
   // Aperçu (Draft Mode, cookie posé par /api/preview) : jamais indexable, quelle que soit la page.
   if (request.cookies.has("__prerender_bypass"))
@@ -67,5 +98,9 @@ export const config = {
   // Exclut /api, /v1, /og, /_next et les fichiers À LA RACINE (robots.txt, sitemap.xml, icon.svg, clé IndexNow…).
   // Un point plus loin dans le chemin reste une page : fiche d'un modèle `/modeles/openai/gpt-4.1`.
   // Tout nouveau préfixe non localisé (webhooks, etc.) doit être ajouté ici.
-  matcher: ["/((?!api|v1|og/|_next|[^/]+\\.[a-zA-Z0-9]+$).*)"],
+  matcher: [
+    "/((?!api|v1|og/|_next|[^/]+\\.[a-zA-Z0-9]+$).*)",
+    // Seulement pour répondre 400 aux adresses mal formées (voir `proxy`).
+    "/(api|v1|og)(/.*)?",
+  ],
 };

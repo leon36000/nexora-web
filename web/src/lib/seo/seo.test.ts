@@ -615,6 +615,18 @@ describe("images Open Graph", () => {
       kind: "page",
       slug: "opsys-ai",
     });
+    expect(resolveOgTarget(["vps", "hermes-agent"], routes)).toEqual({
+      kind: "vps",
+      code: "hermes-agent",
+    });
+    expect(resolveOgTarget(["agents", "mon-agent"], routes)).toEqual({
+      kind: "agent",
+      slug: "mon-agent",
+    });
+    // forme invalide : jamais de texte tiré de l'adresse
+    expect(resolveOgTarget(["vps", "<script>"], routes)).toBeNull();
+    expect(resolveOgTarget(["vps", "a", "b"], routes)).toBeNull();
+    expect(resolveOgTarget(["agents", "-x-"], routes)).toBeNull();
     expect(resolveOgTarget(["modeles", "<script>"], routes)).toBeNull();
     expect(resolveOgTarget(["..", "etc"], routes)).toBeNull();
   });

@@ -65,6 +65,22 @@ export function targetExists(
   };
 }
 
+/**
+ * Lien vers une page éditoriale de Directus (politique de confidentialité, mentions légales…) depuis le corps d'une
+ * page de l'application : localisé pour la langue d'affichage, ou `null` si la page n'est pas publiée (brouillon, pas
+ * encore créée) pour ne jamais afficher un lien qui mène à un 404. Directus muet sans instantané : lien conservé.
+ */
+export function publishedPageHref(
+  alt: Alternates,
+  lang: Lang,
+  neutralPath: string,
+  appRoots: readonly string[] = [],
+): string | null {
+  const href = resolveHrefForLang(alt, lang, neutralPath);
+  const exists = targetExists(alt, appRoots);
+  return exists && !exists(href) ? null : href;
+}
+
 export function buildChrome(
   lang: Lang,
   dict: Dictionary,
@@ -157,6 +173,8 @@ export function buildChrome(
                 href: resolveHrefForLang(alt, lang, l.href),
               })),
             }))
+            // Une colonne dont tous les liens sont masqués disparaît avec son titre.
+            .filter((c) => c.links.length > 0)
         : dictFooter.columns,
     legal:
       legalRoots.length > 0

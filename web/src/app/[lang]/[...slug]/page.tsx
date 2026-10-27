@@ -5,6 +5,7 @@ import { CmsPage } from "@/components/blocks/cms-page";
 import { Unavailable } from "@/components/blocks/unavailable";
 import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { notFoundMetadata } from "@/lib/metadata";
 import { normalizeSlug } from "@/lib/safe-href";
 import { buildCmsMetadata } from "@/lib/seo";
 import {
@@ -30,9 +31,9 @@ export async function generateMetadata(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const slug = normalizeSlug((await props.params).slug);
-  if (slug === null) notFound();
+  if (slug === null) return notFoundMetadata(lang);
   const result = await getPage(lang, slug);
-  if (result.status === "not-found") notFound();
+  if (result.status === "not-found") return notFoundMetadata(lang);
   if (result.status === "unavailable")
     return { robots: { index: false, follow: false } };
   const settings = await getSiteSettings(lang);

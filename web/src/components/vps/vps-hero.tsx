@@ -21,11 +21,13 @@ export function VpsHero({
   t: VpsDictionary;
   withActions: boolean;
   /**
-   * Squelette de chargement (frontière Suspense) : le HTML streamé contient aussi la vraie page, donc le titre ne
-   * doit pas y être un h1 (deux h1 identiques dans le même document, relevés par l'audit de structure).
+   * Coque de chargement (frontière Suspense) : Next diffuse la coque ET le contenu final dans le même HTML ; sans
+   * cette option la page contiendrait deux h1 et deux fils d'Ariane. La coque reprend l'aspect du titre sans le
+   * structurer.
    */
   skeleton?: boolean;
 }) {
+  const Title = skeleton ? "p" : "h1";
   return (
     <Section
       tone="light"
@@ -39,22 +41,23 @@ export function VpsHero({
         </div>
       }
     >
-      <Breadcrumb
-        label={t.nav.breadcrumb}
-        items={[
-          { name: t.nav.home, href: localizePath(lang, "/") },
-          { name: t.nav.vps },
-        ]}
-      />
+      {skeleton ? null : (
+        <Breadcrumb
+          label={t.nav.breadcrumb}
+          items={[
+            { name: t.nav.home, href: localizePath(lang, "/") },
+            { name: t.nav.vps },
+          ]}
+        />
+      )}
       <header className="mt-4 max-w-3xl">
         <Badge tone="accent">{t.hero.label}</Badge>
-        {skeleton ? (
-          <p className="mt-4 text-h1 text-fg">{t.hero.title}</p>
-        ) : (
-          <h1 id="vps-title" className="mt-4 text-h1 text-fg">
-            {t.hero.title}
-          </h1>
-        )}
+        <Title
+          id={skeleton ? undefined : "vps-title"}
+          className="mt-4 text-h1 text-fg"
+        >
+          {t.hero.title}
+        </Title>
         <p className="mt-5 max-w-2xl text-lead text-fg-muted">{t.hero.lead}</p>
         {withActions ? (
           <p className="mt-4 max-w-2xl text-small text-fg-muted">

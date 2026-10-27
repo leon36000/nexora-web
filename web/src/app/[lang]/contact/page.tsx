@@ -7,8 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
 import { isLang, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { publishedPageHref } from "@/lib/chrome";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
+import { getAlternates } from "@/server/cms/read";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -31,6 +33,12 @@ export default async function ContactPage() {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const t = getDictionary(lang).contact;
+  // La politique de confidentialité est une page de Directus : sans publication, pas de lien (jamais de 404).
+  const privacyHref = publishedPageHref(
+    await getAlternates(),
+    lang,
+    "/confidentialite",
+  );
   return (
     <Section tone="light" aria-labelledby="contact-title">
       <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
@@ -63,7 +71,7 @@ export default async function ContactPage() {
           <ContactForm
             lang={lang}
             t={t}
-            privacyHref={localizePath(lang, "/confidentialite")}
+            privacyHref={privacyHref}
             homeHref={localizePath(lang, "/")}
           />
         </div>

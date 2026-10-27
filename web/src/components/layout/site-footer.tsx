@@ -73,19 +73,25 @@ export function SiteFooter({
         </div>
 
         <div className="mt-14 flex flex-col gap-6 border-t border-line pt-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h2 className="sr-only">{footer.legalTitle}</h2>
-            <ul className="flex flex-wrap gap-x-6">
-              {model.legal.map((link) => (
-                <li key={`${link.href}|${link.label}`}>
-                  <Link href={link.href} prefetch={false} className={linkClass}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-8">
+          {model.legal.length > 0 ? (
+            <div>
+              <h2 className="sr-only">{footer.legalTitle}</h2>
+              <ul className="flex flex-wrap gap-x-6">
+                {model.legal.map((link) => (
+                  <li key={`${link.href}|${link.label}`}>
+                    <Link
+                      href={link.href}
+                      prefetch={false}
+                      className={linkClass}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-8 lg:ml-auto">
             <LanguageSwitcher
               current={lang}
               variant="full"

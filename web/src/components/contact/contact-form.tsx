@@ -70,7 +70,8 @@ export function ContactForm({
 }: {
   lang: Lang;
   t: T;
-  privacyHref: string;
+  /** `null` : la politique n'est pas publiée, le libellé reste sans lien. */
+  privacyHref: string | null;
   homeHref: string;
 }) {
   const uid = useId();
@@ -470,12 +471,16 @@ export function ContactForm({
 
           <p className="text-small text-fg-muted">
             {f.privacy.before}
-            <Link
-              href={privacyHref}
-              className="text-accent-text underline underline-offset-4"
-            >
-              {f.privacy.link}
-            </Link>
+            {privacyHref ? (
+              <Link
+                href={privacyHref}
+                className="text-accent-text underline underline-offset-4"
+              >
+                {f.privacy.link}
+              </Link>
+            ) : (
+              f.privacy.link
+            )}
             {f.privacy.after}
           </p>
 

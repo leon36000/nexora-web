@@ -124,6 +124,64 @@ describe("proxy : CSP et formulaires qui redirigent vers Stripe", () => {
   });
 });
 
+describe("proxy : adresses mal formées", () => {
+  const re = (i: number) =>
+    new RegExp(`^${(config.matcher[i] as string).replace(/\(\?!/, "(?!")}$`);
+
+  it("répond 400 (et non 500) à un pourcentage invalide ou à un octet nul, sur les pages comme sur l'API", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    for (const path of [
+      "/%E0%A4%A",
+      "/en/faq/%E0%A4%A",
+      "/modeles/%ff/x",
+      "/%00",
+      "/en/%00",
+      "/api/media/%E0%A4%A",
+      "/og/fr/modeles/%E0%A4%A",
+      "/v1/%E0%A4%A",
+    ]) {
+      const res = await proxy(req(path));
+      expect(res.status, path).toBe(400);
+      expect(res.headers.get("cache-control"), path).toBe("no-store");
+      expect(res.headers.get("x-middleware-rewrite"), path).toBeNull();
+    }
+  });
+
+  it("laisse passer une adresse valide, accents et pourcentages corrects compris", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    expect((await proxy(req("/solutions/%C3%A9t%C3%A9"))).status).toBe(200);
+    expect(
+      (await proxy(req("/en/solutions/%C3%A9t%C3%A9"))).headers.get(
+        "x-middleware-next",
+      ),
+    ).toBe("1");
+  });
+
+  it("l'API, la passerelle et /og ne reçoivent ni réécriture, ni CSP de page (la leur vient de next.config)", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    for (const path of ["/api/health", "/v1/models", "/og/fr/opsys-ai"]) {
+      const res = await proxy(req(path));
+      expect(res.headers.get("x-middleware-next"), path).toBe("1");
+      expect(res.headers.get("x-middleware-rewrite"), path).toBeNull();
+      expect(res.headers.get("content-security-policy"), path).toBeNull();
+    }
+  });
+
+  it("le second matcher couvre /api, /v1 et /og, pas /ogre", () => {
+    const m = re(1);
+    for (const p of [
+      "/api/health",
+      "/api/media/x",
+      "/v1/models",
+      "/og/fr",
+      "/og/fr/a/b",
+    ])
+      expect(m.test(p), p).toBe(true);
+    for (const p of ["/ogre", "/apiary", "/", "/en/api"])
+      expect(m.test(p), p).toBe(false);
+  });
+});
+
 describe("proxy : CSP des pages et de la bulle WorkStudio", () => {
   it("pose la CSP de base sur toute page, sans origine tierce, même sans bulle", async () => {
     vi.stubEnv("SITE_ENV", "production");

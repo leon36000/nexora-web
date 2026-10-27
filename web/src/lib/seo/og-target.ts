@@ -5,8 +5,13 @@ export type OgTarget =
   | { kind: "home" }
   | { kind: "app"; route: AppRoute }
   | { kind: "model"; id: string }
+  | { kind: "vps"; code: string }
+  | { kind: "agent"; slug: string }
   | { kind: "page"; slug: string };
 
+/** Mêmes formes que les pages `/vps/[application]` et `/agents/[slug]`. */
+const VPS_CODE = /^[a-z0-9][a-z0-9-]{0,59}$/;
+const AGENT_SLUG = /^[a-z0-9][a-z0-9-]{0,58}[a-z0-9]$/;
 const MODEL_ID = /^[a-z0-9][a-z0-9._-]{0,40}\/[a-z0-9][a-z0-9._:-]{0,80}$/;
 
 /**
@@ -25,6 +30,19 @@ export function resolveOgTarget(
   if (segs[0] === "modeles" && segs.length > 1) {
     const id = segs.slice(1).map(decodeURIComponent).join("/");
     return MODEL_ID.test(id) ? { kind: "model", id } : null;
+  }
+  // Fiches de l'application : leur titre vient du catalogue VPS / des agents publiés, jamais de l'adresse.
+  if (segs[0] === "vps") {
+    const code = segs[1] ?? "";
+    return segs.length === 2 && VPS_CODE.test(code)
+      ? { kind: "vps", code }
+      : null;
+  }
+  if (segs[0] === "agents") {
+    const slug = segs[1] ?? "";
+    return segs.length === 2 && AGENT_SLUG.test(slug)
+      ? { kind: "agent", slug }
+      : null;
   }
   const slug = normalizeSlug([...segs]);
   return slug === null || slug === "" ? null : { kind: "page", slug };

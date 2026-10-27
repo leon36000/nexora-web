@@ -25,6 +25,19 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: SECURITY_HEADERS },
       { source: "/api/:path*", headers: csp },
       { source: "/v1/:path*", headers: csp },
+      // Réponses qui ne sont pas des pages : images, texte, XML et icône n'ont besoin d'aucune ressource.
+      { source: "/og/:path*", headers: csp },
+      { source: "/llms.txt", headers: csp },
+      { source: "/sitemap.xml", headers: csp },
+      { source: "/robots.txt", headers: csp },
+      { source: "/icon.svg", headers: csp },
+    ];
+  },
+  async redirects() {
+    // Les navigateurs demandent /favicon.ico d'office (surtout avant que le document n'ait annoncé son icône) : on les
+    // renvoie vers l'icône SVG du site plutôt que de journaliser un 404.
+    return [
+      { source: "/favicon.ico", destination: "/icon.svg", permanent: true },
     ];
   },
   async rewrites() {

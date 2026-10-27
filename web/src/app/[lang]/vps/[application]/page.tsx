@@ -21,7 +21,7 @@ import { PlanCard } from "@/components/vps/plan-card";
 import { fmt } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { getVpsDictionary } from "@/i18n/vps";
-import { buildPageMetadata } from "@/lib/metadata";
+import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/site";
 import {
   buildBreadcrumbJsonLd,
@@ -55,7 +55,7 @@ export async function generateMetadata(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const found = await findApp((await props.params).application);
-  if (!found) notFound();
+  if (!found) return notFoundMetadata(lang);
   const { app } = found;
   const t = getVpsDictionary(lang);
   const m = app.kind === "guide" ? t.meta.guide : t.meta.app;

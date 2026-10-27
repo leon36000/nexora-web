@@ -14,7 +14,7 @@ import { getAgentsDictionary } from "@/i18n/agents";
 import { isLang, localizePath } from "@/i18n/config";
 import { formatInteger } from "@/i18n/gateway";
 import { agentSamples, agentStreamingSample } from "@/lib/agent-samples";
-import { buildPageMetadata } from "@/lib/metadata";
+import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_URL } from "@/lib/site";
 import { getPublicAgents } from "@/server/agents/read";
@@ -41,7 +41,7 @@ export async function generateMetadata(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const agent = await findAgent((await props.params).slug);
-  if (!agent) notFound();
+  if (!agent) return notFoundMetadata(lang);
   const t = getAgentsDictionary(lang);
   const name = lang === "fr" ? agent.nameFr : agent.nameEn;
   return buildPageMetadata({
@@ -146,7 +146,7 @@ export default async function AgentPage(
             {fmt(d.exampleLead, { url: baseUrl })}
           </p>
           <div className="mt-6">
-            <CodeSamples samples={agentSamples(baseUrl, agent.id)} />
+            <CodeSamples samples={agentSamples(baseUrl, agent.id, lang)} />
           </div>
           <h3 className="mt-10 text-h4 text-fg">{d.streamTitle}</h3>
           <p className="mt-2 max-w-2xl text-body text-fg-muted">
@@ -154,7 +154,7 @@ export default async function AgentPage(
           </p>
           <CodeBlock
             label={d.streamTitle}
-            code={agentStreamingSample(agent.id)}
+            code={agentStreamingSample(agent.id, lang)}
           />
           <div className="mt-10 flex flex-wrap gap-4">
             <ButtonLink href={localizePath(lang, "/compte")} arrow>
