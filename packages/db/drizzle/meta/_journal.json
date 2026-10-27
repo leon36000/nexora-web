@@ -64,13 +64,6 @@
       "when": 1793079238456,
       "tag": "0008_s7_agents_heberges",
       "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1793099678111,
-      "tag": "0009_i3_paiement_tardif",
-      "breakpoints": true
     }
   ]
 }

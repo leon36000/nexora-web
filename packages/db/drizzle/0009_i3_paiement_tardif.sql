@@ -1,2 +1,0 @@
-ALTER TABLE "vps_orders" DROP CONSTRAINT "vps_orders_status_check";--> statement-breakpoint
-ALTER TABLE "vps_orders" ADD CONSTRAINT "vps_orders_status_check" CHECK ("vps_orders"."status" IN ('awaiting_payment', 'paid', 'provisioning', 'fulfilled', 'failed', 'canceled', 'expired', 'late_payment'));
