@@ -28,6 +28,20 @@ describe("proxy : langues (comportement existant)", () => {
   });
 });
 
+describe("proxy : page Tarifs (deux adresses)", () => {
+  it("/en/pricing est servi par la route /en/tarifs ; /en/tarifs redirige vers l'adresse canonique", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    const served = await proxy(req("/en/pricing"));
+    expect(served.headers.get("x-middleware-rewrite")).toContain("/en/tarifs");
+    const redirect = await proxy(req("/en/tarifs"));
+    expect(redirect.status).toBe(308);
+    expect(redirect.headers.get("location")).toContain("/en/pricing");
+    expect(
+      (await proxy(req("/tarifs"))).headers.get("x-middleware-rewrite"),
+    ).toContain("/fr/tarifs");
+  });
+});
+
 describe("proxy : X-Robots-Tag hors production", () => {
   it("pose noindex, nofollow sur toute page quand SITE_ENV n'est pas « production »", async () => {
     for (const value of [undefined, "staging", "development"]) {

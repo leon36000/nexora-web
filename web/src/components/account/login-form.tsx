@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { AccountDictionary } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
+import { parseOffer, withOffer } from "@/lib/offer-param";
 import { Field, Notice } from "./field";
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 
 export function LoginForm({ lang, t, common }: Props) {
   const router = useRouter();
+  const offer = parseOffer(useSearchParams().get("offre"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -29,7 +31,7 @@ export function LoginForm({ lang, t, common }: Props) {
     setResent(false);
     const { error: err } = await authClient.signIn.email({ email, password });
     if (!err) {
-      router.push(localizePath(lang, "/compte"));
+      router.push(withOffer(localizePath(lang, "/compte"), offer));
       router.refresh();
       return;
     }
@@ -43,7 +45,7 @@ export function LoginForm({ lang, t, common }: Props) {
   async function resend() {
     await authClient.sendVerificationEmail({
       email,
-      callbackURL: localizePath(lang, "/compte/verification"),
+      callbackURL: withOffer(localizePath(lang, "/compte/verification"), offer),
     });
     setResent(true);
   }

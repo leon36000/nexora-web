@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { getAgentsDictionary } from "@/i18n/agents";
 import type { Lang } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
+import { getPricingDictionary } from "@/i18n/pricing";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getVpsDictionary } from "@/i18n/vps";
 
@@ -24,6 +25,16 @@ export type AppRoute = {
 };
 
 export const APP_ROUTES: readonly AppRoute[] = [
+  {
+    // Offres d'abonnement publiées (/tarifs en français, /en/pricing en anglais : voir LOCALIZED_ROUTES).
+    path: "/tarifs",
+    dir: "tarifs",
+    dated: null,
+    meta: (lang) => {
+      const m = getPricingDictionary(lang).meta;
+      return { title: m.title, description: m.description };
+    },
+  },
   {
     path: "/contact",
     dir: "contact",

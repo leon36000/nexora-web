@@ -190,6 +190,7 @@ export const accountEnCA: AccountDictionary = {
       renews: "Next due date: {date}",
       cancels: "Ends on {date}",
       graceUntil: "Payment to be settled before {date}",
+      chosen: "You chose the {name} plan. Confirm to continue to secure payment.",
       statuses: {
         incomplete: "Awaiting payment",
         incomplete_expired: "Expired",

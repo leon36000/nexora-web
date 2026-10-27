@@ -1,9 +1,9 @@
 import type { Logger } from "@nexora/log";
 import { z } from "zod";
-import { LANGS } from "@/i18n/config";
+import { LANGS, localizePath } from "@/i18n/config";
 import { normalizeSlug } from "@/lib/safe-href";
 import { checkAdminAuth } from "./auth";
-import { LANG_CODES, pageIdTag, pageSlugTag, SLUGS_TAG } from "./cms/tags";
+import { LANG_CODES, PLANS_TAG, pageIdTag, pageSlugTag, SLUGS_TAG } from "./cms/tags";
 
 /**
  * POST /api/revalidate : appelé par la garde de publication de Directus après une promotion acceptée
@@ -41,6 +41,10 @@ export function planRevalidation(body: RevalidateBody): RevalidatePlan {
     }
     case "navigation":
       tags.add("nav");
+      break;
+    case "subscription_plans":
+      tags.add(PLANS_TAG);
+      for (const lang of LANGS) paths.add(localizePath(lang, "/tarifs"));
       break;
     case "site_settings":
       tags.add("site");

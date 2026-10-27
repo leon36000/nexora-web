@@ -20,6 +20,7 @@ import { getDb } from "@/server/db";
 import { listApiKeys } from "@/server/gateway/keys";
 import { usageByDayAndModel } from "@/server/gateway/usage";
 import { loadBillingConfig } from "@/server/ledger/config";
+import { parseOffer } from "@/lib/offer-param";
 import { getSettings } from "@/server/payments/settings";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -107,6 +108,18 @@ async function AccountContent({
   };
 
   const q = await searchParams;
+  const wanted = parseOffer(first(q.offre) ?? null);
+  const ownedCodes = new Set(
+    data.subscriptions
+      .filter((s) => s.access === "full" || s.access === "grace")
+      .map((s) => s.planCode),
+  );
+  const chosenOffer =
+    wanted && plans
+      ? (plans.find(
+          (p) => p.code === wanted && p.stripePriceId && !ownedCodes.has(p.code),
+        ) ?? null)
+      : null;
   const errorCode = first(q.erreur);
   const errors = t.dashboard.alerts.errors as Record<string, string>;
   const promoErrors = t.promo.errors as Record<string, string>;
@@ -163,6 +176,7 @@ async function AccountContent({
         config={config}
         plans={plans}
         payment={payment}
+        chosenOffer={chosenOffer}
         flash={flash}
       />
       <ApiKeysSection

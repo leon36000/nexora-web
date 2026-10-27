@@ -198,6 +198,7 @@ export const accountFrCA = {
       renews: "Prochaine échéance : {date}",
       cancels: "Se termine le {date}",
       graceUntil: "Paiement à régulariser avant le {date}",
+      chosen: "Vous avez choisi l’offre {name}. Confirmez pour passer au paiement sécurisé.",
       statuses: {
         incomplete: "En attente du paiement",
         incomplete_expired: "Expiré",

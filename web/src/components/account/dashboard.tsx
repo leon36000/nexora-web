@@ -32,6 +32,8 @@ export interface DashboardProps {
     liveMode: boolean;
     fee: { percent: number; minCents: number } | null;
   };
+  /** Offre choisie sur la page Tarifs (`?offre=`), publiée, vendable et pas déjà en cours. */
+  chosenOffer?: SubscriptionPlan | null;
   flash: { kind: "success" | "info" | "error"; message: string } | null;
 }
 
@@ -82,6 +84,7 @@ export function Dashboard({
   config,
   plans,
   payment,
+  chosenOffer,
   flash,
 }: DashboardProps) {
   const d = t.dashboard;
@@ -111,6 +114,43 @@ export function Dashboard({
       {flash ? (
         <div className="mt-8">
           <Notice tone={flash.kind}>{flash.message}</Notice>
+        </div>
+      ) : null}
+
+      {chosenOffer && isOwner ? (
+        <div className="mt-8">
+          <Card as="section" aria-labelledby="chosen-title">
+            <h2 id="chosen-title" className="text-h4 text-fg">
+              {fmt(d.subscriptions.chosen, {
+                name:
+                  chosenOffer.translations[lang === "fr" ? "fr-CA" : "en-CA"]
+                    ?.name ?? chosenOffer.code,
+              })}
+            </h2>
+            <p className="mt-2 text-body text-fg">
+              {fmt(
+                chosenOffer.interval === "month"
+                  ? d.subscriptions.available.perMonth
+                  : d.subscriptions.available.perYear,
+                { amount: formatCad(lang, chosenOffer.priceCents) },
+              )}
+              {chosenOffer.trialDays > 0
+                ? ` · ${fmt(d.subscriptions.available.trial, { days: chosenOffer.trialDays })}`
+                : ""}
+            </p>
+            <form
+              method="post"
+              action="/api/billing/checkout/subscription"
+              className="mt-5"
+            >
+              <Hidden lang={lang} />
+              <input type="hidden" name="plan" value={chosenOffer.code} />
+              <PromoField lang={lang} t={t} id="promo-chosen" />
+              <Button type="submit" arrow>
+                {d.subscriptions.available.subscribe}
+              </Button>
+            </form>
+          </Card>
         </div>
       ) : null}
 
