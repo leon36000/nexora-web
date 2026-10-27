@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { DEFAULT_LANG } from "@/i18n/config";
+import { embedCspFor } from "@/lib/embed-policy";
 import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
 
 /**
@@ -13,15 +14,23 @@ import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
  * En aperçu (cookie du Draft Mode), l'en-tête `X-Robots-Tag: noindex` est ajouté à toute réponse.
  * Hors production (`SITE_ENV` différent de « production », ou absent) : `X-Robots-Tag: noindex, nofollow` sur
  * toute page, en plus du `Disallow: /` de robots.txt (voir lib/seo/site-env.ts).
- * Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
+ * Bulle WorkStudio : sur les pages choisies dans l'administration, ajoute une CSP qui n'ouvre que l'origine
+ * configurée (voir lib/embed-policy.ts). Les fichiers statiques (avec extension), `/api`, `/v1`, `/og` et `/_next` ne passent pas ici (matcher).
  */
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = route(request);
   // Aperçu (Draft Mode, cookie posé par /api/preview) : jamais indexable, quelle que soit la page.
   if (request.cookies.has("__prerender_bypass"))
     response.headers.set("x-robots-tag", "noindex, nofollow, noarchive");
   else if (!isIndexableEnvironment())
     response.headers.set("x-robots-tag", NOINDEX_HEADER);
+  // Pages qui accueillent la bulle WorkStudio : CSP limitée à l'origine configurée (aucun en-tête ailleurs).
+  if (request.method === "GET" && response.status < 300) {
+    const csp = await embedCspFor(request.nextUrl.pathname, {
+      dev: process.env.NODE_ENV !== "production",
+    });
+    if (csp) response.headers.set("content-security-policy", csp);
+  }
   return response;
 }
 

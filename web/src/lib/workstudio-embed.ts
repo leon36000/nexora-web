@@ -77,3 +77,25 @@ export function embedCsp(
     "base-uri 'self'",
   ].join("; ");
 }
+
+export interface EmbedScriptConfig {
+  origin: string;
+  chatIdentifier: string;
+  position: "right" | "left";
+  color: string | null;
+}
+
+/** Attributs `data-*` de la balise `<script src="…/embed.js">` (voir le guide d'intégration de WorkStudio). */
+export function embedScriptAttributes(
+  config: EmbedScriptConfig,
+  label: string,
+): Record<string, string> {
+  return {
+    "data-nexora-chat": config.chatIdentifier,
+    "data-position": config.position,
+    "data-label": label,
+    ...(config.color && isHexColor(config.color)
+      ? { "data-color": config.color }
+      : {}),
+  };
+}

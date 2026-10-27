@@ -16,8 +16,19 @@ const agent = (over: Partial<CallableAgent> = {}): CallableAgent => ({
   runTokenCap: 32000,
   publishedAt: new Date("2026-10-27T10:00:00Z"),
   region: "quebec",
-  instance: { id: "i", baseUrl: "http://ws.interne:3200", secretRef: "workstudio.cle" },
-  price: { id: "p", inputCadMicro: 1_000_000n, outputCadMicro: 0n, perRunCadMicro: 50_000n, isTrial: true, note: "" },
+  instance: {
+    id: "i",
+    baseUrl: "http://ws.interne:3200",
+    secretRef: "workstudio.cle",
+  },
+  price: {
+    id: "p",
+    inputCadMicro: 1_000_000n,
+    outputCadMicro: 0n,
+    perRunCadMicro: 50_000n,
+    isTrial: true,
+    note: "",
+  },
   ...over,
 });
 

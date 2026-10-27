@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
+import { WorkstudioBubble } from "@/components/agents/workstudio-bubble";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { getAgentsDictionary } from "@/i18n/agents";
 import { HTML_LANG, isLang, LANGS } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { buildChrome } from "@/lib/chrome";
 import { SITE_URL } from "@/lib/site";
+import { getPublicEmbed } from "@/server/agents/read";
 import { getAlternates, getNavigation } from "@/server/cms/read";
 import { geist, inter, jetbrainsMono } from "../fonts";
 import "../globals.css";
@@ -28,9 +31,10 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const dict = getDictionary(lang);
-  const [nav, alternates] = await Promise.all([
+  const [nav, alternates, embed] = await Promise.all([
     getNavigation(lang),
     getAlternates(),
+    getPublicEmbed(),
   ]);
   const chrome = buildChrome(lang, dict, nav, alternates);
 
@@ -55,6 +59,19 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
         <main id="contenu" tabIndex={-1}>
           {children}
         </main>
+        {embed ? (
+          <WorkstudioBubble
+            origin={embed.origin}
+            chatIdentifier={embed.chatIdentifier}
+            pages={embed.pages}
+            position={embed.position}
+            color={embed.color}
+            label={
+              (lang === "fr" ? embed.labelFr : embed.labelEn) ??
+              getAgentsDictionary(lang).widget.defaultLabel
+            }
+          />
+        ) : null}
         <SiteFooter
           lang={lang}
           dict={dict}

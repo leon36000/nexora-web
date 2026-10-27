@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   embedAppliesTo,
   embedCsp,
+  embedScriptAttributes,
   isChatIdentifier,
   isHexColor,
   normalizeEmbedOrigin,
@@ -90,5 +91,29 @@ describe("embedCsp", () => {
     const csp = embedCsp("http://localhost:3200", { dev: true });
     expect(csp).toContain("'unsafe-eval'");
     expect(csp).toContain("ws:");
+  });
+});
+
+describe("embedScriptAttributes", () => {
+  const base = {
+    origin: "https://ia.exemple.ca",
+    chatIdentifier: "support",
+    position: "left" as const,
+    color: null,
+  };
+  it("pose l'identifiant du chat, le côté et le libellé", () => {
+    expect(embedScriptAttributes(base, "Discuter")).toEqual({
+      "data-nexora-chat": "support",
+      "data-position": "left",
+      "data-label": "Discuter",
+    });
+  });
+  it("n'ajoute la couleur que si elle est valide", () => {
+    expect(
+      embedScriptAttributes({ ...base, color: "#0a7d33" }, "x")["data-color"],
+    ).toBe("#0a7d33");
+    expect(
+      embedScriptAttributes({ ...base, color: "rouge" }, "x")["data-color"],
+    ).toBeUndefined();
   });
 });
