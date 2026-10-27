@@ -149,7 +149,7 @@ Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est
 
 #### Existe-t-il une solution pour la construction ?
 
-Oui : OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un statut honnête (disponible, en pilote ou prévu).
+Oui : OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un niveau honnête (qualifié localement, à compléter ou prévu). OPSYS-AI est un produit en développement, partiel : aucun déploiement de production complet n'existe.
 
 #### Et la surveillance vidéo par IA ?
 

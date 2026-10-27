@@ -37,7 +37,7 @@ Custom work begins where standard solutions stop. Three built examples that do n
 
 Does yours look like one of them, or none? [Plan a diagnosis](/en/contact/?sujet=diagnostic).
 
-- **A contractor finds their quotes again.** They want to start from older, comparable quotes to prepare a new one, and track real costs afterward. We would connect the quote database, an estimating agent and an approval before anything is sent. For construction, <a href="/en/opsys-ai/">OPSYS-AI</a> already covers part of this path, with its statuses.
+- **A contractor finds their quotes again.** They want to start from older, comparable quotes to prepare a new one, and track real costs afterward. We would connect the quote database, an estimating agent and an approval before anything is sent. For construction, <a href="/en/opsys-ai/">OPSYS-AI</a> aims at this path, as a product in development that shows every availability level.
 - **A distributor processes its suppliers' documents.** Delivery slips, order confirmations and invoices arrive in different formats. The workflow reads them, compares them with each other and flags what does not match, before any action.
 - **A firm prepares case files.** It gathers authorized documents, draws a summary and a list of points to check from them, then hands over to the responsible person. Access rights are defined before the build.
 

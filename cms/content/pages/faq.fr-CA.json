@@ -6,14 +6,14 @@
   "seo": {
     "slug": "faq",
     "title": "Questions fréquentes",
-    "seo_title": "Questions IA PME\u00a0: des réponses franches",
-    "seo_description": "Données, entraînement, prix, Loi 25, erreurs de l'IA, vidéosurveillance, marketing\u00a0: les réponses franches de Nexora AI aux questions des dirigeants de PME.",
+    "seo_title": "Questions IA PME : des réponses franches",
+    "seo_description": "Données, entraînement, prix, Loi 25, erreurs de l'IA, vidéosurveillance, marketing : les réponses franches de Nexora AI aux questions des dirigeants de PME.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Entrée de la FAQ\u00a0: réponses franches en langage de dirigeant.",
+      "role": "Entrée de la FAQ : réponses franches en langage de dirigeant.",
       "claims": ["CL-09"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Questions fréquentes",
         "headline": "Vos questions. Des réponses franches.",
-        "subheadline": "Données, coûts, mise en service, erreurs de l'IA\u00a0: les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.",
+        "subheadline": "Données, coûts, mise en service, erreurs de l'IA : les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.",
         "primary_label": "Poser une question",
         "primary_href": "/contact/",
         "secondary_label": "Lire nos engagements sur vos données",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_faq",
-      "role": "Données et souveraineté\u00a0: huit questions, dont l'entraînement et la vente des données (E03, E04).",
+      "role": "Données et souveraineté : huit questions, dont l'entraînement et la vente des données (E03, E04).",
       "claims": [
         "CL-02",
         "CL-05",
@@ -59,43 +59,43 @@
         "title": "Vos données, vos règles.",
         "items": [
           {
-            "question": "Mes données sortent-elles du Québec\u00a0?",
-            "answer": "Elles restent là où vous le décidez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous\u00a0: ne sortent que les flux que nous listons ensemble avant la mise en service (mises à jour, licences et, si vous l'activez, un modèle externe). Chez nous, vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises\u00a0; les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants, en préparation.\n\nDans les deux cas, nous n'écrivons «\u00a0aucune donnée ne sort\u00a0» que si nous l'avons vérifié sur votre configuration."
+            "question": "Mes données sortent-elles du Québec ?",
+            "answer": "Elles restent là où vous le décidez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous : ne sortent que les flux que nous listons ensemble avant la mise en service (mises à jour, licences et, si vous l'activez, un modèle externe). Chez nous, vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises ; les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants, en préparation.\n\nDans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration."
           },
           {
-            "question": "Mes données servent-elles à entraîner une IA\u00a0?",
+            "question": "Mes données servent-elles à entraîner une IA ?",
             "answer": "Non, jamais. Nexora AI n'utilise ni vos données, ni vos documents, ni vos invites, ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers. Pour un modèle externe que vous activez, les contrats avec les fournisseurs, en préparation, précisent la conservation et l'entraînement."
           },
           {
-            "question": "Mes données sont-elles vendues\u00a0?",
+            "question": "Mes données sont-elles vendues ?",
             "answer": "Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée."
           },
           {
-            "question": "Un serveur au Québec suffit-il\u00a0?",
-            "answer": "Non. La localisation des machines ne dit rien des modèles appelés, des sauvegardes, des journaux ni des sous-traitants. C'est pourquoi nous examinons quatre couches\u00a0: les données, les modèles, le calcul et l'exploitation."
+            "question": "Un serveur au Québec suffit-il ?",
+            "answer": "Non. La localisation des machines ne dit rien des modèles appelés, des sauvegardes, des journaux ni des sous-traitants. C'est pourquoi nous examinons quatre couches : les données, les modèles, le calcul et l'exploitation."
           },
           {
-            "question": "Êtes-vous conformes à la Loi 25\u00a0?",
-            "answer": "Nous ne nous prononçons pas ainsi\u00a0: aucun logiciel et aucun fournisseur ne rend une entreprise conforme, et la responsabilité reste à celle qui détient les renseignements. La loi demande à votre entreprise, entre autres, une évaluation des facteurs relatifs à la vie privée et un contrat écrit avec ses fournisseurs. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation, au centre de confiance."
+            "question": "Êtes-vous conformes à la Loi 25 ?",
+            "answer": "Nous ne nous prononçons pas ainsi : aucun logiciel et aucun fournisseur ne rend une entreprise conforme, et la responsabilité reste à celle qui détient les renseignements. La loi demande à votre entreprise, entre autres, une évaluation des facteurs relatifs à la vie privée et un contrat écrit avec ses fournisseurs. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation, au centre de confiance."
           },
           {
-            "question": "Peut-on utiliser un modèle externe\u00a0?",
-            "answer": "Oui, à deux conditions\u00a0: vous l'activez par écrit, et il apparaît au schéma des flux comme un flux sortant. Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, et le système ne bascule jamais vers un tel service sans vous le dire."
+            "question": "Peut-on utiliser un modèle externe ?",
+            "answer": "Oui, à deux conditions : vous l'activez par écrit, et il apparaît au schéma des flux comme un flux sortant. Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, et le système ne bascule jamais vers un tel service sans vous le dire."
           },
           {
-            "question": "Le système fonctionne-t-il hors ligne\u00a0?",
-            "answer": "Nous ne promettons pas un fonctionnement sans aucun flux sortant\u00a0: mises à jour et licences sont listées. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas."
+            "question": "Le système fonctionne-t-il hors ligne ?",
+            "answer": "Nous ne promettons pas un fonctionnement sans aucun flux sortant : mises à jour et licences sont listées. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas."
           },
           {
-            "question": "Que se passe-t-il si nous arrêtons\u00a0?",
-            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux\u00a0: l'exportation est prévue au contrat dès le départ, pas négociée à la fin."
+            "question": "Que se passe-t-il si nous arrêtons ?",
+            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux : l'exportation est prévue au contrat dès le départ, pas négociée à la fin."
           }
         ]
       }
     },
     {
       "collection": "block_faq",
-      "role": "Mise en œuvre et coûts\u00a0: neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03).",
+      "role": "Mise en œuvre et coûts : neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03).",
       "claims": [
         "CL-04",
         "CL-10",
@@ -118,47 +118,47 @@
         "title": "Démarrer sans vous compliquer la vie.",
         "items": [
           {
-            "question": "Et si nous n'avons aucun personnel technique\u00a0?",
-            "answer": "Ce n'est pas un obstacle. Nous installons le système, l'exploitons avec vous et le faisons évoluer\u00a0; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
+            "question": "Et si nous n'avons aucun personnel technique ?",
+            "answer": "Ce n'est pas un obstacle. Nous installons le système, l'exploitons avec vous et le faisons évoluer ; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
           },
           {
-            "question": "Combien cela coûte-t-il\u00a0?",
+            "question": "Combien cela coûte-t-il ?",
             "answer": "Il n'y a pas encore de prix public. Le coût dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel. Après un diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
           },
           {
-            "question": "Faut-il un serveur puissant\u00a0?",
-            "answer": "Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous dimensionnons le matériel selon vos usages\u00a0: nombre d'utilisateurs, volume de documents, modèle choisi. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils."
+            "question": "Faut-il un serveur puissant ?",
+            "answer": "Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous dimensionnons le matériel selon vos usages : nombre d'utilisateurs, volume de documents, modèle choisi. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils."
           },
           {
-            "question": "Combien de temps pour démarrer\u00a0?",
-            "answer": "Nous n'annonçons aucun délai universel\u00a0: il dépend de vos logiciels, de vos documents et de vos règles. Il se mesure sur un premier cas."
+            "question": "Combien de temps pour démarrer ?",
+            "answer": "Nous n'annonçons aucun délai universel : il dépend de vos logiciels, de vos documents et de vos règles. Il se mesure sur un premier cas."
           },
           {
-            "question": "Mes logiciels actuels sont-ils compatibles\u00a0?",
+            "question": "Mes logiciels actuels sont-ils compatibles ?",
             "answer": "Un large catalogue de services se connecte à WorkStudio, mais la possibilité de relier un logiciel dépend du service concerné. Nous la vérifions au diagnostic, logiciel par logiciel."
           },
           {
-            "question": "Comment mes employés seront-ils formés\u00a0?",
-            "answer": "À l'usage et à la supervision\u00a0: relire, corriger, approuver, refuser. Pas à programmer."
+            "question": "Comment mes employés seront-ils formés ?",
+            "answer": "À l'usage et à la supervision : relire, corriger, approuver, refuser. Pas à programmer."
           },
           {
-            "question": "Peut-on voir le produit avant de s'engager\u00a0?",
-            "answer": "Oui\u00a0: nous proposons une démonstration sur des données fictives. Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes."
+            "question": "Peut-on voir le produit avant de s'engager ?",
+            "answer": "Oui : nous proposons une démonstration sur des données fictives. Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes."
           },
           {
-            "question": "Et le marketing automatisé\u00a0?",
-            "answer": "Nexora Croissance, notre offre de marketing automatisé, est en accès anticipé\u00a0: l'accès se fait sur demande, et chaque connexion à une plateforme s'ouvre à son rythme. Elle réunit un site web, le référencement, la gestion de campagnes publicitaires, les réseaux sociaux et le suivi de la notoriété. Vous validez les publications et les changements majeurs de budget ou de ciblage, un plafond de dépenses que vous fixez s'applique, et aucun résultat n'est garanti. Tous les détails sont sur la page Nexora Croissance."
+            "question": "Et le marketing automatisé ?",
+            "answer": "Nexora Croissance, notre offre de marketing automatisé, est en accès anticipé : l'accès se fait sur demande, et chaque connexion à une plateforme s'ouvre à son rythme. Elle réunit un site web, le référencement, la gestion de campagnes publicitaires, les réseaux sociaux et le suivi de la notoriété. Vous validez les publications et les changements majeurs de budget ou de ciblage, un plafond de dépenses que vous fixez s'applique, et aucun résultat n'est garanti. Tous les détails sont sur la page Nexora Croissance."
           },
           {
-            "question": "L'hébergement web est-il gratuit avec Nexora Croissance\u00a0?",
-            "answer": "Il est inclus\u00a0: aucuns frais d'hébergement distincts tant que vous êtes client de Nexora Croissance. Restent à votre charge, affichés d'avance\u00a0: le nom de domaine à votre nom (frais annuels payés au registraire) et les frais de publicité versés aux plateformes. Vous repartez avec votre contenu et votre nom de domaine."
+            "question": "L'hébergement web est-il gratuit avec Nexora Croissance ?",
+            "answer": "Il est inclus : aucuns frais d'hébergement distincts tant que vous êtes client de Nexora Croissance. Restent à votre charge, affichés d'avance : le nom de domaine à votre nom (frais annuels payés au registraire) et les frais de publicité versés aux plateformes. Vous repartez avec votre contenu et votre nom de domaine."
           }
         ]
       }
     },
     {
       "collection": "block_faq",
-      "role": "L'IA, ses erreurs et ses limites\u00a0: neuf questions, dont la surveillance vidéo (CL-V01).",
+      "role": "L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01).",
       "claims": [
         "CL-21",
         "CL-128",
@@ -184,47 +184,47 @@
         "title": "Une IA honnête sur ses limites.",
         "items": [
           {
-            "question": "L'IA va-t-elle remplacer mes employés\u00a0?",
-            "answer": "Nos systèmes prennent les tâches répétitives\u00a0; la décision reste à une personne. Un flux de travaux peut s'arrêter sur une validation avant d'agir, et un journal garde la trace de ce qui a été fait."
+            "question": "L'IA va-t-elle remplacer mes employés ?",
+            "answer": "Nos systèmes prennent les tâches répétitives ; la décision reste à une personne. Un flux de travaux peut s'arrêter sur une validation avant d'agir, et un journal garde la trace de ce qui a été fait."
           },
           {
-            "question": "L'IA peut-elle se tromper\u00a0?",
+            "question": "L'IA peut-elle se tromper ?",
             "answer": "Oui. Nous réduisons le risque en la faisant répondre à partir de vos documents, en citant les sources, et en ajoutant un garde-fou de fidélité quand c'est utile. Aucun garde-fou ne supprime l'erreur, c'est pourquoi une personne approuve ce qui engage l'entreprise."
           },
           {
-            "question": "Qui supervise ce que fait l'IA\u00a0?",
+            "question": "Qui supervise ce que fait l'IA ?",
             "answer": "Votre équipe. Chaque appel de modèle laisse une trace consultable, la consommation est mesurée, et des jeux de tests permettent de vérifier qu'un changement n'a rien dégradé."
           },
           {
-            "question": "Pourquoi pas un assistant d'IA grand public\u00a0?",
-            "answer": "Un assistant grand public répond bien aux questions générales. Ce que Nexora AI ajoute\u00a0: le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire."
+            "question": "Pourquoi pas un assistant d'IA grand public ?",
+            "answer": "Un assistant grand public répond bien aux questions générales. Ce que Nexora AI ajoute : le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire."
           },
           {
-            "question": "Qu'est-ce qu'un agent IA\u00a0?",
+            "question": "Qu'est-ce qu'un agent IA ?",
             "answer": "Un logiciel qui accomplit une tâche à votre place, avec les outils et les documents que vous lui autorisez, et qui demande votre validation avant une action importante."
           },
           {
-            "question": "Peut-il répondre au téléphone\u00a0?",
-            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit\u00a0; la téléphonie en direct se vérifie séparément."
+            "question": "Peut-il répondre au téléphone ?",
+            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément."
           },
           {
-            "question": "Nexora Code, Corpus, Quanta et Helix sont-ils disponibles\u00a0?",
-            "answer": "Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est présenté en démonstration sur demande\u00a0; aucune offre en libre-service n'est ouverte."
+            "question": "Nexora Code, Corpus, Quanta et Helix sont-ils disponibles ?",
+            "answer": "Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte."
           },
           {
-            "question": "Existe-t-il une solution pour la construction\u00a0?",
-            "answer": "Oui\u00a0: OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un statut honnête (disponible, en pilote ou prévu)."
+            "question": "Existe-t-il une solution pour la construction ?",
+            "answer": "Oui : OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un niveau honnête (qualifié localement, à compléter ou prévu). OPSYS-AI est un produit en développement, partiel : aucun déploiement de production complet n'existe."
           },
           {
-            "question": "Et la surveillance vidéo par IA\u00a0?",
-            "answer": "Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation\u00a0: ce n'est pas un produit disponible, et aucune installation n'existe encore. Sa conception vise une analyse des images sur un serveur chez le client. Nexora Vision n'offre pas de reconnaissance faciale, et chaque alerte demande la vérification d'une personne. La Loi 25 exige notamment d'informer les personnes avant la collecte\u00a0; le détail est sur la page Nexora Vision."
+            "question": "Et la surveillance vidéo par IA ?",
+            "answer": "Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation : ce n'est pas un produit disponible, et aucune installation n'existe encore. Sa conception vise une analyse des images sur un serveur chez le client. Nexora Vision n'offre pas de reconnaissance faciale, et chaque alerte demande la vérification d'une personne. La Loi 25 exige notamment d'informer les personnes avant la collecte ; le détail est sur la page Nexora Vision."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Renvois vers les pages qui détaillent\u00a0: données, Vision, Croissance, confiance.",
+      "role": "Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance.",
       "claims": ["CL-V01", "CL-G01", "CL-87"],
       "fields": {
         "columns": "2",
@@ -237,19 +237,19 @@
         "cards": [
           {
             "title": "Vos données.",
-            "text": "Les cinq engagements, par écrit\u00a0: sur place ou au Québec, jamais d'entraînement, jamais vendues.",
+            "text": "Les cinq engagements, par écrit : sur place ou au Québec, jamais d'entraînement, jamais vendues.",
             "href": "/vos-donnees/",
             "link_label": "Lire les engagements"
           },
           {
             "title": "Nexora Vision.",
-            "text": "Vidéosurveillance par IA\u00a0: un projet pilote sur invitation, pas un produit disponible.",
+            "text": "Vidéosurveillance par IA : un projet pilote sur invitation, pas un produit disponible.",
             "href": "/vision/",
             "link_label": "Voir le projet pilote"
           },
           {
             "title": "Nexora Croissance.",
-            "text": "Marketing automatisé\u00a0: site avec hébergement inclus, référencement, publicité, réseaux sociaux. Accès anticipé.",
+            "text": "Marketing automatisé : site avec hébergement inclus, référencement, publicité, réseaux sociaux. Accès anticipé.",
             "href": "/croissance/",
             "link_label": "Voir l'accès anticipé"
           },

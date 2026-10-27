@@ -93,6 +93,8 @@ describe("variantes de composition (S3)", () => {
     expect(CARD_STATUSES).toEqual([
       "disponible",
       "acces-anticipe",
+      "qualifie-localement",
+      "en-developpement",
       "pilote",
       "prevu",
     ]);

@@ -152,7 +152,7 @@ Non, jamais. Importer un document dans une base de connaissances n'autorise pas 
 
 #### Que puis-je utiliser dès maintenant ?
 
-Nexora WorkStudio, sur demande. Pour la construction et les services terrain, OPSYS-AI, avec le statut de chacun de ses départements.
+Nexora WorkStudio, sur demande. Pour la construction et les services terrain, OPSYS-AI, un produit en développement, avec le niveau de disponibilité de chacun de ses départements.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
@@ -162,6 +162,6 @@ Réglages : `tone=sombre`
 
 ## Commençons par ce qui existe.
 
-Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte. OPSYS-AI couvre la construction avec un statut honnête par département.
+Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte. OPSYS-AI couvre la construction en produit en développement, avec un niveau honnête par département.
 
 [Discuter de mon projet](/contact/) · [Découvrir OPSYS-AI](/opsys-ai/)

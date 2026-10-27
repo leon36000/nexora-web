@@ -91,7 +91,7 @@ The accountant spends time advising rather than retyping.
 
 #### For construction, OPSYS-AI goes further.
 
-Its internal accounting (department M5) prepares a draft invoice after the work and tracks accounts receivable. That department is in pilot, and neither invoice sending nor payroll calculation is delivered.
+Its Finance department (M5) aims to prepare invoicing and track job costs. OPSYS-AI is a product in development: a targeted reading of costs is locally qualified, but complete accounting, payroll and connectors are not demonstrated.
 
 → [Discover OPSYS-AI](/en/opsys-ai/)
 

@@ -7,7 +7,7 @@
     "slug": "services/automatisation-sur-mesure",
     "title": "Automatisation sur mesure",
     "seo_title": "Automatisation sur mesure pour PME",
-    "seo_description": "Automatisation des processus de PME, sur mesure\u00a0: décrivez-les en français, nous construisons agents et flux de travaux avec vous et les testons sur vos cas.",
+    "seo_description": "Automatisation des processus de PME, sur mesure : décrivez-les en français, nous construisons agents et flux de travaux avec vous et les testons sur vos cas.",
     "canonical": null
   },
   "blocks": [
@@ -40,11 +40,11 @@
       },
       "translation": {
         "title": "Trois processus, trois constructions.",
-        "body": "<p>Le sur-mesure commence là où les solutions types s'arrêtent. Trois exemples construits, qui ne se ressemblent pas\u00a0; ce ne sont pas des résultats de clients.</p><p>Le vôtre ressemble à l'un d'eux, ou à aucun\u00a0? <a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a>.</p>",
+        "body": "<p>Le sur-mesure commence là où les solutions types s'arrêtent. Trois exemples construits, qui ne se ressemblent pas ; ce ne sont pas des résultats de clients.</p><p>Le vôtre ressemble à l'un d'eux, ou à aucun ? <a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a>.</p>",
         "items": [
           {
             "title": "Un entrepreneur retrouve ses soumissions.",
-            "text": "Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, et suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation avant tout envoi. Pour la construction, <a href=\"/opsys-ai/\">OPSYS-AI</a> couvre déjà une partie de ce parcours, avec ses statuts."
+            "text": "Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, et suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation avant tout envoi. Pour la construction, <a href=\"/opsys-ai/\">OPSYS-AI</a> vise ce parcours, en produit en développement dont chaque niveau de disponibilité est affiché."
           },
           {
             "title": "Un distributeur traite les documents de ses fournisseurs.",
@@ -72,11 +72,11 @@
         "cards": [
           {
             "title": "1. Observer.",
-            "text": "Nous regardons comment le travail se fait\u00a0: où le temps se perd, quelles informations entrent, qui décide."
+            "text": "Nous regardons comment le travail se fait : où le temps se perd, quelles informations entrent, qui décide."
           },
           {
             "title": "2. Prototyper.",
-            "text": "Nous décrivons le flux en français\u00a0; le Copilote de WorkStudio en propose une première version que nous relisons et corrigeons avec vous."
+            "text": "Nous décrivons le flux en français ; le Copilote de WorkStudio en propose une première version que nous relisons et corrigeons avec vous."
           },
           {
             "title": "3. Relier.",
@@ -92,7 +92,7 @@
           },
           {
             "title": "6. Former et exploiter.",
-            "text": "Votre équipe apprend à superviser et à corriger\u00a0; nous suivons ce qui fonctionne et ajustons le reste."
+            "text": "Votre équipe apprend à superviser et à corriger ; nous suivons ce qui fonctionne et ajustons le reste."
           }
         ]
       }
@@ -120,7 +120,7 @@
       },
       "translation": {
         "title": "Avec quoi nous construisons.",
-        "body": "<p>Tout est bâti dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, une plateforme à la pointe de l'IA où l'on construit en cartes ou sur un canevas, sans écrire de code. Cela garde le système lisible et transférable. Ses composantes sont livrées\u00a0; c'est leur assemblage pour votre cas qui est sur mesure. Vos données restent à vous, et ne servent jamais à entraîner un modèle\u00a0: <a href=\"/vos-donnees/\">voir les engagements</a>.</p>",
+        "body": "<p>Tout est bâti dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, une plateforme à la pointe de l'IA où l'on construit en cartes ou sur un canevas, sans écrire de code. Cela garde le système lisible et transférable. Ses composantes sont livrées ; c'est leur assemblage pour votre cas qui est sur mesure. Vos données restent à vous, et ne servent jamais à entraîner un modèle : <a href=\"/vos-donnees/\">voir les engagements</a>.</p>",
         "items": [
           {
             "title": "Des agents.",
@@ -160,7 +160,7 @@
           },
           {
             "title": "Des produits non livrés.",
-            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés\u00a0; nous pouvons en étudier la faisabilité, rien de plus à ce stade. Nexora Vision est un projet pilote sur invitation.",
+            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés ; nous pouvons en étudier la faisabilité, rien de plus à ce stade. Nexora Vision est un projet pilote sur invitation.",
             "href": "/vision/",
             "link_label": "Voir Nexora Vision"
           },
@@ -170,7 +170,7 @@
           },
           {
             "title": "Un délai ou un gain annoncé.",
-            "text": "Aucun délai universel et aucun gain chiffré\u00a0: tout se mesure sur un premier cas."
+            "text": "Aucun délai universel et aucun gain chiffré : tout se mesure sur un premier cas."
           }
         ]
       }
@@ -185,26 +185,26 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Sur mesure\u00a0: vos questions.",
+        "title": "Sur mesure : vos questions.",
         "items": [
           {
-            "question": "Quelle différence avec une solution type\u00a0?",
+            "question": "Quelle différence avec une solution type ?",
             "answer": "Une solution type répond à un problème courant et se configure. Le sur-mesure traite un processus propre à votre entreprise, avec ses règles et ses logiciels."
           },
           {
-            "question": "Le résultat m'appartient-il\u00a0?",
+            "question": "Le résultat m'appartient-il ?",
             "answer": "Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit."
           },
           {
-            "question": "Mes données servent-elles à entraîner un modèle\u00a0?",
+            "question": "Mes données servent-elles à entraîner un modèle ?",
             "answer": "Non, jamais. Vos documents, vos invites et vos résultats ne servent pas à entraîner ni à ajuster un modèle, et ne sont jamais vendus."
           },
           {
-            "question": "Combien cela coûte-t-il\u00a0?",
+            "question": "Combien cela coûte-t-il ?",
             "answer": "Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
           },
           {
-            "question": "Qui maintient le système après la mise en service\u00a0?",
+            "question": "Qui maintient le système après la mise en service ?",
             "answer": "Nous l'exploitons avec vous et le faisons évoluer. La répartition exacte est écrite au contrat."
           }
         ]

@@ -7,323 +7,354 @@
 - Page : `opsys-ai` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/opsys-ai/` · slug : `opsys-ai`
 - Titre SEO (45 caractères) : OPSYS-AI : logiciel d'IA pour la construction
-- Description SEO (151 caractères) : OPSYS-AI : dix départements d'IA, un seul dossier, de la demande à la facture brouillon, pour la construction. Chaque capacité affiche son statut réel.
+- Description SEO (159 caractères) : OPSYS-AI, le système d'exploitation intelligent des PME : dix départements d'IA, de la première demande au chantier terminé. Produit en développement, partiel.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du brief §7 ; CTA démonstration et étude de déploiement. · Affirmations : CL-30, CL-61*
+*Promesse de la brochure : le système d'exploitation intelligent des PME ; statut global partiel affiché dès le surtitre. · Affirmations : CL-O01, CL-O03, CL-30*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
-**OPSYS-AI · Construction et services terrain**
+**OPSYS-AI · Produit en développement, partiel**
 
-# Une équipe coordonnée pour votre entreprise de construction.
+# Le système d'exploitation intelligent des PME.
 
-Dix départements virtuels, un seul dossier : de la première demande à la préparation de la facture, plus rien ne se perd entre deux logiciels. Vous approuvez, ils préparent. Et chaque capacité affiche son statut réel : disponible, en pilote ou prévue.
+Donner aux PME des capacités de grande entreprise : une équipe augmentée, organisée autour de votre réalité, de la première demande au chantier terminé. Un produit en développement : chaque capacité affiche son niveau réel, et rien n'est présenté comme livré en production.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Étude de déploiement](/contact/?sujet=etude-deploiement)
 
-### Bloc 2 — Section (`block_section`)
+### Bloc 2 — Cartes (`block_cards`)
 
-*Les problèmes du dirigeant.*
+*Statut global « partiel » et les quatre niveaux de disponibilité (brochure p. 34). · Affirmations : CL-O01, CL-O02, CL-30*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
+Réglages : `columns=3`, `layout=liste`, `tone=clair`, `anchor_id=etat`
 
-## Le temps qui vous échappe.
+## Où en est OPSYS-AI, franchement.
 
-Souvent, une entreprise de construction ne manque pas d'outils : elle manque de liens entre eux. La demande est dans une boîte de réception, la soumission dans un tableur, le chantier sur des feuilles, la facture dans la comptabilité.
+État global : partiel. Aucun déploiement de production complet, aucune parité totale démontrée avec un CRM, un logiciel comptable ou un calendrier tiers, aucune présence réelle ni paie déduite des vues de temps. Quatre niveaux ne se confondent jamais.
 
-OPSYS-AI part de ce constat : un dossier, plusieurs départements, une seule suite logique.
+#### Des règles et des parcours ciblés, vérifiés en environnement local.
 
-- **Les demandes arrivent partout.** Téléphone, courriel, formulaire : rien ne garantit qu'une demande sera suivie.
-- **Les soumissions prennent du temps.** Des informations manquent, les quantités sont ressaisies, les marges se calculent à part.
-- **Le chantier se termine, la facture traîne.** Heures, matériaux et photos sont rassemblés après coup.
-- **Les coûts réels arrivent trop tard.** On compare l'estimé et le réel quand le chantier est déjà fermé.
-- **Les décisions se perdent.** Pourquoi ce prix, ce fournisseur, ce report ? Personne ne s'en souvient.
+Par exemple la qualification de demandes, le suivi CRM, certaines vues administratives, des coûts liés à un devis et un journal de terrain. Ces résultats ne certifient ni l'ensemble des modules, ni une exploitation réelle de bout en bout.
+
+#### Ce qui demande encore de la réalisation.
+
+Le CRM unifié complet, les raccordements entre départements, l'expérience utilisateur globale, les outils d'administration et plusieurs parcours métier.
+
+#### Ce qui dépend de travaux supplémentaires.
+
+Mesures par photo et données géospatiales, assimilation documentaire complète, intégrations comptables et fournisseurs, voix et présentation 3D, application mobile en dernière phase.
+
+#### Ce qu'aucun test local ne prouve.
+
+Fournisseurs réels, livraison de communications, autorisations, sécurité opérationnelle, sauvegarde et reprise, performances, navigateurs et déploiement complet : chaque environnement apporte ses propres preuves.
 
 ### Bloc 3 — Section (`block_section`)
 
-*Parcours global : cinq temps qui regroupent les dix départements. · Affirmations : CL-30, CL-31*
+*L'ambition : des capacités de grande entreprise pour une PME ; exemple de la rénovation. · Affirmations : CL-O03, CL-O10*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=ambition`
 
-## Un dossier. Dix départements.
+## Des capacités de grande entreprise.
 
-Au lieu de dix outils isolés, un seul dossier suit la demande de bout en bout. Chaque département lit ce que les autres ont préparé et ajoute sa part, grâce à un bus d'événements interne : un journal commun où chaque département note ce qui vient de se passer. Résultat : plus rien ne se perd entre deux logiciels.
+Une demande bien accueillie. Une occasion suivie. Une soumission fondée sur des données. Une équipe qui sait quoi faire. Des matériaux et des coûts visibles. Une direction qui comprend les résultats et peut agir.
 
-Ce que le système prépare, une personne l'approuve. Envoyer, payer, décider : ces actions attendent votre accord.
+OPSYS-AI vise à réunir ces moments dans un environnement commun : accueil, ventes, estimation, terrain, finances, matériaux, marketing, analyse, stratégie et mémoire. Une PME de rénovation peut ainsi suivre une demande de gouttières ou de revêtement depuis le premier contact jusqu'à la soumission, la planification, les achats, la réalisation et le suivi financier, avec moins de ruptures entre les dossiers, les personnes et les outils.
 
-- **Recevoir et vendre.** Réception, relation client, estimation et soumission (M1 à M3).
-- **Planifier et réaliser.** Terrain et matériel : équipes, horaires, preuves, besoins et réceptions (M4 et M6).
-- **Facturer.** Facture brouillon, comptes à recevoir et coûts réels (M5).
-- **Croître et piloter.** Marketing, analytique et stratégie (M7 à M9).
-- **Se souvenir.** Mémoire des décisions et des connaissances autorisées (M10).
+- **Une vue commune.** Retrouver le contexte et la prochaine action, sans reconstruire tout le dossier.
+- **Des spécialistes IA configurables.** Ils assistent les équipes dans leurs responsabilités.
+- **Des contrôles humains.** Pour les décisions, les engagements et les actions sensibles.
+- **Un système qui apprend avec méthode.** À partir de sources et de résultats validés, jamais en silence.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les dix départements M1 à M10, statut honnête tiré du rapport 07. · Affirmations : CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10, CL-32, CL-33, CL-35, CL-38, CL-39, CL-40, CL-41, CL-42*
+*Parcours en cinq temps (brochure p. 4) ; exemple illustratif, sans certification de bout en bout. · Affirmations : CL-O04*
 
-Réglages : `columns=4`, `layout=modules`, `tone=clair`, `anchor_id=departements`
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`, `anchor_id=parcours`
 
-## Les dix départements.
+## Du premier contact à la décision.
 
-Chaque carte indique son statut. Disponible : le logiciel le fait aujourd'hui. En pilote : cela fonctionne, avec des limites que nous précisons. Prévu : pas encore livré.
+Un fil conducteur partagé entre les équipes. Exemple illustratif : une demande de remplacement de gouttières devient une occasion suivie, puis une estimation à compléter, un chantier planifié et un dossier à clôturer. Ce scénario illustre la cible ; il ne certifie pas un parcours de bout en bout en production.
 
-#### M1 — Réception.
+#### Accueillir.
 
-Centralise et qualifie les demandes, prépare les suivis et transfère à la bonne personne avec le contexte.
-Disponible : qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote : messages vocaux transcrits. Prévu : réponse envoyée au client, réception vocale en temps réel.
+Une demande arrive. La réception rassemble les informations disponibles, relève les éléments manquants et dirige le dossier vers la bonne personne.
 
-#### M2 — Relation client et ventes.
+#### Vendre et estimer.
 
-Suit contacts, dossiers, soumissions et relances, et suggère la prochaine action.
-Disponible : création du dossier à partir d'une demande, prochaine action suggérée. En pilote : suivi du dossier, relances, dédoublonnage. Prévu : connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).
+Le CRM suit la relation, les activités et les relances. L'estimation prépare un devis à partir de données, de règles et de coûts documentés.
 
-#### M3 — Estimation.
+#### Préparer.
 
-Prépare une estimation et une soumission à partir des informations fournies, expose ce qui manque et refuse de chiffrer quand l'information est insuffisante.
-Statut : disponible pour le calcul et la soumission brouillon, pilote pour le reste. Les quantités et les prix sont saisis par votre équipe. La soumission est un brouillon, filtré de vos coûts et marges internes. Prévu : mesure à partir de photos.
+L'équipe organise la visite ou le chantier, vérifie la capacité et les matériaux, puis confirme les choix qui engagent l'entreprise.
 
-#### M4 — Terrain.
+#### Réaliser.
 
-Organise équipes, horaires, interventions, temps et preuves de réalisation.
-Disponible : intervention créée à partir d'une soumission acceptée. En pilote : cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu : géolocalisation au pointage, itinéraires routiers, répartition automatique.
+Le terrain consigne l'avancement et les écarts. Les faits utiles alimentent le suivi du dossier, des coûts et de la facturation.
 
-#### M5 — FinanceCore.
+#### Comprendre et améliorer.
 
-Prépare facturation, suivi financier, coûts et analyses, avec les validations appropriées.
-Disponible : facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote : prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu : envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable.
+Les tableaux de bord rapprochent les résultats de leurs sources ; la direction examine les écarts, les priorités et les apprentissages.
 
-#### M6 — Matériel.
+### Bloc 5 — Cartes (`block_cards`)
 
-Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.
-Disponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département n’effectue aucun paiement.
+*Les dix départements : promesse en une ligne, exemple qualifié localement, cible à compléter (matrice p. 33). · Affirmations : CL-30, CL-O02, CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10*
 
-#### M7 — Marketing.
+Réglages : `columns=4`, `layout=modules`, `tone=sable`, `anchor_id=departements`
 
-Transforme les informations autorisées en propositions de contenus et suit d'où viennent vos clients.
-Statut : disponible après configuration de votre marque, en pilote pour le reste. Les propositions sont soumises à votre approbation et le consentement est vérifié ; l'exportation vers vos canaux est manuelle. En pilote : suivi de la demande jusqu'à la soumission et à la marge, sans coût publicitaire pour l'instant. Les demandes d'avis restent des brouillons. Prévu : publication automatique sur les réseaux sociaux.
+## Dix départements, une entreprise.
 
-#### M8 — Analytique.
+Des responsabilités distinctes, un contexte commun : les informations passent d'un département à l'autre selon les droits et les contrats prévus. Chaque carte distingue ce qui est qualifié localement de ce qui reste à compléter. Un exemple qualifié ne certifie pas l'ensemble du département.
 
-Rend les indicateurs compréhensibles, sourcés et accompagnés de leur qualité : un indicateur affiche « non calculable » quand une donnée manque.
-Disponible : vue exécutive. En pilote : mesures par chantier. Prévu : prévisions, indice de santé.
+#### M1 — Réception et communications.
 
-#### M9 — Stratégie.
+Accueillir, comprendre et orienter les demandes : une première réponse structurée pour chaque demande.
+Qualifié localement : la qualification et le transfert ciblés des demandes.
+À compléter ou à qualifier : la téléphonie en direct et la livraison réelle des messages (les fournisseurs de communication demandent leurs propres raccordements et preuves).
 
-Réunit les informations utiles à la direction, aux priorités et au suivi des décisions.
-Disponible : synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote : suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu : scénarios, priorités et objectifs.
+#### M2 — CRM, ventes et relances.
 
-#### M10 — Mémoire.
+Organiser les clients, occasions et suivis : ne laissez pas une occasion disparaître entre deux suivis.
+Qualifié localement : un suivi et des vues ciblés.
+À compléter ou à qualifier : le CRM unifié complet et les canaux réels ; les relances proposées ne sont pas des envois automatiques.
 
-Retrouve les décisions et les connaissances autorisées, avec leur contexte et leurs sources.
-Statut : disponible pour le journal des décisions et des événements, qui détecte toute modification ; en pilote pour la recherche dans les connaissances de l'entreprise, désactivée par défaut. Prévu : graphe de relations entre dossiers.
+#### M3 — Estimation et soumissions.
 
-### Bloc 5 — Section (`block_section`)
+Préparer des estimations et des soumissions défendables : une proposition construite à partir de faits, pas d'hypothèses cachées.
+Qualifié localement : des modèles, des rendus et des raccords tarifaires sur des tranches locales.
+À compléter ou à qualifier : la signature, la mesure par photo ou données géospatiales et le parcours complet ; aucune précision n'est promise.
 
-*Démonstration centrale, maillon par maillon : réel / démonstration / cible. · Affirmations : CL-53, CL-60, CL-32, CL-33, CL-34, CL-31*
+#### M4 — Agenda, équipes et terrain.
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=parcours`
+Coordonner les équipes, la cédule et les interventions : passer de la promesse commerciale au travail à réaliser.
+Qualifié localement : un journal de terrain et des temps pointés, sur un périmètre précis.
+À compléter ou à qualifier : la présence observée, le mobile et la répartition du travail ; ni présence réelle ni paie ne sont déduites.
 
-## De la demande à la facture.
+#### M5 — Finance et préparation de la paie.
 
-Voici le parcours central, tel qu'il est aujourd'hui. Pour chaque maillon : ce qui est **réel** (le logiciel le fait), ce qui est en **démonstration** (données fictives ou application simulée en partie) et ce qui est **cible** (pas encore livré).
+Préparer et contrôler les informations financières : mettre les chiffres en contexte avant de décider.
+Qualifié localement : une lecture ciblée de coûts liés à un devis accepté.
+À compléter ou à qualifier : la comptabilité complète, la paie, les paiements et les connecteurs ; un paiement ou une déclaration garde une validation humaine.
 
-Quatre états ne se confondent jamais : préparé, approuvé, envoyé, accusé de réception. Les vérifications ont été faites sur des données fictives.
+#### M6 — Matériaux, achats et fournisseurs.
 
-- **1. Demande reçue.** Réel : le moteur de réception, éprouvé sur données fictives. Démonstration : le transport par SMS et la téléphonie. Préparé : un résumé de la demande.
-- **2. Qualification.** Réel, à configurer pour votre entreprise : cote, questions, prochaine action, transfert vers un humain.
-- **3. Dossier client.** Réel : le dossier est créé à partir de la demande qualifiée. Le suivi complet du dossier est en pilote.
-- **4. Estimation.** Réel : le calcul, qui refuse de chiffrer sans information suffisante. Les quantités et les prix sont saisis. Cible : la mesure à partir de photos.
-- **5. Soumission approuvée.** Réel : soumission brouillon, revue en onze critères et approbation. Préparée et approuvée, oui ; envoyée et accusée de réception, non. Cible : l'envoi au client.
-- **6. Planification et matériel.** Réel côté serveur, sans écran : intervention à planifier, cédule, réservation, bon de commande brouillon approuvé. Cible : l'envoi du bon de commande au fournisseur.
-- **7. Exécution.** Réel : la fin de chantier côté serveur. Démonstration : l'application de l'employé, dont le pointage utilise une position fictive.
-- **8. Clôture contrôlée.** Réel côté serveur : le chantier terminé attend une revue et l'écart de matériel est calculé en quantités. Cible : l'alerte sur le téléphone de l'administrateur.
-- **9. Facture brouillon.** Réel en interne : une facture brouillon est préparée, avec la TPS et la TVQ calculées, à faire valider par votre comptable. Préparée, oui ; envoyée et accusée de réception, non.
-- **10. Analyse et suivi.** Réel : vue exécutive, synthèse de direction, journal des décisions. Démonstration : comparaison de l'estimé et du réel, sur données fictives.
+Gérer catalogue, fournisseurs, achats et mouvements : rendre les besoins de chantier plus visibles.
+Qualifié localement : un catalogue, des prix et une lecture privée de l'historique des prix.
+À compléter ou à qualifier : l'écran de consultation de l'historique et l'import des prix par courriel ; une proposition d'achat n'est jamais une commande passée.
+
+#### M7 — Marketing et croissance.
+
+Organiser la croissance et suivre les initiatives : relier les initiatives commerciales aux résultats observables.
+Qualifié localement : des règles et des indicateurs ciblés.
+À compléter ou à qualifier : la publication et l'attribution réelles ; aucune performance ni attribution exhaustive n'est garantie.
+
+#### M8 — Analytique et vérité des données.
+
+Donner du sens aux indicateurs et à leurs sources : des tableaux de bord qui montrent aussi ce qu'ils ne savent pas.
+Qualifié localement : une garde qui empêche de présenter une marge comme réelle sans prix définitif ni coût réel complet.
+À compléter ou à qualifier : les connecteurs, l'écran partagé et les rapports.
+
+#### M9 — Stratégie et direction.
+
+Éclairer les priorités et les décisions de direction : transformer les informations en choix discutables et traçables.
+Qualifié localement : une consolidation par tranches.
+À compléter ou à qualifier : les scénarios complets et la production ; une recommandation n'est ni une décision approuvée ni un engagement externe.
+
+#### M10 — Mémoire et entreprise apprenante.
+
+Retrouver les connaissances, preuves et apprentissages : garder le contexte utile et améliorer les pratiques avec méthode.
+Qualifié localement : des briques et des tranches locales de mémoire.
+À compléter ou à qualifier : l'assimilation multimodale complète, le rappel et la qualité sur les données de votre entreprise, qui restent à évaluer.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Scénario signature « travaux terminés », maillon par maillon. · Affirmations : CL-54, CL-34, CL-35, CL-41, CL-58, CL-60*
+*La console et le CRM visuel : poste de travail central visé ; vues administratives qualifiées localement ; reste en développement. · Affirmations : CL-O05, CL-30*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=console`
 
-## Quand les travaux se terminent.
+## Une console qui sert les personnes.
 
-Le scénario signature. L'employé renseigne photos, temps, liste de contrôle et matériaux. Les écarts déclenchent une revue. Les départements concernés préparent leurs mises à jour. Voici, maillon par maillon, ce qui est réel, en démonstration ou cible aujourd'hui.
+Le CRM visuel et manuel est le poste de travail central visé : contacts, occasions, activités, soumissions, communications, rendez-vous et suivis de chantier dans une même expérience. Une personne doit pouvoir consulter et faire avancer son travail directement, même lorsqu'un agent l'assiste.
 
-- **L'employé termine le chantier.** Démonstration : la liste de contrôle est locale, les photos après partent en file d'attente, le pointage utilise une position fictive et l'écran des matériaux n'est pas encore qualifié.
-- **Un écart déclenche une revue.** Réel côté serveur : la fin de chantier passe en attente de revue et demande l'approbation d'un responsable.
-- **Le matériel est comparé.** Réel : quantités estimées et réelles comparées, sorties enregistrées, stock bas signalé. Les prix ne sont pas encore pris en compte.
-- **La facture brouillon est préparée.** Réel en interne : facture brouillon et rentabilité mise à jour. Cible : PDF, numérotation et envoi.
-- **Le dossier client est mis à jour.** Réel : le chantier est marqué terminé et l'activité est écrite. La prochaine action n'est qu'une suggestion.
-- **Des contenus sont proposés.** Réel après configuration de votre marque : propositions de contenus soumises à votre décision, exportation manuelle. La demande d'avis reste un brouillon, jamais envoyée.
-- **L'estimé est comparé au réel.** Démonstration : comparaison en minutes, sur données fictives. Les dollars ne sont pas encore comparés.
-- **Les résultats sont exposés.** Réel : vue exécutive. En pilote : mesures de chantier.
-- **L'événement est conservé.** Réel : le journal des décisions et des événements, qui détecte toute modification, garde l'événement et ses sources.
-- **Le client est tenu informé.** Cible : message au client, envoi de la facture, accusé de réception. Aucun envoi réel n'existe aujourd'hui.
+Certaines vues administratives sont qualifiées localement ; l'ensemble de l'expérience, les connexions réelles et la couverture complète sont en développement. Aucune parité complète ni affiliation avec un logiciel externe n'est revendiquée.
+
+- **Une fiche client.** Retrouver les occasions, les interactions et les prochaines actions.
+- **Un pipeline lisible.** Repérer les dossiers à qualifier, les soumissions à suivre et les responsabilités.
+- **Un secrétariat.** Rapprocher accueil, suivi commercial et coordination, avec des raccourcis vers le dossier pertinent.
+- **Des listes, des filtres, des vues de journée.** Travailler par client, par équipe ou par tâche.
+- **Des propositions à valider.** Des actions et des brouillons que l'utilisateur peut examiner avant qu'ils ne partent.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Différenciateurs : rapprochement estimé/réel, matériel, finances, trésorerie, agents et budgets, mémoire. · Affirmations : CL-D06, CL-34, CL-35, CL-42, CL-56, CL-57, CL-58*
+*Agents configurables par responsabilité (brochure p. 17). · Affirmations : CL-O06*
 
-Réglages : `columns=3`, `layout=grille`, `tone=clair`
+Réglages : `columns=3`, `layout=bento`, `tone=clair`, `anchor_id=agents`
 
-## Une équipe, pas un robot.
+## Des agents configurables par responsabilité.
 
-Pas un robot qui répond au téléphone : des départements qui partagent le même dossier.
+Une équipe de spécialistes adaptée à votre façon de travailler, au lieu de confier toutes les responsabilités à un seul assistant. Un agent est un logiciel qui accomplit une tâche avec les outils que vous lui autorisez. La configuration d'un profil ne prouve pas à elle seule qu'une action a été exécutée.
 
-#### L'estimé face au réel.
+#### Des modèles interchangeables.
 
-Les quantités estimées sont comparées aux quantités réelles après chaque chantier (disponible). Les minutes aussi, sur données fictives (démonstration).
+Fournisseurs au choix, solutions de repli, hiérarchie des spécialistes et contrôle de qualité.
 
-#### Le matériel avant le chantier.
+#### Des outils selon vos autorisations.
 
-Les besoins se calculent dès la soumission acceptée. La commande est préparée et approuvée, puis transmise par votre équipe : aucun envoi automatique au fournisseur.
+Logiciels spécialisés et connecteurs utilisables selon les autorisations et les intégrations effectivement qualifiées.
 
-#### La facture, sans ressaisie.
+#### Un périmètre de données.
 
-La facture brouillon naît des données du chantier. Vous la validez ; l'envoi reste à votre équipe.
+Permissions, confidentialité et politique de mémoire définies pour chaque rôle.
 
-#### Le solde et ce que vous devez.
+#### Un budget et des limites.
 
-Le cash libre, c'est l'argent réellement disponible une fois déduites les obligations déjà connues. Il s'appuie sur votre registre interne, pas sur une connexion bancaire (pilote).
+Volume de contexte, nombre d'étapes, reprises et concurrence.
 
-#### Des agents bornés par un budget.
+#### Des validations et une escalade.
 
-Chaque agent a un profil, des permissions et un budget de jetons (l'unité de texte que traite un modèle), vérifié avant l'appel à un fournisseur. Le budget se compte en jetons, pas en dollars (pilote).
-
-#### Un journal des décisions.
-
-Pourquoi ce prix, ce fournisseur, ce report ? Les décisions sont journalisées avec leur contexte, dans un registre qui détecte toute modification.
+Déclencheurs, supervision, et passage à une personne quand la situation l'exige.
 
 ### Bloc 8 — Section (`block_section`)
 
-*Mobile : quatre profils, droits distincts, hors ligne non annoncé. · Affirmations : CL-55*
+*Automatisation sous permissions : l'autonomie se règle sur le niveau de confiance et l'action demandée. · Affirmations : CL-O07, CL-31*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=permissions`
 
-## Quatre profils sur mobile.
+## Automatiser sous permissions.
 
-Chaque profil a ses droits : le propriétaire approuve, le vendeur suit ses clients, l'employé saisit le terrain, le client suit son dossier. Aujourd'hui, trois profils existent en pilote ; le quatrième est prévu.
+L'autonomie se règle sur le niveau de confiance et sur l'action demandée. OPSYS-AI vise à automatiser la préparation, la recherche, la coordination et certaines actions permises, avec des portes de validation proportionnées aux conséquences. Votre équipe progresse d'une assistance supervisée vers des parcours davantage automatisés, au rythme des capacités qualifiées.
 
-Le fonctionnement hors ligne est conçu, mais il n'est pas encore vérifié contre un serveur : nous ne l'annonçons pas. Il n'y a pas de notifications poussées.
+Un état « préparé », « approuvé » ou « envoyé » se distingue toujours d'une livraison effective par le fournisseur : les permissions, les consentements et les contraintes de chaque canal restent déterminants.
 
-- **Propriétaire ou administrateur.** Pilote : approbations (en ligne seulement) et écrans des départements.
-- **Vendeur.** Pilote : demandes, fiche client, notes et soumissions en lecture. Pas d'estimation, de marge ni de photos.
-- **Employé.** Pilote : saisie terrain (photos après, liste de contrôle, signature) et fin de chantier. Le pointage est à qualifier ; l'accueil est minimal.
-- **Client.** Prévu : suivi du dossier par liens sécurisés. Rien n'est livré.
+- **Préparer sans inventer.** Lecture et préparation dans le périmètre autorisé ; ce qui manque est demandé, jamais deviné.
+- **Des brouillons à examiner.** Les propositions sont relues avant les actions qui le nécessitent.
+- **Tout est suivi.** Événements, reprises et traçabilité pour comprendre ce qui s'est passé.
+- **Une personne approuve.** Paiements, engagements externes sensibles, publications et autres opérations réservées.
+- **Une escalade.** Quand la situation dépasse les règles, les droits ou les données disponibles.
 
 ### Bloc 9 — Section (`block_section`)
 
-*Déploiement et souveraineté, sans « mode souverain » inventé. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36, CL-E01, CL-E03, CL-E04*
+*Sécurité, gouvernance et observabilité visées ; aucune certification ; engagements sur les données. · Affirmations : CL-O08, CL-E01, CL-E03, CL-E04*
 
-Réglages : `media_position=none`, `visual=flux-donnees`, `tone=sombre`, `anchor_id=souverainete`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=securite`
 
-## Déploiement et souveraineté, sans détour.
+## Sécurité, gouvernance et observabilité.
 
-OPSYS-AI s'installe sur un serveur ou un serveur privé virtuel (VPS) que vous contrôlez. Cette installation est en pilote : nous qualifions la procédure avec vous.
+Des garde-fous pour travailler avec confiance. La sécurité visée repose sur l'identité, des permissions adaptées aux rôles, la réduction des données partagées et la traçabilité des opérations : les départements et les agents ne devraient accéder qu'aux informations nécessaires à leur responsabilité.
 
-Une promesse de souveraineté se prouve flux par flux. OPSYS-AI passe par une passerelle de modèles qui peut appeler des fournisseurs d'IA externes, selon la configuration. Un mode souverain, où aucun contenu métier ne quitte votre périmètre, n'est pas encore défini dans le produit : tant qu'il ne l'est pas, nous ne l'annonçons pas.
+La conformité dépend de la configuration, du déploiement, des pratiques de l'entreprise et de validations appropriées. Aucune certification de sécurité ou de conformité n'est revendiquée. Vos données restent à vous : [les cinq engagements](/vos-donnees/) s'appliquent à OPSYS-AI.
 
-Pour aller plus loin : [vos données et nos cinq engagements](/vos-donnees/), [les modes de déploiement](/deploiement/) et [notre approche de la souveraineté](/souverainete/).
-
-- **Ce que nous faisons.** Pour votre configuration, nous décrivons par écrit où sont les données, qui peut y accéder, quels flux sont configurés et lesquels sont désactivés.
-- **Ce qui reste votre décision.** Quels modèles utiliser, locaux ou externes. Aucun service externe n'est configuré sans votre activation explicite, consignée par écrit.
-- **Sauvegarde et reprise.** Des scripts de sauvegarde et de restauration sont fournis (pilote). Une restauration complète reste à éprouver sur votre installation.
-- **Hébergement au Québec.** Envisageable dans l'infrastructure de Nexora AI, située au Québec. À qualifier lors de l'étude de déploiement.
-- **Une console protégée.** Les approbations, les modes et les budgets se gèrent dans une console web protégée par authentification.
-- **Vos données restent à vous.** Elles ne servent jamais à entraîner un modèle et ne sont jamais vendues ; chez vous, elles restent sur votre serveur.
+- **Des accès séparés.** Contrôles d'accès, séparation des responsabilités et des domaines de données.
+- **Des secrets protégés.** Références de secrets protégées, sans exposer les valeurs dans les profils.
+- **Des journaux et des preuves.** États d'exécution, erreurs et preuves pour comprendre les opérations.
+- **Confidentialité et conservation.** Paramètres de confidentialité, de conservation et de suppression à définir selon le contexte.
+- **Une surveillance des limites.** Budgets, quotas et disponibilité des outils et des fournisseurs.
 
 ### Bloc 10 — Section (`block_section`)
 
-*Mise en service : étude, configuration, pilote, formation, exploitation. · Affirmations : CL-03, CL-04, CL-14*
+*Connecteurs, hébergement et mobilité : options visées ; mobile et déploiement complet non présentés comme livrés. · Affirmations : CL-O09, CL-77*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=clair`, `anchor_id=mise-en-service`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`, `anchor_id=integration`
 
-## De l'étude à la mise en service.
+## Connecteurs, hébergement et mobilité.
 
-Nous n'annonçons aucun délai universel. Il dépend du nombre de départements activés, de vos données et de vos intégrations, et il se mesure sur un pilote.
+Choisir les options qui correspondent au contexte de l'entreprise. La cible privilégie un serveur Linux, notamment un serveur privé virtuel (VPS), c'est-à-dire un serveur loué rien que pour vous, avec un serveur dédié comme alternative. Les modèles peuvent être locaux, infonuagiques ou hybrides selon vos besoins, vos droits et vos coûts. Voyez aussi [les modes de déploiement](/deploiement/).
 
-### Bloc 11 — Cartes (`block_cards`)
+Une intégration configurée n'est pas nécessairement authentifiée, fonctionnelle ou autorisée à écrire. Les marques et logiciels tiers sont des références ou des possibilités d'intégration, sans partenariat officiel implicite. L'application mobile et le déploiement complet ne sont pas présentés comme livrés.
 
-*Les cinq étapes de la mise en service, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
+- **Des connecteurs par département.** API, webhooks et événements, avec configuration, droits, état, limites et solution de repli.
+- **Des intégrations envisagées.** Communications, calendriers, comptabilité, fournisseurs et sources documentaires, selon les besoins.
+- **Voix et présentation 3D en option.** Envisagées après qualification, sous réserve d'autorisation et de coûts.
+- **Un mobile, en dernière phase.** Profils administrateur, vendeur, employé et client, avec l'ambition d'un fonctionnement hors ligne. Rien n'est livré.
+- **Sauvegarde et reprise.** À définir et à vérifier dans l'environnement retenu.
 
-Réglages : `columns=3`, `layout=etapes`, `tone=clair`
+### Bloc 11 — Section (`block_section`)
 
-#### Étude de déploiement.
+*Pour qui : PME ; rénovation extérieure au Québec comme contexte de départ ; cinq publics. · Affirmations : CL-O10*
 
-Nous cartographions vos processus, vos outils et vos données, et choisissons les départements à activer en premier.
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=pour-qui`
 
-#### Configuration.
+## Pour qui, et pourquoi.
 
-Marque, barèmes, règles de qualification, destinataires des transferts : le système est réglé à votre entreprise.
+OPSYS-AI s'adresse aux PME qui veulent mieux coordonner les demandes, les ventes, les équipes et l'administration. La rénovation extérieure au Québec est le contexte de départ ; l'adaptation à d'autres secteurs dépendra de leurs processus, de leurs données et de leurs règles.
 
-#### Pilote sur un flux.
+- **La direction.** Voir les priorités, les écarts et les décisions à prendre.
+- **Le secrétariat et le service client.** Retrouver le dossier, orienter et préparer les suivis.
+- **Les ventes et l'estimation.** Structurer le pipeline et préparer des soumissions documentées.
+- **Le terrain et les opérations.** Organiser les journées, les interventions et les matériaux.
+- **L'administration et les finances.** Rapprocher les informations et préparer les contrôles.
 
-Un seul parcours d'abord, par exemple de la demande à la soumission, avec vos approbations.
+### Bloc 12 — Cartes (`block_cards`)
 
-#### Formation.
+*Démarche réaliste en quatre étapes (brochure p. 21) ; aucun délai annoncé. · Affirmations : CL-O10, CL-14, CL-80*
 
-Votre équipe apprend à superviser, à approuver et à corriger.
+Réglages : `columns=4`, `layout=etapes`, `tone=clair`, `anchor_id=demarrage`
 
-#### Exploitation.
+## Comment commencer, en quatre étapes.
 
-Nous suivons ce qui fonctionne et élargissons, département par département.
+Une démarche réaliste : un parcours à la fois, qualifié dans votre environnement. Les options, le calendrier et le périmètre se déterminent selon vos besoins et les capacités effectivement disponibles.
 
-### Bloc 12 — FAQ (`block_faq`)
+#### Choisir un parcours prioritaire.
 
-*FAQ OPSYS-AI : objections et limites, réponses vraies seulement. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01, CL-E03, CL-E04, CL-06*
+Celui où votre équipe perd le plus de temps, de la demande à la soumission par exemple.
+
+#### Inventorier données et outils.
+
+Ce qui existe déjà, où cela se trouve et qui y accède.
+
+#### Définir rôles et validations.
+
+Qui prépare, qui approuve, qui est averti.
+
+#### Qualifier chaque étape.
+
+Dans l'environnement visé, avec vos données, avant d'élargir.
+
+### Bloc 13 — FAQ (`block_faq`)
+
+*FAQ alignée sur la brochure : statut, niveaux, envois, remplacement d'un logiciel, serveur, données, secteurs, mobile, délai, prix, essai. · Affirmations : CL-O01, CL-O02, CL-O07, CL-31, CL-O05, CL-O09, CL-O10, CL-E03, CL-E04, CL-14, CL-10, CL-61*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 ## Vos questions. Nos réponses.
 
-#### OPSYS-AI est-il un agent conversationnel ?
+#### OPSYS-AI est-il disponible en production ?
 
-Non. C'est un ensemble de dix départements qui travaillent sur les mêmes dossiers : demande, estimation, chantier, matériel, facture, analyse, mémoire. Le but n'est pas de discuter, mais de coordonner.
+Non. OPSYS-AI est un produit en développement, dont l'état global est partiel. Certains parcours et certaines vues sont qualifiés localement, mais aucun déploiement de production complet n'existe.
 
-#### Les soumissions et les factures partent-elles toutes seules ?
+#### Que veut dire « qualifié localement » ?
 
-Non. Le système prépare des brouillons. La soumission est filtrée de vos coûts et marges internes et passe par une approbation. L'envoi réel au client n'existe pas encore : votre équipe transmet le document.
+Des règles et des parcours ciblés existent et ont été vérifiés en environnement local, sur un périmètre limité. Cela ne certifie ni l'ensemble d'un département, ni une intégration avec un fournisseur, ni un parcours en production.
 
-#### Les dix départements sont-ils tous disponibles ?
+#### Les soumissions, les factures et les relances partent-elles toutes seules ?
 
-Non, et nous le disons département par département. Certains éléments sont disponibles, beaucoup sont en pilote, d'autres sont prévus. Les cartes de la section « Les dix départements » donnent le détail.
+Non. Le système prépare des brouillons et des propositions. Les paiements, engagements externes sensibles, publications et autres opérations réservées demandent l'approbation d'une personne, et un état « préparé » ou « approuvé » ne prouve pas qu'un message a été livré.
 
-#### Que fait l'approbation humaine ?
+#### Remplace-t-il notre logiciel comptable ou notre CRM ?
 
-Elle bloque l'action engageante (envoi, paiement, décision financière) jusqu'à ce qu'une personne habilitée décide. Un journal garde la trace.
+Pas aujourd'hui. Aucune parité totale n'est démontrée avec un CRM, un logiciel comptable ou un calendrier tiers, et la comptabilité complète comme la paie ne sont pas revendiquées. Le CRM unifié est en développement.
 
 #### Peut-on l'installer sur notre propre serveur ?
 
-Oui, sur un serveur ou un VPS que vous contrôlez. L'installation est en pilote : la procédure se qualifie avec nous.
+C'est la cible : un serveur Linux, notamment un serveur privé virtuel, avec un serveur dédié comme alternative. La sauvegarde, l'exploitation et la reprise restent à définir et à vérifier dans votre environnement.
 
 #### Mes données servent-elles à entraîner une IA ?
 
-Jamais. Nous n'utilisons pas vos données pour entraîner ou ajuster un modèle, et nous ne les vendons jamais. Aucun appel à un modèle externe n'est configuré sans votre activation explicite.
+Jamais. Nous n'utilisons pas vos données pour entraîner ou ajuster un modèle, et nous ne les vendons jamais.
 
-#### OPSYS-AI est-il offert en mode souverain ?
+#### Convient-il à d'autres métiers que la rénovation ?
 
-Pas sous ce nom. Nous décrivons plutôt le périmètre réel de votre installation : où sont les données, qui y accède, quels flux sont configurés. Un mode où aucun contenu métier ne quitte votre périmètre n'est pas encore défini dans le produit.
+La rénovation extérieure au Québec est le contexte de départ. L'adaptation à un autre secteur dépend de ses processus, de ses données et de ses règles : c'est l'objet de l'étude de déploiement.
 
-#### Se connecte-t-il à notre comptabilité ou à notre banque ?
+#### Y a-t-il une application mobile ?
 
-Pas aujourd'hui. Le système prépare des dossiers pour votre comptable et rapproche des relevés que vous exportez. Les connexions bancaires et comptables sont prévues, pas livrées.
-
-#### Les messages vocaux et les appels sont-ils traités ?
-
-Des messages vocaux téléversés peuvent être transcrits (pilote). Il n'y a pas de réceptionniste téléphonique en temps réel.
-
-#### Fonctionne-t-il hors ligne sur mobile ?
-
-Le mode hors ligne est conçu, mais il n'a pas encore été vérifié contre un serveur : nous ne le garantissons pas.
+Elle est prévue en dernière phase, pour les profils administrateur, vendeur, employé et client, avec l'ambition d'un fonctionnement hors ligne. Elle n'est pas présentée comme livrée.
 
 #### Combien de temps pour la mise en service ?
 
-Aucun délai universel n'est annoncé. Il dépend des départements activés, de vos données et de vos intégrations, et il se mesure sur un pilote.
+Aucun délai universel n'est annoncé. Il dépend du parcours choisi, de vos données et de vos intégrations, et se détermine en qualifiant chaque étape.
 
 #### Combien cela coûte-t-il ?
 
@@ -331,16 +362,16 @@ Il n'y a pas de prix public. Une étude de déploiement établit, par écrit, ce
 
 #### Existe-t-il un essai gratuit ?
 
-Non, pas en libre-service. Nous proposons une démonstration sur données fictives, une étude de déploiement, puis un pilote qualifié.
+Non, pas en libre-service. Nous proposons une démonstration, une étude de déploiement, puis un pilote qualifié.
 
-### Bloc 13 — Appel à l'action (`block_cta`)
+### Bloc 14 — Appel à l'action (`block_cta`)
 
-*CTA final : démonstration ou étude de déploiement. · Affirmations : CL-61*
+*CTA : démonstration ou étude de déploiement. · Affirmations : CL-61, CL-O01*
 
 Réglages : `tone=sombre`
 
 ## Parlons de vos chantiers.
 
-Voyez OPSYS-AI travailler sur des données fictives, ou lancez une étude de déploiement pour votre entreprise. Nous avançons avec vous, étape par étape : démonstration, étude, puis pilote.
+Voyez où en est OPSYS-AI avec une démonstration, ou lancez une étude de déploiement pour votre entreprise. Nous avançons avec vous, un parcours à la fois : démonstration, étude, puis pilote qualifié.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Étude de déploiement](/contact/?sujet=etude-deploiement)

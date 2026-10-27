@@ -130,7 +130,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=verifier`
 
 Une entreprise se juge à ce qu'elle laisse vérifier. Voici où regarder.
 
-- **Un état pour chaque capacité.** Chaque produit et chaque département indique s'il est disponible, en pilote ou prévu, par exemple sur la page <a href="/opsys-ai/">OPSYS-AI</a>. Nexora Croissance est en accès anticipé et Nexora Vision en projet pilote sur invitation.
+- **Un état pour chaque capacité.** Chaque produit et chaque département indique s'il est disponible, en accès anticipé, en projet pilote, qualifié localement, en développement ou prévu, par exemple sur la page <a href="/opsys-ai/">OPSYS-AI</a>. Nexora Croissance est en accès anticipé et Nexora Vision en projet pilote sur invitation.
 - **Un registre de preuves.** Les affirmations sensibles de ce site sont tenues dans un registre interne, avec leur preuve, leur source et leur version.
 - **Des engagements sur vos données.** Ils sont énoncés avec leurs limites sur la page <a href="/vos-donnees/">Vos données</a>.
 - **Des documents sur demande.** Le <a href="/centre-de-confiance/">centre de confiance</a> liste les documents que nous préparons et leur statut.

@@ -177,6 +177,8 @@ export const frCA = {
     status: {
       disponible: "Disponible",
       "acces-anticipe": "Accès anticipé",
+      "qualifie-localement": "Qualifié localement",
+      "en-developpement": "En développement",
       pilote: "En pilote",
       prevu: "Prévu",
       legend: "État",

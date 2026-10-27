@@ -11,7 +11,13 @@ export const TONES = ["sombre", "clair", "sable"] as const;
 /** Ancre facultative d'un bloc (`^[a-z0-9-]{0,40}$`), commune à tous les blocs. */
 export type Anchored = { anchorId: string | null };
 export type CardLayout = "grille" | "liste" | "etapes" | "modules" | "bento";
-export type CardStatus = "disponible" | "acces-anticipe" | "pilote" | "prevu";
+export type CardStatus =
+  | "disponible"
+  | "acces-anticipe"
+  | "qualifie-localement"
+  | "en-developpement"
+  | "pilote"
+  | "prevu";
 /** Illustrations d'un bloc section : schémas de périmètre, maquettes d'interface produit, schémas de principe. */
 export const SECTION_VISUALS = [
   "aucun",

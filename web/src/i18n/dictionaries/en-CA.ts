@@ -173,6 +173,8 @@ export const enCA: Dictionary = {
     status: {
       disponible: "Available",
       "acces-anticipe": "Early access",
+      "qualifie-localement": "Locally qualified",
+      "en-developpement": "In development",
       pilote: "Pilot",
       prevu: "Planned",
       legend: "Status",

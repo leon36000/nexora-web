@@ -362,7 +362,14 @@ export function CardsBlockView({
   const anchor = anchorProps(block.anchorId);
   const layout = block.layout ?? "grille";
   const present = (
-    ["disponible", "acces-anticipe", "pilote", "prevu"] as const
+    [
+      "disponible",
+      "acces-anticipe",
+      "qualifie-localement",
+      "en-developpement",
+      "pilote",
+      "prevu",
+    ] as const
   ).filter((s) => block.cards.some((c) => c.status === s));
   const legend =
     layout === "modules" && present.length > 0 ? (

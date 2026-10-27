@@ -341,7 +341,14 @@ function normalizeBlock(
             status:
               oneOf<CardStatus | "">(
                 c.status,
-                ["disponible", "acces-anticipe", "pilote", "prevu"],
+                [
+                  "disponible",
+                  "acces-anticipe",
+                  "qualifie-localement",
+                  "en-developpement",
+                  "pilote",
+                  "prevu",
+                ],
                 "",
               ) || null,
           }))

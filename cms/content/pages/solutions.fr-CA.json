@@ -7,13 +7,13 @@
     "slug": "solutions",
     "title": "Solutions",
     "seo_title": "Solutions IA pour PME au Québec",
-    "seo_description": "Six solutions d'IA pour PME du Québec\u00a0: courriels, factures, service client, rendez-vous, comptabilité, documents. Très simples, vos données restent à vous.",
+    "seo_description": "Six solutions d'IA pour PME du Québec : courriels, factures, service client, rendez-vous, comptabilité, documents. Très simples, vos données restent à vous.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Hub des solutions\u00a0: le rêve (les tâches répétitives disparaissent), la pointe de l'IA rendue simple, deux CTA.",
+      "role": "Hub des solutions : le rêve (les tâches répétitives disparaissent), la pointe de l'IA rendue simple, deux CTA.",
       "claims": ["CL-01", "CL-132", "CL-P01", "CL-P02", "CL-P03"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solutions",
         "headline": "Les tâches répétitives, enfin derrière vous.",
-        "subheadline": "La pointe de l'IA, rendue extrêmement simple\u00a0: six situations de PME où le travail répétitif s'efface et où votre équipe garde la décision, sans écrire une ligne de code.",
+        "subheadline": "La pointe de l'IA, rendue extrêmement simple : six situations de PME où le travail répétitif s'efface et où votre équipe garde la décision, sans écrire une ligne de code.",
         "primary_label": "Planifier un diagnostic",
         "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Demander une démonstration",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Le rêve\u00a0: ce qu'une PME gagne quand la ressaisie disparaît, sans chiffre ni promesse de résultat.",
+      "role": "Le rêve : ce qu'une PME gagne quand la ressaisie disparaît, sans chiffre ni promesse de résultat.",
       "claims": ["CL-14", "CL-09", "CL-21", "CL-128"],
       "fields": {
         "media_position": "none",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "Imaginez le travail sans les corvées.",
-        "body": "<p>Le lundi arrive, et les courriels sont déjà triés, les factures déjà lues, les questions des clients déjà répondues. Votre équipe commence la journée par ce qui demande du jugement, du métier, du conseil, et non par de la ressaisie.</p><p>Voilà l'image que vise chaque solution de cette page. Nous ne promettons ni gain chiffré ni résultat garanti\u00a0: le bénéfice réel se mesure sur votre premier cas.</p>",
+        "body": "<p>Le lundi arrive, et les courriels sont déjà triés, les factures déjà lues, les questions des clients déjà répondues. Votre équipe commence la journée par ce qui demande du jugement, du métier, du conseil, et non par de la ressaisie.</p><p>Voilà l'image que vise chaque solution de cette page. Nous ne promettons ni gain chiffré ni résultat garanti : le bénéfice réel se mesure sur votre premier cas.</p>",
         "items": [
           {
             "title": "Du temps pour le métier.",
@@ -69,7 +69,7 @@
       },
       "translation": {
         "title": "Six corvées qui s'effacent.",
-        "intro": "Reconnaissez votre semaine, puis voyez ce qui change. Chaque page suit le même fil\u00a0: le problème, ce que fait le système, ce que reçoit l'équipe, le bénéfice attendu et ce qui reste sous votre contrôle.",
+        "intro": "Reconnaissez votre semaine, puis voyez ce qui change. Chaque page suit le même fil : le problème, ce que fait le système, ce que reçoit l'équipe, le bénéfice attendu et ce qui reste sous votre contrôle.",
         "cards": [
           {
             "title": "Une boîte de réception qui se trie seule.",
@@ -79,7 +79,7 @@
           },
           {
             "title": "Des factures qui se lisent seules.",
-            "text": "Un PDF, un scan, une photo\u00a0: le système lit la pièce, repère les montants qui ne concordent pas et range tout dans une table.",
+            "text": "Un PDF, un scan, une photo : le système lit la pièce, repère les montants qui ne concordent pas et range tout dans une table.",
             "href": "/solutions/factures/",
             "link_label": "Voir les factures"
           },
@@ -97,13 +97,13 @@
           },
           {
             "title": "Une fin de mois sans ressaisie.",
-            "text": "Le système lit les pièces, prépare la pré-saisie et signale les écarts\u00a0; le comptable relit et décide.",
+            "text": "Le système lit les pièces, prépare la pré-saisie et signale les écarts ; le comptable relit et décide.",
             "href": "/solutions/comptabilite/",
             "link_label": "Voir la comptabilité"
           },
           {
             "title": "Des documents qui répondent.",
-            "text": "Posez la question en français\u00a0: la réponse part de vos propres documents, avec ses sources.",
+            "text": "Posez la question en français : la réponse part de vos propres documents, avec ses sources.",
             "href": "/solutions/documents/",
             "link_label": "Voir les documents"
           }
@@ -112,7 +112,7 @@
     },
     {
       "collection": "block_section",
-      "role": "WorkStudio\u00a0: la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic\u00a0; schéma de l'éditeur de flux.",
+      "role": "WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; schéma de l'éditeur de flux.",
       "claims": [
         "CL-132",
         "CL-85",
@@ -135,7 +135,7 @@
       },
       "translation": {
         "title": "Puissant en dessous, simple dessus.",
-        "body": "<p>Ces solutions s'assemblent dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, un seul outil, en français, qui met à votre portée ce que l'IA sait faire de plus récent\u00a0: des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), des réponses fondées sur vos propres documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte. «\u00a0À la pointe\u00a0» est notre façon de le dire\u00a0; la preuve, c'est cette liste.</p><p>Et c'est extrêmement simple à manier\u00a0: vous décrivez le besoin en français, un assistant de création (le Copilote) prépare un flux de travaux (des enchaînements automatisés de tâches) que vous relisez, puis vous le construisez en cartes ou sur un canevas, comme on dessine un schéma, sans écrire de code. Le flux illustré ici reçoit une facture par courriel, prépare l'écriture et s'arrête sur l'approbation d'une personne avant d'écrire.</p><p>Chaque mise en service commence par un diagnostic de votre cas\u00a0: nous vérifions que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel. Ce ne sont pas des boîtes prêtes à l'emploi, mais des configurations sur mesure.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p>",
+        "body": "<p>Ces solutions s'assemblent dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, un seul outil, en français, qui met à votre portée ce que l'IA sait faire de plus récent : des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), des réponses fondées sur vos propres documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte. « À la pointe » est notre façon de le dire ; la preuve, c'est cette liste.</p><p>Et c'est extrêmement simple à manier : vous décrivez le besoin en français, un assistant de création (le Copilote) prépare un flux de travaux (des enchaînements automatisés de tâches) que vous relisez, puis vous le construisez en cartes ou sur un canevas, comme on dessine un schéma, sans écrire de code. Le flux illustré ici reçoit une facture par courriel, prépare l'écriture et s'arrête sur l'approbation d'une personne avant d'écrire.</p><p>Chaque mise en service commence par un diagnostic de votre cas : nous vérifions que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel. Ce ne sont pas des boîtes prêtes à l'emploi, mais des configurations sur mesure.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p>",
         "items": [
           {
             "title": "1. Le problème, nommé.",
@@ -147,11 +147,11 @@
           },
           {
             "title": "3. Le résultat livré à l'équipe.",
-            "text": "Brouillons, tables, réponses sourcées\u00a0: du concret à relire."
+            "text": "Brouillons, tables, réponses sourcées : du concret à relire."
           },
           {
             "title": "4. Le bénéfice, sans chiffre inventé.",
-            "text": "Décrit honnêtement\u00a0; il se mesure sur un premier cas."
+            "text": "Décrit honnêtement ; il se mesure sur un premier cas."
           },
           {
             "title": "5. Votre contrôle, intact.",
@@ -176,7 +176,7 @@
         "cards": [
           {
             "title": "Un entrepreneur en rénovation.",
-            "text": "Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son statut.",
+            "text": "Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son niveau de disponibilité (produit en développement).",
             "href": "/opsys-ai/",
             "link_label": "Découvrir OPSYS-AI"
           },
@@ -203,7 +203,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce que ces solutions ont en commun\u00a0: le contrôle, et des données qui restent à l'entreprise (lien Vos données).",
+      "role": "Ce que ces solutions ont en commun : le contrôle, et des données qui restent à l'entreprise (lien Vos données).",
       "claims": [
         "CL-128",
         "CL-21",
@@ -236,7 +236,7 @@
           },
           {
             "title": "Tout laisse une trace.",
-            "text": "Chaque appel de modèle est consultable\u00a0: ce qui a été demandé, ce qui a été répondu, avec quel modèle."
+            "text": "Chaque appel de modèle est consultable : ce qui a été demandé, ce qui a été répondu, avec quel modèle."
           },
           {
             "title": "Vous choisissez où ça tourne.",
@@ -247,7 +247,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Au-delà des tâches\u00a0: Croissance (accès anticipé) et Vision (projet pilote sur invitation), renvois honnêtes avec statut.",
+      "role": "Au-delà des tâches : Croissance (accès anticipé) et Vision (projet pilote sur invitation), renvois honnêtes avec statut.",
       "claims": ["CL-G01", "CL-V01", "CL-P03"],
       "fields": {
         "media_position": "none",
@@ -256,7 +256,7 @@
       },
       "translation": {
         "title": "Plus loin que les tâches.",
-        "body": "<p>Vos clients ne vous trouvent pas encore assez\u00a0? <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé (site, référencement, annonces, réseaux sociaux), est en accès anticipé\u00a0: l'accès se fait sur demande.</p><p>Vous voulez surveiller vos sites\u00a0? <a href=\"/vision/\">Nexora Vision</a>, la vidéosurveillance par IA, est un projet pilote sur invitation, pas un produit disponible.</p>"
+        "body": "<p>Vos clients ne vous trouvent pas encore assez ? <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé (site, référencement, annonces, réseaux sociaux), est en accès anticipé : l'accès se fait sur demande.</p><p>Vous voulez surveiller vos sites ? <a href=\"/vision/\">Nexora Vision</a>, la vidéosurveillance par IA, est un projet pilote sur invitation, pas un produit disponible.</p>"
       }
     },
     {
@@ -278,30 +278,30 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Avant de choisir\u00a0: vos questions.",
+        "title": "Avant de choisir : vos questions.",
         "items": [
           {
-            "question": "Par où commencer\u00a0?",
+            "question": "Par où commencer ?",
             "answer": "Par le problème qui vous coûte le plus de temps. Nous le décrivons avec vous, nous vérifions les logiciels à relier, puis nous mettons un premier cas en service avant d'élargir."
           },
           {
-            "question": "Faut-il changer mes logiciels\u00a0?",
-            "answer": "En général non\u00a0: le système se relie à ce que vous utilisez déjà. La possibilité de relier un logiciel dépend du service concerné\u00a0; nous la vérifions au diagnostic."
+            "question": "Faut-il changer mes logiciels ?",
+            "answer": "En général non : le système se relie à ce que vous utilisez déjà. La possibilité de relier un logiciel dépend du service concerné ; nous la vérifions au diagnostic."
           },
           {
-            "question": "Est-ce prêt à l'emploi\u00a0?",
-            "answer": "Non, et c'est volontaire\u00a0: chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées."
+            "question": "Est-ce prêt à l'emploi ?",
+            "answer": "Non, et c'est volontaire : chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées."
           },
           {
-            "question": "Mes données servent-elles à entraîner un modèle\u00a0?",
+            "question": "Mes données servent-elles à entraîner un modèle ?",
             "answer": "Jamais. Elles restent sur votre serveur ou chez nous, au Québec, ne servent pas à entraîner ni à ajuster un modèle, et ne sont jamais vendues. La page Vos données détaille chaque engagement."
           },
           {
-            "question": "Et le téléphone\u00a0?",
-            "answer": "Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit\u00a0; la téléphonie en direct se vérifie séparément, au cas par cas."
+            "question": "Et le téléphone ?",
+            "answer": "Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément, au cas par cas."
           },
           {
-            "question": "Combien cela coûte-t-il\u00a0?",
+            "question": "Combien cela coûte-t-il ?",
             "answer": "Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
           }
         ]
@@ -309,7 +309,7 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: diagnostic ou démonstration\u00a0; partenaire d'ici.",
+      "role": "CTA : diagnostic ou démonstration ; partenaire d'ici.",
       "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"

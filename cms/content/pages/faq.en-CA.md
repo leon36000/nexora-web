@@ -149,7 +149,7 @@ No availability or date is announced at this stage. Nexora WorkStudio is present
 
 #### Is there a solution for construction?
 
-Yes: OPSYS-AI coordinates ten departments for construction companies and field services, each with an honest status (available, in pilot or planned).
+Yes: OPSYS-AI coordinates ten departments for construction companies and field services, each with an honest level (locally qualified, to complete or planned). OPSYS-AI is a product in development, partial: no complete production deployment exists.
 
 #### What about AI video surveillance?
 

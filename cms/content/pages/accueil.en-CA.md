@@ -240,15 +240,15 @@ Status: no availability or date is announced at this stage.
 
 ### Bloc 10 — Section (`block_section`)
 
-*Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31*
+*Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31, CL-O01*
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## OPSYS-AI. Ten departments, one file.
 
-For construction companies and field services: ten virtual departments work on the same files, from the first request to preparing the invoice. Nothing gets lost between two programs.
+The intelligent operating system for small businesses, for construction and field services: ten virtual departments work on the same files, from the first request to the finished job. Nothing gets lost between two programs.
 
-It is not a chat robot, not a customer relationship management (CRM) system under a new name, and not ten isolated tools. Commitment actions — sending, paying, deciding — wait for a person's approval. And each department states its status: available, in pilot (it works, with limits we spell out) or planned.
+It is not a chat robot, not a customer relationship management (CRM) system under a new name, and not ten isolated tools. Commitment actions — sending, paying, deciding — wait for a person's approval. OPSYS-AI is a product in development, partial: each department tells what is locally qualified from what remains to be completed, and nothing is presented as delivered in production.
 
 [Discover OPSYS-AI](/en/opsys-ai/)
 

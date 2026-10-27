@@ -37,7 +37,7 @@ Le sur-mesure commence là où les solutions types s'arrêtent. Trois exemples c
 
 Le vôtre ressemble à l'un d'eux, ou à aucun ? [Planifier un diagnostic](/contact/?sujet=diagnostic).
 
-- **Un entrepreneur retrouve ses soumissions.** Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, et suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation avant tout envoi. Pour la construction, <a href="/opsys-ai/">OPSYS-AI</a> couvre déjà une partie de ce parcours, avec ses statuts.
+- **Un entrepreneur retrouve ses soumissions.** Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, et suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation avant tout envoi. Pour la construction, <a href="/opsys-ai/">OPSYS-AI</a> vise ce parcours, en produit en développement dont chaque niveau de disponibilité est affiché.
 - **Un distributeur traite les documents de ses fournisseurs.** Bons de livraison, confirmations de commande et factures arrivent dans des formats différents. Le flux les lit, les compare entre eux et signale ce qui ne concorde pas, avant toute action.
 - **Un cabinet prépare des dossiers.** Il rassemble des pièces autorisées, en tire un résumé et une liste de points à vérifier, puis passe la main à la personne responsable. Les droits d'accès sont définis avant la construction.
 

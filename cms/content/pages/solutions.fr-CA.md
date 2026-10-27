@@ -121,7 +121,7 @@ Quatre situations types. Ce sont des exemples construits, pas des résultats mes
 
 #### Un entrepreneur en rénovation.
 
-Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son statut.
+Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son niveau de disponibilité (produit en développement).
 
 → [Découvrir OPSYS-AI](/opsys-ai/)
 

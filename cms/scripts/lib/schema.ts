@@ -495,12 +495,16 @@ export const SECTION_VISUALS: [string, string][] = [
 export const CARD_STATUSES = [
   "disponible",
   "acces-anticipe",
+  "qualifie-localement",
+  "en-developpement",
   "pilote",
   "prevu",
 ] as const;
 const CARD_STATUS_LABELS: Record<(typeof CARD_STATUSES)[number], string> = {
   disponible: "Disponible",
   "acces-anticipe": "Accès anticipé",
+  "qualifie-localement": "Qualifié localement",
+  "en-developpement": "En développement",
   pilote: "En pilote",
   prevu: "Prévu",
 };

@@ -296,7 +296,7 @@
     {
       "collection": "block_section",
       "role": "Mise en avant d'OPSYS-AI et de son cycle construction.",
-      "claims": ["CL-30", "CL-31"],
+      "claims": ["CL-30", "CL-31", "CL-O01"],
       "fields": {
         "media_position": "none",
         "visual": "aucun",
@@ -304,7 +304,7 @@
       },
       "translation": {
         "title": "OPSYS-AI. Dix départements, un dossier.",
-        "body": "<p>Pour les entreprises de construction et les services terrain : dix départements virtuels travaillent sur les mêmes dossiers, de la première demande à la préparation de la facture. Plus rien ne se perd entre deux logiciels.</p><p>Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) rebaptisé, ni dix outils isolés. Les actions engageantes — envoyer, payer, décider — attendent l'approbation d'une personne. Et chaque département indique son statut : disponible, en pilote (cela fonctionne, avec des limites que nous précisons) ou prévu.</p><p><a href=\"/opsys-ai/\">Découvrir OPSYS-AI</a></p>",
+        "body": "<p>Le système d'exploitation intelligent des PME, pour la construction et les services terrain : dix départements virtuels travaillent sur les mêmes dossiers, de la première demande au chantier terminé. Plus rien ne se perd entre deux logiciels.</p><p>Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) rebaptisé, ni dix outils isolés. Les actions engageantes — envoyer, payer, décider — attendent l'approbation d'une personne. OPSYS-AI est un produit en développement, partiel : chaque département distingue ce qui est qualifié localement de ce qui reste à compléter, et rien n'est présenté comme livré en production.</p><p><a href=\"/opsys-ai/\">Découvrir OPSYS-AI</a></p>",
         "items": [
           {
             "title": "Vendre.",

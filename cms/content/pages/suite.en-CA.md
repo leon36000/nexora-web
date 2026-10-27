@@ -152,7 +152,7 @@ No, never. Importing a document into a knowledge base does not authorize its use
 
 #### What can I use right now?
 
-Nexora WorkStudio, on request. For construction and field services, OPSYS-AI, with the status of each of its departments.
+Nexora WorkStudio, on request. For construction and field services, OPSYS-AI, a product in development, with the availability level of each of its departments.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
@@ -162,6 +162,6 @@ Réglages : `tone=sombre`
 
 ## Let's start with what exists.
 
-Nexora WorkStudio is presented as a demonstration on request; no self-service offer is open. OPSYS-AI covers construction with an honest status for each department.
+Nexora WorkStudio is presented as a demonstration on request; no self-service offer is open. OPSYS-AI covers construction as a product in development, with an honest level for each department.
 
 [Discuss my project](/en/contact/) · [Discover OPSYS-AI](/en/opsys-ai/)

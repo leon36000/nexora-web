@@ -91,7 +91,7 @@ Le comptable consacre son temps à conseiller plutôt qu'à retaper.
 
 #### Pour la construction, OPSYS-AI va plus loin.
 
-Sa comptabilité interne (département M5) prépare une facture brouillon après les travaux et suit les comptes à recevoir. Ce département est en pilote, et ni l'envoi des factures ni le calcul de la paie ne sont livrés.
+Son département Finance (M5) vise à préparer la facturation et à suivre les coûts de chantier. OPSYS-AI est un produit en développement : une lecture ciblée de coûts est qualifiée localement, mais la comptabilité complète, la paie et les connecteurs ne sont pas démontrés.
 
 → [Découvrir OPSYS-AI](/opsys-ai/)
 

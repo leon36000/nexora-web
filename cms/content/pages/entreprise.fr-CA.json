@@ -6,8 +6,8 @@
   "seo": {
     "slug": "entreprise",
     "title": "Entreprise",
-    "seo_title": "Nexora AI\u00a0: IA pour les PME du Québec",
-    "seo_description": "Nexora AI, entreprise du Québec\u00a0: la pointe de l'IA, simple et sous votre contrôle. Services, nouveautés avec leur statut réel, engagements sur vos données.",
+    "seo_title": "Nexora AI : IA pour les PME du Québec",
+    "seo_description": "Nexora AI, entreprise du Québec : la pointe de l'IA, simple et sous votre contrôle. Services, nouveautés avec leur statut réel, engagements sur vos données.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Entreprise",
         "headline": "La pointe de l'IA, simple et d'ici.",
-        "subheadline": "Nexora AI est une entreprise du Québec. Notre mission\u00a0: mettre la pointe de l'IA à la portée des PME d'ici, simplement et sous leur contrôle, pour que leurs données restent à elles.",
+        "subheadline": "Nexora AI est une entreprise du Québec. Notre mission : mettre la pointe de l'IA à la portée des PME d'ici, simplement et sous leur contrôle, pour que leurs données restent à elles.",
         "primary_label": "Planifier un diagnostic",
         "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Lire la méthode",
@@ -53,11 +53,11 @@
         "items": [
           {
             "title": "La pointe de l'IA.",
-            "text": "Des agents qui utilisent vos outils, un assistant qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses tirées de vos documents, la lecture de documents scannés, la voix, la comparaison de modèles. Ces mots sont des mots d'ambition\u00a0: la preuve, c'est la liste de ce que l'outil fait."
+            "text": "Des agents qui utilisent vos outils, un assistant qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses tirées de vos documents, la lecture de documents scannés, la voix, la comparaison de modèles. Ces mots sont des mots d'ambition : la preuve, c'est la liste de ce que l'outil fait."
           },
           {
             "title": "Simple pour tous.",
-            "text": "Sans écrire de code\u00a0: on décrit le besoin, on relit, on approuve. Nous installons, nous exploitons et nous formons votre équipe à l'usage et à la supervision."
+            "text": "Sans écrire de code : on décrit le besoin, on relit, on approuve. Nous installons, nous exploitons et nous formons votre équipe à l'usage et à la supervision."
           },
           {
             "title": "Sous votre contrôle.",
@@ -127,23 +127,23 @@
       },
       "translation": {
         "title": "Trois nouveautés, chacune avec son statut.",
-        "intro": "Les mots d'ambition ne remplacent jamais l'état réel\u00a0: voici où en est chacune.",
+        "intro": "Les mots d'ambition ne remplacent jamais l'état réel : voici où en est chacune.",
         "cards": [
           {
             "title": "Nexora Croissance.",
-            "text": "Notre service de marketing automatisé\u00a0: un site avec hébergement inclus, le référencement, la publicité en ligne, les réseaux sociaux et le suivi de la notoriété. Statut\u00a0: accès anticipé, sur demande.",
+            "text": "Notre service de marketing automatisé : un site avec hébergement inclus, le référencement, la publicité en ligne, les réseaux sociaux et le suivi de la notoriété. Statut : accès anticipé, sur demande.",
             "href": "/croissance/",
             "link_label": "Voir Nexora Croissance"
           },
           {
             "title": "Nexora Vision.",
-            "text": "De la vidéosurveillance par IA, conçue pour analyser les images sur un serveur installé chez vous. Statut\u00a0: projet pilote sur invitation\u00a0; aucune installation n'existe encore.",
+            "text": "De la vidéosurveillance par IA, conçue pour analyser les images sur un serveur installé chez vous. Statut : projet pilote sur invitation ; aucune installation n'existe encore.",
             "href": "/vision/",
             "link_label": "Voir Nexora Vision"
           },
           {
             "title": "Vos données.",
-            "text": "Nos engagements\u00a0: vos données restent chez vous ou au Québec, ne servent jamais à entraîner un modèle et ne sont jamais vendues. Les pièces qui les rendent vérifiables sont en préparation.",
+            "text": "Nos engagements : vos données restent chez vous ou au Québec, ne servent jamais à entraîner un modèle et ne sont jamais vendues. Les pièces qui les rendent vérifiables sont en préparation.",
             "href": "/vos-donnees/",
             "link_label": "Voir les engagements"
           }
@@ -197,7 +197,7 @@
         "items": [
           {
             "title": "Un état pour chaque capacité.",
-            "text": "Chaque produit et chaque département indique s'il est disponible, en pilote ou prévu, par exemple sur la page <a href=\"/opsys-ai/\">OPSYS-AI</a>. Nexora Croissance est en accès anticipé et Nexora Vision en projet pilote sur invitation."
+            "text": "Chaque produit et chaque département indique s'il est disponible, en accès anticipé, en projet pilote, qualifié localement, en développement ou prévu, par exemple sur la page <a href=\"/opsys-ai/\">OPSYS-AI</a>. Nexora Croissance est en accès anticipé et Nexora Vision en projet pilote sur invitation."
           },
           {
             "title": "Un registre de preuves.",
@@ -225,7 +225,7 @@
       },
       "translation": {
         "title": "Nous joindre.",
-        "body": "<p>Le plus simple est le <a href=\"/contact/\">formulaire de contact</a>\u00a0: décrivez un problème concret, nous vous répondons avec ce qui est faisable et par où commencer. Vous préférez commencer par un échange structuré\u00a0? <a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a>.</p>"
+        "body": "<p>Le plus simple est le <a href=\"/contact/\">formulaire de contact</a> : décrivez un problème concret, nous vous répondons avec ce qui est faisable et par où commencer. Vous préférez commencer par un échange structuré ? <a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a>.</p>"
       }
     },
     {

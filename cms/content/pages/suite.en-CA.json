@@ -202,7 +202,7 @@
           },
           {
             "question": "What can I use right now?",
-            "answer": "Nexora WorkStudio, on request. For construction and field services, OPSYS-AI, with the status of each of its departments."
+            "answer": "Nexora WorkStudio, on request. For construction and field services, OPSYS-AI, a product in development, with the availability level of each of its departments."
           }
         ]
       }
@@ -216,7 +216,7 @@
       },
       "translation": {
         "title": "Let's start with what exists.",
-        "text": "Nexora WorkStudio is presented as a demonstration on request; no self-service offer is open. OPSYS-AI covers construction with an honest status for each department.",
+        "text": "Nexora WorkStudio is presented as a demonstration on request; no self-service offer is open. OPSYS-AI covers construction as a product in development, with an honest level for each department.",
         "primary_label": "Discuss my project",
         "primary_href": "/en/contact/",
         "secondary_label": "Discover OPSYS-AI",

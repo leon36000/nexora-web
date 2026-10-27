@@ -121,7 +121,7 @@ Four typical situations. These are constructed examples, not results measured at
 
 #### A renovation contractor.
 
-They want to find old quotes, organize crews and track real costs. For construction and field services, OPSYS-AI brings these needs together in ten departments, each with its own status.
+They want to find old quotes, organize crews and track real costs. For construction and field services, OPSYS-AI brings these needs together in ten departments, each with its own availability level (a product in development).
 
 → [Discover OPSYS-AI](/en/opsys-ai/)
 

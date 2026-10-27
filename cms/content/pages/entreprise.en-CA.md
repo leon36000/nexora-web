@@ -130,7 +130,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=verifier`
 
 A company is judged by what it lets you check. Here is where to look.
 
-- **A status for every capability.** Each product and each department shows whether it is available, in pilot or planned, for example on the <a href="/en/opsys-ai/">OPSYS-AI</a> page. Nexora Croissance is in early access and Nexora Vision is a pilot project by invitation.
+- **A status for every capability.** Each product and each department shows whether it is available, in early access, a pilot project, locally qualified, in development or planned, for example on the <a href="/en/opsys-ai/">OPSYS-AI</a> page. Nexora Croissance is in early access and Nexora Vision is a pilot project by invitation.
 - **A register of proofs.** The sensitive claims on this site are kept in an internal register, with their evidence, source and version.
 - **Commitments on your data.** They are set out, with their limits, on the <a href="/en/your-data/">Your data</a> page.
 - **Documents on request.** The <a href="/en/trust-center/">trust center</a> lists the documents we are preparing and their status.

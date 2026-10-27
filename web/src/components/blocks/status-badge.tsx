@@ -2,9 +2,17 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 import type { CardStatus } from "@/server/cms/model";
 
+/** Largeur du remplissage du carré, par statut (absent : plein ou creux selon le statut). */
+const PARTIAL: Partial<Record<CardStatus, number>> = {
+  "acces-anticipe": 4.9,
+  "qualifie-localement": 3.25,
+  pilote: 3.25,
+  "en-developpement": 1.6,
+};
+
 /**
  * Badge de statut d'un module : toujours un TEXTE (jamais la couleur seule) et un repère de forme
- * (carré plein : disponible ; trois quarts plein : accès anticipé ; demi-plein : en pilote ; creux : prévu).
+ * (carré plein : disponible ; trois quarts plein : accès anticipé ; demi-plein : qualifié localement ou en pilote ; quart plein : en développement ; creux : prévu).
  */
 export function StatusBadge({
   status,
@@ -19,7 +27,9 @@ export function StatusBadge({
         "inline-flex items-center gap-2 whitespace-nowrap rounded-xs border px-2 py-0.5 font-mono text-label uppercase",
         status === "disponible"
           ? "border-success text-fg" // texte : vert sur sable < 4,5:1 ; le vert reste sur le filet et le carré
-          : status === "acces-anticipe" || status === "pilote"
+          : status === "acces-anticipe" ||
+              status === "pilote" ||
+              status === "qualifie-localement"
             ? "border-line-strong text-fg"
             : "border-line border-dashed text-fg-muted",
       )}
@@ -42,11 +52,11 @@ export function StatusBadge({
           stroke="currentColor"
           strokeWidth="1.5"
         />
-        {status === "pilote" || status === "acces-anticipe" ? (
+        {PARTIAL[status] ? (
           <rect
             x="0.75"
             y="0.75"
-            width={status === "pilote" ? 3.25 : 4.9}
+            width={PARTIAL[status]}
             height="6.5"
             fill="currentColor"
           />

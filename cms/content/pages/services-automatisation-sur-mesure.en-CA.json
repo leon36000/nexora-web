@@ -44,7 +44,7 @@
         "items": [
           {
             "title": "A contractor finds their quotes again.",
-            "text": "They want to start from older, comparable quotes to prepare a new one, and track real costs afterward. We would connect the quote database, an estimating agent and an approval before anything is sent. For construction, <a href=\"/en/opsys-ai/\">OPSYS-AI</a> already covers part of this path, with its statuses."
+            "text": "They want to start from older, comparable quotes to prepare a new one, and track real costs afterward. We would connect the quote database, an estimating agent and an approval before anything is sent. For construction, <a href=\"/en/opsys-ai/\">OPSYS-AI</a> aims at this path, as a product in development that shows every availability level."
           },
           {
             "title": "A distributor processes its suppliers' documents.",

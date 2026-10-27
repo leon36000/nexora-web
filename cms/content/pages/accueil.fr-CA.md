@@ -240,15 +240,15 @@ Nexora Code pour le développement assisté par agents, Nexora Corpus pour prép
 
 ### Bloc 10 — Section (`block_section`)
 
-*Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31*
+*Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31, CL-O01*
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
 ## OPSYS-AI. Dix départements, un dossier.
 
-Pour les entreprises de construction et les services terrain : dix départements virtuels travaillent sur les mêmes dossiers, de la première demande à la préparation de la facture. Plus rien ne se perd entre deux logiciels.
+Le système d'exploitation intelligent des PME, pour la construction et les services terrain : dix départements virtuels travaillent sur les mêmes dossiers, de la première demande au chantier terminé. Plus rien ne se perd entre deux logiciels.
 
-Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) rebaptisé, ni dix outils isolés. Les actions engageantes — envoyer, payer, décider — attendent l'approbation d'une personne. Et chaque département indique son statut : disponible, en pilote (cela fonctionne, avec des limites que nous précisons) ou prévu.
+Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) rebaptisé, ni dix outils isolés. Les actions engageantes — envoyer, payer, décider — attendent l'approbation d'une personne. OPSYS-AI est un produit en développement, partiel : chaque département distingue ce qui est qualifié localement de ce qui reste à compléter, et rien n'est présenté comme livré en production.
 
 [Découvrir OPSYS-AI](/opsys-ai/)
 
