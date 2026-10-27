@@ -58,6 +58,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       ["api/admin/site-agents/[[...path]]", "/api/admin/site-agents"],
       ["api/admin/seo/[[...path]]", "/api/admin/seo"],
       ["api/admin/vps/[[...path]]", "/api/admin/vps"],
+      ["api/admin/payments/[[...path]]", "/api/admin/payments"],
     ] as const
   ).map(
     ([route, path]): RouteGuard => ({
