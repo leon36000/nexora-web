@@ -31,6 +31,8 @@ export function gatewayDeps(): GatewayDeps {
     db: getDb,
     fetch,
     litellm: litellmConfig,
+    // Clé d'espace WorkStudio des agents hébergés : lue du coffre à chaque appel (jamais en cache ni en variable).
+    getSecret: (ref) => getSecret(ref),
     log,
     now: () => new Date(),
     requestId: () => `req_${randomUUID().replaceAll("-", "")}`,
