@@ -40,6 +40,8 @@ export interface EngineSettings {
   taskPollMs: number;
   agentTimeoutMs: number;
   agentPollMs: number;
+  /** Pause avant de reprendre l'attente de l'agent quand le budget d'exécution est épuisé. */
+  agentRetryMs: number;
   installTimeoutMs: number;
   shutdownTimeoutSec: number;
   retentionDays: number;
@@ -56,6 +58,7 @@ export const DEFAULT_SETTINGS: EngineSettings = {
   taskPollMs: 1_500,
   agentTimeoutMs: 600_000,
   agentPollMs: 3_000,
+  agentRetryMs: 10_000,
   installTimeoutMs: 900_000,
   shutdownTimeoutSec: 60,
   retentionDays: 7,

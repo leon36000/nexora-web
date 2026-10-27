@@ -196,7 +196,7 @@ async function advance(
       return { outcome: "skipped", reason: `instance ${inst.status}` };
     if (inst.step === "done") return { outcome: "done" };
     if (Date.now() - ctx.startedAt > deps.settings.budgetMs)
-      return await yieldRun(deps, inst, 1_000);
+      return await yieldRun(deps, inst, 0);
     const fn = STEPS[inst.step as Step];
     if (!fn) throw new PermanentError(`étape inconnue : ${inst.step}`);
     const result = await fn(ctx, inst);
@@ -639,7 +639,7 @@ async function stepAwaitAgent(ctx: Ctx, inst: Instance): Promise<StepResult> {
       Date.now() - ctx.startedAt >
       deps.settings.budgetMs - deps.settings.agentPollMs
     )
-      return { wait: 10_000 };
+      return { wait: deps.settings.agentRetryMs };
     await sleepFor(deps, deps.settings.agentPollMs);
   }
 }
