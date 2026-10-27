@@ -133,7 +133,7 @@ tout état ──customer.subscription.deleted──▶ canceled (terminal)     
 
 ### Quand le fondateur aura donné ses clés de test
 
-1. Dans le tableau de bord Stripe (mode test) : **Developers → API keys**, créer une clé restreinte ou copier `sk_test_…`, et **Developers → Webhooks** : créer l'endpoint `https://<site>/api/stripe/webhook` avec les 11 événements ci-dessus ; copier son secret `whsec_…`.
+1. Dans le tableau de bord Stripe (mode test) : **Developers → API keys**, créer une clé restreinte ou copier `sk_test_…`, et **Developers → Webhooks** : créer l'endpoint `https://<site>/api/stripe/webhook` avec les 12 événements ci-dessus ; copier son secret `whsec_…`.
 2. Coller les deux valeurs **dans le Coffre** de l'administration (`stripe.secret_key`, `stripe.webhook_secret`, type `payment`), jamais dans le chat ni dans un fichier.
 3. Activer **Stripe Tax** et ajouter les **inscriptions fiscales** de Nexora (TPS et TVQ du Québec, avec les numéros d'inscription ; adresse d'origine et catégorie de produit « services numériques / logiciel-service ») ; renseigner l'identité de l'entreprise pour les factures. Faire valider par un comptable (TVQ à déclarer par Nexora ; lieu de fourniture des services électroniques).
 4. Activer le **portail client** (Settings → Billing → Customer portal : factures, moyens de paiement, résiliation).

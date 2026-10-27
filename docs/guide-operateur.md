@@ -57,6 +57,7 @@ bun run --cwd web start -H localhost -p 3500              # écoute sur localhos
 
 Autres exigences du démarrage :
 
+- **Node.js 22.18 ou plus récent** (ou 23.6+) sur l'hôte qui lance le worker et les migrations : `worker` (`node src/main.ts`) et `packages/db` (`node src/migrate-cli.ts`) s'appuient sur l'exécution native du TypeScript par Node. Bun 1.4 pour l'installation, les tests et le site.
 - `NODE_ENV=production`. Dans ce mode, les clés Stripe de développement sont ignorées (§6).
 - `SITE_URL=https://<domaine>` **avant** le build et le démarrage : sert aux canoniques, aux hreflang, au sitemap, aux liens des courriels, au contrôle d'origine (CSRF) et à l'attribut `Secure` du témoin de session. Oublié, il vaut `http://localhost:3500` : les pages annoncent localhost et les connexions échouent.
 - `SITE_ENV=production` : **seule** valeur qui rend le site indexable (sinon `Disallow: /` et `noindex` partout, voulu en préproduction).
@@ -96,6 +97,8 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 
 Directus (`deploy/compose.yml`) : `DIRECTUS_SECRET`, `DIRECTUS_ADMIN_EMAIL`, `DIRECTUS_ADMIN_PASSWORD`, `POSTGRES_PASSWORD`, `DIRECTUS_PUBLIC_URL` (devient `PUBLIC_URL`, défaut `http://localhost:8456`), `DIRECTUS_CORS_ORIGIN` (devient `CORS_ORIGIN`, même défaut), `MARKETPLACE_REGISTRY` (posé à une adresse injoignable : la Marketplace ne contacte plus `registry.directus.io`), `TELEMETRY=false`. `deploy/init-env.sh` génère les secrets de `deploy/.env`, dont `BETTER_AUTH_SECRET` ; `deploy/.env.example` liste les variables de production (commentées). Les images sont épinglées **par empreinte** : ne jamais passer à `latest`. LiteLLM reste en `v1.106.2` (la 1.107.0 du 21/10/2026 était piégée).
 
+Autres variables (outils et réglages fins, rarement à poser) : `DIRECTUS_ADMIN_TOKEN` (scripts `cms/scripts`, à la place du courriel et du mot de passe, `docs/cms.md`) ; `NEXORA_DB_CONTAINER`, `NEXORA_DIRECTUS_CONTAINER`, `NEXORA_PG_IMAGE` et les autres `NEXORA_*` de la sauvegarde (§10, `docs/recette/sauvegarde.md`) ; `SEO_AUDIT_BASE_URL`, `SEO_AUDIT_PERF_MAX_PAGES`, `LYCHEE_BIN`, `CHROME_PATH`, `POSTIZ_URL` (audits et diffusion, `docs/seo.md`).
+
 ## 4. Le Coffre et la rotation de la clé maîtresse
 
 Le Coffre chiffre chaque secret (AES-256-GCM, clé de données aléatoire par secret, elle-même chiffrée par la clé maîtresse). **Une valeur n'est jamais relisible** : elle est remplaçable ou révocable.
@@ -133,7 +136,7 @@ En développement : `worker/scripts/dev-provision-agents.ts` fait tout cela avec
 
 1. Créer un compte Stripe, rester en mode test.
 2. Module **Coffre** : `stripe.secret_key` (clé `sk_test_…` ou `rk_test_…`, type `payment`) et `stripe.webhook_secret` (`whsec_…` du point d'accès webhook, type `payment`).
-3. Dans Stripe, point d'accès webhook : `https://<domaine>/api/stripe/webhook`, avec les 10 événements gérés (`docs/infra.md`, section Stripe). Sans les secrets au Coffre, le webhook répond 503 : voulu.
+3. Dans Stripe, point d'accès webhook : `https://<domaine>/api/stripe/webhook`, avec **les 12 événements gérés** : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired`, `invoice.paid`, `invoice.payment_failed`, `invoice_payment.paid`, `charge.refunded`, `charge.dispute.created`, `charge.dispute.closed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted` (`web/src/server/billing/webhook.ts`). Un événement oublié est perdu en silence : sans `invoice_payment.paid`, un remboursement d'abonnement ne reprend pas les crédits inclus ; sans `charge.dispute.closed`, un litige gagné ne rend rien. Sans les secrets au Coffre, le webhook répond 503 : voulu.
 4. Publier les plans vers Stripe :
    - **Plans VPS** : module **VPS** de Directus, bouton « Publier vers Stripe » (crée produits et prix Stripe, et écrit leurs identifiants sur la version de catalogue ; sans secret Stripe au Coffre, l'appel répond 503 `stripe_not_configured` avec la référence à déposer).
    - **Plans d'abonnement et de crédits** (collection Directus `subscription_plans`) : **il n'y a pas de bouton**. Publier le plan dans Directus, puis `curl -X POST http://<site interne>/api/admin/stripe/publish-plan -H "Authorization: Bearer $NEXORA_APP_ADMIN_TOKEN" -H 'content-type: application/json' -d '{"code":"<code du plan>"}'`, et **recopier `stripeProductId` et `stripePriceId` de la réponse** dans les champs « Produit Stripe » et « Prix Stripe » de la fiche du plan (aucun automate ne les écrit ; sans eux, l'achat de ce plan est impossible, et un second appel plus de 24 h après en crée de nouveaux chez Stripe). Un changement de montant crée un nouveau prix : recopier le nouveau.
