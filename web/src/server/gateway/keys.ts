@@ -148,13 +148,16 @@ export async function authenticateApiKey(
   return { ok: true, key: row };
 }
 
-/** Révoque une clé de l'organisation (effet immédiat). Renvoie false si elle n'appartient pas à l'organisation. */
+/**
+ * Révoque une clé de l'organisation (effet immédiat) et renvoie sa date de révocation : celle de la
+ * première révocation si elle l'était déjà. `null` si elle n'appartient pas à l'organisation.
+ */
 export async function revokeApiKey(
   db: Database,
   organizationId: string,
   keyId: string,
   now: Date = new Date(),
-): Promise<boolean> {
+): Promise<Date | null> {
   const [row] = await db
     .select({ id: apiKeysTable.id })
     .from(apiKeysTable)
@@ -164,12 +167,16 @@ export async function revokeApiKey(
         eq(apiKeysTable.organizationId, organizationId),
       ),
     );
-  if (!row) return false;
+  if (!row) return null;
   await db
     .update(apiKeysTable)
     .set({ revokedAt: now })
     .where(and(eq(apiKeysTable.id, keyId), isNull(apiKeysTable.revokedAt)));
-  return true;
+  const [after] = await db
+    .select({ revokedAt: apiKeysTable.revokedAt })
+    .from(apiKeysTable)
+    .where(eq(apiKeysTable.id, keyId));
+  return after?.revokedAt ?? now;
 }
 
 export async function listApiKeys(

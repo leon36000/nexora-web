@@ -147,4 +147,21 @@ describe("révocation", () => {
         .status,
     ).toBe(404);
   });
+
+  it("une seconde révocation renvoie la date de la première, pas une date inventée", async () => {
+    const created = await (
+      await handleCreateKey(req("POST", { name: "deux fois" }), deps(owner(orgA)))
+    ).json();
+    const first = await (
+      await handleRevokeKey(req("DELETE"), created.id, deps(owner(orgA)))
+    ).json();
+    await new Promise((r) => setTimeout(r, 15));
+    const secondRes = await handleRevokeKey(
+      req("DELETE"),
+      created.id,
+      deps(owner(orgA)),
+    );
+    expect(secondRes.status).toBe(200);
+    expect((await secondRes.json()).revokedAt).toBe(first.revokedAt);
+  });
 });
