@@ -1342,6 +1342,42 @@ describe("GET /v1/models : limite par adresse, cache HTTP et cache mémoire", ()
   });
 });
 
+describe("refus 400/422 de l'amont : aucun détail du fournisseur n'est transmis", () => {
+  it.each([400, 422])(
+    "statut amont %i : message générique, sans fournisseur ni identifiant amont",
+    async (status) => {
+      const c = await client();
+      upstream = () =>
+        Response.json(
+          {
+            error: {
+              message:
+                "litellm.BadRequestError: OpenrouterException - provider Wafer rejected model qwen/qwen3-xyz-b200 at https://llm.interne.example:4000 (key sk-or-v1-abc)",
+            },
+          },
+          { status },
+        );
+      const res = await handleChatCompletions(post(c.key, chat()), deps());
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error.code).toBe("upstream_rejected");
+      const text = JSON.stringify(json);
+      for (const leak of [
+        "litellm",
+        "Openrouter",
+        "Wafer",
+        "qwen",
+        "interne.example",
+        "sk-or",
+      ])
+        expect(text.toLowerCase()).not.toContain(leak.toLowerCase());
+      expect(json.error.message.length).toBeGreaterThan(10);
+      // Pas non plus dans les journaux.
+      expect(lines.join("\n").toLowerCase()).not.toContain("wafer");
+    },
+  );
+});
+
 describe("confidentialité", () => {
   it("ne laisse aucune trace du contenu, de la clé client, de la clé maîtresse ni de la clé du fournisseur", async () => {
     const c = await client();

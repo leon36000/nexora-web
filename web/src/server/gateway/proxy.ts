@@ -943,13 +943,9 @@ async function handleInference(
     }
 
     if (!upstream.ok) {
-      const text = await upstream.text().catch(() => "");
-      const mapped = mapUpstreamFailure(
-        upstream.status,
-        text,
-        headers,
-        served.kind,
-      );
+      // Le corps de l'erreur amont n'est jamais relayé : on libère la connexion sans le lire.
+      await upstream.body?.cancel().catch(() => undefined);
+      const mapped = mapUpstreamFailure(upstream.status, headers, served.kind);
       if (served.kind === "agent" && upstream.status >= 401)
         deps.log.warn("passerelle : refus de l'instance d'agents", {
           requestId,
@@ -1119,18 +1115,10 @@ function contentChars(json: Json): number {
 
 function mapUpstreamFailure(
   status: number,
-  text: string,
   headers: Record<string, string>,
   kind: "model" | "agent" = "model",
 ): Response {
-  let message = "";
-  try {
-    const j = JSON.parse(text) as { error?: { message?: unknown } };
-    if (typeof j.error?.message === "string")
-      message = j.error.message.slice(0, 300);
-  } catch {
-    message = "";
-  }
+  // Le message de l'amont (LiteLLM) nomme le fournisseur, le modèle ou l'adresse amont : il n'est jamais transmis.
   const tag = (res: Response, code: string) => {
     res.headers.set("x-nexora-error", code);
     return res;
@@ -1138,7 +1126,7 @@ function mapUpstreamFailure(
   if (status === 400 || status === 422)
     return tag(
       E.badRequest(
-        message || "Requête refusée par le fournisseur du modèle.",
+        "Requête refusée par le fournisseur du modèle. Vérifiez les paramètres envoyés (messages, outils, format de réponse).",
         "upstream_rejected",
         null,
         headers,
