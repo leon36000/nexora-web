@@ -21,8 +21,10 @@ import type { JobHandler } from "./registry.ts";
  * - Un message d'erreur de transport ne contient jamais le mot de passe SMTP (le journal commun nettoie de toute façon).
  *
  * Variables : SMTP_HOST, SMTP_PORT (587 par défaut), SMTP_SECURE (« true » pour TLS implicite), SMTP_USER,
- * SMTP_PASSWORD ou SMTP_PASSWORD_FILE (secret Docker), SMTP_FROM, CONTACT_NOTIFY_TO (une ou plusieurs adresses,
- * séparées par des virgules). En développement : Mailpit sur 127.0.0.1:1026.
+ * SMTP_PASSWORD_FILE (chemin d'un secret Docker : le mot de passe n'est JAMAIS accepté en clair dans l'environnement,
+ * qui se lit par `docker inspect` et `/proc`), SMTP_REQUIRE_TLS (« true » : STARTTLS obligatoire, à poser avec un SMTP réel
+ * sur le port 587 ; défaut non, pour Mailpit), SMTP_FROM, CONTACT_NOTIFY_TO (une ou plusieurs adresses, séparées par des
+ * virgules). En développement : Mailpit sur 127.0.0.1:1026.
  */
 
 export type Mail = {
@@ -46,9 +48,13 @@ export function mailerFromEnv(env: Env = process.env): Mailer | null {
   if (!host) return null;
   const port = Number(env.SMTP_PORT ?? 587);
   const secure = env.SMTP_SECURE === "true";
+  if (env.SMTP_PASSWORD)
+    throw new Error(
+      "SMTP_PASSWORD n'est pas accepté : placer le mot de passe dans un secret et donner son chemin dans SMTP_PASSWORD_FILE",
+    );
   const password = env.SMTP_PASSWORD_FILE
     ? readFileSync(env.SMTP_PASSWORD_FILE, "utf8").trim()
-    : env.SMTP_PASSWORD;
+    : undefined;
   const transport = nodemailer.createTransport({
     host,
     port,

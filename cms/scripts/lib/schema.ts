@@ -753,12 +753,12 @@ export function buildSchema(): {
     ),
   );
 
-  // --- abonnements (S4) : plans publiés dans Directus, lus par le site, poussés vers Stripe par « Publier vers Stripe » ---
+  // --- abonnements (S4) : plans publiés dans Directus, lus par le site, poussés vers Stripe par POST /api/admin/stripe/publish-plan (les identifiants renvoyés se recopient dans la fiche) ---
   add({
     collection: "subscription_plans",
     meta: {
       icon: "workspace_premium",
-      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais publié sans prix. Les identifiants Stripe sont écrits par l’action « Publier vers Stripe ».",
+      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais publié sans prix. Les identifiants Stripe renvoyés par POST /api/admin/stripe/publish-plan se recopient dans la fiche (aucun automate ne les écrit).",
       display_template: "{{code}}",
       sort_field: "sort",
       archive_field: "status",
@@ -824,15 +824,13 @@ export function buildSchema(): {
       }),
       str("stripe_product_id", {
         label: "Produit Stripe",
-        readonly: true,
         width: "half",
-        note: "Écrit après « Publier vers Stripe » (identifiant, pas un secret).",
+        note: "À recopier de la réponse de POST /api/admin/stripe/publish-plan (identifiant, pas un secret) : aucun automate ne l'écrit ici.",
       }),
       str("stripe_price_id", {
         label: "Prix Stripe",
-        readonly: true,
         width: "half",
-        note: "Un prix Stripe est immuable : un changement de montant en crée un nouveau.",
+        note: "À recopier de la réponse de POST /api/admin/stripe/publish-plan ; un prix Stripe est immuable : un changement de montant en crée un nouveau, à recopier de même.",
       }),
       ts("stripe_synced_at", {
         label: "Dernière synchronisation Stripe",

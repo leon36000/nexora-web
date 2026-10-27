@@ -213,7 +213,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Can we try it with no commitment?
 
-There is no account to create for now: self-service offers are not open yet. We offer a demonstration, on fictional data, then we talk about your case.
+Self-service is not open for sale yet: accounts and payments only work in test mode. We offer a demonstration, on fictional data, then we talk about your case.
 
 #### Do I need to know how to code?
 

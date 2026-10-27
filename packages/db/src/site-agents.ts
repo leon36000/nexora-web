@@ -90,7 +90,7 @@ export const SITE_AGENT_DEFINITIONS: readonly SiteAgentDefinition[] = [
     key: "sante",
     name: "Santé des modèles",
     mission:
-      "Vérifie la disponibilité des modèles publiés par un appel minimal. Aucun modèle coûteux, aucune écriture dans Directus.",
+      "Vérifie, sans appeler de modèle, que les modèles publiés sont bien listés par la passerelle et que LiteLLM répond. Aucun débit, aucune écriture dans Directus.",
     usesLlm: false,
     writesDrafts: false,
     defaultModel: null,

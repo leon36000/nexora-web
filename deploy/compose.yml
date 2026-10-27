@@ -40,17 +40,24 @@ services:
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:?définir DIRECTUS_ADMIN_EMAIL}
       ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:?définir DIRECTUS_ADMIN_PASSWORD}
-      PUBLIC_URL: http://localhost:8456
+      # Adresse publique de Directus : à poser en production (liens des courriels, cookies, aperçus).
+      PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8456}
       TELEMETRY: "false"
+      # Souveraineté (écart E3 de docs/recette/flux-sortants.md) : la Marketplace de Directus interroge par défaut
+      # registry.directus.io depuis ce serveur dès qu'un administrateur l'ouvre. Adresse volontairement injoignable
+      # (port « discard » de la boucle locale du conteneur) : la page Marketplace échoue sans rien envoyer dehors.
+      MARKETPLACE_REGISTRY: http://127.0.0.1:9
       EXTENSIONS_AUTO_RELOAD: "true"
       # Le site (localhost:3500) appelle Directus côté serveur seulement ; CORS limité au module « Coffre ».
       CORS_ENABLED: "true"
-      CORS_ORIGIN: http://localhost:8456
+      CORS_ORIGIN: ${DIRECTUS_CORS_ORIGIN:-http://localhost:8456}
       EMAIL_TRANSPORT: smtp
       EMAIL_FROM: no-reply@nexora.test
       EMAIL_SMTP_HOST: mailpit
       EMAIL_SMTP_PORT: "1025"
-      # Adresse interne de l'app (coffre, API d'administration, revalidation) vue depuis Directus.
+      # Adresse interne de l'app (coffre, API d'administration, revalidation) vue depuis Directus. Le défaut ne vaut
+      # que pour le développement (site lancé sur le poste, port 3500) : en production, la poser explicitement, la même
+      # que pour le worker. Sans elle, ou si elle est fausse, les publications ne rafraîchissent pas le site (journalisé).
       NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL:-http://host.docker.internal:3500}
       NEXORA_APP_ADMIN_TOKEN: ${NEXORA_APP_ADMIN_TOKEN:?définir NEXORA_APP_ADMIN_TOKEN}
     extra_hosts:

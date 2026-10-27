@@ -15,6 +15,8 @@ umask 077
   echo "LITELLM_SALT_KEY=$(rnd 32)"
   echo "NEXORA_APP_ADMIN_TOKEN=$(rnd 32)"
   echo "NEXORA_VAULT_MASTER_KEY=$(openssl rand -base64 32)"
+  # Signe les sessions et jetons de Better Auth (32 caractères au moins) : le site refuse de démarrer en production sans lui.
+  echo "BETTER_AUTH_SECRET=$(rnd 32)"
   echo "PC1_UPSTREAM_URL=http://host.docker.internal:18090/v1"
   # Clé du LiteLLM de pc1 (fournisseur amont de développement), lue sans l'afficher.
   if [[ -f "$HOME/.dsh/profiles/web/litellm.env" ]]; then

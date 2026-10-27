@@ -1,4 +1,4 @@
-import { models } from "@nexora/db";
+import { getAgentDefinition, models } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { probeHealth } from "./sante.ts";
@@ -42,5 +42,25 @@ describe("Santé des modèles : sondes gratuites, aucun appel de modèle", () =>
     });
     expect(urls.some((u) => u.includes("chat/completions"))).toBe(false);
     void models;
+  });
+
+  it("signale LiteLLM comme non configuré au lieu de sauter la sonde en silence", async () => {
+    const rows = await probeHealth({
+      db: t.db,
+      gatewayBaseUrl: "http://gw",
+      fetchImpl: (async () =>
+        new Response(JSON.stringify({ data: [] }))) as typeof fetch,
+    });
+    expect(rows.at(-1)).toMatchObject({
+      target: "LiteLLM (réseau interne)",
+      status: "missing",
+    });
+    expect(rows.at(-1)?.detail).toContain("LITELLM_BASE_URL");
+  });
+
+  it("la mission affichée dans le module Directus dit ce que l'agent fait : des sondes, aucun appel de modèle", () => {
+    const mission = getAgentDefinition("sante")?.mission ?? "";
+    expect(mission).not.toMatch(/appel minimal/i);
+    expect(mission).toMatch(/sans appeler/i);
   });
 });

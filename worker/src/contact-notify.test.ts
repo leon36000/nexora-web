@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { eq, jobs, leads } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger, type Logger } from "@nexora/log";
@@ -217,5 +220,38 @@ describe("transport SMTP depuis l'environnement", () => {
     expect(
       mailerFromEnv({ SMTP_HOST: "127.0.0.1", SMTP_PORT: "1026" }),
     ).not.toBeNull();
+  });
+
+  it("refuse un mot de passe SMTP en clair dans l'environnement (fichier de secret seulement)", () => {
+    expect(() =>
+      mailerFromEnv({
+        SMTP_HOST: "smtp.exemple.test",
+        SMTP_USER: "site",
+        SMTP_PASSWORD: "valeur-en-clair",
+      }),
+    ).toThrow(/SMTP_PASSWORD_FILE/);
+    try {
+      mailerFromEnv({ SMTP_HOST: "h", SMTP_PASSWORD: "valeur-en-clair" });
+    } catch (e) {
+      // le message ne cite jamais la valeur
+      expect(String((e as Error).message)).not.toContain("valeur-en-clair");
+    }
+  });
+
+  it("lit le mot de passe SMTP dans le fichier de secret", () => {
+    const dir = mkdtempSync(join(tmpdir(), "smtp-"));
+    const file = join(dir, "pw");
+    writeFileSync(file, "secret-de-fichier\n", { mode: 0o600 });
+    try {
+      expect(
+        mailerFromEnv({
+          SMTP_HOST: "smtp.exemple.test",
+          SMTP_USER: "site",
+          SMTP_PASSWORD_FILE: file,
+        }),
+      ).not.toBeNull();
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

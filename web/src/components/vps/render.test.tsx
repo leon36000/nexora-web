@@ -85,6 +85,18 @@ describe("offres en préparation / indisponible : aucun prix", () => {
     expect(html).not.toContain("#configurateur");
     expect(html).not.toContain("avant taxes");
   });
+  it("le héros sans plans garde son h1 (page réelle) ; le squelette de chargement n'en a pas (sinon le HTML streamé en porte deux)", () => {
+    const real = renderToStaticMarkup(
+      <VpsHero lang="fr" t={fr} withActions={false} />,
+    );
+    expect(real.match(/<h1/g)).toHaveLength(1);
+    const skeleton = renderToStaticMarkup(
+      <VpsHero lang="fr" t={fr} withActions={false} skeleton />,
+    );
+    expect(skeleton).not.toContain("<h1");
+    expect(skeleton).not.toContain('id="vps-title"');
+    expect(skeleton).toContain(fr.hero.title); // le visiteur voit le titre pendant le chargement
+  });
 });
 
 describe("configurateur (rendu serveur initial)", () => {

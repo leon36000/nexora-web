@@ -24,7 +24,7 @@ import {
   versionHash,
   writeVerdict,
 } from "./core";
-import { revalidate } from "./revalidate";
+import { revalidate, revalidateConfigProblem } from "./revalidate";
 
 /** Ligne ou charge utile d'une collection Directus : les champs sont lus au cas par cas. */
 type Row = Record<string, unknown>;
@@ -51,6 +51,10 @@ const parse = (raw: unknown) => {
 
 export default defineHook(
   ({ filter, action }, { database: db, services, getSchema, logger, env }) => {
+    // Configuration vue au démarrage plutôt qu'à la première publication.
+    const configProblem = revalidateConfigProblem(env);
+    if (configProblem) logger.warn(`[nexora-guard] ${configProblem}`);
+
     const tickets = new PromotionTickets();
     const approvalForVersion = new Map<string, string>();
     const lastSent = new Map<string, number>();

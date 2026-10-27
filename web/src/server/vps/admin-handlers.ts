@@ -591,7 +591,13 @@ async function route(
 
   if (a === "stripe" && b === "publish" && !c) {
     allowed("POST");
-    const stripe = await deps.stripe();
+    // Stripe non configuré (secret absent du Coffre, clé refusée par la garde du mode test) : 503 lisible, pas une 500 muette.
+    const stripe = await deps.stripe().catch((error: unknown) => {
+      throw new HttpError(503, "stripe_not_configured", {
+        message:
+          error instanceof Error ? error.message : "Stripe n'est pas configuré",
+      });
+    });
     const { version, result } = await syncVpsCatalogToStripe(db, stripe, now);
     deps.log.info("vps : catalogue publié vers Stripe", {
       version: version.short,

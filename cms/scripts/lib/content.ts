@@ -99,7 +99,14 @@ const NON_CONTENT = new Set([
   "user_updated",
 ]);
 
-export type ManagedFields = Record<string, { base: string[]; tr: string[] }>;
+/**
+ * `defaults` : valeur par défaut du schéma de certains champs (ex. `visual` = « aucun »). Directus la pose à la création
+ * d'un bloc dont le fichier n'a pas le champ ; sans cela, la relance verrait un écart et republierait pour rien.
+ */
+export type ManagedFields = Record<
+  string,
+  { base: string[]; tr: string[]; defaults?: Record<string, Json> }
+>;
 
 /** Champs de contenu de chaque type de bloc (hors clés techniques), d'après `buildSchema()`. */
 export function managedFields(): ManagedFields {
@@ -109,7 +116,14 @@ export function managedFields(): ManagedFields {
     const base = collections.find((c) => c.collection === b);
     const tr = collections.find((c) => c.collection === `${b}_translations`);
     if (!base || !tr) throw new Error(`schéma : bloc « ${b} » introuvable`);
+    const defaults: Record<string, Json> = {};
+    for (const f of [...base.fields, ...tr.fields]) {
+      const d = f.schema?.default_value;
+      if (d !== undefined && d !== null && !NON_CONTENT.has(f.field))
+        defaults[f.field] = d as Json;
+    }
     out[b] = {
+      defaults,
       base: base.fields.map((f) => f.field).filter((f) => !NON_CONTENT.has(f)),
       tr: tr.fields
         .map((f) => f.field)
@@ -281,11 +295,21 @@ const diffFields = (
   cur: Record<string, unknown>,
   want: Fields,
   managed: string[],
+  defaults: Record<string, Json> = {},
 ): Fields => {
   const out: Fields = {};
   for (const k of managed) {
     const w = norm(want[k]);
-    if (!same(norm(cur[k]), w)) out[k] = w;
+    if (!same(norm(cur[k]), w)) {
+      // champ absent du fichier et resté à la valeur par défaut posée par Directus : rien à changer
+      if (
+        want[k] === undefined &&
+        k in defaults &&
+        same(norm(cur[k]), defaults[k])
+      )
+        continue;
+      out[k] = w;
+    }
   }
   return out;
 };
@@ -365,7 +389,7 @@ export function buildDelta(
       stats.created++;
       continue;
     }
-    const itemChanges = diffFields(c.item, w.fields, m.base);
+    const itemChanges = diffFields(c.item, w.fields, m.base, m.defaults);
     const trRel: Rel = { create: [], update: [], delete: [] };
     for (const [code, f] of Object.entries(w.translations)) {
       const ct = (c.item.translations ?? []).find(
@@ -373,7 +397,7 @@ export function buildDelta(
       );
       if (!ct) trRel.create.push({ languages_code: code, ...f });
       else {
-        const d = diffFields(ct, f, m.tr);
+        const d = diffFields(ct, f, m.tr, m.defaults);
         if (Object.keys(d).length)
           trRel.update.push({ id: ct.id as number, ...d });
       }

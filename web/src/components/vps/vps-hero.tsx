@@ -15,15 +15,21 @@ export function VpsHero({
   lang,
   t,
   withActions,
+  skeleton = false,
 }: {
   lang: Lang;
   t: VpsDictionary;
   withActions: boolean;
+  /**
+   * Squelette de chargement (frontière Suspense) : le HTML streamé contient aussi la vraie page, donc le titre ne
+   * doit pas y être un h1 (deux h1 identiques dans le même document, relevés par l'audit de structure).
+   */
+  skeleton?: boolean;
 }) {
   return (
     <Section
       tone="light"
-      aria-labelledby="vps-title"
+      aria-labelledby={skeleton ? undefined : "vps-title"}
       background={
         <div
           aria-hidden="true"
@@ -42,9 +48,13 @@ export function VpsHero({
       />
       <header className="mt-4 max-w-3xl">
         <Badge tone="accent">{t.hero.label}</Badge>
-        <h1 id="vps-title" className="mt-4 text-h1 text-fg">
-          {t.hero.title}
-        </h1>
+        {skeleton ? (
+          <p className="mt-4 text-h1 text-fg">{t.hero.title}</p>
+        ) : (
+          <h1 id="vps-title" className="mt-4 text-h1 text-fg">
+            {t.hero.title}
+          </h1>
+        )}
         <p className="mt-5 max-w-2xl text-lead text-fg-muted">{t.hero.lead}</p>
         {withActions ? (
           <p className="mt-4 max-w-2xl text-small text-fg-muted">

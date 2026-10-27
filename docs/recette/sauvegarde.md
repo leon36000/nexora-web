@@ -4,7 +4,7 @@ Recette S9, daté du 27/10/2026. Scripts : `deploy/backup.sh`, `deploy/restore.s
 
 ## Ce que fait la sauvegarde
 
-`deploy/backup.sh --out DOSSIER [--signer CLE] [--chiffrer CLE] [--sans-fichiers]` produit **une archive** `nexora-backup-<UTC>.tar` (ou `.tar.enc`), en mode 0600, qui contient :
+`deploy/backup.sh --out DOSSIER [--signer CLE] --chiffrer CLE [--sans-fichiers]` produit **une archive** `nexora-backup-<UTC>.tar.enc` (chiffrée : **le chiffrement est obligatoire depuis la recette d'exploitation du 27/10/2026** ; sans clé, le script refuse avant tout accès à Docker, et seul `--sans-chiffrement` produit une `.tar` en clair, avec avertissement, pour un essai jetable), en mode 0600, qui contient :
 
 | Fichier | Contenu |
 |---|---|
@@ -89,7 +89,7 @@ Le conteneur d'essai a ensuite été supprimé (`restore.sh detruire`), de même
 | Archive signée, bonne clé | `Archive valide : … 3 fichier(s), empreintes et manifeste concordants.` |
 | Archive chiffrée sans la clé | `Archive refusée : clé de chiffrement introuvable ou vide.` |
 
-Tests automatisés (`deploy/tests/manifest.test.sh`, 20 contrôles, sans Docker ni base) : archive intacte acceptée ; octet modifié, fichier tronqué, fichier manquant, fichier non déclaré, lien symbolique, chemin `../` hors du dossier racine : **refusés** ; manifeste réécrit avec de fausses empreintes cohérentes : passe **sans** signature (attendu, d'où la signature recommandée) et est **refusé** avec signature ; signature absente, signature d'une autre clé : refusées ; chiffrement : aller-retour identique, mauvaise clé refusée, fichier chiffré altéré refusé, contenu illisible.
+Tests automatisés (`deploy/tests/manifest.test.sh`, 20 contrôles, sans Docker ni base ; `deploy/tests/backup-guards.test.sh`, 11 contrôles sur le chiffrement obligatoire, la clé absente ou vide et l'archive `.enc` sans clé) : archive intacte acceptée ; octet modifié, fichier tronqué, fichier manquant, fichier non déclaré, lien symbolique, chemin `../` hors du dossier racine : **refusés** ; manifeste réécrit avec de fausses empreintes cohérentes : passe **sans** signature (attendu, d'où la signature recommandée) et est **refusé** avec signature ; signature absente, signature d'une autre clé : refusées ; chiffrement : aller-retour identique, mauvaise clé refusée, fichier chiffré altéré refusé, contenu illisible.
 
 ## Instructions séparées : la clé maîtresse et les phrases de passe
 
@@ -108,3 +108,8 @@ Après une restauration réelle : remettre `NEXORA_VAULT_MASTER_KEY` **avant** d
 - Les instantanés du CMS (`CMS_SNAPSHOT_DIR`) ne le sont pas non plus : ils se reconstruisent à la première visite des pages.
 - Pas de planification : à lancer par `cron` ou par un minuteur systemd (exemple dans le guide opérateur) ; pas de rotation des archives (à faire par l'opérateur).
 - Sauvegarde en ligne cohérente par base, mais **non simultanée entre `app` et `directus`** (deux instantanés distincts, à quelques secondes d'écart) : sans conséquence, car les deux bases ne partagent aucune clé étrangère (D4).
+
+## Reprise du 27/10/2026 (recette d'exploitation)
+
+Rejouée sur deux PostgreSQL jetables (conteneurs `exploit-bk-*`, supprimés ensuite ; ni `app` ni `directus` touchés) avec les commandes du guide :
+`backup.sh` sans clé -> refus ; `backup.sh` signée et chiffrée -> `.tar.enc` de 20 Ko ; `restore.sh verifier` sans clé de chiffrement -> refus explicite, avec la clé -> « Archive valide » ; `essai` -> « RESTAURATION EXACTE : tous les décomptes concordent » ; `restaurer` dans un second serveur -> décomptes identiques, base existante refusée sans `--forcer`, fichiers téléversés recopiés ; une archive altérée d'un octet -> « Archive refusée : après déchiffrement, ce n'est pas une archive valide ».

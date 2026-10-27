@@ -312,6 +312,30 @@ describe("POST /api/account/vps/{id}/action", () => {
     ).toBe("stop");
   });
 
+  it("un même requestId rejoué APRÈS la fin de la tâche ne remet pas l'instance « en cours » pour toujours", async () => {
+    const { id } = await instance(fx.organizationId);
+    const body = { action: "reboot", requestId: "rejeu-apres-fin-1" };
+    expect((await act(id, body, deps(owner()))).status).toBe(202);
+    // Le worker a exécuté la tâche : elle est terminée et l'action en cours est effacée (operate.ts).
+    await t.db
+      .update(jobs)
+      .set({ status: "succeeded" })
+      .where(eq(jobs.idempotencyKey, `vps-action:${id}:rejeu-apres-fin-1`));
+    await t.db
+      .update(vpsInstances)
+      .set({ pendingAction: null })
+      .where(eq(vpsInstances.id, id));
+    // Double soumission du formulaire, retour arrière du navigateur, nouvel essai du client : même requestId.
+    expect((await act(id, body, deps(owner()))).status).toBe(202);
+    const row = (
+      await t.db.select().from(vpsInstances).where(eq(vpsInstances.id, id))
+    )[0];
+    expect(row?.pendingAction).toBeNull(); // sinon l'interface affiche « redémarrage… » sans fin et grise tous les boutons
+    expect(
+      (await jobsFor(id)).filter((j) => j.type === "vps.action"),
+    ).toHaveLength(1);
+  });
+
   it("refuse l'action sur un VPS suspendu", async () => {
     const { id } = await instance(fx.organizationId, "suspended");
     const res = await act(id, { action: "start" }, deps(owner()));

@@ -4,12 +4,14 @@
 # La clé maîtresse du coffre (NEXORA_VAULT_MASTER_KEY) et les fichiers .env ne sont JAMAIS dans l'archive :
 # elle se conserve à part (docs/guide-operateur.md). Les secrets du coffre, eux, y sont, mais chiffrés.
 #
-# Usage : deploy/backup.sh [--out DOSSIER] [--sans-fichiers] [--signer FICHIER_CLE] [--chiffrer FICHIER_CLE]
+# Usage : deploy/backup.sh [--out DOSSIER] [--sans-fichiers] [--signer FICHIER_CLE] --chiffrer FICHIER_CLE
+#         (le chiffrement est OBLIGATOIRE : l'archive contient des jetons statiques Directus en clair ; seul un essai
+#          jetable peut le refuser, explicitement, avec --sans-chiffrement)
 # Variables (défauts de la pile de développement/compose) :
 #   NEXORA_DB_CONTAINER=nexorasite-db-1  NEXORA_DB_USER=nexora  NEXORA_APP_DB=app  NEXORA_DIRECTUS_DB=directus
 #   NEXORA_DIRECTUS_CONTAINER=nexorasite-directus-1  NEXORA_UPLOADS_PATH=/directus/uploads
 #   NEXORA_BACKUP_SIGNING_KEY_FILE=  (équivaut à --signer : signature HMAC-SHA256 du manifeste)
-#   NEXORA_BACKUP_ENCRYPT_KEY_FILE=  (équivaut à --chiffrer : l'archive finale est chiffrée, .tar.enc ; elle contient des
+#   NEXORA_BACKUP_ENCRYPT_KEY_FILE=  (équivaut à --chiffrer, obligatoire : l'archive finale est chiffrée, .tar.enc ; elle contient des
 #                                     jetons statiques Directus en clair et des secrets du coffre (chiffrés par la clé maîtresse))
 # Le résultat (chemin, taille, empreinte de l'archive) est imprimé ; l'archive est en mode 0600.
 set -euo pipefail
@@ -25,6 +27,7 @@ DX_CONTAINER="${NEXORA_DIRECTUS_CONTAINER:-nexorasite-directus-1}"
 UPLOADS_PATH="${NEXORA_UPLOADS_PATH:-/directus/uploads}"
 out="./backups"
 with_files=1
+plain_ok=0
 sign_key="${NEXORA_BACKUP_SIGNING_KEY_FILE:-}"
 enc_key="${NEXORA_BACKUP_ENCRYPT_KEY_FILE:-}"
 
@@ -34,10 +37,21 @@ while [ $# -gt 0 ]; do
     --sans-fichiers) with_files=0; shift ;;
     --signer) sign_key="${2:?--signer demande le chemin du fichier de clé}"; shift 2 ;;
     --chiffrer) enc_key="${2:?--chiffrer demande le chemin du fichier de phrase de passe}"; shift 2 ;;
-    -h | --help) sed -n 2,18p "$0"; exit 0 ;;
+    --sans-chiffrement) plain_ok=1; shift ;;
+    -h | --help) sed -n 2,20p "$0"; exit 0 ;;
     *) bk_die "option inconnue : $1" ;;
   esac
 done
+
+# Chiffrement obligatoire, vérifié AVANT tout accès à Docker : une archive en clair contient les jetons statiques de Directus.
+if [ -n "$enc_key" ]; then
+  [ -f "$enc_key" ] || bk_die "fichier de phrase de passe introuvable : $enc_key"
+  [ -s "$enc_key" ] || bk_die "fichier de phrase de passe vide : $enc_key"
+elif [ "$plain_ok" = 1 ]; then
+  echo "ATTENTION : archive NON chiffrée (--sans-chiffrement). Elle contient des jetons statiques Directus en clair : ne la sortez pas de cette machine, détruisez-la après l'essai." >&2
+else
+  bk_die "chiffrement obligatoire : donnez --chiffrer FICHIER_PHRASE_DE_PASSE (ou NEXORA_BACKUP_ENCRYPT_KEY_FILE). Pour un essai jetable seulement : --sans-chiffrement."
+fi
 
 bk_need docker; bk_need jq; bk_need sha256sum; bk_need tar
 docker inspect -f '{{.State.Running}}' "$DB_CONTAINER" 2> /dev/null | grep -q true \
@@ -77,6 +91,7 @@ dump_db() {
   [ -s "$file" ] || bk_die "dump vide pour la base « $db »."
 }
 
+echo "Conteneurs : PostgreSQL « $DB_CONTAINER », Directus « $DX_CONTAINER » (NEXORA_DB_CONTAINER, NEXORA_DIRECTUS_CONTAINER)"
 echo "Sauvegarde de la base « $APP_DB »…"
 dump_db "$APP_DB" "$dir/app.dump"
 echo "Sauvegarde de la base « $DX_DB »…"

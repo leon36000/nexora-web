@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { revalidate } from "./revalidate";
+import { revalidate, revalidateConfigProblem } from "./revalidate";
 
 const SECRET = "jeton-secret-de-test";
 const env = {
@@ -82,5 +82,30 @@ describe("revalidate", () => {
     expect(ok).toBe(false);
     expect(called).toBe(false);
     expect(log.lines.length).toBe(1);
+  });
+});
+
+describe("revalidateConfigProblem : la configuration manquante se voit au démarrage, pas à la première publication", () => {
+  test("rien à signaler quand l'adresse du site et le jeton sont posés", () => {
+    expect(revalidateConfigProblem(env)).toBeNull();
+  });
+
+  test("adresse du site absente : le message nomme la variable et la conséquence", () => {
+    const m = revalidateConfigProblem({ NEXORA_APP_ADMIN_TOKEN: SECRET });
+    expect(m).toContain("NEXORA_APP_INTERNAL_URL");
+    expect(m).toContain("publication");
+  });
+
+  test("jeton absent ou adresse vide : signalés, sans jamais citer de valeur", () => {
+    const m = revalidateConfigProblem({
+      NEXORA_APP_INTERNAL_URL: "  ",
+      NEXORA_APP_ADMIN_TOKEN: "",
+    });
+    expect(m).toContain("NEXORA_APP_INTERNAL_URL");
+    expect(m).toContain("NEXORA_APP_ADMIN_TOKEN");
+    expect(String(revalidateConfigProblem(env))).not.toContain(SECRET);
+    expect(
+      String(revalidateConfigProblem({ NEXORA_APP_INTERNAL_URL: "http://x" })),
+    ).not.toContain("http://x");
   });
 });
