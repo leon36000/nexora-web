@@ -76,5 +76,25 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Ruling : le serveur Next de production écoute sur `localhost` ou `0.0.0.0`, jamais `127.0.0.1`/`::1` (Next 16.4.3 renomme la boucle locale dans la réécriture du proxy → boucle 308 sur les pages françaises) ; consigné au guide. Coût si oublié : site français inaccessible.
 - Ouverts : `MARKETPLACE_REGISTRY` de Directus non posé (E3) ; affirmation CL-12 (« libre-service non ouvert ») contredite en mode test (E7) ; archive de sauvegarde avec jetons Directus en clair sans `--chiffrer` ; base `app_s9` laissée (données de test).
 
+### Revue indépendante finale (Opus, 27/10) et passe de correction
+- Verdict de la revue : 2 bloquants, 5 importants, 5 mineurs. Tous les bloquants et importants corrigés, chacun par un test vu échouer puis passer :
+  - **B1** : règlement plafonné à la réservation et réservation sous-estimable (images, texte non ASCII). Corrigé : règlement au coût réel par une écriture `overage` idempotente dans la même transaction (le solde peut devenir négatif, puis 402) ; 1 600 jetons par image ou clip audio ; 1 jeton par octet non ASCII ; agents hébergés réglés de même. Migration 0009.
+  - **B2** : flux SSE coupé avant l'usage = appels d'outils gratuits. Corrigé : arguments d'outils et `reasoning` comptés ; invite estimée facturée au minimum dès un 200 amont ; règlement de flux réessayé.
+  - **I1** : réservations jamais libérées et crédits jamais expirés. Corrigé : tâches `ledger.release-stale` (10 min ; délai = max(30 min, délai de flux + 15 min)) et `ledger.expire` (quotidienne) ; un règlement tardif est facturé au réel.
+  - **I2** : crédits d'abonnement gardés après remboursement ou litige. Corrigé : octrois reliés à la facture et au paiement (`invoice_payment.paid`), débit proportionnel ; course entre deux remboursements fermée par verrou. Migration 0010.
+  - **I3** : VPS payé après expiration jamais livré. Corrigé : commande reprise, ou `late_payment` avec alerte opérateur, sans remboursement automatique ; `checkout.session.expired` fait foi. Migration 0011.
+  - **I4** : installation longue relancée par un second worker. Corrigé : baux de tâche et d'instance renouvelés pendant les étapes longues.
+  - **I5** : clé SSH du worker envoyable vers une adresse saisie. Corrigé : références `vps.*` réservées.
+  - **M5**, reclassé important : une fiche de modèle à point (`gpt-4.1`) échappait au proxy. Corrigé.
+- Corrigés aussi : M1 (empreinte de clé d'hôte remontée), M2 (plafond de clé dans la transaction du grand livre), M4 (aucun crédit sur facture à 0 $).
+- Rulings de la passe :
+  - Ruling S7 « Nexora absorbe le dépassement de `run_token_cap` » **abandonné** : le dépassement réel est facturé.
+  - Nouveaux événements Stripe à configurer sur l'endpoint : `invoice_payment.paid`, `checkout.session.expired`.
+  - Octrois de crédits d'abonnement antérieurs à 0010 non reliés : sans effet en mode test.
+  - Une erreur déclarée par l'amont dans le flux avant toute livraison reste à coût 0.
+- Mineur reporté : M3 (`checkPrice` ne contrôle pas le prix « cache » quand le coût amont du cache est nul).
+- Contrôle orchestrateur : migrations 0009 à 0011 renumérotées et régénérées par Drizzle (contenu SQL identique) ; conflit `docs/infra.md` résolu (liste d'événements réunie) ; 1 805 tests verts sur main ; migrations appliquées sur `app` et `app_s9`.
+- Parcours de bout en bout après correctifs (`bun run e2e`, `E2E_STRICT=1`, base `app_s9`, build de production) : **8 réussis sur 8, aucun sauté** — y compris l'appel réel GLM 5.3 avec débit exact (règlement au coût réel) et l'agent WorkStudio hébergé (`docs/recette/e2e.md`). Un premier passage avait échoué sur 3 parcours : le `.env` racine de main datait d'avant l'ajout de SMTP et LiteLLM à `scripts/init-dev-env.sh` ; régénéré (ajouts seulement, aucun secret modifié), tout passe.
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
