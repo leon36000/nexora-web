@@ -12,10 +12,13 @@ import { randomBytes } from "node:crypto";
 import {
   ADMIN_POLICY_NAME,
   ADMIN_ROLE,
+  adminPolicyPatch,
   buildAccess,
   hasRules,
   type Perm,
   type PolicyDef,
+  policyBody,
+  tfaEnabled,
   withoutRules,
 } from "./lib/access";
 import {
@@ -27,6 +30,7 @@ import {
   log,
   parseEnvFile,
 } from "./lib/directus";
+import { PASSWORD_POLICY } from "./lib/password";
 import {
   buildSchema,
   type CollectionDef,
@@ -215,6 +219,10 @@ async function applySettings(d: Directus) {
     project_descriptor: "Administration du site",
     project_color: "#CE411C",
     default_language: "fr-CA",
+    // Politique de mot de passe : 12 caractères au moins, minuscule, majuscule et chiffre (lib/password.ts). Pas de
+    // `auth_login_attempts` : au-delà du seuil Directus SUSPEND le compte, ce qui laisserait quiconque verrouiller
+    // l'administrateur en échouant des connexions ; la limitation de débit de compose.yml suffit.
+    auth_password_policy: PASSWORD_POLICY,
   };
   const cur = await d.get<Entity>("/settings");
   if (Object.entries(wanted).some(([k, v]) => cur?.[k] !== v)) {
@@ -280,16 +288,12 @@ async function findByName(
   return rows?.[0] ?? null;
 }
 
-async function ensurePolicy(d: Directus, p: PolicyDef): Promise<string> {
-  const body = {
-    name: p.name,
-    icon: p.icon,
-    description: p.description,
-    app_access: p.app_access,
-    admin_access: !!p.admin_access,
-    enforce_tfa: false,
-    ip_access: null,
-  };
+async function ensurePolicy(
+  d: Directus,
+  p: PolicyDef,
+  enforceTfa: boolean,
+): Promise<string> {
+  const body = policyBody(p, enforceTfa);
   const cur = await findByName(d, "policies", p.name);
   if (!cur) {
     const row = await d.post<Entity>("/policies", body);
@@ -465,6 +469,16 @@ async function applyAccess(
   envFile: string,
 ) {
   log("Rôles et politiques");
+  // 2FA des personnes (Éditeur, Relecteur, Administrateur) : exigée par défaut, CMS_ENFORCE_TFA=0 pour le développement.
+  // Les comptes de service à jeton statique et les agents ne sont jamais concernés (aucune session, aucun OTP).
+  const enforceTfa = tfaEnabled(
+    process.env.CMS_ENFORCE_TFA ?? env.CMS_ENFORCE_TFA,
+  );
+  log(
+    enforceTfa
+      ? "  2FA exigée des personnes (Éditeur, Relecteur, Administrateur) ; CMS_ENFORCE_TFA=0 pour la désactiver en développement."
+      : "  ATTENTION : CMS_ENFORCE_TFA désactivée, mots de passe seuls. Développement seulement.",
+  );
   const rules = await customRulesEnabled(d);
   if (!rules) {
     log(
@@ -484,13 +498,26 @@ async function applyAccess(
     changed(`rôle ${ADMIN_ROLE.from} -> ${ADMIN_ROLE.to}`);
   }
   const adminPolicy = await findByName(d, "policies", ADMIN_POLICY_NAME);
-  if (adminPolicy) {
-    await d.patch(`/policies/${adminPolicy.id}`, { name: "Administrateur" });
-    changed("politique Administrator -> Administrateur");
+  const adminPolicyRow =
+    adminPolicy ?? (await findByName(d, "policies", "Administrateur"));
+  if (adminPolicyRow) {
+    const patch = adminPolicyPatch(enforceTfa);
+    if (
+      Object.entries(patch).some(
+        ([k, v]) => !same(adminPolicyRow[k] ?? null, v),
+      )
+    ) {
+      await d.patch(`/policies/${adminPolicyRow.id}`, patch);
+      changed(
+        adminPolicy
+          ? "politique Administrator -> Administrateur"
+          : "politique Administrateur (2FA)",
+      );
+    } else stats.unchanged++;
   }
 
   for (const p of buildAccess()) {
-    const policyId = await ensurePolicy(d, p);
+    const policyId = await ensurePolicy(d, p, enforceTfa);
     if (p.role) {
       const roleId = await ensureRole(d, p.role);
       await ensureAccess(d, roleId, policyId, `${p.role.name} -> ${p.name}`);

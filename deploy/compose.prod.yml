@@ -1,0 +1,119 @@
+# Surcharge de PRODUCTION de deploy/compose.yml (le développement n'utilise pas ce fichier).
+#
+#   docker compose -p nexorasite -f deploy/compose.yml -f deploy/compose.prod.yml --env-file deploy/prod.env up -d
+#
+# Ce que la surcharge change :
+#  - aucun port publié pour PostgreSQL ni LiteLLM ; Directus n'écoute que sur 127.0.0.1 (pour le proxy HTTPS de l'hôte,
+#    docs/guide-operateur.md §9) ; Mailpit et stripe-mock (développement) ne démarrent plus (profil « dev ») ;
+#  - réseaux : « internal » (internal: true, sans route vers l'extérieur) pour PostgreSQL, Directus, LiteLLM et, hors de
+#    ce fichier, le site et le worker qui le rejoignent (réseau externe « nexora-internal ») ; « egress » seulement pour
+#    Directus (courriels) et LiteLLM (fournisseurs de modèles). PostgreSQL ne sort jamais ;
+#  - secrets : fichiers Docker (/run/secrets/…), plus de variable d'environnement visible par `docker inspect`.
+#    Directus lit nativement SECRET_FILE, DB_PASSWORD_FILE et ADMIN_PASSWORD_FILE ; PostgreSQL, POSTGRES_PASSWORD_FILE
+#    (et initdb, <BASE>_DB_PASSWORD_FILE) ; LiteLLM et le jeton d'administration de l'app passent par un petit
+#    entrypoint qui lit le fichier puis lance le programme d'origine ;
+#  - témoins Directus toujours « Secure », extensions montées en lecture seule.
+#
+# deploy/prod.env ne contient AUCUN secret : seulement des CHEMINS (…_FILE) vers des fichiers 0400 hors du dépôt, écrits
+# sans retour à la ligne final (printf '%s'), et les réglages publics. Voir docs/infra.md « Production ».
+name: nexorasite
+
+services:
+  db:
+    ports: !reset []
+    networks: [internal]
+    environment:
+      POSTGRES_PASSWORD: !reset null
+      DIRECTUS_DB_PASSWORD: !reset null
+      LITELLM_DB_PASSWORD: !reset null
+      UMAMI_DB_PASSWORD: !reset null
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      DIRECTUS_DB_PASSWORD_FILE: /run/secrets/directus_db_password
+      LITELLM_DB_PASSWORD_FILE: /run/secrets/litellm_db_password
+      UMAMI_DB_PASSWORD_FILE: /run/secrets/umami_db_password
+    secrets: [postgres_password, directus_db_password, litellm_db_password, umami_db_password]
+
+  directus:
+    ports: !override
+      - "127.0.0.1:${DIRECTUS_HOST_PORT:-8456}:8055"
+    networks: [internal, egress]
+    extra_hosts: !reset []
+    volumes:
+      - uploads:/directus/uploads
+      - ../cms/extensions:/directus/extensions:ro
+    environment:
+      SECRET: !reset null
+      DB_PASSWORD: !reset null
+      ADMIN_PASSWORD: !reset null
+      NEXORA_APP_ADMIN_TOKEN: !reset null
+      SECRET_FILE: /run/secrets/directus_secret
+      DB_PASSWORD_FILE: /run/secrets/directus_db_password
+      ADMIN_PASSWORD_FILE: /run/secrets/directus_admin_password
+      # Adresse publique HTTPS obligatoire : sans elle les liens, l'origine CORS et les témoins sont faux.
+      PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:?définir DIRECTUS_PUBLIC_URL (adresse https de Directus)}
+      CORS_ORIGIN: ${DIRECTUS_CORS_ORIGIN:?définir DIRECTUS_CORS_ORIGIN (origine https de Directus)}
+      PASSWORD_RESET_URL_ALLOW_LIST: ${DIRECTUS_PUBLIC_URL}/admin/reset-password
+      SESSION_COOKIE_SECURE: ${DIRECTUS_COOKIE_SECURE:-true}
+      REFRESH_TOKEN_COOKIE_SECURE: ${DIRECTUS_COOKIE_SECURE:-true}
+      # Le proxy HTTPS est sur l'hôte : vu depuis le réseau Docker, il vient d'une adresse privée.
+      IP_TRUST_PROXY: ${DIRECTUS_TRUST_PROXY:-uniquelocal}
+      # Adresse du site vue de Directus (réseau « internal »), la même que pour le worker.
+      NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL:?définir NEXORA_APP_INTERNAL_URL (par exemple http://site:3500)}
+    entrypoint:
+      - /bin/sh
+      - -c
+      - 'NEXORA_APP_ADMIN_TOKEN="$$(cat /run/secrets/nexora_app_admin_token)"; export NEXORA_APP_ADMIN_TOKEN; exec "$$@"'
+      - --
+    command: ["node", "docker-entrypoint.cjs"]
+    secrets: [directus_secret, directus_db_password, directus_admin_password, nexora_app_admin_token]
+
+  litellm:
+    ports: !reset []
+    networks: [internal, egress]
+    extra_hosts: !reset []
+    environment:
+      DATABASE_URL: !reset null
+      LITELLM_MASTER_KEY: !reset null
+      LITELLM_SALT_KEY: !reset null
+    entrypoint:
+      - /bin/sh
+      - -c
+      - 'DATABASE_URL="postgresql://litellm:$$(cat /run/secrets/litellm_db_password)@db:5432/litellm"; LITELLM_MASTER_KEY="$$(cat /run/secrets/litellm_master_key)"; LITELLM_SALT_KEY="$$(cat /run/secrets/litellm_salt_key)"; export DATABASE_URL LITELLM_MASTER_KEY LITELLM_SALT_KEY; exec docker/prod_entrypoint.sh "$$@"'
+      - --
+    secrets: [litellm_db_password, litellm_master_key, litellm_salt_key]
+
+  # Développement seulement : jamais démarrés en production (aucun port, aucun secret).
+  mailpit:
+    profiles: [dev]
+    ports: !reset []
+  stripe-mock:
+    profiles: [dev]
+    ports: !reset []
+
+networks:
+  # Sans route vers l'extérieur. Le site et le worker (déclarés ailleurs) le rejoignent :
+  #   networks: { nexora-internal: { external: true } }
+  internal:
+    name: nexora-internal
+    internal: true
+  egress: {}
+
+secrets:
+  postgres_password:
+    file: ${POSTGRES_PASSWORD_FILE:?chemin du fichier du mot de passe du superutilisateur PostgreSQL}
+  directus_db_password:
+    file: ${DIRECTUS_DB_PASSWORD_FILE:?chemin du fichier du mot de passe du rôle directus}
+  litellm_db_password:
+    file: ${LITELLM_DB_PASSWORD_FILE:?chemin du fichier du mot de passe du rôle litellm}
+  umami_db_password:
+    file: ${UMAMI_DB_PASSWORD_FILE:?chemin du fichier du mot de passe du rôle umami}
+  directus_secret:
+    file: ${DIRECTUS_SECRET_FILE:?chemin du fichier du SECRET de Directus}
+  directus_admin_password:
+    file: ${DIRECTUS_ADMIN_PASSWORD_FILE:?chemin du fichier du mot de passe administrateur de Directus}
+  nexora_app_admin_token:
+    file: ${NEXORA_APP_ADMIN_TOKEN_FILE:?chemin du fichier du jeton d'administration de l'app}
+  litellm_master_key:
+    file: ${LITELLM_MASTER_KEY_FILE:?chemin du fichier de la clé maîtresse de LiteLLM}
+  litellm_salt_key:
+    file: ${LITELLM_SALT_KEY_FILE:?chemin du fichier du sel de LiteLLM}

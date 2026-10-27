@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
   type ApprovalRow,
   canonicalJson,
+  DEFAULT_TICKET_TTL_MS,
   evaluatePromotion,
   isStateChangeToApproved,
   PromotionTickets,
@@ -162,6 +163,45 @@ describe("PromotionTickets", () => {
     expect(tickets.isActive("u1")).toBe(true);
     tickets.release("u1", "pages", "2");
     expect(tickets.isActive("u1")).toBe(false);
+  });
+});
+
+describe("PromotionTickets : un billet ne vaut que pour l'élément promu", () => {
+  test("couvre la page promue, pas une autre page publiée", () => {
+    const tickets = new PromotionTickets(1000, () => 0);
+    tickets.issue("u1", "pages", "A");
+    expect(tickets.covers("u1", "pages", ["A"])).toBe(true);
+    expect(tickets.covers("u1", "pages", ["B"])).toBe(false);
+    expect(tickets.covers("u1", "pages", ["A", "B"])).toBe(false);
+  });
+
+  test("ne couvre rien pour un autre utilisateur, ni pour une liste vide (création d'une page publiée)", () => {
+    const tickets = new PromotionTickets(1000, () => 0);
+    tickets.issue("u1", "pages", "A");
+    expect(tickets.covers("u2", "pages", ["A"])).toBe(false);
+    expect(tickets.covers("u1", "pages", [])).toBe(false);
+  });
+
+  test("un billet resté après une promotion échouée expire, et release le retire", () => {
+    let t = 0;
+    const tickets = new PromotionTickets(1000, () => t);
+    tickets.issue("u1", "pages", "A");
+    tickets.issue("u1", "pages", "B");
+    tickets.release("u1", "pages", "B");
+    expect(tickets.covers("u1", "pages", ["B"])).toBe(false);
+    t = 1001;
+    expect(tickets.covers("u1", "pages", ["A"])).toBe(false);
+  });
+
+  test("deux promotions du même utilisateur couvrent chacune leur page", () => {
+    const tickets = new PromotionTickets(1000, () => 0);
+    tickets.issue("u1", "pages", "A");
+    tickets.issue("u1", "pages", "B");
+    expect(tickets.covers("u1", "pages", ["A", "B"])).toBe(true);
+  });
+
+  test("la durée de vie par défaut reste courte (15 s) : une promotion échouée ne laisse pas la page ouverte longtemps", () => {
+    expect(DEFAULT_TICKET_TTL_MS).toBeLessThanOrEqual(15_000);
   });
 });
 
@@ -355,6 +395,64 @@ describe("prepareApprovalUpdate", () => {
         { admin: false, user: "u1", currentHash: "H" },
       ).error?.code,
     ).toBe("NEXORA_APPROBATION_VERROUILLEE");
+  });
+
+  test("séparation des tâches : on n'approuve pas sa propre proposition (non-administrateur)", () => {
+    const own = { ...existing, proposed_by: "u1" };
+    const r = prepareApprovalUpdate({ status: "approuvée" }, own, {
+      admin: false,
+      user: "u1",
+      currentHash: "H",
+    });
+    expect(r.error?.code).toBe("NEXORA_AUTO_APPROBATION_INTERDITE");
+  });
+
+  test("l'auteur de la proposition peut encore la refuser ou la renvoyer à corriger", () => {
+    const own = { ...existing, proposed_by: "u1" };
+    for (const status of ["refusée", "à_corriger"]) {
+      const r = prepareApprovalUpdate({ status }, own, {
+        admin: false,
+        user: "u1",
+        currentHash: "H",
+      });
+      expect(r.error, status).toBeUndefined();
+    }
+  });
+
+  test("une autre personne approuve la proposition d'un tiers", () => {
+    const r = prepareApprovalUpdate(
+      { status: "approuvée" },
+      { ...existing, proposed_by: "u1" },
+      { admin: false, user: "u2", currentHash: "H" },
+    );
+    expect(r.error).toBeUndefined();
+    expect(r.payload.reviewer).toBe("u2");
+  });
+
+  test("l'administrateur n'est pas soumis à cette règle", () => {
+    const r = prepareApprovalUpdate(
+      { status: "approuvée" },
+      { ...existing, proposed_by: "a" },
+      { admin: true, user: "a", currentHash: "H" },
+    );
+    expect(r.error).toBeUndefined();
+  });
+
+  test("l'identité du proposant ne peut jamais être fournie par le client à la création (non-administrateur)", () => {
+    const r = prepareApprovalCreate(
+      { version_id: "v1", proposed_by: "autre" },
+      {
+        admin: false,
+        version: {
+          id: "v1",
+          key: "k",
+          collection: "pages",
+          item: "p1",
+          delta: {},
+        },
+      },
+    );
+    expect("proposed_by" in r.payload).toBe(false);
   });
 
   test("l’administrateur ne peut pas approuver une approbation dont le hash est dépassé", () => {

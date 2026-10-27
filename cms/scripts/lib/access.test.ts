@@ -1,9 +1,12 @@
 import { describe, expect, test } from "bun:test";
 import {
   AGENTS,
+  adminPolicyPatch,
   buildAccess,
   hasRules,
   PUBLIC_POLICY_NAME,
+  policyBody,
+  tfaEnabled,
   withoutRules,
 } from "./access";
 import { BLOCK_TYPES, buildSchema } from "./schema";
@@ -138,6 +141,80 @@ describe("rôles et politiques", () => {
     expect(
       agent.some((p) => p.collection === "approvals" && p.action === "read"),
     ).toBe(false);
+  });
+});
+
+describe("fichiers : remplacer un fichier d'autrui", () => {
+  test("avec licence, l'Éditeur et le Relecteur ne modifient que les fichiers qu'ils ont téléversés", () => {
+    for (const name of ["Éditeur", "Relecteur"]) {
+      const upd = byName(name).permissions.find(
+        (p) => p.collection === "directus_files" && p.action === "update",
+      );
+      expect(upd?.permissions, name).toEqual({
+        uploaded_by: { _eq: "$CURRENT_USER" },
+      });
+    }
+  });
+
+  test("sans licence, aucun rôle non administrateur n'obtient la mise à jour de directus_files (le filtre « uploaded_by » est impossible)", () => {
+    for (const p of buildAccess()) {
+      const stripped = withoutRules(p.permissions);
+      expect(
+        stripped.filter(
+          (x) => x.collection === "directus_files" && x.action === "update",
+        ),
+        p.name,
+      ).toEqual([]);
+    }
+  });
+});
+
+describe("2FA (enforce_tfa) : exigée des personnes, pas des comptes de service à jeton", () => {
+  test("CMS_ENFORCE_TFA : activée par défaut, désactivable par 0, false, non ou off", () => {
+    expect(tfaEnabled(undefined)).toBe(true);
+    expect(tfaEnabled("")).toBe(true);
+    expect(tfaEnabled("1")).toBe(true);
+    expect(tfaEnabled("true")).toBe(true);
+    for (const off of ["0", "false", "FALSE", "non", "off", " 0 "])
+      expect(tfaEnabled(off), off).toBe(false);
+  });
+
+  test("activée : seules les politiques de l'Éditeur et du Relecteur l'exigent", () => {
+    const enforced = policies
+      .filter((p) => policyBody(p, true).enforce_tfa)
+      .map((p) => p.name)
+      .sort();
+    expect(enforced).toEqual(["Relecteur", "Éditeur"].sort());
+    // jamais pour un compte à jeton statique ni pour un agent
+    for (const p of policies.filter(
+      (x) => x.serviceUser || x.role?.name.startsWith("Agent"),
+    ))
+      expect(policyBody(p, true).enforce_tfa, p.name).toBe(false);
+    expect(policyBody(byName(PUBLIC_POLICY_NAME), true).enforce_tfa).toBe(
+      false,
+    );
+  });
+
+  test("désactivée (développement) : aucune politique ne l'exige", () => {
+    for (const p of policies)
+      expect(policyBody(p, false).enforce_tfa, p.name).toBe(false);
+  });
+
+  test("la politique Administrateur suit le même réglage", () => {
+    expect(adminPolicyPatch(true)).toEqual({
+      name: "Administrateur",
+      enforce_tfa: true,
+    });
+    expect(adminPolicyPatch(false).enforce_tfa).toBe(false);
+  });
+
+  test("le corps d'une politique garde l'accès à l'application et l'absence de liste d'adresses", () => {
+    const e = policyBody(byName("Éditeur"), true);
+    expect(e).toMatchObject({
+      app_access: true,
+      admin_access: false,
+      ip_access: null,
+    });
   });
 });
 

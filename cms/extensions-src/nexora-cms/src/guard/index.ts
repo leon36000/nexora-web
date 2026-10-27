@@ -3,7 +3,7 @@
 // 1. `items.promote` (filtre, toutes collections) : aucune promotion de version sans approbation « approuvée » qui porte
 //    sur le hash exact de la version. Une approbation dont le hash ne correspond plus devient « périmée ».
 // 2. Écriture directe sur un élément publié (pages, blocs, traductions) : refusée aux rôles non administrateurs, sauf
-//    pendant une promotion acceptée (billet de promotion).
+//    pendant une promotion acceptée, et seulement sur les pages promues (billet de promotion lié à l'élément).
 // 3. Approbations : hash calculé par le serveur, états contrôlés (voir core.ts).
 // 4. Après une promotion acceptée : revalidation de Next.js (échec non bloquant).
 //
@@ -201,20 +201,26 @@ export default defineHook(
       return [];
     }
 
-    async function touchesPublished(
+    /** Vrai si l'écriture fixe `status = published` sur une page. */
+    function setsPublishedStatus(
+      c: string,
+      action: "create" | "update" | "delete",
+      payload: unknown,
+    ): boolean {
+      if (action === "delete" || c !== "pages") return false;
+      const list: unknown[] = Array.isArray(payload) ? payload : [payload];
+      return list.some((p) => rowOf(p).status === "published");
+    }
+
+    /** Pages racines (publiées ou non) qu'une écriture touche : elles désignent les billets de promotion qui la couvrent. */
+    async function targetPages(
       c: string,
       action: "create" | "update" | "delete",
       payload: unknown,
       keys: (string | number)[],
-    ): Promise<boolean> {
+    ): Promise<string[]> {
       const list: unknown[] =
         Array.isArray(payload) && action !== "delete" ? payload : [payload];
-      if (
-        action !== "delete" &&
-        c === "pages" &&
-        list.some((p) => rowOf(p).status === "published")
-      )
-        return true;
       let pageIds: string[] = [];
       if (action === "create") {
         for (const p of list) {
@@ -233,12 +239,7 @@ export default defineHook(
       } else {
         pageIds = await rootPageIds(c, keys);
       }
-      if (pageIds.length === 0) return false;
-      const published = await db("pages")
-        .whereIn("id", [...new Set(pageIds)])
-        .where("status", "published")
-        .first();
-      return !!published;
+      return [...new Set(pageIds.map(String))];
     }
 
     async function guardWrite(
@@ -251,13 +252,23 @@ export default defineHook(
       const acct = ctx?.accountability;
       const internal = !acct;
       const admin = acct?.admin === true;
-      const ticket = !!acct?.user && tickets.isActive(acct.user);
-      if (internal || admin || ticket) return;
+      if (internal || admin) return;
+      const targets = await targetPages(c, op, payload, keys);
+      const touchesPublished =
+        setsPublishedStatus(c, op, payload) ||
+        (targets.length > 0 &&
+          !!(await db("pages")
+            .whereIn("id", targets)
+            .where("status", "published")
+            .first()));
+      // Le billet de promotion est lié aux pages promues : il ne couvre jamais une autre page publiée.
+      const ticket =
+        !!acct?.user && tickets.covers(acct.user, "pages", targets);
       const verdict = writeVerdict({
         admin,
         internal,
         ticket,
-        touchesPublished: await touchesPublished(c, op, payload, keys),
+        touchesPublished,
       });
       if (!verdict.allow) {
         logger.warn(`[nexora-guard] écriture directe refusée (${op} ${c})`);

@@ -68,13 +68,60 @@ export function appendEnvVar(path: string, name: string, value: string) {
   appendFileSync(path, `${prefix}${name}=${value}\n`, { mode: 0o600 });
 }
 
+/** Message d'échec de connexion, sans secret ; distingue le cas « 2FA requise » (INVALID_OTP) du mot de passe refusé. */
+export async function loginFailure(
+  res: Response,
+  otpGiven: boolean,
+): Promise<string> {
+  let code = "";
+  try {
+    const body = (await res.json()) as Envelope;
+    code = body?.errors?.[0]?.extensions?.code ?? "";
+  } catch {
+    // corps absent ou illisible
+  }
+  if (code === "INVALID_OTP")
+    return otpGiven
+      ? `Connexion administrateur refusée (${res.status}) : code à usage unique (DIRECTUS_ADMIN_OTP) invalide ou expiré`
+      : `Connexion administrateur refusée (${res.status}) : ce compte a activé la 2FA. Utilisez DIRECTUS_ADMIN_TOKEN (jeton statique, à préférer) ou fournissez DIRECTUS_ADMIN_OTP`;
+  return `Connexion administrateur refusée (${res.status})`;
+}
+
+/**
+ * Réessaie une requête refusée par la limitation de débit de Directus (429, RATE_LIMITER_*) : attend le délai
+ * `Retry-After` (secondes) ou, à défaut, un délai court croissant, puis recommence. Rend le dernier 429 après
+ * `maxRetries` nouvelles tentatives. Les autres réponses (succès comme erreurs) sont rendues telles quelles.
+ */
+export async function withRateLimitRetry(
+  attempt: () => Promise<Response>,
+  sleep: (ms: number) => Promise<void> = (ms) =>
+    new Promise((r) => setTimeout(r, ms)),
+  maxRetries = 8,
+): Promise<Response> {
+  let res = await attempt();
+  for (let n = 0; res.status === 429 && n < maxRetries; n++) {
+    const header = Number(res.headers.get("retry-after"));
+    await sleep(
+      Number.isFinite(header) && header >= 0 && res.headers.has("retry-after")
+        ? header * 1000
+        : 250 * (n + 1),
+    );
+    res = await attempt();
+  }
+  return res;
+}
+
 export class Directus {
   constructor(
     public url: string,
     public token: string,
   ) {}
 
-  /** Connexion avec un jeton statique d'administrateur (DIRECTUS_ADMIN_TOKEN) ou le courriel et le mot de passe de l'env. */
+  /**
+   * Connexion avec un jeton statique d'administrateur (DIRECTUS_ADMIN_TOKEN, À PRÉFÉRER : il ne dépend ni d'un mot de
+   * passe ni d'un code à usage unique), sinon courriel et mot de passe de l'env. Un administrateur qui a activé la 2FA
+   * (exigée par apply.ts, CMS_ENFORCE_TFA) doit aussi fournir DIRECTUS_ADMIN_OTP (code à 6 chiffres, valable ~30 s).
+   */
   static async connect(
     url: string,
     env: Record<string, string>,
@@ -88,13 +135,13 @@ export class Directus {
       throw new Error(
         "DIRECTUS_ADMIN_EMAIL et DIRECTUS_ADMIN_PASSWORD (ou DIRECTUS_ADMIN_TOKEN) sont requis",
       );
+    const otp = process.env.DIRECTUS_ADMIN_OTP ?? env.DIRECTUS_ADMIN_OTP;
     const res = await fetch(`${url}/auth/login`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, ...(otp ? { otp } : {}) }),
     });
-    if (!res.ok)
-      throw new Error(`Connexion administrateur refusée (${res.status})`);
+    if (!res.ok) throw new Error(await loginFailure(res, Boolean(otp)));
     const json = (await res.json()) as { data: { access_token: string } };
     return new Directus(url, json.data.access_token);
   }
@@ -105,14 +152,16 @@ export class Directus {
     body?: unknown,
     token = this.token,
   ): Promise<Response> {
-    return fetch(`${this.url}${path}`, {
-      method,
-      headers: {
-        authorization: `Bearer ${token}`,
-        ...(body !== undefined ? { "content-type": "application/json" } : {}),
-      },
-      body: body !== undefined ? JSON.stringify(body) : undefined,
-    });
+    return withRateLimitRetry(() =>
+      fetch(`${this.url}${path}`, {
+        method,
+        headers: {
+          authorization: `Bearer ${token}`,
+          ...(body !== undefined ? { "content-type": "application/json" } : {}),
+        },
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+      }),
+    );
   }
 
   /** Requête ; renvoie `data` ou lève DirectusError. `allow` liste les statuts HTTP tolérés (renvoie alors null). */

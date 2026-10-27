@@ -9,10 +9,14 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: nexora
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-${POSTGRES_PASSWORD_FILE:?définir POSTGRES_PASSWORD ou POSTGRES_PASSWORD_FILE (production, chemin du secret Docker)}}
       POSTGRES_DB: app
-      # Bases supplémentaires créées par initdb/01-databases.sh
+      # Bases supplémentaires créées par initdb/01-databases.sh, chacune avec SON rôle (sans SUPERUSER) et son mot de
+      # passe. POSTGRES_USER (nexora) reste superutilisateur et propriétaire de « app » : le site seul s'en sert.
       EXTRA_DATABASES: directus litellm umami
+      DIRECTUS_DB_PASSWORD: ${DIRECTUS_DB_PASSWORD:-${DIRECTUS_DB_PASSWORD_FILE:?définir DIRECTUS_DB_PASSWORD ou DIRECTUS_DB_PASSWORD_FILE (cluster existant, lancer deploy/harden-db-roles.sh)}}
+      LITELLM_DB_PASSWORD: ${LITELLM_DB_PASSWORD:-${LITELLM_DB_PASSWORD_FILE:?définir LITELLM_DB_PASSWORD ou LITELLM_DB_PASSWORD_FILE (cluster existant, lancer deploy/harden-db-roles.sh)}}
+      UMAMI_DB_PASSWORD: ${UMAMI_DB_PASSWORD:-${UMAMI_DB_PASSWORD_FILE:?définir UMAMI_DB_PASSWORD ou UMAMI_DB_PASSWORD_FILE (cluster existant, lancer deploy/harden-db-roles.sh)}}
     volumes:
       - db:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d:ro
@@ -23,6 +27,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    # Durcissement : aucune capacité sauf celles de l'initialisation du volume (chown du dossier de données, gosu vers
+    # postgres) ; l'image démarre en root puis passe à postgres, donc pas de `user:` ici.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    mem_limit: ${NEXORA_DB_MEM_LIMIT:-2g}
+    pids_limit: 300
 
   directus:
     image: directus/directus:12.5.1@sha256:ef6fc027605ea659a972356e0c35fd7f88b02118b0b3a322dafbec3cc709fdab
@@ -31,18 +42,64 @@ services:
       db:
         condition: service_healthy
     environment:
-      SECRET: ${DIRECTUS_SECRET:?définir DIRECTUS_SECRET}
+      SECRET: ${DIRECTUS_SECRET:-${DIRECTUS_SECRET_FILE:?définir DIRECTUS_SECRET ou DIRECTUS_SECRET_FILE (production, chemin du secret Docker)}}
       DB_CLIENT: pg
       DB_HOST: db
       DB_PORT: "5432"
       DB_DATABASE: directus
-      DB_USER: nexora
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_USER: directus
+      DB_PASSWORD: ${DIRECTUS_DB_PASSWORD:-${DIRECTUS_DB_PASSWORD_FILE:?définir DIRECTUS_DB_PASSWORD ou DIRECTUS_DB_PASSWORD_FILE (cluster existant, lancer deploy/harden-db-roles.sh)}}
       ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:?définir DIRECTUS_ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:?définir DIRECTUS_ADMIN_PASSWORD}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-${DIRECTUS_ADMIN_PASSWORD_FILE:?définir DIRECTUS_ADMIN_PASSWORD ou DIRECTUS_ADMIN_PASSWORD_FILE (production, chemin du secret Docker)}}
       # Adresse publique de Directus : à poser en production (liens des courriels, cookies, aperçus).
       PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8456}
       TELEMETRY: "false"
+      # --- Durcissement (docs/cms.md §10) ---
+      # Limitation de débit par adresse (mémoire : une seule instance) et globale ; courriels (réinitialisation de mot de passe).
+      # 200 requêtes/s par adresse : le site et le worker partagent UNE adresse (leur conteneur) ; les scripts cms/scripts
+      # réessaient seuls après un 429.
+      RATE_LIMITER_ENABLED: "true"
+      RATE_LIMITER_STORE: memory
+      RATE_LIMITER_POINTS: "200"
+      RATE_LIMITER_DURATION: "1"
+      RATE_LIMITER_GLOBAL_ENABLED: "true"
+      RATE_LIMITER_GLOBAL_POINTS: "1000"
+      RATE_LIMITER_GLOBAL_DURATION: "1"
+      RATE_LIMITER_EMAIL_ENABLED: "true"
+      # Jetons et sessions courts (le site n'utilise que des jetons statiques de service, jamais ces sessions).
+      ACCESS_TOKEN_TTL: 15m
+      REFRESH_TOKEN_TTL: 1d
+      SESSION_COOKIE_TTL: 8h
+      # Témoins : DIRECTUS_COOKIE_SECURE DOIT valoir true en production (PUBLIC_URL en https), faux seulement en développement.
+      SESSION_COOKIE_SECURE: ${DIRECTUS_COOKIE_SECURE:-false}
+      REFRESH_TOKEN_COOKIE_SECURE: ${DIRECTUS_COOKIE_SECURE:-false}
+      SESSION_COOKIE_SAME_SITE: Strict
+      REFRESH_TOKEN_COOKIE_SAME_SITE: Strict
+      # Derrière le proxy HTTPS : DIRECTUS_TRUST_PROXY=uniquelocal (réseaux privés Docker) pour lire la vraie adresse
+      # du client dans X-Forwarded-For ; false (défaut) si Directus est joint directement. Jamais « true ».
+      IP_TRUST_PROXY: ${DIRECTUS_TRUST_PROXY:-false}
+      IP_CUSTOM_HEADER: ${DIRECTUS_IP_CUSTOM_HEADER:-false}
+      # Importer une image par URL (Éditeur) : Directus résout le nom puis refuse l'adresse ; 0.0.0.0 bloque aussi les
+      # interfaces locales du conteneur. Plages privées, boucle locale, liaison locale (dont les métadonnées du nuage),
+      # CGNAT et leurs équivalents IPv6 : un Éditeur ne peut pas lire le réseau interne ni host.docker.internal.
+      IMPORT_IP_DENY_LIST: 0.0.0.0,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16,100.64.0.0/10,::1/128,fc00::/7,fe80::/10
+      # Téléversements : rasters courants et PDF seulement (le site ne sert que des rasters : /api/media refuse le SVG).
+      FILES_MIME_TYPE_ALLOW_LIST: image/jpeg,image/png,image/webp,image/gif,image/avif,application/pdf
+      FILES_MAX_UPLOAD_SIZE: ${DIRECTUS_MAX_UPLOAD_SIZE:-20mb}
+      GRAPHQL_INTROSPECTION: "false"
+      # Liens de réinitialisation de mot de passe : seulement vers le panneau (sinon un lien piégé part de notre domaine).
+      PASSWORD_RESET_URL_ALLOW_LIST: ${DIRECTUS_PUBLIC_URL:-http://localhost:8456}/admin/reset-password
+      # Sans « unsafe-eval » le panneau ne démarre pas (compilation des gabarits Vue) : seul ce défaut de Directus reste.
+      # Aucune origine tierce : les défauts autorisaient raw.githubusercontent.com et avatars.githubusercontent.com (images)
+      # et https://* wss://* (connexions) ; une valeur unique remplace la liste entière du défaut.
+      CONTENT_SECURITY_POLICY_DIRECTIVES__IMG_SRC: "'self' data: blob:"
+      CONTENT_SECURITY_POLICY_DIRECTIVES__CONNECT_SRC: "'self'"
+      CONTENT_SECURITY_POLICY_DIRECTIVES__FONT_SRC: "'self' data:"
+      CONTENT_SECURITY_POLICY_DIRECTIVES__STYLE_SRC: "'self' 'unsafe-inline'"
+      # HSTS : sans effet en http, posé pour le jour où le proxy sert Directus en https (docs/guide-operateur.md §9).
+      HSTS_ENABLED: "true"
+      HSTS_MAX_AGE: "15552000"
+      HSTS_INCLUDE_SUB_DOMAINS: "false"
       # Souveraineté (écart E3 de docs/recette/flux-sortants.md) : la Marketplace de Directus interroge par défaut
       # registry.directus.io depuis ce serveur dès qu'un administrateur l'ouvre. Adresse volontairement injoignable
       # (port « discard » de la boucle locale du conteneur) : la page Marketplace échoue sans rien envoyer dehors.
@@ -59,7 +116,7 @@ services:
       # que pour le développement (site lancé sur le poste, port 3500) : en production, la poser explicitement, la même
       # que pour le worker. Sans elle, ou si elle est fausse, les publications ne rafraîchissent pas le site (journalisé).
       NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL:-http://host.docker.internal:3500}
-      NEXORA_APP_ADMIN_TOKEN: ${NEXORA_APP_ADMIN_TOKEN:?définir NEXORA_APP_ADMIN_TOKEN}
+      NEXORA_APP_ADMIN_TOKEN: ${NEXORA_APP_ADMIN_TOKEN:-${NEXORA_APP_ADMIN_TOKEN_FILE:?définir NEXORA_APP_ADMIN_TOKEN ou NEXORA_APP_ADMIN_TOKEN_FILE (production, chemin du secret Docker)}}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -67,6 +124,25 @@ services:
       - ../cms/extensions:/directus/extensions
     ports:
       - "127.0.0.1:8456:8055"
+    user: "1000:1000"
+    # Système de fichiers en lecture seule, vérifié avec directus 12.5.1 (docker run --read-only, aucun conteneur existant
+    # touché) : pm2 écrit son état dans /home/node/.pm2, le regroupement des extensions du panneau dans
+    # /directus/node_modules/.directus, les transformations d'images dans /tmp ; les envois restent dans le volume uploads.
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=64m
+      - /home/node:rw,size=32m,uid=1000,gid=1000
+      - /directus/node_modules/.directus:rw,size=64m,uid=1000,gid=1000
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    mem_limit: ${NEXORA_DIRECTUS_MEM_LIMIT:-1g}
+    pids_limit: 512
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8055/server/ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
 
   litellm:
     # v1.106.2 : dernière version saine avant l'incident 1.107.0 du 21/10/2026. Réseau interne seulement.
@@ -77,9 +153,9 @@ services:
         condition: service_healthy
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     environment:
-      DATABASE_URL: postgresql://nexora:${POSTGRES_PASSWORD}@db:5432/litellm
-      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?définir LITELLM_MASTER_KEY}
-      LITELLM_SALT_KEY: ${LITELLM_SALT_KEY:?définir LITELLM_SALT_KEY}
+      DATABASE_URL: postgresql://litellm:${LITELLM_DB_PASSWORD:-${LITELLM_DB_PASSWORD_FILE:?définir LITELLM_DB_PASSWORD ou LITELLM_DB_PASSWORD_FILE (cluster existant, lancer deploy/harden-db-roles.sh)}}@db:5432/litellm
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-${LITELLM_MASTER_KEY_FILE:?définir LITELLM_MASTER_KEY ou LITELLM_MASTER_KEY_FILE (production, chemin du secret Docker)}}
+      LITELLM_SALT_KEY: ${LITELLM_SALT_KEY:-${LITELLM_SALT_KEY_FILE:?définir LITELLM_SALT_KEY ou LITELLM_SALT_KEY_FILE (production, chemin du secret Docker)}}
       STORE_MODEL_IN_DB: "True"
       LITELLM_LOG: ERROR
       DISABLE_ADMIN_UI: "True"
@@ -93,6 +169,22 @@ services:
     ports:
       # Exposé seulement sur la boucle locale pour le développement (la couche Nexora /v1 l'appelle).
       - "127.0.0.1:4400:4000"
+    # Vérifié avec litellm v1.106.2 (docker run jetable, base jetable, rôle litellm) : démarre, migre sa base et
+    # répond sans root, sans capacité et avec un système de fichiers en lecture seule (seul /tmp est inscriptible).
+    user: "65532:65532"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=128m
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    mem_limit: ${NEXORA_LITELLM_MEM_LIMIT:-2g}
+    pids_limit: 512
+    healthcheck:
+      test: ["CMD", "/app/.venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4000/health/liveliness', timeout=4)"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 90s
 
   mailpit:
     image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
