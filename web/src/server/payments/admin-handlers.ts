@@ -151,24 +151,39 @@ async function syncSome(
   } catch {
     return rows.map((r) => ({
       id: r.id,
-      code: r.code,
+      promoCode: r.code,
       state: "error" as const,
-      code_: "stripe_unavailable",
+      code: "stripe_unavailable",
       message:
         "Stripe n'est pas branché : collez la clé au Coffre puis « Vérifier et brancher Stripe ».",
     }));
   }
-  const needsCredits = rows.some((r) => r.scopes.includes("credits"));
-  if (needsCredits) await ensureCreditsProducts(db, stripe);
-  const products = await scopeProductsFrom(db, deps.plans());
-  const cache: ScopeProducts = products;
+  let cache: ScopeProducts;
+  try {
+    const needsCredits = rows.some((r) => r.scopes.includes("credits"));
+    if (needsCredits) await ensureCreditsProducts(db, stripe);
+    cache = await scopeProductsFrom(db, deps.plans());
+  } catch (error) {
+    // Clé refusée, Stripe injoignable… : le code existe, seul l'état de synchronisation le dit (type d'erreur seulement).
+    const type =
+      typeof error === "object" && error && "type" in error
+        ? String((error as { type: unknown }).type)
+        : "unknown";
+    return rows.map((r) => ({
+      id: r.id,
+      promoCode: r.code,
+      state: "error" as const,
+      code: "stripe_error",
+      message: `Stripe a refusé la préparation de la synchronisation (${type}).`,
+    }));
+  }
   const out = [];
   for (const row of rows) {
     const res = await syncPromo(
       { db, stripe, products: async () => cache, now: deps.now },
       row,
     );
-    out.push({ id: row.id, code: row.code, ...res });
+    out.push({ id: row.id, promoCode: row.code, ...res });
   }
   return out;
 }

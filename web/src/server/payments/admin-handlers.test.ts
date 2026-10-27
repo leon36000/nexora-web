@@ -294,6 +294,20 @@ describe("codes promo", () => {
     expect(body.promo.stripePromotionCodeId).toMatch(/^promo_/);
   });
 
+  it("une erreur de Stripe pendant la synchronisation (clé invalide) ne fait pas échouer la création : le code existe, l'état dit l'erreur", async () => {
+    const api = fakeStripe();
+    api.products.create.mockRejectedValue(Object.assign(new Error("Invalid API Key provided: sk_test_***"), { type: "StripeAuthenticationError" }));
+    const d = deps(api);
+    const res = await call("POST", "promos", { ...def, code: "CLE-INVALIDE", scopes: ["credits"], percentOff: 10 }, d);
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.promo.code).toBe("CLE-INVALIDE");
+    expect(body.sync).toMatchObject({ state: "error", code: "stripe_error" });
+    expect(JSON.stringify(body)).not.toContain("sk_test");
+    const batch = await call("POST", "promos/sync", { limit: 5 }, d);
+    expect(batch.status).toBe(200);
+  });
+
   it("valide la définition : 422 avec les champs en cause ; 409 pour un doublon", async () => {
     const bad = await call("POST", "promos", {
       code: "x",
