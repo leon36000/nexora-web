@@ -125,6 +125,19 @@ async function applySettings(d: Directus) {
 		await d.patch('/settings', wanted);
 		changed('settings');
 	} else stats.unchanged++;
+
+	// Barre des modules : un module d'extension n'y apparaît que s'il y est déclaré. On ajoute « Coffre » avant Réglages
+	// sans toucher au reste d'une barre déjà personnalisée.
+	const vault = { type: 'module', id: 'nexora-vault', enabled: true };
+	const bar: any[] = Array.isArray(cur?.module_bar) && cur.module_bar.length
+		? cur.module_bar
+		: ['content', 'users', 'files', 'insights', 'flows'].map((id) => ({ type: 'module', id, enabled: true })).concat([{ type: 'module', id: 'settings', enabled: true, locked: true } as any]);
+	if (!bar.some((m) => m.id === vault.id)) {
+		const at = bar.findIndex((m) => m.id === 'settings');
+		bar.splice(at === -1 ? bar.length : at, 0, vault);
+		await d.patch('/settings', { module_bar: bar });
+		changed('barre des modules : Coffre ajouté');
+	} else stats.unchanged++;
 }
 
 // ---------- rôles, politiques, permissions ----------

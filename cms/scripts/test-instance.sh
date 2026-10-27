@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Instance Directus jetable pour tester le schéma et les extensions sans toucher au Directus partagé.
 # Même image épinglée que deploy/compose.yml, base dédiée « directus_cmstest » dans le PostgreSQL du projet « nexorasite ».
-# Usage : cms/scripts/test-instance.sh up|down|reset   (aucun secret n'est affiché)
+# Usage : cms/scripts/test-instance.sh up|down|reset|destroy   (aucun secret n'est affiché)
 #   ENV_FILE  fichier .env source (défaut : /home/pc6/Desktop/NexoraSite/deploy/.env)
 #   EXT_DIR   dossier d'extensions monté (défaut : <dépôt>/cms/extensions)
 #   STUB_URL  adresse du service de l'app vue depuis le conteneur (défaut : http://host.docker.internal:3599)
@@ -59,9 +59,16 @@ reset() {
   up
 }
 
+destroy() {
+  down
+  psql_admin "drop database if exists $DB with (force)" >/dev/null
+  echo "instance de test et base $DB supprimées"
+}
+
 case "${1:-}" in
+  destroy) destroy ;;
   up) up ;;
   down) down ;;
   reset) reset ;;
-  *) echo "usage : $0 up|down|reset" >&2; exit 2 ;;
+  *) echo "usage : $0 up|down|reset|destroy" >&2; exit 2 ;;
 esac

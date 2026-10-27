@@ -1,4 +1,4 @@
 node_modules/
-extensions/*/dist/
-extensions/*/node_modules/
+extensions-src/*/dist/
+extensions-src/*/node_modules/
 .data/

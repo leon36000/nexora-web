@@ -9,7 +9,7 @@
     "stub": "bun run scripts/stub-app.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
-    "build:ext": "bun --cwd extensions/nexora-cms run build"
+    "build:ext": "bash scripts/stage-extensions.sh"
   },
   "devDependencies": {
     "@types/bun": "latest",

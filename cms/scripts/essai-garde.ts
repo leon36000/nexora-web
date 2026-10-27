@@ -12,7 +12,7 @@
 import { randomBytes } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { Directus, envFilePath, parseEnvFile } from './lib/directus';
-import { versionHash } from '../extensions/nexora-cms/src/guard/core';
+import { versionHash } from '../extensions-src/nexora-cms/src/guard/core';
 
 const url = process.env['DIRECTUS_URL'] ?? 'http://localhost:8466';
 const DB = process.env['ESSAI_DB'] ?? 'directus_cmstest';
@@ -86,6 +86,9 @@ async function main() {
 	const publisher = process.env['DIRECTUS_PUBLISHER_TOKEN'] ?? env['DIRECTUS_PUBLISHER_TOKEN'] ?? '';
 	const reader = process.env['DIRECTUS_READER_TOKEN'] ?? env['DIRECTUS_READER_TOKEN'] ?? '';
 	if (!publisher || !reader) throw new Error('DIRECTUS_PUBLISHER_TOKEN et DIRECTUS_READER_TOKEN requis (apply.ts les crée)');
+	// comptes d'un essai précédent interrompu (la licence Core limite les sièges à 3)
+	const leftovers = ((await call(A, 'GET', '/users?filter[email][_starts_with]=essai-&fields=id&limit=-1')).data ?? []) as { id: string }[];
+	for (const l of leftovers) await call(A, 'DELETE', `/users/${l.id}`);
 	const users: string[] = [];
 	for (const [k, role] of [['editor', 'Éditeur'], ['reviewer', 'Relecteur']] as const) {
 		const u = await call(A, 'POST', '/users', { email: `essai-${k}-${tag}@nexora.dev`, role: roleId(role), token: tokens[k], status: 'active', first_name: 'Essai', last_name: role });
@@ -109,7 +112,7 @@ async function main() {
 	const heroTid = pb.item.translations[0].id as number;
 	const title = async () => (await call(A, 'GET', `/items/pages/${page.id}?fields=translations.title`)).data.translations[0].title as string;
 	const compare = async (token: string, vid: string) => (await call(token, 'GET', `/versions/${vid}/compare`)).data?.mainHash as string;
-	const stub = async () => (await fetch(`${STUB}/_state`)).json() as Promise<{ revalidations: any[] }>;
+	const stub = async () => (await fetch(`${STUB}/_state`).then((r) => r.json()).catch(() => ({ revalidations: [], vault: [] }))) as { revalidations: any[]; vault: any[] };
 	const approvalOf = async (id: string) => (await call(A, 'GET', `/items/approvals/${id}`)).data;
 	const hashFromDb = (vid: string) => {
 		const row = JSON.parse(psql(`select json_build_object('item', item, 'collection', collection, 'delta', delta)::text from directus_versions where id='${vid}'`));
@@ -306,12 +309,12 @@ async function main() {
 	check('f12', `témoin positif (valeur écrite dans une collection) : le balayage la trouve dans ${Object.entries(chits).map(([t, n]) => `${t}=${n}`).join(', ')} (directus_activity ne stocke jamais les données, seulement l’action)`, !!chits['claims'] && !!chits['directus_revisions']);
 	check('f13', `témoin positif (valeur dans une URL) : ${logCount(CONTROL)} occurrence(s) dans les journaux`, logCount(CONTROL) > 0);
 	await call(A, 'DELETE', `/items/claims/${claim.id}`);
-	const lastLines = execFileSync('sh', ['-c', `docker logs ${CONTAINER} 2>&1 | grep -E "nexora-vault" | tail -3`], { encoding: 'utf8' }).trim();
+	const lastLines = execFileSync('sh', ['-c', `docker logs ${CONTAINER} 2>&1 | grep -E "\\[nexora-vault\\]" | tail -3`], { encoding: 'utf8' }).trim();
 	say('Lignes de journal produites par le Coffre :');
 	say('```');
 	say(lastLines);
 	say('```');
-	const state = (await (await fetch(`${STUB}/_state`)).json()) as any;
+	const state = (await stub()) as any;
 	check('f11', `côté app (bouchon), la valeur a bien été reçue : référence \`essai.temoin\` présente (${state.vault.some((v: any) => v.ref === 'essai.temoin')}), 4 derniers caractères « ${state.vault.find((v: any) => v.ref === 'essai.temoin')?.last4} »`, state.vault.some((v: any) => v.ref === 'essai.temoin'));
 	say();
 
