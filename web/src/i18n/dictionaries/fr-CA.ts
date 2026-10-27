@@ -174,6 +174,20 @@ export const frCA = {
         "Schéma : vos données franchissent un point de passage contrôlé vers le périmètre de l’infrastructure Nexora AI, au Québec, où se trouvent le modèle et le stockage.",
       "flux-donnees":
         "Schéma : vos documents entrent par un point de passage contrôlé vers le modèle, à l’intérieur du périmètre. Ce que le système prépare ne sort qu’après l’approbation d’une personne.",
+      "flux-workstudio":
+        "Maquette de l’éditeur de flux de Nexora WorkStudio : un flux de facture fournisseur, de la réception du courriel à l’écriture en comptabilité, qui attend l’approbation d’une personne avant d’écrire.",
+      "catalogue-modeles":
+        "Maquette du catalogue de modèles : recherche, filtres par capacité et par lieu d’hébergement, quelques modèles et un exemple d’appel compatible avec OpenAI.",
+      "console-vps":
+        "Maquette de la console d’un serveur privé virtuel au Québec : état actif, région, accès par clé, pare-feu, terminal et courbes d’utilisation.",
+      "tableau-de-bord":
+        "Maquette du tableau de bord du compte : solde de crédits, plafond du mois, appels par jour et clés d’API masquées.",
+      "vision-sur-place":
+        "Schéma de principe : des caméras sont reliées à un serveur installé sur le site. Les images y restent ; seule une alerte écrite sort par le point de passage.",
+      "croissance-canaux":
+        "Schéma de principe : votre métier et votre région entrent dans Nexora Croissance, qui fait travailler ensemble site, référencement, annonces Google et Microsoft, réseaux sociaux et analyse de marché, pour produire des demandes de clients.",
+      "engagements-donnees":
+        "Les cinq engagements sur vos données : elles restent chez vous ou au Québec, ne servent jamais à entraîner un modèle, ne sont jamais vendues, et aucun modèle externe n’est utilisé sans votre accord écrit.",
     },
     preview: {
       banner: "Aperçu — non publié",

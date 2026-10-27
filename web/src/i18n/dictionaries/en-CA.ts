@@ -169,6 +169,20 @@ export const enCA: Dictionary = {
         "Diagram: your data crosses a controlled gateway into the perimeter of Nexora AI’s infrastructure in Quebec, where the model and the storage are.",
       "flux-donnees":
         "Diagram: your documents enter through a controlled gateway to the model, inside the perimeter. What the system prepares leaves only after a person approves it.",
+      "flux-workstudio":
+        "Mock-up of the Nexora WorkStudio flow editor: a supplier-invoice workflow, from the received email to the accounting entry, that waits for a person’s approval before writing anything.",
+      "catalogue-modeles":
+        "Mock-up of the model catalogue: search, filters by capability and hosting location, a few models and an example of an OpenAI-compatible call.",
+      "console-vps":
+        "Mock-up of the console of a virtual private server in Quebec: active state, region, key-based access, firewall, terminal and usage curves.",
+      "tableau-de-bord":
+        "Mock-up of the account dashboard: credit balance, monthly cap, calls per day and masked API keys.",
+      "vision-sur-place":
+        "Conceptual diagram: cameras are connected to a server installed on the site. The images stay there; only a written alert leaves through the gateway.",
+      "croissance-canaux":
+        "Conceptual diagram: your trade and your region go into Nexora Croissance, which makes the website, organic search, Google and Microsoft ads, social networks and market analysis work together to produce customer enquiries.",
+      "engagements-donnees":
+        "The five commitments on your data: it stays with you or in Quebec, is never used to train a model, is never sold, and no external model is used without your written agreement.",
     },
     preview: {
       banner: "Preview — not published",

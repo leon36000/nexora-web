@@ -42,6 +42,9 @@ export function Section({
         "relative isolate overflow-hidden text-fg",
         tone === "dark" ? "theme-dark" : "theme-light",
         surface ? "bg-surface" : "bg-bg",
+        // Lueur d'accent seulement en tête d'une bande : une section qui prolonge la précédente n'en répète pas.
+        !(joined === "after" || joined === "both") &&
+          (tone === "dark" ? "wash-dark" : surface ? "wash-sand" : null),
         !flush && !joined && "py-section",
         !flush && joined === "after" && "pb-section",
         !flush && joined === "before" && "pt-section pb-12 md:pb-16",

@@ -29,7 +29,7 @@ Nexora AI designs, installs and supports AI systems built around how you work: r
 
 *Start from the problem: five situations, each leading to its solution. · Affirmations : CL-01*
 
-Réglages : `columns=3`, `layout=grille`, `tone=clair`
+Réglages : `columns=3`, `layout=bento`, `tone=clair`
 
 ## Start with your problem.
 
@@ -233,7 +233,7 @@ We run the system with you, keep what works and adjust the rest.
 
 *Trust: verifiable commitments, no figures and no customers. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31*
 
-Réglages : `columns=3`, `layout=grille`, `tone=sombre`
+Réglages : `columns=3`, `layout=bento`, `tone=sombre`
 
 ## Commitments you can verify.
 

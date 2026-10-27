@@ -6,9 +6,12 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
+import { DashboardMock } from "@/components/visuals/dashboard";
+import { PageIntro } from "@/components/visuals/page-intro";
 import { fmt } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
+import { getVisualsDictionary } from "@/i18n/visuals";
 import {
   apiExampleModelId,
   apiSamples,
@@ -44,13 +47,17 @@ export default async function ApiDocsPage() {
 
   return (
     <Section tone="light" aria-labelledby="docs-title">
-      <header className="max-w-3xl">
-        <Badge tone="accent">{d.label}</Badge>
-        <h1 id="docs-title" className="mt-4 text-h1 text-fg">
-          {d.title}
-        </h1>
-        <p className="mt-5 max-w-2xl text-lead text-fg-muted">{d.lead}</p>
-      </header>
+      <PageIntro
+        visual={<DashboardMock t={getVisualsDictionary(lang).dashboard} />}
+      >
+        <header className="max-w-3xl">
+          <Badge tone="accent">{d.label}</Badge>
+          <h1 id="docs-title" className="mt-4 text-h1 text-fg">
+            {d.title}
+          </h1>
+          <p className="mt-5 max-w-2xl text-lead text-fg-muted">{d.lead}</p>
+        </header>
+      </PageIntro>
 
       <div className="mt-12 grid max-w-4xl gap-14">
         <section aria-labelledby="docs-base">

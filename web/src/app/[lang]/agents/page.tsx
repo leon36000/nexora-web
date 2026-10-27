@@ -8,9 +8,12 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
+import { FlowEditorMock } from "@/components/visuals/flow-editor";
+import { PageIntro } from "@/components/visuals/page-intro";
 import { fmt, formatDate } from "@/i18n/account";
 import { getAgentsDictionary } from "@/i18n/agents";
 import { isLang, localizePath } from "@/i18n/config";
+import { getVisualsDictionary } from "@/i18n/visuals";
 import { agentSamples } from "@/lib/agent-samples";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
@@ -41,15 +44,19 @@ export default async function AgentsPage() {
   return (
     <>
       <Section tone="light" aria-labelledby="agents-title">
-        <header className="max-w-3xl">
-          <Badge tone="accent">{t.catalog.label}</Badge>
-          <h1 id="agents-title" className="mt-4 text-h1 text-fg">
-            {t.catalog.title}
-          </h1>
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
-            {t.catalog.lead}
-          </p>
-        </header>
+        <PageIntro
+          visual={<FlowEditorMock t={getVisualsDictionary(lang).flow} />}
+        >
+          <header className="max-w-3xl">
+            <Badge tone="accent">{t.catalog.label}</Badge>
+            <h1 id="agents-title" className="mt-4 text-h1 text-fg">
+              {t.catalog.title}
+            </h1>
+            <p className="mt-5 max-w-2xl text-lead text-fg-muted">
+              {t.catalog.lead}
+            </p>
+          </header>
+        </PageIntro>
 
         <p
           className="mt-10 min-h-[3rem] text-small text-fg-muted"

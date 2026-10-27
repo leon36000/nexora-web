@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { AuthPanel } from "@/components/account/auth-panel";
 import { AuthShell } from "@/components/account/auth-shell";
 import { ButtonLink } from "@/components/ui/button";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata } from "@/lib/metadata";
 import { SITE_NAME } from "@/lib/site";
 
@@ -62,6 +64,7 @@ function VerifyResult({
   const t = getAccountDictionary(lang);
   return (
     <AuthShell
+      panel={<AuthPanel tagline={getDictionary(lang).footer.tagline} />}
       title={failed ? t.verify.errorTitle : t.verify.title}
       lead={failed ? t.verify.errorText : t.verify.text}
     >

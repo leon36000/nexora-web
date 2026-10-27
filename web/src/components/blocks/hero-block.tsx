@@ -2,6 +2,8 @@ import { PerimeterGrid } from "@/components/brand/perimeter-grid";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
+import { HeroApproval } from "@/components/visuals/hero-approval";
+import type { VisualsDictionary } from "@/i18n/visuals";
 import { cn } from "@/lib/cn";
 import type { HeroBlock } from "@/server/cms/model";
 import { CmsImage } from "./cms-image";
@@ -11,10 +13,13 @@ import { anchorProps, toneProps } from "./tone";
 export function HeroBlockView({
   block,
   level = 1,
+  showcase,
 }: {
   block: HeroBlock;
   /** Un seul h1 par page : les héros suivants sont des h2. */
   level?: 1 | 2;
+  /** Textes de la carte d'exemple « à approuver » posée sur la grille (accueil seulement). */
+  showcase?: VisualsDictionary["hero"];
 }) {
   const H = level === 1 ? "h1" : "h2";
   const titleId = `${block.key}-title`;
@@ -38,20 +43,31 @@ export function HeroBlockView({
       }
     >
       <div className={cn("max-w-2xl lg:max-w-[43rem]")}>
-        {block.eyebrow ? <Badge tone="accent">{block.eyebrow}</Badge> : null}
+        {block.eyebrow ? (
+          <Badge tone="accent" className="rise">
+            {block.eyebrow}
+          </Badge>
+        ) : null}
         <H
           id={titleId}
-          className={cn("text-display text-fg", block.eyebrow && "mt-6")}
+          style={{ "--d": 1 } as React.CSSProperties}
+          className={cn("rise text-display text-fg", block.eyebrow && "mt-6")}
         >
           {block.headline}
         </H>
         {block.subheadline ? (
-          <p className="mt-7 max-w-xl text-lead text-fg-muted">
+          <p
+            style={{ "--d": 2 } as React.CSSProperties}
+            className="rise mt-7 max-w-xl text-lead text-fg-muted"
+          >
             {block.subheadline}
           </p>
         ) : null}
         {block.primary || block.secondary ? (
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <div
+            style={{ "--d": 3 } as React.CSSProperties}
+            className="rise mt-10 flex flex-col gap-3 sm:flex-row"
+          >
             {block.primary ? (
               <ButtonLink href={block.primary.href} size="lg">
                 {block.primary.label}
@@ -69,6 +85,22 @@ export function HeroBlockView({
           </div>
         ) : null}
       </div>
+      {showcase && block.perimeterGrid ? (
+        <>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-[44%] lg:block xl:right-14"
+          >
+            <HeroApproval t={showcase} />
+          </div>
+          <div
+            aria-hidden="true"
+            className="mt-12 flex justify-center lg:hidden"
+          >
+            <HeroApproval t={showcase} />
+          </div>
+        </>
+      ) : null}
       {block.media ? (
         <div className="mt-12 max-w-3xl overflow-hidden rounded-lg border border-line">
           <CmsImage

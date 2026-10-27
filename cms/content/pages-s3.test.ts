@@ -156,12 +156,19 @@ const route = (l: Locale, slug: string) =>
     : `/en/${slug}${slug ? "/" : ""}`;
 
 const TONES = ["sombre", "clair", "sable"];
-const LAYOUTS = ["grille", "liste", "etapes", "modules"];
+const LAYOUTS = ["grille", "liste", "etapes", "modules", "bento"];
 const VISUALS = [
   "aucun",
   "perimetre-sur-place",
   "perimetre-heberge",
   "flux-donnees",
+  "flux-workstudio",
+  "catalogue-modeles",
+  "console-vps",
+  "tableau-de-bord",
+  "vision-sur-place",
+  "croissance-canaux",
+  "engagements-donnees",
 ];
 const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);

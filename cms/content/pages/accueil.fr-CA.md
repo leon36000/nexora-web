@@ -29,7 +29,7 @@ Nexora AI conçoit, installe et accompagne des systèmes d'IA adaptés à votre 
 
 *Entrée par problème : cinq situations, chacune vers sa solution. · Affirmations : CL-01*
 
-Réglages : `columns=3`, `layout=grille`, `tone=clair`
+Réglages : `columns=3`, `layout=bento`, `tone=clair`
 
 ## Partez de votre problème.
 
@@ -233,7 +233,7 @@ Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le 
 
 *Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31*
 
-Réglages : `columns=3`, `layout=grille`, `tone=sombre`
+Réglages : `columns=3`, `layout=bento`, `tone=sombre`
 
 ## Des engagements vérifiables.
 

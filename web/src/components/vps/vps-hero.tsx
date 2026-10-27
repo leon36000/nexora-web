@@ -2,7 +2,10 @@ import { PerimeterGrid } from "@/components/brand/perimeter-grid";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
+import { PageIntro } from "@/components/visuals/page-intro";
+import { VpsConsoleMock } from "@/components/visuals/vps-console";
 import { type Lang, localizePath } from "@/i18n/config";
+import { getVisualsDictionary } from "@/i18n/visuals";
 import type { VpsDictionary } from "@/i18n/vps";
 import { Breadcrumb } from "./breadcrumb";
 
@@ -35,7 +38,7 @@ export function VpsHero({
       background={
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 hidden opacity-40 md:block"
+          className="absolute inset-0 -z-10 hidden opacity-25 md:block"
         >
           <PerimeterGrid shape="wide" animated={false} />
         </div>
@@ -50,31 +53,41 @@ export function VpsHero({
           ]}
         />
       )}
-      <header className="mt-4 max-w-3xl">
-        <Badge tone="accent">{t.hero.label}</Badge>
-        <Title
-          id={skeleton ? undefined : "vps-title"}
-          className="mt-4 text-h1 text-fg"
-        >
-          {t.hero.title}
-        </Title>
-        <p className="mt-5 max-w-2xl text-lead text-fg-muted">{t.hero.lead}</p>
-        {withActions ? (
-          <p className="mt-4 max-w-2xl text-small text-fg-muted">
-            {t.common.priceNote} {t.common.taxes}
+      <PageIntro
+        visual={
+          skeleton ? null : (
+            <VpsConsoleMock t={getVisualsDictionary(lang).vps} />
+          )
+        }
+      >
+        <header className="mt-4 max-w-3xl">
+          <Badge tone="accent">{t.hero.label}</Badge>
+          <Title
+            id={skeleton ? undefined : "vps-title"}
+            className="mt-4 text-h1 text-fg"
+          >
+            {t.hero.title}
+          </Title>
+          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
+            {t.hero.lead}
           </p>
-        ) : null}
-        {withActions ? (
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="#configurateur" size="lg" arrow>
-              {t.hero.primary}
-            </ButtonLink>
-            <ButtonLink href="#plans" variant="secondary" size="lg">
-              {t.hero.secondary}
-            </ButtonLink>
-          </div>
-        ) : null}
-      </header>
+          {withActions ? (
+            <p className="mt-4 max-w-2xl text-small text-fg-muted">
+              {t.common.priceNote} {t.common.taxes}
+            </p>
+          ) : null}
+          {withActions ? (
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#configurateur" size="lg" arrow>
+                {t.hero.primary}
+              </ButtonLink>
+              <ButtonLink href="#plans" variant="secondary" size="lg">
+                {t.hero.secondary}
+              </ButtonLink>
+            </div>
+          ) : null}
+        </header>
+      </PageIntro>
     </Section>
   );
 }

@@ -46,7 +46,7 @@ function Grid({ block }: { block: CardsBlock }) {
         const label = card.title ?? card.linkLabel ?? "";
         const link = <CardAnchor card={card} label={label} />;
         return (
-          <li key={cardKey(card)} className={cells[i]}>
+          <li key={cardKey(card)} className={cn("reveal", cells[i])}>
             <Card
               interactive={Boolean(card.href)}
               className="flex w-full flex-col"
@@ -119,6 +119,122 @@ function List({ block }: { block: CardsBlock }) {
                 <ArrowIcon className="size-5 transition-transform duration-150 motion-safe:group-hover/row:translate-x-1" />
               </span>
             ) : null}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/** Motif de rangées de la mosaïque, sur six colonnes : 4+2, 2+2+2, 3+3, répété. La dernière rangée se répartit à parts égales. */
+const BENTO_ROWS = [
+  [4, 2],
+  [2, 2, 2],
+  [3, 3],
+] as const;
+const BENTO_SPAN: Record<number, string> = {
+  2: "sm:col-span-2",
+  3: "sm:col-span-3",
+  4: "sm:col-span-4",
+  6: "sm:col-span-6",
+};
+
+export function bentoSpans(count: number): number[] {
+  const spans: number[] = [];
+  let r = 0;
+  while (spans.length < count) {
+    const row: readonly number[] = BENTO_ROWS[r % BENTO_ROWS.length] ?? [3, 3];
+    const left = count - spans.length;
+    if (left >= row.length) spans.push(...row);
+    else spans.push(...Array.from({ length: left }, () => 6 / left));
+    r++;
+  }
+  return spans;
+}
+
+/** Pictogramme de tuile : neuf carrés dont quelques-uns s'allument, un seul orange (le point de passage). */
+const GLYPHS = [
+  "x.x.o.x..",
+  ".x.xox.x.",
+  "xx..o..xx",
+  "x..xox..x",
+  "..xxo.x.x",
+];
+function TileGlyph({ i }: { i: number }) {
+  const cells = GLYPHS[i % GLYPHS.length] ?? GLYPHS[0] ?? "";
+  return (
+    <svg viewBox="0 0 30 30" className="size-7 shrink-0" aria-hidden="true">
+      {[...cells].map((c, k) => (
+        <rect
+          // biome-ignore lint/suspicious/noArrayIndexKey: neuf cellules fixes
+          key={k}
+          x={(k % 3) * 11}
+          y={Math.floor(k / 3) * 11}
+          width="8"
+          height="8"
+          className={
+            c === "o" ? "fill-accent" : c === "x" ? "fill-fg" : "fill-fg-muted"
+          }
+          opacity={c === "." ? 0.28 : c === "x" ? 0.85 : 1}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/** Mosaïque : tuiles de tailles variées sur six colonnes, la première mise en valeur ; pour présenter un ensemble sans le répéter à l'identique. */
+function Bento({ block }: { block: CardsBlock }) {
+  const spans = bentoSpans(block.cards.length);
+  const dark = block.tone === "sombre";
+  return (
+    <ul
+      className={cn(
+        "grid gap-3 sm:grid-cols-6 sm:gap-4",
+        (block.title || block.intro) && "mt-12",
+      )}
+    >
+      {block.cards.map((card, i) => {
+        const label = card.title ?? card.linkLabel ?? "";
+        const link = <CardAnchor card={card} label={label} />;
+        const span = spans[i] ?? 3;
+        const feature = i === 0;
+        return (
+          <li
+            key={cardKey(card)}
+            className={cn("reveal flex", BENTO_SPAN[span] ?? "sm:col-span-3")}
+          >
+            <Card
+              interactive={Boolean(card.href)}
+              className={cn(
+                "flex w-full flex-col",
+                feature &&
+                  (dark
+                    ? "wash-dark border-accent/40"
+                    : "theme-dark wash-dark border-transparent bg-bg text-fg"),
+                !feature && i % 4 === 3 && "tex-dots",
+              )}
+            >
+              <TileGlyph i={i} />
+              {card.title ? (
+                <h3
+                  className={cn(
+                    "mt-5 text-fg",
+                    span >= 4 ? "text-h3" : "text-h4",
+                  )}
+                >
+                  {card.href ? link : card.title}
+                </h3>
+              ) : null}
+              {card.text ? (
+                <CardText text={card.text} first={Boolean(card.title)} />
+              ) : null}
+              {card.href && card.linkLabel && card.title ? (
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-[0.9375rem] font-medium text-accent-text">
+                  {card.linkLabel}
+                  <ArrowIcon />
+                </span>
+              ) : null}
+            </Card>
           </li>
         );
       })}
@@ -279,6 +395,8 @@ export function CardsBlockView({
         <Steps block={block} />
       ) : layout === "modules" ? (
         <Modules block={block} t={t} />
+      ) : layout === "bento" ? (
+        <Bento block={block} />
       ) : (
         <Grid block={block} />
       )}

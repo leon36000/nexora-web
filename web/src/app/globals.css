@@ -298,3 +298,115 @@
 @utility tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/* --------------------------------------------------------------------------
+   Matières et mouvement des visuels (marque Nexora AI)
+   Textures : trame de points, lueur d'accent très douce. Mouvement : transform seulement (jamais d'opacité sur le
+   texte du premier écran, pour ne pas retarder le LCP) ; tout est désactivé par prefers-reduced-motion.
+   -------------------------------------------------------------------------- */
+@utility tex-dots {
+  background-image: radial-gradient(var(--line) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+
+@utility wash-dark {
+  background-image:
+    radial-gradient(52rem 26rem at 92% -10%, rgb(206 65 28 / 0.15), transparent 62%),
+    radial-gradient(36rem 20rem at -6% 112%, rgb(244 241 234 / 0.045), transparent 64%);
+}
+
+@utility wash-sand {
+  background-image: radial-gradient(48rem 18rem at 100% 0%, rgb(206 65 28 / 0.07), transparent 66%);
+}
+
+@utility wash-paper {
+  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(206 65 28 / 0.045), transparent 68%);
+}
+
+/* Filet orange en pointillés qui avance : le flux entre deux étapes. */
+.flow-line {
+  background-image: linear-gradient(to bottom, var(--color-ember-600) 0 5px, transparent 5px 11px);
+  background-size: 2px 11px;
+  background-repeat: repeat-y;
+}
+
+.flow-line-x {
+  background-image: linear-gradient(to right, var(--color-ember-600) 0 5px, transparent 5px 11px);
+  background-size: 11px 2px;
+  background-repeat: repeat-x;
+}
+
+@keyframes rise-load {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes flow-down {
+  to {
+    background-position: 0 11px;
+  }
+}
+
+@keyframes flow-right {
+  to {
+    background-position: 11px 0;
+  }
+}
+
+@keyframes ring-soft {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(206 65 28 / 0.4);
+  }
+  55% {
+    box-shadow: 0 0 0 7px rgb(206 65 28 / 0);
+  }
+}
+
+@keyframes bar-grow {
+  from {
+    transform: scaleY(0.2);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise-load 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--d, 0) * 90ms);
+  }
+
+  .flow-line {
+    animation: flow-down 1.6s linear infinite;
+  }
+
+  .flow-line-x {
+    animation: flow-right 1.6s linear infinite;
+  }
+
+  .ring-soft {
+    animation: ring-soft 3.2s ease-in-out infinite;
+  }
+
+  .bar-grow {
+    transform-origin: bottom;
+    animation: bar-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--d, 0) * 40ms);
+  }
+
+  /* Apparition au défilement : pur CSS (scroll-driven animations), sans JavaScript ; ignorée par les
+     navigateurs qui ne la connaissent pas (le contenu reste alors simplement visible). */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise-load linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 38%;
+    }
+  }
+}

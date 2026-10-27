@@ -10,13 +10,23 @@ export type Tone = "sombre" | "clair" | "sable";
 export const TONES = ["sombre", "clair", "sable"] as const;
 /** Ancre facultative d'un bloc (`^[a-z0-9-]{0,40}$`), commune à tous les blocs. */
 export type Anchored = { anchorId: string | null };
-export type CardLayout = "grille" | "liste" | "etapes" | "modules";
+export type CardLayout = "grille" | "liste" | "etapes" | "modules" | "bento";
 export type CardStatus = "disponible" | "pilote" | "prevu";
-export type SectionVisual =
-  | "aucun"
-  | "perimetre-sur-place"
-  | "perimetre-heberge"
-  | "flux-donnees";
+/** Illustrations d'un bloc section : schémas de périmètre, maquettes d'interface produit, schémas de principe. */
+export const SECTION_VISUALS = [
+  "aucun",
+  "perimetre-sur-place",
+  "perimetre-heberge",
+  "flux-donnees",
+  "flux-workstudio",
+  "catalogue-modeles",
+  "console-vps",
+  "tableau-de-bord",
+  "vision-sur-place",
+  "croissance-canaux",
+  "engagements-donnees",
+] as const;
+export type SectionVisual = (typeof SECTION_VISUALS)[number];
 
 export type MediaRef = {
   id: string;

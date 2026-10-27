@@ -35,7 +35,7 @@
       "claims": ["CL-01"],
       "fields": {
         "columns": "3",
-        "layout": "grille",
+        "layout": "bento",
         "tone": "clair"
       },
       "translation": {
@@ -292,7 +292,7 @@
       ],
       "fields": {
         "columns": "3",
-        "layout": "grille",
+        "layout": "bento",
         "tone": "sombre"
       },
       "translation": {

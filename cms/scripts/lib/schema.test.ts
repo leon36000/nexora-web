@@ -49,19 +49,32 @@ describe("variantes de composition (S3)", () => {
     ]);
   });
 
-  test("layout des cartes : grille par défaut, liste, étapes, modules", () => {
+  test("layout des cartes : grille par défaut, liste, étapes, modules, mosaïque", () => {
     const f = field("block_cards", "layout");
-    expect(choices(f)).toEqual(["grille", "liste", "etapes", "modules"]);
+    expect(choices(f)).toEqual([
+      "grille",
+      "liste",
+      "etapes",
+      "modules",
+      "bento",
+    ]);
     expect(f.schema?.default_value).toBe("grille");
   });
 
-  test("visuel des sections : aucun par défaut, deux périmètres, flux de données", () => {
+  test("visuel des sections : aucun par défaut, schémas de périmètre, maquettes d'interface et schémas de principe", () => {
     const f = field("block_section", "visual");
     expect(choices(f)).toEqual([
       "aucun",
       "perimetre-sur-place",
       "perimetre-heberge",
       "flux-donnees",
+      "flux-workstudio",
+      "catalogue-modeles",
+      "console-vps",
+      "tableau-de-bord",
+      "vision-sur-place",
+      "croissance-canaux",
+      "engagements-donnees",
     ]);
     expect(f.schema?.default_value).toBe("aucun");
   });
