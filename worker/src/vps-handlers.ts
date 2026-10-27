@@ -24,6 +24,7 @@ import {
 } from "@nexora/vps";
 import { createSshRunner } from "@nexora/vps/install";
 import type { Mailer } from "./contact-notify.ts";
+import { keepJobAlive } from "./keepalive.ts";
 import type { HandlerRegistry, JobHandler } from "./registry.ts";
 
 /**
@@ -42,7 +43,35 @@ function uuid(payload: Record<string, unknown>, key: string): string {
 }
 
 export const SWEEP_EVERY_MS = 60_000;
+
+const ALERT_SUBJECT: Record<string, string> = {
+  provision_failed: "Échec de provisionnement",
+  late_payment: "Paiement reçu après expiration, sans capacité",
+};
 const bucket = (ms: number, now = Date.now()) => Math.floor(now / ms);
+
+/**
+ * Les tâches VPS tiennent le bail de l'instance (240 s) et peuvent durer bien plus que celui de la
+ * file (5 min) : une installation attend jusqu'à 15 min, une tâche Proxmox jusqu'à 5 min. Tant que
+ * l'exécution dure, le bail de la tâche est renouvelé (au rythme du bail d'instance) ; il est arrêté
+ * à la fin, réussite ou erreur, pour que la file puisse reprendre la tâche si elle échoue.
+ */
+async function whileAlive<T>(
+  deps: EngineDeps,
+  job: { id: string },
+  fn: () => Promise<T>,
+): Promise<T> {
+  const stop = keepJobAlive(
+    deps.db,
+    job.id,
+    Math.max(50, Math.floor(deps.settings.leaseMs / 3)),
+  );
+  try {
+    return await fn();
+  } finally {
+    stop();
+  }
+}
 
 export function registerVpsHandlers(
   registry: HandlerRegistry,
@@ -55,10 +84,12 @@ export function registerVpsHandlers(
 ): HandlerRegistry {
   const provision: JobHandler = async (job) => {
     const orderId = uuid(job.payload, "orderId");
-    const out = await provisionOrder(deps, orderId, {
-      attempt: job.attempt,
-      maxAttempts: job.maxAttempts,
-    });
+    const out = await whileAlive(deps, job, () =>
+      provisionOrder(deps, orderId, {
+        attempt: job.attempt,
+        maxAttempts: job.maxAttempts,
+      }),
+    );
     if (out.outcome === "wait") await enqueueContinuation(deps, orderId, out);
   };
 
@@ -72,7 +103,7 @@ export function registerVpsHandlers(
     )
       throw new Error("action de cycle de vie inconnue");
     // Instance occupée (BusyError) : l'erreur remonte, la file réessaie plus tard.
-    await runLifecycle(deps, instanceId, action);
+    await whileAlive(deps, job, () => runLifecycle(deps, instanceId, action));
   };
 
   const power: JobHandler = async (job) => {
@@ -80,7 +111,7 @@ export function registerVpsHandlers(
     const action = String(job.payload.action) as PowerAction;
     if (!["start", "stop", "reboot"].includes(action))
       throw new Error("action inconnue");
-    await runPowerAction(deps, instanceId, action);
+    await whileAlive(deps, job, () => runPowerAction(deps, instanceId, action));
   };
 
   const sweeper: JobHandler = async (job, ctx) => {
@@ -115,7 +146,9 @@ export function registerVpsHandlers(
       "",
       reason === "provision_failed"
         ? "Aucun remboursement automatique n'a été fait : décider depuis Stripe (annulation de l'abonnement, remboursement)."
-        : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
+        : reason === "late_payment"
+          ? "Le client a payé APRÈS l'expiration de sa commande et aucune capacité n'est disponible. Aucune VM n'existe. Aucun remboursement automatique n'a été fait : brancher un serveur (le balayage reprend la commande seul) ou décider depuis Stripe (annulation de l'abonnement, remboursement)."
+          : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
     ];
     ctx.log.error("vps : intervention de l'opérateur requise", {
       orderId,
@@ -126,7 +159,7 @@ export function registerVpsHandlers(
       from: options.alertFrom ?? "vps@localhost",
       to: options.alertTo,
       replyTo: options.alertFrom ?? "vps@localhost",
-      subject: `[Nexora VPS] ${reason === "provision_failed" ? "Échec de provisionnement" : "Capacité insuffisante"} — ${orderId.slice(0, 8)}`,
+      subject: `[Nexora VPS] ${ALERT_SUBJECT[reason] ?? "Capacité insuffisante"} — ${orderId.slice(0, 8)}`,
       text: lines.join("\n"),
     });
   };

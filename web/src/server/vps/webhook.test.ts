@@ -4,15 +4,19 @@ import {
   creditEntries,
   eq,
   jobs,
+  proxmoxServers,
   subscriptions,
+  vpsEvents,
   vpsInstances,
   vpsOrders,
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
-import { createOrder } from "@nexora/vps";
+import { createOrder, provisionOrder } from "@nexora/vps";
 import { ProxmoxSimulator } from "@nexora/vps/simulator";
 import {
   CUSTOMER_KEY,
+  createSimRunner,
+  engineDeps,
   type Fixture,
   SIM_TOKEN,
   seedFixture,
@@ -25,6 +29,7 @@ import { buildEvent } from "../stripe/testing";
 let t: TestDatabase;
 let fx: Fixture;
 let close: () => Promise<void>;
+let sim: ProxmoxSimulator;
 const silentLog = { debug() {}, info() {}, warn() {}, error() {} } as never;
 // Une source de plans qui échoue si on l'interroge : un abonnement VPS n'est pas un plan Directus.
 const noDirectus = {
@@ -49,7 +54,7 @@ const DAY = 86_400;
 
 beforeAll(async () => {
   t = await createTestDatabase();
-  const sim = new ProxmoxSimulator({ token: SIM_TOKEN });
+  sim = new ProxmoxSimulator({ token: SIM_TOKEN, taskPolls: 1, agentPolls: 1 });
   const s = await sim.start();
   close = s.close;
   fx = await seedFixture(t.db, { simPort: s.port });
@@ -272,5 +277,125 @@ describe("webhook Stripe : suspension et résiliation d'un VPS actif", () => {
     const q = await jobsOf("vps.lifecycle", instanceId);
     expect(q).toHaveLength(1);
     expect(q[0]?.payload).toMatchObject({ action: "terminate" });
+  });
+});
+
+describe("webhook Stripe : paiement reçu APRÈS l'expiration de la commande (I3)", () => {
+  async function expiredOrder() {
+    const { orderId, subId } = await newOrder();
+    await processStripeEvent(
+      deps(),
+      buildEvent("checkout.session.completed", session(orderId, subId), {
+        created: T0,
+      }),
+    );
+    // Le filet de 24 h (ou une panne) a fait expirer la commande avant le prélèvement.
+    await t.db
+      .update(vpsOrders)
+      .set({ status: "expired" })
+      .where(eq(vpsOrders.id, orderId));
+    return { orderId, subId };
+  }
+  const setServer = (state: "ready" | "offline") =>
+    t.db
+      .update(proxmoxServers)
+      .set({ state })
+      .where(eq(proxmoxServers.id, fx.serverId));
+
+  it("`invoice.paid` sur une commande expirée : la commande est reprise et la VM est réellement provisionnée, une seule fois", async () => {
+    const { orderId, subId } = await expiredOrder();
+    const paid = buildEvent("invoice.paid", invoice(orderId, subId), {
+      created: T0 + 5 * DAY,
+    });
+    expect((await processStripeEvent(deps(), paid)).status).toBe("processed");
+    expect((await processStripeEvent(deps(), paid)).status).toBe("duplicate");
+    await processStripeEvent(
+      deps(),
+      buildEvent(
+        "customer.subscription.updated",
+        subObj(orderId, subId, "active"),
+        { created: T0 + 5 * DAY + 1 },
+      ),
+    );
+    expect(await orderRow(orderId)).toMatchObject({ status: "paid" });
+    expect(await jobsOf("vps.provision", orderId)).toHaveLength(1);
+
+    const vps = engineDeps(t.db, createSimRunner(sim).runner);
+    expect(await provisionOrder(vps, orderId)).toEqual({ outcome: "done" });
+    expect(await orderRow(orderId)).toMatchObject({ status: "fulfilled" });
+    expect(sim.guests().length).toBeGreaterThanOrEqual(1);
+    const kinds = (
+      await t.db.select().from(vpsEvents).where(eq(vpsEvents.orderId, orderId))
+    ).map((e) => e.kind);
+    expect(kinds).toContain("resumed_after_expiry");
+  });
+
+  it("sans capacité : état d'alerte, aucune VM, aucun remboursement ni écriture au grand livre ; rejeu idempotent", async () => {
+    const { orderId, subId } = await expiredOrder();
+    const before = sim.guests().length;
+    await setServer("offline");
+    try {
+      const paid = buildEvent("invoice.paid", invoice(orderId, subId), {
+        created: T0 + 5 * DAY,
+      });
+      await processStripeEvent(deps(), paid);
+      expect((await processStripeEvent(deps(), paid)).status).toBe("duplicate");
+      await processStripeEvent(
+        deps(),
+        buildEvent(
+          "customer.subscription.updated",
+          subObj(orderId, subId, "active"),
+          { created: T0 + 5 * DAY + 1 },
+        ),
+      );
+    } finally {
+      await setServer("ready");
+    }
+    expect(await orderRow(orderId)).toMatchObject({ status: "late_payment" });
+    expect(await jobsOf("vps.provision", orderId)).toHaveLength(0);
+    expect(await jobsOf("vps.alert", orderId)).toHaveLength(1);
+    expect(sim.guests().length).toBe(before);
+    expect(
+      await t.db
+        .select()
+        .from(vpsInstances)
+        .where(eq(vpsInstances.orderId, orderId)),
+    ).toHaveLength(0);
+    // Aucun remboursement automatique : rien ne touche au grand livre ni à Stripe.
+    expect(
+      await t.db
+        .select()
+        .from(creditEntries)
+        .where(eq(creditEntries.organizationId, fx.organizationId)),
+    ).toHaveLength(0);
+    const events = (
+      await t.db.select().from(vpsEvents).where(eq(vpsEvents.orderId, orderId))
+    ).filter((e) => e.kind === "paid_after_expiry");
+    expect(events).toHaveLength(1);
+  });
+
+  it("`checkout.session.expired` fait expirer la commande (le balayage n'est qu'un filet)", async () => {
+    const { orderId } = await newOrder();
+    const expired = buildEvent(
+      "checkout.session.expired",
+      {
+        id: `cs_${randomBytes(4).toString("hex")}`,
+        object: "checkout.session",
+        mode: "subscription",
+        payment_status: "unpaid",
+        client_reference_id: fx.organizationId,
+        customer: null,
+        subscription: null,
+        metadata: meta(orderId),
+      },
+      { created: T0 },
+    );
+    expect((await processStripeEvent(deps(), expired)).status).toBe(
+      "processed",
+    );
+    expect(await orderRow(orderId)).toMatchObject({ status: "expired" });
+    expect((await processStripeEvent(deps(), expired)).status).toBe(
+      "duplicate",
+    );
   });
 });

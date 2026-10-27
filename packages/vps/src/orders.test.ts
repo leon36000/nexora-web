@@ -1,4 +1,11 @@
-import { eq, jobs, vpsOrders } from "@nexora/db";
+import {
+  eq,
+  jobs,
+  proxmoxServers,
+  vpsEvents,
+  vpsInstances,
+  vpsOrders,
+} from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
@@ -15,6 +22,7 @@ import {
   createOrder,
   OrderError,
   onVpsCheckoutCompleted,
+  onVpsCheckoutExpired,
   reconcileVpsSubscription,
 } from "./orders.ts";
 import { ensureInstance } from "./provision.ts";
@@ -352,6 +360,202 @@ describe("abonnement → cycle de vie du service", () => {
       eventId: "evt_cancel",
     });
     expect(out.lifecycle).toEqual([`${id}:terminate`]);
+  });
+});
+
+describe("paiement confirmé APRÈS l'expiration de la commande (I3)", () => {
+  async function expiredOrder(subId: string) {
+    const orderId = await fresh(subId);
+    await t.db
+      .update(vpsOrders)
+      .set({ status: "expired" })
+      .where(eq(vpsOrders.id, orderId));
+    return orderId;
+  }
+  const orderOf = async (id: string) =>
+    (await t.db.select().from(vpsOrders).where(eq(vpsOrders.id, id)))[0];
+  const eventsOf = async (orderId: string, kind: string) =>
+    (
+      await t.db.select().from(vpsEvents).where(eq(vpsEvents.orderId, orderId))
+    ).filter((e) => e.kind === kind);
+  async function withoutCapacity<T>(fn: () => Promise<T>): Promise<T> {
+    await t.db
+      .update(proxmoxServers)
+      .set({ state: "offline" })
+      .where(eq(proxmoxServers.id, fx.serverId));
+    try {
+      return await fn();
+    } finally {
+      await t.db
+        .update(proxmoxServers)
+        .set({ state: "ready" })
+        .where(eq(proxmoxServers.id, fx.serverId));
+    }
+  }
+
+  it("avec de la capacité : la commande est REPRISE (payée, provisionnée une seule fois), sans doublon au rejeu", async () => {
+    const orderId = await expiredOrder(`${SUB}_late1`);
+    const out = await reconcile(`${SUB}_late1`, "active", { eventId: "evt_a" });
+    expect(out.provisioned).toEqual([orderId]);
+    expect(await orderOf(orderId)).toMatchObject({ status: "paid" });
+    expect((await orderOf(orderId))?.paidAt).not.toBeNull();
+    expect(await jobsOf("vps.provision", orderId)).toHaveLength(1);
+    expect(await eventsOf(orderId, "resumed_after_expiry")).toHaveLength(1);
+    // Rejeu : même événement, puis un autre événement de l'abonnement.
+    await reconcile(`${SUB}_late1`, "active", { eventId: "evt_a" });
+    await reconcile(`${SUB}_late1`, "active", { eventId: "evt_b" });
+    expect(await jobsOf("vps.provision", orderId)).toHaveLength(1);
+    expect(await eventsOf(orderId, "resumed_after_expiry")).toHaveLength(1);
+    expect(await orderOf(orderId)).toMatchObject({ status: "paid" });
+  });
+
+  it("sans capacité : « late_payment », alerte de l'opérateur, aucune instance, aucune tâche de provisionnement, rejouable", async () => {
+    const orderId = await expiredOrder(`${SUB}_late2`);
+    await withoutCapacity(async () => {
+      const out = await reconcile(`${SUB}_late2`, "active", {
+        eventId: "evt_c",
+      });
+      expect(out.provisioned).toEqual([]);
+      expect(out.held).toEqual([orderId]);
+      await reconcile(`${SUB}_late2`, "active", { eventId: "evt_c" });
+      await reconcile(`${SUB}_late2`, "active", { eventId: "evt_d" });
+    });
+    expect(await orderOf(orderId)).toMatchObject({ status: "late_payment" });
+    expect(await jobsOf("vps.provision", orderId)).toHaveLength(0);
+    const alerts = (await t.db.select().from(jobs)).filter(
+      (j) =>
+        j.type === "vps.alert" && JSON.stringify(j.payload).includes(orderId),
+    );
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]?.payload).toMatchObject({ reason: "late_payment" });
+    expect(await eventsOf(orderId, "paid_after_expiry")).toHaveLength(1);
+    expect(
+      await t.db
+        .select()
+        .from(vpsInstances)
+        .where(eq(vpsInstances.orderId, orderId)),
+    ).toHaveLength(0);
+  });
+
+  it("la capacité revient : le paiement suivant reprend la commande en attente, sans nouvelle alerte", async () => {
+    const orderId = await expiredOrder(`${SUB}_late3`);
+    await withoutCapacity(() => reconcile(`${SUB}_late3`, "active"));
+    expect(await orderOf(orderId)).toMatchObject({ status: "late_payment" });
+    await reconcile(`${SUB}_late3`, "active", { eventId: "evt_e" });
+    expect(await orderOf(orderId)).toMatchObject({ status: "paid" });
+    expect(await jobsOf("vps.provision", orderId)).toHaveLength(1);
+  });
+
+  it("un paiement non confirmé ne reprend rien ; une résiliation clôt la commande en attente", async () => {
+    const orderId = await expiredOrder(`${SUB}_late4`);
+    await reconcile(`${SUB}_late4`, "incomplete");
+    expect(await orderOf(orderId)).toMatchObject({ status: "expired" });
+    const held = await expiredOrder(`${SUB}_late5`);
+    await withoutCapacity(() => reconcile(`${SUB}_late5`, "active"));
+    await reconcile(`${SUB}_late5`, "canceled", { eventId: "evt_f" });
+    expect(await orderOf(held)).toMatchObject({ status: "canceled" });
+  });
+});
+
+describe("expiration d'une session Checkout (I3 : Stripe fait foi)", () => {
+  it("`checkout.session.expired` fait expirer la commande en attente, une seule fois", async () => {
+    const { order } = await createOrder(t.db, input());
+    const run = () =>
+      t.db.transaction((tx) =>
+        onVpsCheckoutExpired(tx, {
+          orderId: order.id,
+          organizationId: fx.organizationId,
+          sessionId: "cs_expired_1",
+        }),
+      );
+    expect(await run()).toBe(true);
+    expect(await run()).toBe(false);
+    const [row] = await t.db
+      .select()
+      .from(vpsOrders)
+      .where(eq(vpsOrders.id, order.id));
+    expect(row?.status).toBe("expired");
+    const kinds = (
+      await t.db.select().from(vpsEvents).where(eq(vpsEvents.orderId, order.id))
+    ).filter((e) => e.kind === "checkout_expired");
+    expect(kinds).toHaveLength(1);
+  });
+
+  it("n'expire ni une commande déjà payée ni celle d'une autre organisation", async () => {
+    const { order } = await createOrder(t.db, input());
+    await t.db
+      .update(vpsOrders)
+      .set({ status: "paid" })
+      .where(eq(vpsOrders.id, order.id));
+    expect(
+      await t.db.transaction((tx) =>
+        onVpsCheckoutExpired(tx, {
+          orderId: order.id,
+          organizationId: fx.organizationId,
+          sessionId: "cs_expired_2",
+        }),
+      ),
+    ).toBe(false);
+    const other = await createOrder(t.db, input());
+    expect(
+      await t.db.transaction((tx) =>
+        onVpsCheckoutExpired(tx, {
+          orderId: other.order.id,
+          organizationId: "org_inconnue",
+          sessionId: "cs_expired_3",
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      (
+        await t.db
+          .select()
+          .from(vpsOrders)
+          .where(eq(vpsOrders.id, other.order.id))
+      )[0]?.status,
+    ).toBe("awaiting_payment");
+  });
+});
+
+describe("expiration d'une ancienne session Checkout (I3)", () => {
+  it("l'expiration d'une ANCIENNE session ne fait pas expirer la commande dont une session plus récente est ouverte", async () => {
+    const { order } = await createOrder(t.db, input());
+    await t.db
+      .update(vpsOrders)
+      .set({ stripeCheckoutSessionId: "cs_recente" })
+      .where(eq(vpsOrders.id, order.id));
+    const old = await t.db.transaction((tx) =>
+      onVpsCheckoutExpired(tx, {
+        orderId: order.id,
+        organizationId: fx.organizationId,
+        sessionId: "cs_ancienne",
+      }),
+    );
+    expect(old).toBe(false);
+    const current = await t.db.transaction((tx) =>
+      onVpsCheckoutExpired(tx, {
+        orderId: order.id,
+        organizationId: fx.organizationId,
+        sessionId: "cs_recente",
+      }),
+    );
+    expect(current).toBe(true);
+  });
+
+  it("n'expire pas une commande dont l'abonnement est déjà relié (prélèvement en cours de confirmation)", async () => {
+    const orderId = await fresh(`${SUB}_exp_linked`);
+    const done = await t.db.transaction((tx) =>
+      onVpsCheckoutExpired(tx, {
+        orderId,
+        organizationId: fx.organizationId,
+        sessionId: "cs_x",
+      }),
+    );
+    expect(done).toBe(false);
+    expect(
+      (await t.db.select().from(vpsOrders).where(eq(vpsOrders.id, orderId)))[0]
+        ?.status,
+    ).toBe("awaiting_payment");
   });
 });
 

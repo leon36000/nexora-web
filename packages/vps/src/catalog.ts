@@ -4,6 +4,7 @@ import {
   configVersions,
   type Database,
   desc,
+  type Executor,
   eq,
   type Region,
   sql,
@@ -621,7 +622,7 @@ export async function getPublishedCatalog(
 }
 
 export async function getCatalogVersionById(
-  db: Database,
+  db: Executor,
   id: string,
 ): Promise<VpsCatalogVersion> {
   const [row] = await db

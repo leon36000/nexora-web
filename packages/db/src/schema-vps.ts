@@ -277,6 +277,11 @@ export const VPS_ORDER_STATUSES = [
   "failed",
   "canceled",
   "expired",
+  /**
+   * Paiement confirmé APRÈS l'expiration de la commande, sans capacité pour la reprendre : le
+   * client a payé, aucune VM n'existe, l'opérateur est alerté (jamais de remboursement automatique).
+   */
+  "late_payment",
 ] as const;
 export type VpsOrderStatus = (typeof VPS_ORDER_STATUSES)[number];
 

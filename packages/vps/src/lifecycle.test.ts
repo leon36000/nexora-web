@@ -131,8 +131,15 @@ describe("paiement d'une commande", () => {
       "fulfilled",
       "failed",
       "canceled",
-      "expired",
     ] as const)
       expect(orderPaymentAction(s, "full")).toBe("wait");
+  });
+  it("un paiement confirmé sur une commande expirée (ou en attente de décision) la REPREND, sous réserve de capacité", () => {
+    for (const s of ["expired", "late_payment"] as const) {
+      expect(orderPaymentAction(s, "full")).toBe("resume");
+      expect(orderPaymentAction(s, "grace")).toBe("resume");
+      expect(orderPaymentAction(s, "none")).toBe("wait");
+      expect(orderPaymentAction(s, "suspended")).toBe("wait");
+    }
   });
 });

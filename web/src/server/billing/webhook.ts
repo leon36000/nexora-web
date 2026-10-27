@@ -39,6 +39,7 @@ import {
   subscriptionIdOfInvoice,
   subscriptionSchema,
 } from "../stripe/payloads";
+import { onVpsSessionExpired } from "../vps/checkout-expired";
 import {
   type PlanSource,
   planConfigVersion,
@@ -66,6 +67,7 @@ export interface WebhookOutcome {
 export const HANDLED_EVENT_TYPES = [
   "checkout.session.completed",
   "checkout.session.async_payment_succeeded",
+  "checkout.session.expired",
   "invoice.paid",
   "invoice.payment_failed",
   "invoice_payment.paid",
@@ -128,6 +130,9 @@ async function dispatch(ctx: Ctx, event: Stripe.Event): Promise<HandlerResult> {
     case "checkout.session.completed":
     case "checkout.session.async_payment_succeeded":
       return onCheckoutSession(ctx, checkoutSessionSchema.parse(object));
+    case "checkout.session.expired":
+      // VPS (S6) : Stripe fait expirer la commande jamais payée (le balayage n'est qu'un filet).
+      return onVpsSessionExpired(ctx.tx, checkoutSessionSchema.parse(object));
     case "invoice.paid":
       return onInvoice(ctx, invoiceSchema.parse(object), "invoice_paid");
     case "invoice.payment_failed":

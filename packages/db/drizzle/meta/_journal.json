@@ -78,6 +78,13 @@
       "when": 1793100114323,
       "tag": "0010_s4b_remboursement_abonnement",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793100265267,
+      "tag": "0011_i3_paiement_tardif",
+      "breakpoints": true
     }
   ]
 }

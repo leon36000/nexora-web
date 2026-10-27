@@ -9,8 +9,14 @@ import {
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { EngineSettings } from "./engine-core.ts";
-import { provisionOrder } from "./provision.ts";
+import {
+  acquireLease,
+  type EngineSettings,
+  releaseLease,
+} from "./engine-core.ts";
+import type { InstallRunner } from "./install.ts";
+import { requestReinstall } from "./operate.ts";
+import { ensureInstance, provisionOrder } from "./provision.ts";
 import { ProxmoxSimulator } from "./proxmox/simulator.ts";
 import {
   CUSTOMER_KEY,
@@ -454,6 +460,135 @@ describe("concurrence", () => {
       ),
     );
     expect(new Set(results.map((r) => r.id)).size).toBe(1);
+  });
+});
+
+describe("bail de l'instance pendant une étape longue (I4)", () => {
+  // Le bail est en temps de base de données : on réduit sa durée (600 ms) plutôt que d'attendre 240 s.
+  // Une installation 4 fois plus longue que le bail doit rester protégée de bout en bout.
+  const LEASE_MS = 600;
+  const INSTALL_MS = 2_400;
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  const slow = (
+    base: InstallRunner,
+    ms: number,
+    failWith?: Error,
+  ): InstallRunner => ({
+    ...base,
+    async run(input) {
+      await sleep(ms);
+      if (failWith) throw failWith;
+      return base.run(input);
+    },
+  });
+
+  /** Un second worker tente de prendre le bail toutes les 100 ms ; renvoie ce qu'il a réussi à voler. */
+  function thief(w: { deps: ReturnType<typeof engineDeps> }, id: string) {
+    const other = engineDeps(t.db, w.deps.runner, {
+      settings: { leaseMs: LEASE_MS },
+    });
+    const stolen: number[] = [];
+    let stop = false;
+    const loop = (async () => {
+      // On n'attaque qu'une fois le bail pris par le vrai worker.
+      while (!stop && !(await lease(id))?.leaseOwner) await sleep(10);
+      const start = Date.now();
+      while (!stop) {
+        if (await acquireLease(other, id)) {
+          stolen.push(Date.now() - start);
+          await releaseLease(other, id);
+        }
+        await sleep(100);
+      }
+    })();
+    return {
+      stolen,
+      async finish() {
+        stop = true;
+        await loop;
+      },
+    };
+  }
+  const lease = async (id: string) =>
+    (await t.db.select().from(vpsInstances).where(eq(vpsInstances.id, id)))[0];
+
+  it("une installation bien plus longue que le bail n'est jamais reprise par un second worker, et le bail est rendu à la fin", async () => {
+    const w = await world({ settings: { leaseMs: LEASE_MS } });
+    try {
+      const orderId = await paidOrder(t.db, w.fx);
+      const inst = await ensureInstance(w.deps, orderId);
+      const slowDeps = {
+        ...w.deps,
+        runner: slow(w.guest.runner, INSTALL_MS),
+      };
+      const probe = thief(w, inst.id);
+      const out = await provisionOrder(slowDeps, orderId);
+      await probe.finish();
+      expect(out).toEqual({ outcome: "done" });
+      expect(probe.stolen).toEqual([]);
+      expect(w.guest.installs).toHaveLength(1);
+      expect(await lease(inst.id)).toMatchObject({
+        leaseOwner: null,
+        leaseUntil: null,
+      });
+    } finally {
+      await w.close();
+    }
+  });
+
+  it("en cas d'erreur, le bail est rendu et le renouvellement s'arrête", async () => {
+    const w = await world({ settings: { leaseMs: LEASE_MS } });
+    try {
+      const orderId = await paidOrder(t.db, w.fx);
+      const inst = await ensureInstance(w.deps, orderId);
+      const failing = {
+        ...w.deps,
+        runner: slow(w.guest.runner, 1_300, new Error("ssh : coupure")),
+      };
+      const probe = thief(w, inst.id);
+      await expect(
+        provisionOrder(failing, orderId, { attempt: 1, maxAttempts: 3 }),
+      ).rejects.toThrow("coupure");
+      await probe.finish();
+      expect(probe.stolen).toEqual([]);
+      expect(await lease(inst.id)).toMatchObject({
+        leaseOwner: null,
+        leaseUntil: null,
+      });
+      await sleep(LEASE_MS); // aucun battement ne doit « ressusciter » le bail
+      expect(await lease(inst.id)).toMatchObject({
+        leaseOwner: null,
+        leaseUntil: null,
+      });
+    } finally {
+      await w.close();
+    }
+  });
+
+  it("la réinstallation (même chemin) garde aussi son bail pendant toute l'installation", async () => {
+    const w = await world({ settings: { leaseMs: LEASE_MS } });
+    try {
+      const orderId = await paidOrder(t.db, w.fx);
+      expect(await provisionOrder(w.deps, orderId)).toEqual({
+        outcome: "done",
+      });
+      const inst = await ensureInstance(w.deps, orderId);
+      await requestReinstall(w.deps, inst.id, "req-i4");
+      const slowDeps = {
+        ...w.deps,
+        runner: slow(w.guest.runner, INSTALL_MS),
+      };
+      const probe = thief(w, inst.id);
+      const out = await provisionOrder(slowDeps, orderId);
+      await probe.finish();
+      expect(out).toEqual({ outcome: "done" });
+      expect(probe.stolen).toEqual([]);
+      expect(w.guest.installs).toHaveLength(2);
+      expect(await lease(inst.id)).toMatchObject({ leaseOwner: null });
+    } finally {
+      await w.close();
+    }
   });
 });
 

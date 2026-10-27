@@ -1,5 +1,12 @@
 import { spawn } from "node:child_process";
-import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import {
+  chmodSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { scrubString } from "@nexora/log";
@@ -44,6 +51,28 @@ export interface SshRunnerOptions {
 }
 
 const tail = (s: string) => scrubString(s).slice(-2_000);
+
+/**
+ * Empreinte (SHA256, forme d'OpenSSH) de la clé d'hôte que le client vient d'enregistrer dans son
+ * fichier `known_hosts` éphémère (`StrictHostKeyChecking=accept-new`). Une seule connexion → une
+ * seule clé ; les lignes illisibles, les commentaires et les noms d'hôte hachés sont tolérés.
+ */
+export function hostKeyFingerprintFrom(knownHosts: string): string | undefined {
+  for (const line of knownHosts.split("\n")) {
+    const fields = line.trim().split(/\s+/);
+    if (fields.length < 3 || fields[0]?.startsWith("#")) continue;
+    // [@marqueur] hôte type clé
+    const at = fields[0]?.startsWith("@") ? 1 : 0;
+    const type = fields[at + 1];
+    const blob = fields[at + 2];
+    if (!type || !blob || !/^(ssh-|ecdsa-|sk-)/.test(type)) continue;
+    if (!/^[A-Za-z0-9+/]+={0,2}$/.test(blob)) continue;
+    const raw = Buffer.from(blob, "base64");
+    if (raw.length === 0) continue;
+    return `SHA256:${createHash("sha256").update(raw).digest("base64").replace(/=+$/, "")}`;
+  }
+  return undefined;
+}
 
 /** Exécution réelle par le client OpenSSH du worker. */
 export function createSshRunner(options: SshRunnerOptions): InstallRunner {
@@ -123,7 +152,7 @@ export function createSshRunner(options: SshRunnerOptions): InstallRunner {
 
   return {
     async run(input) {
-      return withKey(async (args) => {
+      return withKey(async (args, knownHosts) => {
         const env = Object.entries(input.env)
           .filter(([k]) => /^[A-Z][A-Z0-9_]*$/.test(k))
           .map(([k, v]) => `${k}=${shellQuote(v)}`)
@@ -133,7 +162,20 @@ export function createSshRunner(options: SshRunnerOptions): InstallRunner {
           input.script,
           input.timeoutMs,
         );
-        return { ok: code === 0, exitCode: code, tail: tail(out) };
+        let hostKeyFingerprint: string | undefined;
+        try {
+          hostKeyFingerprint = hostKeyFingerprintFrom(
+            readFileSync(knownHosts, "utf8"),
+          );
+        } catch {
+          /* pas de connexion, donc pas de clé d'hôte vue */
+        }
+        return {
+          ok: code === 0,
+          exitCode: code,
+          tail: tail(out),
+          ...(hostKeyFingerprint ? { hostKeyFingerprint } : {}),
+        };
       }, input);
     },
     async cleanup(input) {
