@@ -173,6 +173,30 @@ describe("publier un plan vers Stripe", () => {
     }
   });
 
+  it("un produit ou un prix inconnu du compte Stripe (autre compte, test puis production) est recréé au lieu d'échouer", async () => {
+    const missing = () => Object.assign(new Error("No such product"), { code: "resource_missing" });
+    const s = fake();
+    s.products.update.mockRejectedValueOnce(missing());
+    s.prices.retrieve.mockRejectedValueOnce(missing());
+    const out = await publishPlanToStripe(s.client, {
+      ...PLAN,
+      stripeProductId: "prod_ancien_compte",
+      stripePriceId: "price_ancien_compte",
+    });
+    expect(out).toMatchObject({
+      stripeProductId: "prod_new",
+      stripePriceId: "price_new",
+      productCreated: true,
+      priceCreated: true,
+    });
+    // une autre erreur de Stripe n'est jamais avalée
+    const s2 = fake();
+    s2.products.update.mockRejectedValueOnce(Object.assign(new Error("boom"), { code: "api_error" }));
+    await expect(
+      publishPlanToStripe(s2.client, { ...PLAN, stripeProductId: "prod_1", stripePriceId: "price_1" }),
+    ).rejects.toThrow("boom");
+  });
+
   it("refuse un prix absent ou nul : jamais 0 $", async () => {
     const s = fake();
     for (const priceCents of [0, -5, 12.5, Number.NaN]) {

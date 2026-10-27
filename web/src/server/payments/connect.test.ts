@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { eq, paymentAudit, paymentSettings, vaultSecrets } from "@nexora/db";
+import { eq, paymentAudit, paymentSettings, promoCodes, vaultSecrets } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { HANDLED_EVENT_TYPES } from "../billing/webhook";
@@ -259,6 +259,33 @@ describe("brancher Stripe en un geste", () => {
       deps(fake, { siteUrl: "http://localhost:3500", allowLocalUrl: true }),
     );
     expect(local.ok).toBe(true);
+  });
+});
+
+describe("changement de compte ou de mode Stripe", () => {
+  it("passer à un autre compte (ou du test à la production) oublie les objets Stripe de l'ancien et le dit", async () => {
+    await putKey("sk_test_abc");
+    await connectStripe(deps(fakeStripe()));
+    await t.db.update(paymentSettings).set({ creditsProductFrId: "prod_old_fr", creditsProductEnId: "prod_old_en" });
+    const { promoCodes } = await import("@nexora/db");
+    await t.db.insert(promoCodes).values({
+      code: "ANCIEN-1", kind: "percent", percentOff: 10, scopes: ["vps"],
+      stripeCouponId: "co_old", stripePromotionCodeId: "promo_old", stripeFingerprint: "fp", stripeSyncedAt: new Date(),
+    });
+    // même compte : rien n'est oublié
+    const same = await connectStripe(deps(fakeStripe()));
+    expect(same).toMatchObject({ ok: true, accountChanged: false });
+    expect((await getSettings(t.db)).creditsProductFrId).toBe("prod_old_fr");
+    // autre compte
+    const other = fakeStripe();
+    other.api.accounts.retrieve = vi.fn(async () => ({ id: "acct_999", country: "CA", business_profile: { name: "Autre" }, settings: {} })) as never;
+    const out = await connectStripe(deps(other));
+    expect(out).toMatchObject({ ok: true, accountChanged: true });
+    expect(out.ok && out.warnings.join(" ")).toMatch(/Publier vers Stripe/);
+    const s = await getSettings(t.db);
+    expect([s.creditsProductFrId, s.creditsProductEnId]).toEqual([null, null]);
+    const [row] = await t.db.select().from(promoCodes).where(eq(promoCodes.code, "ANCIEN-1"));
+    expect(row).toMatchObject({ stripeCouponId: null, stripePromotionCodeId: null, stripeFingerprint: null });
   });
 });
 

@@ -1,4 +1,4 @@
-import { type Database, paymentSettings } from "@nexora/db";
+import { type Database, paymentSettings, promoCodes } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import Stripe from "stripe";
 import { HANDLED_EVENT_TYPES } from "../billing/webhook";
@@ -49,6 +49,8 @@ export type ConnectResult =
         updated: boolean;
         replaced: boolean;
       };
+      /** Le compte (ou le mode) Stripe n'est plus celui du dernier branchement. */
+      accountChanged: boolean;
       warnings: string[];
     }
   | { ok: false; code: ConnectErrorCode; message: string; action: string };
@@ -236,6 +238,22 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
   }
   if (hook.secret) await deps.vault.put(WEBHOOK_SECRET_REF, hook.secret, "payment");
 
+  // Un autre compte (ou le passage du test à la production) ne connaît aucun des objets de l'ancien : on les oublie.
+  const accountChanged =
+    (settings.stripeAccountId !== null && settings.stripeAccountId !== account.id) ||
+    (settings.stripeMode !== null && settings.stripeMode !== mode);
+  if (accountChanged) {
+    await deps.db.update(paymentSettings).set({ creditsProductFrId: null, creditsProductEnId: null });
+    await deps.db.update(promoCodes).set({
+      stripeCouponId: null,
+      stripePromotionCodeId: null,
+      stripeFingerprint: null,
+      stripeSyncedAt: null,
+    });
+    warnings.push(
+      "Le compte ou le mode Stripe a changé : relancez « Publier vers Stripe » pour chaque offre d'abonnement et pour le catalogue VPS, puis resynchronisez les codes promo.",
+    );
+  }
   const name =
     account.business_profile?.name ?? account.settings?.dashboard?.display_name ?? null;
   await deps.db.update(paymentSettings).set({
@@ -270,6 +288,7 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
     mode,
     account: { id: account.id, name, country, countryOk },
     taxActive,
+    accountChanged,
     webhook: {
       id: hook.endpoint.id,
       url,

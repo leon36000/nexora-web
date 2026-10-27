@@ -101,6 +101,22 @@ describe("résolution des secrets", () => {
     expect(cfg).toEqual({ secretKey: "sk_test_vault", mockUrl: undefined });
   });
 
+  it("en production, le secret du webhook vient du Coffre (la variable d'environnement est ignorée)", async () => {
+    const getSecret = vault({ "stripe.webhook_secret": "whsec_vault" });
+    expect(
+      await resolveWebhookSecret({
+        env: { NODE_ENV: "production", STRIPE_WEBHOOK_SECRET: "whsec_env" },
+        getSecret,
+      }),
+    ).toBe("whsec_vault");
+    await expect(
+      resolveWebhookSecret({
+        env: { NODE_ENV: "production", STRIPE_WEBHOOK_SECRET: "whsec_env" },
+        getSecret: vault({}),
+      }),
+    ).rejects.toThrow(/stripe\.webhook_secret/);
+  });
+
   it("clé absente du coffre : erreur explicite, sans valeur", async () => {
     await expect(
       resolveStripeConfig({
