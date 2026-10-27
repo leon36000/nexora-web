@@ -284,9 +284,15 @@ async function startSite(): Promise<string | null> {
         ...env,
         PORT,
         NODE_ENV: "production",
+        SITE_URL: BASE,
+        NEXORA_APP_INTERNAL_URL: BASE,
+        // Le site tourne en mode production : le réseau interne (LiteLLM de développement sur 127.0.0.1) doit être
+        // autorisé explicitement, comme le ferait un opérateur (voir docs/guide-operateur.md).
+        NEXORA_OUTBOUND_ALLOW: env.NEXORA_OUTBOUND_ALLOW ?? "127.0.0.0/8",
         CMS_SNAPSHOT_DIR: join(logDir, "snapshots"),
       },
       stdio: ["ignore", fd, fd],
+      detached: true, // propre groupe de processus : on l'arrête en entier (lanceur et next-server)
     },
   );
   console.log(
@@ -301,7 +307,7 @@ async function startSite(): Promise<string | null> {
 function stopSite() {
   if (server?.pid) {
     try {
-      process.kill(server.pid, "SIGTERM");
+      process.kill(-server.pid, "SIGTERM"); // tout le groupe
     } catch {}
     console.log(`Site arrêté (PID ${server.pid}).`);
     server = null;

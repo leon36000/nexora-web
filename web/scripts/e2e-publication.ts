@@ -423,7 +423,8 @@ async function main() {
       "pendant l'aperçu, un visiteur anonyme ne voit toujours pas le brouillon",
       !pubAgain.html.includes(draftText) &&
         !pubAgain.html.includes("Aperçu — non publié") &&
-        !/noindex/.test(pubAgain.headers.get("x-robots-tag") ?? ""),
+        // Hors production, le proxy pose « noindex, nofollow » sur TOUTE page (S8) ; seul l'aperçu ajoute « noarchive ».
+        !/noarchive/.test(pubAgain.headers.get("x-robots-tag") ?? ""),
     );
 
     // ---------- 3. la garde ----------

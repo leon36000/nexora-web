@@ -8,6 +8,7 @@ import {
   NO_ALTERNATES,
 } from "@/lib/alternates";
 import { log } from "@/server/log";
+import { slugKnownAbsent } from "./known-slugs";
 import { langCode } from "./lang";
 import type { NavItem, PageModel, PreviewInfo, SiteSettings } from "./model";
 import {
@@ -80,7 +81,11 @@ export async function getPage(lang: Lang, slug: string): Promise<PageResult> {
       : { status: "not-found" };
   } catch {
     cacheLife({ stale: 30, revalidate: 10, expire: 600 });
-    return { status: "unavailable" };
+    // Directus illisible et pas d'instantané de cette page : si elle ne figure pas dans la dernière liste connue des
+    // pages publiées, c'est une adresse inconnue (404), pas une page à réessayer.
+    return slugKnownAbsent(snapshotStore(), code, slug)
+      ? { status: "not-found" }
+      : { status: "unavailable" };
   }
 }
 
