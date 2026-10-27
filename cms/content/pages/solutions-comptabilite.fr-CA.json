@@ -6,14 +6,14 @@
   "seo": {
     "slug": "solutions/comptabilite",
     "title": "Comptabilité",
-    "seo_title": "Pré-saisie comptable par IA pour PME",
-    "seo_description": "Le système lit vos pièces, prépare la pré-saisie, signale les écarts et laisse la décision à votre comptable. Le rapprochement bancaire n'est pas livré.",
+    "seo_title": "Comptabilité automatisée par IA pour PME",
+    "seo_description": "L'IA lit vos pièces, prépare la pré-saisie et signale les écarts : votre comptable relit et décide. Le rapprochement bancaire n'est pas livré à ce jour.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution comptabilité.",
+      "role": "Promesse de la solution comptabilité : l'IA prépare, le comptable décide.",
       "claims": ["CL-125", "CL-101"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Comptabilité",
         "headline": "Une pré-saisie prête. Le comptable décide.",
-        "subheadline": "Le système lit vos pièces, prépare la pré-saisie et signale les écarts. Votre comptable relit, corrige et valide\u00a0: l'IA prépare, elle ne comptabilise pas.",
+        "subheadline": "Le système lit vos pièces, prépare la pré-saisie (les lignes prêtes à être reprises en comptabilité) et signale les écarts. Votre comptable relit, corrige et valide : l'IA prépare, elle ne comptabilise pas.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème : un cabinet comptable en fin de mois.",
+      "role": "Problème : exemple construit d'un cabinet comptable en fin de mois.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "La fin de mois, c'est la saisie.",
-        "body": "<p>Un petit cabinet comptable reçoit de ses clients des factures, des notes de frais et des relevés, dans toutes les formes possibles. Une grande part du temps de fin de mois passe à relire des montants et à retaper des lignes, plutôt qu'à conseiller.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Un petit cabinet comptable reçoit de ses clients des factures, des notes de frais et des relevés, dans toutes les formes possibles. Une grande part du temps de fin de mois passe à relire des montants et à retaper des lignes, plutôt qu'à conseiller.</p><p>L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Des pièces dans tous les formats.",
@@ -59,8 +59,8 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système : lecture, contrôles de cohérence, table, relecture.",
-      "claims": ["CL-101", "CL-121", "CL-125", "CL-21"],
+      "role": "Ce que fait le système : lecture, contrôles de cohérence, table, relecture.",
+      "claims": ["CL-101", "CL-121", "CL-125", "CL-21", "CL-P01"],
       "fields": {
         "columns": "4",
         "tone": "clair",
@@ -68,12 +68,12 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "Ce que fait le système.",
-        "intro": "Le comptable définit les champs et les règles de contrôle\u00a0; le système les applique pièce par pièce.",
+        "title": "De la pièce à la pré-saisie.",
+        "intro": "Le comptable définit les champs et les règles de contrôle ; le système les applique pièce par pièce, avec la lecture de documents par IA de WorkStudio.",
         "cards": [
           {
             "title": "Il lit les pièces.",
-            "text": "Factures, devis, bons de commande, notes de frais\u00a0: des modèles de départ existent pour ces quatre types."
+            "text": "Factures, devis, bons de commande, notes de frais : des modèles de départ existent pour ces quatre types."
           },
           {
             "title": "Il contrôle.",
@@ -91,37 +91,69 @@
       }
     },
     {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe, bénéfice, et OPSYS-AI pour la construction.",
-      "claims": ["CL-125", "CL-14", "CL-D05"],
+      "collection": "block_cards",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento), dont le renvoi vers OPSYS-AI pour la construction (statut pilote).",
+      "claims": ["CL-125", "CL-D05", "CL-101"],
       "fields": {
-        "media_position": "none",
+        "columns": "2",
         "tone": "sombre",
+        "layout": "bento",
         "anchor_id": "equipe"
       },
       "translation": {
-        "title": "Ce que reçoit l'équipe.",
-        "body": "<p>Une table de pièces prêtes à relire, avec les écarts en tête. Le bénéfice attendu\u00a0: moins de ressaisie et des erreurs repérées plus tôt. Aucun gain chiffré n'est annoncé\u00a0; il se mesure pendant un pilote, sur vos propres dossiers.</p><p>Pour les entreprises de construction, <a href=\"/opsys-ai/\">OPSYS-AI</a> va plus loin\u00a0: sa comptabilité interne (département M5) prépare une facture brouillon après les travaux et suit les comptes à recevoir. Ce département est en pilote, et ni l'envoi des factures ni le calcul de la paie ne sont livrés.</p>",
-        "items": [
+        "title": "Un dossier relu, pas ressaisi.",
+        "intro": "Une table de pièces prêtes à relire, avec les écarts en tête.",
+        "cards": [
           {
             "title": "Une table de pré-saisie.",
-            "text": "Une ligne par pièce, avec l'indicateur «\u00a0à vérifier\u00a0»."
+            "text": "Une ligne par pièce, avec l'indicateur « à vérifier »."
           },
           {
             "title": "Les motifs des écarts.",
             "text": "Champ manquant, valeur illisible, total qui ne concorde pas."
           },
           {
-            "title": "Un dossier relu, pas ressaisi.",
-            "text": "Le comptable consacre son temps au jugement."
+            "title": "Du temps pour le jugement.",
+            "text": "Le comptable consacre son temps à conseiller plutôt qu'à retaper."
+          },
+          {
+            "title": "Pour la construction, OPSYS-AI va plus loin.",
+            "text": "Son département Finance (M5) vise à préparer la facturation et à suivre les coûts de chantier. OPSYS-AI est un produit en développement : une lecture ciblée de coûts est qualifiée localement, mais la comptabilité complète, la paie et les connecteurs ne sont pas démontrés.",
+            "href": "/opsys-ai/",
+            "link_label": "Découvrir OPSYS-AI"
           }
         ]
       }
     },
     {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic.",
+      "claims": ["CL-14", "CL-09", "CL-125"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "Du temps rendu au conseil.",
+        "body": "<p>Le bénéfice attendu : moins de ressaisie et des erreurs repérées plus tôt, donc plus de temps pour ce que le client paie vraiment, le jugement de son comptable. Aucun gain chiffré n'est annoncé ; il se mesure pendant un pilote, sur vos propres dossiers.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour définir vos champs et vos règles de contrôle.</p>"
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire).",
-      "claims": ["CL-125", "CL-126", "CL-128", "CL-111"],
+      "role": "Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données.",
+      "claims": [
+        "CL-125",
+        "CL-126",
+        "CL-128",
+        "CL-111",
+        "CL-06",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sable",
@@ -129,7 +161,7 @@
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "Ce qui reste sous votre contrôle.",
+        "title": "Le comptable garde le dernier mot.",
         "cards": [
           {
             "title": "Le comptable garde la décision.",
@@ -149,7 +181,13 @@
           },
           {
             "title": "Aucun conseil comptable.",
-            "text": "Le système prépare et contrôle\u00a0; il ne conseille pas. Les décisions restent celles de votre comptable."
+            "text": "Le système prépare et contrôle ; il ne conseille pas. Les décisions restent celles de votre comptable."
+          },
+          {
+            "title": "Vos données restent à vous.",
+            "text": "Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner un modèle, jamais vendues. Un service externe de lecture n'entre qu'avec votre activation explicite, consignée par écrit.",
+            "href": "/vos-donnees/",
+            "link_label": "Lire nos engagements"
           }
         ]
       }
@@ -164,22 +202,22 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Comptabilité\u00a0: vos questions.",
+        "title": "Comptabilité : vos questions.",
         "items": [
           {
-            "question": "L'IA fait-elle la comptabilité\u00a0?",
+            "question": "L'IA fait-elle la comptabilité ?",
             "answer": "Non. Elle prépare la pré-saisie et signale les écarts. Les écritures et les décisions restent à votre comptable."
           },
           {
-            "question": "Peut-on automatiser le rapprochement bancaire\u00a0?",
+            "question": "Peut-on automatiser le rapprochement bancaire ?",
             "answer": "Pas avec un produit livré à ce jour. Une étude sur mesure est possible, à partir de relevés exportés, sans connexion bancaire."
           },
           {
-            "question": "Mon comptable doit-il changer d'outil\u00a0?",
-            "answer": "Non, en principe\u00a0: la pré-saisie se range dans une table, et la suite dépend du logiciel qu'il utilise, que nous qualifions avec lui."
+            "question": "Mon comptable doit-il changer d'outil ?",
+            "answer": "Non, en principe : la pré-saisie se range dans une table, et la suite dépend du logiciel qu'il utilise, que nous qualifions avec lui."
           },
           {
-            "question": "Mes pièces quittent-elles mon serveur\u00a0?",
+            "question": "Mes pièces quittent-elles mon serveur ?",
             "answer": "Pas si la lecture se fait avec un modèle sur votre serveur. Un service externe de lecture est possible, seulement avec votre accord écrit, et il est indiqué."
           }
         ]
@@ -187,16 +225,16 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA : diagnostic.",
-      "claims": ["CL-01"],
+      "role": "CTA : diagnostic ; partenaire d'ici.",
+      "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Parlons de votre fin de mois.",
-        "text": "Décrivez-nous vos pièces et votre logiciel. Nous vous disons ce qui se prépare, ce qui se relie et ce qui reste à votre comptable.",
-        "primary_label": "Discuter de mon projet",
-        "primary_href": "/contact/",
+        "text": "Décrivez-nous vos pièces et votre logiciel. Nous vous disons ce qui se prépare, ce qui se relie et ce qui reste à votre comptable. Un partenaire d'ici installe, exploite et forme avec vous.",
+        "primary_label": "Planifier un diagnostic",
+        "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Voir les factures",
         "secondary_href": "/solutions/factures/"
       }

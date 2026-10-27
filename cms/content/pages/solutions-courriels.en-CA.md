@@ -7,31 +7,31 @@
 - Page : `solutions-courriels` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/email/` · slug : `solutions/email`
 - Titre SEO (37 caractères) : Email automation for small businesses
-- Description SEO (158 caractères) : A system sorts your email, summarizes each request and drafts a reply from your own documents. Nothing is sent without your team's approval. See how it works.
+- Description SEO (157 caractères) : No more sorting by hand: the system classifies your email, summarizes each request and drafts a reply from your own documents. Your team approves every send.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la solution courriels. · Affirmations : CL-120, CL-21*
+*Promesse de la solution courriels : une boîte déjà rangée, une validation avant tout envoi. · Affirmations : CL-120, CL-21*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Solution · Email**
 
-# Sorted email. Replies ready to review.
+# Your email arrives already sorted.
 
-A system reads incoming email, classifies it, drafts a reply from your documents and waits for your go-ahead before sending anything.
+A system reads each message, classifies it, summarizes it and drafts a reply based on your documents. It waits for your go-ahead before sending anything.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Le problème, avec un exemple précis. · Affirmations : CL-11*
+*Le problème, avec un exemple construit (entreprise de rénovation). · Affirmations : CL-11*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=probleme`
 
-## The problem, day to day.
+## The inbox overflows, the urgent waits.
 
 Take a renovation company. Every day brings price requests, questions about a job's progress, supplier invoices and unrelated messages. Someone opens everything, sorts, digs for the history, writes. The urgent message waits behind three others.
 
@@ -43,15 +43,15 @@ The example is constructed to illustrate the principle; it is not a customer's r
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Ce que fait le système : quatre étapes, la dernière attend une personne. · Affirmations : CL-120, CL-103, CL-95, CL-21, CL-85*
+*Ce que fait le système : quatre étapes, la dernière attend une personne. · Affirmations : CL-120, CL-103, CL-95, CL-21, CL-85, CL-P02*
 
 Réglages : `columns=4`, `tone=sable`, `layout=etapes`, `anchor_id=systeme`
 
-## What the system does.
+## From email received to reply approved.
 
-The workflow reacts when an email arrives in the mailbox we have connected to WorkStudio. Every step is visible and editable.
+The workflow (an automated sequence of tasks) reacts when an email lands in the mailbox we have connected to WorkStudio. It is built without writing code, and every step is visible and editable.
 
-#### It notices.
+#### It spots.
 
 A new email triggers the workflow. Only the mailboxes you choose to connect are read.
 
@@ -61,48 +61,61 @@ Category (price request, invoice, complaint, other), urgency and a one-sentence 
 
 #### It drafts.
 
-A reply draft, written to your style instructions and from your documents.
+A draft reply, written to your style instructions and from your documents.
 
 #### It waits.
 
-A person reviews, edits, approves or refuses. Nothing goes out before.
+A person reviews, edits, approves or declines. Nothing leaves before that.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que reçoit l'équipe. · Affirmations : CL-120, CL-96, CL-95*
+*Ce que reçoit l'équipe : bénéfices concrets en mosaïque (bento). · Affirmations : CL-120, CL-96, CL-95*
 
-Réglages : `media_position=none`, `tone=sombre`, `anchor_id=equipe`
+Réglages : `columns=2`, `tone=sombre`, `layout=bento`, `anchor_id=equipe`
 
-## What your team receives.
+## A team that reviews instead of writing.
 
-The team no longer works in the disorder of an inbox: it receives items ready to review.
+The team no longer works in the chaos of an inbox: it receives items that are ready to review.
 
-- **A sorted queue.** Messages arrive classified by category and urgency.
-- **A summary per message.** One sentence to understand without reading it all.
-- **A draft per reply.** To correct, not to write. The style comes from instructions you version: the one in production and the one being tested stay separate.
-- **A trace of every draft.** Which model, which request, which reply: everything can be consulted.
+#### A sorted queue.
+
+Email arrives classified by category and urgency: the urgent comes first.
+
+#### A summary per message.
+
+One sentence to understand without reading it all.
+
+#### A draft per reply.
+
+To correct, not to write. Style comes from instructions you version: the production instruction and the test one stay separate.
+
+#### A trace of every draft.
+
+Which model, which request, which answer: all of it can be consulted.
 
 ### Bloc 5 — Section (`block_section`)
 
-*Bénéfice attendu, sans chiffre. · Affirmations : CL-14, CL-09*
+*Bénéfice attendu, sans chiffre ; lien diagnostic. · Affirmations : CL-14, CL-09*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
-## The expected benefit.
+## What you gain, honestly.
 
-Less manual sorting, urgent items seen sooner, more consistent replies from one person to the next. We announce no percentage and no time saved: they depend on your volume and your rules, and are measured during a pilot, on your own email.
+Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. We announce no percentage and no time saved: they depend on your volume and your rules, and are measured during a pilot, on your own email.
+
+[Book a diagnosis](/en/contact/?sujet=diagnostic) to see what it would look like for you.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce qui reste sous contrôle. · Affirmations : CL-128, CL-21, CL-06, CL-23, CL-103*
+*Ce qui reste sous contrôle ; carte données (CL-E01 à E05) avec lien Vos données. · Affirmations : CL-128, CL-21, CL-06, CL-23, CL-103, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
-## What stays under your control.
+## Nothing leaves without your go-ahead.
 
-#### Nothing goes out without a go-ahead.
+#### A person approves every send.
 
-A person's approval comes before any sending, unless you decide otherwise in writing.
+A person's approval comes before any send, unless you decide otherwise in writing.
 
 #### You write the sorting rules.
 
@@ -112,13 +125,15 @@ The categories, the urgency thresholds and the cases never to handle automatical
 
 Each connection belongs to a workspace and can be removed.
 
-#### The model is a written choice.
+#### Your data stays yours.
 
-On your server or in our infrastructure; an external model only with your agreement, and its location is shown.
+On your server or with us, in Quebec: never used to train a model, never sold. An external model comes in only when you explicitly activate it, in writing, and every model shows where it runs.
+
+→ [Read our commitments](/en/your-data/)
 
 #### No bulk sending.
 
-This solution replies to requests received. It is not meant for sending promotional email.
+This solution replies to requests received. It is not for sending promotional email.
 
 ### Bloc 7 — FAQ (`block_faq`)
 
@@ -126,21 +141,21 @@ This solution replies to requests received. It is not meant for sending promotio
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
-## Email: your questions.
+## Your questions about email.
 
 #### Does it work with my mail service?
 
-That depends on the service. A broad catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first.
+It depends on the service. A broad catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first.
 
 #### Can the AI get a reply wrong?
 
-Yes, like a hurried person. That is why a human approves every send, why every draft leaves a trace and why a safeguard can check that the reply stays faithful to your documents before it reaches you. The safeguard reduces error; it does not make it impossible.
+Yes, like a person in a hurry. That is why a human approves every send, why every draft leaves a trace and why a safeguard (an automatic check) can verify that the reply stays faithful to your documents before it is shown to you. The safeguard reduces error; it does not make it impossible.
 
 #### Can it answer simple cases on its own?
 
-Technically yes. In our setups, human approval is the rule; removing that step for one specific type of message is a decision you make in writing, which we record.
+Technically yes. In our configurations, human approval is the rule; removing that step for a specific type of message is a decision you make in writing, which we record.
 
-#### How long to put it into service?
+#### How long does it take to put into service?
 
 There is no universal timeline: it depends on your mail service, your rules and your documents. It is measured on a first case.
 
@@ -150,8 +165,8 @@ There is no universal timeline: it depends on your mail service, your rules and 
 
 Réglages : `tone=sombre`
 
-## See your email sorted.
+## Watch your email sort itself.
 
 We prepare a demonstration on fictional email, then we talk about your mail service and your rules.
 
-[Request a demonstration](/en/contact/?sujet=demonstration) · [See other solutions](/en/solutions/)
+[Request a demonstration](/en/contact/?sujet=demonstration) · [See the other solutions](/en/solutions/)

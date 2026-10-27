@@ -7,199 +7,318 @@
     "slug": "privacy",
     "title": "Privacy policy",
     "seo_title": "Nexora AI privacy policy for the website",
-    "seo_description": "Officer, information collected, purposes, disclosures, retention, rights, cookies, incidents. Draft template, to be completed and reviewed before publication.",
+    "seo_description": "How Nexora AI handles personal information: what we collect, why, who we share it with, for how long, and your rights. Draft, to be completed and reviewed.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Gabarit juridique en brouillon : rubriques en place, informations à compléter.",
+      "role": "Politique de confidentialité complète, rédigée en termes simples selon le plan de la recherche 10 §6.4 ; reste en brouillon tant que les marqueurs ne sont pas remplis.",
       "claims": [],
       "fields": {
         "variant": "clair",
         "perimeter_grid": false
       },
       "translation": {
-        "eyebrow": "Draft · Unpublished page",
+        "eyebrow": "Legal · Draft version, not published",
         "headline": "Privacy policy.",
-        "subheadline": "Draft template structured along the headings expected in Quebec; every item specific to Nexora AI remains to be provided by the founder."
+        "subheadline": "How Nexora AI handles personal information, in plain words: what we collect, why, who we share it with, how long we keep it and what you can do with it. Information specific to the company, in brackets, is still to be supplied by the founder."
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 1 du gabarit.",
-      "claims": [],
+      "role": "L'essentiel en quatre phrases.",
+      "claims": ["CL-E03", "CL-E04"],
       "fields": {
         "media_position": "none",
+        "visual": "aucun",
         "tone": "clair",
-        "anchor_id": "responsable"
+        "anchor_id": "essentiel"
       },
       "translation": {
-        "title": "The privacy officer.",
-        "body": "<p>Title and contact details of the person responsible for the protection of personal information, published on the site [TO BE COMPLETED BY THE FOUNDER]. By default this is the person with the highest authority in the business; designating someone else is done in writing [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
-      }
-    },
-    {
-      "collection": "block_section",
-      "role": "Rubrique 2 du gabarit.",
-      "claims": [],
-      "fields": {
-        "media_position": "none",
-        "tone": "sable",
-        "anchor_id": "recueillis"
-      },
-      "translation": {
-        "title": "Information we collect.",
+        "title": "The essentials, in brief.",
+        "body": "<p>Effective date of this policy: [TO BE COMPLETED BY THE FOUNDER: date].</p><p>This policy covers the information we collect through this site, through forms and through client accounts. The data you process with our systems is governed by a separate contract (see below).</p>",
         "items": [
           {
-            "title": "Contact form.",
-            "text": "Name, email, company, need, envisaged deployment mode, message. Exact list [TO BE COMPLETED BY THE FOUNDER]"
+            "title": "The minimum necessary.",
+            "text": "We collect only what helps us answer your request, provide and bill the service, and protect the site."
           },
           {
-            "title": "Customer account.",
-            "text": "If a customer area opens: sign-up and billing information [TO BE COMPLETED BY THE FOUNDER]"
+            "title": "Never sold.",
+            "text": "We do not sell, rent or exchange any personal information."
           },
           {
-            "title": "Payment.",
-            "text": "Handled by a payment provider [TO BE COMPLETED BY THE FOUNDER]. State what Nexora AI keeps or not [TO BE REVIEWED BY A QUEBEC LAWYER]"
+            "title": "Never used to train an AI.",
+            "text": "We do not use our clients' data to train or fine-tune any model."
           },
           {
-            "title": "Technical logs.",
-            "text": "IP address, date, pages viewed, for security and proper operation. Duration [TO BE COMPLETED BY THE FOUNDER]"
-          },
-          {
-            "title": "Audience measurement.",
-            "text": "Chosen tool and configuration (with or without cookies) [TO BE COMPLETED BY THE FOUNDER]"
-          },
-          {
-            "title": "Customers' system data.",
-            "text": "Handled under the agreement with the customer; it falls outside this policy."
+            "title": "Your rights, simply.",
+            "text": "You can ask to access your information, correct it or have it removed, by writing to the person in charge."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 3 du gabarit.",
-      "claims": [],
+      "role": "Responsable de la protection des renseignements personnels (titre et coordonnées publiés).",
+      "claims": ["CL-L01"],
       "fields": {
         "media_position": "none",
-        "tone": "clair",
-        "anchor_id": "finalites"
+        "visual": "aucun",
+        "tone": "sable",
+        "anchor_id": "responsable"
       },
       "translation": {
-        "title": "Why we use it.",
-        "body": "<p>To answer your request, provide and bill the service, keep the site secure, improve its content. Commercial messages are sent only with consent, with no pre-ticked box, and each one allows unsubscribing. Answering a request and marketing sign-up are two separate things. Exact purposes [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "title": "The person in charge of protection.",
+        "body": "<p>The business responsible for this site is Nexora AI ([TO BE COMPLETED BY THE FOUNDER: legal name, legal form, Quebec enterprise number, address]).</p><p>The person in charge of the protection of personal information is [TO BE COMPLETED BY THE FOUNDER: name, title, email and phone]. By default, this is the person with the highest authority in the business; designating someone else is done in writing [TO BE REVIEWED BY A QUEBEC LAWYER].</p><p>Two roles to tell apart: for the information collected by the site, Nexora AI is <strong>responsible</strong>; for the data you process with our systems, Nexora AI acts <strong>on your behalf</strong>, under a written agreement.</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 4 du gabarit.",
+      "role": "Catégories de renseignements recueillis et moyens de collecte.",
       "claims": [],
       "fields": {
         "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
+        "anchor_id": "recueillis"
+      },
+      "translation": {
+        "title": "What we collect.",
+        "body": "<p>Here are the categories of information and how we obtain them.</p>",
+        "items": [
+          {
+            "title": "Your contact request.",
+            "text": "Name, email, company, need, envisaged deployment mode and message, which you send us through the form."
+          },
+          {
+            "title": "Your client account.",
+            "text": "Registration and billing information, when a client area is open. [TO BE COMPLETED BY THE FOUNDER: exact list]"
+          },
+          {
+            "title": "Your payment.",
+            "text": "Handled by a payment provider; we do not keep your card number. [TO BE COMPLETED BY THE FOUNDER: confirm what Nexora AI keeps]"
+          },
+          {
+            "title": "Connection data and technical logs.",
+            "text": "IP address, date, pages viewed: for the security and proper operation of the site. [TO BE COMPLETED BY THE FOUNDER: retention period]"
+          },
+          {
+            "title": "Audience measurement and cookies.",
+            "text": "[TO BE COMPLETED BY THE FOUNDER: tool chosen and configuration, with or without cookies] See the section on cookies."
+          },
+          {
+            "title": "Content submitted to our systems.",
+            "text": "The documents, conversations and data you process with our systems fall outside this policy: they are governed by your contract (see below)."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Finalités ; améliorer le service sans entraîner de modèle ; consentement aux communications commerciales.",
+      "claims": ["CL-E03"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable",
+        "anchor_id": "finalites"
+      },
+      "translation": {
+        "title": "Why we use it.",
+        "body": "<p>To answer your request, provide and bill the service, support you, secure the site and improve its content and the service. Improving the service <strong>never</strong> involves training a model on our clients' data.</p><p>We send commercial messages only with your consent, with no pre-ticked box, and every message lets you unsubscribe. Answering a request and signing up for a newsletter are two separate things. [TO BE REVIEWED BY A QUEBEC LAWYER]</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Données traitées pour le compte des clients : entente de traitement ; renvoi vers Vos données.",
+      "claims": ["CL-E01", "CL-E02", "CL-E03", "CL-E04", "CL-E05", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
+        "anchor_id": "donnees-clients"
+      },
+      "translation": {
+        "title": "The data of your agents.",
+        "body": "<p>When you use our systems, the documents, conversations and data you process there remain yours. Nexora AI acts on your behalf, under a data processing agreement signed with you. Five commitments apply: your data stays with you or in Quebec, is never used to train a model, is never sold, and no external model touches it without your activation.</p><p>The model data processing agreement is in preparation [TO BE COMPLETED BY THE FOUNDER: drafting of the mandate agreement].</p><p><a href=\"/en/your-data/\">Read the five commitments on your data</a></p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Catégories de sous-traitants ; registre public ; jamais vendus.",
+      "claims": ["CL-E04", "CL-E05", "CL-E06"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
         "tone": "sable",
         "anchor_id": "partage"
       },
       "translation": {
         "title": "Who we share it with.",
-        "body": "<p>Providers in the service chain (site hosting, email, payment, audience measurement), each with its role and location [TO BE COMPLETED BY THE FOUNDER]. For any disclosure of information outside Quebec, a prior assessment and a written agreement are required [TO BE REVIEWED BY A QUEBEC LAWYER]. Nexora AI does not sell personal information [TO BE COMPLETED BY THE FOUNDER].</p>"
+        "body": "<p>We use providers to run the service: site hosting, email, payment, audience measurement, client support and, only if you switch them on, AI model providers. Each has a specific role and a processing location, which we record in a register of sub-processors. [TO BE COMPLETED BY THE FOUNDER: list of sub-processors, with role and country]</p><p>We sell no personal information. We disclose it to a third party only to run the service, under a written contract.</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 5 du gabarit.",
+      "role": "Transferts hors Québec : évaluation, entente écrite, pays.",
+      "claims": ["CL-L02"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
+        "anchor_id": "hors-quebec"
+      },
+      "translation": {
+        "title": "When data leaves Quebec.",
+        "body": "<p>Before disclosing personal information outside Quebec, we carry out a privacy impact assessment (a written analysis of the risks) and sign a written agreement with the provider. [TO BE COMPLETED BY THE FOUNDER: countries concerned and contractual measures for each provider] [TO BE REVIEWED BY A QUEBEC LAWYER]</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Conservation et destruction.",
       "claims": [],
       "fields": {
         "media_position": "none",
-        "tone": "clair",
+        "visual": "aucun",
+        "tone": "sable",
         "anchor_id": "conservation"
       },
       "translation": {
         "title": "How long we keep it.",
-        "body": "<p>Retention period for each category, then destruction or anonymization [TO BE COMPLETED BY THE FOUNDER]. Retention and destruction rules are part of the governance policies that the law requires to be published [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "body": "<p>We keep each category of information as long as its purpose requires, then destroy or anonymize it. [TO BE COMPLETED BY THE FOUNDER: retention period for each category: contact requests, client account, billing, technical logs, audience measurement]</p><p>Retention and destruction rules are part of the governance policies the law asks us to publish [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 6 du gabarit.",
-      "claims": [],
+      "role": "Droits des personnes : accès, rectification, retrait du consentement, portabilité, désindexation ; délai.",
+      "claims": ["CL-L04"],
       "fields": {
         "media_position": "none",
-        "tone": "sable",
+        "visual": "aucun",
+        "tone": "clair",
         "anchor_id": "droits"
       },
       "translation": {
         "title": "Your rights.",
-        "body": "<p>Access your information, have it corrected, withdraw your consent, unsubscribe, obtain your information in a structured, commonly used technological format where the law provides, and file a complaint with the business and then with the Commission d'accès à l'information. How to proceed and the request address [TO BE COMPLETED BY THE FOUNDER]. Time limits [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "body": "<p>You can ask to access your information, have it corrected, withdraw your consent, unsubscribe from a communication, obtain your information in a structured and commonly used technological format where the law provides for it, and ask that dissemination cease or that content be de-indexed in the cases the law provides for.</p><p>To exercise a right, write to the person in charge of the protection of personal information: [TO BE COMPLETED BY THE FOUNDER: address for requests]. Response time: [TO BE COMPLETED BY THE FOUNDER: time limit] [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 7 du gabarit.",
-      "claims": [],
+      "role": "Décisions automatisées (information, facteurs, révision par une personne).",
+      "claims": ["CL-L04", "CL-128"],
       "fields": {
         "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable",
+        "anchor_id": "decisions"
+      },
+      "translation": {
+        "title": "Automated decisions.",
+        "body": "<p>If a decision about you is made exclusively through automated processing, we inform you, tell you which information was used and the main factors, and you can ask for a person to review it. In the flows we configure, any action that commits the business is placed behind a person's approval. [TO BE REVIEWED BY A QUEBEC LAWYER]</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Témoins et traceurs : désactivés par défaut pour tout ce qui permet d'identifier ; liste à fournir.",
+      "claims": ["CL-L04"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
         "tone": "clair",
         "anchor_id": "temoins"
       },
       "translation": {
         "title": "Cookies and tracking technologies.",
-        "body": "<p>List of the cookies and technologies used, their purpose, and how to refuse them. Any technology that can identify, locate or profile a person requires prior information and an opt-in choice. Chosen configuration (essential only, or others) [TO BE COMPLETED BY THE FOUNDER].</p>"
+        "body": "<p>A cookie is a small file your browser keeps to remember a piece of information. Cookies strictly necessary for the site to work are always on. Any technology that can identify you, locate you or profile your activities stays off until you switch it on, after prior notice.</p><p>List of the cookies and technologies used, their purpose and how to refuse them: [TO BE COMPLETED BY THE FOUNDER: list, chosen configuration and consent banner].</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 8 du gabarit.",
-      "claims": [],
+      "role": "Mesures de sécurité : celles qui existent dans le logiciel ; reste à valider pour l'infrastructure.",
+      "claims": ["CL-22", "CL-24", "CL-113"],
       "fields": {
         "media_position": "none",
+        "visual": "aucun",
         "tone": "sable",
+        "anchor_id": "securite"
+      },
+      "translation": {
+        "title": "The security of information.",
+        "body": "<p>We protect information with measures suited to its sensitivity: role-based access control, an audit log, masking of personal information before a call to an external model, and encrypted credentials. No measure removes all risk, and we do not claim otherwise. [TO BE COMPLETED BY THE FOUNDER: security measures specific to the infrastructure and the site, to be validated]</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Incidents de confidentialité : évaluation, avis, registre.",
+      "claims": ["CL-L03", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
         "anchor_id": "incidents"
       },
       "translation": {
         "title": "In case of an incident.",
-        "body": "<p>Description of the procedure: assessing the risk of harm, notifying the Commission d'accès à l'information and the people concerned when the risk is serious, keeping an incident register [TO BE COMPLETED BY THE FOUNDER].</p>"
+        "body": "<p>If a confidentiality incident occurs, we assess the risk of harm. If it is serious, we notify the Commission d'accès à l'information and the people concerned. Every incident is recorded in a register. Our incident procedure is in preparation [TO BE COMPLETED BY THE FOUNDER: drafting of the incident procedure].</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Rubrique 9 du gabarit.",
+      "role": "Recours auprès de l'entreprise puis de la Commission d'accès à l'information.",
       "claims": [],
       "fields": {
         "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable",
+        "anchor_id": "recours"
+      },
+      "translation": {
+        "title": "If you are not satisfied.",
+        "body": "<p>Write first to the person in charge of the protection of personal information. If the answer does not satisfy you, you can file a complaint with the Commission d'accès à l'information du Québec, the body responsible for overseeing the law.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Mises à jour de la politique.",
+      "claims": [],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
         "tone": "clair",
         "anchor_id": "modifications"
       },
       "translation": {
         "title": "Changes and date.",
-        "body": "<p>Date of the last update and how you are informed of a material change [TO BE COMPLETED BY THE FOUNDER].</p>"
+        "body": "<p>We will update this policy when our practices or the law change, and we will show the date of the last update at the top of the page. Significant changes will be communicated to you [TO BE COMPLETED BY THE FOUNDER: how significant changes are communicated].</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Liste de ce que le fondateur doit compléter ou faire valider avant toute publication.",
+      "role": "Liste de contrôle avant publication : marqueurs à remplir, avocat, lien depuis Vos données.",
       "claims": [],
       "fields": {
         "media_position": "none",
+        "visual": "aucun",
         "tone": "sombre",
         "anchor_id": "a-completer"
       },
       "translation": {
-        "title": "To do before publishing.",
-        "body": "<p>This page is a template. It stays a draft, unpublished and not indexed, until the following points are settled.</p>",
+        "title": "To do before publication.",
+        "body": "<p>This policy is complete in structure, but it stays a draft, unpublished and unindexed, until the following points are settled.</p>",
         "items": [
           {
             "title": "Fill in the markers.",
-            "text": "Every [TO BE COMPLETED BY THE FOUNDER] must be replaced with the real information; no value is invented."
+            "text": "Legal identity, person in charge of protection, contact details, sub-processors and countries, retention periods, audience measurement tool, cookies, effective date. No value is invented."
           },
           {
             "title": "Have a lawyer review it.",
-            "text": "The text must be reviewed by a Quebec lawyer [TO BE REVIEWED BY A QUEBEC LAWYER]."
+            "text": "The text, especially the sections marked \"to be reviewed\", must be read by a Quebec lawyer before any publication."
           },
           {
-            "title": "Approve, then publish.",
-            "text": "Only after these two points, remove the draft status and the indexing ban."
+            "title": "Publish, then link.",
+            "text": "On publication, add the link to this policy on the \"Your data\" page; the footer menu will display it by itself."
           }
         ]
       }

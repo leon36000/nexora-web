@@ -6,46 +6,47 @@
 
 - Page : `deploiement-sur-place` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/deployment/on-premises/` · slug : `deployment/on-premises`
-- Titre SEO (42 caractères) : On-premises AI server for small businesses
-- Description SEO (151 caractères) : Nexora AI installs the AI system on your server, in your offices or at a host of your choice. Hardware and access are yours; outbound flows are listed.
+- Titre SEO (40 caractères) : On-premises AI server for small business
+- Description SEO (156 caractères) : On-premises AI server for small business: Nexora AI installs it in your offices or at your chosen host. Your data stays on your server; the access is yours.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du mode sur place. · Affirmations : CL-72, CL-26*
+*Promesse du mode sur place : mon serveur, mes accès, mes règles ; engagement CL-E01. · Affirmations : CL-72, CL-26, CL-E01*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Deployment · On-premises**
 
-# AI on your server. The access is yours.
+# Your AI. Your server. Your rules.
 
-We install and configure the system on a server you own, in your offices or at a host of your choice. What leaves your network, if anything, is handed to you in writing before go-live.
+We install and configure the system on a server that belongs to you, in your offices or at a host of your choice. Your data stays there: Nexora AI gets in only if you authorize it in writing, for a specific task and a limited time.
 
-[Request a deployment study](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
+[Study my project](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Périmètre sur place : schéma et liste de ce qui reste dedans et de ce qui peut sortir. · Affirmations : CL-72, CL-05, CL-77, CL-79*
+*Périmètre sur place : schéma et liste de ce qui reste dedans, de ce qui peut sortir et de qui peut entrer. · Affirmations : CL-72, CL-05, CL-77, CL-79, CL-E01, CL-E03, CL-E04, CL-E05*
 
 Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-sur-place`, `anchor_id=perimetre`
 
 ## The perimeter, on your premises.
 
-The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not a real customer's configuration; the diagram for your installation is handed over in writing.
+The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not the configuration of a real customer; the diagram of your installation is handed to you in writing. Your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
 
 - **What stays within your walls.** Documents, the search index, conversations, logs and, if you choose, the models.
-- **What may leave.** Updates, licence checks, and an external model only if you accepted it in writing.
-- **What we verify.** Every outbound flow is listed. We write “no data leaves” only if we have checked it on your configuration.
+- **What can leave.** Updates, licence checks, and an external model only if you explicitly activated it, in writing.
+- **Who can get in.** Nexora AI accesses your server only if you authorize it in writing, for a specific task and a limited time; every access is logged.
+- **What we verify.** Every outbound flow is listed. We write "no data leaves" only if we have verified it on your configuration.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Étapes de la mise en place sur place. · Affirmations : CL-81, CL-26, CL-104, CL-04*
+*Étapes de la mise en place sur place, sans devenir informaticien. · Affirmations : CL-81, CL-26, CL-104, CL-04*
 
 Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
-## From study to operation.
+## Six steps, no IT degree needed.
 
 #### Size.
 
@@ -53,7 +54,7 @@ The diagnosis measures your uses and sets the hardware needed, before any purcha
 
 #### Install.
 
-Installation is one command on a Docker server (a tool that packages software), on Linux or macOS.
+Installation takes one command on a Docker server (a tool that packages software), on Linux or macOS.
 
 #### Configure.
 
@@ -65,15 +66,15 @@ List of outbound flows, diagram handed over in writing, test of a real case.
 
 #### Train.
 
-Usage and supervision, for your team.
+Usage and supervision, for your team: review, correct, approve.
 
 #### Operate.
 
-Division of tasks written in the contract: updates, backups, monitoring.
+Split of tasks written in the contract: updates, backups, monitoring.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Qui fait quoi dans le mode sur place. · Affirmations : CL-72, CL-04, CL-08*
+*Qui fait quoi dans le mode sur place. · Affirmations : CL-72, CL-04, CL-08, CL-E01*
 
 Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 
@@ -82,9 +83,9 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 #### You.
 
 You own the hardware.
-You hold the access and grant it to Nexora AI as needed.
+You hold the access and decide when to grant it to Nexora AI, in writing.
 You place and keep the backups.
-You decide on the models and any external option.
+You decide on the models and activate, or not, any external option.
 
 #### Nexora AI.
 
@@ -101,7 +102,7 @@ Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
 ## Limits to know about.
 
-#### Offline is not presumed.
+#### Offline is not assumed.
 
 A server on your premises can still receive updates or check a licence. Everything is listed.
 
@@ -119,7 +120,7 @@ No standard configuration: it depends on the number of users, the volume of docu
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08*
+*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08, CL-E01, CL-E03, CL-E04*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -127,17 +128,21 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Does my data stay with me?
 
-By default, documents, the index and conversations stay on your server. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model.
+Yes. Documents, the index and conversations stay on your server. The outbound flows are the ones we list with you before go-live: updates, licences and, if you activate it in writing, an external model.
 
 #### Does Nexora AI access my server?
 
-Only through the access you grant, agreed in advance. You can withdraw it.
+Only if you authorize it in writing, for a specific task and a limited time. Every access is logged, and you can withdraw the authorization.
 
-#### Can I install it at a host of my choice?
+#### Is my data used to train a model?
 
-Yes: “on your premises” means on a server you own, in your offices or at the host you choose. Its location then appears on the data-flow diagram.
+No, never. It is not sold either.
 
-#### What if I want to leave?
+#### Can I install it with a host of my choice?
+
+Yes: "on your premises" means on a server that belongs to you, in your offices or with the host you choose. Its location then appears in the data-flow diagram.
+
+#### And if I want to leave?
 
 You keep your server, your documents, your configurations and your workflows: export is provided for in the contract.
 
@@ -149,6 +154,6 @@ Réglages : `tone=sombre`
 
 ## Let's study your server.
 
-Tell us your uses and constraints. We will tell you what would need to be installed, where, and what would leave the network.
+Tell us your uses and your constraints. We will tell you what it would take to install, where, and what would leave the network.
 
-[Request a deployment study](/en/contact/?sujet=etude-deploiement) · [See the hosted mode](/en/deployment/hosted-quebec/)
+[Study my project](/en/contact/?sujet=etude-deploiement) · [See the hosted mode](/en/deployment/hosted-quebec/)

@@ -361,9 +361,16 @@ export function CardsBlockView({
   const titleId = `${block.key}-title`;
   const anchor = anchorProps(block.anchorId);
   const layout = block.layout ?? "grille";
-  const present = (["disponible", "pilote", "prevu"] as const).filter((s) =>
-    block.cards.some((c) => c.status === s),
-  );
+  const present = (
+    [
+      "disponible",
+      "acces-anticipe",
+      "qualifie-localement",
+      "en-developpement",
+      "pilote",
+      "prevu",
+    ] as const
+  ).filter((s) => block.cards.some((c) => c.status === s));
   const legend =
     layout === "modules" && present.length > 0 ? (
       <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-small text-fg-muted">

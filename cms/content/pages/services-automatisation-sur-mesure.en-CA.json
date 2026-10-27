@@ -6,32 +6,32 @@
   "seo": {
     "slug": "services/custom-automation",
     "title": "Custom automation",
-    "seo_title": "Custom automation for small businesses",
-    "seo_description": "Nexora AI builds agents and workflows with you, connected to your software, and tests them on real cases before they go live. Start with a diagnosis.",
+    "seo_title": "Custom automation for small business",
+    "seo_description": "Custom automation of your small business processes: describe them in plain French, and we build agents and workflows with you, tested on your real cases.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse du sur-mesure.",
-      "claims": ["CL-84", "CL-91"],
+      "role": "Promesse du sur-mesure : décrire en français, le Copilote prépare, nous mettons à l'épreuve.",
+      "claims": ["CL-84", "CL-91", "CL-92", "CL-P02"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Services · Custom work",
+        "eyebrow": "Services · Custom",
         "headline": "Your processes, automated your way.",
-        "subheadline": "When a standard solution is not enough, we build with you the agents and workflows that connect your software and your documents, and we test them on your real cases before go-live.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "subheadline": "When an off-the-shelf solution is not enough, we build with you the agents and workflows that connect your software and your documents. You describe the need in plain French, the WorkStudio Copilot prepares a first version, and we test it on your real cases before go-live.",
+        "primary_label": "Plan a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "See the standard solutions",
         "secondary_href": "/en/solutions/"
       }
     },
     {
       "collection": "block_section",
-      "role": "Trois exemples non interchangeables de processus sur mesure.",
+      "role": "Trois exemples non interchangeables de processus sur mesure, étiquetés comme construits.",
       "claims": ["CL-11", "CL-84", "CL-D03"],
       "fields": {
         "media_position": "none",
@@ -40,26 +40,26 @@
       },
       "translation": {
         "title": "Three processes, three builds.",
-        "body": "<p>Custom work begins where standard solutions stop. Three constructed examples that do not look alike; they are not customer results.</p>",
+        "body": "<p>Custom work begins where standard solutions stop. Three built examples that do not resemble each other; they are not customer results.</p><p>Does yours look like one of them, or none? <a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a>.</p>",
         "items": [
           {
-            "title": "A contractor finds past quotes.",
-            "text": "They want to start from comparable earlier quotes to prepare a new one, and track real costs afterward. We would connect the quote base, an estimating agent and an approval before anything is sent. For construction, OPSYS-AI already covers part of this path, with its statuses."
+            "title": "A contractor finds their quotes again.",
+            "text": "They want to start from older, comparable quotes to prepare a new one, and track real costs afterward. We would connect the quote database, an estimating agent and an approval before anything is sent. For construction, <a href=\"/en/opsys-ai/\">OPSYS-AI</a> aims at this path, as a product in development that shows every availability level."
           },
           {
-            "title": "A distributor processes supplier documents.",
+            "title": "A distributor processes its suppliers' documents.",
             "text": "Delivery slips, order confirmations and invoices arrive in different formats. The workflow reads them, compares them with each other and flags what does not match, before any action."
           },
           {
             "title": "A firm prepares case files.",
-            "text": "It gathers authorized documents, draws a summary and a list of points to verify, then hands over to the responsible person. Access rights are defined before the build."
+            "text": "It gathers authorized documents, draws a summary and a list of points to check from them, then hands over to the responsible person. Access rights are defined before the build."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Notre façon de travailler : six temps, avec les outils de WorkStudio.",
+      "role": "Notre façon de travailler : six gestes, avec les outils de WorkStudio.",
       "claims": ["CL-03", "CL-84", "CL-92", "CL-91", "CL-97", "CL-21"],
       "fields": {
         "columns": "3",
@@ -68,19 +68,19 @@
         "anchor_id": "demarche"
       },
       "translation": {
-        "title": "How we work.",
+        "title": "Six steps, from observation to operation.",
         "cards": [
           {
             "title": "1. Observe.",
-            "text": "We look at how the work is done: where time is lost, what information comes in, who decides."
+            "text": "We look at how the work gets done: where time is lost, what information comes in, who decides."
           },
           {
             "title": "2. Prototype.",
-            "text": "We describe the workflow in plain language; WorkStudio's Copilot proposes a first version that we review and correct."
+            "text": "We describe the workflow in plain French; the WorkStudio Copilot proposes a first version that we review and correct with you."
           },
           {
             "title": "3. Connect.",
-            "text": "We connect your software through connectors, after checking that each one can be."
+            "text": "We hook up your software through connectors, after checking that each one can be connected."
           },
           {
             "title": "4. Test.",
@@ -99,7 +99,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Les briques de WorkStudio utilisées.",
+      "role": "Les briques de WorkStudio utilisées : puissant et sans code.",
       "claims": [
         "CL-90",
         "CL-91",
@@ -107,7 +107,11 @@
         "CL-101",
         "CL-103",
         "CL-27",
-        "CL-98"
+        "CL-98",
+        "CL-P01",
+        "CL-P02",
+        "CL-E03",
+        "CL-E04"
       ],
       "fields": {
         "media_position": "none",
@@ -116,15 +120,15 @@
       },
       "translation": {
         "title": "What we build with.",
-        "body": "<p>Everything is built in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, which keeps the system readable and portable. Its components are delivered; it is their assembly for your case that is custom.</p>",
+        "body": "<p>Everything is built in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, a platform at the leading edge of AI where you build with cards or on a canvas, without writing code. That keeps the system readable and portable. Its components are delivered; it is their assembly for your case that is custom. Your data stays yours and is never used to train a model: <a href=\"/en/your-data/\">see the commitments</a>.</p>",
         "items": [
           {
             "title": "Agents.",
-            "text": "Assistants that follow your instructions, use your tools and documents, and cite their sources."
+            "text": "Assistants that follow your instructions, use your tools and your documents, and cite their sources."
           },
           {
             "title": "Workflows.",
-            "text": "Sequences of steps triggered by an email, a schedule, a request, with human approvals."
+            "text": "Sequences of steps, triggered by an email, a schedule or a request, with human approvals."
           },
           {
             "title": "Documents and data.",
@@ -132,7 +136,7 @@
           },
           {
             "title": "Connectors and an API.",
-            "text": "Services linked by Nexora Connect, and agents callable by API in the OpenAI format."
+            "text": "Services linked through Nexora Connect, and agents callable through an API in the OpenAI format."
           }
         ]
       }
@@ -140,7 +144,7 @@
     {
       "collection": "block_cards",
       "role": "Limites : ce qui n'est pas un produit livré, ce qui se qualifie.",
-      "claims": ["CL-89", "CL-85", "CL-83", "CL-14"],
+      "claims": ["CL-89", "CL-85", "CL-83", "CL-14", "CL-V01"],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -152,18 +156,20 @@
         "cards": [
           {
             "title": "An integration promised in advance.",
-            "text": "Software is connected only after qualification. Some connections require prior registration with the provider."
+            "text": "Software is connected only after qualification. Some connections require prior registration with the vendor."
           },
           {
-            "title": "Products not delivered.",
-            "text": "Telephony, camera vision and specialized models are not delivered products; we can study their feasibility, nothing more at this stage."
+            "title": "Products not yet delivered.",
+            "text": "Telephony, camera vision and specialized models are not delivered products; we can study their feasibility, nothing more at this stage. Nexora Vision is a pilot project by invitation only.",
+            "href": "/en/vision/",
+            "link_label": "See Nexora Vision"
           },
           {
             "title": "A model that is too small.",
             "text": "A small local model is not always enough for agents that call tools. The model is chosen with the case."
           },
           {
-            "title": "An announced timeline or gain.",
+            "title": "A timeline or gain announced.",
             "text": "No universal timeline and no quantified gain: everything is measured on a first case."
           }
         ]
@@ -171,8 +177,8 @@
     },
     {
       "collection": "block_faq",
-      "role": "FAQ propre au sur-mesure.",
-      "claims": ["CL-84", "CL-08", "CL-10"],
+      "role": "FAQ propre au sur-mesure (différence, propriété, coût, maintenance, données).",
+      "claims": ["CL-84", "CL-08", "CL-10", "CL-E03", "CL-E04"],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -182,12 +188,16 @@
         "title": "Custom work: your questions.",
         "items": [
           {
-            "question": "How is it different from a standard solution?",
-            "answer": "A standard solution addresses a common problem and is configured. Custom work handles a process unique to your business, with its rules and its software."
+            "question": "What is the difference from a standard solution?",
+            "answer": "A standard solution answers a common problem and is configured. Custom work handles a process specific to your company, with its rules and its software."
           },
           {
             "question": "Does the result belong to me?",
             "answer": "Your documents, configurations and workflows stay exportable, and the contract provides for it."
+          },
+          {
+            "question": "Is my data used to train a model?",
+            "answer": "No, never. Your documents, prompts and results are not used to train or fine-tune a model, and are never sold."
           },
           {
             "question": "How much does it cost?",
@@ -195,23 +205,23 @@
           },
           {
             "question": "Who maintains the system after go-live?",
-            "answer": "We run it with you and keep it evolving. The exact split is written in the contract."
+            "answer": "We run it with you and evolve it. The exact split is written in the contract."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "CTA : projet.",
+      "role": "CTA : décrire son processus.",
       "claims": ["CL-80"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Describe your process to us.",
-        "text": "Tell us what costs you time and with which software. We will tell you whether it is feasible, how, and which case to start with.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "text": "Tell us what costs you time and with which software. We will tell you if it is feasible, how, and which case to start with.",
+        "primary_label": "Plan a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"
       }

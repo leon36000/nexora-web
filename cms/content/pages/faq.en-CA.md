@@ -6,40 +6,46 @@
 
 - Page : `faq` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/faq/` · slug : `faq`
-- Titre SEO (35 caractères) : FAQ: AI for Quebec small businesses
-- Description SEO (159 caractères) : Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora AI's answers to the questions small-business owners ask most often. Straight answers only.
+- Titre SEO (39 caractères) : AI for small business: straight answers
+- Description SEO (157 caractères) : Data, training, cost, Law 25, AI mistakes, video surveillance, marketing: Nexora AI's straight answers to the questions small-business owners ask most often.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Entrée de la FAQ. · Affirmations : CL-09*
+*Entrée de la FAQ : réponses franches en langage de dirigeant. · Affirmations : CL-09*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **FAQ**
 
-# Your questions. Our answers.
+# Your questions. Straight answers.
 
-The objections business owners raise most often, with true answers only: when we do not know yet, or when something is not delivered, we say so.
+Data, cost, going live, AI mistakes: the questions business owners ask us most often, with true answers only. When something is not delivered yet, we say so.
 
-[Ask a question](/en/contact/) · [See the trust center](/en/trust-center/)
+[Ask a question](/en/contact/) · [Read our commitments on your data](/en/your-data/)
 
 ### Bloc 2 — FAQ (`block_faq`)
 
-*Données et souveraineté : sept questions. · Affirmations : CL-02, CL-05, CL-06, CL-07, CL-08, CL-71, CL-77, CL-L05*
+*Données et souveraineté : huit questions, dont l'entraînement et la vente des données (E03, E04). · Affirmations : CL-02, CL-05, CL-06, CL-07, CL-08, CL-71, CL-77, CL-L05, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-L01, CL-L02, CL-87*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=donnees`
 
-## Data and sovereignty.
+## Your data, your rules.
 
 #### Does my data leave Quebec?
 
-It depends on the deployment mode and the models you choose, and we write it down before kickoff. On your premises, the hardware and the access are yours. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model. With us, hosting is in our infrastructure, in Quebec, and we specify backups, logs and providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration.
+It stays where you decide, and we write it down before kickoff. On your premises, the hardware and the access are yours: only the flows we list together before go-live leave (updates, licences and, if you turn it on, an external model). With us, your data is stored and processed in our infrastructure, in Quebec, backups included; the only exceptions are services you explicitly turn on, all listed in a subcontractor register, which is in preparation.
 
-#### Do you train your models on our data?
+In both cases, we only write “no data leaves” if we have verified it on your configuration.
 
-No, not without your specific authorization. Our rule: one customer's data does not serve another customer or train a model without that customer's agreement, and we put it in the contract.
+#### Is my data used to train an AI?
+
+No, never. Nexora AI uses neither your data, nor your documents, nor your prompts, nor your results to train or fine-tune a model, whether it belongs to Nexora AI or to a third party. For an external model that you turn on, the contracts with providers, in preparation, set out retention and training.
+
+#### Is my data sold?
+
+No. Nexora AI does not sell, rent, trade or share for advertising any personal information or business data entrusted to it.
 
 #### Is a server in Quebec enough?
 
@@ -47,11 +53,11 @@ No. Where the machines sit says nothing about the models called, the backups, th
 
 #### Are you compliant with Law 25?
 
-We do not put it that way. A company's compliance depends on its own practices, contracts and governance: no software and no supplier confers it. We describe what we document, what the software allows and what is in preparation, in the trust center.
+We do not put it that way: no software and no supplier makes a business compliant, and responsibility stays with the business that holds the information. The law asks your business, among other things, for a privacy impact assessment and a written contract with its suppliers. We describe what we document, what the software allows and what is in preparation, in the trust center.
 
 #### Can an external model be used?
 
-Yes, on two conditions: you accept it in writing, and it appears on the data-flow diagram as an outbound flow. No call to an external AI service is configured without your written agreement, and the system never switches to one without telling you.
+Yes, on two conditions: you turn it on in writing, and it appears on the data-flow diagram as an outbound flow. No call to an external AI service is configured without your explicit activation, and the system never switches to one without telling you.
 
 #### Does the system work offline?
 
@@ -63,13 +69,13 @@ You leave with your documents, configurations and workflows: export is provided 
 
 ### Bloc 3 — FAQ (`block_faq`)
 
-*Mise en œuvre et coûts : sept questions. · Affirmations : CL-04, CL-10, CL-82, CL-14, CL-85, CL-12, CL-83*
+*Mise en œuvre et coûts : neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03). · Affirmations : CL-04, CL-10, CL-82, CL-14, CL-85, CL-12, CL-83, CL-G01, CL-G02, CL-G03, CL-G04*
 
 Réglages : `emit_jsonld=false`, `tone=sable`, `anchor_id=mise-en-oeuvre`
 
-## Setup and cost.
+## Getting started, without the hassle.
 
-#### We have no technical staff.
+#### What if we have no technical staff?
 
 That is not an obstacle. We install the system, run it with you and keep it evolving; your team's training covers usage and supervision, not the technical side.
 
@@ -97,13 +103,21 @@ In usage and supervision: reviewing, correcting, approving, refusing. Not in pro
 
 Yes: we offer a demonstration on fictional data. Self-service offers (servers, a credit-based model catalogue, hosted agents) are not open yet.
 
+#### What about automated marketing?
+
+Nexora Croissance, our automated marketing service, is in early access: access is on request, and each connection to a platform opens at its own pace. It brings together a website, search visibility, advertising campaign management, social networks and reputation tracking. You approve publications and major budget or targeting changes, a spending cap that you set applies, and no result is guaranteed. The details are on the Nexora Croissance page.
+
+#### Is web hosting free with Nexora Croissance?
+
+It is included: no separate hosting fees as long as you are a Nexora Croissance customer. Still at your expense, shown upfront: the domain name in your name (annual fees paid to the registrar) and the advertising fees paid to the platforms. You leave with your content and your domain name.
+
 ### Bloc 4 — FAQ (`block_faq`)
 
-*L'IA, ses erreurs et ses limites : huit questions. · Affirmations : CL-21, CL-128, CL-96, CL-112, CL-124, CL-28, CL-30, CL-90*
+*L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01). · Affirmations : CL-21, CL-128, CL-96, CL-112, CL-124, CL-28, CL-30, CL-90, CL-V01, CL-V02, CL-V03, CL-V06, CL-V07, CL-L04*
 
 Réglages : `emit_jsonld=false`, `tone=clair`, `anchor_id=limites`
 
-## AI, its mistakes, its limits.
+## AI that is honest about its limits.
 
 #### Will AI replace my employees?
 
@@ -117,7 +131,7 @@ Yes. We reduce the risk by making it answer from your documents, citing sources,
 
 Your team. Every model call leaves a trace you can consult, consumption is measured, and test sets let you check that a change has not degraded anything.
 
-#### Why not a consumer assistant like ChatGPT?
+#### Why not a consumer AI assistant?
 
 A consumer assistant answers general questions well. What Nexora AI adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it.
 
@@ -135,9 +149,45 @@ No availability or date is announced at this stage. Nexora WorkStudio is present
 
 #### Is there a solution for construction?
 
-Yes: OPSYS-AI coordinates ten departments for construction companies and field services, each with an honest status (available, in pilot or planned).
+Yes: OPSYS-AI coordinates ten departments for construction companies and field services, each with an honest level (locally qualified, to complete or planned). OPSYS-AI is a product in development, partial: no complete production deployment exists.
 
-### Bloc 5 — Appel à l'action (`block_cta`)
+#### What about AI video surveillance?
+
+Nexora Vision, our AI video surveillance project, is a pilot project by invitation: it is not an available product, and no installation exists yet. The intended design keeps image analysis on a server at the customer's site. Nexora Vision does not offer facial recognition, and every alert asks a person to check. Law 25 requires, among other things, informing people before collection; the details are on the Nexora Vision page.
+
+### Bloc 5 — Cartes (`block_cards`)
+
+*Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance. · Affirmations : CL-V01, CL-G01, CL-87*
+
+Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=plus-loin`
+
+## Go further.
+
+#### Your data.
+
+The five commitments, in writing: on your premises or in Quebec, never used for training, never sold.
+
+→ [Read the commitments](/en/your-data/)
+
+#### Nexora Vision.
+
+AI video surveillance: a pilot project by invitation, not an available product.
+
+→ [See the pilot project](/en/vision/)
+
+#### Nexora Croissance.
+
+Automated marketing: a website with hosting included, search visibility, advertising, social networks. Early access.
+
+→ [See early access](/en/growth/)
+
+#### The trust center.
+
+What the software already allows and the documents we are preparing.
+
+→ [See the proof](/en/trust-center/)
+
+### Bloc 6 — Appel à l'action (`block_cta`)
 
 *CTA final de la FAQ. · Affirmations : CL-01*
 

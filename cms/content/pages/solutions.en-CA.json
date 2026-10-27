@@ -7,26 +7,54 @@
     "slug": "solutions",
     "title": "Solutions",
     "seo_title": "AI solutions for small businesses in Quebec",
-    "seo_description": "Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting and documents. Your team keeps the decision.",
+    "seo_description": "Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting, documents. Very simple, and your data stays yours.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Hub des solutions : promesse, deux CTA.",
-      "claims": ["CL-01", "CL-132"],
+      "role": "Hub des solutions : le rêve (les tâches répétitives disparaissent), la pointe de l'IA rendue simple, deux CTA.",
+      "claims": ["CL-01", "CL-132", "CL-P01", "CL-P02", "CL-P03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
         "eyebrow": "Solutions",
-        "headline": "One real problem. One solution at a time.",
-        "subheadline": "Email, invoices, customer service, appointments, accounting, documents: six situations where well-supervised AI removes the retyping and leaves the decision to your team.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "headline": "Repetitive tasks, finally behind you.",
+        "subheadline": "The leading edge of AI, made remarkably simple: six small-business situations where repetitive work fades away and your team keeps the decision, without writing a line of code.",
+        "primary_label": "Book a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a demonstration",
         "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Le rêve : ce qu'une PME gagne quand la ressaisie disparaît, sans chiffre ni promesse de résultat.",
+      "claims": ["CL-14", "CL-09", "CL-21", "CL-128"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "reve"
+      },
+      "translation": {
+        "title": "Picture work without the chores.",
+        "body": "<p>Monday arrives, and the email is already sorted, the invoices already read, the customers' questions already answered. Your team starts the day with what takes judgment, craft and advice, not retyping.</p><p>That is the picture each solution on this page aims for. We promise no figures and no guaranteed result: the real benefit is measured on your first case.</p>",
+        "items": [
+          {
+            "title": "Time for the craft.",
+            "text": "Less retyping, more room for advice, fieldwork and your customers."
+          },
+          {
+            "title": "Fewer oversights.",
+            "text": "Documents checked, reminders prepared, urgent items spotted sooner."
+          },
+          {
+            "title": "A calmer management.",
+            "text": "Any action that commits the business waits for your go-ahead."
+          }
+        ]
       }
     },
     {
@@ -40,42 +68,42 @@
         "anchor_id": "solutions"
       },
       "translation": {
-        "title": "Six situations, six solutions.",
-        "intro": "Pick the one that looks like your week. Each page follows the same thread: the problem, what the system does, what your team receives, the expected benefit and what stays under your control.",
+        "title": "Six chores that fade away.",
+        "intro": "Recognize your week, then see what changes. Each page follows the same thread: the problem, what the system does, what your team receives, the expected benefit and what stays under your control.",
         "cards": [
           {
-            "title": "Email piling up.",
-            "text": "Sorting, digging up the history and a first draft take the whole morning. The system classifies, summarizes and prepares a draft reply.",
+            "title": "An inbox that sorts itself.",
+            "text": "The system classifies each message, summarizes it and prepares a draft reply. Your team reads it over and approves.",
             "href": "/en/solutions/email/",
             "link_label": "See email"
           },
           {
-            "title": "Invoices to retype.",
-            "text": "One supplier sends a PDF, another a photo. The system reads the documents, flags amounts that do not add up and files everything in a table.",
+            "title": "Invoices that read themselves.",
+            "text": "A PDF, a scan, a photo: the system reads the document, flags amounts that do not add up and files everything in a table.",
             "href": "/en/solutions/invoices/",
             "link_label": "See invoices"
           },
           {
-            "title": "Customers who wait.",
-            "text": "The same questions keep coming. An agent answers from your documents, cites its sources and passes the request on to a person with a summary when it does not know.",
+            "title": "Customers served without the wait.",
+            "text": "Frequent questions get an answer drawn from your documents, with sources cited. When it does not know, the system hands off to a person, with a summary.",
             "href": "/en/solutions/customer-service/",
             "link_label": "See customer service"
           },
           {
-            "title": "Appointments that slip.",
-            "text": "Requests outside opening hours, reminders done by hand, late cancellations. The system proposes slots and reminds, based on your calendar.",
+            "title": "A calendar that fills up.",
+            "text": "The system proposes slots from your calendar, reminds your customers and releases cancellations.",
             "href": "/en/solutions/appointments/",
             "link_label": "See appointments"
           },
           {
-            "title": "Documents to key in.",
-            "text": "Month-end means data entry. The system prepares the pre-entry and flags discrepancies; the accountant keeps the decision.",
+            "title": "A month-end without retyping.",
+            "text": "The system reads the documents, prepares the pre-entry and flags discrepancies; the accountant reviews and decides.",
             "href": "/en/solutions/accounting/",
             "link_label": "See accounting"
           },
           {
-            "title": "Documents you cannot find.",
-            "text": "The right clause, the right version, the right procedure. Ask in plain language; the answer comes from your own documents, with its sources.",
+            "title": "Documents that answer back.",
+            "text": "Ask in plain language: the answer comes from your own documents, with its sources.",
             "href": "/en/solutions/documents/",
             "link_label": "See documents"
           }
@@ -84,35 +112,49 @@
     },
     {
       "collection": "block_section",
-      "role": "Comment sont bâties ces solutions : sur WorkStudio, adaptées après diagnostic.",
-      "claims": ["CL-132", "CL-85", "CL-14", "CL-90", "CL-91"],
+      "role": "WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; schéma de l'éditeur de flux.",
+      "claims": [
+        "CL-132",
+        "CL-85",
+        "CL-14",
+        "CL-90",
+        "CL-91",
+        "CL-P01",
+        "CL-P02",
+        "CL-P03",
+        "CL-25",
+        "CL-101",
+        "CL-102",
+        "CL-21"
+      ],
       "fields": {
-        "media_position": "none",
+        "media_position": "right",
         "tone": "sable",
+        "visual": "flux-workstudio",
         "anchor_id": "fonctionnement"
       },
       "translation": {
-        "title": "Built on WorkStudio, fitted to you.",
-        "body": "<p>These solutions are not off-the-shelf boxes. They are configurations assembled in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>: agents (software that completes a task using the tools you authorize) linked by workflows (automated sequences of tasks).</p><p>Every go-live starts with a diagnosis of your case. We then check that your software can be connected, and we announce no universal timeline.</p>",
+        "title": "Powerful underneath, simple on top.",
+        "body": "<p>These solutions are assembled in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, a single tool that brings what AI can do today within your reach: agents (software that completes a task using the tools you authorize), answers drawn from your own documents, reading of scanned documents, transcription and read-aloud, and side-by-side comparison of several models. \"Leading edge\" is our way of putting it; the proof is that list.</p><p>And it is remarkably simple to use: you describe the need in plain language, a building assistant (the Copilot) prepares a workflow (an automated sequence of tasks) for you to review, then you build it with cards or on a canvas, the way you sketch a diagram, without writing code. The workflow pictured here receives an invoice by email, prepares the entry and stops for a person's approval before writing anything.</p><p>Every go-live starts with a diagnosis of your case: we check that your software can be connected, and we announce no universal timeline. These are not off-the-shelf boxes but tailored configurations.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a></p>",
         "items": [
           {
-            "title": "1. The problem.",
+            "title": "1. The problem, named.",
             "text": "What costs you time, described in your own words."
           },
           {
-            "title": "2. What the system does.",
+            "title": "2. The system at work.",
             "text": "The steps, in order, and the ones that wait for a person."
           },
           {
             "title": "3. What your team receives.",
-            "text": "The concrete result: drafts, tables, sourced answers."
+            "text": "Drafts, tables, sourced answers: something concrete to review."
           },
           {
-            "title": "4. The expected benefit.",
-            "text": "Described without invented figures; measured on a first case."
+            "title": "4. The benefit, no invented figures.",
+            "text": "Described honestly; measured on a first case."
           },
           {
-            "title": "5. What stays under your control.",
+            "title": "5. Your control, intact.",
             "text": "The approvals, the access, the location of the data."
           }
         ]
@@ -129,12 +171,12 @@
         "anchor_id": "exemples"
       },
       "translation": {
-        "title": "Needs that do not look alike.",
+        "title": "Every trade finds its way in.",
         "intro": "Four typical situations. These are constructed examples, not results measured at customers.",
         "cards": [
           {
             "title": "A renovation contractor.",
-            "text": "They want to find old quotes, organize crews and track real costs. For construction and field services, OPSYS-AI brings these needs together in ten departments, each with its own status.",
+            "text": "They want to find old quotes, organize crews and track real costs. For construction and field services, OPSYS-AI brings these needs together in ten departments, each with its own availability level (a product in development).",
             "href": "/en/opsys-ai/",
             "link_label": "Discover OPSYS-AI"
           },
@@ -161,16 +203,28 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce que ces solutions ont en commun : le contrôle.",
-      "claims": ["CL-128", "CL-21", "CL-90", "CL-96", "CL-02"],
+      "role": "Ce que ces solutions ont en commun : le contrôle, et des données qui restent à l'entreprise (lien Vos données).",
+      "claims": [
+        "CL-128",
+        "CL-21",
+        "CL-90",
+        "CL-96",
+        "CL-02",
+        "CL-06",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "A shared principle: control.",
-        "body": "<p>Whatever the solution, four rules do not change.</p>",
+        "title": "Powerful, but never alone at the helm.",
+        "body": "<p>Whatever the solution, four rules do not change. The data you entrust to us stays with your business, on your server or with us in Quebec, is never used to train a model and is never sold. <a href=\"/en/your-data/\">Read our commitments on your data</a>.</p>",
         "items": [
           {
             "title": "A person decides.",
@@ -186,18 +240,41 @@
           },
           {
             "title": "You choose where it runs.",
-            "text": "On your server, or in our infrastructure in Quebec. An external model comes in only with your written agreement."
+            "text": "On your server, or in our infrastructure in Quebec. An external model comes in only when you explicitly activate it, in writing."
           }
         ]
       }
     },
     {
+      "collection": "block_section",
+      "role": "Au-delà des tâches : Croissance (accès anticipé) et Vision (projet pilote sur invitation), renvois honnêtes avec statut.",
+      "claims": ["CL-G01", "CL-V01", "CL-P03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "au-dela"
+      },
+      "translation": {
+        "title": "Further than the tasks.",
+        "body": "<p>Not finding enough customers yet? <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service (website, search visibility, ads, social media), is in early access: access is on request.</p><p>Want to watch over your sites? <a href=\"/en/vision/\">Nexora Vision</a>, AI video surveillance, is a pilot project by invitation, not an available product.</p>"
+      }
+    },
+    {
       "collection": "block_faq",
-      "role": "Questions de départ sur les solutions.",
-      "claims": ["CL-132", "CL-85", "CL-124", "CL-10"],
+      "role": "Questions de départ sur les solutions, y compris la question des données.",
+      "claims": [
+        "CL-132",
+        "CL-85",
+        "CL-124",
+        "CL-10",
+        "CL-E03",
+        "CL-E04",
+        "CL-E01",
+        "CL-E02"
+      ],
       "fields": {
         "emit_jsonld": true,
-        "tone": "sable",
+        "tone": "clair",
         "anchor_id": "questions"
       },
       "translation": {
@@ -216,6 +293,10 @@
             "answer": "No, and deliberately so: each solution is configured for your business, with your rules and your documents. What is delivered are the building blocks of WorkStudio."
           },
           {
+            "question": "Is my data used to train a model?",
+            "answer": "Never. It stays on your server or with us in Quebec, is not used to train or fine-tune a model, and is never sold. The Your data page details each commitment."
+          },
+          {
             "question": "What about the phone?",
             "answer": "No call-answering service is delivered today. A voice message dropped in as a recording can be transcribed; live telephony is checked separately, case by case."
           },
@@ -228,16 +309,16 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA : démonstration ou projet.",
-      "claims": ["CL-01"],
+      "role": "CTA : diagnostic ou démonstration ; partenaire d'ici.",
+      "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
-        "title": "Let's talk about your first case.",
-        "text": "Describe a concrete problem. We will tell you which of these solutions applies, in which mode, and where to start.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "title": "Pick the first chore to erase.",
+        "text": "Describe a concrete problem. We will tell you which of these solutions applies, in which mode, and where to start. A partner from here installs, runs and trains your team with you.",
+        "primary_label": "Book a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a demonstration",
         "secondary_href": "/en/contact/?sujet=demonstration"
       }

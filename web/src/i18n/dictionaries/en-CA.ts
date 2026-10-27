@@ -78,6 +78,18 @@ export const enCA: Dictionary = {
             "A coordinated team for construction and field services.",
           href: "/opsys-ai",
         },
+        {
+          label: "Nexora Croissance",
+          description:
+            "Website, search, ads and social networks in one place. Early access.",
+          href: "/croissance",
+        },
+        {
+          label: "Nexora Vision",
+          description:
+            "AI video analytics that keeps your footage on your premises. Pilot project, by invitation.",
+          href: "/vision",
+        },
       ],
     },
     pricing: { label: "Pricing", href: "/tarifs" },
@@ -99,6 +111,8 @@ export const enCA: Dictionary = {
           { label: "WorkStudio", href: "/workstudio" },
           { label: "Software suite", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
+          { label: "Nexora Croissance", href: "/croissance" },
+          { label: "Nexora Vision", href: "/vision" },
         ],
       },
       {
@@ -128,6 +142,7 @@ export const enCA: Dictionary = {
         title: "Trust center",
         links: [
           { label: "Sovereignty", href: "/souverainete" },
+          { label: "Your data", href: "/vos-donnees" },
           { label: "Law 25", href: "/souverainete/loi-25" },
           { label: "Trust center", href: "/centre-de-confiance" },
           { label: "Frequently asked questions", href: "/faq" },
@@ -157,6 +172,9 @@ export const enCA: Dictionary = {
     toc: { label: "On this page" },
     status: {
       disponible: "Available",
+      "acces-anticipe": "Early access",
+      "qualifie-localement": "Locally qualified",
+      "en-developpement": "In development",
       pilote: "Pilot",
       prevu: "Planned",
       legend: "Status",
@@ -238,6 +256,8 @@ export const enCA: Dictionary = {
           automatisation: "Custom automation",
           "opsys-ai": "OPSYS-AI (construction and field services)",
           workstudio: "Nexora WorkStudio",
+          vision: "Nexora Vision (pilot project, by invitation)",
+          croissance: "Nexora Croissance (early access)",
           "vps-api": "A virtual private server, models or the API",
           autre: "Something else",
         },

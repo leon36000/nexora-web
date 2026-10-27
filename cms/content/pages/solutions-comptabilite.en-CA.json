@@ -6,14 +6,14 @@
   "seo": {
     "slug": "solutions/accounting",
     "title": "Accounting",
-    "seo_title": "AI accounting pre-entry for small business",
-    "seo_description": "The system reads your documents, prepares the pre-entry, flags discrepancies and leaves the decision to your accountant. Bank reconciliation is not delivered.",
+    "seo_title": "Accounting automation with AI for SMEs",
+    "seo_description": "AI reads your documents, prepares the pre-entry and flags discrepancies: your accountant reviews and decides. Bank reconciliation is not delivered today.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution comptabilité.",
+      "role": "Promesse de la solution comptabilité : l'IA prépare, le comptable décide.",
       "claims": ["CL-125", "CL-101"],
       "fields": {
         "variant": "sombre",
@@ -21,8 +21,8 @@
       },
       "translation": {
         "eyebrow": "Solution · Accounting",
-        "headline": "Pre-entry ready. The accountant decides.",
-        "subheadline": "The system reads your documents, prepares the pre-entry and flags discrepancies. Your accountant reviews, corrects and approves: the AI prepares, it does not book.",
+        "headline": "A pre-entry ready. The accountant decides.",
+        "subheadline": "The system reads your documents, prepares the pre-entry (the lines ready to be picked up in the books) and flags discrepancies. Your accountant reviews, corrects and approves: the AI prepares, it does not post.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "See all solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème : un cabinet comptable en fin de mois.",
+      "role": "Problème : exemple construit d'un cabinet comptable en fin de mois.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -40,18 +40,18 @@
       },
       "translation": {
         "title": "Month-end means data entry.",
-        "body": "<p>A small accounting firm receives invoices, expense reports and statements from its clients, in every possible form. A large share of month-end time goes to rereading amounts and retyping lines, rather than advising.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "body": "<p>A small accounting firm receives invoices, expense reports and statements from its clients, in every shape imaginable. A large share of month-end time goes to rereading amounts and retyping lines, rather than advising.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
         "items": [
           {
             "title": "Documents in every format.",
-            "text": "Emails, photos, scans, PDFs."
+            "text": "Email, photos, scans, PDFs."
           },
           {
             "title": "Checks to repeat.",
-            "text": "Pre-tax amounts, taxes and total must agree."
+            "text": "The pre-tax amounts, the taxes and the total must agree."
           },
           {
-            "title": "Advisory time lost.",
+            "title": "Advice time lost.",
             "text": "What the client really pays for is the accountant's judgment."
           }
         ]
@@ -60,7 +60,7 @@
     {
       "collection": "block_cards",
       "role": "Ce que fait le système : lecture, contrôles de cohérence, table, relecture.",
-      "claims": ["CL-101", "CL-121", "CL-125", "CL-21"],
+      "claims": ["CL-101", "CL-121", "CL-125", "CL-21", "CL-P01"],
       "fields": {
         "columns": "4",
         "tone": "clair",
@@ -68,8 +68,8 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "What the system does.",
-        "intro": "The accountant defines the fields and the checking rules; the system applies them document by document.",
+        "title": "From document to pre-entry.",
+        "intro": "The accountant defines the fields and the control rules; the system applies them document by document, with WorkStudio's AI document reading.",
         "cards": [
           {
             "title": "It reads the documents.",
@@ -85,43 +85,75 @@
           },
           {
             "title": "It waits.",
-            "text": "The accountant reviews the lines, corrects and approves. Nothing is recorded before."
-          }
-        ]
-      }
-    },
-    {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe, bénéfice, et OPSYS-AI pour la construction.",
-      "claims": ["CL-125", "CL-14", "CL-D05"],
-      "fields": {
-        "media_position": "none",
-        "tone": "sombre",
-        "anchor_id": "equipe"
-      },
-      "translation": {
-        "title": "What your team receives.",
-        "body": "<p>A table of documents ready for review, with discrepancies first. The expected benefit: less retyping and errors caught sooner. No quantified gain is announced; it is measured during a pilot, on your own files.</p><p>For construction companies, <a href=\"/en/opsys-ai/\">OPSYS-AI</a> goes further: its in-house finance department (M5) prepares a draft invoice after the work and tracks receivables. That department is in pilot, and neither sending invoices nor payroll calculation is delivered.</p>",
-        "items": [
-          {
-            "title": "A pre-entry table.",
-            "text": "One row per document, with the “to verify” flag."
-          },
-          {
-            "title": "The reasons for discrepancies.",
-            "text": "Missing field, unreadable value, total that does not add up."
-          },
-          {
-            "title": "A file reviewed, not rekeyed.",
-            "text": "The accountant spends time on judgment."
+            "text": "The accountant reviews the lines, corrects and approves. Nothing is recorded before that."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire).",
-      "claims": ["CL-125", "CL-126", "CL-128", "CL-111"],
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento), dont le renvoi vers OPSYS-AI pour la construction (statut pilote).",
+      "claims": ["CL-125", "CL-D05", "CL-101"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "bento",
+        "anchor_id": "equipe"
+      },
+      "translation": {
+        "title": "A file reviewed, not retyped.",
+        "intro": "A table of documents ready to review, with the discrepancies at the top.",
+        "cards": [
+          {
+            "title": "A pre-entry table.",
+            "text": "One row per document, with the \"to review\" flag."
+          },
+          {
+            "title": "The reasons for discrepancies.",
+            "text": "Missing field, unreadable value, total that does not add up."
+          },
+          {
+            "title": "Time for judgment.",
+            "text": "The accountant spends time advising rather than retyping."
+          },
+          {
+            "title": "For construction, OPSYS-AI goes further.",
+            "text": "Its Finance department (M5) aims to prepare invoicing and track job costs. OPSYS-AI is a product in development: a targeted reading of costs is locally qualified, but complete accounting, payroll and connectors are not demonstrated.",
+            "href": "/en/opsys-ai/",
+            "link_label": "Discover OPSYS-AI"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic.",
+      "claims": ["CL-14", "CL-09", "CL-125"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "Time handed back to advice.",
+        "body": "<p>The expected benefit: less retyping and errors caught sooner, hence more time for what the client really pays for, their accountant's judgment. No quantified gain is announced; it is measured during a pilot, on your own files.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to define your fields and your control rules.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données.",
+      "claims": [
+        "CL-125",
+        "CL-126",
+        "CL-128",
+        "CL-111",
+        "CL-06",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sable",
@@ -129,7 +161,7 @@
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "What stays under your control.",
+        "title": "The accountant has the last word.",
         "cards": [
           {
             "title": "The accountant keeps the decision.",
@@ -137,11 +169,11 @@
           },
           {
             "title": "No bank link.",
-            "text": "Bank reconciliation is not delivered in WorkStudio. It can be studied as custom work, from statements you export, without any connection to your bank."
+            "text": "Bank reconciliation is not delivered in WorkStudio. It can be studied as custom work, from statements you export, with no connection to your bank."
           },
           {
             "title": "Your software, to be qualified.",
-            "text": "Posting to your accounting software goes through a connector qualified during the diagnosis, package by package."
+            "text": "Writing to your accounting software goes through a connector that is qualified during the diagnosis, software by software."
           },
           {
             "title": "Your tax rules.",
@@ -149,7 +181,13 @@
           },
           {
             "title": "No accounting advice.",
-            "text": "The system prepares and checks; it does not advise. Decisions remain your accountant's."
+            "text": "The system prepares and checks; it does not advise. The decisions stay with your accountant."
+          },
+          {
+            "title": "Your data stays yours.",
+            "text": "On your server or with us, in Quebec: never used to train a model, never sold. An external reading service comes in only when you explicitly activate it, in writing.",
+            "href": "/en/your-data/",
+            "link_label": "Read our commitments"
           }
         ]
       }
@@ -168,15 +206,15 @@
         "items": [
           {
             "question": "Does the AI do the bookkeeping?",
-            "answer": "No. It prepares the pre-entry and flags discrepancies. Entries and decisions remain your accountant's."
+            "answer": "No. It prepares the pre-entry and flags discrepancies. The entries and the decisions stay with your accountant."
           },
           {
             "question": "Can bank reconciliation be automated?",
-            "answer": "Not with a product delivered today. A custom study is possible, from exported statements, without a bank connection."
+            "answer": "Not with a product delivered today. A custom study is possible, from exported statements, with no bank connection."
           },
           {
             "question": "Does my accountant have to change tools?",
-            "answer": "In principle, no: the pre-entry is filed in a table, and what follows depends on the software they use, which we qualify with them."
+            "answer": "Not in principle: the pre-entry is filed in a table, and what follows depends on the software they use, which we qualify with them."
           },
           {
             "question": "Do my documents leave my server?",
@@ -187,16 +225,16 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA : diagnostic.",
-      "claims": ["CL-01"],
+      "role": "CTA : diagnostic ; partenaire d'ici.",
+      "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Let's talk about your month-end.",
-        "text": "Describe your documents and your software. We will tell you what gets prepared, what connects and what stays with your accountant.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "text": "Describe your documents and your software. We will tell you what can be prepared, what can be connected and what stays with your accountant. A partner from here installs, runs and trains with you.",
+        "primary_label": "Book a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "See invoices",
         "secondary_href": "/en/solutions/invoices/"
       }

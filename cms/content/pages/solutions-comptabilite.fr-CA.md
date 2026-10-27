@@ -6,14 +6,14 @@
 
 - Page : `solutions-comptabilite` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/comptabilite/` · slug : `solutions/comptabilite`
-- Titre SEO (36 caractères) : Pré-saisie comptable par IA pour PME
-- Description SEO (152 caractères) : Le système lit vos pièces, prépare la pré-saisie, signale les écarts et laisse la décision à votre comptable. Le rapprochement bancaire n'est pas livré.
+- Titre SEO (40 caractères) : Comptabilité automatisée par IA pour PME
+- Description SEO (152 caractères) : L'IA lit vos pièces, prépare la pré-saisie et signale les écarts : votre comptable relit et décide. Le rapprochement bancaire n'est pas livré à ce jour.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la solution comptabilité. · Affirmations : CL-125, CL-101*
+*Promesse de la solution comptabilité : l'IA prépare, le comptable décide. · Affirmations : CL-125, CL-101*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,13 +21,13 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Une pré-saisie prête. Le comptable décide.
 
-Le système lit vos pièces, prépare la pré-saisie et signale les écarts. Votre comptable relit, corrige et valide : l'IA prépare, elle ne comptabilise pas.
+Le système lit vos pièces, prépare la pré-saisie (les lignes prêtes à être reprises en comptabilité) et signale les écarts. Votre comptable relit, corrige et valide : l'IA prépare, elle ne comptabilise pas.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Problème : un cabinet comptable en fin de mois. · Affirmations : CL-11*
+*Problème : exemple construit d'un cabinet comptable en fin de mois. · Affirmations : CL-11*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
@@ -43,13 +43,13 @@ L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat 
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Ce que fait le système : lecture, contrôles de cohérence, table, relecture. · Affirmations : CL-101, CL-121, CL-125, CL-21*
+*Ce que fait le système : lecture, contrôles de cohérence, table, relecture. · Affirmations : CL-101, CL-121, CL-125, CL-21, CL-P01*
 
 Réglages : `columns=4`, `tone=clair`, `layout=etapes`, `anchor_id=systeme`
 
-## Ce que fait le système.
+## De la pièce à la pré-saisie.
 
-Le comptable définit les champs et les règles de contrôle ; le système les applique pièce par pièce.
+Le comptable définit les champs et les règles de contrôle ; le système les applique pièce par pièce, avec la lecture de documents par IA de WorkStudio.
 
 #### Il lit les pièces.
 
@@ -67,29 +67,53 @@ Une ligne de pré-saisie par pièce, avec les champs convenus avec le comptable 
 
 Le comptable relit les lignes, corrige et valide. Rien n'est enregistré avant.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que reçoit l'équipe, bénéfice, et OPSYS-AI pour la construction. · Affirmations : CL-125, CL-14, CL-D05*
+*Ce que reçoit l'équipe : mosaïque de bénéfices (bento), dont le renvoi vers OPSYS-AI pour la construction (statut pilote). · Affirmations : CL-125, CL-D05, CL-101*
 
-Réglages : `media_position=none`, `tone=sombre`, `anchor_id=equipe`
+Réglages : `columns=2`, `tone=sombre`, `layout=bento`, `anchor_id=equipe`
 
-## Ce que reçoit l'équipe.
+## Un dossier relu, pas ressaisi.
 
-Une table de pièces prêtes à relire, avec les écarts en tête. Le bénéfice attendu : moins de ressaisie et des erreurs repérées plus tôt. Aucun gain chiffré n'est annoncé ; il se mesure pendant un pilote, sur vos propres dossiers.
+Une table de pièces prêtes à relire, avec les écarts en tête.
 
-Pour les entreprises de construction, [OPSYS-AI](/opsys-ai/) va plus loin : sa comptabilité interne (département M5) prépare une facture brouillon après les travaux et suit les comptes à recevoir. Ce département est en pilote, et ni l'envoi des factures ni le calcul de la paie ne sont livrés.
+#### Une table de pré-saisie.
 
-- **Une table de pré-saisie.** Une ligne par pièce, avec l'indicateur « à vérifier ».
-- **Les motifs des écarts.** Champ manquant, valeur illisible, total qui ne concorde pas.
-- **Un dossier relu, pas ressaisi.** Le comptable consacre son temps au jugement.
+Une ligne par pièce, avec l'indicateur « à vérifier ».
 
-### Bloc 5 — Cartes (`block_cards`)
+#### Les motifs des écarts.
 
-*Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire). · Affirmations : CL-125, CL-126, CL-128, CL-111*
+Champ manquant, valeur illisible, total qui ne concorde pas.
+
+#### Du temps pour le jugement.
+
+Le comptable consacre son temps à conseiller plutôt qu'à retaper.
+
+#### Pour la construction, OPSYS-AI va plus loin.
+
+Son département Finance (M5) vise à préparer la facturation et à suivre les coûts de chantier. OPSYS-AI est un produit en développement : une lecture ciblée de coûts est qualifiée localement, mais la comptabilité complète, la paie et les connecteurs ne sont pas démontrés.
+
+→ [Découvrir OPSYS-AI](/opsys-ai/)
+
+### Bloc 5 — Section (`block_section`)
+
+*Bénéfice attendu, sans chiffre ; lien diagnostic. · Affirmations : CL-14, CL-09, CL-125*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
+
+## Du temps rendu au conseil.
+
+Le bénéfice attendu : moins de ressaisie et des erreurs repérées plus tôt, donc plus de temps pour ce que le client paie vraiment, le jugement de son comptable. Aucun gain chiffré n'est annoncé ; il se mesure pendant un pilote, sur vos propres dossiers.
+
+[Planifier un diagnostic](/contact/?sujet=diagnostic) pour définir vos champs et vos règles de contrôle.
+
+### Bloc 6 — Cartes (`block_cards`)
+
+*Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données. · Affirmations : CL-125, CL-126, CL-128, CL-111, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
-## Ce qui reste sous votre contrôle.
+## Le comptable garde le dernier mot.
 
 #### Le comptable garde la décision.
 
@@ -111,7 +135,13 @@ Les modèles de départ sont généraux. Taxes, catégories et plan comptable du
 
 Le système prépare et contrôle ; il ne conseille pas. Les décisions restent celles de votre comptable.
 
-### Bloc 6 — FAQ (`block_faq`)
+#### Vos données restent à vous.
+
+Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner un modèle, jamais vendues. Un service externe de lecture n'entre qu'avec votre activation explicite, consignée par écrit.
+
+→ [Lire nos engagements](/vos-donnees/)
+
+### Bloc 7 — FAQ (`block_faq`)
 
 *FAQ propre à la solution comptabilité. · Affirmations : CL-125, CL-126, CL-132*
 
@@ -135,14 +165,14 @@ Non, en principe : la pré-saisie se range dans une table, et la suite dépend 
 
 Pas si la lecture se fait avec un modèle sur votre serveur. Un service externe de lecture est possible, seulement avec votre accord écrit, et il est indiqué.
 
-### Bloc 7 — Appel à l'action (`block_cta`)
+### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : diagnostic. · Affirmations : CL-01*
+*CTA : diagnostic ; partenaire d'ici. · Affirmations : CL-01, CL-04*
 
 Réglages : `tone=sombre`
 
 ## Parlons de votre fin de mois.
 
-Décrivez-nous vos pièces et votre logiciel. Nous vous disons ce qui se prépare, ce qui se relie et ce qui reste à votre comptable.
+Décrivez-nous vos pièces et votre logiciel. Nous vous disons ce qui se prépare, ce qui se relie et ce qui reste à votre comptable. Un partenaire d'ici installe, exploite et forme avec vous.
 
-[Discuter de mon projet](/contact/) · [Voir les factures](/solutions/factures/)
+[Planifier un diagnostic](/contact/?sujet=diagnostic) · [Voir les factures](/solutions/factures/)

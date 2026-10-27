@@ -263,6 +263,24 @@ describe("variantes de composition (S3)", () => {
     ]);
   });
 
+  it("statut d'une carte : « acces-anticipe » est une valeur connue", () => {
+    const b = one(
+      cardsBlock(1, 1, {
+        layout: "modules",
+        translations: [
+          {
+            languages_code: "fr-CA",
+            title: "Cartes",
+            cards: [
+              { title: "Croissance", text: "Texte", status: "acces-anticipe" },
+            ],
+          },
+        ],
+      }),
+    );
+    expect(b?.type === "cards" && b.cards[0]?.status).toBe("acces-anticipe");
+  });
+
   it("schéma d'une section : aucun par défaut, valeurs connues seulement", () => {
     const d = one(sectionBlock(1, 1));
     expect(d?.type === "section" && d.visual).toBe("aucun");

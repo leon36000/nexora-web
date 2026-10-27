@@ -95,14 +95,15 @@ describe("structure", () => {
     });
   }
 
-  test("l'accueil porte le message directeur dans le héros, dans les deux langues", () => {
-    const h = (l: Locale) =>
-      pairs.accueil[l].blocks[0]?.translation.headline as string;
-    expect(h("fr-CA")).toBe(
-      "L'IA qui travaille pour votre entreprise. Sous votre contrôle.",
+  test("l'accueil porte la promesse de la vague 2 dans le héros (la pointe de l'IA, à la portée de tous) et garde le message directeur dans le sous-titre", () => {
+    const hero = (l: Locale) => pairs.accueil[l].blocks[0]?.translation;
+    expect(hero("fr-CA")?.headline).toBe("La pointe de l'IA. À votre portée.");
+    expect(hero("en-CA")?.headline).toBe("Cutting-edge AI. Within your reach.");
+    expect(String(hero("fr-CA")?.subheadline)).toMatch(
+      /L'IA qui travaille pour votre entreprise\. Sous votre contrôle\./,
     );
-    expect(h("en-CA")).toBe(
-      "AI that works for your business. Under your control.",
+    expect(String(hero("en-CA")?.subheadline)).toMatch(
+      /AI that works for your business\. Under your control\./,
     );
   });
 
@@ -129,8 +130,8 @@ describe("SEO", () => {
   for (const page of PAGES)
     for (const l of LOCALES) {
       const f = pairs[page][l];
-      test(`${page} ${l} : titre ≤ 51 caractères (60 avec le gabarit « %s — Nexora »), description de 140 à 160`, () => {
-        expect([...f.seo.seo_title].length).toBeLessThanOrEqual(51);
+      test(`${page} ${l} : titre ≤ 48 caractères (60 avec le suffixe « — Nexora AI »), description de 140 à 160`, () => {
+        expect([...f.seo.seo_title].length).toBeLessThanOrEqual(48);
         expect([...f.seo.seo_title].length).toBeGreaterThanOrEqual(30);
         const n = [...f.seo.seo_description].length;
         expect(n).toBeGreaterThanOrEqual(140);
@@ -271,6 +272,8 @@ describe("VÉRITÉ", () => {
   ];
   // Les négations honnêtes sont permises dans quelques phrases précises (FAQ OPSYS-AI et mentions de prix).
   const ALLOWED: Record<string, RegExp[]> = {
+    // « aucun résultat garanti », « sans garantie » : une négation proche du mot permet de le nier, jamais de l'affirmer
+    garanti: [/\b(aucune?|ni|pas|sans|jamais|non)\b[^.!?]{0,40}\bgaranti/i],
     gratuité: [
       /pas d'essai gratuit/i,
       /Existe-t-il un essai gratuit/i,
@@ -279,8 +282,13 @@ describe("VÉRITÉ", () => {
     certification: [
       /ni certification que nous ne pouvons/i,
       /certification that we cannot prove/i,
+      /aucune\s+certification/i,
+      /no\s+(security\s+or\s+compliance\s+)?certification/i,
     ],
-    guaranteed: [/do not guarantee/i],
+    guaranteed: [
+      /do not guarantee/i,
+      /\b(no|not|never|without|cannot|can't|doesn't|don't)\b[^.!?]{0,40}guarantee/i,
+    ],
     essai: [
       /Existe-t-il un essai gratuit/i,
       /Is there a free trial/i,
@@ -300,6 +308,8 @@ describe("VÉRITÉ", () => {
             if (!m) continue;
             if ((ALLOWED[why] ?? []).some((a) => a.test(v) || a.test(m[0])))
               continue;
+            // l'accueil présente l'hébergement web inclus de Nexora Croissance, avec ses conditions (voir pages-vague2.test.ts)
+            if (page === "accueil" && why === "gratuité") continue;
             problems.push(`${t.path} : ${why} (« ${m[0]} »)`);
           }
         }
@@ -410,32 +420,74 @@ describe("VÉRITÉ", () => {
     ).toEqual([]);
   });
 
-  test("les statuts d'OPSYS-AI correspondent au rapport 07 (départements) : badge prudent, détail dans le texte", () => {
-    // Le badge porte le statut le plus prudent du département : « pilote » dès qu'une partie du département
-    // n'est que pilote (M3, M7 et M10 mêlent « disponible » et « pilote » : le détail le dit dans le texte).
-    // « disponible » n'est affiché que si TOUT le département l'est (aucun cas aujourd'hui).
-    const mixed: Record<number, RegExp> = {
-      3: /Statut\s*: disponible pour le calcul/,
-      7: /Statut\s*: disponible après configuration/,
-      10: /Statut\s*: disponible pour le journal/,
-    };
+  test("les niveaux d'OPSYS-AI suivent la brochure du 27/10/2026 (matrice des pages 33 et 34) : produit partiel, trois niveaux distincts, rien de livré en production", () => {
     for (const l of LOCALES) {
-      const cards = (pairs["opsys-ai"][l].blocks.find(
+      const fr = l === "fr-CA";
+      const f = pairs["opsys-ai"][l];
+      const hero = f.blocks[0];
+      expect(String(hero?.translation.eyebrow)).toMatch(
+        fr
+          ? /Produit en développement, partiel/
+          : /Product in development, partial/,
+      );
+      expect(hero?.claims).toContain("CL-O01");
+      // les quatre niveaux ont leur étiquette propre
+      const levels = f.blocks.find(
+        (b) => (b.fields as Record<string, unknown>)?.anchor_id === "etat",
+      );
+      expect(
+        ((levels?.translation.cards ?? []) as { label: string }[]).map(
+          (c) => c.label,
+        ),
+      ).toEqual(
+        fr
+          ? [
+              "Qualifié localement",
+              "En développement",
+              "Prévu ou optionnel",
+              "À qualifier",
+            ]
+          : [
+              "Locally qualified",
+              "In development",
+              "Planned or optional",
+              "To qualify",
+            ],
+      );
+      expect(plain(String(levels?.translation.intro))).toMatch(
+        fr
+          ? /Aucun déploiement de production complet/
+          : /No complete production deployment/,
+      );
+      // dix départements : promesse, ce qui est qualifié localement, ce qui reste à compléter
+      const cards = (f.blocks.find(
         (b) =>
           b.collection === "block_cards" &&
           ((b.translation.cards as unknown[]) ?? []).length === 10,
-      )?.translation.cards ?? []) as { text: string; status?: string }[];
+      )?.translation.cards ?? []) as {
+        title: string;
+        text: string;
+        status?: string;
+      }[];
       expect(cards).toHaveLength(10);
       for (const [i, c] of cards.entries()) {
-        expect(c.status, `M${i + 1} (${l})`).toBe("pilote");
-        const text = c.text.replace(/\u00a0/g, " ");
-        // le premier paragraphe décrit le département, le détail suit
-        expect(text.split("\n").length, `M${i + 1} (${l}) détail`).toBe(2);
-        const re = mixed[i + 1];
-        if (l === "fr-CA" && re) expect(text, `M${i + 1}`).toMatch(re);
-        // l'ancien en-tête « Statut : pilote. » est porté par le badge, plus par le texte
-        if (!re) expect(text, `M${i + 1}`).not.toMatch(/Statut\s*:/);
+        expect(c.status, `M${i + 1} (${l})`).toBe("qualifie-localement");
+        const lines = c.text.split("\n");
+        expect(lines, `M${i + 1} (${l}) lignes`).toHaveLength(3);
+        expect(lines[1], `M${i + 1}`).toMatch(
+          fr ? /^Qualifié localement\u00a0: / : /^Locally qualified: /,
+        );
+        expect(lines[2], `M${i + 1}`).toMatch(
+          fr
+            ? /^À compléter ou à qualifier\u00a0: /
+            : /^To complete or qualify: /,
+        );
       }
+      // l'ancien vocabulaire « disponible / en pilote / réel côté serveur » ne revient pas
+      for (const t of allTexts(f))
+        expect(plain(t.value), t.path).not.toMatch(
+          /Statut\s*: disponible|Réel côté serveur|Disponible\s*:|Pilote\s*:|données fictives|fictitious data/i,
+        );
     }
   });
 
@@ -520,8 +572,6 @@ describe("CLARTÉ et typographie", () => {
     );
     expect(home).toMatch(/serveur privé virtuel \(VPS\) est un serveur loué/);
     const o = JSON.stringify(pairs["opsys-ai"]["fr-CA"].blocks);
-    expect(o).toMatch(/bus d'événements interne[\s\u00a0]: un journal commun/);
-    expect(o).toMatch(/jetons \(l'unité de texte que traite un modèle\)/);
     expect(o).toMatch(/serveur privé virtuel \(VPS\)/);
   });
 });

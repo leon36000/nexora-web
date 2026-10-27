@@ -82,6 +82,18 @@ export const frCA = {
             "Une équipe coordonnée pour la construction et les services terrain.",
           href: "/opsys-ai",
         },
+        {
+          label: "Nexora Croissance",
+          description:
+            "Site, référencement, publicité et réseaux sociaux, au même endroit. Accès anticipé.",
+          href: "/croissance",
+        },
+        {
+          label: "Nexora Vision",
+          description:
+            "Vidéosurveillance par IA qui garde vos images chez vous. Projet pilote sur invitation.",
+          href: "/vision",
+        },
       ],
     },
     pricing: { label: "Tarifs", href: "/tarifs" },
@@ -103,6 +115,8 @@ export const frCA = {
           { label: "WorkStudio", href: "/workstudio" },
           { label: "Suite logicielle", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
+          { label: "Nexora Croissance", href: "/croissance" },
+          { label: "Nexora Vision", href: "/vision" },
         ],
       },
       {
@@ -132,6 +146,7 @@ export const frCA = {
         title: "Centre de confiance",
         links: [
           { label: "Souveraineté", href: "/souverainete" },
+          { label: "Vos données", href: "/vos-donnees" },
           { label: "Loi 25", href: "/souverainete/loi-25" },
           { label: "Centre de confiance", href: "/centre-de-confiance" },
           { label: "Questions fréquentes", href: "/faq" },
@@ -161,6 +176,9 @@ export const frCA = {
     toc: { label: "Sur cette page" },
     status: {
       disponible: "Disponible",
+      "acces-anticipe": "Accès anticipé",
+      "qualifie-localement": "Qualifié localement",
+      "en-developpement": "En développement",
       pilote: "En pilote",
       prevu: "Prévu",
       legend: "État",
@@ -243,6 +261,8 @@ export const frCA = {
           automatisation: "Une automatisation sur mesure",
           "opsys-ai": "OPSYS-AI (construction et services terrain)",
           workstudio: "Nexora WorkStudio",
+          vision: "Nexora Vision (projet pilote sur invitation)",
+          croissance: "Nexora Croissance (accès anticipé)",
           "vps-api": "Un serveur privé virtuel, des modèles ou l'API",
           autre: "Autre chose",
         },

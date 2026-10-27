@@ -7,59 +7,75 @@
 - Page : `services` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/services/` · slug : `services`
 - Titre SEO (42 caractères) : AI services for small businesses in Quebec
-- Description SEO (151 caractères) : Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora AI's services for small businesses.
+- Description SEO (157 caractères) : AI services for Quebec small businesses: diagnosis, installation on your premises or in Quebec, custom work, operation. Cutting-edge AI, no IT degree needed.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Hub des services : promesse et CTA. · Affirmations : CL-01, CL-80*
+*Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action. · Affirmations : CL-01, CL-80, CL-04, CL-P01, CL-P03*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
-**Services**
+**AI services for small business**
 
-# From idea to operation. With you.
+# AI installed, run and improved. With you.
 
-Nexora AI designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.
+AI services for Quebec small businesses: we install, run and evolve with you a system at the leading edge of AI, without you becoming an IT specialist. A diagnosis first, then a written estimate, then a first case in service.
 
-[Discuss my project](/en/contact/) · [Read the method](/en/method/)
+[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
 
-*Les quatre services. · Affirmations : CL-80, CL-81, CL-84, CL-04*
+*Le rêve : ce que ça change pour la direction d'une PME ; trois bénéfices (pointe, décision humaine, données). · Affirmations : CL-P01, CL-P02, CL-92, CL-101, CL-102, CL-128, CL-02, CL-E03, CL-E04, CL-E05*
 
-Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=services`
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=reve`
 
-## Four services, one thread.
+## What changes for you.
 
-From the first conversation to daily operation, the same people follow you and the same control rules apply.
+Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.
+
+[Plan a diagnosis](/en/contact/?sujet=diagnostic)
+
+- **The leading edge of AI, without the complexity.** Agents (software that carries out a task with the tools you authorize), a Copilot that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice: all in one tool, without writing a line of code.
+- **A person decides.** Any action that commits the business (sending, paying, writing) waits for a person's approval, unless you decide otherwise in writing.
+- **Your data stays yours.** On your premises or with us, in Quebec. Never used to train a model, never sold, no external model without your explicit activation. <a href="/en/your-data/">See the commitments on your data</a>.
+
+### Bloc 3 — Cartes (`block_cards`)
+
+*Les quatre services, liés à leurs pages. · Affirmations : CL-80, CL-81, CL-84, CL-04, CL-26*
+
+Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=services`
+
+## Four services. One partner.
+
+From the first conversation to daily operation, the same people follow you, in French or English, and the same control rules apply.
 
 #### The diagnosis.
 
-We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. It leads to a written estimate.
+We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. You leave with a written estimate.
 
 #### AI server installation.
 
-On your premises or in our infrastructure in Quebec: sizing, installation, configuration, checking of data flows.
+On your premises or in our infrastructure in Quebec: sizing, one-command installation, configuration, checking of data flows. Your AI, ready to work.
 
 → [See installation](/en/services/ai-server-installation/)
 
 #### Custom automation.
 
-Agents and workflows built for your processes, connected to your software, tested on your real cases.
+Agents and workflows built for your processes, connected to your software, tested on your real cases before go-live.
 
 → [See custom work](/en/services/custom-automation/)
 
 #### Operations.
 
-We run the system with you, track what works, adjust the rest; training for your team covers usage and supervision.
+We run the system with you, track what works and adjust the rest; training for your team covers usage and supervision, not the technical side.
 
 → [See the method](/en/method/)
 
-### Bloc 3 — Section (`block_section`)
+### Bloc 4 — Section (`block_section`)
 
-*Ce qui fait varier l'estimation. · Affirmations : CL-10, CL-82, CL-85, CL-14*
+*Ce qui fait varier l'estimation (aucun prix ni délai) et appel à planifier un diagnostic. · Affirmations : CL-10, CL-82, CL-85, CL-14*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=estimation`
 
@@ -67,15 +83,17 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=estimation`
 
 There is no public price yet, and we announce no universal timeline. After the diagnosis, we provide a written estimate that states what is included and what is not. Here is what makes it vary.
 
+[Plan a diagnosis](/en/contact/?sujet=diagnostic) to get yours.
+
 - **The number of cases handled.** One well-chosen case first; others afterward.
 - **The volume of documents.** It weighs on indexing and on storage.
 - **The deployment mode.** On your premises or with us: the cost items are not the same.
 - **The integrations.** Each piece of software to connect is qualified; some take more work than others.
 - **The hardware, on your premises.** It is sized according to the number of users, the volume of documents and the model chosen.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
-*Ce que nous ne faisons pas : limites écrites. · Affirmations : CL-89, CL-86, CL-09*
+*Ce que nous ne promettons pas : limites écrites ; la vision par caméra renvoie à Nexora Vision (pilote sur invitation). · Affirmations : CL-89, CL-86, CL-09, CL-V01*
 
 Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
@@ -87,15 +105,17 @@ Not every computing task can be done without constraints. We say so before you c
 
 #### Products not yet delivered.
 
-Telephony, camera vision and specialized models are not delivered products; they can be the subject of a feasibility study.
+Telephony, camera vision and specialized models are not delivered products; they can be the subject of a feasibility study. Nexora Vision, our AI video-surveillance project, is a pilot project by invitation only.
+
+→ [See Nexora Vision](/en/vision/)
 
 #### An announced service level.
 
 No availability level or response time is announced today; they are set out in the contract.
 
-### Bloc 5 — FAQ (`block_faq`)
+### Bloc 6 — FAQ (`block_faq`)
 
-*Questions sur les services. · Affirmations : CL-04, CL-08, CL-10*
+*Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit). · Affirmations : CL-04, CL-08, CL-10, CL-02, CL-E03, CL-E04*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -104,6 +124,10 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 #### Do we need technical staff?
 
 No. We install, run with you and evolve the system. Your team's training covers usage and supervision, not the technical side.
+
+#### Where is my data?
+
+On your premises, on your server, or with us, in our infrastructure in Quebec, depending on the mode you choose. In both cases it is never used to train a model and never sold.
 
 #### Who handles updates?
 
@@ -117,7 +141,7 @@ You leave with your documents, configurations and workflows: export is provided 
 
 That is the method: one concrete case, put into service and verified, before expanding.
 
-### Bloc 6 — Appel à l'action (`block_cta`)
+### Bloc 7 — Appel à l'action (`block_cta`)
 
 *CTA : diagnostic. · Affirmations : CL-80*
 
@@ -127,4 +151,4 @@ Réglages : `tone=sombre`
 
 Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.
 
-[Discuss my project](/en/contact/) · [Request a deployment study](/en/contact/?sujet=etude-deploiement)
+[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Request a deployment study](/en/contact/?sujet=etude-deploiement)

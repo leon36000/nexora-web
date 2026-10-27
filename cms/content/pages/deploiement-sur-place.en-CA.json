@@ -6,24 +6,24 @@
   "seo": {
     "slug": "deployment/on-premises",
     "title": "On-premises deployment",
-    "seo_title": "On-premises AI server for small businesses",
-    "seo_description": "Nexora AI installs the AI system on your server, in your offices or at a host of your choice. Hardware and access are yours; outbound flows are listed.",
+    "seo_title": "On-premises AI server for small business",
+    "seo_description": "On-premises AI server for small business: Nexora AI installs it in your offices or at your chosen host. Your data stays on your server; the access is yours.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse du mode sur place.",
-      "claims": ["CL-72", "CL-26"],
+      "role": "Promesse du mode sur place : mon serveur, mes accès, mes règles ; engagement CL-E01.",
+      "claims": ["CL-72", "CL-26", "CL-E01"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
         "eyebrow": "Deployment · On-premises",
-        "headline": "AI on your server. The access is yours.",
-        "subheadline": "We install and configure the system on a server you own, in your offices or at a host of your choice. What leaves your network, if anything, is handed to you in writing before go-live.",
-        "primary_label": "Request a deployment study",
+        "headline": "Your AI. Your server. Your rules.",
+        "subheadline": "We install and configure the system on a server that belongs to you, in your offices or at a host of your choice. Your data stays there: Nexora AI gets in only if you authorize it in writing, for a specific task and a limited time.",
+        "primary_label": "Study my project",
         "primary_href": "/en/contact/?sujet=etude-deploiement",
         "secondary_label": "Compare the two modes",
         "secondary_href": "/en/deployment/"
@@ -31,8 +31,17 @@
     },
     {
       "collection": "block_section",
-      "role": "Périmètre sur place : schéma et liste de ce qui reste dedans et de ce qui peut sortir.",
-      "claims": ["CL-72", "CL-05", "CL-77", "CL-79"],
+      "role": "Périmètre sur place : schéma et liste de ce qui reste dedans, de ce qui peut sortir et de qui peut entrer.",
+      "claims": [
+        "CL-72",
+        "CL-05",
+        "CL-77",
+        "CL-79",
+        "CL-E01",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -41,26 +50,30 @@
       },
       "translation": {
         "title": "The perimeter, on your premises.",
-        "body": "<p>The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not a real customer's configuration; the diagram for your installation is handed over in writing.</p>",
+        "body": "<p>The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not the configuration of a real customer; the diagram of your installation is handed to you in writing. Your data is never used to train a model and never sold: <a href=\"/en/your-data/\">see the commitments on your data</a>.</p>",
         "items": [
           {
             "title": "What stays within your walls.",
             "text": "Documents, the search index, conversations, logs and, if you choose, the models."
           },
           {
-            "title": "What may leave.",
-            "text": "Updates, licence checks, and an external model only if you accepted it in writing."
+            "title": "What can leave.",
+            "text": "Updates, licence checks, and an external model only if you explicitly activated it, in writing."
+          },
+          {
+            "title": "Who can get in.",
+            "text": "Nexora AI accesses your server only if you authorize it in writing, for a specific task and a limited time; every access is logged."
           },
           {
             "title": "What we verify.",
-            "text": "Every outbound flow is listed. We write “no data leaves” only if we have checked it on your configuration."
+            "text": "Every outbound flow is listed. We write \"no data leaves\" only if we have verified it on your configuration."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Étapes de la mise en place sur place.",
+      "role": "Étapes de la mise en place sur place, sans devenir informaticien.",
       "claims": ["CL-81", "CL-26", "CL-104", "CL-04"],
       "fields": {
         "columns": "3",
@@ -69,7 +82,7 @@
         "anchor_id": "etapes"
       },
       "translation": {
-        "title": "From study to operation.",
+        "title": "Six steps, no IT degree needed.",
         "cards": [
           {
             "title": "Size.",
@@ -77,7 +90,7 @@
           },
           {
             "title": "Install.",
-            "text": "Installation is one command on a Docker server (a tool that packages software), on Linux or macOS."
+            "text": "Installation takes one command on a Docker server (a tool that packages software), on Linux or macOS."
           },
           {
             "title": "Configure.",
@@ -89,11 +102,11 @@
           },
           {
             "title": "Train.",
-            "text": "Usage and supervision, for your team."
+            "text": "Usage and supervision, for your team: review, correct, approve."
           },
           {
             "title": "Operate.",
-            "text": "Division of tasks written in the contract: updates, backups, monitoring."
+            "text": "Split of tasks written in the contract: updates, backups, monitoring."
           }
         ]
       }
@@ -101,7 +114,7 @@
     {
       "collection": "block_cards",
       "role": "Qui fait quoi dans le mode sur place.",
-      "claims": ["CL-72", "CL-04", "CL-08"],
+      "claims": ["CL-72", "CL-04", "CL-08", "CL-E01"],
       "fields": {
         "columns": "2",
         "tone": "sable",
@@ -113,7 +126,7 @@
         "cards": [
           {
             "title": "You.",
-            "text": "You own the hardware.\nYou hold the access and grant it to Nexora AI as needed.\nYou place and keep the backups.\nYou decide on the models and any external option."
+            "text": "You own the hardware.\nYou hold the access and decide when to grant it to Nexora AI, in writing.\nYou place and keep the backups.\nYou decide on the models and activate, or not, any external option."
           },
           {
             "title": "Nexora AI.",
@@ -136,7 +149,7 @@
         "title": "Limits to know about.",
         "cards": [
           {
-            "title": "Offline is not presumed.",
+            "title": "Offline is not assumed.",
             "text": "A server on your premises can still receive updates or check a licence. Everything is listed."
           },
           {
@@ -157,7 +170,7 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre au mode sur place.",
-      "claims": ["CL-72", "CL-77", "CL-08"],
+      "claims": ["CL-72", "CL-77", "CL-08", "CL-E01", "CL-E03", "CL-E04"],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -168,18 +181,22 @@
         "items": [
           {
             "question": "Does my data stay with me?",
-            "answer": "By default, documents, the index and conversations stay on your server. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model."
+            "answer": "Yes. Documents, the index and conversations stay on your server. The outbound flows are the ones we list with you before go-live: updates, licences and, if you activate it in writing, an external model."
           },
           {
             "question": "Does Nexora AI access my server?",
-            "answer": "Only through the access you grant, agreed in advance. You can withdraw it."
+            "answer": "Only if you authorize it in writing, for a specific task and a limited time. Every access is logged, and you can withdraw the authorization."
           },
           {
-            "question": "Can I install it at a host of my choice?",
-            "answer": "Yes: “on your premises” means on a server you own, in your offices or at the host you choose. Its location then appears on the data-flow diagram."
+            "question": "Is my data used to train a model?",
+            "answer": "No, never. It is not sold either."
           },
           {
-            "question": "What if I want to leave?",
+            "question": "Can I install it with a host of my choice?",
+            "answer": "Yes: \"on your premises\" means on a server that belongs to you, in your offices or with the host you choose. Its location then appears in the data-flow diagram."
+          },
+          {
+            "question": "And if I want to leave?",
             "answer": "You keep your server, your documents, your configurations and your workflows: export is provided for in the contract."
           }
         ]
@@ -194,8 +211,8 @@
       },
       "translation": {
         "title": "Let's study your server.",
-        "text": "Tell us your uses and constraints. We will tell you what would need to be installed, where, and what would leave the network.",
-        "primary_label": "Request a deployment study",
+        "text": "Tell us your uses and your constraints. We will tell you what it would take to install, where, and what would leave the network.",
+        "primary_label": "Study my project",
         "primary_href": "/en/contact/?sujet=etude-deploiement",
         "secondary_label": "See the hosted mode",
         "secondary_href": "/en/deployment/hosted-quebec/"

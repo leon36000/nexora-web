@@ -7,13 +7,13 @@
 - Page : `deploiement` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/deploiement/` · slug : `deploiement`
 - Titre SEO (41 caractères) : Déploiement d'IA : sur place ou au Québec
-- Description SEO (160 caractères) : Comparaison honnête des deux modes de déploiement de Nexora AI : sur votre serveur ou hébergé au Québec. Qui contrôle quoi, point par point, et comment choisir.
+- Description SEO (156 caractères) : Déploiement d'IA pour PME au Québec : sur votre serveur ou hébergé chez nous. Qui contrôle quoi, comment choisir. Vos données n'entraînent jamais un modèle.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Hub du déploiement : deux modes, qui contrôle quoi. · Affirmations : CL-02, CL-70*
+*Page-pivot du déploiement : deux modes, mêmes engagements sur les données, qui contrôle quoi en une lecture. · Affirmations : CL-02, CL-70, CL-E03, CL-E04*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,56 +21,58 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Chez vous, ou chez nous au Québec.
 
-Les deux modes servent le même principe : savoir où tout se trouve. Voici, point par point, qui contrôle quoi, et comment choisir.
+Dans les deux modes, vos données restent à vous, ne servent jamais à entraîner un modèle et ne sont jamais vendues. Voici, en une lecture, qui contrôle quoi, et comment choisir.
 
-[Demander une étude de déploiement](/contact/?sujet=etude-deploiement) · [Lire sur la souveraineté](/souverainete/)
+[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Voir les engagements sur vos données](/vos-donnees/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Les deux modes, résumés, avec liens vers les pages détaillées. · Affirmations : CL-02, CL-72, CL-73*
+*Les deux modes, chacun avec son engagement sur les données, et liens vers les pages détaillées. · Affirmations : CL-02, CL-72, CL-73, CL-E01, CL-E02*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=modes`
 
-## Deux modes, côte à côte.
+## Deux modes. Un seul principe.
+
+Le principe : savoir où tout se trouve, et qui décide.
 
 #### Chez vous.
 
-Nous installons le système sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Le matériel, les accès et les sauvegardes sont à vous.
+Nous installons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Le matériel, les accès et les sauvegardes sont à vous, et vos données restent sur votre serveur.
 
 → [Voir le mode sur place](/deploiement/sur-place/)
 
 #### Chez nous, au Québec.
 
-Nous hébergeons et exploitons le système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel.
+Nous hébergeons et exploitons le système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel, et vos données restent au Québec, sauvegardes comprises.
 
 → [Voir le mode hébergé](/deploiement/heberge-quebec/)
 
 ### Bloc 3 — Section (`block_section`)
 
-*Tableau comparatif sous forme de liste : qui contrôle quoi. · Affirmations : CL-72, CL-73, CL-05, CL-06, CL-08, CL-77*
+*Tableau comparatif sous forme de liste : qui contrôle quoi, huit points. · Affirmations : CL-72, CL-73, CL-05, CL-06, CL-08, CL-77, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=qui-controle`
 
-## Qui contrôle quoi.
+## Qui contrôle quoi, en une lecture.
 
-Huit points, du matériel à la sortie du contrat. Dans chaque cas, la réponse est écrite avant la mise en service.
+Huit points, du matériel à la sortie du contrat. Dans chaque cas, la réponse est écrite avant la mise en service. Dans les deux modes, vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
 
 - **Le matériel.** Chez vous : il vous appartient. Chez nous : il appartient à notre infrastructure ; vous n'achetez rien.
 - **Les données.** Chez vous : sur votre serveur. Chez nous : dans notre infrastructure au Québec, selon les lieux précisés par écrit.
-- **Les modèles.** Dans les deux cas : sur le serveur concerné, ou externes seulement si vous les avez acceptés par écrit. Chaque modèle indique où il tourne.
-- **Les sauvegardes.** Chez vous : où vous les placez. Chez nous : dans les lieux nommés au contrat, avec la liste des sous-traitants.
+- **Les modèles.** Dans les deux cas : sur le serveur concerné, ou externes seulement si vous les avez activés explicitement, par écrit. Chaque modèle indique où il tourne.
+- **Les sauvegardes.** Chez vous : où vous les placez. Chez nous : au Québec, dans les lieux nommés au contrat, avec la liste des sous-traitants.
 - **Les mises à jour.** Listées dans les deux modes comme flux sortants. Chez vous, leur déclenchement se convient ; chez nous, nous les appliquons.
-- **Les accès de Nexora AI.** Chez vous : seulement ceux que vous accordez, convenus à l'avance. Chez nous : ceux qu'exige l'exploitation, décrits dans l'étude.
+- **Les accès de Nexora AI.** Chez vous : seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, chaque accès étant journalisé. Chez nous : ceux qu'exige l'exploitation, décrits dans l'étude.
 - **L'exploitation.** Chez vous : partagée selon le contrat. Chez nous : assurée par Nexora AI avec vous.
 - **La sortie du contrat.** Dans les deux modes : vos documents, vos configurations et vos flux de travaux restent exportables.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Comment choisir : cinq critères. · Affirmations : CL-82, CL-85, CL-04*
+*Comment choisir : cinq questions. · Affirmations : CL-82, CL-85, CL-04*
 
 Réglages : `columns=3`, `tone=sombre`, `layout=liste`, `anchor_id=choisir`
 
-## Comment choisir son mode.
+## Cinq questions pour choisir.
 
 Il n'y a pas de bon mode en soi. Voici les questions qui orientent la réponse.
 
@@ -96,7 +98,7 @@ Certains clients, notamment publics, peuvent exiger un hébergement au Québec 
 
 ### Bloc 5 — Section (`block_section`)
 
-*Le mode mixte : à étudier, aucune offre définie. · Affirmations : CL-74*
+*Le mode mixte : à étudier, aucune offre définie (CL-74). · Affirmations : CL-74*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=mixte`
 
@@ -104,9 +106,11 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=mixte`
 
 Certaines entreprises voudront garder des données sensibles chez elles et confier le reste à notre infrastructure. Une combinaison des deux modes peut être étudiée au cas par cas. Aucune offre mixte n'est définie à ce jour : nous ne vous en présentons donc ni le périmètre ni les conditions avant de l'avoir étudiée avec vous.
 
+Pour en parler, [étudier mon projet](/contact/?sujet=etude-deploiement) avec nous, ou lire d'abord notre approche de [la souveraineté](/souverainete/).
+
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ du hub déploiement. · Affirmations : CL-02, CL-06, CL-08*
+*FAQ du hub déploiement. · Affirmations : CL-02, CL-06, CL-08, CL-E03, CL-E04*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -122,7 +126,11 @@ L'exportation de vos documents, de vos configurations et de vos flux de travaux 
 
 #### Mes données sortent-elles du Québec ?
 
-Cela dépend du mode et des modèles choisis ; nous l'écrivons avant le démarrage. Un modèle externe n'est jamais configuré sans votre accord écrit.
+Cela dépend du mode et des modèles choisis ; nous l'écrivons avant le démarrage. Un modèle externe n'est jamais configuré sans votre activation explicite, consignée par écrit.
+
+#### Mes données servent-elles à entraîner un modèle ?
+
+Non, jamais, dans aucun des deux modes. Elles ne sont pas non plus vendues.
 
 #### Y a-t-il un mode hors ligne ?
 
@@ -138,4 +146,4 @@ Réglages : `tone=sombre`
 
 Une étude de déploiement compare les deux options pour votre cas : données, compétences, matériel, exigences de vos clients.
 
-[Demander une étude de déploiement](/contact/?sujet=etude-deploiement) · [Voir le centre de confiance](/centre-de-confiance/)
+[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Voir le centre de confiance](/centre-de-confiance/)

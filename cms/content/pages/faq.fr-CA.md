@@ -6,40 +6,46 @@
 
 - Page : `faq` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/faq/` · slug : `faq`
-- Titre SEO (38 caractères) : Questions fréquentes sur l'IA pour PME
-- Description SEO (157 caractères) : Vos données, le coût, la mise en service, les erreurs de l'IA, la Loi 25 : les réponses de Nexora AI aux questions les plus fréquentes des dirigeants de PME.
+- Titre SEO (40 caractères) : Questions IA PME : des réponses franches
+- Description SEO (156 caractères) : Données, entraînement, prix, Loi 25, erreurs de l'IA, vidéosurveillance, marketing : les réponses franches de Nexora AI aux questions des dirigeants de PME.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Entrée de la FAQ. · Affirmations : CL-09*
+*Entrée de la FAQ : réponses franches en langage de dirigeant. · Affirmations : CL-09*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Questions fréquentes**
 
-# Vos questions. Nos réponses.
+# Vos questions. Des réponses franches.
 
-Les objections que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement : quand nous ne savons pas encore, ou que ce n'est pas livré, nous l'écrivons.
+Données, coûts, mise en service, erreurs de l'IA : les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.
 
-[Poser une question](/contact/) · [Voir le centre de confiance](/centre-de-confiance/)
+[Poser une question](/contact/) · [Lire nos engagements sur vos données](/vos-donnees/)
 
 ### Bloc 2 — FAQ (`block_faq`)
 
-*Données et souveraineté : sept questions. · Affirmations : CL-02, CL-05, CL-06, CL-07, CL-08, CL-71, CL-77, CL-L05*
+*Données et souveraineté : huit questions, dont l'entraînement et la vente des données (E03, E04). · Affirmations : CL-02, CL-05, CL-06, CL-07, CL-08, CL-71, CL-77, CL-L05, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-L01, CL-L02, CL-87*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=donnees`
 
-## Données et souveraineté.
+## Vos données, vos règles.
 
 #### Mes données sortent-elles du Québec ?
 
-Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous. Les flux sortants sont ceux que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous le choisissez, un modèle externe. Chez nous, l'hébergement est dans notre infrastructure, au Québec, et nous précisons par écrit les sauvegardes, les journaux et les prestataires. Dans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
+Elles restent là où vous le décidez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous : ne sortent que les flux que nous listons ensemble avant la mise en service (mises à jour, licences et, si vous l'activez, un modèle externe). Chez nous, vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises ; les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants, en préparation.
 
-#### Entraînez-vous vos modèles avec nos données ?
+Dans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
 
-Non, pas sans votre autorisation spécifique. Notre règle : les données d'un client ne servent ni à un autre client ni à entraîner un modèle sans son accord, et nous l'inscrivons au contrat.
+#### Mes données servent-elles à entraîner une IA ?
+
+Non, jamais. Nexora AI n'utilise ni vos données, ni vos documents, ni vos invites, ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers. Pour un modèle externe que vous activez, les contrats avec les fournisseurs, en préparation, précisent la conservation et l'entraînement.
+
+#### Mes données sont-elles vendues ?
+
+Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée.
 
 #### Un serveur au Québec suffit-il ?
 
@@ -47,11 +53,11 @@ Non. La localisation des machines ne dit rien des modèles appelés, des sauvega
 
 #### Êtes-vous conformes à la Loi 25 ?
 
-Nous ne nous prononçons pas ainsi. La conformité d'une entreprise dépend de ses propres pratiques, de ses contrats et de sa gouvernance : aucun logiciel et aucun fournisseur ne la confère. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation, au centre de confiance.
+Nous ne nous prononçons pas ainsi : aucun logiciel et aucun fournisseur ne rend une entreprise conforme, et la responsabilité reste à celle qui détient les renseignements. La loi demande à votre entreprise, entre autres, une évaluation des facteurs relatifs à la vie privée et un contrat écrit avec ses fournisseurs. Nous décrivons ce que nous documentons, ce que le logiciel permet et ce qui est en préparation, au centre de confiance.
 
 #### Peut-on utiliser un modèle externe ?
 
-Oui, à deux conditions : vous l'acceptez par écrit, et il apparaît au schéma des flux comme un flux sortant. Aucun appel à un service d'IA externe n'est configuré sans votre accord écrit, et le système ne bascule jamais vers un tel service sans vous le dire.
+Oui, à deux conditions : vous l'activez par écrit, et il apparaît au schéma des flux comme un flux sortant. Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, et le système ne bascule jamais vers un tel service sans vous le dire.
 
 #### Le système fonctionne-t-il hors ligne ?
 
@@ -63,13 +69,13 @@ Vous repartez avec vos documents, vos configurations et vos flux de travaux : l
 
 ### Bloc 3 — FAQ (`block_faq`)
 
-*Mise en œuvre et coûts : sept questions. · Affirmations : CL-04, CL-10, CL-82, CL-14, CL-85, CL-12, CL-83*
+*Mise en œuvre et coûts : neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03). · Affirmations : CL-04, CL-10, CL-82, CL-14, CL-85, CL-12, CL-83, CL-G01, CL-G02, CL-G03, CL-G04*
 
 Réglages : `emit_jsonld=false`, `tone=sable`, `anchor_id=mise-en-oeuvre`
 
-## Mise en œuvre et coûts.
+## Démarrer sans vous compliquer la vie.
 
-#### Nous n'avons pas de personnel technique.
+#### Et si nous n'avons aucun personnel technique ?
 
 Ce n'est pas un obstacle. Nous installons le système, l'exploitons avec vous et le faisons évoluer ; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique.
 
@@ -97,13 +103,21 @@ Un large catalogue de services se connecte à WorkStudio, mais la possibilité d
 
 Oui : nous proposons une démonstration sur des données fictives. Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes.
 
+#### Et le marketing automatisé ?
+
+Nexora Croissance, notre offre de marketing automatisé, est en accès anticipé : l'accès se fait sur demande, et chaque connexion à une plateforme s'ouvre à son rythme. Elle réunit un site web, le référencement, la gestion de campagnes publicitaires, les réseaux sociaux et le suivi de la notoriété. Vous validez les publications et les changements majeurs de budget ou de ciblage, un plafond de dépenses que vous fixez s'applique, et aucun résultat n'est garanti. Tous les détails sont sur la page Nexora Croissance.
+
+#### L'hébergement web est-il gratuit avec Nexora Croissance ?
+
+Il est inclus : aucuns frais d'hébergement distincts tant que vous êtes client de Nexora Croissance. Restent à votre charge, affichés d'avance : le nom de domaine à votre nom (frais annuels payés au registraire) et les frais de publicité versés aux plateformes. Vous repartez avec votre contenu et votre nom de domaine.
+
 ### Bloc 4 — FAQ (`block_faq`)
 
-*L'IA, ses erreurs et ses limites : huit questions. · Affirmations : CL-21, CL-128, CL-96, CL-112, CL-124, CL-28, CL-30, CL-90*
+*L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01). · Affirmations : CL-21, CL-128, CL-96, CL-112, CL-124, CL-28, CL-30, CL-90, CL-V01, CL-V02, CL-V03, CL-V06, CL-V07, CL-L04*
 
 Réglages : `emit_jsonld=false`, `tone=clair`, `anchor_id=limites`
 
-## L'IA, ses erreurs, ses limites.
+## Une IA honnête sur ses limites.
 
 #### L'IA va-t-elle remplacer mes employés ?
 
@@ -117,7 +131,7 @@ Oui. Nous réduisons le risque en la faisant répondre à partir de vos document
 
 Votre équipe. Chaque appel de modèle laisse une trace consultable, la consommation est mesurée, et des jeux de tests permettent de vérifier qu'un changement n'a rien dégradé.
 
-#### Pourquoi pas un assistant grand public comme ChatGPT ?
+#### Pourquoi pas un assistant d'IA grand public ?
 
 Un assistant grand public répond bien aux questions générales. Ce que Nexora AI ajoute : le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire.
 
@@ -131,13 +145,49 @@ Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vo
 
 #### Nexora Code, Corpus, Quanta et Helix sont-ils disponibles ?
 
-Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n’est ouverte.
+Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte.
 
 #### Existe-t-il une solution pour la construction ?
 
-Oui : OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un statut honnête (disponible, en pilote ou prévu).
+Oui : OPSYS-AI coordonne dix départements pour les entreprises de construction et les services terrain, chacun avec un niveau honnête (qualifié localement, à compléter ou prévu). OPSYS-AI est un produit en développement, partiel : aucun déploiement de production complet n'existe.
 
-### Bloc 5 — Appel à l'action (`block_cta`)
+#### Et la surveillance vidéo par IA ?
+
+Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation : ce n'est pas un produit disponible, et aucune installation n'existe encore. Sa conception vise une analyse des images sur un serveur chez le client. Nexora Vision n'offre pas de reconnaissance faciale, et chaque alerte demande la vérification d'une personne. La Loi 25 exige notamment d'informer les personnes avant la collecte ; le détail est sur la page Nexora Vision.
+
+### Bloc 5 — Cartes (`block_cards`)
+
+*Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance. · Affirmations : CL-V01, CL-G01, CL-87*
+
+Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=plus-loin`
+
+## Aller plus loin.
+
+#### Vos données.
+
+Les cinq engagements, par écrit : sur place ou au Québec, jamais d'entraînement, jamais vendues.
+
+→ [Lire les engagements](/vos-donnees/)
+
+#### Nexora Vision.
+
+Vidéosurveillance par IA : un projet pilote sur invitation, pas un produit disponible.
+
+→ [Voir le projet pilote](/vision/)
+
+#### Nexora Croissance.
+
+Marketing automatisé : site avec hébergement inclus, référencement, publicité, réseaux sociaux. Accès anticipé.
+
+→ [Voir l'accès anticipé](/croissance/)
+
+#### Le centre de confiance.
+
+Ce que le logiciel permet déjà et les documents que nous préparons.
+
+→ [Voir les preuves](/centre-de-confiance/)
+
+### Bloc 6 — Appel à l'action (`block_cta`)
 
 *CTA final de la FAQ. · Affirmations : CL-01*
 

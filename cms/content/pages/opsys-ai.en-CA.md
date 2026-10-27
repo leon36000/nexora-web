@@ -7,335 +7,371 @@
 - Page : `opsys-ai` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/opsys-ai/` · slug : `opsys-ai`
 - Titre SEO (48 caractères) : OPSYS-AI: AI software for construction companies
-- Description SEO (160 caractères) : OPSYS-AI coordinates ten virtual departments for construction companies, from the first request to the draft invoice, with an honest status for each capability.
+- Description SEO (153 caractères) : OPSYS-AI, the intelligent operating system for small businesses: ten AI departments, from first request to finished job. Product in development, partial.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promise from brief §7; calls to action for a demonstration and a deployment study. · Affirmations : CL-30, CL-61*
+*Promesse de la brochure : le système d'exploitation intelligent des PME ; statut global partiel affiché dès le surtitre. · Affirmations : CL-O01, CL-O03, CL-30*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
-**OPSYS-AI · Construction and field services**
+**OPSYS-AI · Product in development, partial**
 
-# A coordinated team for your construction company.
+# The intelligent operating system for small businesses.
 
-Ten virtual departments work on the same files, from the first request to the preparation of the invoice. Every capability states its status: available, pilot or planned.
+Giving small businesses the capabilities of a large company: an augmented team, organized around your reality, from the first request to the finished job. A product in development: every capability shows its real level, and nothing is presented as delivered in production.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [Deployment study](/en/contact/?sujet=etude-deploiement)
 
-### Bloc 2 — Section (`block_section`)
+### Bloc 2 — Cartes (`block_cards`)
 
-*The owner's problems.*
+*Statut global « partiel » et les quatre niveaux de disponibilité (brochure p. 34). · Affirmations : CL-O01, CL-O02, CL-30*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
+Réglages : `columns=3`, `layout=liste`, `tone=clair`, `anchor_id=etat`
 
-## What costs you time.
+## Where OPSYS-AI stands, frankly.
 
-Often, a construction company does not lack tools: it lacks links between them. The request sits in an inbox, the quote in a spreadsheet, the job on paper sheets, the invoice in the accounting system.
+Overall status: partial. No complete production deployment, no demonstrated full parity with a third-party CRM, accounting package or calendar, and no real presence or payroll inferred from time views. Four levels are never confused.
 
-OPSYS-AI starts from that observation: one file, several departments, one logical sequence.
+#### Targeted rules and flows, verified in a local environment.
 
-- **Requests arrive everywhere.** Phone, email, web form: nothing guarantees that a request will be followed up.
-- **Quotes take time.** Information is missing, quantities are re-entered, margins are worked out separately.
-- **The job ends, the invoice lags.** Hours, materials and photos are pulled together after the fact.
-- **Actual costs arrive too late.** Estimate and actual are compared once the job is already closed.
-- **Decisions get lost.** Why this price, this supplier, this delay? Nobody remembers.
+For example request qualification, CRM follow-up, some administrative views, costs tied to a quote and a field log. These results certify neither all the modules nor a real end-to-end operation.
+
+#### What still needs to be built.
+
+The complete unified CRM, links between departments, the overall user experience, the administration tools and several business flows.
+
+#### What depends on further work.
+
+Photo and geospatial measurement, complete document assimilation, accounting and supplier integrations, voice and 3D presentation, a mobile app in the last phase.
+
+#### What no local test proves.
+
+Real providers, delivery of communications, authorizations, operational security, backup and recovery, performance, browsers and full deployment: each environment brings its own proof.
 
 ### Bloc 3 — Section (`block_section`)
 
-*Overall journey: five stages that group the ten departments. · Affirmations : CL-30, CL-31*
+*L'ambition : des capacités de grande entreprise pour une PME ; exemple de la rénovation. · Affirmations : CL-O03, CL-O10*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=ambition`
 
-## One file. Ten departments.
+## The capabilities of a large company.
 
-Instead of ten isolated tools, a single file follows the request from end to end. Each department reads what the others have prepared and adds its share, through an internal event bus: a shared log where each department notes what has just happened.
+A request well received. An opportunity followed up. A quote based on data. A team that knows what to do. Materials and costs in plain view. A leadership team that understands the results and can act.
 
-What the system prepares, a person approves. Sending, paying, deciding: these actions wait for your go-ahead.
+OPSYS-AI aims to bring these moments into a shared environment: reception, sales, estimating, field work, finance, materials, marketing, analytics, strategy and memory. A renovation business can follow a gutter or siding request from the first contact through to the quote, scheduling, purchasing, delivery and financial follow-up, with fewer breaks between files, people and tools.
 
-- **Receive and sell.** Intake, customer relations, estimating and quoting (M1 to M3).
-- **Plan and deliver.** Field work and materials: crews, schedules, proof of work, needs and receipts (M4 and M6).
-- **Invoice.** Draft invoice, receivables and actual costs (M5).
-- **Grow and steer.** Marketing, analytics and strategy (M7 to M9).
-- **Remember.** Memory of decisions and of authorized knowledge (M10).
+- **A shared view.** Find the context and the next action without rebuilding the whole file.
+- **Configurable AI specialists.** They assist your staff in their responsibilities.
+- **Human controls.** For decisions, commitments and sensitive actions.
+- **A system that learns with method.** From validated sources and results, never silently.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*The ten departments M1 to M10, with the honest status taken from report 07. · Affirmations : CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10, CL-32, CL-33, CL-35, CL-38, CL-39, CL-40, CL-41, CL-42*
+*Parcours en cinq temps (brochure p. 4) ; exemple illustratif, sans certification de bout en bout. · Affirmations : CL-O04*
 
-Réglages : `columns=4`, `layout=modules`, `tone=clair`, `anchor_id=departements`
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`, `anchor_id=parcours`
 
-## The ten departments.
+## From first contact to decision.
 
-Each card states its status. Available: the software does it today. Pilot: it works, with limits that we spell out. Planned: not delivered yet.
+A common thread shared across the business. Illustrative example: a request to replace gutters becomes a tracked opportunity, then an estimate to complete, a scheduled job and a file to close. This scenario illustrates the target; it does not certify an end-to-end flow in production.
 
-#### M1 — Intake.
+#### Welcome.
 
-Centralizes and qualifies requests, prepares follow-ups and hands off to the right person with the context.
-Available: request qualification (to be configured for your company), handoffs to a human, missed calls logged by your team. Pilot: transcribed voicemails. Planned: replies sent to the customer, real-time voice intake.
+A request arrives. Reception gathers the information available, notes what is missing and directs the file to the right person.
 
-#### M2 — Customer relations and sales.
+#### Sell and estimate.
 
-Tracks contacts, files, quotes and follow-ups, and suggests the next action.
-Available: file creation from a request, suggested next action. Pilot: file tracking, follow-ups, duplicate detection. Planned: connection to an external customer relationship management (CRM) system, visual tracking board (kanban).
+The CRM tracks the relationship, the activities and the follow-ups. The estimate prepares a quote from documented data, rules and costs.
 
-#### M3 — Estimating.
+#### Prepare.
 
-Prepares an estimate and a quote from the information provided, shows what is missing and refuses to give a figure when the information is insufficient.
-Status: available for the calculation and the draft quote, pilot for the rest. Quantities and prices are entered by your team. The quote is a draft, stripped of your internal costs and margins. Planned: measurement from photos.
+The team organizes the visit or the job, checks capacity and materials, then confirms the choices that commit the business.
 
-#### M4 — Field operations.
+#### Deliver.
 
-Organizes crews, schedules, jobs, time and proof of completion.
-Available: a job created from an accepted quote. Pilot: scheduling by route, clock-in at server time, after photos, signature and checklist. Planned: location at clock-in, road routing, automatic dispatch.
+The field records progress and variances. Useful facts feed the follow-up of the file, the costs and the invoicing.
 
-#### M5 — FinanceCore.
+#### Understand and improve.
 
-Prepares invoicing, financial tracking, costs and analyses, with appropriate approvals.
-Available: draft invoice after the job, accounts receivable, accounts payable entered by your team. Pilot: cash-flow forecast, actual cost per job, reconciliation from exported statements. Payroll is prepared (hours and gross pay) for your accountant, without payroll calculation. Planned: sending invoices, bank and accounting connections. The tax calendar must be validated by your accountant.
+Dashboards tie results back to their sources; leadership examines the variances, the priorities and the lessons learned.
 
-#### M6 — Materials.
+### Bloc 5 — Cartes (`block_cards`)
 
-Links needs, availability, suppliers, orders, receipts and actual consumption.
-Available: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department makes no payments.
+*Les dix départements : promesse en une ligne, exemple qualifié localement, cible à compléter (matrice p. 33). · Affirmations : CL-30, CL-O02, CL-D01, CL-D02, CL-D03, CL-D04, CL-D05, CL-D06, CL-D07, CL-D08, CL-D09, CL-D10*
 
-#### M7 — Marketing.
+Réglages : `columns=4`, `layout=modules`, `tone=sable`, `anchor_id=departements`
 
-Turns authorized information into content proposals and tracks where your customers come from.
-Status: available once your brand is configured, pilot for the rest. Proposals are submitted for your approval and consent is verified; export to your channels is manual. Pilot: tracking from request to quote to margin, with no advertising cost for now. Review requests remain drafts. Planned: automatic publishing to social networks.
+## Ten departments, one business.
 
-#### M8 — Analytics.
+Distinct responsibilities, shared context: information passes from one department to another according to the rights and contracts provided for. Each card tells what is locally qualified from what remains to be completed. A qualified example does not certify the whole department.
 
-Makes indicators understandable, sourced and accompanied by their quality: an indicator shows “not calculable” when data is missing.
-Available: executive view. Pilot: per-job measures. Planned: forecasts, health score.
+#### M1 — Reception and communications.
 
-#### M9 — Strategy.
+Welcome, understand and route requests: a structured first reply for every request.
+Locally qualified: targeted qualification and transfer of requests.
+To complete or qualify: live telephony and real delivery of messages (communication providers need their own connections and proof).
 
-Gathers the information that management needs for priorities and for tracking decisions.
-Available: management briefing and strategic reading, which inform without advising. Pilot: tracking a decision under the owner's approval, which executes nothing. Planned: scenarios, priorities and objectives.
+#### M2 — CRM, sales and follow-ups.
 
-#### M10 — Memory.
+Organize customers, opportunities and follow-ups: do not let an opportunity vanish between two follow-ups.
+Locally qualified: targeted follow-up and views.
+To complete or qualify: the complete unified CRM and real channels; proposed follow-ups are not automatic sends.
 
-Retrieves decisions and authorized knowledge, with their context and their sources.
-Status: available for the log of decisions and events, which detects any modification; pilot for searching the company's knowledge, disabled by default. Planned: relationship graph between files.
+#### M3 — Estimating and quotes.
 
-### Bloc 5 — Section (`block_section`)
+Prepare defensible estimates and quotes: a proposal built on facts, not hidden assumptions.
+Locally qualified: templates, renderings and pricing links on local slices.
+To complete or qualify: signature, photo or geospatial measurement and the complete flow; no accuracy is promised.
 
-*Central demonstration, link by link: real / demonstration / target. · Affirmations : CL-53, CL-60, CL-32, CL-33, CL-34, CL-31*
+#### M4 — Calendar, crews and field work.
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=parcours`
+Coordinate crews, scheduling and jobs: move from the sales promise to the work to be done.
+Locally qualified: a field log and recorded times, on a specific scope.
+To complete or qualify: observed presence, mobile and dispatch; neither real presence nor payroll is inferred.
 
-## From request to invoice.
+#### M5 — Finance and payroll preparation.
 
-This is the central journey as it stands today. For each link: what is **real** (the software does it), what is a **demonstration** (fictitious data or a partly simulated application) and what is a **target** (not delivered yet).
+Prepare and check financial information: put the numbers in context before deciding.
+Locally qualified: a targeted reading of costs tied to an accepted quote.
+To complete or qualify: full accounting, payroll, payments and connectors; a payment or a filing keeps a human approval.
 
-Four states are never confused: prepared, approved, sent, acknowledged. Verification was carried out on fictitious data.
+#### M6 — Materials, purchasing and suppliers.
 
-- **1. Request received.** Real: the intake engine, tested on fictitious data. Demonstration: SMS transport and telephony. Prepared: a summary of the request.
-- **2. Qualification.** Real, to be configured for your company: score, questions, next action, handoff to a human.
-- **3. Customer file.** Real: the file is created from the qualified request. Full file tracking is in pilot.
-- **4. Estimate.** Real: the calculation, which refuses to give a figure without sufficient information. Quantities and prices are entered. Target: measurement from photos.
-- **5. Approved quote.** Real: draft quote, eleven-criteria review and approval. Prepared and approved, yes; sent and acknowledged, no. Target: sending to the customer.
-- **6. Scheduling and materials.** Real on the server side, without a screen: job to schedule, schedule, reservation, approved draft purchase order. Target: sending the purchase order to the supplier.
-- **7. Execution.** Real: job completion on the server side. Demonstration: the employee app, whose clock-in uses a fictitious location.
-- **8. Controlled close-out.** Real on the server side: the completed job waits for a review and the material gap is calculated in quantities. Target: the alert on the administrator's phone.
-- **9. Draft invoice.** Real, internally: a draft invoice is prepared, with GST and QST calculated, to be validated by your accountant. Prepared, yes; sent and acknowledged, no.
-- **10. Analysis and tracking.** Real: executive view, management briefing, log of decisions. Demonstration: comparison of estimate and actual, on fictitious data.
+Manage catalogue, suppliers, purchases and movements: make job-site needs more visible.
+Locally qualified: a catalogue, prices and a private reading of price history.
+To complete or qualify: the history viewing screen and the import of prices by email; a purchase proposal is never an order placed.
+
+#### M7 — Marketing and growth.
+
+Organize growth and track initiatives: tie commercial initiatives to observable results.
+Locally qualified: targeted rules and indicators.
+To complete or qualify: real publishing and attribution; no performance or attribution is guaranteed.
+
+#### M8 — Analytics and data truth.
+
+Give meaning to indicators and their sources: dashboards that also show what they do not know.
+Locally qualified: a guard that prevents showing a margin as real without a final price and the complete real cost.
+To complete or qualify: connectors, the shared wallboard and the reports.
+
+#### M9 — Strategy and leadership.
+
+Shed light on priorities and leadership decisions: turn information into choices that can be debated and traced.
+Locally qualified: consolidation by slices.
+To complete or qualify: complete scenarios and production; a recommendation is neither an approved decision nor an external commitment.
+
+#### M10 — Memory and the learning business.
+
+Find knowledge, evidence and lessons learned: keep useful context and improve practices with method.
+Locally qualified: local memory building blocks and slices.
+To complete or qualify: complete multimodal assimilation, recall and quality on your company's data, which remain to be assessed.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Signature scenario “job completed”, link by link. · Affirmations : CL-54, CL-34, CL-35, CL-41, CL-58, CL-60*
+*La console et le CRM visuel : poste de travail central visé ; vues administratives qualifiées localement ; reste en développement. · Affirmations : CL-O05, CL-30*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=console`
 
-## When the job is done.
+## A console that serves people.
 
-The signature scenario. The employee enters photos, time, checklist and materials. Gaps trigger a review. The departments concerned prepare their updates. Here, link by link, is what is real, a demonstration or a target today.
+The visual, manual CRM is the central workstation we aim for: contacts, opportunities, activities, quotes, communications, appointments and job follow-ups in one experience. A person must be able to view and move their work forward directly, even when an agent assists.
 
-- **The employee finishes the job.** Demonstration: the checklist is local, after photos go into a queue, clock-in uses a fictitious location and the materials screen is not yet qualified.
-- **A gap triggers a review.** Real on the server side: job completion moves to awaiting review and requires a manager's approval.
-- **Materials are compared.** Real: estimated and actual quantities compared, withdrawals recorded, low stock flagged. Prices are not yet taken into account.
-- **The draft invoice is prepared.** Real, internally: draft invoice and updated profitability. Target: PDF, numbering and sending.
-- **The customer file is updated.** Real: the job is marked complete and the activity is written. The next action is only a suggestion.
-- **Content is proposed.** Real once your brand is configured: content proposals submitted for your decision, manual export. The review request remains a draft, never sent.
-- **Estimate is compared to actual.** Demonstration: comparison in minutes, on fictitious data. Dollars are not yet compared.
-- **Results are exposed.** Real: executive view. Pilot: job measures.
-- **The event is kept.** Real: the log of decisions and events, which detects any modification, keeps the event and its sources.
-- **The customer is kept informed.** Target: message to the customer, sending the invoice, acknowledgment. No real sending exists today.
+Some administrative views are locally qualified; the overall experience, real connections and complete coverage are in development. No complete parity or affiliation with external software is claimed.
+
+- **A customer record.** Find opportunities, interactions and next actions.
+- **A readable pipeline.** Spot files to qualify, quotes to follow and responsibilities.
+- **A secretariat.** Bring together reception, sales follow-up and coordination, with shortcuts to the relevant file.
+- **Lists, filters and day views.** Work by customer, team or task.
+- **Proposals to approve.** Actions and drafts the user can examine before they go out.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Differentiators: estimate versus actual, materials, finance, cash, agents and budgets, memory. · Affirmations : CL-D06, CL-34, CL-35, CL-42, CL-56, CL-57, CL-58*
+*Agents configurables par responsabilité (brochure p. 17). · Affirmations : CL-O06*
 
-Réglages : `columns=3`, `layout=grille`, `tone=clair`
+Réglages : `columns=3`, `layout=bento`, `tone=clair`, `anchor_id=agents`
 
-## What sets it apart.
+## Agents you configure by responsibility.
 
-Not a robot that answers the phone: departments that share the same file.
+A team of specialists adapted to the way you work, instead of handing every responsibility to a single assistant. An agent is software that carries out a task with the tools you allow it. Configuring a profile does not by itself prove that an action was carried out.
 
-#### Estimate against actual.
+#### Interchangeable models.
 
-Estimated quantities are compared with actual quantities after every job (available). So are minutes, on fictitious data (demonstration).
+Providers of your choice, fallback options, a hierarchy of specialists and quality control.
 
-#### Materials before the job.
+#### Tools according to your authorizations.
 
-Needs are calculated as soon as the quote is accepted. The order is prepared and approved, then sent by your team: no automatic sending to the supplier.
+Specialized software and connectors usable according to the authorizations and the integrations actually qualified.
 
-#### Invoicing without re-entry.
+#### A data perimeter.
 
-The draft invoice comes from the job data. You validate it; sending stays with your team.
+Permissions, confidentiality and memory policy defined for each role.
 
-#### The balance and what you owe.
+#### A budget and limits.
 
-Spendable cash is the money actually available once known obligations are deducted. It relies on your internal ledger, not on a bank connection (pilot).
+Context volume, number of steps, retries and concurrency.
 
-#### Agents bounded by a budget.
+#### Approvals and escalation.
 
-Each agent has a profile, permissions and a token budget (a token is the unit of text a model processes), checked before the call to a provider. The budget is counted in tokens, not dollars (pilot).
-
-#### A log of decisions.
-
-Why this price, this supplier, this delay? Decisions are logged with their context, in a register that detects any modification.
+Triggers, supervision, and handover to a person when the situation calls for it.
 
 ### Bloc 8 — Section (`block_section`)
 
-*Mobile: four profiles, distinct rights, offline not announced. · Affirmations : CL-55*
+*Automatisation sous permissions : l'autonomie se règle sur le niveau de confiance et l'action demandée. · Affirmations : CL-O07, CL-31*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=permissions`
 
-## Four profiles on mobile.
+## Automating under permissions.
 
-Each profile has its own rights: the owner approves, the salesperson follows customers, the employee enters field data, the customer follows their file. Today, three profiles exist in pilot; the fourth is planned.
+Autonomy is set according to the level of trust and the action requested. OPSYS-AI aims to automate preparation, research, coordination and certain permitted actions, with approval gates proportionate to the consequences. Your team moves from supervised assistance toward more automated flows, at the pace of the qualified capabilities.
 
-Offline operation is designed, but it has not yet been verified against a server: we do not announce it. There are no push notifications.
+A "prepared", "approved" or "sent" state is always distinct from actual delivery by the provider: the permissions, consents and constraints of each channel remain decisive.
 
-- **Owner or administrator.** Pilot: approvals (online only) and department screens.
-- **Salesperson.** Pilot: requests, customer record, notes and read-only quotes. No estimating, margin or photos.
-- **Employee.** Pilot: field entry (after photos, checklist, signature) and job completion. Clock-in is yet to be qualified; the home screen is minimal.
-- **Customer.** Planned: file tracking through secure links. Nothing is delivered.
+- **Prepare without inventing.** Reading and preparation within the authorized perimeter; what is missing is asked for, never guessed.
+- **Drafts to examine.** Proposals are reviewed before the actions that require it.
+- **Everything is tracked.** Events, retries and traceability to understand what happened.
+- **A person approves.** Payments, sensitive external commitments, publications and other reserved operations.
+- **Escalation.** When the situation goes beyond the rules, the rights or the data available.
 
 ### Bloc 9 — Section (`block_section`)
 
-*Deployment and sovereignty, with no invented “sovereign mode”. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36*
+*Sécurité, gouvernance et observabilité visées ; aucune certification ; engagements sur les données. · Affirmations : CL-O08, CL-E01, CL-E03, CL-E04*
 
-Réglages : `media_position=none`, `visual=flux-donnees`, `tone=sombre`, `anchor_id=souverainete`
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`, `anchor_id=securite`
 
-## Deployment and sovereignty, plainly.
+## Security, governance and observability.
 
-OPSYS-AI installs on a server or a virtual private server (VPS) that you control. This installation is in pilot: we qualify the procedure with you.
+Guardrails for working with confidence. The security we aim for rests on identity, permissions suited to roles, reduction of shared data and traceability of operations: departments and agents should access only the information needed for their responsibility.
 
-A promise of sovereignty is proven flow by flow. OPSYS-AI goes through a model gateway that can call external AI providers, depending on the configuration. A sovereign mode, in which no business content leaves your perimeter, is not yet defined in the product: until it is, we do not announce it.
+Compliance depends on the configuration, the deployment, the business's practices and appropriate validations. No security or compliance certification is claimed. Your data stays yours: [the five commitments](/en/your-data/) apply to OPSYS-AI.
 
-To go further: [the deployment modes](/en/deployment/) and [our approach to sovereignty](/en/sovereignty/).
-
-- **What we do.** For your configuration, we describe in writing where the data is, who can access it, which flows are configured and which are disabled.
-- **What stays your decision.** Which models to use, local or external. No external service is configured without your written consent.
-- **Backup and recovery.** Backup and restore scripts are provided (pilot). A full restore still has to be proven on your installation.
-- **Hosting in Quebec.** Under consideration in Nexora AI's infrastructure, located in Quebec. To be qualified during the deployment study.
-- **A protected console.** Approvals, modes and budgets are managed in a web console protected by authentication.
+- **Separate access.** Access controls, separation of responsibilities and of data domains.
+- **Protected secrets.** Protected secret references, without exposing values in profiles.
+- **Logs and proof.** Execution states, errors and proof to understand operations.
+- **Confidentiality and retention.** Confidentiality, retention and deletion settings to define according to context.
+- **Monitoring of limits.** Budgets, quotas and availability of tools and providers.
 
 ### Bloc 10 — Section (`block_section`)
 
-*Going live: study, configuration, pilot, training, operation. · Affirmations : CL-03, CL-04, CL-14*
+*Connecteurs, hébergement et mobilité : options visées ; mobile et déploiement complet non présentés comme livrés. · Affirmations : CL-O09, CL-77*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=clair`, `anchor_id=mise-en-service`
+Réglages : `media_position=none`, `visual=aucun`, `tone=clair`, `anchor_id=integration`
 
-## From study to go-live.
+## Connectors, hosting and mobility.
 
-We announce no one-size-fits-all timeline. It depends on the number of departments activated, on your data and on your integrations, and it is measured on a pilot.
+Choose the options that fit the business's context. The target favours a Linux server, notably a virtual private server (VPS), meaning a server rented for you alone, with a dedicated server as an alternative. Models can be local, cloud or hybrid depending on your needs, rights and costs. See also [the deployment modes](/en/deployment/).
 
-### Bloc 11 — Cartes (`block_cards`)
+A configured integration is not necessarily authenticated, working or authorized to write. Third-party brands and software are references or integration possibilities, with no implied official partnership. The mobile app and the complete deployment are not presented as delivered.
 
-*Les cinq étapes de la mise en service, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
+- **Connectors by department.** APIs, webhooks and events, with configuration, rights, state, limits and a fallback.
+- **Integrations envisaged.** Communications, calendars, accounting, suppliers and document sources, as needed.
+- **Voice and 3D presentation, optional.** Envisaged after qualification, subject to authorization and costs.
+- **A mobile app, in the last phase.** Administrator, salesperson, employee and client profiles, with the ambition of offline operation. Nothing is delivered.
+- **Backup and recovery.** To be defined and verified in the chosen environment.
 
-Réglages : `columns=3`, `layout=etapes`, `tone=clair`
+### Bloc 11 — Section (`block_section`)
 
-#### Deployment study.
+*Pour qui : PME ; rénovation extérieure au Québec comme contexte de départ ; cinq publics. · Affirmations : CL-O10*
 
-We map your processes, tools and data, and choose which departments to activate first.
+Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=pour-qui`
 
-#### Configuration.
+## Who it is for, and why.
 
-Brand, rate schedules, qualification rules, handoff recipients: the system is tuned to your company.
+OPSYS-AI is for small businesses that want to coordinate requests, sales, crews and administration better. Exterior renovation in Quebec is the starting business context; adapting to other sectors will depend on their processes, data and rules.
 
-#### Pilot on one flow.
+- **Leadership.** See the priorities, the variances and the decisions to make.
+- **Reception and customer service.** Find the file, route requests and prepare follow-ups.
+- **Sales and estimating.** Structure the pipeline and prepare documented quotes.
+- **Field and operations.** Organize days, jobs and materials.
+- **Administration and finance.** Reconcile information and prepare controls.
 
-A single journey first, for example from request to quote, with your approvals.
+### Bloc 12 — Cartes (`block_cards`)
 
-#### Training.
+*Démarche réaliste en quatre étapes (brochure p. 21) ; aucun délai annoncé. · Affirmations : CL-O10, CL-14, CL-80*
 
-Your team learns to supervise, approve and correct.
+Réglages : `columns=4`, `layout=etapes`, `tone=clair`, `anchor_id=demarrage`
 
-#### Operation.
+## How to start, in four steps.
 
-We follow what works and widen the scope, department by department.
+A realistic approach: one flow at a time, qualified in your environment. Options, timing and scope are determined by your needs and the capabilities actually available.
 
-### Bloc 12 — FAQ (`block_faq`)
+#### Choose a priority flow.
 
-*OPSYS-AI FAQ: objections and limits, true answers only. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01*
+The one where your team loses the most time, from request to quote for example.
+
+#### Inventory data and tools.
+
+What already exists, where it is and who has access.
+
+#### Define roles and approvals.
+
+Who prepares, who approves, who is notified.
+
+#### Qualify each step.
+
+In the target environment, with your data, before widening.
+
+### Bloc 13 — FAQ (`block_faq`)
+
+*FAQ alignée sur la brochure : statut, niveaux, envois, remplacement d'un logiciel, serveur, données, secteurs, mobile, délai, prix, essai. · Affirmations : CL-O01, CL-O02, CL-O07, CL-31, CL-O05, CL-O09, CL-O10, CL-E03, CL-E04, CL-14, CL-10, CL-61*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 ## Your questions. Our answers.
 
-#### Is OPSYS-AI a chatbot?
+#### Is OPSYS-AI available in production?
 
-No. It is a set of ten departments that work on the same files: request, estimate, job, materials, invoice, analysis, memory. The aim is not to chat, but to coordinate.
+No. OPSYS-AI is a product in development, and its overall status is partial. Some flows and views are locally qualified, but no complete production deployment exists.
 
-#### Are quotes and invoices sent automatically?
+#### What does "locally qualified" mean?
 
-No. The system prepares drafts. The quote is stripped of your internal costs and margins and goes through an approval. Real sending to the customer does not exist yet: your team transmits the document.
+Targeted rules and flows exist and were verified in a local environment, on a limited scope. That certifies neither a whole department, nor an integration with a provider, nor a flow in production.
 
-#### Are all ten departments available?
+#### Do quotes, invoices and follow-ups go out on their own?
 
-No, and we say so department by department. Some elements are available, many are in pilot, others are planned. The cards in the “The ten departments” section give the detail.
+No. The system prepares drafts and proposals. Payments, sensitive external commitments, publications and other reserved operations require a person's approval, and a "prepared" or "approved" state does not prove that a message was delivered.
 
-#### What does human approval do?
+#### Does it replace our accounting software or our CRM?
 
-It blocks the binding action (sending, paying, a financial decision) until an authorized person decides. A log keeps the record.
+Not today. No full parity is demonstrated with a third-party CRM, accounting package or calendar, and complete accounting and payroll are not claimed. The unified CRM is in development.
 
 #### Can we install it on our own server?
 
-Yes, on a server or a VPS that you control. Installation is in pilot: the procedure is qualified with us.
+That is the target: a Linux server, notably a virtual private server, with a dedicated server as an alternative. Backup, operation and recovery remain to be defined and verified in your environment.
 
-#### Is OPSYS-AI offered in a sovereign mode?
+#### Is my data used to train an AI?
 
-Not under that name. We describe the real perimeter of your installation instead: where the data is, who accesses it, which flows are configured. A mode in which no business content leaves your perimeter is not yet defined in the product.
+Never. We do not use your data to train or fine-tune any model, and we never sell it.
 
-#### Does it connect to our accounting or our bank?
+#### Is it suitable for trades other than renovation?
 
-Not today. The system prepares files for your accountant and reconciles statements that you export. Bank and accounting connections are planned, not delivered.
+Exterior renovation in Quebec is the starting context. Adapting to another sector depends on its processes, data and rules: that is the purpose of the deployment study.
 
-#### Are voicemails and calls handled?
+#### Is there a mobile app?
 
-Uploaded voicemails can be transcribed (pilot). There is no real-time phone receptionist.
-
-#### Does it work offline on mobile?
-
-Offline mode is designed, but it has not yet been verified against a server: we do not guarantee it.
+It is planned for the last phase, for administrator, salesperson, employee and client profiles, with the ambition of offline operation. It is not presented as delivered.
 
 #### How long does go-live take?
 
-No universal timeline is announced. It depends on the departments activated, your data and your integrations, and it is measured on a pilot.
+No universal timeline is announced. It depends on the chosen flow, your data and your integrations, and is determined by qualifying each step.
 
 #### How much does it cost?
 
-There is no public price. A deployment study establishes, in writing, what is included and what it costs.
+There is no public price. A deployment study sets out in writing what is included and what it costs.
 
 #### Is there a free trial?
 
-No, not as self-service. We offer a demonstration on fictitious data, a deployment study, then a qualified pilot.
+No, not as self-service. We offer a demonstration, a deployment study, then a qualified pilot.
 
-### Bloc 13 — Appel à l'action (`block_cta`)
+### Bloc 14 — Appel à l'action (`block_cta`)
 
-*Final call to action: demonstration or deployment study. · Affirmations : CL-61*
+*CTA : démonstration ou étude de déploiement. · Affirmations : CL-61, CL-O01*
 
 Réglages : `tone=sombre`
 
 ## Let's talk about your jobs.
 
-Request a demonstration on fictitious data, or a deployment study for your company. We move with you, step by step: demonstration, study, then pilot.
+See where OPSYS-AI stands with a demonstration, or start a deployment study for your company. We move with you, one flow at a time: demonstration, study, then qualified pilot.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [Deployment study](/en/contact/?sujet=etude-deploiement)

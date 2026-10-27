@@ -6,14 +6,14 @@
   "seo": {
     "slug": "solutions/appointments",
     "title": "Appointments",
-    "seo_title": "AI appointment booking for small businesses",
-    "seo_description": "A system takes requests, proposes slots from your calendar, reminds your clients and releases cancelled slots. No slot is confirmed without being checked.",
+    "seo_title": "AI appointment booking that fills your day",
+    "seo_description": "The system receives appointment requests, proposes slots from your calendar, reminds your customers and releases cancellations. No slot is ever made up.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution rendez-vous.",
+      "role": "Promesse de la solution rendez-vous : un agenda qui se remplit, sans disponibilité inventée.",
       "claims": ["CL-123", "CL-124"],
       "fields": {
         "variant": "sombre",
@@ -21,8 +21,8 @@
       },
       "translation": {
         "eyebrow": "Solution · Appointments",
-        "headline": "Slots proposed. Reminders sent.",
-        "subheadline": "The system takes appointment requests, proposes slots from your calendar and reminds your clients. It never confirms an availability it has not checked.",
+        "headline": "A calendar that fills itself.",
+        "subheadline": "The system receives appointment requests, proposes slots from your calendar and reminds your customers, even when the office is closed. It never confirms an availability it has not checked.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "See all solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème : un petit cabinet qui perd des créneaux.",
+      "role": "Problème : exemple construit d'un petit cabinet qui perd des créneaux.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -44,11 +44,11 @@
         "items": [
           {
             "title": "Requests that wait.",
-            "text": "They arrive in the evening; the reply leaves the next day, sometimes too late."
+            "text": "They arrive in the evening; the reply goes out the next day, sometimes too late."
           },
           {
             "title": "Forgotten reminders.",
-            "text": "Each one is a risk of a no-show."
+            "text": "Every oversight is a risk of a no-show."
           },
           {
             "title": "Late cancellations.",
@@ -59,8 +59,8 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système, selon l'agenda connecté.",
-      "claims": ["CL-123", "CL-103", "CL-91", "CL-21", "CL-85"],
+      "role": "Ce que fait le système, selon l'agenda connecté : de la demande au rappel.",
+      "claims": ["CL-123", "CL-103", "CL-91", "CL-21", "CL-85", "CL-P02"],
       "fields": {
         "columns": "4",
         "tone": "clair",
@@ -68,12 +68,12 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "What the system does.",
-        "intro": "Everything rests on a calendar actually connected to WorkStudio. Without that connection, the system is limited to recording a slot request, confirming nothing.",
+        "title": "From request to reminder.",
+        "intro": "It all rests on a calendar genuinely connected to WorkStudio. Without that connection, the system is limited to recording a slot request, confirming nothing. The workflow (an automated sequence of tasks) is built without writing code.",
         "cards": [
           {
             "title": "It receives.",
-            "text": "A request arrives by email or by form. The system pulls out the need and the preferences."
+            "text": "A request arrives by email or form. The system pulls out the need and the preferences."
           },
           {
             "title": "It proposes.",
@@ -91,65 +91,96 @@
       }
     },
     {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe, bénéfice, et limites vocales.",
-      "claims": ["CL-123", "CL-124", "CL-102", "CL-14"],
+      "collection": "block_cards",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento), dont la transcription d'un message vocal et l'absence de téléphonie.",
+      "claims": ["CL-123", "CL-124", "CL-102"],
       "fields": {
-        "media_position": "none",
+        "columns": "2",
         "tone": "sombre",
+        "layout": "bento",
         "anchor_id": "equipe"
       },
       "translation": {
-        "title": "What your team receives.",
-        "body": "<p>A calendar that fills while the team works, reminders sent without anyone remembering, cancellations handled. The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate and no gain is announced: it is measured during a pilot.</p><p>The phone is not included. No call-answering service is delivered today; a voice message dropped in as a recording can be transcribed, and live telephony is checked separately.</p>",
-        "items": [
+        "title": "Appointments ready, reminders sent.",
+        "intro": "A calendar that fills while the team works, reminders sent without anyone thinking about it, cancellations handled.",
+        "cards": [
           {
             "title": "Requests received.",
-            "text": "A clear queue: to handle, proposed, confirmed."
+            "text": "A clear queue: to process, proposed, confirmed."
           },
           {
-            "title": "Prepared reminders.",
+            "title": "Reminders prepared.",
             "text": "The wording is yours, approved once."
           },
           {
-            "title": "Visible cancellations.",
-            "text": "The freed slot shows up in the calendar at once."
+            "title": "Cancellations in plain sight.",
+            "text": "The freed slot shows up in the calendar right away."
+          },
+          {
+            "title": "Voice messages, transcribed.",
+            "text": "A voice message dropped in as a recording can be transcribed. The phone itself is not included: no call-answering service is delivered today, and live telephony is checked separately."
           }
         ]
       }
     },
     {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic ; lien vers Croissance (être trouvé, accès anticipé).",
+      "claims": ["CL-14", "CL-09", "CL-123", "CL-G01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "Fewer lost slots.",
+        "body": "<p>The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to connect your calendar.</p><p>A full calendar starts with customers who find you: <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service, is in early access, on request.</p>"
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé.",
-      "claims": ["CL-123", "CL-131", "CL-128", "CL-06"],
+      "role": "Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé ; carte données avec lien Vos données.",
+      "claims": [
+        "CL-123",
+        "CL-131",
+        "CL-128",
+        "CL-06",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
-        "tone": "clair",
+        "tone": "sable",
         "layout": "liste",
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "What stays under your control.",
+        "title": "No slot is ever made up.",
         "cards": [
           {
-            "title": "No invented slot, ever.",
-            "text": "Without a connected calendar, the system records a slot request. It does not confirm an unchecked availability."
+            "title": "No calendar, no confirmation.",
+            "text": "Without a connected calendar, the system records a slot request. It does not confirm an unverified availability."
           },
           {
             "title": "You decide on confirmation.",
-            "text": "You choose which appointment types are confirmed on their own and which wait for a person."
+            "text": "You choose which types of appointment confirm on their own and which wait for a person."
           },
           {
             "title": "Limited information.",
-            "text": "For a health or wellness practice, we recommend limiting the system to administrative information (date, time, appointment type). We qualify no clinical use."
+            "text": "For a health or wellness practice, we recommend limiting the system to administrative information (date, time, type of appointment). We do not qualify any clinical use."
           },
           {
-            "title": "Reminders are yours.",
-            "text": "The wording, the timing and the channel are approved by you. Reminders relate to an existing appointment; they are not for prospecting."
+            "title": "The reminders are yours.",
+            "text": "The wording, the timing and the channel are approved by you. Reminders concern an existing appointment; they are not for prospecting."
           },
           {
-            "title": "The location of the data is written.",
-            "text": "The calendar and the requests stay inside the agreed perimeter; an external service is a disclosed choice."
+            "title": "Your data stays yours.",
+            "text": "The calendar and the requests stay within the agreed perimeter: on your server or with us, in Quebec. Never used to train a model, never sold; an external service comes in only when you explicitly activate it, in writing.",
+            "href": "/en/your-data/",
+            "link_label": "Read our commitments"
           }
         ]
       }
@@ -160,15 +191,15 @@
       "claims": ["CL-123", "CL-124", "CL-85", "CL-132"],
       "fields": {
         "emit_jsonld": true,
-        "tone": "sable",
+        "tone": "clair",
         "anchor_id": "questions"
       },
       "translation": {
         "title": "Appointments: your questions.",
         "items": [
           {
-            "question": "Which calendars does it work with?",
-            "answer": "Those that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider."
+            "question": "Which calendar does it work with?",
+            "answer": "With calendars that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider."
           },
           {
             "question": "Can it answer the phone?",
@@ -180,21 +211,21 @@
           },
           {
             "question": "Can it be used for care?",
-            "answer": "For administration only: request, slot, reminder. We qualify no clinical use and we recommend not routing health information through it."
+            "answer": "For administration only: request, slot, reminder. We do not qualify any clinical use and we recommend not routing health information through it."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "CTA : démonstration.",
-      "claims": ["CL-01"],
+      "role": "CTA : démonstration ; partenaire d'ici.",
+      "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
-        "title": "See the calendar fill.",
-        "text": "We prepare a demonstration on a fictional calendar, then we talk about yours and your confirmation rules.",
+        "title": "Watch the calendar fill up.",
+        "text": "We prepare a demonstration on a fictional calendar, then we talk about yours and your confirmation rules. A partner from here installs, runs and trains with you.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "See customer service",

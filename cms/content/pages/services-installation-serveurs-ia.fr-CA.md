@@ -7,27 +7,27 @@
 - Page : `services-installation-serveurs-ia` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/services/installation-serveurs-ia/` · slug : `services/installation-serveurs-ia`
 - Titre SEO (38 caractères) : Installation de serveurs d'IA pour PME
-- Description SEO (159 caractères) : Nexora AI installe et configure votre serveur d'IA chez vous ou dans son infrastructure au Québec, puis l'exploite avec vous. Matériel dimensionné avant achat.
+- Description SEO (158 caractères) : Installation de serveur d'IA pour PME : Nexora AI installe en une commande, chez vous ou au Québec, puis exploite avec vous. Matériel dimensionné avant achat.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du service d'installation. · Affirmations : CL-81, CL-05*
+*Promesse du service d'installation : un serveur d'IA prêt à travailler, un périmètre écrit. · Affirmations : CL-81, CL-05, CL-26*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Services · Installation**
 
-# Un serveur d'IA installé. Un périmètre écrit.
+# Un serveur d'IA prêt à travailler.
 
-Nous installons, configurons et exploitons avec vous le serveur qui fait tourner vos agents et vos modèles : chez vous, ou dans notre infrastructure au Québec. Le périmètre vous est remis par écrit avant la mise en service.
+Nous installons, configurons et exploitons avec vous le serveur qui fait tourner vos agents et vos modèles : chez vous, ou dans notre infrastructure au Québec. Installation en une commande, périmètre remis par écrit avant la mise en service, données qui restent à vous.
 
 [Demander une étude de déploiement](/contact/?sujet=etude-deploiement) · [Comparer les deux modes](/deploiement/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Définition du serveur d'IA et des deux voies. · Affirmations : CL-81, CL-02, CL-13*
+*Définition du serveur d'IA, deux voies et engagements sur les données de chaque voie. · Affirmations : CL-81, CL-02, CL-13, CL-E01, CL-E02, CL-E03, CL-E04, CL-73*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=deux-voies`
 
@@ -35,18 +35,18 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=deux-voies`
 
 Un serveur d'IA est une machine qui exécute les modèles (les moteurs qui produisent les réponses) et les agents. Ce peut être un serveur physique, ou un serveur privé virtuel (VPS), c'est-à-dire un serveur loué rien que pour vous.
 
-La méthode est la même dans les deux cas : on dimensionne, on installe, on configure, on vérifie les flux, on forme, puis on exploite.
+La méthode est la même dans les deux cas : on dimensionne, on installe, on configure, on vérifie les flux, on forme, puis on exploite. Dans les deux cas aussi, vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
 
-- **Chez vous.** Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous.
-- **Chez nous, au Québec.** Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel.
+- **Chez vous.** Dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous, et vos données restent sur votre serveur : Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, chaque accès étant journalisé.
+- **Chez nous, au Québec.** Dans notre infrastructure, où nous l'exploitons. Vous n'achetez ni serveur ni matériel. Vos données restent au Québec, sauvegardes comprises, hors les services que vous activez explicitement ; le lieu vous est précisé par écrit avant la mise en service.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Six étapes, de l'étude à l'exploitation. · Affirmations : CL-81, CL-26, CL-88, CL-104, CL-05, CL-04*
+*Six étapes de l'installation, de l'étude à l'exploitation. · Affirmations : CL-81, CL-26, CL-88, CL-104, CL-05, CL-04*
 
 Réglages : `columns=3`, `tone=sable`, `layout=etapes`, `anchor_id=etapes`
 
-## De l'étude à l'exploitation.
+## L'installation, de l'étude à l'exploitation.
 
 #### 1. Dimensionner.
 
@@ -100,15 +100,15 @@ Lire des documents scannés ou transcrire des enregistrements demande des modèl
 
 ### Bloc 5 — Section (`block_section`)
 
-*Ce que nous installons : WorkStudio et ses composants. · Affirmations : CL-26, CL-27, CL-103, CL-24, CL-88*
+*Ce que contient le serveur : WorkStudio et ses composants. · Affirmations : CL-26, CL-27, CL-103, CL-24, CL-88, CL-P02*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=composants`
 
-## Ce que nous installons.
+## Ce que contient votre serveur d'IA.
 
-L'installation réunit la plateforme [Nexora WorkStudio](/workstudio/) et les services dont elle a besoin.
+L'installation réunit la plateforme [Nexora WorkStudio](/workstudio/), où l'on construit ses agents et ses flux sans écrire de code, et les services dont elle a besoin.
 
-- **WorkStudio.** Le studio où se conçoivent et se pilotent agents et flux de travaux.
+- **WorkStudio.** Le studio où se conçoivent et se pilotent agents et flux de travaux, en français, sans écrire de code.
 - **Une passerelle de modèles.** Un point d'accès unique à plusieurs modèles d'IA, au format OpenAI, avec clés, quotas et mesure de la consommation.
 - **Nexora Connect.** Le moteur de connecteurs qui relie vos services (messagerie, agenda, stockage, facturation).
 - **Des services optionnels.** Détection locale des renseignements personnels, voix locale (transcription, synthèse vocale), lecture de documents scannés.
@@ -134,13 +134,13 @@ La durée dépend de votre cas et se mesure sur un premier cas.
 
 Disponibilité et délais de réponse se précisent au contrat.
 
-#### Aucun flux sortant n’est présumé nul.
+#### Aucun flux sortant n'est présumé nul.
 
 Mises à jour, licences, modèle externe éventuel : tout est listé avant la mise en service.
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à l'installation. · Affirmations : CL-26, CL-81, CL-82, CL-08*
+*FAQ propre à l'installation (matériel, serveur existant, exploitation, changement de mode, sorties de données). · Affirmations : CL-26, CL-81, CL-82, CL-08, CL-77, CL-06, CL-E01, CL-E05*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -152,11 +152,15 @@ Cela dépend du cas. Le diagnostic répond à cette question avant tout achat :
 
 #### Peut-on l'installer sur un serveur existant ?
 
-Il faut un serveur Linux ou macOS qui fait tourner Docker. Nous vérifions au diagnostic qu’il convient aux usages prévus.
+Il faut un serveur Linux ou macOS qui fait tourner Docker. Nous vérifions au diagnostic qu'il convient aux usages prévus.
+
+#### Mes données quittent-elles le serveur ?
+
+Dans le mode sur place, les documents, l'index de recherche et les conversations restent sur votre serveur. Ce qui peut en sortir est listé avec vous avant la mise en service : mises à jour, vérifications de licence et, seulement si vous l'avez activé par écrit, un modèle externe.
 
 #### Qui exploite ensuite ?
 
-Nous, avec vous, selon ce que le contrat prévoit. Dans le mode sur place, les accès que vous nous donnez sont convenus à l'avance.
+Nous, avec vous, selon ce que le contrat prévoit. Dans le mode sur place, nous n'accédons à votre serveur que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps.
 
 #### Peut-on changer de mode plus tard ?
 

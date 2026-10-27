@@ -6,23 +6,23 @@
   "seo": {
     "slug": "solutions/customer-service",
     "title": "Customer service",
-    "seo_title": "AI customer service for Quebec small business",
-    "seo_description": "An agent answers your customers from your own documents, cites its sources and passes the request on to a person with a summary. You stay in control. Learn how.",
+    "seo_title": "AI customer service for small businesses",
+    "seo_description": "An agent answers your customers from your own documents, cites its sources and hands the request to a person with a summary. Your team stays in charge.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution service client.",
-      "claims": ["CL-122", "CL-90"],
+      "role": "Promesse de la solution service client : le site répond, l'équipe se concentre.",
+      "claims": ["CL-122", "CL-90", "CL-107"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
         "eyebrow": "Solution · Customer service",
-        "headline": "Sourced answers. A person as backup.",
-        "subheadline": "An agent answers your customers' questions from your own documents, cites what it used and passes the request to your team when it does not know.",
+        "headline": "Your site answers. Your team focuses.",
+        "subheadline": "An agent (software that completes a task using the tools you authorize) answers your customers' questions from your own documents, cites its sources and hands off to your team when it does not know.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "See all solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème : un distributeur de produits de plomberie.",
+      "role": "Problème : exemple construit d'un distributeur de produits de plomberie.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -39,12 +39,12 @@
         "anchor_id": "probleme"
       },
       "translation": {
-        "title": "The same questions, every day.",
-        "body": "<p>Take a plumbing-supplies distributor that serves contractors. Every day it is asked for opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find and repeat them.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "title": "The same questions, day after day.",
+        "body": "<p>Take a plumbing-supplies distributor that serves contractors. Every day, people ask about opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find them and say them again.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
         "items": [
           {
             "title": "An interrupted team.",
-            "text": "Simple questions break the work of the people who should be handling the hard cases."
+            "text": "Simple questions break the concentration of the people who should be handling the hard cases."
           },
           {
             "title": "Uneven answers.",
@@ -60,7 +60,7 @@
     {
       "collection": "block_cards",
       "role": "Ce que fait le système : trois étapes, avec relais humain.",
-      "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112"],
+      "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112", "CL-P01"],
       "fields": {
         "columns": "3",
         "tone": "sombre",
@@ -68,16 +68,16 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "What the system does.",
-        "intro": "The agent is published in WorkStudio. It can live on your website (a chat bubble) or in an internal space reserved for your team.",
+        "title": "Search, answer, hand off.",
+        "intro": "The agent is published in WorkStudio, the tool that puts answers drawn from your own documents within your reach. It can live on your website (a chat bubble) or in an internal space reserved for your team.",
         "cards": [
           {
             "title": "It searches.",
-            "text": "For each question, it consults the document bases you opened to it: data sheets, guides, policies. By default, indexing is computed on the instance's own server."
+            "text": "For each question, it consults the document bases you have opened to it: data sheets, guides, policies. Indexing (filing documents so they can be found quickly) is computed by default on the instance's server."
           },
           {
             "title": "It answers and cites.",
-            "text": "The answer numbers its sources, which a click opens. A safeguard can check that the answer stays faithful to your documents before it goes out."
+            "text": "The answer numbers its sources, which one click opens. A safeguard (an automatic check) can verify that the answer stays faithful to your documents before it goes out."
           },
           {
             "title": "It passes the request on.",
@@ -87,65 +87,102 @@
       }
     },
     {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe, et le bénéfice.",
-      "claims": ["CL-96", "CL-122", "CL-14"],
+      "collection": "block_cards",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento).",
+      "claims": ["CL-96", "CL-122"],
       "fields": {
-        "media_position": "none",
+        "columns": "2",
         "tone": "clair",
+        "layout": "bento",
         "anchor_id": "equipe"
       },
       "translation": {
-        "title": "What your team receives.",
-        "body": "<p>Simple questions get an answer without tying anyone up. The others arrive with their context: the question, what the agent already answered, a summary.</p><p>The expected benefit: fewer interruptions, more consistent answers, customers who get something sooner. No percentage is announced; the effect is measured during a pilot, on your real questions.</p>",
-        "items": [
+        "title": "A team that takes back control.",
+        "intro": "Simple questions get an answer without tying anyone up. The others arrive with their context.",
+        "cards": [
           {
-            "title": "Requests passed on.",
-            "text": "With the summary of the exchange, so nobody asks the question twice."
+            "title": "Requests passed on with context.",
+            "text": "The question, what the agent has already answered, a summary of the exchange: nobody has to ask again."
           },
           {
-            "title": "A conversation log.",
+            "title": "A log of conversations.",
             "text": "The agent's exchanges are traced: you can see what was answered, with which sources."
           },
           {
-            "title": "Traces to review.",
-            "text": "Questions left unanswered can be found in the traces and tell you which documents your knowledge base is missing."
+            "title": "Traces that reveal the gaps.",
+            "text": "Questions left unanswered show up in the traces and tell you which documents your base is missing."
+          },
+          {
+            "title": "Simple questions, settled alone.",
+            "text": "The answers are found in your data sheets and guides, without interrupting anyone."
           }
         ]
       }
     },
     {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic ; lien vers Croissance (visibilité, accès anticipé).",
+      "claims": ["CL-14", "CL-122", "CL-09", "CL-G01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "Fewer interruptions, more consistency.",
+        "body": "<p>The expected benefit: fewer interruptions, more consistent answers, customers who get something faster. No percentage is announced; the effect is measured during a pilot, on your real questions.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to assess your frequent questions.</p><p>Want more customers to find you, too? <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service, is in early access: access is on request.</p>"
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, avec limites : pas de téléphone, pas de promesse de disponibilité.",
-      "claims": ["CL-124", "CL-86", "CL-109", "CL-93", "CL-128", "CL-06"],
+      "role": "Ce qui reste sous contrôle, avec limites : pas de téléphone, pas de promesse de disponibilité ; carte données avec lien Vos données.",
+      "claims": [
+        "CL-124",
+        "CL-86",
+        "CL-109",
+        "CL-93",
+        "CL-128",
+        "CL-06",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
-        "tone": "sable",
+        "tone": "clair",
         "layout": "liste",
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "What stays under your control.",
+        "title": "You stay in control, always.",
         "cards": [
           {
             "title": "You choose the documents.",
-            "text": "The agent only consults the bases you open to it. An agent open to the public should never reach confidential documents: we keep the two apart."
+            "text": "The agent consults only the bases you open to it. A publicly accessible agent should never have access to confidential documents: we keep the two apart."
           },
           {
-            "title": "Nothing irreversible without consent.",
+            "title": "Nothing irreversible without approval.",
             "text": "If the agent has a tool that writes (create a file, send a message), the action waits for your team's approval when the chat is public."
           },
           {
-            "title": "No phone.",
+            "title": "No telephone.",
             "text": "No call-answering service is delivered today. The solution covers chat and written requests."
           },
           {
             "title": "No availability promise.",
-            "text": "The agent answers when the system is online. No availability level is announced today; it is set in the contract."
+            "text": "The agent answers when the system is online. No availability level is announced today; it will be specified in the contract."
           },
           {
-            "title": "The model is a written choice.",
-            "text": "On your server or in our infrastructure; an external model only with your agreement. Web search, if it were turned on for the agent, would send its queries outside the system: we do not turn it on for a public agent."
+            "title": "Web search stays off.",
+            "text": "If it were turned on for the agent, its queries would leave the system: we do not turn it on for a public agent."
+          },
+          {
+            "title": "Your data stays yours.",
+            "text": "On your server or with us, in Quebec: never used to train a model, never sold. An external model comes in only when you explicitly activate it, in writing.",
+            "href": "/en/your-data/",
+            "link_label": "Read our commitments"
           }
         ]
       }
@@ -156,7 +193,7 @@
       "claims": ["CL-107", "CL-122", "CL-132", "CL-112"],
       "fields": {
         "emit_jsonld": true,
-        "tone": "clair",
+        "tone": "sable",
         "anchor_id": "questions"
       },
       "translation": {
@@ -164,11 +201,11 @@
         "items": [
           {
             "question": "How does the agent appear on my website?",
-            "answer": "One line of code adds a chat bubble, or you embed a frame in a page. You limit the list of sites allowed to display it. This requires a public HTTPS address for your instance."
+            "answer": "One line of code adds a chat bubble, or you embed a frame in a page. You limit the list of sites allowed to display it. This requires a public HTTPS address (a secure web address anyone can reach) for your instance."
           },
           {
             "question": "Can it make up an answer?",
-            "answer": "A model can be wrong. We reduce the risk by making it answer from your documents, cite its sources and, where needed, add a faithfulness safeguard. During the pilot we check that it says so when it finds nothing."
+            "answer": "A model can get things wrong. We reduce the risk by having it answer from your documents, cite its sources and, where needed, add a faithfulness safeguard. During the pilot we check that it says so when it finds nothing."
           },
           {
             "question": "What if the customer wants to talk to someone?",
@@ -176,7 +213,7 @@
           },
           {
             "question": "Does it speak French and English?",
-            "answer": "It answers in the language of the question as far as the chosen model allows. We check both languages on your documents during the pilot."
+            "answer": "It answers in the language of the question to the extent the chosen model allows. We check both languages on your documents during the pilot."
           }
         ]
       }
@@ -189,7 +226,7 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "See the agent answer.",
+        "title": "Watch the agent answer your customers.",
         "text": "We prepare a demonstration on fictional documents, then we talk about your frequent questions and your website.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",

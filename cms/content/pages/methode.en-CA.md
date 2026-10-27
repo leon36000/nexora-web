@@ -7,23 +7,23 @@
 - Page : `methode` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/method/` · slug : `method`
 - Titre SEO (46 caractères) : Our method for bringing AI into small business
-- Description SEO (158 caractères) : Understand, integrate, verify, train, operate: Nexora AI's method, one case at a time. No universal timeline announced and no gain quoted without measurement.
+- Description SEO (155 caractères) : Bringing AI into small business in five stages: understand, integrate, verify, train, operate, one case at a time. No coding, no promised timeline or gain.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la méthode : un cas à la fois, vérifié. · Affirmations : CL-03, CL-14*
+*Promesse de la méthode : un parcours rassurant pour un dirigeant non technique, un cas à la fois, vérifié. · Affirmations : CL-03, CL-14, CL-04, CL-P02*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Method**
 
-# Five stages. One case at a time.
+# Five stages to put AI to work.
 
-We start with one concrete problem, put into service and verified, before expanding. Here is what happens at each stage, and what you receive.
+Guidance on bringing AI into your business, designed for an executive, not an IT specialist: we start with one concrete problem, put into service and verified, before expanding. Here is what happens at each stage, and what you receive.
 
-[Discuss my project](/en/contact/) · [See the services](/en/services/)
+[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [See the services](/en/services/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
@@ -35,7 +35,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=temps`
 
 #### 1. Understand.
 
-We observe how the work is done today: where time is lost, what information comes in, who decides.
+We listen and observe how the work is done today: where time is lost, what information comes in, who decides.
 You receive: a written description of the case, its data and its constraints.
 
 #### 2. Integrate.
@@ -60,6 +60,20 @@ You receive: traces, measured consumption, adjustments decided together.
 
 ### Bloc 3 — Section (`block_section`)
 
+*Rassurer : ce que le dirigeant n'a pas à faire (programmer, tout lancer d'un coup, deviner). · Affirmations : CL-92, CL-P02, CL-04, CL-14, CL-96, CL-21, CL-128*
+
+Réglages : `media_position=none`, `tone=sable`, `anchor_id=epargne`
+
+## What you do not have to do.
+
+The method is designed so that a small-business leadership team stays in charge without ever becoming specialists. Here is what you are spared, and what stays under your control.
+
+- **Program.** You describe the need in plain French, the WorkStudio Copilot prepares a workflow (an automated sequence of tasks) that you review, and starter templates for small business are provided. Your team learns to supervise, not to code.
+- **Launch everything at once.** One case first, put into service and verified. You see the result before expanding.
+- **Guess what the AI is doing.** Every model call leaves a trace you can consult, and any action that commits the business waits for a person's approval.
+
+### Bloc 4 — Section (`block_section`)
+
 *Pourquoi un cas d'abord, et ce que mesure le pilote. · Affirmations : CL-14, CL-09, CL-10*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=un-cas`
@@ -68,13 +82,15 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=un-cas`
 
 A well-chosen case goes into service, gets verified and is corrected quickly. It also reveals what your company really expects from the system, which no diagram tells you. We then expand, without multiplying disconnected tools.
 
+[Plan a diagnosis](/en/contact/?sujet=diagnostic) to choose yours.
+
 - **No universal timeline.** It depends on your situation: software to connect, quality of documents, rules to write. It is measured on a first case.
 - **A measured goal, not a promise.** We set with you what we want to observe during the pilot. We announce no percentage and no time saved before measuring it at your site.
 - **A written estimate.** After the diagnosis, it states what is included and what is not. There is no public price yet.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
-*Quatre points de contrôle tout au long du parcours. · Affirmations : CL-05, CL-128, CL-21, CL-96, CL-08*
+*Quatre points de contrôle tout au long du parcours ; renvoi aux engagements sur les données. · Affirmations : CL-05, CL-128, CL-21, CL-96, CL-08, CL-E03*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controles`
 
@@ -82,7 +98,9 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controles`
 
 #### Before starting.
 
-The data-flow diagram: where data is stored, which external services are called, which backups exist.
+The data-flow diagram: where data is stored, which external services are called, which backups exist. Your data is never used to train a model.
+
+→ [See the commitments on your data](/en/your-data/)
 
 #### Before go-live.
 
@@ -96,7 +114,7 @@ Every model call leaves a trace; consumption is measured; you see what the syste
 
 Your documents, configurations and workflows stay exportable, and the contract provides for it.
 
-### Bloc 5 — Section (`block_section`)
+### Bloc 6 — Section (`block_section`)
 
 *Comment nous mesurons : outils, pas chiffres promis. · Affirmations : CL-97, CL-96, CL-106, CL-94*
 
@@ -108,10 +126,10 @@ We use the tools in [WorkStudio](/en/workstudio/) to measure, on your own cases,
 
 - **Test sets.** Your real questions and the expected answers, replayed at every change of instruction or model.
 - **Traces.** What was asked, what was answered, with which model, in how much time.
-- **Measured consumption.** Tokens, runs and footprint, by model, workspace and person, with monthly caps.
+- **Measured consumption.** Tokens (the unit of text a model processes), runs and footprint, by model, workspace and person, with monthly caps.
 - **A model test bench.** The Playground compares several models side by side before choosing one.
 
-### Bloc 6 — FAQ (`block_faq`)
+### Bloc 7 — FAQ (`block_faq`)
 
 *FAQ propre à la méthode. · Affirmations : CL-14, CL-04, CL-03*
 
@@ -135,7 +153,7 @@ No. Training covers usage and supervision: reviewing, correcting, approving, ref
 
 It is possible, but we advise against it at the start: one verified case teaches more than a broad, poorly bounded project.
 
-### Bloc 7 — Appel à l'action (`block_cta`)
+### Bloc 8 — Appel à l'action (`block_cta`)
 
 *CTA : discuter du premier cas. · Affirmations : CL-80*
 
@@ -145,4 +163,4 @@ Réglages : `tone=sombre`
 
 Describe what costs you time. We will help you pick the case that will teach the most.
 
-[Discuss my project](/en/contact/) · [Learn more about Nexora AI](/en/company/)
+[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Learn more about Nexora AI](/en/company/)

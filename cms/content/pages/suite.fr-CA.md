@@ -6,14 +6,14 @@
 
 - Page : `suite` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/suite/` · slug : `suite`
-- Titre SEO (43 caractères) : La suite : WorkStudio, Code, Corpus, Quanta
-- Description SEO (158 caractères) : Nexora WorkStudio : démonstration sur demande, aucune offre en libre-service. Nexora Code, Nexora Corpus, Quanta et Helix : leur vocation, sans date annoncée.
+- Titre SEO (43 caractères) : Suite logicielle IA : cinq noms, cinq états
+- Description SEO (152 caractères) : WorkStudio est livré, en démonstration sur demande ; Nexora Code, Corpus, Quanta et Helix n'ont aucune date annoncée. Une suite d'IA aux états honnêtes.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la suite : un ensemble, avec l'état réel de chaque nom. · Affirmations : CL-20, CL-28*
+*Promesse de la suite : une idée commune, l'état réel de chaque nom. · Affirmations : CL-20, CL-28, CL-P03*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,13 +21,13 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Une suite, pas une pile.
 
-Les produits de Nexora AI servent la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. Voici l'état réel de chacun.
+Une seule idée relie les produits de Nexora AI : une IA qui travaille pour vous, sous votre contrôle, avec des accès, des budgets et des journaux que vous maîtrisez. Un nom est déjà livré, à la pointe de l'IA ; pour les autres, voici l'état réel de chacun.
 
 [Voir WorkStudio](/workstudio/) · [Discuter de mon projet](/contact/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Cinq noms, cinq états honnêtes. · Affirmations : CL-20, CL-28, CL-12*
+*Cinq noms, cinq états honnêtes. · Affirmations : CL-20, CL-28, CL-12, CL-110, CL-P01*
 
 Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=etats`
 
@@ -37,7 +37,7 @@ Un seul de ces cinq noms est un produit livré. Pour les quatre autres, nous éc
 
 #### Nexora WorkStudio.
 
-Le studio où l'on conçoit, connecte et pilote des agents et des flux de travaux. Démonstration sur demande.
+Le studio où l'on conçoit, connecte et pilote des agents et des flux de travaux, en français et sans écrire de code. Démonstration sur demande.
 
 → [Découvrir WorkStudio](/workstudio/)
 
@@ -59,7 +59,26 @@ Un nom de modèle. Aucune disponibilité ni date n'est annoncée à ce stade.
 
 ### Bloc 3 — Section (`block_section`)
 
-*Nexora Corpus : la vocation, deux destinations distinctes. · Affirmations : CL-120, CL-28, CL-07*
+*Ce qui fait la cohérence d'une suite : mêmes règles d'accès, de budget, de validation et de données (déjà appliquées dans WorkStudio). · Affirmations : CL-22, CL-106, CL-21, CL-E03, CL-E04, CL-20*
+
+Réglages : `media_position=none`, `tone=sable`, `anchor_id=fil`
+
+## Ce qui relie la suite.
+
+Ce qui fait une suite, ce n'est pas le nombre de noms : c'est la même façon de travailler partout. WorkStudio l'applique déjà ; elle sert de règle à la suite.
+
+[Lire les cinq engagements sur vos données](/vos-donnees/).
+
+[Demander une démonstration de WorkStudio](/contact/?sujet=demonstration).
+
+- **Des accès que vous maîtrisez.** Des organisations, des rôles et un journal d'audit : vous savez qui fait quoi.
+- **Des budgets que vous fixez.** Des plafonds mensuels de consommation, par modèle, espace et personne.
+- **Une personne qui décide.** Une étape peut attendre la validation d'une personne avant d'agir.
+- **Des données qui restent à vous.** Jamais utilisées pour entraîner un modèle, jamais vendues.
+
+### Bloc 4 — Section (`block_section`)
+
+*Nexora Corpus : la vocation, deux destinations distinctes. · Affirmations : CL-120, CL-28, CL-07, CL-E03*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=corpus`
 
@@ -71,11 +90,11 @@ Il distinguera deux destinations, qu'on ne confond pas : mettre à jour une bas
 
 - **Des connaissances pour retrouver.** Extraction, classement, dédoublonnage, droits d'accès, provenance, versions, indexation : de quoi retrouver une réponse dans vos documents, avec ses sources.
 - **Des données pour spécialiser un modèle.** Sélection, qualité, autorisations, droits d'usage, séparation entre entraînement et évaluation, contrôle des régressions.
-- **Une règle de départ.** Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et nous n'utilisons pas les données d'un client pour entraîner un modèle sans son autorisation spécifique.
+- **Une règle de départ.** Un document importé n'autorise pas son utilisation pour l'entraînement. Aucune donnée ne part automatiquement vers les deux destinations, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 5 — Section (`block_section`)
 
-*Nexora Code : la vocation, sans autonomie annoncée. · Affirmations : CL-121, CL-28*
+*Nexora Code : la vocation, sans autonomie annoncée. · Affirmations : CL-121, CL-28*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=code`
 
@@ -85,9 +104,9 @@ Nexora Code est destiné au développement assisté par agents : comprendre un 
 
 Nous n'annonçons ni autonomie universelle, ni nombre d'agents travaillant ensemble, ni calendrier : rien de cela n'est démontré à ce jour.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Cartes (`block_cards`)
 
-*Quanta et Helix : ce que nous ne publions pas. · Affirmations : CL-122, CL-28*
+*Quanta et Helix : ce que nous ne publions pas. · Affirmations : CL-122, CL-28*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=modeles`
 
@@ -111,9 +130,9 @@ Provenance des modèles de base, licence et modalités de déploiement seront pu
 
 Ni date, ni promesse de disponibilité à ce stade.
 
-### Bloc 6 — FAQ (`block_faq`)
+### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ de la suite. · Affirmations : CL-28, CL-12, CL-07*
+*FAQ de la suite. · Affirmations : CL-28, CL-12, CL-07, CL-E03*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -129,20 +148,20 @@ Nous ne publions aucune comparaison. Ces modèles n'ont pas encore de fiche cano
 
 #### Corpus entraînera-t-il un modèle avec mes documents ?
 
-Non, pas sans votre autorisation spécifique. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement.
+Non, jamais. Importer un document dans une base de connaissances n'autorise pas son utilisation pour l'entraînement, et Nexora AI n'utilise jamais vos données pour entraîner ou ajuster un modèle.
 
 #### Que puis-je utiliser dès maintenant ?
 
-Nexora WorkStudio, sur demande. Pour la construction et les services terrain, OPSYS-AI, avec le statut de chacun de ses départements.
+Nexora WorkStudio, sur demande. Pour la construction et les services terrain, OPSYS-AI, un produit en développement, avec le niveau de disponibilité de chacun de ses départements.
 
-### Bloc 7 — Appel à l'action (`block_cta`)
+### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : discuter, voir OPSYS-AI. · Affirmations : CL-12*
+*CTA : discuter, voir OPSYS-AI. · Affirmations : CL-12*
 
 Réglages : `tone=sombre`
 
 ## Commençons par ce qui existe.
 
-Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n’est ouverte. OPSYS-AI couvre la construction avec un statut honnête par département.
+Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte. OPSYS-AI couvre la construction en produit en développement, avec un niveau honnête par département.
 
 [Discuter de mon projet](/contact/) · [Découvrir OPSYS-AI](/opsys-ai/)

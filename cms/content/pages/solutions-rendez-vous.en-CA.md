@@ -6,28 +6,28 @@
 
 - Page : `solutions-rendez-vous` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/appointments/` · slug : `solutions/appointments`
-- Titre SEO (43 caractères) : AI appointment booking for small businesses
-- Description SEO (154 caractères) : A system takes requests, proposes slots from your calendar, reminds your clients and releases cancelled slots. No slot is confirmed without being checked.
+- Titre SEO (42 caractères) : AI appointment booking that fills your day
+- Description SEO (152 caractères) : The system receives appointment requests, proposes slots from your calendar, reminds your customers and releases cancellations. No slot is ever made up.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la solution rendez-vous. · Affirmations : CL-123, CL-124*
+*Promesse de la solution rendez-vous : un agenda qui se remplit, sans disponibilité inventée. · Affirmations : CL-123, CL-124*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Solution · Appointments**
 
-# Slots proposed. Reminders sent.
+# A calendar that fills itself.
 
-The system takes appointment requests, proposes slots from your calendar and reminds your clients. It never confirms an availability it has not checked.
+The system receives appointment requests, proposes slots from your calendar and reminds your customers, even when the office is closed. It never confirms an availability it has not checked.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Problème : un petit cabinet qui perd des créneaux. · Affirmations : CL-11*
+*Problème : exemple construit d'un petit cabinet qui perd des créneaux. · Affirmations : CL-11*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
@@ -37,23 +37,23 @@ A small practice receives appointment requests by email and by form, often outsi
 
 The example is constructed to illustrate the principle; it is not a customer's result.
 
-- **Requests that wait.** They arrive in the evening; the reply leaves the next day, sometimes too late.
-- **Forgotten reminders.** Each one is a risk of a no-show.
+- **Requests that wait.** They arrive in the evening; the reply goes out the next day, sometimes too late.
+- **Forgotten reminders.** Every oversight is a risk of a no-show.
 - **Late cancellations.** The freed slot does not get filled.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Ce que fait le système, selon l'agenda connecté. · Affirmations : CL-123, CL-103, CL-91, CL-21, CL-85*
+*Ce que fait le système, selon l'agenda connecté : de la demande au rappel. · Affirmations : CL-123, CL-103, CL-91, CL-21, CL-85, CL-P02*
 
 Réglages : `columns=4`, `tone=clair`, `layout=etapes`, `anchor_id=systeme`
 
-## What the system does.
+## From request to reminder.
 
-Everything rests on a calendar actually connected to WorkStudio. Without that connection, the system is limited to recording a slot request, confirming nothing.
+It all rests on a calendar genuinely connected to WorkStudio. Without that connection, the system is limited to recording a slot request, confirming nothing. The workflow (an automated sequence of tasks) is built without writing code.
 
 #### It receives.
 
-A request arrives by email or by form. The system pulls out the need and the preferences.
+A request arrives by email or form. The system pulls out the need and the preferences.
 
 #### It proposes.
 
@@ -67,61 +67,87 @@ The event is created only once availability is verified in the calendar, and aft
 
 A scheduled workflow sends a reminder before the appointment and handles cancellations.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que reçoit l'équipe, bénéfice, et limites vocales. · Affirmations : CL-123, CL-124, CL-102, CL-14*
+*Ce que reçoit l'équipe : mosaïque de bénéfices (bento), dont la transcription d'un message vocal et l'absence de téléphonie. · Affirmations : CL-123, CL-124, CL-102*
 
-Réglages : `media_position=none`, `tone=sombre`, `anchor_id=equipe`
+Réglages : `columns=2`, `tone=sombre`, `layout=bento`, `anchor_id=equipe`
 
-## What your team receives.
+## Appointments ready, reminders sent.
 
-A calendar that fills while the team works, reminders sent without anyone remembering, cancellations handled. The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate and no gain is announced: it is measured during a pilot.
+A calendar that fills while the team works, reminders sent without anyone thinking about it, cancellations handled.
 
-The phone is not included. No call-answering service is delivered today; a voice message dropped in as a recording can be transcribed, and live telephony is checked separately.
+#### Requests received.
 
-- **Requests received.** A clear queue: to handle, proposed, confirmed.
-- **Prepared reminders.** The wording is yours, approved once.
-- **Visible cancellations.** The freed slot shows up in the calendar at once.
+A clear queue: to process, proposed, confirmed.
 
-### Bloc 5 — Cartes (`block_cards`)
+#### Reminders prepared.
 
-*Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé. · Affirmations : CL-123, CL-131, CL-128, CL-06*
+The wording is yours, approved once.
 
-Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=controle`
+#### Cancellations in plain sight.
 
-## What stays under your control.
+The freed slot shows up in the calendar right away.
 
-#### No invented slot, ever.
+#### Voice messages, transcribed.
 
-Without a connected calendar, the system records a slot request. It does not confirm an unchecked availability.
+A voice message dropped in as a recording can be transcribed. The phone itself is not included: no call-answering service is delivered today, and live telephony is checked separately.
+
+### Bloc 5 — Section (`block_section`)
+
+*Bénéfice attendu, sans chiffre ; lien diagnostic ; lien vers Croissance (être trouvé, accès anticipé). · Affirmations : CL-14, CL-09, CL-123, CL-G01*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
+
+## Fewer lost slots.
+
+The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot.
+
+[Book a diagnosis](/en/contact/?sujet=diagnostic) to connect your calendar.
+
+A full calendar starts with customers who find you: [Nexora Croissance](/en/growth/), our automated marketing service, is in early access, on request.
+
+### Bloc 6 — Cartes (`block_cards`)
+
+*Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé ; carte données avec lien Vos données. · Affirmations : CL-123, CL-131, CL-128, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
+
+Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
+
+## No slot is ever made up.
+
+#### No calendar, no confirmation.
+
+Without a connected calendar, the system records a slot request. It does not confirm an unverified availability.
 
 #### You decide on confirmation.
 
-You choose which appointment types are confirmed on their own and which wait for a person.
+You choose which types of appointment confirm on their own and which wait for a person.
 
 #### Limited information.
 
-For a health or wellness practice, we recommend limiting the system to administrative information (date, time, appointment type). We qualify no clinical use.
+For a health or wellness practice, we recommend limiting the system to administrative information (date, time, type of appointment). We do not qualify any clinical use.
 
-#### Reminders are yours.
+#### The reminders are yours.
 
-The wording, the timing and the channel are approved by you. Reminders relate to an existing appointment; they are not for prospecting.
+The wording, the timing and the channel are approved by you. Reminders concern an existing appointment; they are not for prospecting.
 
-#### The location of the data is written.
+#### Your data stays yours.
 
-The calendar and the requests stay inside the agreed perimeter; an external service is a disclosed choice.
+The calendar and the requests stay within the agreed perimeter: on your server or with us, in Quebec. Never used to train a model, never sold; an external service comes in only when you explicitly activate it, in writing.
 
-### Bloc 6 — FAQ (`block_faq`)
+→ [Read our commitments](/en/your-data/)
+
+### Bloc 7 — FAQ (`block_faq`)
 
 *FAQ propre à la solution rendez-vous. · Affirmations : CL-123, CL-124, CL-85, CL-132*
 
-Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
+Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Appointments: your questions.
 
-#### Which calendars does it work with?
+#### Which calendar does it work with?
 
-Those that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider.
+With calendars that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider.
 
 #### Can it answer the phone?
 
@@ -133,16 +159,16 @@ It checks the calendar at the moment of confirming. If the slot is taken, it pro
 
 #### Can it be used for care?
 
-For administration only: request, slot, reminder. We qualify no clinical use and we recommend not routing health information through it.
+For administration only: request, slot, reminder. We do not qualify any clinical use and we recommend not routing health information through it.
 
-### Bloc 7 — Appel à l'action (`block_cta`)
+### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : démonstration. · Affirmations : CL-01*
+*CTA : démonstration ; partenaire d'ici. · Affirmations : CL-01, CL-04*
 
 Réglages : `tone=sombre`
 
-## See the calendar fill.
+## Watch the calendar fill up.
 
-We prepare a demonstration on a fictional calendar, then we talk about yours and your confirmation rules.
+We prepare a demonstration on a fictional calendar, then we talk about yours and your confirmation rules. A partner from here installs, runs and trains with you.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See customer service](/en/solutions/customer-service/)

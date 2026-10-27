@@ -102,6 +102,20 @@ export const NAVIGATION: NavEntry[] = [
         "Une équipe coordonnée pour la construction et les services terrain.",
         "A coordinated team for construction and field services.",
       ),
+      both(
+        "Nexora Croissance",
+        "Nexora Croissance",
+        "/croissance/",
+        "Site, référencement, publicité et réseaux sociaux, au même endroit. Accès anticipé.",
+        "Website, search, ads and social networks in one place. Early access.",
+      ),
+      both(
+        "Nexora Vision",
+        "Nexora Vision",
+        "/vision/",
+        "Vidéosurveillance par IA qui garde vos images chez vous. Projet pilote sur invitation.",
+        "AI video analytics that keeps your footage on your premises. Pilot project, by invitation.",
+      ),
     ],
   ),
   top("header", "link", both("Tarifs", "Pricing", "/tarifs/")),
@@ -128,6 +142,8 @@ export const NAVIGATION: NavEntry[] = [
       both("WorkStudio", "WorkStudio", "/workstudio/"),
       both("Suite logicielle", "Software suite", "/suite/"),
       both("OPSYS-AI", "OPSYS-AI", "/opsys-ai/"),
+      both("Nexora Croissance", "Nexora Croissance", "/croissance/"),
+      both("Nexora Vision", "Nexora Vision", "/vision/"),
     ],
   ),
   top(
@@ -176,6 +192,7 @@ export const NAVIGATION: NavEntry[] = [
     },
     [
       both("Souveraineté", "Sovereignty", "/souverainete/"),
+      both("Vos données", "Your data", "/vos-donnees/"),
       both("Loi 25", "Law 25", "/souverainete/loi-25/"),
       both("Centre de confiance", "Trust centre", "/centre-de-confiance/"),
       both("Questions fréquentes", "Frequently asked questions", "/faq/"),

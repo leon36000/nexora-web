@@ -47,6 +47,8 @@ const SUBJECTS: Record<string, string> = {
   demonstration: "opsys-ai",
   "etude-deploiement": "installation",
   diagnostic: "diagnostic",
+  "pilote-vision": "vision",
+  "acces-croissance": "croissance",
 };
 
 const INPUT =
