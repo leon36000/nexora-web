@@ -18,19 +18,22 @@ import {
   proxmoxClientFactory,
   runLifecycle,
   runPowerAction,
+  runSetup,
   safeError,
   settingsFromEnv,
   sweep,
 } from "@nexora/vps";
 import { createSshRunner } from "@nexora/vps/install";
 import type { Mailer } from "./contact-notify.ts";
+import { fetchPublicText } from "./fetch-text.ts";
 import { keepJobAlive } from "./keepalive.ts";
 import type { HandlerRegistry, JobHandler } from "./registry.ts";
 
 /**
  * Tâches du VPS (S6) : `vps.provision` (commande payée ou réinstallation), `vps.lifecycle`
  * (suspension, reprise, résiliation, suppression), `vps.action` (démarrer/arrêter/redémarrer),
- * `vps.sweep` (balayage périodique, se replanifie lui-même) et `vps.alert` (courriel à l'opérateur).
+ * `vps.sweep` (balayage périodique, se replanifie lui-même), `vps.alert` (courriel à l'opérateur) et
+ * `vps.server_setup` (branchement guidé d'un serveur Proxmox : image, gabarit, vérification).
  * Chaque gestionnaire est idempotent : la file peut le rejouer (bail de 5 minutes, redémarrage).
  */
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -80,6 +83,8 @@ export function registerVpsHandlers(
     mailer?: Mailer | null;
     alertTo?: string;
     alertFrom?: string;
+    /** Lecture des fichiers de sommes publiés par les éditeurs d'images (remplaçable dans les tests). */
+    fetchText?: (url: string) => Promise<string>;
   } = {},
 ): HandlerRegistry {
   const provision: JobHandler = async (job) => {
@@ -112,6 +117,19 @@ export function registerVpsHandlers(
     if (!["start", "stop", "reboot"].includes(action))
       throw new Error("action inconnue");
     await whileAlive(deps, job, () => runPowerAction(deps, instanceId, action));
+  };
+
+  // Branchement d'un serveur : télécharge l'image, fabrique le gabarit, vérifie. Long (minutes) : le bail de la tâche est renouvelé.
+  const serverSetup: JobHandler = async (job) => {
+    const serverId = uuid(job.payload, "serverId");
+    const runId = uuid(job.payload, "runId");
+    await whileAlive(deps, job, () =>
+      runSetup(
+        { ...deps, fetchText: options.fetchText ?? fetchPublicText },
+        serverId,
+        runId,
+      ),
+    );
   };
 
   const sweeper: JobHandler = async (job, ctx) => {
@@ -168,6 +186,7 @@ export function registerVpsHandlers(
     .register("vps.provision", provision)
     .register("vps.lifecycle", lifecycle)
     .register("vps.action", power)
+    .register("vps.server_setup", serverSetup)
     .register("vps.sweep", sweeper)
     .register("vps.alert", alert);
 }
