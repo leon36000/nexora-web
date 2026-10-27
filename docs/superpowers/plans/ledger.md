@@ -112,5 +112,12 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Prouvé sur simulateur seulement (schéma officiel de l'API, 33 chemins) ; au premier vrai serveur : suivre le guide puis `PROXMOX_CONTRACT_URL`.
 - Worker mis en service utilisateur `nexorasite-worker` (base `app`, planificateur actif) pour que l'admin fonctionne réellement (branchement, VPS, contact, grand livre). Contrôle : `bun run check` vert (web 932, cms 617, vps 216, worker 164) ; démo mise à jour (e0f0629).
 
+## Vague 2 — paiements (27/10, décisions D1–D5 de `specs/2026-10-27-nexora-ai-vague-2.md`)
+- Fusion `vague2/paiements` (20 commits, migration 0013 appliquée sur `app`, `app_s9`, `app_demo` ; `apply.ts` + `seed.ts` + extension redéployés ; `seed-vps.ts` : 4 plans VPS en brouillon aux prix suggérés sur `app` et `app_demo`). `bun run check` vert (web 1091, cms 647, vps 221, worker 164, db 61).
+- Ruling (agent, accepté) : codes promo dans la base `app` (module Directus « Paiements »), pas en collection Directus — montants et clients hors de Directus (D4 du site) ; synchronisation Stripe côté serveur — coût si faux : un écran de plus à faire si le fondateur veut la collection.
+- Ruling (agent, accepté) : une clé `sk_live_` et les événements `livemode` restent refusés tant que « Autoriser les paiements réels » n'est pas coché par le fondateur (journalisé) — coût si faux : un clic.
+- À trancher par le fondateur avant publication : offres annuelles créditées de 12 mois d'un coup (risque de coût ; un litige reprend les crédits) ; limites des paliers WorkStudio proposées par l'étude.
+- Démo : base dédiée `app_demo` (D11), versions de catalogue republiées sans données de développement ; mise à jour par `~/.local/state/nexorasite-demo/mettre-a-jour.sh` (migrations + build avec `DATABASE_URL` de la démo).
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
