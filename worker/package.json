@@ -11,6 +11,8 @@
   "dependencies": {
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
+    "@nexora/vault": "workspace:*",
+    "@nexora/vps": "workspace:*",
     "nodemailer": "^10.2.1"
   },
   "devDependencies": {

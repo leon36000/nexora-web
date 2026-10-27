@@ -44,12 +44,30 @@
       "name": "@nexora/log",
       "version": "0.1.0",
     },
+    "packages/vault": {
+      "name": "@nexora/vault",
+      "version": "0.1.0",
+      "dependencies": {
+        "@nexora/db": "workspace:*",
+      },
+    },
+    "packages/vps": {
+      "name": "@nexora/vps",
+      "version": "0.1.0",
+      "dependencies": {
+        "@nexora/db": "workspace:*",
+        "@nexora/log": "workspace:*",
+        "drizzle-orm": "^0.45.4",
+      },
+    },
     "web": {
       "name": "web",
       "version": "0.1.0",
       "dependencies": {
         "@nexora/db": "workspace:*",
         "@nexora/log": "workspace:*",
+        "@nexora/vault": "workspace:*",
+        "@nexora/vps": "workspace:*",
         "altcha": "^3.5.0",
         "altcha-lib": "^2.8.0",
         "better-auth": "1.7.14",
@@ -80,6 +98,8 @@
       "dependencies": {
         "@nexora/db": "workspace:*",
         "@nexora/log": "workspace:*",
+        "@nexora/vault": "workspace:*",
+        "@nexora/vps": "workspace:*",
         "nodemailer": "^10.2.1",
       },
       "devDependencies": {
@@ -350,6 +370,10 @@
     "@nexora/db": ["@nexora/db@workspace:packages/db"],
 
     "@nexora/log": ["@nexora/log@workspace:packages/log"],
+
+    "@nexora/vault": ["@nexora/vault@workspace:packages/vault"],
+
+    "@nexora/vps": ["@nexora/vps@workspace:packages/vps"],
 
     "@nexora/worker": ["@nexora/worker@workspace:worker"],
 

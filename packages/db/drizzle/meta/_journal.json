@@ -43,6 +43,13 @@
       "when": 1793073524510,
       "tag": "0005_s5_prix_immuables",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793075197296,
+      "tag": "0006_s6_vps",
+      "breakpoints": true
     }
   ]
 }
