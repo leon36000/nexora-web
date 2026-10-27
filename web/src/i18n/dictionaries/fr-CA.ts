@@ -92,7 +92,7 @@ export const frCA = {
 
   footer: {
     tagline: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
-    location: "Entreprise québécoise d’IA souveraine.",
+    location: "Entreprise québécoise d’IA.",
     columns: [
       {
         title: "Produits",
@@ -250,7 +250,7 @@ export const frCA = {
         label: "Mode de déploiement envisagé",
         hint: "Rien n'est décidé par ce choix : il nous aide à préparer la conversation.",
         options: {
-          "sur-place": "Chez moi, sur mon propre serveur",
+          "sur-place": "Chez vous, sur votre propre serveur",
           heberge: "Hébergé au Québec par Nexora",
           indecis: "Je ne sais pas encore",
         },
@@ -309,7 +309,7 @@ export const frCA = {
       label: "IA souveraine au Québec",
       title: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
       subtitle:
-        "De la réception de vos appels à l’automatisation de vos opérations, Nexora conçoit des systèmes IA adaptés à votre métier — installés chez vous ou hébergés dans notre infrastructure au Québec.",
+        "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora conçoit des systèmes IA adaptés à votre métier.",
       primary: "Planifier un diagnostic",
       secondary: "Voir les solutions",
     },
@@ -320,8 +320,8 @@ export const frCA = {
       lead: "Chaque système Nexora commence par une tâche précise de votre quotidien, puis s’étend sans multiplier les outils déconnectés.",
       items: [
         {
-          title: "Appels non traités",
-          text: "Une demande manquée est une demande perdue. Un système peut répondre, qualifier et transférer avec le bon contexte.",
+          title: "Demandes dispersées",
+          text: "Courriels, formulaires et messages arrivent par des portes différentes. Il faut les rassembler avant d’y répondre.",
         },
         {
           title: "Ressaisie des mêmes données",
@@ -349,7 +349,7 @@ export const frCA = {
       lead: "Dans les deux cas, vous conservez la maîtrise de vos données, de vos accès et des usages autorisés.",
       onsite: {
         label: "Chez vous",
-        title: "Installation souveraine",
+        title: "Installation chez vous",
         text: "Le système est installé sur votre propre infrastructure, selon vos règles d’accès.",
         diagram:
           "Schéma : un périmètre unique entoure vos données, les modèles et le calcul, dans vos locaux.",
@@ -366,7 +366,7 @@ export const frCA = {
 
     products: {
       label: "La suite",
-      title: "Un ensemble, pas des abonnements empilés.",
+      title: "Des briques, un point d’entrée.",
       lead: "Des briques qui se complètent : vous choisissez le point d’entrée, le reste s’y rattache.",
       items: [
         {
@@ -474,7 +474,7 @@ export const frCA = {
           text: "Qui administre, ce qui est journalisé et comment revenir en arrière.",
         },
       ],
-      law: "Conçu pour faciliter votre conformité à la Loi 25.",
+      law: "Des documents pour votre démarche Loi 25 sont en préparation.",
       cta: "Visiter le centre de confiance",
       secondary: "Lire notre approche de la souveraineté",
     },

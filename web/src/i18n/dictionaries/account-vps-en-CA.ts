@@ -64,7 +64,7 @@ export const accountVpsEnCA: AccountVpsDictionary = {
     ipPending: "Assigned during preparation",
     ipCopy: "Copy the IP address",
     regions: {
-      quebec: "Québec",
+      quebec: "Quebec",
       canada: "Canada",
       etats_unis: "United States",
       europe: "Europe",

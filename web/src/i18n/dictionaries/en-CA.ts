@@ -2,17 +2,17 @@ import type { Dictionary } from "./fr-CA";
 
 /**
  * Dictionnaire d'interface en-CA : même structure que fr-CA (vérifiée par le type `Dictionary`).
- * Anglais canadien (orthographe : centre, organization/organisation selon l'usage canadien, « Québec »
- * avec accent). Mêmes règles de vérité que la version française : aucun chiffre, client ou
+ * Anglais canadien (orthographe : center, organization/organisation selon l'usage canadien, « Quebec »
+ * sans accent). Mêmes règles de vérité que la version française : aucun chiffre, client ou
  * certification inventé.
  */
 export const enCA: Dictionary = {
   meta: {
     siteName: "Nexora",
     home: {
-      title: "Nexora | Sovereign AI for your business, in Québec",
+      title: "Nexora | Sovereign AI for your business, in Quebec",
       description:
-        "Nexora designs AI systems for your business, installed on your premises or hosted in Québec. You keep control of your data and your access.",
+        "Nexora designs AI systems for your business, installed on your premises or hosted in Quebec. You keep control of your data and your access.",
     },
     notFound: {
       title: "Page not found | Nexora",
@@ -48,7 +48,7 @@ export const enCA: Dictionary = {
         {
           label: "VPS",
           description:
-            "Virtual private servers in Québec, with the application of your choice.",
+            "Virtual private servers in Quebec, with the application of your choice.",
           href: "/vps",
         },
         {
@@ -88,7 +88,7 @@ export const enCA: Dictionary = {
 
   footer: {
     tagline: "AI that works for your business. Under your control.",
-    location: "A Québec sovereign AI company.",
+    location: "A Quebec AI company.",
     columns: [
       {
         title: "Products",
@@ -125,11 +125,11 @@ export const enCA: Dictionary = {
         ],
       },
       {
-        title: "Trust centre",
+        title: "Trust center",
         links: [
           { label: "Sovereignty", href: "/souverainete" },
           { label: "Law 25", href: "/souverainete/loi-25" },
-          { label: "Trust centre", href: "/centre-de-confiance" },
+          { label: "Trust center", href: "/centre-de-confiance" },
           { label: "Frequently asked questions", href: "/faq" },
           { label: "Resources", href: "/ressources" },
         ],
@@ -166,7 +166,7 @@ export const enCA: Dictionary = {
       "perimetre-sur-place":
         "Diagram: a single perimeter surrounds your data, the model and the compute, on your premises. A request enters through a controlled gateway and stays inside.",
       "perimetre-heberge":
-        "Diagram: your data crosses a controlled gateway into the perimeter of Nexora’s infrastructure in Québec, where the model and the storage are.",
+        "Diagram: your data crosses a controlled gateway into the perimeter of Nexora’s infrastructure in Quebec, where the model and the storage are.",
       "flux-donnees":
         "Diagram: your documents enter through a controlled gateway to the model, inside the perimeter. What the system prepares leaves only after a person approves it.",
     },
@@ -189,7 +189,7 @@ export const enCA: Dictionary = {
     meta: {
       title: "Book a diagnostic | Nexora",
       description:
-        "Describe your need in a few questions: Nexora records your request and the team writes back. Installed on your premises or hosted in Québec.",
+        "Describe your need in a few questions: Nexora records your request and the team writes back. Installed on your premises or hosted in Quebec.",
     },
     label: "Diagnostic",
     title: "Let’s talk about your need.",
@@ -245,8 +245,8 @@ export const enCA: Dictionary = {
         label: "Deployment mode you have in mind",
         hint: "This choice decides nothing: it helps us prepare the conversation.",
         options: {
-          "sur-place": "On my premises, on my own server",
-          heberge: "Hosted in Québec by Nexora",
+          "sur-place": "On your premises, on your own server",
+          heberge: "Hosted in Quebec by Nexora",
           indecis: "I don’t know yet",
         },
       },
@@ -299,10 +299,10 @@ export const enCA: Dictionary = {
 
   home: {
     hero: {
-      label: "Sovereign AI in Québec",
+      label: "Sovereign AI in Quebec",
       title: "AI that works for your business. Under your control.",
       subtitle:
-        "From answering your calls to automating your operations, Nexora designs AI systems tailored to your trade — installed on your premises or hosted in our infrastructure in Québec.",
+        "From managing your requests to automating your operations, Nexora designs AI systems tailored to your trade.",
       primary: "Book a diagnostic",
       secondary: "See solutions",
     },
@@ -313,8 +313,8 @@ export const enCA: Dictionary = {
       lead: "Every Nexora system begins with a specific task from your day-to-day work, then grows without adding disconnected tools.",
       items: [
         {
-          title: "Unanswered calls",
-          text: "A missed request is a lost request. A system can answer, qualify, and hand over with the right context.",
+          title: "Scattered requests",
+          text: "Emails, forms and messages arrive through different doors. They need to be gathered before anyone answers.",
         },
         {
           title: "Re-entering the same data",
@@ -338,40 +338,40 @@ export const enCA: Dictionary = {
 
     deployment: {
       label: "Two deployment modes",
-      title: "On your premises, or in Québec.",
+      title: "On your premises, or in Quebec.",
       lead: "Either way, you keep control of your data, your access, and the uses you authorize.",
       onsite: {
         label: "On your premises",
-        title: "Sovereign installation",
+        title: "On-premises installation",
         text: "The system is installed on your own infrastructure, under your access rules.",
         diagram:
           "Diagram: a single perimeter surrounds your data, the models, and the compute, on your premises.",
       },
       hosted: {
-        label: "In Québec",
+        label: "In Quebec",
         title: "Hosted by Nexora",
-        text: "We run the system in our AI infrastructure located in Québec, with the access and uses you authorize.",
+        text: "We run the system in our AI infrastructure located in Quebec, with the access and uses you authorize.",
         diagram:
-          "Diagram: your data crosses one controlled gate into the perimeter of Nexora’s infrastructure in Québec.",
+          "Diagram: your data crosses one controlled gate into the perimeter of Nexora’s infrastructure in Quebec.",
       },
       cta: "Compare the two modes",
     },
 
     products: {
       label: "The suite",
-      title: "One whole, not stacked subscriptions.",
+      title: "Building blocks, one entry point.",
       lead: "Building blocks that complete each other: you choose the entry point, the rest connects to it.",
       items: [
         {
           label: "VPS",
           title: "Virtual private servers",
-          text: "A server in Québec, with the application of your choice already installed.",
+          text: "A server in Quebec, with the application of your choice already installed.",
           href: "/vps",
         },
         {
           label: "Models and API",
           title: "A model gateway",
-          text: "One access point to many models, hosted in Québec or in the cloud, each with its data residency.",
+          text: "One access point to many models, hosted in Quebec or in the cloud, each with its data residency.",
           href: "/modeles",
         },
         {
@@ -456,7 +456,7 @@ export const enCA: Dictionary = {
         },
         {
           title: "Models",
-          text: "Models hosted in Québec and external cloud models are identified as such. No silent switching.",
+          text: "Models hosted in Quebec and external cloud models are identified as such. No silent switching.",
         },
         {
           title: "Compute",
@@ -467,8 +467,8 @@ export const enCA: Dictionary = {
           text: "Who administers, what is logged, and how to roll back.",
         },
       ],
-      law: "Designed to help you meet your Law 25 obligations.",
-      cta: "Visit the trust centre",
+      law: "Documents for your Law 25 approach are in preparation.",
+      cta: "Visit the trust center",
       secondary: "Read our approach to sovereignty",
     },
 
