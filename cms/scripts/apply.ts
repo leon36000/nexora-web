@@ -123,10 +123,14 @@ async function ensureField(d: Directus, collection: string, f: FieldDef) {
     changed(`champ ${collection}.${f.field} (meta)`);
   } else stats.unchanged++;
   // Un champ devenu facultatif (ex. navigation_translations.href) doit aussi cesser d'être NOT NULL en base.
+  const curSchema = cur.schema as
+    | { is_primary_key?: boolean; is_nullable?: boolean }
+    | null
+    | undefined;
   if (
-    cur.schema &&
-    !cur.schema.is_primary_key &&
-    cur.schema.is_nullable === false &&
+    curSchema &&
+    !curSchema.is_primary_key &&
+    curSchema.is_nullable === false &&
     f.schema?.is_nullable !== false &&
     f.schema !== undefined
   ) {

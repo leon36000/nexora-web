@@ -244,11 +244,12 @@ export function flattenNavigation(entries: NavEntry[] = NAVIGATION): Flat[] {
   const rank: Record<string, number> = {};
   const out: Flat[] = [];
   for (const e of entries) {
-    rank[e.placement] = (rank[e.placement] ?? 0) + 1;
+    const position = (rank[e.placement] ?? 0) + 1;
+    rank[e.placement] = position;
     out.push({
       placement: e.placement,
       style: e.style,
-      sort: rank[e.placement] * 10,
+      sort: position * 10,
       parentLabel: null,
       fr: e.fr,
       en: e.en,
