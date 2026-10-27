@@ -8,7 +8,10 @@
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "vault:rotate": "bun scripts/vault-rotate.ts"
+    "vault:rotate": "bun scripts/vault-rotate.ts",
+    "check:contrast": "bun scripts/contrast.mjs",
+    "verify:ui": "bun scripts/verify-ui.mjs",
+    "capture": "bun scripts/capture.mjs"
   },
   "dependencies": {
     "next": "16.4.3",
@@ -19,6 +22,8 @@
     "zod": "^4"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
