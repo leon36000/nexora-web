@@ -6,6 +6,7 @@ import { ProxmoxSimulator } from "@nexora/vps/simulator";
 import { createSimRunner, engineDeps, SIM_TOKEN } from "@nexora/vps/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { handleVpsAdmin, type VpsAdminDeps } from "./admin-handlers";
+import { readGuidePdf } from "./guide";
 
 const ADMIN = "a".repeat(40);
 const [DEBIAN] = CLOUD_IMAGES;
@@ -456,5 +457,34 @@ describe("guide de branchement (PDF) pour le personnel", () => {
       deps({ guidePdf: async () => PDF }),
     );
     expect(res.status).toBe(405);
+  });
+});
+
+describe("le PDF réel du dépôt", () => {
+  it("est trouvé par l'application (depuis web/) et c'est un vrai PDF", async () => {
+    const pdf = await readGuidePdf();
+    expect(pdf).not.toBeNull();
+    expect(
+      Buffer.from(pdf as Uint8Array)
+        .subarray(0, 5)
+        .toString("latin1"),
+    ).toBe("%PDF-");
+  });
+  it("n'est jamais servi si le fichier n'est pas un PDF", async () => {
+    const { writeFileSync, mkdtempSync, rmSync } = await import("node:fs");
+    const { tmpdir } = await import("node:os");
+    const { join } = await import("node:path");
+    const dir = mkdtempSync(join(tmpdir(), "guide-"));
+    try {
+      writeFileSync(join(dir, "faux.pdf"), "<html>pas un pdf</html>");
+      expect(
+        await readGuidePdf(
+          { VPS_GUIDE_PDF_PATH: join(dir, "faux.pdf") },
+          join(dir, "x"),
+        ),
+      ).toBeNull();
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

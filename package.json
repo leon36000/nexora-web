@@ -20,7 +20,8 @@
     "db:migrate": "bun run --cwd packages/db migrate",
     "worker": "bun run --cwd worker start",
     "vault:rotate": "bun run --cwd web vault:rotate",
-    "e2e": "bun scripts/e2e.ts"
+    "e2e": "bun scripts/e2e.ts",
+    "guide:vps": "bun run --cwd worker guide:vps"
   },
   "devDependencies": {
     "@biomejs/biome": "^2",

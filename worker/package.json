@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/main.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "guide:vps": "node scripts/build-vps-guide.ts"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.14.0",
