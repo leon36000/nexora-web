@@ -9,6 +9,23 @@ export type RevalidateBody = {
   slugs: string[];
 };
 
+/**
+ * Problème de configuration de la revalidation (null si tout est posé). Sert au démarrage de l'extension : sans
+ * NEXORA_APP_INTERNAL_URL (aucun défaut ici : il dépend du réseau de l'hôte) ni jeton, aucune publication ne
+ * rafraîchit le site, et on ne s'en apercevait qu'au premier clic sur « publier ». Ne cite jamais de valeur.
+ */
+export function revalidateConfigProblem(
+  env: Record<string, unknown>,
+): string | null {
+  const missing: string[] = [];
+  if (!String(env.NEXORA_APP_INTERNAL_URL ?? "").trim())
+    missing.push("NEXORA_APP_INTERNAL_URL");
+  if (!String(env.NEXORA_APP_ADMIN_TOKEN ?? "").trim())
+    missing.push("NEXORA_APP_ADMIN_TOKEN");
+  if (missing.length === 0) return null;
+  return `${missing.join(" et ")} non défini(s) : une publication ne rafraîchira PAS le site (les pages publiées n'apparaîtront qu'à l'expiration du cache)`;
+}
+
 export async function revalidate(
   body: RevalidateBody,
   deps: {
