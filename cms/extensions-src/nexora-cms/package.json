@@ -70,6 +70,16 @@
         "type": "module",
         "name": "nexora-vps-module",
         "source": "src/vps/module/index.ts"
+      },
+      {
+        "type": "endpoint",
+        "name": "nexora-hosted-agents",
+        "source": "src/hosted-agents/endpoint.ts"
+      },
+      {
+        "type": "module",
+        "name": "nexora-hosted-agents-module",
+        "source": "src/hosted-agents/module/index.ts"
       }
     ],
     "host": "^12.5.1"
