@@ -62,6 +62,61 @@ export interface TaskStatus {
 
 export type VmConfig = Record<string, string | number | boolean>;
 
+/** Stockage vu par un nœud (`GET /nodes/{node}/storage`). */
+export interface StorageInfo {
+  storage: string;
+  type: string;
+  /** Types de contenu autorisés, séparés par des virgules (images,rootdir,iso,import…). */
+  content: string;
+  active?: boolean | number;
+  enabled?: boolean | number;
+  shared?: boolean | number;
+  total?: number;
+  used?: number;
+  avail?: number;
+}
+
+/** Volume d'un stockage (`GET /nodes/{node}/storage/{storage}/content`). */
+export interface StorageVolume {
+  volid: string;
+  format: string;
+  size?: number;
+  content?: string;
+  ctime?: number;
+}
+
+/** Interface réseau du nœud (`GET /nodes/{node}/network`). */
+export interface NetworkIface {
+  iface: string;
+  type: string;
+  active?: boolean | number;
+  cidr?: string;
+  address?: string;
+  netmask?: string;
+  gateway?: string;
+  bridge_ports?: string;
+  bridge_vlan_aware?: boolean | number;
+  comments?: string;
+}
+
+export interface NodeDns {
+  dns1?: string;
+  dns2?: string;
+  dns3?: string;
+  search?: string;
+}
+
+export interface DownloadUrlParams {
+  url: string;
+  /** `import` pour une image de disque de VM (qcow2, raw, vmdk), `iso` pour un ISO. */
+  content: "iso" | "vztmpl" | "import";
+  filename: string;
+  checksum?: string;
+  checksumAlgorithm?: "md5" | "sha1" | "sha224" | "sha256" | "sha384" | "sha512";
+  /** Vérifie le certificat du serveur d'images (défaut Proxmox : oui). */
+  verifyCertificates?: boolean;
+}
+
 export interface FirewallRule {
   pos: number;
   type: string;
@@ -219,10 +274,74 @@ export class ProxmoxClient {
   }
   nodeStatus(node: string): Promise<{
     memory?: { total: number; used: number };
-    cpuinfo?: { cpus: number };
+    cpuinfo?: { cpus: number; cores?: number; sockets?: number; model?: string };
+    rootfs?: { total: number; used: number; avail?: number };
+    pveversion?: string;
     uptime?: number;
   }> {
     return this.call("GET", `/nodes/${q(node)}/status`);
+  }
+  /** Stockages du nœud ; `content` ne garde que ceux qui acceptent ce type de contenu. */
+  storages(
+    node: string,
+    opts: { content?: string; enabled?: boolean } = {},
+  ): Promise<StorageInfo[]> {
+    const params: Record<string, string | boolean> = {};
+    if (opts.content) params.content = opts.content;
+    if (opts.enabled !== undefined) params.enabled = opts.enabled;
+    return this.call("GET", `/nodes/${q(node)}/storage`, params);
+  }
+  storageContent(
+    node: string,
+    storage: string,
+    content?: string,
+  ): Promise<StorageVolume[]> {
+    return this.call(
+      "GET",
+      `/nodes/${q(node)}/storage/${q(storage)}/content`,
+      content ? { content } : undefined,
+    );
+  }
+  /**
+   * Fait télécharger une image par le nœud lui-même (`download-url`). La somme publiée est vérifiée
+   * PAR PROXMOX (`checksum` + `checksum-algorithm`) : une différence fait échouer la tâche.
+   */
+  downloadUrl(
+    node: string,
+    storage: string,
+    p: DownloadUrlParams,
+  ): Promise<string> {
+    const body: Record<string, string | boolean> = {
+      url: p.url,
+      content: p.content,
+      filename: p.filename,
+    };
+    if (p.checksum && p.checksumAlgorithm) {
+      body.checksum = p.checksum;
+      body["checksum-algorithm"] = p.checksumAlgorithm;
+    }
+    if (p.verifyCertificates !== undefined)
+      body["verify-certificates"] = p.verifyCertificates;
+    return this.call(
+      "POST",
+      `/nodes/${q(node)}/storage/${q(storage)}/download-url`,
+      body,
+    );
+  }
+  /** Interfaces réseau du nœud (`type: "any_bridge"` pour les ponts, y compris OVS). */
+  networks(node: string, type?: string): Promise<NetworkIface[]> {
+    return this.call(
+      "GET",
+      `/nodes/${q(node)}/network`,
+      type ? { type } : undefined,
+    );
+  }
+  nodeDns(node: string): Promise<NodeDns> {
+    return this.call("GET", `/nodes/${q(node)}/dns`);
+  }
+  /** Droits effectifs du jeton sur un chemin : `{ chemin: { privilège: 1 } }`. */
+  permissions(path?: string): Promise<Record<string, Record<string, number>>> {
+    return this.call("GET", "/access/permissions", path ? { path } : undefined);
   }
   nextId(): Promise<number> {
     return this.call<number | string>("GET", "/cluster/nextid").then(Number);
@@ -249,6 +368,17 @@ export class ProxmoxClient {
         return null;
       throw e;
     }
+  }
+  /** Crée une VM (`POST /nodes/{node}/qemu`) ; renvoie l'UPID de la tâche. */
+  createVm(
+    node: string,
+    params: Record<string, string | number | boolean>,
+  ): Promise<string> {
+    return this.call("POST", `/nodes/${q(node)}/qemu`, params);
+  }
+  /** Convertit une VM arrêtée en gabarit ; renvoie l'UPID. */
+  convertToTemplate(node: string, vmid: number): Promise<string> {
+    return this.call("POST", `/nodes/${q(node)}/qemu/${vmid}/template`);
   }
   /** Clone complet d'un gabarit (`newid`). Renvoie l'UPID de la tâche. */
   cloneVm(
