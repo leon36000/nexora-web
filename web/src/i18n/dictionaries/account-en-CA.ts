@@ -225,4 +225,28 @@ export const accountEnCA: AccountDictionary = {
       link: "See my VPS",
     },
   },
+  promo: {
+    label: "Promo code",
+    placeholder: "Your code",
+    hint: "Optional. The discount is checked by the server and shown on the payment page.",
+    trialNote: "{days}-day free trial: you are only billed when the trial ends.",
+    errors: {
+      unknown: "This promo code does not exist or is no longer valid.",
+      expired: "This promo code has expired.",
+      exhausted: "This promo code has reached its maximum number of uses.",
+      wrong_scope: "This code does not apply to this type of purchase.",
+      staff_only: "This code is reserved for the Nexora team.",
+      first_order_only: "This code is reserved for a first order.",
+      already_used: "Your organization has already used this code.",
+      min_amount: "This code requires a higher purchase amount.",
+      not_ready: "This code is not active yet. Try again later or contact us.",
+      covers_all: "This code would cover the whole credit purchase: choose a higher amount.",
+    },
+    gifted: {
+      subscription: "Subscription provided: full access, no payment.",
+      vps: "VPS provided: it will be installed as soon as a server is ready.",
+      credits: "Credits provided: {amount}.",
+      capReached: "The monthly cap on provided credits has been reached.",
+    },
+  },
 };

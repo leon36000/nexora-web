@@ -234,6 +234,30 @@ export const accountFrCA = {
       link: "Voir mes VPS",
     },
   },
+  promo: {
+    label: "Code promo",
+    placeholder: "Votre code",
+    hint: "Facultatif. Le rabais est vérifié par le serveur et apparaît sur la page de paiement.",
+    trialNote: "Essai gratuit de {days} jours : vous ne serez facturé qu’à la fin de l’essai.",
+    errors: {
+      unknown: "Ce code promo n’existe pas ou n’est plus valide.",
+      expired: "Ce code promo est expiré.",
+      exhausted: "Ce code promo a atteint son nombre maximal d’utilisations.",
+      wrong_scope: "Ce code ne s’applique pas à ce type d’achat.",
+      staff_only: "Ce code est réservé à l’équipe de Nexora.",
+      first_order_only: "Ce code est réservé à une première commande.",
+      already_used: "Votre organisation a déjà utilisé ce code.",
+      min_amount: "Ce code exige un montant d’achat plus élevé.",
+      not_ready: "Ce code n’est pas encore activé. Réessayez plus tard ou contactez-nous.",
+      covers_all: "Ce code couvrirait la totalité de l’achat de crédits : choisissez un montant plus élevé.",
+    },
+    gifted: {
+      subscription: "Abonnement offert : accès complet, sans paiement.",
+      vps: "VPS offert : il sera installé dès qu’un serveur est prêt.",
+      credits: "Crédits offerts : {amount}.",
+      capReached: "Le plafond mensuel de crédits offerts est atteint.",
+    },
+  },
 };
 
 export type AccountDictionary = typeof accountFrCA;
