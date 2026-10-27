@@ -1,4 +1,15 @@
-export { and, asc, desc, eq, isNull, lt, ne, or, sql } from "drizzle-orm";
+export {
+  and,
+  asc,
+  desc,
+  eq,
+  inArray,
+  isNull,
+  lt,
+  ne,
+  or,
+  sql,
+} from "drizzle-orm";
 export { createDb, type Database, type DbHandle, type Sql } from "./client.ts";
 export { recordEventOnce } from "./events.ts";
 export { MIGRATIONS_FOLDER, runMigrations } from "./migrate.ts";
