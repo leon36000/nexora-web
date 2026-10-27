@@ -461,6 +461,23 @@ async function netDebitedMicro(
   return BigInt(row?.total ?? "0");
 }
 
+/** Fenêtre pendant laquelle un événement dont l'achat est introuvable est « trop tôt » plutôt que « sans objet ». */
+const EARLY_EVENT_WINDOW_MS = 15 * 60_000;
+
+/**
+ * Événement de remboursement ou de litige dont la source (achat, facture) n'existe pas encore : Stripe n'ordonne pas ses
+ * livraisons. Récent, il échoue (500) pour que Stripe le renvoie une fois l'achat enregistré ; sans cela l'événement était
+ * marqué traité et les crédits remboursés restaient acquis. Plus ancien, il ne concerne aucun achat de Nexora (ignoré).
+ */
+class EventBeforePurchaseError extends Error {
+  constructor() {
+    super("événement reçu avant l'achat qu'il concerne");
+    this.name = "EventBeforePurchaseError";
+  }
+}
+const arrivedTooEarly = (ctx: Ctx): boolean =>
+  Date.now() - ctx.created * 1000 < EARLY_EVENT_WINDOW_MS;
+
 async function onChargeRefunded(
   ctx: Ctx,
   charge: ChargePayload,
@@ -470,7 +487,10 @@ async function onChargeRefunded(
     paymentIntent: charge.payment_intent ? idOf(charge.payment_intent) : null,
     charge: charge.id,
   });
-  if (!source) return "ignored";
+  if (!source) {
+    if (arrivedTooEarly(ctx)) throw new EventBeforePurchaseError();
+    return "ignored";
+  }
 
   const already = await netDebitedMicro(tx, source.id);
   const delta = creditsToDebitForRefund({
@@ -514,7 +534,10 @@ async function onDisputeCreated(
     paymentIntent: dispute.payment_intent ? idOf(dispute.payment_intent) : null,
     charge: idOf(dispute.charge),
   });
-  if (!source) return "ignored";
+  if (!source) {
+    if (arrivedTooEarly(ctx)) throw new EventBeforePurchaseError();
+    return "ignored";
+  }
 
   const already = await netDebitedMicro(tx, source.id);
   const wanted = creditsToDebitForRefund({
