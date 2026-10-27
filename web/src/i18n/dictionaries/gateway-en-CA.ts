@@ -226,6 +226,8 @@ export const gatewayEnCA: GatewayDictionary = {
       invalid_spend_cap:
         "Invalid cap: enter an amount in dollars, for example 50 or 12.50.",
       forbidden: "Only the organization owner can manage keys.",
+      key_limit:
+        "Limit reached: 25 active keys per organization. Revoke an unused key before creating another.",
       rate_limited: "Too many requests. Wait a minute.",
       generic: "The operation failed. Try again in a moment.",
     },

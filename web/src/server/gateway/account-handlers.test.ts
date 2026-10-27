@@ -8,7 +8,12 @@ import {
   handleCreateKey,
   handleRevokeKey,
 } from "./account-handlers";
-import { authenticateApiKey, hashApiKey } from "./keys";
+import {
+  authenticateApiKey,
+  createApiKey,
+  hashApiKey,
+  MAX_ACTIVE_KEYS_PER_ORGANIZATION,
+} from "./keys";
 import { newOrganization } from "./test-support";
 
 let t: TestDatabase;
@@ -112,6 +117,27 @@ describe("création de clé", () => {
         )
       ).status,
     ).toBe(422);
+  });
+});
+
+describe("plafond de clés actives", () => {
+  it("refuse en 409 key_limit au-delà de 25 clés actives par organisation", async () => {
+    const org = await newOrganization(t.db);
+    for (let i = 0; i < MAX_ACTIVE_KEYS_PER_ORGANIZATION; i++)
+      await createApiKey(t.db, { organizationId: org, name: `k${i}` });
+    const res = await handleCreateKey(
+      req("POST", { name: "de trop" }),
+      deps(owner(org)),
+    );
+    expect(res.status).toBe(409);
+    expect(await res.json()).toMatchObject({ error: "key_limit" });
+    expect(res.headers.get("cache-control")).toBe("no-store");
+    // L'autre organisation n'est pas touchée.
+    const other = await handleCreateKey(
+      req("POST", { name: "ok" }),
+      deps(owner(orgB)),
+    );
+    expect(other.status).toBe(201);
   });
 });
 

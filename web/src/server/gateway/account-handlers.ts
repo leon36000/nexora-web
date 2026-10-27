@@ -4,7 +4,13 @@ import { z } from "zod";
 import { isSameOriginRequest } from "../auth/origin";
 import { consumeRateLimit } from "../billing/rate-limit";
 import { parseCadToCents } from "../ledger/money";
-import { ApiKeyInputError, createApiKey, revokeApiKey } from "./keys";
+import {
+  ApiKeyInputError,
+  ApiKeyLimitError,
+  createApiKey,
+  MAX_ACTIVE_KEYS_PER_ORGANIZATION,
+  revokeApiKey,
+} from "./keys";
 
 /**
  * Clés API de l'espace client : `POST /api/account/api-keys` (création, valeur affichée UNE fois)
@@ -104,6 +110,7 @@ export async function handleCreateKey(
         ? new Date(now.getTime() + parsed.expiresInDays * 86_400_000)
         : null,
       createdBy: auth.ctx.userId,
+      maxActiveKeys: MAX_ACTIVE_KEYS_PER_ORGANIZATION,
     });
     deps.log.info("clé API créée", {
       apiKeyId: created.record.id,
@@ -123,6 +130,11 @@ export async function handleCreateKey(
   } catch (error) {
     if (error instanceof ApiKeyInputError)
       return json({ error: "invalid_request" }, 422);
+    if (error instanceof ApiKeyLimitError)
+      return json(
+        { error: "key_limit", limit: MAX_ACTIVE_KEYS_PER_ORGANIZATION },
+        409,
+      );
     deps.log.error("clé API : erreur interne", {
       errorName: error instanceof Error ? error.name : typeof error,
     });

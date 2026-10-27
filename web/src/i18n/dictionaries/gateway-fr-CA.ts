@@ -232,6 +232,8 @@ export const gatewayFrCA = {
       invalid_spend_cap:
         "Plafond invalide : entrez un montant en dollars, par exemple 50 ou 12,50.",
       forbidden: "Seul le propriétaire de l’organisation peut gérer les clés.",
+      key_limit:
+        "Limite atteinte : 25 clés actives par organisation. Révoquez une clé inutilisée avant d’en créer une autre.",
       rate_limited: "Trop de demandes. Patientez une minute.",
       generic: "L’opération a échoué. Réessayez dans un moment.",
     },
