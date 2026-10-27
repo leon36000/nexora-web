@@ -1,4 +1,9 @@
 import type { Database } from "@nexora/db";
+import type { Logger } from "@nexora/log";
+import {
+  createSiteAgentRunHandler,
+  productionRunnerDeps,
+} from "./agents/index.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { HandlerRegistry } from "./registry.ts";
 
@@ -6,7 +11,9 @@ import { HandlerRegistry } from "./registry.ts";
  * Gestionnaires du worker : contrôle de vie (S1) et notification des demandes de contact (S3).
  * Les types qui exigent la base ne sont enregistrés que si `db` est fourni.
  */
-export function defaultRegistry(deps: { db?: Database } = {}): HandlerRegistry {
+export function defaultRegistry(
+  deps: { db?: Database; log?: Logger } = {},
+): HandlerRegistry {
   const registry = new HandlerRegistry().register(
     "system.ping",
     async (_job, ctx) => {
@@ -17,6 +24,11 @@ export function defaultRegistry(deps: { db?: Database } = {}): HandlerRegistry {
     registry.register(
       "contact.notify",
       createNotifyHandler({ db: deps.db, mailer: mailerFromEnv() }),
+    );
+  if (deps.db && deps.log)
+    registry.register(
+      "site-agent.run",
+      createSiteAgentRunHandler(productionRunnerDeps(deps.db, deps.log)),
     );
   return registry;
 }

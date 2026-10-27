@@ -15,7 +15,7 @@ if (!url) {
 const handle = createDb(url, { max: 10 });
 const worker = new Worker({
   db: handle.db,
-  registry: defaultRegistry({ db: handle.db }),
+  registry: defaultRegistry({ db: handle.db, log }),
   logger: log,
   concurrency: Number(process.env.WORKER_CONCURRENCY ?? 4),
   pollIntervalMs: Number(process.env.WORKER_POLL_MS ?? 1000),
