@@ -10,7 +10,7 @@ import {
 describe("navigation du §6", () => {
   const header = NAVIGATION.filter((n) => n.placement === "header");
 
-  test("en-tête : IA souveraine, Solutions, Produits (6 entrées), Tarifs, Ressources, puis Connexion et le bouton", () => {
+  test("en-tête : IA souveraine, Solutions, Produits (8 entrées), Tarifs, Ressources, puis Connexion et le bouton", () => {
     expect(header.map((n) => n.fr.label)).toEqual([
       "IA souveraine",
       "Solutions",
@@ -22,7 +22,7 @@ describe("navigation du §6", () => {
     ]);
     expect(
       header.find((n) => n.fr.label === "Produits")?.children,
-    ).toHaveLength(6);
+    ).toHaveLength(8);
     expect(header.find((n) => n.fr.label === "Connexion")?.style).toBe(
       "utility",
     );
@@ -35,6 +35,16 @@ describe("navigation du §6", () => {
     expect(header.some((n) => n.fr.label === "IA souveraine")).toBe(true);
     const produits = header.find((n) => n.fr.label === "Produits");
     expect(produits?.children?.map((c) => c.fr.label)).toContain("OPSYS-AI");
+    // vague 2 : Croissance et Vision sont au menu, et « Vos données » dans la colonne de confiance du pied de page
+    expect(produits?.children?.map((c) => c.fr.href)).toEqual(
+      expect.arrayContaining(["/croissance/", "/vision/"]),
+    );
+    const confiance = NAVIGATION.find(
+      (n) => n.placement === "footer" && n.fr.label === "Centre de confiance",
+    );
+    expect(confiance?.children?.map((c) => c.fr.href)).toContain(
+      "/vos-donnees/",
+    );
   });
 
   test("chaque entrée existe dans les deux langues, avec un lien propre à sa langue", () => {

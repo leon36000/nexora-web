@@ -6,52 +6,90 @@
 
 - Page : `centre-de-confiance` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/centre-de-confiance/` · slug : `centre-de-confiance`
-- Titre SEO (44 caractères) : Centre de confiance : engagements et preuves
-- Description SEO (157 caractères) : Nos engagements vérifiables, ce que le logiciel permet déjà et la liste des documents que nous préparons avec leur statut : tout ce qu'on peut nous demander.
+- Titre SEO (45 caractères) : Sécurité des données IA : centre de confiance
+- Description SEO (159 caractères) : Cinq engagements sur vos données, ce que le logiciel permet déjà et les documents que nous préparons, avec leur statut : tout ce que vous pouvez nous demander.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du centre de confiance. · Affirmations : CL-09, CL-87*
+*Promesse du centre de confiance : cinq engagements sur les données, des preuves à demander. · Affirmations : CL-09, CL-87, CL-E03, CL-E04, CL-E05*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Centre de confiance**
 
-# Des engagements. Des preuves à demander.
+# Cinq engagements. Des preuves à demander.
 
-Pas de grands mots ici : ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.
+Vos données restent à vous : jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Voici ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.
 
-[Demander un document](/contact/) · [Lire sur la souveraineté](/souverainete/)
+[Demander un document](/contact/) · [Lire les cinq engagements](/vos-donnees/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Six engagements vérifiables. · Affirmations : CL-05, CL-06, CL-76, CL-07, CL-08, CL-21, CL-128, CL-09*
+*Les cinq engagements sur les données (E01 à E05). · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-06, CL-07, CL-77, CL-87*
 
-Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=engagements`
+Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=engagements`
 
-## Des engagements vérifiables.
+## Cinq engagements sur vos données.
 
-Chacun peut être contrôlé avant et après la mise en service.
+Chacun peut être contrôlé avant et après la mise en service. Les flux sortants (mises à jour, licences, modèle externe éventuel) sont listés avant la mise en service : installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.
 
-#### Vous savez où vont vos données.
+#### Sur place, tout reste chez vous.
 
-Avant toute mise en service, nous vous remettons par écrit le schéma des flux : où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent.
+Vos données restent sur votre serveur. Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé.
 
-#### Pas de modèle externe sans accord.
+#### Hébergé, tout reste au Québec.
 
-Aucun appel à un service d'IA externe n'est configuré sans votre accord écrit, et le système ne bascule jamais vers un tel service sans vous le dire.
+Vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises. Les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants.
 
-#### Vos données restent les vôtres.
+#### Jamais d'entraînement.
 
-Nous ne réutilisons pas les données d'un client, ni pour un autre client ni pour entraîner un modèle, sans son autorisation spécifique.
+Nexora AI n'utilise jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers.
 
-#### Vous pouvez partir.
+#### Jamais vendues.
+
+Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée.
+
+#### Aucun modèle externe sans activation.
+
+Vos données ne vont à un fournisseur de modèle externe que si vous l'avez activé pour un agent ou un projet précis. La liste des fournisseurs et les contrats qui précisent la conservation et l'entraînement sont en préparation.
+
+### Bloc 3 — Cartes (`block_cards`)
+
+*Les mécanismes qui rendent les engagements vérifiables (E06) et les anciens engagements de service. · Affirmations : CL-E06, CL-05, CL-06, CL-76, CL-08, CL-21, CL-128, CL-09, CL-87*
+
+Réglages : `columns=4`, `tone=sable`, `layout=grille`, `anchor_id=mecanismes`
+
+## Ce qui les rend vérifiables.
+
+Un engagement vaut ce que vaut sa preuve. Voici les pièces qui le soutiennent.
+
+#### Un contrat de traitement.
+
+Signé avec chaque client. Le contrat type et l'entente de traitement sont en préparation.
+
+#### Un registre des sous-traitants.
+
+Le pays et le rôle de chacun. Le registre est en préparation.
+
+#### Un journal d'accès.
+
+Qui accède à quoi, et quand. Sur place, chaque accès de Nexora AI à votre système est journalisé.
+
+#### Un schéma des flux.
+
+Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent : remis par écrit, avant la mise en service.
+
+#### Aucune bascule en silence.
+
+Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, consignée par écrit, et le système ne bascule jamais en silence vers un tel service.
+
+#### Une porte de sortie.
 
 Vos documents, vos configurations et vos flux de travaux restent exportables ; le contrat le prévoit.
 
-#### Les décisions restent humaines.
+#### Une personne décide.
 
 Dans les flux que nous configurons, toute action qui engage l'entreprise attend la validation d'une personne, sauf décision écrite contraire de votre part.
 
@@ -59,11 +97,11 @@ Dans les flux que nous configurons, toute action qui engage l'entreprise attend 
 
 Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvons pas prouver. Quand une capacité est en pilote ou prévue, nous l'écrivons.
 
-### Bloc 3 — Cartes (`block_cards`)
+### Bloc 4 — Cartes (`block_cards`)
 
 *Ce que le logiciel permet déjà, statuts disponibles. · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-104, CL-113, CL-110*
 
-Réglages : `columns=3`, `tone=sable`, `layout=modules`, `anchor_id=logiciel`
+Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=logiciel`
 
 ## Ce que le logiciel permet déjà.
 
@@ -93,11 +131,11 @@ Chaque appel de modèle est tracé ; les noms, courriels et numéros de télép
 
 Chaque modèle indique où il tourne ; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
 *Documents fournis sur demande, tous en préparation. · Affirmations : CL-87, CL-73, CL-05*
 
-Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=documents`
+Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=documents`
 
 ## Documents sur demande.
 
@@ -127,7 +165,7 @@ Pour aider votre entreprise à documenter l'évaluation d'un projet d'IA.
 
 Qui évalue, qui avise, où l'incident est consigné.
 
-### Bloc 5 — Section (`block_section`)
+### Bloc 6 — Section (`block_section`)
 
 *Trois plans de données distincts. · Affirmations : CL-78, CL-71*
 
@@ -135,17 +173,19 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
 ## Trois plans de données.
 
-Quand on parle de « données », on parle de trois choses différentes. Nous les traitons séparément.
+Quand on parle de « données », on parle de trois choses différentes. Nous les traitons séparément. [Lire nos engagements sur vos données](/vos-donnees/).
+
+Un document vous manque ? [Demander un document](/contact/).
 
 - **Le contenu public du site.** Ce que vous lisez ici : fait pour être publié et indexé.
 - **Vos échanges avec Nexora AI.** Formulaires, courriels, facturation : ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira.
 - **Les données de votre système.** Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux.
 
-### Bloc 6 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *Ce que nous ne revendiquons pas. · Affirmations : CL-09, CL-86, CL-L05*
 
-Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=non-revendique`
+Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=non-revendique`
 
 ## Ce que nous ne revendiquons pas.
 
@@ -163,11 +203,25 @@ Disponibilité et délais de réponse se précisent au contrat.
 
 #### Aucune conformité décrétée.
 
-La conformité d'une entreprise dépend de ses pratiques, de ses contrats et de sa gouvernance. Aucun fournisseur ne la confère.
+La Loi 25 s'adresse à votre entreprise : sa conformité dépend de ses pratiques, de ses contrats et de sa gouvernance. Aucun fournisseur ne la confère.
 
-### Bloc 7 — FAQ (`block_faq`)
+### Bloc 8 — Section (`block_section`)
 
-*FAQ du centre de confiance. · Affirmations : CL-87, CL-09, CL-06*
+*Sécurité des sites physiques : renvoi vers Nexora Vision, projet pilote sur invitation (CL-V01). · Affirmations : CL-V01, CL-V03, CL-V04, CL-V07*
+
+Réglages : `media_position=none`, `tone=sable`, `anchor_id=locaux`
+
+## Vos locaux, un projet à part.
+
+La sécurité physique de vos locaux ne relève pas de ce centre de confiance. [Nexora Vision](/vision/), notre projet de vidéosurveillance par IA, est un projet pilote sur invitation : ce n'est pas un produit disponible, et aucune installation n'existe encore.
+
+- **Pas de reconnaissance faciale.** Nexora Vision n'offre pas de reconnaissance faciale : la fonction n'est pas livrée.
+- **Pas d'analyse des employés.** Aucune fonction d'analyse de la productivité ou du comportement ; les alertes se limitent aux zones et aux horaires que vous définissez.
+- **Une personne vérifie.** Une alerte demande la vérification d'une personne : l'IA détecte des personnes et des objets, pas l'identité ni l'intention.
+
+### Bloc 9 — FAQ (`block_faq`)
+
+*FAQ du centre de confiance. · Affirmations : CL-87, CL-09, CL-06, CL-E01, CL-E03, CL-E04, CL-E05*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -177,21 +231,29 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 Écrivez-nous par le formulaire de contact en nommant le document. Tant qu'il est en préparation, nous vous le disons au lieu de vous en promettre une date.
 
+#### Mes données servent-elles à entraîner une IA ?
+
+Non, jamais. Nexora AI n'utilise ni vos données, ni vos documents, ni vos invites, ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers.
+
+#### Mes données sont-elles vendues ?
+
+Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée.
+
 #### Avez-vous une attestation de sécurité ?
 
 Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons.
 
 #### Qui, chez Nexora AI, peut accéder à mon système ?
 
-Seulement les accès convenus à l'avance, décrits dans l'étude de déploiement. Dans le mode sur place, vous les accordez et pouvez les retirer.
+Seulement les accès convenus à l'avance, décrits dans l'étude de déploiement. Sur place, Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé.
 
 #### Utilisez-vous un modèle externe ?
 
-Seulement si vous l'avez accepté par écrit. Il apparaît alors au schéma des flux comme un flux sortant.
+Seulement si vous l'avez activé par écrit, pour un agent ou un projet précis. Il apparaît alors au schéma des flux comme un flux sortant.
 
-### Bloc 8 — Appel à l'action (`block_cta`)
+### Bloc 10 — Appel à l'action (`block_cta`)
 
-*CTA : demander un document. · Affirmations : CL-87*
+*CTA : demander un document. · Affirmations : CL-87*
 
 Réglages : `tone=sombre`
 

@@ -492,9 +492,15 @@ export const SECTION_VISUALS: [string, string][] = [
   ["engagements-donnees", "Schéma : les cinq engagements sur les données"],
 ];
 /** Statut d'une carte en disposition « modules » ; vide = aucun badge. */
-export const CARD_STATUSES = ["disponible", "pilote", "prevu"] as const;
+export const CARD_STATUSES = [
+  "disponible",
+  "acces-anticipe",
+  "pilote",
+  "prevu",
+] as const;
 const CARD_STATUS_LABELS: Record<(typeof CARD_STATUSES)[number], string> = {
   disponible: "Disponible",
+  "acces-anticipe": "Accès anticipé",
   pilote: "En pilote",
   prevu: "Prévu",
 };

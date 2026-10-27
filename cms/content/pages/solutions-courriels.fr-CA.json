@@ -7,13 +7,13 @@
     "slug": "solutions/courriels",
     "title": "Courriels",
     "seo_title": "Automatisation des courriels pour PME",
-    "seo_description": "Un système trie vos courriels, résume chaque demande et prépare un brouillon à partir de vos documents. Rien ne part sans la validation de votre équipe.",
+    "seo_description": "Fini le tri à la main\u00a0: le système classe vos courriels, résume chaque demande et prépare un brouillon à partir de vos documents. Votre équipe approuve l'envoi.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution courriels.",
+      "role": "Promesse de la solution courriels\u00a0: une boîte déjà rangée, une validation avant tout envoi.",
       "claims": ["CL-120", "CL-21"],
       "fields": {
         "variant": "sombre",
@@ -21,8 +21,8 @@
       },
       "translation": {
         "eyebrow": "Solution · Courriels",
-        "headline": "Des courriels triés. Des réponses prêtes.",
-        "subheadline": "Un système lit les courriels qui arrivent, les classe, prépare un brouillon à partir de vos documents et attend votre feu vert avant d'envoyer quoi que ce soit.",
+        "headline": "Vos courriels arrivent déjà triés.",
+        "subheadline": "Un système lit chaque message, le classe, le résume et prépare un brouillon fondé sur vos documents. Il attend votre feu vert avant d'envoyer quoi que ce soit.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Le problème, avec un exemple précis.",
+      "role": "Le problème, avec un exemple construit (entreprise de rénovation).",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -39,7 +39,7 @@
         "anchor_id": "probleme"
       },
       "translation": {
-        "title": "Le problème, au quotidien.",
+        "title": "La boîte déborde, l'urgent attend.",
         "body": "<p>Prenons une entreprise de rénovation. Chaque jour arrivent des demandes de prix, des questions sur l'avancement d'un chantier, des factures de fournisseurs et des courriels sans rapport. Quelqu'un ouvre tout, trie, cherche l'historique, rédige. Le courriel urgent attend derrière trois autres.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
@@ -59,8 +59,8 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système : quatre étapes, la dernière attend une personne.",
-      "claims": ["CL-120", "CL-103", "CL-95", "CL-21", "CL-85"],
+      "role": "Ce que fait le système\u00a0: quatre étapes, la dernière attend une personne.",
+      "claims": ["CL-120", "CL-103", "CL-95", "CL-21", "CL-85", "CL-P02"],
       "fields": {
         "columns": "4",
         "tone": "sable",
@@ -68,8 +68,8 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "Ce que fait le système.",
-        "intro": "Le flux de travaux réagit à l'arrivée d'un courriel dans la messagerie que nous avons reliée à WorkStudio. Chaque étape est visible et modifiable.",
+        "title": "Du courriel reçu à la réponse approuvée.",
+        "intro": "Le flux de travaux (un enchaînement automatisé de tâches) réagit à l'arrivée d'un courriel dans la messagerie que nous avons reliée à WorkStudio. Il se construit sans écrire de code, et chaque étape est visible et modifiable.",
         "cards": [
           {
             "title": "Il repère.",
@@ -91,21 +91,22 @@
       }
     },
     {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe.",
+      "collection": "block_cards",
+      "role": "Ce que reçoit l'équipe\u00a0: bénéfices concrets en mosaïque (bento).",
       "claims": ["CL-120", "CL-96", "CL-95"],
       "fields": {
-        "media_position": "none",
+        "columns": "2",
         "tone": "sombre",
+        "layout": "bento",
         "anchor_id": "equipe"
       },
       "translation": {
-        "title": "Ce que reçoit l'équipe.",
-        "body": "<p>L'équipe ne travaille plus dans le désordre d'une boîte de réception\u00a0: elle reçoit des éléments prêts à relire.</p>",
-        "items": [
+        "title": "Une équipe qui relit au lieu d'écrire.",
+        "intro": "L'équipe ne travaille plus dans le désordre d'une boîte de réception\u00a0: elle reçoit des éléments prêts à relire.",
+        "cards": [
           {
             "title": "Une file triée.",
-            "text": "Les courriels arrivent classés par catégorie et par urgence."
+            "text": "Les courriels arrivent classés par catégorie et par urgence\u00a0: l'urgent passe devant."
           },
           {
             "title": "Un résumé par message.",
@@ -124,7 +125,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre.",
+      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic.",
       "claims": ["CL-14", "CL-09"],
       "fields": {
         "media_position": "none",
@@ -132,14 +133,25 @@
         "anchor_id": "benefice"
       },
       "translation": {
-        "title": "Le bénéfice attendu.",
-        "body": "<p>Moins de tri à la main, des urgences vues plus tôt, des réponses plus homogènes d'une personne à l'autre. Nous n'annonçons pas de pourcentage ni de gain de temps\u00a0: ils dépendent de votre volume et de vos règles, et se mesurent pendant un pilote, sur vos propres courriels.</p>"
+        "title": "Ce que vous y gagnez, honnêtement.",
+        "body": "<p>Moins de tri à la main, des urgences vues plus tôt, des réponses plus homogènes d'une personne à l'autre. Nous n'annonçons ni pourcentage ni gain de temps\u00a0: ils dépendent de votre volume et de vos règles, et se mesurent pendant un pilote, sur vos propres courriels.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour voir ce que cela donnerait chez vous.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle.",
-      "claims": ["CL-128", "CL-21", "CL-06", "CL-23", "CL-103"],
+      "role": "Ce qui reste sous contrôle\u00a0; carte données (CL-E01 à E05) avec lien Vos données.",
+      "claims": [
+        "CL-128",
+        "CL-21",
+        "CL-06",
+        "CL-23",
+        "CL-103",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sable",
@@ -147,10 +159,10 @@
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "Ce qui reste sous votre contrôle.",
+        "title": "Rien ne part sans votre feu vert.",
         "cards": [
           {
-            "title": "Rien ne part sans feu vert.",
+            "title": "Une personne approuve chaque envoi.",
             "text": "La validation d'une personne précède tout envoi, sauf décision écrite contraire de votre part."
           },
           {
@@ -162,8 +174,10 @@
             "text": "Chaque connexion appartient à un espace de travail et peut être retirée."
           },
           {
-            "title": "Le modèle est un choix écrit.",
-            "text": "Sur votre serveur ou dans notre infrastructure\u00a0; un modèle externe seulement avec votre accord, et son lieu est indiqué."
+            "title": "Vos données restent à vous.",
+            "text": "Sur votre serveur ou chez nous, au Québec\u00a0: jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe n'entre qu'avec votre activation explicite, consignée par écrit, et chaque modèle indique où il tourne.",
+            "href": "/vos-donnees/",
+            "link_label": "Lire nos engagements"
           },
           {
             "title": "Pas d'envoi en masse.",
@@ -182,7 +196,7 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Courriels\u00a0: vos questions.",
+        "title": "Vos questions sur les courriels.",
         "items": [
           {
             "question": "Ça fonctionne avec ma messagerie\u00a0?",
@@ -190,7 +204,7 @@
           },
           {
             "question": "L'IA peut-elle se tromper de réponse\u00a0?",
-            "answer": "Oui, comme une personne pressée. C'est pourquoi un humain approuve chaque envoi, que chaque brouillon laisse une trace et qu'un garde-fou peut vérifier que la réponse reste fidèle à vos documents avant qu'elle vous soit présentée. Le garde-fou réduit l'erreur\u00a0; il ne la rend pas impossible."
+            "answer": "Oui, comme une personne pressée. C'est pourquoi un humain approuve chaque envoi, que chaque brouillon laisse une trace et qu'un garde-fou (un contrôle automatique) peut vérifier que la réponse reste fidèle à vos documents avant qu'elle vous soit présentée. Le garde-fou réduit l'erreur\u00a0; il ne la rend pas impossible."
           },
           {
             "question": "Peut-elle répondre toute seule aux cas simples\u00a0?",
@@ -205,13 +219,13 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA : démonstration.",
+      "role": "CTA\u00a0: démonstration.",
       "claims": ["CL-01"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
-        "title": "Voir vos courriels triés.",
+        "title": "Voyez vos courriels se ranger.",
         "text": "Nous préparons une démonstration sur des courriels fictifs, puis nous parlons de votre messagerie et de vos règles.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",

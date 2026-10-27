@@ -7,45 +7,46 @@
 - Page : `deploiement-sur-place` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/deploiement/sur-place/` · slug : `deploiement/sur-place`
 - Titre SEO (31 caractères) : Serveur d'IA sur place pour PME
-- Description SEO (153 caractères) : Nexora AI installe le système d'IA sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Matériel et accès à vous, flux sortants listés.
+- Description SEO (160 caractères) : Serveur d'IA sur place pour PME : Nexora AI l'installe dans vos locaux ou chez l'hébergeur de votre choix. Vos données restent chez vous, vos accès sont à vous.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du mode sur place. · Affirmations : CL-72, CL-26*
+*Promesse du mode sur place : mon serveur, mes accès, mes règles ; engagement CL-E01. · Affirmations : CL-72, CL-26, CL-E01*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Déploiement · Sur place**
 
-# L'IA sur votre serveur. Les accès sont à vous.
+# Votre IA. Votre serveur. Vos règles.
 
-Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Ce qui sort de votre réseau, s'il y a lieu, vous est remis par écrit avant la mise en service.
+Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Vos données y restent : Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps.
 
-[Demander une étude de déploiement](/contact/?sujet=etude-deploiement) · [Comparer les deux modes](/deploiement/)
+[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Comparer les deux modes](/deploiement/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Périmètre sur place : schéma et liste de ce qui reste dedans et de ce qui peut sortir. · Affirmations : CL-72, CL-05, CL-77, CL-79*
+*Périmètre sur place : schéma et liste de ce qui reste dedans, de ce qui peut sortir et de qui peut entrer. · Affirmations : CL-72, CL-05, CL-77, CL-79, CL-E01, CL-E03, CL-E04, CL-E05*
 
 Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-sur-place`, `anchor_id=perimetre`
 
 ## Le périmètre, chez vous.
 
-Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; le schéma de votre installation vous est remis par écrit.
+Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; le schéma de votre installation vous est remis par écrit. Vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
 
 - **Ce qui reste dans vos murs.** Les documents, l'index de recherche, les conversations, les journaux et, si vous le choisissez, les modèles.
-- **Ce qui peut en sortir.** Les mises à jour, les vérifications de licence, et un modèle externe seulement si vous l'avez accepté par écrit.
+- **Ce qui peut en sortir.** Les mises à jour, les vérifications de licence, et un modèle externe seulement si vous l'avez activé explicitement, par écrit.
+- **Qui peut entrer.** Nexora AI n'accède à votre serveur que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps ; chaque accès est journalisé.
 - **Ce que nous vérifions.** Chaque flux sortant est listé. Nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Étapes de la mise en place sur place. · Affirmations : CL-81, CL-26, CL-104, CL-04*
+*Étapes de la mise en place sur place, sans devenir informaticien. · Affirmations : CL-81, CL-26, CL-104, CL-04*
 
 Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
-## De l'étude à l'exploitation.
+## Six étapes, sans devenir informaticien.
 
 #### Dimensionner.
 
@@ -65,7 +66,7 @@ Liste des flux sortants, schéma remis par écrit, test d'un cas réel.
 
 #### Former.
 
-Usage et supervision, pour votre équipe.
+Usage et supervision, pour votre équipe : relire, corriger, approuver.
 
 #### Exploiter.
 
@@ -73,7 +74,7 @@ Partage des tâches écrit au contrat : mises à jour, sauvegardes, surveillanc
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Qui fait quoi dans le mode sur place. · Affirmations : CL-72, CL-04, CL-08*
+*Qui fait quoi dans le mode sur place. · Affirmations : CL-72, CL-04, CL-08, CL-E01*
 
 Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 
@@ -82,9 +83,9 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 #### Vous.
 
 Vous possédez le matériel.
-Vous détenez les accès et les accordez à Nexora AI au besoin.
+Vous détenez les accès et décidez quand en accorder à Nexora AI, par écrit.
 Vous placez et conservez les sauvegardes.
-Vous décidez des modèles et de toute option externe.
+Vous décidez des modèles et activez, ou non, toute option externe.
 
 #### Nexora AI.
 
@@ -119,7 +120,7 @@ Pas de configuration type : elle dépend du nombre d'utilisateurs, du volume de
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08*
+*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08, CL-E01, CL-E03, CL-E04*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -127,11 +128,15 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Mes données restent-elles chez moi ?
 
-Par défaut, les documents, l’index et les conversations restent sur votre serveur. Les flux sortants sont ceux que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous le choisissez, un modèle externe.
+Oui. Les documents, l'index et les conversations restent sur votre serveur. Les flux sortants sont ceux que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous l'activez par écrit, un modèle externe.
 
 #### Nexora AI accède-t-elle à mon serveur ?
 
-Seulement par les accès que vous accordez, convenus à l'avance. Vous pouvez les retirer.
+Seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps. Chaque accès est journalisé, et vous pouvez retirer l'autorisation.
+
+#### Mes données servent-elles à entraîner un modèle ?
+
+Non, jamais. Elles ne sont pas non plus vendues.
 
 #### Puis-je l'installer chez un hébergeur de mon choix ?
 
@@ -151,4 +156,4 @@ Réglages : `tone=sombre`
 
 Dites-nous vos usages et vos contraintes. Nous vous disons ce qu'il faudrait installer, où, et ce qui sortirait du réseau.
 
-[Demander une étude de déploiement](/contact/?sujet=etude-deploiement) · [Voir le mode hébergé](/deploiement/heberge-quebec/)
+[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Voir le mode hébergé](/deploiement/heberge-quebec/)

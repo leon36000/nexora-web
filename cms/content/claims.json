@@ -1,7 +1,7 @@
 {
-  "version": 2,
-  "date": "2026-10-26",
-  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI et pages du jalon S3). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ».",
+  "version": 3,
+  "date": "2026-10-27",
+  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ».",
   "claims": [
     {
       "id": "CL-01",
@@ -66,11 +66,11 @@
     {
       "id": "CL-06",
       "kind": "engagement",
-      "statement": "Aucun appel à un service d'IA externe n'est configuré sans votre accord écrit.",
+      "statement": "Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, consignée par écrit.",
       "scope": "Engagement de service, tous modes.",
-      "evidence": "Exigence du brief §8 : options externes distinctes, désactivées par défaut, explicitement acceptées ; aucun basculement silencieux vers un modèle infonuagique. À confirmer par le fondateur ; à inscrire au contrat type.",
+      "evidence": "Engagement du fondateur (brief §3), repris et précisé par la décision D7 de la vague 2 (engagement 5) : le fournisseur externe est activé pour un agent ou un projet précis. À confirmer par le fondateur (CL-A12).",
       "evidence_url": null,
-      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §8",
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), §3 ; Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7",
       "approval_status": "en_revue",
       "valid_from": "2026-10-26",
       "valid_until": null
@@ -78,11 +78,11 @@
     {
       "id": "CL-07",
       "kind": "engagement",
-      "statement": "Nous ne réutilisons pas les données d'un client, ni pour un autre client ni pour entraîner un modèle, sans son autorisation spécifique.",
+      "statement": "Nous n'utilisons jamais les données d'un client pour entraîner ou ajuster un modèle, ni pour un autre client.",
       "scope": "Règle de Nexora AI. CLAUSE DU CONTRAT TYPE À RÉDIGER.",
-      "evidence": "Exigence du brief §8 (« pas de réutilisation… sans autorisation spécifique »). Rapport 06 §4.5 : formulation autorisée seulement si contractuelle, avec procédure technique.",
+      "evidence": "Engagement du fondateur, renforcé par la décision D7 de la vague 2 (engagement 3 : « jamais » d'entraînement, sans exception d'autorisation). Valable seulement si les clauses des fournisseurs sont au moins aussi strictes (recherche 10 §6.5, point 4). À confirmer par le fondateur (CL-A12).",
       "evidence_url": null,
-      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §8 ; Rapport docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026), §4.5",
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), §3 ; Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7",
       "approval_status": "en_revue",
       "valid_from": "2026-10-26",
       "valid_until": null
@@ -906,9 +906,9 @@
     {
       "id": "CL-89",
       "kind": "fait",
-      "statement": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés ; ils peuvent faire l'objet d'une étude de faisabilité.",
+      "statement": "La téléphonie et les modèles spécialisés ne sont pas des produits livrés ; la vision par caméra existe seulement comme projet pilote sur invitation (Nexora Vision). Ils peuvent faire l'objet d'une étude de faisabilité.",
       "scope": "Site public de Nexora AI, tous modes de déploiement.",
-      "evidence": "Brief §3 : ne pas promettre que toute tâche est réalisable sans contraintes ; §6 : vérifier séparément téléphonie, transcription, synthèse vocale et transport des données. Rapport 07 §3 : pas de téléphonie ni de SIP.",
+      "evidence": "Brief §3 : ne pas promettre que toute tâche est réalisable sans contraintes ; §6 : vérifier séparément téléphonie, transcription, synthèse vocale et transport des données. Rapport 07 §3 : pas de téléphonie ni de SIP. Mise à jour du 27/10/2026 : Nexora Vision est présenté comme projet pilote sur invitation (CL-V01), jamais comme produit livré.",
       "evidence_url": null,
       "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §3 et §6 ; rapport docs/recherche/07-opsys-ai-couverture.md (26/10/2026)",
       "approval_status": "en_revue",
@@ -1554,7 +1554,7 @@
     {
       "id": "CL-A12",
       "kind": "a_completer",
-      "statement": "[À COMPLÉTER PAR LE FONDATEUR] Confirmer ou corriger les engagements de service écrits au nom de Nexora AI : CL-05 à CL-08, CL-72, CL-73, CL-76 et CL-128.",
+      "statement": "[À COMPLÉTER PAR LE FONDATEUR] Confirmer ou corriger les engagements de service écrits au nom de Nexora AI : CL-05 à CL-08, CL-72, CL-73, CL-76, CL-128 et les cinq engagements sur les données CL-E01 à CL-E05 (validation par un avocat recommandée avant le lancement).",
       "scope": "Toutes les pages.",
       "evidence": "Ces engagements sont rédigés d'après le brief et le rapport 06, sans contrat type existant.",
       "evidence_url": null,
@@ -1585,6 +1585,438 @@
       "source_version": "Demande au fondateur, lot S3 du contenu (26/10/2026)",
       "approval_status": "brouillon",
       "valid_from": "2026-10-26",
+      "valid_until": null
+    },
+    {
+      "id": "CL-P01",
+      "kind": "produit",
+      "statement": "Nexora WorkStudio met à votre portée des capacités d'IA actuelles dans un seul outil en français : des agents qui utilisent vos outils, un assistant de création de flux (Copilote), des réponses fondées sur vos documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte, la mesure par jeux de tests.",
+      "scope": "Capacités livrées en v3 de WorkStudio, vérifiées sur le serveur de test de Nexora AI (CL-110). « À la pointe » est un énoncé promotionnel ; la preuve est la liste des capacités, pas un classement.",
+      "evidence": "Guide de WorkStudio v3 (dépôt Nexora-Studio-) et journal de la v3 ; capacités détaillées aux entrées CL-20 à CL-27, CL-90 à CL-102. Aucun comparatif ni classement n'est publié.",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D8 ; entrées CL-20, CL-90 à CL-102, CL-110",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-P02",
+      "kind": "produit",
+      "statement": "WorkStudio se prend en main sans écrire de code : on décrit le besoin en français, le Copilote prépare un flux que l'on relit, des modèles de départ pour PME sont fournis, on construit en cartes ou sur un canevas et l'installation se fait en une commande.",
+      "scope": "Parcours de construction décrit dans le guide de WorkStudio ; « extrêmement facile » est un énoncé promotionnel dont la preuve est ce parcours sans code.",
+      "evidence": "Entrées CL-26 (installation en une commande), CL-91 (cartes ou canevas, test pas à pas), CL-92 (Copilote et modèles de départ). Les modèles de départ sont généraux (CL-111).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D8 ; entrées CL-26, CL-91, CL-92",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-P03",
+      "kind": "politique",
+      "statement": "Les mots d'ambition du site (« pointe de l'IA », « puissant », « simple ») sont des énoncés promotionnels ; à côté de chaque produit, son état réel (disponible, accès anticipé, projet pilote, prévu) est écrit, et ce qui n'est pas livré n'est jamais décrit comme en service.",
+      "scope": "Règle éditoriale de toutes les pages.",
+      "evidence": "Décision D8 de la vague 2 : textes forts mais statuts honnêtes (Loi sur la concurrence, indications trompeuses ; Loi sur la protection du consommateur du Québec).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D8",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E01",
+      "kind": "engagement",
+      "statement": "Sur place : vos données restent sur votre serveur. Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé.",
+      "scope": "Mode installé chez le client. Les flux sortants (mises à jour, licences, modèle externe éventuel) sont listés avant la mise en service (CL-77) ; ce n'est pas une promesse d'absence de tout flux sortant.",
+      "evidence": "Engagement du fondateur (D7, engagement 1), rédaction proposée par la recherche 10 §6.3. Le journal d'audit existe dans WorkStudio (CL-22). À valider par un avocat avant le lancement (recherche 10 §6.5, point 12).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7 ; docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), partie B §6.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E02",
+      "kind": "engagement",
+      "statement": "Hébergé : vos données restent au Québec. Elles sont stockées et traitées dans l'infrastructure de Nexora AI, située au Québec, sauvegardes comprises. Les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants.",
+      "scope": "Mode hébergé par Nexora AI. Valable seulement une fois la preuve du lieu produite (CL-A05) et le registre des sous-traitants dressé (CL-87).",
+      "evidence": "Engagement du fondateur (D7, engagement 2). PREUVE TECHNIQUE À PRODUIRE avant la mise en ligne publique : adresse et contrat du centre de données, lieu des sauvegardes, des journaux et des sous-traitants (recherche 10 §6.3 et §6.5, point 2).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7 ; docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), partie B §6.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E03",
+      "kind": "engagement",
+      "statement": "Nexora AI n'utilise jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers.",
+      "scope": "Tous les produits et modes de déploiement. Les clauses des fournisseurs de modèles doivent être au moins aussi strictes (recherche 10 §6.5, point 4) ; les journaux techniques de sécurité sont expliqués dans la politique de confidentialité.",
+      "evidence": "Engagement du fondateur (D7, engagement 3). « Jamais » n'est vrai que si le contrat et l'architecture le garantissent : clause à rédiger (CL-A06) et clauses des fournisseurs à vérifier.",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7 ; docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), partie B §6.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E04",
+      "kind": "engagement",
+      "statement": "Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée.",
+      "scope": "Tous les produits et modes de déploiement.",
+      "evidence": "Engagement du fondateur (D7, engagement 4). À reprendre dans les conditions et dans l'entente de traitement (CL-A06).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7 ; docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), partie B §6.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E05",
+      "kind": "engagement",
+      "statement": "Vos données ne sont envoyées à un fournisseur de modèle externe que si vous l'avez activé pour un agent ou un projet précis ; la liste des fournisseurs est publique et chacun est lié par un contrat qui précise la conservation et l'entraînement.",
+      "scope": "Tous les produits qui appellent des modèles. La liste publique des fournisseurs et les contrats sont en préparation (CL-87).",
+      "evidence": "Engagement du fondateur (D7, engagement 5), reformulé en « activation explicite par le client » comme le recommande la recherche 10 §6.3 (le produit API décrit fidèlement ce mécanisme). Cohérent avec CL-06 et CL-76.",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7 ; docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), partie B §6.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E06",
+      "kind": "engagement",
+      "statement": "Ces engagements s'appuient sur un contrat de traitement signé avec chaque client, un registre des sous-traitants (pays et rôle de chacun) et un journal d'accès ; le contrat type et le registre sont en préparation.",
+      "scope": "Mécanismes qui rendent les engagements vérifiables ; ce qui existe déjà dans le logiciel est cité à part (CL-22, CL-23, CL-24, CL-105, CL-113).",
+      "evidence": "Recherche 10 §6.2 (ce qui rend un engagement crédible) et §6.3 (conditions avant publication). Documents types en préparation (CL-87, CL-A06).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), §6.2 et §6.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E07",
+      "kind": "fait",
+      "statement": "Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même.",
+      "scope": "Constat général sur les pratiques du secteur ; aucune entreprise n'est nommée ni visée sur le site.",
+      "evidence": "Recherche 10 §6.1 : pour une offre grand public payante d'un fournisseur de modèles, un contrôle « Enable data sharing » permet de se retirer du programme d'entraînement (source primaire du fournisseur). Le non-entraînement n'y est pas le réglage par défaut.",
+      "evidence_url": null,
+      "source_version": "docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), §6.1",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E08",
+      "kind": "fait",
+      "statement": "Certains fournisseurs d'IA annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser.",
+      "scope": "Constat général ; aucune entreprise n'est nommée ni visée sur le site.",
+      "evidence": "Recherche 10 §6.1 : pour une grande plateforme d'API, la résidence au Canada couvre le stockage, pas le traitement (documentation du fournisseur, source primaire).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/10-prix-et-engagements-donnees.md (27/10/2026), §6.1",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-E09",
+      "kind": "fait",
+      "statement": "Un fournisseur soumis à la juridiction d'un autre pays peut être tenu de lui remettre des données qu'il détient, même stockées au Canada (exemple : la loi américaine CLOUD Act de 2018). Les lois canadiennes et québécoises s'appliquent aussi aux entreprises d'ici.",
+      "scope": "Constat général de droit ; « souverain » désigne un contrôle juridique et opérationnel, pas une immunité (CL-75). Aucune entreprise n'est nommée.",
+      "evidence": "Recherche 06 §4.3 : CLOUD Act (18 U.S.C. § 2713, 23 mars 2018), source primaire consultée ; nuance sur les lois locales. Validation par un avocat recommandée.",
+      "evidence_url": null,
+      "source_version": "docs/recherche/06-mistral-marketing-souverainete.md (26/10/2026), §4.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V01",
+      "kind": "statut",
+      "statement": "Nexora Vision est un projet pilote sur invitation, pas un produit disponible : aucune installation ni mesure de performance n'existe encore, et la licence des modèles de détection, l'évaluation des facteurs relatifs à la vie privée, la politique et l'affiche sont à régler avant le premier site.",
+      "scope": "Statut affiché sur la page Nexora Vision, sur l'accueil et dans le menu.",
+      "evidence": "Recherche 08 §5.4 (statut recommandé : « Projet pilote (sur invitation) ») et §5.2-5.3 (licence des modèles de détection bloquante, preuve de performance absente). Passage à « accès anticipé » : un site pilote mesuré, une licence réglée, un avis juridique obtenu.",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §5.4 ; Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D9",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V02",
+      "kind": "offre",
+      "statement": "Conception visée : l'analyse (détection de personnes et de véhicules dans des zones et à des horaires définis par le client) se fait sur un serveur installé chez le client ; seules des alertes écrites (type d'objet, heure, zone) peuvent en sortir, et seulement si le client l'active.",
+      "scope": "Architecture visée du pilote, à confirmer par un test de sortie réseau avant toute affirmation au présent. Mises à jour et licences éventuelles sont listées (CL-77).",
+      "evidence": "Recherche 08 §4.8 (point 1) et §6.8 (question 1 : « À confirmer dans l'architecture finale »). Aucune installation n'existe encore (CL-V01).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §4.8, §6.8",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V03",
+      "kind": "engagement",
+      "statement": "Nexora Vision n'offre pas de reconnaissance faciale : la fonction n'est pas livrée.",
+      "scope": "Périmètre de la version 1 du pilote. Une identification de personnes exigerait une déclaration à la Commission d'accès à l'information, un consentement exprès et une solution de rechange, que Nexora AI n'offre pas.",
+      "evidence": "Recherche 08 §4.2, §4.4 (affaire Clearview AI, CAI, 2021), §4.7 et §5.3 (exclu de la version 1). Formulation : « non offerte et non livrée », sans promesse d'impossibilité technique (§6.9).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §4.2, §4.4, §5.3, §6.9",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V04",
+      "kind": "engagement",
+      "statement": "Nexora Vision ne propose aucune fonction d'analyse des employés (productivité, comportement) ; les alertes se limitent aux zones et aux horaires que le client définit.",
+      "scope": "Périmètre de la version 1 du pilote. La surveillance continue du personnel est très risquée au Québec (Charte, jurisprudence arbitrale).",
+      "evidence": "Recherche 08 §4.5, §4.7 et §4.8 (point 9) ; réponse à l'objection « Ça va surveiller mes employés » (§6.5).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §4.5, §4.7, §4.8, §6.5",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V05",
+      "kind": "offre",
+      "statement": "Conception visée : recherche des événements par type d'objet et par horaire, floutage automatique des visages hors cible et masquage de zones sensibles, journal d'accès (qui a consulté quelles images, quand), conservation réglable par type d'événement avec destruction automatique.",
+      "scope": "Fonctions visées du pilote ; aucune n'est annoncée comme livrée (CL-V01).",
+      "evidence": "Recherche 08 §4.8 (points 3 à 6) et §5.3 (périmètre recommandé de la version 1 : alertes selon horaires et zones, recherche par type d'objet et par horaire, journal d'accès, conservation paramétrable, floutage des visages hors cible).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §4.8, §5.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V06",
+      "kind": "offre",
+      "statement": "Avant l'installation, Nexora AI prévoit de remettre au client une évaluation des facteurs relatifs à la vie privée, une politique de vidéosurveillance et un modèle d'affiche d'information ; ces documents sont en préparation et ne remplacent pas un avis juridique.",
+      "scope": "Au Québec, la Loi 25 exige d'informer les personnes avant la collecte ; une affiche avant l'entrée est la pratique recommandée. Aucune conformité n'est affirmée.",
+      "evidence": "Recherche 08 §4.1, §4.3, §4.8 (point 7) et §6.5 (« Est-ce légal ? »). Documents types en préparation (CL-87, CL-A06). Articles de loi à confirmer sur le texte officiel avant diffusion (recherche 08, avertissement §4).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §4.1, §4.3, §4.8, §6.5",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V07",
+      "kind": "politique",
+      "statement": "Une alerte de Nexora Vision demande la vérification d'une personne : l'IA détecte des personnes et des objets, pas l'identité ni l'intention, et elle ne remplace ni un agent de sécurité ni une intervention.",
+      "scope": "Limite de responsabilité à préciser au contrat (recherche 08 §5.2, point 4).",
+      "evidence": "Recherche 08 §6.9 (« ce qu'il ne faut pas affirmer ») et §6.8 (question 8).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §6.8, §6.9",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V08",
+      "kind": "fait",
+      "statement": "La compatibilité des caméras existantes (normes courantes ONVIF et RTSP) est vérifiée avant l'installation ; certaines caméras ne seront pas compatibles.",
+      "scope": "Condition du pilote.",
+      "evidence": "Recherche 08 §5.3 (composants) et §6.8 (question 6).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §5.3, §6.8",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V09",
+      "kind": "fait",
+      "statement": "Les études sur la vidéosurveillance montrent un effet réel mais modeste sur la criminalité, plus net dans les stationnements et plus fort avec une surveillance active ; le gain ne vient pas de l'IA seule.",
+      "scope": "Contexte, pas une promesse : aucune étude indépendante du taux de détection ni des fausses alertes d'une caméra IA n'a été trouvée.",
+      "evidence": "Revue systématique de Piza, Welsh, Farrington et Thomas (2019), citée par la recherche 08 §2 (niveau de preuve « fort » pour les stationnements).",
+      "evidence_url": "https://www.ojp.gov/ncjrs/virtual-library/abstracts/cctv-surveillance-crime-prevention-40-year-systematic-review-meta",
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §2",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-V10",
+      "kind": "politique",
+      "statement": "Aucun taux de détection, de fausses alertes ni de réduction des vols n'est annoncé pour Nexora Vision ; les résultats seront mesurés pendant le pilote, avec leur méthode, et publiés ensuite.",
+      "scope": "Règle de la Loi sur la concurrence : une allégation de performance exige un test adéquat et approprié fait avant la déclaration.",
+      "evidence": "Recherche 08 §6.9 (« Nous réduisons les vols de X % », « Précision de 99 % » : à ne pas affirmer) et §5.2 (point 7).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/08-surveillance-video-ia.md (27/10/2026), §5.2, §6.9",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G01",
+      "kind": "statut",
+      "statement": "Nexora Croissance est en accès anticipé : l'accès se fait sur demande, et chaque connexion à une plateforme s'ouvre à son rythme.",
+      "scope": "Statut affiché sur la page Nexora Croissance, sur l'accueil et dans le menu. Aucun client ni aucun résultat n'est annoncé.",
+      "evidence": "Décision D10 de la vague 2 (statut « Accès anticipé »). Les plateformes exigent chacune une approbation (recherche 09 §2.5). À confirmer par le fondateur : ouverture effective et premiers clients (CL-A17).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D10 ; docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §2.5",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G02",
+      "kind": "offre",
+      "statement": "Nexora Croissance réunit dans une seule offre : un site web adapté au métier, le référencement naturel (SEO), la gestion de campagnes Google Ads et Microsoft Advertising, l'analyse de marché et de mots-clés, la gestion des réseaux sociaux, la fiche Google Business Profile et le suivi de la notoriété.",
+      "scope": "Description de l'offre visée ; l'état de chaque connexion est précisé séparément (CL-G05, CL-G09).",
+      "evidence": "Décision D10 de la vague 2 ; structure de la page produit recommandée par la recherche 09 §6 (six blocs). Aucun concurrent trouvé ne combine tous ces éléments dans une seule offre (recherche 09 §0, point 2).",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D10 ; docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §0, §6",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G03",
+      "kind": "offre",
+      "statement": "L'hébergement du site est inclus : aucuns frais d'hébergement distincts tant que vous êtes client de Nexora Croissance. À votre charge, affichés d'avance : le nom de domaine à votre nom (frais annuels payés au registraire) et les frais de publicité versés aux plateformes. Vous repartez avec votre contenu et votre nom de domaine.",
+      "scope": "Conditions proposées, à confirmer par le fondateur (CL-A15). Le mot « gratuit » ne s'emploie que pour l'hébergement et toujours avec ces conditions, conformément à la Loi sur la protection du consommateur et à la Loi sur la concurrence.",
+      "evidence": "Recherche 09 §4.7 (« Site web gratuit pour toujours » à éviter ; « hébergement inclus pendant la durée de votre abonnement »), §9.2 à §9.4 (modèle à tester, principe de transparence). Coûts réels de l'hébergeur à confirmer (§9.3).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §4.7, §9.4",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G04",
+      "kind": "politique",
+      "statement": "Dans Nexora Croissance, vous validez les publications et les changements majeurs de budget ou de ciblage, un plafond de dépenses que vous fixez s'applique, et vous recevez un rapport par campagne en français ; une IA propose, vous décidez.",
+      "scope": "Principe de conception de l'offre (transparence et contrôle), non un résultat mesuré.",
+      "evidence": "Recherche 09 §0 (point 2 : la critique la plus forte contre les outils actuels porte sur la boîte noire), §4.7 (« Une IA propose, vous validez »), §7 (questions 4 et 7). Cohérent avec CL-21 et CL-128.",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §0, §4.7, §7",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G05",
+      "kind": "fait",
+      "statement": "Chaque plateforme exige sa propre approbation avant d'ouvrir un accès de production ; pour certaines, cela prend de plusieurs semaines à plusieurs mois. L'état de chaque connexion (active, en cours d'approbation, prévue) est affiché au moment de votre demande.",
+      "scope": "Aucune connexion n'est annoncée comme active sur le site.",
+      "evidence": "Recherche 09 §0 (point 3) et §2.5 (calendrier réaliste, ordre de grandeur à confirmer).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §0, §2.5",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G06",
+      "kind": "politique",
+      "statement": "Aucune position dans les résultats de recherche, aucun nombre de clients et aucun rendement publicitaire n'est garanti ; les objectifs sont des indicateurs mesurés (positions, visites, demandes) et rapportés chaque mois.",
+      "scope": "Google interdit les garanties de placement dans ses annonces ; la Loi sur la concurrence exige un test adéquat et approprié avant une allégation de performance.",
+      "evidence": "Recherche 09 §4.1, §4.5 et §4.7 (« Première page de Google garantie » : à éviter) ; question 1 de la FAQ recommandée (§7).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §4.1, §4.5, §4.7, §7",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G07",
+      "kind": "engagement",
+      "statement": "Nexora AI ne rédige ni ne publie d'avis à la place de vos clients et n'en masque aucun ; les réponses aux avis, si vous les activez, sont rédigées pour vous et validées par vous.",
+      "scope": "Règle des lois sur les pratiques commerciales trompeuses (Canada) et de la règle américaine sur les faux avis.",
+      "evidence": "Recherche 09 §4.6 (principe pour Nexora) et §7 (question 8).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §4.6, §7",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G08",
+      "kind": "fait",
+      "statement": "Les relances par courriel ou texto exigent un consentement documenté (loi canadienne anti-pourriel) ; Nexora Croissance est conçu pour n'envoyer aucun message commercial sans ce consentement.",
+      "scope": "Principe de conception ; sanctions de la loi pouvant atteindre plusieurs millions de dollars (non citées sur le site).",
+      "evidence": "Recherche 09 §4.3 (LCAP / CASL, application à Nexora).",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §4.3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G09",
+      "kind": "fait",
+      "statement": "Plateformes visées. Publicité : Google Ads, Microsoft Advertising, Meta (Facebook, Instagram), TikTok, LinkedIn, Pinterest, Snapchat, Reddit, X. Réseaux sociaux : Facebook, Instagram, Threads, LinkedIn, X, TikTok, YouTube, Pinterest, Snapchat, Bluesky, Mastodon, Telegram, Discord, WhatsApp Business, Reddit. Présence locale : Google Business Profile, Google Search Console, Bing Webmaster Tools, IndexNow. Aucune connexion n'est annoncée comme active.",
+      "scope": "Liste de ce qui est visé, par les interfaces officielles seulement (aucun contournement). L'automatisation de chaque réseau dépend de son API et de son approbation ; Reddit n'est pas recommandé pour la publication automatique.",
+      "evidence": "Recherche 09 §3.1, §3.2 et §3.3. Les noms de marques désignent des plateformes tierces ; aucun partenariat ni statut officiel n'est revendiqué.",
+      "evidence_url": null,
+      "source_version": "docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §3",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-G10",
+      "kind": "engagement",
+      "statement": "Dans Nexora Croissance, les données de votre entreprise ne servent ni à entraîner des modèles ni à être vendues ; elles ne sont transmises qu'aux plateformes que vous connectez, pour ce que vous décidez de publier, et les modèles utilisés pour rédiger sont ceux que vous activez.",
+      "scope": "Application des engagements CL-E03 à CL-E05 à Nexora Croissance. Les plateformes publicitaires reçoivent évidemment ce que vous publiez chez elles.",
+      "evidence": "Décision D7 ; recherche 09 §0 (point 8 : l'engagement doit couvrir Nexora et chacun de ses sous-traitants) et §4.7.",
+      "evidence_url": null,
+      "source_version": "Spécification vague 2 (docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md, 27/10/2026), D7 ; docs/recherche/09-marketing-automatise-ia.md (27/10/2026), §0, §4.7",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-A15",
+      "kind": "a_completer",
+      "statement": "[À COMPLÉTER PAR LE FONDATEUR] Confirmer les conditions de l'hébergement web inclus dans Nexora Croissance (durée, nom de domaine, limites d'usage raisonnable, sortie du client avec son contenu) et l'hébergeur retenu pour les sites des clients.",
+      "scope": "Point à fournir par le fondateur ; il n'est cité par aucune page.",
+      "evidence": "Non fourni.",
+      "evidence_url": null,
+      "source_version": "Demande au fondateur, lot « contenu vague 2 » (27/10/2026)",
+      "approval_status": "brouillon",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-A16",
+      "kind": "a_completer",
+      "statement": "[À COMPLÉTER PAR LE FONDATEUR] Lever les prérequis de Nexora Vision avant de passer du projet pilote à l'accès anticipé : licence des modèles de détection, avis juridique écrit, évaluation des facteurs relatifs à la vie privée, politique et affiche types, premier site pilote mesuré.",
+      "scope": "Point à fournir par le fondateur ; il n'est cité par aucune page.",
+      "evidence": "Non fourni.",
+      "evidence_url": null,
+      "source_version": "Demande au fondateur, lot « contenu vague 2 » (27/10/2026)",
+      "approval_status": "brouillon",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-A17",
+      "kind": "a_completer",
+      "statement": "[À COMPLÉTER PAR LE FONDATEUR] Confirmer le statut « accès anticipé » de Nexora Croissance : qui peut y accéder, quelles connexions sont réellement actives, où en sont les approbations de chaque plateforme.",
+      "scope": "Point à fournir par le fondateur ; il n'est cité par aucune page.",
+      "evidence": "Non fourni.",
+      "evidence_url": null,
+      "source_version": "Demande au fondateur, lot « contenu vague 2 » (27/10/2026)",
+      "approval_status": "brouillon",
+      "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-A18",
+      "kind": "a_completer",
+      "statement": "[À COMPLÉTER PAR LE FONDATEUR] Fournir les éléments manquants de la politique de confidentialité (identité légale, responsable de la protection des renseignements personnels, durées de conservation, outil de mesure d'audience, témoins, prestataires, date d'entrée en vigueur) puis la faire valider par un avocat québécois avant publication.",
+      "scope": "Point à fournir par le fondateur ; il n'est cité par aucune page.",
+      "evidence": "Non fourni.",
+      "evidence_url": null,
+      "source_version": "Demande au fondateur, lot « contenu vague 2 » (27/10/2026)",
+      "approval_status": "brouillon",
+      "valid_from": "2026-10-27",
       "valid_until": null
     }
   ],
@@ -1804,6 +2236,72 @@
       "formulation": "Équipe, partenaires, clients, adresse, date de fondation, effectif sur la page entreprise.",
       "raison": "Non fournis (CL-A01 à CL-A04).",
       "remplacement": "Page limitée à l'offre et aux principes."
+    },
+    {
+      "id": "R-37",
+      "formulation": "« Nexora Vision est conforme à la Loi 25 » ou « certifié, approuvé par la CAI ».",
+      "raison": "Aucune certification ni approbation de ce type n'existe (recherche 08 §6.9) ; documents types en préparation (R-02).",
+      "remplacement": "Obligations de la loi décrites ; documents « en préparation » ; « ceci n'est pas un avis juridique »."
+    },
+    {
+      "id": "R-38",
+      "formulation": "« Aucune donnée ne quitte jamais votre site » (Vision).",
+      "raison": "Vrai seulement après la preuve technique et en précisant les exceptions (recherche 08 §6.9).",
+      "remplacement": "Conception visée : les images restent sur place, seules des alertes écrites peuvent sortir, si vous l'activez (CL-V02)."
+    },
+    {
+      "id": "R-39",
+      "formulation": "« Nous réduisons les vols de X % », « précision de 99 % », tout taux de détection.",
+      "raison": "Aucune mesure ni méthode (recherche 08 §6.9 ; Loi sur la concurrence).",
+      "remplacement": "Aucun chiffre ; les résultats seront mesurés pendant le pilote (CL-V10)."
+    },
+    {
+      "id": "R-40",
+      "formulation": "« L'IA remplace un agent de sécurité », « surveillance 24 h/24 sans personne », « identifie les voleurs ».",
+      "raison": "Une alerte demande une intervention humaine ; l'IA ne détecte ni l'identité ni l'intention (recherche 08 §6.9).",
+      "remplacement": "CL-V07."
+    },
+    {
+      "id": "R-41",
+      "formulation": "Nom d'un logiciel libre de détection, « basé sur » ou logo, comparaisons de prix nominatives avec des concurrents.",
+      "raison": "Politique de marque non vérifiée ; prix de concurrents non publics (recherche 08 §6.9).",
+      "remplacement": "Aucune marque tierce ni comparaison de prix."
+    },
+    {
+      "id": "R-42",
+      "formulation": "« Première page de Google garantie », « +X % de clients garantis », « résultat assuré ».",
+      "raison": "Google interdit les garanties de placement ; allégation de performance sans test préalable (recherche 09 §4.7).",
+      "remplacement": "Indicateurs mesurés et rapportés chaque mois (CL-G06)."
+    },
+    {
+      "id": "R-43",
+      "formulation": "« Site web gratuit pour toujours », « aucun risque, zéro effort ».",
+      "raison": "Dépend des conditions (domaine, durée) ; exagération contraire à la Loi sur la concurrence (recherche 09 §4.7).",
+      "remplacement": "Hébergement inclus tant que vous êtes client, conditions affichées au même endroit (CL-G03)."
+    },
+    {
+      "id": "R-44",
+      "formulation": "« Publicités gérées par IA, sans surveillance » ; « certifié Google », « partenaire officiel Meta ».",
+      "raison": "Contraire à la transparence attendue ; statuts de partenaire non obtenus (recherche 09 §4.7).",
+      "remplacement": "« Une IA propose, vous décidez » (CL-G04) ; aucun statut de partenaire revendiqué."
+    },
+    {
+      "id": "R-45",
+      "formulation": "Plateformes présentées comme connectées ; calendrier de livraison de Nexora Croissance ; prix.",
+      "raison": "Aucune connexion n'est active ; accès à chaque plateforme soumis à approbation (recherche 09 §2.5) ; prix en brouillon (D5).",
+      "remplacement": "État de chaque connexion affiché sur demande (CL-G05) ; CL-10."
+    },
+    {
+      "id": "R-46",
+      "formulation": "« Vos données ne quittent jamais votre serveur » sans exception, ou « hébergé au Québec » sans précision sur les services activés par le client.",
+      "raison": "Les mises à jour, licences et services externes activés sont des flux sortants (CL-77) ; la preuve du lieu reste à produire (CL-A05).",
+      "remplacement": "Engagements D7 avec leurs exceptions écrites (CL-E01, CL-E02)."
+    },
+    {
+      "id": "R-47",
+      "formulation": "Comparaison nominative ou dénigrante des pratiques de grandes entreprises technologiques.",
+      "raison": "Faits non sourcés sur des entreprises précises ; risque de dénigrement.",
+      "remplacement": "Pratiques décrites en général, avec la source de la recherche 10 §6.1 (CL-E07, CL-E08, CL-E09)."
     }
   ]
 }

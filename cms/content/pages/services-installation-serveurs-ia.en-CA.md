@@ -6,28 +6,28 @@
 
 - Page : `services-installation-serveurs-ia` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/services/ai-server-installation/` · slug : `services/ai-server-installation`
-- Titre SEO (43 caractères) : AI server installation for small businesses
-- Description SEO (158 caractères) : Nexora AI installs and configures your AI server on your premises or in its infrastructure in Quebec, then runs it with you. Sizing comes before any purchase.
+- Titre SEO (41 caractères) : AI server installation for small business
+- Description SEO (160 caractères) : AI server installation for small business: Nexora AI installs in one command, on your premises or in Quebec, and runs it with you. Hardware sized before buying.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du service d'installation. · Affirmations : CL-81, CL-05*
+*Promesse du service d'installation : un serveur d'IA prêt à travailler, un périmètre écrit. · Affirmations : CL-81, CL-05, CL-26*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Services · Installation**
 
-# An AI server installed. A perimeter in writing.
+# An AI server, ready to work.
 
-We install, configure and run with you the server that powers your agents and models: on your premises, or in our infrastructure in Quebec. The perimeter is handed over in writing before go-live.
+We install, configure and run with you the server that powers your agents and models: on your premises, or in our infrastructure in Quebec. One-command installation, perimeter handed over in writing before go-live, data that stays yours.
 
 [Request a deployment study](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Définition du serveur d'IA et des deux voies. · Affirmations : CL-81, CL-02, CL-13*
+*Définition du serveur d'IA, deux voies et engagements sur les données de chaque voie. · Affirmations : CL-81, CL-02, CL-13, CL-E01, CL-E02, CL-E03, CL-E04, CL-73*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=deux-voies`
 
@@ -35,18 +35,18 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=deux-voies`
 
 An AI server is a machine that runs the models (the engines that produce the answers) and the agents. It can be a physical server, or a virtual private server (VPS), meaning a server rented just for you.
 
-The method is the same in both cases: size, install, configure, check the flows, train, then operate.
+The method is the same in both cases: size, install, configure, check the flows, train, then operate. In both cases too, your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
 
-- **On your premises.** In your offices or at a host of your choice. The hardware and the access are yours.
-- **With us, in Quebec.** In our infrastructure, where we run it. You buy no server and no hardware.
+- **On your premises.** In your offices or at a host of your choice. The hardware and the access are yours, and your data stays on your server: Nexora AI gets in only if you authorize it in writing, for a specific task and a limited time, and every access is logged.
+- **With us, in Quebec.** In our infrastructure, where we run it. You buy no server and no hardware. Your data stays in Quebec, backups included, apart from the services you explicitly activate; the location is specified to you in writing before go-live.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Six étapes, de l'étude à l'exploitation. · Affirmations : CL-81, CL-26, CL-88, CL-104, CL-05, CL-04*
+*Six étapes de l'installation, de l'étude à l'exploitation. · Affirmations : CL-81, CL-26, CL-88, CL-104, CL-05, CL-04*
 
 Réglages : `columns=3`, `tone=sable`, `layout=etapes`, `anchor_id=etapes`
 
-## From study to operation.
+## Installation, from study to operation.
 
 #### 1. Size.
 
@@ -100,15 +100,15 @@ Reading scanned documents or transcribing recordings calls for additional models
 
 ### Bloc 5 — Section (`block_section`)
 
-*Ce que nous installons : WorkStudio et ses composants. · Affirmations : CL-26, CL-27, CL-103, CL-24, CL-88*
+*Ce que contient le serveur : WorkStudio et ses composants. · Affirmations : CL-26, CL-27, CL-103, CL-24, CL-88, CL-P02*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=composants`
 
-## What we install.
+## What your AI server contains.
 
-The installation brings together the [Nexora WorkStudio](/en/workstudio/) platform and the services it needs.
+The installation brings together the [Nexora WorkStudio](/en/workstudio/) platform, where you build agents and workflows without writing code, and the services it needs.
 
-- **WorkStudio.** The studio where agents and workflows are designed and run.
+- **WorkStudio.** The studio where agents and workflows are designed and run, in French, without writing code.
 - **A model gateway.** A single access point to several AI models, in the OpenAI format, with keys, quotas and consumption metering.
 - **Nexora Connect.** The connector engine that links your services (mail, calendar, storage, billing).
 - **Optional services.** Local detection of personal information, local voice (transcription, speech synthesis), reading of scanned documents.
@@ -140,7 +140,7 @@ Updates, licences, any external model: everything is listed before go-live.
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à l'installation. · Affirmations : CL-26, CL-81, CL-82, CL-08*
+*FAQ propre à l'installation (matériel, serveur existant, exploitation, changement de mode, sorties de données). · Affirmations : CL-26, CL-81, CL-82, CL-08, CL-77, CL-06, CL-E01, CL-E05*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -152,11 +152,15 @@ It depends on the case. The diagnosis answers that before any purchase: it takes
 
 #### Can it go on an existing server?
 
-A Linux or macOS server running Docker is required. We check during the assessment that it suits the intended uses.
+A Linux or macOS server running Docker is required. We check during the diagnosis that it suits the intended uses.
+
+#### Does my data leave the server?
+
+In the on-premises mode, documents, the search index and conversations stay on your server. What can leave is listed with you before go-live: updates, licence checks and, only if you activated it in writing, an external model.
 
 #### Who runs it afterwards?
 
-We do, with you, as the contract provides. In the on-premises mode, the access you give us is agreed in advance.
+We do, with you, as the contract provides. In the on-premises mode, we access your server only if you authorize it in writing, for a specific task and a limited time.
 
 #### Can we change mode later?
 

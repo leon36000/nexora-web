@@ -7,13 +7,13 @@
 - Page : `solutions-documents` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/documents/` · slug : `solutions/documents`
 - Titre SEO (35 caractères) : AI search across your own documents
-- Description SEO (156 caractères) : Ask a question in plain language: the answer comes from your own documents, with its sources. By default, indexing is computed on the instance's own server.
+- Description SEO (150 caractères) : Ask a question in plain language: the answer comes from your own documents, with its sources. Contracts, quotes, procedures: find, summarize, extract.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la solution documents. · Affirmations : CL-127, CL-25*
+*Promesse de la solution documents : retrouver la bonne clause, avec sources. · Affirmations : CL-127, CL-25, CL-90*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,43 +21,43 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # The right clause. The right version. Found.
 
-Ask your question in plain language. The answer comes from your own documents, cites its sources and sends you back to the original passage.
+Ask your question in plain language: the answer comes from your own documents, cites its sources and sends you back to the original passage. Like a colleague who has read everything, and who shows you where.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Problème : un cabinet de services professionnels. · Affirmations : CL-11*
+*Problème : exemple construit d'un cabinet de services professionnels. · Affirmations : CL-11*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
-## Documents you cannot find.
+## Documents that hide.
 
-A professional-services firm accumulates contracts, quotes, procedures and file notes, spread across several folders and several versions. Finding the clause in an old contract means digging through four folders and calling a colleague.
+A professional-services firm accumulates contracts, quotes, procedures and file notes, spread across several folders and several versions. Finding the clause of an old contract means digging through several folders and calling a colleague.
 
 The example is constructed to illustrate the principle; it is not a customer's result.
 
 - **Several versions.** Which one is right? The signed one, or the last one edited?
-- **Memory in people's heads.** When someone leaves, landmarks leave with them.
-- **Searches to repeat.** The same question, asked by three people, is searched three times.
+- **A memory held in heads.** When a person leaves, landmarks go with them.
+- **Searches to repeat.** The same question, asked by three people, is searched for three times.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Ce que fait le système : constituer la base, répondre avec sources, résumer, extraire. · Affirmations : CL-127, CL-25, CL-90, CL-101, CL-129, CL-112*
+*Ce que fait le système : constituer la base, répondre avec sources, résumer, extraire. · Affirmations : CL-127, CL-25, CL-90, CL-101, CL-129, CL-112, CL-P01*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=systeme`
 
-## What the system does.
+## Searching your documents, in plain language.
 
-Three WorkStudio functions, assembled for your case.
+Functions of WorkStudio, the tool that puts answers drawn from your own documents within your reach, assembled for your case.
 
 #### A knowledge base.
 
-You drop in documents (PDF, Word, text, web pages) or connect a synchronized source. They are split and indexed (filed so they can be found quickly); by default, the computation happens on the instance's own server.
+You drop in documents (PDF, Word, text, web pages) or connect a synced source. They are split up and indexed (filed so they can be found quickly); by default the computing is done on the instance's server.
 
 #### Answers with their sources.
 
-The agent searches the base first, answers, numbers its sources and makes them clickable. A safeguard can check that the answer is faithful to your documents.
+The agent (software that completes a task using the tools you authorize) searches the base first, answers, numbers its sources and makes them clickable. A safeguard can check the answer's faithfulness to your documents.
 
 #### Summaries and extracts.
 
@@ -65,37 +65,61 @@ A starter template summarizes a contract (deadlines, amounts, clauses to have re
 
 #### Structured fields.
 
-When a document follows a known form (quote, purchase order), the system pulls out fields and files them in a table.
+When a document follows a known form (quote, purchase order), the system pulls out fields filed in a table.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que reçoit l'équipe, et le bénéfice. · Affirmations : CL-127, CL-14, CL-100*
+*Ce que reçoit l'équipe : mosaïque de bénéfices (bento). · Affirmations : CL-127, CL-100, CL-96*
 
-Réglages : `media_position=none`, `tone=sombre`, `anchor_id=equipe`
+Réglages : `columns=2`, `tone=sombre`, `layout=bento`, `anchor_id=equipe`
 
-## What your team receives.
+## A memory that stays when people leave.
 
-A way to ask your own documents a question, in WorkStudio's internal Assistant or in a chat you publish. The expected benefit: less time searching, less dependence on one person's memory. No time saved is announced; the effect is measured during a pilot, on your real questions.
+A way to ask your own documents a question, in WorkStudio's internal Assistant or in a chat you publish.
 
-- **An answer and its sources.** A click opens the document or shows the excerpt used.
-- **A company memory.** Knowledge of the files stays in the base when someone leaves.
-- **Traces to review.** Questions left unanswered reveal what your documents do not say.
+#### An answer and its sources.
 
-### Bloc 5 — Cartes (`block_cards`)
+One click opens the document or shows the passage used.
 
-*Ce qui reste sous contrôle, avec limites. · Affirmations : CL-127, CL-25, CL-129, CL-109, CL-06*
+#### A company memory.
+
+Knowledge of the files stays in the base when someone leaves.
+
+#### Traces to review.
+
+Questions left unanswered reveal what your documents do not say.
+
+#### An Assistant close at hand.
+
+The Assistant is an internal chat where the team talks to the company's published agents.
+
+### Bloc 5 — Section (`block_section`)
+
+*Bénéfice attendu, sans chiffre ; lien diagnostic. · Affirmations : CL-14, CL-09, CL-127*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
+
+## Less searching, more answers.
+
+The expected benefit: less time spent searching, less dependence on one person's memory. No time saved is announced; the effect is measured during a pilot, on your real questions.
+
+[Book a diagnosis](/en/contact/?sujet=diagnostic) to choose which documents to query first.
+
+### Bloc 6 — Cartes (`block_cards`)
+
+*Ce qui reste sous contrôle, avec limites ; carte données avec lien Vos données. · Affirmations : CL-127, CL-25, CL-129, CL-109, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
-## What stays under your control.
+## You choose what it reads.
 
 #### You choose the bases.
 
-The agent only consults the document bases you open to it. Access rights are set per base and per workspace, not document by document.
+The agent consults only the document bases you open to it. Access rights are set per base and per workspace, not document by document.
 
 #### Where your documents are indexed.
 
-By default, indexing runs on the instance’s server: on your premises, on your own server; hosted, in Nexora AI’s infrastructure in Quebec. An external service is a written choice.
+By default, indexing is computed on the instance's server: with you, on your server; in hosted mode, in Nexora AI's infrastructure in Quebec. An external service is a written choice.
 
 #### No legal advice.
 
@@ -103,13 +127,19 @@ The contract summary flags clauses to have reviewed. It replaces neither a lawye
 
 #### The AI can be wrong.
 
-A model can misread a passage. The cited sources let you check, and we test faithfulness to the documents during the pilot.
+A model can misread a passage. The cited sources let you verify, and we check faithfulness to the documents during the pilot.
 
 #### Web search stays a choice.
 
 If it is turned on for an agent, its queries leave the instance: we do not turn it on for agents that handle confidential data.
 
-### Bloc 6 — FAQ (`block_faq`)
+#### Your data stays yours.
+
+Never used to train a model, never sold. An external model comes in only when you explicitly activate it, in writing.
+
+→ [Read our commitments](/en/your-data/)
+
+### Bloc 7 — FAQ (`block_faq`)
 
 *FAQ propre à la solution documents. · Affirmations : CL-127, CL-25, CL-101, CL-132*
 
@@ -123,24 +153,24 @@ PDFs, Word documents, text and web pages. Scanned documents are read with a read
 
 #### Are my documents sent elsewhere?
 
-By default, no: indexing is computed on the instance's own server. If you choose an external model to answer, the excerpts used are sent to it; we say so beforehand, in writing.
+By default, no: indexing is computed on the instance's server. If you choose an external model to answer, the passages used are sent to it; we state this beforehand, in writing.
 
-#### Does the agent say when it finds nothing?
+#### Does the agent say so when it finds nothing?
 
-That is the goal of the configuration, and we check it during the pilot on your documents. A faithfulness safeguard reduces unsupported answers; it does not eliminate them.
+That is the aim of the configuration, and we verify it during the pilot on your documents. A faithfulness safeguard reduces unsupported answers; it does not eliminate them.
 
 #### Can we limit what each person sees?
 
 You limit what each agent consults, base by base. Document-by-document access rights are not announced today.
 
-### Bloc 7 — Appel à l'action (`block_cta`)
+### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : démonstration. · Affirmations : CL-01*
+*CTA : démonstration ; partenaire d'ici. · Affirmations : CL-01, CL-04*
 
 Réglages : `tone=sombre`
 
 ## Question your documents.
 
-We prepare a demonstration on fictional documents, then we talk about yours and where they should stay.
+We prepare a demonstration on fictional documents, then we talk about yours and where they must stay. A partner from here installs, runs and trains with you.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See customer service](/en/solutions/customer-service/)

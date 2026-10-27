@@ -7,61 +7,100 @@
     "slug": "services",
     "title": "Services",
     "seo_title": "AI services for small businesses in Quebec",
-    "seo_description": "Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora AI's services for small businesses.",
+    "seo_description": "AI services for Quebec small businesses: diagnosis, installation on your premises or in Quebec, custom work, operation. Cutting-edge AI, no IT degree needed.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Hub des services : promesse et CTA.",
-      "claims": ["CL-01", "CL-80"],
+      "role": "Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action.",
+      "claims": ["CL-01", "CL-80", "CL-04", "CL-P01", "CL-P03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Services",
-        "headline": "From idea to operation. With you.",
-        "subheadline": "Nexora AI designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "eyebrow": "AI services for small business",
+        "headline": "AI installed, run and improved. With you.",
+        "subheadline": "AI services for Quebec small businesses: we install, run and evolve with you a system at the leading edge of AI, without you becoming an IT specialist. A diagnosis first, then a written estimate, then a first case in service.",
+        "primary_label": "Plan a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"
       }
     },
     {
+      "collection": "block_section",
+      "role": "Le rêve : ce que ça change pour la direction d'une PME ; trois bénéfices (pointe, décision humaine, données).",
+      "claims": [
+        "CL-P01",
+        "CL-P02",
+        "CL-92",
+        "CL-101",
+        "CL-102",
+        "CL-128",
+        "CL-02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reve"
+      },
+      "translation": {
+        "title": "What changes for you.",
+        "body": "<p>Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a></p>",
+        "items": [
+          {
+            "title": "The leading edge of AI, without the complexity.",
+            "text": "Agents (software that carries out a task with the tools you authorize), a Copilot that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice: all in one tool, without writing a line of code."
+          },
+          {
+            "title": "A person decides.",
+            "text": "Any action that commits the business (sending, paying, writing) waits for a person's approval, unless you decide otherwise in writing."
+          },
+          {
+            "title": "Your data stays yours.",
+            "text": "On your premises or with us, in Quebec. Never used to train a model, never sold, no external model without your explicit activation. <a href=\"/en/your-data/\">See the commitments on your data</a>."
+          }
+        ]
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Les quatre services.",
-      "claims": ["CL-80", "CL-81", "CL-84", "CL-04"],
+      "role": "Les quatre services, liés à leurs pages.",
+      "claims": ["CL-80", "CL-81", "CL-84", "CL-04", "CL-26"],
       "fields": {
         "columns": "2",
-        "tone": "clair",
+        "tone": "sable",
         "layout": "modules",
         "anchor_id": "services"
       },
       "translation": {
-        "title": "Four services, one thread.",
-        "intro": "From the first conversation to daily operation, the same people follow you and the same control rules apply.",
+        "title": "Four services. One partner.",
+        "intro": "From the first conversation to daily operation, the same people follow you, in French or English, and the same control rules apply.",
         "cards": [
           {
             "title": "The diagnosis.",
-            "text": "We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. It leads to a written estimate."
+            "text": "We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. You leave with a written estimate."
           },
           {
             "title": "AI server installation.",
-            "text": "On your premises or in our infrastructure in Quebec: sizing, installation, configuration, checking of data flows.",
+            "text": "On your premises or in our infrastructure in Quebec: sizing, one-command installation, configuration, checking of data flows. Your AI, ready to work.",
             "href": "/en/services/ai-server-installation/",
             "link_label": "See installation"
           },
           {
             "title": "Custom automation.",
-            "text": "Agents and workflows built for your processes, connected to your software, tested on your real cases.",
+            "text": "Agents and workflows built for your processes, connected to your software, tested on your real cases before go-live.",
             "href": "/en/services/custom-automation/",
             "link_label": "See custom work"
           },
           {
             "title": "Operations.",
-            "text": "We run the system with you, track what works, adjust the rest; training for your team covers usage and supervision.",
+            "text": "We run the system with you, track what works and adjust the rest; training for your team covers usage and supervision, not the technical side.",
             "href": "/en/method/",
             "link_label": "See the method"
           }
@@ -70,7 +109,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce qui fait varier l'estimation.",
+      "role": "Ce qui fait varier l'estimation (aucun prix ni délai) et appel à planifier un diagnostic.",
       "claims": ["CL-10", "CL-82", "CL-85", "CL-14"],
       "fields": {
         "media_position": "none",
@@ -79,7 +118,7 @@
       },
       "translation": {
         "title": "What makes the estimate vary.",
-        "body": "<p>There is no public price yet, and we announce no universal timeline. After the diagnosis, we provide a written estimate that states what is included and what is not. Here is what makes it vary.</p>",
+        "body": "<p>There is no public price yet, and we announce no universal timeline. After the diagnosis, we provide a written estimate that states what is included and what is not. Here is what makes it vary.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a> to get yours.</p>",
         "items": [
           {
             "title": "The number of cases handled.",
@@ -106,8 +145,8 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que nous ne faisons pas : limites écrites.",
-      "claims": ["CL-89", "CL-86", "CL-09"],
+      "role": "Ce que nous ne promettons pas : limites écrites ; la vision par caméra renvoie à Nexora Vision (pilote sur invitation).",
+      "claims": ["CL-89", "CL-86", "CL-09", "CL-V01"],
       "fields": {
         "columns": "3",
         "tone": "sable",
@@ -123,7 +162,9 @@
           },
           {
             "title": "Products not yet delivered.",
-            "text": "Telephony, camera vision and specialized models are not delivered products; they can be the subject of a feasibility study."
+            "text": "Telephony, camera vision and specialized models are not delivered products; they can be the subject of a feasibility study. Nexora Vision, our AI video-surveillance project, is a pilot project by invitation only.",
+            "href": "/en/vision/",
+            "link_label": "See Nexora Vision"
           },
           {
             "title": "An announced service level.",
@@ -134,8 +175,8 @@
     },
     {
       "collection": "block_faq",
-      "role": "Questions sur les services.",
-      "claims": ["CL-04", "CL-08", "CL-10"],
+      "role": "Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit).",
+      "claims": ["CL-04", "CL-08", "CL-10", "CL-02", "CL-E03", "CL-E04"],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -147,6 +188,10 @@
           {
             "question": "Do we need technical staff?",
             "answer": "No. We install, run with you and evolve the system. Your team's training covers usage and supervision, not the technical side."
+          },
+          {
+            "question": "Where is my data?",
+            "answer": "On your premises, on your server, or with us, in our infrastructure in Quebec, depending on the mode you choose. In both cases it is never used to train a model and never sold."
           },
           {
             "question": "Who handles updates?",
@@ -173,8 +218,8 @@
       "translation": {
         "title": "Let's start with a diagnosis.",
         "text": "Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "primary_label": "Plan a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a deployment study",
         "secondary_href": "/en/contact/?sujet=etude-deploiement"
       }

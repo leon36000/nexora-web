@@ -6,23 +6,23 @@
   "seo": {
     "slug": "solutions/service-client",
     "title": "Service client",
-    "seo_title": "Service client par IA pour PME au Québec",
-    "seo_description": "Un agent répond à vos clients à partir de vos documents, cite ses sources et transmet la demande à une personne avec un résumé. Vous gardez la main.",
+    "seo_title": "Service client par IA pour PME",
+    "seo_description": "Un agent répond à vos clients à partir de vos documents, cite ses sources et passe le relais à une personne, avec un résumé. Votre équipe garde la main.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution service client.",
-      "claims": ["CL-122", "CL-90"],
+      "role": "Promesse de la solution service client\u00a0: le site répond, l'équipe se concentre.",
+      "claims": ["CL-122", "CL-90", "CL-107"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
         "eyebrow": "Solution · Service client",
-        "headline": "Des réponses sourcées. Une personne en relais.",
-        "subheadline": "Un agent répond aux questions de vos clients à partir de vos propres documents, cite ce qu'il a utilisé et transmet la demande à votre équipe quand il ne sait pas.",
+        "headline": "Votre site répond. Votre équipe se concentre.",
+        "subheadline": "Un agent (un logiciel qui accomplit une tâche avec les outils que vous autorisez) répond aux questions de vos clients à partir de vos propres documents, cite ses sources et passe le relais à votre équipe quand il ne sait pas.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème : un distributeur de produits de plomberie.",
+      "role": "Problème\u00a0: exemple construit d'un distributeur de produits de plomberie.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -39,7 +39,7 @@
         "anchor_id": "probleme"
       },
       "translation": {
-        "title": "Les mêmes questions, tous les jours.",
+        "title": "Les mêmes questions, jour après jour.",
         "body": "<p>Prenons un distributeur de produits de plomberie qui sert des entrepreneurs. Chaque jour, on lui demande les heures d'ouverture, la politique de retour, les documents à fournir pour ouvrir un compte, les zones desservies. Les réponses existent, dans des fiches et des guides, mais il faut quelqu'un pour les retrouver et les redire.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
@@ -59,8 +59,8 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système : trois étapes, avec relais humain.",
-      "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112"],
+      "role": "Ce que fait le système\u00a0: trois étapes, avec relais humain.",
+      "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112", "CL-P01"],
       "fields": {
         "columns": "3",
         "tone": "sombre",
@@ -68,16 +68,16 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "Ce que fait le système.",
-        "intro": "L'agent est publié dans WorkStudio. Il peut vivre sur votre site (une bulle de chat) ou dans un espace interne réservé à votre équipe.",
+        "title": "Chercher, répondre, passer le relais.",
+        "intro": "L'agent est publié dans WorkStudio, l'outil qui met à votre portée les réponses fondées sur vos documents. Il peut vivre sur votre site (une bulle de chat) ou dans un espace interne réservé à votre équipe.",
         "cards": [
           {
             "title": "Il cherche.",
-            "text": "À chaque question, il consulte les bases de documents que vous lui avez ouvertes\u00a0: fiches, guides, politiques. L'indexation se calcule par défaut sur le serveur de l'instance."
+            "text": "À chaque question, il consulte les bases de documents que vous lui avez ouvertes\u00a0: fiches, guides, politiques. L'indexation (le rangement des documents pour les retrouver vite) se calcule par défaut sur le serveur de l'instance."
           },
           {
             "title": "Il répond et cite.",
-            "text": "La réponse numérote ses sources, qu'un clic permet d'ouvrir. Un garde-fou peut vérifier que la réponse reste fidèle à vos documents avant qu'elle parte."
+            "text": "La réponse numérote ses sources, qu'un clic permet d'ouvrir. Un garde-fou (un contrôle automatique) peut vérifier que la réponse reste fidèle à vos documents avant qu'elle parte."
           },
           {
             "title": "Il transmet la demande.",
@@ -87,45 +87,76 @@
       }
     },
     {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe, et le bénéfice.",
-      "claims": ["CL-96", "CL-122", "CL-14"],
+      "collection": "block_cards",
+      "role": "Ce que reçoit l'équipe\u00a0: mosaïque de bénéfices (bento).",
+      "claims": ["CL-96", "CL-122"],
       "fields": {
-        "media_position": "none",
+        "columns": "2",
         "tone": "clair",
+        "layout": "bento",
         "anchor_id": "equipe"
       },
       "translation": {
-        "title": "Ce que reçoit l'équipe.",
-        "body": "<p>Les questions simples trouvent une réponse sans mobiliser quelqu'un. Les autres arrivent avec leur contexte\u00a0: la question, ce que l'agent a déjà répondu, un résumé.</p><p>Le bénéfice attendu\u00a0: moins d'interruptions, des réponses plus constantes, des clients qui obtiennent quelque chose plus vite. Aucun pourcentage n'est annoncé\u00a0; l'effet se mesure pendant un pilote, sur vos vraies questions.</p>",
-        "items": [
+        "title": "Une équipe qui reprend la main.",
+        "intro": "Les questions simples trouvent une réponse sans mobiliser quelqu'un. Les autres arrivent avec leur contexte.",
+        "cards": [
           {
-            "title": "Les demandes transmises.",
-            "text": "Avec le résumé de l'échange, pour ne pas poser deux fois la question."
+            "title": "Des demandes transmises avec leur contexte.",
+            "text": "La question, ce que l'agent a déjà répondu, un résumé de l'échange\u00a0: personne ne repose la question."
           },
           {
             "title": "Un journal des conversations.",
             "text": "Les échanges de l'agent sont tracés\u00a0: on peut voir ce qui a été répondu, avec quelles sources."
           },
           {
-            "title": "Des traces à relire.",
+            "title": "Des traces qui révèlent les trous.",
             "text": "Les questions restées sans réponse se repèrent dans les traces et disent quels documents manquent à votre base."
+          },
+          {
+            "title": "Des questions simples, réglées seules.",
+            "text": "Les réponses se trouvent dans vos fiches et vos guides, sans interrompre qui que ce soit."
           }
         ]
       }
     },
     {
+      "collection": "block_section",
+      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic\u00a0; lien vers Croissance (visibilité, accès anticipé).",
+      "claims": ["CL-14", "CL-122", "CL-09", "CL-G01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "benefice"
+      },
+      "translation": {
+        "title": "Moins d'interruptions, plus de constance.",
+        "body": "<p>Le bénéfice attendu\u00a0: moins d'interruptions, des réponses plus constantes, des clients qui obtiennent quelque chose plus vite. Aucun pourcentage n'est annoncé\u00a0; l'effet se mesure pendant un pilote, sur vos vraies questions.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour évaluer vos questions fréquentes.</p><p>Vous voulez aussi que davantage de clients vous trouvent\u00a0? <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé, est en accès anticipé\u00a0: l'accès se fait sur demande.</p>"
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, avec limites : pas de téléphone, pas de promesse de disponibilité.",
-      "claims": ["CL-124", "CL-86", "CL-109", "CL-93", "CL-128", "CL-06"],
+      "role": "Ce qui reste sous contrôle, avec limites\u00a0: pas de téléphone, pas de promesse de disponibilité\u00a0; carte données avec lien Vos données.",
+      "claims": [
+        "CL-124",
+        "CL-86",
+        "CL-109",
+        "CL-93",
+        "CL-128",
+        "CL-06",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
-        "tone": "sable",
+        "tone": "clair",
         "layout": "liste",
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "Ce qui reste sous votre contrôle.",
+        "title": "Vous gardez la main, toujours.",
         "cards": [
           {
             "title": "Vous choisissez les documents.",
@@ -144,8 +175,14 @@
             "text": "L'agent répond quand le système est en ligne. Aucun niveau de disponibilité n'est annoncé à ce jour\u00a0; il se précise au contrat."
           },
           {
-            "title": "Le modèle est un choix écrit.",
-            "text": "Sur votre serveur ou dans notre infrastructure\u00a0; un modèle externe seulement avec votre accord. La recherche sur le web, si elle était activée pour l'agent, enverrait ses requêtes hors du système\u00a0: nous ne l'activons pas pour un agent public."
+            "title": "La recherche web reste fermée.",
+            "text": "Si elle était activée pour l'agent, ses requêtes quitteraient le système\u00a0: nous ne l'activons pas pour un agent public."
+          },
+          {
+            "title": "Vos données restent à vous.",
+            "text": "Sur votre serveur ou chez nous, au Québec\u00a0: jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe n'entre qu'avec votre activation explicite, consignée par écrit.",
+            "href": "/vos-donnees/",
+            "link_label": "Lire nos engagements"
           }
         ]
       }
@@ -156,7 +193,7 @@
       "claims": ["CL-107", "CL-122", "CL-132", "CL-112"],
       "fields": {
         "emit_jsonld": true,
-        "tone": "clair",
+        "tone": "sable",
         "anchor_id": "questions"
       },
       "translation": {
@@ -164,7 +201,7 @@
         "items": [
           {
             "question": "Comment l'agent apparaît-il sur mon site\u00a0?",
-            "answer": "Une ligne de code ajoute une bulle de chat, ou vous insérez un cadre dans une page. Vous limitez la liste des sites autorisés à l'afficher. Il faut pour cela une adresse HTTPS publique pour votre instance."
+            "answer": "Une ligne de code ajoute une bulle de chat, ou vous insérez un cadre dans une page. Vous limitez la liste des sites autorisés à l'afficher. Il faut pour cela une adresse HTTPS publique (une adresse web sécurisée, accessible à tous) pour votre instance."
           },
           {
             "question": "Peut-il inventer une réponse\u00a0?",
@@ -183,13 +220,13 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA : démonstration.",
+      "role": "CTA\u00a0: démonstration.",
       "claims": ["CL-01"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
-        "title": "Voir l'agent répondre.",
+        "title": "Voyez l'agent répondre à vos clients.",
         "text": "Nous préparons une démonstration sur des documents fictifs, puis nous parlons de vos questions fréquentes et de votre site.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",

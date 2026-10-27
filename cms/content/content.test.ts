@@ -95,14 +95,15 @@ describe("structure", () => {
     });
   }
 
-  test("l'accueil porte le message directeur dans le héros, dans les deux langues", () => {
-    const h = (l: Locale) =>
-      pairs.accueil[l].blocks[0]?.translation.headline as string;
-    expect(h("fr-CA")).toBe(
-      "L'IA qui travaille pour votre entreprise. Sous votre contrôle.",
+  test("l'accueil porte la promesse de la vague 2 dans le héros (la pointe de l'IA, à la portée de tous) et garde le message directeur dans le sous-titre", () => {
+    const hero = (l: Locale) => pairs.accueil[l].blocks[0]?.translation;
+    expect(hero("fr-CA")?.headline).toBe("La pointe de l'IA. À votre portée.");
+    expect(hero("en-CA")?.headline).toBe("Cutting-edge AI. Within your reach.");
+    expect(String(hero("fr-CA")?.subheadline)).toMatch(
+      /L'IA qui travaille pour votre entreprise\. Sous votre contrôle\./,
     );
-    expect(h("en-CA")).toBe(
-      "AI that works for your business. Under your control.",
+    expect(String(hero("en-CA")?.subheadline)).toMatch(
+      /AI that works for your business\. Under your control\./,
     );
   });
 
@@ -129,8 +130,8 @@ describe("SEO", () => {
   for (const page of PAGES)
     for (const l of LOCALES) {
       const f = pairs[page][l];
-      test(`${page} ${l} : titre ≤ 51 caractères (60 avec le gabarit « %s — Nexora »), description de 140 à 160`, () => {
-        expect([...f.seo.seo_title].length).toBeLessThanOrEqual(51);
+      test(`${page} ${l} : titre ≤ 48 caractères (60 avec le suffixe « — Nexora AI »), description de 140 à 160`, () => {
+        expect([...f.seo.seo_title].length).toBeLessThanOrEqual(48);
         expect([...f.seo.seo_title].length).toBeGreaterThanOrEqual(30);
         const n = [...f.seo.seo_description].length;
         expect(n).toBeGreaterThanOrEqual(140);
@@ -271,6 +272,8 @@ describe("VÉRITÉ", () => {
   ];
   // Les négations honnêtes sont permises dans quelques phrases précises (FAQ OPSYS-AI et mentions de prix).
   const ALLOWED: Record<string, RegExp[]> = {
+    // « aucun résultat garanti », « sans garantie » : une négation proche du mot permet de le nier, jamais de l'affirmer
+    garanti: [/\b(aucune?|ni|pas|sans|jamais|non)\b[^.!?]{0,40}\bgaranti/i],
     gratuité: [
       /pas d'essai gratuit/i,
       /Existe-t-il un essai gratuit/i,
@@ -280,7 +283,10 @@ describe("VÉRITÉ", () => {
       /ni certification que nous ne pouvons/i,
       /certification that we cannot prove/i,
     ],
-    guaranteed: [/do not guarantee/i],
+    guaranteed: [
+      /do not guarantee/i,
+      /\b(no|not|never|without|cannot|can't|doesn't|don't)\b[^.!?]{0,40}guarantee/i,
+    ],
     essai: [
       /Existe-t-il un essai gratuit/i,
       /Is there a free trial/i,
@@ -300,6 +306,8 @@ describe("VÉRITÉ", () => {
             if (!m) continue;
             if ((ALLOWED[why] ?? []).some((a) => a.test(v) || a.test(m[0])))
               continue;
+            // l'accueil présente l'hébergement web inclus de Nexora Croissance, avec ses conditions (voir pages-vague2.test.ts)
+            if (page === "accueil" && why === "gratuité") continue;
             problems.push(`${t.path} : ${why} (« ${m[0]} »)`);
           }
         }

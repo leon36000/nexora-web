@@ -8,6 +8,8 @@ export const LEAD_NEEDS = [
   "automatisation",
   "opsys-ai",
   "workstudio",
+  "vision",
+  "croissance",
   "vps-api",
   "autre",
 ] as const;
@@ -34,6 +36,8 @@ export const LEAD_LABELS_FR = {
     automatisation: "Automatisation sur mesure",
     "opsys-ai": "OPSYS-AI (construction et services terrain)",
     workstudio: "Nexora WorkStudio",
+    vision: "Nexora Vision (projet pilote sur invitation)",
+    croissance: "Nexora Croissance (accès anticipé)",
     "vps-api": "Serveur privé virtuel, modèles et API",
     autre: "Autre besoin",
   },

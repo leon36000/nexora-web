@@ -1,0 +1,323 @@
+{
+  "page": "vos-donnees",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "vos-donnees",
+    "title": "Vos données",
+    "seo_title": "Vos données : cinq engagements de Nexora AI",
+    "seo_description": "Vos données restent chez vous ou au Québec, ne servent jamais à entraîner une IA et ne sont jamais vendues. Les cinq engagements de Nexora AI, simplement.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse : vos données restent à vous ; les cinq engagements en une phrase.",
+      "claims": ["CL-E01", "CL-E02", "CL-E03", "CL-E04", "CL-E05"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Vos données · Cinq engagements",
+        "headline": "Vos données sont à vous. Toujours.",
+        "subheadline": "Chez vous ou au Québec. Jamais utilisées pour entraîner une IA. Jamais vendues. Jamais envoyées à un modèle externe sans votre feu vert. Cinq engagements, expliqués simplement, avec ce qui les rend vérifiables et leurs limites.",
+        "primary_label": "Poser une question sur vos données",
+        "primary_href": "/contact/?sujet=diagnostic",
+        "secondary_label": "Voir la souveraineté de l'IA",
+        "secondary_href": "/souverainete/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Schéma des cinq engagements ; le principe commun.",
+      "claims": ["CL-E01", "CL-E02", "CL-E03", "CL-E04", "CL-E05"],
+      "fields": {
+        "media_position": "right",
+        "visual": "engagements-donnees",
+        "tone": "clair",
+        "anchor_id": "principe"
+      },
+      "translation": {
+        "title": "Cinq engagements, un seul principe.",
+        "body": "<p>Vos données appartiennent à votre entreprise. Nous les protégeons, nous ne les exploitons pas. Tout le reste découle de ce principe.</p><p>Deux engagements disent <strong>où</strong> elles se trouvent. Deux disent ce que nous <strong>n'en ferons jamais</strong>. Le dernier dit <strong>qui d'autre</strong> peut les voir : personne, tant que vous ne l'avez pas décidé.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les cinq engagements de la décision D7, avec leurs exceptions écrites.",
+      "claims": ["CL-E01", "CL-E02", "CL-E03", "CL-E04", "CL-E05", "CL-77"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "sable",
+        "anchor_id": "engagements"
+      },
+      "translation": {
+        "title": "Ce que chaque engagement veut dire.",
+        "intro": "Pas de petits caractères : voici les engagements, avec leurs exceptions.",
+        "cards": [
+          {
+            "title": "Sur place : vos données restent sur votre serveur.",
+            "label": "Engagement 1",
+            "text": "Quand le système est installé chez vous, vos documents, vos conversations et les données de vos agents restent sur votre matériel. Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé. Les mises à jour, les licences et un modèle externe éventuel sont listés avant la mise en service."
+          },
+          {
+            "title": "Hébergé : vos données restent au Québec.",
+            "label": "Engagement 2",
+            "text": "Quand nous hébergeons le système, vos données sont stockées et traitées dans notre infrastructure, située au Québec, sauvegardes comprises. Les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants."
+          },
+          {
+            "title": "Jamais d'entraînement.",
+            "label": "Engagement 3",
+            "text": "Nous n'utilisons jamais vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers."
+          },
+          {
+            "title": "Jamais vendues.",
+            "label": "Engagement 4",
+            "text": "Nous ne vendons, ne louons, n'échangeons et ne partageons à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui nous est confiée."
+          },
+          {
+            "title": "Aucun modèle externe sans votre activation.",
+            "label": "Engagement 5",
+            "text": "Vos données ne sont envoyées à un fournisseur de modèle externe que si vous l'avez activé pour un agent ou un projet précis. La liste des fournisseurs est publique, et chacun est lié par un contrat qui précise la conservation et l'entraînement."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Comparaison avec les pratiques courantes du secteur, sans nommer d'entreprise (CL-E07 à CL-E09).",
+      "claims": [
+        "CL-E07",
+        "CL-E08",
+        "CL-E09",
+        "CL-E03",
+        "CL-73",
+        "CL-75",
+        "CL-08"
+      ],
+      "fields": {
+        "columns": "2",
+        "layout": "grille",
+        "tone": "clair",
+        "anchor_id": "comparaison"
+      },
+      "translation": {
+        "title": "Ce qui nous distingue des pratiques courantes.",
+        "intro": "Nous ne nommons personne et nous ne jugeons personne : nous comparons des pratiques, celles qu'on observe dans le secteur de l'IA. Trois questions à poser à n'importe quel fournisseur, nous compris.",
+        "cards": [
+          {
+            "title": "L'entraînement : un réglage à désactiver ?",
+            "text": "Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même.\nChez nous, ce réglage n'existe pas : jamais d'entraînement sur vos données."
+          },
+          {
+            "title": "Le stockage ici, le traitement ailleurs ?",
+            "text": "Certains fournisseurs annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs.\nChez nous, nous distinguons les deux et nous écrivons où se trouvent vos données, vos sauvegardes et vos journaux."
+          },
+          {
+            "title": "Quelle loi s'applique au fournisseur ?",
+            "text": "Un fournisseur soumis à la juridiction d'un autre pays peut être tenu de lui remettre des données qu'il détient, même stockées au Canada. Les lois d'ici s'appliquent aussi aux entreprises d'ici : « souverain » veut dire contrôle, pas immunité.\nChez nous, la question se pose et reçoit une réponse écrite."
+          },
+          {
+            "title": "Et si vous partez ?",
+            "text": "Un service dont on ne peut pas sortir garde vos données en otage.\nChez nous, vos documents, vos configurations et vos flux de travaux restent exportables : le contrat le prévoit."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Mécanismes de vérification : ce qui existe déjà dans le logiciel (disponible) et ce qui est en préparation (prévu).",
+      "claims": [
+        "CL-E06",
+        "CL-22",
+        "CL-23",
+        "CL-24",
+        "CL-105",
+        "CL-113",
+        "CL-87",
+        "CL-110"
+      ],
+      "fields": {
+        "columns": "3",
+        "layout": "modules",
+        "tone": "sombre",
+        "anchor_id": "preuves"
+      },
+      "translation": {
+        "title": "Comment nous le prouvons.",
+        "intro": "Un engagement vaut ce que valent les mécanismes qui le font respecter. Voici ceux qui existent déjà dans le logiciel (disponible : livré et vérifié sur notre serveur de test) et ceux qui sont en préparation.",
+        "cards": [
+          {
+            "title": "Un journal d'accès.",
+            "status": "disponible",
+            "text": "Qui a fait quoi, et quand.\nWorkStudio offre des organisations, des rôles, un journal d'audit et des plafonds mensuels de consommation."
+          },
+          {
+            "title": "Un modèle qui dit où il tourne.",
+            "status": "disponible",
+            "text": "Chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers : vous savez où va chaque requête."
+          },
+          {
+            "title": "Les renseignements personnels, masqués.",
+            "status": "disponible",
+            "text": "Une politique par espace décide si les renseignements personnels sont autorisés, masqués ou refusés avant un appel à un modèle hors de l'instance."
+          },
+          {
+            "title": "Des identifiants chiffrés.",
+            "status": "disponible",
+            "text": "Les identifiants des connecteurs sont chiffrés et conservés sur l'instance."
+          },
+          {
+            "title": "Un contrat de traitement.",
+            "status": "prevu",
+            "text": "Signé avec chaque client. Le contrat type et l'entente de traitement sont en préparation."
+          },
+          {
+            "title": "Un registre des sous-traitants.",
+            "status": "prevu",
+            "text": "Le pays et le rôle de chaque fournisseur, y compris les fournisseurs de modèles que vous activez. Le registre public est en préparation."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Limites : ce que les engagements ne veulent pas dire.",
+      "claims": ["CL-77", "CL-71", "CL-75", "CL-L05", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Nos limites, écrites noir sur blanc.",
+        "body": "<p>Un engagement crédible dit ce qu'il ne couvre pas. Voici les nôtres.</p>",
+        "items": [
+          {
+            "title": "« Sur place » ne veut pas dire « rien ne sort ».",
+            "text": "Les mises à jour, les licences et un modèle externe éventuel sont des flux sortants. Nous les listons avec vous avant la mise en service."
+          },
+          {
+            "title": "« Au Québec » ne règle pas tout.",
+            "text": "Un serveur au Québec n'exclut pas, à lui seul, des appels ailleurs. Nous n'affirmons une souveraineté que lorsqu'elle est démontrée, mode par mode."
+          },
+          {
+            "title": "Aucun fournisseur ne vous met en règle.",
+            "text": "Aucun logiciel ni fournisseur ne rend une entreprise conforme à la loi sur la protection des renseignements personnels : la responsabilité reste à l'entreprise qui détient les renseignements. Nous vous aidons à documenter ; nous ne remplaçons pas un avis juridique."
+          },
+          {
+            "title": "Des documents encore en préparation.",
+            "text": "Le contrat type, l'entente de traitement, le registre public des sous-traitants et la preuve du lieu d'hébergement sont en préparation. Nous les remettrons avant toute mise en service."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Renvoi vers les deux modes de déploiement.",
+      "claims": ["CL-E01", "CL-E02", "CL-72", "CL-73"],
+      "fields": {
+        "columns": "2",
+        "layout": "grille",
+        "tone": "clair",
+        "anchor_id": "modes"
+      },
+      "translation": {
+        "title": "Deux modes, la même promesse.",
+        "intro": "Que le système soit chez vous ou chez nous, les cinq engagements s'appliquent. Seul le lieu change.",
+        "cards": [
+          {
+            "title": "Chez vous.",
+            "text": "Le matériel, les accès et les sauvegardes vous appartiennent. Vos données restent sur votre serveur.",
+            "href": "/deploiement/sur-place/",
+            "link_label": "Voir le mode sur place"
+          },
+          {
+            "title": "Chez nous, au Québec.",
+            "text": "Nous hébergeons et exploitons le système dans notre infrastructure, au Québec. Vous n'achetez ni serveur ni matériel.",
+            "href": "/deploiement/heberge-quebec/",
+            "link_label": "Voir le mode hébergé"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ : entraînement, vente, lieu, accès de Nexora AI, modèles externes, sortie, Loi 25, incident.",
+      "claims": [
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05",
+        "CL-08",
+        "CL-73",
+        "CL-L03",
+        "CL-L05",
+        "CL-87"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions. Nos réponses.",
+        "items": [
+          {
+            "question": "Mes données servent-elles à entraîner une IA ?",
+            "answer": "Jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers."
+          },
+          {
+            "question": "Vendez-vous mes données ?",
+            "answer": "Jamais. Nous ne vendons, ne louons, n'échangeons et ne partageons à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui nous est confiée."
+          },
+          {
+            "question": "Où sont mes données ?",
+            "answer": "Cela dépend du mode choisi. Sur place, elles restent sur votre serveur. Hébergées, elles restent dans notre infrastructure, au Québec, sauvegardes comprises. Dans les deux cas, nous écrivons le lieu des données, des sauvegardes et des journaux avant la mise en service."
+          },
+          {
+            "question": "Quelqu'un chez Nexora AI peut-il voir mes données ?",
+            "answer": "Sur place, seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé. Pour le mode hébergé, les règles d'accès sont précisées par écrit avant la mise en service."
+          },
+          {
+            "question": "Un modèle externe peut-il voir mes données ?",
+            "answer": "Seulement si vous l'avez activé pour un agent ou un projet précis. Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, et le système ne bascule jamais en silence vers un modèle externe."
+          },
+          {
+            "question": "Puis-je récupérer mes données si je pars ?",
+            "answer": "Oui. Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit dès le départ."
+          },
+          {
+            "question": "Nexora AI est-elle en règle avec la Loi 25 ?",
+            "answer": "Aucun logiciel ni aucun fournisseur ne peut, à lui seul, mettre une entreprise en règle avec cette loi : la responsabilité reste à l'entreprise qui détient les renseignements. Nous vous aidons à documenter vos flux, et nos documents types (entente de traitement, évaluation, procédure d'incident) sont en préparation."
+          },
+          {
+            "question": "Que se passe-t-il en cas d'incident de sécurité ?",
+            "answer": "La loi exige de déclarer à la Commission d'accès à l'information et aux personnes concernées tout incident qui présente un risque de préjudice sérieux, et de tenir un registre. Notre procédure d'incident est en préparation ; nous la remettrons avec le contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : poser une question sur ses données.",
+      "claims": ["CL-E03"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Vos données, vos règles.",
+        "text": "Une question sur l'endroit où vivront vos données, sur un contrat ou sur un fournisseur de modèles ? Posez-la avant de vous engager : la réponse sera écrite.",
+        "primary_label": "Planifier un diagnostic",
+        "primary_href": "/contact/?sujet=diagnostic",
+        "secondary_label": "Voir le centre de confiance",
+        "secondary_href": "/centre-de-confiance/"
+      }
+    }
+  ]
+}

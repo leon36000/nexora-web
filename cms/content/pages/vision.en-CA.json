@@ -1,0 +1,378 @@
+{
+  "page": "vision",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "vision",
+    "title": "Nexora Vision",
+    "seo_title": "AI video analytics on your premises",
+    "seo_description": "Nexora Vision is AI video analytics that keeps your footage on your premises, with no facial recognition. A pilot project by invitation for Quebec businesses.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de Nexora Vision, statut de projet pilote sur invitation visible dès le surtitre.",
+      "claims": ["CL-V01", "CL-V02", "CL-V03", "CL-E03"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Nexora Vision · Pilot project, by invitation",
+        "headline": "Your cameras see. The AI understands, on-site.",
+        "subheadline": "AI video analytics that keeps your footage on your premises: it spots what matters, alerts you and keeps a log of every look at your images. No facial recognition, and never any AI training on your footage. A pilot project by invitation: we build the first site together with you.",
+        "primary_label": "Join the pilot",
+        "primary_href": "/en/contact/?sujet=pilote-vision",
+        "secondary_label": "Read our data commitments",
+        "secondary_href": "/en/your-data/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Statut honnête : projet pilote sur invitation, ce qui existe, ce qui reste à régler, ce qui sera mesuré.",
+      "claims": ["CL-V01", "CL-V10"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair",
+        "anchor_id": "statut"
+      },
+      "translation": {
+        "title": "A pilot project, plainly stated.",
+        "intro": "Nexora Vision is not a product on sale: it is a project we are building with a first invited business. Here is where we stand, without embellishment.",
+        "cards": [
+          {
+            "title": "Pilot project, by invitation.",
+            "label": "Status",
+            "text": "We invite businesses whose site fits the pilot: parking lot, warehouse, construction site, shop. Join the list and we will tell you whether your case fits."
+          },
+          {
+            "title": "No installation, no measurement.",
+            "label": "Today",
+            "text": "No site is installed and no detection or false-alert rate exists yet. So we announce none."
+          },
+          {
+            "title": "Four things to settle first.",
+            "label": "Before the first site",
+            "text": "The licence for the detection models, the privacy impact assessment (a written analysis of the risks for the people filmed), the video surveillance policy and the information sign. The last three documents are in preparation."
+          },
+          {
+            "title": "Measured results, then published.",
+            "label": "Then",
+            "text": "The pilot measures real detections and false alerts on your site. We will publish the results with their method, then move to early access."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Principe : les images restent sur place ; seule une alerte écrite peut sortir, si le client l'active. Schéma de principe.",
+      "claims": ["CL-V02", "CL-E03", "CL-77"],
+      "fields": {
+        "media_position": "right",
+        "visual": "vision-sur-place",
+        "tone": "sombre",
+        "anchor_id": "principe"
+      },
+      "translation": {
+        "title": "Your footage stays with you.",
+        "body": "<p>We install a small server at your site, connected to your cameras. That is where the AI looks: the images do not leave for an outside service. Only a written alert — the type of object, the time, the zone — can leave, and only if you switch it on.</p><p>That is the principle the pilot aims for. Updates and any licences are listed before installation, as for any on-premises server. And your footage is never used to train an AI.</p><p><a href=\"/en/your-data/\">Read the five commitments on your data</a></p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que le pilote vise : six bénéfices pour une direction non technique.",
+      "claims": ["CL-V05", "CL-V08", "CL-V02", "CL-04", "CL-130"],
+      "fields": {
+        "columns": "3",
+        "layout": "bento",
+        "tone": "clair",
+        "anchor_id": "avantages"
+      },
+      "translation": {
+        "title": "What you gain.",
+        "intro": "Surveillance you tune the way you want, and that you can audit. Here is what the pilot is designed to bring you.",
+        "cards": [
+          {
+            "title": "Alerts worth your attention.",
+            "text": "You set the zones and the hours: a person in the parking lot at midnight, a vehicle at the loading dock on a Sunday. The AI detects people and vehicles; it does not disturb anyone for the rest."
+          },
+          {
+            "title": "Your existing cameras.",
+            "text": "No need to replace everything: we first check that your cameras speak the common standards (ONVIF and RTSP). Some will not be compatible."
+          },
+          {
+            "title": "A log of every look.",
+            "text": "Who viewed which footage, and when. You always know what was looked at."
+          },
+          {
+            "title": "Faces blurred, zones masked.",
+            "text": "Faces of people who are not the target are blurred automatically, and sensitive zones (neighbouring windows, screens) can be masked."
+          },
+          {
+            "title": "Search that finds the event.",
+            "text": "Search by type of object and by time instead of replaying hours of recording."
+          },
+          {
+            "title": "Retention you set, automatic destruction.",
+            "text": "You choose how long to keep each type of event; the footage is then destroyed automatically. Installed, maintained and supported in French, in Quebec."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Comment ça marche : trois étapes simples.",
+      "claims": ["CL-V08", "CL-V02", "CL-V05", "CL-V01"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "sable",
+        "anchor_id": "fonctionnement"
+      },
+      "translation": {
+        "title": "How it works, in three steps.",
+        "intro": "Nothing to program. We connect, we set it up with you, you receive.",
+        "cards": [
+          {
+            "title": "Connect your cameras.",
+            "text": "We check that your cameras are compatible, then connect them to a server installed at your site. No port opened to the Internet."
+          },
+          {
+            "title": "The AI analyses on-site.",
+            "text": "It spots people and vehicles in the zones and at the times you have defined. The footage stays on the server."
+          },
+          {
+            "title": "You receive what matters.",
+            "text": "Written alerts, a search across events and an access log. A person checks each alert: the AI proposes, you decide."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Limites écrites : pas de reconnaissance faciale, pas d'analyse des employés, pas d'identification, pas de remplacement d'un agent de sécurité.",
+      "claims": ["CL-V03", "CL-V04", "CL-V07", "CL-E03", "CL-V10"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What Nexora Vision does not do.",
+        "body": "<p>Trustworthy surveillance is defined as much by what it refuses as by what it does. Here are our refusals, written down in advance.</p>",
+        "items": [
+          {
+            "title": "No facial recognition.",
+            "text": "This function is not delivered. Identifying people would require a declaration to the Commission d'accès à l'information, express consent and a non-biometric alternative: we do not offer it."
+          },
+          {
+            "title": "No employee analytics.",
+            "text": "No productivity or behaviour measurement. Alerts are limited to the zones and hours you define."
+          },
+          {
+            "title": "No identity, no intent.",
+            "text": "The AI detects people and objects. It does not say who someone is, or what they intend to do."
+          },
+          {
+            "title": "No training on your footage.",
+            "text": "Your footage is never used to train or fine-tune a model, ours or a third party's."
+          },
+          {
+            "title": "No replacement for a security guard.",
+            "text": "An alert calls for a person to check it. It does not replace an intervention."
+          },
+          {
+            "title": "No invented figure.",
+            "text": "No detection rate, false-alert rate or drop in theft is announced: the pilot will measure them, and we will publish the method."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Où commencer : stationnements et périmètres, là où les preuves sont les plus solides ; prudence ailleurs.",
+      "claims": ["CL-V09", "CL-V04", "CL-V07"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair",
+        "anchor_id": "cas-usage"
+      },
+      "translation": {
+        "title": "Where to start: your risk sites.",
+        "intro": "Studies of video surveillance show a real but modest effect on crime, clearer in parking lots and stronger when someone watches actively. The gain does not come from AI alone, which is why the pilot starts where the evidence is strongest.",
+        "cards": [
+          {
+            "title": "Parking lots.",
+            "label": "First choice",
+            "text": "People and vehicles outside opening hours, intrusion alerts. This is the ground where video surveillance has proven itself."
+          },
+          {
+            "title": "Warehouses and loading docks.",
+            "label": "Perimeter",
+            "text": "Perimeter, docks, access outside working hours. Large video flows: the hardware is sized with you."
+          },
+          {
+            "title": "Construction sites.",
+            "label": "Equipment",
+            "text": "Detecting a presence outside working hours near stored equipment. Connectivity and power on site are checked first."
+          },
+          {
+            "title": "Shops.",
+            "label": "Entrances",
+            "text": "Entrances, restricted zones, back rooms. No tracking of customers from one aisle to the next."
+          },
+          {
+            "title": "Offices and server rooms.",
+            "label": "Access",
+            "text": "Access outside working hours and restricted areas. Never a camera pointed at workstations."
+          },
+          {
+            "title": "Clinics and restaurants: prior study.",
+            "label": "Caution",
+            "text": "Places with a strong expectation of privacy, or where staff would be filmed continuously: we proceed only after a legal analysis with you."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Loi 25 : ce que la loi demande à l'entreprise, ce que Nexora AI prépare ; aucune conformité affirmée ; avis juridique recommandé.",
+      "claims": ["CL-L04", "CL-L05", "CL-V06", "CL-V03", "CL-V04", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sable",
+        "anchor_id": "loi-25"
+      },
+      "translation": {
+        "title": "Law 25, plainly.",
+        "body": "<p>Filming people means processing personal information. Quebec's private-sector privacy law (Law 25) applies, and <strong>your business</strong> is responsible for it. Here is what it asks, in plain words. No software or supplier can, on its own, bring a business into line with this law.</p><p>This is not legal advice. Consult a lawyer before any installation, especially in a work area.</p>",
+        "items": [
+          {
+            "title": "Inform before filming.",
+            "text": "People must know they are being filmed before they enter: a sign at the entrance, with a contact."
+          },
+          {
+            "title": "Write the rule.",
+            "text": "A video surveillance policy says why, where, when and for how long you film."
+          },
+          {
+            "title": "Assess before deploying.",
+            "text": "A privacy impact assessment weighs the risks before installation."
+          },
+          {
+            "title": "Limit and destroy.",
+            "text": "Keep only what is useful and destroy the rest once the purpose is met."
+          },
+          {
+            "title": "What Nexora AI prepares with you.",
+            "text": "An assessment, a policy and a model sign delivered before installation. These documents are in preparation."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les cinq engagements sur les données s'appliquent à Nexora Vision ; lien vers Vos données.",
+      "claims": ["CL-E01", "CL-E02", "CL-E03", "CL-E04", "CL-E05"],
+      "fields": {
+        "media_position": "left",
+        "visual": "engagements-donnees",
+        "tone": "sombre",
+        "anchor_id": "vos-images"
+      },
+      "translation": {
+        "title": "Your footage, your rules.",
+        "body": "<p>Nexora AI's five commitments apply to your footage like everything else: it stays with you (or in Quebec, depending on the mode), is never used to train a model, is never sold, and no external model touches it unless you have switched it on.</p><p><a href=\"/en/your-data/\">See the five commitments</a> · <a href=\"/en/deployment/on-premises/\">Understand the on-premises mode</a></p>"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ : réponses de la recherche 08 §6.8, au conditionnel de conception tant que rien n'est installé.",
+      "claims": [
+        "CL-V01",
+        "CL-V02",
+        "CL-V03",
+        "CL-V04",
+        "CL-V06",
+        "CL-V07",
+        "CL-V08",
+        "CL-E03",
+        "CL-10",
+        "CL-L04",
+        "CL-L05"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions. Our answers.",
+        "items": [
+          {
+            "question": "Does my footage leave my premises?",
+            "answer": "No, that is the principle we aim for: the analysis runs on the server installed at your site. Only written alerts (type of object, time, zone) can leave, and only if you switch them on. Updates and any licences are listed before installation. As no site is installed yet, we will verify it with a test during the pilot before stating it as fact."
+          },
+          {
+            "question": "Do you do facial recognition?",
+            "answer": "No. This function is not delivered. Identifying people would require a declaration to the Commission d'accès à l'information, express consent and a non-biometric alternative: we do not offer it."
+          },
+          {
+            "question": "Is my footage used to train an AI?",
+            "answer": "Never. We do not use your footage to train or fine-tune any model, ours or a third party's. It is one of our five commitments on your data."
+          },
+          {
+            "question": "Must I inform my employees and customers?",
+            "answer": "Yes. Quebec law asks that people be informed before collection, and a sign at the entrance is the recommended practice. We prepare a model sign and a policy with you; these documents are in preparation and do not replace legal advice."
+          },
+          {
+            "question": "How long is the footage kept?",
+            "answer": "You choose, by type of event. The footage is then destroyed automatically. This is the design aimed for in the pilot."
+          },
+          {
+            "question": "Can I use my current cameras?",
+            "answer": "Often, yes. We first check compatibility with the common standards (ONVIF and RTSP) before installation. Some cameras will not be compatible."
+          },
+          {
+            "question": "Is it legal to monitor my employees?",
+            "answer": "It depends on the reason, the zones and the hours. Continuous monitoring of staff or of their productivity is risky and can be refused by an arbitrator. We do not offer that function. Consult a lawyer before any installation in a work area."
+          },
+          {
+            "question": "What happens if the AI gets it wrong?",
+            "answer": "Every alert is checked by a person and recorded in the log. The pilot measures the false-alert rate on your site. An alert does not replace a security intervention, and the contract sets out the limits of liability."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. It will depend on the number of cameras, the storage and the retention period; a written estimate follows the diagnostic."
+          },
+          {
+            "question": "How do I join the pilot?",
+            "answer": "Describe your site: type of place, approximate number of cameras, reason for the surveillance. We reply to see whether your case fits the pilot."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à rejoindre le pilote.",
+      "claims": ["CL-V01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Join the pilot project.",
+        "text": "Describe your site: parking lot, warehouse, construction site or shop. We tell you whether your case fits the pilot, and what we would put in place together.",
+        "primary_label": "Join the pilot",
+        "primary_href": "/en/contact/?sujet=pilote-vision",
+        "secondary_label": "Your data, your rules",
+        "secondary_href": "/en/your-data/"
+      }
+    }
+  ]
+}

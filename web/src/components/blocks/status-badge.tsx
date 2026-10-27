@@ -4,7 +4,7 @@ import type { CardStatus } from "@/server/cms/model";
 
 /**
  * Badge de statut d'un module : toujours un TEXTE (jamais la couleur seule) et un repère de forme
- * (carré plein : disponible ; demi-plein : en pilote ; creux : prévu).
+ * (carré plein : disponible ; trois quarts plein : accès anticipé ; demi-plein : en pilote ; creux : prévu).
  */
 export function StatusBadge({
   status,
@@ -19,7 +19,7 @@ export function StatusBadge({
         "inline-flex items-center gap-2 whitespace-nowrap rounded-xs border px-2 py-0.5 font-mono text-label uppercase",
         status === "disponible"
           ? "border-success text-fg" // texte : vert sur sable < 4,5:1 ; le vert reste sur le filet et le carré
-          : status === "pilote"
+          : status === "acces-anticipe" || status === "pilote"
             ? "border-line-strong text-fg"
             : "border-line border-dashed text-fg-muted",
       )}
@@ -42,11 +42,11 @@ export function StatusBadge({
           stroke="currentColor"
           strokeWidth="1.5"
         />
-        {status === "pilote" ? (
+        {status === "pilote" || status === "acces-anticipe" ? (
           <rect
             x="0.75"
             y="0.75"
-            width="3.25"
+            width={status === "pilote" ? 3.25 : 4.9}
             height="6.5"
             fill="currentColor"
           />

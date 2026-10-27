@@ -7,13 +7,13 @@
     "slug": "solutions/email",
     "title": "Email",
     "seo_title": "Email automation for small businesses",
-    "seo_description": "A system sorts your email, summarizes each request and drafts a reply from your own documents. Nothing is sent without your team's approval. See how it works.",
+    "seo_description": "No more sorting by hand: the system classifies your email, summarizes each request and drafts a reply from your own documents. Your team approves every send.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution courriels.",
+      "role": "Promesse de la solution courriels : une boîte déjà rangée, une validation avant tout envoi.",
       "claims": ["CL-120", "CL-21"],
       "fields": {
         "variant": "sombre",
@@ -21,8 +21,8 @@
       },
       "translation": {
         "eyebrow": "Solution · Email",
-        "headline": "Sorted email. Replies ready to review.",
-        "subheadline": "A system reads incoming email, classifies it, drafts a reply from your documents and waits for your go-ahead before sending anything.",
+        "headline": "Your email arrives already sorted.",
+        "subheadline": "A system reads each message, classifies it, summarizes it and drafts a reply based on your documents. It waits for your go-ahead before sending anything.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "See all solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Le problème, avec un exemple précis.",
+      "role": "Le problème, avec un exemple construit (entreprise de rénovation).",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -39,7 +39,7 @@
         "anchor_id": "probleme"
       },
       "translation": {
-        "title": "The problem, day to day.",
+        "title": "The inbox overflows, the urgent waits.",
         "body": "<p>Take a renovation company. Every day brings price requests, questions about a job's progress, supplier invoices and unrelated messages. Someone opens everything, sorts, digs for the history, writes. The urgent message waits behind three others.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
         "items": [
           {
@@ -60,7 +60,7 @@
     {
       "collection": "block_cards",
       "role": "Ce que fait le système : quatre étapes, la dernière attend une personne.",
-      "claims": ["CL-120", "CL-103", "CL-95", "CL-21", "CL-85"],
+      "claims": ["CL-120", "CL-103", "CL-95", "CL-21", "CL-85", "CL-P02"],
       "fields": {
         "columns": "4",
         "tone": "sable",
@@ -68,11 +68,11 @@
         "anchor_id": "systeme"
       },
       "translation": {
-        "title": "What the system does.",
-        "intro": "The workflow reacts when an email arrives in the mailbox we have connected to WorkStudio. Every step is visible and editable.",
+        "title": "From email received to reply approved.",
+        "intro": "The workflow (an automated sequence of tasks) reacts when an email lands in the mailbox we have connected to WorkStudio. It is built without writing code, and every step is visible and editable.",
         "cards": [
           {
-            "title": "It notices.",
+            "title": "It spots.",
             "text": "A new email triggers the workflow. Only the mailboxes you choose to connect are read."
           },
           {
@@ -81,31 +81,32 @@
           },
           {
             "title": "It drafts.",
-            "text": "A reply draft, written to your style instructions and from your documents."
+            "text": "A draft reply, written to your style instructions and from your documents."
           },
           {
             "title": "It waits.",
-            "text": "A person reviews, edits, approves or refuses. Nothing goes out before."
+            "text": "A person reviews, edits, approves or declines. Nothing leaves before that."
           }
         ]
       }
     },
     {
-      "collection": "block_section",
-      "role": "Ce que reçoit l'équipe.",
+      "collection": "block_cards",
+      "role": "Ce que reçoit l'équipe : bénéfices concrets en mosaïque (bento).",
       "claims": ["CL-120", "CL-96", "CL-95"],
       "fields": {
-        "media_position": "none",
+        "columns": "2",
         "tone": "sombre",
+        "layout": "bento",
         "anchor_id": "equipe"
       },
       "translation": {
-        "title": "What your team receives.",
-        "body": "<p>The team no longer works in the disorder of an inbox: it receives items ready to review.</p>",
-        "items": [
+        "title": "A team that reviews instead of writing.",
+        "intro": "The team no longer works in the chaos of an inbox: it receives items that are ready to review.",
+        "cards": [
           {
             "title": "A sorted queue.",
-            "text": "Messages arrive classified by category and urgency."
+            "text": "Email arrives classified by category and urgency: the urgent comes first."
           },
           {
             "title": "A summary per message.",
@@ -113,18 +114,18 @@
           },
           {
             "title": "A draft per reply.",
-            "text": "To correct, not to write. The style comes from instructions you version: the one in production and the one being tested stay separate."
+            "text": "To correct, not to write. Style comes from instructions you version: the production instruction and the test one stay separate."
           },
           {
             "title": "A trace of every draft.",
-            "text": "Which model, which request, which reply: everything can be consulted."
+            "text": "Which model, which request, which answer: all of it can be consulted."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre.",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic.",
       "claims": ["CL-14", "CL-09"],
       "fields": {
         "media_position": "none",
@@ -132,14 +133,25 @@
         "anchor_id": "benefice"
       },
       "translation": {
-        "title": "The expected benefit.",
-        "body": "<p>Less manual sorting, urgent items seen sooner, more consistent replies from one person to the next. We announce no percentage and no time saved: they depend on your volume and your rules, and are measured during a pilot, on your own email.</p>"
+        "title": "What you gain, honestly.",
+        "body": "<p>Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. We announce no percentage and no time saved: they depend on your volume and your rules, and are measured during a pilot, on your own email.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to see what it would look like for you.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle.",
-      "claims": ["CL-128", "CL-21", "CL-06", "CL-23", "CL-103"],
+      "role": "Ce qui reste sous contrôle ; carte données (CL-E01 à E05) avec lien Vos données.",
+      "claims": [
+        "CL-128",
+        "CL-21",
+        "CL-06",
+        "CL-23",
+        "CL-103",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sable",
@@ -147,11 +159,11 @@
         "anchor_id": "controle"
       },
       "translation": {
-        "title": "What stays under your control.",
+        "title": "Nothing leaves without your go-ahead.",
         "cards": [
           {
-            "title": "Nothing goes out without a go-ahead.",
-            "text": "A person's approval comes before any sending, unless you decide otherwise in writing."
+            "title": "A person approves every send.",
+            "text": "A person's approval comes before any send, unless you decide otherwise in writing."
           },
           {
             "title": "You write the sorting rules.",
@@ -162,12 +174,14 @@
             "text": "Each connection belongs to a workspace and can be removed."
           },
           {
-            "title": "The model is a written choice.",
-            "text": "On your server or in our infrastructure; an external model only with your agreement, and its location is shown."
+            "title": "Your data stays yours.",
+            "text": "On your server or with us, in Quebec: never used to train a model, never sold. An external model comes in only when you explicitly activate it, in writing, and every model shows where it runs.",
+            "href": "/en/your-data/",
+            "link_label": "Read our commitments"
           },
           {
             "title": "No bulk sending.",
-            "text": "This solution replies to requests received. It is not meant for sending promotional email."
+            "text": "This solution replies to requests received. It is not for sending promotional email."
           }
         ]
       }
@@ -182,22 +196,22 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Email: your questions.",
+        "title": "Your questions about email.",
         "items": [
           {
             "question": "Does it work with my mail service?",
-            "answer": "That depends on the service. A broad catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first."
+            "answer": "It depends on the service. A broad catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first."
           },
           {
             "question": "Can the AI get a reply wrong?",
-            "answer": "Yes, like a hurried person. That is why a human approves every send, why every draft leaves a trace and why a safeguard can check that the reply stays faithful to your documents before it reaches you. The safeguard reduces error; it does not make it impossible."
+            "answer": "Yes, like a person in a hurry. That is why a human approves every send, why every draft leaves a trace and why a safeguard (an automatic check) can verify that the reply stays faithful to your documents before it is shown to you. The safeguard reduces error; it does not make it impossible."
           },
           {
             "question": "Can it answer simple cases on its own?",
-            "answer": "Technically yes. In our setups, human approval is the rule; removing that step for one specific type of message is a decision you make in writing, which we record."
+            "answer": "Technically yes. In our configurations, human approval is the rule; removing that step for a specific type of message is a decision you make in writing, which we record."
           },
           {
-            "question": "How long to put it into service?",
+            "question": "How long does it take to put into service?",
             "answer": "There is no universal timeline: it depends on your mail service, your rules and your documents. It is measured on a first case."
           }
         ]
@@ -211,11 +225,11 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "See your email sorted.",
+        "title": "Watch your email sort itself.",
         "text": "We prepare a demonstration on fictional email, then we talk about your mail service and your rules.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
-        "secondary_label": "See other solutions",
+        "secondary_label": "See the other solutions",
         "secondary_href": "/en/solutions/"
       }
     }

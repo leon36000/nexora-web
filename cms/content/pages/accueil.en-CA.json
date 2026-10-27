@@ -7,23 +7,23 @@
     "slug": "",
     "title": "Home",
     "seo_title": "AI automation for small businesses in Quebec",
-    "seo_description": "Nexora AI designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, under your control. Let's talk.",
+    "seo_description": "Nexora AI brings cutting-edge AI within reach of Quebec small businesses: powerful agents, a simple start, data on your premises or in Quebec. Let's talk.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promise and subtitle; two calls to action.",
-      "claims": ["CL-01", "CL-02"],
+      "role": "Promesse de la vague 2 : la pointe de l'IA à la portée de tous ; le message directeur reste dans le sous-titre ; deux CTA.",
+      "claims": ["CL-01", "CL-02", "CL-P01", "CL-P02", "CL-E01", "CL-E02"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Nexora AI · AI for Quebec businesses",
-        "headline": "AI that works for your business. Under your control.",
-        "subheadline": "Nexora AI designs, installs and supports AI systems built around how you work: running on your own server, or hosted in our infrastructure in Quebec.",
-        "primary_label": "Talk about my project",
+        "eyebrow": "Nexora AI · AI for Quebec small businesses",
+        "headline": "Cutting-edge AI. Within your reach.",
+        "subheadline": "AI that works for your business. Under your control. Powerful agents, an extremely simple start — you describe, the tool builds — and data that stays on your premises or in Quebec.",
+        "primary_label": "Discuss my project",
         "primary_href": "/en/contact/",
         "secondary_label": "See the solutions",
         "secondary_href": "/en/solutions/"
@@ -31,44 +31,44 @@
     },
     {
       "collection": "block_cards",
-      "role": "Start from the problem: five situations, each leading to its solution.",
-      "claims": ["CL-01"],
+      "role": "Entrée par problème : cinq situations, chacune vers sa solution.",
+      "claims": ["CL-01", "CL-132"],
       "fields": {
         "columns": "3",
         "layout": "bento",
         "tone": "clair"
       },
       "translation": {
-        "title": "Start with your problem.",
-        "intro": "You don't need to know what a language model is. Tell us where your team loses time, and we build from there.",
+        "title": "Start from your problem.",
+        "intro": "No need to know what a language model is. Tell us where your team loses time: we build from there.",
         "cards": [
           {
-            "title": "Requests left unanswered.",
-            "text": "Emails, web forms, missed calls: everything arrives through a different door. A system gathers these requests, drafts a reply and hands off to the right person, with context.",
+            "title": "Requests nobody answers.",
+            "text": "Emails, forms, missed calls: everything arrives through different doors. A system gathers these requests, prepares a reply and hands it to the right person, with the context. Nothing gets lost.",
             "href": "/en/solutions/customer-service/",
             "link_label": "See the solution"
           },
           {
-            "title": "The same data, typed twice.",
-            "text": "An invoice arrives by email, then gets retyped into the accounting system. A system reads the document, suggests the fields and waits for your approval before writing anything.",
+            "title": "The same entry, twice.",
+            "text": "An invoice arrives by email, then is retyped into the accounting software. A system reads the document, proposes the fields and waits for your approval before writing anything.",
             "href": "/en/solutions/invoices/",
             "link_label": "See the solution"
           },
           {
-            "title": "Documents no one can find.",
-            "text": "The right clause, the right quote, the right version: which folder? Ask in plain language; the answer starts from your own documents.",
+            "title": "Documents nobody can find.",
+            "text": "The right clause, the right quote, the right version: in which folder? Ask the question in plain language; the answer comes from your own documents.",
             "href": "/en/solutions/documents/",
             "link_label": "See the solution"
           },
           {
-            "title": "Follow-ups that slip.",
-            "text": "A quote reminder, an appointment confirmation, an email left in drafts. The system keeps the list, drafts the message and leaves the decision to send with you.",
+            "title": "Follow-ups that get forgotten.",
+            "text": "A quote reminder, an appointment reminder, an email left in drafts. The system keeps the list, prepares the message and leaves the decision to send with you.",
             "href": "/en/solutions/email/",
             "link_label": "See the solution"
           },
           {
-            "title": "No big picture.",
-            "text": "What is in progress, what is blocked, what costs more than planned: the information exists, but it is scattered. We bring it together in one readable view.",
+            "title": "No overall view.",
+            "text": "What is under way, what is blocked, what costs more than planned: the information exists, but it is scattered. We gather it into one readable view.",
             "href": "/en/solutions/",
             "link_label": "See the solutions"
           }
@@ -77,7 +77,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Three before / after scenarios, labelled as examples.",
+      "role": "Trois scénarios avant / après, étiquetés comme exemples construits.",
       "claims": ["CL-11", "CL-21"],
       "fields": {
         "columns": "3",
@@ -85,20 +85,75 @@
         "tone": "sable"
       },
       "translation": {
-        "title": "Before. After. Your call.",
-        "intro": "Three typical scenarios to show the principle. They are constructed examples, not results measured at customers.",
+        "title": "Before. After. Your decision.",
+        "intro": "Three typical scenarios to understand the principle. They are constructed examples, not results measured at clients.",
         "cards": [
           {
             "title": "A supplier invoice arrives.",
-            "text": "Before: someone opens it, retypes the amounts and looks for who has to approve it.\nAfter: the system reads the invoice, suggests the fields and the category, then puts it in front of the right person.\nYour control: nothing is recorded in the accounting system without a person's approval."
+            "text": "Before: someone opens it, retypes the amounts and looks for who must approve it.\nAfter: the system reads the invoice, proposes the fields and the category, then puts it in front of the right person.\nYour control: nothing is recorded in accounting without a person's approval."
           },
           {
             "title": "A question about an old file.",
-            "text": "Before: someone digs through four folders and calls a colleague.\nAfter: you ask in plain language; the answer draws on your documents and says plainly when it finds nothing.\nYour control: you choose which documents the agent may consult."
+            "text": "Before: you dig through four folders and call a colleague.\nAfter: you ask the question in plain language; the answer relies on your documents and says clearly when it finds nothing.\nYour control: you choose which documents the agent may consult."
           },
           {
             "title": "A request comes in through the website.",
-            "text": "Before: it waits until someone opens the inbox.\nAfter: the system qualifies it, creates the file and alerts the person in charge with a summary.\nYour control: your team approves the reply to the customer before it is sent."
+            "text": "Before: it waits for someone to open the inbox.\nAfter: the system qualifies it, creates the file and alerts the person in charge with a summary.\nYour control: the reply to the client is approved by your team before it is sent."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "La pointe de l'IA rendue simple : six capacités, sans nommer le produit avant la définition de la souveraineté.",
+      "claims": [
+        "CL-P01",
+        "CL-P02",
+        "CL-P03",
+        "CL-90",
+        "CL-91",
+        "CL-92",
+        "CL-93",
+        "CL-25",
+        "CL-101",
+        "CL-102",
+        "CL-94",
+        "CL-23",
+        "CL-96",
+        "CL-97"
+      ],
+      "fields": {
+        "columns": "3",
+        "layout": "bento",
+        "tone": "clair"
+      },
+      "translation": {
+        "title": "Cutting-edge AI, without the complexity.",
+        "intro": "The most advanced things AI can do, within reach of a small-business leadership team: you describe, you review, you decide. Not a line of code, no jargon.",
+        "cards": [
+          {
+            "title": "Describe it. It gets built.",
+            "text": "Say in plain language what you want to automate: a builder assistant prepares a workflow (an automated sequence of tasks). You review it, try it step by step, launch it."
+          },
+          {
+            "title": "Agents that act.",
+            "text": "An agent is software that carries out a task with the tools and documents you allow it. It cites its sources and asks for your approval before writing or deleting."
+          },
+          {
+            "title": "Your documents answer.",
+            "text": "Ask a question in plain language: the answer comes from your own documents, with its sources."
+          },
+          {
+            "title": "It reads, listens and speaks.",
+            "text": "It reads scanned PDFs and images, pulls out the fields of an invoice, transcribes audio recordings and reads a text aloud. It does not answer the phone."
+          },
+          {
+            "title": "Models, side by side.",
+            "text": "Compare several AI models on the same question, with the time and the tokens (the unit of text a model processes) of each answer. Each model shows whether it runs on your server, in Europe or at a third party."
+          },
+          {
+            "title": "Measured, not assumed.",
+            "text": "Test sets measure whether an agent answers well and compare two versions. Every call leaves a trace you can consult. These ambitious words are promotional statements: the proof is the list of what the tool does."
           }
         ]
       }
@@ -106,99 +161,141 @@
     {
       "collection": "block_section",
       "role": "Souveraineté définie en une phrase ; introduit les deux modes.",
-      "claims": ["CL-26"],
+      "claims": ["CL-70", "CL-71"],
       "fields": {
         "media_position": "none",
         "visual": "aucun",
         "tone": "sombre"
       },
       "translation": {
-        "title": "Your premises. Or ours.",
-        "body": "<p>AI is sovereign when you know where it runs, who can access it and where your data goes, and when you can walk away from it. Nexora AI offers two ways to get there.</p>"
+        "title": "At your site. Or at ours.",
+        "body": "<p>An AI is sovereign when you know where it runs, who has access to it and where your data goes, and when you can leave it. Nexora AI offers two ways to get there. In both, your data stays yours.</p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Mode sur : schéma de périmètre et lien vers le détail.",
-      "claims": ["CL-02", "CL-05"],
+      "role": "Mode sur place : schéma de périmètre, engagement 1 et lien vers le détail.",
+      "claims": ["CL-E01", "CL-02", "CL-05", "CL-77"],
       "fields": {
         "media_position": "none",
         "visual": "perimetre-sur-place",
         "tone": "sombre"
       },
       "translation": {
-        "title": "Your premises.",
-        "body": "<p>We install the system on your own server, in your offices or with the host of your choice. The hardware and the access are yours. Before go-live, we list what leaves the network, if anything: updates, licences, and an external model if you choose one.</p><p><a href=\"/en/deployment/on-premises/\">See the on-premises mode</a></p>"
+        "title": "At your site.",
+        "body": "<p>We install the system on your own server, in your premises or with the host of your choice. The hardware and the access are yours, and your data stays on your server: we access it only if you authorize it in writing, for a specific task, and every access is logged.</p><p>Before go-live, we list what leaves the network, if anything does: updates, licences, an external model if you enable one.</p><p><a href=\"/en/deployment/on-premises/\">See the on-premises mode</a></p>"
       }
     },
     {
       "collection": "block_section",
-      "role": "Mode heberge : schéma de périmètre et lien vers le détail.",
-      "claims": ["CL-05"],
+      "role": "Mode hébergé : schéma de périmètre, engagement 2 et lien vers le détail.",
+      "claims": ["CL-E02", "CL-05", "CL-73"],
       "fields": {
         "media_position": "left",
         "visual": "perimetre-heberge",
         "tone": "sombre"
       },
       "translation": {
-        "title": "Ours, in Quebec.",
-        "body": "<p>We host and operate the system in our infrastructure, located in Quebec. You buy no server and no hardware. Where your data, backups and logs sit, and who can access them: we put it in writing in the deployment study.</p><p><a href=\"/en/deployment/hosted-quebec/\">See the hosted mode</a></p>"
+        "title": "At ours, in Quebec.",
+        "body": "<p>We host and run the system in our infrastructure, located in Quebec. You buy no server or hardware, and your data stays in Quebec, backups included. The only exceptions are services you enable yourself, all listed.</p><p>Where your data, backups and logs are, and who has access: we write it down in the deployment study.</p><p><a href=\"/en/deployment/hosted-quebec/\">See the hosted mode</a></p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les cinq engagements en un coup d'œil ; comparaison sobre avec les pratiques courantes ; renvoi vers Vos données.",
+      "claims": ["CL-E01", "CL-E02", "CL-E03", "CL-E04", "CL-E05", "CL-E07"],
+      "fields": {
+        "media_position": "right",
+        "visual": "engagements-donnees",
+        "tone": "sable"
+      },
+      "translation": {
+        "title": "Your data stays yours.",
+        "body": "<p>Five commitments, no fine print: on your premises or in Quebec, <strong>never</strong> used to train an AI, <strong>never</strong> sold, and no external model unless you have switched it on.</p><p>In some consumer AI services, sharing conversations to improve the models is a setting the user must switch off themselves. With us, that setting does not exist.</p><p><a href=\"/en/your-data/\">Read the five commitments</a></p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "The products presented as one set, each with its real status.",
-      "claims": ["CL-12", "CL-13", "CL-20", "CL-21", "CL-22", "CL-27", "CL-28"],
+      "role": "Les produits présentés comme un ensemble, chacun avec son état réel en étiquette.",
+      "claims": [
+        "CL-12",
+        "CL-13",
+        "CL-20",
+        "CL-21",
+        "CL-22",
+        "CL-27",
+        "CL-28",
+        "CL-110",
+        "CL-G01",
+        "CL-G02",
+        "CL-G03",
+        "CL-V01",
+        "CL-V03"
+      ],
       "fields": {
         "columns": "3",
         "layout": "liste",
         "tone": "clair"
       },
       "translation": {
-        "title": "One suite, not a pile of tools.",
-        "intro": "Every product serves the same idea: AI that works for you, with the access, budgets and logs you control.",
+        "title": "A suite, not a pile.",
+        "intro": "Every product serves the same idea: AI that works for you, with access, budgets and logs you control. Each product's label states its real status.",
         "cards": [
           {
             "title": "Nexora WorkStudio.",
-            "text": "Design, connect and run agents (software that carries out a task with the tools you authorize) and workflows (automated sequences of tasks) in one place. A step can wait for a person's approval before it acts.\nStatus: demonstration on request.",
+            "label": "Available",
+            "text": "Design, connect and run agents (software that carries out a task with the tools you allow) and workflows (automated sequences of tasks), in one place and in plain language. A step can wait for a person's approval before acting.\nStatus: available, meaning delivered and verified on our test server; no client result is announced. Demonstration on request.",
             "href": "/en/workstudio/",
-            "link_label": "Discover WorkStudio",
-            "label": "WorkStudio"
+            "link_label": "Discover WorkStudio"
+          },
+          {
+            "title": "Nexora Croissance.",
+            "label": "Early access",
+            "text": "A website built for your trade with free web hosting (conditions on the page), search visibility, your Google and Microsoft ads, your social networks and market analysis: marketing run by AI and validated by you.\nStatus: early access, on request. No guaranteed result.",
+            "href": "/en/growth/",
+            "link_label": "Discover Nexora Croissance"
+          },
+          {
+            "title": "Nexora Vision.",
+            "label": "Pilot project",
+            "text": "AI video analytics that keeps your footage on your premises, with no facial recognition.\nStatus: pilot project by invitation. No installation exists yet.",
+            "href": "/en/vision/",
+            "link_label": "Discover Nexora Vision"
           },
           {
             "title": "Models and API.",
-            "text": "An API (the door through which other software calls a service) gives access to several AI models, the engines that produce answers, in the OpenAI format, a common calling format that many tools understand. Keys, quotas (usage limits) and usage metering are managed there.\nStatus: demonstration on request; the public catalogue, with its prices, is in preparation.",
-            "href": "/en/modeles/",
-            "link_label": "See the models",
-            "label": "Models and API"
+            "label": "On request",
+            "text": "An API (the doorway through which other software calls a service) gives access to several AI models, the engines that produce answers, in OpenAI format, a common calling format many tools understand. Keys, quotas (usage limits) and consumption metering are managed there.\nStatus: demonstration on request; the public catalogue, with its prices, is in preparation.",
+            "href": "/en/models/",
+            "link_label": "See the models"
           },
           {
             "title": "Hosted agents.",
-            "text": "The agents you publish in WorkStudio, callable through an API with your own key and subject to the same limits as everything else.\nStatus: API calls exist in WorkStudio; the online catalogue is in preparation.",
+            "label": "On request",
+            "text": "The agents you publish in WorkStudio, callable through the API with your own key and subject to the same limits as everything else.\nStatus: calling through the API exists in WorkStudio; the online catalogue is in preparation.",
             "href": "/en/agents/",
-            "link_label": "See the agents",
-            "label": "Agents"
+            "link_label": "See the agents"
           },
           {
             "title": "VPS in Quebec.",
-            "text": "A virtual private server (VPS) is a server rented for you alone. We are preparing offers hosted in Quebec, with an AI application installed of your choosing.\nStatus: in preparation; online ordering is not open.",
+            "label": "In preparation",
+            "text": "A virtual private server (VPS) is a server rented for you alone. We are preparing offers hosted in Quebec, with an AI application installed of your choice.\nStatus: in preparation; online ordering is not open.",
             "href": "/en/vps/",
-            "link_label": "See the servers",
-            "label": "VPS"
+            "link_label": "See the servers"
           },
           {
             "title": "The software suite.",
-            "text": "Nexora Code for agent-assisted development, Nexora Corpus to prepare your documents and data, and the Quanta and Helix models.\nStatus: no availability and no date are announced at this stage.",
+            "label": "No date",
+            "text": "Nexora Code for agent-assisted development, Nexora Corpus to prepare your documents and data, and the Quanta and Helix models.\nStatus: no availability or date is announced at this stage.",
             "href": "/en/suite/",
-            "link_label": "See the suite",
-            "label": "Suite"
+            "link_label": "See the suite"
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Feature spot for OPSYS-AI and its construction cycle.",
+      "role": "Mise en avant d'OPSYS-AI et de son cycle construction.",
       "claims": ["CL-30", "CL-31"],
       "fields": {
         "media_position": "none",
@@ -207,11 +304,11 @@
       },
       "translation": {
         "title": "OPSYS-AI. Ten departments, one file.",
-        "body": "<p>For construction companies and field-service businesses: ten virtual departments work on the same files, from the first request to the preparation of the invoice.</p><p>It is not a chatbot, a renamed customer relationship management (CRM) tool or ten isolated tools. Commitments that bind you — sending, paying, deciding — wait for a person's approval. And each department states its status: available, pilot (it works, with limits that we spell out) or planned.</p><p><a href=\"/en/opsys-ai/\">Discover OPSYS-AI</a></p>",
+        "body": "<p>For construction companies and field services: ten virtual departments work on the same files, from the first request to preparing the invoice. Nothing gets lost between two programs.</p><p>It is not a chat robot, not a customer relationship management (CRM) system under a new name, and not ten isolated tools. Commitment actions — sending, paying, deciding — wait for a person's approval. And each department states its status: available, in pilot (it works, with limits we spell out) or planned.</p><p><a href=\"/en/opsys-ai/\">Discover OPSYS-AI</a></p>",
         "items": [
           {
             "title": "Sell.",
-            "text": "Intake, customer relations, estimating and quoting."
+            "text": "Reception, customer relations, estimating and quoting."
           },
           {
             "title": "Deliver.",
@@ -219,18 +316,18 @@
           },
           {
             "title": "Invoice.",
-            "text": "Draft invoice, receivables and actual costs."
+            "text": "Draft invoice, accounts receivable and real costs."
           },
           {
             "title": "Steer.",
-            "text": "Marketing, analytics, strategy and a memory of decisions."
+            "text": "Marketing, analytics, strategy and decision memory."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Five-step method.",
+      "role": "Méthode en cinq temps.",
       "claims": ["CL-03", "CL-04", "CL-14"],
       "fields": {
         "media_position": "none",
@@ -239,7 +336,7 @@
       },
       "translation": {
         "title": "Five steps. One case at a time.",
-        "body": "<p>We start with one concrete problem, put into service and verified, before widening the scope. We announce no one-size-fits-all timeline: it depends on your situation and is measured on a first use case.</p><p><a href=\"/en/method/\">Read the method</a></p>"
+        "body": "<p>We start with one concrete problem, put into service and verified, before widening. We announce no universal timeline: it depends on your situation and is measured on a first case. You do not need to become an IT specialist: we install, we run it with you and we train your team.</p><p><a href=\"/en/method/\">Read the method</a></p>"
       }
     },
     {
@@ -255,7 +352,7 @@
         "cards": [
           {
             "title": "Understand.",
-            "text": "We observe how the work gets done today: where time is lost, what information comes in, who decides."
+            "text": "We observe how the work is done today: where time is lost, what information comes in, who decides."
           },
           {
             "title": "Integrate.",
@@ -270,15 +367,15 @@
             "text": "Your team learns to supervise, correct and decide, not to program."
           },
           {
-            "title": "Operate and improve.",
-            "text": "We run the system with you, keep what works and adjust the rest."
+            "title": "Run and improve.",
+            "text": "We run the system with you, follow what works and adjust the rest."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Trust: verifiable commitments, no figures and no customers.",
+      "role": "Confiance : engagements vérifiables, sans chiffre ni client.",
       "claims": [
         "CL-05",
         "CL-06",
@@ -288,7 +385,9 @@
         "CL-21",
         "CL-23",
         "CL-24",
-        "CL-31"
+        "CL-31",
+        "CL-E03",
+        "CL-E04"
       ],
       "fields": {
         "columns": "3",
@@ -296,34 +395,36 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "Commitments you can verify.",
-        "intro": "No big words: precise commitments that you can check before and after go-live.",
+        "title": "Verifiable commitments.",
+        "intro": "No big words: precise commitments you can check before and after go-live.",
         "cards": [
           {
             "title": "You know where your data goes.",
-            "text": "Before go-live, we give you the data-flow diagram in writing: where data is stored, which external services are called, which backups exist.",
+            "text": "Before any go-live, we give you in writing the flow diagram: where data is stored, which external services are called, which backups exist.",
             "href": "/en/sovereignty/",
             "link_label": "Read about sovereignty"
           },
           {
-            "title": "No external model without your consent.",
-            "text": "No call to an external AI service is configured without your written consent. In WorkStudio, each model shows whether it runs on your server, in Europe or with a third party."
+            "title": "No external model without your activation.",
+            "text": "No call to an external AI service is set up without your explicit activation, recorded in writing. In WorkStudio, each model shows whether it runs on your server, in Europe or at a third party."
           },
           {
             "title": "Decisions stay human.",
-            "text": "A workflow can stop for a person's approval before it acts. In OPSYS-AI, commitments that bind you — sending, paying, financial decisions — require an approval."
+            "text": "A workflow can stop for a person's approval before acting. In OPSYS-AI, commitment actions — sending, paying, financial decisions — require approval."
           },
           {
             "title": "Personal information, spotted.",
-            "text": "A service installed on your server can spot names, emails and phone numbers so they can be masked in traces or before a call to an external model, according to the policy you choose."
+            "text": "A service installed on your server can spot names, emails and phone numbers to mask them in traces or before a call to an external model, according to the policy you choose."
           },
           {
-            "title": "Your data stays yours.",
-            "text": "We do not reuse a customer's data, for another customer or to train a model, without that customer's specific authorization. Your documents, configurations and workflows stay exportable."
+            "title": "Never for training, never sold.",
+            "text": "We never use your data to train a model, or for another client, and we never sell it. Your documents, configurations and workflows stay exportable.",
+            "href": "/en/your-data/",
+            "link_label": "Read the five commitments"
           },
           {
             "title": "No claim without proof.",
-            "text": "We publish no testimonial, figure or certification that we cannot prove. When a capability is in pilot or planned, we say so.",
+            "text": "We publish no testimonial, figure or certification that we cannot prove. When a capability is in pilot or planned, we write it.",
             "href": "/en/trust-center/",
             "link_label": "See the trust centre"
           }
@@ -332,7 +433,7 @@
     },
     {
       "collection": "block_faq",
-      "role": "FAQ: the objections from report 06 §8.4, true answers only.",
+      "role": "FAQ : objections du rapport 06 §8.4 et questions de la vague 2 ; réponses vraies seulement.",
       "claims": [
         "CL-02",
         "CL-04",
@@ -346,7 +447,12 @@
         "CL-21",
         "CL-22",
         "CL-23",
-        "CL-25"
+        "CL-25",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-P02"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -357,57 +463,65 @@
         "items": [
           {
             "question": "Does my data leave Quebec?",
-            "answer": "It depends on the deployment mode and the models you choose, and we put it in writing before we start. On your premises, the hardware and the access are yours. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model. In our infrastructure, hosting is in Quebec, and we specify backups, logs and service providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration."
+            "answer": "It depends on the deployment mode and the models you choose, and we write it down before the start. At your site, your data stays on your server. At ours, it stays in Quebec, backups included. In both cases, the only exits are those we list with you before go-live: updates, licences and, if you enable one, an external model. We write \"no data leaves\" only if we have verified it on your configuration."
           },
           {
-            "question": "Do you train your models on our data?",
-            "answer": "No, not without your specific authorization. Our rule: a customer's data is not used for another customer or to train a model without that customer's consent, and we write it into the contract."
+            "question": "Do you train your models with our data?",
+            "answer": "Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, ours or a third party's, and we put it in the contract."
+          },
+          {
+            "question": "Do you sell our data?",
+            "answer": "Never. We do not sell, rent, exchange or share for advertising purposes any data entrusted to us."
+          },
+          {
+            "question": "Is it really simple to use?",
+            "answer": "That is the goal of the whole tool. You describe in plain language what you want to automate, an assistant prepares the workflow, you review it, try it step by step, then launch it. We install the system, run it with you and train your team in use and supervision, not in technology."
           },
           {
             "question": "We have no technical staff.",
-            "answer": "That is not an obstacle. We install the system, run it with you and keep it evolving; training for your team covers use and supervision, not the technical side."
+            "answer": "That is not an obstacle. We install the system, run it with you and keep it evolving; your team's training covers use and supervision, not technology."
           },
           {
             "question": "What happens if we stop?",
-            "answer": "You leave with your documents, your configurations and your workflows: export is written into the contract from the start, not negotiated at the end."
+            "answer": "You leave with your documents, configurations and workflows: export is provided for in the contract from the start, not negotiated at the end."
           },
           {
             "question": "How much does it cost?",
-            "answer": "There is no public price yet. The cost depends on the number of use cases, the volume of documents, the deployment mode, the integrations and, on your premises, the hardware. After a diagnostic, we provide a written estimate that states what is included and what is not. Self-service offers will show their prices and renewal terms when they open."
+            "answer": "There is no public price yet. The cost depends on the number of cases handled, the volume of documents, the deployment mode, the integrations and, at your site, the hardware. After a diagnostic, we give you a written estimate stating what is included and what is not. Self-service offers will show their prices and renewal conditions when they open."
           },
           {
             "question": "Will AI replace my employees?",
-            "answer": "Our systems take over repetitive tasks; the decision stays with a person. A workflow can stop for an approval before it acts, and a log keeps a record of what was done."
+            "answer": "Our systems take over repetitive tasks; the decision stays with a person. A workflow can stop for an approval before acting, and a log keeps track of what was done."
           },
           {
-            "question": "Why not a general-purpose assistant such as ChatGPT?",
-            "answer": "A general-purpose assistant answers general questions well. What Nexora AI adds: a choice of where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
+            "question": "Why not a consumer assistant?",
+            "answer": "A consumer assistant answers general questions well. What Nexora AI adds: the choice of where your requests are processed, your own documents as the basis for answers, links with your software, approvals and a log. The right choice depends on what you want to do with it."
           },
           {
             "question": "Do we need a powerful server?",
-            "answer": "It depends on the use case. With us, you buy no server. On your premises, we size the hardware to your usage: number of users, volume of documents, chosen model. The diagnostic answers this question before you buy anything."
+            "answer": "It depends on the case. At our site, you buy no server. At yours, we size the hardware to your uses: number of users, volume of documents, chosen model. The diagnostic answers this before any purchase."
           },
           {
             "question": "What is an AI agent?",
-            "answer": "Software that carries out a task for you, with the tools and documents you authorize, and that asks for your approval before an important action."
+            "answer": "Software that carries out a task for you, with the tools and documents you allow it, and that asks for your approval before an important action."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "Final call to action.",
-      "claims": ["CL-01"],
+      "role": "CTA final.",
+      "claims": ["CL-01", "CL-P02"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
-        "title": "Let's talk about your first use case.",
-        "text": "Describe one concrete problem. We will tell you what is feasible, in which mode, and where to start.",
-        "primary_label": "Talk about my project",
+        "title": "Your first case starts here.",
+        "text": "Describe a concrete problem. We tell you what is feasible, in which mode, and where to begin.",
+        "primary_label": "Discuss my project",
         "primary_href": "/en/contact/",
-        "secondary_label": "Discover OPSYS-AI",
-        "secondary_href": "/en/opsys-ai/"
+        "secondary_label": "Discover WorkStudio",
+        "secondary_href": "/en/workstudio/"
       }
     }
   ]

@@ -6,14 +6,14 @@
   "seo": {
     "slug": "opsys-ai",
     "title": "OPSYS-AI",
-    "seo_title": "OPSYS-AI\u00a0: logiciel d'IA pour la construction",
-    "seo_description": "OPSYS-AI coordonne dix départements virtuels pour les entreprises de construction, de la demande à la facture brouillon. Un statut honnête par capacité.",
+    "seo_title": "OPSYS-AI : logiciel d'IA pour la construction",
+    "seo_description": "OPSYS-AI : dix départements d'IA, un seul dossier, de la demande à la facture brouillon, pour la construction. Chaque capacité affiche son statut réel.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse du brief §7\u00a0; CTA démonstration et étude de déploiement.",
+      "role": "Promesse du brief §7 ; CTA démonstration et étude de déploiement.",
       "claims": ["CL-30", "CL-61"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "OPSYS-AI · Construction et services terrain",
         "headline": "Une équipe coordonnée pour votre entreprise de construction.",
-        "subheadline": "Dix départements virtuels travaillent sur les mêmes dossiers, de la première demande à la préparation de la facture. Chaque capacité indique son statut\u00a0: disponible, en pilote ou prévue.",
+        "subheadline": "Dix départements virtuels, un seul dossier : de la première demande à la préparation de la facture, plus rien ne se perd entre deux logiciels. Vous approuvez, ils préparent. Et chaque capacité affiche son statut réel : disponible, en pilote ou prévue.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Étude de déploiement",
@@ -39,12 +39,12 @@
         "tone": "clair"
       },
       "translation": {
-        "title": "Ce qui vous coûte du temps.",
-        "body": "<p>Souvent, une entreprise de construction ne manque pas d'outils\u00a0: elle manque de liens entre eux. La demande est dans une boîte de réception, la soumission dans un tableur, le chantier sur des feuilles, la facture dans la comptabilité.</p><p>OPSYS-AI part de ce constat\u00a0: un dossier, plusieurs départements, une seule suite logique.</p>",
+        "title": "Le temps qui vous échappe.",
+        "body": "<p>Souvent, une entreprise de construction ne manque pas d'outils : elle manque de liens entre eux. La demande est dans une boîte de réception, la soumission dans un tableur, le chantier sur des feuilles, la facture dans la comptabilité.</p><p>OPSYS-AI part de ce constat : un dossier, plusieurs départements, une seule suite logique.</p>",
         "items": [
           {
             "title": "Les demandes arrivent partout.",
-            "text": "Téléphone, courriel, formulaire\u00a0: rien ne garantit qu'une demande sera suivie."
+            "text": "Téléphone, courriel, formulaire : rien ne garantit qu'une demande sera suivie."
           },
           {
             "title": "Les soumissions prennent du temps.",
@@ -60,14 +60,14 @@
           },
           {
             "title": "Les décisions se perdent.",
-            "text": "Pourquoi ce prix, ce fournisseur, ce report\u00a0? Personne ne s'en souvient."
+            "text": "Pourquoi ce prix, ce fournisseur, ce report ? Personne ne s'en souvient."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Parcours global\u00a0: cinq temps qui regroupent les dix départements.",
+      "role": "Parcours global : cinq temps qui regroupent les dix départements.",
       "claims": ["CL-30", "CL-31"],
       "fields": {
         "media_position": "none",
@@ -76,7 +76,7 @@
       },
       "translation": {
         "title": "Un dossier. Dix départements.",
-        "body": "<p>Au lieu de dix outils isolés, un seul dossier suit la demande de bout en bout. Chaque département lit ce que les autres ont préparé et ajoute sa part, grâce à un bus d'événements interne\u00a0: un journal commun où chaque département note ce qui vient de se passer.</p><p>Ce que le système prépare, une personne l'approuve. Envoyer, payer, décider\u00a0: ces actions attendent votre accord.</p>",
+        "body": "<p>Au lieu de dix outils isolés, un seul dossier suit la demande de bout en bout. Chaque département lit ce que les autres ont préparé et ajoute sa part, grâce à un bus d'événements interne : un journal commun où chaque département note ce qui vient de se passer. Résultat : plus rien ne se perd entre deux logiciels.</p><p>Ce que le système prépare, une personne l'approuve. Envoyer, payer, décider : ces actions attendent votre accord.</p>",
         "items": [
           {
             "title": "Recevoir et vendre.",
@@ -84,7 +84,7 @@
           },
           {
             "title": "Planifier et réaliser.",
-            "text": "Terrain et matériel\u00a0: équipes, horaires, preuves, besoins et réceptions (M4 et M6)."
+            "text": "Terrain et matériel : équipes, horaires, preuves, besoins et réceptions (M4 et M6)."
           },
           {
             "title": "Facturer.",
@@ -132,56 +132,56 @@
       },
       "translation": {
         "title": "Les dix départements.",
-        "intro": "Chaque carte indique son statut. Disponible\u00a0: le logiciel le fait aujourd'hui. En pilote\u00a0: cela fonctionne, avec des limites que nous précisons. Prévu\u00a0: pas encore livré.",
+        "intro": "Chaque carte indique son statut. Disponible : le logiciel le fait aujourd'hui. En pilote : cela fonctionne, avec des limites que nous précisons. Prévu : pas encore livré.",
         "cards": [
           {
             "title": "M1 — Réception.",
-            "text": "Centralise et qualifie les demandes, prépare les suivis et transfère à la bonne personne avec le contexte.\nDisponible\u00a0: qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote\u00a0: messages vocaux transcrits. Prévu\u00a0: réponse envoyée au client, réception vocale en temps réel.",
+            "text": "Centralise et qualifie les demandes, prépare les suivis et transfère à la bonne personne avec le contexte.\nDisponible : qualification des demandes (à configurer pour votre entreprise), transferts vers un humain, appels manqués saisis par votre équipe. En pilote : messages vocaux transcrits. Prévu : réponse envoyée au client, réception vocale en temps réel.",
             "status": "pilote"
           },
           {
             "title": "M2 — Relation client et ventes.",
-            "text": "Suit contacts, dossiers, soumissions et relances, et suggère la prochaine action.\nDisponible\u00a0: création du dossier à partir d'une demande, prochaine action suggérée. En pilote\u00a0: suivi du dossier, relances, dédoublonnage. Prévu\u00a0: connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).",
+            "text": "Suit contacts, dossiers, soumissions et relances, et suggère la prochaine action.\nDisponible : création du dossier à partir d'une demande, prochaine action suggérée. En pilote : suivi du dossier, relances, dédoublonnage. Prévu : connexion à un logiciel externe de gestion de la relation client (CRM), tableau de suivi visuel (kanban).",
             "status": "pilote"
           },
           {
             "title": "M3 — Estimation.",
-            "text": "Prépare une estimation et une soumission à partir des informations fournies, expose ce qui manque et refuse de chiffrer quand l'information est insuffisante.\nStatut\u00a0: disponible pour le calcul et la soumission brouillon, pilote pour le reste. Les quantités et les prix sont saisis par votre équipe. La soumission est un brouillon, filtré de vos coûts et marges internes. Prévu\u00a0: mesure à partir de photos.",
+            "text": "Prépare une estimation et une soumission à partir des informations fournies, expose ce qui manque et refuse de chiffrer quand l'information est insuffisante.\nStatut : disponible pour le calcul et la soumission brouillon, pilote pour le reste. Les quantités et les prix sont saisis par votre équipe. La soumission est un brouillon, filtré de vos coûts et marges internes. Prévu : mesure à partir de photos.",
             "status": "pilote"
           },
           {
             "title": "M4 — Terrain.",
-            "text": "Organise équipes, horaires, interventions, temps et preuves de réalisation.\nDisponible\u00a0: intervention créée à partir d'une soumission acceptée. En pilote\u00a0: cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu\u00a0: géolocalisation au pointage, itinéraires routiers, répartition automatique.",
+            "text": "Organise équipes, horaires, interventions, temps et preuves de réalisation.\nDisponible : intervention créée à partir d'une soumission acceptée. En pilote : cédule par tournées, pointage à l'heure du serveur, photos après, signature et liste de contrôle. Prévu : géolocalisation au pointage, itinéraires routiers, répartition automatique.",
             "status": "pilote"
           },
           {
             "title": "M5 — FinanceCore.",
-            "text": "Prépare facturation, suivi financier, coûts et analyses, avec les validations appropriées.\nDisponible\u00a0: facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote\u00a0: prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu\u00a0: envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable.",
+            "text": "Prépare facturation, suivi financier, coûts et analyses, avec les validations appropriées.\nDisponible : facture brouillon après les travaux, comptes à recevoir, comptes à payer saisis par votre équipe. En pilote : prévision de trésorerie, coût réel par chantier, rapprochement à partir de relevés exportés. La paie est préparée (heures et brut) pour votre comptable, sans calcul de paie. Prévu : envoi des factures, connexions bancaires et comptables. Le calendrier fiscal est à faire valider par votre comptable.",
             "status": "pilote"
           },
           {
             "title": "M6 — Matériel.",
-            "text": "Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.\nDisponible\u00a0: besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote\u00a0: bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu\u00a0: envoi de la commande au fournisseur. Ce département n’effectue aucun paiement.",
+            "text": "Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.\nDisponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département n’effectue aucun paiement.",
             "status": "pilote"
           },
           {
             "title": "M7 — Marketing.",
-            "text": "Transforme les informations autorisées en propositions de contenus et suit d'où viennent vos clients.\nStatut\u00a0: disponible après configuration de votre marque, en pilote pour le reste. Les propositions sont soumises à votre approbation et le consentement est vérifié\u00a0; l'exportation vers vos canaux est manuelle. En pilote\u00a0: suivi de la demande jusqu'à la soumission et à la marge, sans coût publicitaire pour l'instant. Les demandes d'avis restent des brouillons. Prévu\u00a0: publication automatique sur les réseaux sociaux.",
+            "text": "Transforme les informations autorisées en propositions de contenus et suit d'où viennent vos clients.\nStatut : disponible après configuration de votre marque, en pilote pour le reste. Les propositions sont soumises à votre approbation et le consentement est vérifié ; l'exportation vers vos canaux est manuelle. En pilote : suivi de la demande jusqu'à la soumission et à la marge, sans coût publicitaire pour l'instant. Les demandes d'avis restent des brouillons. Prévu : publication automatique sur les réseaux sociaux.",
             "status": "pilote"
           },
           {
             "title": "M8 — Analytique.",
-            "text": "Rend les indicateurs compréhensibles, sourcés et accompagnés de leur qualité\u00a0: un indicateur affiche «\u00a0non calculable\u00a0» quand une donnée manque.\nDisponible\u00a0: vue exécutive. En pilote\u00a0: mesures par chantier. Prévu\u00a0: prévisions, indice de santé.",
+            "text": "Rend les indicateurs compréhensibles, sourcés et accompagnés de leur qualité : un indicateur affiche « non calculable » quand une donnée manque.\nDisponible : vue exécutive. En pilote : mesures par chantier. Prévu : prévisions, indice de santé.",
             "status": "pilote"
           },
           {
             "title": "M9 — Stratégie.",
-            "text": "Réunit les informations utiles à la direction, aux priorités et au suivi des décisions.\nDisponible\u00a0: synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote\u00a0: suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu\u00a0: scénarios, priorités et objectifs.",
+            "text": "Réunit les informations utiles à la direction, aux priorités et au suivi des décisions.\nDisponible : synthèse de direction et lecture stratégique, qui informent sans conseiller. En pilote : suivi d'une décision sous l'approbation du propriétaire, qui n'exécute rien. Prévu : scénarios, priorités et objectifs.",
             "status": "pilote"
           },
           {
             "title": "M10 — Mémoire.",
-            "text": "Retrouve les décisions et les connaissances autorisées, avec leur contexte et leurs sources.\nStatut\u00a0: disponible pour le journal des décisions et des événements, qui détecte toute modification\u00a0; en pilote pour la recherche dans les connaissances de l'entreprise, désactivée par défaut. Prévu\u00a0: graphe de relations entre dossiers.",
+            "text": "Retrouve les décisions et les connaissances autorisées, avec leur contexte et leurs sources.\nStatut : disponible pour le journal des décisions et des événements, qui détecte toute modification ; en pilote pour la recherche dans les connaissances de l'entreprise, désactivée par défaut. Prévu : graphe de relations entre dossiers.",
             "status": "pilote"
           }
         ]
@@ -189,7 +189,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Démonstration centrale, maillon par maillon\u00a0: réel / démonstration / cible.",
+      "role": "Démonstration centrale, maillon par maillon : réel / démonstration / cible.",
       "claims": ["CL-53", "CL-60", "CL-32", "CL-33", "CL-34", "CL-31"],
       "fields": {
         "media_position": "none",
@@ -199,54 +199,54 @@
       },
       "translation": {
         "title": "De la demande à la facture.",
-        "body": "<p>Voici le parcours central, tel qu'il est aujourd'hui. Pour chaque maillon\u00a0: ce qui est <strong>réel</strong> (le logiciel le fait), ce qui est en <strong>démonstration</strong> (données fictives ou application simulée en partie) et ce qui est <strong>cible</strong> (pas encore livré).</p><p>Quatre états ne se confondent jamais\u00a0: préparé, approuvé, envoyé, accusé de réception. Les vérifications ont été faites sur des données fictives.</p>",
+        "body": "<p>Voici le parcours central, tel qu'il est aujourd'hui. Pour chaque maillon : ce qui est <strong>réel</strong> (le logiciel le fait), ce qui est en <strong>démonstration</strong> (données fictives ou application simulée en partie) et ce qui est <strong>cible</strong> (pas encore livré).</p><p>Quatre états ne se confondent jamais : préparé, approuvé, envoyé, accusé de réception. Les vérifications ont été faites sur des données fictives.</p>",
         "items": [
           {
             "title": "1. Demande reçue.",
-            "text": "Réel\u00a0: le moteur de réception, éprouvé sur données fictives. Démonstration\u00a0: le transport par SMS et la téléphonie. Préparé\u00a0: un résumé de la demande."
+            "text": "Réel : le moteur de réception, éprouvé sur données fictives. Démonstration : le transport par SMS et la téléphonie. Préparé : un résumé de la demande."
           },
           {
             "title": "2. Qualification.",
-            "text": "Réel, à configurer pour votre entreprise\u00a0: cote, questions, prochaine action, transfert vers un humain."
+            "text": "Réel, à configurer pour votre entreprise : cote, questions, prochaine action, transfert vers un humain."
           },
           {
             "title": "3. Dossier client.",
-            "text": "Réel\u00a0: le dossier est créé à partir de la demande qualifiée. Le suivi complet du dossier est en pilote."
+            "text": "Réel : le dossier est créé à partir de la demande qualifiée. Le suivi complet du dossier est en pilote."
           },
           {
             "title": "4. Estimation.",
-            "text": "Réel\u00a0: le calcul, qui refuse de chiffrer sans information suffisante. Les quantités et les prix sont saisis. Cible\u00a0: la mesure à partir de photos."
+            "text": "Réel : le calcul, qui refuse de chiffrer sans information suffisante. Les quantités et les prix sont saisis. Cible : la mesure à partir de photos."
           },
           {
             "title": "5. Soumission approuvée.",
-            "text": "Réel\u00a0: soumission brouillon, revue en onze critères et approbation. Préparée et approuvée, oui\u00a0; envoyée et accusée de réception, non. Cible\u00a0: l'envoi au client."
+            "text": "Réel : soumission brouillon, revue en onze critères et approbation. Préparée et approuvée, oui ; envoyée et accusée de réception, non. Cible : l'envoi au client."
           },
           {
             "title": "6. Planification et matériel.",
-            "text": "Réel côté serveur, sans écran\u00a0: intervention à planifier, cédule, réservation, bon de commande brouillon approuvé. Cible\u00a0: l'envoi du bon de commande au fournisseur."
+            "text": "Réel côté serveur, sans écran : intervention à planifier, cédule, réservation, bon de commande brouillon approuvé. Cible : l'envoi du bon de commande au fournisseur."
           },
           {
             "title": "7. Exécution.",
-            "text": "Réel\u00a0: la fin de chantier côté serveur. Démonstration\u00a0: l'application de l'employé, dont le pointage utilise une position fictive."
+            "text": "Réel : la fin de chantier côté serveur. Démonstration : l'application de l'employé, dont le pointage utilise une position fictive."
           },
           {
             "title": "8. Clôture contrôlée.",
-            "text": "Réel côté serveur\u00a0: le chantier terminé attend une revue et l'écart de matériel est calculé en quantités. Cible\u00a0: l'alerte sur le téléphone de l'administrateur."
+            "text": "Réel côté serveur : le chantier terminé attend une revue et l'écart de matériel est calculé en quantités. Cible : l'alerte sur le téléphone de l'administrateur."
           },
           {
             "title": "9. Facture brouillon.",
-            "text": "Réel en interne\u00a0: une facture brouillon est préparée, avec la TPS et la TVQ calculées, à faire valider par votre comptable. Préparée, oui\u00a0; envoyée et accusée de réception, non."
+            "text": "Réel en interne : une facture brouillon est préparée, avec la TPS et la TVQ calculées, à faire valider par votre comptable. Préparée, oui ; envoyée et accusée de réception, non."
           },
           {
             "title": "10. Analyse et suivi.",
-            "text": "Réel\u00a0: vue exécutive, synthèse de direction, journal des décisions. Démonstration\u00a0: comparaison de l'estimé et du réel, sur données fictives."
+            "text": "Réel : vue exécutive, synthèse de direction, journal des décisions. Démonstration : comparaison de l'estimé et du réel, sur données fictives."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Scénario signature «\u00a0travaux terminés\u00a0», maillon par maillon.",
+      "role": "Scénario signature « travaux terminés », maillon par maillon.",
       "claims": ["CL-54", "CL-34", "CL-35", "CL-41", "CL-58", "CL-60"],
       "fields": {
         "media_position": "none",
@@ -259,50 +259,50 @@
         "items": [
           {
             "title": "L'employé termine le chantier.",
-            "text": "Démonstration\u00a0: la liste de contrôle est locale, les photos après partent en file d'attente, le pointage utilise une position fictive et l'écran des matériaux n'est pas encore qualifié."
+            "text": "Démonstration : la liste de contrôle est locale, les photos après partent en file d'attente, le pointage utilise une position fictive et l'écran des matériaux n'est pas encore qualifié."
           },
           {
             "title": "Un écart déclenche une revue.",
-            "text": "Réel côté serveur\u00a0: la fin de chantier passe en attente de revue et demande l'approbation d'un responsable."
+            "text": "Réel côté serveur : la fin de chantier passe en attente de revue et demande l'approbation d'un responsable."
           },
           {
             "title": "Le matériel est comparé.",
-            "text": "Réel\u00a0: quantités estimées et réelles comparées, sorties enregistrées, stock bas signalé. Les prix ne sont pas encore pris en compte."
+            "text": "Réel : quantités estimées et réelles comparées, sorties enregistrées, stock bas signalé. Les prix ne sont pas encore pris en compte."
           },
           {
             "title": "La facture brouillon est préparée.",
-            "text": "Réel en interne\u00a0: facture brouillon et rentabilité mise à jour. Cible\u00a0: PDF, numérotation et envoi."
+            "text": "Réel en interne : facture brouillon et rentabilité mise à jour. Cible : PDF, numérotation et envoi."
           },
           {
             "title": "Le dossier client est mis à jour.",
-            "text": "Réel\u00a0: le chantier est marqué terminé et l'activité est écrite. La prochaine action n'est qu'une suggestion."
+            "text": "Réel : le chantier est marqué terminé et l'activité est écrite. La prochaine action n'est qu'une suggestion."
           },
           {
             "title": "Des contenus sont proposés.",
-            "text": "Réel après configuration de votre marque\u00a0: propositions de contenus soumises à votre décision, exportation manuelle. La demande d'avis reste un brouillon, jamais envoyée."
+            "text": "Réel après configuration de votre marque : propositions de contenus soumises à votre décision, exportation manuelle. La demande d'avis reste un brouillon, jamais envoyée."
           },
           {
             "title": "L'estimé est comparé au réel.",
-            "text": "Démonstration\u00a0: comparaison en minutes, sur données fictives. Les dollars ne sont pas encore comparés."
+            "text": "Démonstration : comparaison en minutes, sur données fictives. Les dollars ne sont pas encore comparés."
           },
           {
             "title": "Les résultats sont exposés.",
-            "text": "Réel\u00a0: vue exécutive. En pilote\u00a0: mesures de chantier."
+            "text": "Réel : vue exécutive. En pilote : mesures de chantier."
           },
           {
             "title": "L'événement est conservé.",
-            "text": "Réel\u00a0: le journal des décisions et des événements, qui détecte toute modification, garde l'événement et ses sources."
+            "text": "Réel : le journal des décisions et des événements, qui détecte toute modification, garde l'événement et ses sources."
           },
           {
             "title": "Le client est tenu informé.",
-            "text": "Cible\u00a0: message au client, envoi de la facture, accusé de réception. Aucun envoi réel n'existe aujourd'hui."
+            "text": "Cible : message au client, envoi de la facture, accusé de réception. Aucun envoi réel n'existe aujourd'hui."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Différenciateurs\u00a0: rapprochement estimé/réel, matériel, finances, trésorerie, agents et budgets, mémoire.",
+      "role": "Différenciateurs : rapprochement estimé/réel, matériel, finances, trésorerie, agents et budgets, mémoire.",
       "claims": [
         "CL-D06",
         "CL-34",
@@ -318,8 +318,8 @@
         "tone": "clair"
       },
       "translation": {
-        "title": "Ce qui la distingue.",
-        "intro": "Pas un robot qui répond au téléphone\u00a0: des départements qui partagent le même dossier.",
+        "title": "Une équipe, pas un robot.",
+        "intro": "Pas un robot qui répond au téléphone : des départements qui partagent le même dossier.",
         "cards": [
           {
             "title": "L'estimé face au réel.",
@@ -327,11 +327,11 @@
           },
           {
             "title": "Le matériel avant le chantier.",
-            "text": "Les besoins se calculent dès la soumission acceptée. La commande est préparée et approuvée, puis transmise par votre équipe\u00a0: aucun envoi automatique au fournisseur."
+            "text": "Les besoins se calculent dès la soumission acceptée. La commande est préparée et approuvée, puis transmise par votre équipe : aucun envoi automatique au fournisseur."
           },
           {
             "title": "La facture, sans ressaisie.",
-            "text": "La facture brouillon naît des données du chantier. Vous la validez\u00a0; l'envoi reste à votre équipe."
+            "text": "La facture brouillon naît des données du chantier. Vous la validez ; l'envoi reste à votre équipe."
           },
           {
             "title": "Le solde et ce que vous devez.",
@@ -343,14 +343,14 @@
           },
           {
             "title": "Un journal des décisions.",
-            "text": "Pourquoi ce prix, ce fournisseur, ce report\u00a0? Les décisions sont journalisées avec leur contexte, dans un registre qui détecte toute modification."
+            "text": "Pourquoi ce prix, ce fournisseur, ce report ? Les décisions sont journalisées avec leur contexte, dans un registre qui détecte toute modification."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Mobile\u00a0: quatre profils, droits distincts, hors ligne non annoncé.",
+      "role": "Mobile : quatre profils, droits distincts, hors ligne non annoncé.",
       "claims": ["CL-55"],
       "fields": {
         "media_position": "none",
@@ -359,31 +359,42 @@
       },
       "translation": {
         "title": "Quatre profils sur mobile.",
-        "body": "<p>Chaque profil a ses droits\u00a0: le propriétaire approuve, le vendeur suit ses clients, l'employé saisit le terrain, le client suit son dossier. Aujourd'hui, trois profils existent en pilote\u00a0; le quatrième est prévu.</p><p>Le fonctionnement hors ligne est conçu, mais il n'est pas encore vérifié contre un serveur\u00a0: nous ne l'annonçons pas. Il n'y a pas de notifications poussées.</p>",
+        "body": "<p>Chaque profil a ses droits : le propriétaire approuve, le vendeur suit ses clients, l'employé saisit le terrain, le client suit son dossier. Aujourd'hui, trois profils existent en pilote ; le quatrième est prévu.</p><p>Le fonctionnement hors ligne est conçu, mais il n'est pas encore vérifié contre un serveur : nous ne l'annonçons pas. Il n'y a pas de notifications poussées.</p>",
         "items": [
           {
             "title": "Propriétaire ou administrateur.",
-            "text": "Pilote\u00a0: approbations (en ligne seulement) et écrans des départements."
+            "text": "Pilote : approbations (en ligne seulement) et écrans des départements."
           },
           {
             "title": "Vendeur.",
-            "text": "Pilote\u00a0: demandes, fiche client, notes et soumissions en lecture. Pas d'estimation, de marge ni de photos."
+            "text": "Pilote : demandes, fiche client, notes et soumissions en lecture. Pas d'estimation, de marge ni de photos."
           },
           {
             "title": "Employé.",
-            "text": "Pilote\u00a0: saisie terrain (photos après, liste de contrôle, signature) et fin de chantier. Le pointage est à qualifier\u00a0; l'accueil est minimal."
+            "text": "Pilote : saisie terrain (photos après, liste de contrôle, signature) et fin de chantier. Le pointage est à qualifier ; l'accueil est minimal."
           },
           {
             "title": "Client.",
-            "text": "Prévu\u00a0: suivi du dossier par liens sécurisés. Rien n'est livré."
+            "text": "Prévu : suivi du dossier par liens sécurisés. Rien n'est livré."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Déploiement et souveraineté, sans «\u00a0mode souverain\u00a0» inventé.",
-      "claims": ["CL-02", "CL-05", "CL-06", "CL-37", "CL-59", "CL-63", "CL-36"],
+      "role": "Déploiement et souveraineté, sans « mode souverain » inventé.",
+      "claims": [
+        "CL-02",
+        "CL-05",
+        "CL-06",
+        "CL-37",
+        "CL-59",
+        "CL-63",
+        "CL-36",
+        "CL-E01",
+        "CL-E03",
+        "CL-E04"
+      ],
       "fields": {
         "media_position": "none",
         "visual": "flux-donnees",
@@ -392,7 +403,7 @@
       },
       "translation": {
         "title": "Déploiement et souveraineté, sans détour.",
-        "body": "<p>OPSYS-AI s'installe sur un serveur ou un serveur privé virtuel (VPS) que vous contrôlez. Cette installation est en pilote\u00a0: nous qualifions la procédure avec vous.</p><p>Une promesse de souveraineté se prouve flux par flux. OPSYS-AI passe par une passerelle de modèles qui peut appeler des fournisseurs d'IA externes, selon la configuration. Un mode souverain, où aucun contenu métier ne quitte votre périmètre, n'est pas encore défini dans le produit\u00a0: tant qu'il ne l'est pas, nous ne l'annonçons pas.</p><p>Pour aller plus loin\u00a0: <a href=\"/deploiement/\">les modes de déploiement</a> et <a href=\"/souverainete/\">notre approche de la souveraineté</a>.</p>",
+        "body": "<p>OPSYS-AI s'installe sur un serveur ou un serveur privé virtuel (VPS) que vous contrôlez. Cette installation est en pilote : nous qualifions la procédure avec vous.</p><p>Une promesse de souveraineté se prouve flux par flux. OPSYS-AI passe par une passerelle de modèles qui peut appeler des fournisseurs d'IA externes, selon la configuration. Un mode souverain, où aucun contenu métier ne quitte votre périmètre, n'est pas encore défini dans le produit : tant qu'il ne l'est pas, nous ne l'annonçons pas.</p><p>Pour aller plus loin : <a href=\"/vos-donnees/\">vos données et nos cinq engagements</a>, <a href=\"/deploiement/\">les modes de déploiement</a> et <a href=\"/souverainete/\">notre approche de la souveraineté</a>.</p>",
         "items": [
           {
             "title": "Ce que nous faisons.",
@@ -400,7 +411,7 @@
           },
           {
             "title": "Ce qui reste votre décision.",
-            "text": "Quels modèles utiliser, locaux ou externes. Aucun service externe n'est configuré sans votre accord écrit."
+            "text": "Quels modèles utiliser, locaux ou externes. Aucun service externe n'est configuré sans votre activation explicite, consignée par écrit."
           },
           {
             "title": "Sauvegarde et reprise.",
@@ -413,13 +424,17 @@
           {
             "title": "Une console protégée.",
             "text": "Les approbations, les modes et les budgets se gèrent dans une console web protégée par authentification."
+          },
+          {
+            "title": "Vos données restent à vous.",
+            "text": "Elles ne servent jamais à entraîner un modèle et ne sont jamais vendues ; chez vous, elles restent sur votre serveur."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Mise en service\u00a0: étude, configuration, pilote, formation, exploitation.",
+      "role": "Mise en service : étude, configuration, pilote, formation, exploitation.",
       "claims": ["CL-03", "CL-04", "CL-14"],
       "fields": {
         "media_position": "none",
@@ -449,7 +464,7 @@
           },
           {
             "title": "Configuration.",
-            "text": "Marque, barèmes, règles de qualification, destinataires des transferts\u00a0: le système est réglé à votre entreprise."
+            "text": "Marque, barèmes, règles de qualification, destinataires des transferts : le système est réglé à votre entreprise."
           },
           {
             "title": "Pilote sur un flux.",
@@ -468,7 +483,7 @@
     },
     {
       "collection": "block_faq",
-      "role": "FAQ OPSYS-AI\u00a0: objections et limites, réponses vraies seulement.",
+      "role": "FAQ OPSYS-AI : objections et limites, réponses vraies seulement.",
       "claims": [
         "CL-30",
         "CL-31",
@@ -483,7 +498,10 @@
         "CL-61",
         "CL-10",
         "CL-14",
-        "CL-D01"
+        "CL-D01",
+        "CL-E03",
+        "CL-E04",
+        "CL-06"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -494,51 +512,55 @@
         "title": "Vos questions. Nos réponses.",
         "items": [
           {
-            "question": "OPSYS-AI est-il un agent conversationnel\u00a0?",
-            "answer": "Non. C'est un ensemble de dix départements qui travaillent sur les mêmes dossiers\u00a0: demande, estimation, chantier, matériel, facture, analyse, mémoire. Le but n'est pas de discuter, mais de coordonner."
+            "question": "OPSYS-AI est-il un agent conversationnel ?",
+            "answer": "Non. C'est un ensemble de dix départements qui travaillent sur les mêmes dossiers : demande, estimation, chantier, matériel, facture, analyse, mémoire. Le but n'est pas de discuter, mais de coordonner."
           },
           {
-            "question": "Les soumissions et les factures partent-elles toutes seules\u00a0?",
-            "answer": "Non. Le système prépare des brouillons. La soumission est filtrée de vos coûts et marges internes et passe par une approbation. L'envoi réel au client n'existe pas encore\u00a0: votre équipe transmet le document."
+            "question": "Les soumissions et les factures partent-elles toutes seules ?",
+            "answer": "Non. Le système prépare des brouillons. La soumission est filtrée de vos coûts et marges internes et passe par une approbation. L'envoi réel au client n'existe pas encore : votre équipe transmet le document."
           },
           {
-            "question": "Les dix départements sont-ils tous disponibles\u00a0?",
-            "answer": "Non, et nous le disons département par département. Certains éléments sont disponibles, beaucoup sont en pilote, d'autres sont prévus. Les cartes de la section «\u00a0Les dix départements\u00a0» donnent le détail."
+            "question": "Les dix départements sont-ils tous disponibles ?",
+            "answer": "Non, et nous le disons département par département. Certains éléments sont disponibles, beaucoup sont en pilote, d'autres sont prévus. Les cartes de la section « Les dix départements » donnent le détail."
           },
           {
-            "question": "Que fait l'approbation humaine\u00a0?",
+            "question": "Que fait l'approbation humaine ?",
             "answer": "Elle bloque l'action engageante (envoi, paiement, décision financière) jusqu'à ce qu'une personne habilitée décide. Un journal garde la trace."
           },
           {
-            "question": "Peut-on l'installer sur notre propre serveur\u00a0?",
-            "answer": "Oui, sur un serveur ou un VPS que vous contrôlez. L'installation est en pilote\u00a0: la procédure se qualifie avec nous."
+            "question": "Peut-on l'installer sur notre propre serveur ?",
+            "answer": "Oui, sur un serveur ou un VPS que vous contrôlez. L'installation est en pilote : la procédure se qualifie avec nous."
           },
           {
-            "question": "OPSYS-AI est-il offert en mode souverain\u00a0?",
-            "answer": "Pas sous ce nom. Nous décrivons plutôt le périmètre réel de votre installation\u00a0: où sont les données, qui y accède, quels flux sont configurés. Un mode où aucun contenu métier ne quitte votre périmètre n'est pas encore défini dans le produit."
+            "question": "Mes données servent-elles à entraîner une IA ?",
+            "answer": "Jamais. Nous n'utilisons pas vos données pour entraîner ou ajuster un modèle, et nous ne les vendons jamais. Aucun appel à un modèle externe n'est configuré sans votre activation explicite."
           },
           {
-            "question": "Se connecte-t-il à notre comptabilité ou à notre banque\u00a0?",
+            "question": "OPSYS-AI est-il offert en mode souverain ?",
+            "answer": "Pas sous ce nom. Nous décrivons plutôt le périmètre réel de votre installation : où sont les données, qui y accède, quels flux sont configurés. Un mode où aucun contenu métier ne quitte votre périmètre n'est pas encore défini dans le produit."
+          },
+          {
+            "question": "Se connecte-t-il à notre comptabilité ou à notre banque ?",
             "answer": "Pas aujourd'hui. Le système prépare des dossiers pour votre comptable et rapproche des relevés que vous exportez. Les connexions bancaires et comptables sont prévues, pas livrées."
           },
           {
-            "question": "Les messages vocaux et les appels sont-ils traités\u00a0?",
+            "question": "Les messages vocaux et les appels sont-ils traités ?",
             "answer": "Des messages vocaux téléversés peuvent être transcrits (pilote). Il n'y a pas de réceptionniste téléphonique en temps réel."
           },
           {
-            "question": "Fonctionne-t-il hors ligne sur mobile\u00a0?",
-            "answer": "Le mode hors ligne est conçu, mais il n'a pas encore été vérifié contre un serveur\u00a0: nous ne le garantissons pas."
+            "question": "Fonctionne-t-il hors ligne sur mobile ?",
+            "answer": "Le mode hors ligne est conçu, mais il n'a pas encore été vérifié contre un serveur : nous ne le garantissons pas."
           },
           {
-            "question": "Combien de temps pour la mise en service\u00a0?",
+            "question": "Combien de temps pour la mise en service ?",
             "answer": "Aucun délai universel n'est annoncé. Il dépend des départements activés, de vos données et de vos intégrations, et il se mesure sur un pilote."
           },
           {
-            "question": "Combien cela coûte-t-il\u00a0?",
+            "question": "Combien cela coûte-t-il ?",
             "answer": "Il n'y a pas de prix public. Une étude de déploiement établit, par écrit, ce qui est inclus et ce que cela coûte."
           },
           {
-            "question": "Existe-t-il un essai gratuit\u00a0?",
+            "question": "Existe-t-il un essai gratuit ?",
             "answer": "Non, pas en libre-service. Nous proposons une démonstration sur données fictives, une étude de déploiement, puis un pilote qualifié."
           }
         ]
@@ -546,14 +568,14 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA final\u00a0: démonstration ou étude de déploiement.",
+      "role": "CTA final : démonstration ou étude de déploiement.",
       "claims": ["CL-61"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Parlons de vos chantiers.",
-        "text": "Demandez une démonstration sur données fictives, ou une étude de déploiement pour votre entreprise. Nous avançons avec vous, étape par étape\u00a0: démonstration, étude, puis pilote.",
+        "text": "Voyez OPSYS-AI travailler sur des données fictives, ou lancez une étude de déploiement pour votre entreprise. Nous avançons avec vous, étape par étape : démonstration, étude, puis pilote.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Étude de déploiement",

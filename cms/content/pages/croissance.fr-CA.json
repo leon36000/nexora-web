@@ -1,0 +1,392 @@
+{
+  "page": "croissance",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "croissance",
+    "title": "Nexora Croissance",
+    "seo_title": "Marketing automatisé par IA pour PME",
+    "seo_description": "Site adapté à votre métier, hébergement inclus, SEO, Google Ads, Microsoft Advertising et réseaux sociaux, menés par l'IA et validés par vous. Accès anticipé.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de Nexora Croissance : le marketing complet mené par l'IA et validé par le client ; statut accès anticipé dès le surtitre ; hébergement gratuit annoncé avec renvoi aux conditions.",
+      "claims": ["CL-G01", "CL-G02", "CL-G03", "CL-G04"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Nexora Croissance · Accès anticipé",
+        "headline": "Votre marketing complet. Mené par l'IA.",
+        "subheadline": "Un site adapté à votre métier avec hébergement web gratuit (conditions écrites plus bas), le référencement, vos annonces Google et Microsoft, vos réseaux sociaux, l'analyse de marché et de mots-clés : tout au même endroit. L'IA propose, vous décidez.",
+        "primary_label": "Demander l'accès anticipé",
+        "primary_href": "/contact/?sujet=acces-croissance",
+        "secondary_label": "Vos données restent à vous",
+        "secondary_href": "/vos-donnees/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Statut honnête : accès anticipé, sur demande, connexion par connexion, aucun résultat annoncé.",
+      "claims": ["CL-G01", "CL-G05", "CL-09"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair",
+        "anchor_id": "statut"
+      },
+      "translation": {
+        "title": "Accès anticipé, sans embellir.",
+        "intro": "Nexora Croissance est en accès anticipé. Voici ce que cela veut dire concrètement.",
+        "cards": [
+          {
+            "title": "L'accès se fait sur demande.",
+            "label": "Statut",
+            "text": "Vous nous décrivez votre entreprise, votre région et vos objectifs. Nous vous disons ce que nous pouvons mettre en place avec vous aujourd'hui."
+          },
+          {
+            "title": "Une connexion à la fois.",
+            "label": "Plateformes",
+            "text": "Chaque plateforme (Google, Microsoft, Meta et les autres) doit approuver notre accès avant de s'ouvrir. Pour certaines, cela prend de plusieurs semaines à plusieurs mois. L'état de chaque connexion (active, en cours d'approbation, prévue) vous est montré au moment de votre demande."
+          },
+          {
+            "title": "Aucun résultat annoncé.",
+            "label": "Preuves",
+            "text": "Nous ne publions aucun nom de client, aucune citation de client, aucun chiffre de performance : nous mesurerons votre résultat avec vous, dès le premier mois."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Schéma de principe : votre métier et votre région entrent, les canaux travaillent ensemble, des demandes de clients sortent.",
+      "claims": ["CL-G02"],
+      "fields": {
+        "media_position": "right",
+        "visual": "croissance-canaux",
+        "tone": "sombre",
+        "anchor_id": "canaux"
+      },
+      "translation": {
+        "title": "Tout votre marketing, au même endroit.",
+        "body": "<p>D'ordinaire, un site, des annonces, des réseaux sociaux et des statistiques vivent chez quatre prestataires qui ne se parlent pas. Ici, votre métier et votre région entrent d'un côté ; de l'autre sortent des demandes de clients.</p><p>Entre les deux, le site, le référencement, les annonces Google et Microsoft, les réseaux sociaux et l'analyse de marché travaillent <strong>ensemble</strong>, avec une seule équipe, un seul tableau de suivi et une seule facture à comprendre.</p><p><a href=\"/contact/?sujet=acces-croissance\">Demander l'accès anticipé</a></p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les leviers : site, référencement, annonces, mots-clés, réseaux sociaux, notoriété, et les données qui vivent.",
+      "claims": ["CL-G02", "CL-G03", "CL-G06", "CL-G07", "CL-G10"],
+      "fields": {
+        "columns": "3",
+        "layout": "bento",
+        "tone": "clair",
+        "anchor_id": "leviers"
+      },
+      "translation": {
+        "title": "Sept leviers, une seule équipe.",
+        "intro": "Tout ce qu'une agence ferait pour vous, mené par l'IA et validé par vous. L'IA prépare ; vous gardez la main.",
+        "cards": [
+          {
+            "title": "Un site fait pour votre métier.",
+            "text": "Les textes, les sections et les images sont adaptés à votre métier, en français d'ici. Vous relisez et validez avant la mise en ligne. L'hébergement est gratuit, conditions écrites plus bas."
+          },
+          {
+            "title": "Trouvé sur Google.",
+            "text": "Le référencement naturel (SEO), c'est apparaître dans les résultats de recherche sans payer une annonce. Nous visons une progression mesurable de vos positions sur vos mots-clés prioritaires, et nous vous en rendons compte chaque mois."
+          },
+          {
+            "title": "Des annonces qui s'améliorent.",
+            "text": "Vos campagnes Google Ads et Microsoft Advertising sont créées, suivies et ajustées en continu, avec un plafond de dépenses que vous fixez. Un rapport par campagne, en français."
+          },
+          {
+            "title": "Les mots que vos clients tapent.",
+            "text": "L'analyse de marché et de mots-clés montre ce que vos clients cherchent et où se trouvent les occasions, avant de dépenser un dollar."
+          },
+          {
+            "title": "Des réseaux sociaux qui vivent.",
+            "text": "Les publications sont préparées pour vos réseaux, planifiées, puis publiées après votre validation."
+          },
+          {
+            "title": "Une réputation qui se construit.",
+            "text": "Votre fiche Google Business Profile est tenue à jour et votre notoriété suivie. Les réponses aux avis sont rédigées pour vous et validées par vous ; aucun avis n'est fabriqué ni masqué."
+          },
+          {
+            "title": "Vos données, enfin vivantes.",
+            "text": "Vos visites, vos demandes, vos campagnes et vos avis nourrissent l'analyse et les recommandations, pour viser mieux d'un mois à l'autre. Elles ne servent jamais à entraîner un modèle et ne sont jamais vendues.",
+            "href": "/vos-donnees/",
+            "link_label": "Lire nos engagements"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Comment ça marche : questionnaire métier, création et validation, optimisation et rapport.",
+      "claims": ["CL-G04", "CL-G02"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "sable",
+        "anchor_id": "fonctionnement"
+      },
+      "translation": {
+        "title": "Comment ça marche, en trois étapes.",
+        "intro": "Vous répondez à des questions sur votre métier. Le reste, c'est l'affaire de l'IA et de notre équipe, sous votre regard.",
+        "cards": [
+          {
+            "title": "Parlez-nous de votre métier.",
+            "text": "Un questionnaire simple : vos services, vos clients, votre région, vos objectifs. Pas de jargon, pas de réglage technique."
+          },
+          {
+            "title": "Validez ce qui est préparé.",
+            "text": "L'IA prépare le site, les campagnes et les publications. Vous relisez, vous corrigez, vous approuvez. Rien ne part sans vous."
+          },
+          {
+            "title": "Suivez, ajustez, améliorez.",
+            "text": "Les campagnes sont suivies et ajustées. Vous recevez un rapport en français, lisible en quelques minutes, et vous pouvez tout arrêter ou modifier."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Hébergement web gratuit avec ses conditions affichées au même endroit (recherche 09 §4.7 et §9.4).",
+      "claims": ["CL-G03"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre",
+        "anchor_id": "hebergement"
+      },
+      "translation": {
+        "title": "Hébergement web gratuit. Conditions comprises.",
+        "body": "<p>Le mot « gratuit » doit être exact. Le voici, avec toutes ses conditions, au même endroit : l'hébergement de votre site est inclus avec Nexora Croissance, sans frais d'hébergement distincts <strong>tant que vous êtes client</strong>.</p>",
+        "items": [
+          {
+            "title": "Inclus.",
+            "text": "L'hébergement de votre site, sans frais distincts tant que vous êtes client de Nexora Croissance."
+          },
+          {
+            "title": "À votre charge, affiché d'avance.",
+            "text": "Le nom de domaine à votre nom (des frais annuels, payés au registraire) et les frais de publicité, versés directement aux plateformes."
+          },
+          {
+            "title": "Si vous partez.",
+            "text": "Vous repartez avec votre contenu et votre nom de domaine. L'hébergement, lui, s'arrête avec votre statut de client."
+          },
+          {
+            "title": "Ce que nous ne disons pas.",
+            "text": "Nous ne disons pas « gratuit pour toujours » ni « sans aucun frais » : ce serait faux. Les prix des formules ne sont pas publiés pour l'instant."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Transparence et contrôle : l'angle différenciant face aux boîtes noires publicitaires.",
+      "claims": ["CL-G04", "CL-G06", "CL-G08", "CL-21"],
+      "fields": {
+        "columns": "3",
+        "layout": "grille",
+        "tone": "clair",
+        "anchor_id": "transparence"
+      },
+      "translation": {
+        "title": "Pas de boîte noire. Vous décidez.",
+        "intro": "On reproche aux outils publicitaires automatisés d'optimiser sans montrer comment. Nous faisons l'inverse : tout se voit, tout se plafonne, tout s'arrête.",
+        "cards": [
+          {
+            "title": "Vous validez.",
+            "text": "Publications, changements majeurs de budget ou de ciblage : rien ne se fait sans votre accord."
+          },
+          {
+            "title": "Vous plafonnez.",
+            "text": "Vous fixez le plafond de dépenses. Il s'applique, toujours."
+          },
+          {
+            "title": "Vous voyez tout.",
+            "text": "Un rapport par campagne, en français : coût, clics, demandes ou ventes. Nous fixons ensemble l'indicateur principal avant le lancement."
+          },
+          {
+            "title": "Vous arrêtez quand vous voulez.",
+            "text": "Selon les conditions de résiliation du contrat. Votre site, votre contenu et vos données exportables restent à vous."
+          },
+          {
+            "title": "Seulement les voies officielles.",
+            "text": "Nous passons par les interfaces officielles de chaque plateforme. Aucun contournement."
+          },
+          {
+            "title": "Aucun message sans consentement.",
+            "text": "Les relances par courriel ou texto exigent un consentement documenté. Nexora Croissance n'envoie aucun message commercial sans lui."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Liste nominative des réseaux et plateformes visés (recherche 09 §3) ; aucune connexion annoncée comme active.",
+      "claims": ["CL-G09", "CL-G05"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "sable",
+        "anchor_id": "plateformes"
+      },
+      "translation": {
+        "title": "Les plateformes visées, nommées.",
+        "intro": "Voici où Nexora Croissance vise à travailler pour vous. Aucune connexion n'est annoncée comme active : chacune s'ouvre quand la plateforme approuve notre accès, et son état vous est montré à votre demande. Les noms ci-dessous désignent des plateformes tierces ; nous ne revendiquons aucun partenariat ni statut officiel.",
+        "cards": [
+          {
+            "title": "Publicité.",
+            "label": "Annonces",
+            "text": "Google Ads, Microsoft Advertising, Meta (Facebook et Instagram), TikTok, LinkedIn, Pinterest, Snapchat, Reddit, X."
+          },
+          {
+            "title": "Réseaux sociaux.",
+            "label": "Publication",
+            "text": "Facebook, Instagram, Threads, LinkedIn, X, TikTok, YouTube, Pinterest, Snapchat, Bluesky, Mastodon, Telegram, Discord, WhatsApp Business et Reddit. Pour chaque réseau, ce qui s'automatise dépend de ses règles : la publication automatique est déconseillée sur Reddit."
+          },
+          {
+            "title": "Présence locale et recherche.",
+            "label": "Visibilité",
+            "text": "Google Business Profile, Google Search Console, Bing Webmaster Tools et IndexNow pour signaler vos nouvelles pages aux moteurs de recherche."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Vos données dans Nexora Croissance : engagements D7 appliqués.",
+      "claims": ["CL-G10", "CL-E03", "CL-E04", "CL-E05"],
+      "fields": {
+        "media_position": "left",
+        "visual": "engagements-donnees",
+        "tone": "sombre",
+        "anchor_id": "donnees"
+      },
+      "translation": {
+        "title": "Vos données travaillent. Pour vous seul.",
+        "body": "<p>Vos visites, vos demandes, vos campagnes et vos avis sont de l'or pour votre marketing. Nous les faisons travailler pour vous : mieux viser, mieux comprendre, mieux décider.</p><p>Elles ne servent <strong>jamais</strong> à entraîner un modèle et ne sont <strong>jamais</strong> vendues. Elles ne sont transmises qu'aux plateformes que vous connectez, pour ce que vous décidez de publier, et les modèles qui rédigent sont ceux que vous activez.</p><p><a href=\"/vos-donnees/\">Voir les cinq engagements</a></p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que Nexora Croissance ne garantit pas : positions, nombre de clients, rendement ; avis, consentement.",
+      "claims": ["CL-G06", "CL-G07", "CL-G08", "CL-G05"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce que Nexora Croissance ne garantit pas.",
+        "body": "<p>Un marketing sérieux ne vend pas de miracles. Voici ce que nous ne promettons pas, parce que personne ne peut le promettre honnêtement.</p>",
+        "items": [
+          {
+            "title": "Aucune position garantie.",
+            "text": "Personne ne peut garantir un rang dans Google, et les plateformes publicitaires interdisent cette promesse. Nous suivons des indicateurs mesurés (positions, visites, demandes) et nous vous en rendons compte chaque mois."
+          },
+          {
+            "title": "Aucun nombre de clients garanti.",
+            "text": "Ni rendement publicitaire garanti : les résultats varient selon votre métier, votre région et votre budget."
+          },
+          {
+            "title": "Aucun avis fabriqué.",
+            "text": "Nous ne rédigeons ni ne publions d'avis à la place de vos clients, et nous n'en masquons aucun."
+          },
+          {
+            "title": "Aucune connexion présentée comme active.",
+            "text": "Tant qu'une plateforme n'a pas approuvé notre accès, la connexion est marquée « en cours » ou « prévue »."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ : huit questions de la recherche 09 §7 plus deux sur le prix et l'accès.",
+      "claims": [
+        "CL-G06",
+        "CL-G03",
+        "CL-G05",
+        "CL-G04",
+        "CL-G07",
+        "CL-G10",
+        "CL-E03",
+        "CL-E04",
+        "CL-10",
+        "CL-G01"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions. Nos réponses.",
+        "items": [
+          {
+            "question": "Pouvez-vous me garantir la première place sur Google ?",
+            "answer": "Non. Personne ne peut le faire, et les plateformes publicitaires interdisent cette promesse. Nous suivons des indicateurs mesurés (positions, visites, demandes) et nous vous en rendons compte chaque mois."
+          },
+          {
+            "question": "Mon site sera-t-il vraiment gratuit ?",
+            "answer": "L'hébergement est gratuit : sans frais d'hébergement distincts tant que vous êtes client de Nexora Croissance. Le nom de domaine (des frais annuels payés au registraire) et les frais de publicité sont à votre charge. Si vous partez, vous repartez avec votre contenu et votre nom de domaine."
+          },
+          {
+            "question": "Qui a accès à mes données ?",
+            "answer": "Seules les personnes autorisées chez Nexora AI et les fournisseurs listés au contrat. Vos données ne sont pas vendues et ne servent jamais à entraîner des modèles d'IA. Voyez nos cinq engagements sur la page « Vos données »."
+          },
+          {
+            "question": "Puis-je valider les publications et les changements de publicité ?",
+            "answer": "Oui. Vous validez les publications et les changements majeurs de budget ou de ciblage. Un plafond de dépenses que vous fixez s'applique toujours."
+          },
+          {
+            "question": "Quelles plateformes sont connectées ?",
+            "answer": "Aucune n'est annoncée comme active pour l'instant. La liste des plateformes visées est sur cette page, et l'état de chaque connexion (active, en cours d'approbation, prévue) vous est montré au moment de votre demande. Certaines plateformes exigent une approbation qui peut prendre de plusieurs semaines à plusieurs mois."
+          },
+          {
+            "question": "Puis-je arrêter à tout moment ?",
+            "answer": "Oui, selon les conditions de résiliation du contrat. Vous conservez votre contenu, votre nom de domaine et vos données exportables."
+          },
+          {
+            "question": "Comment savoir si la publicité fonctionne ?",
+            "answer": "Vous recevez un rapport par campagne : coût, clics, demandes ou ventes. Nous définissons ensemble l'indicateur principal avant le lancement."
+          },
+          {
+            "question": "Nexora AI publie-t-elle ou modifie-t-elle mes avis en ligne ?",
+            "answer": "Non. Nous ne rédigeons ni ne publions d'avis à la place de vos clients et nous n'en masquons aucun. Les réponses aux avis, si vous les activez, sont rédigées pour vous et validées par vous."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Il n'y a pas encore de prix public. Les formules sont en préparation ; une estimation écrite suit le diagnostic, avec ce qui est inclus et ce qui est à votre charge."
+          },
+          {
+            "question": "Qui peut rejoindre l'accès anticipé ?",
+            "answer": "Toute entreprise qui nous en fait la demande. Décrivez-nous votre métier, votre région et vos objectifs : nous vous disons ce que nous pouvons mettre en place avec vous aujourd'hui."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à demander l'accès anticipé.",
+      "claims": ["CL-G01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Demandez l'accès anticipé.",
+        "text": "Décrivez votre métier, votre région et vos objectifs. Nous vous disons ce que Nexora Croissance peut faire pour vous dès maintenant, et ce qui viendra avec chaque plateforme.",
+        "primary_label": "Demander l'accès anticipé",
+        "primary_href": "/contact/?sujet=acces-croissance",
+        "secondary_label": "Lire Vos données",
+        "secondary_href": "/vos-donnees/"
+      }
+    }
+  ]
+}

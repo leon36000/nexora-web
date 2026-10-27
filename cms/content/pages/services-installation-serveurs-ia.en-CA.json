@@ -6,23 +6,23 @@
   "seo": {
     "slug": "services/ai-server-installation",
     "title": "AI server installation",
-    "seo_title": "AI server installation for small businesses",
-    "seo_description": "Nexora AI installs and configures your AI server on your premises or in its infrastructure in Quebec, then runs it with you. Sizing comes before any purchase.",
+    "seo_title": "AI server installation for small business",
+    "seo_description": "AI server installation for small business: Nexora AI installs in one command, on your premises or in Quebec, and runs it with you. Hardware sized before buying.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse du service d'installation.",
-      "claims": ["CL-81", "CL-05"],
+      "role": "Promesse du service d'installation : un serveur d'IA prêt à travailler, un périmètre écrit.",
+      "claims": ["CL-81", "CL-05", "CL-26"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
         "eyebrow": "Services · Installation",
-        "headline": "An AI server installed. A perimeter in writing.",
-        "subheadline": "We install, configure and run with you the server that powers your agents and models: on your premises, or in our infrastructure in Quebec. The perimeter is handed over in writing before go-live.",
+        "headline": "An AI server, ready to work.",
+        "subheadline": "We install, configure and run with you the server that powers your agents and models: on your premises, or in our infrastructure in Quebec. One-command installation, perimeter handed over in writing before go-live, data that stays yours.",
         "primary_label": "Request a deployment study",
         "primary_href": "/en/contact/?sujet=etude-deploiement",
         "secondary_label": "Compare the two modes",
@@ -31,8 +31,17 @@
     },
     {
       "collection": "block_section",
-      "role": "Définition du serveur d'IA et des deux voies.",
-      "claims": ["CL-81", "CL-02", "CL-13"],
+      "role": "Définition du serveur d'IA, deux voies et engagements sur les données de chaque voie.",
+      "claims": [
+        "CL-81",
+        "CL-02",
+        "CL-13",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-73"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -40,22 +49,22 @@
       },
       "translation": {
         "title": "Two paths, one method.",
-        "body": "<p>An AI server is a machine that runs the models (the engines that produce the answers) and the agents. It can be a physical server, or a virtual private server (VPS), meaning a server rented just for you.</p><p>The method is the same in both cases: size, install, configure, check the flows, train, then operate.</p>",
+        "body": "<p>An AI server is a machine that runs the models (the engines that produce the answers) and the agents. It can be a physical server, or a virtual private server (VPS), meaning a server rented just for you.</p><p>The method is the same in both cases: size, install, configure, check the flows, train, then operate. In both cases too, your data is never used to train a model and never sold: <a href=\"/en/your-data/\">see the commitments on your data</a>.</p>",
         "items": [
           {
             "title": "On your premises.",
-            "text": "In your offices or at a host of your choice. The hardware and the access are yours."
+            "text": "In your offices or at a host of your choice. The hardware and the access are yours, and your data stays on your server: Nexora AI gets in only if you authorize it in writing, for a specific task and a limited time, and every access is logged."
           },
           {
             "title": "With us, in Quebec.",
-            "text": "In our infrastructure, where we run it. You buy no server and no hardware."
+            "text": "In our infrastructure, where we run it. You buy no server and no hardware. Your data stays in Quebec, backups included, apart from the services you explicitly activate; the location is specified to you in writing before go-live."
           }
         ]
       }
     },
     {
       "collection": "block_cards",
-      "role": "Six étapes, de l'étude à l'exploitation.",
+      "role": "Six étapes de l'installation, de l'étude à l'exploitation.",
       "claims": ["CL-81", "CL-26", "CL-88", "CL-104", "CL-05", "CL-04"],
       "fields": {
         "columns": "3",
@@ -64,7 +73,7 @@
         "anchor_id": "etapes"
       },
       "translation": {
-        "title": "From study to operation.",
+        "title": "Installation, from study to operation.",
         "cards": [
           {
             "title": "1. Size.",
@@ -128,20 +137,20 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce que nous installons : WorkStudio et ses composants.",
-      "claims": ["CL-26", "CL-27", "CL-103", "CL-24", "CL-88"],
+      "role": "Ce que contient le serveur : WorkStudio et ses composants.",
+      "claims": ["CL-26", "CL-27", "CL-103", "CL-24", "CL-88", "CL-P02"],
       "fields": {
         "media_position": "none",
         "tone": "clair",
         "anchor_id": "composants"
       },
       "translation": {
-        "title": "What we install.",
-        "body": "<p>The installation brings together the <a href=\"/en/workstudio/\">Nexora WorkStudio</a> platform and the services it needs.</p>",
+        "title": "What your AI server contains.",
+        "body": "<p>The installation brings together the <a href=\"/en/workstudio/\">Nexora WorkStudio</a> platform, where you build agents and workflows without writing code, and the services it needs.</p>",
         "items": [
           {
             "title": "WorkStudio.",
-            "text": "The studio where agents and workflows are designed and run."
+            "text": "The studio where agents and workflows are designed and run, in French, without writing code."
           },
           {
             "title": "A model gateway.",
@@ -196,8 +205,17 @@
     },
     {
       "collection": "block_faq",
-      "role": "FAQ propre à l'installation.",
-      "claims": ["CL-26", "CL-81", "CL-82", "CL-08"],
+      "role": "FAQ propre à l'installation (matériel, serveur existant, exploitation, changement de mode, sorties de données).",
+      "claims": [
+        "CL-26",
+        "CL-81",
+        "CL-82",
+        "CL-08",
+        "CL-77",
+        "CL-06",
+        "CL-E01",
+        "CL-E05"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -212,11 +230,15 @@
           },
           {
             "question": "Can it go on an existing server?",
-            "answer": "A Linux or macOS server running Docker is required. We check during the assessment that it suits the intended uses."
+            "answer": "A Linux or macOS server running Docker is required. We check during the diagnosis that it suits the intended uses."
+          },
+          {
+            "question": "Does my data leave the server?",
+            "answer": "In the on-premises mode, documents, the search index and conversations stay on your server. What can leave is listed with you before go-live: updates, licence checks and, only if you activated it in writing, an external model."
           },
           {
             "question": "Who runs it afterwards?",
-            "answer": "We do, with you, as the contract provides. In the on-premises mode, the access you give us is agreed in advance."
+            "answer": "We do, with you, as the contract provides. In the on-premises mode, we access your server only if you authorize it in writing, for a specific task and a limited time."
           },
           {
             "question": "Can we change mode later?",

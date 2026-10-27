@@ -1,0 +1,392 @@
+{
+  "page": "croissance",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "growth",
+    "title": "Nexora Croissance",
+    "seo_title": "AI marketing automation for small business",
+    "seo_description": "A website built for your trade with hosting included, SEO, Google Ads, Microsoft Advertising and social networks, run by AI and validated by you. Early access.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de Nexora Croissance : le marketing complet mené par l'IA et validé par le client ; statut accès anticipé dès le surtitre ; hébergement gratuit annoncé avec renvoi aux conditions.",
+      "claims": ["CL-G01", "CL-G02", "CL-G03", "CL-G04"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Nexora Croissance · Early access",
+        "headline": "Your complete marketing. Run by AI.",
+        "subheadline": "A website built for your trade with free web hosting (conditions spelled out below), search visibility, your Google and Microsoft ads, your social networks, market and keyword analysis: all in one place. The AI proposes, you decide.",
+        "primary_label": "Request early access",
+        "primary_href": "/en/contact/?sujet=acces-croissance",
+        "secondary_label": "Your data stays yours",
+        "secondary_href": "/en/your-data/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Statut honnête : accès anticipé, sur demande, connexion par connexion, aucun résultat annoncé.",
+      "claims": ["CL-G01", "CL-G05", "CL-09"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair",
+        "anchor_id": "statut"
+      },
+      "translation": {
+        "title": "Early access, without embellishment.",
+        "intro": "Nexora Croissance is in early access. Here is what that means in practice.",
+        "cards": [
+          {
+            "title": "Access is by request.",
+            "label": "Status",
+            "text": "You tell us about your business, your region and your goals. We tell you what we can put in place with you today."
+          },
+          {
+            "title": "One connection at a time.",
+            "label": "Platforms",
+            "text": "Each platform (Google, Microsoft, Meta and the others) must approve our access before it opens. For some, that takes several weeks to several months. The state of each connection (active, awaiting approval, planned) is shown to you when you apply."
+          },
+          {
+            "title": "No result announced.",
+            "label": "Proof",
+            "text": "We publish no client names, no quoted praise and no performance figures: we will measure your result with you, from the first month."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Schéma de principe : votre métier et votre région entrent, les canaux travaillent ensemble, des demandes de clients sortent.",
+      "claims": ["CL-G02"],
+      "fields": {
+        "media_position": "right",
+        "visual": "croissance-canaux",
+        "tone": "sombre",
+        "anchor_id": "canaux"
+      },
+      "translation": {
+        "title": "All your marketing, in one place.",
+        "body": "<p>Usually, a website, ads, social networks and statistics live with four providers who do not talk to each other. Here, your trade and your region go in one side; customer enquiries come out the other.</p><p>In between, the website, search visibility, Google and Microsoft ads, social networks and market analysis work <strong>together</strong>, with one team, one dashboard and one bill to understand.</p><p><a href=\"/en/contact/?sujet=acces-croissance\">Request early access</a></p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les leviers : site, référencement, annonces, mots-clés, réseaux sociaux, notoriété, et les données qui vivent.",
+      "claims": ["CL-G02", "CL-G03", "CL-G06", "CL-G07", "CL-G10"],
+      "fields": {
+        "columns": "3",
+        "layout": "bento",
+        "tone": "clair",
+        "anchor_id": "leviers"
+      },
+      "translation": {
+        "title": "Seven levers, one team.",
+        "intro": "Everything an agency would do for you, run by AI and validated by you. The AI prepares; you keep control.",
+        "cards": [
+          {
+            "title": "A website made for your trade.",
+            "text": "Texts, sections and images are adapted to your trade, in the language of your market. You review and validate before it goes live. Hosting is free, conditions spelled out below."
+          },
+          {
+            "title": "Found on Google.",
+            "text": "Search engine optimization (SEO) means showing up in search results without paying for an ad. We aim for measurable progress in your rankings on your priority keywords, and report to you every month."
+          },
+          {
+            "title": "Ads that keep improving.",
+            "text": "Your Google Ads and Microsoft Advertising campaigns are created, tracked and adjusted continuously, with a spending cap that you set. A report per campaign, in plain language."
+          },
+          {
+            "title": "The words your customers type.",
+            "text": "Market and keyword analysis shows what your customers search for and where the opportunities are, before you spend a dollar."
+          },
+          {
+            "title": "Social networks that stay alive.",
+            "text": "Posts are prepared for your networks, scheduled, then published after you validate them."
+          },
+          {
+            "title": "A reputation that builds.",
+            "text": "Your Google Business Profile listing is kept up to date and your reputation tracked. Replies to reviews are written for you and validated by you; no review is fabricated or hidden."
+          },
+          {
+            "title": "Your data, finally alive.",
+            "text": "Your visits, enquiries, campaigns and reviews feed the analysis and the recommendations, so you aim better from one month to the next. They are never used to train a model and never sold.",
+            "href": "/en/your-data/",
+            "link_label": "Read our commitments"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Comment ça marche : questionnaire métier, création et validation, optimisation et rapport.",
+      "claims": ["CL-G04", "CL-G02"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "sable",
+        "anchor_id": "fonctionnement"
+      },
+      "translation": {
+        "title": "How it works, in three steps.",
+        "intro": "You answer questions about your trade. The rest is up to the AI and our team, under your watch.",
+        "cards": [
+          {
+            "title": "Tell us about your trade.",
+            "text": "A simple questionnaire: your services, your customers, your region, your goals. No jargon, no technical settings."
+          },
+          {
+            "title": "Validate what is prepared.",
+            "text": "The AI prepares the website, the campaigns and the posts. You read, correct and approve. Nothing goes out without you."
+          },
+          {
+            "title": "Follow, adjust, improve.",
+            "text": "Campaigns are tracked and adjusted. You receive a report in plain language, readable in a few minutes, and you can stop or change anything."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Hébergement web gratuit avec ses conditions affichées au même endroit (recherche 09 §4.7 et §9.4).",
+      "claims": ["CL-G03"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "sombre",
+        "anchor_id": "hebergement"
+      },
+      "translation": {
+        "title": "Free web hosting. Conditions included.",
+        "body": "<p>The word \"free\" must be exact. Here it is, with all its conditions, in one place: hosting for your website is included with Nexora Croissance, with no separate hosting fee <strong>as long as you are a client</strong>.</p>",
+        "items": [
+          {
+            "title": "Included.",
+            "text": "Hosting for your website, with no separate fee as long as you are a client of Nexora Croissance."
+          },
+          {
+            "title": "At your expense, shown upfront.",
+            "text": "The domain name in your name (an annual fee, paid to the registrar) and advertising costs, paid directly to the platforms."
+          },
+          {
+            "title": "If you leave.",
+            "text": "You leave with your content and your domain name. Hosting itself stops when your client status ends."
+          },
+          {
+            "title": "What we do not say.",
+            "text": "We do not say \"free forever\" or \"no fees at all\": that would be false. Plan prices are not published for now."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Transparence et contrôle : l'angle différenciant face aux boîtes noires publicitaires.",
+      "claims": ["CL-G04", "CL-G06", "CL-G08", "CL-21"],
+      "fields": {
+        "columns": "3",
+        "layout": "grille",
+        "tone": "clair",
+        "anchor_id": "transparence"
+      },
+      "translation": {
+        "title": "No black box. You decide.",
+        "intro": "Automated ad tools are criticized for optimizing without showing how. We do the opposite: everything can be seen, everything can be capped, everything can be stopped.",
+        "cards": [
+          {
+            "title": "You validate.",
+            "text": "Posts, major changes to budget or targeting: nothing happens without your approval."
+          },
+          {
+            "title": "You cap.",
+            "text": "You set the spending cap. It applies, always."
+          },
+          {
+            "title": "You see everything.",
+            "text": "A report per campaign, in plain language: cost, clicks, enquiries or sales. We agree on the main indicator together before launch."
+          },
+          {
+            "title": "You stop whenever you want.",
+            "text": "According to the termination conditions in the contract. Your site, your content and your exportable data remain yours."
+          },
+          {
+            "title": "Official channels only.",
+            "text": "We go through each platform's official interfaces. No workarounds."
+          },
+          {
+            "title": "No message without consent.",
+            "text": "Follow-ups by email or text require documented consent. Nexora Croissance sends no commercial message without it."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Liste nominative des réseaux et plateformes visés (recherche 09 §3) ; aucune connexion annoncée comme active.",
+      "claims": ["CL-G09", "CL-G05"],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "sable",
+        "anchor_id": "plateformes"
+      },
+      "translation": {
+        "title": "The platforms we aim for, by name.",
+        "intro": "Here is where Nexora Croissance aims to work for you. No connection is announced as active: each opens when the platform approves our access, and its state is shown to you on request. The names below designate third-party platforms; we claim no partnership or official status.",
+        "cards": [
+          {
+            "title": "Advertising.",
+            "label": "Ads",
+            "text": "Google Ads, Microsoft Advertising, Meta (Facebook and Instagram), TikTok, LinkedIn, Pinterest, Snapchat, Reddit, X."
+          },
+          {
+            "title": "Social networks.",
+            "label": "Publishing",
+            "text": "Facebook, Instagram, Threads, LinkedIn, X, TikTok, YouTube, Pinterest, Snapchat, Bluesky, Mastodon, Telegram, Discord, WhatsApp Business and Reddit. For each network, what can be automated depends on its rules: automatic posting is not recommended on Reddit."
+          },
+          {
+            "title": "Local presence and search.",
+            "label": "Visibility",
+            "text": "Google Business Profile, Google Search Console, Bing Webmaster Tools and IndexNow to tell search engines about your new pages."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Vos données dans Nexora Croissance : engagements D7 appliqués.",
+      "claims": ["CL-G10", "CL-E03", "CL-E04", "CL-E05"],
+      "fields": {
+        "media_position": "left",
+        "visual": "engagements-donnees",
+        "tone": "sombre",
+        "anchor_id": "donnees"
+      },
+      "translation": {
+        "title": "Your data works. For you alone.",
+        "body": "<p>Your visits, enquiries, campaigns and reviews are gold for your marketing. We put them to work for you: aim better, understand better, decide better.</p><p>They are <strong>never</strong> used to train a model and <strong>never</strong> sold. They are passed only to the platforms you connect, for what you decide to publish, and the models that write are the ones you switch on.</p><p><a href=\"/en/your-data/\">See the five commitments</a></p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que Nexora Croissance ne garantit pas : positions, nombre de clients, rendement ; avis, consentement.",
+      "claims": ["CL-G06", "CL-G07", "CL-G08", "CL-G05"],
+      "fields": {
+        "media_position": "none",
+        "visual": "aucun",
+        "tone": "clair",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What Nexora Croissance does not guarantee.",
+        "body": "<p>Serious marketing does not sell miracles. Here is what we do not promise, because nobody can honestly promise it.</p>",
+        "items": [
+          {
+            "title": "No ranking guaranteed.",
+            "text": "No one can promise a rank on Google, and ad platforms forbid that promise. We track measured indicators (rankings, visits, enquiries) and report to you every month."
+          },
+          {
+            "title": "No number of customers guaranteed.",
+            "text": "No advertising return guaranteed either: results vary with your trade, your region and your budget."
+          },
+          {
+            "title": "No fabricated review.",
+            "text": "We neither write nor publish reviews in place of your customers, and we hide none."
+          },
+          {
+            "title": "No connection presented as active.",
+            "text": "Until a platform has approved our access, the connection is marked \"in progress\" or \"planned\"."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "FAQ : huit questions de la recherche 09 §7 plus deux sur le prix et l'accès.",
+      "claims": [
+        "CL-G06",
+        "CL-G03",
+        "CL-G05",
+        "CL-G04",
+        "CL-G07",
+        "CL-G10",
+        "CL-E03",
+        "CL-E04",
+        "CL-10",
+        "CL-G01"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions. Our answers.",
+        "items": [
+          {
+            "question": "Can you promise me the top spot on Google?",
+            "answer": "No. No one can, and ad platforms forbid that promise. We track measured indicators (rankings, visits, enquiries) and report to you every month."
+          },
+          {
+            "question": "Will my website really be free?",
+            "answer": "Hosting is free: no separate hosting fee as long as you are a client of Nexora Croissance. The domain name (an annual fee paid to the registrar) and advertising costs are at your expense. If you leave, you leave with your content and your domain name."
+          },
+          {
+            "question": "Who has access to my data?",
+            "answer": "Only authorized people at Nexora AI and the suppliers listed in the contract. Your data is not sold and is never used to train AI models. See our five commitments on the Your data page."
+          },
+          {
+            "question": "Can I validate posts and ad changes?",
+            "answer": "Yes. You validate posts and major changes to budget or targeting. A spending cap that you set always applies."
+          },
+          {
+            "question": "Which platforms are connected?",
+            "answer": "None is announced as active for now. The list of target platforms is on this page, and the state of each connection (active, awaiting approval, planned) is shown to you when you apply. Some platforms require an approval that can take several weeks to several months."
+          },
+          {
+            "question": "Can I stop at any time?",
+            "answer": "Yes, according to the termination conditions in the contract. You keep your content, your domain name and your exportable data."
+          },
+          {
+            "question": "How do I know whether the advertising works?",
+            "answer": "You receive a report per campaign: cost, clicks, enquiries or sales. We agree on the main indicator together before launch."
+          },
+          {
+            "question": "Does Nexora AI publish or edit my online reviews?",
+            "answer": "No. We neither write nor publish reviews in place of your customers, and we hide none. Replies to reviews, if you switch them on, are written for you and validated by you."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. The plans are in preparation; a written estimate follows the diagnostic, with what is included and what is at your expense."
+          },
+          {
+            "question": "Who can join the early access?",
+            "answer": "Any business that asks us. Describe your trade, your region and your goals: we tell you what we can put in place with you today."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à demander l'accès anticipé.",
+      "claims": ["CL-G01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Request early access.",
+        "text": "Describe your trade, your region and your goals. We tell you what Nexora Croissance can do for you right now, and what will come with each platform.",
+        "primary_label": "Request early access",
+        "primary_href": "/en/contact/?sujet=acces-croissance",
+        "secondary_label": "Read Your data",
+        "secondary_href": "/en/your-data/"
+      }
+    }
+  ]
+}

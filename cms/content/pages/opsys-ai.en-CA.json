@@ -7,7 +7,7 @@
     "slug": "opsys-ai",
     "title": "OPSYS-AI",
     "seo_title": "OPSYS-AI: AI software for construction companies",
-    "seo_description": "OPSYS-AI coordinates ten virtual departments for construction companies, from the first request to the draft invoice, with an honest status for each capability.",
+    "seo_description": "OPSYS-AI: ten AI departments, one file, from the first request to the draft invoice, for construction companies. Every capability states its real status.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "OPSYS-AI · Construction and field services",
         "headline": "A coordinated team for your construction company.",
-        "subheadline": "Ten virtual departments work on the same files, from the first request to the preparation of the invoice. Every capability states its status: available, pilot or planned.",
+        "subheadline": "Ten virtual departments, one file: from the first request to preparing the invoice, nothing gets lost between two programs. You approve, they prepare. And every capability states its real status: available, in pilot or planned.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "Deployment study",
@@ -39,7 +39,7 @@
         "tone": "clair"
       },
       "translation": {
-        "title": "What costs you time.",
+        "title": "The time slipping away.",
         "body": "<p>Often, a construction company does not lack tools: it lacks links between them. The request sits in an inbox, the quote in a spreadsheet, the job on paper sheets, the invoice in the accounting system.</p><p>OPSYS-AI starts from that observation: one file, several departments, one logical sequence.</p>",
         "items": [
           {
@@ -76,7 +76,7 @@
       },
       "translation": {
         "title": "One file. Ten departments.",
-        "body": "<p>Instead of ten isolated tools, a single file follows the request from end to end. Each department reads what the others have prepared and adds its share, through an internal event bus: a shared log where each department notes what has just happened.</p><p>What the system prepares, a person approves. Sending, paying, deciding: these actions wait for your go-ahead.</p>",
+        "body": "<p>Instead of ten isolated tools, a single file follows the request from end to end. Each department reads what the others have prepared and adds its share, through an internal event bus: a shared log where each department notes what has just happened. The result: nothing gets lost between two programs.</p><p>What the system prepares, a person approves. Sending, paying, deciding: these actions wait for your go-ahead.</p>",
         "items": [
           {
             "title": "Receive and sell.",
@@ -318,7 +318,7 @@
         "tone": "clair"
       },
       "translation": {
-        "title": "What sets it apart.",
+        "title": "A team, not a robot.",
         "intro": "Not a robot that answers the phone: departments that share the same file.",
         "cards": [
           {
@@ -383,7 +383,18 @@
     {
       "collection": "block_section",
       "role": "Deployment and sovereignty, with no invented “sovereign mode”.",
-      "claims": ["CL-02", "CL-05", "CL-06", "CL-37", "CL-59", "CL-63", "CL-36"],
+      "claims": [
+        "CL-02",
+        "CL-05",
+        "CL-06",
+        "CL-37",
+        "CL-59",
+        "CL-63",
+        "CL-36",
+        "CL-E01",
+        "CL-E03",
+        "CL-E04"
+      ],
       "fields": {
         "media_position": "none",
         "visual": "flux-donnees",
@@ -392,7 +403,7 @@
       },
       "translation": {
         "title": "Deployment and sovereignty, plainly.",
-        "body": "<p>OPSYS-AI installs on a server or a virtual private server (VPS) that you control. This installation is in pilot: we qualify the procedure with you.</p><p>A promise of sovereignty is proven flow by flow. OPSYS-AI goes through a model gateway that can call external AI providers, depending on the configuration. A sovereign mode, in which no business content leaves your perimeter, is not yet defined in the product: until it is, we do not announce it.</p><p>To go further: <a href=\"/en/deployment/\">the deployment modes</a> and <a href=\"/en/sovereignty/\">our approach to sovereignty</a>.</p>",
+        "body": "<p>OPSYS-AI installs on a server or a virtual private server (VPS) that you control. This installation is in pilot: we qualify the procedure with you.</p><p>A promise of sovereignty is proven flow by flow. OPSYS-AI goes through a model gateway that can call external AI providers, depending on the configuration. A sovereign mode, in which no business content leaves your perimeter, is not yet defined in the product: until it is, we do not announce it.</p><p>To go further: <a href=\"/en/your-data/\">your data and our five commitments</a>, <a href=\"/en/deployment/\">the deployment modes</a> and <a href=\"/en/sovereignty/\">our approach to sovereignty</a>.</p>",
         "items": [
           {
             "title": "What we do.",
@@ -400,7 +411,7 @@
           },
           {
             "title": "What stays your decision.",
-            "text": "Which models to use, local or external. No external service is configured without your written consent."
+            "text": "Which models to use, local or external. No external service is configured without your explicit activation, recorded in writing."
           },
           {
             "title": "Backup and recovery.",
@@ -413,6 +424,10 @@
           {
             "title": "A protected console.",
             "text": "Approvals, modes and budgets are managed in a web console protected by authentication."
+          },
+          {
+            "title": "Your data stays yours.",
+            "text": "It is never used to train a model and never sold; at your site, it stays on your server."
           }
         ]
       }
@@ -483,7 +498,10 @@
         "CL-61",
         "CL-10",
         "CL-14",
-        "CL-D01"
+        "CL-D01",
+        "CL-E03",
+        "CL-E04",
+        "CL-06"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -512,6 +530,10 @@
           {
             "question": "Can we install it on our own server?",
             "answer": "Yes, on a server or a VPS that you control. Installation is in pilot: the procedure is qualified with us."
+          },
+          {
+            "question": "Is my data used to train an AI?",
+            "answer": "Never. We do not use your data to train or fine-tune any model, and we never sell it. No call to an external model is set up without your explicit activation."
           },
           {
             "question": "Is OPSYS-AI offered in a sovereign mode?",
@@ -553,7 +575,7 @@
       },
       "translation": {
         "title": "Let's talk about your jobs.",
-        "text": "Request a demonstration on fictitious data, or a deployment study for your company. We move with you, step by step: demonstration, study, then pilot.",
+        "text": "See OPSYS-AI work on fictitious data, or start a deployment study for your company. We move with you, step by step: demonstration, study, then pilot.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "Deployment study",

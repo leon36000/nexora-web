@@ -6,48 +6,48 @@
 
 - Page : `deploiement-heberge-quebec` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/deployment/hosted-quebec/` · slug : `deployment/hosted-quebec`
-- Titre SEO (40 caractères) : AI hosted in Quebec for small businesses
-- Description SEO (150 caractères) : Nexora AI hosts and runs your AI system in its infrastructure, located in Quebec. Location, backups, logs and subcontractors are specified in writing.
+- Titre SEO (38 caractères) : AI hosted in Quebec for small business
+- Description SEO (158 caractères) : AI hosted in Quebec for small business: Nexora AI hosts and runs it in its own infrastructure, backups included. Location, subcontractors and logs in writing.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du mode hébergé. · Affirmations : CL-02, CL-73*
+*Promesse du mode hébergé : au Québec, sous le contrôle du client ; engagement CL-E02, preuves en préparation. · Affirmations : CL-02, CL-73, CL-E02, CL-87*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Deployment · Hosted**
 
-# We host. You keep control.
+# Hosted in Quebec. Under your control.
 
-We host and run your system in our infrastructure, located in Quebec. The documents that prove the location are in preparation: you will receive them in writing before go-live.
+We host and run your AI system in our infrastructure, located in Quebec: you buy no server and no hardware, and we commit to keeping your data in Quebec, backups included. The documents that prove it are in preparation; you will receive them in writing before go-live.
 
-[Request a deployment study](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
+[Study my project](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Périmètre hébergé : schéma et liste. · Affirmations : CL-73, CL-05, CL-77, CL-79*
+*Périmètre hébergé : schéma et liste (ce qui reste, ce qui peut sortir, ce que nous précisons). · Affirmations : CL-73, CL-05, CL-77, CL-79, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-heberge`, `anchor_id=perimetre`
 
 ## The perimeter, with us.
 
-The diagram shows a typical perimeter: your team, our infrastructure in Quebec, your documents. It is an example, not a real customer's configuration; the diagram for your installation is handed over in writing.
+The diagram shows a typical perimeter: your team, our infrastructure in Quebec, your documents. It is an example, not the configuration of a real customer; the diagram of your installation is handed to you in writing. Your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
 
-- **What stays in our infrastructure.** Your system's documents, search index, conversations and logs.
-- **What may leave.** Updates, licence checks, and an external model only if you accepted it in writing.
+- **What stays in our infrastructure.** Your system's documents, search index, conversations and logs, in Quebec, backups included.
+- **What can leave.** Updates, licence checks, and an external model only if you explicitly activated it, in writing. Every activated service appears in a register of subcontractors.
 - **What we specify.** The hosting location, the location of backups and logs, and the list of subcontractors: in writing, before go-live.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Documents remis par écrit : statuts honnêtes (en préparation). · Affirmations : CL-73, CL-87, CL-05*
+*Documents remis par écrit : statuts honnêtes (en préparation). · Affirmations : CL-73, CL-87, CL-05, CL-E06*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=documents`
 
-## What we hand over.
+## What we hand over to you.
 
-The hosted mode only makes sense if it can be proven. These are the documents we will hand over before go-live; they are in preparation.
+A hosting commitment only makes sense if it can be proven. It rests on a processing contract signed with you, a register of subcontractors and an access log. The documents below are the ones we will hand over before go-live; they are in preparation.
 
 #### The hosting location.
 
@@ -55,15 +55,15 @@ Address of the site and a location clause in the contract.
 
 #### The location of backups and logs.
 
-Where they are, how long they are kept.
+Where they are, and how long they are kept.
 
 #### The list of subcontractors.
 
-Who takes part in the hosting chain, and where.
+Who is involved in the hosting chain, and where.
 
 #### The data-flow diagram.
 
-What stays inside the perimeter, what leaves it.
+What stays within the perimeter, what leaves it.
 
 → [See the trust center](/en/trust-center/)
 
@@ -77,45 +77,59 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 
 #### You.
 
-You decide the use cases and the documents.
+You decide on the use cases and the documents.
 You approve the actions that commit the business.
-You accept, or not, any external model.
+You activate, or not, any external model.
 You can export your documents, configurations and workflows.
 
 #### Nexora AI.
 
 We host and run the system.
 We apply updates and monitor.
-We specify in writing locations, backups, logs and subcontractors.
+We specify in writing the locations, backups, logs and subcontractors.
 We train your team in usage and supervision.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 5 — Section (`block_section`)
 
-*Limites du mode hébergé. · Affirmations : CL-75, CL-77, CL-86, CL-06*
+*Ce que la loi québécoise demande à l'entreprise et ce que Nexora AI fournit ; jamais comme conformité acquise. · Affirmations : CL-L01, CL-L02, CL-L05, CL-73, CL-75, CL-87*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=loi`
+
+## What the law asks of the business.
+
+Quebec's law on the protection of personal information (often called Law 25) places the responsibility on the business that holds the information. Hosting in Quebec does not, on its own, set aside the laws that apply to you and to your suppliers, and no software or vendor makes a business compliant.
+
+- **What the law asks.** A designated officer, published governance rules, a privacy impact assessment of any project involving personal information, and a written contract with service providers.
+- **What Nexora AI provides.** The hosting location, the location of backups and logs and the list of subcontractors, in writing, along with the standard documents in preparation, to feed your own assessment.
+- **What remains yours.** The decision, the responsibility and the legal advice: this page is not legal advice.
+
+### Bloc 6 — Cartes (`block_cards`)
+
+*Limites du mode hébergé. · Affirmations : CL-75, CL-77, CL-86, CL-06, CL-76*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
 ## Limits to know about.
 
-#### In Quebec does not mean unconditional.
+#### In Quebec does not mean without conditions.
 
-Hosting in Quebec does not, by itself, set aside the laws that apply to you and your suppliers.
+Hosting in Quebec does not, on its own, set aside the laws that apply to you and to your suppliers.
 
 #### Models matter as much as location.
 
-An external model called from our infrastructure is an outbound flow. It is configured only with your written agreement.
+An external model called from our infrastructure is an outbound flow. It is configured only with your explicit activation, recorded in writing.
 
 #### No announced service level.
 
 Availability and response times are set out in the contract.
 
-#### No silent fallback.
+#### No silent switch.
 
 If a local model is unavailable, the system never turns to an external service without telling you.
 
-### Bloc 6 — FAQ (`block_faq`)
+### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre au mode hébergé. · Affirmations : CL-02, CL-73, CL-07, CL-08*
+*FAQ propre au mode hébergé. · Affirmations : CL-02, CL-73, CL-07, CL-08, CL-E02, CL-E03, CL-E04*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -123,21 +137,21 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Where exactly is my data?
 
-In our infrastructure, located in Quebec. The precise location, the location of backups and logs and the list of subcontractors are handed over in writing before go-live.
+In our infrastructure, located in Quebec, backups included. The precise location, the location of backups and logs, and the list of subcontractors are handed to you in writing before go-live.
 
-#### Is my data kept separate from other customers'?
+#### Is my data kept separate from other customers' data?
 
-We describe the separation between customers in the deployment study, so you can have it checked. We assert nothing on the subject before documenting it for your case.
+We describe the separation between customers in the deployment study, so that you can have it checked. We state nothing about it before we have documented it for your case.
 
 #### Do you use my data to train a model?
 
-No, not without your specific authorization. We do not reuse one customer's data for another customer or to train a model, and we put it in the contract.
+No, never. We use neither your data, nor your documents, nor your prompts, nor your results to train or fine-tune a model, ours or a third party's, and we do not sell them. We put it in the contract.
 
-#### What if I want to leave?
+#### And if I want to leave?
 
 You leave with your documents, configurations and workflows: export is provided for in the contract.
 
-### Bloc 7 — Appel à l'action (`block_cta`)
+### Bloc 8 — Appel à l'action (`block_cta`)
 
 *CTA : étude de déploiement. · Affirmations : CL-80*
 
@@ -145,6 +159,6 @@ Réglages : `tone=sombre`
 
 ## Let's study your hosting.
 
-Tell us your uses and requirements. We will tell you what we would document: location, backups, logs, subcontractors.
+Tell us your uses and your requirements. We will tell you what we would document: location, backups, logs, subcontractors.
 
-[Request a deployment study](/en/contact/?sujet=etude-deploiement) · [See the trust center](/en/trust-center/)
+[Study my project](/en/contact/?sujet=etude-deploiement) · [See the trust center](/en/trust-center/)

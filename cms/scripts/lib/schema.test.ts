@@ -89,8 +89,13 @@ describe("variantes de composition (S3)", () => {
     }
   });
 
-  test("le statut d'une carte : disponible, pilote, prévu ou vide", () => {
-    expect(CARD_STATUSES).toEqual(["disponible", "pilote", "prevu"]);
+  test("le statut d'une carte : disponible, accès anticipé, pilote, prévu ou vide", () => {
+    expect(CARD_STATUSES).toEqual([
+      "disponible",
+      "acces-anticipe",
+      "pilote",
+      "prevu",
+    ]);
     const cards = field("block_cards_translations", "cards");
     const options = cards.meta?.options as
       | {
@@ -104,6 +109,9 @@ describe("variantes de composition (S3)", () => {
     const status = listFields.find((x) => x.field === "status");
     expect(status).toBeDefined();
     expect(JSON.stringify(status?.meta.options?.choices)).toContain("prevu");
+    expect(JSON.stringify(status?.meta.options?.choices)).toContain(
+      "acces-anticipe",
+    );
     expect(listFields.map((x) => x.field)).toEqual(
       expect.arrayContaining(["title", "text", "href", "link_label", "label"]),
     );

@@ -6,32 +6,62 @@
 
 - Page : `souverainete` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/sovereignty/` · slug : `sovereignty`
-- Titre SEO (42 caractères) : AI sovereignty: the four layers of control
-- Description SEO (157 caractères) : AI is sovereign when you know where it runs, who can reach it and where your data goes. The four layers of control, the two modes and what we do not promise.
+- Titre SEO (46 caractères) : Sovereign AI in Quebec: four layers of control
+- Description SEO (155 caractères) : AI is sovereign when you know where it runs and where your data goes. On your premises or in Quebec: never used for training, never sold. Five commitments.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse du pilier : définition courte, deux CTA. · Affirmations : CL-70, CL-71*
+*Promesse du pilier : vos données restent où vous le décidez ; définition courte, deux CTA. · Affirmations : CL-70, CL-71, CL-E03, CL-E04, CL-E05*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Sovereignty**
 
-# Sovereignty means knowing where your data goes.
+# Your data stays where you decide.
 
-AI is sovereign when you know where it runs, who can reach it and where your data goes, and when you can walk away from it. Here is how Nexora AI turns that idea into an architecture and into commitments you can check.
+AI is sovereign when you know where it runs, who can reach it and where your data goes, and when you can walk away from it. On your own server or with us in Quebec: never used for training, never sold, no external model without your activation.
 
-[Discuss my project](/en/contact/) · [See the trust center](/en/trust-center/)
+[Study my project](/en/contact/?sujet=etude-deploiement) · [Read the five commitments](/en/your-data/)
 
-### Bloc 2 — Section (`block_section`)
+### Bloc 2 — Cartes (`block_cards`)
+
+*Les cinq engagements sur les données (E01 à E05), en mosaïque. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-E06, CL-06, CL-77, CL-87*
+
+Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=engagements`
+
+## Sovereign AI, in five commitments.
+
+Five commitments in plain language. They rest on a data processing contract signed with each customer; the standard contract and the subcontractor register are in preparation.
+
+#### On premises, everything stays with you.
+
+Your data stays on your server. Nexora AI only reaches it if you authorize it in writing, for a specific, time-limited task, and every access is logged.
+
+#### Hosted, everything stays in Quebec.
+
+Your data is stored and processed in our infrastructure, in Quebec, backups included. The only exceptions are services you explicitly turn on, all listed in a subcontractor register.
+
+#### Never used for training.
+
+Nexora AI never uses your data, documents, prompts or results to train or fine-tune a model, whether it belongs to Nexora AI or to a third party.
+
+#### Never sold.
+
+Nexora AI does not sell, rent, trade or share for advertising any personal information or business data entrusted to it.
+
+#### No external model without activation.
+
+Your data only goes to an external model provider if you turned it on for a specific agent or project. The list of providers and the contracts that set out retention and training are in preparation.
+
+### Bloc 3 — Section (`block_section`)
 
 *Définition vérifiable : quatre questions, une réponse écrite chacune. · Affirmations : CL-70, CL-75, CL-05, CL-08*
 
-Réglages : `media_position=none`, `tone=clair`, `anchor_id=definition`
+Réglages : `media_position=none`, `tone=sable`, `anchor_id=definition`
 
-## A definition you can check.
+## Sovereignty you can check.
 
 Here, “sovereign” describes control, not a label. At Nexora AI, AI is sovereign when four questions each have a written, precise answer that your team can verify.
 
@@ -42,11 +72,11 @@ We do not talk about immunity. Sovereignty reduces the dependencies you did not 
 - **Where the data goes.** A data-flow diagram, handed over in writing before go-live, shows what stays inside the perimeter and what leaves it.
 - **Whether you can leave.** Your documents, configurations and workflows stay exportable, and the contract says so.
 
-### Bloc 3 — Cartes (`block_cards`)
+### Bloc 4 — Cartes (`block_cards`)
 
 *Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
 
-Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=couches`
+Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=couches`
 
 ## Four layers of control.
 
@@ -56,11 +86,11 @@ A server in Quebec says nothing about the models it calls. So we look at each la
 
 Your documents, conversations, images and databases. We document where they are stored, who can reach them, how long they are kept and how they are exported or erased when the contract ends.
 
-→ [See the commitments](/en/trust-center/)
+→ [See the five commitments](/en/your-data/)
 
 #### 2. The models.
 
-The engine that produces the answers can run on your server, in our infrastructure or at a third party. In WorkStudio, every model shows where it runs. No external model is configured without your written agreement, and there is never a silent fallback when something fails.
+The engine that produces the answers can run on your server, in our infrastructure or at a third party. In WorkStudio, every model shows where it runs. No external model is called without your explicit activation, recorded in writing, and there is never a silent fallback when something fails.
 
 → [See WorkStudio](/en/workstudio/)
 
@@ -76,7 +106,7 @@ Who installs, updates, monitors and repairs. Updates, licences and any outbound 
 
 → [See the services](/en/services/)
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 5 — Section (`block_section`)
 
 *Schéma de flux (exemple) : ce qui reste dans le périmètre, ce qui peut en sortir. · Affirmations : CL-05, CL-06, CL-78, CL-79*
 
@@ -86,19 +116,35 @@ Réglages : `media_position=none`, `tone=sombre`, `visual=flux-donnees`, `anchor
 
 The diagram shows a typical journey: your team, the system, your documents, the model. At every arrow, one question: does this data stay inside the agreed perimeter?
 
-It is an example, not a real customer's configuration. The diagram for your own installation is handed over in writing before go-live.
+It is an example, not a real customer's configuration. The diagram for your own installation is handed over in writing before go-live. [See the trust center](/en/trust-center/).
 
 - **Inside the perimeter.** Documents, search index, conversations and logs stay on your server or in our infrastructure in Quebec, depending on the mode you choose.
-- **What may leave it.** Updates, licences, and an external model only if you accepted it in writing. Every outbound flow is listed on the diagram.
+- **What may leave it.** Updates, licences, and an external model only if you turned it on in writing. Every outbound flow is listed on the diagram.
 - **What this diagram does not cover.** Your exchanges with Nexora AI (forms, emails, billing) form a separate plane, distinct from your system's data. The trust center describes it.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Section (`block_section`)
+
+*Comparaison sobre des pratiques du secteur (constats généraux, personne n'est nommé). · Affirmations : CL-E07, CL-E08, CL-E09, CL-E02, CL-E03, CL-75*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=pratiques`
+
+## Three questions for any provider.
+
+We name no one and judge no one. These are general observations about industry practice, and questions to put in writing to any AI provider, ourselves included.
+
+Put these three questions to us: [study my project](/en/contact/?sujet=etude-deploiement).
+
+- **Do my conversations improve the model?** In some consumer AI services, sharing conversations to improve the models is a setting the user has to switch off personally. At Nexora AI, the answer is written down: never.
+- **Stored in Canada, processed where?** Some AI providers advertise data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. In our hosted mode, data is stored and processed in Quebec, backups included.
+- **Which country can demand access?** A provider subject to another country's jurisdiction may be required to hand over data it holds, even data stored in Canada (for example, a U.S. law passed in 2018). Canadian and Quebec laws also apply to businesses here. “Sovereign” describes control, not immunity.
+
+### Bloc 7 — Cartes (`block_cards`)
 
 *Les deux modes d'hébergement, en liens vers les pages détaillées. · Affirmations : CL-02, CL-72, CL-73, CL-74*
 
-Réglages : `columns=3`, `tone=clair`, `layout=liste`, `anchor_id=modes`
+Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=modes`
 
-## Two modes, one principle.
+## Your premises or ours, in Quebec.
 
 The principle is the same in both: you know where everything is. What changes is who owns the machines.
 
@@ -120,27 +166,31 @@ Who controls what, point by point. A combination of the two modes can be studied
 
 → [Compare the modes](/en/deployment/)
 
-### Bloc 6 — Cartes (`block_cards`)
+### Bloc 8 — Cartes (`block_cards`)
 
-*Ce que Nexora AI affirme : cinq engagements, sans chiffre ni certification. · Affirmations : CL-05, CL-06, CL-76, CL-07, CL-08, CL-09, CL-87*
+*Les mécanismes qui rendent les engagements vérifiables (E06) et les affirmations de Nexora AI. · Affirmations : CL-E06, CL-05, CL-06, CL-76, CL-07, CL-08, CL-09, CL-87, CL-22*
 
-Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=affirmations`
+Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=verification`
 
-## What Nexora AI states.
+## What makes all of this checkable.
 
-Every statement points to an internal proof that we keep up to date. The contract documents that carry them are in preparation.
+Every commitment points to an internal proof that we keep up to date. The contract documents that carry them are in preparation.
+
+#### A contract and a register.
+
+A data processing contract signed with each customer carries the commitments above, including never training a model on your data. A subcontractor register gives each one's country and role. The standard contract and the register are in preparation.
+
+#### An access log.
+
+Who reaches what, and when. On premises, every access by Nexora AI to your system is logged.
 
 #### A data-flow diagram before kickoff.
 
 Where data is stored, which external services are called, which backups exist: in writing, before go-live.
 
-#### No external model without consent.
+#### No silent switch.
 
-No call to an external AI service is configured without your written agreement, and the system never switches to one without telling you.
-
-#### No reuse without permission.
-
-We do not reuse one customer's data for another customer or to train a model without that customer's specific authorization.
+No call to an external AI service is configured without your explicit activation, recorded in writing, and the system never switches silently to an external model.
 
 #### A reversible system.
 
@@ -150,11 +200,27 @@ Your documents, configurations and workflows stay exportable; the contract provi
 
 When a capability is in pilot or planned, we write it. We publish no figure and no attestation that we cannot prove.
 
-### Bloc 7 — Cartes (`block_cards`)
+### Bloc 9 — Section (`block_section`)
+
+*La Loi 25 : ce que la loi demande à l'entreprise, ce que Nexora AI fournit, ce qui reste à l'entreprise (CL-L05). · Affirmations : CL-L01, CL-L02, CL-L04, CL-L05, CL-87, CL-05, CL-E06*
+
+Réglages : `media_position=none`, `tone=sombre`, `anchor_id=loi`
+
+## Law 25 and your business.
+
+Law 25 (Quebec's private-sector privacy law) is addressed to your business, not to your supplier. No software and no supplier makes a business compliant: responsibility stays with the business that holds the information.
+
+Our part: give you what you need to answer, in writing, the questions the law requires you to ask. [See the five commitments on your data](/en/your-data/).
+
+- **What the law asks of your business.** A designated person in charge, published governance rules, a privacy impact assessment for any project involving personal information and, before communicating information outside Quebec, an assessment and a written agreement.
+- **What Nexora AI provides.** A data-flow diagram that says where the data goes, an access log, a subcontractor register and template documents, including a privacy impact assessment template. These documents are in preparation.
+- **What stays with you.** Informing the people concerned, justifying a decision based on automated processing and answering access requests. No AI takes these over for you.
+
+### Bloc 10 — Cartes (`block_cards`)
 
 *Ce que Nexora AI ne promet pas : cinq limites écrites. · Affirmations : CL-75, CL-77, CL-L05, CL-87*
 
-Réglages : `columns=3`, `tone=clair`, `layout=liste`, `anchor_id=limites`
+Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 ## What Nexora AI does not promise.
 
@@ -180,11 +246,11 @@ Updates, licences, possible external models: every outbound flow is listed, and 
 
 The word has no legal definition, and some dependencies (base models, components, hardware) always come from elsewhere. We prefer to name each dependency.
 
-### Bloc 8 — FAQ (`block_faq`)
+### Bloc 11 — FAQ (`block_faq`)
 
-*Questions sur la souveraineté. · Affirmations : CL-02, CL-06, CL-08, CL-71, CL-77*
+*Questions sur la souveraineté. · Affirmations : CL-02, CL-06, CL-08, CL-71, CL-77, CL-E03, CL-E04*
 
-Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
+Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Sovereignty: your questions.
 
@@ -196,19 +262,27 @@ No, not automatically. A system can run on your server and still receive updates
 
 No. Where the machines sit says nothing about the models called, the backups, the logs or the subcontractors. That is why we look at four layers, not one.
 
+#### Is my data used to train a model?
+
+No, never. Nexora AI uses neither your data, nor your documents, nor your prompts, nor your results to train or fine-tune a model, whether it belongs to Nexora AI or to a third party.
+
+#### Is my data sold?
+
+No. Nexora AI does not sell, rent, trade or share for advertising any personal information or business data entrusted to it.
+
 #### Can you prove where my data is?
 
 We hand over the data-flow diagram of your installation in writing and, in the hosted mode, the location of hosting, backups and logs along with the list of subcontractors. These are documents you can have checked.
 
 #### What if I want to use an external model?
 
-It is possible, on two conditions: you accept it in writing, and it appears on the data-flow diagram as an outbound flow. In WorkStudio, every model shows whether it runs on your server, in Europe or at a third party.
+It is possible, on two conditions: you turn it on in writing, and it appears on the data-flow diagram as an outbound flow. In WorkStudio, every model shows whether it runs on your server, in Europe or at a third party.
 
 #### What happens to my data when the contract ends?
 
 Your documents, configurations and workflows stay exportable, and the contract provides for it. The retention and erasure that apply are described in the deployment study.
 
-### Bloc 9 — Appel à l'action (`block_cta`)
+### Bloc 12 — Appel à l'action (`block_cta`)
 
 *CTA final : étude de déploiement. · Affirmations : CL-05, CL-10*
 
@@ -218,4 +292,4 @@ Réglages : `tone=sombre`
 
 Describe your situation. We will tell you which mode fits, what we would document and what is left to decide together.
 
-[Request a deployment study](/en/contact/?sujet=etude-deploiement) · [See the trust center](/en/trust-center/)
+[Request a deployment study](/en/contact/?sujet=etude-deploiement) · [Read the five commitments](/en/your-data/)

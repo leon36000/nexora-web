@@ -7,7 +7,7 @@
 - Page : `opsys-ai` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/opsys-ai/` · slug : `opsys-ai`
 - Titre SEO (45 caractères) : OPSYS-AI : logiciel d'IA pour la construction
-- Description SEO (152 caractères) : OPSYS-AI coordonne dix départements virtuels pour les entreprises de construction, de la demande à la facture brouillon. Un statut honnête par capacité.
+- Description SEO (151 caractères) : OPSYS-AI : dix départements d'IA, un seul dossier, de la demande à la facture brouillon, pour la construction. Chaque capacité affiche son statut réel.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Une équipe coordonnée pour votre entreprise de construction.
 
-Dix départements virtuels travaillent sur les mêmes dossiers, de la première demande à la préparation de la facture. Chaque capacité indique son statut : disponible, en pilote ou prévue.
+Dix départements virtuels, un seul dossier : de la première demande à la préparation de la facture, plus rien ne se perd entre deux logiciels. Vous approuvez, ils préparent. Et chaque capacité affiche son statut réel : disponible, en pilote ou prévue.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Étude de déploiement](/contact/?sujet=etude-deploiement)
 
@@ -31,7 +31,7 @@ Dix départements virtuels travaillent sur les mêmes dossiers, de la première 
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
-## Ce qui vous coûte du temps.
+## Le temps qui vous échappe.
 
 Souvent, une entreprise de construction ne manque pas d'outils : elle manque de liens entre eux. La demande est dans une boîte de réception, la soumission dans un tableur, le chantier sur des feuilles, la facture dans la comptabilité.
 
@@ -51,7 +51,7 @@ Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
 
 ## Un dossier. Dix départements.
 
-Au lieu de dix outils isolés, un seul dossier suit la demande de bout en bout. Chaque département lit ce que les autres ont préparé et ajoute sa part, grâce à un bus d'événements interne : un journal commun où chaque département note ce qui vient de se passer.
+Au lieu de dix outils isolés, un seul dossier suit la demande de bout en bout. Chaque département lit ce que les autres ont préparé et ajoute sa part, grâce à un bus d'événements interne : un journal commun où chaque département note ce qui vient de se passer. Résultat : plus rien ne se perd entre deux logiciels.
 
 Ce que le système prépare, une personne l'approuve. Envoyer, payer, décider : ces actions attendent votre accord.
 
@@ -171,7 +171,7 @@ Le scénario signature. L'employé renseigne photos, temps, liste de contrôle e
 
 Réglages : `columns=3`, `layout=grille`, `tone=clair`
 
-## Ce qui la distingue.
+## Une équipe, pas un robot.
 
 Pas un robot qui répond au téléphone : des départements qui partagent le même dossier.
 
@@ -218,7 +218,7 @@ Le fonctionnement hors ligne est conçu, mais il n'est pas encore vérifié cont
 
 ### Bloc 9 — Section (`block_section`)
 
-*Déploiement et souveraineté, sans « mode souverain » inventé. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36*
+*Déploiement et souveraineté, sans « mode souverain » inventé. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36, CL-E01, CL-E03, CL-E04*
 
 Réglages : `media_position=none`, `visual=flux-donnees`, `tone=sombre`, `anchor_id=souverainete`
 
@@ -228,13 +228,14 @@ OPSYS-AI s'installe sur un serveur ou un serveur privé virtuel (VPS) que vous c
 
 Une promesse de souveraineté se prouve flux par flux. OPSYS-AI passe par une passerelle de modèles qui peut appeler des fournisseurs d'IA externes, selon la configuration. Un mode souverain, où aucun contenu métier ne quitte votre périmètre, n'est pas encore défini dans le produit : tant qu'il ne l'est pas, nous ne l'annonçons pas.
 
-Pour aller plus loin : [les modes de déploiement](/deploiement/) et [notre approche de la souveraineté](/souverainete/).
+Pour aller plus loin : [vos données et nos cinq engagements](/vos-donnees/), [les modes de déploiement](/deploiement/) et [notre approche de la souveraineté](/souverainete/).
 
 - **Ce que nous faisons.** Pour votre configuration, nous décrivons par écrit où sont les données, qui peut y accéder, quels flux sont configurés et lesquels sont désactivés.
-- **Ce qui reste votre décision.** Quels modèles utiliser, locaux ou externes. Aucun service externe n'est configuré sans votre accord écrit.
+- **Ce qui reste votre décision.** Quels modèles utiliser, locaux ou externes. Aucun service externe n'est configuré sans votre activation explicite, consignée par écrit.
 - **Sauvegarde et reprise.** Des scripts de sauvegarde et de restauration sont fournis (pilote). Une restauration complète reste à éprouver sur votre installation.
 - **Hébergement au Québec.** Envisageable dans l'infrastructure de Nexora AI, située au Québec. À qualifier lors de l'étude de déploiement.
 - **Une console protégée.** Les approbations, les modes et les budgets se gèrent dans une console web protégée par authentification.
+- **Vos données restent à vous.** Elles ne servent jamais à entraîner un modèle et ne sont jamais vendues ; chez vous, elles restent sur votre serveur.
 
 ### Bloc 10 — Section (`block_section`)
 
@@ -274,7 +275,7 @@ Nous suivons ce qui fonctionne et élargissons, département par département.
 
 ### Bloc 12 — FAQ (`block_faq`)
 
-*FAQ OPSYS-AI : objections et limites, réponses vraies seulement. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01*
+*FAQ OPSYS-AI : objections et limites, réponses vraies seulement. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01, CL-E03, CL-E04, CL-06*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -299,6 +300,10 @@ Elle bloque l'action engageante (envoi, paiement, décision financière) jusqu'�
 #### Peut-on l'installer sur notre propre serveur ?
 
 Oui, sur un serveur ou un VPS que vous contrôlez. L'installation est en pilote : la procédure se qualifie avec nous.
+
+#### Mes données servent-elles à entraîner une IA ?
+
+Jamais. Nous n'utilisons pas vos données pour entraîner ou ajuster un modèle, et nous ne les vendons jamais. Aucun appel à un modèle externe n'est configuré sans votre activation explicite.
 
 #### OPSYS-AI est-il offert en mode souverain ?
 
@@ -336,6 +341,6 @@ Réglages : `tone=sombre`
 
 ## Parlons de vos chantiers.
 
-Demandez une démonstration sur données fictives, ou une étude de déploiement pour votre entreprise. Nous avançons avec vous, étape par étape : démonstration, étude, puis pilote.
+Voyez OPSYS-AI travailler sur des données fictives, ou lancez une étude de déploiement pour votre entreprise. Nous avançons avec vous, étape par étape : démonstration, étude, puis pilote.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Étude de déploiement](/contact/?sujet=etude-deploiement)

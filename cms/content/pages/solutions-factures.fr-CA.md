@@ -6,32 +6,32 @@
 
 - Page : `solutions-factures` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/factures/` · slug : `solutions/factures`
-- Titre SEO (41 caractères) : Traitement automatisé des factures en PME
-- Description SEO (155 caractères) : Un système lit vos factures fournisseurs, extrait les montants, signale ce qui ne concorde pas et range tout dans une table. Une personne approuve ensuite.
+- Titre SEO (32 caractères) : Facturation automatisée pour PME
+- Description SEO (157 caractères) : Le système lit les factures de vos fournisseurs (PDF, scans, photos), extrait les montants, signale les écarts et range tout en table. Une personne approuve.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la solution factures. · Affirmations : CL-101, CL-121*
+*Promesse de la solution factures : fini de retaper, les écarts remontent. · Affirmations : CL-101, CL-121*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Solution · Factures**
 
-# Des factures lues. Des écarts signalés.
+# Fini de retaper vos factures.
 
-Le système lit les factures de vos fournisseurs, extrait les champs que vous avez définis et vous montre d'abord ce qui est douteux. Le paiement et la comptabilité restent entre les mains d'une personne.
+Le système lit chaque facture, PDF, scan ou photo, extrait les champs que vous avez définis et vous montre d'abord ce qui est douteux. Le paiement et la comptabilité restent entre les mains d'une personne.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Problème : exemple d'un atelier qui reçoit des formats variés. · Affirmations : CL-11*
+*Problème : exemple construit d'un atelier d'usinage qui reçoit des formats variés. · Affirmations : CL-11*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=probleme`
 
-## La même saisie, deux fois.
+## Quand chaque facture arrive autrement.
 
 Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée en travers. Quelqu'un retape les numéros, les dates et les montants, puis cherche qui doit approuver.
 
@@ -43,13 +43,13 @@ L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat 
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Ce que fait le système : lecture, extraction, vérification, rangement. · Affirmations : CL-101, CL-121, CL-21*
+*Ce que fait le système : lecture, extraction, vérification, rangement. · Affirmations : CL-101, CL-121, CL-21, CL-P01, CL-P02*
 
 Réglages : `columns=4`, `tone=sable`, `layout=etapes`, `anchor_id=systeme`
 
-## Ce que fait le système.
+## Une facture entre, une ligne en sort.
 
-Les étapes sont celles d'un flux de travaux WorkStudio : un fichier entre, une ligne de table en sort.
+Les étapes sont celles d'un flux de travaux WorkStudio (un enchaînement automatisé de tâches), construit sans écrire de code. WorkStudio met à votre portée la lecture de documents scannés par IA, avec ce qu'il faut de contrôle humain.
 
 #### Il lit.
 
@@ -67,38 +67,51 @@ Un champ obligatoire manquant, une valeur illisible ou un total qui ne concorde 
 
 Une ligne par pièce dans une table, prête pour la suite. La suite attend une personne.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que reçoit l'équipe. · Affirmations : CL-101, CL-121*
+*Ce que reçoit l'équipe : mosaïque de bénéfices concrets (bento). · Affirmations : CL-101, CL-121*
 
-Réglages : `media_position=none`, `tone=sombre`, `anchor_id=equipe`
+Réglages : `columns=2`, `tone=sombre`, `layout=bento`, `anchor_id=equipe`
 
-## Ce que reçoit l'équipe.
+## Une table plutôt qu'une pile.
 
 L'équipe ouvre une table, pas une pile de courriels. Les pièces sûres se parcourent vite ; celles qui sont douteuses remontent en tête.
 
-- **Une table de pièces.** Une ligne par facture, avec les champs que vous avez choisis.
-- **Un indicateur « à vérifier ».** Avec le motif : champ manquant, valeur illisible, total qui ne concorde pas.
-- **Une conclusion simple.** Le modèle de départ « contrôle d'une facture fournisseur » conclut « à payer » ou « à vérifier ».
-- **Le texte lu.** Le document tel qu'il a été lu est conservé, pour comparer avec l'original.
+#### Une table de pièces.
+
+Une ligne par facture, avec les champs que vous avez choisis.
+
+#### Un indicateur « à vérifier ».
+
+Avec le motif : champ manquant, valeur illisible, total qui ne concorde pas.
+
+#### Une conclusion simple.
+
+Le modèle de départ « contrôle d'une facture fournisseur » conclut « à payer » ou « à vérifier ».
+
+#### Le texte lu, conservé.
+
+Le document tel qu'il a été lu est conservé, pour comparer avec l'original.
 
 ### Bloc 5 — Section (`block_section`)
 
-*Bénéfice attendu, sans chiffre. · Affirmations : CL-14, CL-09*
+*Bénéfice attendu, sans chiffre ; lien diagnostic. · Affirmations : CL-14, CL-09*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
-## Le bénéfice attendu.
+## Des erreurs vues avant le paiement.
 
 Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Nous n'annonçons aucun pourcentage de précision ni aucun temps gagné : la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.
 
+[Planifier un diagnostic](/contact/?sujet=diagnostic) pour essayer la lecture sur vos pièces.
+
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce qui reste sous contrôle, y compris les limites. · Affirmations : CL-128, CL-21, CL-125, CL-111, CL-06*
+*Ce qui reste sous contrôle, y compris les limites ; carte données avec lien Vos données. · Affirmations : CL-128, CL-21, CL-125, CL-111, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
-## Ce qui reste sous votre contrôle.
+## Aucun paiement sans une personne.
 
 #### Aucun paiement automatique.
 
@@ -116,9 +129,11 @@ Les modèles de départ sont généraux et ne suivent pas les règles fiscales d
 
 Tout ce qui est marqué « à vérifier » passe sous les yeux de quelqu'un.
 
-#### Le lieu de lecture est un choix.
+#### Vos données restent à vous.
 
-Un modèle de lecture sur votre serveur garde les documents chez vous ; un service externe est un choix écrit et indiqué.
+Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle de lecture sur votre serveur garde les pièces chez vous ; un service externe n'entre qu'avec votre activation explicite, consignée par écrit.
+
+→ [Lire nos engagements](/vos-donnees/)
 
 ### Bloc 7 — FAQ (`block_faq`)
 
@@ -126,7 +141,7 @@ Un modèle de lecture sur votre serveur garde les documents chez vous ; un serv
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
-## Factures : vos questions.
+## Facturation automatisée : vos questions.
 
 #### Lit-il les factures scannées de travers ?
 
@@ -146,12 +161,12 @@ Des modèles de départ existent pour les devis, les bons de commande et les not
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : démonstration. · Affirmations : CL-01*
+*CTA : démonstration ; partenaire d'ici. · Affirmations : CL-01, CL-04*
 
 Réglages : `tone=sombre`
 
-## Voir vos factures lues.
+## Voyez vos factures se lire seules.
 
-Nous préparons une démonstration sur des factures fictives, puis nous parlons de vos pièces, de vos champs et de votre comptabilité.
+Nous préparons une démonstration sur des factures fictives, puis nous parlons de vos pièces, de vos champs et de votre comptabilité. Un partenaire d'ici installe, exploite et forme avec vous.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir la comptabilité](/solutions/comptabilite/)

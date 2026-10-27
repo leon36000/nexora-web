@@ -7,48 +7,91 @@
     "slug": "company",
     "title": "Company",
     "seo_title": "Nexora AI: AI for Quebec small businesses",
-    "seo_description": "Nexora AI designs, installs and supports AI systems for Quebec small businesses. Our principles: truth first, control, reversibility, one case at a time.",
+    "seo_description": "Nexora AI, a Quebec company: the leading edge of AI, simple and under your control. Services, new products with their real status, commitments on your data.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Présentation de Nexora AI, limitée à ce qui est connu.",
-      "claims": ["CL-01", "CL-130"],
+      "role": "Mission de Nexora AI (la pointe de l'IA, simple, sous votre contrôle, d'ici), limitée à ce qui est connu.",
+      "claims": ["CL-01", "CL-130", "CL-P01", "CL-P03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
         "eyebrow": "Company",
-        "headline": "Nexora AI. AI in the service of local small business.",
-        "subheadline": "Nexora AI is a Quebec company. We design, install, integrate and support AI systems fitted to your trade, for businesses that want to keep control of their data.",
-        "primary_label": "Contact us",
-        "primary_href": "/en/contact/",
+        "headline": "The leading edge of AI, simple and local.",
+        "subheadline": "Nexora AI is a Quebec company. Our mission: to put the leading edge of AI within reach of local small businesses, simply and under their control, so that their data stays theirs.",
+        "primary_label": "Plan a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"
       }
     },
     {
       "collection": "block_section",
-      "role": "Ce que fait Nexora AI : quatre verbes.",
-      "claims": ["CL-01", "CL-04", "CL-02"],
+      "role": "La mission en quatre idées : pointe, simplicité, contrôle, d'ici.",
+      "claims": [
+        "CL-P01",
+        "CL-P02",
+        "CL-P03",
+        "CL-04",
+        "CL-128",
+        "CL-E03",
+        "CL-E04",
+        "CL-130"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
+        "anchor_id": "mission"
+      },
+      "translation": {
+        "title": "Our mission, in four ideas.",
+        "body": "<p>Cutting-edge AI should not require a team of specialists, or giving up your data. That is what we are building.</p>",
+        "items": [
+          {
+            "title": "The leading edge of AI.",
+            "text": "Agents that use your tools, an assistant that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice, model comparison. These are words of ambition: the proof is the list of what the tool does."
+          },
+          {
+            "title": "Simple for everyone.",
+            "text": "No code to write: you describe the need, review, approve. We install, we run it, and we train your team in usage and supervision."
+          },
+          {
+            "title": "Under your control.",
+            "text": "A person decides on anything that commits the business. Your data stays on your premises or in Quebec, is never used to train a model and is never sold. <a href=\"/en/your-data/\">See the commitments on your data</a>."
+          },
+          {
+            "title": "Local.",
+            "text": "A Quebec company, working in French, that stays at your side after the installation."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que fait Nexora AI : quatre verbes, en mosaïque.",
+      "claims": ["CL-01", "CL-04", "CL-02"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "bento",
         "anchor_id": "metier"
       },
       "translation": {
         "title": "What we do.",
-        "body": "<p>We start with one concrete problem, then extend the system without multiplying disconnected tools. Two installation modes structure the offer: on your premises, or in our infrastructure in Quebec.</p>",
-        "items": [
+        "cards": [
           {
             "title": "Design.",
-            "text": "AI systems fitted to your trade, not a catalogue of gadgets."
+            "text": "AI systems fitted to your trade, not a catalogue of gadgets. We start with one concrete problem, then extend without multiplying disconnected tools."
           },
           {
             "title": "Install.",
-            "text": "On your server, or in our infrastructure in Quebec."
+            "text": "On your server, or in our infrastructure in Quebec.",
+            "href": "/en/deployment/",
+            "link_label": "Compare the two modes"
           },
           {
             "title": "Integrate.",
@@ -56,7 +99,53 @@
           },
           {
             "title": "Support.",
-            "text": "By running the system with you and training your team in usage and supervision."
+            "text": "By running the system with you and training your team in usage and supervision.",
+            "href": "/en/services/",
+            "link_label": "See the services"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les trois nouveautés, chacune en une phrase avec son statut honnête.",
+      "claims": [
+        "CL-G01",
+        "CL-G02",
+        "CL-V01",
+        "CL-V02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05",
+        "CL-E06"
+      ],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "nouveautes"
+      },
+      "translation": {
+        "title": "Three novelties, each with its status.",
+        "intro": "Words of ambition never replace the real state of things: here is where each one stands.",
+        "cards": [
+          {
+            "title": "Nexora Croissance.",
+            "text": "Nexora Croissance, our automated marketing service: a website with hosting included, search visibility, online advertising, social media and reputation tracking. Status: early access, on request.",
+            "href": "/en/growth/",
+            "link_label": "See Nexora Croissance"
+          },
+          {
+            "title": "Nexora Vision.",
+            "text": "AI video surveillance, designed to analyze images on a server installed on your premises. Status: pilot project by invitation only; no installation exists yet.",
+            "href": "/en/vision/",
+            "link_label": "See Nexora Vision"
+          },
+          {
+            "title": "Your data.",
+            "text": "Our commitments: your data stays on your premises or in Quebec, is never used to train a model and is never sold. The documents that make them verifiable are in preparation.",
+            "href": "/en/your-data/",
+            "link_label": "See the commitments"
           }
         ]
       }
@@ -96,7 +185,7 @@
     {
       "collection": "block_section",
       "role": "Ce que le lecteur peut vérifier.",
-      "claims": ["CL-09", "CL-87"],
+      "claims": ["CL-09", "CL-87", "CL-E06", "CL-V01", "CL-G01"],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -108,11 +197,15 @@
         "items": [
           {
             "title": "A status for every capability.",
-            "text": "Each product and each department shows whether it is available, in pilot or planned, for example on the <a href=\"/en/opsys-ai/\">OPSYS-AI</a> page."
+            "text": "Each product and each department shows whether it is available, in pilot or planned, for example on the <a href=\"/en/opsys-ai/\">OPSYS-AI</a> page. Nexora Croissance is in early access and Nexora Vision is a pilot project by invitation."
           },
           {
             "title": "A register of proofs.",
             "text": "The sensitive claims on this site are kept in an internal register, with their evidence, source and version."
+          },
+          {
+            "title": "Commitments on your data.",
+            "text": "They are set out, with their limits, on the <a href=\"/en/your-data/\">Your data</a> page."
           },
           {
             "title": "Documents on request.",
@@ -132,7 +225,7 @@
       },
       "translation": {
         "title": "Get in touch.",
-        "body": "<p>The simplest way is the <a href=\"/en/contact/\">contact form</a>: describe one concrete problem, and we will reply with what is feasible and where to start.</p>"
+        "body": "<p>The simplest way is the <a href=\"/en/contact/\">contact form</a>: describe one concrete problem, and we will reply with what is feasible and where to start. Would you rather begin with a structured conversation? <a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a>.</p>"
       }
     },
     {
@@ -145,8 +238,8 @@
       "translation": {
         "title": "Let's talk about your first case.",
         "text": "Describe a concrete problem. We will tell you what is feasible, in which mode, and where to start.",
-        "primary_label": "Discuss my project",
-        "primary_href": "/en/contact/",
+        "primary_label": "Plan a diagnosis",
+        "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "See the services",
         "secondary_href": "/en/services/"
       }

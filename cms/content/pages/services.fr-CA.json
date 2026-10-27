@@ -7,61 +7,100 @@
     "slug": "services",
     "title": "Services",
     "seo_title": "Services d'IA pour PME au Québec",
-    "seo_description": "Diagnostic, installation de serveurs d'IA chez vous ou au Québec, automatisation sur mesure et exploitation\u00a0: les services de Nexora AI pour les PME.",
+    "seo_description": "Services d'IA pour PME du Québec\u00a0: diagnostic, installation chez vous ou au Québec, sur mesure, exploitation. La pointe de l'IA, sans devenir informaticien.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Hub des services : promesse et CTA.",
-      "claims": ["CL-01", "CL-80"],
+      "role": "Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action.",
+      "claims": ["CL-01", "CL-80", "CL-04", "CL-P01", "CL-P03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Services",
-        "headline": "De l'idée à l'exploitation. Avec vous.",
-        "subheadline": "Nexora AI conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas mis en service.",
-        "primary_label": "Discuter de mon projet",
-        "primary_href": "/contact/",
+        "eyebrow": "Services d'IA pour PME",
+        "headline": "L'IA installée, exploitée, améliorée. Avec vous.",
+        "subheadline": "Des services d'IA pour PME du Québec\u00a0: nous installons, exploitons et faisons évoluer avec vous un système à la pointe de l'IA, sans que vous deveniez informaticien. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas en service.",
+        "primary_label": "Planifier un diagnostic",
+        "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Lire la méthode",
         "secondary_href": "/methode/"
       }
     },
     {
+      "collection": "block_section",
+      "role": "Le rêve : ce que ça change pour la direction d'une PME ; trois bénéfices (pointe, décision humaine, données).",
+      "claims": [
+        "CL-P01",
+        "CL-P02",
+        "CL-92",
+        "CL-101",
+        "CL-102",
+        "CL-128",
+        "CL-02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reve"
+      },
+      "translation": {
+        "title": "Ce que ça change pour vous.",
+        "body": "<p>Imaginez une IA qui travaille dans votre entreprise\u00a0: elle lit vos documents, prépare vos réponses, relie vos logiciels et s'arrête pour demander votre accord avant tout geste qui vous engage. Nous l'installons, nous l'exploitons et nous l'améliorons avec vous. Vous gardez l'esprit sur votre métier\u00a0; nous prenons la technique en charge.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p>",
+        "items": [
+          {
+            "title": "La pointe de l'IA, sans la complexité.",
+            "text": "Des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), un Copilote qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses fondées sur vos documents, la lecture de documents scannés, la voix\u00a0: tout dans un seul outil, sans écrire de code."
+          },
+          {
+            "title": "Une personne décide.",
+            "text": "Toute action qui engage l'entreprise (envoi, paiement, écriture) attend la validation d'une personne, sauf décision écrite contraire de votre part."
+          },
+          {
+            "title": "Vos données restent à vous.",
+            "text": "Chez vous ou chez nous, au Québec. Jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation explicite. <a href=\"/vos-donnees/\">Voir les engagements sur vos données</a>."
+          }
+        ]
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Les quatre services.",
-      "claims": ["CL-80", "CL-81", "CL-84", "CL-04"],
+      "role": "Les quatre services, liés à leurs pages.",
+      "claims": ["CL-80", "CL-81", "CL-84", "CL-04", "CL-26"],
       "fields": {
         "columns": "2",
-        "tone": "clair",
+        "tone": "sable",
         "layout": "modules",
         "anchor_id": "services"
       },
       "translation": {
-        "title": "Quatre services, un fil conducteur.",
-        "intro": "Du premier échange à l'exploitation quotidienne, les mêmes personnes vous suivent et les mêmes règles de contrôle s'appliquent.",
+        "title": "Quatre services. Un seul partenaire.",
+        "intro": "Du premier échange à l'exploitation quotidienne, les mêmes personnes vous suivent, en français, et les mêmes règles de contrôle s'appliquent.",
         "cards": [
           {
             "title": "Le diagnostic.",
-            "text": "Nous décrivons avec vous le cas visé, vos logiciels, vos volumes, le mode de déploiement envisagé et les intégrations nécessaires. Il débouche sur une estimation écrite."
+            "text": "Nous décrivons avec vous le cas visé, vos logiciels, vos volumes, le mode de déploiement envisagé et les intégrations nécessaires. Vous repartez avec une estimation écrite."
           },
           {
             "title": "L'installation de serveurs d'IA.",
-            "text": "Chez vous ou dans notre infrastructure au Québec\u00a0: dimensionnement, installation, configuration, vérification des flux.",
+            "text": "Chez vous ou dans notre infrastructure au Québec\u00a0: dimensionnement, installation en une commande, configuration, vérification des flux. Votre IA, prête à travailler.",
             "href": "/services/installation-serveurs-ia/",
             "link_label": "Voir l'installation"
           },
           {
             "title": "L'automatisation sur mesure.",
-            "text": "Des agents et des flux de travaux construits pour vos processus, reliés à vos logiciels, mis à l'épreuve sur vos cas réels.",
+            "text": "Des agents et des flux de travaux construits pour vos processus, reliés à vos logiciels, mis à l'épreuve sur vos cas réels avant la mise en service.",
             "href": "/services/automatisation-sur-mesure/",
             "link_label": "Voir le sur-mesure"
           },
           {
             "title": "L'exploitation.",
-            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne, ajustons le reste\u00a0; la formation de votre équipe porte sur l'usage et la supervision.",
+            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste\u00a0; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique.",
             "href": "/methode/",
             "link_label": "Voir la méthode"
           }
@@ -70,7 +109,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce qui fait varier l'estimation.",
+      "role": "Ce qui fait varier l'estimation (aucun prix ni délai) et appel à planifier un diagnostic.",
       "claims": ["CL-10", "CL-82", "CL-85", "CL-14"],
       "fields": {
         "media_position": "none",
@@ -79,7 +118,7 @@
       },
       "translation": {
         "title": "Ce qui fait varier l'estimation.",
-        "body": "<p>Il n'y a pas encore de prix public, et nous n'annonçons aucun délai universel. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas. Voici ce qui la fait varier.</p>",
+        "body": "<p>Il n'y a pas encore de prix public, et nous n'annonçons aucun délai universel. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas. Voici ce qui la fait varier.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour obtenir la vôtre.</p>",
         "items": [
           {
             "title": "Le nombre de cas traités.",
@@ -106,8 +145,8 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que nous ne faisons pas : limites écrites.",
-      "claims": ["CL-89", "CL-86", "CL-09"],
+      "role": "Ce que nous ne promettons pas : limites écrites ; la vision par caméra renvoie à Nexora Vision (pilote sur invitation).",
+      "claims": ["CL-89", "CL-86", "CL-09", "CL-V01"],
       "fields": {
         "columns": "3",
         "tone": "sable",
@@ -123,7 +162,9 @@
           },
           {
             "title": "Des produits pas encore livrés.",
-            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés\u00a0; ils peuvent faire l'objet d'une étude de faisabilité."
+            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés\u00a0; ils peuvent faire l'objet d'une étude de faisabilité. Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation.",
+            "href": "/vision/",
+            "link_label": "Voir Nexora Vision"
           },
           {
             "title": "Un niveau de service annoncé.",
@@ -134,8 +175,8 @@
     },
     {
       "collection": "block_faq",
-      "role": "Questions sur les services.",
-      "claims": ["CL-04", "CL-08", "CL-10"],
+      "role": "Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit).",
+      "claims": ["CL-04", "CL-08", "CL-10", "CL-02", "CL-E03", "CL-E04"],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -147,6 +188,10 @@
           {
             "question": "Faut-il du personnel technique chez nous\u00a0?",
             "answer": "Non. Nous installons, exploitons avec vous et faisons évoluer le système. La formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
+          },
+          {
+            "question": "Où sont mes données\u00a0?",
+            "answer": "Chez vous, sur votre serveur, ou chez nous, dans notre infrastructure au Québec, selon le mode choisi. Dans les deux cas, elles ne servent jamais à entraîner un modèle et ne sont jamais vendues."
           },
           {
             "question": "Qui s'occupe des mises à jour\u00a0?",
@@ -173,8 +218,8 @@
       "translation": {
         "title": "Commençons par un diagnostic.",
         "text": "Décrivez-nous votre premier cas. Nous vous disons ce qui est faisable, dans quel mode, et ce qu'il faudrait pour l'installer.",
-        "primary_label": "Discuter de mon projet",
-        "primary_href": "/contact/",
+        "primary_label": "Planifier un diagnostic",
+        "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Demander une étude de déploiement",
         "secondary_href": "/contact/?sujet=etude-deploiement"
       }

@@ -7,7 +7,7 @@
 - Page : `opsys-ai` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/opsys-ai/` · slug : `opsys-ai`
 - Titre SEO (48 caractères) : OPSYS-AI: AI software for construction companies
-- Description SEO (160 caractères) : OPSYS-AI coordinates ten virtual departments for construction companies, from the first request to the draft invoice, with an honest status for each capability.
+- Description SEO (153 caractères) : OPSYS-AI: ten AI departments, one file, from the first request to the draft invoice, for construction companies. Every capability states its real status.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # A coordinated team for your construction company.
 
-Ten virtual departments work on the same files, from the first request to the preparation of the invoice. Every capability states its status: available, pilot or planned.
+Ten virtual departments, one file: from the first request to preparing the invoice, nothing gets lost between two programs. You approve, they prepare. And every capability states its real status: available, in pilot or planned.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [Deployment study](/en/contact/?sujet=etude-deploiement)
 
@@ -31,7 +31,7 @@ Ten virtual departments work on the same files, from the first request to the pr
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
-## What costs you time.
+## The time slipping away.
 
 Often, a construction company does not lack tools: it lacks links between them. The request sits in an inbox, the quote in a spreadsheet, the job on paper sheets, the invoice in the accounting system.
 
@@ -51,7 +51,7 @@ Réglages : `media_position=none`, `visual=aucun`, `tone=sable`
 
 ## One file. Ten departments.
 
-Instead of ten isolated tools, a single file follows the request from end to end. Each department reads what the others have prepared and adds its share, through an internal event bus: a shared log where each department notes what has just happened.
+Instead of ten isolated tools, a single file follows the request from end to end. Each department reads what the others have prepared and adds its share, through an internal event bus: a shared log where each department notes what has just happened. The result: nothing gets lost between two programs.
 
 What the system prepares, a person approves. Sending, paying, deciding: these actions wait for your go-ahead.
 
@@ -171,7 +171,7 @@ The signature scenario. The employee enters photos, time, checklist and material
 
 Réglages : `columns=3`, `layout=grille`, `tone=clair`
 
-## What sets it apart.
+## A team, not a robot.
 
 Not a robot that answers the phone: departments that share the same file.
 
@@ -218,7 +218,7 @@ Offline operation is designed, but it has not yet been verified against a server
 
 ### Bloc 9 — Section (`block_section`)
 
-*Deployment and sovereignty, with no invented “sovereign mode”. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36*
+*Deployment and sovereignty, with no invented “sovereign mode”. · Affirmations : CL-02, CL-05, CL-06, CL-37, CL-59, CL-63, CL-36, CL-E01, CL-E03, CL-E04*
 
 Réglages : `media_position=none`, `visual=flux-donnees`, `tone=sombre`, `anchor_id=souverainete`
 
@@ -228,13 +228,14 @@ OPSYS-AI installs on a server or a virtual private server (VPS) that you control
 
 A promise of sovereignty is proven flow by flow. OPSYS-AI goes through a model gateway that can call external AI providers, depending on the configuration. A sovereign mode, in which no business content leaves your perimeter, is not yet defined in the product: until it is, we do not announce it.
 
-To go further: [the deployment modes](/en/deployment/) and [our approach to sovereignty](/en/sovereignty/).
+To go further: [your data and our five commitments](/en/your-data/), [the deployment modes](/en/deployment/) and [our approach to sovereignty](/en/sovereignty/).
 
 - **What we do.** For your configuration, we describe in writing where the data is, who can access it, which flows are configured and which are disabled.
-- **What stays your decision.** Which models to use, local or external. No external service is configured without your written consent.
+- **What stays your decision.** Which models to use, local or external. No external service is configured without your explicit activation, recorded in writing.
 - **Backup and recovery.** Backup and restore scripts are provided (pilot). A full restore still has to be proven on your installation.
 - **Hosting in Quebec.** Under consideration in Nexora AI's infrastructure, located in Quebec. To be qualified during the deployment study.
 - **A protected console.** Approvals, modes and budgets are managed in a web console protected by authentication.
+- **Your data stays yours.** It is never used to train a model and never sold; at your site, it stays on your server.
 
 ### Bloc 10 — Section (`block_section`)
 
@@ -274,7 +275,7 @@ We follow what works and widen the scope, department by department.
 
 ### Bloc 12 — FAQ (`block_faq`)
 
-*OPSYS-AI FAQ: objections and limits, true answers only. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01*
+*OPSYS-AI FAQ: objections and limits, true answers only. · Affirmations : CL-30, CL-31, CL-33, CL-34, CL-35, CL-37, CL-38, CL-39, CL-55, CL-59, CL-61, CL-10, CL-14, CL-D01, CL-E03, CL-E04, CL-06*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -299,6 +300,10 @@ It blocks the binding action (sending, paying, a financial decision) until an au
 #### Can we install it on our own server?
 
 Yes, on a server or a VPS that you control. Installation is in pilot: the procedure is qualified with us.
+
+#### Is my data used to train an AI?
+
+Never. We do not use your data to train or fine-tune any model, and we never sell it. No call to an external model is set up without your explicit activation.
 
 #### Is OPSYS-AI offered in a sovereign mode?
 
@@ -336,6 +341,6 @@ Réglages : `tone=sombre`
 
 ## Let's talk about your jobs.
 
-Request a demonstration on fictitious data, or a deployment study for your company. We move with you, step by step: demonstration, study, then pilot.
+See OPSYS-AI work on fictitious data, or start a deployment study for your company. We move with you, step by step: demonstration, study, then pilot.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [Deployment study](/en/contact/?sujet=etude-deploiement)

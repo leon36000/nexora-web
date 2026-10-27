@@ -83,6 +83,10 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
     draft: true,
   },
   confidentialite: { fr: "confidentialite", en: "privacy", draft: true },
+  // vague 2 (27/10/2026) : nouvelles pages publiées (voir aussi pages-vague2.test.ts)
+  vision: { fr: "vision", en: "vision" },
+  croissance: { fr: "croissance", en: "growth" },
+  "vos-donnees": { fr: "vos-donnees", en: "your-data" },
   conditions: { fr: "conditions", en: "terms", draft: true },
   "utilisation-acceptable": {
     fr: "utilisation-acceptable",
@@ -174,7 +178,7 @@ const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);
 
 describe("S3 : structure", () => {
-  test("les 25 pages attendues existent, et rien d'autre ne s'ajoute sans être déclaré ici", () => {
+  test("les 28 pages attendues existent, et rien d'autre ne s'ajoute sans être déclaré ici", () => {
     const found = discoverPages(PAGES_DIR).filter(
       (k) => k !== "accueil" && k !== "opsys-ai",
     );
@@ -495,6 +499,10 @@ describe("S3 : VÉRITÉ", () => {
       /faciliter\s+(votre\s+)?conformité|facilitate\s+your\s+compliance/i,
       "facilitation de la conformité (R-02)",
     ],
+    [
+      /(respecte|respectent|satisfait|répond\s+à|répondent\s+à|est\s+aux\s+normes\s+de)\s+la\s+loi\s*25|complies\s+with\s+(quebec'?s?\s+)?law\s*25|law\s*25[\s-]+compliant/i,
+      "conformité à la Loi 25 affirmée",
+    ],
     [/\b100\s*%/, "100 %"],
     [/\d\s*%/, "pourcentage"],
     [/\d\s*(\$|€|CAD|USD)/, "prix"],
@@ -550,8 +558,20 @@ describe("S3 : VÉRITÉ", () => {
     certification: [
       /ni certification que nous ne pouvons/i,
       /certification that we cannot prove/i,
+      /aucune?\s+certification/i,
+      /no\s+certification/i,
     ],
-    guaranteed: [/do not guarantee/i],
+    // « aucun résultat garanti », « sans garantie » : une négation proche du mot permet de le nier, jamais de l'affirmer
+    garanti: [/\b(aucune?|ni|pas|sans|jamais|non)\b[^.!?]{0,40}\bgaranti/i],
+    guaranteed: [
+      /do not guarantee/i,
+      /\b(no|not|never|without|cannot|can't|doesn't|don't)\b[^.!?]{0,40}guarantee/i,
+    ],
+  };
+  // Mots permis seulement sur certaines pages, avec leurs conditions (contrôlées dans pages-vague2.test.ts).
+  const ONLY_ON: Record<string, string[]> = {
+    gratuité: ["croissance", "faq", "confidentialite", "conditions"],
+    "marque ou prestataire non qualifié": ["croissance"],
   };
 
   for (const k of KEYS)
@@ -571,6 +591,7 @@ describe("S3 : VÉRITÉ", () => {
               continue;
             if ((ALLOWED[why] ?? []).some((a) => a.test(v) || a.test(m[0])))
               continue;
+            if (ONLY_ON[why]?.includes(k)) continue;
             problems.push(`${t.path} : ${why} (« ${m[0]} »)`);
           }
         }
@@ -578,8 +599,18 @@ describe("S3 : VÉRITÉ", () => {
       });
     }
 
-  test("la Loi 25 n'est mentionnée que dans le guide, la FAQ et les gabarits juridiques ; la FAQ n'en dit jamais « conforme »", () => {
-    const allowed = new Set(["souverainete-loi-25", "faq", ...LEGAL]);
+  test("la Loi 25 n'est mentionnée que dans les pages qui la traitent (guide, FAQ, souveraineté, confiance, hébergement au Québec, Vision, Croissance, Vos données) et les gabarits juridiques ; aucune n'en dit « conforme »", () => {
+    const allowed = new Set([
+      "souverainete-loi-25",
+      "faq",
+      "souverainete",
+      "centre-de-confiance",
+      "deploiement-heberge-quebec",
+      "vision",
+      "croissance",
+      "vos-donnees",
+      ...LEGAL,
+    ]);
     for (const k of KEYS)
       for (const l of LOCALES)
         for (const t of allTexts(page(k, l)))
@@ -648,7 +679,18 @@ describe("S3 : VÉRITÉ", () => {
     }
   });
 
-  test("les cartes « disponible » ne sont que celles de WorkStudio, du centre de confiance et du guide Loi 25 ; « prévu » ne désigne que des documents en préparation", () => {
+  test("les statuts de cartes sont réservés aux pages qui les méritent : « disponible » (WorkStudio, suite, confiance, Loi 25, Vos données), « accès anticipé » (Croissance), « pilote » (Vision) ; « prévu » ne désigne que du travail en préparation", () => {
+    const where: Record<string, string[]> = {
+      disponible: [
+        "workstudio",
+        "suite",
+        "centre-de-confiance",
+        "souverainete-loi-25",
+        "vos-donnees",
+      ],
+      "acces-anticipe": ["croissance"],
+      pilote: ["vision"],
+    };
     for (const k of KEYS)
       for (const b of page(k, "fr-CA").blocks)
         for (const c of (b.translation.cards ?? []) as {
@@ -656,24 +698,15 @@ describe("S3 : VÉRITÉ", () => {
           title: string;
           text: string;
         }[]) {
-          if (c.status === "disponible")
-            expect(
-              [
-                "workstudio",
-                "suite",
-                "centre-de-confiance",
-                "souverainete-loi-25",
-              ],
-              `${k} : ${c.title}`,
-            ).toContain(k);
+          if (c.status && where[c.status])
+            expect(where[c.status], `${k} : ${c.title}`).toContain(k);
           if (c.status === "prevu")
             expect(
-              /(préparation|à rédiger|pas encore|not available|in preparation)/i.test(
+              /(préparation|à rédiger|pas encore|not available|in preparation|prévue?s?\b|visée?s?\b|bientôt)/i.test(
                 c.text,
               ) || /(préparation)/i.test(JSON.stringify(b.translation)),
               `${k} : ${c.title}`,
             ).toBe(true);
-          expect(c.status, `${k} : ${c.title}`).not.toBe("pilote");
         }
   });
 
@@ -687,6 +720,9 @@ describe("S3 : VÉRITÉ", () => {
 
   test("les pages de souveraineté, de déploiement et de services nomment leurs limites", () => {
     const need: Record<string, RegExp> = {
+      vision: /ne fait pas|n'offre pas/,
+      croissance: /ne garantit|ne promet/,
+      "vos-donnees": /limites|ne garantit|ne promet/i,
       souverainete: /Ce que Nexora AI ne promet pas/,
       "deploiement-sur-place": /Limites/,
       "deploiement-heberge-quebec": /Limites/,
@@ -840,7 +876,7 @@ describe("chargement dans Directus", () => {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
       expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
     }
-    expect(PUBLISHED).toHaveLength(20);
+    expect(PUBLISHED).toHaveLength(23);
     expect(DRAFTS).toHaveLength(5);
   });
 

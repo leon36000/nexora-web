@@ -6,14 +6,14 @@
   "seo": {
     "slug": "faq",
     "title": "Frequently asked questions",
-    "seo_title": "FAQ: AI for Quebec small businesses",
-    "seo_description": "Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora AI's answers to the questions small-business owners ask most often. Straight answers only.",
+    "seo_title": "AI for small business: straight answers",
+    "seo_description": "Data, training, cost, Law 25, AI mistakes, video surveillance, marketing: Nexora AI's straight answers to the questions small-business owners ask most often.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Entrée de la FAQ.",
+      "role": "Entrée de la FAQ : réponses franches en langage de dirigeant.",
       "claims": ["CL-09"],
       "fields": {
         "variant": "sombre",
@@ -21,17 +21,17 @@
       },
       "translation": {
         "eyebrow": "FAQ",
-        "headline": "Your questions. Our answers.",
-        "subheadline": "The objections business owners raise most often, with true answers only: when we do not know yet, or when something is not delivered, we say so.",
+        "headline": "Your questions. Straight answers.",
+        "subheadline": "Data, cost, going live, AI mistakes: the questions business owners ask us most often, with true answers only. When something is not delivered yet, we say so.",
         "primary_label": "Ask a question",
         "primary_href": "/en/contact/",
-        "secondary_label": "See the trust center",
-        "secondary_href": "/en/trust-center/"
+        "secondary_label": "Read our commitments on your data",
+        "secondary_href": "/en/your-data/"
       }
     },
     {
       "collection": "block_faq",
-      "role": "Données et souveraineté : sept questions.",
+      "role": "Données et souveraineté : huit questions, dont l'entraînement et la vente des données (E03, E04).",
       "claims": [
         "CL-02",
         "CL-05",
@@ -40,7 +40,15 @@
         "CL-08",
         "CL-71",
         "CL-77",
-        "CL-L05"
+        "CL-L05",
+        "CL-E01",
+        "CL-E02",
+        "CL-E03",
+        "CL-E04",
+        "CL-E05",
+        "CL-L01",
+        "CL-L02",
+        "CL-87"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -48,15 +56,19 @@
         "anchor_id": "donnees"
       },
       "translation": {
-        "title": "Data and sovereignty.",
+        "title": "Your data, your rules.",
         "items": [
           {
             "question": "Does my data leave Quebec?",
-            "answer": "It depends on the deployment mode and the models you choose, and we write it down before kickoff. On your premises, the hardware and the access are yours. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model. With us, hosting is in our infrastructure, in Quebec, and we specify backups, logs and providers in writing. In both cases, we only write “no data leaves” if we have verified it on your configuration."
+            "answer": "It stays where you decide, and we write it down before kickoff. On your premises, the hardware and the access are yours: only the flows we list together before go-live leave (updates, licences and, if you turn it on, an external model). With us, your data is stored and processed in our infrastructure, in Quebec, backups included; the only exceptions are services you explicitly turn on, all listed in a subcontractor register, which is in preparation.\n\nIn both cases, we only write “no data leaves” if we have verified it on your configuration."
           },
           {
-            "question": "Do you train your models on our data?",
-            "answer": "No, not without your specific authorization. Our rule: one customer's data does not serve another customer or train a model without that customer's agreement, and we put it in the contract."
+            "question": "Is my data used to train an AI?",
+            "answer": "No, never. Nexora AI uses neither your data, nor your documents, nor your prompts, nor your results to train or fine-tune a model, whether it belongs to Nexora AI or to a third party. For an external model that you turn on, the contracts with providers, in preparation, set out retention and training."
+          },
+          {
+            "question": "Is my data sold?",
+            "answer": "No. Nexora AI does not sell, rent, trade or share for advertising any personal information or business data entrusted to it."
           },
           {
             "question": "Is a server in Quebec enough?",
@@ -64,11 +76,11 @@
           },
           {
             "question": "Are you compliant with Law 25?",
-            "answer": "We do not put it that way. A company's compliance depends on its own practices, contracts and governance: no software and no supplier confers it. We describe what we document, what the software allows and what is in preparation, in the trust center."
+            "answer": "We do not put it that way: no software and no supplier makes a business compliant, and responsibility stays with the business that holds the information. The law asks your business, among other things, for a privacy impact assessment and a written contract with its suppliers. We describe what we document, what the software allows and what is in preparation, in the trust center."
           },
           {
             "question": "Can an external model be used?",
-            "answer": "Yes, on two conditions: you accept it in writing, and it appears on the data-flow diagram as an outbound flow. No call to an external AI service is configured without your written agreement, and the system never switches to one without telling you."
+            "answer": "Yes, on two conditions: you turn it on in writing, and it appears on the data-flow diagram as an outbound flow. No call to an external AI service is configured without your explicit activation, and the system never switches to one without telling you."
           },
           {
             "question": "Does the system work offline?",
@@ -83,18 +95,30 @@
     },
     {
       "collection": "block_faq",
-      "role": "Mise en œuvre et coûts : sept questions.",
-      "claims": ["CL-04", "CL-10", "CL-82", "CL-14", "CL-85", "CL-12", "CL-83"],
+      "role": "Mise en œuvre et coûts : neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03).",
+      "claims": [
+        "CL-04",
+        "CL-10",
+        "CL-82",
+        "CL-14",
+        "CL-85",
+        "CL-12",
+        "CL-83",
+        "CL-G01",
+        "CL-G02",
+        "CL-G03",
+        "CL-G04"
+      ],
       "fields": {
         "emit_jsonld": false,
         "tone": "sable",
         "anchor_id": "mise-en-oeuvre"
       },
       "translation": {
-        "title": "Setup and cost.",
+        "title": "Getting started, without the hassle.",
         "items": [
           {
-            "question": "We have no technical staff.",
+            "question": "What if we have no technical staff?",
             "answer": "That is not an obstacle. We install the system, run it with you and keep it evolving; your team's training covers usage and supervision, not the technical side."
           },
           {
@@ -120,13 +144,21 @@
           {
             "question": "Can I see the product before committing?",
             "answer": "Yes: we offer a demonstration on fictional data. Self-service offers (servers, a credit-based model catalogue, hosted agents) are not open yet."
+          },
+          {
+            "question": "What about automated marketing?",
+            "answer": "Nexora Croissance, our automated marketing service, is in early access: access is on request, and each connection to a platform opens at its own pace. It brings together a website, search visibility, advertising campaign management, social networks and reputation tracking. You approve publications and major budget or targeting changes, a spending cap that you set applies, and no result is guaranteed. The details are on the Nexora Croissance page."
+          },
+          {
+            "question": "Is web hosting free with Nexora Croissance?",
+            "answer": "It is included: no separate hosting fees as long as you are a Nexora Croissance customer. Still at your expense, shown upfront: the domain name in your name (annual fees paid to the registrar) and the advertising fees paid to the platforms. You leave with your content and your domain name."
           }
         ]
       }
     },
     {
       "collection": "block_faq",
-      "role": "L'IA, ses erreurs et ses limites : huit questions.",
+      "role": "L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01).",
       "claims": [
         "CL-21",
         "CL-128",
@@ -135,7 +167,13 @@
         "CL-124",
         "CL-28",
         "CL-30",
-        "CL-90"
+        "CL-90",
+        "CL-V01",
+        "CL-V02",
+        "CL-V03",
+        "CL-V06",
+        "CL-V07",
+        "CL-L04"
       ],
       "fields": {
         "emit_jsonld": false,
@@ -143,7 +181,7 @@
         "anchor_id": "limites"
       },
       "translation": {
-        "title": "AI, its mistakes, its limits.",
+        "title": "AI that is honest about its limits.",
         "items": [
           {
             "question": "Will AI replace my employees?",
@@ -158,7 +196,7 @@
             "answer": "Your team. Every model call leaves a trace you can consult, consumption is measured, and test sets let you check that a change has not degraded anything."
           },
           {
-            "question": "Why not a consumer assistant like ChatGPT?",
+            "question": "Why not a consumer AI assistant?",
             "answer": "A consumer assistant answers general questions well. What Nexora AI adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
           },
           {
@@ -176,6 +214,50 @@
           {
             "question": "Is there a solution for construction?",
             "answer": "Yes: OPSYS-AI coordinates ten departments for construction companies and field services, each with an honest status (available, in pilot or planned)."
+          },
+          {
+            "question": "What about AI video surveillance?",
+            "answer": "Nexora Vision, our AI video surveillance project, is a pilot project by invitation: it is not an available product, and no installation exists yet. The intended design keeps image analysis on a server at the customer's site. Nexora Vision does not offer facial recognition, and every alert asks a person to check. Law 25 requires, among other things, informing people before collection; the details are on the Nexora Vision page."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance.",
+      "claims": ["CL-V01", "CL-G01", "CL-87"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "plus-loin"
+      },
+      "translation": {
+        "title": "Go further.",
+        "cards": [
+          {
+            "title": "Your data.",
+            "text": "The five commitments, in writing: on your premises or in Quebec, never used for training, never sold.",
+            "href": "/en/your-data/",
+            "link_label": "Read the commitments"
+          },
+          {
+            "title": "Nexora Vision.",
+            "text": "AI video surveillance: a pilot project by invitation, not an available product.",
+            "href": "/en/vision/",
+            "link_label": "See the pilot project"
+          },
+          {
+            "title": "Nexora Croissance.",
+            "text": "Automated marketing: a website with hosting included, search visibility, advertising, social networks. Early access.",
+            "href": "/en/growth/",
+            "link_label": "See early access"
+          },
+          {
+            "title": "The trust center.",
+            "text": "What the software already allows and the documents we are preparing.",
+            "href": "/en/trust-center/",
+            "link_label": "See the proof"
           }
         ]
       }

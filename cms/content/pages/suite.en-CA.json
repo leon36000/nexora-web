@@ -6,15 +6,15 @@
   "seo": {
     "slug": "suite",
     "title": "Software suite",
-    "seo_title": "The suite: WorkStudio, Code, Corpus, Quanta",
-    "seo_description": "Nexora WorkStudio: a demonstration on request, no self-service offer. Nexora Code, Nexora Corpus, Quanta and Helix: their purpose, no availability announced.",
+    "seo_title": "AI software suite: five names, five states",
+    "seo_description": "WorkStudio is delivered, as a demonstration on request; Nexora Code, Corpus, Quanta and Helix have no announced date. An AI software suite with honest states.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la suite : un ensemble, avec l'état réel de chaque nom.",
-      "claims": ["CL-20", "CL-28"],
+      "role": "Promesse de la suite : une idée commune, l'état réel de chaque nom.",
+      "claims": ["CL-20", "CL-28", "CL-P03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Software suite",
         "headline": "A suite, not a pile.",
-        "subheadline": "Nexora AI's products serve the same idea: AI that works for you, with the access, budgets and logs you control. Here is the real state of each one.",
+        "subheadline": "One idea ties Nexora AI's products together: AI that works for you, under your control, with the access, budgets and logs you manage. One name is already delivered, at the leading edge of AI; for the others, here is the real state of each.",
         "primary_label": "See WorkStudio",
         "primary_href": "/en/workstudio/",
         "secondary_label": "Discuss my project",
@@ -32,7 +32,7 @@
     {
       "collection": "block_cards",
       "role": "Cinq noms, cinq états honnêtes.",
-      "claims": ["CL-20", "CL-28", "CL-12"],
+      "claims": ["CL-20", "CL-28", "CL-12", "CL-110", "CL-P01"],
       "fields": {
         "columns": "3",
         "tone": "clair",
@@ -45,7 +45,7 @@
         "cards": [
           {
             "title": "Nexora WorkStudio.",
-            "text": "The studio where you design, connect and run agents and workflows. Demonstration on request.",
+            "text": "The studio where you design, connect and run agents and workflows, in plain language and without writing code. Demonstration on request.",
             "href": "/en/workstudio/",
             "link_label": "Discover WorkStudio",
             "status": "disponible"
@@ -71,8 +71,40 @@
     },
     {
       "collection": "block_section",
+      "role": "Ce qui fait la cohérence d'une suite : mêmes règles d'accès, de budget, de validation et de données (déjà appliquées dans WorkStudio).",
+      "claims": ["CL-22", "CL-106", "CL-21", "CL-E03", "CL-E04", "CL-20"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "fil"
+      },
+      "translation": {
+        "title": "What ties the suite together.",
+        "body": "<p>What makes a suite is not the number of names: it is the same way of working everywhere. WorkStudio already applies it; it serves as the rule for the suite.</p><p><a href=\"/en/your-data/\">Read the five commitments on your data</a>.</p><p><a href=\"/en/contact/?sujet=demonstration\">Request a WorkStudio demonstration</a>.</p>",
+        "items": [
+          {
+            "title": "Access you manage.",
+            "text": "Organizations, roles and an audit log: you know who does what."
+          },
+          {
+            "title": "Budgets you set.",
+            "text": "Monthly consumption caps, by model, workspace and person."
+          },
+          {
+            "title": "A person who decides.",
+            "text": "A step can wait for a person's approval before acting."
+          },
+          {
+            "title": "Data that stays yours.",
+            "text": "Never used to train a model, never sold."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
       "role": "Nexora Corpus : la vocation, deux destinations distinctes.",
-      "claims": ["CL-120", "CL-28", "CL-07"],
+      "claims": ["CL-120", "CL-28", "CL-07", "CL-E03"],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -92,7 +124,7 @@
           },
           {
             "title": "A starting rule.",
-            "text": "An imported document does not authorize its use for training. No data goes automatically to both destinations, and we do not use a customer's data to train a model without that customer's specific authorization."
+            "text": "An imported document does not authorize its use for training. No data goes automatically to both destinations, and Nexora AI never uses your data to train or fine-tune a model."
           }
         ]
       }
@@ -147,7 +179,7 @@
     {
       "collection": "block_faq",
       "role": "FAQ de la suite.",
-      "claims": ["CL-28", "CL-12", "CL-07"],
+      "claims": ["CL-28", "CL-12", "CL-07", "CL-E03"],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -166,7 +198,7 @@
           },
           {
             "question": "Will Corpus train a model on my documents?",
-            "answer": "No, not without your specific authorization. Importing a document into a knowledge base does not authorize its use for training."
+            "answer": "No, never. Importing a document into a knowledge base does not authorize its use for training, and Nexora AI never uses your data to train or fine-tune a model."
           },
           {
             "question": "What can I use right now?",
