@@ -92,7 +92,9 @@ export default async function AgentsPage() {
           ))}
         </ol>
         <div className="mt-8">
-          <CodeSamples samples={agentSamples(`${SITE_URL}/v1`, exampleId)} />
+          <CodeSamples
+            samples={agentSamples(`${SITE_URL}/v1`, exampleId, lang)}
+          />
         </div>
         <div className="mt-10 flex flex-wrap gap-4">
           <ButtonLink href={localizePath(lang, "/compte")} arrow>

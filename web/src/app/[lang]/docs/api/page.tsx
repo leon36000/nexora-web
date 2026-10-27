@@ -9,7 +9,11 @@ import { Section } from "@/components/ui/section";
 import { fmt } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
-import { apiSamples, streamingSample } from "@/lib/api-samples";
+import {
+  apiExampleModelId,
+  apiSamples,
+  streamingSample,
+} from "@/lib/api-samples";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_URL } from "@/lib/site";
@@ -34,7 +38,7 @@ export default async function ApiDocsPage() {
   const t = getGatewayDictionary(lang);
   const d = t.docs;
   const baseUrl = `${SITE_URL}/v1`;
-  const example = "nexora/nom-du-modele";
+  const example = apiExampleModelId(lang);
   const h2 = "text-h3 text-fg";
   const p = "mt-3 max-w-2xl text-body text-fg-muted";
 
@@ -73,7 +77,7 @@ export default async function ApiDocsPage() {
             {d.firstCall}
           </h2>
           <div className="mt-6">
-            <CodeSamples samples={apiSamples(baseUrl, example)} />
+            <CodeSamples samples={apiSamples(baseUrl, example, "chat", lang)} />
           </div>
         </section>
 
@@ -84,7 +88,7 @@ export default async function ApiDocsPage() {
           <p className={p}>{d.streamingText}</p>
           <CodeBlock
             label={`${d.streaming} (${d.code})`}
-            code={streamingSample(example)}
+            code={streamingSample(example, lang)}
           />
         </section>
 

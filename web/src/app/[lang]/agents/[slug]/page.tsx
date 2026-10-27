@@ -146,7 +146,7 @@ export default async function AgentPage(
             {fmt(d.exampleLead, { url: baseUrl })}
           </p>
           <div className="mt-6">
-            <CodeSamples samples={agentSamples(baseUrl, agent.id)} />
+            <CodeSamples samples={agentSamples(baseUrl, agent.id, lang)} />
           </div>
           <h3 className="mt-10 text-h4 text-fg">{d.streamTitle}</h3>
           <p className="mt-2 max-w-2xl text-body text-fg-muted">
@@ -154,7 +154,7 @@ export default async function AgentPage(
           </p>
           <CodeBlock
             label={d.streamTitle}
-            code={agentStreamingSample(agent.id)}
+            code={agentStreamingSample(agent.id, lang)}
           />
           <div className="mt-10 flex flex-wrap gap-4">
             <ButtonLink href={localizePath(lang, "/compte")} arrow>

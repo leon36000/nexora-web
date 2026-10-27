@@ -234,7 +234,9 @@ export default async function ModelPage(
           {model.kind === "embedding" ? ` ${d.exampleEmbeddingLead}` : ""}
         </p>
         <div className="mt-6">
-          <CodeSamples samples={apiSamples(baseUrl, model.id, model.kind)} />
+          <CodeSamples
+            samples={apiSamples(baseUrl, model.id, model.kind, lang)}
+          />
         </div>
         <div className="mt-10 flex flex-wrap gap-4">
           <ButtonLink href={localizePath(lang, "/compte")} arrow>
