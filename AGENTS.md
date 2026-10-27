@@ -21,6 +21,7 @@ Site public et commercial de Nexora (IA souveraine au Québec). Conception de r�
 
 ## Outils
 - Gestionnaire : **bun** (`bun install`, `bun run …`, `bunx`). Node 24 disponible.
+- **Ne jamais arrêter un processus par motif** (`pkill -f`, `killall`) : d'autres sessions font tourner des serveurs sur pc6. Note le PID de ce que tu lances et arrête seulement ce PID.
 - Ne jamais utiliser `cd` dans une commande Bash : chemins absolus, `git -C`, `bun --cwd`.
 - Ports de développement : site 3500, Directus 8456, LiteLLM 4400 (réseau interne), PostgreSQL 15440, Mailpit 8026 (interface) / 1026 (SMTP).
 - Machine pc6 (aarch64, disque à ~95 %) : `docker builder prune -af` après les builds ; ne supprimer que ses propres images.
