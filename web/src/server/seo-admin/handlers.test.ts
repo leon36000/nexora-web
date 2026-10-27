@@ -287,14 +287,12 @@ describe("indexation", () => {
     expect(job?.payload).toEqual({ trigger: "manual", dryRun: true });
     const live = await call("POST", "indexing/run", {});
     expect(live.status).toBe(202);
-    await t.db
-      .insert(indexingSubmissions)
-      .values({
-        engine: "indexnow",
-        trigger: "manual",
-        status: "dry_run",
-        urlCount: 2,
-      });
+    await t.db.insert(indexingSubmissions).values({
+      engine: "indexnow",
+      trigger: "manual",
+      status: "dry_run",
+      urlCount: 2,
+    });
     const r = await call("GET", "indexing");
     expect(r.body.submissions).toHaveLength(1);
     expect((await call("POST", "indexing/run", { dryRun: "oui" })).status).toBe(
