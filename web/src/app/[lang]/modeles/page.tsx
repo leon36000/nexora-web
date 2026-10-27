@@ -7,12 +7,14 @@ import {
   parseFilters,
 } from "@/components/gateway/catalog-filters";
 import { ModelCard } from "@/components/gateway/model-card";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
 import { fmt, formatDate } from "@/i18n/account";
 import { isLang, type Lang, localizePath } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { buildPageMetadata } from "@/lib/metadata";
+import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { getPublicCatalog } from "@/server/gateway/read";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -53,6 +55,14 @@ export default async function ModelsPage({
       <Suspense fallback={<CatalogSkeleton lang={lang} />}>
         <CatalogList lang={lang} searchParams={searchParams} />
       </Suspense>
+      <JsonLd
+        data={appBreadcrumb(lang, [
+          {
+            name: t.meta.models.title.replace(/ \| Nexora$/, ""),
+            path: "/modeles",
+          },
+        ])}
+      />
     </Section>
   );
 }

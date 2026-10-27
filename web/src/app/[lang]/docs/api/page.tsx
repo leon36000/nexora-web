@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { CodeBlock, CodeSamples } from "@/components/gateway/code-samples";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -10,6 +11,7 @@ import { isLang, localizePath } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { apiSamples, streamingSample } from "@/lib/api-samples";
 import { buildPageMetadata } from "@/lib/metadata";
+import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -178,6 +180,14 @@ export default async function ApiDocsPage() {
           </ButtonLink>
         </div>
       </div>
+      <JsonLd
+        data={appBreadcrumb(lang, [
+          {
+            name: t.meta.docs.title.replace(/ \| Nexora$/, ""),
+            path: "/docs/api",
+          },
+        ])}
+      />
     </Section>
   );
 }

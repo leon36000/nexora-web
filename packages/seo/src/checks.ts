@@ -164,6 +164,7 @@ export function checkSite(
       });
     if (
       (options.requireXDefault ?? true) &&
+      p.alternates.length > 1 &&
       !p.alternates.some((a) => a.hreflang === "x-default")
     )
       add({

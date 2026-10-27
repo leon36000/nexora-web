@@ -167,7 +167,11 @@ export function checkJsonLdConformity(
 
     const prices: { label: string; value: number }[] = [];
     collectPrices(node.offers, prices);
+    const seen = new Set<number>();
     for (const p of prices) {
+      // un même prix répété (Offer.price et priceSpecification.price) n'est signalé qu'une fois
+      if (seen.has(p.value)) continue;
+      seen.add(p.value);
       if (Number.isNaN(p.value))
         findings.push({
           rule: "jsonld.price-invalid",

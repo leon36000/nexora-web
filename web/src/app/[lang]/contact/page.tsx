@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { ContactForm } from "@/components/contact/contact-form";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
 import { isLang, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata } from "@/lib/metadata";
+import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -66,6 +68,11 @@ export default async function ContactPage() {
           />
         </div>
       </div>
+      <JsonLd
+        data={appBreadcrumb(lang, [
+          { name: t.meta.title.replace(/ \| Nexora$/, ""), path: "/contact" },
+        ])}
+      />
     </Section>
   );
 }
