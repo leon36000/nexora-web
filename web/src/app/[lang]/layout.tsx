@@ -7,7 +7,8 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { getAgentsDictionary } from "@/i18n/agents";
 import { HTML_LANG, isLang, LANGS } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { buildChrome } from "@/lib/chrome";
+import { buildChrome, targetExists } from "@/lib/chrome";
+import { availableAppRoutes } from "@/lib/seo/app-routes";
 import { SITE_URL } from "@/lib/site";
 import { getPublicEmbed } from "@/server/agents/read";
 import { getAlternates, getNavigation } from "@/server/cms/read";
@@ -36,7 +37,15 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
     getAlternates(),
     getPublicEmbed(),
   ]);
-  const chrome = buildChrome(lang, dict, nav, alternates);
+  // Espace client hors sitemap, mais bien une route de l'application.
+  const appRoots = [...availableAppRoutes().map((r) => r.path), "/compte"];
+  const chrome = buildChrome(
+    lang,
+    dict,
+    nav,
+    alternates,
+    targetExists(alternates, appRoots),
+  );
 
   return (
     <html
