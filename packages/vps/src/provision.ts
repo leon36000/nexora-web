@@ -684,11 +684,30 @@ async function stepVerify(ctx: Ctx, inst: Instance): Promise<StepResult> {
   const tpl = await templateFor(deps, server, plan.templateCode);
   // La clé du worker quitte la VM (fichier authorized_keys) et la configuration cloud-init.
   if (deps.settings.workerSshPublicKey) {
-    await deps.runner.cleanup({
+    const cleaned = await deps.runner.cleanup({
       host: inst.ipv4,
       user: tpl.ciUser,
       timeoutMs: 60_000,
     });
+    if (!cleaned.ok) {
+      // La clé du worker reste dans authorized_keys : accès de l'opérateur à la VM du client. Jamais « actif » ainsi.
+      await recordVpsEvent(deps.db, {
+        organizationId: inst.organizationId,
+        orderId: inst.orderId,
+        instanceId: inst.id,
+        actor: "worker",
+        kind: "worker_key_cleanup_failed",
+        message: "la clé SSH du worker n'a pas pu être retirée de la VM",
+      });
+      await enqueue(deps.db, {
+        type: "vps.alert",
+        payload: { orderId: inst.orderId, reason: "worker_key_not_removed" },
+        idempotencyKey: `vps-alert:${inst.orderId}:worker_key_not_removed`,
+      });
+      throw new Error(
+        "clé du worker non retirée de la VM (authorized_keys) : nouvelle tentative",
+      );
+    }
     await client.setConfig(server.node, inst.vmid, {
       sshkeys: encodeURIComponent(order.sshPublicKey),
     });

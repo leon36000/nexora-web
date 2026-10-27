@@ -50,6 +50,7 @@ export const SWEEP_EVERY_MS = 60_000;
 const ALERT_SUBJECT: Record<string, string> = {
   provision_failed: "Échec de provisionnement",
   late_payment: "Paiement reçu après expiration, sans capacité",
+  worker_key_not_removed: "Clé SSH du worker non retirée d'une VM",
 };
 const bucket = (ms: number, now = Date.now()) => Math.floor(now / ms);
 
@@ -164,9 +165,11 @@ export function registerVpsHandlers(
       "",
       reason === "provision_failed"
         ? "Aucun remboursement automatique n'a été fait : décider depuis Stripe (annulation de l'abonnement, remboursement)."
-        : reason === "late_payment"
-          ? "Le client a payé APRÈS l'expiration de sa commande et aucune capacité n'est disponible. Aucune VM n'existe. Aucun remboursement automatique n'a été fait : brancher un serveur (le balayage reprend la commande seul) ou décider depuis Stripe (annulation de l'abonnement, remboursement)."
-          : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
+        : reason === "worker_key_not_removed"
+          ? "La clé SSH du worker est peut-être restée dans authorized_keys de la VM du client. La vérification est relancée ; si elle échoue de nouveau, retirer la ligne « nexora-worker » à la main."
+          : reason === "late_payment"
+            ? "Le client a payé APRÈS l'expiration de sa commande et aucune capacité n'est disponible. Aucune VM n'existe. Aucun remboursement automatique n'a été fait : brancher un serveur (le balayage reprend la commande seul) ou décider depuis Stripe (annulation de l'abonnement, remboursement)."
+            : "La commande attend de la capacité : brancher un serveur ou libérer de la place.",
     ];
     ctx.log.error("vps : intervention de l'opérateur requise", {
       orderId,

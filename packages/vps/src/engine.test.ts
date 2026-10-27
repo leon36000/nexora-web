@@ -272,6 +272,46 @@ describe("provisionnement complet", () => {
   });
 });
 
+describe("clé SSH du worker : retirée de la VM, sinon échec explicite", () => {
+  it("un nettoyage en échec (authorized_keys intact) relance la vérification et alerte l'opérateur ; la VM n'est pas déclarée active", async () => {
+    const w = await world();
+    try {
+      const orderId = await paidOrder(t.db, w.fx);
+      w.guest.state.failCleanup = 1;
+      await expect(
+        provisionOrder(w.deps, orderId, { attempt: 1, maxAttempts: 3 }),
+      ).rejects.toThrow(/clé du worker/);
+      const [mid] = await t.db
+        .select()
+        .from(vpsInstances)
+        .where(eq(vpsInstances.orderId, orderId));
+      expect(mid).toMatchObject({ status: "provisioning", step: "verify" });
+      expect(await eventKinds(mid?.id as string)).toContain(
+        "worker_key_cleanup_failed",
+      );
+      const alerts = (await t.db.select().from(jobs)).filter(
+        (j) =>
+          j.type === "vps.alert" &&
+          (j.payload as { reason?: string }).reason ===
+            "worker_key_not_removed",
+      );
+      expect(alerts).toHaveLength(1);
+      // La reprise nettoie à nouveau, puis active la VM.
+      expect(
+        await provisionOrder(w.deps, orderId, { attempt: 2, maxAttempts: 3 }),
+      ).toEqual({ outcome: "done" });
+      expect(w.guest.cleanups).toHaveLength(2);
+      const [done] = await t.db
+        .select()
+        .from(vpsInstances)
+        .where(eq(vpsInstances.orderId, orderId));
+      expect(done).toMatchObject({ status: "active", step: "done" });
+    } finally {
+      await w.close();
+    }
+  });
+});
+
 describe("compensation", () => {
   it("supprime la VM partielle, libère l'adresse, signale à l'opérateur et ne rembourse pas", async () => {
     const w = await world();
