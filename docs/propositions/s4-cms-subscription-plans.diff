@@ -1,0 +1,154 @@
+diff --git a/cms/scripts/lib/access.ts b/cms/scripts/lib/access.ts
+index 13c48cf..7fc2381 100644
+--- a/cms/scripts/lib/access.ts
++++ b/cms/scripts/lib/access.ts
+@@ -137,6 +137,25 @@ export function publishedReadPerms(): Perm[] {
+     // n'entre dans la table principale que par promotion approuvée ; les brouillons vivent dans directus_versions.
+     ...BLOCK_TYPES.map((b) => read(b)),
+     ...BLOCK_TRANSLATIONS.map((b) => read(b)),
++    read("subscription_plans", {
++      permissions: PUBLISHED,
++      fields: [
++        "id",
++        "code",
++        "kind",
++        "status",
++        "interval",
++        "price_cents",
++        "included_credits_cents",
++        "stripe_product_id",
++        "stripe_price_id",
++        "sort",
++        "translations",
++      ],
++    }),
++    read("subscription_plans_translations", {
++      permissions: { subscription_plans_id: PUBLISHED },
++    }),
+     read("navigation", { permissions: PUBLISHED }),
+     read("navigation_translations", {
+       permissions: { navigation_id: PUBLISHED },
+@@ -150,7 +169,12 @@ export function publishedReadPerms(): Perm[] {
+ 
+ /** Lecture complète du contenu principal (éditeurs, relecteurs, agents de contenu). */
+ export function contentReadPerms(): Perm[] {
+-  return [...PAGE_TREE, ...SITE_COLLECTIONS].map((c) => read(c));
++  return [
++    ...PAGE_TREE,
++    ...SITE_COLLECTIONS,
++    "subscription_plans",
++    "subscription_plans_translations",
++  ].map((c) => read(c));
+ }
+ 
+ /** Écriture du contenu publié : réservée à la promotion de versions et à l'administrateur (la garde de publication contrôle). */
+diff --git a/cms/scripts/lib/schema.ts b/cms/scripts/lib/schema.ts
+index 5adf595..9e117ec 100644
+--- a/cms/scripts/lib/schema.ts
++++ b/cms/scripts/lib/schema.ts
+@@ -679,6 +679,105 @@ export function buildSchema(): {
+     ),
+   );
+ 
++  // --- abonnements (S4) : plans publiés dans Directus, lus par le site, poussés vers Stripe par « Publier vers Stripe » ---
++  add({
++    collection: "subscription_plans",
++    meta: {
++      icon: "workspace_premium",
++      note: "Plans d’abonnement (WorkStudio, API, agents). Prix hors taxes en cents CAD ; jamais publié sans prix. Les identifiants Stripe sont écrits par l’action « Publier vers Stripe ».",
++      display_template: "{{code}}",
++      sort_field: "sort",
++      archive_field: "status",
++      archive_value: "archived",
++      unarchive_value: "draft",
++      translations: [
++        {
++          language: "fr-CA",
++          translation: "Plans d’abonnement",
++          singular: "Plan d’abonnement",
++          plural: "Plans d’abonnement",
++        },
++      ],
++    },
++    fields: [
++      uuidPk(),
++      str("code", {
++        label: "Code",
++        required: true,
++        unique: true,
++        note: "Identifiant stable (ex. workstudio-pro), minuscules et tirets.",
++      }),
++      select(
++        "kind",
++        [
++          ["workstudio", "WorkStudio"],
++          ["api", "API et modèles"],
++          ["agents", "Agents hébergés"],
++          ["other", "Autre"],
++        ],
++        { label: "Famille", def: "other", width: "half" },
++      ),
++      select("status", STATUS_PAGES, {
++        label: "Statut",
++        def: "draft",
++        required: true,
++        width: "half",
++      }),
++      select(
++        "interval",
++        [
++          ["month", "Mensuel"],
++          ["year", "Annuel"],
++        ],
++        { label: "Période de facturation", def: "month", required: true, width: "half" },
++      ),
++      int("price_cents", {
++        label: "Prix (cents CAD, avant taxes)",
++        required: true,
++        width: "half",
++        note: "Ex. 4900 pour 49,00 $. Un prix absent ou nul bloque la publication ; TPS et TVQ sont ajoutées par Stripe Tax.",
++      }),
++      int("included_credits_cents", {
++        label: "Crédits inclus par période (cents CAD)",
++        def: 0,
++        width: "half",
++        note: "Accordés à chaque facture payée, valables jusqu’à la fin de la période.",
++      }),
++      str("stripe_product_id", {
++        label: "Produit Stripe",
++        readonly: true,
++        width: "half",
++        note: "Écrit après « Publier vers Stripe » (identifiant, pas un secret).",
++      }),
++      str("stripe_price_id", {
++        label: "Prix Stripe",
++        readonly: true,
++        width: "half",
++        note: "Un prix Stripe est immuable : un changement de montant en crée un nouveau.",
++      }),
++      ts("stripe_synced_at", { label: "Dernière synchronisation Stripe", readonly: true }),
++      int("sort", { label: "Ordre", hidden: true }),
++      translationsAlias(),
++      dateCreated(),
++      dateUpdated(),
++    ],
++  });
++  add(
++    translationsOf(
++      "subscription_plans",
++      "Plans d’abonnement",
++      [
++        str("name", { label: "Nom", required: true }),
++        txt("description", { label: "Description" }),
++        json("features", {
++          label: "Points forts",
++          note: "Liste de textes courts, sans chiffre ni promesse non démontrée.",
++        }),
++      ],
++      relations,
++    ),
++  );
++
+   // --- pages ---
+   add({
+     collection: "pages",
