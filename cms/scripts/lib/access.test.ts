@@ -204,3 +204,15 @@ describe("offres d'abonnement : ce que le public et le site lisent", () => {
     }
   });
 });
+
+describe("fichiers : lecture des métadonnées vidéo par le site", () => {
+  test("le public et le lecteur du site lisent la durée d'un fichier (affichage de la vidéo)", () => {
+    for (const name of [PUBLIC_POLICY_NAME, "Lecteur site"]) {
+      const reads = byName(name).permissions.find(
+        (p) => p.collection === "directus_files" && p.action === "read",
+      );
+      expect(reads?.fields, name).toContain("duration");
+      expect(reads?.fields, name).toContain("type");
+    }
+  });
+});

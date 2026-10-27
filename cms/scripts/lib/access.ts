@@ -76,6 +76,7 @@ const FILE_FIELDS = [
   "height",
   "filename_download",
   "filesize",
+  "duration",
   "focal_point_x",
   "focal_point_y",
   "modified_on",
