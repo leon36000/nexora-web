@@ -1,4 +1,5 @@
 import type { Logger } from "@nexora/log";
+import { readLimitedBytes } from "@nexora/net";
 import Stripe from "stripe";
 import { processStripeEvent, type WebhookDeps } from "../billing/webhook";
 
@@ -49,9 +50,12 @@ export async function handleStripeWebhook(
     return json({ error: "webhook_not_configured" }, 503);
   }
 
-  const raw = await request.text();
-  if (raw.length > MAX_BODY_BYTES)
+  // Corps annoncé trop gros : refusé sans lecture ; sinon lu par morceaux, interrompu au-delà de la limite.
+  if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES)
     return json({ error: "payload_too_large" }, 413);
+  const read = await readLimitedBytes(request, MAX_BODY_BYTES);
+  if (!read.ok) return json({ error: "payload_too_large" }, 413);
+  const raw = new TextDecoder().decode(read.bytes);
 
   let event: Stripe.Event;
   try {

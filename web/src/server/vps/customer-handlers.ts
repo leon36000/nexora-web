@@ -27,6 +27,7 @@ import {
   grantGiftVps,
   isGiftSubscriptionRef,
 } from "../payments/gifts";
+import { stripePageCodesSafe } from "../payments/promo-apply";
 import { resolvePromo } from "../payments/purchase";
 import { getSettings } from "../payments/settings";
 import { type CheckoutDeps, CheckoutError } from "../stripe/checkout";
@@ -65,6 +66,27 @@ interface Input {
   fields: Record<string, unknown>;
   wantsJson: boolean;
   lang: Lang;
+}
+
+/** Taille maximale d'un formulaire de commande : au-delà, refusé sans lecture. */
+const MAX_BODY_BYTES = 64 * 1024;
+
+/** Ce qu'on sait d'une requête avant d'en lire le corps (forme de la réponse, langue de la page d'origine). */
+function preliminaryInput(request: Request): Input {
+  let lang: Lang = DEFAULT_LANG;
+  try {
+    const referer = request.headers.get("referer");
+    if (referer && /^\/en(?:\/|$)/.test(new URL(referer).pathname)) lang = "en";
+  } catch {
+    // Referer illisible : langue par défaut.
+  }
+  return {
+    fields: {},
+    wantsJson: (request.headers.get("accept") ?? "").includes(
+      "application/json",
+    ),
+    lang,
+  };
 }
 
 async function readInput(request: Request): Promise<Input> {
@@ -124,18 +146,21 @@ async function authorize(
   bucket: string,
   limit: number,
 ): Promise<Auth> {
-  const input = await readInput(request);
+  // Le corps n'est lu qu'après origine, session et débit : un anonyme ne fait rien lire.
+  const early = preliminaryInput(request);
   if (request.method !== "POST")
     return { response: json({ error: "method_not_allowed" }, 405) };
   if (!isSameOriginRequest(request, deps.siteUrl))
     return { response: json({ error: "invalid_origin" }, 403) };
+  if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES)
+    return { response: json({ error: "payload_too_large" }, 413) };
   const ctx = await deps.getContext(request.headers);
   if (!ctx) {
-    if (input.wantsJson)
+    if (early.wantsJson)
       return { response: json({ error: "unauthenticated" }, 401) };
     return {
       response: redirect(
-        `${deps.siteUrl}${localizePath(input.lang, "/compte/connexion")}`,
+        `${deps.siteUrl}${localizePath(early.lang, "/compte/connexion")}`,
       ),
     };
   }
@@ -150,11 +175,11 @@ async function authorize(
   );
   if (!rate.allowed)
     return {
-      response: fail(deps, input, 429, "rate_limited", "/vps", {
+      response: fail(deps, early, 429, "rate_limited", "/vps", {
         "retry-after": String(rate.retryAfterSeconds),
       }),
     };
-  return { input, ctx };
+  return { input: await readInput(request), ctx };
 }
 
 const checkoutFields = z.object({
@@ -278,7 +303,8 @@ export async function handleVpsCheckout(
         catalogVersion: order.catalogVersion,
         lang: input.lang,
         email: ctx.email,
-        allowStripePageCodes: settings.stripePageCodes,
+        allowStripePageCodes:
+          settings.stripePageCodes && (await stripePageCodesSafe(db)),
         ...(promo.kind === "discount"
           ? {
               promo: promo.promo,

@@ -10,6 +10,7 @@ import {
   grantGiftCredits,
   grantGiftSubscription,
 } from "../payments/gifts";
+import { stripePageCodesSafe } from "../payments/promo-apply";
 import { ensureCreditsProducts } from "../payments/promo-sync";
 import {
   creditFee,
@@ -61,6 +62,24 @@ interface Input {
   fields: Record<string, string>;
   wantsJson: boolean;
   lang: Lang;
+}
+
+/** Taille maximale d'un formulaire de paiement : quelques champs courts ; au-delà, refusé sans lecture. */
+const MAX_BODY_BYTES = 64 * 1024;
+
+/** Ce qu'on sait d'une requête AVANT d'en lire le corps : forme de la réponse et langue (page d'origine). */
+function preliminaryInput(request: Request): Input {
+  const wantsJson = (request.headers.get("accept") ?? "").includes(
+    "application/json",
+  );
+  let lang: Lang = DEFAULT_LANG;
+  try {
+    const referer = request.headers.get("referer");
+    if (referer && /^\/en(?:\/|$)/.test(new URL(referer).pathname)) lang = "en";
+  } catch {
+    // Referer illisible : langue par défaut.
+  }
+  return { fields: {}, wantsJson, lang };
 }
 
 async function readInput(request: Request): Promise<Input> {
@@ -126,7 +145,8 @@ async function authorize(
   deps: BillingHttpDeps,
   route: string,
 ): Promise<Authorized> {
-  const input = await readInput(request);
+  // Le corps n'est lu qu'à la fin, une fois origine, session, rôle et débit vérifiés : un anonyme ne fait rien lire.
+  const input = preliminaryInput(request);
   if (request.method !== "POST")
     return {
       response: Response.json({ error: "method_not_allowed" }, { status: 405 }),
@@ -136,6 +156,13 @@ async function authorize(
       response: Response.json(
         { error: "invalid_origin" },
         { status: 403, headers: NO_STORE },
+      ),
+    };
+  if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES)
+    return {
+      response: Response.json(
+        { error: "payload_too_large" },
+        { status: 413, headers: NO_STORE },
       ),
     };
 
@@ -170,7 +197,7 @@ async function authorize(
       }),
     };
   return {
-    input,
+    input: await readInput(request),
     userId: session.userId,
     email: session.email,
     organizationId: ctx.organizationId,
@@ -306,7 +333,8 @@ export async function handleCreditsCheckout(
       productName: deps.productName(input.lang),
       ...(productId ? { productId } : {}),
       email: auth.email,
-      allowStripePageCodes: settings.stripePageCodes,
+      allowStripePageCodes:
+        settings.stripePageCodes && (await stripePageCodesSafe(deps.db)),
       ...discountOf(promo),
     });
     return done(input, out.url);
@@ -403,7 +431,8 @@ export async function handleSubscribeCheckout(
           (promo.kind === "discount" && promo.promo.trialDays
             ? { days: 0, requireCard: settings.trialRequiresCard }
             : undefined),
-        allowStripePageCodes: settings.stripePageCodes,
+        allowStripePageCodes:
+          settings.stripePageCodes && (await stripePageCodesSafe(deps.db)),
         ...discountOf(promo),
       },
     );

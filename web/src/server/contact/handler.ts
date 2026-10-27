@@ -1,5 +1,6 @@
 import type { Database } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { readLimitedBytes } from "@nexora/net";
 import { type ChallengeTuning, issueChallenge, verifyAltcha } from "./altcha";
 import { clientKey, type createRateLimiter } from "./rate-limit";
 import { fingerprintOf, parseContact } from "./schema";
@@ -63,7 +64,9 @@ export async function handleContactSubmit(
   const announced = Number(request.headers.get("content-length"));
   if (Number.isFinite(announced) && announced > MAX_BODY_CHARS * 4)
     return json({ error: "payload_too_large" }, 413);
-  const raw = await request.text();
+  const read = await readLimitedBytes(request, MAX_BODY_CHARS * 4);
+  if (!read.ok) return json({ error: "payload_too_large" }, 413);
+  const raw = new TextDecoder().decode(read.bytes);
   if (raw.length > MAX_BODY_CHARS)
     return json({ error: "payload_too_large" }, 413);
   let body: Record<string, unknown>;

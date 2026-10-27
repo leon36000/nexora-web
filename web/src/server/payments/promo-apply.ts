@@ -87,6 +87,27 @@ export async function staffStatus(
   return row.twoFactor ? "ok" : "needs_two_factor";
 }
 
+/**
+ * Le champ « code promo » de la page Stripe est-il sûr ? Stripe applique la date de fin, le nombre maximal
+ * d'utilisations et « première commande », mais PAS « un par client » : un code de ce type saisi sur la page de
+ * Stripe se réutiliserait à volonté. Tant qu'un tel code est actif, le champ est retiré (le code se saisit dans
+ * notre formulaire, où la limite est vérifiée).
+ */
+export async function stripePageCodesSafe(db: Database): Promise<boolean> {
+  const [row] = await db
+    .select({ id: promoCodes.id })
+    .from(promoCodes)
+    .where(
+      and(
+        eq(promoCodes.status, "active"),
+        eq(promoCodes.onePerCustomer, true),
+        sql`${promoCodes.kind} IN ('percent', 'amount', 'free')`,
+      ),
+    )
+    .limit(1);
+  return !row;
+}
+
 /** Cette organisation a-t-elle déjà payé quelque chose ? (don du personnel et commande impayée exclus) */
 export async function hasPriorOrder(
   db: Database,

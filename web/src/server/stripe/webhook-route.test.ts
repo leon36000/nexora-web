@@ -61,6 +61,49 @@ const session = (orgId: string) => ({
   metadata: { kind: "credits", organization_id: orgId },
 });
 
+describe("POST /api/stripe/webhook : corps démesuré", () => {
+  it("refuse (413) sans lire un corps annoncé trop gros, et un flux sans longueur annoncée qui dépasse la limite", async () => {
+    const id = await org();
+    const base = webhookRequest(
+      buildEvent("checkout.session.completed", session(id)),
+    );
+    const announced = new Request(base.url, {
+      method: "POST",
+      headers: {
+        ...Object.fromEntries(base.headers),
+        "content-length": "9000000",
+      },
+      body: "{}",
+    });
+    let read = false;
+    const text = announced.text.bind(announced);
+    announced.text = async () => {
+      read = true;
+      return text();
+    };
+    expect((await handleStripeWebhook(announced, deps())).status).toBe(413);
+    expect(read).toBe(false);
+
+    const chunk = new Uint8Array(512 * 1024);
+    let sent = 0;
+    const stream = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        if (sent++ < 40) controller.enqueue(chunk);
+        else controller.close();
+      },
+    });
+    const chunked = new Request(base.url, {
+      method: "POST",
+      headers: Object.fromEntries(base.headers),
+      body: stream,
+      // @ts-expect-error duplex est requis par Node pour un corps en flux
+      duplex: "half",
+    });
+    expect((await handleStripeWebhook(chunked, deps())).status).toBe(413);
+    expect(sent).toBeLessThan(10);
+  });
+});
+
 describe("POST /api/stripe/webhook", () => {
   it("accepte un événement correctement signé et crédite le compte", async () => {
     const id = await org();
