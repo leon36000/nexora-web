@@ -16,7 +16,7 @@ import {
 } from "@/lib/api-samples";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/docs/api",
     title: t.meta.docs.title,
     description: t.meta.docs.description,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 
@@ -191,7 +191,7 @@ export default async function ApiDocsPage() {
       <JsonLd
         data={appBreadcrumb(lang, [
           {
-            name: t.meta.docs.title.replace(/ \| Nexora$/, ""),
+            name: t.meta.docs.title.replace(` | ${SITE_NAME}`, ""),
             path: "/docs/api",
           },
         ])}

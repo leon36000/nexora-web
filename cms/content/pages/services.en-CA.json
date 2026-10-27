@@ -7,7 +7,7 @@
     "slug": "services",
     "title": "Services",
     "seo_title": "AI services for small businesses in Quebec",
-    "seo_description": "Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora's services for small businesses.",
+    "seo_description": "Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora AI's services for small businesses.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Services",
         "headline": "From idea to operation. With you.",
-        "subheadline": "Nexora designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.",
+        "subheadline": "Nexora AI designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.",
         "primary_label": "Discuss my project",
         "primary_href": "/en/contact/",
         "secondary_label": "Read the method",

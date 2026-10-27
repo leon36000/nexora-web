@@ -6,6 +6,7 @@ import { ForgotForm } from "@/components/account/forgot-form";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -16,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/mot-de-passe-oublie",
     title: t.meta.forgot,
     description: t.forgot.lead,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }

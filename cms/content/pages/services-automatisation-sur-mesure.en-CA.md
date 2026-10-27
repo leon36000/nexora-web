@@ -7,7 +7,7 @@
 - Page : `services-automatisation-sur-mesure` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/services/custom-automation/` · slug : `services/custom-automation`
 - Titre SEO (38 caractères) : Custom automation for small businesses
-- Description SEO (159 caractères) : Nexora builds agents and workflows with you, connected to your software, and tests them on your real cases before they go into service. Start with a diagnosis.
+- Description SEO (149 caractères) : Nexora AI builds agents and workflows with you, connected to your software, and tests them on real cases before they go live. Start with a diagnosis.
 
 ## Contenu
 

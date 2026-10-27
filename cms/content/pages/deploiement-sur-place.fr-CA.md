@@ -7,7 +7,7 @@
 - Page : `deploiement-sur-place` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/deploiement/sur-place/` · slug : `deploiement/sur-place`
 - Titre SEO (31 caractères) : Serveur d'IA sur place pour PME
-- Description SEO (160 caractères) : Nexora installe le système d'IA sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Matériel et accès à vous, flux sortants listés par écrit.
+- Description SEO (153 caractères) : Nexora AI installe le système d'IA sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Matériel et accès à vous, flux sortants listés.
 
 ## Contenu
 
@@ -82,11 +82,11 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 #### Vous.
 
 Vous possédez le matériel.
-Vous détenez les accès et les accordez à Nexora au besoin.
+Vous détenez les accès et les accordez à Nexora AI au besoin.
 Vous placez et conservez les sauvegardes.
 Vous décidez des modèles et de toute option externe.
 
-#### Nexora.
+#### Nexora AI.
 
 Nous dimensionnons, installons et configurons.
 Nous listons les flux sortants et remettons le schéma.
@@ -129,7 +129,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 Par défaut, les documents, l’index et les conversations restent sur votre serveur. Les flux sortants sont ceux que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous le choisissez, un modèle externe.
 
-#### Nexora accède-t-elle à mon serveur ?
+#### Nexora AI accède-t-elle à mon serveur ?
 
 Seulement par les accès que vous accordez, convenus à l'avance. Vous pouvez les retirer.
 

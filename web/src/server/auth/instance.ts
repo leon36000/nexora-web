@@ -21,7 +21,7 @@ export function getAuth(): NexoraAuth {
       baseURL: SITE_URL,
       mailer: createSmtpMailer({
         url: process.env.SMTP_URL ?? "smtp://127.0.0.1:1026",
-        from: process.env.MAIL_FROM ?? "Nexora <no-reply@nexora.test>",
+        from: process.env.MAIL_FROM ?? "Nexora AI <no-reply@nexora.test>",
       }),
       secureCookies: SITE_URL.startsWith("https://"),
       log: (message, fields) => log.warn(message, fields),

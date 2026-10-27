@@ -7,7 +7,7 @@
     "slug": "faq",
     "title": "Frequently asked questions",
     "seo_title": "FAQ: AI for Quebec small businesses",
-    "seo_description": "Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora's answers to the questions small-business owners ask most often. Straight answers only.",
+    "seo_description": "Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora AI's answers to the questions small-business owners ask most often. Straight answers only.",
     "canonical": null
   },
   "blocks": [
@@ -159,7 +159,7 @@
           },
           {
             "question": "Why not a consumer assistant like ChatGPT?",
-            "answer": "A consumer assistant answers general questions well. What Nexora adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
+            "answer": "A consumer assistant answers general questions well. What Nexora AI adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it."
           },
           {
             "question": "What is an AI agent?",

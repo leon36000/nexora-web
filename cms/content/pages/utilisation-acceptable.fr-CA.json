@@ -6,7 +6,7 @@
   "seo": {
     "slug": "utilisation-acceptable",
     "title": "Utilisation acceptable",
-    "seo_title": "Politique d'utilisation acceptable de Nexora",
+    "seo_title": "Politique d'utilisation acceptable de Nexora AI",
     "seo_description": "Usages permis et interdits, sécurité, prévention des abus, contenus générés, surveillance, mesures, signalement. Gabarit en brouillon à compléter et à valider.",
     "canonical": null
   },
@@ -36,7 +36,7 @@
       },
       "translation": {
         "title": "Le principe.",
-        "body": "<p>Les services de Nexora servent à des usages légitimes d'entreprise. Utiliser le service de manière illicite, nuisible pour d'autres ou contraire à ces règles peut mener à des mesures décrites plus bas [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+        "body": "<p>Les services de Nexora AI servent à des usages légitimes d'entreprise. Utiliser le service de manière illicite, nuisible pour d'autres ou contraire à ces règles peut mener à des mesures décrites plus bas [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
       }
     },
     {
@@ -77,7 +77,7 @@
           },
           {
             "title": "Usages à haut risque.",
-            "text": "À décider\u00a0: usages que Nexora n'accepte pas, par exemple décisions sur des personnes sans supervision humaine [À COMPLÉTER PAR LE FONDATEUR]"
+            "text": "À décider\u00a0: usages que Nexora AI n'accepte pas, par exemple décisions sur des personnes sans supervision humaine [À COMPLÉTER PAR LE FONDATEUR]"
           }
         ]
       }
@@ -121,7 +121,7 @@
       },
       "translation": {
         "title": "Surveillance, signalement, mesures.",
-        "body": "<p>Comment Nexora détecte un abus sans lire les données métier des clients, adresse de signalement, avis préalable, suspension et résiliation, droit de réponse [À COMPLÉTER PAR LE FONDATEUR]. Texte [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
+        "body": "<p>Comment Nexora AI détecte un abus sans lire les données métier des clients, adresse de signalement, avis préalable, suspension et résiliation, droit de réponse [À COMPLÉTER PAR LE FONDATEUR]. Texte [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].</p>"
       }
     },
     {

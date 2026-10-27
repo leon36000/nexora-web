@@ -67,7 +67,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=concevoir`
 
 ## Design your agents.
 
-“Available” means delivered in the current version and verified on Nexora's test server. It does not mean a customer is already using it.
+“Available” means delivered in the current version and verified on Nexora AI's test server. It does not mean a customer is already using it.
 
 #### Agents.
 
@@ -197,7 +197,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
 
 A product is also judged by what it writes about its limits. Here are ours, as of this page's date.
 
-- **Verified here, not yet at a customer.** WorkStudio has been verified on Nexora's test server with several models hosted elsewhere than on that server. No customer result is announced.
+- **Verified here, not yet at a customer.** WorkStudio has been verified on Nexora AI's test server with several models hosted elsewhere than on that server. No customer result is announced.
 - **Tool-using agents need a capable model.** A small local model is not always enough for agents that call tools. The model is chosen with the case.
 - **Two options are off the beaten path.** The code interpreter is off by default and can only be turned on by an administrator. Web search sends its queries outside the instance: it is available only if an administrator turns it on.
 - **Starter templates are general.** They do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business.

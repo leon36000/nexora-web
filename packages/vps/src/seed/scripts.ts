@@ -25,8 +25,8 @@ const DOCKER_KEY_FPR = "9DC858229FC7DD38854AE2D88D81803C0EBFCD88";
 
 export function installScript(spec: ScriptSpec): string {
   return `#!/usr/bin/env bash
-# Nexora — installation de ${spec.name} ${spec.version} (script ${spec.scriptVersion}).
-# Exécuté par le worker de Nexora, une fois, juste après le premier démarrage de la VM.
+# Nexora AI — installation de ${spec.name} ${spec.version} (script ${spec.scriptVersion}).
+# Exécuté par le worker de Nexora AI, une fois, juste après le premier démarrage de la VM.
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
@@ -76,7 +76,7 @@ write_access() {
   local dest="$OWNER_HOME/nexora-acces.txt"
   umask 077
   cat > "$dest" <<ACCESS
-Nexora — ${spec.name} ${spec.version}
+Nexora AI — ${spec.name} ${spec.version}
 Rien n'est exposé à Internet : l'application écoute sur 127.0.0.1 de cette machine.
 Accès par tunnel SSH depuis votre poste (exemple) :
   ssh -N -L $1:127.0.0.1:$1 $OWNER@<adresse-ip-de-votre-VPS>
@@ -271,7 +271,7 @@ YAML
 docker compose pull
 docker compose up -d
 write_access 3001 "Mot de passe de l'instance : $PASS
-Ajoutez ensuite vos fournisseurs de modèles dans les réglages (par exemple la passerelle de Nexora)."`,
+Ajoutez ensuite vos fournisseurs de modèles dans les réglages (par exemple la passerelle de Nexora AI)."`,
 });
 
 export const librechatScript = installScript({

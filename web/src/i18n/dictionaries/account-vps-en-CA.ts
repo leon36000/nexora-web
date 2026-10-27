@@ -3,7 +3,7 @@ import type { AccountVpsDictionary } from "./account-vps-fr-CA";
 /** “My VPS” dictionary (en-CA): same structure as fr-CA, checked by the `AccountVpsDictionary` type. No invented figures, delivery times or guarantees. */
 export const accountVpsEnCA: AccountVpsDictionary = {
   meta: {
-    title: "My VPS | Nexora",
+    title: "My VPS | Nexora AI",
     description:
       "Your virtual private servers: status, SSH access, start, reinstall and cancellation.",
   },
@@ -232,7 +232,7 @@ export const accountVpsEnCA: AccountVpsDictionary = {
     reinstall: {
       title: "Reinstall this VPS?",
       warning:
-        "All data on the disk will be erased. Nexora keeps a snapshot of the old machine for 7 days so our team can recover it; this is not a self-service backup.",
+        "All data on the disk will be erased. Nexora AI keeps a snapshot of the old machine for 7 days so our team can recover it; this is not a self-service backup.",
       unavailable: "The VPS will be unavailable during the reinstall.",
       ack: "I understand",
       ackRequired: "Tick the box to confirm.",
@@ -254,7 +254,7 @@ export const accountVpsEnCA: AccountVpsDictionary = {
     actors: {
       system: "System",
       customer: "You",
-      operator: "Nexora team",
+      operator: "Nexora AI team",
       stripe: "Payment",
       worker: "System",
     },

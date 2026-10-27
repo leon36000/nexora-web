@@ -7,18 +7,18 @@
 export const gatewayFrCA = {
   meta: {
     models: {
-      title: "Modèles | Nexora",
+      title: "Modèles | Nexora AI",
       description:
-        "Catalogue des modèles d’IA accessibles par l’API de Nexora : prix en dollars canadiens, contexte, capacités et lieu d’hébergement de chacun.",
+        "Catalogue des modèles d’IA accessibles par l’API de Nexora AI : prix en dollars canadiens, contexte, capacités et lieu d’hébergement de chacun.",
     },
     model: {
       description:
         "Fiche du modèle {name} : prix par million de jetons en dollars canadiens, contexte, hébergement et exemple d’appel.",
     },
     docs: {
-      title: "Documentation de l’API | Nexora",
+      title: "Documentation de l’API | Nexora AI",
       description:
-        "Démarrage rapide de l’API de Nexora, compatible OpenAI : clé, premier appel, diffusion en continu, erreurs et limites.",
+        "Démarrage rapide de l’API de Nexora AI, compatible OpenAI : clé, premier appel, diffusion en continu, erreurs et limites.",
     },
   },
 
@@ -88,7 +88,7 @@ export const gatewayFrCA = {
     dataPolicyMissing:
       "Le fournisseur n’a pas encore déclaré de politique de données.",
     nexoraNote:
-      "La passerelle de Nexora ne garde que des métadonnées d’usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes.",
+      "La passerelle de Nexora AI ne garde que des métadonnées d’usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes.",
     sunset: "Retrait prévu le {date}.",
     example: "Exemple d’appel",
     exampleLead:
@@ -102,7 +102,7 @@ export const gatewayFrCA = {
   docs: {
     label: "API",
     title: "Démarrage rapide de l’API.",
-    lead: "L’API de Nexora est compatible avec celle d’OpenAI : changez l’adresse de base et la clé, le reste de votre code ne bouge pas.",
+    lead: "L’API de Nexora AI est compatible avec celle d’OpenAI : changez l’adresse de base et la clé, le reste de votre code ne bouge pas.",
     baseUrlTitle: "Adresse de base",
     baseUrlText:
       "Toutes les requêtes passent par {url}. L’authentification se fait par l’en-tête Authorization.",
@@ -187,7 +187,7 @@ export const gatewayFrCA = {
 
   account: {
     title: "Clés API",
-    lead: "Les clés donnent accès à l’API de Nexora et dépensent les crédits de votre organisation.",
+    lead: "Les clés donnent accès à l’API de Nexora AI et dépensent les crédits de votre organisation.",
     ownerOnly:
       "Seul le propriétaire de l’organisation peut créer ou révoquer une clé.",
     createTitle: "Créer une clé",
@@ -204,7 +204,7 @@ export const gatewayFrCA = {
     creating: "Création…",
     createdTitle: "Clé créée",
     createdWarn:
-      "Copiez cette clé maintenant : elle ne sera plus jamais affichée. Nexora n’en conserve que l’empreinte.",
+      "Copiez cette clé maintenant : elle ne sera plus jamais affichée. Nexora AI n’en conserve que l’empreinte.",
     copy: "Copier la clé",
     copied: "Clé copiée",
     close: "J’ai copié la clé",

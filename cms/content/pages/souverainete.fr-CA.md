@@ -6,7 +6,7 @@
 
 - Page : `souverainete` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/souverainete/` · slug : `souverainete`
-- Titre SEO (49 caractères) : Souveraineté de l’IA : quatre couches de contrôle
+- Titre SEO (41 caractères) : Souveraineté de l’IA : les quatre couches
 - Description SEO (154 caractères) : Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données. Les quatre couches de contrôle, les deux modes et nos limites.
 
 ## Contenu
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # La souveraineté, c'est savoir où vont vos données.
 
-Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Voici comment Nexora traduit cette idée en architecture et en engagements que vous pouvez vérifier.
+Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Voici comment Nexora AI traduit cette idée en architecture et en engagements que vous pouvez vérifier.
 
 [Discuter de mon projet](/contact/) · [Voir le centre de confiance](/centre-de-confiance/)
 
@@ -33,18 +33,18 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=definition`
 
 ## Une définition qui se vérifie.
 
-« Souverain » désigne ici un contrôle, pas une étiquette. Chez Nexora, une IA est souveraine quand quatre questions ont une réponse écrite, précise, que votre équipe peut vérifier.
+« Souverain » désigne ici un contrôle, pas une étiquette. Chez Nexora AI, une IA est souveraine quand quatre questions ont une réponse écrite, précise, que votre équipe peut vérifier.
 
 Nous ne parlons pas d'immunité. La souveraineté réduit les dépendances que vous n'avez pas choisies ; elle ne supprime ni les lois qui s'appliquent à votre entreprise, ni vos obligations.
 
-- **Où elle tourne.** Sur un serveur qui vous appartient, ou dans l'infrastructure de Nexora, au Québec. Le lieu est écrit, pas supposé.
-- **Qui y accède.** Des comptes nommés, des rôles, un journal des actions. Les accès de Nexora à votre système sont convenus à l'avance.
+- **Où elle tourne.** Sur un serveur qui vous appartient, ou dans l'infrastructure de Nexora AI, au Québec. Le lieu est écrit, pas supposé.
+- **Qui y accède.** Des comptes nommés, des rôles, un journal des actions. Les accès de Nexora AI à votre système sont convenus à l'avance.
 - **Où vont les données.** Un schéma des flux, remis par écrit avant la mise en service, dit ce qui reste dans le périmètre et ce qui en sort.
 - **Si vous pouvez partir.** Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Les quatre couches, chacune avec ce que Nexora documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
+*Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
 
 Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=couches`
 
@@ -90,7 +90,7 @@ C'est un exemple, pas la configuration d'un client réel. Le schéma de votre in
 
 - **Dans le périmètre.** Documents, index de recherche, conversations et journaux restent sur votre serveur ou dans notre infrastructure au Québec, selon le mode choisi.
 - **Ce qui peut en sortir.** Mises à jour, licences, et un modèle externe seulement si vous l'avez accepté par écrit. Chaque flux sortant est inscrit au schéma.
-- **Ce qui n'est pas sur ce schéma.** Vos échanges avec Nexora (formulaires, courriels, facturation) forment un autre plan, distinct des données de votre système. Le centre de confiance le décrit.
+- **Ce qui n'est pas sur ce schéma.** Vos échanges avec Nexora AI (formulaires, courriels, facturation) forment un autre plan, distinct des données de votre système. Le centre de confiance le décrit.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -122,11 +122,11 @@ Qui contrôle quoi, point par point. Une combinaison des deux modes peut être �
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce que Nexora affirme : cinq engagements, sans chiffre ni certification. · Affirmations : CL-05, CL-06, CL-76, CL-07, CL-08, CL-09, CL-87*
+*Ce que Nexora AI affirme : cinq engagements, sans chiffre ni certification. · Affirmations : CL-05, CL-06, CL-76, CL-07, CL-08, CL-09, CL-87*
 
 Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=affirmations`
 
-## Ce que Nexora affirme.
+## Ce que Nexora AI affirme.
 
 Chaque affirmation renvoie à une preuve interne que nous tenons à jour. Les documents contractuels qui les portent sont en préparation.
 
@@ -152,11 +152,11 @@ Quand une capacité est en pilote ou prévue, nous l'écrivons. Nous ne publions
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Ce que Nexora ne promet pas : cinq limites écrites. · Affirmations : CL-75, CL-77, CL-L05, CL-87*
+*Ce que Nexora AI ne promet pas : cinq limites écrites. · Affirmations : CL-75, CL-77, CL-L05, CL-87*
 
 Réglages : `columns=3`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
-## Ce que Nexora ne promet pas.
+## Ce que Nexora AI ne promet pas.
 
 Une page de souveraineté qui n'écrit pas ses limites ne vaut rien. Voici les nôtres.
 

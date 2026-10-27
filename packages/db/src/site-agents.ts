@@ -114,7 +114,7 @@ export const agentDirectusTokenRef = (key: SiteAgentKey) =>
 /** Organisation interne qui porte le grand livre et les clés des agents (D9). */
 export const INTERNAL_AGENTS_ORG = {
   id: "org_nexora_agents_site",
-  name: "Nexora — agents du site",
+  name: "Nexora AI — agents du site",
   slug: "nexora-agents-site",
 } as const;
 

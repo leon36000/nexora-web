@@ -7,7 +7,7 @@
 - Page : `faq` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/faq/` · slug : `faq`
 - Titre SEO (38 caractères) : Questions fréquentes sur l'IA pour PME
-- Description SEO (154 caractères) : Vos données, le coût, la mise en service, les erreurs de l'IA, la Loi 25 : les réponses de Nexora aux questions les plus fréquentes des dirigeants de PME.
+- Description SEO (157 caractères) : Vos données, le coût, la mise en service, les erreurs de l'IA, la Loi 25 : les réponses de Nexora AI aux questions les plus fréquentes des dirigeants de PME.
 
 ## Contenu
 
@@ -119,7 +119,7 @@ Votre équipe. Chaque appel de modèle laisse une trace consultable, la consomma
 
 #### Pourquoi pas un assistant grand public comme ChatGPT ?
 
-Un assistant grand public répond bien aux questions générales. Ce que Nexora ajoute : le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire.
+Un assistant grand public répond bien aux questions générales. Ce que Nexora AI ajoute : le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire.
 
 #### Qu'est-ce qu'un agent IA ?
 

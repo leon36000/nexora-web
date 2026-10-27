@@ -85,7 +85,7 @@ export function buildPlanProductsJsonLd(input: {
       name: plan.name,
       ...(description ? { description } : {}),
       url,
-      brand: { "@type": "Brand", name: "Nexora" },
+      brand: { "@type": "Brand", name: "Nexora AI" },
       additionalProperty: input.labels.specs(plan).map((s) => ({
         "@type": "PropertyValue",
         name: s.name,

@@ -233,7 +233,7 @@ Pour aller plus loin : [les modes de déploiement](/deploiement/) et [notre app
 - **Ce que nous faisons.** Pour votre configuration, nous décrivons par écrit où sont les données, qui peut y accéder, quels flux sont configurés et lesquels sont désactivés.
 - **Ce qui reste votre décision.** Quels modèles utiliser, locaux ou externes. Aucun service externe n'est configuré sans votre accord écrit.
 - **Sauvegarde et reprise.** Des scripts de sauvegarde et de restauration sont fournis (pilote). Une restauration complète reste à éprouver sur votre installation.
-- **Hébergement au Québec.** Envisageable dans l'infrastructure de Nexora, située au Québec. À qualifier lors de l'étude de déploiement.
+- **Hébergement au Québec.** Envisageable dans l'infrastructure de Nexora AI, située au Québec. À qualifier lors de l'étude de déploiement.
 - **Une console protégée.** Les approbations, les modes et les budgets se gèrent dans une console web protégée par authentification.
 
 ### Bloc 10 — Section (`block_section`)

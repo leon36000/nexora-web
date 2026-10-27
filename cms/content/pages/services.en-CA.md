@@ -7,7 +7,7 @@
 - Page : `services` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/services/` · slug : `services`
 - Titre SEO (42 caractères) : AI services for small businesses in Quebec
-- Description SEO (148 caractères) : Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora's services for small businesses.
+- Description SEO (151 caractères) : Diagnosis, AI server installation on your premises or in Quebec, custom automation and day-to-day operation: Nexora AI's services for small businesses.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # From idea to operation. With you.
 
-Nexora designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.
+Nexora AI designs, installs, integrates and supports AI systems fitted to your trade. A diagnosis first, then a written estimate, then a first case put into service.
 
 [Discuss my project](/en/contact/) · [Read the method](/en/method/)
 

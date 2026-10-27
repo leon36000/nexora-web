@@ -6,12 +6,12 @@
  */
 export const accountFrCA = {
   meta: {
-    login: "Connexion | Nexora",
-    signup: "Créer un compte | Nexora",
-    forgot: "Mot de passe oublié | Nexora",
-    reset: "Nouveau mot de passe | Nexora",
-    verify: "Confirmation du courriel | Nexora",
-    dashboard: "Mon compte | Nexora",
+    login: "Connexion | Nexora AI",
+    signup: "Créer un compte | Nexora AI",
+    forgot: "Mot de passe oublié | Nexora AI",
+    reset: "Nouveau mot de passe | Nexora AI",
+    verify: "Confirmation du courriel | Nexora AI",
+    dashboard: "Mon compte | Nexora AI",
   },
 
   common: {
@@ -152,7 +152,7 @@ export const accountFrCA = {
     },
     buy: {
       title: "Acheter des crédits",
-      productName: "Crédits Nexora",
+      productName: "Crédits Nexora AI",
       lead: "Paiement unique, sans abonnement. Vous recevez en crédits le montant avant taxes.",
       amount: "Montant en dollars canadiens",
       choose: "Montants proposés",

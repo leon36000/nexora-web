@@ -6,7 +6,7 @@
 
 - Page : `confidentialite` · langue : `en-CA` · statut visé : `draft` · noindex : oui
 - Route : `/en/privacy/` · slug : `privacy`
-- Titre SEO (37 caractères) : Nexora privacy policy for the website
+- Titre SEO (40 caractères) : Nexora AI privacy policy for the website
 - Description SEO (158 caractères) : Officer, information collected, purposes, disclosures, retention, rights, cookies, incidents. Draft template, to be completed and reviewed before publication.
 
 ## Contenu
@@ -21,7 +21,7 @@ Réglages : `variant=clair`, `perimeter_grid=false`
 
 # Privacy policy.
 
-Draft template structured along the headings expected in Quebec; every Nexora-specific item remains to be provided by the founder.
+Draft template structured along the headings expected in Quebec; every item specific to Nexora AI remains to be provided by the founder.
 
 
 
@@ -45,7 +45,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=recueillis`
 
 - **Contact form.** Name, email, company, need, envisaged deployment mode, message. Exact list [TO BE COMPLETED BY THE FOUNDER]
 - **Customer account.** If a customer area opens: sign-up and billing information [TO BE COMPLETED BY THE FOUNDER]
-- **Payment.** Handled by a payment provider [TO BE COMPLETED BY THE FOUNDER]. State what Nexora keeps or not [TO BE REVIEWED BY A QUEBEC LAWYER]
+- **Payment.** Handled by a payment provider [TO BE COMPLETED BY THE FOUNDER]. State what Nexora AI keeps or not [TO BE REVIEWED BY A QUEBEC LAWYER]
 - **Technical logs.** IP address, date, pages viewed, for security and proper operation. Duration [TO BE COMPLETED BY THE FOUNDER]
 - **Audience measurement.** Chosen tool and configuration (with or without cookies) [TO BE COMPLETED BY THE FOUNDER]
 - **Customers' system data.** Handled under the agreement with the customer; it falls outside this policy.
@@ -68,7 +68,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=partage`
 
 ## Who we share it with.
 
-Providers in the service chain (site hosting, email, payment, audience measurement), each with its role and location [TO BE COMPLETED BY THE FOUNDER]. For any disclosure of information outside Quebec, a prior assessment and a written agreement are required [TO BE REVIEWED BY A QUEBEC LAWYER]. Nexora does not sell personal information [TO BE COMPLETED BY THE FOUNDER].
+Providers in the service chain (site hosting, email, payment, audience measurement), each with its role and location [TO BE COMPLETED BY THE FOUNDER]. For any disclosure of information outside Quebec, a prior assessment and a written agreement are required [TO BE REVIEWED BY A QUEBEC LAWYER]. Nexora AI does not sell personal information [TO BE COMPLETED BY THE FOUNDER].
 
 ### Bloc 6 — Section (`block_section`)
 

@@ -48,7 +48,7 @@ export const LEAD_LABELS_FR = {
   },
   deployment: {
     "sur-place": "Sur place, chez le client",
-    heberge: "Hébergé au Québec par Nexora",
+    heberge: "Hébergé au Québec par Nexora AI",
     indecis: "Pas encore décidé",
   },
 } as const satisfies {

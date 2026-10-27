@@ -6,7 +6,7 @@
 
 - Page : `mentions-legales` · langue : `fr-CA` · statut visé : `draft` · noindex : oui
 - Route : `/mentions-legales/` · slug : `mentions-legales`
-- Titre SEO (43 caractères) : Mentions légales de Nexora, éditeur du site
+- Titre SEO (46 caractères) : Mentions légales de Nexora AI, éditeur du site
 - Description SEO (155 caractères) : Identité de l'éditeur du site, hébergeur, propriété intellectuelle, responsabilité et droit applicable. Gabarit en brouillon, à compléter par le fondateur.
 
 ## Contenu
@@ -69,7 +69,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=responsabilite`
 
 ## Responsabilité et liens externes.
 
-Le contenu du site est fourni à titre d'information et peut évoluer. Nexora s'efforce de le tenir exact, mais ne peut en assurer l'absence d'erreur. Le site peut renvoyer à des sites tiers dont Nexora ne contrôle pas le contenu. Formulation de la limitation de responsabilité [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
+Le contenu du site est fourni à titre d'information et peut évoluer. Nexora AI s'efforce de le tenir exact, mais ne peut en assurer l'absence d'erreur. Le site peut renvoyer à des sites tiers dont Nexora AI ne contrôle pas le contenu. Formulation de la limitation de responsabilité [À VALIDER PAR UN AVOCAT QUÉBÉCOIS].
 
 ### Bloc 6 — Section (`block_section`)
 

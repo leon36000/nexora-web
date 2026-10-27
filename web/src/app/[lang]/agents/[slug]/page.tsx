@@ -16,7 +16,7 @@ import { formatInteger } from "@/i18n/gateway";
 import { agentSamples, agentStreamingSample } from "@/lib/agent-samples";
 import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { getPublicAgents } from "@/server/agents/read";
 
 const SLUG = /^[a-z0-9][a-z0-9-]{0,58}[a-z0-9]$/;
@@ -47,9 +47,9 @@ export async function generateMetadata(
   return buildPageMetadata({
     lang,
     path: `/agents/${agent.slug}`,
-    title: `${name} | Nexora`,
+    title: `${name} | ${SITE_NAME}`,
     description: fmt(t.meta.agent.description, { name }),
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 
@@ -171,7 +171,7 @@ export default async function AgentPage(
         <JsonLd
           data={appBreadcrumb(lang, [
             {
-              name: t.meta.list.title.replace(/ \| Nexora$/, ""),
+              name: t.meta.list.title.replace(` | ${SITE_NAME}`, ""),
               path: "/agents",
             },
             { name, path: `/agents/${agent.slug}` },

@@ -90,7 +90,7 @@
       },
       "translation": {
         "title": "Concevoir vos agents.",
-        "intro": "«\u00a0Disponible\u00a0» signifie livré dans la version actuelle et vérifié sur le serveur de test de Nexora. Cela ne veut pas dire qu'un client l'utilise déjà.",
+        "intro": "«\u00a0Disponible\u00a0» signifie livré dans la version actuelle et vérifié sur le serveur de test de Nexora AI. Cela ne veut pas dire qu'un client l'utilise déjà.",
         "cards": [
           {
             "title": "Des agents.",
@@ -279,7 +279,7 @@
         "items": [
           {
             "title": "Vérifié chez nous, pas encore chez un client.",
-            "text": "WorkStudio a été vérifié sur le serveur de test de Nexora avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé."
+            "text": "WorkStudio a été vérifié sur le serveur de test de Nexora AI avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé."
           },
           {
             "title": "Les agents à outils exigent un modèle capable.",

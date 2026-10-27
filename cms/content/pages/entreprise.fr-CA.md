@@ -6,28 +6,28 @@
 
 - Page : `entreprise` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/entreprise/` · slug : `entreprise`
-- Titre SEO (34 caractères) : Nexora : IA pour les PME du Québec
-- Description SEO (155 caractères) : Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME du Québec. Nos principes : vérité d'abord, contrôle, réversibilité, un cas à la fois.
+- Titre SEO (37 caractères) : Nexora AI : IA pour les PME du Québec
+- Description SEO (158 caractères) : Nexora AI conçoit, installe et accompagne des systèmes d'IA pour les PME du Québec. Nos principes : vérité d'abord, contrôle, réversibilité, un cas à la fois.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Présentation de Nexora, limitée à ce qui est connu. · Affirmations : CL-01, CL-130*
+*Présentation de Nexora AI, limitée à ce qui est connu. · Affirmations : CL-01, CL-130*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Entreprise**
 
-# Nexora. L'IA au service des PME d'ici.
+# Nexora AI. L'IA au service des PME d'ici.
 
-Nexora est une entreprise du Québec. Nous concevons, installons, intégrons et accompagnons des systèmes d'IA adaptés à votre métier, pour des entreprises qui veulent garder la maîtrise de leurs données.
+Nexora AI est une entreprise du Québec. Nous concevons, installons, intégrons et accompagnons des systèmes d'IA adaptés à votre métier, pour des entreprises qui veulent garder la maîtrise de leurs données.
 
 [Nous joindre](/contact/) · [Lire la méthode](/methode/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Ce que fait Nexora : quatre verbes. · Affirmations : CL-01, CL-04, CL-02*
+*Ce que fait Nexora AI : quatre verbes. · Affirmations : CL-01, CL-04, CL-02*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=metier`
 
@@ -80,7 +80,7 @@ Une entreprise se juge à ce qu'elle laisse vérifier. Voici où regarder.
 
 ### Bloc 5 — Section (`block_section`)
 
-*Joindre Nexora : le formulaire, rien d'autre d'inventé. · Affirmations : CL-01*
+*Joindre Nexora AI : le formulaire, rien d'autre d'inventé. · Affirmations : CL-01*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=contact`
 

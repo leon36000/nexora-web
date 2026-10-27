@@ -7,7 +7,7 @@
     "slug": "deployment/on-premises",
     "title": "On-premises deployment",
     "seo_title": "On-premises AI server for small businesses",
-    "seo_description": "Nexora installs the AI system on your server, in your offices or at a host of your choice. Hardware and access are yours; outbound flows are listed in writing.",
+    "seo_description": "Nexora AI installs the AI system on your server, in your offices or at a host of your choice. Hardware and access are yours; outbound flows are listed.",
     "canonical": null
   },
   "blocks": [
@@ -113,10 +113,10 @@
         "cards": [
           {
             "title": "You.",
-            "text": "You own the hardware.\nYou hold the access and grant it to Nexora as needed.\nYou place and keep the backups.\nYou decide on the models and any external option."
+            "text": "You own the hardware.\nYou hold the access and grant it to Nexora AI as needed.\nYou place and keep the backups.\nYou decide on the models and any external option."
           },
           {
-            "title": "Nexora.",
+            "title": "Nexora AI.",
             "text": "We size, install and configure.\nWe list the outbound flows and hand over the diagram.\nWe train your team.\nWe run it with you, as the contract provides."
           }
         ]
@@ -171,7 +171,7 @@
             "answer": "By default, documents, the index and conversations stay on your server. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model."
           },
           {
-            "question": "Does Nexora access my server?",
+            "question": "Does Nexora AI access my server?",
             "answer": "Only through the access you grant, agreed in advance. You can withdraw it."
           },
           {

@@ -6,7 +6,7 @@
   "seo": {
     "slug": "legal-notice",
     "title": "Legal notice",
-    "seo_title": "Legal notice for the Nexora website",
+    "seo_title": "Legal notice for the Nexora AI website",
     "seo_description": "Identity of the site publisher, host, intellectual property, liability and governing law. Draft template, to be completed by the founder before publication.",
     "canonical": null
   },
@@ -107,7 +107,7 @@
       },
       "translation": {
         "title": "Liability and external links.",
-        "body": "<p>The site's content is provided for information and may change. Nexora strives to keep it accurate but cannot ensure it contains no error. The site may link to third-party sites whose content Nexora does not control. Wording of the limitation of liability [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
+        "body": "<p>The site's content is provided for information and may change. Nexora AI strives to keep it accurate but cannot ensure it contains no error. The site may link to third-party sites whose content Nexora AI does not control. Wording of the limitation of liability [TO BE REVIEWED BY A QUEBEC LAWYER].</p>"
       }
     },
     {

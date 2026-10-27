@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Sovereignty means knowing where your data goes.
 
-AI is sovereign when you know where it runs, who can reach it and where your data goes, and when you can walk away from it. Here is how Nexora turns that idea into an architecture and into commitments you can check.
+AI is sovereign when you know where it runs, who can reach it and where your data goes, and when you can walk away from it. Here is how Nexora AI turns that idea into an architecture and into commitments you can check.
 
 [Discuss my project](/en/contact/) · [See the trust center](/en/trust-center/)
 
@@ -33,18 +33,18 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=definition`
 
 ## A definition you can check.
 
-Here, “sovereign” describes control, not a label. At Nexora, AI is sovereign when four questions each have a written, precise answer that your team can verify.
+Here, “sovereign” describes control, not a label. At Nexora AI, AI is sovereign when four questions each have a written, precise answer that your team can verify.
 
 We do not talk about immunity. Sovereignty reduces the dependencies you did not choose; it removes neither the laws that apply to your business nor your own obligations.
 
-- **Where it runs.** On a server you own, or in Nexora's infrastructure in Quebec. The location is written down, not assumed.
-- **Who can reach it.** Named accounts, roles and a log of actions. Nexora's own access to your system is agreed in advance.
+- **Where it runs.** On a server you own, or in Nexora AI's infrastructure in Quebec. The location is written down, not assumed.
+- **Who can reach it.** Named accounts, roles and a log of actions. Nexora AI's own access to your system is agreed in advance.
 - **Where the data goes.** A data-flow diagram, handed over in writing before go-live, shows what stays inside the perimeter and what leaves it.
 - **Whether you can leave.** Your documents, configurations and workflows stay exportable, and the contract says so.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Les quatre couches, chacune avec ce que Nexora documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
+*Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
 
 Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=couches`
 
@@ -90,7 +90,7 @@ It is an example, not a real customer's configuration. The diagram for your own 
 
 - **Inside the perimeter.** Documents, search index, conversations and logs stay on your server or in our infrastructure in Quebec, depending on the mode you choose.
 - **What may leave it.** Updates, licences, and an external model only if you accepted it in writing. Every outbound flow is listed on the diagram.
-- **What this diagram does not cover.** Your exchanges with Nexora (forms, emails, billing) form a separate plane, distinct from your system's data. The trust center describes it.
+- **What this diagram does not cover.** Your exchanges with Nexora AI (forms, emails, billing) form a separate plane, distinct from your system's data. The trust center describes it.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -122,11 +122,11 @@ Who controls what, point by point. A combination of the two modes can be studied
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce que Nexora affirme : cinq engagements, sans chiffre ni certification. · Affirmations : CL-05, CL-06, CL-76, CL-07, CL-08, CL-09, CL-87*
+*Ce que Nexora AI affirme : cinq engagements, sans chiffre ni certification. · Affirmations : CL-05, CL-06, CL-76, CL-07, CL-08, CL-09, CL-87*
 
 Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=affirmations`
 
-## What Nexora states.
+## What Nexora AI states.
 
 Every statement points to an internal proof that we keep up to date. The contract documents that carry them are in preparation.
 
@@ -152,11 +152,11 @@ When a capability is in pilot or planned, we write it. We publish no figure and 
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Ce que Nexora ne promet pas : cinq limites écrites. · Affirmations : CL-75, CL-77, CL-L05, CL-87*
+*Ce que Nexora AI ne promet pas : cinq limites écrites. · Affirmations : CL-75, CL-77, CL-L05, CL-87*
 
 Réglages : `columns=3`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
-## What Nexora does not promise.
+## What Nexora AI does not promise.
 
 A sovereignty page that does not write down its limits is worth nothing. Here are ours.
 

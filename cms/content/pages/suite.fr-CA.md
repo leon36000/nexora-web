@@ -6,7 +6,7 @@
 
 - Page : `suite` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/suite/` · slug : `suite`
-- Titre SEO (47 caractères) : Suite Nexora : WorkStudio, Code, Corpus, Quanta
+- Titre SEO (43 caractères) : La suite : WorkStudio, Code, Corpus, Quanta
 - Description SEO (158 caractères) : Nexora WorkStudio : démonstration sur demande, aucune offre en libre-service. Nexora Code, Nexora Corpus, Quanta et Helix : leur vocation, sans date annoncée.
 
 ## Contenu
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Une suite, pas une pile.
 
-Les produits de Nexora servent la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. Voici l'état réel de chacun.
+Les produits de Nexora AI servent la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. Voici l'état réel de chacun.
 
 [Voir WorkStudio](/workstudio/) · [Discuter de mon projet](/contact/)
 

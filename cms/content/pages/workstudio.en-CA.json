@@ -90,7 +90,7 @@
       },
       "translation": {
         "title": "Design your agents.",
-        "intro": "“Available” means delivered in the current version and verified on Nexora's test server. It does not mean a customer is already using it.",
+        "intro": "“Available” means delivered in the current version and verified on Nexora AI's test server. It does not mean a customer is already using it.",
         "cards": [
           {
             "title": "Agents.",
@@ -279,7 +279,7 @@
         "items": [
           {
             "title": "Verified here, not yet at a customer.",
-            "text": "WorkStudio has been verified on Nexora's test server with several models hosted elsewhere than on that server. No customer result is announced."
+            "text": "WorkStudio has been verified on Nexora AI's test server with several models hosted elsewhere than on that server. No customer result is announced."
           },
           {
             "title": "Tool-using agents need a capable model.",

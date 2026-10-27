@@ -6,7 +6,7 @@
 
 - Page : `conditions` · langue : `en-CA` · statut visé : `draft` · noindex : oui
 - Route : `/en/terms/` · slug : `terms`
-- Titre SEO (45 caractères) : Terms of use for the Nexora site and services
+- Titre SEO (48 caractères) : Terms of use for the Nexora AI site and services
 - Description SEO (159 caractères) : Purpose, accounts, offers, prices and taxes, termination, export, liability and governing law. Draft template, to be completed and reviewed before publication.
 
 ## Contenu
@@ -33,7 +33,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=objet`
 
 ## Purpose and acceptance.
 
-These terms govern use of Nexora's site and services. The services are aimed at businesses; confirm whether they are also aimed at individuals, which changes the applicable rules [TO BE REVIEWED BY A QUEBEC LAWYER]. Method of acceptance (click, signature) [TO BE COMPLETED BY THE FOUNDER].
+These terms govern use of Nexora AI's site and services. The services are aimed at businesses; confirm whether they are also aimed at individuals, which changes the applicable rules [TO BE REVIEWED BY A QUEBEC LAWYER]. Method of acceptance (click, signature) [TO BE COMPLETED BY THE FOUNDER].
 
 ### Bloc 3 — Section (`block_section`)
 
@@ -83,7 +83,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=responsabilite`
 
 ## Our liability.
 
-Extent and limits of Nexora's liability, human supervision of AI outputs, force majeure [TO BE REVIEWED BY A QUEBEC LAWYER].
+Extent and limits of Nexora AI's liability, human supervision of AI outputs, force majeure [TO BE REVIEWED BY A QUEBEC LAWYER].
 
 ### Bloc 8 — Section (`block_section`)
 

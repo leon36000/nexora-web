@@ -4,18 +4,18 @@ import type { GatewayDictionary } from "./gateway-fr-CA";
 export const gatewayEnCA: GatewayDictionary = {
   meta: {
     models: {
-      title: "Models | Nexora",
+      title: "Models | Nexora AI",
       description:
-        "Catalogue of AI models available through the Nexora API: prices in Canadian dollars, context window, capabilities and hosting location for each.",
+        "Catalogue of AI models available through the Nexora AI API: prices in Canadian dollars, context window, capabilities and hosting location for each.",
     },
     model: {
       description:
         "Model page for {name}: price per million tokens in Canadian dollars, context window, hosting and an example call.",
     },
     docs: {
-      title: "API documentation | Nexora",
+      title: "API documentation | Nexora AI",
       description:
-        "Quickstart for the Nexora API, which is OpenAI-compatible: key, first call, streaming, errors and limits.",
+        "Quickstart for the Nexora AI API, which is OpenAI-compatible: key, first call, streaming, errors and limits.",
     },
   },
 
@@ -83,7 +83,7 @@ export const gatewayEnCA: GatewayDictionary = {
     dataPolicy: "Data policy declared by the provider",
     dataPolicyMissing: "The provider has not declared a data policy yet.",
     nexoraNote:
-      "Nexora’s gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests.",
+      "Nexora AI’s gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests.",
     sunset: "Scheduled for retirement on {date}.",
     example: "Example call",
     exampleLead:
@@ -97,7 +97,7 @@ export const gatewayEnCA: GatewayDictionary = {
   docs: {
     label: "API",
     title: "API quickstart.",
-    lead: "The Nexora API is compatible with OpenAI’s: change the base URL and the key, and the rest of your code stays as it is.",
+    lead: "The Nexora AI API is compatible with OpenAI’s: change the base URL and the key, and the rest of your code stays as it is.",
     baseUrlTitle: "Base URL",
     baseUrlText:
       "All requests go through {url}. Authenticate with the Authorization header.",
@@ -182,7 +182,7 @@ export const gatewayEnCA: GatewayDictionary = {
 
   account: {
     title: "API keys",
-    lead: "Keys give access to the Nexora API and spend your organization’s credits.",
+    lead: "Keys give access to the Nexora AI API and spend your organization’s credits.",
     ownerOnly: "Only the organization owner can create or revoke a key.",
     createTitle: "Create a key",
     name: "Key name",
@@ -198,7 +198,7 @@ export const gatewayEnCA: GatewayDictionary = {
     creating: "Creating…",
     createdTitle: "Key created",
     createdWarn:
-      "Copy this key now: it will never be shown again. Nexora only keeps its fingerprint.",
+      "Copy this key now: it will never be shown again. Nexora AI only keeps its fingerprint.",
     copy: "Copy key",
     copied: "Key copied",
     close: "I have copied the key",

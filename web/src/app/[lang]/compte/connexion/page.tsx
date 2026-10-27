@@ -6,6 +6,7 @@ import { LoginForm } from "@/components/account/login-form";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -16,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/connexion",
     title: t.meta.login,
     description: t.login.lead,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }

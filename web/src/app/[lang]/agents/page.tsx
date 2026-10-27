@@ -14,7 +14,7 @@ import { isLang, localizePath } from "@/i18n/config";
 import { agentSamples } from "@/lib/agent-samples";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { getPublicAgents } from "@/server/agents/read";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/agents",
     title: t.meta.list.title,
     description: t.meta.list.description,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 
@@ -142,7 +142,7 @@ export default async function AgentsPage() {
       <JsonLd
         data={appBreadcrumb(lang, [
           {
-            name: t.meta.list.title.replace(/ \| Nexora$/, ""),
+            name: t.meta.list.title.replace(` | ${SITE_NAME}`, ""),
             path: "/agents",
           },
         ])}

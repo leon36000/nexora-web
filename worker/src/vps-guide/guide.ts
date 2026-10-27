@@ -114,7 +114,7 @@ export function buildGuideHtml(md: string, opts: { date: string }): string {
 </head>
 <body>
 <section class="couverture">
-<div class="bandeau"><div class="page-marges"><p class="marque">Nexora</p><h1>${escapeHtml(h1)}</h1><p class="meta">Version du document : ${sourceHash(md)} · Généré le ${escapeHtml(opts.date)} · Destiné au personnel</p></div></div>
+<div class="bandeau"><div class="page-marges"><p class="marque">Nexora AI</p><h1>${escapeHtml(h1)}</h1><p class="meta">Version du document : ${sourceHash(md)} · Généré le ${escapeHtml(opts.date)} · Destiné au personnel</p></div></div>
 <nav class="sommaire"><h2>Sommaire</h2><ol>${toc}</ol></nav>
 </section>
 <div class="saut"></div>

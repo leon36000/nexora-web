@@ -15,6 +15,7 @@ import { isLang, type Lang, localizePath } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
+import { SITE_NAME } from "@/lib/site";
 import { getPublicCatalog } from "@/server/gateway/read";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/modeles",
     title: t.meta.models.title,
     description: t.meta.models.description,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 
@@ -58,7 +59,7 @@ export default async function ModelsPage({
       <JsonLd
         data={appBreadcrumb(lang, [
           {
-            name: t.meta.models.title.replace(/ \| Nexora$/, ""),
+            name: t.meta.models.title.replace(` | ${SITE_NAME}`, ""),
             path: "/modeles",
           },
         ])}

@@ -7,7 +7,7 @@
 - Page : `services-installation-serveurs-ia` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/services/installation-serveurs-ia/` · slug : `services/installation-serveurs-ia`
 - Titre SEO (38 caractères) : Installation de serveurs d'IA pour PME
-- Description SEO (156 caractères) : Nexora installe et configure votre serveur d'IA chez vous ou dans son infrastructure au Québec, puis l'exploite avec vous. Matériel dimensionné avant achat.
+- Description SEO (159 caractères) : Nexora AI installe et configure votre serveur d'IA chez vous ou dans son infrastructure au Québec, puis l'exploite avec vous. Matériel dimensionné avant achat.
 
 ## Contenu
 

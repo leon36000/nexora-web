@@ -7,7 +7,7 @@
     "slug": "",
     "title": "Accueil",
     "seo_title": "Automatisation IA pour PME au Québec",
-    "seo_description": "Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME\u00a0: chez vous ou hébergés au Québec, sous votre contrôle. Parlons de votre projet.",
+    "seo_description": "Nexora AI conçoit, installe et accompagne des systèmes d'IA pour les PME\u00a0: chez vous ou hébergés au Québec, sous votre contrôle. Parlons de votre projet.",
     "canonical": null
   },
   "blocks": [
@@ -20,9 +20,9 @@
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Nexora · IA pour les PME du Québec",
+        "eyebrow": "Nexora AI · IA pour les PME du Québec",
         "headline": "L'IA qui travaille pour votre entreprise. Sous votre contrôle.",
-        "subheadline": "Nexora conçoit, installe et accompagne des systèmes d'IA adaptés à votre métier\u00a0: installés chez vous, ou hébergés dans notre infrastructure au Québec.",
+        "subheadline": "Nexora AI conçoit, installe et accompagne des systèmes d'IA adaptés à votre métier\u00a0: installés chez vous, ou hébergés dans notre infrastructure au Québec.",
         "primary_label": "Discuter de mon projet",
         "primary_href": "/contact/",
         "secondary_label": "Voir les solutions",
@@ -114,7 +114,7 @@
       },
       "translation": {
         "title": "Chez vous. Ou chez nous.",
-        "body": "<p>Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora propose deux façons d'y arriver.</p>"
+        "body": "<p>Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora AI propose deux façons d'y arriver.</p>"
       }
     },
     {
@@ -381,7 +381,7 @@
           },
           {
             "question": "Pourquoi pas un assistant grand public comme ChatGPT\u00a0?",
-            "answer": "Un assistant grand public répond bien aux questions générales. Ce que Nexora ajoute\u00a0: le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire."
+            "answer": "Un assistant grand public répond bien aux questions générales. Ce que Nexora AI ajoute\u00a0: le choix du lieu où vos requêtes sont traitées, vos propres documents comme base de réponse, des liens avec vos logiciels, des validations et un journal. Le bon choix dépend de ce que vous voulez en faire."
           },
           {
             "question": "Faut-il un serveur puissant\u00a0?",

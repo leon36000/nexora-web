@@ -7,7 +7,7 @@
     "slug": "deploiement/heberge-quebec",
     "title": "Hébergé au Québec",
     "seo_title": "IA hébergée au Québec pour PME",
-    "seo_description": "Nexora héberge et exploite votre système d'IA dans son infrastructure, située au Québec. Lieu, sauvegardes, journaux et sous-traitants précisés par écrit.",
+    "seo_description": "Nexora AI héberge et exploite votre système d'IA dans son infrastructure, située au Québec. Lieu, sauvegardes, journaux et sous-traitants précisés par écrit.",
     "canonical": null
   },
   "blocks": [
@@ -115,7 +115,7 @@
             "text": "Vous décidez des cas d'usage et des documents.\nVous validez les actions qui engagent l'entreprise.\nVous acceptez, ou non, tout modèle externe.\nVous pouvez exporter vos documents, vos configurations et vos flux de travaux."
           },
           {
-            "title": "Nexora.",
+            "title": "Nexora AI.",
             "text": "Nous hébergeons et exploitons le système.\nNous appliquons les mises à jour et surveillons.\nNous précisons par écrit lieux, sauvegardes, journaux et sous-traitants.\nNous formons votre équipe à l'usage et à la supervision."
           }
         ]

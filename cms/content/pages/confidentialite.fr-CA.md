@@ -6,7 +6,7 @@
 
 - Page : `confidentialite` · langue : `fr-CA` · statut visé : `draft` · noindex : oui
 - Route : `/confidentialite/` · slug : `confidentialite`
-- Titre SEO (38 caractères) : Politique de confidentialité de Nexora
+- Titre SEO (41 caractères) : Politique de confidentialité de Nexora AI
 - Description SEO (154 caractères) : Responsable, renseignements recueillis, finalités, partage, conservation, droits, témoins, incidents. Gabarit en brouillon à compléter et à faire valider.
 
 ## Contenu
@@ -21,7 +21,7 @@ Réglages : `variant=clair`, `perimeter_grid=false`
 
 # Politique de confidentialité.
 
-Gabarit en brouillon structuré selon les rubriques attendues au Québec ; chaque information propre à Nexora reste à fournir par le fondateur.
+Gabarit en brouillon structuré selon les rubriques attendues au Québec ; chaque information propre à Nexora AI reste à fournir par le fondateur.
 
 
 
@@ -45,7 +45,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=recueillis`
 
 - **Formulaire de contact.** Nom, courriel, entreprise, besoin, mode de déploiement envisagé, message. Liste exacte [À COMPLÉTER PAR LE FONDATEUR]
 - **Compte client.** Si un espace client ouvre : renseignements d'inscription et de facturation [À COMPLÉTER PAR LE FONDATEUR]
-- **Paiement.** Traité par un prestataire de paiement [À COMPLÉTER PAR LE FONDATEUR]. Précisez ce que Nexora conserve ou non [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]
+- **Paiement.** Traité par un prestataire de paiement [À COMPLÉTER PAR LE FONDATEUR]. Précisez ce que Nexora AI conserve ou non [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]
 - **Journaux techniques.** Adresse IP, date, pages consultées, pour la sécurité et le bon fonctionnement. Durée [À COMPLÉTER PAR LE FONDATEUR]
 - **Mesure d'audience.** Outil retenu et configuration (avec ou sans témoins) [À COMPLÉTER PAR LE FONDATEUR]
 - **Données des systèmes des clients.** Traitées selon l'entente conclue avec le client ; elles ne relèvent pas de cette politique.
@@ -68,7 +68,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=partage`
 
 ## Avec qui nous les partageons.
 
-Prestataires de la chaîne de service (hébergement du site, courriel, paiement, mesure d'audience), chacun avec son rôle et son lieu [À COMPLÉTER PAR LE FONDATEUR]. Pour toute communication de renseignements à l'extérieur du Québec, une évaluation préalable et une entente écrite sont requises [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Nexora ne vend pas de renseignements personnels [À COMPLÉTER PAR LE FONDATEUR].
+Prestataires de la chaîne de service (hébergement du site, courriel, paiement, mesure d'audience), chacun avec son rôle et son lieu [À COMPLÉTER PAR LE FONDATEUR]. Pour toute communication de renseignements à l'extérieur du Québec, une évaluation préalable et une entente écrite sont requises [À VALIDER PAR UN AVOCAT QUÉBÉCOIS]. Nexora AI ne vend pas de renseignements personnels [À COMPLÉTER PAR LE FONDATEUR].
 
 ### Bloc 6 — Section (`block_section`)
 

@@ -7,7 +7,7 @@
     "slug": "deploiement/sur-place",
     "title": "Déploiement sur place",
     "seo_title": "Serveur d'IA sur place pour PME",
-    "seo_description": "Nexora installe le système d'IA sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Matériel et accès à vous, flux sortants listés par écrit.",
+    "seo_description": "Nexora AI installe le système d'IA sur votre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Matériel et accès à vous, flux sortants listés.",
     "canonical": null
   },
   "blocks": [
@@ -113,10 +113,10 @@
         "cards": [
           {
             "title": "Vous.",
-            "text": "Vous possédez le matériel.\nVous détenez les accès et les accordez à Nexora au besoin.\nVous placez et conservez les sauvegardes.\nVous décidez des modèles et de toute option externe."
+            "text": "Vous possédez le matériel.\nVous détenez les accès et les accordez à Nexora AI au besoin.\nVous placez et conservez les sauvegardes.\nVous décidez des modèles et de toute option externe."
           },
           {
-            "title": "Nexora.",
+            "title": "Nexora AI.",
             "text": "Nous dimensionnons, installons et configurons.\nNous listons les flux sortants et remettons le schéma.\nNous formons votre équipe.\nNous exploitons avec vous, selon le contrat."
           }
         ]
@@ -171,7 +171,7 @@
             "answer": "Par défaut, les documents, l’index et les conversations restent sur votre serveur. Les flux sortants sont ceux que nous listons avec vous avant la mise en service\u00a0: mises à jour, licences et, si vous le choisissez, un modèle externe."
           },
           {
-            "question": "Nexora accède-t-elle à mon serveur\u00a0?",
+            "question": "Nexora AI accède-t-elle à mon serveur\u00a0?",
             "answer": "Seulement par les accès que vous accordez, convenus à l'avance. Vous pouvez les retirer."
           },
           {

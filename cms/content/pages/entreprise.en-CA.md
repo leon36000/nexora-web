@@ -6,28 +6,28 @@
 
 - Page : `entreprise` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/company/` · slug : `company`
-- Titre SEO (38 caractères) : Nexora: AI for Quebec small businesses
-- Description SEO (150 caractères) : Nexora designs, installs and supports AI systems for Quebec small businesses. Our principles: truth first, control, reversibility, one case at a time.
+- Titre SEO (41 caractères) : Nexora AI: AI for Quebec small businesses
+- Description SEO (153 caractères) : Nexora AI designs, installs and supports AI systems for Quebec small businesses. Our principles: truth first, control, reversibility, one case at a time.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Présentation de Nexora, limitée à ce qui est connu. · Affirmations : CL-01, CL-130*
+*Présentation de Nexora AI, limitée à ce qui est connu. · Affirmations : CL-01, CL-130*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Company**
 
-# Nexora. AI in the service of local small business.
+# Nexora AI. AI in the service of local small business.
 
-Nexora is a Quebec company. We design, install, integrate and support AI systems fitted to your trade, for businesses that want to keep control of their data.
+Nexora AI is a Quebec company. We design, install, integrate and support AI systems fitted to your trade, for businesses that want to keep control of their data.
 
 [Contact us](/en/contact/) · [Read the method](/en/method/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Ce que fait Nexora : quatre verbes. · Affirmations : CL-01, CL-04, CL-02*
+*Ce que fait Nexora AI : quatre verbes. · Affirmations : CL-01, CL-04, CL-02*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=metier`
 
@@ -80,7 +80,7 @@ A company is judged by what it lets you check. Here is where to look.
 
 ### Bloc 5 — Section (`block_section`)
 
-*Joindre Nexora : le formulaire, rien d'autre d'inventé. · Affirmations : CL-01*
+*Joindre Nexora AI : le formulaire, rien d'autre d'inventé. · Affirmations : CL-01*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=contact`
 

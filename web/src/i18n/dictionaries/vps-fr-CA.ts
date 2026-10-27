@@ -7,19 +7,19 @@
 export const vpsFrCA = {
   meta: {
     vps: {
-      title: "VPS au Québec pour vos agents d’IA | Nexora",
+      title: "VPS au Québec pour vos agents d’IA | Nexora AI",
       description:
         "VPS hébergés au Québec pour vos agents et outils d’IA : plans comparés, applications prêtes à installer, prix en dollars canadiens avant taxes.",
     },
     app: {
-      title: "{name} sur un VPS au Québec | Nexora",
+      title: "{name} sur un VPS au Québec | Nexora AI",
       description:
         "{tagline} Version {version}, licence {license}. VPS au Québec, prix en $ CA avant taxes.",
     },
     guide: {
-      title: "Installer {name} sur votre VPS | Nexora",
+      title: "Installer {name} sur votre VPS | Nexora AI",
       description:
-        "{tagline} Guide d’installation : Nexora n’installe pas {name} et ne le revend pas.",
+        "{tagline} Guide d’installation : Nexora AI n’installe pas {name} et ne le revend pas.",
     },
   },
 
@@ -111,7 +111,7 @@ export const vpsFrCA = {
     stepKey: "4. Clé SSH publique",
     planHint: "Les plans trop petits pour l’application choisie sont grisés.",
     appHint:
-      "Seules les applications installées par Nexora sont offertes à la commande.",
+      "Seules les applications installées par Nexora AI sont offertes à la commande.",
     tooSmall: "Trop petit : cette application demande au moins {ram}.",
     specLine: "{vcpu} vCPU · {ram} · {disk} NVMe",
     minRam: "Mémoire minimale : {ram}",
@@ -128,7 +128,7 @@ export const vpsFrCA = {
     keyPlaceholder: "ssh-ed25519 AAAA… vous@poste",
     keygenSummary: "Comment générer une clé ?",
     keygenIntro:
-      "Dans un terminal sur votre poste, créez une paire de clés. La commande vous demande une phrase secrète facultative : elle protège votre clé privée sur votre poste et n’est jamais envoyée à Nexora.",
+      "Dans un terminal sur votre poste, créez une paire de clés. La commande vous demande une phrase secrète facultative : elle protège votre clé privée sur votre poste et n’est jamais envoyée à Nexora AI.",
     keygenCommand: "ssh-keygen -t ed25519",
     keygenShow:
       "Affichez ensuite la clé publique (le fichier qui se termine par .pub) et collez son contenu ci-dessus :",
@@ -188,7 +188,7 @@ export const vpsFrCA = {
   apps: {
     label: "Applications",
     title: "Applications prêtes à installer",
-    lead: "Choisissez une application à la commande : Nexora l’installe sur votre VPS dans la version indiquée. Chaque fiche donne la version, la licence et les ports.",
+    lead: "Choisissez une application à la commande : Nexora AI l’installe sur votre VPS dans la version indiquée. Chaque fiche donne la version, la licence et les ports.",
     empty: "Aucune application n’est publiée pour le moment.",
     kind: "Prête à installer",
     version: "Version {version}",
@@ -200,7 +200,7 @@ export const vpsFrCA = {
   guides: {
     label: "Guides",
     title: "Des outils à installer vous-même",
-    lead: "Certaines applications ne sont pas installées par Nexora : leur licence ne s’y prête pas (par exemple n8n, Open WebUI ou Dify). Vous les installez vous-même sur votre VPS, sous votre propre licence, en suivant le guide de leur fiche.",
+    lead: "Certaines applications ne sont pas installées par Nexora AI : leur licence ne s’y prête pas (par exemple n8n, Open WebUI ou Dify). Vous les installez vous-même sur votre VPS, sous votre propre licence, en suivant le guide de leur fiche.",
     kind: "À installer vous-même sous votre licence",
     license: "Licence {license}",
     view: "Voir le guide de {name}",
@@ -219,7 +219,7 @@ export const vpsFrCA = {
       },
       ssh: {
         q: "Comment accède-t-on au serveur ? Y a-t-il un mot de passe ?",
-        a: "L’accès se fait en SSH, uniquement avec votre clé : vous fournissez votre clé PUBLIQUE à la commande. Aucun mot de passe SSH n’est créé ni demandé, et Nexora ne voit jamais votre clé privée.",
+        a: "L’accès se fait en SSH, uniquement avec votre clé : vous fournissez votre clé PUBLIQUE à la commande. Aucun mot de passe SSH n’est créé ni demandé, et Nexora AI ne voit jamais votre clé privée.",
       },
       tunnel: {
         q: "Les applications sont-elles ouvertes sur Internet ?",
@@ -242,7 +242,7 @@ export const vpsFrCA = {
       },
       reinstall: {
         q: "Que fait une réinstallation ?",
-        a: "Elle efface les données du VPS pour repartir d’une installation neuve. Nexora garde toutefois un instantané du disque pendant 7 jours.",
+        a: "Elle efface les données du VPS pour repartir d’une installation neuve. Nexora AI garde toutefois un instantané du disque pendant 7 jours.",
       },
       port25: {
         q: "Puis-je envoyer des courriels depuis le VPS ?",
@@ -285,7 +285,7 @@ export const vpsFrCA = {
       "Les plans sont momentanément indisponibles. Rechargez la page dans quelques minutes.",
     order: "Commander avec cette application",
     guideTitle: "Guide d’installation",
-    guideNotice: "Nexora n’installe pas {name} et ne le revend pas.",
+    guideNotice: "Nexora AI n’installe pas {name} et ne le revend pas.",
     guideNoticeText:
       "{name} s’installe par vos soins, sous votre propre licence, sur un VPS. Les étapes ci-dessous sont un point de départ : suivez toujours la documentation officielle du projet.",
     guideOrderNote:
@@ -304,11 +304,11 @@ export const vpsFrCA = {
       },
       version: {
         q: "Quelle version est installée ?",
-        a: "Nexora installe la version {version}. Pour les nouvelles versions et les avis de sécurité, suivez le projet d’origine.",
+        a: "Nexora AI installe la version {version}. Pour les nouvelles versions et les avis de sécurité, suivez le projet d’origine.",
       },
       whoInstalls: {
         q: "Qui installe {name} ?",
-        a: "Vous. Nexora ne l’installe pas et ne le revend pas : vous suivez le guide sur votre propre VPS, sous votre licence.",
+        a: "Vous. Nexora AI ne l’installe pas et ne le revend pas : vous suivez le guide sur votre propre VPS, sous votre licence.",
       },
       ram: {
         q: "De quelle mémoire ai-je besoin ?",

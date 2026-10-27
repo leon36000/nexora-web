@@ -7,13 +7,13 @@
 export const agentsFrCA = {
   meta: {
     list: {
-      title: "Agents hébergés | Nexora",
+      title: "Agents hébergés | Nexora AI",
       description:
         "Agents conçus dans Nexora WorkStudio, appelables par l’API avec votre clé : un seul solde de crédits, prix en dollars canadiens, hébergement indiqué.",
     },
     agent: {
       description:
-        "Fiche de l’agent {name} : appel par API avec votre clé Nexora, prix, hébergement de l’instance, limites et exemples de code.",
+        "Fiche de l’agent {name} : appel par API avec votre clé Nexora AI, prix, hébergement de l’instance, limites et exemples de code.",
     },
   },
 
@@ -37,10 +37,10 @@ export const agentsFrCA = {
   catalog: {
     label: "Agents hébergés",
     title: "Des agents prêts à appeler.",
-    lead: "Un agent est conçu et publié dans Nexora WorkStudio. Vous l’appelez par l’API de Nexora, avec votre clé et votre solde de crédits, comme vous appelez un modèle.",
+    lead: "Un agent est conçu et publié dans Nexora WorkStudio. Vous l’appelez par l’API de Nexora AI, avec votre clé et votre solde de crédits, comme vous appelez un modèle.",
     count: "{count} agent(s) publié(s)",
     empty:
-      "Aucun agent n’est publié pour le moment. Le catalogue se remplit au fur et à mesure que Nexora publie ses agents.",
+      "Aucun agent n’est publié pour le moment. Le catalogue se remplit au fur et à mesure que Nexora AI publie ses agents.",
     unavailable:
       "Le catalogue est momentanément indisponible. Réessayez dans un instant.",
     trialNote:
@@ -56,7 +56,7 @@ export const agentsFrCA = {
     howTitle: "Comment ça marche",
     howSteps: [
       "Créez une clé API dans votre espace client et rechargez vos crédits.",
-      "Appelez l’API de Nexora avec le modèle « agent/<identifiant> », exactement comme pour un modèle.",
+      "Appelez l’API de Nexora AI avec le modèle « agent/<identifiant> », exactement comme pour un modèle.",
       "Suivez la consommation de chaque agent dans votre espace client.",
     ],
   },
@@ -93,10 +93,10 @@ export const agentsFrCA = {
     lead: "Ce que fait la passerelle, et ce qu’elle ne fait pas.",
     hostingTitle: "Hébergement",
     hosting:
-      "Votre requête est traitée par l’instance Nexora WorkStudio indiquée sur la fiche de l’agent (hébergement déclaré par Nexora), puis par le modèle de langage que cette instance utilise. La région du modèle se vérifie dans le catalogue des modèles ; l’hébergement de l’instance ne dit rien de plus que ce qui est déclaré.",
+      "Votre requête est traitée par l’instance Nexora WorkStudio indiquée sur la fiche de l’agent (hébergement déclaré par Nexora AI), puis par le modèle de langage que cette instance utilise. La région du modèle se vérifie dans le catalogue des modèles ; l’hébergement de l’instance ne dit rien de plus que ce qui est déclaré.",
     retentionTitle: "Contenu de vos échanges",
     retention:
-      "La passerelle de Nexora ne garde que des métadonnées d’usage (agent, jetons, coût, durée), jamais le contenu de vos requêtes.",
+      "La passerelle de Nexora AI ne garde que des métadonnées d’usage (agent, jetons, coût, durée), jamais le contenu de vos requêtes.",
     billingTitle: "Facturation",
     billing:
       "Chaque appel réserve d’abord son coût maximal sur votre solde, puis est réglé au coût réel. Sans solde suffisant, l’API répond 402 avant d’appeler l’agent. Vous pouvez plafonner la dépense d’une clé.",

@@ -7,7 +7,7 @@
 - Page : `deploiement-sur-place` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/deployment/on-premises/` · slug : `deployment/on-premises`
 - Titre SEO (42 caractères) : On-premises AI server for small businesses
-- Description SEO (159 caractères) : Nexora installs the AI system on your server, in your offices or at a host of your choice. Hardware and access are yours; outbound flows are listed in writing.
+- Description SEO (151 caractères) : Nexora AI installs the AI system on your server, in your offices or at a host of your choice. Hardware and access are yours; outbound flows are listed.
 
 ## Contenu
 
@@ -82,11 +82,11 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=repartition`
 #### You.
 
 You own the hardware.
-You hold the access and grant it to Nexora as needed.
+You hold the access and grant it to Nexora AI as needed.
 You place and keep the backups.
 You decide on the models and any external option.
 
-#### Nexora.
+#### Nexora AI.
 
 We size, install and configure.
 We list the outbound flows and hand over the diagram.
@@ -129,7 +129,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 By default, documents, the index and conversations stay on your server. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model.
 
-#### Does Nexora access my server?
+#### Does Nexora AI access my server?
 
 Only through the access you grant, agreed in advance. You can withdraw it.
 

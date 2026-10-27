@@ -6,14 +6,14 @@
   "seo": {
     "slug": "entreprise",
     "title": "Entreprise",
-    "seo_title": "Nexora\u00a0: IA pour les PME du Québec",
-    "seo_description": "Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME du Québec. Nos principes\u00a0: vérité d'abord, contrôle, réversibilité, un cas à la fois.",
+    "seo_title": "Nexora AI\u00a0: IA pour les PME du Québec",
+    "seo_description": "Nexora AI conçoit, installe et accompagne des systèmes d'IA pour les PME du Québec. Nos principes\u00a0: vérité d'abord, contrôle, réversibilité, un cas à la fois.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Présentation de Nexora, limitée à ce qui est connu.",
+      "role": "Présentation de Nexora AI, limitée à ce qui est connu.",
       "claims": ["CL-01", "CL-130"],
       "fields": {
         "variant": "sombre",
@@ -21,8 +21,8 @@
       },
       "translation": {
         "eyebrow": "Entreprise",
-        "headline": "Nexora. L'IA au service des PME d'ici.",
-        "subheadline": "Nexora est une entreprise du Québec. Nous concevons, installons, intégrons et accompagnons des systèmes d'IA adaptés à votre métier, pour des entreprises qui veulent garder la maîtrise de leurs données.",
+        "headline": "Nexora AI. L'IA au service des PME d'ici.",
+        "subheadline": "Nexora AI est une entreprise du Québec. Nous concevons, installons, intégrons et accompagnons des systèmes d'IA adaptés à votre métier, pour des entreprises qui veulent garder la maîtrise de leurs données.",
         "primary_label": "Nous joindre",
         "primary_href": "/contact/",
         "secondary_label": "Lire la méthode",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce que fait Nexora : quatre verbes.",
+      "role": "Ce que fait Nexora AI : quatre verbes.",
       "claims": ["CL-01", "CL-04", "CL-02"],
       "fields": {
         "media_position": "none",
@@ -123,7 +123,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Joindre Nexora : le formulaire, rien d'autre d'inventé.",
+      "role": "Joindre Nexora AI : le formulaire, rien d'autre d'inventé.",
       "claims": ["CL-01"],
       "fields": {
         "media_position": "none",

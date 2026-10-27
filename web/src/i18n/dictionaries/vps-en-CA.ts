@@ -4,19 +4,19 @@ import type { VpsDictionary } from "./vps-fr-CA";
 export const vpsEnCA: VpsDictionary = {
   meta: {
     vps: {
-      title: "VPS in Quebec for your AI agents | Nexora",
+      title: "VPS in Quebec for your AI agents | Nexora AI",
       description:
         "VPS hosted in Quebec for your AI agents and tools: compared plans, ready-to-install applications, prices in Canadian dollars before taxes.",
     },
     app: {
-      title: "{name} on a VPS in Quebec | Nexora",
+      title: "{name} on a VPS in Quebec | Nexora AI",
       description:
         "{tagline} Version {version}, {license} license. VPS in Quebec, prices in CAD before taxes.",
     },
     guide: {
-      title: "Install {name} on your VPS | Nexora",
+      title: "Install {name} on your VPS | Nexora AI",
       description:
-        "{tagline} Installation guide: Nexora does not install {name} and does not resell it.",
+        "{tagline} Installation guide: Nexora AI does not install {name} and does not resell it.",
     },
   },
 
@@ -108,7 +108,7 @@ export const vpsEnCA: VpsDictionary = {
     stepKey: "4. Public SSH key",
     planHint:
       "Plans that are too small for the chosen application are greyed out.",
-    appHint: "Only applications installed by Nexora can be ordered online.",
+    appHint: "Only applications installed by Nexora AI can be ordered online.",
     tooSmall: "Too small: this application needs at least {ram}.",
     specLine: "{vcpu} vCPU · {ram} · {disk} NVMe",
     minRam: "Minimum memory: {ram}",
@@ -125,7 +125,7 @@ export const vpsEnCA: VpsDictionary = {
     keyPlaceholder: "ssh-ed25519 AAAA… you@laptop",
     keygenSummary: "How do I generate a key?",
     keygenIntro:
-      "In a terminal on your computer, create a key pair. The command asks for an optional passphrase: it protects your private key on your computer and is never sent to Nexora.",
+      "In a terminal on your computer, create a key pair. The command asks for an optional passphrase: it protects your private key on your computer and is never sent to Nexora AI.",
     keygenCommand: "ssh-keygen -t ed25519",
     keygenShow:
       "Then display the public key (the file ending in .pub) and paste its content above:",
@@ -184,7 +184,7 @@ export const vpsEnCA: VpsDictionary = {
   apps: {
     label: "Applications",
     title: "Ready-to-install applications",
-    lead: "Choose an application when you order: Nexora installs it on your VPS in the version shown. Each page gives the version, the license and the ports.",
+    lead: "Choose an application when you order: Nexora AI installs it on your VPS in the version shown. Each page gives the version, the license and the ports.",
     empty: "No application is published at the moment.",
     kind: "Ready to install",
     version: "Version {version}",
@@ -196,7 +196,7 @@ export const vpsEnCA: VpsDictionary = {
   guides: {
     label: "Guides",
     title: "Tools you install yourself",
-    lead: "Some applications are not installed by Nexora: their license does not allow it (for example n8n, Open WebUI or Dify). You install them yourself on your VPS, under your own license, by following the guide on their page.",
+    lead: "Some applications are not installed by Nexora AI: their license does not allow it (for example n8n, Open WebUI or Dify). You install them yourself on your VPS, under your own license, by following the guide on their page.",
     kind: "Install it yourself under your license",
     license: "{license} license",
     view: "See the {name} guide",
@@ -215,7 +215,7 @@ export const vpsEnCA: VpsDictionary = {
       },
       ssh: {
         q: "How do I access the server? Is there a password?",
-        a: "Access is over SSH, with your key only: you provide your PUBLIC key when ordering. No SSH password is created or requested, and Nexora never sees your private key.",
+        a: "Access is over SSH, with your key only: you provide your PUBLIC key when ordering. No SSH password is created or requested, and Nexora AI never sees your private key.",
       },
       tunnel: {
         q: "Are applications open to the Internet?",
@@ -238,7 +238,7 @@ export const vpsEnCA: VpsDictionary = {
       },
       reinstall: {
         q: "What does a reinstall do?",
-        a: "It erases the VPS data to start from a fresh install. Nexora does keep a snapshot of the disk for 7 days.",
+        a: "It erases the VPS data to start from a fresh install. Nexora AI does keep a snapshot of the disk for 7 days.",
       },
       port25: {
         q: "Can I send email from the VPS?",
@@ -280,7 +280,7 @@ export const vpsEnCA: VpsDictionary = {
       "Plans are temporarily unavailable. Reload the page in a few minutes.",
     order: "Order with this application",
     guideTitle: "Installation guide",
-    guideNotice: "Nexora does not install {name} and does not resell it.",
+    guideNotice: "Nexora AI does not install {name} and does not resell it.",
     guideNoticeText:
       "You install {name} yourself, under your own license, on a VPS. The steps below are a starting point: always follow the project’s official documentation.",
     guideOrderNote:
@@ -299,11 +299,11 @@ export const vpsEnCA: VpsDictionary = {
       },
       version: {
         q: "Which version is installed?",
-        a: "Nexora installs version {version}. For new versions and security advisories, follow the upstream project.",
+        a: "Nexora AI installs version {version}. For new versions and security advisories, follow the upstream project.",
       },
       whoInstalls: {
         q: "Who installs {name}?",
-        a: "You do. Nexora does not install it and does not resell it: you follow the guide on your own VPS, under your license.",
+        a: "You do. Nexora AI does not install it and does not resell it: you follow the guide on your own VPS, under your license.",
       },
       ram: {
         q: "How much memory do I need?",

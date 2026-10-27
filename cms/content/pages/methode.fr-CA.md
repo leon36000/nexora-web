@@ -7,7 +7,7 @@
 - Page : `methode` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/methode/` · slug : `methode`
 - Titre SEO (39 caractères) : Méthode d'accompagnement en IA pour PME
-- Description SEO (154 caractères) : Comprendre, intégrer, vérifier, former, exploiter : la méthode de Nexora, un cas à la fois. Aucun délai universel annoncé, aucun gain chiffré sans mesure.
+- Description SEO (157 caractères) : Comprendre, intégrer, vérifier, former, exploiter : la méthode de Nexora AI, un cas à la fois. Aucun délai universel annoncé, aucun gain chiffré sans mesure.
 
 ## Contenu
 
@@ -145,4 +145,4 @@ Réglages : `tone=sombre`
 
 Décrivez-nous ce qui vous coûte du temps. Nous vous aidons à choisir le cas qui apprendra le plus.
 
-[Discuter de mon projet](/contact/) · [En savoir plus sur Nexora](/entreprise/)
+[Discuter de mon projet](/contact/) · [En savoir plus sur Nexora AI](/entreprise/)

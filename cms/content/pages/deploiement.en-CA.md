@@ -7,7 +7,7 @@
 - Page : `deploiement` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/deployment/` · slug : `deployment`
 - Titre SEO (39 caractères) : AI deployment: on-premises or in Quebec
-- Description SEO (148 caractères) : An honest comparison of Nexora's two deployment modes: on your own server or hosted in Quebec. Who controls what, point by point, and how to choose.
+- Description SEO (151 caractères) : An honest comparison of Nexora AI's two deployment modes: on your own server or hosted in Quebec. Who controls what, point by point, and how to choose.
 
 ## Contenu
 
@@ -60,8 +60,8 @@ Eight points, from hardware to contract exit. In each case, the answer is writte
 - **The models.** In both cases: on the server concerned, or external only if you accepted them in writing. Each model shows where it runs.
 - **The backups.** On your premises: wherever you put them. With us: at the locations named in the contract, with the list of subcontractors.
 - **The updates.** Listed in both modes as outbound flows. On your premises, their timing is agreed; with us, we apply them.
-- **Nexora's access.** On your premises: only what you grant, agreed in advance. With us: what operations require, described in the study.
-- **The operations.** On your premises: shared according to the contract. With us: provided by Nexora with you.
+- **Nexora AI's access.** On your premises: only what you grant, agreed in advance. With us: what operations require, described in the study.
+- **The operations.** On your premises: shared according to the contract. With us: provided by Nexora AI with you.
 - **Contract exit.** In both modes: your documents, configurations and workflows stay exportable.
 
 ### Bloc 4 — Cartes (`block_cards`)

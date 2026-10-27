@@ -10,6 +10,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { publishedPageHref } from "@/lib/chrome";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
+import { SITE_NAME } from "@/lib/site";
 import { getAlternates } from "@/server/cms/read";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -78,7 +79,10 @@ export default async function ContactPage() {
       </div>
       <JsonLd
         data={appBreadcrumb(lang, [
-          { name: t.meta.title.replace(/ \| Nexora$/, ""), path: "/contact" },
+          {
+            name: t.meta.title.replace(` | ${SITE_NAME}`, ""),
+            path: "/contact",
+          },
         ])}
       />
     </Section>

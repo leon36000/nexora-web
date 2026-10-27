@@ -7,6 +7,7 @@ import { ResetForm } from "@/components/account/reset-form";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -17,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/reinitialiser",
     title: t.meta.reset,
     description: t.reset.lead,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }

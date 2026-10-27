@@ -100,7 +100,7 @@
       },
       "translation": {
         "title": "Ce que le logiciel permet déjà.",
-        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora. Elles soutiennent votre démarche\u00a0; elles ne la remplacent pas.",
+        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche\u00a0; elles ne la remplacent pas.",
         "cards": [
           {
             "title": "Rôles et organisations.",
@@ -156,7 +156,7 @@
           },
           {
             "title": "Le contrat type et l'entente de traitement.",
-            "text": "Ce que Nexora fait des renseignements que vous lui confiez, et ce qu'elle s'interdit.",
+            "text": "Ce que Nexora AI fait des renseignements que vous lui confiez, et ce qu'elle s'interdit.",
             "status": "prevu"
           },
           {
@@ -200,7 +200,7 @@
             "text": "Ce que vous lisez ici\u00a0: fait pour être publié et indexé."
           },
           {
-            "title": "Vos échanges avec Nexora.",
+            "title": "Vos échanges avec Nexora AI.",
             "text": "Formulaires, courriels, facturation\u00a0: ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira."
           },
           {
@@ -263,7 +263,7 @@
             "answer": "Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons."
           },
           {
-            "question": "Qui, chez Nexora, peut accéder à mon système\u00a0?",
+            "question": "Qui, chez Nexora AI, peut accéder à mon système\u00a0?",
             "answer": "Seulement les accès convenus à l'avance, décrits dans l'étude de déploiement. Dans le mode sur place, vous les accordez et pouvez les retirer."
           },
           {

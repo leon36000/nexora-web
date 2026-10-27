@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -17,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/compte/verification",
     title: t.meta.verify,
     description: t.verify.text,
-    siteName: "Nexora",
+    siteName: SITE_NAME,
     noindex: true,
   });
 }

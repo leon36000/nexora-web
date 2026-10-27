@@ -7,7 +7,7 @@
 - Page : `services-automatisation-sur-mesure` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/services/automatisation-sur-mesure/` · slug : `services/automatisation-sur-mesure`
 - Titre SEO (34 caractères) : Automatisation sur mesure pour PME
-- Description SEO (151 caractères) : Nexora construit avec vous des agents et des flux de travaux reliés à vos logiciels, et les met à l'épreuve sur vos cas réels avant la mise en service.
+- Description SEO (154 caractères) : Nexora AI construit avec vous des agents et des flux de travaux reliés à vos logiciels, et les met à l'épreuve sur vos cas réels avant la mise en service.
 
 ## Contenu
 

@@ -6,7 +6,7 @@
   "seo": {
     "slug": "privacy",
     "title": "Privacy policy",
-    "seo_title": "Nexora privacy policy for the website",
+    "seo_title": "Nexora AI privacy policy for the website",
     "seo_description": "Officer, information collected, purposes, disclosures, retention, rights, cookies, incidents. Draft template, to be completed and reviewed before publication.",
     "canonical": null
   },
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Draft · Unpublished page",
         "headline": "Privacy policy.",
-        "subheadline": "Draft template structured along the headings expected in Quebec; every Nexora-specific item remains to be provided by the founder."
+        "subheadline": "Draft template structured along the headings expected in Quebec; every item specific to Nexora AI remains to be provided by the founder."
       }
     },
     {
@@ -61,7 +61,7 @@
           },
           {
             "title": "Payment.",
-            "text": "Handled by a payment provider [TO BE COMPLETED BY THE FOUNDER]. State what Nexora keeps or not [TO BE REVIEWED BY A QUEBEC LAWYER]"
+            "text": "Handled by a payment provider [TO BE COMPLETED BY THE FOUNDER]. State what Nexora AI keeps or not [TO BE REVIEWED BY A QUEBEC LAWYER]"
           },
           {
             "title": "Technical logs.",
@@ -103,7 +103,7 @@
       },
       "translation": {
         "title": "Who we share it with.",
-        "body": "<p>Providers in the service chain (site hosting, email, payment, audience measurement), each with its role and location [TO BE COMPLETED BY THE FOUNDER]. For any disclosure of information outside Quebec, a prior assessment and a written agreement are required [TO BE REVIEWED BY A QUEBEC LAWYER]. Nexora does not sell personal information [TO BE COMPLETED BY THE FOUNDER].</p>"
+        "body": "<p>Providers in the service chain (site hosting, email, payment, audience measurement), each with its role and location [TO BE COMPLETED BY THE FOUNDER]. For any disclosure of information outside Quebec, a prior assessment and a written agreement are required [TO BE REVIEWED BY A QUEBEC LAWYER]. Nexora AI does not sell personal information [TO BE COMPLETED BY THE FOUNDER].</p>"
       }
     },
     {

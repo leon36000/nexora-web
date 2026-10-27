@@ -7,7 +7,7 @@
 - Page : `deploiement-heberge-quebec` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/deploiement/heberge-quebec/` · slug : `deploiement/heberge-quebec`
 - Titre SEO (30 caractères) : IA hébergée au Québec pour PME
-- Description SEO (154 caractères) : Nexora héberge et exploite votre système d'IA dans son infrastructure, située au Québec. Lieu, sauvegardes, journaux et sous-traitants précisés par écrit.
+- Description SEO (157 caractères) : Nexora AI héberge et exploite votre système d'IA dans son infrastructure, située au Québec. Lieu, sauvegardes, journaux et sous-traitants précisés par écrit.
 
 ## Contenu
 
@@ -82,7 +82,7 @@ Vous validez les actions qui engagent l'entreprise.
 Vous acceptez, ou non, tout modèle externe.
 Vous pouvez exporter vos documents, vos configurations et vos flux de travaux.
 
-#### Nexora.
+#### Nexora AI.
 
 Nous hébergeons et exploitons le système.
 Nous appliquons les mises à jour et surveillons.

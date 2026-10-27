@@ -7,7 +7,7 @@
 - Page : `deploiement-heberge-quebec` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/deployment/hosted-quebec/` · slug : `deployment/hosted-quebec`
 - Titre SEO (40 caractères) : AI hosted in Quebec for small businesses
-- Description SEO (158 caractères) : Nexora hosts and runs your AI system in its infrastructure, located in Quebec. Location, backups, logs and subcontractors are specified in writing beforehand.
+- Description SEO (150 caractères) : Nexora AI hosts and runs your AI system in its infrastructure, located in Quebec. Location, backups, logs and subcontractors are specified in writing.
 
 ## Contenu
 
@@ -82,7 +82,7 @@ You approve the actions that commit the business.
 You accept, or not, any external model.
 You can export your documents, configurations and workflows.
 
-#### Nexora.
+#### Nexora AI.
 
 We host and run the system.
 We apply updates and monitor.

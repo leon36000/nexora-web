@@ -8,20 +8,20 @@ import type { Dictionary } from "./fr-CA";
  */
 export const enCA: Dictionary = {
   meta: {
-    siteName: "Nexora",
+    siteName: "Nexora AI",
     home: {
-      title: "Nexora | Sovereign AI for your business, in Quebec",
+      title: "Nexora AI | Sovereign AI for your business, in Quebec",
       description:
-        "Nexora designs AI systems for your business, installed on your premises or hosted in Quebec. You keep control of your data and your access.",
+        "Nexora AI designs AI systems for your business, installed on your premises or hosted in Quebec. You keep control of your data and your access.",
     },
     notFound: {
-      title: "Page not found | Nexora",
+      title: "Page not found | Nexora AI",
     },
   },
 
   a11y: {
     skipToContent: "Skip to content",
-    homeLink: "Nexora, back to the home page",
+    homeLink: "Nexora AI, back to the home page",
     mainNav: "Main navigation",
     mobileNav: "Mobile navigation",
     footerNav: "Footer",
@@ -142,7 +142,7 @@ export const enCA: Dictionary = {
       { label: "Terms of use", href: "/conditions" },
       { label: "Acceptable use", href: "/utilisation-acceptable" },
     ],
-    copyright: "© Nexora. All rights reserved.",
+    copyright: "© Nexora AI. All rights reserved.",
   },
 
   notFound: {
@@ -166,7 +166,7 @@ export const enCA: Dictionary = {
       "perimetre-sur-place":
         "Diagram: a single perimeter surrounds your data, the model and the compute, on your premises. A request enters through a controlled gateway and stays inside.",
       "perimetre-heberge":
-        "Diagram: your data crosses a controlled gateway into the perimeter of Nexora’s infrastructure in Quebec, where the model and the storage are.",
+        "Diagram: your data crosses a controlled gateway into the perimeter of Nexora AI’s infrastructure in Quebec, where the model and the storage are.",
       "flux-donnees":
         "Diagram: your documents enter through a controlled gateway to the model, inside the perimeter. What the system prepares leaves only after a person approves it.",
     },
@@ -187,9 +187,9 @@ export const enCA: Dictionary = {
 
   contact: {
     meta: {
-      title: "Book a diagnostic | Nexora",
+      title: "Book a diagnostic | Nexora AI",
       description:
-        "Describe your need in a few questions: Nexora records your request and the team writes back. Installed on your premises or hosted in Quebec.",
+        "Describe your need in a few questions: Nexora AI records your request and the team writes back. Installed on your premises or hosted in Quebec.",
     },
     label: "Diagnostic",
     title: "Let’s talk about your need.",
@@ -198,7 +198,7 @@ export const enCA: Dictionary = {
       title: "What happens next",
       items: [
         "Your request is recorded as soon as you send it.",
-        "The Nexora team is notified by email.",
+        "The Nexora AI team is notified by email.",
         "We write to the address you give us.",
       ],
       note: "We do not announce a response time. Sending this form commits you to nothing.",
@@ -246,7 +246,7 @@ export const enCA: Dictionary = {
         hint: "This choice decides nothing: it helps us prepare the conversation.",
         options: {
           "sur-place": "On your premises, on your own server",
-          heberge: "Hosted in Quebec by Nexora",
+          heberge: "Hosted in Quebec by Nexora AI",
           indecis: "I don’t know yet",
         },
       },
@@ -258,7 +258,7 @@ export const enCA: Dictionary = {
         hint: "Optional: the context, where you lose time, the tools you use today.",
       },
       consentMarketing: {
-        label: "I would also like to receive news from Nexora by email.",
+        label: "I would also like to receive news from Nexora AI by email.",
         hint: "Optional and separate from your request: leave this box unchecked to simply write to us.",
       },
       privacy: {
@@ -290,7 +290,7 @@ export const enCA: Dictionary = {
     },
     success: {
       title: "Request recorded.",
-      text: "Your request is recorded and the Nexora team has been notified. We will write to the address you gave us. We do not announce a response time.",
+      text: "Your request is recorded and the Nexora AI team has been notified. We will write to the address you gave us. We do not announce a response time.",
       already:
         "This request was already recorded: there is no need to send it again. The team has been notified.",
       home: "Back to home",
@@ -302,7 +302,7 @@ export const enCA: Dictionary = {
       label: "Sovereign AI in Quebec",
       title: "AI that works for your business. Under your control.",
       subtitle:
-        "From managing your requests to automating your operations, Nexora designs AI systems tailored to your trade.",
+        "From managing your requests to automating your operations, Nexora AI designs AI systems tailored to your trade.",
       primary: "Book a diagnostic",
       secondary: "See solutions",
     },
@@ -310,7 +310,7 @@ export const enCA: Dictionary = {
     problems: {
       label: "Where to start",
       title: "Start from a concrete problem.",
-      lead: "Every Nexora system begins with a specific task from your day-to-day work, then grows without adding disconnected tools.",
+      lead: "Every Nexora AI system begins with a specific task from your day-to-day work, then grows without adding disconnected tools.",
       items: [
         {
           title: "Scattered requests",
@@ -349,10 +349,10 @@ export const enCA: Dictionary = {
       },
       hosted: {
         label: "In Quebec",
-        title: "Hosted by Nexora",
+        title: "Hosted by Nexora AI",
         text: "We run the system in our AI infrastructure located in Quebec, with the access and uses you authorize.",
         diagram:
-          "Diagram: your data crosses one controlled gate into the perimeter of Nexora’s infrastructure in Quebec.",
+          "Diagram: your data crosses one controlled gate into the perimeter of Nexora AI’s infrastructure in Quebec.",
       },
       cta: "Compare the two modes",
     },

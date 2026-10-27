@@ -7,7 +7,7 @@
 - Page : `faq` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/faq/` · slug : `faq`
 - Titre SEO (35 caractères) : FAQ: AI for Quebec small businesses
-- Description SEO (156 caractères) : Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora's answers to the questions small-business owners ask most often. Straight answers only.
+- Description SEO (159 caractères) : Your data, cost, going live, AI mistakes, Quebec privacy law: Nexora AI's answers to the questions small-business owners ask most often. Straight answers only.
 
 ## Contenu
 
@@ -119,7 +119,7 @@ Your team. Every model call leaves a trace you can consult, consumption is measu
 
 #### Why not a consumer assistant like ChatGPT?
 
-A consumer assistant answers general questions well. What Nexora adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it.
+A consumer assistant answers general questions well. What Nexora AI adds: choosing where your requests are processed, your own documents as the basis for answers, links to your software, approvals and a log. The right choice depends on what you want to do with it.
 
 #### What is an AI agent?
 

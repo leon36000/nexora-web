@@ -20,7 +20,7 @@ import { apiSamples } from "@/lib/api-samples";
 import { buildPageMetadata, notFoundMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { type PriceOffer, productJsonLd } from "@/lib/seo/jsonld";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { getPublicCatalog } from "@/server/gateway/read";
 
 const MODEL_ID = /^[a-z0-9][a-z0-9._-]{0,40}\/[a-z0-9][a-z0-9._:-]{0,80}$/;
@@ -53,9 +53,9 @@ export async function generateMetadata(
   return buildPageMetadata({
     lang,
     path: `/modeles/${model.id}`,
-    title: `${model.name} | Nexora`,
+    title: `${model.name} | ${SITE_NAME}`,
     description: fmt(t.meta.model.description, { name: model.name }),
-    siteName: "Nexora",
+    siteName: SITE_NAME,
   });
 }
 
@@ -254,7 +254,7 @@ export default async function ModelPage(
       <JsonLd
         data={appBreadcrumb(lang, [
           {
-            name: t.meta.models.title.replace(/ \| Nexora$/, ""),
+            name: t.meta.models.title.replace(` | ${SITE_NAME}`, ""),
             path: "/modeles",
           },
           { name: model.name, path: `/modeles/${model.id}` },

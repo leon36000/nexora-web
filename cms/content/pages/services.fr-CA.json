@@ -7,7 +7,7 @@
     "slug": "services",
     "title": "Services",
     "seo_title": "Services d'IA pour PME au Québec",
-    "seo_description": "Diagnostic, installation de serveurs d'IA chez vous ou au Québec, automatisation sur mesure et exploitation\u00a0: les services de Nexora pour les PME.",
+    "seo_description": "Diagnostic, installation de serveurs d'IA chez vous ou au Québec, automatisation sur mesure et exploitation\u00a0: les services de Nexora AI pour les PME.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Services",
         "headline": "De l'idée à l'exploitation. Avec vous.",
-        "subheadline": "Nexora conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas mis en service.",
+        "subheadline": "Nexora AI conçoit, installe, intègre et accompagne des systèmes d'IA adaptés à votre métier. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas mis en service.",
         "primary_label": "Discuter de mon projet",
         "primary_href": "/contact/",
         "secondary_label": "Lire la méthode",
