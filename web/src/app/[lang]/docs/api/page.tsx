@@ -80,7 +80,10 @@ export default async function ApiDocsPage() {
             {d.streaming}
           </h2>
           <p className={p}>{d.streamingText}</p>
-          <CodeBlock label={`${d.streaming} (${d.code})`} code={streamingSample(example)} />
+          <CodeBlock
+            label={`${d.streaming} (${d.code})`}
+            code={streamingSample(example)}
+          />
         </section>
 
         <section aria-labelledby="docs-models">
@@ -88,7 +91,10 @@ export default async function ApiDocsPage() {
             {d.models}
           </h2>
           <p className={p}>{d.modelsText}</p>
-          <CodeBlock label={`${d.models} (${d.code})`} code={`curl ${baseUrl}/models`} />
+          <CodeBlock
+            label={`${d.models} (${d.code})`}
+            code={`curl ${baseUrl}/models`}
+          />
         </section>
 
         <section aria-labelledby="docs-embeddings">

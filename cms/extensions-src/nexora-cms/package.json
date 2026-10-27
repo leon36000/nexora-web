@@ -1,6 +1,6 @@
 {
   "name": "nexora-cms",
-  "description": "Extensions Nexora pour Directus : garde de publication (D6) et Coffre (D2).",
+  "description": "Extensions Nexora pour Directus : garde de publication (D6), Coffre (D2) et module Modèles (D14).",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -30,6 +30,16 @@
         "type": "module",
         "name": "nexora-vault-module",
         "source": "src/vault/module/index.ts"
+      },
+      {
+        "type": "endpoint",
+        "name": "nexora-catalog",
+        "source": "src/catalog/endpoint.ts"
+      },
+      {
+        "type": "module",
+        "name": "nexora-models-module",
+        "source": "src/catalog/module/index.ts"
       }
     ],
     "host": "^12.5.1"

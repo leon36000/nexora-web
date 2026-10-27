@@ -640,7 +640,10 @@ describe("flux SSE", () => {
   it("le grand livre est à jour dès que le client lit [DONE], sans attendre la fermeture du flux", async () => {
     const c = await client();
     upstream = () => sse(events);
-    const res = await handleChatCompletions(post(c.key, chat({ stream: true })), deps());
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
     const reader = res.body?.getReader();
     if (!reader) throw new Error("flux attendu");
     const decoder = new TextDecoder();
