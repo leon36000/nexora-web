@@ -130,6 +130,7 @@ export interface FirewallRule {
   enable?: number;
   proto?: string;
   dport?: string;
+  dest?: string;
   comment?: string;
   iface?: string;
 }

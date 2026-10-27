@@ -116,19 +116,30 @@ describe("provisionnement complet", () => {
         NEXORA_APP_VERSION: "1.2.3",
       });
 
-      // Pare-feu : rien en entrée sauf SSH, ICMP et le port public de l'application ; SMTP sortant fermé.
+      // Pare-feu : rien en entrée sauf SSH, ICMP et le port public de l'application ; SMTP sortant fermé ;
+      // réseaux privés fermés en sortie sauf la passerelle (ICMP) et le DNS du réservoir.
       expect(vm?.firewall.options).toMatchObject({
         enable: 1,
         policy_in: "DROP",
         ipfilter: 1,
       });
       const rules = vm?.firewall.rules.map(
-        (r) => `${r.type}:${r.action}:${r.proto}/${r.dport ?? "-"}`,
+        (r) =>
+          `${r.type}:${r.action}:${r.proto ?? "*"}/${r.dport ?? "-"}${r.dest ? `>${r.dest}` : ""}`,
       );
       expect(rules).toEqual([
         "in:ACCEPT:tcp/22",
         "in:ACCEPT:tcp/8443",
         "in:ACCEPT:icmp/-",
+        "out:ACCEPT:icmp/->10.20.0.1",
+        "out:ACCEPT:udp/53>10.20.0.2",
+        "out:ACCEPT:tcp/53>10.20.0.2",
+        "out:DROP:*/->10.0.0.0/8",
+        "out:DROP:*/->172.16.0.0/12",
+        "out:DROP:*/->192.168.0.0/16",
+        "out:DROP:*/->169.254.0.0/16",
+        "out:DROP:*/->100.64.0.0/10",
+        "out:DROP:*/->fc00::/7",
         "out:DROP:tcp/25",
       ]);
       expect(vm?.firewall.ipsets["ipfilter-net0"]).toEqual(["10.20.0.10"]);

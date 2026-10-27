@@ -500,7 +500,10 @@ async function stepFirewall(ctx: Ctx, inst: Instance): Promise<StepResult> {
   const server = await loadServer(deps, inst.serverId);
   const client = await deps.proxmox(server);
   const { app } = await loadPinned(deps, inst);
-  const plan = buildFirewallPlan(app.ports);
+  const plan = buildFirewallPlan(app.ports, {
+    gateway: server.ipPool.gateway,
+    dns: server.ipPool.dns,
+  });
 
   // Anti-usurpation d'adresse : l'IP de la VM est la seule autorisée sur net0.
   const sets = await client.firewallIpsets(server.node, inst.vmid);
