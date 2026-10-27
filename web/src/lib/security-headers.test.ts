@@ -46,7 +46,7 @@ describe("en-têtes de sécurité (S9)", () => {
     expect(parseCsp(API_CSP).get("frame-ancestors")).toEqual(["'none'"]);
   });
 
-  it("les réponses qui ne sont pas des pages (images /og, llms.txt, sitemap, robots, icône) portent aussi la CSP restrictive", async () => {
+  it("les réponses qui ne sont pas des pages (images /og, llms.txt, sitemap, robots, icônes, manifeste) portent aussi la CSP restrictive", async () => {
     const rules = (await nextConfig.headers?.()) ?? [];
     for (const source of [
       "/og/:path*",
@@ -54,6 +54,11 @@ describe("en-têtes de sécurité (S9)", () => {
       "/sitemap.xml",
       "/robots.txt",
       "/icon.svg",
+      "/favicon.ico",
+      "/apple-icon.png",
+      "/manifest.webmanifest",
+      "/icon-:size.png",
+      "/icon-maskable-:size.png",
     ]) {
       const rule = rules.find((r) => r.source === source);
       const csp = rule?.headers.find(

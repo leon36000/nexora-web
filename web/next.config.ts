@@ -35,13 +35,11 @@ const nextConfig: NextConfig = {
       { source: "/sitemap.xml", headers: csp },
       { source: "/robots.txt", headers: csp },
       { source: "/icon.svg", headers: csp },
-    ];
-  },
-  async redirects() {
-    // Les navigateurs demandent /favicon.ico d'office (surtout avant que le document n'ait annoncé son icône) : on les
-    // renvoie vers l'icône SVG du site plutôt que de journaliser un 404.
-    return [
-      { source: "/favicon.ico", destination: "/icon.svg", permanent: true },
+      { source: "/favicon.ico", headers: csp },
+      { source: "/apple-icon.png", headers: csp },
+      { source: "/manifest.webmanifest", headers: csp },
+      { source: "/icon-:size.png", headers: csp },
+      { source: "/icon-maskable-:size.png", headers: csp },
     ];
   },
   async rewrites() {
