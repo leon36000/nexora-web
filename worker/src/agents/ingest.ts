@@ -1,6 +1,6 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import { isNonPublicAddress } from "@nexora/net";
+import { isNonPublicAddress, readLimitedBytes } from "@nexora/net";
 import { parse } from "node-html-parser";
 
 /**
@@ -127,9 +127,10 @@ export async function ingestSource(
   const declared = Number(res.headers.get("content-length") ?? 0);
   if (declared > MAX_BYTES)
     throw new IngestError("size", "source trop volumineuse");
-  const buf = new Uint8Array(await res.arrayBuffer());
-  if (buf.byteLength > MAX_BYTES)
-    throw new IngestError("size", "source trop volumineuse");
+  const read = await readLimitedBytes(res, MAX_BYTES).catch(() => null);
+  if (!read) throw new IngestError("fetch", "source injoignable");
+  if (!read.ok) throw new IngestError("size", "source trop volumineuse");
+  const buf = read.bytes;
   const body = new TextDecoder("utf-8", { fatal: false }).decode(buf);
   const { title, text } =
     type.startsWith("text/html") || type.includes("xhtml")

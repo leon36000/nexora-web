@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import type { Database } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { readLimitedBytes } from "@nexora/net";
 import {
   AGENT_PUBLIC_PREFIX,
   type CallableAgent,
@@ -336,10 +337,10 @@ async function readBody(
   const declared = Number(request.headers.get("content-length"));
   if (Number.isFinite(declared) && declared > max)
     return { ok: false, tooLarge: true };
-  const text = await request.text();
-  if (Buffer.byteLength(text, "utf8") > max)
-    return { ok: false, tooLarge: true };
-  return { ok: true, text };
+  // Lecture par morceaux : le flux est coupé dès le plafond (un corps sans Content-Length n'est jamais lu en entier).
+  const read = await readLimitedBytes(request, max);
+  if (!read.ok) return { ok: false, tooLarge: true };
+  return { ok: true, text: new TextDecoder().decode(read.bytes) };
 }
 
 /** Jetons facturés quand le client annule avant la fin de la réponse : invite estimée (+ sortie demandée hors flux). */

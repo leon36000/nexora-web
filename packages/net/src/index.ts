@@ -248,3 +248,38 @@ export async function checkOutboundUrl(
       "adresse du réseau interne refusée (à autoriser par l'opérateur : NEXORA_OUTBOUND_ALLOW)",
   };
 }
+
+/**
+ * Lit un corps (Request ou Response) par morceaux et s'arrête dès que `max` octets sont dépassés : le flux est alors
+ * annulé, jamais lu en entier. À préférer à `text()` / `arrayBuffer()` pour tout corps venu du réseau.
+ */
+export async function readLimitedBytes(
+  source: { body: ReadableStream<Uint8Array> | null },
+  max: number,
+): Promise<{ ok: true; bytes: Uint8Array } | { ok: false }> {
+  if (!source.body) return { ok: true, bytes: new Uint8Array(0) };
+  const reader = source.body.getReader();
+  const parts: Uint8Array[] = [];
+  let total = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > max) {
+        await reader.cancel().catch(() => undefined);
+        return { ok: false };
+      }
+      parts.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const p of parts) {
+    bytes.set(p, offset);
+    offset += p.byteLength;
+  }
+  return { ok: true, bytes };
+}

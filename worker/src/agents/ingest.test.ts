@@ -111,6 +111,28 @@ describe("ingestion : contenu", () => {
       }),
     ).rejects.toThrow(/volumineuse/);
   });
+  it("lit le corps par morceaux : sans Content-Length, un flux énorme est coupé sans être lu en entier", async () => {
+    const state = { pulled: 0, cancelled: false };
+    const streaming = (async () =>
+      new Response(
+        new ReadableStream<Uint8Array>({
+          pull(c) {
+            if (state.pulled >= 2000) return c.close();
+            state.pulled++;
+            c.enqueue(new TextEncoder().encode("a".repeat(10_000)));
+          },
+          cancel() {
+            state.cancelled = true;
+          },
+        }),
+        { headers: { "content-type": "text/html" } },
+      )) as typeof fetch;
+    await expect(
+      ingestSource("https://x.example/", { ...pub, fetchImpl: streaming }),
+    ).rejects.toThrow(/volumineuse/);
+    expect(state.cancelled).toBe(true);
+    expect(state.pulled).toBeLessThan(100); // 400 000 octets / 10 000 = 40 morceaux
+  });
   it("tronque et enveloppe en données, sans balise de fermeture forgeable", async () => {
     const s = await ingestSource("https://x.example/", {
       ...pub,

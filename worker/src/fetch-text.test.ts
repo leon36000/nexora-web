@@ -98,6 +98,29 @@ describe("lecture d'un fichier de sommes public (HTTPS, gardes SSRF)", () => {
         fetchImpl: big,
       }),
     ).rejects.toThrow(/volumineux/);
+    // Sans Content-Length : le flux est coupé dès la limite, jamais lu en entier.
+    const state = { pulled: 0, cancelled: false };
+    const streaming = (async () =>
+      new Response(
+        new ReadableStream<Uint8Array>({
+          pull(c) {
+            if (state.pulled >= 2000) return c.close();
+            state.pulled++;
+            c.enqueue(new TextEncoder().encode("x".repeat(10_000)));
+          },
+          cancel() {
+            state.cancelled = true;
+          },
+        }),
+      )) as unknown as typeof fetch;
+    await expect(
+      fetchPublicText("https://cloud.exemple/a", {
+        resolve: PUBLIC,
+        fetchImpl: streaming,
+      }),
+    ).rejects.toThrow(/volumineux/);
+    expect(state.cancelled).toBe(true);
+    expect(state.pulled).toBeLessThan(100); // 512 Kio / 10 000 = 53 morceaux
     const notFound = (async () =>
       res("non", { status: 404 })) as unknown as typeof fetch;
     await expect(

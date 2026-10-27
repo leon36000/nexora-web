@@ -1342,6 +1342,54 @@ describe("GET /v1/models : limite par adresse, cache HTTP et cache mémoire", ()
   });
 });
 
+describe("corps de requête plafonné pendant la lecture", () => {
+  it("sans Content-Length, un flux plus gros que le plafond est coupé (413) sans être lu en entier", async () => {
+    const c = await client();
+    const state = { pulled: 0, cancelled: false };
+    const enc = new TextEncoder();
+    const body = new ReadableStream<Uint8Array>({
+      pull(ctrl) {
+        if (state.pulled >= 500) return ctrl.close();
+        state.pulled++;
+        ctrl.enqueue(enc.encode("a".repeat(10_000)));
+      },
+      cancel() {
+        state.cancelled = true;
+      },
+    });
+    const req = new Request("http://localhost/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${c.key}`,
+        "content-type": "application/json",
+      },
+      body,
+      duplex: "half",
+    } as RequestInit);
+    const res = await handleChatCompletions(
+      req,
+      deps({ maxBodyBytes: 50_000 }),
+    );
+    expect(res.status).toBe(413);
+    expect((await res.json()).error.code).toBe("request_too_large");
+    expect(state.cancelled).toBe(true);
+    expect(state.pulled).toBeLessThan(30);
+    expect(calls).toHaveLength(0);
+  });
+
+  it("un corps de plusieurs octets non ASCII est mesuré en octets, pas en caractères", async () => {
+    const c = await client();
+    const res = await handleChatCompletions(
+      post(
+        c.key,
+        chat({ messages: [{ role: "user", content: "é".repeat(30_000) }] }),
+      ),
+      deps({ maxBodyBytes: 50_000 }),
+    );
+    expect(res.status).toBe(413);
+  });
+});
+
 describe("refus 400/422 de l'amont : aucun détail du fournisseur n'est transmis", () => {
   it.each([400, 422])(
     "statut amont %i : message générique, sans fournisseur ni identifiant amont",
