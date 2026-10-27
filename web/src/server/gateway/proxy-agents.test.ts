@@ -315,7 +315,7 @@ describe("appel non diffusé d'un agent", () => {
     });
   });
 
-  it("plafonne le règlement au montant réservé : le client ne paie jamais plus que le plafond", async () => {
+  it("règle au coût RÉEL au-delà du plafond d'exécution : le dépassement est facturé (S7 : plus absorbé par Nexora)", async () => {
     const a = await agent({ runTokenCap: 1000 });
     const c = await client();
     upstream = () =>
@@ -326,9 +326,12 @@ describe("appel non diffusé d'un agent", () => {
       });
     const res = await handleChatCompletions(post(c.key, ask(a.slug)), deps());
     expect(res.status).toBe(200);
-    const reserve = RUN_FEE + 3_000n;
+    const real =
+      RUN_FEE +
+      requestCost({ prompt: 40_000, completion: 9000, cached: 0 }, PRICE);
+    expect(real).toBeGreaterThan(RUN_FEE + 3_000n);
     expect(await getAccount(t.db, c.org)).toMatchObject({
-      balanceMicro: 10n * M - reserve,
+      balanceMicro: 10n * M - real,
       heldMicro: 0n,
     });
   });

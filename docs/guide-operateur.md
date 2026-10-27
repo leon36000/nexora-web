@@ -174,7 +174,7 @@ Module **Modèles** : ajouter un fournisseur (adresse, **région**, politique de
 2. Module **Agents hébergés** : créer l'instance (adresse interne, ou publique en https), coller la clé au Coffre (type `other`), « Tester », « Découvrir » (les agents arrivent en brouillon), compléter chacun (description, **prix**), publier.
 3. Côté WorkStudio, avant publication : **`NEXORA_EMBED_ORIGINS=https://<domaine du site>`**. Vide, l'instance accepte toutes les origines pour la bulle.
 4. Bulle `/embed.js` : réglage dans le module (pages choisies) ; la CSP n'ouvre alors que l'origine configurée, sur ces pages seulement.
-5. Limites : la réservation d'un appel est plafonnée à `run_token_cap` (32 000 jetons par défaut) ; renommer un agent dans WorkStudio change son identifiant amont `agent:<nom>` (le ressaisir dans le module) ; le coût amont de WorkStudio n'est pas suivi.
+5. Limites : la réservation d'un appel est calculée sur `run_token_cap` (32 000 jetons par défaut), mais le règlement est au coût réel (un dépassement est facturé et peut rendre le solde négatif) ; renommer un agent dans WorkStudio change son identifiant amont `agent:<nom>` (le ressaisir dans le module) ; le coût amont de WorkStudio n'est pas suivi.
 
 ## 9. Proxy frontal (HTTPS)
 
