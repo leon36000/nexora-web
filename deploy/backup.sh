@@ -4,11 +4,13 @@
 # La clé maîtresse du coffre (NEXORA_VAULT_MASTER_KEY) et les fichiers .env ne sont JAMAIS dans l'archive :
 # elle se conserve à part (docs/guide-operateur.md). Les secrets du coffre, eux, y sont, mais chiffrés.
 #
-# Usage : deploy/backup.sh [--out DOSSIER] [--sans-fichiers] [--signer FICHIER_CLE]
+# Usage : deploy/backup.sh [--out DOSSIER] [--sans-fichiers] [--signer FICHIER_CLE] [--chiffrer FICHIER_CLE]
 # Variables (défauts de la pile de développement/compose) :
 #   NEXORA_DB_CONTAINER=nexorasite-db-1  NEXORA_DB_USER=nexora  NEXORA_APP_DB=app  NEXORA_DIRECTUS_DB=directus
 #   NEXORA_DIRECTUS_CONTAINER=nexorasite-directus-1  NEXORA_UPLOADS_PATH=/directus/uploads
 #   NEXORA_BACKUP_SIGNING_KEY_FILE=  (équivaut à --signer : signature HMAC-SHA256 du manifeste)
+#   NEXORA_BACKUP_ENCRYPT_KEY_FILE=  (équivaut à --chiffrer : l'archive finale est chiffrée, .tar.enc ; elle contient des
+#                                     jetons statiques Directus en clair et des secrets du coffre (chiffrés par la clé maîtresse))
 # Le résultat (chemin, taille, empreinte de l'archive) est imprimé ; l'archive est en mode 0600.
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,13 +26,15 @@ UPLOADS_PATH="${NEXORA_UPLOADS_PATH:-/directus/uploads}"
 out="./backups"
 with_files=1
 sign_key="${NEXORA_BACKUP_SIGNING_KEY_FILE:-}"
+enc_key="${NEXORA_BACKUP_ENCRYPT_KEY_FILE:-}"
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --out) out="${2:?--out demande un dossier}"; shift 2 ;;
     --sans-fichiers) with_files=0; shift ;;
     --signer) sign_key="${2:?--signer demande le chemin du fichier de clé}"; shift 2 ;;
-    -h | --help) sed -n 2,14p "$0"; exit 0 ;;
+    --chiffrer) enc_key="${2:?--chiffrer demande le chemin du fichier de phrase de passe}"; shift 2 ;;
+    -h | --help) sed -n 2,18p "$0"; exit 0 ;;
     *) bk_die "option inconnue : $1" ;;
   esac
 done
@@ -102,6 +106,12 @@ bk_verify_dir "$dir" "$sign_key" 0
 
 archive="$out/$name.tar"
 tar -cf "$archive" -C "$work" "$name"
+if [ -n "$enc_key" ]; then
+  bk_encrypt "$archive" "$archive.enc" "$enc_key"
+  rm -f "$archive"
+  archive="$archive.enc"
+  echo "Archive chiffrée (AES-256, PBKDF2) : la phrase de passe se conserve à part, comme la clé maîtresse du coffre."
+fi
 chmod 600 "$archive"
 echo
 echo "Archive : $archive"

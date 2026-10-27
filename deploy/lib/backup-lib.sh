@@ -95,3 +95,20 @@ bk_extract_verified() {
   bk_verify_dir "$dest/$root" "$keyfile" "$unsigned_ok" || return 1
   printf '%s\n' "$dest/$root"
 }
+
+# bk_encrypt IN OUT KEYFILE : chiffre l'archive (AES-256-CBC, PBKDF2 600 000 itérations, sel aléatoire) avec la phrase de
+# passe contenue dans KEYFILE. L'archive contient des jetons statiques Directus en clair : à chiffrer dès qu'elle quitte le serveur.
+bk_encrypt() {
+  local in="$1" out="$2" keyfile="$3"
+  [ -s "$keyfile" ] || bk_die "clé de chiffrement introuvable ou vide : $keyfile"
+  openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -salt -in "$in" -out "$out" -pass "file:$keyfile" || bk_die "chiffrement impossible."
+}
+
+# bk_decrypt IN OUT KEYFILE : déchiffre ; code 1 avec un message clair si la clé est mauvaise ou le fichier altéré.
+bk_decrypt() {
+  local in="$1" out="$2" keyfile="$3"
+  [ -s "$keyfile" ] || { echo "Archive refusée : clé de chiffrement introuvable ou vide ($keyfile)." >&2; return 1; }
+  openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in "$in" -out "$out" -pass "file:$keyfile" 2> /dev/null \
+    || { echo "Archive refusée : déchiffrement impossible (mauvaise clé ou fichier altéré)." >&2; return 1; }
+  tar -tf "$out" > /dev/null 2>&1 || { echo "Archive refusée : après déchiffrement, ce n'est pas une archive valide (mauvaise clé ou fichier altéré)." >&2; return 1; }
+}

@@ -14,6 +14,7 @@
 #
 # Variables : NEXORA_DB_USER=nexora  NEXORA_APP_DB=app  NEXORA_DIRECTUS_DB=directus  NEXORA_UPLOADS_PATH=/directus/uploads
 #   NEXORA_PG_IMAGE=pgvector/pgvector:pg17 (image de l'essai ; en production, l'image épinglée de deploy/compose.yml)
+#   NEXORA_BACKUP_ENCRYPT_KEY_FILE=  (phrase de passe d'une archive .tar.enc ; l'archive est déchiffrée dans un dossier temporaire 0700)
 #   NEXORA_BACKUP_SIGNING_KEY_FILE=  (vérifie la signature ; sinon --signature-ignoree pour accepter une archive signée)
 # Après une restauration réelle : replacez NEXORA_VAULT_MASTER_KEY (conservée à part) AVANT de démarrer le site.
 set -euo pipefail
@@ -27,10 +28,11 @@ DX_DB="${NEXORA_DIRECTUS_DB:-directus}"
 UPLOADS_PATH="${NEXORA_UPLOADS_PATH:-/directus/uploads}"
 PG_IMAGE="${NEXORA_PG_IMAGE:-pgvector/pgvector:pg17}"
 sign_key="${NEXORA_BACKUP_SIGNING_KEY_FILE:-}"
+enc_key="${NEXORA_BACKUP_ENCRYPT_KEY_FILE:-}"
 unsigned_ok=0
 LABEL="nexora.restore-sandbox=1"
 
-usage() { sed -n 2,19p "$0"; }
+usage() { sed -n 2,21p "$0"; }
 [ $# -ge 1 ] || { usage; exit 2; }
 cmd="$1"; shift
 archive=""; name=""; port=""; keep=0; pg_container=""; force=0; dx_container=""
@@ -62,7 +64,12 @@ extract() {
   [ -n "$archive" ] || bk_die "archive requise."
   tmp="$(mktemp -d)"
   chmod 700 "$tmp"
-  dir="$(bk_extract_verified "$archive" "$tmp/x" "$sign_key" "$unsigned_ok")" || exit 1
+  local plain="$archive"
+  if [[ "$archive" == *.enc ]]; then
+    plain="$tmp/archive.tar"
+    bk_decrypt "$archive" "$plain" "$enc_key" || exit 1
+  fi
+  dir="$(bk_extract_verified "$plain" "$tmp/x" "$sign_key" "$unsigned_ok")" || exit 1
 }
 
 # pg_restore_into CONTENEUR BASE FICHIER : crée la base (vide) et y restaure le dump par l'entrée standard.

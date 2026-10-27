@@ -106,5 +106,17 @@ retar sansig
 verify sansig "$work/signing.key" && ko "signature retirée acceptée" || ok "signature retirée refusée quand une clé est fournie"
 
 echo
+echo "Chiffrement de l'archive"
+printf 'phrase-de-passe-de-test-assez-longue' > "$work/enc.key"
+printf 'une-autre-phrase-de-passe' > "$work/enc-autre.key"
+bk_encrypt "$work/intacte.tar" "$work/intacte.tar.enc" "$work/enc.key" && ok "archive chiffrée" || ko "chiffrement"
+if tar -tf "$work/intacte.tar.enc" > /dev/null 2>&1 || grep -aq "app.dump" "$work/intacte.tar.enc"; then ko "le fichier chiffré laisse voir son contenu"; else ok "le fichier chiffré n'est ni une archive ni lisible (aucun nom de fichier visible)"; fi
+bk_decrypt "$work/intacte.tar.enc" "$work/dec.tar" "$work/enc.key" && cmp -s "$work/intacte.tar" "$work/dec.tar" && ok "déchiffrement identique à l'original" || ko "aller-retour du chiffrement"
+bk_decrypt "$work/intacte.tar.enc" "$work/dec2.tar" "$work/enc-autre.key" 2> /dev/null && ko "mauvaise clé acceptée" || ok "mauvaise clé de chiffrement refusée"
+cp "$work/intacte.tar.enc" "$work/alteree.tar.enc"
+printf 'X' | dd of="$work/alteree.tar.enc" bs=1 seek=300 conv=notrunc 2> /dev/null
+bk_decrypt "$work/alteree.tar.enc" "$work/dec3.tar" "$work/enc.key" 2> /dev/null && ko "fichier chiffré altéré accepté" || ok "fichier chiffré altéré refusé"
+
+echo
 echo "$pass réussis, $fail échecs"
 [ "$fail" -eq 0 ]
