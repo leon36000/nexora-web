@@ -330,6 +330,33 @@ describe("plans, applications, versions, Stripe", () => {
   });
 });
 
+describe("« Publier vers Stripe » : un Stripe absent ou en panne ne donne pas une 500 muette", () => {
+  it("secret Stripe absent du Coffre : 503 stripe_not_configured, avec le motif lisible par l'opérateur", async () => {
+    const res = await call("POST", "stripe/publish", undefined, {
+      stripe: async () => {
+        throw new Error(
+          "Secret Stripe absent : coller « stripe.secret_key » dans le Coffre.",
+        );
+      },
+    });
+    expect(res.status).toBe(503);
+    expect(res.body.error).toBe("stripe_not_configured");
+    expect(res.body.message).toContain("stripe.secret_key");
+  });
+
+  it("clé refusée par la garde du mode test : 503 aussi, sans citer de clé", async () => {
+    const res = await call("POST", "stripe/publish", undefined, {
+      stripe: async () => {
+        const e = new Error("La clé Stripe doit être une clé de test");
+        e.name = "StripeModeError";
+        throw e;
+      },
+    });
+    expect(res.status).toBe(503);
+    expect(res.body.error).toBe("stripe_not_configured");
+  });
+});
+
 describe("vues en lecture seule : aucun renseignement personnel", () => {
   it("les commandes et instances ne contiennent ni clé SSH, ni courriel, ni empreinte de clé", async () => {
     const org = `org_${randomBytes(4).toString("hex")}`;
