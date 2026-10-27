@@ -433,7 +433,7 @@ describe("réservation, règlement et libération", () => {
     expect(events).toHaveLength(5);
   });
 
-  it("plafonne le règlement au montant réservé si l'amont rapporte plus que prévu", async () => {
+  it("règle au coût RÉEL quand l'amont rapporte plus que la réservation : le dépassement est facturé", async () => {
     const c = await client(10n);
     upstream = () =>
       upstreamOk({
@@ -454,7 +454,89 @@ describe("réservation, règlement et libération", () => {
       .select()
       .from(creditReservations)
       .where(eq(creditReservations.organizationId, c.org));
-    expect(ev?.costMicro).toBe(r?.amountMicro);
+    const real = requestCost(
+      { prompt: 100, completion: 900_000, cached: 0 },
+      PRICE,
+    );
+    expect(real).toBe(2_700_100n);
+    expect(r?.amountMicro).toBeLessThan(real);
+    expect(ev?.costMicro).toBe(real);
+    expect(res.headers.get("x-nexora-cost-micro")).toBe(real.toString());
+    expect((await getAccount(t.db, c.org)).balanceMicro).toBe(10n * M - real);
+    // Dérive journalisée, sans contenu.
+    const warn = lines
+      .map((l) => JSON.parse(l))
+      .find((l) => l.msg?.includes("très supérieur"));
+    expect(warn).toBeDefined();
+    expect(warn.costMicro).toBe(real.toString());
+    expect(lines.join("\n")).not.toContain(PROMPT_MARKER);
+  });
+
+  it("réservation sous-estimée : le solde devient négatif et l'appel suivant répond 402", async () => {
+    const c = await client(2n, { spendCapMicro: 20n * M });
+    upstream = () =>
+      upstreamOk({
+        prompt_tokens: 100,
+        completion_tokens: 900_000,
+        total_tokens: 900_100,
+      });
+    const first = await handleChatCompletions(
+      post(c.key, chat({ max_tokens: 50 })),
+      deps(),
+    );
+    expect(first.status).toBe(200);
+    const account = await getAccount(t.db, c.org);
+    expect(account.balanceMicro).toBe(2n * M - 2_700_100n);
+    expect(account).toMatchObject({ blocked: true, heldMicro: 0n });
+    const [k] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.id, c.record.id));
+    expect(k?.spentMicro).toBe(2_700_100n);
+    const calls1 = calls.length;
+    const second = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(second.status).toBe(402);
+    expect((await second.json()).error.code).toBe("account_blocked");
+    expect(calls).toHaveLength(calls1); // l'amont n'est pas appelé
+  });
+
+  it("des images par adresse avec max_tokens = 1 : la réservation couvre les images, plus l'URL seule", async () => {
+    const c = await client(10n);
+    const images = (n: number) =>
+      Array.from({ length: n }, (_, i) => ({
+        type: "image_url",
+        image_url: { url: `https://img.example/${i}.png` },
+      }));
+    const res = await handleChatCompletions(
+      post(
+        c.key,
+        chat({
+          max_tokens: 1,
+          messages: [{ role: "user", content: images(15) }],
+        }),
+      ),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    const [r] = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, c.org));
+    // 15 images × 1 600 jetons × 1 CAD/M = 24 000 µCAD au minimum (avant : quelques centaines).
+    expect(r?.amountMicro).toBeGreaterThanOrEqual(24_000n);
+    // 50 images dépassent le contexte du modèle d'essai (32 000 jetons) une fois comptées au forfait.
+    const tooMany = await handleChatCompletions(
+      post(
+        c.key,
+        chat({
+          max_tokens: 1,
+          messages: [{ role: "user", content: images(50) }],
+        }),
+      ),
+      deps(),
+    );
+    expect(tooMany.status).toBe(400);
+    expect((await tooMany.json()).error.code).toBe("context_length_exceeded");
   });
 
   it("facture les jetons en cache au tarif de cache", async () => {

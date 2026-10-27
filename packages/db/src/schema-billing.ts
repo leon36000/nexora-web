@@ -65,6 +65,7 @@ export const ENTRY_KINDS = [
   "refund",
   "dispute",
   "expire",
+  "overage",
 ] as const;
 export type EntryKind = (typeof ENTRY_KINDS)[number];
 
@@ -113,10 +114,11 @@ export const creditEntries = pgTable(
     index("credit_entries_purchase_idx").on(t.purchaseId),
     check(
       "credit_entries_kind_check",
-      sql`${t.kind} IN ('credit','reserve','settle','release','refund','dispute','expire')`,
+      sql`${t.kind} IN ('credit','reserve','settle','release','refund','dispute','expire','overage')`,
     ),
-    // Un solde disponible négatif n'est permis que par remboursement ou litige (D7) : jamais par
-    // une réservation ni par une expiration, quelle que soit la logique applicative.
+    // Un solde disponible négatif n'est permis que par remboursement, litige ou dépassement de
+    // réservation « overage » (D1/D7 : le coût réel est dû) : jamais par une réservation ni par
+    // une expiration, quelle que soit la logique applicative.
     check(
       "credit_entries_no_overdraft_check",
       sql`(${t.kind} NOT IN ('reserve','expire') OR ${t.balanceAfterMicro} - ${t.heldAfterMicro} >= 0)`,
@@ -129,7 +131,7 @@ export const creditEntries = pgTable(
         (${t.kind} = 'reserve' AND ${t.balanceDeltaMicro} = 0 AND ${t.heldDeltaMicro} > 0) OR
         (${t.kind} = 'settle'  AND ${t.balanceDeltaMicro} <= 0 AND ${t.heldDeltaMicro} < 0 AND ${t.balanceDeltaMicro} >= ${t.heldDeltaMicro}) OR
         (${t.kind} = 'release' AND ${t.balanceDeltaMicro} = 0 AND ${t.heldDeltaMicro} < 0) OR
-        (${t.kind} IN ('refund','dispute','expire') AND ${t.balanceDeltaMicro} < 0 AND ${t.heldDeltaMicro} = 0)
+        (${t.kind} IN ('refund','dispute','expire','overage') AND ${t.balanceDeltaMicro} < 0 AND ${t.heldDeltaMicro} = 0)
       )`,
     ),
   ],
@@ -147,8 +149,13 @@ export const creditReservations = pgTable(
       .notNull()
       .references(() => organizations.id, { onDelete: "restrict" }),
     amountMicro: micro("amount_micro").notNull(),
+    /** Coût réel facturé (règlement plafonné à la réservation + dépassement éventuel). */
     settledMicro: micro("settled_micro"),
     status: text("status").$type<ReservationStatus>().notNull().default("open"),
+    /** Clé API qui a émis la requête (null : appel interne). Sert à rendre ou ajuster `spent_micro`. */
+    apiKeyId: uuid("api_key_id"),
+    /** Le montant a aussi été retenu sur le plafond de dépense de la clé (clé plafonnée). */
+    keySpendHeld: boolean("key_spend_held").notNull().default(false),
     idempotencyKey: text("idempotency_key").notNull(),
     configVersion: text("config_version").notNull(),
     createdAt: ts("created_at").notNull().defaultNow(),

@@ -15,7 +15,7 @@ import { type ApiKeyRow, authenticateApiKey } from "./keys";
 import { costMicro, formatMicro, type PerMillion } from "./pricing";
 import { type PublicModel, toPublicModel } from "./public";
 import type { SnapshotModel, SnapshotProvider } from "./snapshot";
-import { finalizeRequest, releaseKeySpend, reserveKeySpend } from "./usage";
+import { finalizeRequest } from "./usage";
 
 /**
  * Couche publique `/v1/*` compatible OpenAI (D1) : authentifie la clé Nexora, réserve le coût
@@ -593,11 +593,9 @@ async function handleInference(
   let db: Database | undefined;
   let key: ApiKeyRow | undefined;
   let reservation: { id: string; amount: bigint } | undefined;
-  let keyReserved = false;
   let settled = false;
   let target: Target | undefined;
   let streamHandedOff = false;
-  let pendingAmount: bigint | undefined;
 
   const finalize = async (input: {
     status: "ok" | "error" | "aborted";
@@ -623,11 +621,21 @@ async function handleInference(
       upstreamPrice: target.upstreamPrice,
       runFeeMicro: target.runFee,
       reservationId: reservation.id,
-      reservedMicro: reservation.amount,
-      keyReserved,
       latencyMs: Math.round(performance.now() - started),
     });
     settled = true;
+    // Dérive de l'estimation : le coût réel (facturé en entier) dépasse fortement la réservation. Aucun contenu.
+    if (!result.replayed && result.costMicro > reservation.amount * 2n)
+      deps.log.warn("passerelle : coût réel très supérieur à la réservation", {
+        requestId,
+        apiKeyId: key.id,
+        organizationId: key.organizationId,
+        model: target.publicId,
+        endpoint,
+        reservedMicro: reservation.amount.toString(),
+        costMicro: result.costMicro.toString(),
+        overageMicro: result.overageMicro.toString(),
+      });
     return result;
   };
 
@@ -725,7 +733,8 @@ async function handleInference(
         upstreamPrice: { input: 0n, output: 0n, cache: null },
         runFee: price.perRunCadMicro,
       };
-      // Le plafond d'exécution borne le montant réservé : exécution + plafond de jetons au prix le plus élevé.
+      // Le plafond d'exécution borne le montant RÉSERVÉ : exécution + plafond de jetons au prix le plus élevé. Le
+      // règlement est au coût réel : un dépassement du plafond est facturé (ruling S7 « Nexora absorbe » abandonné).
       reserveMicro =
         price.perRunCadMicro +
         costMicro(
@@ -783,28 +792,23 @@ async function handleInference(
       costMicro(plan.promptEstimate, price.input) +
         costMicro(plan.maxOutput, price.output);
     const amount = maxCost > 0n ? maxCost : 1n;
-    pendingAmount = amount;
 
-    if (key.spendCapMicro !== null) {
-      keyReserved = await reserveKeySpend(db, key.id, amount);
-      if (!keyReserved) return E.keyCap(rateHeaders);
-    }
+    // Plafond de la clé et grand livre dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
     const reserved = await reserve(db, {
       organizationId: key.organizationId,
       amountMicro: amount,
       idempotencyKey: `gw:${requestId}`,
       configVersion: served.configVersion,
+      apiKeyId: key.id,
     });
+    if (reserved.status === "key_cap_exceeded") return E.keyCap(rateHeaders);
     if (
       reserved.status === "insufficient_funds" ||
       reserved.status === "blocked"
-    ) {
-      if (keyReserved) await releaseKeySpend(db, key.id, amount);
-      keyReserved = false;
+    )
       return reserved.status === "blocked"
         ? E.blocked(rateHeaders)
         : E.insufficient(rateHeaders);
-    }
     reservation = { id: reserved.reservation.id, amount };
 
     const headers: Record<string, string> = {
@@ -989,16 +993,6 @@ async function handleInference(
           errorName: errorName(e),
         });
       }
-    } else if (
-      !streamHandedOff &&
-      !settled &&
-      db &&
-      key &&
-      keyReserved &&
-      !reservation &&
-      pendingAmount
-    ) {
-      await releaseKeySpend(db, key.id, pendingAmount).catch(() => undefined);
     }
     return openAiError(
       500,
