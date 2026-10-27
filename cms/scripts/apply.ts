@@ -242,11 +242,23 @@ async function applySettings(d: Directus) {
           })),
           { type: "module", id: "settings", enabled: true, locked: true },
         ];
-  if (!bar.some((m) => m.id === vault.id)) {
-    const at = bar.findIndex((m) => m.id === "settings");
-    bar.splice(at === -1 ? bar.length : at, 0, vault);
+  // Modules maison (D14) : catalogues de l'app administrés depuis Directus, insérés avant Réglages.
+  const extensionModules = [
+    { type: "module", id: "nexora-models", enabled: true },
+    vault,
+  ];
+  const missing = extensionModules.filter(
+    (mod) => !bar.some((m) => m.id === mod.id),
+  );
+  if (missing.length) {
+    for (const mod of missing) {
+      const at = bar.findIndex((m) => m.id === "settings");
+      bar.splice(at === -1 ? bar.length : at, 0, mod);
+    }
     await d.patch("/settings", { module_bar: bar });
-    changed("barre des modules : Coffre ajouté");
+    changed(
+      `barre des modules : ${missing.map((m) => m.id).join(", ")} ajouté(s)`,
+    );
   } else stats.unchanged++;
 }
 
