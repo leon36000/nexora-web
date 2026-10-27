@@ -43,4 +43,18 @@ describe("Santé des modèles : sondes gratuites, aucun appel de modèle", () =>
     expect(urls.some((u) => u.includes("chat/completions"))).toBe(false);
     void models;
   });
+
+  it("signale LiteLLM comme non configuré au lieu de sauter la sonde en silence", async () => {
+    const rows = await probeHealth({
+      db: t.db,
+      gatewayBaseUrl: "http://gw",
+      fetchImpl: (async () =>
+        new Response(JSON.stringify({ data: [] }))) as typeof fetch,
+    });
+    expect(rows.at(-1)).toMatchObject({
+      target: "LiteLLM (réseau interne)",
+      status: "missing",
+    });
+    expect(rows.at(-1)?.detail).toContain("LITELLM_BASE_URL");
+  });
 });

@@ -21,8 +21,20 @@ export function productionRunnerDeps(
   log: RunnerDeps["log"],
   env: Env = process.env,
 ): RunnerDeps {
-  const appUrl = env.NEXORA_APP_INTERNAL_URL ?? "http://127.0.0.1:3500";
-  const directusUrl = env.DIRECTUS_URL ?? "http://localhost:8456";
+  // Les repli de développement n'existent pas en production : une adresse oubliée y ferait appeler « localhost »
+  // en silence. Le worker refuse alors de démarrer, avec le nom de la variable manquante.
+  const production = env.NODE_ENV === "production";
+  const required = (name: string, devDefault: string): string => {
+    const value = env[name]?.trim();
+    if (value) return value;
+    if (production)
+      throw new Error(
+        `${name} est obligatoire en production (agents du site) : aucune adresse de développement par défaut`,
+      );
+    return devDefault;
+  };
+  const appUrl = required("NEXORA_APP_INTERNAL_URL", "http://127.0.0.1:3500");
+  const directusUrl = required("DIRECTUS_URL", "http://localhost:8456");
   return {
     db,
     log,

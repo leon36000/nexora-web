@@ -98,7 +98,13 @@ export async function probeHealth(deps: HealthDeps): Promise<HealthRow[]> {
     }
   }
 
-  if (deps.litellmBaseUrl) {
+  if (!deps.litellmBaseUrl) {
+    rows.push({
+      target: "LiteLLM (réseau interne)",
+      status: "missing",
+      detail: "LITELLM_BASE_URL n'est pas défini pour le worker : sonde non faite",
+    });
+  } else {
     const live = await timed(
       doFetch,
       `${deps.litellmBaseUrl.replace(/\/+$/, "")}/health/liveliness`,
