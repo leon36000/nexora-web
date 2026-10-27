@@ -1,0 +1,4 @@
+# Dossier monté par Directus (/directus/extensions) : seulement des builds, produits par cms/scripts/stage-extensions.sh.
+# Les sources sont dans cms/extensions-src/.
+*
+!.gitignore

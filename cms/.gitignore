@@ -1,0 +1,4 @@
+node_modules/
+extensions-src/*/dist/
+extensions-src/*/node_modules/
+.data/

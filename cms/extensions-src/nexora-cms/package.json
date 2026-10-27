@@ -1,0 +1,43 @@
+{
+  "name": "nexora-cms",
+  "description": "Extensions Nexora pour Directus : garde de publication (D6) et Coffre (D2).",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "keywords": ["directus", "directus-extension", "directus-extension-bundle"],
+  "directus:extension": {
+    "type": "bundle",
+    "path": {
+      "app": "dist/app.js",
+      "api": "dist/api.js"
+    },
+    "entries": [
+      {
+        "type": "hook",
+        "name": "publication-guard",
+        "source": "src/guard/index.ts"
+      },
+      {
+        "type": "endpoint",
+        "name": "nexora-vault",
+        "source": "src/vault/endpoint.ts"
+      },
+      {
+        "type": "module",
+        "name": "nexora-vault-module",
+        "source": "src/vault/module/index.ts"
+      }
+    ],
+    "host": "^12.5.1"
+  },
+  "scripts": {
+    "build": "directus-extension build"
+  },
+  "devDependencies": {
+    "@directus/errors": "^3.0.0",
+    "@directus/extensions-sdk": "18.0.6",
+    "@types/node": "^22",
+    "typescript": "^5",
+    "vue": "3.5.43"
+  }
+}
