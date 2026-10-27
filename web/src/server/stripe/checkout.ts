@@ -13,10 +13,17 @@ export type CheckoutErrorCode =
 
 export class CheckoutError extends Error {
   readonly code: CheckoutErrorCode;
-  constructor(code: CheckoutErrorCode, message: string) {
+  /** Pour `stripe_error` : type, code et paramètre fautif signalés par Stripe (jamais le message). */
+  readonly detail?: { type?: string; code?: string; param?: string };
+  constructor(
+    code: CheckoutErrorCode,
+    message: string,
+    detail?: CheckoutError["detail"],
+  ) {
     super(message);
     this.name = "CheckoutError";
     this.code = code;
+    this.detail = detail;
   }
 }
 

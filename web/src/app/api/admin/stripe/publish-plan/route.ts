@@ -1,8 +1,6 @@
 import { publishPlanDeps } from "@/server/billing/deps";
 import { handlePublishPlan } from "@/server/stripe/admin-publish";
 
-export const dynamic = "force-dynamic";
-
 // Contrat (consommé par l'administration) :
 //   POST { code } + Authorization: Bearer <NEXORA_APP_ADMIN_TOKEN>
 //   → 200 { code, stripeProductId, stripePriceId, productCreated, priceCreated, previousPriceArchived, appliedAt }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
+import { Suspense } from "react";
 import { AuthShell } from "@/components/account/auth-shell";
 import { ButtonLink } from "@/components/ui/button";
 import { getAccountDictionary } from "@/i18n/account";
@@ -25,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Arrivée après le lien de confirmation du courriel. Better Auth redirige ici ; en cas d'échec il
- * ajoute `?error=…` (lien invalide ou expiré).
+ * ajoute `?error=…` (lien invalide ou expiré). Le paramètre est lu dans une frontière Suspense.
  */
 export default async function VerifyPage({
   searchParams,
@@ -34,8 +35,32 @@ export default async function VerifyPage({
 }) {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
-  const t = getAccountDictionary(lang);
+  return (
+    <Suspense fallback={<VerifyResult lang={lang} failed={false} />}>
+      <VerifyOutcome lang={lang} searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function VerifyOutcome({
+  lang,
+  searchParams,
+}: {
+  lang: "fr" | "en";
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const failed = Boolean((await searchParams).error);
+  return <VerifyResult lang={lang} failed={failed} />;
+}
+
+function VerifyResult({
+  lang,
+  failed,
+}: {
+  lang: "fr" | "en";
+  failed: boolean;
+}) {
+  const t = getAccountDictionary(lang);
   return (
     <AuthShell
       title={failed ? t.verify.errorTitle : t.verify.title}

@@ -53,7 +53,6 @@ export interface Account {
 
 /** Plus petit de deux `bigint` (`Math.min` ne les accepte pas). */
 export function minBigint(a: bigint, b: bigint): bigint {
-  // biome-ignore lint/complexity/useMathMinMax: Math.min ne gère pas les bigint
   return a < b ? a : b;
 }
 
