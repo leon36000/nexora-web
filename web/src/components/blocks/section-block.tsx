@@ -7,6 +7,7 @@ import { cn } from "@/lib/cn";
 import type { SectionBlock } from "@/server/cms/model";
 import { CARD_GRID, cellClasses } from "./card-grid";
 import { CmsImage } from "./cms-image";
+import { CmsVideo } from "./cms-video";
 import { RichText } from "./rich-text";
 import { anchorProps, toneProps } from "./tone";
 
@@ -34,6 +35,13 @@ export function SectionBlockView({
   const left = block.mediaPosition === "left";
   const media = visual ? (
     <SectionVisualFigure visual={visual} lang={lang} />
+  ) : withMedia && block.media?.kind === "video" ? (
+    <CmsVideo
+      lang={lang}
+      title={block.title}
+      media={block.media}
+      captions={block.captions}
+    />
   ) : withMedia && block.media ? (
     <div className="overflow-hidden rounded-lg border border-line">
       <CmsImage

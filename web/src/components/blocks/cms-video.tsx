@@ -1,0 +1,159 @@
+"use client";
+
+import { type Ref, useEffect, useRef, useState } from "react";
+import { buttonClasses } from "@/components/ui/button";
+import type { Lang } from "@/i18n/config";
+import { mediaPath } from "@/lib/media";
+import type { Captions, MediaRef } from "@/server/cms/model";
+
+/**
+ * Vidéo d'une section (S10). Façade légère : aucun octet de vidéo n'est chargé avant le clic. La carte garde le
+ * ratio 16/9 (pas de décalage à l'arrivée du lecteur) ; le lecteur natif reçoit le focus à l'ouverture.
+ */
+
+/** Libellés propres à ce composant (le dictionnaire de l'interface n'y pourvoit pas encore). */
+const TEXT: Record<Lang, { play: string; fallback: string }> = {
+  fr: {
+    play: "Lire la vidéo",
+    fallback: "Votre navigateur ne peut pas lire cette vidéo.",
+  },
+  en: {
+    play: "Play the video",
+    fallback: "Your browser cannot play this video.",
+  },
+};
+
+/** Durée « m:ss » (ou « h:mm:ss »), ou null si la durée est inconnue. */
+export function formatDuration(ms: number | null): string | null {
+  if (ms === null || !Number.isFinite(ms) || ms <= 0) return null;
+  const total = Math.round(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = String(total % 60).padStart(2, "0");
+  return h > 0 ? `${h}:${String(m).padStart(2, "0")}:${s}` : `${m}:${s}`;
+}
+
+/** Nom de la langue des sous-titres, dans la langue de la page (ex. « français (Canada) »). */
+function languageName(code: string, lang: Lang): string {
+  try {
+    return (
+      new Intl.DisplayNames([lang === "fr" ? "fr-CA" : "en-CA"], {
+        type: "language",
+      }).of(code) ?? code
+    );
+  } catch {
+    return code;
+  }
+}
+
+type StageProps = {
+  lang: Lang;
+  title: string | null;
+  media: MediaRef;
+  captions: Captions | null;
+  open: boolean;
+  onOpen: () => void;
+  frameRef?: Ref<HTMLDivElement>;
+};
+
+/** Présentation pure : la carte avant le clic, le lecteur après. */
+export function VideoStage({
+  lang,
+  title,
+  media,
+  captions,
+  open,
+  onOpen,
+  frameRef,
+}: StageProps) {
+  const text = TEXT[lang];
+  if (open) {
+    return (
+      <div
+        ref={frameRef}
+        className="relative aspect-video w-full overflow-hidden rounded-lg border border-line bg-black"
+      >
+        {/* biome-ignore lint/a11y/useMediaCaption: la piste n'existe que si l'éditeur a fourni des sous-titres ; aucune transcription n'est inventée */}
+        <video
+          className="absolute inset-0 h-full w-full"
+          controls
+          autoPlay
+          playsInline
+          preload="auto"
+          aria-label={title ?? undefined}
+        >
+          <source src={mediaPath(media.id)} type={media.mime ?? "video/mp4"} />
+          {captions ? (
+            <track
+              kind="captions"
+              src={mediaPath(captions.id)}
+              srcLang={captions.lang}
+              label={languageName(captions.lang, lang)}
+              default
+            />
+          ) : null}
+          {text.fallback}
+        </video>
+      </div>
+    );
+  }
+  const duration = formatDuration(media.durationMs);
+  return (
+    <div
+      ref={frameRef}
+      className="relative flex aspect-video w-full flex-col items-center justify-center gap-4 overflow-hidden rounded-lg border border-line bg-surface p-6 text-center"
+    >
+      {title ? <p className="text-h4 text-fg">{title}</p> : null}
+      <button
+        type="button"
+        onClick={onOpen}
+        className={buttonClasses({ variant: "primary", size: "lg" })}
+      >
+        <svg
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          focusable="false"
+          className="size-5 shrink-0"
+        >
+          <path d="M4 2.5v11l9-5.5z" fill="currentColor" />
+        </svg>
+        {text.play}
+        {duration ? (
+          <span className="font-normal tabular-nums opacity-90">
+            ({duration})
+          </span>
+        ) : null}
+      </button>
+    </div>
+  );
+}
+
+/** Vidéo du CMS : façade, puis lecteur natif (avec sous-titres) au clic. */
+export function CmsVideo({
+  lang,
+  title,
+  media,
+  captions,
+}: {
+  lang: Lang;
+  title: string | null;
+  media: MediaRef;
+  captions: Captions | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const frame = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (open) frame.current?.querySelector("video")?.focus();
+  }, [open]);
+  return (
+    <VideoStage
+      lang={lang}
+      title={title}
+      media={media}
+      captions={captions}
+      open={open}
+      onOpen={() => setOpen(true)}
+      frameRef={frame}
+    />
+  );
+}
