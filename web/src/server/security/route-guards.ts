@@ -223,6 +223,19 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     ],
   },
   {
+    route: "v1/[[...path]]",
+    kind: "public",
+    why: "Filet : toute autre adresse /v1 répond 404 en JSON (aucune donnée, aucun effet)",
+    probes: [
+      {
+        label: "adresse inconnue",
+        method: "POST",
+        path: "/v1/images",
+        expect: [404],
+      },
+    ],
+  },
+  {
     route: "api/stripe/webhook",
     kind: "signature",
     why: "Événements Stripe : signature vérifiée sur le corps brut",
