@@ -160,7 +160,7 @@ describe("réglages, personnel et dons", () => {
       t.db.insert(giftGrants).values({
         organizationId: "o1",
         userId: "u1",
-        kind: "inconnu",
+        kind: "inconnu" as "credits",
         idempotencyKey: "gift:2",
       }),
     ).rejects.toThrow();
@@ -180,8 +180,8 @@ describe("réglages, personnel et dons", () => {
     const redemption = {
       promoCodeId: code?.id as string,
       organizationId: "o1",
-      scope: "subscriptions",
-      source: "stripe",
+      scope: "subscriptions" as const,
+      source: "stripe" as const,
       stripeSessionId: "cs_1",
     };
     await t.db.insert(promoRedemptions).values(redemption);

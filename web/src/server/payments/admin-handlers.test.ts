@@ -296,9 +296,18 @@ describe("codes promo", () => {
 
   it("une erreur de Stripe pendant la synchronisation (clé invalide) ne fait pas échouer la création : le code existe, l'état dit l'erreur", async () => {
     const api = fakeStripe();
-    api.products.create.mockRejectedValue(Object.assign(new Error("Invalid API Key provided: sk_test_***"), { type: "StripeAuthenticationError" }));
+    api.products.create.mockRejectedValue(
+      Object.assign(new Error("Invalid API Key provided: sk_test_***"), {
+        type: "StripeAuthenticationError",
+      }),
+    );
     const d = deps(api);
-    const res = await call("POST", "promos", { ...def, code: "CLE-INVALIDE", scopes: ["credits"], percentOff: 10 }, d);
+    const res = await call(
+      "POST",
+      "promos",
+      { ...def, code: "CLE-INVALIDE", scopes: ["credits"], percentOff: 10 },
+      d,
+    );
     expect(res.status).toBe(201);
     const body = await res.json();
     expect(body.promo.code).toBe("CLE-INVALIDE");
