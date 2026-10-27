@@ -219,6 +219,7 @@ export interface CheckoutBody {
   term: Term;
   sshKey: string;
   hostname?: string;
+  promo?: string;
   requestId: string;
   lang: Lang;
 }
@@ -227,20 +228,38 @@ export function buildCheckoutBody(input: {
   selection: Selection;
   sshKey: string;
   hostname: string;
+  promo?: string;
   requestId: string;
   lang: Lang;
 }): CheckoutBody {
   const hostname = input.hostname.trim();
+  const promo = input.promo?.trim();
   return {
     plan: input.selection.plan,
     app: input.selection.app,
     term: input.selection.term,
     sshKey: input.sshKey.trim(),
     ...(hostname ? { hostname } : {}),
+    ...(promo ? { promo } : {}),
     requestId: input.requestId,
     lang: input.lang,
   };
 }
+
+/** Motifs de refus d'un code promo (voir `PROMO_MESSAGE_KEYS` côté serveur). */
+export const PROMO_ERROR_KEYS = [
+  "promo_unknown",
+  "promo_expired",
+  "promo_exhausted",
+  "promo_wrong_scope",
+  "promo_staff_only",
+  "promo_first_order_only",
+  "promo_already_used",
+  "promo_min_amount",
+  "promo_not_ready",
+  "promo_covers_all",
+] as const;
+export type PromoErrorKey = (typeof PROMO_ERROR_KEYS)[number];
 
 export type OrderErrorKey =
   | "unauthenticated"
@@ -255,6 +274,7 @@ export type OrderErrorKey =
   | "payment_unavailable"
   | "catalog_changed"
   | "already_processed"
+  | PromoErrorKey
   | "network"
   | "generic";
 
@@ -292,6 +312,8 @@ export function orderErrorKey(
   code: string | undefined,
 ): OrderErrorKey {
   if (code === undefined) return BY_STATUS[status] ?? "generic";
+  if ((PROMO_ERROR_KEYS as readonly string[]).includes(code))
+    return code as PromoErrorKey;
   return Object.hasOwn(BY_CODE, code)
     ? (BY_CODE[code] as OrderErrorKey)
     : "generic";

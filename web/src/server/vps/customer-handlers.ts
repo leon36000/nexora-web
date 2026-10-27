@@ -21,11 +21,16 @@ import { DEFAULT_LANG, isLang, type Lang, localizePath } from "@/i18n/config";
 import { isSameOriginRequest } from "../auth/origin";
 import { consumeRateLimit } from "../billing/rate-limit";
 import type { BillingConfig } from "../ledger/config";
-import { type CheckoutDeps, CheckoutError } from "../stripe/checkout";
-import { createVpsCheckout } from "../stripe/vps-checkout";
-import { cancelGiftSubscription, GiftError, grantGiftVps, isGiftSubscriptionRef } from "../payments/gifts";
+import {
+  cancelGiftSubscription,
+  GiftError,
+  grantGiftVps,
+  isGiftSubscriptionRef,
+} from "../payments/gifts";
 import { resolvePromo } from "../payments/purchase";
 import { getSettings } from "../payments/settings";
+import { type CheckoutDeps, CheckoutError } from "../stripe/checkout";
+import { createVpsCheckout } from "../stripe/vps-checkout";
 
 /**
  * Routes de l'espace client pour les VPS : commande (`POST /api/vps/checkout`) et actions
@@ -207,7 +212,9 @@ export async function handleVpsCheckout(
     const published = await getPublishedCatalog(db);
     const snapPlan = published?.snapshot.plans.find((p) => p.code === f.plan);
     const price =
-      f.term === "month" ? snapPlan?.priceMonthlyCents : snapPlan?.priceYearlyCents;
+      f.term === "month"
+        ? snapPlan?.priceMonthlyCents
+        : snapPlan?.priceYearlyCents;
     const now = deps.now();
     const promo = await resolvePromo(db, {
       code: f.promo,
@@ -273,7 +280,10 @@ export async function handleVpsCheckout(
         email: ctx.email,
         allowStripePageCodes: settings.stripePageCodes,
         ...(promo.kind === "discount"
-          ? { promo: promo.promo, noPaymentMethodNeeded: promo.noPaymentMethodNeeded }
+          ? {
+              promo: promo.promo,
+              noPaymentMethodNeeded: promo.noPaymentMethodNeeded,
+            }
           : {}),
       },
     );
@@ -288,7 +298,12 @@ export async function handleVpsCheckout(
     if (error instanceof OrderError)
       return fail(deps, input, ORDER_STATUS[error.code] ?? 400, error.code);
     if (error instanceof GiftError)
-      return fail(deps, input, error.code === "not_staff" ? 403 : 409, `gift_${error.code}`);
+      return fail(
+        deps,
+        input,
+        error.code === "not_staff" ? 403 : 409,
+        `gift_${error.code}`,
+      );
     if (error instanceof CheckoutError) {
       deps.log.error("vps : Stripe a refusé la commande", { code: error.code });
       return fail(deps, input, 502, "payment_unavailable");

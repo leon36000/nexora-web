@@ -50,7 +50,10 @@ const rowSchema = z.object({
   kind: z.string().default("other"),
   family: z.string().nullish(),
   trial_days: z.number().int().nullish(),
-  trial_card: z.enum(["default", "required", "not_required"]).nullish().catch("default"),
+  trial_card: z
+    .enum(["default", "required", "not_required"])
+    .nullish()
+    .catch("default"),
   status: z.string(),
   interval: z.enum(["month", "year"]),
   price_cents: z.number().int().positive(),

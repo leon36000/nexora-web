@@ -51,7 +51,8 @@ export async function resolvePromo(
     row: p,
     promo: {
       promoCodeId: p.id,
-      stripePromotionCodeId: p.kind === "trial" ? null : p.stripePromotionCodeId,
+      stripePromotionCodeId:
+        p.kind === "trial" ? null : p.stripePromotionCodeId,
       ...(p.kind === "trial" && p.trialDays ? { trialDays: p.trialDays } : {}),
     },
     noPaymentMethodNeeded: p.kind === "free" && p.duration === "forever",
@@ -63,12 +64,19 @@ export async function resolvePromo(
  * Payer 100 $ avec 5 % donne 95 $ de crédits. Les crédits restent toujours positifs.
  */
 export function creditFee(
-  settings: Pick<PaymentSettings, "creditsFeeEnabled" | "creditsFeeBps" | "creditsFeeMinCents">,
+  settings: Pick<
+    PaymentSettings,
+    "creditsFeeEnabled" | "creditsFeeBps" | "creditsFeeMinCents"
+  >,
   amountCents: number,
 ): { feeCents: number; creditsCents: number } {
-  if (!settings.creditsFeeEnabled) return { feeCents: 0, creditsCents: amountCents };
+  if (!settings.creditsFeeEnabled)
+    return { feeCents: 0, creditsCents: amountCents };
   const pct = Math.round((amountCents * settings.creditsFeeBps) / 10_000);
-  const fee = Math.min(Math.max(pct, settings.creditsFeeMinCents), amountCents - 1);
+  const fee = Math.min(
+    Math.max(pct, settings.creditsFeeMinCents),
+    amountCents - 1,
+  );
   return { feeCents: fee, creditsCents: amountCents - fee };
 }
 

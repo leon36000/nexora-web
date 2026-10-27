@@ -6,6 +6,8 @@ import { getAuth } from "../auth/instance";
 import { getDb } from "../db";
 import { loadBillingConfig } from "../ledger/config";
 import { log } from "../log";
+import { resolveSessionPromotion } from "../payments/session-promotion";
+import { isLiveAllowed } from "../payments/settings";
 import type { PublishPlanRouteDeps } from "../stripe/admin-publish";
 import {
   createStripeClient,
@@ -13,8 +15,6 @@ import {
   resolveWebhookSecret,
 } from "../stripe/client";
 import type { WebhookRouteDeps } from "../stripe/webhook-route";
-import { isLiveAllowed } from "../payments/settings";
-import { resolveSessionPromotion } from "../payments/session-promotion";
 import { getSecret } from "../vault";
 import type { BillingHttpDeps } from "./http";
 import { lazyPlanSource, planSourceFromEnv } from "./plans";

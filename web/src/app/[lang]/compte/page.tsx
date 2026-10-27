@@ -20,6 +20,7 @@ import { getDb } from "@/server/db";
 import { listApiKeys } from "@/server/gateway/keys";
 import { usageByDayAndModel } from "@/server/gateway/usage";
 import { loadBillingConfig } from "@/server/ledger/config";
+import { getSettings } from "@/server/payments/settings";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -94,35 +95,62 @@ async function AccountContent({
     plans = null;
   }
 
+  const settings = await getSettings(getDb());
+  const payment = {
+    liveMode: settings.liveModeAllowed && settings.stripeMode === "live",
+    fee: settings.creditsFeeEnabled
+      ? {
+          percent: settings.creditsFeeBps / 100,
+          minCents: settings.creditsFeeMinCents,
+        }
+      : null,
+  };
+
   const q = await searchParams;
   const errorCode = first(q.erreur);
   const errors = t.dashboard.alerts.errors as Record<string, string>;
+  const promoErrors = t.promo.errors as Record<string, string>;
+  const gifted = first(q.offert);
   const flash = errorCode
     ? {
         kind: "error" as const,
-        message: fmt(errors[errorCode] ?? errors.internal_error ?? "", {
-          min: formatCad(lang, config.minPurchaseCents),
-          max: formatCad(lang, config.maxPurchaseCents),
-        }),
+        message: errorCode.startsWith("promo_")
+          ? (promoErrors[errorCode.slice("promo_".length)] ??
+            errors.internal_error ??
+            "")
+          : fmt(errors[errorCode] ?? errors.internal_error ?? "", {
+              min: formatCad(lang, config.minPurchaseCents),
+              max: formatCad(lang, config.maxPurchaseCents),
+            }),
       }
-    : first(q.achat) === "ok"
-      ? { kind: "success" as const, message: t.dashboard.alerts.purchaseOk }
-      : first(q.achat) === "annule"
-        ? {
-            kind: "info" as const,
-            message: t.dashboard.alerts.purchaseCancelled,
-          }
-        : first(q.abonnement) === "ok"
+    : gifted === "abonnement" || gifted === "credits" || gifted === "vps"
+      ? {
+          kind: "success" as const,
+          message:
+            gifted === "abonnement"
+              ? t.promo.gifted.subscription
+              : gifted === "vps"
+                ? t.promo.gifted.vps
+                : t.promo.gifted.credits,
+        }
+      : first(q.achat) === "ok"
+        ? { kind: "success" as const, message: t.dashboard.alerts.purchaseOk }
+        : first(q.achat) === "annule"
           ? {
-              kind: "success" as const,
-              message: t.dashboard.alerts.subscriptionOk,
+              kind: "info" as const,
+              message: t.dashboard.alerts.purchaseCancelled,
             }
-          : first(q.abonnement) === "annule"
+          : first(q.abonnement) === "ok"
             ? {
-                kind: "info" as const,
-                message: t.dashboard.alerts.subscriptionCancelled,
+                kind: "success" as const,
+                message: t.dashboard.alerts.subscriptionOk,
               }
-            : null;
+            : first(q.abonnement) === "annule"
+              ? {
+                  kind: "info" as const,
+                  message: t.dashboard.alerts.subscriptionCancelled,
+                }
+              : null;
 
   return (
     <>
@@ -134,6 +162,7 @@ async function AccountContent({
         userName={session.name}
         config={config}
         plans={plans}
+        payment={payment}
         flash={flash}
       />
       <ApiKeysSection

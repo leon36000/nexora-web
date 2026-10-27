@@ -1,4 +1,9 @@
-import { type Database, type Executor, paymentAudit, paymentSettings } from "@nexora/db";
+import {
+  type Database,
+  type Executor,
+  paymentAudit,
+  paymentSettings,
+} from "@nexora/db";
 import { z } from "zod";
 
 export type PaymentSettings = typeof paymentSettings.$inferSelect;
@@ -23,7 +28,10 @@ export async function auditPayment(
 
 /** Réglages (une ligne) : créée avec les valeurs par défaut à la première lecture. */
 export async function getSettings(db: Database): Promise<PaymentSettings> {
-  await db.insert(paymentSettings).values({ id: "default" }).onConflictDoNothing();
+  await db
+    .insert(paymentSettings)
+    .values({ id: "default" })
+    .onConflictDoNothing();
   const [row] = await db.select().from(paymentSettings);
   if (!row) throw new Error("réglages de paiement introuvables");
   return row;

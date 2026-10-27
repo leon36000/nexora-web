@@ -6,7 +6,11 @@ import { paymentsAdminDeps } from "@/server/payments/deps";
 type Ctx = { params: Promise<{ path?: string[] }> };
 
 const handle = async (request: Request, ctx: Ctx) =>
-  handlePaymentsAdmin(request, (await ctx.params).path ?? [], paymentsAdminDeps());
+  handlePaymentsAdmin(
+    request,
+    (await ctx.params).path ?? [],
+    paymentsAdminDeps(),
+  );
 
 export const GET = handle;
 export const POST = handle;

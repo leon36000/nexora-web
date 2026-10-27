@@ -77,7 +77,8 @@ export const promoInputSchema = z
         if (v[f] != null && !allowed.includes(f))
           bad(f, "valeur étrangère à ce type de code");
     };
-    if (new Set(v.scopes).size !== v.scopes.length) bad("scopes", "portée répétée");
+    if (new Set(v.scopes).size !== v.scopes.length)
+      bad("scopes", "portée répétée");
     switch (v.kind) {
       case "percent":
         if (v.percentOff == null) bad("percentOff", "pourcentage requis");
@@ -105,7 +106,10 @@ export const promoInputSchema = z
       v.scopes.includes("credits") &&
       (v.kind === "free" || (v.kind === "percent" && v.percentOff === 100))
     )
-      bad("scopes", "un rabais de 100 % ne peut pas viser les crédits (utilisez un code du personnel)");
+      bad(
+        "scopes",
+        "un rabais de 100 % ne peut pas viser les crédits (utilisez un code du personnel)",
+      );
   });
 export type PromoInput = z.input<typeof promoInputSchema>;
 
@@ -115,15 +119,15 @@ function parseInput(input: unknown) {
     throw new PromoError(
       "invalid",
       "Définition de code invalide.",
-      parsed.error.issues.map((i) => `${i.path.join(".") || "code"} : ${i.message}`),
+      parsed.error.issues.map(
+        (i) => `${i.path.join(".") || "code"} : ${i.message}`,
+      ),
     );
   const code = normalizeCode(parsed.data.code);
   if (!code)
-    throw new PromoError(
-      "invalid",
-      "Définition de code invalide.",
-      ["code : 3 à 40 caractères, lettres, chiffres et tirets seulement"],
-    );
+    throw new PromoError("invalid", "Définition de code invalide.", [
+      "code : 3 à 40 caractères, lettres, chiffres et tirets seulement",
+    ]);
   return { ...parsed.data, code };
 }
 
@@ -137,7 +141,8 @@ function toValues(v: ReturnType<typeof parseInput>, createdBy: string) {
     trialDays: v.trialDays ?? null,
     scopes: [...v.scopes],
     duration: v.duration,
-    durationMonths: v.duration === "repeating" ? (v.durationMonths ?? null) : null,
+    durationMonths:
+      v.duration === "repeating" ? (v.durationMonths ?? null) : null,
     maxRedemptions: v.maxRedemptions ?? null,
     expiresAt: v.expiresAt ? new Date(v.expiresAt) : null,
     firstOrderOnly: v.firstOrderOnly,
@@ -159,7 +164,10 @@ export async function createPromo(
 ): Promise<PromoRow> {
   const v = parseInput(input);
   try {
-    const [row] = await db.insert(promoCodes).values(toValues(v, actor)).returning();
+    const [row] = await db
+      .insert(promoCodes)
+      .values(toValues(v, actor))
+      .returning();
     if (!row) throw new Error("code promo non créé");
     await auditPayment(db, {
       actor,
@@ -188,16 +196,25 @@ export interface BatchSpec {
 export function generateCodes(spec: BatchSpec): string[] {
   const prefix = (spec.prefix ?? "").toUpperCase();
   if (!/^[A-Z0-9]{0,12}$/.test(prefix))
-    throw new PromoError("invalid", "Préfixe : 12 lettres ou chiffres au plus.");
+    throw new PromoError(
+      "invalid",
+      "Préfixe : 12 lettres ou chiffres au plus.",
+    );
   if (!Number.isInteger(spec.count) || spec.count < 1 || spec.count > MAX_BATCH)
-    throw new PromoError("batch_too_large", `Un lot compte de 1 à ${MAX_BATCH} codes.`);
+    throw new PromoError(
+      "batch_too_large",
+      `Un lot compte de 1 à ${MAX_BATCH} codes.`,
+    );
   if (!Number.isInteger(spec.length) || spec.length < 4 || spec.length > 24)
     throw new PromoError("invalid", "Longueur : 4 à 24 caractères.");
   const out = new Set<string>();
   let guard = 0;
   while (out.size < spec.count) {
     if (++guard > spec.count * 20)
-      throw new PromoError("invalid", "Longueur trop courte pour ce nombre de codes.");
+      throw new PromoError(
+        "invalid",
+        "Longueur trop courte pour ce nombre de codes.",
+      );
     const bytes = randomBytes(spec.length);
     let body = "";
     for (const b of bytes) body += ALPHABET[b & 31];
@@ -223,7 +240,11 @@ export async function createPromoBatch(
     const done: string[] = [];
     for (let round = 0; round < 6 && done.length < input.count; round++) {
       const missing = input.count - done.length;
-      const codes = generateCodes({ prefix: input.prefix, count: missing, length: input.length });
+      const codes = generateCodes({
+        prefix: input.prefix,
+        count: missing,
+        length: input.length,
+      });
       const rows = codes.map((code) => ({
         ...toValues(parseInput({ ...input.definition, code }), actor),
         batchId,
@@ -236,12 +257,19 @@ export async function createPromoBatch(
       done.push(...inserted.map((r) => r.code));
     }
     if (done.length < input.count)
-      throw new PromoError("invalid", "Impossible de générer assez de codes uniques : allongez-les.");
+      throw new PromoError(
+        "invalid",
+        "Impossible de générer assez de codes uniques : allongez-les.",
+      );
     await auditPayment(tx, {
       actor,
       action: "promo.batch",
       subject: batchId,
-      detail: { count: done.length, prefix: input.prefix ?? "", length: input.length },
+      detail: {
+        count: done.length,
+        prefix: input.prefix ?? "",
+        length: input.length,
+      },
     });
     return done;
   });
@@ -279,11 +307,19 @@ export interface PromoListItem extends PromoRow {
 /** Codes avec leurs statistiques d'utilisation (nombre d'utilisations et rabais total accordé). */
 export async function listPromos(
   db: Database,
-  filter: { q?: string; status?: PromoStatus; batchId?: string; limit?: number; offset?: number },
+  filter: {
+    q?: string;
+    status?: PromoStatus;
+    batchId?: string;
+    limit?: number;
+    offset?: number;
+  },
 ): Promise<{ items: PromoListItem[]; total: number }> {
   const limit = Math.min(Math.max(filter.limit ?? 100, 1), 500);
   const where = and(
-    filter.q ? ilike(promoCodes.code, `%${filter.q.replace(/[%_\\]/g, "\\$&")}%`) : undefined,
+    filter.q
+      ? ilike(promoCodes.code, `%${filter.q.replace(/[%_\\]/g, "\\$&")}%`)
+      : undefined,
     filter.status ? eq(promoCodes.status, filter.status) : undefined,
     filter.batchId ? eq(promoCodes.batchId, filter.batchId) : undefined,
   );
@@ -291,7 +327,10 @@ export async function listPromos(
     .select({
       promoCodeId: promoRedemptions.promoCodeId,
       n: sql<number>`count(*)::int`.as("n"),
-      cents: sql<number>`coalesce(sum(${promoRedemptions.discountCents}), 0)::int`.as("cents"),
+      cents:
+        sql<number>`coalesce(sum(${promoRedemptions.discountCents}), 0)::int`.as(
+          "cents",
+        ),
     })
     .from(promoRedemptions)
     .groupBy(promoRedemptions.promoCodeId)

@@ -63,7 +63,8 @@ export type ConnectErrorCode =
   | "site_url_not_public"
   | "webhook_failed";
 
-const LOCAL_HOST = /^(localhost|127\.|\[?::1\]?$|0\.0\.0\.0|.*\.localhost$|.*\.test$)/i;
+const LOCAL_HOST =
+  /^(localhost|127\.|\[?::1\]?$|0\.0\.0\.0|.*\.localhost$|.*\.test$)/i;
 
 function isPublicUrl(siteUrl: string): boolean {
   try {
@@ -75,7 +76,9 @@ function isPublicUrl(siteUrl: string): boolean {
 }
 
 const errorType = (e: unknown): string =>
-  typeof e === "object" && e && "type" in e ? String((e as { type: unknown }).type) : "unknown";
+  typeof e === "object" && e && "type" in e
+    ? String((e as { type: unknown }).type)
+    : "unknown";
 
 async function fail(
   deps: ConnectDeps,
@@ -86,13 +89,11 @@ async function fail(
 ): Promise<ConnectResult> {
   if (persist) {
     await getSettings(deps.db);
-    await deps.db
-      .update(paymentSettings)
-      .set({
-        webhookStatus: "error",
-        stripeLastError: message,
-        updatedAt: deps.now(),
-      });
+    await deps.db.update(paymentSettings).set({
+      webhookStatus: "error",
+      stripeLastError: message,
+      updatedAt: deps.now(),
+    });
   }
   await auditPayment(deps.db, {
     actor: "admin",
@@ -111,10 +112,23 @@ async function ensureWebhook(
   url: string,
   ownedId: string | null,
   hasSecret: boolean,
-): Promise<{ endpoint: Endpoint; secret: string | null; created: boolean; updated: boolean; replaced: boolean }> {
-  const events = [...WEBHOOK_EVENTS] as unknown as Stripe.WebhookEndpointCreateParams.EnabledEvent[];
-  const all = await stripe.webhookEndpoints.list({ limit: 100 }).autoPagingToArray({ limit: 1000 });
-  const mine = ownedId && hasSecret ? all.find((e) => e.id === ownedId && e.url === url) : undefined;
+): Promise<{
+  endpoint: Endpoint;
+  secret: string | null;
+  created: boolean;
+  updated: boolean;
+  replaced: boolean;
+}> {
+  const events = [
+    ...WEBHOOK_EVENTS,
+  ] as unknown as Stripe.WebhookEndpointCreateParams.EnabledEvent[];
+  const all = await stripe.webhookEndpoints
+    .list({ limit: 100 })
+    .autoPagingToArray({ limit: 1000 });
+  const mine =
+    ownedId && hasSecret
+      ? all.find((e) => e.id === ownedId && e.url === url)
+      : undefined;
   if (mine) {
     // Nous possédons déjà son secret : mise à jour sur place (liste d'événements, réactivation).
     const endpoint = await stripe.webhookEndpoints.update(mine.id, {
@@ -122,7 +136,13 @@ async function ensureWebhook(
       description: HOOK_DESCRIPTION,
       disabled: false,
     });
-    return { endpoint, secret: null, created: false, updated: true, replaced: false };
+    return {
+      endpoint,
+      secret: null,
+      created: false,
+      updated: true,
+      replaced: false,
+    };
   }
   // Le secret d'un point n'est lisible qu'à sa création : un point à NOTRE adresse dont nous n'avons pas
   // le secret est remplacé ; ceux des autres adresses ne sont jamais touchés.
@@ -135,10 +155,18 @@ async function ensureWebhook(
     url,
     enabled_events: events,
     description: HOOK_DESCRIPTION,
-    api_version: Stripe.API_VERSION as Stripe.WebhookEndpointCreateParams.ApiVersion,
+    api_version:
+      Stripe.API_VERSION as Stripe.WebhookEndpointCreateParams.ApiVersion,
   });
-  if (!endpoint.secret) throw new Error("Stripe n'a pas renvoyé le secret du point de webhook");
-  return { endpoint, secret: endpoint.secret, created: true, updated: false, replaced };
+  if (!endpoint.secret)
+    throw new Error("Stripe n'a pas renvoyé le secret du point de webhook");
+  return {
+    endpoint,
+    secret: endpoint.secret,
+    created: true,
+    updated: false,
+    replaced,
+  };
 }
 
 /**
@@ -192,7 +220,9 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
   try {
     account = await stripe.accounts.retrieve(null);
   } catch (e) {
-    deps.log.warn("stripe : clé refusée au branchement", { type: errorType(e) });
+    deps.log.warn("stripe : clé refusée au branchement", {
+      type: errorType(e),
+    });
     return fail(
       deps,
       "key_rejected",
@@ -226,9 +256,17 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
   let hook: Awaited<ReturnType<typeof ensureWebhook>>;
   try {
     const hasSecret = (await deps.vault.summary(WEBHOOK_SECRET_REF)).present;
-    hook = await ensureWebhook(stripe, deps, url, settings.webhookEndpointId, hasSecret);
+    hook = await ensureWebhook(
+      stripe,
+      deps,
+      url,
+      settings.webhookEndpointId,
+      hasSecret,
+    );
   } catch (e) {
-    deps.log.error("stripe : création du point de webhook impossible", { type: errorType(e) });
+    deps.log.error("stripe : création du point de webhook impossible", {
+      type: errorType(e),
+    });
     return fail(
       deps,
       "webhook_failed",
@@ -236,14 +274,18 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
       "Vérifiez que la clé a le droit « Webhook Endpoints : écriture » (clé restreinte) ou utilisez la clé secrète standard, puis relancez le branchement.",
     );
   }
-  if (hook.secret) await deps.vault.put(WEBHOOK_SECRET_REF, hook.secret, "payment");
+  if (hook.secret)
+    await deps.vault.put(WEBHOOK_SECRET_REF, hook.secret, "payment");
 
   // Un autre compte (ou le passage du test à la production) ne connaît aucun des objets de l'ancien : on les oublie.
   const accountChanged =
-    (settings.stripeAccountId !== null && settings.stripeAccountId !== account.id) ||
+    (settings.stripeAccountId !== null &&
+      settings.stripeAccountId !== account.id) ||
     (settings.stripeMode !== null && settings.stripeMode !== mode);
   if (accountChanged) {
-    await deps.db.update(paymentSettings).set({ creditsProductFrId: null, creditsProductEnId: null });
+    await deps.db
+      .update(paymentSettings)
+      .set({ creditsProductFrId: null, creditsProductEnId: null });
     await deps.db.update(promoCodes).set({
       stripeCouponId: null,
       stripePromotionCodeId: null,
@@ -255,7 +297,9 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
     );
   }
   const name =
-    account.business_profile?.name ?? account.settings?.dashboard?.display_name ?? null;
+    account.business_profile?.name ??
+    account.settings?.dashboard?.display_name ??
+    null;
   await deps.db.update(paymentSettings).set({
     stripeMode: mode,
     stripeAccountId: account.id,
@@ -342,16 +386,19 @@ export async function readStripeStatus(deps: {
   } else if (s.webhookStatus === "connected" && !hook.present) {
     state = "error";
     lastError = "Le secret du webhook n'est plus au Coffre.";
-    action = "Cliquez « Vérifier et brancher Stripe » : un nouveau secret sera créé et rangé au Coffre.";
+    action =
+      "Cliquez « Vérifier et brancher Stripe » : un nouveau secret sera créé et rangé au Coffre.";
   } else if (s.webhookStatus === "connected" && s.webhookUrl !== expectedUrl) {
     state = "error";
     lastError = "L'adresse du site a changé depuis le branchement.";
-    action = "Cliquez « Vérifier et brancher Stripe » pour recréer le point de webhook à la nouvelle adresse.";
+    action =
+      "Cliquez « Vérifier et brancher Stripe » pour recréer le point de webhook à la nouvelle adresse.";
   } else if (s.webhookStatus === "connected") {
     state = "connected";
   } else if (s.webhookStatus === "error") {
     state = "error";
-    action = "Corrigez le problème indiqué, puis cliquez « Vérifier et brancher Stripe ».";
+    action =
+      "Corrigez le problème indiqué, puis cliquez « Vérifier et brancher Stripe ».";
   } else {
     state = "key_unverified";
     action = "La clé est au Coffre : cliquez « Vérifier et brancher Stripe ».";
@@ -377,7 +424,9 @@ export async function readStripeStatus(deps: {
 }
 
 /** Fabrique de production : client réel (ou stripe-mock en développement). */
-export function productionClientFactory(env: Record<string, string | undefined>) {
+export function productionClientFactory(
+  env: Record<string, string | undefined>,
+) {
   return (key: string, allowLive: boolean): Stripe =>
     createStripeClient({
       secretKey: key,

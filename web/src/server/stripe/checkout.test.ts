@@ -281,8 +281,12 @@ describe("essai gratuit, codes promo et crédits nets (extras de paiement)", () 
   });
 
   it("sans code saisi, la page Stripe garde son champ « code promo » si le réglage le permet", async () => {
-    expect((await sub({ allowStripePageCodes: true })).allow_promotion_codes).toBe(true);
-    expect((await sub({ allowStripePageCodes: false })).allow_promotion_codes).toBeUndefined();
+    expect(
+      (await sub({ allowStripePageCodes: true })).allow_promotion_codes,
+    ).toBe(true);
+    expect(
+      (await sub({ allowStripePageCodes: false })).allow_promotion_codes,
+    ).toBeUndefined();
   });
 
   it("un code d'essai remplace la durée de l'offre ; le plus long gagne", async () => {

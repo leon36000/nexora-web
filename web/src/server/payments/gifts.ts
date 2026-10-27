@@ -5,10 +5,10 @@ import {
   type Database,
   debit,
   desc,
-  eq,
   type Executor,
-  getAccount,
+  eq,
   type GiftKind,
+  getAccount,
   giftGrants,
   gte,
   lt,
@@ -18,7 +18,11 @@ import {
   subscriptions,
   users,
 } from "@nexora/db";
-import { type CreateOrderInput, createOrder, reconcileVpsSubscription } from "@nexora/vps";
+import {
+  type CreateOrderInput,
+  createOrder,
+  reconcileVpsSubscription,
+} from "@nexora/vps";
 import { type BillingConfig, configVersion } from "../ledger/config";
 import { addMonths, centsToMicro } from "../ledger/money";
 import { auditPayment } from "./settings";
@@ -44,22 +48,34 @@ export class GiftError extends Error {
 export type GiftRow = typeof giftGrants.$inferSelect;
 
 const GIFT_PREFIX = "gift_";
-export const isGiftSubscriptionRef = (ref: string): boolean => ref.startsWith(GIFT_PREFIX);
+export const isGiftSubscriptionRef = (ref: string): boolean =>
+  ref.startsWith(GIFT_PREFIX);
 
 /** Pose ou retire le drapeau « personnel » d'un compte client. Journalisé. */
 export async function setStaffFlag(
   db: Database,
   input: { userId: string; on: boolean; actor: string; note?: string },
 ): Promise<void> {
-  const [user] = await db.select({ id: users.id }).from(users).where(eq(users.id, input.userId));
+  const [user] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.id, input.userId));
   if (!user) throw new GiftError("not_found", "Compte introuvable.");
   if (input.on)
     await db
       .insert(staffAccounts)
-      .values({ userId: input.userId, grantedBy: input.actor, note: input.note ?? "" })
+      .values({
+        userId: input.userId,
+        grantedBy: input.actor,
+        note: input.note ?? "",
+      })
       .onConflictDoUpdate({
         target: staffAccounts.userId,
-        set: { revokedAt: null, grantedBy: input.actor, note: input.note ?? "" },
+        set: {
+          revokedAt: null,
+          grantedBy: input.actor,
+          note: input.note ?? "",
+        },
       });
   else
     await db
@@ -78,7 +94,11 @@ async function assertStaff(tx: Executor, userId: string): Promise<void> {
     .select({ revokedAt: staffAccounts.revokedAt })
     .from(staffAccounts)
     .where(eq(staffAccounts.userId, userId));
-  if (!row || row.revokedAt) throw new GiftError("not_staff", "Ce compte n'est pas un compte du personnel.");
+  if (!row || row.revokedAt)
+    throw new GiftError(
+      "not_staff",
+      "Ce compte n'est pas un compte du personnel.",
+    );
 }
 
 export interface GiftBase {
@@ -142,7 +162,10 @@ export async function grantGiftSubscription(
         ),
       );
     if (running)
-      throw new GiftError("already_gifted", "Cette organisation a déjà cette offre en cadeau.");
+      throw new GiftError(
+        "already_gifted",
+        "Cette organisation a déjà cette offre en cadeau.",
+      );
     const grantId = randomUUID();
     const ref = await insertGiftSubscription(tx, input, input.planCode);
     const [grant] = await tx
@@ -173,7 +196,12 @@ export async function grantGiftSubscription(
 /** VPS offert : commande normale (même provisionnement), reliée à un abonnement offert au lieu de Stripe. */
 export async function grantGiftVps(
   db: Database,
-  input: GiftBase & { order: Omit<CreateOrderInput, "organizationId" | "userId" | "allowUnsynced"> },
+  input: GiftBase & {
+    order: Omit<
+      CreateOrderInput,
+      "organizationId" | "userId" | "allowUnsynced"
+    >;
+  },
 ): Promise<GiftRow> {
   await assertStaff(db, input.userId);
   const { order } = await createOrder(db, {
@@ -189,7 +217,11 @@ export async function grantGiftVps(
       .where(eq(giftGrants.vpsOrderId, order.id));
     if (existing) return existing; // rejeu du même formulaire
     const grantId = randomUUID();
-    const ref = await insertGiftSubscription(tx, input, `vps-${order.planCode}`);
+    const ref = await insertGiftSubscription(
+      tx,
+      input,
+      `vps-${order.planCode}`,
+    );
     const [grant] = await tx
       .insert(giftGrants)
       .values({
@@ -224,8 +256,10 @@ export async function grantGiftVps(
   });
 }
 
-const monthStart = (d: Date) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
-const nextMonthStart = (d: Date) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1));
+const monthStart = (d: Date) =>
+  new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+const nextMonthStart = (d: Date) =>
+  new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1));
 
 /** Crédits offerts ce mois-ci (UTC) par ce compte du personnel, en cents CAD (dons révoqués exclus). */
 export async function monthlyGiftedCents(
@@ -234,7 +268,9 @@ export async function monthlyGiftedCents(
   now: Date,
 ): Promise<number> {
   const [row] = await db
-    .select({ micro: sql<string>`coalesce(sum(${giftGrants.creditsMicro}), 0)::text` })
+    .select({
+      micro: sql<string>`coalesce(sum(${giftGrants.creditsMicro}), 0)::text`,
+    })
     .from(giftGrants)
     .where(
       and(
@@ -255,13 +291,19 @@ export async function monthlyGiftedCents(
  */
 export async function grantGiftCredits(
   db: Database,
-  input: GiftBase & { amountCents: number; capCents: number; config: BillingConfig },
+  input: GiftBase & {
+    amountCents: number;
+    capCents: number;
+    config: BillingConfig;
+  },
 ): Promise<GiftRow> {
   if (!Number.isSafeInteger(input.amountCents) || input.amountCents <= 0)
     throw new GiftError("invalid_amount", "Montant invalide.");
   return db.transaction(async (tx) => {
     await assertStaff(tx, input.userId);
-    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext(${`staff-gift:${input.userId}`}))`);
+    await tx.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext(${`staff-gift:${input.userId}`}))`,
+    );
     const used = await monthlyGiftedCents(tx, input.userId, input.now);
     const remaining = Math.max(input.capCents - used, 0);
     if (input.amountCents > remaining)
@@ -321,7 +363,12 @@ async function cancelGiftTx(
   if (sub.status !== "canceled") {
     await tx
       .update(subscriptions)
-      .set({ status: "canceled", canceledAt: input.now, graceEndsAt: null, updatedAt: input.now })
+      .set({
+        status: "canceled",
+        canceledAt: input.now,
+        graceEndsAt: null,
+        updatedAt: input.now,
+      })
       .where(eq(subscriptions.id, sub.id));
     await reconcileVpsSubscription(tx, {
       stripeSubscriptionId: sub.stripeSubscriptionId,
@@ -340,7 +387,10 @@ async function cancelGiftTx(
       revokeReason: input.reason ?? null,
     })
     .where(
-      and(eq(giftGrants.subscriptionRef, input.subscriptionRef), eq(giftGrants.status, "active")),
+      and(
+        eq(giftGrants.subscriptionRef, input.subscriptionRef),
+        eq(giftGrants.status, "active"),
+      ),
     );
   await auditPayment(tx, {
     actor: input.actor,
@@ -367,15 +417,29 @@ export async function revokeGift(
   opts: { actor: string; reason?: string; now: Date; config: BillingConfig },
 ): Promise<GiftRow> {
   return db.transaction(async (tx) => {
-    const [grant] = await tx.select().from(giftGrants).where(eq(giftGrants.id, grantId)).for("update");
+    const [grant] = await tx
+      .select()
+      .from(giftGrants)
+      .where(eq(giftGrants.id, grantId))
+      .for("update");
     if (!grant) throw new GiftError("not_found", "Don introuvable.");
     if (grant.status === "revoked") return grant;
     if (grant.subscriptionRef) {
-      await cancelGiftTx(tx, { subscriptionRef: grant.subscriptionRef, actor: opts.actor, reason: opts.reason, now: opts.now });
+      await cancelGiftTx(tx, {
+        subscriptionRef: grant.subscriptionRef,
+        actor: opts.actor,
+        reason: opts.reason,
+        now: opts.now,
+      });
     } else if (grant.kind === "credits" && grant.creditsMicro) {
-      const account = await getAccount(tx as unknown as Database, grant.organizationId);
-      const available = account.availableMicro > 0n ? account.availableMicro : 0n;
-      const take = available < grant.creditsMicro ? available : grant.creditsMicro;
+      const account = await getAccount(
+        tx as unknown as Database,
+        grant.organizationId,
+      );
+      const available =
+        account.availableMicro > 0n ? account.availableMicro : 0n;
+      const take =
+        available < grant.creditsMicro ? available : grant.creditsMicro;
       if (take > 0n)
         await debit(tx, {
           organizationId: grant.organizationId,
@@ -389,7 +453,12 @@ export async function revokeGift(
         });
       await tx
         .update(giftGrants)
-        .set({ status: "revoked", revokedAt: opts.now, revokedBy: opts.actor, revokeReason: opts.reason ?? null })
+        .set({
+          status: "revoked",
+          revokedAt: opts.now,
+          revokedBy: opts.actor,
+          revokeReason: opts.reason ?? null,
+        })
         .where(eq(giftGrants.id, grant.id));
       await auditPayment(tx, {
         actor: opts.actor,
@@ -398,7 +467,10 @@ export async function revokeGift(
         detail: { grantId: grant.id, takenMicro: take.toString() },
       });
     }
-    const [done] = await tx.select().from(giftGrants).where(eq(giftGrants.id, grant.id));
+    const [done] = await tx
+      .select()
+      .from(giftGrants)
+      .where(eq(giftGrants.id, grant.id));
     return done as GiftRow;
   });
 }
@@ -412,7 +484,9 @@ export async function listGifts(
     .from(giftGrants)
     .where(
       and(
-        filter.organizationId ? eq(giftGrants.organizationId, filter.organizationId) : undefined,
+        filter.organizationId
+          ? eq(giftGrants.organizationId, filter.organizationId)
+          : undefined,
         filter.userId ? eq(giftGrants.userId, filter.userId) : undefined,
       ),
     )

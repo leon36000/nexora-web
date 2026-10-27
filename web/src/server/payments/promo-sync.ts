@@ -4,8 +4,8 @@ import {
   type Database,
   eq,
   isNotNull,
-  paymentSettings,
   type PromoScope,
+  paymentSettings,
   promoCodes,
   promoRedemptions,
   sql,
@@ -31,7 +31,9 @@ export interface SyncDeps {
 }
 
 const errorType = (e: unknown): string =>
-  typeof e === "object" && e && "type" in e ? String((e as { type: unknown }).type) : "unknown";
+  typeof e === "object" && e && "type" in e
+    ? String((e as { type: unknown }).type)
+    : "unknown";
 
 /** Produits de chaque portée : offres publiées vers Stripe, plans VPS publiés vers Stripe, produits « Crédits ». */
 export async function scopeProductsFrom(
@@ -73,30 +75,44 @@ export async function ensureCreditsProducts(
   if (!fr)
     fr = (
       await stripe.products.create(
-        { name: "Crédits Nexora", metadata: { nexora_kind: "credits", lang: "fr" } },
+        {
+          name: "Crédits Nexora",
+          metadata: { nexora_kind: "credits", lang: "fr" },
+        },
         { idempotencyKey: "credits-product:fr" },
       )
     ).id;
   if (!en)
     en = (
       await stripe.products.create(
-        { name: "Nexora credits", metadata: { nexora_kind: "credits", lang: "en" } },
+        {
+          name: "Nexora credits",
+          metadata: { nexora_kind: "credits", lang: "en" },
+        },
         { idempotencyKey: "credits-product:en" },
       )
     ).id;
   if (fr !== s.creditsProductFrId || en !== s.creditsProductEnId)
-    await db
-      .update(paymentSettings)
-      .set({ creditsProductFrId: fr, creditsProductEnId: en, updatedAt: new Date() });
+    await db.update(paymentSettings).set({
+      creditsProductFrId: fr,
+      creditsProductEnId: en,
+      updatedAt: new Date(),
+    });
   return [fr, en];
 }
 
-function couponParams(promo: PromoRow, appliesTo: string[] | null): Stripe.CouponCreateParams {
+function couponParams(
+  promo: PromoRow,
+  appliesTo: string[] | null,
+): Stripe.CouponCreateParams {
   return {
     name: (promo.label || promo.code).slice(0, 40),
     ...(promo.kind === "amount"
       ? { amount_off: promo.amountOffCents as number, currency: "cad" }
-      : { percent_off: promo.kind === "free" ? 100 : (promo.percentOff as number) }),
+      : {
+          percent_off:
+            promo.kind === "free" ? 100 : (promo.percentOff as number),
+        }),
     duration: promo.duration,
     ...(promo.duration === "repeating"
       ? { duration_in_months: promo.durationMonths as number }
@@ -106,7 +122,9 @@ function couponParams(promo: PromoRow, appliesTo: string[] | null): Stripe.Coupo
   };
 }
 
-function restrictions(promo: PromoRow): Stripe.PromotionCodeCreateParams.Restrictions | undefined {
+function restrictions(
+  promo: PromoRow,
+): Stripe.PromotionCodeCreateParams.Restrictions | undefined {
   const r: Stripe.PromotionCodeCreateParams.Restrictions = {};
   if (promo.firstOrderOnly) r.first_time_transaction = true;
   if (promo.minAmountCents != null) {
@@ -123,22 +141,35 @@ const fingerprint = (value: unknown) =>
  * Synchronise UN code avec Stripe (coupon + code de promotion). Jamais appelée par Directus : le serveur de
  * l'app seul parle à Stripe. Les codes du personnel et d'essai n'existent pas chez Stripe.
  */
-export async function syncPromo(deps: SyncDeps, promo: PromoRow): Promise<SyncOutcome> {
-  if (promo.kind === "staff" || promo.kind === "trial") return { state: "skipped" };
+export async function syncPromo(
+  deps: SyncDeps,
+  promo: PromoRow,
+): Promise<SyncOutcome> {
+  if (promo.kind === "staff" || promo.kind === "trial")
+    return { state: "skipped" };
   const record = async (set: Partial<typeof promoCodes.$inferInsert>) =>
-    deps.db.update(promoCodes).set({ ...set, updatedAt: deps.now() }).where(eq(promoCodes.id, promo.id));
+    deps.db
+      .update(promoCodes)
+      .set({ ...set, updatedAt: deps.now() })
+      .where(eq(promoCodes.id, promo.id));
 
   const scopeProducts = await deps.products();
   const everywhere = promo.scopes.length === 3;
   let appliesTo: string[] | null = null;
   if (!everywhere) {
-    const lacking = (promo.scopes as PromoScope[]).filter((s) => scopeProducts[s].length === 0);
+    const lacking = (promo.scopes as PromoScope[]).filter(
+      (s) => scopeProducts[s].length === 0,
+    );
     if (lacking.length > 0) {
       const message = `Aucun produit Stripe pour la portée (${lacking.join(", ")}) : lancez d'abord « Publier vers Stripe » pour les offres concernées, puis resynchronisez.`;
       await record({ stripeSyncError: message });
       return { state: "error", code: "no_products", message };
     }
-    appliesTo = [...new Set((promo.scopes as PromoScope[]).flatMap((s) => scopeProducts[s]))].sort();
+    appliesTo = [
+      ...new Set(
+        (promo.scopes as PromoScope[]).flatMap((s) => scopeProducts[s]),
+      ),
+    ].sort();
   }
   const fp = fingerprint({
     coupon: couponParams(promo, appliesTo),
@@ -152,12 +183,16 @@ export async function syncPromo(deps: SyncDeps, promo: PromoRow): Promise<SyncOu
   try {
     // Déjà synchronisé et identique : seul le statut peut avoir changé.
     if (promo.stripePromotionCodeId && promo.stripeFingerprint === fp) {
-      const current = await deps.stripe.promotionCodes.retrieve(promo.stripePromotionCodeId);
+      const current = await deps.stripe.promotionCodes.retrieve(
+        promo.stripePromotionCodeId,
+      );
       if (current.active === wantActive) {
         if (promo.stripeSyncError) await record({ stripeSyncError: null });
         return { state: "unchanged" };
       }
-      await deps.stripe.promotionCodes.update(promo.stripePromotionCodeId, { active: wantActive });
+      await deps.stripe.promotionCodes.update(promo.stripePromotionCodeId, {
+        active: wantActive,
+      });
       await record({ stripeSyncedAt: deps.now(), stripeSyncError: null });
       return { state: "updated" };
     }
@@ -165,7 +200,9 @@ export async function syncPromo(deps: SyncDeps, promo: PromoRow): Promise<SyncOu
     let recreated = false;
     if (promo.stripePromotionCodeId) {
       // Définition changée (produits de la portée) : l'ancien code de promotion est désactivé.
-      await deps.stripe.promotionCodes.update(promo.stripePromotionCodeId, { active: false });
+      await deps.stripe.promotionCodes.update(promo.stripePromotionCodeId, {
+        active: false,
+      });
       recreated = true;
     }
     const [{ used } = { used: 0 }] = await deps.db
@@ -180,9 +217,12 @@ export async function syncPromo(deps: SyncDeps, promo: PromoRow): Promise<SyncOu
         return { state: "unchanged" };
       }
     }
-    const coupon = await deps.stripe.coupons.create(couponParams(promo, appliesTo), {
-      idempotencyKey: `promo-coupon:${promo.id}:${fp}`,
-    });
+    const coupon = await deps.stripe.coupons.create(
+      couponParams(promo, appliesTo),
+      {
+        idempotencyKey: `promo-coupon:${promo.id}:${fp}`,
+      },
+    );
     const r = restrictions(promo);
     const code = await deps.stripe.promotionCodes.create(
       {
@@ -190,7 +230,9 @@ export async function syncPromo(deps: SyncDeps, promo: PromoRow): Promise<SyncOu
         code: promo.code,
         active: wantActive,
         ...(remaining != null ? { max_redemptions: remaining } : {}),
-        ...(promo.expiresAt ? { expires_at: Math.floor(promo.expiresAt.getTime() / 1000) } : {}),
+        ...(promo.expiresAt
+          ? { expires_at: Math.floor(promo.expiresAt.getTime() / 1000) }
+          : {}),
         ...(r ? { restrictions: r } : {}),
         metadata: { promo_code_id: promo.id },
       },

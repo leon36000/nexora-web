@@ -407,7 +407,8 @@ export async function updatePlan(
     );
   // Saisir un prix est une décision du fondateur : le drapeau « suggéré » tombe, sauf instruction contraire.
   const priceEdited =
-    patch.priceMonthlyCents !== undefined || patch.priceYearlyCents !== undefined;
+    patch.priceMonthlyCents !== undefined ||
+    patch.priceYearlyCents !== undefined;
   if (priceEdited && patch.priceSuggested === undefined)
     patch = { ...patch, priceSuggested: false };
   if (patch.status === "approved" || patch.status === "published") {

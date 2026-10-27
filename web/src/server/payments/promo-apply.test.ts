@@ -23,7 +23,9 @@ beforeAll(async () => {
     { id: "o-client", name: "Client", slug: "o-client" },
     { id: "o-staff", name: "Équipe", slug: "o-staff" },
   ]);
-  await t.db.insert(staffAccounts).values({ userId: "u-staff", grantedBy: "admin" });
+  await t.db
+    .insert(staffAccounts)
+    .values({ userId: "u-staff", grantedBy: "admin" });
 });
 afterAll(async () => {
   await t.drop();
@@ -35,16 +37,27 @@ async function promo(over: Record<string, unknown> = {}, synced = true) {
   n += 1;
   const row = await createPromo(
     t.db,
-    { code: `CODE-${n}`, kind: "percent", percentOff: 20, scopes: ["subscriptions"], ...over },
+    {
+      code: `CODE-${n}`,
+      kind: "percent",
+      percentOff: 20,
+      scopes: ["subscriptions"],
+      ...over,
+    },
     "admin",
   );
   if (synced && row.kind !== "trial" && row.kind !== "staff")
     await t.db
       .update(promoCodes)
-      .set({ stripeCouponId: `co_${n}`, stripePromotionCodeId: `promo_${n}`, stripeSyncedAt: NOW })
+      .set({
+        stripeCouponId: `co_${n}`,
+        stripePromotionCodeId: `promo_${n}`,
+        stripeSyncedAt: NOW,
+      })
       .where(eq(promoCodes.id, row.id));
   return row;
 }
+
 import { eq } from "@nexora/db";
 
 const ask = (code: string, over: Record<string, unknown> = {}) =>
@@ -67,7 +80,10 @@ describe("validation côté serveur d'un code saisi", () => {
 
   it("refuse un code inconnu ou désactivé avec le même message (pas d'énumération)", async () => {
     const p = await promo();
-    await t.db.update(promoCodes).set({ status: "disabled" }).where(eq(promoCodes.id, p.id));
+    await t.db
+      .update(promoCodes)
+      .set({ status: "disabled" })
+      .where(eq(promoCodes.id, p.id));
     expect(await ask("INCONNU-9")).toEqual({ ok: false, reason: "unknown" });
     expect(await ask(p.code)).toEqual({ ok: false, reason: "unknown" });
     expect(await ask("%%%")).toEqual({ ok: false, reason: "unknown" });
@@ -94,13 +110,25 @@ describe("validation côté serveur d'un code saisi", () => {
   });
 
   it("un code du personnel n'est accepté que d'un compte du personnel, et seulement sans Stripe", async () => {
-    const p = await promo({ kind: "staff", percentOff: null, scopes: ["subscriptions", "vps", "credits"] }, false);
+    const p = await promo(
+      {
+        kind: "staff",
+        percentOff: null,
+        scopes: ["subscriptions", "vps", "credits"],
+      },
+      false,
+    );
     expect(await ask(p.code)).toEqual({ ok: false, reason: "staff_only" });
-    const r = await ask(p.code, { organizationId: "o-staff", userId: "u-staff" });
+    const r = await ask(p.code, {
+      organizationId: "o-staff",
+      userId: "u-staff",
+    });
     expect(r).toMatchObject({ ok: true, gift: true });
     // un drapeau retiré ne donne plus rien
     await t.db.update(staffAccounts).set({ revokedAt: NOW });
-    expect(await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).toEqual({
+    expect(
+      await ask(p.code, { organizationId: "o-staff", userId: "u-staff" }),
+    ).toEqual({
       ok: false,
       reason: "staff_only",
     });
@@ -118,12 +146,16 @@ describe("validation côté serveur d'un code saisi", () => {
       stripeSessionId: "cs_y",
     });
     expect(await ask(p.code)).toEqual({ ok: false, reason: "already_used" });
-    expect((await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).ok).toBe(true);
+    expect(
+      (await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).ok,
+    ).toBe(true);
   });
 
   it("« première commande seulement » : refuse une organisation qui a déjà acheté", async () => {
     const p = await promo({ firstOrderOnly: true });
-    expect((await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).ok).toBe(true);
+    expect(
+      (await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).ok,
+    ).toBe(true);
     await t.db.insert(creditPurchases).values({
       organizationId: "o-client",
       stripeCheckoutSessionId: "cs_old",
@@ -132,7 +164,10 @@ describe("validation côté serveur d'un code saisi", () => {
       creditsMicro: 20_000_000n,
       configVersion: "cfg",
     });
-    expect(await ask(p.code)).toEqual({ ok: false, reason: "first_order_only" });
+    expect(await ask(p.code)).toEqual({
+      ok: false,
+      reason: "first_order_only",
+    });
   });
 
   it("un abonnement offert ne compte pas comme une commande payée", async () => {
@@ -143,7 +178,9 @@ describe("validation côté serveur d'un code saisi", () => {
       stripeCustomerId: "gift",
       status: "gifted",
     });
-    expect((await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).ok).toBe(true);
+    expect(
+      (await ask(p.code, { organizationId: "o-staff", userId: "u-staff" })).ok,
+    ).toBe(true);
   });
 
   it("montant minimum", async () => {
@@ -152,16 +189,25 @@ describe("validation côté serveur d'un code saisi", () => {
       ok: false,
       reason: "min_amount",
     });
-    expect((await ask(p.code, { scope: "credits", amountCents: 5000 })).ok).toBe(true);
+    expect(
+      (await ask(p.code, { scope: "credits", amountCents: 5000 })).ok,
+    ).toBe(true);
   });
 
   it("crédits : un rabais en montant qui couvrirait tout l'achat est refusé", async () => {
-    const p = await promo({ kind: "amount", percentOff: null, amountOffCents: 2000, scopes: ["credits"] });
+    const p = await promo({
+      kind: "amount",
+      percentOff: null,
+      amountOffCents: 2000,
+      scopes: ["credits"],
+    });
     expect(await ask(p.code, { scope: "credits", amountCents: 2000 })).toEqual({
       ok: false,
       reason: "covers_all",
     });
-    expect((await ask(p.code, { scope: "credits", amountCents: 2500 })).ok).toBe(true);
+    expect(
+      (await ask(p.code, { scope: "credits", amountCents: 2500 })).ok,
+    ).toBe(true);
   });
 
   it("un code pas encore synchronisé avec Stripe n'est pas applicable (jamais un rabais promis mais non appliqué)", async () => {
@@ -170,7 +216,15 @@ describe("validation côté serveur d'un code saisi", () => {
   });
 
   it("un code d'essai n'a pas besoin de Stripe", async () => {
-    const p = await promo({ kind: "trial", percentOff: null, trialDays: 30, scopes: ["subscriptions"] }, false);
+    const p = await promo(
+      {
+        kind: "trial",
+        percentOff: null,
+        trialDays: 30,
+        scopes: ["subscriptions"],
+      },
+      false,
+    );
     const r = await ask(p.code);
     expect(r).toMatchObject({ ok: true, gift: false });
     expect(r.ok && r.promo.trialDays).toBe(30);
@@ -182,7 +236,8 @@ describe("messages", () => {
     const { getAccountDictionary } = await import("@/i18n/account");
     for (const lang of ["fr", "en"] as const) {
       const d = getAccountDictionary(lang).promo.errors;
-      for (const k of PROMO_MESSAGE_KEYS) expect(d[k], `${lang}:${k}`).toBeTruthy();
+      for (const k of PROMO_MESSAGE_KEYS)
+        expect(d[k], `${lang}:${k}`).toBeTruthy();
     }
   });
 });

@@ -1,12 +1,26 @@
 import { randomBytes } from "node:crypto";
-import { eq, paymentAudit, paymentSettings, promoCodes, vaultSecrets } from "@nexora/db";
+import {
+  eq,
+  paymentAudit,
+  paymentSettings,
+  promoCodes,
+  vaultSecrets,
+} from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { HANDLED_EVENT_TYPES } from "../billing/webhook";
 import { loadKeyring } from "../vault/crypto";
 import {
-  connectStripe,
   type ConnectDeps,
+  connectStripe,
   readStripeStatus,
   WEBHOOK_EVENTS,
 } from "./connect";
@@ -41,9 +55,12 @@ function fakeStripe(opts: FakeOptions = {}) {
       retrieve: vi.fn(async () => {
         calls.push("accounts.retrieve");
         if (opts.failAccount)
-          throw Object.assign(new Error("Invalid API Key provided: sk_test_***"), {
-            type: "StripeAuthenticationError",
-          });
+          throw Object.assign(
+            new Error("Invalid API Key provided: sk_test_***"),
+            {
+              type: "StripeAuthenticationError",
+            },
+          );
         return {
           id: "acct_123",
           country: opts.country ?? "CA",
@@ -95,7 +112,10 @@ function fakeStripe(opts: FakeOptions = {}) {
   return { api, endpoints, calls };
 }
 
-function deps(fake: ReturnType<typeof fakeStripe>, over: Partial<ConnectDeps> = {}): ConnectDeps {
+function deps(
+  fake: ReturnType<typeof fakeStripe>,
+  over: Partial<ConnectDeps> = {},
+): ConnectDeps {
   return {
     db: t.db,
     vault: dbVault(t.db, keyring),
@@ -113,7 +133,8 @@ beforeEach(async () => {
   await t.db.delete(vaultSecrets);
 });
 
-const putKey = (value: string) => dbVault(t.db, keyring).put("stripe.secret_key", value, "payment");
+const putKey = (value: string) =>
+  dbVault(t.db, keyring).put("stripe.secret_key", value, "payment");
 
 describe("événements du webhook", () => {
   it("sont exactement les 12 événements gérés par le serveur", () => {
@@ -142,13 +163,16 @@ describe("brancher Stripe en un geste", () => {
       taxActive: true,
       webhook: { created: true, updated: false },
     });
-    const created = fake.api.webhookEndpoints.create.mock.calls[0]?.[0] as Record<string, unknown>;
+    const created = fake.api.webhookEndpoints.create.mock
+      .calls[0]?.[0] as Record<string, unknown>;
     expect(created.url).toBe("https://nexora.example/api/stripe/webhook");
     expect([...(created.enabled_events as string[])].sort()).toEqual(
       [...HANDLED_EVENT_TYPES].sort(),
     );
     // le secret whsec_ est au Coffre, jamais dans la réponse ni dans les réglages
-    expect(await dbVault(t.db, keyring).get("stripe.webhook_secret")).toBe("whsec_secret_1");
+    expect(await dbVault(t.db, keyring).get("stripe.webhook_secret")).toBe(
+      "whsec_secret_1",
+    );
     expect(JSON.stringify(out)).not.toContain("whsec_secret_1");
     const settings = await getSettings(t.db);
     expect(JSON.stringify(settings)).not.toContain("whsec_");
@@ -172,36 +196,61 @@ describe("brancher Stripe en un geste", () => {
     const fake = fakeStripe();
     await connectStripe(deps(fake));
     const again = await connectStripe(deps(fake));
-    expect(again).toMatchObject({ ok: true, webhook: { created: false, updated: true } });
+    expect(again).toMatchObject({
+      ok: true,
+      webhook: { created: false, updated: true },
+    });
     expect(fake.endpoints).toHaveLength(1);
-    expect(await dbVault(t.db, keyring).get("stripe.webhook_secret")).toBe("whsec_secret_1");
+    expect(await dbVault(t.db, keyring).get("stripe.webhook_secret")).toBe(
+      "whsec_secret_1",
+    );
   });
 
   it("corrige les événements d'un point que nous possédons déjà", async () => {
     await putKey("sk_test_abc");
     const fake = fakeStripe();
     await connectStripe(deps(fake));
-    (fake.endpoints[0] as Record<string, unknown>).enabled_events = ["invoice.paid"];
+    (fake.endpoints[0] as Record<string, unknown>).enabled_events = [
+      "invoice.paid",
+    ];
     await connectStripe(deps(fake));
-    expect([...((fake.endpoints[0] as Record<string, unknown>).enabled_events as string[])].sort()).toEqual(
-      [...HANDLED_EVENT_TYPES].sort(),
-    );
+    expect(
+      [
+        ...((fake.endpoints[0] as Record<string, unknown>)
+          .enabled_events as string[]),
+      ].sort(),
+    ).toEqual([...HANDLED_EVENT_TYPES].sort());
   });
 
   it("un point existant à la même adresse dont nous n'avons pas le secret est remplacé (le secret d'un point n'est lisible qu'à sa création)", async () => {
     await putKey("sk_test_abc");
     const fake = fakeStripe({
       existing: [
-        { id: "we_old", url: "https://nexora.example/api/stripe/webhook", enabled_events: ["*"], status: "enabled" },
-        { id: "we_other", url: "https://autre.example/hook", enabled_events: ["*"], status: "enabled" },
+        {
+          id: "we_old",
+          url: "https://nexora.example/api/stripe/webhook",
+          enabled_events: ["*"],
+          status: "enabled",
+        },
+        {
+          id: "we_other",
+          url: "https://autre.example/hook",
+          enabled_events: ["*"],
+          status: "enabled",
+        },
       ],
     });
     const out = await connectStripe(deps(fake));
-    expect(out).toMatchObject({ ok: true, webhook: { created: true, replaced: true } });
+    expect(out).toMatchObject({
+      ok: true,
+      webhook: { created: true, replaced: true },
+    });
     expect(fake.api.webhookEndpoints.del).toHaveBeenCalledWith("we_old");
     // l'autre point (autre adresse) n'est jamais touché
     expect(fake.endpoints.map((e) => e.id)).toContain("we_other");
-    expect(await dbVault(t.db, keyring).get("stripe.webhook_secret")).toMatch(/^whsec_secret_/);
+    expect(await dbVault(t.db, keyring).get("stripe.webhook_secret")).toMatch(
+      /^whsec_secret_/,
+    );
   });
 
   it("clé invalide : état « erreur » avec le type d'erreur, sans citer la clé", async () => {
@@ -233,7 +282,9 @@ describe("brancher Stripe en un geste", () => {
 
   it("signale un pays autre que le Canada et Stripe Tax inactif sans bloquer le branchement", async () => {
     await putKey("sk_test_abc");
-    const out = await connectStripe(deps(fakeStripe({ country: "US", taxStatus: "pending" })));
+    const out = await connectStripe(
+      deps(fakeStripe({ country: "US", taxStatus: "pending" })),
+    );
     expect(out).toMatchObject({
       ok: true,
       account: { country: "US", countryOk: false },
@@ -252,7 +303,9 @@ describe("brancher Stripe en un geste", () => {
   it("refuse une adresse de site locale (Stripe ne peut pas l'atteindre) et le dit", async () => {
     await putKey("sk_test_abc");
     const fake = fakeStripe();
-    const out = await connectStripe(deps(fake, { siteUrl: "http://localhost:3500" }));
+    const out = await connectStripe(
+      deps(fake, { siteUrl: "http://localhost:3500" }),
+    );
     expect(out).toMatchObject({ ok: false, code: "site_url_not_public" });
     expect(fake.api.webhookEndpoints.create).not.toHaveBeenCalled();
     const local = await connectStripe(
@@ -266,11 +319,20 @@ describe("changement de compte ou de mode Stripe", () => {
   it("passer à un autre compte (ou du test à la production) oublie les objets Stripe de l'ancien et le dit", async () => {
     await putKey("sk_test_abc");
     await connectStripe(deps(fakeStripe()));
-    await t.db.update(paymentSettings).set({ creditsProductFrId: "prod_old_fr", creditsProductEnId: "prod_old_en" });
+    await t.db.update(paymentSettings).set({
+      creditsProductFrId: "prod_old_fr",
+      creditsProductEnId: "prod_old_en",
+    });
     const { promoCodes } = await import("@nexora/db");
     await t.db.insert(promoCodes).values({
-      code: "ANCIEN-1", kind: "percent", percentOff: 10, scopes: ["vps"],
-      stripeCouponId: "co_old", stripePromotionCodeId: "promo_old", stripeFingerprint: "fp", stripeSyncedAt: new Date(),
+      code: "ANCIEN-1",
+      kind: "percent",
+      percentOff: 10,
+      scopes: ["vps"],
+      stripeCouponId: "co_old",
+      stripePromotionCodeId: "promo_old",
+      stripeFingerprint: "fp",
+      stripeSyncedAt: new Date(),
     });
     // même compte : rien n'est oublié
     const same = await connectStripe(deps(fakeStripe()));
@@ -278,38 +340,80 @@ describe("changement de compte ou de mode Stripe", () => {
     expect((await getSettings(t.db)).creditsProductFrId).toBe("prod_old_fr");
     // autre compte
     const other = fakeStripe();
-    other.api.accounts.retrieve = vi.fn(async () => ({ id: "acct_999", country: "CA", business_profile: { name: "Autre" }, settings: {} })) as never;
+    other.api.accounts.retrieve = vi.fn(async () => ({
+      id: "acct_999",
+      country: "CA",
+      business_profile: { name: "Autre" },
+      settings: {},
+    })) as never;
     const out = await connectStripe(deps(other));
     expect(out).toMatchObject({ ok: true, accountChanged: true });
     expect(out.ok && out.warnings.join(" ")).toMatch(/Publier vers Stripe/);
     const s = await getSettings(t.db);
     expect([s.creditsProductFrId, s.creditsProductEnId]).toEqual([null, null]);
-    const [row] = await t.db.select().from(promoCodes).where(eq(promoCodes.code, "ANCIEN-1"));
-    expect(row).toMatchObject({ stripeCouponId: null, stripePromotionCodeId: null, stripeFingerprint: null });
+    const [row] = await t.db
+      .select()
+      .from(promoCodes)
+      .where(eq(promoCodes.code, "ANCIEN-1"));
+    expect(row).toMatchObject({
+      stripeCouponId: null,
+      stripePromotionCodeId: null,
+      stripeFingerprint: null,
+    });
   });
 });
 
 describe("état affiché dans l'admin", () => {
   it("sans clé : « manquant » avec l'action", async () => {
-    const s = await readStripeStatus({ db: t.db, vault: dbVault(t.db, keyring), siteUrl: "https://nexora.example" });
-    expect(s).toMatchObject({ state: "no_key", keyPresent: false, webhookSecretPresent: false });
+    const s = await readStripeStatus({
+      db: t.db,
+      vault: dbVault(t.db, keyring),
+      siteUrl: "https://nexora.example",
+    });
+    expect(s).toMatchObject({
+      state: "no_key",
+      keyPresent: false,
+      webhookSecretPresent: false,
+    });
     expect(s.action).toMatch(/Coffre/);
   });
 
   it("clé collée mais pas encore vérifiée", async () => {
     await putKey("sk_test_abc");
-    const s = await readStripeStatus({ db: t.db, vault: dbVault(t.db, keyring), siteUrl: "https://nexora.example" });
-    expect(s).toMatchObject({ state: "key_unverified", keyPresent: true, keyLast4: "****" });
+    const s = await readStripeStatus({
+      db: t.db,
+      vault: dbVault(t.db, keyring),
+      siteUrl: "https://nexora.example",
+    });
+    expect(s).toMatchObject({
+      state: "key_unverified",
+      keyPresent: true,
+      keyLast4: "****",
+    });
     expect(s.action).toMatch(/Vérifier et brancher/);
   });
 
   it("branché, puis « erreur » si le secret du webhook disparaît du Coffre", async () => {
     await putKey("sk_test_abc");
     await connectStripe(deps(fakeStripe()));
-    const ok = await readStripeStatus({ db: t.db, vault: dbVault(t.db, keyring), siteUrl: "https://nexora.example" });
-    expect(ok).toMatchObject({ state: "connected", mode: "test", webhookSecretPresent: true });
-    await t.db.delete(vaultSecrets).where(eq(vaultSecrets.ref, "stripe.webhook_secret"));
-    const broken = await readStripeStatus({ db: t.db, vault: dbVault(t.db, keyring), siteUrl: "https://nexora.example" });
+    const ok = await readStripeStatus({
+      db: t.db,
+      vault: dbVault(t.db, keyring),
+      siteUrl: "https://nexora.example",
+    });
+    expect(ok).toMatchObject({
+      state: "connected",
+      mode: "test",
+      webhookSecretPresent: true,
+    });
+    await t.db
+      .delete(vaultSecrets)
+      .where(eq(vaultSecrets.ref, "stripe.webhook_secret"));
+    const broken = await readStripeStatus({
+      db: t.db,
+      vault: dbVault(t.db, keyring),
+      siteUrl: "https://nexora.example",
+    });
     expect(broken.state).toBe("error");
     expect(broken.action).toMatch(/Vérifier et brancher/);
   });
@@ -317,7 +421,11 @@ describe("état affiché dans l'admin", () => {
   it("l'adresse du site change : le point doit être recréé (état « erreur » avec l'action)", async () => {
     await putKey("sk_test_abc");
     await connectStripe(deps(fakeStripe()));
-    const s = await readStripeStatus({ db: t.db, vault: dbVault(t.db, keyring), siteUrl: "https://autre.example" });
+    const s = await readStripeStatus({
+      db: t.db,
+      vault: dbVault(t.db, keyring),
+      siteUrl: "https://autre.example",
+    });
     expect(s.state).toBe("error");
   });
 });

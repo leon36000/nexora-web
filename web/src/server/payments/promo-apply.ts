@@ -35,7 +35,11 @@ export const PROMO_MESSAGE_KEYS = [
 export type PromoRejection = (typeof PROMO_MESSAGE_KEYS)[number];
 
 export type PromoCheck =
-  | { ok: true; promo: PromoRow; /** Don du personnel : aucun passage par Stripe. */ gift: boolean }
+  | {
+      ok: true;
+      promo: PromoRow /** Don du personnel : aucun passage par Stripe. */;
+      gift: boolean;
+    }
   | { ok: false; reason: PromoRejection };
 
 export interface ValidatePromoInput {
@@ -48,16 +52,24 @@ export interface ValidatePromoInput {
   now: Date;
 }
 
-export async function isStaffUser(db: Database, userId: string): Promise<boolean> {
+export async function isStaffUser(
+  db: Database,
+  userId: string,
+): Promise<boolean> {
   const [row] = await db
     .select({ userId: staffAccounts.userId })
     .from(staffAccounts)
-    .where(and(eq(staffAccounts.userId, userId), isNull(staffAccounts.revokedAt)));
+    .where(
+      and(eq(staffAccounts.userId, userId), isNull(staffAccounts.revokedAt)),
+    );
   return Boolean(row);
 }
 
 /** Cette organisation a-t-elle déjà payé quelque chose ? (don du personnel et commande impayée exclus) */
-export async function hasPriorOrder(db: Database, organizationId: string): Promise<boolean> {
+export async function hasPriorOrder(
+  db: Database,
+  organizationId: string,
+): Promise<boolean> {
   const [credit] = await db
     .select({ id: creditPurchases.id })
     .from(creditPurchases)
@@ -99,16 +111,23 @@ export async function validatePromo(
   db: Database,
   input: ValidatePromoInput,
 ): Promise<PromoCheck> {
-  const reject = (reason: PromoRejection): PromoCheck => ({ ok: false, reason });
+  const reject = (reason: PromoRejection): PromoCheck => ({
+    ok: false,
+    reason,
+  });
   const code = normalizeCode(input.code);
   if (!code) return reject("unknown");
-  const [promo] = await db.select().from(promoCodes).where(eq(promoCodes.code, code));
+  const [promo] = await db
+    .select()
+    .from(promoCodes)
+    .where(eq(promoCodes.code, code));
   if (!promo || promo.status !== "active") return reject("unknown");
   if (promo.expiresAt && promo.expiresAt <= input.now) return reject("expired");
   if (!promo.scopes.includes(input.scope)) return reject("wrong_scope");
 
   const gift = promo.kind === "staff";
-  if (gift && !(await isStaffUser(db, input.userId))) return reject("staff_only");
+  if (gift && !(await isStaffUser(db, input.userId)))
+    return reject("staff_only");
 
   const [{ used } = { used: 0 }] = await db
     .select({ used: sql<number>`count(*)::int` })
@@ -146,7 +165,10 @@ export async function validatePromo(
     return reject("covers_all");
 
   // Rabais appliqué par Stripe : il faut que le code existe chez Stripe ET soit à jour.
-  const needsStripe = promo.kind === "percent" || promo.kind === "amount" || promo.kind === "free";
+  const needsStripe =
+    promo.kind === "percent" ||
+    promo.kind === "amount" ||
+    promo.kind === "free";
   if (needsStripe && (!promo.stripePromotionCodeId || promo.stripeSyncError))
     return reject("not_ready");
   return { ok: true, promo, gift };

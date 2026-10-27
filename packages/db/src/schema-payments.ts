@@ -149,10 +149,7 @@ export const promoCodes = pgTable(
   (t) => [
     uniqueIndex("promo_codes_code_unique").on(t.code),
     index("promo_codes_batch_idx").on(t.batchId),
-    check(
-      "promo_codes_kind_check",
-      sql`${t.kind} IN (${inList(PROMO_KINDS)})`,
-    ),
+    check("promo_codes_kind_check", sql`${t.kind} IN (${inList(PROMO_KINDS)})`),
     check(
       "promo_codes_status_check",
       sql`${t.status} IN (${inList(PROMO_STATUSES)})`,
@@ -253,7 +250,10 @@ export const giftGrants = pgTable(
     vpsOrderId: uuid("vps_order_id"),
     /** Crédits offerts, en micro-CAD. */
     creditsMicro: bigint("credits_micro", { mode: "bigint" }),
-    status: text("status").$type<"active" | "revoked">().notNull().default("active"),
+    status: text("status")
+      .$type<"active" | "revoked">()
+      .notNull()
+      .default("active"),
     reason: text("reason").notNull().default(""),
     idempotencyKey: text("idempotency_key").notNull(),
     createdAt: ts("created_at").notNull().defaultNow(),

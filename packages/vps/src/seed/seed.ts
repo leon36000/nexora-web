@@ -161,10 +161,46 @@ export async function seedDevCatalog(
  * Coûts de base et marges : voir l'étude (sous réserve de confirmation du centre de données).
  */
 export const SUGGESTED_PLANS = [
-  { code: "essentiel", name: "Essentiel", vcpu: 2, ramMb: 4096, diskGb: 40, month: 1900, year: 19200, sort: 10 },
-  { code: "croissance", name: "Croissance", vcpu: 4, ramMb: 8192, diskGb: 75, month: 3500, year: 34800, sort: 20 },
-  { code: "pro", name: "Pro", vcpu: 6, ramMb: 12288, diskGb: 100, month: 5500, year: 54000, sort: 30 },
-  { code: "scale", name: "Scale", vcpu: 8, ramMb: 24576, diskGb: 200, month: 9900, year: 106800, sort: 40 },
+  {
+    code: "essentiel",
+    name: "Essentiel",
+    vcpu: 2,
+    ramMb: 4096,
+    diskGb: 40,
+    month: 1900,
+    year: 19200,
+    sort: 10,
+  },
+  {
+    code: "croissance",
+    name: "Croissance",
+    vcpu: 4,
+    ramMb: 8192,
+    diskGb: 75,
+    month: 3500,
+    year: 34800,
+    sort: 20,
+  },
+  {
+    code: "pro",
+    name: "Pro",
+    vcpu: 6,
+    ramMb: 12288,
+    diskGb: 100,
+    month: 5500,
+    year: 54000,
+    sort: 30,
+  },
+  {
+    code: "scale",
+    name: "Scale",
+    vcpu: 8,
+    ramMb: 24576,
+    diskGb: 200,
+    month: 9900,
+    year: 106800,
+    sort: 40,
+  },
 ].map((p) => ({
   code: p.code,
   name: p.name,
@@ -180,7 +216,9 @@ export const SUGGESTED_PLANS = [
   descriptionEn: `${p.vcpu} vCPU, ${p.ramMb / 1024} GB of RAM and ${p.diskGb} GB of NVMe storage. A virtual private server for your applications.`,
 }));
 
-export async function seedDraftPlans(db: Database): Promise<{ created: string[] }> {
+export async function seedDraftPlans(
+  db: Database,
+): Promise<{ created: string[] }> {
   const created: string[] = [];
   for (const p of SUGGESTED_PLANS) {
     const [exists] = await db

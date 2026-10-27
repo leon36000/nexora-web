@@ -176,9 +176,9 @@ describe("mode production : seulement avec l'autorisation explicite du fondateur
   it("resolveStripeConfig lit l'autorisation au moment de la résolution", async () => {
     const getSecret = async () => "sk_live_vault";
     const env = { NODE_ENV: "production" };
-    await expect(resolveStripeConfig({ env, getSecret })).rejects.toBeInstanceOf(
-      StripeModeError,
-    );
+    await expect(
+      resolveStripeConfig({ env, getSecret }),
+    ).rejects.toBeInstanceOf(StripeModeError);
     const cfg = await resolveStripeConfig({
       env,
       getSecret,

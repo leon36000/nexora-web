@@ -322,7 +322,9 @@ async function onCheckoutSession(
   // posée par notre Checkout) ; jamais plus que le montant payé avant rabais.
   const wanted = Number(session.metadata.credits_cents);
   const creditsCents =
-    Number.isSafeInteger(wanted) && wanted > 0 ? Math.min(wanted, subtotal) : subtotal;
+    Number.isSafeInteger(wanted) && wanted > 0
+      ? Math.min(wanted, subtotal)
+      : subtotal;
   const creditsMicro = centsToMicro(creditsCents);
   const paymentIntent = session.payment_intent
     ? idOf(session.payment_intent)

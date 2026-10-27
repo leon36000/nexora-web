@@ -131,6 +131,9 @@ export const accountEnCA: AccountDictionary = {
         payment_unavailable:
           "The payment service is not responding. Try again in a moment.",
         internal_error: "Something went wrong. Try again in a moment.",
+        gift_cap_reached:
+          "The monthly cap on provided credits has been reached.",
+        gift_already_gifted: "This gift already exists.",
       },
     },
     balance: {
@@ -153,6 +156,8 @@ export const accountEnCA: AccountDictionary = {
       taxNote:
         "GST and QST are calculated by Stripe at the next step, based on your billing address, and added to the amount.",
       testNote: "Test mode: no real payment is possible for now.",
+      feeNote:
+        "A top-up fee of {percent}% (minimum {min}) is deducted from the credits granted.",
       limits: "From {min} to {max}.",
       ownerOnly: "Only the organization owner can buy credits.",
     },
@@ -169,6 +174,8 @@ export const accountEnCA: AccountDictionary = {
         purchase: "Credit purchase",
         subscription: "Included credits (subscription)",
         usage: "Usage",
+        staff_gift: "Credits provided by Nexora",
+        staff_gift_revoked: "Provided credits: taken back",
         stripe_refund: "Refund",
         stripe_dispute: "Dispute",
         dispute_reversal: "Dispute won: credits returned",
@@ -205,6 +212,7 @@ export const accountEnCA: AccountDictionary = {
         empty: "No plan is published at the moment.",
         perMonth: "{amount} per month, before tax",
         perYear: "{amount} per year, before tax",
+        trial: "{days}-day free trial",
         included: "{amount} of credits included each period",
         subscribe: "Subscribe",
         ownerOnly: "Only the owner can subscribe.",
@@ -229,7 +237,8 @@ export const accountEnCA: AccountDictionary = {
     label: "Promo code",
     placeholder: "Your code",
     hint: "Optional. The discount is checked by the server and shown on the payment page.",
-    trialNote: "{days}-day free trial: you are only billed when the trial ends.",
+    trialNote:
+      "{days}-day free trial: you are only billed when the trial ends.",
     errors: {
       unknown: "This promo code does not exist or is no longer valid.",
       expired: "This promo code has expired.",
@@ -240,12 +249,13 @@ export const accountEnCA: AccountDictionary = {
       already_used: "Your organization has already used this code.",
       min_amount: "This code requires a higher purchase amount.",
       not_ready: "This code is not active yet. Try again later or contact us.",
-      covers_all: "This code would cover the whole credit purchase: choose a higher amount.",
+      covers_all:
+        "This code would cover the whole credit purchase: choose a higher amount.",
     },
     gifted: {
       subscription: "Subscription provided: full access, no payment.",
       vps: "VPS provided: it will be installed as soon as a server is ready.",
-      credits: "Credits provided: {amount}.",
+      credits: "Credits provided: they have been added to your balance.",
       capReached: "The monthly cap on provided credits has been reached.",
     },
   },

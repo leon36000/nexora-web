@@ -10,10 +10,11 @@ import {
   listEntries,
   organizations,
   processedEvents,
+  promoCodes,
+  promoRedemptions,
   subscriptions,
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
-import { promoCodes, promoRedemptions } from "@nexora/db";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { DEFAULT_BILLING_CONFIG } from "../ledger/config";
 import { buildEvent } from "../stripe/testing";
@@ -134,7 +135,13 @@ describe("achat de crédits : checkout.session.completed", () => {
       deps(),
       buildEvent(
         "checkout.session.completed",
-        creditSession(org, { metadata: { kind: "credits", organization_id: org.id, credits_cents: "9500" } }),
+        creditSession(org, {
+          metadata: {
+            kind: "credits",
+            organization_id: org.id,
+            credits_cents: "9500",
+          },
+        }),
         { created: EVT_TIME },
       ),
     );
@@ -144,7 +151,13 @@ describe("achat de crédits : checkout.session.completed", () => {
       deps(),
       buildEvent(
         "checkout.session.completed",
-        creditSession(other, { metadata: { kind: "credits", organization_id: other.id, credits_cents: "99999999" } }),
+        creditSession(other, {
+          metadata: {
+            kind: "credits",
+            organization_id: other.id,
+            credits_cents: "99999999",
+          },
+        }),
         { created: EVT_TIME },
       ),
     );
@@ -1346,12 +1359,20 @@ describe("cohérence globale", () => {
   });
 });
 
-
 describe("codes promo : enregistrement des utilisations", () => {
-  async function promo(code: string, stripePromotionCodeId: string | null = null) {
+  async function promo(
+    code: string,
+    stripePromotionCodeId: string | null = null,
+  ) {
     const [row] = await t.db
       .insert(promoCodes)
-      .values({ code, kind: "percent", percentOff: 20, scopes: ["credits", "subscriptions", "vps"], stripePromotionCodeId })
+      .values({
+        code,
+        kind: "percent",
+        percentOff: 20,
+        scopes: ["credits", "subscriptions", "vps"],
+        stripePromotionCodeId,
+      })
       .returning();
     return row!;
   }
@@ -1363,14 +1384,29 @@ describe("codes promo : enregistrement des utilisations", () => {
       amount_subtotal: 10_000,
       amount_total: 9_200,
       total_details: { amount_tax: 1_200, amount_discount: 2_000 },
-      metadata: { kind: "credits", organization_id: org.id, promo_code_id: p.id },
+      metadata: {
+        kind: "credits",
+        organization_id: org.id,
+        promo_code_id: p.id,
+      },
     });
-    const evt = buildEvent("checkout.session.completed", session, { created: EVT_TIME });
+    const evt = buildEvent("checkout.session.completed", session, {
+      created: EVT_TIME,
+    });
     await processStripeEvent(deps(), evt);
     await processStripeEvent(deps(), evt);
-    const rows = await t.db.select().from(promoRedemptions).where(eq(promoRedemptions.promoCodeId, p.id));
+    const rows = await t.db
+      .select()
+      .from(promoRedemptions)
+      .where(eq(promoRedemptions.promoCodeId, p.id));
     expect(rows).toHaveLength(1);
-    expect(rows[0]).toMatchObject({ organizationId: org.id, scope: "credits", source: "stripe", discountCents: 2_000, stripeSessionId: session.id });
+    expect(rows[0]).toMatchObject({
+      organizationId: org.id,
+      scope: "credits",
+      source: "stripe",
+      discountCents: 2_000,
+      stripeSessionId: session.id,
+    });
     // les crédits valent toujours le montant avant rabais et taxes
     expect((await getAccount(t.db, org.id)).balanceMicro).toBe(100_000_000n);
   });
@@ -1390,13 +1426,25 @@ describe("codes promo : enregistrement des utilisations", () => {
           customer: org.customer,
           subscription: `sub_${org.n}`,
           total_details: { amount_discount: 0 },
-          metadata: { kind: "subscription", organization_id: org.id, plan_code: "workstudio-pro", promo_code_id: p.id },
+          metadata: {
+            kind: "subscription",
+            organization_id: org.id,
+            plan_code: "workstudio-pro",
+            promo_code_id: p.id,
+          },
         },
         { created: EVT_TIME },
       ),
     );
-    const [r] = await t.db.select().from(promoRedemptions).where(eq(promoRedemptions.promoCodeId, p.id));
-    expect(r).toMatchObject({ scope: "subscriptions", stripeSubscriptionId: `sub_${org.n}`, discountCents: 0 });
+    const [r] = await t.db
+      .select()
+      .from(promoRedemptions)
+      .where(eq(promoRedemptions.promoCodeId, p.id));
+    expect(r).toMatchObject({
+      scope: "subscriptions",
+      stripeSubscriptionId: `sub_${org.n}`,
+      discountCents: 0,
+    });
   });
 
   it("un code saisi sur la page Stripe est retrouvé par son code de promotion Stripe (résolution facultative)", async () => {
@@ -1415,7 +1463,10 @@ describe("codes promo : enregistrement des utilisations", () => {
       ),
     );
     expect(resolve).toHaveBeenCalledTimes(1);
-    const rows = await t.db.select().from(promoRedemptions).where(eq(promoRedemptions.promoCodeId, p.id));
+    const rows = await t.db
+      .select()
+      .from(promoRedemptions)
+      .where(eq(promoRedemptions.promoCodeId, p.id));
     expect(rows).toHaveLength(1);
     expect(rows[0]?.discountCents).toBe(1_000);
   });
@@ -1425,12 +1476,23 @@ describe("codes promo : enregistrement des utilisations", () => {
     const resolve = vi.fn(async () => {
       throw new Error("réseau");
     });
-    await processStripeEvent(deps({ resolveSessionPromotion: resolve }), buildEvent("checkout.session.completed", creditSession(org), { created: EVT_TIME }));
+    await processStripeEvent(
+      deps({ resolveSessionPromotion: resolve }),
+      buildEvent("checkout.session.completed", creditSession(org), {
+        created: EVT_TIME,
+      }),
+    );
     expect(resolve).not.toHaveBeenCalled();
     const org2 = await newOrg();
     const out = await processStripeEvent(
       deps({ resolveSessionPromotion: resolve }),
-      buildEvent("checkout.session.completed", creditSession(org2, { total_details: { amount_tax: 1_000, amount_discount: 500 } }), { created: EVT_TIME }),
+      buildEvent(
+        "checkout.session.completed",
+        creditSession(org2, {
+          total_details: { amount_tax: 1_000, amount_discount: 500 },
+        }),
+        { created: EVT_TIME },
+      ),
     );
     expect(out.status).toBe("processed");
     expect((await getAccount(t.db, org2.id)).balanceMicro).toBe(100_000_000n);

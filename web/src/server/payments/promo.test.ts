@@ -46,34 +46,81 @@ describe("règles de définition d'un code", () => {
   it("exige la valeur propre à chaque type", () => {
     expect(ok({ code: "ABC", ...base })).toBe(true);
     expect(ok({ code: "ABC", kind: "percent", scopes: ["vps"] })).toBe(false);
-    expect(ok({ code: "ABC", kind: "amount", amountOffCents: 500, scopes: ["vps"] })).toBe(true);
+    expect(
+      ok({ code: "ABC", kind: "amount", amountOffCents: 500, scopes: ["vps"] }),
+    ).toBe(true);
     expect(ok({ code: "ABC", kind: "amount", scopes: ["vps"] })).toBe(false);
-    expect(ok({ code: "ABC", kind: "trial", trialDays: 14, scopes: ["subscriptions"] })).toBe(true);
-    expect(ok({ code: "ABC", kind: "trial", scopes: ["subscriptions"] })).toBe(false);
+    expect(
+      ok({
+        code: "ABC",
+        kind: "trial",
+        trialDays: 14,
+        scopes: ["subscriptions"],
+      }),
+    ).toBe(true);
+    expect(ok({ code: "ABC", kind: "trial", scopes: ["subscriptions"] })).toBe(
+      false,
+    );
     expect(ok({ code: "ABC", kind: "free", scopes: ["vps"] })).toBe(true);
-    expect(ok({ code: "ABC", kind: "staff", scopes: ["subscriptions", "vps", "credits"] })).toBe(true);
+    expect(
+      ok({
+        code: "ABC",
+        kind: "staff",
+        scopes: ["subscriptions", "vps", "credits"],
+      }),
+    ).toBe(true);
   });
   it("refuse une valeur étrangère au type (pas de pourcentage sur un code de montant)", () => {
-    expect(ok({ code: "ABC", kind: "amount", amountOffCents: 500, percentOff: 10, scopes: ["vps"] })).toBe(false);
+    expect(
+      ok({
+        code: "ABC",
+        kind: "amount",
+        amountOffCents: 500,
+        percentOff: 10,
+        scopes: ["vps"],
+      }),
+    ).toBe(false);
   });
   it("un essai ne vise que les abonnements", () => {
-    expect(ok({ code: "ABC", kind: "trial", trialDays: 7, scopes: ["vps"] })).toBe(false);
-    expect(ok({ code: "ABC", kind: "trial", trialDays: 7, scopes: ["subscriptions", "credits"] })).toBe(false);
+    expect(
+      ok({ code: "ABC", kind: "trial", trialDays: 7, scopes: ["vps"] }),
+    ).toBe(false);
+    expect(
+      ok({
+        code: "ABC",
+        kind: "trial",
+        trialDays: 7,
+        scopes: ["subscriptions", "credits"],
+      }),
+    ).toBe(false);
   });
   it("un code qui couvrirait 100 % d'un achat de crédits est refusé (il ne donnerait aucun crédit)", () => {
     expect(ok({ code: "ABC", kind: "free", scopes: ["credits"] })).toBe(false);
-    expect(ok({ code: "ABC", kind: "percent", percentOff: 100, scopes: ["credits", "vps"] })).toBe(false);
-    expect(ok({ code: "ABC", kind: "percent", percentOff: 99, scopes: ["credits"] })).toBe(true);
+    expect(
+      ok({
+        code: "ABC",
+        kind: "percent",
+        percentOff: 100,
+        scopes: ["credits", "vps"],
+      }),
+    ).toBe(false);
+    expect(
+      ok({ code: "ABC", kind: "percent", percentOff: 99, scopes: ["credits"] }),
+    ).toBe(true);
     // le code du personnel offre sans passer par Stripe : il peut viser les crédits
     expect(ok({ code: "ABC", kind: "staff", scopes: ["credits"] })).toBe(true);
   });
   it("la durée « répétée » exige un nombre de mois, les limites des valeurs positives", () => {
     expect(ok({ code: "ABC", ...base, duration: "repeating" })).toBe(false);
-    expect(ok({ code: "ABC", ...base, duration: "repeating", durationMonths: 3 })).toBe(true);
+    expect(
+      ok({ code: "ABC", ...base, duration: "repeating", durationMonths: 3 }),
+    ).toBe(true);
     expect(ok({ code: "ABC", ...base, maxRedemptions: 0 })).toBe(false);
     expect(ok({ code: "ABC", ...base, minAmountCents: -5 })).toBe(false);
     expect(ok({ code: "ABC", ...base, expiresAt: "pas une date" })).toBe(false);
-    expect(ok({ code: "ABC", ...base, expiresAt: "2027-01-31T23:59:59Z" })).toBe(true);
+    expect(
+      ok({ code: "ABC", ...base, expiresAt: "2027-01-31T23:59:59Z" }),
+    ).toBe(true);
   });
   it("refuse un champ inconnu (aucun identifiant Stripe saisi à la main)", () => {
     expect(ok({ code: "ABC", ...base, stripeCouponId: "co_1" })).toBe(false);
@@ -94,20 +141,38 @@ describe("génération en lot", () => {
     expect(() => generateCodes({ count: 0, length: 8 })).toThrow();
     expect(() => generateCodes({ count: 5001, length: 8 })).toThrow();
     expect(() => generateCodes({ count: 5, length: 3 })).toThrow();
-    expect(() => generateCodes({ count: 5, length: 8, prefix: "a_b" })).toThrow();
-    expect(() => generateCodes({ count: 5, length: 8, prefix: "A".repeat(13) })).toThrow();
+    expect(() =>
+      generateCodes({ count: 5, length: 8, prefix: "a_b" }),
+    ).toThrow();
+    expect(() =>
+      generateCodes({ count: 5, length: 8, prefix: "A".repeat(13) }),
+    ).toThrow();
   });
 });
 
 describe("création, lot, désactivation", () => {
   it("crée un code normalisé, journalise, refuse un doublon", async () => {
-    const row = await createPromo(t.db, { code: "bienvenue-25", ...base }, "admin");
-    expect(row).toMatchObject({ code: "BIENVENUE-25", status: "active", stripeCouponId: null });
-    await expect(createPromo(t.db, { code: "Bienvenue-25", ...base }, "admin")).rejects.toMatchObject({
+    const row = await createPromo(
+      t.db,
+      { code: "bienvenue-25", ...base },
+      "admin",
+    );
+    expect(row).toMatchObject({
+      code: "BIENVENUE-25",
+      status: "active",
+      stripeCouponId: null,
+    });
+    await expect(
+      createPromo(t.db, { code: "Bienvenue-25", ...base }, "admin"),
+    ).rejects.toMatchObject({
       code: "duplicate",
     });
     const log = await t.db.select().from(paymentAudit);
-    expect(log.some((l) => l.action === "promo.create" && l.subject === "BIENVENUE-25")).toBe(true);
+    expect(
+      log.some(
+        (l) => l.action === "promo.create" && l.subject === "BIENVENUE-25",
+      ),
+    ).toBe(true);
   });
 
   it("refuse une définition invalide par une PromoError claire", async () => {
@@ -119,23 +184,39 @@ describe("création, lot, désactivation", () => {
   it("génère un lot : même définition, un code différent par ligne, même identifiant de lot", async () => {
     const out = await createPromoBatch(
       t.db,
-      { prefix: "lancement", count: 12, length: 6, definition: { ...base, maxRedemptions: 1, label: "Lancement" } },
+      {
+        prefix: "lancement",
+        count: 12,
+        length: 6,
+        definition: { ...base, maxRedemptions: 1, label: "Lancement" },
+      },
       "admin",
     );
     expect(out.codes).toHaveLength(12);
-    const rows = await t.db.select().from(promoCodes).where(eq(promoCodes.batchId, out.batchId));
+    const rows = await t.db
+      .select()
+      .from(promoCodes)
+      .where(eq(promoCodes.batchId, out.batchId));
     expect(rows).toHaveLength(12);
-    expect(rows.every((r) => r.maxRedemptions === 1 && r.label === "Lancement")).toBe(true);
+    expect(
+      rows.every((r) => r.maxRedemptions === 1 && r.label === "Lancement"),
+    ).toBe(true);
     expect(new Set(rows.map((r) => r.code)).size).toBe(12);
   });
 
   it("désactive un code (réversible) et le journalise", async () => {
-    const row = await createPromo(t.db, { code: "A-DESACTIVER", ...base }, "admin");
+    const row = await createPromo(
+      t.db,
+      { code: "A-DESACTIVER", ...base },
+      "admin",
+    );
     const off = await disablePromo(t.db, row.id, "admin");
     expect(off.status).toBe("disabled");
     const on = await setPromoStatus(t.db, row.id, "active", "admin");
     expect(on.status).toBe("active");
-    await expect(disablePromo(t.db, "00000000-0000-4000-8000-000000000000", "admin")).rejects.toMatchObject({
+    await expect(
+      disablePromo(t.db, "00000000-0000-4000-8000-000000000000", "admin"),
+    ).rejects.toMatchObject({
       code: "not_found",
     });
   });
@@ -143,10 +224,26 @@ describe("création, lot, désactivation", () => {
   it("liste avec les statistiques d'utilisation", async () => {
     const row = await createPromo(t.db, { code: "STATS-1", ...base }, "admin");
     const { organizations } = await import("@nexora/db");
-    await t.db.insert(organizations).values({ id: "o-stats", name: "O", slug: "o-stats" });
+    await t.db
+      .insert(organizations)
+      .values({ id: "o-stats", name: "O", slug: "o-stats" });
     await t.db.insert(promoRedemptions).values([
-      { promoCodeId: row.id, organizationId: "o-stats", scope: "subscriptions", source: "stripe", stripeSessionId: "cs_1", discountCents: 1200 },
-      { promoCodeId: row.id, organizationId: "o-stats", scope: "subscriptions", source: "stripe", stripeSessionId: "cs_2", discountCents: 800 },
+      {
+        promoCodeId: row.id,
+        organizationId: "o-stats",
+        scope: "subscriptions",
+        source: "stripe",
+        stripeSessionId: "cs_1",
+        discountCents: 1200,
+      },
+      {
+        promoCodeId: row.id,
+        organizationId: "o-stats",
+        scope: "subscriptions",
+        source: "stripe",
+        stripeSessionId: "cs_2",
+        discountCents: 800,
+      },
     ]);
     const list = await listPromos(t.db, {});
     const mine = list.items.find((i) => i.id === row.id);

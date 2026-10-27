@@ -1,6 +1,5 @@
 import { sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { accessLevel } from "./subscription-access.ts";
 import {
   giftGrants,
   organizations,
@@ -12,6 +11,7 @@ import {
   subscriptions,
   users,
 } from "./schema.ts";
+import { accessLevel } from "./subscription-access.ts";
 import { createTestDatabase, type TestDatabase } from "./testing.ts";
 
 let t: TestDatabase;
@@ -32,9 +32,9 @@ const promo = (over: Partial<typeof promoCodes.$inferInsert> = {}) => ({
 
 describe("accès d'un abonnement offert", () => {
   it("un abonnement « offert » donne l'accès complet", () => {
-    expect(accessLevel({ status: "gifted", graceEndsAt: null }, new Date())).toBe(
-      "full",
-    );
+    expect(
+      accessLevel({ status: "gifted", graceEndsAt: null }, new Date()),
+    ).toBe("full");
   });
 });
 
@@ -134,7 +134,9 @@ describe("réglages, personnel et dons", () => {
     await t.db
       .insert(organizations)
       .values({ id: "o1", name: "Org", slug: "org" });
-    await t.db.insert(staffAccounts).values({ userId: "u1", grantedBy: "admin" });
+    await t.db
+      .insert(staffAccounts)
+      .values({ userId: "u1", grantedBy: "admin" });
     const [grant] = await t.db
       .insert(giftGrants)
       .values({

@@ -62,14 +62,26 @@ describe("lecteur Directus des abonnements", () => {
 
   it("lit l'offre (famille), l'essai gratuit et le réglage de carte ; la famille retombe sur le code", async () => {
     const f = fetchReturning([
-      row({ family: "workstudio-equipe", trial_days: 14, trial_card: "not_required" }),
+      row({
+        family: "workstudio-equipe",
+        trial_days: 14,
+        trial_card: "not_required",
+      }),
       row({ code: "seul" }),
     ]);
     const [a, b] = await createDirectusPlanSource(
       cfg(f as unknown as typeof fetch),
     ).listPublished();
-    expect(a).toMatchObject({ family: "workstudio-equipe", trialDays: 14, trialCard: "not_required" });
-    expect(b).toMatchObject({ family: "seul", trialDays: 0, trialCard: "default" });
+    expect(a).toMatchObject({
+      family: "workstudio-equipe",
+      trialDays: 14,
+      trialCard: "not_required",
+    });
+    expect(b).toMatchObject({
+      family: "seul",
+      trialDays: 0,
+      trialCard: "default",
+    });
     const url = decodeURIComponent((f.mock.calls[0] as [string])[0]);
     expect(url).toContain("trial_days");
     // le prix suggéré n'est jamais demandé par le site
@@ -77,7 +89,10 @@ describe("lecteur Directus des abonnements", () => {
   });
 
   it("refuse une durée d'essai hors de 0 à 365 jours (le plan reste lisible sans essai)", async () => {
-    const f = fetchReturning([row({ trial_days: 9999 }), row({ code: "n", trial_days: -3 })]);
+    const f = fetchReturning([
+      row({ trial_days: 9999 }),
+      row({ code: "n", trial_days: -3 }),
+    ]);
     const plans = await createDirectusPlanSource(
       cfg(f as unknown as typeof fetch),
     ).listPublished();

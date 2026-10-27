@@ -263,7 +263,9 @@ export async function createSubscriptionCheckout(
       locale: STRIPE_LOCALE[input.lang],
       line_items: [{ price: input.plan.stripePriceId as string, quantity: 1 }],
       ...discountParams(input),
-      ...(cardOptional ? { payment_method_collection: "if_required" as const } : {}),
+      ...(cardOptional
+        ? { payment_method_collection: "if_required" as const }
+        : {}),
       automatic_tax: { enabled: true },
       billing_address_collection: "required",
       customer_update: { address: "auto", name: "auto" },
@@ -281,7 +283,9 @@ export async function createSubscriptionCheckout(
               ...(cardOptional && input.noPaymentMethodNeeded !== true
                 ? {
                     trial_settings: {
-                      end_behavior: { missing_payment_method: "cancel" as const },
+                      end_behavior: {
+                        missing_payment_method: "cancel" as const,
+                      },
                     },
                   }
                 : {}),

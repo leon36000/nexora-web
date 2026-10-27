@@ -16,6 +16,7 @@ import type { Logger } from "@nexora/log";
 import type Stripe from "stripe";
 import { z } from "zod";
 import type { PlanSource } from "../billing/plans";
+import type { BillingConfig } from "../ledger/config";
 import {
   allowMethods,
   HttpError,
@@ -25,15 +26,10 @@ import {
   runAdminRoute,
   uuidParam,
 } from "../site-agents/http";
-import type { BillingConfig } from "../ledger/config";
 import { PublishPlanError, publishPlanToStripe } from "../stripe/publish-plan";
+import type { ConnectDeps } from "./connect";
 import { connectStripe, readStripeStatus } from "./connect";
-import {
-  GiftError,
-  listGifts,
-  revokeGift,
-  setStaffFlag,
-} from "./gifts";
+import { GiftError, listGifts, revokeGift, setStaffFlag } from "./gifts";
 import {
   createPromo,
   createPromoBatch,
@@ -48,13 +44,8 @@ import {
   scopeProductsFrom,
   syncPromo,
 } from "./promo-sync";
-import {
-  getSettings,
-  settingsPatchSchema,
-  updateSettings,
-} from "./settings";
+import { getSettings, settingsPatchSchema, updateSettings } from "./settings";
 import type { PaymentVault } from "./vault";
-import type { ConnectDeps } from "./connect";
 
 /**
  * API d'administration des paiements : `/api/admin/payments/*`. Consommée par le module Directus « Paiements »
@@ -76,7 +67,9 @@ export interface PaymentsAdminDeps {
   now: () => Date;
 }
 
-const PATCH_SETTINGS = settingsPatchSchema.extend({ confirmLive: z.boolean().optional() }).strict();
+const PATCH_SETTINGS = settingsPatchSchema
+  .extend({ confirmLive: z.boolean().optional() })
+  .strict();
 const batchBody = z
   .object({
     prefix: z.string().max(12).optional(),
@@ -85,7 +78,9 @@ const batchBody = z
     definition: z.record(z.string(), z.unknown()),
   })
   .strict();
-const statusBody = z.object({ status: z.enum(["active", "disabled"]) }).strict();
+const statusBody = z
+  .object({ status: z.enum(["active", "disabled"]) })
+  .strict();
 const syncBody = z
   .object({
     limit: z.number().int().min(1).max(100).optional(),
@@ -101,7 +96,9 @@ const staffBody = z
   })
   .strict();
 const publishBody = z.object({ code: z.string().min(1).max(100) }).strict();
-const revokeBody = z.object({ reason: z.string().max(300).optional() }).strict();
+const revokeBody = z
+  .object({ reason: z.string().max(300).optional() })
+  .strict();
 
 export async function handlePaymentsAdmin(
   request: Request,
@@ -117,12 +114,24 @@ export async function handlePaymentsAdmin(
     (error) => {
       if (error instanceof PromoError)
         return json(
-          { error: `promo_${error.code}`, message: error.message, issues: error.issues },
-          error.code === "not_found" ? 404 : error.code === "duplicate" ? 409 : 422,
+          {
+            error: `promo_${error.code}`,
+            message: error.message,
+            issues: error.issues,
+          },
+          error.code === "not_found"
+            ? 404
+            : error.code === "duplicate"
+              ? 409
+              : 422,
         );
       if (error instanceof GiftError)
         return json(
-          { error: `gift_${error.code}`, message: error.message, remainingCents: error.remainingCents },
+          {
+            error: `gift_${error.code}`,
+            message: error.message,
+            remainingCents: error.remainingCents,
+          },
           error.code === "not_found" ? 404 : 409,
         );
       return null;
@@ -145,7 +154,8 @@ async function syncSome(
       code: r.code,
       state: "error" as const,
       code_: "stripe_unavailable",
-      message: "Stripe n'est pas branché : collez la clé au Coffre puis « Vérifier et brancher Stripe ».",
+      message:
+        "Stripe n'est pas branché : collez la clé au Coffre puis « Vérifier et brancher Stripe ».",
     }));
   }
   const needsCredits = rows.some((r) => r.scopes.includes("credits"));
@@ -174,7 +184,11 @@ async function route(
 
   if (!a) {
     allowMethods(request, "GET");
-    const stripe = await readStripeStatus({ db, vault: deps.vault(), siteUrl: deps.siteUrl });
+    const stripe = await readStripeStatus({
+      db,
+      vault: deps.vault(),
+      siteUrl: deps.siteUrl,
+    });
     const settings = await getSettings(db);
     const [promos] = await db.select({ n: count() }).from(promoCodes);
     const [unsynced] = await db
@@ -210,7 +224,11 @@ async function route(
       log: deps.log,
       now: deps.now,
     });
-    const status = await readStripeStatus({ db, vault: deps.vault(), siteUrl: deps.siteUrl });
+    const status = await readStripeStatus({
+      db,
+      vault: deps.vault(),
+      siteUrl: deps.siteUrl,
+    });
     return json({ ...result, status }, result.ok ? 200 : 422);
   }
 
@@ -221,7 +239,8 @@ async function route(
     const { confirmLive, ...patch } = body;
     if (patch.liveModeAllowed === true && confirmLive !== true)
       throw new HttpError(422, "confirmation_required", {
-        message: "Autoriser les paiements réels exige une confirmation explicite.",
+        message:
+          "Autoriser les paiements réels exige une confirmation explicite.",
       });
     return json(publicSettings(await updateSettings(db, patch, "admin")));
   }
@@ -232,20 +251,28 @@ async function route(
     const plan = await deps.plans().getByCode(code);
     if (!plan)
       throw new HttpError(404, "plan_not_found", {
-        message: "Offre introuvable ou non publiée : publiez-la dans Directus avant « Publier vers Stripe ».",
+        message:
+          "Offre introuvable ou non publiée : publiez-la dans Directus avant « Publier vers Stripe ».",
       });
     let stripe: Stripe;
     try {
       stripe = await deps.stripe();
     } catch {
       throw new HttpError(503, "stripe_unavailable", {
-        message: "Stripe n'est pas branché : collez la clé au Coffre puis « Vérifier et brancher Stripe ».",
+        message:
+          "Stripe n'est pas branché : collez la clé au Coffre puis « Vérifier et brancher Stripe ».",
       });
     }
     try {
       const result = await publishPlanToStripe(stripe, plan);
-      deps.log.info("paiements : offre publiée vers Stripe", { code: plan.code });
-      return json({ code: plan.code, ...result, appliedAt: deps.now().toISOString() });
+      deps.log.info("paiements : offre publiée vers Stripe", {
+        code: plan.code,
+      });
+      return json({
+        code: plan.code,
+        ...result,
+        appliedAt: deps.now().toISOString(),
+      });
     } catch (error) {
       if (error instanceof PublishPlanError)
         throw new HttpError(422, "invalid_plan", { message: error.message });
@@ -262,7 +289,8 @@ async function route(
         return json(
           await listPromos(db, {
             q: url.searchParams.get("q") ?? undefined,
-            status: status === "active" || status === "disabled" ? status : undefined,
+            status:
+              status === "active" || status === "disabled" ? status : undefined,
             batchId: batchId ? uuidParam(batchId) : undefined,
             limit: limitParam(url, 100, 500),
             offset: Math.max(Number(url.searchParams.get("offset")) || 0, 0),
@@ -272,7 +300,10 @@ async function route(
       const body = await readBody(request, z.record(z.string(), z.unknown()));
       const row = await createPromo(db, body, "admin");
       const [sync] = await syncSome(deps, [row]);
-      const [fresh] = await db.select().from(promoCodes).where(eq(promoCodes.id, row.id));
+      const [fresh] = await db
+        .select()
+        .from(promoCodes)
+        .where(eq(promoCodes.id, row.id));
       return json({ promo: fresh ?? row, sync }, 201);
     }
     if (b === "batch" && !c) {
@@ -280,11 +311,23 @@ async function route(
       const body = await readBody(request, batchBody);
       const out = await createPromoBatch(
         db,
-        { prefix: body.prefix, count: body.count, length: body.length, definition: body.definition as never },
+        {
+          prefix: body.prefix,
+          count: body.count,
+          length: body.length,
+          definition: body.definition as never,
+        },
         "admin",
       );
       // Pas de synchronisation en ligne (jusqu'à 5 000 codes) : « Synchroniser avec Stripe » s'en charge par paquets.
-      return json({ batchId: out.batchId, count: out.codes.length, codes: out.codes.slice(0, 20) }, 201);
+      return json(
+        {
+          batchId: out.batchId,
+          count: out.codes.length,
+          codes: out.codes.slice(0, 20),
+        },
+        201,
+      );
     }
     if (b === "sync" && !c) {
       allowMethods(request, "POST");
@@ -297,7 +340,11 @@ async function route(
             needsStripe,
             body.after ? sql`${promoCodes.id} > ${body.after}` : undefined,
           )
-        : and(eq(promoCodes.status, "active"), needsStripe, isNull(promoCodes.stripePromotionCodeId));
+        : and(
+            eq(promoCodes.status, "active"),
+            needsStripe,
+            isNull(promoCodes.stripePromotionCodeId),
+          );
       const rows = await db
         .select()
         .from(promoCodes)
@@ -310,14 +357,22 @@ async function route(
         : await db
             .select({ n: count() })
             .from(promoCodes)
-            .where(and(eq(promoCodes.status, "active"), needsStripe, isNull(promoCodes.stripePromotionCodeId)));
+            .where(
+              and(
+                eq(promoCodes.status, "active"),
+                needsStripe,
+                isNull(promoCodes.stripePromotionCodeId),
+              ),
+            );
       const failed = results.filter((r) => r.state === "error");
       return json({
         processed: results.length,
         errors: failed.length,
-        firstError: (failed[0] as { message?: string } | undefined)?.message ?? null,
+        firstError:
+          (failed[0] as { message?: string } | undefined)?.message ?? null,
         remaining,
-        next: body.all && rows.length === limit ? rows[rows.length - 1]?.id : null,
+        next:
+          body.all && rows.length === limit ? rows[rows.length - 1]?.id : null,
       });
     }
     const id = uuidParam(b);
@@ -330,7 +385,10 @@ async function route(
     }
     if (c === "sync") {
       allowMethods(request, "POST");
-      const [row] = await db.select().from(promoCodes).where(eq(promoCodes.id, id));
+      const [row] = await db
+        .select()
+        .from(promoCodes)
+        .where(eq(promoCodes.id, id));
       if (!row) throw new HttpError(404, "not_found");
       const [sync] = await syncSome(deps, [row]);
       return json({ sync });
@@ -362,16 +420,24 @@ async function route(
       .where(sql`lower(${users.email}) = ${body.email.toLowerCase()}`);
     if (!user)
       throw new HttpError(404, "user_not_found", {
-        message: "Aucun compte client avec ce courriel : la personne doit d'abord s'inscrire.",
+        message:
+          "Aucun compte client avec ce courriel : la personne doit d'abord s'inscrire.",
       });
-    await setStaffFlag(db, { userId: user.id, on: body.on, actor: "admin", note: body.note });
+    await setStaffFlag(db, {
+      userId: user.id,
+      on: body.on,
+      actor: "admin",
+      note: body.note,
+    });
     return json({ userId: user.id, on: body.on });
   }
 
   if (a === "gifts") {
     if (!b) {
       allowMethods(request, "GET");
-      return json({ items: await listGifts(db, { limit: limitParam(url, 100, 500) }) });
+      return json({
+        items: await listGifts(db, { limit: limitParam(url, 100, 500) }),
+      });
     }
     if (c === "revoke") {
       allowMethods(request, "POST");

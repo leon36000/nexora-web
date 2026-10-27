@@ -5,10 +5,19 @@ import { OrgAccessError, resolveOrgContext } from "../auth/guards";
 import { isSameOriginRequest } from "../auth/origin";
 import type { BillingConfig } from "../ledger/config";
 import { parseCadToCents } from "../ledger/money";
-import { GiftError, grantGiftCredits, grantGiftSubscription } from "../payments/gifts";
-import { creditFee, type PromoResolution, resolvePromo, trialFor } from "../payments/purchase";
-import { getSettings } from "../payments/settings";
+import {
+  GiftError,
+  grantGiftCredits,
+  grantGiftSubscription,
+} from "../payments/gifts";
 import { ensureCreditsProducts } from "../payments/promo-sync";
+import {
+  creditFee,
+  type PromoResolution,
+  resolvePromo,
+  trialFor,
+} from "../payments/purchase";
+import { getSettings } from "../payments/settings";
 import {
   type CheckoutDeps,
   CheckoutError,
@@ -199,7 +208,12 @@ function checkoutFailure(
   if (error instanceof GiftError)
     return error.code === "cap_reached"
       ? fail(deps, input, 409, "gift_cap_reached")
-      : fail(deps, input, error.code === "already_gifted" ? 409 : 403, `gift_${error.code}`);
+      : fail(
+          deps,
+          input,
+          error.code === "already_gifted" ? 409 : 403,
+          `gift_${error.code}`,
+        );
   if (error instanceof CheckoutError) {
     const map: Record<string, [number, string]> = {
       invalid_amount: [422, "invalid_amount"],
@@ -273,7 +287,9 @@ export async function handleCreditsCheckout(
     const fee = creditFee(settings, cents);
     // Produit Stripe « Crédits » de la langue : permet à un coupon de ne viser que les crédits.
     let productId: string | null =
-      (input.lang === "fr" ? settings.creditsProductFrId : settings.creditsProductEnId) ?? null;
+      (input.lang === "fr"
+        ? settings.creditsProductFrId
+        : settings.creditsProductEnId) ?? null;
     if (!productId) {
       try {
         const [fr, en] = await ensureCreditsProducts(deps.db, stripe as never);

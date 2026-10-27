@@ -21,7 +21,8 @@ export function paymentsAdminDeps(): PaymentsAdminDeps {
     siteUrl,
     createClient: productionClientFactory(env),
     // Hors production avec le simulateur Stripe : une adresse locale est acceptée (aucun vrai Stripe ne l'appelle).
-    allowLocalUrl: env.NODE_ENV !== "production" && Boolean(env.STRIPE_API_BASE_URL),
+    allowLocalUrl:
+      env.NODE_ENV !== "production" && Boolean(env.STRIPE_API_BASE_URL),
     stripe: (): Promise<Stripe> => getStripe(),
     plans: () => lazyPlanSource(() => planSourceFromEnv()),
     billingConfig: loadBillingConfig(),

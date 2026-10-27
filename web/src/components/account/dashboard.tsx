@@ -27,10 +27,46 @@ export interface DashboardProps {
   config: BillingConfig;
   /** null : les offres n'ont pas pu être lues (Directus indisponible ou non configuré). */
   plans: SubscriptionPlan[] | null;
+  /** Réglages de paiement visibles du client : mode réel ou test, frais de recharge. */
+  payment: {
+    liveMode: boolean;
+    fee: { percent: number; minCents: number } | null;
+  };
   flash: { kind: "success" | "info" | "error"; message: string } | null;
 }
 
 const NEGATIVE = "text-accent-text";
+
+/** Champ facultatif « code promo » : le serveur le valide ; le navigateur n'envoie que le texte saisi. */
+function PromoField({
+  lang,
+  t,
+  id,
+}: {
+  lang: Lang;
+  t: AccountDictionary;
+  id: string;
+}) {
+  void lang;
+  return (
+    <div className="mb-3 max-w-48">
+      <label htmlFor={id} className="block text-small font-medium text-fg">
+        {t.promo.label}
+      </label>
+      <input
+        id={id}
+        name="promo"
+        type="text"
+        maxLength={60}
+        autoComplete="off"
+        autoCapitalize="characters"
+        spellCheck={false}
+        placeholder={t.promo.placeholder}
+        className={INPUT_CLASS}
+      />
+    </div>
+  );
+}
 
 function Hidden({ lang }: { lang: Lang }) {
   return <input type="hidden" name="lang" value={lang} />;
@@ -45,6 +81,7 @@ export function Dashboard({
   userName,
   config,
   plans,
+  payment,
   flash,
 }: DashboardProps) {
   const d = t.dashboard;
@@ -160,11 +197,22 @@ export function Dashboard({
                   {fmt(d.buy.limits, { min, max })}
                 </p>
               </div>
+              <PromoField lang={lang} t={t} id="promo-credits" />
               <Button type="submit" arrow>
                 {d.buy.submit}
               </Button>
               <p className="text-small text-fg-muted">{d.buy.taxNote}</p>
-              <p className="text-small text-fg-muted">{d.buy.testNote}</p>
+              {payment.fee ? (
+                <p className="text-small text-fg-muted">
+                  {fmt(d.buy.feeNote, {
+                    percent: payment.fee.percent,
+                    min: formatCad(lang, payment.fee.minCents),
+                  })}
+                </p>
+              ) : null}
+              {payment.liveMode ? null : (
+                <p className="text-small text-fg-muted">{d.buy.testNote}</p>
+              )}
             </form>
           ) : (
             <p className="mt-5 text-small text-fg-muted">{d.buy.ownerOnly}</p>
@@ -273,6 +321,13 @@ export function Dashboard({
                       </p>
                     ) : null}
                     <p className="mt-3 text-body text-fg">{price}</p>
+                    {plan.trialDays > 0 ? (
+                      <p className="mt-1 text-small text-fg-muted">
+                        {fmt(d.subscriptions.available.trial, {
+                          days: plan.trialDays,
+                        })}
+                      </p>
+                    ) : null}
                     {plan.includedCreditsCents > 0 ? (
                       <p className="mt-1 text-small text-fg-muted">
                         {fmt(d.subscriptions.available.included, {
@@ -296,6 +351,11 @@ export function Dashboard({
                         >
                           <Hidden lang={lang} />
                           <input type="hidden" name="plan" value={plan.code} />
+                          <PromoField
+                            lang={lang}
+                            t={t}
+                            id={`promo-${plan.code}`}
+                          />
                           <Button type="submit" variant="secondary">
                             {d.subscriptions.available.subscribe}
                           </Button>
