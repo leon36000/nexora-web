@@ -400,3 +400,94 @@ Recette et preuves : `docs/recette/` ; mode d'emploi : `docs/guide-operateur.md`
 - **Portée des secrets** : `@nexora/vault/scope` ; un secret ne part vers une adresse saisie que si son type convient.
 - **Sauvegarde** : `deploy/backup.sh`, `deploy/restore.sh` ; **e2e regroupés** : `bun run e2e`.
 - **Écoute du serveur** : `next start -H localhost` (ou `0.0.0.0` en conteneur), jamais `127.0.0.1`.
+
+## Durcissement de la pile (recette de sécurité du 27/10/2026)
+
+Fichiers : `deploy/compose.yml` (développement), `deploy/compose.prod.yml` (surcharge de production), `deploy/initdb/01-databases.sh`, `deploy/harden-db-roles.sh`, tests `deploy/tests/{db-roles,compose}.test.sh` (`bun run --cwd deploy test`). Réglages de Directus côté contenu (2FA, mot de passe, fichiers) : `docs/cms.md` §11. Tout a été validé sur des conteneurs jetables (PostgreSQL, Directus 12.5.1 et LiteLLM v1.106.2 neufs, base jetable) sans toucher aux conteneurs de la pile en service.
+
+### Un rôle PostgreSQL par base
+
+Avant : `POSTGRES_USER: nexora` (superutilisateur) possédait toutes les bases et Directus et LiteLLM se connectaient avec lui ; leur compromission donnait le serveur entier, dont la base `app` (clients, grand livre, Coffre). Maintenant, `initdb/01-databases.sh` crée un rôle `directus`, `litellm` et `umami`, chacun **propriétaire de sa base seulement**, `LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS`, mot de passe lu par `\getenv` (jamais dans le SQL ni la ligne de commande), `REVOKE ALL … FROM PUBLIC` puis `GRANT CONNECT` à son seul rôle, et `REVOKE CONNECT ON DATABASE app FROM PUBLIC`. La base `app` garde son propriétaire (`nexora`, utilisé par le site, le worker, les sauvegardes). `nexora` reste superutilisateur : un rôle de site non privilégié est une suite possible (les tests créent des bases jetables et en ont besoin).
+
+Variables : `DIRECTUS_DB_PASSWORD`, `LITELLM_DB_PASSWORD`, `UMAMI_DB_PASSWORD` (générées par `deploy/init-env.sh`, aléatoires, distinctes ; `…_FILE` en production). `compose.yml` refuse de démarrer sans elles et sans leur variante `_FILE`.
+
+**Cluster existant : `initdb` ne s'exécute qu'à l'initialisation d'un volume neuf.** Le conteneur PostgreSQL en service n'est pas recréé : migrer avec `deploy/harden-db-roles.sh`, idempotent, qui ne redémarre rien. Ordre :
+
+1. **Sauvegarde** : `deploy/backup.sh` (chiffrée), comme au guide §10.
+2. Relire le SQL : `bash deploy/harden-db-roles.sh --dry-run`. Il n'utilise **pas** `REASSIGN OWNED` : cette commande déplace aussi les objets partagés, donc la base `app`, au nouveau rôle (vérifié dans la documentation de PostgreSQL) ; le script transfère les schémas, tables, séquences, vues, types, domaines et fonctions un à un, par base.
+3. Appliquer : `bash deploy/harden-db-roles.sh` (défauts : `--env-file deploy/.env`, `--container nexorasite-db-1` ou `NEXORA_DB_CONTAINER`, `--superuser nexora`). Il (a) ajoute à l'env les trois mots de passe manquants, générés au hasard, jamais affichés, fichier laissé en 0600 ; (b) crée les rôles ; (c) `ALTER DATABASE … OWNER TO` ; (d) transfère les objets ; (e) retire `CONNECT` à `PUBLIC` sur `app` et sur chaque base de service. Directus et LiteLLM, connectés en superutilisateur, continuent de fonctionner pendant ce temps.
+4. Vérifier : `bash deploy/harden-db-roles.sh --check` (lecture seule ; code de sortie 1 si un rôle est trop puissant, absent, ou si `PUBLIC` peut encore se connecter à `app`).
+5. **Seulement alors**, mettre la pile à jour et recréer **uniquement** Directus et LiteLLM, sans leurs dépendances (sinon Compose recréerait aussi `db` pour ses nouvelles limites) : `docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d --no-deps directus litellm`. Directus se connecte alors avec `DB_USER=directus`, LiteLLM avec le rôle `litellm`.
+6. Vérifier `/server/ping` de Directus, `/health/liveliness` de LiteLLM, puis une publication d'essai. **Retour arrière** : `docker compose … up -d --no-deps` avec l'ancien `compose.yml` (les rôles et propriétaires nouveaux n'empêchent pas la connexion du superutilisateur).
+7. `db` (nouvelles limites de mémoire et de processus, capacités retirées) se recrée plus tard, à un moment choisi : arrêter le site et le worker, puis Directus, puis `docker compose … up -d --no-deps db`.
+8. **Après toute restauration** (`deploy/restore.sh` restaure avec `--no-owner` : tout redevient propriété de `nexora`), rejouer `bash deploy/harden-db-roles.sh`.
+
+`cms/scripts/test-instance.sh` (instance jetable de développement) continue de se connecter avec `nexora`.
+
+### Directus : variables posées dans `compose.yml`
+
+| Réglage | Valeur | Raison |
+|---|---|---|
+| `RATE_LIMITER_ENABLED`, `RATE_LIMITER_STORE` | `true`, `memory` | une seule instance ; 200 requêtes/s par adresse (`RATE_LIMITER_POINTS`), car le site et le worker partagent une adresse ; les scripts `cms/scripts` réessaient seuls après un 429 |
+| `RATE_LIMITER_GLOBAL_*` | `true`, 1000/s | plafond global |
+| `RATE_LIMITER_EMAIL_ENABLED` | `true` | limite l'envoi de courriels (réinitialisation de mot de passe) |
+| `ACCESS_TOKEN_TTL`, `REFRESH_TOKEN_TTL`, `SESSION_COOKIE_TTL` | `15m`, `1d`, `8h` | le site n'utilise que des jetons statiques de service, jamais ces sessions |
+| `SESSION_COOKIE_SAME_SITE`, `REFRESH_TOKEN_COOKIE_SAME_SITE` | `Strict` | vérifié : connexion, panneau et module d'extension fonctionnent (même origine) |
+| `SESSION_COOKIE_SECURE`, `REFRESH_TOKEN_COOKIE_SECURE` | `${DIRECTUS_COOKIE_SECURE:-false}` | **`DIRECTUS_COOKIE_SECURE=true` est OBLIGATOIRE en production** (`PUBLIC_URL` en https) ; `compose.prod.yml` le force à `true` par défaut |
+| `IP_TRUST_PROXY`, `IP_CUSTOM_HEADER` | `${DIRECTUS_TRUST_PROXY:-false}`, `${DIRECTUS_IP_CUSTOM_HEADER:-false}` | en production, `DIRECTUS_TRUST_PROXY=uniquelocal` (le proxy HTTPS de l'hôte est une adresse privée Docker) pour que la limitation de débit voie le vrai client ; jamais `true` ; `IP_CUSTOM_HEADER` seulement si le proxy n'utilise pas `X-Forwarded-For` |
+| `IMPORT_IP_DENY_LIST` | `0.0.0.0,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16,100.64.0.0/10,::1/128,fc00::/7,fe80::/10` | un Éditeur peut importer une image par URL : sans cela, il lit le réseau interne et les métadonnées du nuage. Directus compare l'adresse **résolue** (donc `host.docker.internal`, en `172.x`, est refusé) et traite les formes IPv6 de transition. Vérifié avec la classe `IpBlocklist` de l'image |
+| `FILES_MIME_TYPE_ALLOW_LIST` | `image/jpeg,image/png,image/webp,image/gif,image/avif,application/pdf` | le site ne sert que des rasters (`/api/media` refuse le SVG) ; un fichier `text/plain` est refusé (vérifié) |
+| `FILES_MAX_UPLOAD_SIZE` | `${DIRECTUS_MAX_UPLOAD_SIZE:-20mb}` | |
+| `GRAPHQL_INTROSPECTION` | `false` | vérifié : `__schema` refusé |
+| `PASSWORD_RESET_URL_ALLOW_LIST` | `<PUBLIC_URL>/admin/reset-password` | un lien de réinitialisation ne pointe que vers le panneau |
+| `CONTENT_SECURITY_POLICY_DIRECTIVES__{IMG_SRC,CONNECT_SRC,FONT_SRC,STYLE_SRC}` | `'self' data: blob:`, `'self'`, `'self' data:`, `'self' 'unsafe-inline'` | retire `raw.githubusercontent.com`, `avatars.githubusercontent.com`, `https://*`, `wss://*` et `https:` des défauts. Une valeur unique **remplace** la liste entière (les listes se fusionnent par position sinon). Vérifié dans un navigateur : connexion, contenu, fichiers et modèle de données sans violation de CSP. **Reste** `script-src 'self' 'unsafe-eval'` : le panneau ne démarre pas sans (compilation des gabarits Vue) ; `style-src 'unsafe-inline'` : styles Vue |
+| `HSTS_ENABLED`, `HSTS_MAX_AGE`, `HSTS_INCLUDE_SUB_DOMAINS` | `true`, `15552000`, `false` | sans effet en http ; actif derrière le proxy HTTPS |
+| `TELEMETRY`, `MARKETPLACE_REGISTRY` | inchangés | |
+| `DIRECTUS_MAX_UPLOAD_SIZE` | `20mb` | |
+
+Constat : la politique de mot de passe n'est **pas** une variable d'environnement (`AUTH_PASSWORD_POLICY` n'existe pas dans Directus 12.5.1) : c'est un réglage du projet, posé par `cms/scripts/apply.ts` (`docs/cms.md` §11). `X-Powered-By: Directus` est réécrit par Directus après `app.disable("x-powered-by")` : le retirer au proxy.
+
+### Conteneurs
+
+| Service | `no-new-privileges` | `cap_drop: [ALL]` | Utilisateur | Système de fichiers | Mémoire / processus | Sonde |
+|---|---|---|---|---|---|---|
+| `db` | oui | + `CHOWN`, `DAC_OVERRIDE`, `FOWNER`, `SETGID`, `SETUID` (chown du volume, `gosu`) | l'image démarre en root puis passe à `postgres` | inscriptible (volume de données) | `NEXORA_DB_MEM_LIMIT` (2g), 300 | `pg_isready` |
+| `directus` | oui | aucune capacité | `1000:1000` (image : `node`) | **lecture seule** + tmpfs `/tmp`, `/home/node` (état de pm2), `/directus/node_modules/.directus` (regroupement des extensions) ; envois dans le volume `uploads` | `NEXORA_DIRECTUS_MEM_LIMIT` (1g), 512 | `wget --spider /server/ping` (`/server/health` exige un jeton : 403) |
+| `litellm` | oui | aucune capacité | `65532:65532` | **lecture seule** + tmpfs `/tmp` | `NEXORA_LITELLM_MEM_LIMIT` (2g), 512 | `python urllib /health/liveliness` |
+
+Vérifié sur conteneurs jetables avec exactement ces options : PostgreSQL s'initialise (rôles créés, redémarrage possible) avec les cinq capacités ; Directus amorce son schéma avec le rôle `directus` (sans CREATEDB) et charge l'extension ; LiteLLM crée ses 98 tables avec le rôle `litellm`, répond à `/v1/models` et enregistre un modèle en base. Essai de la garde de publication complet (`cms/scripts/essai-garde.ts`) sur ce Directus : 59/59.
+
+### Production : `compose.prod.yml`
+
+```bash
+docker compose -p nexorasite -f deploy/compose.yml -f deploy/compose.prod.yml --env-file deploy/prod.env up -d
+```
+
+- **Ports** : aucun pour PostgreSQL ni LiteLLM ; Directus seulement sur `127.0.0.1:${DIRECTUS_HOST_PORT:-8456}` (proxy HTTPS de l'hôte, guide §9). Mailpit et stripe-mock passent au profil `dev` (ne démarrent pas).
+- **Réseaux** : `nexora-internal` (`internal: true`, sans route vers l'extérieur) pour `db`, `directus`, `litellm` **et** pour le site et le worker, qui doivent le rejoindre (`networks: { nexora-internal: { external: true } }` dans leur définition) : leur `DATABASE_URL` vise `db:5432`, `DIRECTUS_URL` `http://directus:8055`, `LITELLM_BASE_URL` `http://litellm:4000`, `NEXORA_APP_INTERNAL_URL` (obligatoire) l'adresse du site sur ce réseau. `egress` (avec sortie) seulement pour Directus (courriels) et LiteLLM (fournisseurs de modèles) : **PostgreSQL ne sort jamais**.
+- **Secrets** : `deploy/prod.env` ne contient **que des chemins** (`POSTGRES_PASSWORD_FILE`, `DIRECTUS_DB_PASSWORD_FILE`, `LITELLM_DB_PASSWORD_FILE`, `UMAMI_DB_PASSWORD_FILE`, `DIRECTUS_SECRET_FILE`, `DIRECTUS_ADMIN_PASSWORD_FILE`, `NEXORA_APP_ADMIN_TOKEN_FILE`, `LITELLM_MASTER_KEY_FILE`, `LITELLM_SALT_KEY_FILE`) et les réglages publics (`DIRECTUS_PUBLIC_URL` en https, `DIRECTUS_CORS_ORIGIN`, `DIRECTUS_ADMIN_EMAIL`, `NEXORA_APP_INTERNAL_URL`) ; `docker compose` refuse de démarrer sans eux. Les fichiers : `printf '%s' valeur > fichier`, **sans retour à la ligne final** (Directus lit le contenu tel quel : un `\n` fausserait le mot de passe), mode 0400, propriétaire 1000 pour Directus (le secret monté garde le propriétaire et le mode du fichier source : donner la lecture à l'utilisateur du conteneur, 1000 pour Directus, 65532 pour LiteLLM, ou groupe lisible). Directus lit nativement `SECRET_FILE`, `DB_PASSWORD_FILE` et `ADMIN_PASSWORD_FILE` ; PostgreSQL `POSTGRES_PASSWORD_FILE` (et `initdb` `<BASE>_DB_PASSWORD_FILE`) ; **LiteLLM et `NEXORA_APP_ADMIN_TOKEN`** n'ont pas de variante `_FILE` : un `entrypoint` lit le fichier, exporte la variable pour le seul processus puis lance le programme d'origine ; `docker inspect` ne montre plus aucune valeur (vérifié). Restent en variable d'environnement : `PC1_UPSTREAM_KEY` (fournisseur amont de **développement** seulement, vide en production).
+- Les témoins sont `Secure` par défaut, `IP_TRUST_PROXY=uniquelocal`, extensions montées en lecture seule.
+- Le test `deploy/tests/compose.test.sh` vérifie ces propriétés sur la configuration résolue (aucun secret, aucun port, réseau interne, etc.).
+
+### Variables nouvelles ou changées (récapitulatif)
+
+| Variable | Défaut | Rôle |
+|---|---|---|
+| `DIRECTUS_DB_PASSWORD`, `LITELLM_DB_PASSWORD`, `UMAMI_DB_PASSWORD` (ou `…_FILE`) | générées | mots de passe des rôles de base ; **obligatoires** |
+| `DIRECTUS_COOKIE_SECURE` | `false` (dev), `true` (prod) | témoins `Secure` ; **doit être `true` en production** |
+| `DIRECTUS_TRUST_PROXY` | `false` (dev), `uniquelocal` (prod) | `IP_TRUST_PROXY` |
+| `DIRECTUS_IP_CUSTOM_HEADER` | `false` | `IP_CUSTOM_HEADER` |
+| `DIRECTUS_MAX_UPLOAD_SIZE` | `20mb` | `FILES_MAX_UPLOAD_SIZE` |
+| `NEXORA_DB_MEM_LIMIT`, `NEXORA_DIRECTUS_MEM_LIMIT`, `NEXORA_LITELLM_MEM_LIMIT` | `2g`, `1g`, `2g` | plafonds de mémoire |
+| `DIRECTUS_HOST_PORT` (prod) | `8456` | port de Directus sur la boucle locale |
+| `*_FILE` (prod) | — | chemins des secrets Docker |
+| `CMS_ENFORCE_TFA` | activée | 2FA des personnes (`cms/scripts/apply.ts`) |
+| `DIRECTUS_ADMIN_OTP` | — | code à usage unique des scripts `cms/scripts` avec un administrateur à 2FA (préférer `DIRECTUS_ADMIN_TOKEN`) |
+| `ESSAI_DB_CONTAINER` | `nexorasite-db-1` | conteneur PostgreSQL de `cms/scripts/essai-garde.ts` |
+| `NEXORA_APP_ADMIN_TOKEN`, `DIRECTUS_SECRET`, `DIRECTUS_ADMIN_PASSWORD`, `POSTGRES_PASSWORD`, `LITELLM_*` | inchangés | acceptent aussi `<VAR>_FILE` (garde de `compose.yml`) |
+
+### Non fait ou à décider
+
+- `nexora` reste superutilisateur et propriétaire de `app` (site, worker, sauvegardes, tests) : un rôle `app` non privilégié est la suite logique.
+- `db` n'est pas en lecture seule (hors périmètre demandé) ; le CSP du panneau garde `unsafe-eval` (exigence de Directus).
+- Le site et le worker ne sont pas dans `compose.yml` : leur rattachement à `nexora-internal` et leur propre durcissement restent à écrire quand ils seront conteneurisés.
