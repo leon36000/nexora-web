@@ -1,5 +1,4 @@
 import {
-  and,
   type Database,
   eq,
   apiKeys as keysTable,
@@ -12,9 +11,11 @@ import {
 import { type PerMillion, requestCost } from "./pricing";
 
 /**
- * Règlement d'une requête (D1) : grand livre + événement d'usage + dépense de la clé, dans UNE
- * transaction et de façon idempotente par `requestId`. L'événement ne contient que des
- * métadonnées : jamais le contenu de la requête ni de la réponse.
+ * Règlement d'une requête (D1) : grand livre + événement d'usage, dans UNE transaction et de façon
+ * idempotente par `requestId`. Le règlement est au coût RÉEL : au-delà du montant réservé, le grand
+ * livre débite le dépassement (le solde peut devenir négatif, l'API répond alors 402). La dépense de la
+ * clé (`spent_micro`) est ajustée par le grand livre, dans la même transaction. L'événement ne contient
+ * que des métadonnées : jamais le contenu de la requête ni de la réponse.
  */
 
 export interface FinalizeInput {
@@ -37,14 +38,14 @@ export interface FinalizeInput {
    * eu lieu (statut « ok » ou « aborted »), jamais sur un échec.
    */
   runFeeMicro?: bigint;
-  /** Montant réservé au grand livre et, le cas échéant, sur le plafond de la clé. */
-  reservedMicro: bigint;
-  keyReserved: boolean;
   latencyMs: number;
 }
 
 export interface FinalizeResult {
+  /** Coût réel facturé (peut dépasser le montant réservé). */
   costMicro: bigint;
+  /** Part du coût au-delà de la réservation (0 le plus souvent). */
+  overageMicro: bigint;
   replayed: boolean;
 }
 
@@ -54,6 +55,7 @@ export async function finalizeRequest(
 ): Promise<FinalizeResult> {
   return db.transaction(async (tx) => {
     let charged = 0n;
+    let overage = 0n;
     const runFee = input.status === "error" ? 0n : (input.runFeeMicro ?? 0n);
     if (input.status === "error") {
       await releaseReservation(tx, {
@@ -62,12 +64,15 @@ export async function finalizeRequest(
       });
     } else {
       const wanted = requestCost(input.tokens, input.price) + runFee;
-      const { entry } = await settleReservation(tx, {
+      const settled = await settleReservation(tx, {
         organizationId: input.organizationId,
         reservationId: input.reservationId,
         actualMicro: wanted,
       });
-      charged = -entry.balanceDeltaMicro;
+      charged = settled.chargedMicro;
+      overage = settled.overageEntry
+        ? -settled.overageEntry.balanceDeltaMicro
+        : 0n;
     }
     const upstreamUsd =
       input.status === "error"
@@ -105,53 +110,18 @@ export async function finalizeRequest(
         .select({ costMicro: usageEvents.costMicro })
         .from(usageEvents)
         .where(eq(usageEvents.requestId, input.requestId));
-      return { costMicro: existing?.costMicro ?? charged, replayed: true };
+      return {
+        costMicro: existing?.costMicro ?? charged,
+        overageMicro: overage,
+        replayed: true,
+      };
     }
-    // La dépense de la clé passe de « réservé » à « réglé » (ou revient en arrière en cas d'échec).
-    const delta = charged - (input.keyReserved ? input.reservedMicro : 0n);
     await tx
       .update(keysTable)
-      .set({
-        spentMicro: sql`GREATEST(${keysTable.spentMicro} + ${delta.toString()}::bigint, 0)`,
-        lastUsedAt: new Date(),
-      })
+      .set({ lastUsedAt: new Date() })
       .where(eq(keysTable.id, input.apiKeyId));
-    return { costMicro: charged, replayed: false };
+    return { costMicro: charged, overageMicro: overage, replayed: false };
   });
-}
-
-/** Réserve atomiquement `amount` sur le plafond de dépense de la clé ; false si le plafond serait dépassé. */
-export async function reserveKeySpend(
-  db: Database,
-  keyId: string,
-  amountMicro: bigint,
-): Promise<boolean> {
-  const rows = await db
-    .update(keysTable)
-    .set({
-      spentMicro: sql`${keysTable.spentMicro} + ${amountMicro.toString()}::bigint`,
-    })
-    .where(
-      and(
-        eq(keysTable.id, keyId),
-        sql`(${keysTable.spendCapMicro} IS NULL OR ${keysTable.spentMicro} + ${amountMicro.toString()}::bigint <= ${keysTable.spendCapMicro})`,
-      ),
-    )
-    .returning({ id: keysTable.id });
-  return rows.length > 0;
-}
-
-export async function releaseKeySpend(
-  db: Database,
-  keyId: string,
-  amountMicro: bigint,
-): Promise<void> {
-  await db
-    .update(keysTable)
-    .set({
-      spentMicro: sql`GREATEST(${keysTable.spentMicro} - ${amountMicro.toString()}::bigint, 0)`,
-    })
-    .where(eq(keysTable.id, keyId));
 }
 
 export interface UsageRow {

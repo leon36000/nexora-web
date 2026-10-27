@@ -47,6 +47,8 @@ describe("portée d'un secret du coffre (aucun secret de la plateforme vers une 
       "site-agent.seo.gateway",
       "seo.bing.api_key",
       "directus.jeton",
+      "vps.worker_ssh_key",
+      "vps.autre",
     ])
       for (const scope of [
         "model-provider",

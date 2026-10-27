@@ -6,13 +6,14 @@ import {
   productionRunnerDeps,
 } from "./agents/index.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
+import { registerLedgerHandlers } from "./ledger-handlers.ts";
 import { HandlerRegistry } from "./registry.ts";
 import { registerSeoHandlers } from "./seo/handlers.ts";
 import { registerVpsHandlers } from "./vps-handlers.ts";
 
 /**
- * Gestionnaires du worker : contrôle de vie (S1), notification des demandes de contact (S3) et
- * VPS (S6). Les types qui exigent la base ne sont enregistrés que si `db` est fourni ; ceux du VPS
+ * Gestionnaires du worker : contrôle de vie (S1), notification des demandes de contact (S3),
+ * VPS (S6) et tâches périodiques du grand livre (libération des réservations perdues, expiration). Les types qui exigent la base ne sont enregistrés que si `db` est fourni ; ceux du VPS
  * seulement si le moteur est configuré (clé maîtresse du coffre).
  */
 export function defaultRegistry(
@@ -42,5 +43,7 @@ export function defaultRegistry(
     );
   if (deps.db && deps.log)
     registerSeoHandlers(registry, { db: deps.db, log: deps.log });
+  if (deps.db && deps.log)
+    registerLedgerHandlers(registry, { db: deps.db, log: deps.log });
   return registry;
 }

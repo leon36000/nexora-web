@@ -66,6 +66,8 @@ describe("proxy : matcher", () => {
       "/sitemap.xml",
       "/llms.txt",
       `/${"a".repeat(32)}.txt`,
+      "/icon.svg",
+      "/favicon.ico",
     ])
       expect(re.test(p), p).toBe(false);
     for (const p of [
@@ -73,6 +75,9 @@ describe("proxy : matcher", () => {
       "/en",
       "/solutions",
       "/modeles/nexora/glm-5-3",
+      // identifiant de modèle avec un point (OpenRouter : gpt-4.1, claude-3.5…) : la fiche passe par le proxy
+      "/modeles/openai/gpt-4.1",
+      "/en/modeles/openai/gpt-4.1",
       "/ogre",
     ])
       expect(re.test(p), p).toBe(true);

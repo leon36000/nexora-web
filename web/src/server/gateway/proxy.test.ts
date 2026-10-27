@@ -11,6 +11,7 @@ import {
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { estimateOutputTokens } from "./estimate";
 import { createApiKey, revokeApiKey } from "./keys";
 import { requestCost } from "./pricing";
 import {
@@ -433,7 +434,7 @@ describe("réservation, règlement et libération", () => {
     expect(events).toHaveLength(5);
   });
 
-  it("plafonne le règlement au montant réservé si l'amont rapporte plus que prévu", async () => {
+  it("règle au coût RÉEL quand l'amont rapporte plus que la réservation : le dépassement est facturé", async () => {
     const c = await client(10n);
     upstream = () =>
       upstreamOk({
@@ -454,7 +455,89 @@ describe("réservation, règlement et libération", () => {
       .select()
       .from(creditReservations)
       .where(eq(creditReservations.organizationId, c.org));
-    expect(ev?.costMicro).toBe(r?.amountMicro);
+    const real = requestCost(
+      { prompt: 100, completion: 900_000, cached: 0 },
+      PRICE,
+    );
+    expect(real).toBe(2_700_100n);
+    expect(r?.amountMicro).toBeLessThan(real);
+    expect(ev?.costMicro).toBe(real);
+    expect(res.headers.get("x-nexora-cost-micro")).toBe(real.toString());
+    expect((await getAccount(t.db, c.org)).balanceMicro).toBe(10n * M - real);
+    // Dérive journalisée, sans contenu.
+    const warn = lines
+      .map((l) => JSON.parse(l))
+      .find((l) => l.msg?.includes("très supérieur"));
+    expect(warn).toBeDefined();
+    expect(warn.costMicro).toBe(real.toString());
+    expect(lines.join("\n")).not.toContain(PROMPT_MARKER);
+  });
+
+  it("réservation sous-estimée : le solde devient négatif et l'appel suivant répond 402", async () => {
+    const c = await client(2n, { spendCapMicro: 20n * M });
+    upstream = () =>
+      upstreamOk({
+        prompt_tokens: 100,
+        completion_tokens: 900_000,
+        total_tokens: 900_100,
+      });
+    const first = await handleChatCompletions(
+      post(c.key, chat({ max_tokens: 50 })),
+      deps(),
+    );
+    expect(first.status).toBe(200);
+    const account = await getAccount(t.db, c.org);
+    expect(account.balanceMicro).toBe(2n * M - 2_700_100n);
+    expect(account).toMatchObject({ blocked: true, heldMicro: 0n });
+    const [k] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.id, c.record.id));
+    expect(k?.spentMicro).toBe(2_700_100n);
+    const calls1 = calls.length;
+    const second = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(second.status).toBe(402);
+    expect((await second.json()).error.code).toBe("account_blocked");
+    expect(calls).toHaveLength(calls1); // l'amont n'est pas appelé
+  });
+
+  it("des images par adresse avec max_tokens = 1 : la réservation couvre les images, plus l'URL seule", async () => {
+    const c = await client(10n);
+    const images = (n: number) =>
+      Array.from({ length: n }, (_, i) => ({
+        type: "image_url",
+        image_url: { url: `https://img.example/${i}.png` },
+      }));
+    const res = await handleChatCompletions(
+      post(
+        c.key,
+        chat({
+          max_tokens: 1,
+          messages: [{ role: "user", content: images(15) }],
+        }),
+      ),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    const [r] = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, c.org));
+    // 15 images × 1 600 jetons × 1 CAD/M = 24 000 µCAD au minimum (avant : quelques centaines).
+    expect(r?.amountMicro).toBeGreaterThanOrEqual(24_000n);
+    // 50 images dépassent le contexte du modèle d'essai (32 000 jetons) une fois comptées au forfait.
+    const tooMany = await handleChatCompletions(
+      post(
+        c.key,
+        chat({
+          max_tokens: 1,
+          messages: [{ role: "user", content: images(50) }],
+        }),
+      ),
+      deps(),
+    );
+    expect(tooMany.status).toBe(400);
+    expect((await tooMany.json()).error.code).toBe("context_length_exceeded");
   });
 
   it("facture les jetons en cache au tarif de cache", async () => {
@@ -746,6 +829,155 @@ describe("flux SSE", () => {
     expect(ev?.status).toBe("aborted");
     expect(ev?.costMicro).toBeGreaterThan(0n);
     expect(acct.balanceMicro).toBe(10n * M - (ev?.costMicro ?? 0n));
+  });
+});
+
+describe("flux coupé avant le bloc d'usage : ce qui a été livré ou consommé est facturé", () => {
+  const toolDelta = (args: string, extra: Record<string, unknown> = {}) =>
+    ev({
+      id: "g",
+      object: "chat.completion.chunk",
+      model: "nexora/test-chat",
+      choices: [
+        {
+          index: 0,
+          delta: {
+            tool_calls: [
+              {
+                index: 0,
+                id: "call_1",
+                function: { name: "meteo", arguments: args },
+              },
+            ],
+            ...extra,
+          },
+          finish_reason: null,
+        },
+      ],
+    });
+  const cut = (chunks: string[]) => () => {
+    const enc = new TextEncoder();
+    return new Response(
+      new ReadableStream({
+        async start(ctrl) {
+          for (const c of chunks) {
+            ctrl.enqueue(enc.encode(c));
+            await new Promise((r) => setTimeout(r, 3));
+          }
+          ctrl.close(); // fin sans bloc d'usage ni [DONE]
+        },
+      }),
+      { headers: { "content-type": "text/event-stream" } },
+    );
+  };
+  const eventOf = async (org: string) =>
+    (
+      await t.db
+        .select()
+        .from(usageEvents)
+        .where(eq(usageEvents.organizationId, org))
+    )[0];
+
+  it("appels d'outils sans texte : l'invite estimée ET les arguments estimés sont facturés", async () => {
+    const c = await client();
+    const args = ['{"ville":', '"Québec","unite":', '"celsius"}'];
+    upstream = cut(args.map((a) => toolDelta(a)));
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    await res.text();
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.completionTokens).toBe(
+      estimateOutputTokens(args.join("").length),
+    );
+    const expected = requestCost(
+      {
+        prompt: e?.promptTokens ?? 0,
+        completion: e?.completionTokens ?? 0,
+        cached: 0,
+      },
+      PRICE,
+    );
+    expect(e?.costMicro).toBe(expected);
+    expect(expected).toBeGreaterThan(0n);
+    expect(await getAccount(t.db, c.org)).toMatchObject({
+      balanceMicro: 10n * M - expected,
+      heldMicro: 0n,
+    });
+  });
+
+  it("le raisonnement (delta.reasoning) est aussi compté", async () => {
+    const c = await client();
+    const think = "Je réfléchis à la question posée par le client. ".repeat(4);
+    upstream = cut([
+      ev({
+        id: "g",
+        object: "chat.completion.chunk",
+        model: "nexora/test-chat",
+        choices: [
+          { index: 0, delta: { reasoning: think }, finish_reason: null },
+        ],
+      }),
+    ]);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    await res.text();
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.completionTokens).toBe(estimateOutputTokens(think.length));
+  });
+
+  it("l'amont répond 200 puis le flux se termine sans rien livrer : l'invite estimée est facturée (pas zéro)", async () => {
+    const c = await client();
+    upstream = cut([]);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    await res.text();
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.completionTokens).toBe(0);
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.costMicro).toBe(
+      requestCost(
+        { prompt: e?.promptTokens ?? 0, completion: 0, cached: 0 },
+        PRICE,
+      ),
+    );
+    expect(e?.costMicro).toBeGreaterThan(0n);
+  });
+
+  it("le client coupe avant le premier fragment : l'invite estimée est facturée", async () => {
+    const c = await client();
+    upstream = () =>
+      new Response(
+        new ReadableStream({
+          async start(ctrl) {
+            await new Promise((r) => setTimeout(r, 1500));
+            ctrl.close();
+          },
+        }),
+        { headers: { "content-type": "text/event-stream" } },
+      );
+    const res = await handleChatCompletions(
+      post(c.key, chat({ stream: true })),
+      deps(),
+    );
+    const reader = res.body?.getReader();
+    if (!reader) throw new Error("flux attendu");
+    await reader.cancel();
+    await new Promise((r) => setTimeout(r, 100));
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.errorCode).toBe("client_closed");
+    expect(e?.costMicro).toBeGreaterThan(0n);
+    expect((await getAccount(t.db, c.org)).heldMicro).toBe(0n);
   });
 });
 

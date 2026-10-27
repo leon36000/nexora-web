@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, inArray, lt, sql } from "drizzle-orm";
 import type { Database } from "./client.ts";
 import {
+  apiKeys,
   creditAccounts,
   creditEntries,
   creditReservations,
@@ -14,7 +15,13 @@ import {
  * - Chaque opération verrouille la ligne `credit_accounts` de l'organisation (FOR UPDATE) :
  *   les écritures d'une même organisation sont sérialisées, ce qui rend la réservation atomique.
  * - Solde disponible = solde − montants réservés. Une réservation exige un disponible suffisant ;
- *   seul un remboursement ou un litige peut rendre le solde négatif, et l'API est alors bloquée.
+ *   seuls un remboursement, un litige ou le dépassement d'une réservation (écriture « overage »)
+ *   peuvent rendre le solde négatif, et l'API est alors bloquée (402).
+ * - Règlement au coût RÉEL (D1) : jusqu'au montant réservé, une écriture « settle » ; au-delà, une
+ *   écriture « overage » distincte, dans la même transaction et idempotente par réservation.
+ *   Nexora n'absorbe jamais le dépassement d'une estimation trop basse.
+ * - Plafond de dépense d'une clé API : retenu et rendu dans la MÊME transaction que la réservation
+ *   du grand livre (jamais d'état intermédiaire), y compris à la libération périodique.
  * - Une contrainte SQL (`credit_entries_no_overdraft_check`) refuse en dernier recours un
  *   disponible négatif causé par une réservation ou une expiration.
  */
@@ -312,13 +319,35 @@ export interface ReserveInput {
   amountMicro: bigint;
   idempotencyKey: string;
   configVersion: string;
+  /**
+   * Clé API qui émet la requête. Si elle a un plafond de dépense, le montant y est retenu dans la même
+   * transaction (et rendu au règlement ou à la libération) ; sinon seul le coût réglé s'y ajoute.
+   */
+  apiKeyId?: string;
 }
 
 export type ReserveResult =
   | { status: "reserved"; reservation: Reservation; entry: Entry }
   | { status: "replayed"; reservation: Reservation }
   | { status: "insufficient_funds"; availableMicro: bigint }
-  | { status: "blocked"; balanceMicro: bigint };
+  | { status: "blocked"; balanceMicro: bigint }
+  /** Le plafond de dépense de la clé serait dépassé : rien n'est écrit. */
+  | { status: "key_cap_exceeded" };
+
+/** Ajuste la dépense cumulée d'une clé (jamais sous zéro). Sans effet pour un delta nul. */
+async function adjustKeySpend(
+  tx: Tx,
+  apiKeyId: string | null,
+  deltaMicro: bigint,
+): Promise<void> {
+  if (!apiKeyId || deltaMicro === 0n) return;
+  await tx
+    .update(apiKeys)
+    .set({
+      spentMicro: sql`GREATEST(${apiKeys.spentMicro} + ${deltaMicro.toString()}::bigint, 0)`,
+    })
+    .where(eq(apiKeys.id, apiKeyId));
+}
 
 /**
  * Réserve atomiquement le coût maximal estimé d'une requête. Le verrou de ligne sérialise les
@@ -343,6 +372,26 @@ export async function reserve(
         throw new LedgerError("idempotency_conflict", "clé déjà utilisée");
       return { status: "replayed", reservation: existing };
     }
+    // Plafond de la clé (verrou pris après celui du compte, comme au règlement : pas d'interblocage).
+    let keySpendHeld = false;
+    if (input.apiKeyId) {
+      const [key] = await tx
+        .select({
+          organizationId: apiKeys.organizationId,
+          spendCapMicro: apiKeys.spendCapMicro,
+          spentMicro: apiKeys.spentMicro,
+        })
+        .from(apiKeys)
+        .where(eq(apiKeys.id, input.apiKeyId))
+        .for("update");
+      if (!key || key.organizationId !== input.organizationId)
+        throw new LedgerError("not_found", "clé API introuvable");
+      if (key.spendCapMicro !== null) {
+        if (key.spentMicro + input.amountMicro > key.spendCapMicro)
+          return { status: "key_cap_exceeded" };
+        keySpendHeld = true;
+      }
+    }
     if (acct.balanceMicro < 0n)
       return { status: "blocked", balanceMicro: acct.balanceMicro };
     const available = acct.balanceMicro - acct.heldMicro;
@@ -356,9 +405,13 @@ export async function reserve(
         amountMicro: input.amountMicro,
         idempotencyKey: input.idempotencyKey,
         configVersion: input.configVersion,
+        apiKeyId: input.apiKeyId ?? null,
+        keySpendHeld,
       })
       .returning();
     if (!reservation) throw new Error("réservation non créée");
+    if (keySpendHeld)
+      await adjustKeySpend(tx, input.apiKeyId ?? null, input.amountMicro);
     const { entry } = await appendEntry(tx, acct, {
       organizationId: input.organizationId,
       kind: "reserve",
@@ -395,16 +448,33 @@ async function lockReservation(
 export interface SettleInput {
   organizationId: string;
   reservationId: string;
-  /** Coût réel (jetons × prix de vente). Plafonné au montant réservé. */
+  /** Coût réel (jetons × prix de vente). Facturé en entier, même au-delà du montant réservé. */
   actualMicro: bigint;
   configVersion?: string;
 }
 
-/** Règle une réservation au coût réel et libère le surplus. Une seule fois ; un rejeu renvoie le premier. */
+export interface SettleResult {
+  /** Écriture « settle » (ou « overage » seule si la réservation avait déjà été libérée). */
+  entry: Entry;
+  /** Écriture de dépassement : le coût réel excédait la réservation (ou elle avait été libérée). */
+  overageEntry: Entry | null;
+  /** Montant total débité du solde pour cette réservation. */
+  chargedMicro: bigint;
+  replayed: boolean;
+}
+
+/**
+ * Règle une réservation au coût RÉEL (D1). Jusqu'au montant réservé : une écriture « settle » qui libère
+ * le surplus. Au-delà : une écriture « overage » supplémentaire, dans la même transaction, qui peut
+ * rendre le solde négatif (l'API est alors bloquée). Une seule fois ; un rejeu renvoie le premier résultat.
+ *
+ * Réservation déjà libérée (libération périodique d'une requête lente) : le coût réel est dû quand même,
+ * débité en entier par une écriture « overage » (aucun montant n'est plus retenu). Un coût nul ne produit rien.
+ */
 export async function settleReservation(
   exec: Executor,
   input: SettleInput,
-): Promise<{ entry: Entry; replayed: boolean }> {
+): Promise<SettleResult> {
   if (typeof input.actualMicro !== "bigint" || input.actualMicro < 0n)
     throw new LedgerError("invalid_amount", "coût réel : entier ≥ 0 attendu");
   return inTx(exec, async (tx) => {
@@ -415,32 +485,113 @@ export async function settleReservation(
       input.reservationId,
     );
     if (res.status === "settled") {
-      const existing = await findEntryByKey(tx, `settle:${res.id}`);
-      if (!existing)
+      const entry = await findEntryByKey(tx, `settle:${res.id}`);
+      if (!entry)
         throw new LedgerError("not_found", "écriture de règlement absente");
-      return { entry: existing, replayed: true };
+      const overageEntry =
+        (await findEntryByKey(tx, `overage:${res.id}`)) ?? null;
+      return {
+        entry,
+        overageEntry,
+        chargedMicro: res.settledMicro ?? -entry.balanceDeltaMicro,
+        replayed: true,
+      };
     }
-    if (res.status === "released")
-      throw new LedgerError("reservation_closed", "réservation déjà libérée");
+    if (res.status === "released") {
+      const late = await findEntryByKey(tx, `overage:${res.id}`);
+      if (late)
+        return {
+          entry: late,
+          overageEntry: late,
+          chargedMicro: -late.balanceDeltaMicro,
+          replayed: true,
+        };
+      if (input.actualMicro === 0n) {
+        const released = await findEntryByKey(tx, `release:${res.id}`);
+        if (!released)
+          throw new LedgerError("not_found", "écriture de libération absente");
+        return {
+          entry: released,
+          overageEntry: null,
+          chargedMicro: 0n,
+          replayed: true,
+        };
+      }
+      const { entry } = await appendEntry(tx, acct, {
+        organizationId: input.organizationId,
+        kind: "overage",
+        balanceDeltaMicro: -input.actualMicro,
+        heldDeltaMicro: 0n,
+        idempotencyKey: `overage:${res.id}`,
+        configVersion: input.configVersion ?? res.configVersion,
+        source: "usage",
+        reservationId: res.id,
+        metadata: { overageMicro: input.actualMicro.toString(), late: true },
+      });
+      await tx
+        .update(creditReservations)
+        .set({ settledMicro: input.actualMicro })
+        .where(eq(creditReservations.id, res.id));
+      // La libération avait déjà rendu la part retenue sur le plafond de la clé : tout le coût s'y ajoute.
+      await adjustKeySpend(tx, res.apiKeyId, input.actualMicro);
+      return {
+        entry,
+        overageEntry: entry,
+        chargedMicro: input.actualMicro,
+        replayed: false,
+      };
+    }
 
     const cost = minBigint(input.actualMicro, res.amountMicro);
     const overage = input.actualMicro - cost;
-    const { entry } = await appendEntry(tx, acct, {
+    const configVersion = input.configVersion ?? res.configVersion;
+    const { entry, ...after } = await appendEntry(tx, acct, {
       organizationId: input.organizationId,
       kind: "settle",
       balanceDeltaMicro: -cost,
       heldDeltaMicro: -res.amountMicro,
       idempotencyKey: `settle:${res.id}`,
-      configVersion: input.configVersion ?? res.configVersion,
+      configVersion,
       source: "usage",
       reservationId: res.id,
-      metadata: overage > 0n ? { overageMicro: overage.toString() } : {},
     });
+    let overageEntry: Entry | null = null;
+    if (overage > 0n) {
+      const out = await appendEntry(tx, after, {
+        organizationId: input.organizationId,
+        kind: "overage",
+        balanceDeltaMicro: -overage,
+        heldDeltaMicro: 0n,
+        idempotencyKey: `overage:${res.id}`,
+        configVersion,
+        source: "usage",
+        reservationId: res.id,
+        metadata: {
+          overageMicro: overage.toString(),
+          reservedMicro: res.amountMicro.toString(),
+        },
+      });
+      overageEntry = out.entry;
+    }
     await tx
       .update(creditReservations)
-      .set({ status: "settled", settledMicro: cost, closedAt: sql`now()` })
+      .set({
+        status: "settled",
+        settledMicro: input.actualMicro,
+        closedAt: sql`now()`,
+      })
       .where(eq(creditReservations.id, res.id));
-    return { entry, replayed: false };
+    await adjustKeySpend(
+      tx,
+      res.apiKeyId,
+      input.actualMicro - (res.keySpendHeld ? res.amountMicro : 0n),
+    );
+    return {
+      entry,
+      overageEntry,
+      chargedMicro: input.actualMicro,
+      replayed: false,
+    };
   });
 }
 
@@ -478,6 +629,8 @@ export async function releaseReservation(
       .update(creditReservations)
       .set({ status: "released", closedAt: sql`now()` })
       .where(eq(creditReservations.id, res.id));
+    if (res.keySpendHeld)
+      await adjustKeySpend(tx, res.apiKeyId, -res.amountMicro);
     return { entry, replayed: false };
   });
 }
@@ -485,6 +638,9 @@ export async function releaseReservation(
 /**
  * Libère les réservations ouvertes depuis `olderThan` (requête perdue : plantage entre la
  * réservation et le règlement). À appeler périodiquement par le worker. Renvoie le nombre libéré.
+ * Le seuil DOIT dépasser la durée maximale d'un flux : un règlement tardif est facturé au réel
+ * (écriture « overage »), mais une libération trop hâtive prêterait gratuitement le disponible.
+ * Le plafond de dépense de la clé est rendu avec la libération.
  */
 export async function releaseStaleReservations(
   exec: Executor,
@@ -565,7 +721,12 @@ export async function expireDue(
       .where(
         and(
           eq(creditEntries.organizationId, input.organizationId),
-          inArray(creditEntries.kind, ["settle", "refund", "dispute"]),
+          inArray(creditEntries.kind, [
+            "settle",
+            "overage",
+            "refund",
+            "dispute",
+          ]),
         ),
       );
     const expiredRows = await tx
@@ -617,4 +778,42 @@ export async function expireDue(
     }
     return { expiredMicro, entries };
   });
+}
+
+/**
+ * Expire, pour toutes les organisations ayant un lot échu non encore expiré en entier, les crédits non
+ * consommés (voir `expireDue`). À appeler une fois par jour par le worker ; rejouable sans effet. Renvoie
+ * le nombre d'organisations touchées et le total expiré.
+ */
+export async function expireAllDue(
+  exec: Executor,
+  input: { now: Date; configVersion: string },
+): Promise<{ organizations: number; expiredMicro: bigint }> {
+  const due = await exec
+    .select({ organizationId: creditEntries.organizationId })
+    .from(creditEntries)
+    .where(
+      and(
+        eq(creditEntries.kind, "credit"),
+        lt(creditEntries.expiresAt, input.now),
+        sql`${creditEntries.balanceDeltaMicro} > COALESCE((
+          SELECT -SUM(x.balance_delta_micro) FROM credit_entries x
+          WHERE x.kind = 'expire' AND x.lot_entry_id = ${creditEntries.id}
+        ), 0)`,
+      ),
+    )
+    .groupBy(creditEntries.organizationId)
+    .orderBy(asc(creditEntries.organizationId));
+  let expiredMicro = 0n;
+  let touched = 0;
+  for (const row of due) {
+    const out = await expireDue(exec, {
+      organizationId: row.organizationId,
+      now: input.now,
+      configVersion: input.configVersion,
+    });
+    if (out.expiredMicro > 0n) touched += 1;
+    expiredMicro += out.expiredMicro;
+  }
+  return { organizations: touched, expiredMicro };
 }

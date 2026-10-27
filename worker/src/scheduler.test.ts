@@ -129,4 +129,33 @@ describe("planificateur", () => {
       ),
     ).toHaveLength(1);
   });
+
+  it("grand livre : libération des réservations perdues toutes les 10 minutes, expiration une fois par jour", async () => {
+    await tickScheduler(at("2026-10-27T14:00:00Z"));
+    await tickScheduler(at("2026-10-27T14:03:00Z")); // même tranche de 10 minutes
+    await tickScheduler(at("2026-10-27T14:11:00Z")); // tranche suivante
+    await tickScheduler(at("2026-10-27T18:00:00Z")); // plus tard le même jour
+    const all = await t.db.select().from(jobs);
+    const releases = all.filter((j) => j.type === "ledger.release-stale");
+    const expires = all.filter((j) => j.type === "ledger.expire");
+    expect(releases.length).toBe(3);
+    expect(new Set(releases.map((j) => j.idempotencyKey)).size).toBe(3);
+    expect(expires).toHaveLength(1);
+    expect(expires[0]?.idempotencyKey).toBe("ledger-expire:2026-10-27");
+    await tickScheduler(at("2026-10-28T14:00:00Z"));
+    expect(
+      (await t.db.select().from(jobs)).filter(
+        (j) => j.type === "ledger.expire",
+      ),
+    ).toHaveLength(2);
+  });
+
+  it("grand livre : l'expiration n'est pas déclarée avant 2 h (heure locale)", async () => {
+    await tickScheduler(at("2026-10-27T05:00:00Z")); // 01:00 locale
+    expect(
+      (await t.db.select().from(jobs)).filter(
+        (j) => j.type === "ledger.expire",
+      ),
+    ).toHaveLength(0);
+  });
 });
