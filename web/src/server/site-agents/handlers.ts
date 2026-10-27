@@ -406,6 +406,10 @@ async function route(
           model,
           state,
           ...(body.config ? { config: body.config } : {}),
+          // Une erreur de budget n'a plus lieu d'être une fois le budget relevé au-dessus de la dépense.
+          ...(state === "idle" && /budget/i.test(agent.lastError ?? "")
+            ? { lastError: null }
+            : {}),
           updatedAt: sql`now()`,
         })
         .where(eq(siteAgents.key, key));

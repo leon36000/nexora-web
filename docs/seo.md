@@ -71,3 +71,27 @@ Titre, résumé (réglages publiés ou dictionnaire), puis une liste de liens pa
 ### Diff Directus proposé (non appliqué)
 
 `pages.schema_type` (liste : `service`, `software`, `article`, vide) pour remplacer le registre de slugs `lib/seo/page-schema.ts` ; `pages.published_at` (date) pour un `datePublished` exact des articles. Aucun des deux n'est nécessaire au fonctionnement actuel.
+
+## 2. Audits planifiés (worker, file `jobs`)
+
+Code : `worker/src/seo/` (`audit.ts`, `audit-structure.ts`, `audit-links.ts`, `audit-a11y.ts`, `audit-perf.ts`, `issues.ts`). Tables `seo_audits` et `seo_issues` (migration 0006). Visible dans le module Directus « SEO » (relais administrateur, patron « Modèles »).
+
+- **Planification** : `worker/src/scheduler.ts` déclare ce qui est dû toutes les minutes, avec une clé d'idempotence par occurrence (plusieurs workers ou un redémarrage ne créent jamais deux fois la même). Heure d'America/Toronto : audit complet à 03 h ; filet de l'indexation et vérification des adaptateurs à 04 h ; santé des modèles chaque heure (si activée) ; veille le lundi 07 h (si activée et si une source est configurée). `WORKER_SCHEDULER=off` coupe le planificateur.
+- **Quatre volets, indépendants** (un volet qui échoue n'efface pas les constats des autres, le résumé le dit) :
+  1. *structure* : sitemap -> chaque page rendue -> contrôles de `@nexora/seo` (titres et descriptions uniques par langue et de bonne longueur, canonical, hreflang réciproques, noindex, un h1, JSON-LD lisible et conforme au visible) ;
+  2. *liens* : lychee (`~/.local/bin/lychee`, variable `LYCHEE_BIN`) sur les pages du sitemap, liens externes compris (429 toléré) ;
+  3. *accessibilité* : axe-core par Playwright (Chromium) à 390 et 1440 px, règles WCAG 2.0 à 2.2 AA ;
+  4. *performance* : Lighthouse (API Node, profil mobile) sur les `SEO_AUDIT_PERF_MAX_PAGES` (6) pages les plus courtes. Sous 95 : avertissement ; sous 80 : erreur.
+- **Adresse interrogée** : `SEO_AUDIT_BASE_URL`, sinon `NEXORA_APP_INTERNAL_URL`, sinon `SITE_URL`. Les pages sont jugées sous leur adresse publique (celle du sitemap).
+- **Problèmes** (`seo_issues`) : dédoublonnés par empreinte (volet, règle, page, élément). Un problème qu'un audit complet ne retrouve plus passe à « résolu » ; un problème résolu qui revient est rouvert ; un problème « ignoré » par une personne ne l'est jamais par un audit. Les tâches longues renouvellent leur bail (`keepJobAlive`).
+- Unlighthouse n'est pas utilisé : Lighthouse CI suffit pour le périmètre (un site, quelques dizaines de pages) ; à ajouter si le site dépasse cent pages.
+
+## 3. Indexation et adaptateurs à état honnête
+
+Code : `worker/src/seo/indexing.ts`, `adapters.ts`, `handlers.ts` ; web : `web/src/server/site-agents/after-publish.ts` (appelé par `/api/revalidate`).
+
+- **Après une publication** (la garde de Directus appelle `/api/revalidate`), une tâche `seo.index` est mise en file 15 s plus tard (une par fenêtre de 2 minutes). Elle lit `sitemap.xml`, compare à la dernière photographie envoyée (`sitemap_snapshots`) et soumet les URL nouvelles ou dont le `lastmod` a changé. Filet quotidien à 04 h.
+- **Rien n'est envoyé sans** : clé présente (Coffre) ET dernière vérification réussie ET autorisation d'écriture donnée par une personne (`seo_adapters.write_enabled`, module « SEO ») ET `SITE_ENV=production`. Sinon la soumission est journalisée « ignorée » avec sa raison (`indexing_submissions`). La photographie n'avance que si un moteur a accepté : ce qui n'a pas pu partir reste dans le prochain diff.
+- **État affiché** (même règle côté web et worker) : *non connecté* (aucune clé, ou vérification jamais réussie) ; *connecté en lecture* (clé + vérification réussie par un appel en lecture seule) ; *autorisé en écriture* (en plus, autorisation humaine). Références du Coffre : `seo.bing.api_key`, `seo.searchconsole.credentials` (JSON du compte de service), `seo.dataforseo.credentials` (`login:motdepasse`), `seo.postiz.api_key` (+ `POSTIZ_URL`). IndexNow n'a pas de secret : sa clé (32 hex) est publique, servie à `/<clé>.txt`.
+- **Sans clé du fondateur, aucun appel externe** (testé : zéro requête). Vérifications : Bing (quota de soumission), Search Console (jeton JWT en lecture seule, liste des propriétés), DataForSEO (`user_data`), Postiz (liste des canaux), IndexNow (le site sert bien le fichier de clé). Search Console, DataForSEO et Postiz n'ont pas d'écriture câblée dans ce jalon (pas d'agent Diffusion ni de veille payante) : leur état « écriture » ne débloque rien tant que le code correspondant n'existe pas.
+- Plafonds respectés : IndexNow 10 000 URL par requête, Bing 500 par lot ici (10 000 par jour et par domaine).

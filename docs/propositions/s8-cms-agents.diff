@@ -1,0 +1,45 @@
+diff --git a/cms/scripts/lib/access.ts b/cms/scripts/lib/access.ts
+index 7fc2381..f727afa 100644
+--- a/cms/scripts/lib/access.ts
++++ b/cms/scripts/lib/access.ts
+@@ -83,6 +83,9 @@ const FILE_FIELDS = [
+ ];
+ const USER_FIELDS = ["id", "first_name", "last_name", "avatar", "role"];
+ const APPROVAL_CREATE_FIELDS = [
++  // S8 : un agent n'a pas le droit de LIRE l'approbation qu'il crée (Directus répond alors sans corps) ; il fournit donc
++  // lui-même l'identifiant (UUID) pour garder la référence.
++  "id",
+   "status",
+   "kind",
+   "collection",
+@@ -289,6 +292,11 @@ function agentPolicy(a: (typeof AGENTS)[number]): PolicyDef {
+   } else {
+     perms.push(...publishedReadPerms());
+   }
++  // S8 : seul le Rédacteur crée la COQUILLE (en brouillon) d'une nouvelle page ; la garde de publication refuse toute
++  // écriture qui fixerait `status = published`. Le Traducteur et le SEO n'écrivent que dans des versions.
++  if (a.key === "redacteur")
++    for (const c of ["pages", "pages_translations"])
++      perms.push({ collection: c, action: "create", fields: ALL });
+   perms.push(
+     proposeApproval(),
+     read("approvals", { permissions: ownApprovals, degrade: "drop" }),
+@@ -300,6 +308,18 @@ function agentPolicy(a: (typeof AGENTS)[number]): PolicyDef {
+     app_access: false,
+     permissions: perms,
+     role: { name: a.name, icon: "smart_toy", description: a.mission },
++    // S8 : compte de service par agent de contenu, jeton statique à coller ensuite dans le Coffre
++    // (`site-agent.<agent>.directus`), jamais ailleurs.
++    ...(a.content
++      ? {
++          serviceUser: {
++            email: `agent-${a.key}@nexora.dev`,
++            first_name: a.name,
++            last_name: "Nexora (agent)",
++            tokenEnv: `DIRECTUS_AGENT_${a.key.toUpperCase()}_TOKEN`,
++          },
++        }
++      : {}),
+   };
+ }
+ 

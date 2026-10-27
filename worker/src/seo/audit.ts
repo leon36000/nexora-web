@@ -143,7 +143,10 @@ export async function executeAudit(
           pages: r.pages,
         });
       } else if (volet === "links") {
-        const r = await auditLinks(pages, deps.runLychee);
+        const r = await auditLinks(pages, deps.runLychee, {
+          internalOrigin: base,
+          publicOrigin: new URL(pages[0]?.publicUrl ?? base).origin,
+        });
         await finishVolet("links", r.findings, allPublic, {
           linksChecked: r.checked,
         });

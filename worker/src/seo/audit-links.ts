@@ -51,6 +51,8 @@ export function parseLycheeReport(
   stdout: string,
   /** adresse interne -> adresse publique de la page source */
   toPublic: (source: string) => string,
+  /** adresse interne -> adresse publique de la cible (affichage) */
+  toPublicTarget: (target: string) => string = (t) => t,
 ): { findings: AuditFinding[]; total: number } {
   let report: LycheeReport;
   try {
@@ -63,13 +65,14 @@ export function parseLycheeReport(
     for (const [source, entries] of Object.entries(map ?? {}))
       for (const e of entries) {
         const code = e.status?.code;
+        const target = toPublicTarget(e.url);
         findings.push({
           kind: "links",
           rule: timeout ? "links.timeout" : "links.broken",
           severity: timeout ? "warning" : "error",
           url: toPublic(source),
-          key: e.url,
-          message: `${timeout ? "Lien lent ou sans réponse" : "Lien cassé"} : ${e.url}${code ? ` (${code})` : ""}`,
+          key: target,
+          message: `${timeout ? "Lien lent ou sans réponse" : "Lien cassé"} : ${target}${code ? ` (${code})` : ""}`,
           detail: {
             target: e.url,
             status: code ?? null,
@@ -86,7 +89,13 @@ export function parseLycheeReport(
 export async function auditLinks(
   pages: readonly { fetchUrl: string; publicUrl: string }[],
   run: RunLychee = runLycheeProcess(),
-  options: { timeoutMs?: number; extraArgs?: string[] } = {},
+  options: {
+    timeoutMs?: number;
+    extraArgs?: string[];
+    /** Adresse interne interrogée et adresse publique correspondante. */
+    internalOrigin?: string;
+    publicOrigin?: string;
+  } = {},
 ): Promise<{ findings: AuditFinding[]; checked: number }> {
   if (pages.length === 0) return { findings: [], checked: 0 };
   const args = [
@@ -108,9 +117,12 @@ export async function auditLinks(
   if (!stdout.trim())
     throw new Error(`lychee n'a rien produit (code ${code ?? "signal"})`);
   const byFetch = new Map(pages.map((p) => [p.fetchUrl, p.publicUrl]));
+  const { internalOrigin: from, publicOrigin: to } = options;
   const { findings, total } = parseLycheeReport(
     stdout,
     (s) => byFetch.get(s) ?? s,
+    (t) =>
+      from && to && t.startsWith(from) ? `${to}${t.slice(from.length)}` : t,
   );
   return { findings, checked: total };
 }
