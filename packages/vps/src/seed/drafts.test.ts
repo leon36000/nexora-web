@@ -32,14 +32,14 @@ describe("plans VPS préparés en brouillon (prix suggérés par l'étude)", () 
       by.croissance?.priceMonthlyCents,
       by.pro?.priceMonthlyCents,
       by.scale?.priceMonthlyCents,
-    ]).toEqual([1900, 3500, 5500, 9900]);
+    ]).toEqual([2500, 4500, 7900, 11900]);
     // annuel : 16 $, 29 $, 45 $ et 89 $ par mois, facturés pour l'année
     expect([
       by.essentiel?.priceYearlyCents,
       by.croissance?.priceYearlyCents,
       by.pro?.priceYearlyCents,
       by.scale?.priceYearlyCents,
-    ]).toEqual([19200, 34800, 54000, 106800]);
+    ]).toEqual([25200, 45600, 80400, 118800]);
     expect([
       by.essentiel?.vcpu,
       by.croissance?.vcpu,

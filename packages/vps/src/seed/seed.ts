@@ -154,8 +154,8 @@ export async function seedDevCatalog(
 }
 
 /**
- * Plans VPS préparés en BROUILLON avec les prix SUGGÉRÉS par l'étude de marché
- * (docs/recherche/10-prix-et-engagements-donnees.md, partie A.2). Le drapeau `priceSuggested` interdit
+ * Plans VPS préparés en BROUILLON aux prix fixés le 27/10/2026 d'après l'enquête de marché
+ * (docs/recherche/11-enquete-prix-vps.md ; décision déléguée par le fondateur, renouvellement au même prix). Le drapeau `priceSuggested` interdit
  * leur approbation tant que le fondateur n'a pas confirmé (ou changé) les prix : rien n'est jamais publié
  * sans lui. Idempotent : un plan déjà présent n'est jamais touché. Aucun plan de développement.
  * Coûts de base et marges : voir l'étude (sous réserve de confirmation du centre de données).
@@ -163,42 +163,46 @@ export async function seedDevCatalog(
 export const SUGGESTED_PLANS = [
   {
     code: "essentiel",
+    bandwidthGb: 4000,
     name: "Essentiel",
     vcpu: 2,
     ramMb: 4096,
-    diskGb: 40,
-    month: 1900,
-    year: 19200,
+    diskGb: 80,
+    month: 2500,
+    year: 25200,
     sort: 10,
   },
   {
     code: "croissance",
+    bandwidthGb: 6000,
     name: "Croissance",
     vcpu: 4,
     ramMb: 8192,
-    diskGb: 75,
-    month: 3500,
-    year: 34800,
+    diskGb: 160,
+    month: 4500,
+    year: 45600,
     sort: 20,
   },
   {
     code: "pro",
+    bandwidthGb: 8000,
     name: "Pro",
     vcpu: 6,
     ramMb: 12288,
-    diskGb: 100,
-    month: 5500,
-    year: 54000,
+    diskGb: 240,
+    month: 7900,
+    year: 80400,
     sort: 30,
   },
   {
     code: "scale",
+    bandwidthGb: 12000,
     name: "Scale",
     vcpu: 8,
     ramMb: 24576,
-    diskGb: 200,
-    month: 9900,
-    year: 106800,
+    diskGb: 320,
+    month: 11900,
+    year: 118800,
     sort: 40,
   },
 ].map((p) => ({
@@ -207,8 +211,7 @@ export const SUGGESTED_PLANS = [
   vcpu: p.vcpu,
   ramMb: p.ramMb,
   diskGb: p.diskGb,
-  // Bande passante non précisée tant que le fournisseur n'est pas confirmé (0 = « non précisée »).
-  bandwidthGb: 0,
+  bandwidthGb: p.bandwidthGb,
   priceMonthlyCents: p.month,
   priceYearlyCents: p.year,
   sort: p.sort,
