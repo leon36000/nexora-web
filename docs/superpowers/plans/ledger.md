@@ -12,5 +12,13 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Incident : un agent a lancé `pkill -f "next start"` et tué les lanceurs npm de deux serveurs d'autres sessions (ports 3102, 3311 ; processus next-server intacts, ports répondent). Règle ajoutée à AGENTS.md.
 - Sécurité : LiteLLM de pc1 en v1.99.1 (non touché par l'incident 1.107.0) ; aucune trace du paquet piégé sur pc1 et pc6.
 
+## S2 Tranche verticale — terminé le 27/10/2026
+- Contenu (Sonnet) : accueil (10 blocs) et OPSYS-AI (12 blocs) en fr-CA/en-CA, démarche marketing documentée (`cms/content/README.md`), registre de 56 affirmations (`cms/content/claims.json`, chargées « en revue », jamais approuvées par l'agent) et 20 formulations retirées faute de preuve (dont « la réception de vos appels », toute mention de la Loi 25, « mode souverain » d'OPSYS-AI). Chargement par versions + approbations + promotion. Contrôle orchestrateur : relecture complète de l'accueil fr — ton et vérité conformes.
+- Rendu (Sonnet) : lecture Directus serveur (publié seulement, statut revérifié), six blocs, texte riche en liste blanche, FAQPage par code, métadonnées et hreflang conditionnels, aperçu signé (Draft Mode, noindex), revalidation par étiquettes (`expire: 0`), instantanés en cas de panne de Directus ; traînée orange du héros inversée vers l'intérieur. Preuves : e2e de publication 25/25 (page jetable et accueil réel), axe 0 violation, Lighthouse mobile 98/100/100/100, résilience Directus coupé (200 depuis l'instantané).
+- Constat du contrôle qualité (→ S3) : composition trop uniforme une fois rendue depuis Directus (sections presque toutes claires, schémas de déploiement perdus, cartes orphelines) ; ajouter des variantes de blocs.
+- Ruling : l'aperçu lit les versions avec le jeton Publication (le lecteur n'y a pas accès sans licence) — coût si compromis : un jeton plus puissant côté serveur ; à remplacer par un compte « Aperçu » dès la clé OIG.
+- Ruling : `partialPrefetching: false` pour obtenir un vrai 404 sur URL inconnue.
+- En attente du fondateur : affirmations commerciales « en revue » (schéma des flux écrit, aucun modèle externe sans accord, non-réutilisation des données, exportation au contrat, hébergement au Québec).
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
