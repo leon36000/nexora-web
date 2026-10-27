@@ -96,7 +96,7 @@ export const agentsFrCA = {
       "Votre requête est traitée par l’instance Nexora WorkStudio indiquée sur la fiche de l’agent (hébergement déclaré par Nexora), puis par le modèle de langage que cette instance utilise. La région du modèle se vérifie dans le catalogue des modèles ; l’hébergement de l’instance ne dit rien de plus que ce qui est déclaré.",
     retentionTitle: "Contenu de vos échanges",
     retention:
-      "La passerelle de Nexora ne conserve ni le contenu de vos requêtes ni celui des réponses : seules des métadonnées d’usage (agent, jetons, coût, durée) sont gardées pour la facturation.",
+      "La passerelle de Nexora ne garde que des métadonnées d’usage (agent, jetons, coût, durée), jamais le contenu de vos requêtes.",
     billingTitle: "Facturation",
     billing:
       "Chaque appel réserve d’abord son coût maximal sur votre solde, puis est réglé au coût réel. Sans solde suffisant, l’API répond 402 avant d’appeler l’agent. Vous pouvez plafonner la dépense d’une clé.",

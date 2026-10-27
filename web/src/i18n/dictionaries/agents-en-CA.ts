@@ -93,7 +93,7 @@ export const agentsEnCA: AgentsDictionary = {
       "Your request is processed by the Nexora WorkStudio instance shown on the agent’s page (hosting declared by Nexora), then by the language model that instance uses. A model’s region can be checked in the model catalogue; the instance hosting says nothing more than what is declared.",
     retentionTitle: "Content of your exchanges",
     retention:
-      "The Nexora gateway does not keep the content of your requests or of the responses: only usage metadata (agent, tokens, cost, duration) is kept for billing.",
+      "The Nexora gateway keeps only usage metadata (agent, tokens, cost, duration), never the content of your requests.",
     billingTitle: "Billing",
     billing:
       "Each call first reserves its maximum cost on your balance, then is settled at the actual cost. Without enough balance, the API answers 402 before calling the agent. You can cap the spending of a key.",
