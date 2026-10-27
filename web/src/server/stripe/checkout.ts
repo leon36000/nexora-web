@@ -115,7 +115,7 @@ export interface CheckoutExtras {
 }
 
 /** Remise et champ de code d'une session : `discounts` et `allow_promotion_codes` s'excluent chez Stripe. */
-function discountParams(extras: CheckoutExtras) {
+export function discountParams(extras: CheckoutExtras) {
   const id = extras.promo?.stripePromotionCodeId;
   if (id) return { discounts: [{ promotion_code: id }] };
   if (!extras.promo && extras.allowStripePageCodes)
@@ -123,7 +123,7 @@ function discountParams(extras: CheckoutExtras) {
   return {};
 }
 
-const promoMeta = (extras: CheckoutExtras): Record<string, string> =>
+export const promoMeta = (extras: CheckoutExtras): Record<string, string> =>
   extras.promo ? { promo_code_id: extras.promo.promoCodeId } : {};
 
 export interface CreditCheckoutInput extends CheckoutExtras {

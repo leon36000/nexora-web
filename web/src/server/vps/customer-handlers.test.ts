@@ -32,12 +32,13 @@ let close: () => Promise<void>;
 const SITE = "http://localhost:3500";
 const silent = { debug() {}, info() {}, warn() {}, error() {} } as never;
 
+let sessionSeq = 0;
 const sessions = {
   create: vi.fn(
-    async (_p: Record<string, unknown>, _o?: Record<string, unknown>) => ({
-      id: "cs_test_vps",
-      url: "https://checkout.stripe.test/c/pay/cs_test_vps",
-    }),
+    async (_p: Record<string, unknown>, _o?: Record<string, unknown>) => {
+      const id = sessionSeq++ === 0 ? "cs_test_vps" : `cs_test_vps_${sessionSeq}`;
+      return { id, url: `https://checkout.stripe.test/c/pay/${id}` };
+    },
   ),
 };
 const customers = {
@@ -228,6 +229,106 @@ describe("POST /api/vps/checkout", () => {
     );
     expect(res.status).toBe(502);
     expect(JSON.stringify(await res.json())).not.toContain("sk_test");
+  });
+});
+
+describe("codes promo et VPS offert", () => {
+  let staffOrg = "";
+  const withPromo = async (code: string, over: Record<string, unknown> = {}, synced = true) => {
+    const { createPromo } = await import("../payments/promo");
+    const { promoCodes } = await import("@nexora/db");
+    const row = await createPromo(t.db, { code, kind: "percent", percentOff: 15, scopes: ["vps"], ...over }, "admin");
+    if (synced && row.kind !== "staff")
+      await t.db.update(promoCodes).set({ stripeCouponId: `co_${code}`, stripePromotionCodeId: `promo_${code}` }).where(eq(promoCodes.id, row.id));
+    return row;
+  };
+
+  const freshOwner = async (): Promise<NonNullable<Ctx>> => ({
+    userId: `u-${randomBytes(4).toString("hex")}`,
+    email: "client@exemple.ca",
+    organizationId: await newOrg(t.db),
+    role: "owner",
+  });
+
+  it("un code de rabais est appliqué à l'abonnement VPS et suit la commande dans les métadonnées", async () => {
+    const promo = await withPromo("VPS-15");
+    const res = await handleVpsCheckout(req("/api/vps/checkout", form({ promo: "vps-15" })), deps(await freshOwner()));
+    expect(res.status).toBe(200);
+    const json = (await res.json()) as { orderId: string };
+    const params = sessions.create.mock.calls.at(-1)?.[0] as Record<string, any>;
+    expect(params.discounts).toEqual([{ promotion_code: "promo_VPS-15" }]);
+    expect(params.allow_promotion_codes).toBeUndefined();
+    expect(params.metadata.promo_code_id).toBe(promo.id);
+    expect(params.subscription_data.metadata.promo_code_id).toBe(promo.id);
+    const opts = sessions.create.mock.calls.at(-1)?.[1] as { idempotencyKey: string };
+    expect(opts.idempotencyKey).toBe(`vps-checkout:${json.orderId}:${promo.id}`);
+  });
+
+  it("sans code, le champ « code promo » de la page Stripe reste disponible", async () => {
+    await handleVpsCheckout(req("/api/vps/checkout", form()), deps(await freshOwner()));
+    const params = sessions.create.mock.calls.at(-1)?.[0] as Record<string, any>;
+    expect(params.allow_promotion_codes).toBe(true);
+    expect(params.discounts).toBeUndefined();
+  });
+
+  it("un code refusé (portée, inconnu) arrête la commande avec son motif", async () => {
+    await withPromo("SEULEMENT-ABO", { scopes: ["subscriptions"] });
+    const before = sessions.create.mock.calls.length;
+    const wrong = await handleVpsCheckout(req("/api/vps/checkout", form({ promo: "SEULEMENT-ABO" })), deps(await freshOwner()));
+    expect(wrong.status).toBe(422);
+    expect(await wrong.json()).toEqual({ error: "promo_wrong_scope" });
+    const unknown = await handleVpsCheckout(req("/api/vps/checkout", form({ promo: "NOPE" })), deps(await freshOwner()));
+    expect(await unknown.json()).toEqual({ error: "promo_unknown" });
+    expect(sessions.create.mock.calls.length).toBe(before);
+  });
+
+  it("code du personnel : VPS offert sans Stripe, même provisionnement (tâche mise en file), abonnement « offert »", async () => {
+    const { staffAccounts, users, subscriptions: subs } = await import("@nexora/db");
+    await t.db.insert(users).values({ id: "u-staff-vps", name: "Équipe", email: "equipe-vps@example.com" });
+    staffOrg = await newOrg(t.db);
+    await t.db.insert(staffAccounts).values({ userId: "u-staff-vps", grantedBy: "admin" });
+    await withPromo("EQUIPE-VPS", { kind: "staff", percentOff: null, scopes: ["vps", "subscriptions", "credits"] });
+    const before = sessions.create.mock.calls.length;
+    const ctx: Ctx = { userId: "u-staff-vps", email: "equipe-vps@example.com", organizationId: staffOrg, role: "owner" };
+    const res = await handleVpsCheckout(req("/api/vps/checkout", form({ promo: "EQUIPE-VPS", requestId: "req-gift-0001" })), deps(ctx));
+    expect(res.status).toBe(200);
+    const json = (await res.json()) as { url: string; orderId?: string };
+    expect(json.url).toContain("/compte/vps?offert=vps");
+    expect(sessions.create.mock.calls.length).toBe(before);
+    const orders = await t.db.select().from(vpsOrders).where(eq(vpsOrders.idempotencyKey, `vps:${staffOrg}:req-gift-0001`));
+    expect(orders[0]).toMatchObject({ status: "paid" });
+    expect(orders[0]?.stripeSubscriptionId).toMatch(/^gift_/);
+    const [sub] = await t.db.select().from(subs).where(eq(subs.stripeSubscriptionId, orders[0]!.stripeSubscriptionId!));
+    expect(sub?.status).toBe("gifted");
+    const queued = await t.db.select().from(jobs).where(eq(jobs.idempotencyKey, `vps-provision:${orders[0]!.id}`));
+    expect(queued).toHaveLength(1);
+    // le même formulaire renvoyé ne crée ni deuxième VPS ni deuxième don
+    const again = await handleVpsCheckout(req("/api/vps/checkout", form({ promo: "EQUIPE-VPS", requestId: "req-gift-0001" })), deps(ctx));
+    expect(again.status).toBe(200);
+    expect(await t.db.select().from(subs).where(eq(subs.organizationId, staffOrg))).toHaveLength(1);
+  });
+
+  it("résilier un VPS offert résilie l'abonnement offert sans appeler Stripe", async () => {
+    const { subscriptions: subs } = await import("@nexora/db");
+    const [order] = await t.db.select().from(vpsOrders).where(eq(vpsOrders.idempotencyKey, `vps:${staffOrg}:req-gift-0001`));
+    const [inst] = await t.db
+      .insert(vpsInstances)
+      .values({
+        orderId: order!.id, organizationId: staffOrg, vcpu: 2, ramMb: 4096, diskGb: 40, planCode: fx.planCode,
+        appCode: fx.appCode, appVersion: "1.2.3", catalogVersionId: fx.catalogVersionId,
+        vmName: `nx-${order!.id.slice(0, 8)}`, status: "active", step: "done",
+      })
+      .returning();
+    const calls = subscriptions.update.mock.calls.length;
+    const res = await handleVpsAction(
+      req(`/api/account/vps/${inst!.id}/action`, { action: "cancel", confirm: true, requestId: "req-cancel-gift" }),
+      inst!.id,
+      deps({ userId: "u-staff-vps", email: "e@example.com", organizationId: staffOrg, role: "owner" }),
+    );
+    expect(res.status).toBe(202);
+    expect(subscriptions.update.mock.calls.length).toBe(calls);
+    const [sub] = await t.db.select().from(subs).where(eq(subs.stripeSubscriptionId, order!.stripeSubscriptionId!));
+    expect(sub?.status).toBe("canceled");
   });
 });
 

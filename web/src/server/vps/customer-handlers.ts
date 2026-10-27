@@ -23,6 +23,9 @@ import { consumeRateLimit } from "../billing/rate-limit";
 import type { BillingConfig } from "../ledger/config";
 import { type CheckoutDeps, CheckoutError } from "../stripe/checkout";
 import { createVpsCheckout } from "../stripe/vps-checkout";
+import { cancelGiftSubscription, GiftError, grantGiftVps, isGiftSubscriptionRef } from "../payments/gifts";
+import { resolvePromo } from "../payments/purchase";
+import { getSettings } from "../payments/settings";
 
 /**
  * Routes de l'espace client pour les VPS : commande (`POST /api/vps/checkout`) et actions
@@ -155,6 +158,7 @@ const checkoutFields = z.object({
   term: z.enum(["month", "year"]),
   sshKey: z.string().min(1).max(2000),
   hostname: z.string().max(40).optional(),
+  promo: z.string().max(60).optional(),
   requestId: z
     .string()
     .min(8)
@@ -186,6 +190,10 @@ export async function handleVpsCheckout(
   if (ctx.role !== "owner") return fail(deps, input, 403, "forbidden");
   const parsed = checkoutFields.safeParse({
     ...input.fields,
+    promo:
+      typeof input.fields.promo === "string" && input.fields.promo.trim()
+        ? input.fields.promo
+        : undefined,
     hostname:
       typeof input.fields.hostname === "string" && input.fields.hostname
         ? input.fields.hostname
@@ -195,6 +203,47 @@ export async function handleVpsCheckout(
   const f = parsed.data;
   const db = deps.db();
   try {
+    // Code promo : décidé ici, côté serveur, à partir du prix de la version de catalogue publiée.
+    const published = await getPublishedCatalog(db);
+    const snapPlan = published?.snapshot.plans.find((p) => p.code === f.plan);
+    const price =
+      f.term === "month" ? snapPlan?.priceMonthlyCents : snapPlan?.priceYearlyCents;
+    const now = deps.now();
+    const promo = await resolvePromo(db, {
+      code: f.promo,
+      scope: "vps",
+      organizationId: ctx.organizationId,
+      userId: ctx.userId,
+      amountCents: price ?? undefined,
+      now,
+    });
+    if (promo.kind === "rejected")
+      return fail(deps, input, 422, `promo_${promo.reason}`);
+    const orderBase = {
+      idempotencyKey: `vps:${ctx.organizationId}:${f.requestId}`,
+      planCode: f.plan,
+      appCode: f.app,
+      term: f.term,
+      sshPublicKey: f.sshKey,
+      hostname: f.hostname,
+      maxPerOrganization: deps.maxPerOrganization,
+    };
+    if (promo.kind === "gift") {
+      // Don du personnel : même commande et même provisionnement, mais aucun passage par Stripe.
+      const gift = await grantGiftVps(db, {
+        organizationId: ctx.organizationId,
+        userId: ctx.userId,
+        promoCodeId: promo.promo.id,
+        now,
+        reason: `code ${promo.promo.code}`,
+        order: orderBase,
+      });
+      const url = `${deps.siteUrl}${localizePath(input.lang, "/compte/vps")}?offert=vps`;
+      return input.wantsJson
+        ? json({ url, orderId: gift.vpsOrderId })
+        : redirect(url);
+    }
+    const settings = await getSettings(db);
     const { order } = await createOrder(db, {
       organizationId: ctx.organizationId,
       userId: ctx.userId,
@@ -222,6 +271,10 @@ export async function handleVpsCheckout(
         catalogVersion: order.catalogVersion,
         lang: input.lang,
         email: ctx.email,
+        allowStripePageCodes: settings.stripePageCodes,
+        ...(promo.kind === "discount"
+          ? { promo: promo.promo, noPaymentMethodNeeded: promo.noPaymentMethodNeeded }
+          : {}),
       },
     );
     await db
@@ -234,6 +287,8 @@ export async function handleVpsCheckout(
   } catch (error) {
     if (error instanceof OrderError)
       return fail(deps, input, ORDER_STATUS[error.code] ?? 400, error.code);
+    if (error instanceof GiftError)
+      return fail(deps, input, error.code === "not_staff" ? 403 : 409, `gift_${error.code}`);
     if (error instanceof CheckoutError) {
       deps.log.error("vps : Stripe a refusé la commande", { code: error.code });
       return fail(deps, input, 502, "payment_unavailable");
@@ -334,6 +389,16 @@ export async function handleVpsAction(
       .where(eq(vpsOrders.id, inst.orderId));
     if (!order?.stripeSubscriptionId)
       return fail(deps, input, 409, "no_subscription", back);
+    // VPS offert par l'équipe : aucun abonnement Stripe ; la résiliation passe par l'abonnement « offert ».
+    if (isGiftSubscriptionRef(order.stripeSubscriptionId)) {
+      await cancelGiftSubscription(db, {
+        subscriptionRef: order.stripeSubscriptionId,
+        actor: "customer",
+        reason: "résiliation demandée par le client",
+        now: deps.now(),
+      });
+      return ok();
+    }
     const stripe = await deps.stripe();
     await stripe.subscriptions.update(order.stripeSubscriptionId, {
       cancel_at_period_end: true,
