@@ -56,12 +56,14 @@ services:
       TELEMETRY: "false"
       # --- Durcissement (docs/cms.md §10) ---
       # Limitation de débit par adresse (mémoire : une seule instance) et globale ; courriels (réinitialisation de mot de passe).
+      # 200 requêtes/s par adresse : le site et le worker partagent UNE adresse (leur conteneur) ; les scripts cms/scripts
+      # réessaient seuls après un 429.
       RATE_LIMITER_ENABLED: "true"
       RATE_LIMITER_STORE: memory
-      RATE_LIMITER_POINTS: "100"
+      RATE_LIMITER_POINTS: "200"
       RATE_LIMITER_DURATION: "1"
       RATE_LIMITER_GLOBAL_ENABLED: "true"
-      RATE_LIMITER_GLOBAL_POINTS: "500"
+      RATE_LIMITER_GLOBAL_POINTS: "1000"
       RATE_LIMITER_GLOBAL_DURATION: "1"
       RATE_LIMITER_EMAIL_ENABLED: "true"
       # Jetons et sessions courts (le site n'utilise que des jetons statiques de service, jamais ces sessions).
