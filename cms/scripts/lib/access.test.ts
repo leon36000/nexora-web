@@ -1,9 +1,12 @@
 import { describe, expect, test } from "bun:test";
 import {
   AGENTS,
+  adminPolicyPatch,
   buildAccess,
   hasRules,
   PUBLIC_POLICY_NAME,
+  policyBody,
+  tfaEnabled,
   withoutRules,
 } from "./access";
 import { BLOCK_TYPES, buildSchema } from "./schema";
@@ -163,6 +166,55 @@ describe("fichiers : remplacer un fichier d'autrui", () => {
         p.name,
       ).toEqual([]);
     }
+  });
+});
+
+describe("2FA (enforce_tfa) : exigée des personnes, pas des comptes de service à jeton", () => {
+  test("CMS_ENFORCE_TFA : activée par défaut, désactivable par 0, false, non ou off", () => {
+    expect(tfaEnabled(undefined)).toBe(true);
+    expect(tfaEnabled("")).toBe(true);
+    expect(tfaEnabled("1")).toBe(true);
+    expect(tfaEnabled("true")).toBe(true);
+    for (const off of ["0", "false", "FALSE", "non", "off", " 0 "])
+      expect(tfaEnabled(off), off).toBe(false);
+  });
+
+  test("activée : seules les politiques de l'Éditeur et du Relecteur l'exigent", () => {
+    const enforced = policies
+      .filter((p) => policyBody(p, true).enforce_tfa)
+      .map((p) => p.name)
+      .sort();
+    expect(enforced).toEqual(["Relecteur", "Éditeur"].sort());
+    // jamais pour un compte à jeton statique ni pour un agent
+    for (const p of policies.filter(
+      (x) => x.serviceUser || x.role?.name.startsWith("Agent"),
+    ))
+      expect(policyBody(p, true).enforce_tfa, p.name).toBe(false);
+    expect(policyBody(byName(PUBLIC_POLICY_NAME), true).enforce_tfa).toBe(
+      false,
+    );
+  });
+
+  test("désactivée (développement) : aucune politique ne l'exige", () => {
+    for (const p of policies)
+      expect(policyBody(p, false).enforce_tfa, p.name).toBe(false);
+  });
+
+  test("la politique Administrateur suit le même réglage", () => {
+    expect(adminPolicyPatch(true)).toEqual({
+      name: "Administrateur",
+      enforce_tfa: true,
+    });
+    expect(adminPolicyPatch(false).enforce_tfa).toBe(false);
+  });
+
+  test("le corps d'une politique garde l'accès à l'application et l'absence de liste d'adresses", () => {
+    const e = policyBody(byName("Éditeur"), true);
+    expect(e).toMatchObject({
+      app_access: true,
+      admin_access: false,
+      ip_access: null,
+    });
   });
 });
 

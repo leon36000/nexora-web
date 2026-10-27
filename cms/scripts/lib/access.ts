@@ -29,6 +29,11 @@ export type PolicyDef = {
   permissions: Perm[];
   /** Rôle créé et relié à la politique (absent pour la politique publique, déjà reliée au rôle nul). */
   role?: { name: string; icon: string; description: string };
+  /**
+   * Politique de personnes qui ouvrent une session avec courriel et mot de passe (Éditeur, Relecteur) : la 2FA leur est
+   * exigée (`enforce_tfa`). Jamais pour un compte de service à jeton statique ni pour un agent (aucune session).
+   */
+  human?: boolean;
   /** Sans règles personnalisées (pas de licence), aucune permission n'est accordée (rôle public). */
   noRulesNoAccess?: boolean;
   /** Compte de service avec jeton statique (variable d'environnement). */
@@ -58,6 +63,33 @@ export function withoutRules(perms: Perm[]): Perm[] {
     out.push({ collection: p.collection, action: p.action, fields: ["*"] });
   }
   return out;
+}
+
+/**
+ * Réglage `CMS_ENFORCE_TFA` : la 2FA des personnes est exigée par défaut ; `0`, `false`, `non` ou `off` la désactive
+ * (développement). Toute autre valeur, ou l'absence de valeur, l'active.
+ */
+export function tfaEnabled(value: string | undefined): boolean {
+  const v = (value ?? "").trim().toLowerCase();
+  return !["0", "false", "non", "no", "off"].includes(v);
+}
+
+/** Corps envoyé à Directus pour une politique (comparé avant écriture par apply.ts). */
+export function policyBody(p: PolicyDef, enforceTfa: boolean) {
+  return {
+    name: p.name,
+    icon: p.icon,
+    description: p.description,
+    app_access: p.app_access,
+    admin_access: !!p.admin_access,
+    enforce_tfa: !!p.human && enforceTfa,
+    ip_access: null,
+  };
+}
+
+/** La politique d'administration livrée par Directus (renommée) : ce sont des personnes, la 2FA suit le réglage. */
+export function adminPolicyPatch(enforceTfa: boolean) {
+  return { name: "Administrateur", enforce_tfa: enforceTfa };
 }
 
 export const PUBLIC_POLICY_NAME = "$t:public_label";
@@ -324,6 +356,7 @@ export function buildAccess(): PolicyDef[] {
     description:
       "Rédige des brouillons (versions) et propose des approbations. Ne publie pas.",
     app_access: true,
+    human: true,
     permissions: [
       ...contentReadPerms(),
       read("claims"),
@@ -346,6 +379,7 @@ export function buildAccess(): PolicyDef[] {
     description:
       "Relit, approuve et publie une version approuvée (la garde de publication contrôle le hash exact).",
     app_access: true,
+    human: true,
     permissions: [
       ...contentReadPerms(),
       ...pageTreeWritePerms(),
