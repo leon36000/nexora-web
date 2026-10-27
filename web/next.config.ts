@@ -17,7 +17,11 @@ const nextConfig: NextConfig = {
     localPatterns: [{ pathname: "/api/media/*" }],
   },
   // Les polices des images Open Graph (route /og) sont lues sur disque : à inclure dans une sortie tracée.
-  outputFileTracingIncludes: { "/og/**": ["./src/fonts/og/**"] },
+  outputFileTracingIncludes: {
+    "/og/**": ["./src/fonts/og/**"],
+    // Guide de branchement Proxmox (PDF) servi aux administrateurs.
+    "/api/admin/vps/**": ["../docs/vps/*.pdf"],
+  },
   // En-têtes de sécurité (S9) sur toutes les routes ; la CSP des pages est posée par proxy.ts (elle dépend de la bulle).
   async headers() {
     const csp = [{ key: "Content-Security-Policy", value: API_CSP }];

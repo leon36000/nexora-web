@@ -24,6 +24,10 @@ const ALLOWED: ReadonlyArray<readonly [string, RegExp]> = [
   ["PATCH", new RegExp(`^templates/${UUID}$`)],
   ["POST", new RegExp(`^versions/${UUID}/(approve|publish)$`)],
   ["POST", /^stripe\/publish$/],
+  // Branchement guidé d'un serveur Proxmox (empreinte TLS, connexion, découverte, préparation des gabarits).
+  ["POST", /^connect(\/probe)?$/],
+  ["POST", new RegExp(`^servers/${UUID}/(discover|setup)$`)],
+  ["GET", new RegExp(`^servers/${UUID}/setup$`)],
 ];
 
 /** Paramètres de requête permis, par chemin (GET seulement). Tout autre paramètre est refusé. */
@@ -152,4 +156,88 @@ export async function relayToVps(
       "Le service d’administration a répondu par une erreur.",
     );
   return { status: res.status, body: json };
+}
+
+export type GuideResult =
+  | { ok: true; status: 200; body: Uint8Array; contentType: "application/pdf" }
+  | { ok: false; status: number; body: unknown };
+
+const MAX_GUIDE_BYTES = 20 * 1024 * 1024;
+
+/**
+ * Guide de branchement (PDF) : l'app le sert à `GET /api/admin/vps/guide` ; le relais JSON ne sait pas
+ * rendre du binaire, d'où cette fonction. Même discipline : le jeton ne va qu'à l'app (jamais de
+ * redirection), seul un vrai PDF est rendu, aucune cause technique n'est exposée.
+ */
+const fail = (status: number, code: string, message: string): GuideResult => ({
+  ok: false,
+  ...err(status, code, message),
+});
+
+export async function fetchGuide(deps: {
+  env: Record<string, unknown>;
+  fetchFn?: typeof fetch;
+  timeoutMs?: number;
+}): Promise<GuideResult> {
+  const base = String(deps.env.NEXORA_APP_INTERNAL_URL ?? "").replace(
+    /\/+$/,
+    "",
+  );
+  const token = String(deps.env.NEXORA_APP_ADMIN_TOKEN ?? "");
+  if (!base || !token)
+    return fail(
+      503,
+      "VPS_NON_CONFIGURE",
+      "Le service d’administration de l’app n’est pas configuré.",
+    );
+  let res: Response;
+  try {
+    res = await (deps.fetchFn ?? fetch)(`${base}/api/admin/vps/guide`, {
+      method: "GET",
+      headers: { authorization: `Bearer ${token}` },
+      redirect: "manual",
+      signal: AbortSignal.timeout(deps.timeoutMs ?? 30_000),
+    });
+  } catch {
+    return fail(
+      502,
+      "VPS_INDISPONIBLE",
+      "Le service d’administration de l’app est injoignable.",
+    );
+  }
+  if (res.status === 401)
+    return fail(
+      502,
+      "VPS_NON_AUTORISE",
+      "L’app a refusé le jeton de service de Directus (NEXORA_APP_ADMIN_TOKEN).",
+    );
+  if (res.status === 404)
+    return fail(
+      404,
+      "VPS_GUIDE_ABSENT",
+      "Le PDF du guide n’a pas été généré (commande « bun run guide:vps » dans le dépôt).",
+    );
+  const type = res.headers.get("content-type") ?? "";
+  if (res.status !== 200 || !type.startsWith("application/pdf"))
+    return fail(
+      502,
+      "VPS_ERREUR",
+      "Réponse invalide du service d’administration.",
+    );
+  const bytes = new Uint8Array(await res.arrayBuffer());
+  if (
+    bytes.length > MAX_GUIDE_BYTES ||
+    String.fromCharCode(...bytes.subarray(0, 5)) !== "%PDF-"
+  )
+    return fail(
+      502,
+      "VPS_ERREUR",
+      "Réponse invalide du service d’administration.",
+    );
+  return {
+    ok: true,
+    status: 200,
+    body: bytes,
+    contentType: "application/pdf",
+  };
 }

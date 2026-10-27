@@ -61,6 +61,7 @@ import type Stripe from "stripe";
 import { z } from "zod";
 import { checkAdminAuth } from "../auth";
 import { lanOutboundGuard, type OutboundGuard } from "../security/outbound";
+import { GUIDE_FILENAME, readGuidePdf } from "./guide";
 import { syncVpsCatalogToStripe, VpsSyncError } from "./stripe-sync";
 
 /**
@@ -84,6 +85,8 @@ export interface VpsAdminDeps {
   onPublished?: () => void;
   /** Lecture du certificat au premier contact (remplaçable dans les tests). */
   probe?: typeof probeTls;
+  /** Contenu du guide PDF (remplaçable dans les tests) ; défaut : fichier du dépôt. */
+  guidePdf?: () => Promise<Uint8Array | null>;
 }
 
 /** Hôte Proxmox (SSRF) et portée du jeton : refus 422 avant toute écriture. */
@@ -548,6 +551,31 @@ async function route(
         : null,
       instanceCounts: Object.fromEntries(counts.map((r) => [r.status, r.n])),
       devSamplesAllowed: (deps.env ?? process.env).NODE_ENV !== "production",
+    });
+  }
+
+  // Guide de branchement (PDF) : document public de l'équipe, sans secret ; réservé aux administrateurs.
+  if (a === "guide" && !b) {
+    allowed("GET");
+    const pdf = await (deps.guidePdf ?? readGuidePdf)();
+    if (!pdf)
+      return json(
+        {
+          error: "guide_unavailable",
+          message:
+            "Le PDF du guide n'a pas été généré : lancer « bun run guide:vps » dans le dépôt.",
+        },
+        404,
+      );
+    return new Response(new Uint8Array(pdf), {
+      status: 200,
+      headers: {
+        "content-type": "application/pdf",
+        "content-disposition": `attachment; filename="${GUIDE_FILENAME}"`,
+        "content-length": String(pdf.byteLength),
+        "x-content-type-options": "nosniff",
+        ...NO_STORE,
+      },
     });
   }
 

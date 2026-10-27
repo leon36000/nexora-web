@@ -411,3 +411,50 @@ describe("prérequis manquants dits clairement", () => {
     }
   });
 });
+
+describe("guide de branchement (PDF) pour le personnel", () => {
+  const PDF = Buffer.from("%PDF-1.7\n% guide d'essai\n%%EOF\n");
+  const raw = (over: Partial<VpsAdminDeps> = {}, auth: string | null = ADMIN) =>
+    handleVpsAdmin(
+      new Request("http://localhost/api/admin/vps/guide", {
+        headers: auth ? { authorization: `Bearer ${auth}` } : {},
+      }),
+      ["guide"],
+      deps(over),
+    );
+
+  it("exige l'authentification d'administration", async () => {
+    expect((await raw({}, null)).status).toBe(401);
+    expect((await raw({}, "b".repeat(40))).status).toBe(401);
+  });
+
+  it("sert le PDF en téléchargement, sans mise en cache et sans exposer autre chose que le document", async () => {
+    const res = await raw({ guidePdf: async () => PDF });
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toBe("application/pdf");
+    expect(res.headers.get("content-disposition")).toBe(
+      'attachment; filename="guide-branchement-proxmox.pdf"',
+    );
+    expect(res.headers.get("cache-control")).toBe("no-store");
+    expect(res.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(Buffer.from(await res.arrayBuffer()).equals(PDF)).toBe(true);
+  });
+
+  it("répond 404 lisible quand le PDF n'a pas été généré", async () => {
+    const res = await raw({ guidePdf: async () => null });
+    expect(res.status).toBe(404);
+    expect((await res.json()).error).toBe("guide_unavailable");
+  });
+
+  it("n'accepte que GET", async () => {
+    const res = await handleVpsAdmin(
+      new Request("http://localhost/api/admin/vps/guide", {
+        method: "POST",
+        headers: { authorization: `Bearer ${ADMIN}` },
+      }),
+      ["guide"],
+      deps({ guidePdf: async () => PDF }),
+    );
+    expect(res.status).toBe(405);
+  });
+});

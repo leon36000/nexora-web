@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
+  fetchGuide,
   isAllowed,
   normalizePath,
   relayToVps,
@@ -27,6 +28,11 @@ describe("liste fermée des appels", () => {
       ["GET", `servers/${ID}/templates`],
       ["POST", `servers/${ID}/templates`],
       ["PATCH", `templates/${ID}`],
+      ["POST", "connect/probe"],
+      ["POST", "connect"],
+      ["POST", `servers/${ID}/discover`],
+      ["GET", `servers/${ID}/setup`],
+      ["POST", `servers/${ID}/setup`],
       ["GET", "plans"],
       ["POST", "plans"],
       ["GET", `plans/${ID}`],
@@ -63,6 +69,14 @@ describe("liste fermée des appels", () => {
       ["GET", `servers/${ID}/test`],
       ["GET", `versions/${ID}/publish`],
       ["GET", "stripe/publish"],
+      ["GET", "connect"],
+      ["GET", "connect/probe"],
+      ["PUT", "connect"],
+      ["POST", "connect/x"],
+      ["DELETE", `servers/${ID}/setup`],
+      ["PATCH", `servers/${ID}/setup`],
+      ["GET", `servers/${ID}/discover`],
+      ["POST", "guide"],
       ["PATCH", `templates/${ID}/x`],
       ["GET", `templates/${ID}`],
       ["OPTIONS", ""],
@@ -387,5 +401,74 @@ describe("relais", () => {
       { env, fetchFn: never },
     );
     expect(r.status).toBe(413);
+  });
+});
+
+describe("guide de branchement (PDF)", () => {
+  const bytes = Buffer.from("%PDF-1.7\nguide\n%%EOF\n");
+  const pdfFetch = ((url: string, init: RequestInit) => {
+    calls.push({ url, init });
+    return Promise.resolve(
+      new Response(bytes, {
+        status: 200,
+        headers: { "content-type": "application/pdf" },
+      }),
+    );
+  }) as unknown as typeof fetch;
+  const calls: { url: string; init: RequestInit }[] = [];
+
+  test("relaie le PDF tel quel, avec le jeton d'administration envoyé à l'app seulement", async () => {
+    calls.length = 0;
+    const r = await fetchGuide({ env, fetchFn: pdfFetch });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(Buffer.from(r.body).equals(bytes)).toBe(true);
+    expect(r.contentType).toBe("application/pdf");
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.url).toBe("http://app.interne:3500/api/admin/vps/guide");
+    const sent = calls[0]?.init.headers as Record<string, string>;
+    expect(sent.authorization).toBe("Bearer jeton-admin-app");
+    expect(calls[0]?.init.redirect).toBe("manual");
+  });
+
+  test("n'envoie jamais le jeton si l'app n'est pas configurée", async () => {
+    const r = await fetchGuide({ env: {}, fetchFn: never });
+    expect(r.status).toBe(503);
+  });
+
+  test("refuse un contenu qui n'est pas un PDF (réponse d'erreur, page HTML…)", async () => {
+    const html = (async () =>
+      new Response("<html>", {
+        status: 200,
+        headers: { "content-type": "text/html" },
+      })) as unknown as typeof fetch;
+    expect((await fetchGuide({ env, fetchFn: html })).status).toBe(502);
+    const fake = (async () =>
+      new Response("pas un pdf", {
+        status: 200,
+        headers: { "content-type": "application/pdf" },
+      })) as unknown as typeof fetch;
+    expect((await fetchGuide({ env, fetchFn: fake })).status).toBe(502);
+  });
+
+  test("transmet le 404 lisible quand le PDF n'est pas généré, et 502 si l'app refuse le jeton", async () => {
+    const missing = (async () =>
+      new Response(JSON.stringify({ error: "guide_unavailable" }), {
+        status: 404,
+        headers: { "content-type": "application/json" },
+      })) as unknown as typeof fetch;
+    expect((await fetchGuide({ env, fetchFn: missing })).status).toBe(404);
+    const refused = (async () =>
+      new Response("{}", { status: 401 })) as unknown as typeof fetch;
+    expect((await fetchGuide({ env, fetchFn: refused })).status).toBe(502);
+  });
+
+  test("une panne réseau donne 502 sans détail", async () => {
+    const down = (async () => {
+      throw new Error("ECONNREFUSED 10.0.0.1:3500 jeton-admin-app");
+    }) as unknown as typeof fetch;
+    const r = await fetchGuide({ env, fetchFn: down });
+    expect(r.status).toBe(502);
+    expect(JSON.stringify(r)).not.toContain("jeton-admin-app");
   });
 });
