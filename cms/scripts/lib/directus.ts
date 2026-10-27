@@ -151,6 +151,27 @@ export class Directus {
   // Écritures : Directus renvoie toujours la ressource (aucun statut toléré), d'où un résultat non nul.
   post = async <T = unknown>(path: string, body: unknown): Promise<T> =>
     (await this.req<T>("POST", path, body)) as T;
+  /** Téléversement multipart (ex. POST /files) : le type de contenu de la requête est posé par fetch. */
+  postFile = async <T = unknown>(path: string, form: FormData): Promise<T> => {
+    const res = await fetch(`${this.url}${path}`, {
+      method: "POST",
+      headers: { authorization: `Bearer ${this.token}` },
+      body: form,
+    });
+    const text = await res.text();
+    const json = (text ? safeJson(text) : null) as Envelope;
+    if (!res.ok) {
+      const e = json?.errors?.[0];
+      throw new DirectusError(
+        "POST",
+        path,
+        res.status,
+        e?.extensions?.code ?? "ERREUR",
+        e?.message ?? "",
+      );
+    }
+    return (json?.data ?? json) as T;
+  };
   patch = async <T = unknown>(path: string, body: unknown): Promise<T> =>
     (await this.req<T>("PATCH", path, body)) as T;
   del = async <T = unknown>(path: string, body?: unknown): Promise<T> =>
@@ -158,3 +179,11 @@ export class Directus {
 }
 
 export const log = (...parts: unknown[]) => console.log(...parts);
+
+function safeJson(text: string): unknown {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}

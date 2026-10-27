@@ -539,3 +539,20 @@ describe("textes de relecture (.md)", () => {
     expect(readme).toBe(readmeWithTable(readme));
   });
 });
+
+describe("vidéo dans le texte de relecture (S10)", () => {
+  test("une section qui référence une vidéo et ses sous-titres les nomme dans le .md", () => {
+    const base = structuredClone(pairs["opsys-ai"]["fr-CA"]);
+    const sec = base.blocks.find((b) => b.collection === "block_section");
+    expect(sec).toBeDefined();
+    if (!sec) return;
+    sec.fields = { ...(sec.fields ?? {}), media: { asset: "video-opsys.mp4" } };
+    sec.translation = {
+      ...sec.translation,
+      media_captions: { asset: "video-opsys.fr-CA.vtt" },
+    };
+    const md = renderMarkdown(base);
+    expect(md).toContain("Média : `video-opsys.mp4`");
+    expect(md).toContain("sous-titres : `video-opsys.fr-CA.vtt`");
+  });
+});
