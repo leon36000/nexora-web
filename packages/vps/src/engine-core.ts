@@ -155,6 +155,63 @@ export async function releaseLease(deps: EngineDeps, instanceId: string) {
     );
 }
 
+/**
+ * Renouvelle le bail de l'instance (même durée qu'à la prise). Faux si ce worker n'en est plus le
+ * titulaire (un autre worker l'a repris après une longue interruption) : il ne le « ressuscite » pas.
+ */
+export async function renewLease(
+  deps: EngineDeps,
+  instanceId: string,
+): Promise<boolean> {
+  const rows = await deps.db
+    .update(vpsInstances)
+    .set({
+      leaseUntil: sql`now() + (${deps.settings.leaseMs} * interval '1 millisecond')`,
+    })
+    .where(
+      and(
+        eq(vpsInstances.id, instanceId),
+        eq(vpsInstances.leaseOwner, deps.workerId),
+      ),
+    )
+    .returning({ id: vpsInstances.id });
+  return rows.length === 1;
+}
+
+/**
+ * Renouvelle le bail tant qu'une étape longue s'exécute (installation de 15 min, attente d'une tâche
+ * Proxmox de 5 min) : sans cela, le bail de 240 s expire en cours de route et un second worker
+ * reprend l'instance en parallèle. Renvoie la fonction d'arrêt, à appeler dans `finally`.
+ */
+export function keepLeaseAlive(
+  deps: EngineDeps,
+  instanceId: string,
+  everyMs = Math.max(50, Math.floor(deps.settings.leaseMs / 3)),
+): () => void {
+  let stopped = false;
+  let lostLogged = false;
+  const timer = setInterval(() => {
+    if (stopped) return;
+    renewLease(deps, instanceId)
+      .then((held) => {
+        if (!held && !stopped && !lostLogged) {
+          lostLogged = true;
+          deps.log.warn("vps : bail d'instance perdu en cours d'exécution", {
+            instanceId,
+          });
+        }
+      })
+      .catch(() => {
+        /* le prochain battement réessaiera */
+      });
+  }, everyMs);
+  timer.unref();
+  return () => {
+    stopped = true;
+    clearInterval(timer);
+  };
+}
+
 export async function withLease<T>(
   deps: EngineDeps,
   instanceId: string,
@@ -162,9 +219,11 @@ export async function withLease<T>(
 ): Promise<{ busy: true } | { busy: false; value: T }> {
   const inst = await acquireLease(deps, instanceId);
   if (!inst) return { busy: true };
+  const stopRenewing = keepLeaseAlive(deps, instanceId);
   try {
     return { busy: false, value: await fn(inst) };
   } finally {
+    stopRenewing();
     await releaseLease(deps, instanceId);
   }
 }

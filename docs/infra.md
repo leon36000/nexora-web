@@ -289,6 +289,12 @@ worker ──▶ placement → clone → configure → firewall → start → aw
                  └─ Proxmox VE (API REST, jeton du Coffre)         └─ script versionné, SHA-256 vérifié, exécuté par SSH
 ```
 
+### Paiement tardif, baux longs (correctifs I3 et I4, migration 0009)
+
+- **Commande expirée puis payée** : `checkout.session.expired` (Stripe) fait expirer la commande ; le balayage de 24 h n'est qu'un filet et ne touche pas une commande dont l'abonnement est relié. Si l'abonnement devient payant sur une commande `expired`, elle est reprise (`paid` + `vps.provision`) quand une capacité existe ; sinon elle passe à `late_payment` (événement `paid_after_expiry`, courriel à l'opérateur) et le balayage la reprend dès que la capacité revient. **Jamais de remboursement automatique** : l'opérateur décide depuis Stripe.
+- **Baux** : pendant toute exécution VPS, le bail de l'instance (`leaseMs`, 240 s) et celui de la tâche (file, 5 min) sont renouvelés toutes les `leaseMs / 3` ; ils sont rendus à la fin, réussite ou erreur. Une installation de 15 min n'est donc plus reprise en parallèle par un second worker.
+- **Empreinte de la clé d'hôte** : lue du `known_hosts` éphémère après la connexion SSH, enregistrée sur l'instance et affichée au client.
+
 ### Variables
 
 | Variable | Rôle |
