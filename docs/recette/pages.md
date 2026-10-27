@@ -19,6 +19,8 @@ Les mesures à 94 coïncident avec une charge de 5 sur pc6 (machine partagée) :
 2. **Liens de navigation vers des pages absentes** (Tarifs, Ressources, Loi 25, mentions légales) : masqués tant que la page n'est ni publiée ni une route de l'application (`targetExists`, test RED→GREEN). Ils réapparaissent à la publication.
 3. **Lien `/en/models/`** de l'accueil anglais : corrigé en `/en/modeles/` et republié par la chaîne d'approbation.
 
+4. **Routes de l'application absentes du sitemap** quand le serveur tourne depuis un autre répertoire (`next start web/` lancé ailleurs) : `appRouteExists` cherchait le manifeste et les sources sous `process.cwd()` et, faute de les trouver, retirait `/contact`, `/modeles`, `/docs/api`, `/agents` et `/vps` du sitemap, de `llms.txt` et de la navigation rendue à la demande. Sans manifeste ni sources, elle ne retire plus rien (test RED→GREEN).
+
 ## Constat de déploiement (non corrigeable dans le code)
 
 Le serveur Next de production doit être lié à `localhost` ou à `0.0.0.0` (conteneur), **jamais à `127.0.0.1` ni à `::1`**. Avec `-H 127.0.0.1`, toutes les pages françaises bouclent en 308 (l'anglais répond 200). Cause, vérifiée dans Next 16.4.3 (`next/dist/server/web/adapter.js`) : l'adaptateur refabrique la réécriture de `proxy.ts` (`/x` → `/fr/x`) avec `NextURL`, qui renomme 127.0.0.1 en « localhost ». L'origine ne correspond plus à celle du serveur, Next proxifie la requête comme une réécriture externe, et la règle `/fr/…` → `/…` renvoie un 308. Un correctif dans `proxy.ts` a été essayé puis retiré : l'adaptateur renormalise après lui. Reprendre l'en-tête `Host` aurait ouvert une SSRF.
