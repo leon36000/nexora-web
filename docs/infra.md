@@ -19,7 +19,7 @@ Variables lues par l'app : `DATABASE_URL`, `NEXORA_APP_ADMIN_TOKEN` (32 caractè
 
 Schéma dans `packages/db/src/schema.ts`, migrations SQL versionnées dans `packages/db/drizzle/`. Pour changer le schéma : modifier `schema.ts`, `bun run db:generate -- --name <nom>`, relire le SQL, `bun run db:migrate`. Ne jamais éditer une migration déjà appliquée.
 
-Tables de S1 : `jobs` (file), `vault_secrets` (coffre), `config_versions` (versions publiées figées, D3), `processed_events` (idempotence des webhooks, D7 : `recordEventOnce(db, fournisseur, idEvenement)` renvoie `true` au premier passage seulement). Les tables clients (Better Auth), le grand livre et la facturation sont arrivées avec S4 (section « Paiements » ci-dessous) ; les clés clientes de la passerelle arriveront avec S5.
+Tables de S1 : `jobs` (file), `vault_secrets` (coffre), `config_versions` (versions publiées figées, D3), `processed_events` (idempotence des webhooks, D7 : `recordEventOnce(db, fournisseur, idEvenement)` renvoie `true` au premier passage seulement). Les tables clients (Better Auth), le grand livre et la facturation sont arrivées avec S4 (section « Paiements » ci-dessous) ; les clés clientes et le catalogue de la passerelle sont arrivés avec S5 (section « Passerelle de modèles » ci-dessous).
 
 ## File de tâches et worker
 
@@ -153,3 +153,67 @@ Pages `/contact` et `/en/contact` (route de l'application, pas une page Directus
 - **Notification.** Le worker (`worker/src/contact-notify.ts`) envoie le courriel à `CONTACT_NOTIFY_TO` par SMTP (`SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD_FILE`, `SMTP_FROM` ; développement : Mailpit 127.0.0.1:1026) puis renseigne `leads.notified_at`. Échec d'envoi : la demande reste en base, la tâche est reprise (8 essais, délais exponentiels) ; au-delà, la tâche est `dead` et `SELECT … FROM leads WHERE notified_at IS NULL` retrouve les demandes à traiter (remettre la tâche en `pending`). Envoi au moins une fois (un doublon est possible si le worker meurt entre l'envoi et l'écriture de `notified_at`).
 - **Vie privée.** Aucune adresse IP ni agent utilisateur n'est stocké ; aucun renseignement personnel dans les journaux ni dans la file.
 - **Preuve.** `web/scripts/e2e-contact.ts` (navigateur réel, base, worker, Mailpit) : `docs/captures/s3/e2e-contact.md`.
+
+
+## Passerelle de modèles (jalon S5)
+
+Conception : §9 et D1, D2, D3, D4, D14 de `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Preuve de bout en bout : `docs/captures/s5/e2e-gateway.md`. Code : `web/src/server/gateway/`, `packages/db/src/schema-gateway.ts`, routes `web/src/app/v1/*`, `web/src/app/api/admin/catalog/*`, `web/src/app/api/account/api-keys/*`, pages `/modeles`, `/modeles/<id>`, `/docs/api`, section « Clés API » de `/compte`, module Directus `cms/extensions-src/nexora-cms/src/catalog/`.
+
+```
+client ──Bearer nxk_…──▶ /v1/* (Next.js) ──Bearer clé maîtresse──▶ LiteLLM (réseau interne) ──▶ fournisseur
+                           │  empreinte SHA-256, révocation, expiration, modèles autorisés, RPM/TPM
+                           │  réservation atomique (grand livre) → règlement au coût réel → libération du reste
+                           └─ usage_events (métadonnées seulement)
+```
+
+### Variables
+
+| Variable | Rôle |
+|---|---|
+| `LITELLM_MASTER_KEY` | Clé maîtresse de LiteLLM. **Variable serveur**, jamais exposée (secret Docker en production). Sans elle, `/v1` répond 503. Ajoutée par `scripts/init-dev-env.sh`. |
+| `LITELLM_BASE_URL` | Adresse de LiteLLM (défaut `http://127.0.0.1:4400`). |
+| `GATEWAY_DEFAULT_RPM` (120), `GATEWAY_DEFAULT_TPM` (400000) | Limites par minute d'une clé sans limite propre. |
+| `GATEWAY_MAX_BODY_BYTES` (8000000), `GATEWAY_DEFAULT_MAX_OUTPUT_TOKENS` (4096) | Taille maximale d'un corps ; plafond de sortie d'un modèle sans plafond déclaré. |
+| `GATEWAY_UPSTREAM_TIMEOUT_MS` (300000), `GATEWAY_STREAM_TIMEOUT_MS` (900000) | Délais d'un appel et d'un flux. |
+| `SITE_URL` | Doit être l'origine réelle de service : elle sert aux URL des exemples, aux canoniques et au contrôle d'origine des routes de compte. |
+
+### Tables (base `app`, migrations 0004 et 0005)
+
+`model_providers` (type, adresses, **référence** du coffre, région, politique de données, priorité, état et dernier contrôle), `models` (identifiant public stable `espace/nom`, statut brouillon → approuvé → publié → retiré, résidence, visibilité, fin de vie), `model_prices` (par million de jetons : coût amont en micro-USD, prix de vente en micro-CAD, marge visée, **plancher de marge**, date d'effet ; lignes **immuables** par déclencheur SQL), `fx_rates` (USD → CAD ; utilisable seulement une fois approuvé ; seule l'approbation est permise après coup), `api_keys` (empreinte SHA-256 de 256 bits aléatoires ; préfixe affiché ; modèles autorisés, plafond de dépense, RPM/TPM, expiration, révocation), `usage_events` (idempotent par `request_id`, **ajout seulement**, jamais de contenu). `config_versions` reçoit un statut (`draft`, `approved`, `published`, `superseded`), `approved_at`, `applied_at/status/detail` ; son contenu et son hash sont figés par déclencheur. La collection `model_catalog` / `main` y porte le catalogue.
+
+### Versions de catalogue (D3, D14)
+
+Les tables de travail se modifient librement ; **seule une version publiée** sert à la facturation (`/v1`) et à la synchronisation. `POST /versions` photographie les modèles au statut « publié » avec leur prix en vigueur et le taux approuvé, calcule le hash (contenu + version parente) et renvoie l'aperçu des différences et les problèmes. Garde de publication (à l'approbation **et** à la publication, sur le contenu figé) : taux de change approuvé, prix présent, prix > 0 (sortie exigée pour un modèle de conversation), prix ≥ coût amont converti × (1 + plancher), fournisseur actif, clé présente et non révoquée dans le coffre. Un brouillon construit sur une version devenue obsolète est refusé (`stale_version`). Une seule version est publiée à la fois (verrou consultatif).
+
+### API d'administration `/api/admin/catalog/*`
+
+`Authorization: Bearer <NEXORA_APP_ADMIN_TOKEN>` (temps constant, 503 si non configuré). Montants en micro-unités entières (chaînes dans les réponses).
+
+| Appel | Rôle |
+|---|---|
+| `GET /` | Vue d'ensemble (fournisseurs, modèles avec prix actuel, taux, versions, version publiée et état « appliqué »). |
+| `GET/POST /providers`, `GET/PATCH /providers/{id}` | Fournisseurs (types `openrouter`, `openai_compatible`, `litellm_upstream`, `vllm`, `ollama`). |
+| `POST /providers/{id}/test` | « Tester le fournisseur » : liste des modèles avec la clé du coffre ; écrit état, date et résumé (jamais la réponse). |
+| `GET/POST /models`, `GET/PATCH /models/{id}` | Modèles ; passer à `approved`/`published` exige un prix valide. |
+| `GET/POST /models/{id}/prices` | Historique et ajout d'un prix (vente explicite, ou calculée avec `marginBps` au taux approuvé). |
+| `GET/POST /fx-rates`, `POST /fx-rates/{id}/approve` | Taux de change. |
+| `GET/POST /versions`, `GET /versions/{id}`, `POST /versions/{id}/approve`, `POST /versions/{id}/publish` | Brouillon → approuvé → publié. La publication revalide l'étiquette de cache `model-catalog` (pages publiques). |
+| `POST /sync-litellm` | Pousse le catalogue **publié** dans LiteLLM : crédentials `nexora-prov-<code>` (clé tirée du coffre), puis modèles `nxm-<id>` (`/model/new` ou `/model/update`), retire ce que Nexora gère et qui n'est plus publié ; ne touche jamais aux modèles du fichier de configuration. Écrit « appliqué » + date (ou « échec » + code) sur la version. Rejouable. |
+
+Codes d'erreur : 401, 404, 405, 409 (`conflict`, `invalid_transition`, `stale_version`, `no_published_catalog`), 422 (`invalid_request`, `publication_refused` avec `issues`), 502/503 (LiteLLM).
+
+### Couche publique `/v1/*` (compatible OpenAI)
+
+`GET /v1/models` (sans clé : catalogue public ; avec clé : ses modèles), `POST /v1/chat/completions` (JSON ou SSE), `POST /v1/embeddings`. Pour chaque appel : clé (empreinte, révocation, expiration, modèle autorisé ; un modèle `private` exige d'être listé dans `allowed_models`) → RPM puis TPM (table `api_rate_limits`) → estimation prudente (1 jeton par 3 octets) + `max_tokens` **borné et toujours transmis** × prix publié = coût maximal → plafond de la clé (mise à jour atomique) → **réservation** au grand livre (402 `insufficient_quota` / `account_blocked`, avant tout appel) → LiteLLM avec la clé maîtresse → **règlement au coût réel** (`usage` de l'amont ; `stream_options.include_usage` forcé) plafonné au montant réservé, reste libéré → `usage_events` dans la même transaction. Seuls les paramètres OpenAI connus sont transmis (`api_base`, `api_key`, `metadata`, `mock_response`… sont ignorés). La réponse est nettoyée (`provider`, `usage.cost*` retirés ; `model` = identifiant public). En flux, le règlement a lieu **avant** l'envoi de `[DONE]` ; un client qui ferme la connexion coupe l'amont et ne paie que ce qui a été livré (estimé). Échec de l'amont : réservation libérée, rien débité (événement `error`). En-têtes : `x-request-id`, `x-nexora-model`, `x-nexora-residency`, `x-nexora-catalog-version`, `x-nexora-cost-micro` (réponse complète), `x-ratelimit-*`, `Retry-After`. Aucun contenu n'est journalisé ni stocké (test : ni le prompt, ni la réponse, ni la clé client, ni la clé maîtresse, ni la clé du fournisseur dans les journaux et les événements). Le journal masque aussi `nxk_…` (`@nexora/log`).
+
+### Espace client
+
+`/compte` : section « Clés API » (création par `POST /api/account/api-keys`, valeur affichée **une seule fois** ; révocation par `DELETE /api/account/api-keys/{id}` ; usage par jour et par modèle sur 30 jours). **Propriétaire seulement** (une clé dépense les crédits) ; organisation tirée de la session ; contrôle d'origine ; 20 opérations par minute et par utilisateur. Crédit de TEST pour le développement : `grantTestCredit` (`web/src/server/gateway/dev-credit.ts`, refusé si `NODE_ENV=production`).
+
+### Module Directus « Modèles » (D14)
+
+Dans le bundle `nexora-cms` : endpoint `/nexora-catalog` (administrateurs Directus seulement ; liste fermée de méthodes et chemins relayés vers `/api/admin/catalog/*` avec `NEXORA_APP_ADMIN_TOKEN` ; rien n'est persisté, seul « méthode chemin : statut » est journalisé) et module « Modèles » (fournisseurs avec « coller la clé » → Coffre `llm_provider`, modèles et prix, taux de change, versions avec aperçu des différences, boutons Approuver / Publier / Synchroniser / Tester). Construction : `cms/scripts/stage-extensions.sh`. **Pour que le module apparaisse dans la barre de Directus**, `nexora-models` doit être ajouté à `module_bar` (comme `nexora-vault` dans `cms/scripts/apply.ts`) : non fait ici, par consigne.
+
+### Limites connues (non livrées)
+
+Un seul fournisseur par modèle (pas de bascule automatique selon la priorité) ; pas de planificateur qui libère les réservations perdues (plantage entre réservation et règlement : `releaseStaleReservations` existe, le worker ne l'appelle pas ; la dépense de la clé reste alors gonflée) ; estimation d'entrée prudente mais sans tokenizer (si l'amont rapporte plus que le maximum réservé, le règlement est plafonné au montant réservé) ; images et audio en entrée non testés ; limites RPM/TPM par clé seulement (pas par organisation ni par adresse) ; rapprochement périodique de la dépense LiteLLM avec le grand livre (contrôle de dérive) non écrit ; pas de tableau de bord d'administration de l'usage global ; entrée « Modèles » du menu à ajouter dans la navigation Directus ; pages `/modeles`, `/docs/api` : si le CMS publie une page de même chemin, la route statique la masque.

@@ -29,6 +29,20 @@
       "when": 1793072202505,
       "tag": "0003_s3_leads",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793073524194,
+      "tag": "0004_s5_passerelle",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793073524510,
+      "tag": "0005_s5_prix_immuables",
+      "breakpoints": true
     }
   ]
 }

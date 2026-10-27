@@ -33,6 +33,11 @@ describe("redact", () => {
     ).not.toContain("motdepasse");
   });
 
+  it("masque les clés clientes de la passerelle (nxk_…)", () => {
+    const key = `nxk_${"Ab3-_".repeat(8)}Zz9`;
+    expect(scrubString(`appel avec ${key} refusé`)).not.toContain("Ab3-_Ab3-_");
+  });
+
   it("sérialise les erreurs sans pile et sans secret", () => {
     const out = redact(new Error("boom Bearer abcDEF123456789xyz")) as Record<
       string,

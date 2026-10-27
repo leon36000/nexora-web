@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
 import { Dashboard } from "@/components/account/dashboard";
+import { ApiKeysSection } from "@/components/gateway/api-keys-section";
 import { Section } from "@/components/ui/section";
 import { fmt, formatCad, getAccountDictionary } from "@/i18n/account";
 import { isLang, localizePath } from "@/i18n/config";
@@ -16,6 +17,8 @@ import {
   type SubscriptionPlan,
 } from "@/server/billing/plans";
 import { getDb } from "@/server/db";
+import { listApiKeys } from "@/server/gateway/keys";
+import { usageByDayAndModel } from "@/server/gateway/usage";
 import { loadBillingConfig } from "@/server/ledger/config";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -79,6 +82,11 @@ async function AccountContent({
   const t = getAccountDictionary(lang);
   const config = loadBillingConfig();
   const data = await loadDashboard(getDb(), session.organizationId);
+  // Clés API et usage de la passerelle (S5) : mêmes données d'organisation, même session.
+  const [apiKeys, usage] = await Promise.all([
+    listApiKeys(getDb(), session.organizationId),
+    usageByDayAndModel(getDb(), session.organizationId, 30),
+  ]);
 
   // Offres publiées dans Directus ; en cas d'échec, la page reste utilisable sans elles.
   let plans: SubscriptionPlan[] | null = null;
@@ -119,15 +127,23 @@ async function AccountContent({
             : null;
 
   return (
-    <Dashboard
-      lang={lang}
-      t={t}
-      data={data}
-      role={session.role}
-      userName={session.name}
-      config={config}
-      plans={plans}
-      flash={flash}
-    />
+    <>
+      <Dashboard
+        lang={lang}
+        t={t}
+        data={data}
+        role={session.role}
+        userName={session.name}
+        config={config}
+        plans={plans}
+        flash={flash}
+      />
+      <ApiKeysSection
+        lang={lang}
+        role={session.role}
+        keys={apiKeys}
+        usage={usage}
+      />
+    </>
   );
 }
