@@ -13,11 +13,13 @@ export const ERROR_MESSAGES: Record<string, string> = {
   internal_error: "Erreur interne de l’app.",
   HOSTED_AGENTS_NON_CONFIGURE:
     "Le service d’administration de l’app n’est pas configuré (NEXORA_APP_INTERNAL_URL et NEXORA_APP_ADMIN_TOKEN).",
-  HOSTED_AGENTS_INDISPONIBLE: "Le service d’administration de l’app est injoignable.",
+  HOSTED_AGENTS_INDISPONIBLE:
+    "Le service d’administration de l’app est injoignable.",
   HOSTED_AGENTS_NON_AUTORISE: "L’app a refusé le jeton de service de Directus.",
   HOSTED_AGENTS_ROUTE_INCONNUE: "Appel non pris en charge.",
   HOSTED_AGENTS_ERREUR: "Le service d’administration a répondu par une erreur.",
-  HOSTED_AGENTS_REPONSE_INVALIDE: "Réponse invalide du service d’administration.",
+  HOSTED_AGENTS_REPONSE_INVALIDE:
+    "Réponse invalide du service d’administration.",
 };
 
 export const ISSUE_LABELS: Record<string, string> = {

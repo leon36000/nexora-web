@@ -69,7 +69,7 @@ describe("relais (agents hébergés)", () => {
       `http://app.interne:3500/api/admin/hosted-agents/instances/${ID}/discover`,
     );
     expect(
-      (seen.init?.headers as Record<string, string>).authorization,
+      ((seen.init?.headers ?? {}) as Record<string, string>).authorization,
     ).toBe("Bearer jeton-admin-app");
   });
   test("refuse hors liste sans appeler l'app, et signale un service non configuré", async () => {

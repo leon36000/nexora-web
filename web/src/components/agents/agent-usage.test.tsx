@@ -30,8 +30,12 @@ describe("consommation par agent de l'espace client", () => {
   });
   it("annonce l'absence d'exécution, en français et en anglais", () => {
     expect(
-      renderToStaticMarkup(<AgentUsage lang="fr" usage={[row("nexora/x", 1, 1n)]} />),
+      renderToStaticMarkup(
+        <AgentUsage lang="fr" usage={[row("nexora/x", 1, 1n)]} />,
+      ),
     ).toContain("Aucune exécution d’agent");
-    expect(renderToStaticMarkup(<AgentUsage lang="en" usage={[]} />)).toContain("No agent run");
+    expect(renderToStaticMarkup(<AgentUsage lang="en" usage={[]} />)).toContain(
+      "No agent run",
+    );
   });
 });

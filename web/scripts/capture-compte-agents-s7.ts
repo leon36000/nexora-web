@@ -34,7 +34,13 @@ const password = randomBytes(18).toString("base64url");
 const signup = await fetch(`${base}/api/auth/sign-up/email`, {
   method: "POST",
   headers: { "content-type": "application/json", origin: base },
-  body: JSON.stringify({ email, password, name: "Essai S7", company: "Entreprise d’essai S7", locale: "fr" }),
+  body: JSON.stringify({
+    email,
+    password,
+    name: "Essai S7",
+    company: "Entreprise d’essai S7",
+    locale: "fr",
+  }),
 });
 if (!signup.ok) throw new Error(`inscription refusée : ${signup.status}`);
 await db

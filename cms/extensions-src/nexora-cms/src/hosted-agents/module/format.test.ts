@@ -18,6 +18,9 @@ describe("errorMessage", () => {
 
 describe("linesToList", () => {
   test("une page par ligne, lignes vides ignorées", () => {
-    expect(linesToList("/agents\n\n  /workstudio \r\n")).toEqual(["/agents", "/workstudio"]);
+    expect(linesToList("/agents\n\n  /workstudio \r\n")).toEqual([
+      "/agents",
+      "/workstudio",
+    ]);
   });
 });

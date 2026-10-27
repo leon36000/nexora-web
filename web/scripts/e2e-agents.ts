@@ -343,7 +343,8 @@ check(
 const ledger = await deriveBalance(db, ORG);
 const acct = await getAccount(db, ORG);
 check(
-  ledger.balanceMicro === acct.balanceMicro && ledger.heldMicro === acct.heldMicro,
+  ledger.balanceMicro === acct.balanceMicro &&
+    ledger.heldMicro === acct.heldMicro,
   "le solde dérivé du journal égale le solde du compte",
   `${acct.balanceMicro} µCAD`,
 );
