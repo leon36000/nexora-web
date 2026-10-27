@@ -1,5 +1,5 @@
 {
-  "id": "50e26d0f-c1ce-4682-8846-ded272cfff64",
+  "id": "fb753243-aab4-47b1-a30a-c3caee1b9ab1",
   "prevId": "1b187e5f-0c35-4eac-a5ed-ed804da9103b",
   "version": "7",
   "dialect": "postgresql",
@@ -3103,8 +3103,8 @@
       },
       "isRLSEnabled": false
     },
-    "public.os_templates": {
-      "name": "os_templates",
+    "public.indexing_submissions": {
+      "name": "indexing_submissions",
       "schema": "",
       "columns": {
         "id": {
@@ -3114,61 +3114,49 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "server_id": {
-          "name": "server_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "code": {
-          "name": "code",
+        "engine": {
+          "name": "engine",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "trigger": {
+          "name": "trigger",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "os": {
-          "name": "os",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "os_version": {
-          "name": "os_version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "vmid": {
-          "name": "vmid",
+        "url_count": {
+          "name": "url_count",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": 0
         },
-        "ci_user": {
-          "name": "ci_user",
-          "type": "text",
+        "urls_sample": {
+          "name": "urls_sample",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": true,
-          "default": "'debian'"
+          "default": "'[]'::jsonb"
         },
-        "image_sha256": {
-          "name": "image_sha256",
+        "status": {
+          "name": "status",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "http_status": {
+          "name": "http_status",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "state": {
-          "name": "state",
+        "detail": {
+          "name": "detail",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'draft'"
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -3176,6 +3164,72 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        }
+      },
+      "indexes": {
+        "indexing_submissions_created_idx": {
+          "name": "indexing_submissions_created_idx",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "indexing_submissions_status_check": {
+          "name": "indexing_submissions_status_check",
+          "value": "\"indexing_submissions\".\"status\" IN ('dry_run', 'submitted', 'failed', 'skipped')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.seo_adapters": {
+      "name": "seo_adapters",
+      "schema": "",
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "write_enabled": {
+          "name": "write_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "last_check_at": {
+          "name": "last_check_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_check_status": {
+          "name": "last_check_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'never'"
+        },
+        "last_check_detail": {
+          "name": "last_check_detail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -3185,18 +3239,225 @@
           "default": "now()"
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.seo_audits": {
+      "name": "seo_audits",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'queued'"
+        },
+        "trigger": {
+          "name": "trigger",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'schedule'"
+        },
+        "base_url": {
+          "name": "base_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pages_checked": {
+          "name": "pages_checked",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "issues_found": {
+          "name": "issues_found",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "summary": {
+          "name": "summary",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "finished_at": {
+          "name": "finished_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
       "indexes": {
-        "os_templates_server_code_unique": {
-          "name": "os_templates_server_code_unique",
+        "seo_audits_created_idx": {
+          "name": "seo_audits_created_idx",
           "columns": [
             {
-              "expression": "server_id",
+              "expression": "created_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
-            },
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "seo_audits_kind_check": {
+          "name": "seo_audits_kind_check",
+          "value": "\"seo_audits\".\"kind\" IN ('structure', 'links', 'a11y', 'perf', 'all')"
+        },
+        "seo_audits_status_check": {
+          "name": "seo_audits_status_check",
+          "value": "\"seo_audits\".\"status\" IN ('queued', 'running', 'succeeded', 'failed')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.seo_issues": {
+      "name": "seo_issues",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "audit_id": {
+          "name": "audit_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "severity": {
+          "name": "severity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rule": {
+          "name": "rule",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "detail": {
+          "name": "detail",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "fingerprint": {
+          "name": "fingerprint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "first_seen_at": {
+          "name": "first_seen_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "last_seen_at": {
+          "name": "last_seen_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "resolved_at": {
+          "name": "resolved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "seo_issues_fingerprint_unique": {
+          "name": "seo_issues_fingerprint_unique",
+          "columns": [
             {
-              "expression": "code",
+              "expression": "fingerprint",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -3206,18 +3467,277 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "seo_issues_status_idx": {
+          "name": "seo_issues_status_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "severity",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "last_seen_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "seo_issues_audit_idx": {
+          "name": "seo_issues_audit_idx",
+          "columns": [
+            {
+              "expression": "audit_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
-        "os_templates_server_id_proxmox_servers_id_fk": {
-          "name": "os_templates_server_id_proxmox_servers_id_fk",
-          "tableFrom": "os_templates",
-          "tableTo": "proxmox_servers",
+        "seo_issues_audit_id_seo_audits_id_fk": {
+          "name": "seo_issues_audit_id_seo_audits_id_fk",
+          "tableFrom": "seo_issues",
+          "tableTo": "seo_audits",
           "columnsFrom": [
-            "server_id"
+            "audit_id"
           ],
           "columnsTo": [
             "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "seo_issues_severity_check": {
+          "name": "seo_issues_severity_check",
+          "value": "\"seo_issues\".\"severity\" IN ('error', 'warning', 'info')"
+        },
+        "seo_issues_status_check": {
+          "name": "seo_issues_status_check",
+          "value": "\"seo_issues\".\"status\" IN ('open', 'resolved', 'ignored')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.seo_settings": {
+      "name": "seo_settings",
+      "schema": "",
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.site_agent_runs": {
+      "name": "site_agent_runs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "agent_key": {
+          "name": "agent_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger": {
+          "name": "trigger",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'manual'"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'queued'"
+        },
+        "input": {
+          "name": "input",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "output": {
+          "name": "output",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "prompt_tokens": {
+          "name": "prompt_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "completion_tokens": {
+          "name": "completion_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "cost_micro": {
+          "name": "cost_micro",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "0"
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "events": {
+          "name": "events",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "job_id": {
+          "name": "job_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "requested_by": {
+          "name": "requested_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "finished_at": {
+          "name": "finished_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "site_agent_runs_agent_idx": {
+          "name": "site_agent_runs_agent_idx",
+          "columns": [
+            {
+              "expression": "agent_key",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "site_agent_runs_status_idx": {
+          "name": "site_agent_runs_status_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "site_agent_runs_agent_key_site_agents_key_fk": {
+          "name": "site_agent_runs_agent_key_site_agents_key_fk",
+          "tableFrom": "site_agent_runs",
+          "tableTo": "site_agents",
+          "columnsFrom": [
+            "agent_key"
+          ],
+          "columnsTo": [
+            "key"
           ],
           "onDelete": "restrict",
           "onUpdate": "no action"
@@ -3227,32 +3747,25 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {
-        "os_templates_state_check": {
-          "name": "os_templates_state_check",
-          "value": "\"os_templates\".\"state\" IN ('draft', 'ready', 'retired')"
+        "site_agent_runs_status_check": {
+          "name": "site_agent_runs_status_check",
+          "value": "\"site_agent_runs\".\"status\" IN ('queued', 'running', 'succeeded', 'failed', 'stopped', 'budget_exceeded')"
         },
-        "os_templates_vmid_range": {
-          "name": "os_templates_vmid_range",
-          "value": "\"os_templates\".\"vmid\" BETWEEN 100 AND 999999999"
+        "site_agent_runs_cost_nonneg": {
+          "name": "site_agent_runs_cost_nonneg",
+          "value": "\"site_agent_runs\".\"cost_micro\" >= 0"
         }
       },
       "isRLSEnabled": false
     },
-    "public.proxmox_servers": {
-      "name": "proxmox_servers",
+    "public.site_agents": {
+      "name": "site_agents",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "code": {
-          "name": "code",
+        "key": {
+          "name": "key",
           "type": "text",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true
         },
         "name": {
@@ -3261,425 +3774,92 @@
           "primaryKey": false,
           "notNull": true
         },
-        "host": {
-          "name": "host",
+        "mission": {
+          "name": "mission",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "port": {
-          "name": "port",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 8006
-        },
-        "node": {
-          "name": "node",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "region": {
-          "name": "region",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'quebec'"
-        },
-        "capacity": {
-          "name": "capacity",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ip_pool": {
-          "name": "ip_pool",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "token_ref": {
-          "name": "token_ref",
+        "model": {
+          "name": "model",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "tls_mode": {
-          "name": "tls_mode",
-          "type": "text",
+        "enabled": {
+          "name": "enabled",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "'verify'"
+          "default": false
         },
-        "tls_fingerprint": {
-          "name": "tls_fingerprint",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "storage": {
-          "name": "storage",
-          "type": "text",
+        "budget_micro": {
+          "name": "budget_micro",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true,
-          "default": "'local-lvm'"
-        },
-        "pool": {
-          "name": "pool",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "vmid_min": {
-          "name": "vmid_min",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 10000
+          "default": "0"
         },
         "state": {
           "name": "state",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'draft'"
+          "default": "'disabled'"
         },
-        "last_checked_at": {
-          "name": "last_checked_at",
+        "last_run_at": {
+          "name": "last_run_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
-        "last_check_ok": {
-          "name": "last_check_ok",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_check_detail": {
-          "name": "last_check_detail",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "pve_version": {
-          "name": "pve_version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
+        "prompt_tokens_total": {
+          "name": "prompt_tokens_total",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": 0
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
+        "completion_tokens_total": {
+          "name": "completion_tokens_total",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "proxmox_servers_code_unique": {
-          "name": "proxmox_servers_code_unique",
-          "columns": [
-            {
-              "expression": "code",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "proxmox_servers_state_check": {
-          "name": "proxmox_servers_state_check",
-          "value": "\"proxmox_servers\".\"state\" IN ('draft', 'ready', 'maintenance', 'offline')"
+          "default": 0
         },
-        "proxmox_servers_tls_check": {
-          "name": "proxmox_servers_tls_check",
-          "value": "\"proxmox_servers\".\"tls_mode\" IN ('verify', 'pinned') AND (\"proxmox_servers\".\"tls_mode\" <> 'pinned' OR \"proxmox_servers\".\"tls_fingerprint\" IS NOT NULL)"
-        },
-        "proxmox_servers_region_check": {
-          "name": "proxmox_servers_region_check",
-          "value": "\"proxmox_servers\".\"region\" IN ('quebec', 'canada', 'etats_unis', 'europe', 'autre')"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.vps_apps": {
-      "name": "vps_apps",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "text",
+        "cost_total_micro": {
+          "name": "cost_total_micro",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true,
-          "default": "'installable'"
+          "default": "0"
         },
-        "tagline_fr": {
-          "name": "tagline_fr",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "tagline_en": {
-          "name": "tagline_en",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "description_fr": {
-          "name": "description_fr",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "description_en": {
-          "name": "description_en",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "version": {
-          "name": "version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "upstream_url": {
-          "name": "upstream_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "license": {
-          "name": "license",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "license_url": {
-          "name": "license_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "license_warning_fr": {
-          "name": "license_warning_fr",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "license_warning_en": {
-          "name": "license_warning_en",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "guide_fr": {
-          "name": "guide_fr",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "guide_en": {
-          "name": "guide_en",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "install_script_version": {
-          "name": "install_script_version",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "install_script": {
-          "name": "install_script",
+        "last_error": {
+          "name": "last_error",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "install_script_sha256": {
-          "name": "install_script_sha256",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ports": {
-          "name": "ports",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'[]'::jsonb"
-        },
-        "min_ram_mb": {
-          "name": "min_ram_mb",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1024
-        },
-        "sort": {
-          "name": "sort",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 100
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'draft'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "vps_apps_code_unique": {
-          "name": "vps_apps_code_unique",
-          "columns": [
-            {
-              "expression": "code",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "vps_apps_status_check": {
-          "name": "vps_apps_status_check",
-          "value": "\"vps_apps\".\"status\" IN ('draft', 'approved', 'published', 'retired')"
-        },
-        "vps_apps_kind_check": {
-          "name": "vps_apps_kind_check",
-          "value": "\"vps_apps\".\"kind\" IN ('installable', 'guide')"
-        },
-        "vps_apps_script_check": {
-          "name": "vps_apps_script_check",
-          "value": "(\n        (\"vps_apps\".\"kind\" = 'installable' AND \"vps_apps\".\"install_script\" IS NOT NULL\n          AND \"vps_apps\".\"install_script_sha256\" = encode(sha256(convert_to(\"vps_apps\".\"install_script\", 'UTF8')), 'hex'))\n        OR (\"vps_apps\".\"kind\" = 'guide' AND \"vps_apps\".\"install_script\" IS NULL AND \"vps_apps\".\"install_script_sha256\" IS NULL)\n      )"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.vps_events": {
-      "name": "vps_events",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "organization_id": {
-          "name": "organization_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "order_id": {
-          "name": "order_id",
+        "gateway_key_id": {
+          "name": "gateway_key_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "instance_id": {
-          "name": "instance_id",
-          "type": "uuid",
+        "gateway_key_ref": {
+          "name": "gateway_key_ref",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "actor": {
-          "name": "actor",
+        "directus_token_ref": {
+          "name": "directus_token_ref",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "kind": {
-          "name": "kind",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "message": {
-          "name": "message",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "detail": {
-          "name": "detail",
+        "config": {
+          "name": "config",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true,
@@ -3691,62 +3871,71 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "site_agents_state_check": {
+          "name": "site_agents_state_check",
+          "value": "\"site_agents\".\"state\" IN ('idle', 'running', 'error', 'budget_exceeded', 'disabled')"
+        },
+        "site_agents_budget_nonneg": {
+          "name": "site_agents_budget_nonneg",
+          "value": "\"site_agents\".\"budget_micro\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.sitemap_snapshots": {
+      "name": "sitemap_snapshots",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "taken_at": {
+          "name": "taken_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "urls": {
+          "name": "urls",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "url_count": {
+          "name": "url_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {
-        "vps_events_instance_idx": {
-          "name": "vps_events_instance_idx",
+        "sitemap_snapshots_taken_idx": {
+          "name": "sitemap_snapshots_taken_idx",
           "columns": [
             {
-              "expression": "instance_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_events_order_idx": {
-          "name": "vps_events_order_idx",
-          "columns": [
-            {
-              "expression": "order_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_events_org_idx": {
-          "name": "vps_events_org_idx",
-          "columns": [
-            {
-              "expression": "organization_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
+              "expression": "taken_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -3763,845 +3952,6 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.vps_instances": {
-      "name": "vps_instances",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "organization_id": {
-          "name": "organization_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "vcpu": {
-          "name": "vcpu",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ram_mb": {
-          "name": "ram_mb",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "disk_gb": {
-          "name": "disk_gb",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "plan_code": {
-          "name": "plan_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "app_code": {
-          "name": "app_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "app_version": {
-          "name": "app_version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "catalog_version_id": {
-          "name": "catalog_version_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "server_id": {
-          "name": "server_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "vmid": {
-          "name": "vmid",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ipv4": {
-          "name": "ipv4",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "vm_name": {
-          "name": "vm_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'provisioning'"
-        },
-        "step": {
-          "name": "step",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'placement'"
-        },
-        "power": {
-          "name": "power",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'unknown'"
-        },
-        "run_seq": {
-          "name": "run_seq",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "lease_owner": {
-          "name": "lease_owner",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "lease_until": {
-          "name": "lease_until",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "pending_action": {
-          "name": "pending_action",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "install_script_sha256": {
-          "name": "install_script_sha256",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ssh_host_key_fingerprint": {
-          "name": "ssh_host_key_fingerprint",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_snapshot_name": {
-          "name": "last_snapshot_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_error": {
-          "name": "last_error",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "activated_at": {
-          "name": "activated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "suspended_at": {
-          "name": "suspended_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "canceled_at": {
-          "name": "canceled_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "retention_ends_at": {
-          "name": "retention_ends_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "vps_instances_order_unique": {
-          "name": "vps_instances_order_unique",
-          "columns": [
-            {
-              "expression": "order_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_instances_server_vmid_unique": {
-          "name": "vps_instances_server_vmid_unique",
-          "columns": [
-            {
-              "expression": "server_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "vmid",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"vps_instances\".\"vmid\" IS NOT NULL AND \"vps_instances\".\"deleted_at\" IS NULL",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_instances_server_ip_unique": {
-          "name": "vps_instances_server_ip_unique",
-          "columns": [
-            {
-              "expression": "server_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "ipv4",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"vps_instances\".\"ipv4\" IS NOT NULL AND \"vps_instances\".\"deleted_at\" IS NULL",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_instances_org_idx": {
-          "name": "vps_instances_org_idx",
-          "columns": [
-            {
-              "expression": "organization_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_instances_status_idx": {
-          "name": "vps_instances_status_idx",
-          "columns": [
-            {
-              "expression": "status",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "updated_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "vps_instances_order_id_vps_orders_id_fk": {
-          "name": "vps_instances_order_id_vps_orders_id_fk",
-          "tableFrom": "vps_instances",
-          "tableTo": "vps_orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "vps_instances_organization_id_organizations_id_fk": {
-          "name": "vps_instances_organization_id_organizations_id_fk",
-          "tableFrom": "vps_instances",
-          "tableTo": "organizations",
-          "columnsFrom": [
-            "organization_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "vps_instances_server_id_proxmox_servers_id_fk": {
-          "name": "vps_instances_server_id_proxmox_servers_id_fk",
-          "tableFrom": "vps_instances",
-          "tableTo": "proxmox_servers",
-          "columnsFrom": [
-            "server_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "vps_instances_status_check": {
-          "name": "vps_instances_status_check",
-          "value": "\"vps_instances\".\"status\" IN ('provisioning', 'active', 'suspended', 'reinstalling', 'canceled', 'failed', 'deleted')"
-        },
-        "vps_instances_step_check": {
-          "name": "vps_instances_step_check",
-          "value": "\"vps_instances\".\"step\" IN ('placement', 'snapshot', 'clone', 'configure', 'firewall', 'start', 'await_agent', 'install', 'verify', 'done')"
-        },
-        "vps_instances_power_check": {
-          "name": "vps_instances_power_check",
-          "value": "\"vps_instances\".\"power\" IN ('unknown', 'running', 'stopped')"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.vps_orders": {
-      "name": "vps_orders",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "organization_id": {
-          "name": "organization_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_by": {
-          "name": "created_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "idempotency_key": {
-          "name": "idempotency_key",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "plan_id": {
-          "name": "plan_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "plan_code": {
-          "name": "plan_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "app_id": {
-          "name": "app_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "app_code": {
-          "name": "app_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "term": {
-          "name": "term",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "region": {
-          "name": "region",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "price_cents": {
-          "name": "price_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "currency": {
-          "name": "currency",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'cad'"
-        },
-        "catalog_version_id": {
-          "name": "catalog_version_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "catalog_version": {
-          "name": "catalog_version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ssh_public_key": {
-          "name": "ssh_public_key",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ssh_key_fingerprint": {
-          "name": "ssh_key_fingerprint",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "hostname": {
-          "name": "hostname",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'awaiting_payment'"
-        },
-        "stripe_checkout_session_id": {
-          "name": "stripe_checkout_session_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "stripe_subscription_id": {
-          "name": "stripe_subscription_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "paid_at": {
-          "name": "paid_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "failure_reason": {
-          "name": "failure_reason",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "vps_orders_idempotency_unique": {
-          "name": "vps_orders_idempotency_unique",
-          "columns": [
-            {
-              "expression": "idempotency_key",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_orders_subscription_unique": {
-          "name": "vps_orders_subscription_unique",
-          "columns": [
-            {
-              "expression": "stripe_subscription_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"vps_orders\".\"stripe_subscription_id\" IS NOT NULL",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_orders_session_unique": {
-          "name": "vps_orders_session_unique",
-          "columns": [
-            {
-              "expression": "stripe_checkout_session_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"vps_orders\".\"stripe_checkout_session_id\" IS NOT NULL",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "vps_orders_org_idx": {
-          "name": "vps_orders_org_idx",
-          "columns": [
-            {
-              "expression": "organization_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "vps_orders_organization_id_organizations_id_fk": {
-          "name": "vps_orders_organization_id_organizations_id_fk",
-          "tableFrom": "vps_orders",
-          "tableTo": "organizations",
-          "columnsFrom": [
-            "organization_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "vps_orders_plan_id_vps_plans_id_fk": {
-          "name": "vps_orders_plan_id_vps_plans_id_fk",
-          "tableFrom": "vps_orders",
-          "tableTo": "vps_plans",
-          "columnsFrom": [
-            "plan_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "vps_orders_app_id_vps_apps_id_fk": {
-          "name": "vps_orders_app_id_vps_apps_id_fk",
-          "tableFrom": "vps_orders",
-          "tableTo": "vps_apps",
-          "columnsFrom": [
-            "app_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "vps_orders_status_check": {
-          "name": "vps_orders_status_check",
-          "value": "\"vps_orders\".\"status\" IN ('awaiting_payment', 'paid', 'provisioning', 'fulfilled', 'failed', 'canceled', 'expired')"
-        },
-        "vps_orders_term_check": {
-          "name": "vps_orders_term_check",
-          "value": "\"vps_orders\".\"term\" IN ('month', 'year')"
-        },
-        "vps_orders_price_pos": {
-          "name": "vps_orders_price_pos",
-          "value": "\"vps_orders\".\"price_cents\" > 0"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.vps_plans": {
-      "name": "vps_plans",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description_fr": {
-          "name": "description_fr",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "description_en": {
-          "name": "description_en",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "vcpu": {
-          "name": "vcpu",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ram_mb": {
-          "name": "ram_mb",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "disk_gb": {
-          "name": "disk_gb",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "bandwidth_gb": {
-          "name": "bandwidth_gb",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "region": {
-          "name": "region",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'quebec'"
-        },
-        "price_monthly_cents": {
-          "name": "price_monthly_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "price_yearly_cents": {
-          "name": "price_yearly_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "highlighted": {
-          "name": "highlighted",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "stripe_product_id": {
-          "name": "stripe_product_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "stripe_price_monthly_id": {
-          "name": "stripe_price_monthly_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "stripe_price_yearly_id": {
-          "name": "stripe_price_yearly_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "template_code": {
-          "name": "template_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "sort": {
-          "name": "sort",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 100
-        },
-        "is_dev_sample": {
-          "name": "is_dev_sample",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'draft'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "vps_plans_code_unique": {
-          "name": "vps_plans_code_unique",
-          "columns": [
-            {
-              "expression": "code",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "vps_plans_status_check": {
-          "name": "vps_plans_status_check",
-          "value": "\"vps_plans\".\"status\" IN ('draft', 'approved', 'published', 'retired')"
-        },
-        "vps_plans_region_check": {
-          "name": "vps_plans_region_check",
-          "value": "\"vps_plans\".\"region\" IN ('quebec', 'canada', 'etats_unis', 'europe', 'autre')"
-        },
-        "vps_plans_size_pos": {
-          "name": "vps_plans_size_pos",
-          "value": "\"vps_plans\".\"vcpu\" > 0 AND \"vps_plans\".\"ram_mb\" > 0 AND \"vps_plans\".\"disk_gb\" > 0 AND \"vps_plans\".\"bandwidth_gb\" >= 0"
-        },
-        "vps_plans_price_pos": {
-          "name": "vps_plans_price_pos",
-          "value": "(\"vps_plans\".\"price_monthly_cents\" IS NULL OR \"vps_plans\".\"price_monthly_cents\" > 0) AND (\"vps_plans\".\"price_yearly_cents\" IS NULL OR \"vps_plans\".\"price_yearly_cents\" > 0)"
-        }
-      },
       "isRLSEnabled": false
     }
   },

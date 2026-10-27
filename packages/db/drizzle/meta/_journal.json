@@ -47,15 +47,15 @@
     {
       "idx": 6,
       "version": "7",
-      "when": 1793075197296,
-      "tag": "0006_s6_vps",
+      "when": 1793074774423,
+      "tag": "0006_s8_autogestion",
       "breakpoints": true
     },
     {
       "idx": 7,
       "version": "7",
-      "when": 1793075784119,
-      "tag": "0007_s6_vps_reinstall",
+      "when": 1793078431763,
+      "tag": "0007_s6_vps",
       "breakpoints": true
     }
   ]

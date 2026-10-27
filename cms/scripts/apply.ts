@@ -245,6 +245,8 @@ async function applySettings(d: Directus) {
   // Modules maison (D14) : catalogues de l'app administrés depuis Directus, insérés avant Réglages.
   const extensionModules = [
     { type: "module", id: "nexora-models", enabled: true },
+    { type: "module", id: "nexora-agents", enabled: true },
+    { type: "module", id: "nexora-seo", enabled: true },
     vault,
   ];
   const missing = extensionModules.filter(

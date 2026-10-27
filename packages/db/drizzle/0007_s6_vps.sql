@@ -115,6 +115,8 @@ CREATE TABLE "vps_instances" (
 	"install_script_sha256" text,
 	"ssh_host_key_fingerprint" text,
 	"last_snapshot_name" text,
+	"previous_vmid" integer,
+	"previous_delete_after" timestamp with time zone,
 	"last_error" text,
 	"activated_at" timestamp with time zone,
 	"suspended_at" timestamp with time zone,

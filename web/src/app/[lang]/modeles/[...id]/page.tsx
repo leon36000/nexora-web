@@ -5,6 +5,7 @@ import { lang as getLang } from "next/root-params";
 import { CodeSamples } from "@/components/gateway/code-samples";
 import { activeCapabilities } from "@/components/gateway/model-card";
 import { ResidencyBadge } from "@/components/gateway/residency-badge";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -17,6 +18,8 @@ import {
 } from "@/i18n/gateway";
 import { apiSamples } from "@/lib/api-samples";
 import { buildPageMetadata } from "@/lib/metadata";
+import { appBreadcrumb } from "@/lib/seo/app-jsonld";
+import { type PriceOffer, productJsonLd } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
 import { getPublicCatalog } from "@/server/gateway/read";
 
@@ -80,6 +83,32 @@ export default async function ModelPage(
       <dd className="text-small text-fg-muted">{c.unit}</dd>
     </div>
   );
+
+  // Données structurées : exactement ce que la fiche affiche. Un prix de développement n'est pas une offre.
+  const unit = (label: string, value: string): PriceOffer => ({
+    name: label,
+    price: value,
+    currency: "CAD",
+    unitText: c.unit,
+  });
+  const productInput = {
+    name: model.name,
+    description: description || null,
+    url: `${SITE_URL}${localizePath(lang, `/modeles/${model.id}`)}`,
+    sku: model.id,
+    brand: null,
+    offers: model.note
+      ? []
+      : [
+          unit(c.input, model.inputPerMillion),
+          ...(model.kind === "chat"
+            ? [unit(c.output, model.outputPerMillion)]
+            : []),
+          ...(model.cachePerMillion
+            ? [unit(c.cachedInput, model.cachePerMillion)]
+            : []),
+        ],
+  };
 
   return (
     <Section tone="light" aria-labelledby="model-title">
@@ -219,6 +248,16 @@ export default async function ModelPage(
           </ButtonLink>
         </div>
       </section>
+      <JsonLd data={productJsonLd(productInput)} />
+      <JsonLd
+        data={appBreadcrumb(lang, [
+          {
+            name: t.meta.models.title.replace(/ \| Nexora$/, ""),
+            path: "/modeles",
+          },
+          { name: model.name, path: `/modeles/${model.id}` },
+        ])}
+      />
     </Section>
   );
 }

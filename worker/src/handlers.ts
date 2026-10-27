@@ -1,7 +1,13 @@
 import type { Database } from "@nexora/db";
+import type { Logger } from "@nexora/log";
 import type { EngineDeps } from "@nexora/vps";
+import {
+  createSiteAgentRunHandler,
+  productionRunnerDeps,
+} from "./agents/index.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { HandlerRegistry } from "./registry.ts";
+import { registerSeoHandlers } from "./seo/handlers.ts";
 import { registerVpsHandlers } from "./vps-handlers.ts";
 
 /**
@@ -10,7 +16,7 @@ import { registerVpsHandlers } from "./vps-handlers.ts";
  * seulement si le moteur est configuré (clé maîtresse du coffre).
  */
 export function defaultRegistry(
-  deps: { db?: Database; vps?: EngineDeps | null } = {},
+  deps: { db?: Database; log?: Logger; vps?: EngineDeps | null } = {},
 ): HandlerRegistry {
   const registry = new HandlerRegistry().register(
     "system.ping",
@@ -29,5 +35,12 @@ export function defaultRegistry(
       alertTo: process.env.VPS_ALERT_TO ?? process.env.CONTACT_NOTIFY_TO,
       alertFrom: process.env.SMTP_FROM,
     });
+  if (deps.db && deps.log)
+    registry.register(
+      "site-agent.run",
+      createSiteAgentRunHandler(productionRunnerDeps(deps.db, deps.log)),
+    );
+  if (deps.db && deps.log)
+    registerSeoHandlers(registry, { db: deps.db, log: deps.log });
   return registry;
 }

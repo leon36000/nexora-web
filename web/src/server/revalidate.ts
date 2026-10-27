@@ -57,6 +57,8 @@ export interface RevalidateDeps {
   revalidateTag: (tag: string, profile: { expire: number }) => void;
   revalidatePath: (path: string) => void;
   log: Logger;
+  /** Suites d'une publication (indexation, traduction) : n'échoue jamais la revalidation. */
+  afterPublished?: (body: RevalidateBody) => Promise<void>;
 }
 
 const NO_STORE = { "cache-control": "no-store" };
@@ -109,5 +111,10 @@ export async function handleRevalidate(
     tags: plan.tags.length,
     paths: plan.paths.length,
   });
+  try {
+    await deps.afterPublished?.(parsed.data);
+  } catch (error) {
+    deps.log.warn("revalidation : suites de publication en échec", { error });
+  }
   return json({ revalidated: true, ...plan });
 }

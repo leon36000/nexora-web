@@ -177,4 +177,5 @@ export * from "./schema-auth.ts";
 export * from "./schema-billing.ts";
 export * from "./schema-gateway.ts";
 export * from "./schema-leads.ts";
+export * from "./schema-site.ts";
 export * from "./schema-vps.ts";

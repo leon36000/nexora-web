@@ -17,6 +17,7 @@
   "dependencies": {
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
+    "@nexora/seo": "workspace:*",
     "@nexora/vault": "workspace:*",
     "@nexora/vps": "workspace:*",
     "altcha": "^3.5.0",
@@ -27,6 +28,7 @@
     "nodemailer": "10.2.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "schema-dts": "^2.1.0",
     "stripe": "23.0.1",
     "zod": "^4"
   },

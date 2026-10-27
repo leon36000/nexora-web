@@ -36,5 +36,13 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Contrôle orchestrateur : 704 tests verts, clé maîtresse lue en un seul point serveur, aucun secret ; module ajouté à la barre Directus par `apply.ts`.
 - À faire : bascule multi-fournisseurs, libération des réservations perdues par le worker, rapprochement périodique LiteLLM ↔ grand livre, entrée « Modèles » dans la navigation.
 
+## S8 Autogestion IA et SEO — terminé le 27/10/2026
+- Livré : SEO technique natif (sitemap multilingue, robots, JSON-LD, Open Graph, llms.txt, IndexNow) ; audits planifiés (structure, lychee, axe, Lighthouse) ; agents du site (Rédacteur, Traducteur, SEO, Veille, Santé) débités au grand livre par la passerelle, écriture par `create_draft` seulement ; modules Directus « Agents du site » et « SEO » ; paquets `@nexora/seo` et `@nexora/vault`.
+- Preuves : brouillon réel par le Rédacteur (coût = règlement du grand livre), test d'injection (rien publié, rien supprimé, 0 secret), arrêt sur budget, audit nocturne (0 violation axe, Lighthouse 94–98).
+- Contrôle orchestrateur : 883 tests verts ; client Directus des agents à liste fermée (ni PATCH, ni DELETE, ni promote) ; la garde force « en attente » sur toute approbation créée par un non-administrateur.
+- Ruling : diff `s8-cms-agents` repris pour les droits (`id` à la création d'approbation, `create` sur `pages` et `pages_translations` pour le Rédacteur seul), SANS les comptes de service dans `apply.ts` — `apply.ts` régénérerait des jetons hors du Coffre et rendrait périmés ceux déjà déposés ; les comptes restent créés par l'opérateur (script de développement, ou Directus puis Coffre en production). Coût si faux : une étape manuelle de plus au déploiement.
+- Écart connu : 313 liens internes cassés vers des pages pas encore publiées (attendu avant S3 contenu).
+- À faire : agent Diffusion (Postiz), maillage interne par embeddings, Umami, écritures réelles Search Console/DataForSEO (clés du fondateur) ; décision d'affaires sur le blocage des robots d'entraînement (bloqués par défaut).
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.

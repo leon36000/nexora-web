@@ -6,6 +6,7 @@ import {
   localizePath,
   OG_LOCALE,
 } from "@/i18n/config";
+import { ogImage } from "./seo/og";
 import { SITE_URL } from "./site";
 
 type PageMetadataInput = {
@@ -48,7 +49,13 @@ export function buildPageMetadata({
       url: localizePath(lang, path),
       locale: OG_LOCALE[lang],
       alternateLocale: LANGS.filter((l) => l !== lang).map((l) => OG_LOCALE[l]),
+      images: [ogImage(lang, path, title)],
     },
-    twitter: { card: "summary", title, description },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage(lang, path, title).url],
+    },
   };
 }
