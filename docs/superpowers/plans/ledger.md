@@ -52,11 +52,14 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Non vérifié : aucun vrai Proxmox ni vraie VM (test de contrat prêt, `PROXMOX_CONTRACT_URL`) ; pas de TLS ni domaine par VPS (applications en 127.0.0.1, tunnel SSH) ; commande sans application impossible alors que les guides n8n/Open WebUI/Dify l'évoquent (renvoi au contact).
 - Ruling (S6) : plans « [DEV] » commandables en développement, badge visible — à désactiver avant publication.
 
-## S7 Agents hébergés — livré le 27/10/2026 (en attente de fusion)
+## S7 Agents hébergés — terminé le 27/10/2026
 - Livré : migration `0008_s7_agents_heberges` (instances WorkStudio, agents, prix immuables, réglage de la bulle, `usage_events.run_fee_micro`) ; `agent/<slug>` dans `/v1/chat/completions` et `/v1/models` (réservation plafonnée par exécution, règlement exact, repli sans usage, 402, 401, 404, 503 propre) ; découverte `GET /v1/models` de WorkStudio (brouillons seulement) ; `/agents` et fiches fr/en ; consommation par agent dans `/compte` ; module Directus « Agents hébergés » ; bulle `/embed.js` administrable avec CSP limitée à l'origine configurée.
 - Preuves : `docs/captures/s7/` (appels réels GLM 5.3 via WorkStudio, flux et non-flux, débit = règlement ; axe 0 ; bulle sans erreur de CSP).
 - Correctif S5 au passage : un paquet SSE entièrement masqué (usage non demandé) laissait la lecture en attente.
-- Non fait : vue du module dans un Directus connecté ; prix réels ; rapprochement avec la consommation WorkStudio.
+- Non fait : prix réels ; rapprochement avec la consommation WorkStudio ; coût amont WorkStudio non suivi (pas de plancher de marge).
+- Contrôle orchestrateur : 1 290 tests verts ; CSP posée seulement sur les pages de la bulle (cache 10 s, aucune en cas d'erreur) ; boucle SSE terminée à la fin de l'amont, règlement avant `[DONE]` ; migration 0008 appliquée sur `app` ; module « Agents hébergés » ouvert dans le vrai Directus (données réelles par le relais).
+- Rulings (S7) : réservation plafonnée à `run_token_cap` (32 000 jetons par défaut) — trop bas, Nexora absorbe le dépassement ; identifiant amont `agent:<nom>` faute d'identifiant de workflow dans `/v1/models` — renommer l'agent dans WorkStudio le casse tant que l'admin n'a pas saisi `agent:<id>` ; CSP avec `'unsafe-inline'` pour les scripts de Next sur les pages de la bulle.
+- À poser côté WorkStudio avant publication : `NEXORA_EMBED_ORIGINS=https://<domaine du site>` (vide aujourd'hui = toutes origines).
 
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
