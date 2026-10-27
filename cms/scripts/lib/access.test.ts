@@ -181,3 +181,21 @@ describe("schéma", () => {
     }
   });
 });
+
+describe("offres d'abonnement : ce que le public et le site lisent", () => {
+  const reads = (name: string) =>
+    byName(name).permissions.find(
+      (p) => p.collection === "subscription_plans" && p.action === "read",
+    );
+
+  test("le public et le lecteur du site lisent l'essai et la famille, jamais le prix suggéré", () => {
+    for (const name of [PUBLIC_POLICY_NAME, "Lecteur site"]) {
+      const fields = reads(name)?.fields as string[];
+      expect(fields, name).toEqual(
+        expect.arrayContaining(["family", "trial_days", "trial_card", "price_cents"]),
+      );
+      expect(fields, name).not.toContain("suggested_price_cents");
+      expect(fields, name).not.toContain("*");
+    }
+  });
+});

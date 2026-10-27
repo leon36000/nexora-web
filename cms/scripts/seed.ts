@@ -18,6 +18,7 @@ import {
   flattenNavigation,
   planNavigation,
 } from "./lib/navigation";
+import { DRAFT_PLANS } from "./lib/plans-seed";
 import { LANGS } from "./lib/schema";
 
 export const MESSAGE_DIRECTEUR = {
@@ -194,6 +195,26 @@ async function seedHome(d: Directus) {
   made(`page d'accueil fr-CA + en-CA (statut brouillon, bloc héros)`);
 }
 
+/**
+ * Offres WorkStudio en BROUILLON avec le prix suggéré (jamais publiées, jamais de prix décidé). Idempotent : une offre
+ * déjà présente (même code) n'est jamais modifiée, même si le fondateur a changé son prix, ses textes ou son statut.
+ */
+async function seedPlans(d: Directus) {
+  log("Offres d'abonnement (brouillons, prix suggérés)");
+  for (const plan of DRAFT_PLANS) {
+    const cur = await d.get<Entity>(
+      `/items/subscription_plans?filter[code][_eq]=${encodeURIComponent(plan.code)}&fields=id&limit=1`,
+      [403, 404],
+    );
+    if (cur && (Array.isArray(cur) ? cur.length : cur.id)) {
+      kept(plan.code);
+      continue;
+    }
+    await d.post("/items/subscription_plans", plan);
+    made(`${plan.code} (brouillon, prix suggéré ${plan.suggested_price_cents / 100} $)`);
+  }
+}
+
 async function main() {
   const url = process.env.DIRECTUS_URL ?? "http://localhost:8456";
   const env = parseEnvFile(envFilePath());
@@ -203,6 +224,7 @@ async function main() {
   await seedSettings(d);
   await seedNavigation(d);
   await seedHome(d);
+  await seedPlans(d);
   log(`Terminé : ${stats.created} créé(s), ${stats.kept} déjà présent(s)`);
 }
 

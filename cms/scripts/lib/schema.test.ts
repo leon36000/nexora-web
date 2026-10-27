@@ -110,11 +110,11 @@ describe("variantes de composition (S3)", () => {
 });
 
 describe("plans d'abonnement : identifiants Stripe", () => {
-  test("aucun automate n'écrit les identifiants Stripe dans Directus : ils ne sont pas en lecture seule pour l'administrateur", () => {
+  test("« Publier vers Stripe » (module Paiements) écrit les identifiants ; ils restent modifiables à la main en dépannage", () => {
     for (const f of ["stripe_product_id", "stripe_price_id"]) {
       const def = field("subscription_plans", f);
       expect(def.meta?.readonly ?? false).toBe(false);
-      expect(String(def.meta?.note)).toContain("publish-plan");
+      expect(String(def.meta?.note)).toContain("Publier vers Stripe");
     }
   });
 });
@@ -129,5 +129,28 @@ describe("navigation", () => {
     expect(field("navigation_translations", "description")).toBeDefined();
     // un parent qui n'ouvre qu'un menu n'a pas de lien
     expect(field("navigation_translations", "href").meta?.required).toBe(false);
+  });
+});
+
+describe("offres d'abonnement : essai, famille et prix suggéré (vague 2)", () => {
+  test("la famille regroupe les lignes mensuelle et annuelle d'une offre", () => {
+    expect(field("subscription_plans", "family").type).toBe("string");
+  });
+
+  test("l'essai gratuit : durée en jours (0 par défaut) et carte exigée selon le réglage général ou l'offre", () => {
+    expect(field("subscription_plans", "trial_days").schema?.default_value).toBe(0);
+    const card = field("subscription_plans", "trial_card");
+    expect(choices(card)).toEqual(["default", "required", "not_required"]);
+    expect(card.schema?.default_value).toBe("default");
+  });
+
+  test("le prix suggéré est un champ distinct du prix, jamais obligatoire", () => {
+    const suggested = field("subscription_plans", "suggested_price_cents");
+    expect(suggested.type).toBe("integer");
+    expect(suggested.meta?.required).toBeFalsy();
+  });
+
+  test("le prix peut rester vide en brouillon : la publication sans prix est bloquée par le site (jamais à 0 $)", () => {
+    expect(field("subscription_plans", "price_cents").meta?.required).toBeFalsy();
   });
 });
