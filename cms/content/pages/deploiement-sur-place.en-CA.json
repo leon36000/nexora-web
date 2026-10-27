@@ -168,7 +168,7 @@
         "items": [
           {
             "question": "Does my data stay with me?",
-            "answer": "Documents, the index and conversations stay on your server. The only outbound flows are those we list together: updates, licences, and an external model if you choose one."
+            "answer": "By default, documents, the index and conversations stay on your server. Outbound flows are those we list with you before go-live: updates, licences and, if you choose it, an external model."
           },
           {
             "question": "Does Nexora access my server?",

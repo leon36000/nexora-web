@@ -7,7 +7,7 @@
 - Page : `solutions` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/` · slug : `solutions`
 - Titre SEO (43 caractères) : AI solutions for small businesses in Quebec
-- Description SEO (157 caractères) : Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting and documents. Your team always keeps the decision.
+- Description SEO (150 caractères) : Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting and documents. Your team keeps the decision.
 
 ## Contenu
 
@@ -49,7 +49,7 @@ One supplier sends a PDF, another a photo. The system reads the documents, flags
 
 #### Customers who wait.
 
-The same questions keep coming. An agent answers from your documents, cites its sources and hands over to a person when it does not know.
+The same questions keep coming. An agent answers from your documents, cites its sources and passes the request on to a person with a summary when it does not know.
 
 → [See customer service](/en/solutions/customer-service/)
 

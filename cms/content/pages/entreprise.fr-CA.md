@@ -52,7 +52,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=principes`
 
 Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvons pas prouver. Quand une capacité est en pilote ou prévue, nous l'écrivons.
 
-#### Le contrôle, toujours.
+#### Le contrôle, dans les flux que nous configurons.
 
 Dans les flux que nous configurons, toute action qui engage l'entreprise attend la validation d'une personne, sauf décision écrite contraire de votre part.
 
@@ -75,7 +75,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=verifier`
 Une entreprise se juge à ce qu'elle laisse vérifier. Voici où regarder.
 
 - **Un état pour chaque capacité.** Chaque produit et chaque département indique s'il est disponible, en pilote ou prévu, par exemple sur la page <a href="/opsys-ai/">OPSYS-AI</a>.
-- **Un registre de preuves.** Chaque affirmation de ce site est tenue dans un registre interne, avec sa preuve, sa source et sa version.
+- **Un registre de preuves.** Les affirmations sensibles de ce site sont tenues dans un registre interne, avec leur preuve, leur source et leur version.
 - **Des documents sur demande.** Le <a href="/centre-de-confiance/">centre de confiance</a> liste les documents que nous préparons et leur statut.
 
 ### Bloc 5 — Section (`block_section`)

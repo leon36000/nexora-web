@@ -7,7 +7,7 @@
     "slug": "suite",
     "title": "Suite logicielle",
     "seo_title": "Suite Nexora\u00a0: WorkStudio, Code, Corpus, Quanta",
-    "seo_description": "WorkStudio est disponible sur demande. Nexora Code, Nexora Corpus et les modèles Quanta et Helix\u00a0: leur vocation, et aucune disponibilité annoncée à ce stade.",
+    "seo_description": "Nexora WorkStudio\u00a0: démonstration sur demande, aucune offre en libre-service. Nexora Code, Nexora Corpus, Quanta et Helix\u00a0: leur vocation, sans date annoncée.",
     "canonical": null
   },
   "blocks": [
@@ -184,7 +184,7 @@
       },
       "translation": {
         "title": "Commençons par ce qui existe.",
-        "text": "WorkStudio est disponible sur demande, et OPSYS-AI couvre la construction avec un statut honnête par département.",
+        "text": "Nexora WorkStudio est présenté en démonstration sur demande\u00a0; aucune offre en libre-service n’est ouverte. OPSYS-AI couvre la construction avec un statut honnête par département.",
         "primary_label": "Discuter de mon projet",
         "primary_href": "/contact/",
         "secondary_label": "Découvrir OPSYS-AI",

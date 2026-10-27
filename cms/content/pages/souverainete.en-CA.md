@@ -6,7 +6,7 @@
 
 - Page : `souverainete` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/sovereignty/` · slug : `sovereignty`
-- Titre SEO (39 caractères) : Sovereign AI in Quebec: the four layers
+- Titre SEO (42 caractères) : AI sovereignty: the four layers of control
 - Description SEO (157 caractères) : AI is sovereign when you know where it runs, who can reach it and where your data goes. The four layers of control, the two modes and what we do not promise.
 
 ## Contenu

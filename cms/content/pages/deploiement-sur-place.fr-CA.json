@@ -168,7 +168,7 @@
         "items": [
           {
             "question": "Mes données restent-elles chez moi\u00a0?",
-            "answer": "Les documents, l'index et les conversations restent sur votre serveur. Les seuls flux sortants sont ceux que nous dressons ensemble\u00a0: mises à jour, licences, et un modèle externe si vous en choisissez un."
+            "answer": "Par défaut, les documents, l’index et les conversations restent sur votre serveur. Les flux sortants sont ceux que nous listons avec vous avant la mise en service\u00a0: mises à jour, licences et, si vous le choisissez, un modèle externe."
           },
           {
             "question": "Nexora accède-t-elle à mon serveur\u00a0?",

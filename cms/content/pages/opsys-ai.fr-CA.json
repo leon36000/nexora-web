@@ -161,7 +161,7 @@
           },
           {
             "title": "M6 — Matériel.",
-            "text": "Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.\nDisponible\u00a0: besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote\u00a0: bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu\u00a0: envoi de la commande au fournisseur. Ce département ne paie rien.",
+            "text": "Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.\nDisponible\u00a0: besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote\u00a0: bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu\u00a0: envoi de la commande au fournisseur. Ce département n’effectue aucun paiement.",
             "status": "pilote"
           },
           {
@@ -238,7 +238,7 @@
             "text": "Réel en interne\u00a0: une facture brouillon est préparée, avec la TPS et la TVQ calculées, à faire valider par votre comptable. Préparée, oui\u00a0; envoyée et accusée de réception, non."
           },
           {
-            "title": "10. Analyse et apprentissage.",
+            "title": "10. Analyse et suivi.",
             "text": "Réel\u00a0: vue exécutive, synthèse de direction, journal des décisions. Démonstration\u00a0: comparaison de l'estimé et du réel, sur données fictives."
           }
         ]

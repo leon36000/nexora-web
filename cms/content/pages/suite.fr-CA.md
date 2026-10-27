@@ -7,7 +7,7 @@
 - Page : `suite` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/suite/` · slug : `suite`
 - Titre SEO (47 caractères) : Suite Nexora : WorkStudio, Code, Corpus, Quanta
-- Description SEO (158 caractères) : WorkStudio est disponible sur demande. Nexora Code, Nexora Corpus et les modèles Quanta et Helix : leur vocation, et aucune disponibilité annoncée à ce stade.
+- Description SEO (158 caractères) : Nexora WorkStudio : démonstration sur demande, aucune offre en libre-service. Nexora Code, Nexora Corpus, Quanta et Helix : leur vocation, sans date annoncée.
 
 ## Contenu
 
@@ -143,6 +143,6 @@ Réglages : `tone=sombre`
 
 ## Commençons par ce qui existe.
 
-WorkStudio est disponible sur demande, et OPSYS-AI couvre la construction avec un statut honnête par département.
+Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n’est ouverte. OPSYS-AI couvre la construction avec un statut honnête par département.
 
 [Discuter de mon projet](/contact/) · [Découvrir OPSYS-AI](/opsys-ai/)

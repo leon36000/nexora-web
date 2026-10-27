@@ -99,7 +99,7 @@ Available: draft invoice after the job, accounts receivable, accounts payable en
 #### M6 — Materials.
 
 Links needs, availability, suppliers, orders, receipts and actual consumption.
-Available: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department pays nothing.
+Available: needs forecast from an accepted quote, reservations, gap between estimated and actual quantities. Pilot: approved draft purchase order, receipts, losses and breakage. Planned: sending the order to the supplier. This department makes no payments.
 
 #### M7 — Marketing.
 
@@ -142,7 +142,7 @@ Four states are never confused: prepared, approved, sent, acknowledged. Verifica
 - **7. Execution.** Real: job completion on the server side. Demonstration: the employee app, whose clock-in uses a fictitious location.
 - **8. Controlled close-out.** Real on the server side: the completed job waits for a review and the material gap is calculated in quantities. Target: the alert on the administrator's phone.
 - **9. Draft invoice.** Real, internally: a draft invoice is prepared, with GST and QST calculated, to be validated by your accountant. Prepared, yes; sent and acknowledged, no.
-- **10. Analysis and learning.** Real: executive view, management briefing, log of decisions. Demonstration: comparison of estimate and actual, on fictitious data.
+- **10. Analysis and tracking.** Real: executive view, management briefing, log of decisions. Demonstration: comparison of estimate and actual, on fictitious data.
 
 ### Bloc 6 — Section (`block_section`)
 

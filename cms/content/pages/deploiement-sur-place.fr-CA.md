@@ -127,7 +127,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Mes données restent-elles chez moi ?
 
-Les documents, l'index et les conversations restent sur votre serveur. Les seuls flux sortants sont ceux que nous dressons ensemble : mises à jour, licences, et un modèle externe si vous en choisissez un.
+Par défaut, les documents, l’index et les conversations restent sur votre serveur. Les flux sortants sont ceux que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous le choisissez, un modèle externe.
 
 #### Nexora accède-t-elle à mon serveur ?
 

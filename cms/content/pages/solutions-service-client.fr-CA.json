@@ -7,7 +7,7 @@
     "slug": "solutions/service-client",
     "title": "Service client",
     "seo_title": "Service client par IA pour PME au Québec",
-    "seo_description": "Un agent répond à vos clients à partir de vos documents, cite ses sources et passe la main à une personne quand il ne sait pas. Vous gardez la main.",
+    "seo_description": "Un agent répond à vos clients à partir de vos documents, cite ses sources et transmet la demande à une personne avec un résumé. Vous gardez la main.",
     "canonical": null
   },
   "blocks": [
@@ -80,7 +80,7 @@
             "text": "La réponse numérote ses sources, qu'un clic permet d'ouvrir. Un garde-fou peut vérifier que la réponse reste fidèle à vos documents avant qu'elle parte."
           },
           {
-            "title": "Il passe la main.",
+            "title": "Il transmet la demande.",
             "text": "S'il ne trouve rien, il propose un rappel par une personne et transmet la demande à l'équipe avec un résumé."
           }
         ]

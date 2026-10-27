@@ -99,7 +99,7 @@ Disponible : facture brouillon après les travaux, comptes à recevoir, comptes
 #### M6 — Matériel.
 
 Relie besoins, disponibilités, fournisseurs, commandes, réceptions et consommation réelle.
-Disponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département ne paie rien.
+Disponible : besoins prévus à partir d'une soumission acceptée, réservations, écart entre quantités estimées et réelles. En pilote : bon de commande brouillon approuvé, réceptions, pertes et bris. Prévu : envoi de la commande au fournisseur. Ce département n’effectue aucun paiement.
 
 #### M7 — Marketing.
 
@@ -142,7 +142,7 @@ Quatre états ne se confondent jamais : préparé, approuvé, envoyé, accusé 
 - **7. Exécution.** Réel : la fin de chantier côté serveur. Démonstration : l'application de l'employé, dont le pointage utilise une position fictive.
 - **8. Clôture contrôlée.** Réel côté serveur : le chantier terminé attend une revue et l'écart de matériel est calculé en quantités. Cible : l'alerte sur le téléphone de l'administrateur.
 - **9. Facture brouillon.** Réel en interne : une facture brouillon est préparée, avec la TPS et la TVQ calculées, à faire valider par votre comptable. Préparée, oui ; envoyée et accusée de réception, non.
-- **10. Analyse et apprentissage.** Réel : vue exécutive, synthèse de direction, journal des décisions. Démonstration : comparaison de l'estimé et du réel, sur données fictives.
+- **10. Analyse et suivi.** Réel : vue exécutive, synthèse de direction, journal des décisions. Démonstration : comparaison de l'estimé et du réel, sur données fictives.
 
 ### Bloc 6 — Section (`block_section`)
 

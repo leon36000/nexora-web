@@ -7,7 +7,7 @@
 - Page : `solutions-service-client` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/customer-service/` · slug : `solutions/customer-service`
 - Titre SEO (45 caractères) : AI customer service for Quebec small business
-- Description SEO (156 caractères) : An agent answers your customers from your own documents, cites its sources and hands over to a person when it does not know. You stay in control. Learn how.
+- Description SEO (160 caractères) : An agent answers your customers from your own documents, cites its sources and passes the request on to a person with a summary. You stay in control. Learn how.
 
 ## Contenu
 
@@ -59,7 +59,7 @@ For each question, it consults the document bases you opened to it: data sheets,
 
 The answer numbers its sources, which a click opens. A safeguard can check that the answer stays faithful to your documents before it goes out.
 
-#### It hands over.
+#### It passes the request on.
 
 If it finds nothing, it offers a callback by a person and passes the request to the team with a summary.
 

@@ -136,8 +136,8 @@
             "text": "The agent only consults the document bases you open to it. Access rights are set per base and per workspace, not document by document."
           },
           {
-            "title": "Your documents stay with you.",
-            "text": "By default, indexing is computed on the instance's own server and no document leaves it. An external service is a written choice."
+            "title": "Where your documents are indexed.",
+            "text": "By default, indexing runs on the instance’s server: on your premises, on your own server; hosted, in Nexora’s infrastructure in Quebec. An external service is a written choice."
           },
           {
             "title": "No legal advice.",
