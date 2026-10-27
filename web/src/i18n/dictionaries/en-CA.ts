@@ -154,7 +154,7 @@ export const enCA: Dictionary = {
 
   cms: {
     priceOnRequest: "On request",
-    toc: { label: "On this page", open: "Show contents" },
+    toc: { label: "On this page" },
     status: {
       disponible: "Available",
       pilote: "Pilot",

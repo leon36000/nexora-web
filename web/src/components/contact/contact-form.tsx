@@ -422,7 +422,7 @@ export function ContactForm({
               checked={values.marketingConsent}
               aria-describedby={id("consent-hint")}
               onChange={(e) => set("marketingConsent", e.target.checked)}
-              className="mt-1 size-5 shrink-0 accent-[var(--color-ember-600)]"
+              className="mt-0.5 size-6 shrink-0 accent-[var(--color-ember-600)]"
             />
             <div>
               <label
@@ -622,7 +622,7 @@ function RadioGroup({
               value={optionValue}
               checked={value === optionValue}
               onChange={() => onChange(optionValue)}
-              className="size-5 shrink-0 accent-[var(--color-ember-600)]"
+              className="size-6 shrink-0 accent-[var(--color-ember-600)]"
             />
             {label}
           </label>

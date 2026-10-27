@@ -6,7 +6,6 @@ import { cn } from "@/lib/cn";
 type Props = {
   entries: ReadonlyArray<{ id: string; label: string }>;
   label: string;
-  openLabel: string;
 };
 
 /**
@@ -15,7 +14,7 @@ type Props = {
  * - mobile : menu déroulant natif (<details>), refermé après le choix d'une rubrique.
  * Sans JavaScript, les liens d'ancre fonctionnent ; seule la mise en évidence de la section courante est perdue.
  */
-export function PageToc({ entries, label, openLabel }: Props) {
+export function PageToc({ entries, label }: Props) {
   const [active, setActive] = useState<string | null>(null);
   const details = useRef<HTMLDetailsElement>(null);
 
@@ -48,10 +47,7 @@ export function PageToc({ entries, label, openLabel }: Props) {
     <div className="theme-light sticky top-16 z-30 border-b border-line bg-bg/95 text-fg backdrop-blur-md">
       <nav aria-label={label} className="mx-auto w-full max-w-page px-gutter">
         <details ref={details} className="group md:hidden">
-          <summary
-            aria-label={openLabel}
-            className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 font-mono text-label uppercase text-fg [&::-webkit-details-marker]:hidden"
-          >
+          <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 font-mono text-label uppercase text-fg [&::-webkit-details-marker]:hidden">
             <span>{label}</span>
             <svg
               viewBox="0 0 12 12"

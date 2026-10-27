@@ -43,6 +43,15 @@ export function SiteHeader({
       alternates={alternates}
     />
   );
+  // un second repère de langue (menu mobile) porte un nom distinct : deux repères identiques gêneraient la navigation
+  const mobileSwitcher = (
+    <LanguageSwitcher
+      current={lang}
+      label={`${language.label}, ${a11y.mobileNav.toLowerCase()}`}
+      names={{ fr: language.fr, en: language.en }}
+      alternates={alternates}
+    />
+  );
   const linkClass =
     "inline-flex min-h-11 items-center rounded-xs px-3 text-[0.9375rem] text-fg-muted transition-colors duration-150 hover:text-fg";
 
@@ -104,7 +113,7 @@ export function SiteHeader({
             login={login}
             cta={cta}
             logo={<Logo tone="dark" />}
-            languageSwitcher={switcher}
+            languageSwitcher={mobileSwitcher}
           />
         </div>
       </div>

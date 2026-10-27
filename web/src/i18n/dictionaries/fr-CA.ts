@@ -158,7 +158,7 @@ export const frCA = {
 
   cms: {
     priceOnRequest: "Sur demande",
-    toc: { label: "Sur cette page", open: "Afficher le sommaire" },
+    toc: { label: "Sur cette page" },
     status: {
       disponible: "Disponible",
       pilote: "En pilote",

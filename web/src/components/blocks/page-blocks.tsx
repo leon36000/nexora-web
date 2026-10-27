@@ -34,12 +34,7 @@ export function PageBlocks({ lang, page }: { lang: Lang; page: PageModel }) {
   let heroSeen = false;
   const tocAfter = page.blocks[0]?.type === "hero" ? 0 : -1;
   const tocNode = toc ? (
-    <PageToc
-      key="toc"
-      entries={toc}
-      label={cms.toc.label}
-      openLabel={cms.toc.open}
-    />
+    <PageToc key="toc" entries={toc} label={cms.toc.label} />
   ) : null;
   return (
     <>

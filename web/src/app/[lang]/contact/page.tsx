@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
@@ -31,18 +30,7 @@ export default async function ContactPage() {
   if (!isLang(lang)) notFound();
   const t = getDictionary(lang).contact;
   return (
-    <Section
-      tone="light"
-      aria-labelledby="contact-title"
-      background={
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 hidden opacity-30 lg:block"
-        >
-          <PerimeterGrid shape="wide" animated={false} />
-        </div>
-      }
-    >
+    <Section tone="light" aria-labelledby="contact-title">
       <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
         <div>
           <Badge tone="accent">{t.label}</Badge>
