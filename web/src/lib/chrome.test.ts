@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { NavItem } from "@/server/cms/model";
 import { buildAlternates } from "./alternates";
-import { buildChrome, targetExists } from "./chrome";
+import { buildChrome, publishedPageHref, targetExists } from "./chrome";
 
 const item = (
   over: Partial<NavItem> & { id: string; label: string },
@@ -249,5 +249,38 @@ describe("liens vers des pages qui n'existent pas encore", () => {
       undefined,
     );
     expect(chrome.footer.legal).toHaveLength(1);
+  });
+});
+
+describe("publishedPageHref : lien vers une page éditoriale, jamais vers un 404", () => {
+  const published = buildAlternates([
+    { "fr-CA": "confidentialite", "en-CA": "privacy" },
+    { "fr-CA": "souverainete", "en-CA": "sovereignty" },
+  ]);
+
+  it("localise le lien d'une page publiée, avec le slug de la langue d'affichage", () => {
+    expect(publishedPageHref(published, "fr", "/confidentialite")).toBe(
+      "/confidentialite",
+    );
+    expect(publishedPageHref(published, "en", "/confidentialite")).toBe(
+      "/en/privacy",
+    );
+  });
+
+  it("renvoie null quand la page n'est pas publiée (brouillon) : le lien n'est pas affiché", () => {
+    expect(publishedPageHref(alt, "fr", "/confidentialite")).toBeNull();
+    expect(publishedPageHref(alt, "en", "/confidentialite")).toBeNull();
+  });
+
+  it("garde le lien quand Directus est muet sans instantané (on ne sait pas)", () => {
+    expect(
+      publishedPageHref(buildAlternates([]), "fr", "/confidentialite"),
+    ).toBe("/confidentialite");
+  });
+
+  it("une route de l'application passe", () => {
+    expect(publishedPageHref(alt, "en", "/contact", ["/contact"])).toBe(
+      "/en/contact",
+    );
   });
 });
