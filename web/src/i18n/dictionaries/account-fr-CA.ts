@@ -41,6 +41,8 @@ export const accountFrCA = {
         "Votre courriel n’est pas encore confirmé. Ouvrez le message que nous vous avons envoyé, ou demandez-en un nouveau.",
       rateLimited:
         "Trop de tentatives. Patientez une minute avant de réessayer.",
+      locked:
+        "Trop d’échecs de connexion pour cette adresse : accès suspendu quelques minutes. Réessayez plus tard, ou réinitialisez votre mot de passe.",
       generic: "La connexion a échoué. Réessayez dans un moment.",
     },
   },
@@ -52,13 +54,17 @@ export const accountFrCA = {
     company: "Nom de l’entreprise",
     companyHint:
       "Il nommera votre organisation. Sans entreprise, nous utiliserons votre nom.",
-    passwordHint: "10 caractères au moins.",
+    passwordHint: "12 caractères au moins.",
     submit: "Créer mon compte",
     haveAccount: "Déjà un compte ?",
     loginLink: "Se connecter",
     errors: {
       nameRequired: "Indiquez votre nom.",
-      weak: "Ce mot de passe est trop court : 10 caractères au moins.",
+      weak: "Ce mot de passe est trop court : 12 caractères au moins.",
+      common:
+        "Ce mot de passe est trop courant ou trop proche de vos informations. Choisissez une phrase de passe plus longue.",
+      breached:
+        "Ce mot de passe figure dans des fuites de données connues. Choisissez-en un autre.",
       invalidEmail: "Cette adresse courriel n’est pas valide.",
       rateLimited:
         "Trop de tentatives. Patientez une minute avant de réessayer.",
@@ -86,14 +92,18 @@ export const accountFrCA = {
 
   reset: {
     title: "Nouveau mot de passe.",
-    lead: "Choisissez un mot de passe d’au moins 10 caractères. Vos autres sessions seront fermées.",
+    lead: "Choisissez un mot de passe d’au moins 12 caractères. Vos autres sessions seront fermées.",
     password: "Nouveau mot de passe",
     submit: "Enregistrer le mot de passe",
     done: "Votre mot de passe est changé. Vous pouvez vous connecter.",
     goLogin: "Aller à la connexion",
     errors: {
       invalidToken: "Ce lien est invalide ou expiré. Demandez-en un nouveau.",
-      weak: "Ce mot de passe est trop court : 10 caractères au moins.",
+      weak: "Ce mot de passe est trop court : 12 caractères au moins.",
+      common:
+        "Ce mot de passe est trop courant. Choisissez une phrase de passe plus longue.",
+      breached:
+        "Ce mot de passe figure dans des fuites de données connues. Choisissez-en un autre.",
       generic: "Le changement a échoué. Réessayez dans un moment.",
     },
     askAgain: "Demander un nouveau lien",
@@ -139,6 +149,11 @@ export const accountFrCA = {
           "Le service de paiement ne répond pas. Réessayez dans un moment.",
         internal_error: "Une erreur est survenue. Réessayez dans un moment.",
         gift_cap_reached: "Le plafond mensuel de crédits offerts est atteint.",
+        gift_code_exhausted:
+          "Ce code a atteint son nombre maximal d’utilisations.",
+        gift_code_expired: "Ce code est expiré.",
+        gift_two_factor_required:
+          "Activez la double authentification de votre compte (page Sécurité) pour offrir un service.",
         gift_already_gifted: "Ce don existe déjà.",
       },
     },
@@ -255,6 +270,8 @@ export const accountFrCA = {
       exhausted: "Ce code promo a atteint son nombre maximal d’utilisations.",
       wrong_scope: "Ce code ne s’applique pas à ce type d’achat.",
       staff_only: "Ce code est réservé à l’équipe de Nexora.",
+      two_factor_required:
+        "Activez la double authentification de votre compte (page Sécurité) pour utiliser un code de l’équipe.",
       first_order_only: "Ce code est réservé à une première commande.",
       already_used: "Votre organisation a déjà utilisé ce code.",
       min_amount: "Ce code exige un montant d’achat plus élevé.",

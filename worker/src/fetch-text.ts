@@ -1,4 +1,4 @@
-import { checkOutboundUrl } from "@nexora/net";
+import { checkOutboundUrl, readLimitedBytes } from "@nexora/net";
 
 /**
  * Lecture d'un petit fichier texte public (fichier de sommes de contrôle publié par l'éditeur d'une
@@ -42,9 +42,9 @@ export async function fetchPublicText(
       continue;
     }
     if (!res.ok) throw new Error(`réponse ${res.status}`);
-    const text = await res.text();
-    if (text.length > MAX_BYTES) throw new Error("fichier trop volumineux");
-    return text;
+    const read = await readLimitedBytes(res, MAX_BYTES);
+    if (!read.ok) throw new Error("fichier trop volumineux");
+    return new TextDecoder().decode(read.bytes);
   }
   throw new Error("trop de redirections");
 }

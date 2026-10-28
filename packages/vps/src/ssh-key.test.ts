@@ -72,4 +72,145 @@ describe("clé publique SSH du client", () => {
       ok: false,
     });
   });
+
+  describe("longueurs et champs du blob (refus 400 plutôt qu'échec après paiement)", () => {
+    const part = (b: Buffer | string) => {
+      const buf = typeof b === "string" ? Buffer.from(b) : b;
+      const len = Buffer.alloc(4);
+      len.writeUInt32BE(buf.length);
+      return Buffer.concat([len, buf]);
+    };
+    const line = (type: string, ...fields: Array<Buffer | string>) =>
+      `${type} ${Buffer.concat([part(type), ...fields.map(part)]).toString("base64")}`;
+    const key32 = Buffer.alloc(32, 7);
+    const point = (bytes: number) =>
+      Buffer.concat([Buffer.from([4]), Buffer.alloc(bytes - 1, 9)]);
+
+    it("ed25519 : exactement 32 octets de clé, rien après", () => {
+      expect(parseSshPublicKey(line("ssh-ed25519", key32)).ok).toBe(true);
+      for (const bad of [
+        Buffer.alloc(0),
+        Buffer.alloc(31, 7),
+        Buffer.alloc(33, 7),
+        Buffer.alloc(64, 7),
+      ])
+        expect(
+          parseSshPublicKey(line("ssh-ed25519", bad)),
+          `${bad.length} octets`,
+        ).toMatchObject({ ok: false, reason: "invalid_format" });
+      // Octets en trop après le champ de clé.
+      expect(
+        parseSshPublicKey(line("ssh-ed25519", key32, "queue")),
+      ).toMatchObject({ ok: false, reason: "invalid_format" });
+    });
+
+    it.each([
+      ["nistp256", 65],
+      ["nistp384", 97],
+      ["nistp521", 133],
+    ])(
+      "ecdsa-sha2-%s : courbe cohérente, point non compressé de %i octets",
+      (curve, size) => {
+        const type = `ecdsa-sha2-${curve}`;
+        expect(parseSshPublicKey(line(type, curve, point(size))).ok).toBe(true);
+        // Courbe annoncée différente du type.
+        expect(
+          parseSshPublicKey(line(type, "nistp999", point(size))),
+        ).toMatchObject({ ok: false, reason: "invalid_format" });
+        // Point trop court / trop long / compressé.
+        expect(
+          parseSshPublicKey(line(type, curve, point(size - 1))),
+        ).toMatchObject({ ok: false, reason: "invalid_format" });
+        expect(
+          parseSshPublicKey(line(type, curve, point(size + 1))),
+        ).toMatchObject({ ok: false, reason: "invalid_format" });
+        const compressed = point(size);
+        compressed[0] = 2;
+        expect(parseSshPublicKey(line(type, curve, compressed))).toMatchObject({
+          ok: false,
+          reason: "invalid_format",
+        });
+        // Octets en trop.
+        expect(
+          parseSshPublicKey(line(type, curve, point(size), "x")),
+        ).toMatchObject({ ok: false, reason: "invalid_format" });
+      },
+    );
+
+    it("clés de sécurité (sk-…) : clé de la bonne taille et champ application", () => {
+      expect(
+        parseSshPublicKey(line("sk-ssh-ed25519@openssh.com", key32, "ssh:")).ok,
+      ).toBe(true);
+      expect(
+        parseSshPublicKey(
+          line("sk-ssh-ed25519@openssh.com", Buffer.alloc(5), "ssh:"),
+        ),
+      ).toMatchObject({ ok: false, reason: "invalid_format" });
+      expect(
+        parseSshPublicKey(line("sk-ssh-ed25519@openssh.com", key32)),
+      ).toMatchObject({ ok: false, reason: "invalid_format" });
+      expect(
+        parseSshPublicKey(
+          line(
+            "sk-ecdsa-sha2-nistp256@openssh.com",
+            "nistp256",
+            point(65),
+            "ssh:",
+          ),
+        ).ok,
+      ).toBe(true);
+      expect(
+        parseSshPublicKey(
+          line(
+            "sk-ecdsa-sha2-nistp256@openssh.com",
+            "nistp256",
+            point(10),
+            "ssh:",
+          ),
+        ),
+      ).toMatchObject({ ok: false, reason: "invalid_format" });
+    });
+
+    it("rsa : exposant impair et plausible, module impair non négatif, rien après", () => {
+      const n = (bits: number, last = 0xab) => {
+        const b = Buffer.concat([
+          Buffer.from([0]),
+          Buffer.alloc(bits / 8, 0xab),
+        ]);
+        b[b.length - 1] = last;
+        return b;
+      };
+      const e = Buffer.from([1, 0, 1]);
+      expect(parseSshPublicKey(line("ssh-rsa", e, n(2048))).ok).toBe(true);
+      expect(
+        parseSshPublicKey(line("ssh-rsa", e, n(2048, 0xaa))),
+      ).toMatchObject({
+        ok: false,
+        reason: "invalid_format",
+      }); // module pair
+      for (const badE of [
+        Buffer.alloc(0),
+        Buffer.from([0]),
+        Buffer.from([1]),
+        Buffer.from([2]),
+        Buffer.from([1, 0, 0]),
+        Buffer.alloc(40, 3),
+      ])
+        expect(
+          parseSshPublicKey(line("ssh-rsa", badE, n(2048))),
+          `e=${badE.toString("hex")}`,
+        ).toMatchObject({ ok: false, reason: "invalid_format" });
+      // Module « négatif » (bit de poids fort sans octet 0 devant).
+      expect(
+        parseSshPublicKey(line("ssh-rsa", e, Buffer.alloc(256, 0xab))),
+      ).toMatchObject({ ok: false, reason: "invalid_format" });
+      // Module démesuré.
+      expect(parseSshPublicKey(line("ssh-rsa", e, n(32768)))).toMatchObject({
+        ok: false,
+      });
+      expect(
+        parseSshPublicKey(line("ssh-rsa", e, n(2048), "queue")),
+      ).toMatchObject({ ok: false, reason: "invalid_format" });
+    });
+  });
 });

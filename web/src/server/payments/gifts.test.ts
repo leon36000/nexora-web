@@ -37,8 +37,18 @@ let promoId: string;
 beforeAll(async () => {
   t = await createTestDatabase();
   await t.db.insert(users).values([
-    { id: "u-staff", name: "Équipe", email: "equipe@example.com" },
-    { id: "u-client", name: "Client", email: "client@example.com" },
+    {
+      id: "u-staff",
+      name: "Équipe",
+      email: "equipe@example.com",
+      twoFactorEnabled: true,
+    },
+    {
+      id: "u-client",
+      name: "Client",
+      email: "client@example.com",
+      twoFactorEnabled: true,
+    },
   ]);
   await t.db
     .insert(organizations)
@@ -96,6 +106,31 @@ describe("drapeau « personnel »", () => {
     expect(actions).toEqual(
       expect.arrayContaining(["staff.grant", "staff.revoke"]),
     );
+  });
+});
+
+describe("double authentification obligatoire pour le personnel", () => {
+  it("un compte du personnel sans double authentification ne peut rien offrir (abonnement, crédits, VPS)", async () => {
+    await t.db.insert(users).values({
+      id: "u-staff-nofa",
+      name: "Sans 2FA",
+      email: "sans2fa@example.com",
+    });
+    await t.db
+      .insert(staffAccounts)
+      .values({ userId: "u-staff-nofa", grantedBy: "admin" });
+    await expect(
+      grantGiftSubscription(t.db, {
+        organizationId: "o-staff",
+        userId: "u-staff-nofa",
+        planCode: "workstudio-equipe",
+        promoCodeId: promoId,
+        now: NOW,
+      }),
+    ).rejects.toMatchObject({ code: "two_factor_required" });
+    await t.db
+      .delete(staffAccounts)
+      .where(eq(staffAccounts.userId, "u-staff-nofa"));
   });
 });
 
@@ -355,5 +390,64 @@ describe("liste des dons", () => {
     expect(list.every((g) => ["active", "revoked"].includes(g.status))).toBe(
       true,
     );
+  });
+});
+
+describe("dons simultanés (courses)", () => {
+  it("un code à une seule utilisation ne sert qu'une fois, même demandé cinq fois en parallèle", async () => {
+    const p = await createPromo(
+      t.db,
+      {
+        code: "UNE-SEULE",
+        kind: "staff",
+        scopes: ["subscriptions"],
+        maxRedemptions: 1,
+      },
+      "admin",
+    );
+    const orgs = [1, 2, 3, 4, 5].map((n) => `o-race-${n}`);
+    await t.db
+      .insert(organizations)
+      .values(orgs.map((id) => ({ id, name: id, slug: id })));
+    const results = await Promise.allSettled(
+      orgs.map((organizationId) =>
+        grantGiftSubscription(t.db, {
+          organizationId,
+          userId: "u-staff",
+          planCode: "workstudio-equipe",
+          promoCodeId: p.id,
+          now: NOW,
+        }),
+      ),
+    );
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const refused = results.filter((r) => r.status === "rejected");
+    expect(refused).toHaveLength(4);
+    expect((refused[0] as PromiseRejectedResult).reason).toMatchObject({
+      code: "code_exhausted",
+    });
+  });
+
+  it("deux dons identiques simultanés à la même organisation : un seul actif", async () => {
+    await t.db
+      .insert(organizations)
+      .values({ id: "o-dup", name: "Dup", slug: "o-dup" });
+    const results = await Promise.allSettled(
+      Array.from({ length: 5 }, () =>
+        grantGiftSubscription(t.db, {
+          organizationId: "o-dup",
+          userId: "u-staff",
+          planCode: "workstudio-equipe",
+          promoCodeId: null,
+          now: NOW,
+        }),
+      ),
+    );
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const active = await t.db
+      .select()
+      .from(giftGrants)
+      .where(eq(giftGrants.organizationId, "o-dup"));
+    expect(active.filter((g) => g.status === "active")).toHaveLength(1);
   });
 });

@@ -75,6 +75,34 @@ describe("pages, chat et couleur", () => {
   });
 });
 
+describe("pages interdites à la bulle", () => {
+  it("refuse l'espace client et les adresses techniques : un script tiers n'y entre jamais", () => {
+    for (const page of [
+      "/compte",
+      "/compte/securite",
+      "/compte/vps",
+      "/api/auth",
+      "/api",
+      "/v1",
+      "/admin",
+      "/_next/static",
+      "/og",
+      "/COMPTE",
+    ])
+      expect(normalizeEmbedPage(page), page).toBeNull();
+    expect(normalizeEmbedPage("/agents")).toBe("/agents");
+    expect(normalizeEmbedPage("/comptes-rendus")).toBe("/comptes-rendus");
+  });
+
+  it("n'applique plus la bulle à une page interdite déjà enregistrée (réglage ancien)", () => {
+    expect(embedAppliesTo(["/compte", "/agents"], "/compte")).toBe(false);
+    expect(embedAppliesTo(["/compte", "/agents"], "/en/compte/securite")).toBe(
+      false,
+    );
+    expect(embedAppliesTo(["/compte", "/agents"], "/agents")).toBe(true);
+  });
+});
+
 describe("embedCsp", () => {
   it("n'ouvre que l'origine configurée, sans joker", () => {
     const csp = embedCsp("https://ia.exemple.ca");

@@ -68,6 +68,40 @@ describe("en-têtes de sécurité (S9)", () => {
     }
   });
 
+  it("isolation inter-origines : COOP same-origin partout, CORP same-origin sur l'API et la passerelle, pas de politique Flash/PDF", async () => {
+    const rules = (await nextConfig.headers?.()) ?? [];
+    const all = Object.fromEntries(
+      (rules.find((r) => r.source === "/:path*")?.headers ?? []).map((x) => [
+        x.key.toLowerCase(),
+        x.value,
+      ]),
+    );
+    expect(all["cross-origin-opener-policy"]).toBe("same-origin");
+    expect(all["x-permitted-cross-domain-policies"]).toBe("none");
+    expect(all["permissions-policy"]).toMatch(/display-capture=\(\)/);
+    expect(all["permissions-policy"]).toMatch(/browsing-topics=\(\)/);
+    for (const source of ["/api/:path*", "/v1/:path*"]) {
+      const h = Object.fromEntries(
+        (rules.find((r) => r.source === source)?.headers ?? []).map((x) => [
+          x.key.toLowerCase(),
+          x.value,
+        ]),
+      );
+      expect(h["cross-origin-resource-policy"], source).toBe("same-origin");
+    }
+  });
+
+  it("la CSP des pages interdit les gestionnaires d'événements en ligne (onclick=…) et, en HTTPS, met à niveau les sous-ressources", () => {
+    const csp = parseCsp(pageCsp({ dev: false }));
+    expect(csp.get("script-src-attr")).toEqual(["'none'"]);
+    expect(csp.has("upgrade-insecure-requests")).toBe(false);
+    expect(
+      parseCsp(pageCsp({ dev: false, https: true })).has(
+        "upgrade-insecure-requests",
+      ),
+    ).toBe(true);
+  });
+
   it("n'expose pas la technologie du serveur", () => {
     expect(nextConfig.poweredByHeader).toBe(false);
   });

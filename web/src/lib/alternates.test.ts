@@ -80,3 +80,17 @@ describe("liens de navigation lus dans Directus", () => {
     expect(resolveHrefForLang(alt, "fr", "/")).toBe("/");
   });
 });
+
+describe("table de correspondance : slugs hostiles saisis dans Directus", () => {
+  it("un slug qui n'est pas propre ne devient jamais une cible de lien (aucune URL //hôte)", () => {
+    const hostile = buildAlternates([
+      { "fr-CA": "propre", "en-CA": "/evil.com" },
+      { "fr-CA": "autre", "en-CA": "//evil.com" },
+    ]);
+    for (const path of ["/propre", "/autre"]) {
+      const target = alternatePath(hostile, "fr", path);
+      expect(target.startsWith("//"), target).toBe(false);
+      expect(target).not.toContain("evil.com");
+    }
+  });
+});

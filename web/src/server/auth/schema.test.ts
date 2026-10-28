@@ -25,6 +25,7 @@ describe("tables d'authentification vs schéma attendu par Better Auth", () => {
     member: schema.members,
     invitation: schema.invitations,
     rateLimit: schema.authRateLimits,
+    twoFactor: schema.twoFactors,
   } as const;
 
   it("couvre tous les modèles attendus", () => {

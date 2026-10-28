@@ -17,7 +17,6 @@
 // dans le fichier .env, jamais affiché). Les affirmations (`claims.json`) sont chargées en « en_revue » : seule une
 // personne habilitée les approuve.
 
-import { randomBytes } from "node:crypto";
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -50,6 +49,7 @@ import {
   log,
   parseEnvFile,
 } from "./lib/directus";
+import { generatePassword } from "./lib/password";
 import { BLOCK_TYPES } from "./lib/schema";
 
 const CONTENT_DIR = join(
@@ -188,7 +188,7 @@ async function accountToken(
     const t = await login(url, email, known);
     if (t) return t;
   }
-  const password = randomBytes(24).toString("base64url");
+  const password = generatePassword();
   const found = await admin.get<Entity[]>(
     `/users?filter[email][_eq]=${encodeURIComponent(email)}&fields=id&limit=1`,
   );

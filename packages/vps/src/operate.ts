@@ -1,5 +1,6 @@
 import {
   and,
+  desc,
   enqueue,
   eq,
   isNotNull,
@@ -7,6 +8,7 @@ import {
   lt,
   ne,
   subscriptions,
+  vpsEvents,
   vpsInstances,
   vpsOrders,
 } from "@nexora/db";
@@ -135,13 +137,31 @@ export async function runPowerAction(
   return res.value;
 }
 
-/** Demande de réinstallation : l'instance passe en « reinstalling » et la tâche de provisionnement est mise en file. */
+/** Délai minimal entre deux demandes de réinstallation d'une même instance. */
+export const MIN_REINSTALL_INTERVAL_MS = 24 * 3_600_000;
+
+export type ReinstallRefusal =
+  /** L'instance n'est pas « active ». */
+  | "not_active"
+  /** Une ancienne VM est encore conservée : la prochaine réinstallation attend sa purge (sinon elle serait orpheline). */
+  | "reinstall_pending_purge"
+  /** Moins de 24 h depuis la dernière demande. */
+  | "reinstall_too_soon";
+
+/**
+ * Demande de réinstallation : l'instance passe en « reinstalling » et la tâche de provisionnement est mise en file.
+ * Refusée (`accepted: false` + `code`) tant qu'une ancienne VM est conservée et moins de 24 h après la précédente
+ * demande : des réinstallations en chaîne laisseraient des VM orphelines et saturerait le stockage.
+ */
 export async function requestReinstall(
-  deps: Pick<EngineDeps, "db">,
+  deps: Pick<EngineDeps, "db"> & Partial<Pick<EngineDeps, "now">>,
   instanceId: string,
   requestId: string,
   actor: "customer" | "operator" = "customer",
-) {
+): Promise<
+  | { accepted: true }
+  | { accepted: false; reason: string; code: ReinstallRefusal }
+> {
   return deps.db.transaction(async (tx) => {
     const [inst] = await tx
       .select()
@@ -150,7 +170,36 @@ export async function requestReinstall(
       .for("update");
     if (!inst) throw new PermanentError("instance introuvable");
     if (inst.status !== "active")
-      return { accepted: false as const, reason: `instance ${inst.status}` };
+      return {
+        accepted: false as const,
+        reason: `instance ${inst.status}`,
+        code: "not_active" as const,
+      };
+    if (inst.previousVmid !== null)
+      return {
+        accepted: false as const,
+        reason:
+          "une ancienne VM est encore conservée : attendez sa suppression avant de réinstaller",
+        code: "reinstall_pending_purge" as const,
+      };
+    const [last] = await tx
+      .select({ at: vpsEvents.createdAt })
+      .from(vpsEvents)
+      .where(
+        and(
+          eq(vpsEvents.instanceId, instanceId),
+          eq(vpsEvents.kind, "reinstall_started"),
+        ),
+      )
+      .orderBy(desc(vpsEvents.createdAt))
+      .limit(1);
+    const now = (deps.now ?? (() => new Date()))();
+    if (last && now.getTime() - last.at.getTime() < MIN_REINSTALL_INTERVAL_MS)
+      return {
+        accepted: false as const,
+        reason: "une réinstallation a déjà été demandée il y a moins de 24 h",
+        code: "reinstall_too_soon" as const,
+      };
     await tx
       .update(vpsInstances)
       .set({
@@ -317,7 +366,9 @@ async function deleteVm(deps: EngineDeps, inst: Instance) {
   if (inst.serverId && inst.vmid) {
     const { client, node, vmid } = await clientOf(deps, inst);
     const cfg = await client.findConfig(node, vmid);
-    if (cfg) {
+    // Même garde que compensate et purgeOld : seule la VM portant le nom de cette instance est supprimée
+    // (le numéro a pu être réattribué, la VM renommée) ; jamais une VM étrangère.
+    if (cfg && cfg.name === inst.vmName) {
       const st = await client.vmStatus(node, vmid);
       if (st.status === "running")
         await task(deps, client, await client.stopVm(node, vmid));
@@ -326,6 +377,22 @@ async function deleteVm(deps: EngineDeps, inst: Instance) {
         client,
         await client.deleteVm(node, vmid, { skiplock: true }),
       );
+    } else if (cfg) {
+      deps.log.error(
+        "vps : suppression ignorée, la VM ne porte pas le nom attendu",
+        {
+          instanceId: inst.id,
+        },
+      );
+      await recordVpsEvent(deps.db, {
+        organizationId: inst.organizationId,
+        orderId: inst.orderId,
+        instanceId: inst.id,
+        actor: "system",
+        kind: "delete_skipped_foreign_vm",
+        message:
+          "VM non supprimée : son nom ne correspond pas à l'instance (vérification manuelle requise)",
+      });
     }
   }
   await purgeOld(deps, inst, true);

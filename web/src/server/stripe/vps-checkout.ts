@@ -6,6 +6,7 @@ import {
   type CheckoutDeps,
   CheckoutError,
   type CheckoutExtras,
+  checkoutExpiry,
   discountParams,
   ensureStripeCustomer,
   promoMeta,
@@ -57,6 +58,7 @@ export async function createVpsCheckout(
     };
     const session = await deps.stripe.checkout.sessions.create(
       {
+        expires_at: checkoutExpiry(),
         mode: "subscription",
         customer,
         client_reference_id: input.organizationId,

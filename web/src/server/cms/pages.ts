@@ -1,4 +1,5 @@
 import { ZodError, z } from "zod";
+import { cleanSlug } from "@/lib/safe-href";
 import type { CmsClient } from "./client";
 import { CmsContentError } from "./errors";
 import type { LangCode } from "./lang";
@@ -198,6 +199,7 @@ export async function fetchSlugPairs(client: CmsClient): Promise<SlugPair[]> {
   const byPage = new Map<string, SlugPair>();
   for (const r of rows) {
     if (r.languages_code !== "fr-CA" && r.languages_code !== "en-CA") continue;
+    if (cleanSlug(r.slug) === null) continue;
     const pair = byPage.get(r.pages_id) ?? {};
     pair[r.languages_code] = r.slug ?? "";
     byPage.set(r.pages_id, pair);

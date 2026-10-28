@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
-import { API_CSP, SECURITY_HEADERS } from "./src/lib/security-headers";
+import {
+  API_CORP,
+  API_CSP,
+  SECURITY_HEADERS,
+} from "./src/lib/security-headers";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -27,8 +31,8 @@ const nextConfig: NextConfig = {
     const csp = [{ key: "Content-Security-Policy", value: API_CSP }];
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },
-      { source: "/api/:path*", headers: csp },
-      { source: "/v1/:path*", headers: csp },
+      { source: "/api/:path*", headers: [...csp, API_CORP] },
+      { source: "/v1/:path*", headers: [...csp, API_CORP] },
       // Réponses qui ne sont pas des pages : images, texte, XML et icône n'ont besoin d'aucune ressource.
       { source: "/og/:path*", headers: csp },
       { source: "/llms.txt", headers: csp },

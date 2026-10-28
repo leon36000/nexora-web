@@ -49,6 +49,9 @@ export async function testProvider(
       listUrl(provider.type, provider.baseUrl),
       {
         headers,
+        // La garde d'adresse n'a vérifié que l'adresse d'origine : une redirection ne doit jamais être suivie
+        // (la clé du coffre partirait vers une autre destination).
+        redirect: "manual",
         signal: AbortSignal.timeout(deps.timeoutMs ?? 10_000),
       },
     );
@@ -59,6 +62,11 @@ export async function testProvider(
     };
   }
   const ms = Math.round(performance.now() - started);
+  if (res.status >= 300 && res.status < 400)
+    return {
+      ok: false,
+      detail: `redirection HTTP ${res.status} non suivie : indiquez l'adresse finale du fournisseur`,
+    };
   if (!res.ok) return { ok: false, detail: `HTTP ${res.status} en ${ms} ms` };
   let count: number | null = null;
   try {

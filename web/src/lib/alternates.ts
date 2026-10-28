@@ -1,4 +1,5 @@
 import { type Lang, localizePath, stripLangPrefix } from "@/i18n/config";
+import { cleanSlug } from "@/lib/safe-href";
 import type { SlugPair } from "@/server/cms/model";
 
 /**
@@ -16,8 +17,9 @@ export const NO_ALTERNATES: Alternates = { fr: {}, en: {} };
 export function buildAlternates(pairs: readonly SlugPair[]): Alternates {
   const out: Alternates = { fr: {}, en: {} };
   for (const p of pairs) {
-    const fr = p["fr-CA"];
-    const en = p["en-CA"];
+    // Un slug de Directus qui n'est pas propre est ignoré : il ne devient ni clé ni cible (`/evil.com`, `//hôte`).
+    const fr = cleanSlug(p["fr-CA"]) === null ? undefined : p["fr-CA"];
+    const en = cleanSlug(p["en-CA"]) === null ? undefined : p["en-CA"];
     if (fr !== undefined) out.fr[fr] = en ?? null;
     if (en !== undefined) out.en[en] = fr ?? null;
   }

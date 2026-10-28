@@ -458,6 +458,36 @@ describe("remboursements : charge.refunded", () => {
     expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
   });
 
+  it("un remboursement ou un litige reçu AVANT l'achat n'est pas perdu : erreur (Stripe le renvoie), puis traité une fois l'achat connu", async () => {
+    const org = await newOrg();
+    const session = creditSession(org);
+    const fresh = Math.floor(Date.now() / 1000);
+    const refund = buildEvent("charge.refunded", charge(session), {
+      created: fresh,
+    });
+    const dispute = buildEvent(
+      "charge.dispute.created",
+      {
+        id: `dp_${String(session.payment_intent)}`,
+        charge: "ch_1",
+        payment_intent: session.payment_intent,
+        amount: 11_498,
+        status: "needs_response",
+      },
+      { created: fresh },
+    );
+    await expect(processStripeEvent(deps(), refund)).rejects.toThrow();
+    await expect(processStripeEvent(deps(), dispute)).rejects.toThrow();
+    // L'échec ne laisse aucune trace : le renvoi de Stripe sera traité comme un premier envoi.
+    await processStripeEvent(
+      deps(),
+      buildEvent("checkout.session.completed", session, { created: fresh }),
+    );
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBeGreaterThan(0n);
+    expect((await processStripeEvent(deps(), refund)).status).toBe("processed");
+    expect((await getAccount(t.db, org.id)).balanceMicro).toBe(0n);
+  });
+
   it("une charge sans achat de crédits connu est ignorée", async () => {
     const out = await processStripeEvent(
       deps(),

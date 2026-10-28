@@ -57,7 +57,7 @@ export function createSimRunner(sim: ProxmoxSimulator) {
     env: Record<string, string>;
   }[] = [];
   const cleanups: string[] = [];
-  const state = { failNext: 0, failMessage: "exit 1" };
+  const state = { failNext: 0, failMessage: "exit 1", failCleanup: 0 };
   const runner: InstallRunner = {
     async run(input: InstallInput): Promise<InstallResult> {
       const vm = sim
@@ -89,6 +89,10 @@ export function createSimRunner(sim: ProxmoxSimulator) {
     },
     async cleanup(input) {
       cleanups.push(input.host);
+      if (state.failCleanup > 0) {
+        state.failCleanup -= 1;
+        return { ok: false };
+      }
       return { ok: true };
     },
   };

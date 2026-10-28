@@ -58,6 +58,16 @@ const ORDER = [
 type Step = (typeof ORDER)[number];
 
 type StepResult = "advance" | { wait: number };
+
+/** Réinstallation refusée avant tout effet : l'instance redevient active, sans compensation. */
+class ReinstallRefusedError extends Error {
+  readonly code: string;
+  constructor(code: string) {
+    super(code);
+    this.name = "ReinstallRefusedError";
+    this.code = code;
+  }
+}
 interface Ctx {
   deps: EngineDeps;
   startedAt: number;
@@ -164,6 +174,26 @@ export async function provisionOrder(
     try {
       return await advance(ctx, held.id);
     } catch (error) {
+      if (error instanceof ReinstallRefusedError) {
+        // La VM courante reste en service : l'instance redevient « active », rien n'est compensé.
+        const cur = await loadInstance(deps, held.id);
+        await setInstance(deps, held.id, {
+          status: "active",
+          step: "done",
+          pendingAction: null,
+          lastError: error.code,
+        });
+        await recordVpsEvent(deps.db, {
+          organizationId: cur.organizationId,
+          orderId,
+          instanceId: held.id,
+          actor: "worker",
+          kind: "reinstall_refused",
+          message: `réinstallation refusée : ${error.code}`,
+          detail: { code: error.code },
+        });
+        return { outcome: "skipped" as const, reason: error.code };
+      }
       const permanent = error instanceof PermanentError;
       const last = tries.attempt >= tries.maxAttempts;
       const cur = await loadInstance(deps, held.id);
@@ -500,7 +530,10 @@ async function stepFirewall(ctx: Ctx, inst: Instance): Promise<StepResult> {
   const server = await loadServer(deps, inst.serverId);
   const client = await deps.proxmox(server);
   const { app } = await loadPinned(deps, inst);
-  const plan = buildFirewallPlan(app.ports);
+  const plan = buildFirewallPlan(app.ports, {
+    gateway: server.ipPool.gateway,
+    dns: server.ipPool.dns,
+  });
 
   // Anti-usurpation d'adresse : l'IP de la VM est la seule autorisée sur net0.
   const sets = await client.firewallIpsets(server.node, inst.vmid);
@@ -651,11 +684,30 @@ async function stepVerify(ctx: Ctx, inst: Instance): Promise<StepResult> {
   const tpl = await templateFor(deps, server, plan.templateCode);
   // La clé du worker quitte la VM (fichier authorized_keys) et la configuration cloud-init.
   if (deps.settings.workerSshPublicKey) {
-    await deps.runner.cleanup({
+    const cleaned = await deps.runner.cleanup({
       host: inst.ipv4,
       user: tpl.ciUser,
       timeoutMs: 60_000,
     });
+    if (!cleaned.ok) {
+      // La clé du worker reste dans authorized_keys : accès de l'opérateur à la VM du client. Jamais « actif » ainsi.
+      await recordVpsEvent(deps.db, {
+        organizationId: inst.organizationId,
+        orderId: inst.orderId,
+        instanceId: inst.id,
+        actor: "worker",
+        kind: "worker_key_cleanup_failed",
+        message: "la clé SSH du worker n'a pas pu être retirée de la VM",
+      });
+      await enqueue(deps.db, {
+        type: "vps.alert",
+        payload: { orderId: inst.orderId, reason: "worker_key_not_removed" },
+        idempotencyKey: `vps-alert:${inst.orderId}:worker_key_not_removed`,
+      });
+      throw new Error(
+        "clé du worker non retirée de la VM (authorized_keys) : nouvelle tentative",
+      );
+    }
     await client.setConfig(server.node, inst.vmid, {
       sshkeys: encodeURIComponent(order.sshPublicKey),
     });
@@ -708,6 +760,10 @@ async function stepRetireOld(ctx: Ctx, inst: Instance): Promise<StepResult> {
     if (inst.previousVmid) return "advance";
     throw new PermanentError("réinstallation sans VM à remplacer");
   }
+  // Une ancienne VM est déjà conservée : l'écraser la rendrait orpheline (jamais supprimée, stockage perdu).
+  // Refus SANS compensation : la VM courante est celle du client, elle ne doit pas être détruite.
+  if (inst.previousVmid)
+    throw new ReinstallRefusedError("reinstall_pending_purge");
   const server = await loadServer(deps, inst.serverId);
   const client = await deps.proxmox(server);
   const snapName =

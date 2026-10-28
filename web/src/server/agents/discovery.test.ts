@@ -147,3 +147,24 @@ describe("checkInstance", () => {
     expect(check.detail).toMatch(/HTTP 200 en \d+ ms/);
   });
 });
+
+describe("redirections", () => {
+  it("ne suit pas une redirection (la clé d'espace ne part pas ailleurs) et la signale", async () => {
+    const seen: Array<RequestRedirect | undefined> = [];
+    const result = await discoverAgents(
+      instance,
+      deps((async (_url, init) => {
+        seen.push(init?.redirect);
+        return new Response(null, {
+          status: 307,
+          headers: { location: "http://169.254.169.254/" },
+        });
+      }) as typeof fetch),
+    );
+    expect(seen).toEqual(["manual"]);
+    expect(result.ok).toBe(false);
+    expect(result.detail).toMatch(/redirection/i);
+    expect(result.detail).not.toContain("169.254");
+    expect(result.detail).not.toContain(KEY);
+  });
+});

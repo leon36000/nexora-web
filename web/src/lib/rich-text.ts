@@ -116,8 +116,90 @@ function decodeEntities(text: string): string {
   });
 }
 
-const START_TAG =
-  /^<([a-zA-Z][a-zA-Z0-9]*)((?:\s+[^\s=/>"']+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'>]+))?)*)\s*(\/?)>/;
+/** Longueur maximale d'une balise ouvrante lue : au-delà, le `<` est du texte (borne le travail par balise). */
+const MAX_TAG = 2048;
+
+const isSpace = (c: number) =>
+  c === 0x20 || c === 0x09 || c === 0x0a || c === 0x0d || c === 0x0c;
+const isLetter = (c: number) =>
+  (c >= 0x41 && c <= 0x5a) || (c >= 0x61 && c <= 0x7a);
+const isDigit = (c: number) => c >= 0x30 && c <= 0x39;
+/** Fin d'un nom d'attribut : espace, `=`, `/`, `>`, guillemets. */
+const isNameStop = (c: number) =>
+  isSpace(c) ||
+  c === 0x3d ||
+  c === 0x2f ||
+  c === 0x3e ||
+  c === 0x22 ||
+  c === 0x27;
+const isValueStop = (c: number) =>
+  isSpace(c) || c === 0x22 || c === 0x27 || c === 0x3e;
+
+interface ScannedTag {
+  name: string;
+  attrs: string;
+  selfClosed: boolean;
+  length: number;
+}
+
+/**
+ * Lit une balise ouvrante au début de `w` (qui commence par `<`) en UN passage, sans retour arrière : une suite de
+ * `<a <a <a …` ne coûte plus un temps quadratique (l'ancienne expression régulière gelait le serveur plusieurs
+ * secondes sur 100 000 caractères). Mêmes règles que l'ancienne expression : nom alphanumérique, attributs séparés
+ * par des espaces, valeurs entre guillemets (le `>` y est permis) ou sans guillemets, `/>` auto-fermant.
+ */
+function scanStartTag(w: string): ScannedTag | null {
+  const n = w.length;
+  let p = 1;
+  if (p >= n || !isLetter(w.charCodeAt(p))) return null;
+  while (p < n && (isLetter(w.charCodeAt(p)) || isDigit(w.charCodeAt(p)))) p++;
+  const name = w.slice(1, p);
+  const attrsStart = p;
+  let attrsEnd = p;
+  for (;;) {
+    const wsStart = p;
+    while (p < n && isSpace(w.charCodeAt(p))) p++;
+    if (p >= n) return null;
+    const c = w.charCodeAt(p);
+    if (c === 0x3e)
+      return {
+        name,
+        attrs: w.slice(attrsStart, attrsEnd),
+        selfClosed: false,
+        length: p + 1,
+      };
+    if (c === 0x2f && w.charCodeAt(p + 1) === 0x3e)
+      return {
+        name,
+        attrs: w.slice(attrsStart, attrsEnd),
+        selfClosed: true,
+        length: p + 2,
+      };
+    if (p === wsStart) return null;
+    const nameStart = p;
+    while (p < n && !isNameStop(w.charCodeAt(p))) p++;
+    if (p === nameStart) return null;
+    attrsEnd = p;
+    let q = p;
+    while (q < n && isSpace(w.charCodeAt(q))) q++;
+    if (w.charCodeAt(q) === 0x3d) {
+      q++;
+      while (q < n && isSpace(w.charCodeAt(q))) q++;
+      const v = w.charCodeAt(q);
+      if (v === 0x22 || v === 0x27) {
+        const close = w.indexOf(v === 0x22 ? '"' : "'", q + 1);
+        if (close === -1) return null;
+        q = close + 1;
+      } else {
+        const valueStart = q;
+        while (q < n && !isValueStop(w.charCodeAt(q))) q++;
+        if (q === valueStart) return null;
+      }
+      p = q;
+      attrsEnd = p;
+    }
+  }
+}
 const END_TAG = /^<\/([a-zA-Z][a-zA-Z0-9]*)\s*>/;
 const ATTR = /([^\s=/>"']+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?/g;
 
@@ -183,6 +265,7 @@ export function parseRichText(html: string): RichNode[] {
 
   let i = 0;
   let textStart = 0;
+  let nextGt = -1;
   const flushText = (end: number) => {
     if (end > textStart) pushText(decodeEntities(src.slice(textStart, end)));
   };
@@ -190,7 +273,8 @@ export function parseRichText(html: string): RichNode[] {
   while (i < src.length) {
     const lt = src.indexOf("<", i);
     if (lt === -1) break;
-    const rest = src.slice(lt);
+    // Fenêtre bornée : aucune expression ne lit plus de MAX_TAG caractères par `<`.
+    const rest = src.slice(lt, lt + MAX_TAG);
 
     // commentaire, CDATA, déclaration, instruction
     if (rest.startsWith("<!--")) {
@@ -229,13 +313,18 @@ export function parseRichText(html: string): RichNode[] {
       continue;
     }
 
-    const startTag = START_TAG.exec(rest);
+    // Une balise valide contient un `>` dans sa fenêtre : sans lui, inutile de la lire (position mémorisée).
+    if (nextGt < lt) {
+      const found = src.indexOf(">", lt);
+      nextGt = found === -1 ? Number.POSITIVE_INFINITY : found;
+    }
+    const startTag = nextGt < lt + MAX_TAG ? scanStartTag(rest) : null;
     if (startTag) {
       flushText(lt);
-      const name = (startTag[1] as string).toLowerCase();
-      const attrs = startTag[2] ?? "";
-      const selfClosed = startTag[3] === "/";
-      i = textStart = lt + startTag[0].length;
+      const name = startTag.name.toLowerCase();
+      const attrs = startTag.attrs;
+      const selfClosed = startTag.selfClosed;
+      i = textStart = lt + startTag.length;
 
       if (DROP_WITH_CONTENT.has(name)) {
         if (!selfClosed) {

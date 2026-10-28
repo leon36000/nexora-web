@@ -216,6 +216,11 @@ export const accountVpsEnCA: AccountVpsDictionary = {
   errors: {
     not_active:
       "This operation is only possible while the VPS is active and idle.",
+    reinstall_pending_purge:
+      "A previous reinstall is still being kept for safety: wait for it to be purged before asking for another.",
+    reinstall_too_soon: "A reinstall was done recently: try again in 24 hours.",
+    gift_two_factor_required:
+      "Turn on two-factor authentication for your account (Security page) to provide a service.",
     confirmation_required: "A confirmation is required.",
     forbidden: "Only the organization owner can do this.",
     rate_limited: "Too many requests. Wait a minute before trying again.",

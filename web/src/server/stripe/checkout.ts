@@ -114,6 +114,15 @@ export interface CheckoutExtras {
   noPaymentMethodNeeded?: boolean;
 }
 
+/**
+ * Durée de vie d'une session de paiement : 30 minutes (le minimum de Stripe), au lieu de 24 h. Les limites d'un
+ * code (usages, « un par client », expiration) ne sont comptées qu'au paiement : une session laissée ouverte ne doit
+ * pas rester un bon à échanger toute la journée.
+ */
+export const CHECKOUT_SESSION_TTL_SECONDS = 30 * 60;
+export const checkoutExpiry = (nowMs = Date.now()): number =>
+  Math.floor(nowMs / 1000) + CHECKOUT_SESSION_TTL_SECONDS;
+
 /** Remise et champ de code d'une session : `discounts` et `allow_promotion_codes` s'excluent chez Stripe. */
 export function discountParams(extras: CheckoutExtras) {
   const id = extras.promo?.stripePromotionCodeId;
@@ -174,6 +183,7 @@ export async function createCreditCheckout(
   );
   const session = await wrapStripe(() =>
     deps.stripe.checkout.sessions.create({
+      expires_at: checkoutExpiry(),
       mode: "payment",
       customer,
       client_reference_id: input.organizationId,
@@ -257,6 +267,7 @@ export async function createSubscriptionCheckout(
     (trialDays > 0 && input.trial?.requireCard === false);
   const session = await wrapStripe(() =>
     deps.stripe.checkout.sessions.create({
+      expires_at: checkoutExpiry(),
       mode: "subscription",
       customer,
       client_reference_id: input.organizationId,

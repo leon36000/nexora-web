@@ -116,19 +116,30 @@ describe("provisionnement complet", () => {
         NEXORA_APP_VERSION: "1.2.3",
       });
 
-      // Pare-feu : rien en entrée sauf SSH, ICMP et le port public de l'application ; SMTP sortant fermé.
+      // Pare-feu : rien en entrée sauf SSH, ICMP et le port public de l'application ; SMTP sortant fermé ;
+      // réseaux privés fermés en sortie sauf la passerelle (ICMP) et le DNS du réservoir.
       expect(vm?.firewall.options).toMatchObject({
         enable: 1,
         policy_in: "DROP",
         ipfilter: 1,
       });
       const rules = vm?.firewall.rules.map(
-        (r) => `${r.type}:${r.action}:${r.proto}/${r.dport ?? "-"}`,
+        (r) =>
+          `${r.type}:${r.action}:${r.proto ?? "*"}/${r.dport ?? "-"}${r.dest ? `>${r.dest}` : ""}`,
       );
       expect(rules).toEqual([
         "in:ACCEPT:tcp/22",
         "in:ACCEPT:tcp/8443",
         "in:ACCEPT:icmp/-",
+        "out:ACCEPT:icmp/->10.20.0.1",
+        "out:ACCEPT:udp/53>10.20.0.2",
+        "out:ACCEPT:tcp/53>10.20.0.2",
+        "out:DROP:*/->10.0.0.0/8",
+        "out:DROP:*/->172.16.0.0/12",
+        "out:DROP:*/->192.168.0.0/16",
+        "out:DROP:*/->169.254.0.0/16",
+        "out:DROP:*/->100.64.0.0/10",
+        "out:DROP:*/->fc00::/7",
         "out:DROP:tcp/25",
       ]);
       expect(vm?.firewall.ipsets["ipfilter-net0"]).toEqual(["10.20.0.10"]);
@@ -255,6 +266,46 @@ describe("provisionnement complet", () => {
       await provisionOrder(w.deps, orderId);
       expect(w.sim.cloneRequests).toBe(1);
       expect(w.sim.callsTo("POST", "/clone")).toHaveLength(0);
+    } finally {
+      await w.close();
+    }
+  });
+});
+
+describe("clé SSH du worker : retirée de la VM, sinon échec explicite", () => {
+  it("un nettoyage en échec (authorized_keys intact) relance la vérification et alerte l'opérateur ; la VM n'est pas déclarée active", async () => {
+    const w = await world();
+    try {
+      const orderId = await paidOrder(t.db, w.fx);
+      w.guest.state.failCleanup = 1;
+      await expect(
+        provisionOrder(w.deps, orderId, { attempt: 1, maxAttempts: 3 }),
+      ).rejects.toThrow(/clé du worker/);
+      const [mid] = await t.db
+        .select()
+        .from(vpsInstances)
+        .where(eq(vpsInstances.orderId, orderId));
+      expect(mid).toMatchObject({ status: "provisioning", step: "verify" });
+      expect(await eventKinds(mid?.id as string)).toContain(
+        "worker_key_cleanup_failed",
+      );
+      const alerts = (await t.db.select().from(jobs)).filter(
+        (j) =>
+          j.type === "vps.alert" &&
+          (j.payload as { reason?: string }).reason ===
+            "worker_key_not_removed",
+      );
+      expect(alerts).toHaveLength(1);
+      // La reprise nettoie à nouveau, puis active la VM.
+      expect(
+        await provisionOrder(w.deps, orderId, { attempt: 2, maxAttempts: 3 }),
+      ).toEqual({ outcome: "done" });
+      expect(w.guest.cleanups).toHaveLength(2);
+      const [done] = await t.db
+        .select()
+        .from(vpsInstances)
+        .where(eq(vpsInstances.orderId, orderId));
+      expect(done).toMatchObject({ status: "active", step: "done" });
     } finally {
       await w.close();
     }

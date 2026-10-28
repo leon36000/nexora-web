@@ -5,17 +5,20 @@ import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { AccountDictionary } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
+import type { SecurityDictionary } from "@/i18n/security";
 import { authClient } from "@/lib/auth-client";
 import { parseOffer, withOffer } from "@/lib/offer-param";
 import { Field, Notice } from "./field";
+import { TwoFactorChallenge } from "./two-factor-challenge";
 
 type Props = {
   lang: Lang;
   t: AccountDictionary["login"];
   common: AccountDictionary["common"];
+  security: SecurityDictionary;
 };
 
-export function LoginForm({ lang, t, common }: Props) {
+export function LoginForm({ lang, t, common, security }: Props) {
   const router = useRouter();
   const offer = parseOffer(useSearchParams().get("offre"));
   const [email, setEmail] = useState("");
@@ -23,20 +26,35 @@ export function LoginForm({ lang, t, common }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<keyof typeof t.errors | null>(null);
   const [resent, setResent] = useState(false);
+  const [secondFactor, setSecondFactor] = useState(false);
+
+  const enter = () => {
+    router.push(withOffer(localizePath(lang, "/compte"), offer));
+    router.refresh();
+  };
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError(null);
     setResent(false);
-    const { error: err } = await authClient.signIn.email({ email, password });
+    const { data, error: err } = await authClient.signIn.email({
+      email,
+      password,
+    });
     if (!err) {
-      router.push(withOffer(localizePath(lang, "/compte"), offer));
-      router.refresh();
+      // Double authentification activée : aucune session tant que le second facteur n'est pas validé.
+      if ((data as { twoFactorRedirect?: boolean } | null)?.twoFactorRedirect) {
+        setSecondFactor(true);
+        setBusy(false);
+        return;
+      }
+      enter();
       return;
     }
     setBusy(false);
-    if (err.status === 429) setError("rateLimited");
+    if (err.code === "ACCOUNT_TEMPORARILY_LOCKED") setError("locked");
+    else if (err.status === 429) setError("rateLimited");
     else if (err.status === 403) setError("unverified");
     else if (err.status === 401 || err.status === 400) setError("invalid");
     else setError("generic");
@@ -49,6 +67,9 @@ export function LoginForm({ lang, t, common }: Props) {
     });
     setResent(true);
   }
+
+  if (secondFactor)
+    return <TwoFactorChallenge t={security.challenge} onDone={enter} />;
 
   return (
     <form onSubmit={onSubmit} className="space-y-5" noValidate>

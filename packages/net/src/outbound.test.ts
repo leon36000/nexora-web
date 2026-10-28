@@ -51,6 +51,23 @@ describe("classifyAddress", () => {
     expect(isNonPublicAddress("::ffff:7f00:1")).toBe(true);
   });
 
+  it.each([
+    ["2002:a9fe:a9fe::1", "reserved"], // 6to4 de 169.254.169.254
+    ["2002:7f00:1::1", "reserved"], // 6to4 de 127.0.0.1
+    ["2002:808:808::1", "reserved"], // 6to4, refusé en bloc
+    ["64:ff9b::a9fe:a9fe", "reserved"], // NAT64 de 169.254.169.254
+    ["64:ff9b:1::a9fe:a9fe", "reserved"], // NAT64 local
+    ["::169.254.169.254", "reserved"], // IPv4-compatible
+    ["::a9fe:a9fe", "reserved"],
+    ["::7f00:1", "reserved"],
+    ["::808:808", "reserved"],
+    ["fec0::1", "reserved"], // site-local obsolète
+    ["febf::1", "link-local"],
+    ["::1", "loopback"],
+  ])("IPv6 détourné %s est %s", (ip, kind) => {
+    expect(classifyAddress(ip)).toBe(kind);
+  });
+
   it("une chaîne qui n'est pas une adresse est refusée", () => {
     expect(isNonPublicAddress("exemple.ca")).toBe(true);
     expect(classifyAddress("999.1.1.1")).toBe("reserved");
@@ -209,5 +226,84 @@ describe("checkOutboundUrl (production : réseau interne refusé par défaut)", 
         })
       ).ok,
     ).toBe(false);
+  });
+
+  it("literalOnly : refuse les noms qui désignent le lien local ou les métadonnées du nuage, même en développement", async () => {
+    const prod = policyFromEnv({ NODE_ENV: "production" });
+    const dev = policyFromEnv({ NODE_ENV: "development" });
+    const interdits = [
+      "metadata.google.internal",
+      "METADATA.google.internal.",
+      "metadata",
+      "metadata.tencentyun.com",
+      "instance-data",
+      "vm.metadata.azure.example",
+      "imprimante.local",
+    ];
+    for (const policy of [prod, dev]) {
+      for (const host of interdits) {
+        const r = await checkOutboundUrl(`http://${host}/v1`, policy, {
+          literalOnly: true,
+        });
+        expect(r.ok, host).toBe(false);
+      }
+    }
+  });
+
+  it("literalOnly : localhost et *.localhost sont de la boucle locale (refusés en production, admis comme 127.0.0.1 en développement)", async () => {
+    const prod = policyFromEnv({ NODE_ENV: "production" });
+    const dev = policyFromEnv({ NODE_ENV: "development" });
+    for (const host of ["localhost", "localhost.", "api.localhost"]) {
+      expect(
+        (
+          await checkOutboundUrl(`http://${host}:4000/v1`, prod, {
+            literalOnly: true,
+          })
+        ).ok,
+        host,
+      ).toBe(false);
+      expect(
+        (
+          await checkOutboundUrl(`http://${host}:4000/v1`, dev, {
+            literalOnly: true,
+          })
+        ).ok,
+        host,
+      ).toBe(true);
+    }
+    // Un hôte déclaré par l'opérateur reste admis.
+    const allowed = policyFromEnv({
+      NODE_ENV: "production",
+      NEXORA_OUTBOUND_ALLOW: "localhost",
+    });
+    expect(
+      (
+        await checkOutboundUrl("http://localhost:4000/v1", allowed, {
+          literalOnly: true,
+        })
+      ).ok,
+    ).toBe(true);
+    // Les noms documentés d'une passerelle sur l'hôte ou le réseau Docker continuent de passer.
+    for (const ok of [
+      "host.docker.internal",
+      "passerelle.internal",
+      "litellm-amont.interne",
+    ])
+      expect(
+        (
+          await checkOutboundUrl(`http://${ok}:4000/v1`, prod, {
+            literalOnly: true,
+          })
+        ).ok,
+        ok,
+      ).toBe(true);
+    // Un nom ordinaire continue de passer.
+    expect(
+      (
+        await checkOutboundUrl("http://litellm:4000/v1", prod, {
+          literalOnly: true,
+        })
+      ).ok,
+    ).toBe(true);
   });
 });

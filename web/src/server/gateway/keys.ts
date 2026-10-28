@@ -2,10 +2,14 @@ import { createHash, randomBytes } from "node:crypto";
 import {
   and,
   apiKeys as apiKeysTable,
+  count,
   type Database,
   desc,
   eq,
+  gt,
   isNull,
+  or,
+  sql,
 } from "@nexora/db";
 
 /**
@@ -47,6 +51,18 @@ export class ApiKeyInputError extends Error {
   }
 }
 
+/** Plafond de clés actives (non révoquées, non expirées) par organisation : les limites RPM/TPM étant par clé, sans plafond elles se contournent en multipliant les clés. */
+export const MAX_ACTIVE_KEYS_PER_ORGANIZATION = 25;
+
+export class ApiKeyLimitError extends Error {
+  readonly limit: number;
+  constructor(limit: number) {
+    super(`clé API : plafond de ${limit} clés actives atteint`);
+    this.name = "ApiKeyLimitError";
+    this.limit = limit;
+  }
+}
+
 export interface CreateApiKeyInput {
   organizationId: string;
   name: string;
@@ -56,6 +72,8 @@ export interface CreateApiKeyInput {
   tpmLimit?: number | null;
   expiresAt?: Date | null;
   createdBy?: string | null;
+  /** Refuse (ApiKeyLimitError) si l'organisation a déjà autant de clés actives ; décompte et insertion sous verrou. */
+  maxActiveKeys?: number;
 }
 
 const positiveInt = (v: number | null | undefined) =>
@@ -84,24 +102,53 @@ export async function createApiKey(
     throw new ApiKeyInputError("allowedModels");
 
   const { key, prefix, hash } = generateApiKey();
-  const [row] = await db
-    .insert(apiKeysTable)
-    .values({
-      organizationId: input.organizationId,
-      name,
-      prefix,
-      keyHash: hash,
-      allowedModels:
-        input.allowedModels && input.allowedModels.length > 0
-          ? input.allowedModels
-          : null,
-      spendCapMicro: input.spendCapMicro ?? null,
-      rpmLimit: input.rpmLimit ?? null,
-      tpmLimit: input.tpmLimit ?? null,
-      expiresAt: input.expiresAt ?? null,
-      createdBy: input.createdBy ?? null,
-    })
-    .returning();
+  const insertRow = async (d: Database) => {
+    const [inserted] = await d
+      .insert(apiKeysTable)
+      .values({
+        organizationId: input.organizationId,
+        name,
+        prefix,
+        keyHash: hash,
+        allowedModels:
+          input.allowedModels && input.allowedModels.length > 0
+            ? input.allowedModels
+            : null,
+        spendCapMicro: input.spendCapMicro ?? null,
+        rpmLimit: input.rpmLimit ?? null,
+        tpmLimit: input.tpmLimit ?? null,
+        expiresAt: input.expiresAt ?? null,
+        createdBy: input.createdBy ?? null,
+      })
+      .returning();
+    return inserted;
+  };
+  const max = input.maxActiveKeys;
+  const row =
+    max === undefined
+      ? await insertRow(db)
+      : await db.transaction(async (tx) => {
+          const d = tx as unknown as Database;
+          // Verrou par organisation : le décompte et l'insertion ne se chevauchent pas entre requêtes simultanées.
+          await d.execute(
+            sql`SELECT pg_advisory_xact_lock(hashtext(${`api-keys:${input.organizationId}`}))`,
+          );
+          const [active] = await d
+            .select({ n: count() })
+            .from(apiKeysTable)
+            .where(
+              and(
+                eq(apiKeysTable.organizationId, input.organizationId),
+                isNull(apiKeysTable.revokedAt),
+                or(
+                  isNull(apiKeysTable.expiresAt),
+                  gt(apiKeysTable.expiresAt, new Date()),
+                ),
+              ),
+            );
+          if ((active?.n ?? 0) >= max) throw new ApiKeyLimitError(max);
+          return insertRow(d);
+        });
   if (!row) throw new Error("clé non créée");
   return { key, record: summarize(row) };
 }

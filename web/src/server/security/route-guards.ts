@@ -45,9 +45,10 @@ const JSON_H = { "content-type": "application/json" };
 const WRONG = {
   authorization: "Bearer jeton-faux-mais-assez-long-pour-etre-pris-au-serieux",
 };
+// 429 : après 10 échecs depuis une même adresse le proxy freine les jetons faux (server/admin-throttle.ts) ; jamais 200.
 const adminProbes = (method: string, path: string): Probe[] => [
-  { label: "sans jeton", method, path, expect: [401] },
-  { label: "mauvais jeton", method, path, headers: WRONG, expect: [401] },
+  { label: "sans jeton", method, path, expect: [401, 429] },
+  { label: "mauvais jeton", method, path, headers: WRONG, expect: [401, 429] },
 ];
 
 export const ROUTE_GUARDS: RouteGuard[] = [
@@ -309,7 +310,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
         path: "/api/contact",
         headers: JSON_H,
         body: "{}",
-        expect: [400, 422],
+        expect: [400, 422, 429],
       },
     ],
   },

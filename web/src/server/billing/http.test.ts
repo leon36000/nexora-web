@@ -122,6 +122,54 @@ function post(
   });
 }
 
+describe("facturation : le corps n'est lu qu'après origine, session et rôle", () => {
+  /** Requête dont la lecture du corps est espionnée. */
+  function spied(headers: Record<string, string>) {
+    const request = post(
+      "/api/billing/checkout/credits",
+      { amount: "20" },
+      headers,
+    );
+    const reads = { count: 0 };
+    for (const method of ["formData", "json", "text", "arrayBuffer"] as const) {
+      const original = request[method].bind(request);
+      (request as unknown as Record<string, unknown>)[method] = (
+        ...args: unknown[]
+      ) => {
+        reads.count++;
+        return (original as (...a: unknown[]) => unknown)(...args);
+      };
+    }
+    return { request, reads };
+  }
+
+  it("origine étrangère : refusée sans lire le corps", async () => {
+    const { session } = await account();
+    const { request, reads } = spied({ origin: "https://evil.example" });
+    const res = await handleCreditsCheckout(request, setup(session).deps);
+    expect(res.status).toBe(403);
+    expect(reads.count).toBe(0);
+  });
+
+  it("sans session : refusé sans lire le corps ; le retour garde la langue de la page d'origine", async () => {
+    const s = setup(null as never);
+    s.deps.getSession = async () => null;
+    const { request, reads } = spied({ referer: `${SITE}/en/compte` });
+    const res = await handleCreditsCheckout(request, s.deps);
+    expect(res.status).toBe(303);
+    expect(res.headers.get("location")).toContain("/en/compte/connexion");
+    expect(reads.count).toBe(0);
+  });
+
+  it("corps annoncé démesuré : 413 sans lecture", async () => {
+    const { session } = await account();
+    const { request, reads } = spied({ "content-length": "5000000" });
+    const res = await handleCreditsCheckout(request, setup(session).deps);
+    expect(res.status).toBe(413);
+    expect(reads.count).toBe(0);
+  });
+});
+
 describe("facturation : Stripe non configuré ou indisponible", () => {
   it("un montant hors bornes reste refusé en 422 même si Stripe n'est pas configuré", async () => {
     const { session } = await account();
@@ -231,7 +279,12 @@ describe("POST /api/billing/checkout/credits", () => {
     );
     expect(json.status).toBe(401);
     const form = await handleCreditsCheckout(
-      post("/api/billing/checkout/credits", { amount: "50", lang: "en" }),
+      // La langue vient de la page d'origine (Referer) : le corps n'est pas lu avant l'authentification.
+      post(
+        "/api/billing/checkout/credits",
+        { amount: "50" },
+        { referer: `${SITE}/en/compte` },
+      ),
       s.deps,
     );
     expect(form.status).toBe(303);
@@ -515,6 +568,55 @@ describe("essai gratuit, codes promo, frais de recharge et dons du personnel", (
     ).toBeUndefined();
   });
 
+  it("une session de paiement expire en 30 minutes (et non 24 h) : un code à usage limité ne peut pas être « réservé » par des sessions laissées ouvertes", async () => {
+    const { session } = await account();
+    const s = setup(session);
+    await handleSubscribeCheckout(
+      post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+      s.deps,
+    );
+    const s2 = setup(session);
+    await handleCreditsCheckout(
+      post("/api/billing/checkout/credits", { amount: "20" }, {}, true),
+      s2.deps,
+    );
+    for (const sess of [s, s2]) {
+      const expires = sessionParams(sess).expires_at as number;
+      const inSeconds = expires - Math.floor(Date.now() / 1000);
+      expect(inSeconds).toBeGreaterThan(29 * 60);
+      expect(inSeconds).toBeLessThanOrEqual(30 * 60);
+    }
+  });
+
+  it("le champ « code promo » de la page Stripe est retiré tant qu'un code « un par client » est actif (Stripe ne sait pas le limiter par client : réutilisable à volonté)", async () => {
+    const row = await stripePromo("UNSEUL-FOIS", { onePerCustomer: true });
+    const { session } = await account();
+    const s = setup(session);
+    const res = await handleSubscribeCheckout(
+      post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+      s.deps,
+    );
+    expect(res.status).toBe(200);
+    expect(sessionParams(s).allow_promotion_codes).toBeUndefined();
+    const s2 = setup(session);
+    await handleCreditsCheckout(
+      post("/api/billing/checkout/credits", { amount: "20" }, {}, true),
+      s2.deps,
+    );
+    expect(sessionParams(s2).allow_promotion_codes).toBeUndefined();
+    // Code désactivé : le champ revient.
+    await t.db
+      .update(promoCodes)
+      .set({ status: "disabled" })
+      .where(eq(promoCodes.id, row.id));
+    const s3 = setup(session);
+    await handleSubscribeCheckout(
+      post("/api/billing/checkout/subscription", { plan: "pro" }, {}, true),
+      s3.deps,
+    );
+    expect(sessionParams(s3).allow_promotion_codes).toBe(true);
+  });
+
   it("abonnement : un code valide est appliqué par son code de promotion Stripe ; un code refusé arrête l'achat avec son motif", async () => {
     await stripePromo("BIENVENUE-A");
     const { session } = await account();
@@ -615,6 +717,10 @@ describe("essai gratuit, codes promo, frais de recharge et dons du personnel", (
   async function staffAccount() {
     const acct = await account();
     await t.db
+      .update(users)
+      .set({ twoFactorEnabled: true })
+      .where(eq(users.id, acct.session.userId));
+    await t.db
       .insert(staffAccounts)
       .values({ userId: acct.session.userId, grantedBy: "admin" });
     return acct;
@@ -668,7 +774,7 @@ describe("essai gratuit, codes promo, frais de recharge et dons du personnel", (
       s.deps,
     );
     expect(res.status).toBe(422);
-    expect(await res.json()).toEqual({ error: "promo_staff_only" });
+    expect(await res.json()).toEqual({ error: "promo_unknown" });
     expect(
       await t.db
         .select()

@@ -49,6 +49,8 @@ export async function discoverAgents(
       `${instance.baseUrl.replace(/\/+$/, "")}/v1/models`,
       {
         headers: { authorization: `Bearer ${key}`, accept: "application/json" },
+        // Une redirection ne doit jamais être suivie : la clé d'espace partirait vers une autre destination.
+        redirect: "manual",
         signal: AbortSignal.timeout(deps.timeoutMs ?? 15_000),
       },
     );
@@ -59,6 +61,11 @@ export async function discoverAgents(
     };
   }
   const ms = Math.round(performance.now() - started);
+  if (res.status >= 300 && res.status < 400)
+    return {
+      ok: false,
+      detail: `redirection HTTP ${res.status} non suivie : indiquez l'adresse finale de l'instance`,
+    };
   if (res.status === 401 || res.status === 403)
     return {
       ok: false,

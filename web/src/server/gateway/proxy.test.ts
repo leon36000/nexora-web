@@ -19,6 +19,7 @@ import {
   handleChatCompletions,
   handleEmbeddings,
   handleModels,
+  resetModelsCache,
 } from "./proxy";
 import { newOrganization, publishTestCatalog } from "./test-support";
 
@@ -540,6 +541,56 @@ describe("réservation, règlement et libération", () => {
     expect((await tooMany.json()).error.code).toBe("context_length_exceeded");
   });
 
+  it("la réservation couvre le texte caché derrière une clé image_url et les paramètres transmis (response_format, tool_choice, stop)", async () => {
+    const reservedFor = async (body: Record<string, unknown>) => {
+      const c = await client(10n);
+      const res = await handleChatCompletions(post(c.key, body), deps());
+      expect(res.status).toBe(200);
+      const [r] = await t.db
+        .select()
+        .from(creditReservations)
+        .where(eq(creditReservations.organizationId, c.org));
+      return r?.amountMicro ?? 0n;
+    };
+    const hidden = "h".repeat(30_000); // 10 000 jetons = 10 000 µCAD d'entrée
+    const base = await reservedFor(chat({ max_tokens: 1 }));
+    // 1) objet type:text portant une clé image_url (forfait média de 1 600 jetons au lieu du texte)
+    const viaImageKey = await reservedFor(
+      chat({
+        max_tokens: 1,
+        messages: [
+          {
+            role: "user",
+            content: [{ type: "text", text: hidden, image_url: "x" }],
+          },
+        ],
+      }),
+    );
+    expect(viaImageKey - base).toBeGreaterThanOrEqual(9_000n);
+    // 2) texte placé dans response_format, tool_choice et stop (transmis à l'amont, comptés jusqu'ici pour rien)
+    const viaResponseFormat = await reservedFor(
+      chat({
+        max_tokens: 1,
+        response_format: {
+          type: "json_schema",
+          json_schema: { name: "s", schema: { description: hidden } },
+        },
+      }),
+    );
+    expect(viaResponseFormat - base).toBeGreaterThanOrEqual(9_000n);
+    const viaToolChoice = await reservedFor(
+      chat({
+        max_tokens: 1,
+        tool_choice: { type: "function", function: { name: hidden } },
+      }),
+    );
+    expect(viaToolChoice - base).toBeGreaterThanOrEqual(9_000n);
+    const viaStop = await reservedFor(
+      chat({ max_tokens: 1, stop: [hidden.slice(0, 120), hidden] }),
+    );
+    expect(viaStop - base).toBeGreaterThanOrEqual(9_000n);
+  });
+
   it("facture les jetons en cache au tarif de cache", async () => {
     const org = await newOrganization(t.db);
     await credit(t.db, {
@@ -981,6 +1032,117 @@ describe("flux coupé avant le bloc d'usage : ce qui a été livré ou consommé
   });
 });
 
+describe("le client annule avant la réponse de l'amont : l'amont a pu continuer, l'invite est facturée", () => {
+  const eventOf = async (org: string) =>
+    (
+      await t.db
+        .select()
+        .from(usageEvents)
+        .where(eq(usageEvents.organizationId, org))
+    )[0];
+  /** L'amont ne répond jamais ; il rejette à l'annulation du signal (comme fetch). */
+  const hangingUpstream = () => {
+    upstream = (_call, signal) =>
+      new Promise<Response>((_resolve, reject) => {
+        signal?.addEventListener("abort", () =>
+          reject(new DOMException("annulé", "AbortError")),
+        );
+      });
+  };
+  const abortable = (key: string, body: unknown, signal: AbortSignal) =>
+    new Request("http://localhost/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${key}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+      signal,
+    });
+
+  it("requête non diffusée : invite estimée + max_tokens demandé", async () => {
+    const c = await client();
+    hangingUpstream();
+    const ac = new AbortController();
+    const pending = handleChatCompletions(
+      abortable(c.key, chat({ max_tokens: 200 }), ac.signal),
+      deps(),
+    );
+    await new Promise((r) => setTimeout(r, 100));
+    ac.abort();
+    const res = await pending;
+    expect(res.status).toBe(499);
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.errorCode).toBe("client_closed");
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.completionTokens).toBe(200);
+    expect(e?.costMicro).toBe(
+      requestCost(
+        {
+          prompt: e?.promptTokens ?? 0,
+          completion: 200,
+          cached: 0,
+        },
+        PRICE,
+      ),
+    );
+    expect(e?.costMicro).toBeGreaterThan(600n);
+    expect(await getAccount(t.db, c.org)).toMatchObject({
+      balanceMicro: 10n * M - (e?.costMicro ?? 0n),
+      heldMicro: 0n,
+    });
+  });
+
+  it("flux : invite estimée seulement (rien n'a été livré)", async () => {
+    const c = await client();
+    hangingUpstream();
+    const ac = new AbortController();
+    const pending = handleChatCompletions(
+      abortable(c.key, chat({ stream: true }), ac.signal),
+      deps(),
+    );
+    await new Promise((r) => setTimeout(r, 100));
+    ac.abort();
+    expect((await pending).status).toBe(499);
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("aborted");
+    expect(e?.promptTokens).toBeGreaterThan(0);
+    expect(e?.completionTokens).toBe(0);
+    expect(e?.costMicro).toBe(
+      requestCost(
+        { prompt: e?.promptTokens ?? 0, completion: 0, cached: 0 },
+        PRICE,
+      ),
+    );
+    expect(e?.costMicro).toBeGreaterThan(0n);
+  });
+
+  it("une panne de l'amont (injoignable, sans annulation du client) reste gratuite", async () => {
+    const c = await client();
+    upstream = () => {
+      throw new TypeError("fetch failed");
+    };
+    const res = await handleChatCompletions(post(c.key, chat()), deps());
+    expect(res.status).toBe(502);
+    const e = await eventOf(c.org);
+    expect(e?.status).toBe("error");
+    expect(e?.costMicro).toBe(0n);
+  });
+
+  it("les appels à l'amont ne suivent jamais une redirection (redirect: error)", async () => {
+    const c = await client();
+    const d = deps();
+    const seen: Array<RequestInit | undefined> = [];
+    d.fetch = (async (_input, init) => {
+      seen.push(init);
+      return upstreamOk();
+    }) as typeof fetch;
+    await handleChatCompletions(post(c.key, chat()), d);
+    expect(seen[0]?.redirect).toBe("error");
+  });
+});
+
 describe("limites", () => {
   it("applique la limite de requêtes par minute de la clé (429 + Retry-After)", async () => {
     const c = await client(10n, { rpmLimit: 2 });
@@ -1095,6 +1257,173 @@ describe("embeddings et liste des modèles", () => {
     );
     expect(bad.status).toBe(401);
   });
+});
+
+describe("GET /v1/models : limite par adresse, cache HTTP et cache mémoire", () => {
+  const listFrom = (ip: string, headers: Record<string, string> = {}) =>
+    new Request("http://x/v1/models", {
+      headers: { "x-forwarded-for": `${ip}, 10.0.0.1`, ...headers },
+    });
+
+  it("répond avec un Cache-Control public de 30 s (sans clé) et Vary", async () => {
+    const res = await handleModels(listFrom("203.0.113.10"), deps());
+    expect(res.status).toBe(200);
+    const cc = res.headers.get("cache-control") ?? "";
+    expect(cc).toContain("public");
+    expect(cc).toContain("max-age=30");
+    expect(cc).not.toContain("no-store");
+    expect((res.headers.get("vary") ?? "").toLowerCase()).toContain(
+      "authorization",
+    );
+  });
+
+  it("une réponse propre à une clé n'est jamais mise en cache partagé", async () => {
+    const c = await client();
+    const res = await handleModels(
+      listFrom("203.0.113.11", { authorization: `Bearer ${c.key}` }),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    const cc = res.headers.get("cache-control") ?? "";
+    expect(cc).not.toContain("public");
+  });
+
+  it("limite les appels par adresse client (429 + Retry-After), sans toucher aux autres adresses", async () => {
+    const d = deps({ modelsPerMinute: 3 });
+    for (let i = 0; i < 3; i++)
+      expect((await handleModels(listFrom("203.0.113.20"), d)).status).toBe(
+        200,
+      );
+    const blocked = await handleModels(listFrom("203.0.113.20"), d);
+    expect(blocked.status).toBe(429);
+    expect(Number(blocked.headers.get("retry-after"))).toBeGreaterThan(0);
+    expect((await blocked.json()).error.code).toBe("rate_limit_exceeded");
+    expect((await handleModels(listFrom("203.0.113.21"), d)).status).toBe(200);
+    // Une clé invalide est aussi comptée (pas de bruteforce des clés sans limite).
+    for (let i = 0; i < 3; i++)
+      await handleModels(
+        listFrom("203.0.113.22", {
+          authorization: `Bearer nxk_${"y".repeat(43)}`,
+        }),
+        d,
+      );
+    expect(
+      (
+        await handleModels(
+          listFrom("203.0.113.22", {
+            authorization: `Bearer nxk_${"y".repeat(43)}`,
+          }),
+          d,
+        )
+      ).status,
+    ).toBe(429);
+  });
+
+  it("le catalogue est mis en cache en mémoire : le second appel ne relit pas la base", async () => {
+    resetModelsCache();
+    let reads = 0;
+    const counting = new Proxy(t.db, {
+      get(target, prop, receiver) {
+        if (prop === "select" || prop === "query" || prop === "execute")
+          reads++;
+        return Reflect.get(target, prop, receiver);
+      },
+    });
+    const d = { ...deps(), db: () => counting };
+    await handleModels(listFrom("203.0.113.30"), d);
+    const afterFirst = reads;
+    expect(afterFirst).toBeGreaterThan(0);
+    await handleModels(listFrom("203.0.113.31"), d);
+    expect(reads).toBe(afterFirst);
+    // Expire après la durée du cache.
+    const later = { ...d, now: () => new Date(Date.now() + 60_000) };
+    await handleModels(listFrom("203.0.113.32"), later);
+    expect(reads).toBeGreaterThan(afterFirst);
+  });
+});
+
+describe("corps de requête plafonné pendant la lecture", () => {
+  it("sans Content-Length, un flux plus gros que le plafond est coupé (413) sans être lu en entier", async () => {
+    const c = await client();
+    const state = { pulled: 0, cancelled: false };
+    const enc = new TextEncoder();
+    const body = new ReadableStream<Uint8Array>({
+      pull(ctrl) {
+        if (state.pulled >= 500) return ctrl.close();
+        state.pulled++;
+        ctrl.enqueue(enc.encode("a".repeat(10_000)));
+      },
+      cancel() {
+        state.cancelled = true;
+      },
+    });
+    const req = new Request("http://localhost/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${c.key}`,
+        "content-type": "application/json",
+      },
+      body,
+      duplex: "half",
+    } as RequestInit);
+    const res = await handleChatCompletions(
+      req,
+      deps({ maxBodyBytes: 50_000 }),
+    );
+    expect(res.status).toBe(413);
+    expect((await res.json()).error.code).toBe("request_too_large");
+    expect(state.cancelled).toBe(true);
+    expect(state.pulled).toBeLessThan(30);
+    expect(calls).toHaveLength(0);
+  });
+
+  it("un corps de plusieurs octets non ASCII est mesuré en octets, pas en caractères", async () => {
+    const c = await client();
+    const res = await handleChatCompletions(
+      post(
+        c.key,
+        chat({ messages: [{ role: "user", content: "é".repeat(30_000) }] }),
+      ),
+      deps({ maxBodyBytes: 50_000 }),
+    );
+    expect(res.status).toBe(413);
+  });
+});
+
+describe("refus 400/422 de l'amont : aucun détail du fournisseur n'est transmis", () => {
+  it.each([400, 422])(
+    "statut amont %i : message générique, sans fournisseur ni identifiant amont",
+    async (status) => {
+      const c = await client();
+      upstream = () =>
+        Response.json(
+          {
+            error: {
+              message:
+                "litellm.BadRequestError: OpenrouterException - provider Wafer rejected model qwen/qwen3-xyz-b200 at https://llm.interne.example:4000 (key sk-or-v1-abc)",
+            },
+          },
+          { status },
+        );
+      const res = await handleChatCompletions(post(c.key, chat()), deps());
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error.code).toBe("upstream_rejected");
+      const text = JSON.stringify(json);
+      for (const leak of [
+        "litellm",
+        "Openrouter",
+        "Wafer",
+        "qwen",
+        "interne.example",
+        "sk-or",
+      ])
+        expect(text.toLowerCase()).not.toContain(leak.toLowerCase());
+      expect(json.error.message.length).toBeGreaterThan(10);
+      // Pas non plus dans les journaux.
+      expect(lines.join("\n").toLowerCase()).not.toContain("wafer");
+    },
+  );
 });
 
 describe("confidentialité", () => {

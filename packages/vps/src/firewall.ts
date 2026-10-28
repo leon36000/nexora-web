@@ -2,8 +2,10 @@ import type { VpsAppPort } from "@nexora/db";
 
 /**
  * Pare-feu Proxmox par VM (D8) : rien n'entre sauf SSH (22), l'écho ICMP et les ports de
- * l'application déclarés `public` ; le port 25 sortant est fermé (spam) ; la VM ne peut usurper
- * ni adresse IP ni adresse MAC. Les règles portent un commentaire `nexora:…` : c'est ce qui permet
+ * l'application déclarés `public` ; en sortie, le port 25 est fermé (spam) et les réseaux privés,
+ * le lien local et 100.64.0.0/10 sont fermés (une VM cliente ne peut balayer ni les autres VPS ni le
+ * réseau de l'opérateur), SAUF la passerelle (ICMP) et les résolveurs DNS du réservoir d'adresses ;
+ * la VM ne peut usurper ni adresse IP ni adresse MAC. Les règles portent un commentaire `nexora:…` : c'est ce qui permet
  * de rejouer l'application du plan sans doublons et de ne jamais toucher à une règle posée à la
  * main par l'opérateur.
  */
@@ -11,8 +13,11 @@ export interface FirewallRuleSpec {
   type: "in" | "out";
   action: "ACCEPT" | "DROP";
   enable: 1;
-  proto: "tcp" | "udp" | "icmp";
+  /** Absent : tous les protocoles. */
+  proto?: "tcp" | "udp" | "icmp";
   dport?: string;
+  /** Destination (adresse ou CIDR) : sortie seulement. */
+  dest?: string;
   comment: string;
   [k: string]: string | number | boolean | undefined;
 }
@@ -26,7 +31,29 @@ export const RULE_PREFIX = "nexora:";
 const SSH_PORT = 22;
 const BLOCKED_OUT = [25];
 
-export function buildFirewallPlan(ports: readonly VpsAppPort[]): FirewallPlan {
+/**
+ * Destinations fermées en sortie. fe80::/10 (IPv6 lien local) n'y figure pas volontairement : la
+ * découverte de voisins (NDP) en dépend, et les réservoirs d'adresses sont IPv4.
+ */
+export const PRIVATE_EGRESS_BLOCKS: readonly string[] = [
+  "10.0.0.0/8",
+  "172.16.0.0/12",
+  "192.168.0.0/16",
+  "169.254.0.0/16",
+  "100.64.0.0/10",
+  "fc00::/7",
+];
+
+/** Ce que la VM doit pouvoir joindre malgré la fermeture : la passerelle et les résolveurs de son réservoir. */
+export interface EgressPool {
+  gateway: string;
+  dns: readonly string[];
+}
+
+export function buildFirewallPlan(
+  ports: readonly VpsAppPort[],
+  egress: EgressPool,
+): FirewallPlan {
   const rules: FirewallRuleSpec[] = [
     {
       type: "in",
@@ -62,6 +89,34 @@ export function buildFirewallPlan(ports: readonly VpsAppPort[]): FirewallPlan {
     proto: "icmp",
     comment: `${RULE_PREFIX}icmp`,
   });
+  // Sortie : les acceptations (passerelle, DNS) précèdent TOUJOURS les fermetures (Proxmox évalue dans l'ordre).
+  rules.push({
+    type: "out",
+    action: "ACCEPT",
+    enable: 1,
+    proto: "icmp",
+    dest: egress.gateway,
+    comment: `${RULE_PREFIX}egress-gw`,
+  });
+  for (const ip of new Set(egress.dns))
+    for (const proto of ["udp", "tcp"] as const)
+      rules.push({
+        type: "out",
+        action: "ACCEPT",
+        enable: 1,
+        proto,
+        dport: "53",
+        dest: ip,
+        comment: `${RULE_PREFIX}egress-dns-${ip}/${proto}`,
+      });
+  for (const cidr of PRIVATE_EGRESS_BLOCKS)
+    rules.push({
+      type: "out",
+      action: "DROP",
+      enable: 1,
+      dest: cidr,
+      comment: `${RULE_PREFIX}egress-deny-${cidr}`,
+    });
   for (const port of BLOCKED_OUT)
     rules.push({
       type: "out",
@@ -94,6 +149,7 @@ export interface ExistingRule {
   action?: string;
   proto?: string;
   dport?: string;
+  dest?: string;
   comment?: string;
 }
 
@@ -102,11 +158,16 @@ const sig = (r: {
   action?: string;
   proto?: string;
   dport?: string;
+  dest?: string;
   comment?: string;
 }) =>
-  `${r.type}|${r.action}|${r.proto ?? ""}|${r.dport ?? ""}|${r.comment ?? ""}`;
+  `${r.type}|${r.action}|${r.proto ?? ""}|${r.dport ?? ""}|${r.dest ?? ""}|${r.comment ?? ""}`;
 
-/** Écart entre le plan voulu et les règles existantes ; ne regarde que les règles `nexora:`. */
+/**
+ * Écart entre le plan voulu et les règles existantes ; ne regarde que les règles `nexora:`.
+ * Le bloc de sortie est ordonné (acceptations avant fermetures) : dès qu'il diffère, il est retiré
+ * en entier et reposé dans l'ordre du plan, au lieu d'ajouter une règle à la fin.
+ */
 export function diffFirewallRules(
   wanted: readonly FirewallRuleSpec[],
   existing: readonly ExistingRule[],
@@ -114,11 +175,15 @@ export function diffFirewallRules(
   const ours = existing.filter((r) => r.comment?.startsWith(RULE_PREFIX));
   const have = new Set(ours.map(sig));
   const want = new Set(wanted.map(sig));
+  const outChanged =
+    wanted.some((r) => r.type === "out" && !have.has(sig(r))) ||
+    ours.some((r) => r.type === "out" && !want.has(sig(r)));
+  const rewrite = (r: { type?: string }) => outChanged && r.type === "out";
   return {
-    toAdd: wanted.filter((r) => !have.has(sig(r))),
+    toAdd: wanted.filter((r) => rewrite(r) || !have.has(sig(r))),
     // Positions en ordre décroissant : supprimer la dernière d'abord garde les autres valides.
     toRemove: ours
-      .filter((r) => !want.has(sig(r)))
+      .filter((r) => rewrite(r) || !want.has(sig(r)))
       .map((r) => r.pos)
       .sort((a, b) => b - a),
   };

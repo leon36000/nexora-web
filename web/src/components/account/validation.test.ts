@@ -14,14 +14,14 @@ describe("validation des formulaires de compte (avant tout appel au serveur)", (
   });
 
   it("inscription : le nom, puis le courriel, puis la longueur du mot de passe", () => {
-    const ok = { name: "Ana", email: "a@b.co", password: "0123456789" };
+    const ok = { name: "Ana", email: "a@b.co", password: "0123456789ab" };
     expect(validateSignup(ok)).toBeNull();
     expect(validateSignup({ ...ok, name: "   " })).toBe("nameRequired");
     expect(validateSignup({ ...ok, name: "", email: "" })).toBe("nameRequired");
     expect(validateSignup({ ...ok, email: "pas-un-courriel" })).toBe(
       "invalidEmail",
     );
-    expect(validateSignup({ ...ok, password: "123456789" })).toBe("weak");
+    expect(validateSignup({ ...ok, password: "0123456789a" })).toBe("weak");
     expect(validateSignup({ ...ok, password: "" })).toBe("weak");
   });
 });

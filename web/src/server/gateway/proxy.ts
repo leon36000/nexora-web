@@ -1,6 +1,8 @@
+import { createHash } from "node:crypto";
 import type { Database } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { readLimitedBytes } from "@nexora/net";
 import {
   AGENT_PUBLIC_PREFIX,
   type CallableAgent,
@@ -44,6 +46,8 @@ export interface GatewayDeps {
     /** Durée maximale d'un flux complet. */
     streamTimeoutMs: number;
     defaultMaxOutputTokens: number;
+    /** Appels à GET /v1/models par minute et par adresse client (défaut : 120). */
+    modelsPerMinute?: number;
   };
 }
 
@@ -119,12 +123,66 @@ function findModel(
 
 // ─── GET /v1/models ─────────────────────────────────────────────────────────────
 
+/** Durée du cache mémoire de la liste (catalogue publié + agents) : borne les lectures de la base. */
+const MODELS_CACHE_MS = 20_000;
+/** Durée annoncée aux caches HTTP (secondes). */
+const MODELS_MAX_AGE_SECONDS = 30;
+const DEFAULT_MODELS_PER_MINUTE = 120;
+
+interface ModelsSource {
+  version: CatalogVersion | null;
+  agents: CallableAgent[];
+  expiresAt: number;
+}
+let modelsSources = new WeakMap<object, ModelsSource>();
+
+/** Vide le cache mémoire de la liste des modèles (tests). */
+export function resetModelsCache(): void {
+  modelsSources = new WeakMap();
+}
+
+async function readModelsSource(
+  db: Database,
+  now: Date,
+): Promise<ModelsSource> {
+  const cached = modelsSources.get(db);
+  if (cached && cached.expiresAt > now.getTime()) return cached;
+  const fresh: ModelsSource = {
+    version: await getPublishedCatalog(db),
+    agents: await listCallableAgents(db, now),
+    expiresAt: now.getTime() + MODELS_CACHE_MS,
+  };
+  modelsSources.set(db, fresh);
+  return fresh;
+}
+
+/** Empreinte courte de l'adresse du client (premier élément de x-forwarded-for) : jamais l'adresse elle-même. */
+function clientAddressKey(request: Request): string {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip")?.trim() ||
+    "inconnu";
+  return createHash("sha256")
+    .update(`gw-models|${ip}`)
+    .digest("hex")
+    .slice(0, 16);
+}
+
 export async function handleModels(
   request: Request,
   deps: GatewayDeps,
 ): Promise<Response> {
   const db = deps.db();
   try {
+    // Route publique : limite par adresse, avant toute lecture (aussi pour les clés invalides).
+    const limit = deps.limits.modelsPerMinute ?? DEFAULT_MODELS_PER_MINUTE;
+    const rl = await consumeRateLimit(
+      db,
+      `gw:models:${clientAddressKey(request)}`,
+      { limit, windowSeconds: 60, now: deps.now() },
+    );
+    if (!rl.allowed)
+      return E.rateLimited({ "retry-after": String(rl.retryAfterSeconds) });
     const header = request.headers.get("authorization");
     let key: ApiKeyRow | null = null;
     if (header) {
@@ -132,7 +190,8 @@ export async function handleModels(
       if (!auth.ok) return E.invalidKey(auth.code);
       key = auth.key;
     }
-    const version = await getPublishedCatalog(db);
+    const source = await readModelsSource(db, deps.now());
+    const version = source.version;
     const lang = (request.headers.get("accept-language") ?? "")
       .toLowerCase()
       .startsWith("en")
@@ -180,7 +239,7 @@ export async function handleModels(
         },
       }));
     // Agents hébergés : mêmes règles d'accès que les modèles (clé restreinte → sa liste ; sinon agents publics).
-    const agentData = (await listCallableAgents(db, now))
+    const agentData = source.agents
       .filter((a) =>
         key?.allowedModels
           ? key.allowedModels.includes(a.publicId)
@@ -207,7 +266,15 @@ export async function handleModels(
       }));
     return Response.json(
       { object: "list", data: [...modelData, ...agentData] },
-      { headers: { "cache-control": "no-store" } },
+      {
+        headers: {
+          // Sans clé : même liste pour tous (cache partagé de 30 s). Avec une clé, la liste lui est propre.
+          "cache-control": key
+            ? `private, max-age=${MODELS_MAX_AGE_SECONDS}`
+            : `public, max-age=${MODELS_MAX_AGE_SECONDS}`,
+          vary: "Authorization, Accept-Language",
+        },
+      },
     );
   } catch (error) {
     deps.log.error("passerelle : liste des modèles impossible", {
@@ -270,10 +337,19 @@ async function readBody(
   const declared = Number(request.headers.get("content-length"));
   if (Number.isFinite(declared) && declared > max)
     return { ok: false, tooLarge: true };
-  const text = await request.text();
-  if (Buffer.byteLength(text, "utf8") > max)
-    return { ok: false, tooLarge: true };
-  return { ok: true, text };
+  // Lecture par morceaux : le flux est coupé dès le plafond (un corps sans Content-Length n'est jamais lu en entier).
+  const read = await readLimitedBytes(request, max);
+  if (!read.ok) return { ok: false, tooLarge: true };
+  return { ok: true, text: new TextDecoder().decode(read.bytes) };
+}
+
+/** Jetons facturés quand le client annule avant la fin de la réponse : invite estimée (+ sortie demandée hors flux). */
+function abortedTokens(plan: Plan): Usage {
+  return {
+    prompt: plan.promptEstimate,
+    completion: plan.stream ? 0 : plan.maxOutput,
+    cached: 0,
+  };
 }
 
 interface Plan {
@@ -341,11 +417,11 @@ function planChat(
   const clientWantsUsage =
     isObject(body.stream_options) && body.stream_options.include_usage === true;
 
-  const promptEstimate = estimateTokens({
-    messages: body.messages,
-    tools: body.tools,
-    functions: body.functions,
-  });
+  // Tout ce qui sera transmis à l'amont est estimé (response_format, tool_choice, stop… peuvent porter du texte).
+  const forwarded: Json = {};
+  for (const name of CHAT_PARAMS)
+    if (body[name] !== undefined) forwarded[name] = body[name];
+  const promptEstimate = estimateTokens(forwarded);
   const modelCap = Math.min(
     model.maxOutputTokens ?? deps.limits.defaultMaxOutputTokens,
     model.contextMax,
@@ -379,9 +455,7 @@ function planChat(
     maxOutput = Math.min(modelCap, room);
   }
 
-  const upstreamBody: Json = {};
-  for (const name of CHAT_PARAMS)
-    if (body[name] !== undefined) upstreamBody[name] = body[name];
+  const upstreamBody: Json = { ...forwarded };
   upstreamBody.model = model.publicId;
   // Le plafond de sortie est TOUJOURS transmis : il borne le coût au montant réservé.
   upstreamBody.max_tokens = maxOutput;
@@ -841,6 +915,8 @@ async function handleInference(
         },
         body: JSON.stringify(plan.upstreamBody),
         signal,
+        // Une redirection de l'amont ne doit jamais être suivie (la garde SSRF n'a vérifié que l'adresse d'origine).
+        redirect: "error",
       });
     } catch {
       const aborted = request.signal.aborted;
@@ -848,7 +924,11 @@ async function handleInference(
         status: aborted ? "aborted" : "error",
         httpStatus: aborted ? 499 : 502,
         errorCode: aborted ? "client_closed" : "upstream_unreachable",
-        tokens: { prompt: 0, completion: 0, cached: 0 },
+        // Le client a annulé : l'amont a pu continuer à produire. On facture l'invite estimée (flux) ou l'invite plus
+        // la sortie demandée (non diffusé, bornée par max_tokens), comme pour un flux interrompu.
+        tokens: aborted
+          ? abortedTokens(plan)
+          : { prompt: 0, completion: 0, cached: 0 },
         stream: plan.stream,
       });
       return aborted
@@ -864,13 +944,9 @@ async function handleInference(
     }
 
     if (!upstream.ok) {
-      const text = await upstream.text().catch(() => "");
-      const mapped = mapUpstreamFailure(
-        upstream.status,
-        text,
-        headers,
-        served.kind,
-      );
+      // Le corps de l'erreur amont n'est jamais relayé : on libère la connexion sans le lire.
+      await upstream.body?.cancel().catch(() => undefined);
+      const mapped = mapUpstreamFailure(upstream.status, headers, served.kind);
       if (served.kind === "agent" && upstream.status >= 401)
         deps.log.warn("passerelle : refus de l'instance d'agents", {
           requestId,
@@ -910,13 +986,18 @@ async function handleInference(
       json = null;
     }
     if (!isObject(json)) {
+      // Annulation du client pendant la lecture de la réponse : l'amont a répondu, la sortie est due.
+      const aborted = request.signal.aborted;
       await finalize({
-        status: "error",
-        httpStatus: 502,
-        errorCode: "invalid_upstream_response",
-        tokens: { prompt: 0, completion: 0, cached: 0 },
+        status: aborted ? "aborted" : "error",
+        httpStatus: aborted ? 499 : 502,
+        errorCode: aborted ? "client_closed" : "invalid_upstream_response",
+        tokens: aborted
+          ? abortedTokens(plan)
+          : { prompt: 0, completion: 0, cached: 0 },
         stream: false,
       });
+      if (aborted) return new Response(null, { status: 499 });
       return E.upstream(
         502,
         "invalid_upstream_response",
@@ -1035,18 +1116,10 @@ function contentChars(json: Json): number {
 
 function mapUpstreamFailure(
   status: number,
-  text: string,
   headers: Record<string, string>,
   kind: "model" | "agent" = "model",
 ): Response {
-  let message = "";
-  try {
-    const j = JSON.parse(text) as { error?: { message?: unknown } };
-    if (typeof j.error?.message === "string")
-      message = j.error.message.slice(0, 300);
-  } catch {
-    message = "";
-  }
+  // Le message de l'amont (LiteLLM) nomme le fournisseur, le modèle ou l'adresse amont : il n'est jamais transmis.
   const tag = (res: Response, code: string) => {
     res.headers.set("x-nexora-error", code);
     return res;
@@ -1054,7 +1127,7 @@ function mapUpstreamFailure(
   if (status === 400 || status === 422)
     return tag(
       E.badRequest(
-        message || "Requête refusée par le fournisseur du modèle.",
+        "Requête refusée par le fournisseur du modèle. Vérifiez les paramètres envoyés (messages, outils, format de réponse).",
         "upstream_rejected",
         null,
         headers,

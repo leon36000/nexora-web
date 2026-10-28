@@ -2,11 +2,13 @@ import { and, apiKeys, eq, organizations } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
+  ApiKeyLimitError,
   authenticateApiKey,
   createApiKey,
   generateApiKey,
   hashApiKey,
   listApiKeys,
+  MAX_ACTIVE_KEYS_PER_ORGANIZATION,
   revokeApiKey,
 } from "./keys";
 
@@ -180,5 +182,60 @@ describe("création, authentification, révocation", () => {
       .from(apiKeys)
       .where(and(eq(apiKeys.id, record.id)));
     expect(row?.revokedAt).toBeInstanceOf(Date);
+  });
+});
+
+describe("plafond de clés actives par organisation", () => {
+  const mkOrg = async (id: string) =>
+    t.db
+      .insert(organizations)
+      .values({ id, name: id, slug: id, createdAt: new Date() });
+
+  it("le plafond par défaut est de 25", () => {
+    expect(MAX_ACTIVE_KEYS_PER_ORGANIZATION).toBe(25);
+  });
+
+  it("refuse la création au-delà du plafond, ne compte ni les clés révoquées ni les expirées, ni celles d'une autre organisation", async () => {
+    await mkOrg("org_cap_a");
+    await mkOrg("org_cap_b");
+    const cap = 3;
+    const make = (org: string, extra: Record<string, unknown> = {}) =>
+      createApiKey(t.db, {
+        organizationId: org,
+        name: "k",
+        maxActiveKeys: cap,
+        ...extra,
+      });
+    const first = await make("org_cap_a");
+    await make("org_cap_a", { expiresAt: new Date(Date.now() - 1000) }); // expirée : ne compte pas
+    await make("org_cap_a");
+    await make("org_cap_a");
+    await expect(make("org_cap_a")).rejects.toBeInstanceOf(ApiKeyLimitError);
+    // Révoquer libère une place.
+    await revokeApiKey(t.db, "org_cap_a", first.record.id);
+    await expect(make("org_cap_a")).resolves.toBeDefined();
+    await expect(make("org_cap_a")).rejects.toBeInstanceOf(ApiKeyLimitError);
+    // Une autre organisation a son propre plafond.
+    await expect(make("org_cap_b")).resolves.toBeDefined();
+  });
+
+  it("des créations simultanées ne dépassent jamais le plafond", async () => {
+    await mkOrg("org_cap_race");
+    const results = await Promise.allSettled(
+      Array.from({ length: 12 }, () =>
+        createApiKey(t.db, {
+          organizationId: "org_cap_race",
+          name: "k",
+          maxActiveKeys: 5,
+        }),
+      ),
+    );
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(5);
+    const rejected = results.filter((r) => r.status === "rejected");
+    expect(rejected).toHaveLength(7);
+    for (const r of rejected)
+      expect((r as PromiseRejectedResult).reason).toBeInstanceOf(
+        ApiKeyLimitError,
+      );
   });
 });

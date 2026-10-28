@@ -1,5 +1,6 @@
 import type { Database } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import { readLimitedBytes } from "@nexora/net";
 import { type ChallengeTuning, issueChallenge, verifyAltcha } from "./altcha";
 import { clientKey, type createRateLimiter } from "./rate-limit";
 import { fingerprintOf, parseContact } from "./schema";
@@ -52,9 +53,20 @@ export async function handleContactSubmit(
   request: Request,
   deps: ContactDeps,
 ): Promise<Response> {
-  if (!(request.headers.get("content-type") ?? "").includes("application/json"))
+  // Type exact : « text/plain;application/json » est une requête CORS « simple » (sans prévol) qu'un site tiers peut faire envoyer.
+  if (
+    !/^application\/json\s*(?:;|$)/i.test(
+      request.headers.get("content-type") ?? "",
+    )
+  )
     return json({ error: "unsupported_media_type" }, 415);
-  const raw = await request.text();
+  // Corps annoncé trop gros : refusé sans le lire.
+  const announced = Number(request.headers.get("content-length"));
+  if (Number.isFinite(announced) && announced > MAX_BODY_CHARS * 4)
+    return json({ error: "payload_too_large" }, 413);
+  const read = await readLimitedBytes(request, MAX_BODY_CHARS * 4);
+  if (!read.ok) return json({ error: "payload_too_large" }, 413);
+  const raw = new TextDecoder().decode(read.bytes);
   if (raw.length > MAX_BODY_CHARS)
     return json({ error: "payload_too_large" }, 413);
   let body: Record<string, unknown>;

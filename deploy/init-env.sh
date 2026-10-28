@@ -8,6 +8,10 @@ rnd() { openssl rand -hex "${1:-24}"; }
 umask 077
 {
   echo "POSTGRES_PASSWORD=$(rnd 24)"
+  # Un rôle PostgreSQL par base, sans droit de superutilisateur (initdb/01-databases.sh, harden-db-roles.sh).
+  echo "DIRECTUS_DB_PASSWORD=$(rnd 24)"
+  echo "LITELLM_DB_PASSWORD=$(rnd 24)"
+  echo "UMAMI_DB_PASSWORD=$(rnd 24)"
   echo "DIRECTUS_SECRET=$(rnd 32)"
   echo "DIRECTUS_ADMIN_EMAIL=admin@example.com"
   echo "DIRECTUS_ADMIN_PASSWORD=$(rnd 16)"

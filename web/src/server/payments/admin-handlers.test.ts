@@ -414,9 +414,12 @@ describe("codes promo", () => {
 
 describe("personnel et dons", () => {
   it("pose le drapeau par courriel, liste, retire ; 404 pour un courriel inconnu", async () => {
-    await t.db
-      .insert(users)
-      .values({ id: "u-adm", name: "Équipe", email: "Equipe@Example.com" });
+    await t.db.insert(users).values({
+      id: "u-adm",
+      name: "Équipe",
+      email: "Equipe@Example.com",
+      twoFactorEnabled: true,
+    });
     const on = await call("POST", "staff", {
       email: "equipe@example.com",
       on: true,

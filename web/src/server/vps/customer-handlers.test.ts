@@ -113,6 +113,50 @@ const form = (over: Record<string, unknown> = {}) => ({
   ...over,
 });
 
+describe("VPS : le corps n'est lu qu'après origine et session", () => {
+  function spied(origin: string | null, headers: Record<string, string> = {}) {
+    const request = new Request(`${SITE}/api/vps/checkout`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+        ...(origin ? { origin } : {}),
+        ...headers,
+      },
+      body: JSON.stringify(form()),
+    });
+    const reads = { count: 0 };
+    for (const method of ["formData", "json", "text", "arrayBuffer"] as const) {
+      const original = request[method].bind(request);
+      (request as unknown as Record<string, unknown>)[method] = (
+        ...args: unknown[]
+      ) => {
+        reads.count++;
+        return (original as (...a: unknown[]) => unknown)(...args);
+      };
+    }
+    return { request, reads };
+  }
+
+  it("origine étrangère ou absente, anonyme, corps annoncé démesuré : refusés sans lire le corps", async () => {
+    const foreign = spied("https://evil.example");
+    expect(
+      (await handleVpsCheckout(foreign.request, deps(owner()))).status,
+    ).toBe(403);
+    expect(foreign.reads.count).toBe(0);
+    const anonymous = spied(SITE);
+    expect(
+      (await handleVpsCheckout(anonymous.request, deps(null))).status,
+    ).toBe(401);
+    expect(anonymous.reads.count).toBe(0);
+    const huge = spied(SITE, { "content-length": "5000000" });
+    expect((await handleVpsCheckout(huge.request, deps(owner()))).status).toBe(
+      413,
+    );
+    expect(huge.reads.count).toBe(0);
+  });
+});
+
 describe("POST /api/vps/checkout", () => {
   it("crée la commande et une session d'abonnement avec le prix Stripe de la version publiée et la commande dans les métadonnées", async () => {
     const body = form({ requestId: "req-abcdef12" });
@@ -329,6 +373,7 @@ describe("codes promo et VPS offert", () => {
       id: "u-staff-vps",
       name: "Équipe",
       email: "equipe-vps@example.com",
+      twoFactorEnabled: true,
     });
     staffOrg = await newOrg(t.db);
     await t.db
