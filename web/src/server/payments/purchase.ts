@@ -56,6 +56,7 @@ export async function resolvePromo(
       stripePromotionCodeId:
         p.kind === "trial" ? null : p.stripePromotionCodeId,
       ...(p.kind === "trial" && p.trialDays ? { trialDays: p.trialDays } : {}),
+      ...(p.onePerCustomer ? { onePerCustomer: true } : {}),
     },
     noPaymentMethodNeeded: p.kind === "free" && p.duration === "forever",
   };

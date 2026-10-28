@@ -1,4 +1,10 @@
-import { billingCustomers, type Database, eq, organizations } from "@nexora/db";
+import {
+  billingCustomers,
+  type Database,
+  eq,
+  organizations,
+  sql,
+} from "@nexora/db";
 import type Stripe from "stripe";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { SubscriptionPlan } from "../billing/plans";
@@ -104,6 +110,8 @@ export interface AppliedPromo {
   stripePromotionCodeId: string | null;
   /** Code d'essai : jours offerts (abonnements). */
   trialDays?: number;
+  /** Code « un par client » : Stripe ne le limite pas, une seule session ouverte à la fois (voir `createExclusiveSession`). */
+  onePerCustomer?: boolean;
 }
 
 /** Ce que tous les parcours d'achat partagent : code promo, champ de la page Stripe, essai sans carte. */
@@ -131,6 +139,42 @@ export function discountParams(extras: CheckoutExtras) {
   if (!extras.promo && extras.allowStripePageCodes)
     return { allow_promotion_codes: true };
   return {};
+}
+
+/**
+ * Un code « un par client » est vérifié à la CRÉATION de la session mais compté au paiement : sans précaution, un client
+ * ouvrait plusieurs sessions avec le même code et les payait toutes. Une session avec un tel code est donc créée sous un
+ * verrou (par organisation et par code) et suivie de l'expiration des AUTRES sessions ouvertes du client qui portent le même
+ * code. Échecs d'expiration ignorés (session déjà terminée) : l'achat n'en dépend pas.
+ */
+export async function createExclusiveSession<T extends { id: string }>(
+  deps: { db: Database; stripe: Pick<Stripe, "checkout"> },
+  input: { organizationId: string; customer: string; promo?: AppliedPromo },
+  create: () => Promise<T>,
+): Promise<T> {
+  const promo = input.promo;
+  if (!promo?.onePerCustomer) return create();
+  return deps.db.transaction(async (tx) => {
+    await tx.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext(${`promo-session:${input.organizationId}:${promo.promoCodeId}`}))`,
+    );
+    const session = await create();
+    try {
+      const open = await deps.stripe.checkout.sessions.list({
+        customer: input.customer,
+        status: "open",
+        limit: 100,
+      });
+      for (const other of open.data) {
+        if (other.id === session.id) continue;
+        if (other.metadata?.promo_code_id !== promo.promoCodeId) continue;
+        await deps.stripe.checkout.sessions.expire(other.id).catch(() => {});
+      }
+    } catch {
+      // Lecture impossible : la session créée reste valable, l'écart ne dépasse pas sa durée de vie de 30 minutes.
+    }
+    return session;
+  });
 }
 
 export const promoMeta = (extras: CheckoutExtras): Record<string, string> =>
@@ -183,45 +227,50 @@ export async function createCreditCheckout(
     ensureStripeCustomer(deps, input.organizationId, input.email),
   );
   const session = await wrapStripe(() =>
-    deps.stripe.checkout.sessions.create({
-      expires_at: checkoutExpiry(),
-      mode: "payment",
-      customer,
-      client_reference_id: input.organizationId,
-      locale: STRIPE_LOCALE[input.lang],
-      line_items: [
-        {
-          quantity: 1,
-          price_data: {
-            currency,
-            unit_amount: input.amountCents,
-            tax_behavior: "exclusive",
-            ...(input.productId
-              ? { product: input.productId }
-              : { product_data: { name: input.productName } }),
+    createExclusiveSession(
+      deps,
+      { organizationId: input.organizationId, customer, promo: input.promo },
+      () =>
+        deps.stripe.checkout.sessions.create({
+          expires_at: checkoutExpiry(),
+          mode: "payment",
+          customer,
+          client_reference_id: input.organizationId,
+          locale: STRIPE_LOCALE[input.lang],
+          line_items: [
+            {
+              quantity: 1,
+              price_data: {
+                currency,
+                unit_amount: input.amountCents,
+                tax_behavior: "exclusive",
+                ...(input.productId
+                  ? { product: input.productId }
+                  : { product_data: { name: input.productName } }),
+              },
+            },
+          ],
+          ...discountParams(input),
+          automatic_tax: { enabled: true },
+          billing_address_collection: "required",
+          customer_update: { address: "auto", name: "auto" },
+          tax_id_collection: { enabled: true },
+          invoice_creation: { enabled: true },
+          metadata: {
+            kind: "credits",
+            organization_id: input.organizationId,
+            credits_cents: String(creditsCents),
+            config_version: configVersion(deps.config),
+            ...promoMeta(input),
           },
-        },
-      ],
-      ...discountParams(input),
-      automatic_tax: { enabled: true },
-      billing_address_collection: "required",
-      customer_update: { address: "auto", name: "auto" },
-      tax_id_collection: { enabled: true },
-      invoice_creation: { enabled: true },
-      metadata: {
-        kind: "credits",
-        organization_id: input.organizationId,
-        credits_cents: String(creditsCents),
-        config_version: configVersion(deps.config),
-        ...promoMeta(input),
-      },
-      success_url: accountUrl(
-        deps,
-        input.lang,
-        "?achat=ok&session_id={CHECKOUT_SESSION_ID}",
-      ),
-      cancel_url: accountUrl(deps, input.lang, "?achat=annule"),
-    }),
+          success_url: accountUrl(
+            deps,
+            input.lang,
+            "?achat=ok&session_id={CHECKOUT_SESSION_ID}",
+          ),
+          cancel_url: accountUrl(deps, input.lang, "?achat=annule"),
+        }),
+    ),
   );
   if (!session.url)
     throw new CheckoutError("stripe_error", "session sans adresse");
@@ -267,50 +316,57 @@ export async function createSubscriptionCheckout(
     input.noPaymentMethodNeeded === true ||
     (trialDays > 0 && input.trial?.requireCard === false);
   const session = await wrapStripe(() =>
-    deps.stripe.checkout.sessions.create({
-      expires_at: checkoutExpiry(),
-      mode: "subscription",
-      customer,
-      client_reference_id: input.organizationId,
-      locale: STRIPE_LOCALE[input.lang],
-      line_items: [{ price: input.plan.stripePriceId as string, quantity: 1 }],
-      ...discountParams(input),
-      ...(cardOptional
-        ? { payment_method_collection: "if_required" as const }
-        : {}),
-      automatic_tax: { enabled: true },
-      billing_address_collection: "required",
-      customer_update: { address: "auto", name: "auto" },
-      tax_id_collection: { enabled: true },
-      metadata: {
-        kind: "subscription",
-        ...meta,
-        config_version: planConfigVersion(input.plan),
-      },
-      subscription_data: {
-        metadata: meta,
-        ...(trialDays > 0
-          ? {
-              trial_period_days: trialDays,
-              ...(cardOptional && input.noPaymentMethodNeeded !== true
-                ? {
-                    trial_settings: {
-                      end_behavior: {
-                        missing_payment_method: "cancel" as const,
-                      },
-                    },
-                  }
-                : {}),
-            }
-          : {}),
-      },
-      success_url: accountUrl(
-        deps,
-        input.lang,
-        "?abonnement=ok&session_id={CHECKOUT_SESSION_ID}",
-      ),
-      cancel_url: accountUrl(deps, input.lang, "?abonnement=annule"),
-    }),
+    createExclusiveSession(
+      deps,
+      { organizationId: input.organizationId, customer, promo: input.promo },
+      () =>
+        deps.stripe.checkout.sessions.create({
+          expires_at: checkoutExpiry(),
+          mode: "subscription",
+          customer,
+          client_reference_id: input.organizationId,
+          locale: STRIPE_LOCALE[input.lang],
+          line_items: [
+            { price: input.plan.stripePriceId as string, quantity: 1 },
+          ],
+          ...discountParams(input),
+          ...(cardOptional
+            ? { payment_method_collection: "if_required" as const }
+            : {}),
+          automatic_tax: { enabled: true },
+          billing_address_collection: "required",
+          customer_update: { address: "auto", name: "auto" },
+          tax_id_collection: { enabled: true },
+          metadata: {
+            kind: "subscription",
+            ...meta,
+            config_version: planConfigVersion(input.plan),
+          },
+          subscription_data: {
+            metadata: meta,
+            ...(trialDays > 0
+              ? {
+                  trial_period_days: trialDays,
+                  ...(cardOptional && input.noPaymentMethodNeeded !== true
+                    ? {
+                        trial_settings: {
+                          end_behavior: {
+                            missing_payment_method: "cancel" as const,
+                          },
+                        },
+                      }
+                    : {}),
+                }
+              : {}),
+          },
+          success_url: accountUrl(
+            deps,
+            input.lang,
+            "?abonnement=ok&session_id={CHECKOUT_SESSION_ID}",
+          ),
+          cancel_url: accountUrl(deps, input.lang, "?abonnement=annule"),
+        }),
+    ),
   );
   if (!session.url)
     throw new CheckoutError("stripe_error", "session sans adresse");

@@ -7,6 +7,7 @@ import {
   CheckoutError,
   type CheckoutExtras,
   checkoutExpiry,
+  createExclusiveSession,
   discountParams,
   ensureStripeCustomer,
   promoMeta,
@@ -56,30 +57,35 @@ export async function createVpsCheckout(
       vps_order_id: input.orderId,
       ...promoMeta(input),
     };
-    const session = await deps.stripe.checkout.sessions.create(
-      {
-        expires_at: checkoutExpiry(),
-        mode: "subscription",
-        customer,
-        client_reference_id: input.organizationId,
-        locale: STRIPE_LOCALE[input.lang],
-        line_items: [{ price: input.priceId, quantity: 1 }],
-        ...discountParams(input),
-        ...(input.noPaymentMethodNeeded
-          ? { payment_method_collection: "if_required" as const }
-          : {}),
-        automatic_tax: { enabled: true },
-        billing_address_collection: "required",
-        customer_update: { address: "auto", name: "auto" },
-        tax_id_collection: { enabled: true },
-        metadata: { ...meta, config_version: input.catalogVersion },
-        subscription_data: { metadata: meta },
-        success_url: `${deps.siteUrl}${localizePath(input.lang, "/compte/vps")}?commande=ok&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${deps.siteUrl}${localizePath(input.lang, "/vps")}?commande=annulee`,
-      } satisfies Stripe.Checkout.SessionCreateParams,
-      {
-        idempotencyKey: `vps-checkout:${input.orderId}${input.promo ? `:${input.promo.promoCodeId}` : ""}`,
-      },
+    const session = await createExclusiveSession(
+      deps,
+      { organizationId: input.organizationId, customer, promo: input.promo },
+      () =>
+        deps.stripe.checkout.sessions.create(
+          {
+            expires_at: checkoutExpiry(),
+            mode: "subscription",
+            customer,
+            client_reference_id: input.organizationId,
+            locale: STRIPE_LOCALE[input.lang],
+            line_items: [{ price: input.priceId, quantity: 1 }],
+            ...discountParams(input),
+            ...(input.noPaymentMethodNeeded
+              ? { payment_method_collection: "if_required" as const }
+              : {}),
+            automatic_tax: { enabled: true },
+            billing_address_collection: "required",
+            customer_update: { address: "auto", name: "auto" },
+            tax_id_collection: { enabled: true },
+            metadata: { ...meta, config_version: input.catalogVersion },
+            subscription_data: { metadata: meta },
+            success_url: `${deps.siteUrl}${localizePath(input.lang, "/compte/vps")}?commande=ok&session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${deps.siteUrl}${localizePath(input.lang, "/vps")}?commande=annulee`,
+          } satisfies Stripe.Checkout.SessionCreateParams,
+          {
+            idempotencyKey: `vps-checkout:${input.orderId}${input.promo ? `:${input.promo.promoCodeId}` : ""}`,
+          },
+        ),
     );
     if (!session.url)
       throw new CheckoutError("stripe_error", "session sans adresse");
