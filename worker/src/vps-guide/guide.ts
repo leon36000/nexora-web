@@ -22,7 +22,7 @@ export const GUIDE_PDF = join(
 export const sourceHash = (md: string): string =>
   createHash("sha256").update(md).digest("hex").slice(0, 12);
 
-export const guideTitle = (md: string, h1: string): string =>
+const guideTitle = (md: string, h1: string): string =>
   `${h1} (source ${sourceHash(md)})`;
 
 /** Titre (champ /Title) d'un PDF produit par Chromium : chaîne hexadécimale UTF-16BE ou chaîne littérale. */

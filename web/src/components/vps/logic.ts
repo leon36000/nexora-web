@@ -247,7 +247,7 @@ export function buildCheckoutBody(input: {
 }
 
 /** Motifs de refus d'un code promo (voir `PROMO_MESSAGE_KEYS` côté serveur). */
-export const PROMO_ERROR_KEYS = [
+const PROMO_ERROR_KEYS = [
   "promo_unknown",
   "promo_expired",
   "promo_exhausted",
@@ -260,7 +260,7 @@ export const PROMO_ERROR_KEYS = [
   "promo_covers_all",
   "promo_account_restricted",
 ] as const;
-export type PromoErrorKey = (typeof PROMO_ERROR_KEYS)[number];
+type PromoErrorKey = (typeof PROMO_ERROR_KEYS)[number];
 
 export type OrderErrorKey =
   | "unauthenticated"

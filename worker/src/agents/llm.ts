@@ -3,7 +3,7 @@ import type { AgentContext } from "./context.ts";
 import type { ChatMessage, ToolDefinition } from "./gateway-client.ts";
 
 /** Extrait le premier objet JSON équilibré d'un texte (les modèles entourent parfois d'un bloc de code). */
-export function extractJsonObject(text: string): unknown {
+function extractJsonObject(text: string): unknown {
   const start = text.indexOf("{");
   if (start === -1) throw new Error("aucun objet JSON dans la réponse");
   let depth = 0;

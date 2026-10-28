@@ -13,7 +13,7 @@ export interface VaultDeps {
   log: Logger;
 }
 
-export const REF_PATTERN = /^[a-z0-9._-]{3,64}$/;
+const REF_PATTERN = /^[a-z0-9._-]{3,64}$/;
 const MAX_BODY_CHARS = 16_384;
 
 const refSchema = z.string().regex(REF_PATTERN);

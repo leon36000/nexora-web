@@ -1,4 +1,4 @@
-// Captures de l'accueil (fr-CA et en-CA) à 390, 768, 1024 et 1440 px -> docs/captures/s1/
+// Captures de l'accueil (fr-CA et en-CA) à 390, 768, 1024 et 1440 px -> .data/captures/ (ignoré par git)
 // Usage : BASE_URL=http://localhost:3641 bun web/scripts/capture.mjs
 import { chromium } from "@playwright/test";
 import { mkdirSync } from "node:fs";
@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const base = process.env.BASE_URL ?? "http://localhost:3641";
-const out = join(dirname(fileURLToPath(import.meta.url)), "../../docs/captures/s1");
+const out = join(dirname(fileURLToPath(import.meta.url)), "../../.data/captures");
 mkdirSync(out, { recursive: true });
 
 const widths = [390, 768, 1024, 1440];

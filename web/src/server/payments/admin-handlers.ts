@@ -35,7 +35,6 @@ import {
   createPromoBatch,
   listPromos,
   PromoError,
-  promoInputSchema,
   setPromoStatus,
 } from "./promo";
 import {

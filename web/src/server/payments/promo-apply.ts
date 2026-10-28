@@ -56,25 +56,12 @@ export interface ValidatePromoInput {
   now: Date;
 }
 
-export async function isStaffUser(
-  db: Database,
-  userId: string,
-): Promise<boolean> {
-  const [row] = await db
-    .select({ userId: staffAccounts.userId })
-    .from(staffAccounts)
-    .where(
-      and(eq(staffAccounts.userId, userId), isNull(staffAccounts.revokedAt)),
-    );
-  return Boolean(row);
-}
-
 /**
  * Compte du personnel utilisable pour les privilèges (codes `staff`, dons) : drapeau actif ET double
  * authentification activée (ASVS niveau 3 pour les comptes privilégiés). `needs_two_factor` : drapeau posé, mais le
  * compte n'a pas encore activé sa double authentification (page /compte/securite) ; `none` : pas du personnel.
  */
-export async function staffStatus(
+async function staffStatus(
   db: Database,
   userId: string,
 ): Promise<"none" | "needs_two_factor" | "ok"> {
@@ -111,7 +98,7 @@ export async function stripePageCodesSafe(db: Database): Promise<boolean> {
 }
 
 /** Cette organisation a-t-elle déjà payé quelque chose ? (don du personnel et commande impayée exclus) */
-export async function hasPriorOrder(
+async function hasPriorOrder(
   db: Database,
   organizationId: string,
 ): Promise<boolean> {

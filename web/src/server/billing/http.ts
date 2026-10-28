@@ -49,11 +49,11 @@ export interface BillingHttpDeps {
 }
 
 /** Statuts d'un abonnement qui court encore (en retard de paiement compris, pendant le délai de grâce). */
-export const LIVE_SUBSCRIPTION_STATUSES = [
-  "active",
-  "trialing",
-  "past_due",
-] as ("active" | "trialing" | "past_due")[];
+const LIVE_SUBSCRIPTION_STATUSES = ["active", "trialing", "past_due"] as (
+  | "active"
+  | "trialing"
+  | "past_due"
+)[];
 
 const NO_STORE = { "cache-control": "no-store" };
 /** 10 créations de paiement ou de portail par minute et par utilisateur. */

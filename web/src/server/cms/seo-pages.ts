@@ -4,7 +4,7 @@ import type { CmsClient } from "./client";
 import { CmsContentError } from "./errors";
 
 /** Page publiée vue sous l'angle SEO : dates réelles et textes de balises, par langue. */
-export type SeoPageTranslation = {
+type SeoPageTranslation = {
   code: "fr-CA" | "en-CA";
   /** `""` pour l'accueil. */
   slug: string;

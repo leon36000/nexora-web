@@ -14,8 +14,8 @@ export interface LighthouseScores {
 }
 export type RunLighthouse = (url: string) => Promise<LighthouseScores>;
 
-export const PERF_TARGET = 0.95;
-export const PERF_ERROR_BELOW = 0.8;
+const PERF_TARGET = 0.95;
+const PERF_ERROR_BELOW = 0.8;
 
 export function scoresToFindings(
   publicUrl: string,

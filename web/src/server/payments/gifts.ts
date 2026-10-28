@@ -7,7 +7,6 @@ import {
   desc,
   type Executor,
   eq,
-  type GiftKind,
   getAccount,
   giftGrants,
   gte,
@@ -547,5 +546,3 @@ export async function listGifts(
     .orderBy(desc(giftGrants.createdAt))
     .limit(Math.min(filter.limit ?? 100, 500));
 }
-
-export type { GiftKind };

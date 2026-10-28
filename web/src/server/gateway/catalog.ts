@@ -32,8 +32,8 @@ import {
   type SnapshotProvider,
 } from "./snapshot";
 
-export const CATALOG_COLLECTION = "model_catalog";
-export const CATALOG_ITEM = "main";
+const CATALOG_COLLECTION = "model_catalog";
+const CATALOG_ITEM = "main";
 
 export type CatalogErrorCode =
   | "not_found"
@@ -478,7 +478,7 @@ function snapshotModel(m: Model, price: Price | null): SnapshotModel {
 }
 
 /** Photographie des tables de travail : modèles au statut « publié », leur prix et le taux approuvés à `now`. */
-export async function buildSnapshot(
+async function buildSnapshot(
   db: Database,
   now: Date = new Date(),
 ): Promise<CatalogSnapshot> {
@@ -506,7 +506,7 @@ const fxOrNull = async (db: Database, now: Date) => {
   return fx ? snapshotFx(fx) : null;
 };
 
-export const shortHash = (hash: string) => `cat_${hash.slice(0, 16)}`;
+const shortHash = (hash: string) => `cat_${hash.slice(0, 16)}`;
 
 export interface CatalogVersion {
   id: string;
@@ -569,10 +569,7 @@ export async function listVersions(
   return rows.map(toVersion);
 }
 
-export async function getVersion(
-  db: Database,
-  id: string,
-): Promise<CatalogVersion> {
+async function getVersion(db: Database, id: string): Promise<CatalogVersion> {
   const [row] = await db
     .select()
     .from(configVersions)
@@ -586,7 +583,7 @@ export interface VaultCheck {
 }
 
 /** Existence d'un secret actif dans le coffre (sans jamais le déchiffrer). */
-export const vaultCheck = (db: Database): VaultCheck => ({
+const vaultCheck = (db: Database): VaultCheck => ({
   secretExists: async (ref) => {
     const [row] = await db
       .select({ revokedAt: vaultSecrets.revokedAt })

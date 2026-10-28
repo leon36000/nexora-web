@@ -75,7 +75,7 @@ function slugCondition(slug: string) {
  * `publishedOnly` : AJOUTE `pages_id.status = published`. Sans licence, le jeton lecteur voit les
  * brouillons : ce filtre est la seule barrière (voir AGENTS.md).
  */
-export function translationFilter(
+function translationFilter(
   code: LangCode,
   slug: string,
   publishedOnly: boolean,

@@ -9,7 +9,7 @@ export const GUIDE_FILENAME = "guide-branchement-proxmox.pdf";
  * L'application le lit sur disque : depuis `web/` (cas normal : `next start` dans `web/`) ou depuis la
  * racine du dépôt ; `VPS_GUIDE_PDF_PATH` permet de le placer ailleurs. Le document ne contient aucun secret.
  */
-export function guideCandidates(
+function guideCandidates(
   env: Record<string, string | undefined> = process.env,
   cwd: string = process.cwd(),
 ): string[] {

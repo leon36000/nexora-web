@@ -128,7 +128,7 @@ export interface CheckoutExtras {
  * code (usages, « un par client », expiration) ne sont comptées qu'au paiement : une session laissée ouverte ne doit
  * pas rester un bon à échanger toute la journée.
  */
-export const CHECKOUT_SESSION_TTL_SECONDS = 30 * 60;
+const CHECKOUT_SESSION_TTL_SECONDS = 30 * 60;
 export const checkoutExpiry = (nowMs = Date.now()): number =>
   Math.floor(nowMs / 1000) + CHECKOUT_SESSION_TTL_SECONDS;
 
@@ -287,7 +287,7 @@ export interface SubscriptionCheckoutInput extends CheckoutExtras {
 }
 
 /** Durée d'essai effective : le plus long de l'offre et du code d'essai. */
-export function effectiveTrialDays(input: SubscriptionCheckoutInput): number {
+function effectiveTrialDays(input: SubscriptionCheckoutInput): number {
   return Math.max(input.trial?.days ?? 0, input.promo?.trialDays ?? 0);
 }
 

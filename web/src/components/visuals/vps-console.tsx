@@ -1,5 +1,4 @@
 import type { VisualsDictionary } from "@/i18n/visuals";
-import { cn } from "@/lib/cn";
 import { Chip, Window } from "./frame";
 
 /** Courbes de principe (aucune valeur) : des tracés fixes, jamais présentés comme des mesures. */

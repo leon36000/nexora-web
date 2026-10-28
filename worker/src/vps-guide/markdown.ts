@@ -16,7 +16,7 @@ const escapeHtml = (s: string) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-export function slugify(text: string): string {
+function slugify(text: string): string {
   return text
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")

@@ -8,7 +8,7 @@ import type { AddressInfo } from "node:net";
 
 type Json = Record<string, unknown>;
 
-export type Seen = {
+type Seen = {
   path: string;
   query: URLSearchParams;
   authorization: string;

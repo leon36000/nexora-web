@@ -57,7 +57,7 @@ export interface SiteAgentsAdminDeps {
 }
 
 /** Garde-fous (micro-CAD) : un PATCH de budget ne dépasse pas 100 $, une allocation de crédit 500 $ par appel. */
-export const MAX_BUDGET_MICRO = 100_000_000n;
+const MAX_BUDGET_MICRO = 100_000_000n;
 export const MAX_CREDIT_MICRO = 500_000_000n;
 
 const micro = z

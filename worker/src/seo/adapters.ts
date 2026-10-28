@@ -20,7 +20,7 @@ import { generateIndexNowKey, isValidIndexNowKey } from "@nexora/seo";
  * Aucun appel externe n'est fait sans clé fournie par le fondateur dans le Coffre. Les références ci-dessous sont celles
  * du module « SEO » (web/src/server/seo-admin/adapters.ts).
  */
-export const ADAPTER_SECRET_REFS = {
+const ADAPTER_SECRET_REFS = {
   indexnow: null,
   bing: "seo.bing.api_key",
   searchconsole: "seo.searchconsole.credentials",
@@ -49,7 +49,7 @@ export interface AdapterDeps {
 
 const KEY_NAME = "indexnow_key";
 
-export async function readIndexNowKey(db: Database): Promise<string | null> {
+async function readIndexNowKey(db: Database): Promise<string | null> {
   const [row] = await db
     .select({ value: seoSettings.value })
     .from(seoSettings)
@@ -70,10 +70,7 @@ export async function getOrCreateIndexNowKey(db: Database): Promise<string> {
 }
 
 /** La référence est-elle dans le Coffre et non révoquée ? (sans déchiffrer) */
-export async function secretPresent(
-  db: Database,
-  ref: string,
-): Promise<boolean> {
+async function secretPresent(db: Database, ref: string): Promise<boolean> {
   const [row] = await db
     .select({ id: vaultSecrets.id })
     .from(vaultSecrets)
@@ -81,7 +78,7 @@ export async function secretPresent(
   return Boolean(row);
 }
 
-export async function adapterRow(db: Database, key: SeoAdapterKey) {
+async function adapterRow(db: Database, key: SeoAdapterKey) {
   await db.insert(seoAdapters).values({ key }).onConflictDoNothing();
   const [row] = await db
     .select()

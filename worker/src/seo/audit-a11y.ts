@@ -16,7 +16,7 @@ export type RunAxe = (
   viewport: { width: number; height: number },
 ) => Promise<AxeViolation[]>;
 
-export const VIEWPORTS = [
+const VIEWPORTS = [
   { name: "mobile", width: 390, height: 844 },
   { name: "bureau", width: 1440, height: 900 },
 ] as const;

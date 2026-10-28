@@ -7,7 +7,7 @@ import type { SubscriptionPlan } from "@/server/billing/plans";
  */
 export type Period = "month" | "year";
 
-export interface PriceOption {
+interface PriceOption {
   /** Code de la ligne d'offre (`?offre=<code>` à l'inscription, `plan` du Checkout). */
   code: string;
   interval: Period;

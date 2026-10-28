@@ -9,7 +9,7 @@
  *   reprise → résiliation → rétention de 7 jours → suppression (horloge simulée).
  *
  * Exige la pile de développement (PostgreSQL, Mailpit, stripe-mock). `WRITE_CAPTURE=1` écrit le
- * compte rendu dans docs/captures/s6/e2e-vps.md.
+ * compte rendu dans docs/preuves/s6/e2e-vps.md.
  */
 import { randomBytes } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -355,11 +355,11 @@ describe.skipIf(!stackUp)(
       await stopSim?.();
       await t?.drop();
       if (process.env.WRITE_CAPTURE === "1") {
-        mkdirSync(new URL("../../../../docs/captures/s6", import.meta.url), {
+        mkdirSync(new URL("../../../../docs/preuves/s6", import.meta.url), {
           recursive: true,
         });
         writeFileSync(
-          new URL("../../../../docs/captures/s6/e2e-vps.md", import.meta.url),
+          new URL("../../../../docs/preuves/s6/e2e-vps.md", import.meta.url),
           `# Preuve de bout en bout — VPS (S6)\n\nGénéré par \`WRITE_CAPTURE=1 bun run --cwd web vitest run src/server/vps/e2e.test.ts\` le ${new Date().toISOString().slice(0, 10)}.\nSimulateur Proxmox (dérivé de l'apidoc officiel), stripe-mock, Mailpit, webhooks signés, vrai worker, horloge simulée pour les délais. Aucun paiement réel, aucun vrai serveur Proxmox.\n\n${report.join("\n")}\n`,
         );
       }

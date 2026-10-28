@@ -280,7 +280,7 @@ export async function getAgent(db: Database, id: string): Promise<HostedAgent> {
   return row;
 }
 
-export type AgentIssueCode =
+type AgentIssueCode =
   | "name_fr_missing"
   | "name_en_missing"
   | "description_fr_missing"

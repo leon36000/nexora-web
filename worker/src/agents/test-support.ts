@@ -10,7 +10,7 @@ import type {
 } from "./gateway-client.ts";
 import type { PageSnapshot } from "./page-reader.ts";
 
-export type Call = { method: string; path: string; body?: unknown };
+type Call = { method: string; path: string; body?: unknown };
 
 /**
  * Faux Directus pour les tests : applique la VRAIE garde des agents (une requête hors liste fermée lève), garde un

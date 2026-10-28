@@ -69,7 +69,7 @@ export const ADMIN_PATH = /^\/api\/(?:admin|revalidate)(?:\/|$)/;
 const limiter = createFailureLimiter();
 
 /** Adresse du client : premier élément de X-Forwarded-For (le proxy frontal doit l'écraser, guide §9). */
-export function clientAddress(request: Request): string {
+function clientAddress(request: Request): string {
   return (
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "inconnue"
   );

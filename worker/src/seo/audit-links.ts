@@ -13,11 +13,10 @@ export type RunLychee = (
   timeoutMs: number,
 ) => Promise<{ code: number | null; stdout: string }>;
 
-export const lycheeBinary = (
-  env: Record<string, string | undefined> = process.env,
-) => env.LYCHEE_BIN ?? join(homedir(), ".local", "bin", "lychee");
+const lycheeBinary = (env: Record<string, string | undefined> = process.env) =>
+  env.LYCHEE_BIN ?? join(homedir(), ".local", "bin", "lychee");
 
-export const runLycheeProcess =
+const runLycheeProcess =
   (bin = lycheeBinary()): RunLychee =>
   (args, timeoutMs) =>
     new Promise((resolve, reject) => {

@@ -15,7 +15,7 @@ import {
 } from "@nexora/db";
 import { type AccessLevel, accessLevel } from "./subscription-state";
 
-export interface DashboardEntry {
+interface DashboardEntry {
   id: string;
   kind: EntryKind;
   source: string;
@@ -26,7 +26,7 @@ export interface DashboardEntry {
   expiresAt: Date | null;
 }
 
-export interface DashboardSubscription {
+interface DashboardSubscription {
   id: string;
   planCode: string | null;
   status: SubscriptionStatus;

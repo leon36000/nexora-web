@@ -14,10 +14,10 @@ import type { SnapshotModel, SnapshotProvider } from "./snapshot";
  * déclarés ailleurs (fichier de configuration) ne sont jamais touchés.
  */
 
-export const MODEL_ID_PREFIX = "nxm-";
-export const CREDENTIAL_PREFIX = "nexora-prov-";
+const MODEL_ID_PREFIX = "nxm-";
+const CREDENTIAL_PREFIX = "nexora-prov-";
 
-export class LitellmError extends Error {
+class LitellmError extends Error {
   readonly status: number;
   readonly operation: string;
   /** Jamais le corps de la réponse : il peut contenir des valeurs de crédentials. */
@@ -169,27 +169,21 @@ export type LitellmClient = ReturnType<typeof createLitellmClient>;
 
 // ─── Correspondances Nexora → LiteLLM ───────────────────────────────────────────
 
-export const credentialNameOf = (provider: Pick<SnapshotProvider, "code">) =>
+const credentialNameOf = (provider: Pick<SnapshotProvider, "code">) =>
   `${CREDENTIAL_PREFIX}${provider.code}`;
 
-export const modelIdOf = (publicId: string) =>
+const modelIdOf = (publicId: string) =>
   `${MODEL_ID_PREFIX}${publicId.replace(/[^a-z0-9._-]+/gi, "-")}`;
 
 /** Nom de modèle LiteLLM selon le type de fournisseur. */
-export function litellmModelString(
-  type: ProviderType,
-  upstreamId: string,
-): string {
+function litellmModelString(type: ProviderType, upstreamId: string): string {
   if (type === "openrouter") return `openrouter/${upstreamId}`;
   if (type === "ollama") return `ollama_chat/${upstreamId}`;
   return `openai/${upstreamId}`;
 }
 
 /** Adresse de base attendue par LiteLLM : `/v1` ajouté pour les API compatibles OpenAI. */
-export function apiBaseFor(
-  type: ProviderType,
-  url: string,
-): string | undefined {
+function apiBaseFor(type: ProviderType, url: string): string | undefined {
   const clean = url.replace(/\/+$/, "");
   if (type === "ollama") return clean.replace(/\/v1$/, "");
   if (type === "openrouter" && /openrouter\.ai/.test(clean)) return undefined;

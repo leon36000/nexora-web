@@ -28,7 +28,7 @@ export function buildEvent<T extends object>(
 }
 
 /** Corps brut et en-tête `stripe-signature` valides pour l'événement. */
-export function signEvent(
+function signEvent(
   event: Stripe.Event,
   secret: string = TEST_WEBHOOK_SECRET,
 ): { payload: string; signature: string } {

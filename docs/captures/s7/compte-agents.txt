@@ -1,6 +1,0 @@
-appel non diffusé : HTTP 200
-appel diffusé : HTTP 200
-OK    /compte @390 : tableau des agents visible (1 ligne(s)), 0 violation(s) axe
-OK    /compte @1440 : tableau des agents visible (1 ligne(s)), 0 violation(s) axe
-OK    /en/compte @390 : tableau des agents visible (1 ligne(s)), 0 violation(s) axe
-OK    /en/compte @1440 : tableau des agents visible (1 ligne(s)), 0 violation(s) axe

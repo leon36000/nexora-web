@@ -13,9 +13,3 @@ export class CmsContentError extends Error {
     this.name = "CmsContentError";
   }
 }
-
-export function isCmsError(
-  e: unknown,
-): e is CmsUnavailableError | CmsContentError {
-  return e instanceof CmsUnavailableError || e instanceof CmsContentError;
-}

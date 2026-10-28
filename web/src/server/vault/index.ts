@@ -5,8 +5,6 @@ import { getDb } from "../db";
 import { type Keyring, loadKeyring } from "./crypto";
 import { readSecret, readSecretForScope } from "./store";
 
-export { VaultError } from "./crypto";
-
 /**
  * Valeur d'un secret du coffre, pour les autres modules serveur (clés de fournisseurs, jeton
  * Proxmox, clés de paiement…). Lève VaultError (not_found, revoked, decrypt_failed).

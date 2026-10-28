@@ -157,21 +157,13 @@ export function stageState(
 
 // ─── Actions ────────────────────────────────────────────────────────────────────
 
-export const VPS_ACTIONS = [
-  "start",
-  "stop",
-  "reboot",
-  "reinstall",
-  "cancel",
-] as const;
+const VPS_ACTIONS = ["start", "stop", "reboot", "reinstall", "cancel"] as const;
 export type VpsAction = (typeof VPS_ACTIONS)[number];
 
 export interface ActionState {
   visible: boolean;
   enabled: boolean;
 }
-
-export const OWNER_ONLY: readonly VpsAction[] = ["reinstall", "cancel"];
 
 /**
  * Qui voit et peut faire quoi. Démarrer, arrêter et redémarrer : tout membre, sur un VPS actif

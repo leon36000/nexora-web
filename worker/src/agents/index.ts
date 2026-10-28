@@ -11,7 +11,7 @@ import { seoOnPage } from "./seo-onpage.ts";
 import { traducteur } from "./traducteur.ts";
 import { veille } from "./veille.ts";
 
-export { executeRun, type RunnerDeps } from "./runner.ts";
+export type { RunnerDeps } from "./runner.ts";
 
 type Env = Record<string, string | undefined>;
 

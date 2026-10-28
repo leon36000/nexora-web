@@ -126,7 +126,7 @@ Cinq agents du site (Rédacteur, Traducteur, SEO on-page, Veille, Santé) ; chac
 1. Dans Directus, créer un utilisateur par agent (courriel de service, par exemple `agent-redacteur@…`), rôle correspondant (« Agent Rédacteur », « Agent Traducteur », « Agent SEO on-page »…, créés par `apply.ts`), puis générer son **jeton statique**.
 2. Module **Coffre** : coller le jeton sous `site-agent.<agent>.directus` (type `other`). Ne jamais le laisser dans un champ de Directus.
 3. Module **Agents du site** : « Générer la clé de la passerelle » (clé Nexora de l'agent), « Allouer du crédit » à l'organisation interne, fixer **modèle et budget mensuel**, activer. Le budget est vérifié avant chaque appel ; l'arrêt est immédiat (désactiver l'agent).
-4. Droits supplémentaires nécessaires au Rédacteur (créer la coquille d'une page) : voir `docs/propositions/s8-cms-agents.diff`.
+4. Le droit de créer la coquille d'une page (en brouillon) est accordé au seul Rédacteur par `apply.ts` (`cms/scripts/lib/access.ts`) ; rien à ajouter à la main.
 
 En développement : `worker/scripts/dev-provision-agents.ts` fait tout cela avec des valeurs d'essai ; **ne jamais l'utiliser en production**.
 

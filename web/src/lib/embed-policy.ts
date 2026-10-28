@@ -15,7 +15,7 @@ export interface EmbedPolicySource {
 const TTL_MS = 10_000;
 let cache: { at: number; value: EmbedPolicySource | null } | null = null;
 
-export async function loadEmbedPolicySource(): Promise<EmbedPolicySource | null> {
+async function loadEmbedPolicySource(): Promise<EmbedPolicySource | null> {
   const { getDb } = await import("@/server/db");
   const { getEmbedSettings } = await import("@/server/agents/catalog");
   const s = await getEmbedSettings(getDb());

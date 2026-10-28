@@ -111,7 +111,7 @@ export const promoInputSchema = z
         "un rabais de 100 % ne peut pas viser les crédits (utilisez un code du personnel)",
       );
   });
-export type PromoInput = z.input<typeof promoInputSchema>;
+type PromoInput = z.input<typeof promoInputSchema>;
 
 function parseInput(input: unknown) {
   const parsed = promoInputSchema.safeParse(input);

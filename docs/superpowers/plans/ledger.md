@@ -54,7 +54,7 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 
 ## S7 Agents hébergés — terminé le 27/10/2026
 - Livré : migration `0008_s7_agents_heberges` (instances WorkStudio, agents, prix immuables, réglage de la bulle, `usage_events.run_fee_micro`) ; `agent/<slug>` dans `/v1/chat/completions` et `/v1/models` (réservation plafonnée par exécution, règlement exact, repli sans usage, 402, 401, 404, 503 propre) ; découverte `GET /v1/models` de WorkStudio (brouillons seulement) ; `/agents` et fiches fr/en ; consommation par agent dans `/compte` ; module Directus « Agents hébergés » ; bulle `/embed.js` administrable avec CSP limitée à l'origine configurée.
-- Preuves : `docs/captures/s7/` (appels réels GLM 5.3 via WorkStudio, flux et non-flux, débit = règlement ; axe 0 ; bulle sans erreur de CSP).
+- Preuves : `docs/preuves/s7/` (appels réels GLM 5.3 via WorkStudio, flux et non-flux, débit = règlement ; axe 0 ; bulle sans erreur de CSP).
 - Correctif S5 au passage : un paquet SSE entièrement masqué (usage non demandé) laissait la lecture en attente.
 - Non fait : prix réels ; rapprochement avec la consommation WorkStudio ; coût amont WorkStudio non suivi (pas de plancher de marge).
 - Contrôle orchestrateur : 1 290 tests verts ; CSP posée seulement sur les pages de la bulle (cache 10 s, aucune en cas d'erreur) ; boucle SSE terminée à la fin de l'amont, règlement avant `[DONE]` ; migration 0008 appliquée sur `app` ; module « Agents hébergés » ouvert dans le vrai Directus (données réelles par le relais).
@@ -128,6 +128,20 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Ouverts : R9 (un détenteur du jeton d'administration peut tester un fournisseur vers un hôte HTTPS qu'il contrôle) ; essais gratuits répétables avec de nouveaux comptes (atténué par la carte exigée) ; offres annuelles créditées en une fois ; `TRACE` à refuser au proxy frontal.
 - WorkStudio v3.1 fusionné dans `Nexora Studio` (b05d7e07) mais NON redéployé : disque de pc6 à 99 % (build arrêté à 4 Go libres) ; en attente de l'accord du fondateur pour vider les caches go-build et uv.
 - Contrôle : `bun run check` vert (web 1221, cms 781, vps 239, worker 165, db 61, net 54) ; démo à jour (4c72152).
+
+## Ménage du 27/10 (demande du fondateur : « rien de désuet, aucun fichier ne servant plus à rien »)
+- Méthode : `knip` (fichiers, dépendances, exports) puis recherche des références (code, scripts shell, `package.json`, documents d'exploitation, Directus) avant chaque suppression ; les entrées de l'extension Directus (déclarées dans `cms/extensions-src/nexora-cms/package.json` et importées par des fichiers `.vue`) sont des faux positifs de `knip` et n'ont pas été touchées.
+- Supprimés (94 fichiers, environ 28 Mo) :
+  - 14 scripts ponctuels de `web/scripts/` par tranche (`axe-pages`, `axe-s2/s3/s6/s7`, `capture-pages`, `capture-s2`, `capture-compte-agents-s7`, `clip`, `verify-account-vps`, `verify-embed-s7`, `verify-gateway-account`, `essai-lastmod`, `indexnow-key`) : aucune référence ailleurs (la clé IndexNow est créée au premier besoin par `getOrCreateIndexNowKey`) ;
+  - 7 scripts de preuve de `worker/scripts/` déjà joués (`dev-branchement-proof`, `dev-directus-harness`, `dev-injection-proof`, `dev-lighthouse`, `dev-probe-directus`, `dev-probe-gateway`, `dev-run-nightly`) ; gardés : `dev-run-audit` (cité par `docs/recette/pages.md`), `dev-provision-agents` (guide de l'opérateur), `build-vps-guide` (script `guide:vps`) ;
+  - la galerie de marque (`/galerie-marque`, outil de développement masqué par `NEXORA_GALERIE_MARQUE`) : plus rien ne la servait ; ses exports devenus orphelins sont retirés ;
+  - `docs/propositions/` (5 diffs déjà appliqués : modules et droits dans `apply.ts` et `access.ts`), `docs/marque/pistes-logo.html` (pistes du logo abandonné, dont « Nexus »), `web/README.md` (gabarit `create-next-app`) ;
+  - les images et rapports HTML de `docs/captures/` (ancienne charte, régénérables) et trois journaux Lighthouse/axe d'anciennes tranches, remplacés par la recette des pages (`docs/recette/pages.md`) ; `docs/captures/` devient `docs/preuves/` (journaux textuels cités par les documents, 68 Ko) ;
+  - dépendance `drizzle-orm` inutilisée de `@nexora/vps` (verrou régénéré) ; 205 mots-clés `export` inutiles retirés et le code mort qu'ils cachaient (fonctions, types, imports) supprimé, vérifié par `tsc --noUnusedLocals`.
+- Corrigés : §5 de la conception (palette sable et encre forêt, logo à trois barres) remplacé par un renvoi à `docs/marque/charte.md` ; `capture.mjs` écrit dans `.data/captures/` (ignoré) ; `contrast.mjs` n'écrit plus de fichier ; références mortes du guide de l'opérateur, de `seo.md`, de `cms.md` et des journaux de preuve.
+- Gardés volontairement : `docs/recherche/00` à `11` (sources citées par la conception, le contenu et les prix), `docs/marque/refonte-mistral.md` et `outils/`, tous les rapports de `docs/recette/`, les scripts documentés (`audit-flux`, `check-*`, `e2e-*`, `pentest-securite`, `restore-proof`, `verify-*`), `dev-credit.ts` (utilisé par les scripts e2e), `cms/extensions/` (déployé), `.cache/cms`, `.env*`.
+- Hors git : arbre de travail `NexoraSite-wt/securite2` (branche fusionnée, 1,3 Go) retiré et sa branche supprimée ; anciennes exécutions `.data/e2e` et `tsconfig.tsbuildinfo` effacés. `web/.next` du dépôt principal laissé (un `next dev` sur le port 3500 s'en sert).
+- Contrôle : `bun run check` vert (lint 0 erreur ; typecheck 9 paquets ; tests db 71, net 54, seo 21, log 7, vps 241, cms 781, deploy 109, worker 167, web 1 302).
 
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.

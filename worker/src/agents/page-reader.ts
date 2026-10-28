@@ -2,7 +2,7 @@ import type { AgentDirectus } from "./directus-client.ts";
 
 /** Lecture d'une page de Directus (lecture seule) telle que les agents la voient, en brouillon ou publiée. */
 
-export const BLOCK_TYPES = [
+const BLOCK_TYPES = [
   "block_hero",
   "block_section",
   "block_cards",
@@ -11,7 +11,7 @@ export const BLOCK_TYPES = [
   "block_cta",
 ] as const;
 
-export const PAGE_READ_FIELDS = [
+const PAGE_READ_FIELDS = [
   "id",
   "status",
   "noindex",
@@ -33,7 +33,7 @@ export const PAGE_READ_FIELDS = [
 
 type Json = Record<string, unknown>;
 
-export interface PageTranslationRow {
+interface PageTranslationRow {
   id: number | string;
   languages_code: string;
   slug: string | null;

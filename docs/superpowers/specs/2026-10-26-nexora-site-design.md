@@ -82,31 +82,9 @@ Il vend aussi les **services** de Nexora (installation de serveurs IA et configu
 
 **Clés secrètes saisies dans l'admin** (le fondateur veut coller une clé OpenRouter dans le panneau) : voir la décision D2 (§17). Le module « Coffre » de Directus est un simple formulaire. Il envoie la clé **directement** au service coffre de l'app, sans l'écrire dans une collection, l'activité, les révisions ou les journaux de Directus. Directus ne reçoit en retour que la référence, les 4 derniers caractères et l'état. Une clé n'est jamais relisible, seulement remplaçable ou révocable.
 
-## 5. Identité visuelle (Nexora, à la manière de Mistral sans la copier)
+## 5. Identité visuelle
 
-Audit : `docs/recherche/00-audit-visuel-mistral.md`.
-
-- **Palette (contrastes WCAG calculés le 26/10) :**
-
-  | Usage | Fond sombre `#0E1613` (surface `#16211D`) | Fond clair « papier » `#FBF8F2` |
-  |---|---|---|
-  | Texte | `#F4F1EA` (16,3:1) | `#17221E` (15,4:1) |
-  | Texte secondaire | `#A9B3AE` (8,5:1) | `#58625B` (6,0:1) |
-  | Accent en texte | `#F07A52` (6,7:1) | `#B83A18` (5,4:1) |
-  | Bouton d'accent | — | orange Nexora `#CE411C` (celui du logo), texte blanc `#FFFFFF` (4,8:1) |
-  | Succès | `#5CC596` (8,7:1) | `#2F7D5B` (4,7:1) |
-
-  Une seule teinte d'accent, l'orange Nexora. Sur fond sombre, l'orange `#CE411C` ne sert jamais à du texte courant (3,9:1).
-- **Typographies libres, servies localement :** titres en **Geist** (OFL), graisse 500, interlignage serré ; texte en **Inter** ; libellés techniques en **JetBrains Mono**.
-- **Signature graphique :** une **grille de périmètre**, des carrés qui dessinent une frontière, celle de vos données. Elle sert de motif d'arrière-plan, d'animation discrète et d'illustration des flux. Jamais de cerveau lumineux ni de robot décoratif.
-- **Logo :** les trois barres inclinées existantes (`NexoraWeb/web/src/app/icon.svg`).
-- **Rythme :**
-  - héros sombre avec un slogan court ponctué d'un point ;
-  - manifeste de souveraineté plein écran ;
-  - alternance texte et visuel produit (vraies interfaces WorkStudio, catalogue, console VPS) ;
-  - schémas de flux de données ;
-  - CTA répétés.
-- **Mobile :** composition propre (pas une réduction). **Animations :** discrètes, désactivées avec `prefers-reduced-motion`.
+La première version de cette section (palette sable et encre forêt, logo à trois barres) est abandonnée. L'identité en vigueur, la refonte « Instrument » du 27/10/2026 (palette, contrastes, logo « N » en pixels, typographies Geist, Inter et JetBrains Mono, composants), est décrite dans `docs/marque/charte.md` ; les principes retenus de l'étude de mistral.ai sont dans `docs/marque/refonte-mistral.md` et l'audit de départ dans `docs/recherche/00-audit-visuel-mistral.md`. Les contraintes de la conception restent : une seule teinte d'accent, aucun cerveau lumineux ni robot décoratif, composition mobile propre (pas une réduction), animations discrètes désactivées avec `prefers-reduced-motion`, contrastes WCAG 2.2 AA calculés (`bun run --cwd web check:contrast`).
 
 ## 6. Arborescence (fr-CA, puis `/en/…`)
 

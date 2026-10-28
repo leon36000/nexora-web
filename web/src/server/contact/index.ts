@@ -10,7 +10,7 @@ import { createRateLimiter } from "./rate-limit";
  * (HMAC avec une étiquette propre), ce qui évite un secret de plus en développement. Sans l'un ni l'autre,
  * le formulaire reste fermé (503).
  */
-export function altchaSecretFromEnv(
+function altchaSecretFromEnv(
   env: Record<string, string | undefined> = process.env,
 ): string | undefined {
   const own = env.NEXORA_ALTCHA_SECRET;

@@ -1,6 +1,6 @@
 import type { SiteAgent, SiteAgentDefinition, SiteAgentRun } from "@nexora/db";
 import type { AgentDirectus } from "./directus-client.ts";
-import type { ChatMessage, ChatRequest, ChatResult } from "./gateway-client.ts";
+import type { ChatRequest, ChatResult } from "./gateway-client.ts";
 import type { IngestedSource } from "./ingest.ts";
 
 export class BudgetExceededError extends Error {
@@ -40,4 +40,3 @@ export interface AgentContext {
 }
 
 export type AgentImpl = (ctx: AgentContext) => Promise<void>;
-export type { ChatMessage };

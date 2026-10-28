@@ -28,7 +28,7 @@ export interface SnapshotProvider {
   enabled: boolean;
 }
 
-export interface SnapshotPrice {
+interface SnapshotPrice {
   id: string;
   upstreamInputUsdMicro: string;
   upstreamOutputUsdMicro: string;
@@ -60,7 +60,7 @@ export interface SnapshotModel {
   price: SnapshotPrice | null;
 }
 
-export interface SnapshotFx {
+interface SnapshotFx {
   id: string;
   usdToCadMicro: string;
   effectiveAt: string;
@@ -80,7 +80,7 @@ export const EMPTY_SNAPSHOT: CatalogSnapshot = {
   models: [],
 };
 
-export function priceRowOf(price: SnapshotPrice): PriceRow {
+function priceRowOf(price: SnapshotPrice): PriceRow {
   const opt = (v: string | null) => (v === null ? null : BigInt(v));
   return {
     upstreamInputUsdMicro: BigInt(price.upstreamInputUsdMicro),
@@ -156,7 +156,7 @@ export function guardSnapshot(
   return issues;
 }
 
-export interface Change {
+interface Change {
   field: string;
   before: unknown;
   after: unknown;

@@ -18,7 +18,7 @@ import {
  * 256 bits aléatoires n'a pas besoin d'un hachage lent : l'empreinte n'est pas devinable.
  */
 
-export const KEY_PREFIX = "nxk_";
+const KEY_PREFIX = "nxk_";
 const DISPLAY_PREFIX_LENGTH = 11;
 
 export type ApiKeyRow = typeof apiKeysTable.$inferSelect;

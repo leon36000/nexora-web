@@ -1,17 +1,10 @@
-import {
-  type Database,
-  jobs,
-  type Lead,
-  leads,
-  recordEventOnce,
-  sql,
-} from "@nexora/db";
+import { type Database, jobs, leads, recordEventOnce, sql } from "@nexora/db";
 import type { ContactData } from "./schema";
 
 /** Type de la tâche de la file `jobs` qui envoie le courriel de notification à l'équipe (gestionnaire : worker). */
 export const NOTIFY_JOB = "contact.notify";
 /** Une demande identique (même empreinte) reçue dans cette fenêtre n'est ni réenregistrée ni renotifiée. */
-export const DEDUPE_WINDOW_HOURS = 24;
+const DEDUPE_WINDOW_HOURS = 24;
 
 export type SaveResult =
   | { status: "created"; id: string }
@@ -67,8 +60,6 @@ export async function saveLead(
     return { status: "created", id: row.id };
   });
 }
-
-export type { Lead };
 
 /**
  * Registre des défis Altcha déjà utilisés (empêche le rejeu d'une preuve de travail), dans la table

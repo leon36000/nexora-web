@@ -8,7 +8,7 @@ import http from "node:http";
  * donc pas les refuser ; la garde se place sur l'événement `request` du serveur HTTP de Node, installée par
  * `instrumentation.ts`. La consigne au proxy frontal (guide §9) reste la première barrière.
  */
-export const ALLOWED_METHODS = [
+const ALLOWED_METHODS = [
   "GET",
   "HEAD",
   "POST",
