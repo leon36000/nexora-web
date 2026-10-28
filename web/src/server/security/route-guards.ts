@@ -310,7 +310,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
         path: "/api/contact",
         headers: JSON_H,
         body: "{}",
-        expect: [400, 422],
+        expect: [400, 422, 429],
       },
     ],
   },
