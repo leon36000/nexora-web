@@ -21,7 +21,7 @@ type Joined = "after" | "before" | "both" | undefined;
 function CardAnchor({ card, label }: { card: CardItem; label: string }) {
   if (!card.href) return null;
   return card.href.startsWith("/") ? (
-    <Link href={card.href} className={CARD_LINK}>
+    <Link href={card.href} prefetch={false} className={CARD_LINK}>
       {label}
     </Link>
   ) : (

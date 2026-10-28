@@ -361,6 +361,17 @@
   }
 }
 
+/* Règle graduée : une graduation tous les 8 px, une plus haute tous les 64 px (le bas d'un héros, comme un instrument). */
+.ruler {
+  height: 10px;
+  background-image:
+    linear-gradient(to right, var(--line-strong) 1px, transparent 1px),
+    linear-gradient(to right, var(--line) 1px, transparent 1px);
+  background-size: 64px 10px, 8px 5px;
+  background-position: left bottom, left bottom;
+  background-repeat: repeat-x;
+}
+
 @utility tex-dots {
   background-image: radial-gradient(var(--line) 1px, transparent 1.3px);
   background-size: 22px 22px;

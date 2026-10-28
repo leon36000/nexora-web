@@ -24,6 +24,11 @@ export function HeroBlockView({
   const H = level === 1 ? "h1" : "h2";
   const titleId = `${block.key}-title`;
   const anchor = anchorProps(block.anchorId);
+  // Chaque héros a sa propre mosaïque (graine tirée de la clé du bloc) : deux pages ne se ressemblent pas à l'identique.
+  const seed = [...block.key].reduce(
+    (a, c) => (a * 31 + c.charCodeAt(0)) % 997,
+    7,
+  );
   return (
     <Section
       {...toneProps(block.variant)}
@@ -40,7 +45,8 @@ export function HeroBlockView({
             aria-hidden="true"
             className="absolute inset-0 -z-10 hidden md:block"
           >
-            <MosaicBackdrop shape="wide" />
+            <MosaicBackdrop shape="wide" seed={seed} />
+            <div className="ruler absolute inset-x-0 bottom-0" />
           </div>
         ) : undefined
       }
@@ -120,7 +126,7 @@ export function HeroBlockView({
           aria-hidden="true"
           className="mt-12 aspect-[13/5] w-full md:hidden"
         >
-          <MosaicBackdrop shape="compact" />
+          <MosaicBackdrop shape="compact" seed={seed} />
         </div>
       ) : null}
     </Section>

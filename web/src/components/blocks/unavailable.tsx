@@ -19,7 +19,10 @@ export function Unavailable({
       className="min-h-[70dvh]"
       containerClassName="flex min-h-[70dvh] flex-col justify-center"
       background={
-        <div aria-hidden="true" className="absolute inset-0 -z-10 opacity-60">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 hidden md:block"
+        >
           <MosaicBackdrop />
         </div>
       }

@@ -270,7 +270,7 @@ Les six types de blocs restent les mêmes (D5) ; S3 ajoute des **champs de compo
 
 | Champ | Blocs | Valeurs (défaut) | Rendu |
 |---|---|---|---|
-| `tone` | section, cartes, tarifs, FAQ ; CTA (déjà là) | `sombre`, `clair`, `sable` (`clair` ; CTA : `sombre`) | sombre = fond encre forêt ; clair = papier ; sable = surface claire relevée. L'ancienne valeur « accent » du CTA se lit « sable ». |
+| `tone` | section, cartes, tarifs, FAQ ; CTA (déjà là) | `sombre`, `clair`, `sable` (`clair` ; CTA : `sombre`) | sombre = fond noir profond ; clair = papier ; sable = surface crème relevée. L'ancienne valeur « accent » du CTA se lit « sable ». |
 | `variant` | héros | `sombre`, `clair`, `sable` (`sombre`) | idem |
 | `layout` | cartes | `grille`, `liste`, `etapes`, `modules` (`grille`) | liste = rangées pleine largeur, libellé mono à gauche (champ de carte `label`, sinon 01, 02…) ; étapes = frise numérotée (horizontale en bureau, verticale en mobile) ; modules = grille compacte M1…, badge de statut facultatif par carte (champ de carte `status` : `disponible`, `pilote`, `prevu` ; texte + forme, jamais la couleur seule), premier paragraphe visible et détail déplié (`<details>`). |
 | `visual` | section | `aucun`, `perimetre-sur-place`, `perimetre-heberge`, `flux-donnees` (`aucun`) | schéma SVG tiré de la grille de périmètre, dans une colonne (à droite, à gauche si `media_position = left`) ; `role="img"` avec texte alternatif traduit (`dict.cms.visuals`). Dans `flux-donnees`, rien d'orange ne sort du périmètre (l'approbation humaine est un carré creux). |

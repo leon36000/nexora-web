@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Notice } from "@/components/account/field";
+import { EmptyMark } from "@/components/brand/empty-mark";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { fmt, formatCad } from "@/i18n/account";
@@ -117,6 +118,7 @@ export function VpsPanel({
 
       {empty ? (
         <Card className="mt-10" variant="outline">
+          <EmptyMark className="mb-6" />
           <h2 className="text-h3 text-fg">{t.empty.title}</h2>
           <p className="mt-3 max-w-2xl text-body text-fg-muted">
             {t.empty.text}

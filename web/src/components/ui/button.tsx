@@ -125,7 +125,7 @@ export function ButtonLink({
   );
   if (href.startsWith("/")) {
     return (
-      <Link href={href} className={classes} {...props}>
+      <Link href={href} prefetch={false} className={classes} {...props}>
         {content}
       </Link>
     );

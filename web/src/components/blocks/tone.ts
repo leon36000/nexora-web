@@ -1,6 +1,6 @@
 import type { Tone } from "@/server/cms/model";
 
-/** Ton CMS -> propriétés de <Section> : sombre = fond encre forêt ; clair = papier ; sable = surface claire relevée. */
+/** Ton CMS -> propriétés de <Section> : sombre = fond noir profond ; clair = papier ; sable = surface claire relevée. */
 export function toneProps(tone: Tone | undefined): {
   tone: "dark" | "light";
   surface: boolean;
