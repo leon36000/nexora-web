@@ -1,10 +1,14 @@
 import {
+  createAnnualTranches,
   credit,
   creditReservations,
   eq,
   getAccount,
+  grantFirstTranche,
   organizations,
   reserve,
+  subscriptionCreditGrants,
+  subscriptionCreditTranches,
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
@@ -79,6 +83,7 @@ describe("tâches du grand livre", () => {
     const types = defaultRegistry({ db: t.db, log: silent }).types();
     expect(types).toContain("ledger.release-stale");
     expect(types).toContain("ledger.expire");
+    expect(types).toContain("ledger.grant-tranches");
   });
 
   it("ledger.release-stale libère les réservations de plus de 30 min et laisse les récentes (même d'un long flux)", async () => {
@@ -128,5 +133,52 @@ describe("tâches du grand livre", () => {
     expect((await getAccount(t.db, id)).balanceMicro).toBe(0n);
     await handler(job("ledger.expire"), ctx);
     expect((await getAccount(t.db, id)).balanceMicro).toBe(0n);
+  });
+
+  it("ledger.grant-tranches verse le douzième mensuel d'une offre annuelle à son échéance, une seule fois", async () => {
+    const id = await org();
+    const start = new Date("2026-01-15T00:00:00Z");
+    const [grant] = await t.db
+      .insert(subscriptionCreditGrants)
+      .values({
+        organizationId: id,
+        stripeInvoiceId: `in_${id}`,
+        stripeSubscriptionId: `sub_${id}`,
+        amountPaidCents: 100_000,
+        creditsMicro: 1200n * M,
+        configVersion: "t",
+      })
+      .returning();
+    if (!grant) throw new Error("octroi attendu");
+    await createAnnualTranches(t.db, {
+      grantId: grant.id,
+      organizationId: id,
+      stripeInvoiceId: `in_${id}`,
+      stripeSubscriptionId: `sub_${id}`,
+      totalMicro: 1200n * M,
+      periodStart: start,
+    });
+    await grantFirstTranche(t.db, {
+      grantId: grant.id,
+      configVersion: "t",
+      now: start,
+    });
+    expect((await getAccount(t.db, id)).balanceMicro).toBe(100n * M);
+    const registry = registerLedgerHandlers(new HandlerRegistry(), {
+      db: t.db,
+      log: silent,
+      now: () => new Date("2026-03-20T00:00:00Z"),
+    });
+    const handler = registry.get("ledger.grant-tranches");
+    if (!handler) throw new Error("gestionnaire attendu");
+    await handler(job("ledger.grant-tranches"), ctx);
+    await handler(job("ledger.grant-tranches"), ctx); // rejeu : sans effet
+    // Janvier (paiement), février et mars (15 mars) : trois douzièmes.
+    expect((await getAccount(t.db, id)).balanceMicro).toBe(300n * M);
+    const granted = await t.db
+      .select()
+      .from(subscriptionCreditTranches)
+      .where(eq(subscriptionCreditTranches.grantId, grant.id));
+    expect(granted.filter((r) => r.status === "granted")).toHaveLength(3);
   });
 });

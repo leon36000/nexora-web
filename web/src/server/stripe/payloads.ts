@@ -45,6 +45,11 @@ export const invoiceSchema = z.object({
   billing_reason: z.string().nullish(),
   /** Montant réellement encaissé, taxes comprises (0 : facture couverte par un solde ou un rabais). */
   amount_paid: z.number().int().nullish(),
+  /**
+   * Total de la facture après rabais et avant taxes, en cents : sert à proportionner les crédits inclus au prix réellement
+   * payé (un code de 99 % ne donne pas 100 % des crédits). Absent : octroi complet, comme avant.
+   */
+  total_excluding_tax: z.number().int().nullish(),
   /** Anciennes versions d'API : la facture porte son paiement (supprimé depuis 2025, voir `invoicePaymentSchema`). */
   payment_intent: ref.nullish(),
   charge: ref.nullish(),

@@ -1,13 +1,19 @@
 import {
   and,
   billingCustomers,
+  createAnnualTranches,
   credit,
   creditEntries,
   creditPurchases,
   type Database,
   debit,
+  desc,
   type Executor,
   eq,
+  grantedMicro,
+  grantFirstTranche,
+  hasTranches,
+  holdPendingTranches,
   minBigint,
   or,
   organizations,
@@ -15,7 +21,11 @@ import {
   promoCodes,
   promoRedemptions,
   recordEventOnce,
+  reducedMicro,
+  reduceUnpaidTranches,
+  releaseHeldTranches,
   SUBSCRIPTION_STATUSES,
+  settleLostDispute,
   sql,
   stripeInvoicePayments,
   subscriptionCreditGrants,
@@ -498,19 +508,28 @@ async function onChargeRefunded(
     return "ignored";
   }
 
-  const already = await netDebitedMicro(tx, source.id);
+  const tranched =
+    source.lotSource === "subscription" && (await hasTranches(tx, source.id));
+  // Offre annuelle : ce qui a déjà été retiré des mois à venir compte comme déjà repris.
+  const already =
+    (await netDebitedMicro(tx, source.id)) +
+    (tranched ? await reducedMicro(tx, source.id) : 0n);
   const delta = creditsToDebitForRefund({
     creditsMicro: source.creditsMicro,
     amountTotalCents: source.paidCents,
     cumulativeRefundedCents: charge.amount_refunded,
     alreadyDebitedMicro: already,
   });
-  if (delta > 0n) {
+  // On retire d'abord les douzièmes pas encore versés : le solde du client n'est entamé que pour le reste.
+  const fromLedger = tranched
+    ? delta - (await reduceUnpaidTranches(tx, source.id, delta, ctx.at))
+    : delta;
+  if (fromLedger > 0n) {
     await debit(tx, {
       organizationId: source.organizationId,
       kind: "refund",
-      amountMicro: delta,
-      idempotencyKey: `refund:${source.id}:${charge.amount_refunded}:${delta}`,
+      amountMicro: fromLedger,
+      idempotencyKey: `refund:${source.id}:${charge.amount_refunded}:${fromLedger}`,
       configVersion: ctx.cfgVersion,
       source: "stripe_refund",
       purchaseId: source.id,
@@ -552,8 +571,17 @@ async function onDisputeCreated(
     cumulativeRefundedCents: dispute.amount,
     alreadyDebitedMicro: 0n,
   });
-  const room = source.creditsMicro - already;
-  const amount = minBigint(wanted, room);
+  let room = source.creditsMicro - already;
+  if (
+    source.lotSource === "subscription" &&
+    (await hasTranches(tx, source.id))
+  ) {
+    // Offre annuelle : le grand livre ne reprend que ce qui a été versé ; les mois à venir sont suspendus jusqu'à
+    // l'issue du litige (gagné : ils reprennent ; perdu : ils sont retirés à hauteur du montant non repris).
+    room = (await grantedMicro(tx, source.id)) - already;
+    await holdPendingTranches(tx, source.id, dispute.id);
+  }
+  const amount = minBigint(wanted, room < 0n ? 0n : room);
   if (amount > 0n) {
     await debit(tx, {
       organizationId: source.organizationId,
@@ -579,7 +607,8 @@ async function onDisputeClosed(
   dispute: ReturnType<typeof disputeSchema.parse>,
 ): Promise<HandlerResult> {
   const { tx, deps } = ctx;
-  if (dispute.status !== "won") return "processed";
+  const closed = ["won", "lost", "warning_closed"];
+  if (!dispute.status || !closed.includes(dispute.status)) return "processed";
   const source = await creditSourceFor(tx, {
     paymentIntent: dispute.payment_intent ? idOf(dispute.payment_intent) : null,
     charge: idOf(dispute.charge),
@@ -589,6 +618,28 @@ async function onDisputeClosed(
     .select()
     .from(creditEntries)
     .where(eq(creditEntries.idempotencyKey, `dispute:${dispute.id}`));
+  // Offre annuelle (douzièmes) : l'issue du litige décide du sort des mois suspendus.
+  const tranched =
+    source.lotSource === "subscription" && (await hasTranches(tx, source.id));
+  if (tranched && dispute.status === "lost") {
+    const wanted = creditsToDebitForRefund({
+      creditsMicro: source.creditsMicro,
+      amountTotalCents: source.paidCents,
+      cumulativeRefundedCents: dispute.amount,
+      alreadyDebitedMicro: 0n,
+    });
+    const taken = withdrawn ? -withdrawn.balanceDeltaMicro : 0n;
+    await settleLostDispute(
+      tx,
+      source.id,
+      dispute.id,
+      wanted > taken ? wanted - taken : 0n,
+      ctx.at,
+    );
+    return "processed";
+  }
+  if (tranched) await releaseHeldTranches(tx, dispute.id);
+  if (dispute.status !== "won") return "processed";
   if (!withdrawn) return "processed"; // rien n'avait été retiré
   const [lot] = await tx
     .select({ expiresAt: creditEntries.expiresAt })
@@ -598,7 +649,16 @@ async function onDisputeClosed(
         eq(creditEntries.purchaseId, source.id),
         eq(creditEntries.source, source.lotSource),
       ),
-    );
+    )
+    .orderBy(desc(creditEntries.expiresAt))
+    .limit(1);
+  // Douzièmes mensuels : le lot d'origine est souvent déjà échu, les crédits rendus valent au moins 30 jours.
+  const restoredExpiry =
+    tranched && lot?.expiresAt
+      ? new Date(
+          Math.max(lot.expiresAt.getTime(), ctx.at.getTime() + 30 * 86_400_000),
+        )
+      : lot?.expiresAt;
   await credit(tx, {
     organizationId: source.organizationId,
     amountMicro: -withdrawn.balanceDeltaMicro,
@@ -607,7 +667,7 @@ async function onDisputeClosed(
     source: "dispute_reversal",
     // Les crédits rendus gardent l'échéance du lot d'origine.
     expiresAt:
-      lot?.expiresAt ?? addMonths(ctx.at, deps.config.creditExpiryMonths),
+      restoredExpiry ?? addMonths(ctx.at, deps.config.creditExpiryMonths),
     purchaseId: source.id,
     externalRef: dispute.id,
   });
@@ -781,13 +841,15 @@ async function onInvoice(
           invoiceId: invoice.id,
         },
       );
-    } else if (plan.includedCreditsCents > 0) {
+    } else if (includedCreditsFor(plan, invoice) > 0) {
       await grantIncludedCredits(ctx, {
         orgId,
         invoice,
         subscriptionId: subId,
         plan,
         paidCents: invoice.amount_paid ?? 0,
+        creditsCents: includedCreditsFor(plan, invoice),
+        periodStart: period ? new Date(period.start * 1000) : ctx.at,
         expiresAt: period ? new Date(period.end * 1000) : addMonths(ctx.at, 1),
       });
     }
@@ -820,8 +882,29 @@ async function linkInvoicePayment(
 }
 
 /**
+ * Crédits inclus à verser pour une facture, en cents : proportionnels au prix réellement payé (avant taxes, après
+ * rabais). Ruling du 28/10 : un code de 99 % ne donne pas 100 % des crédits de l'offre (on ne vend jamais plus de crédits
+ * que le prix payé n'en achète). Sans `total_excluding_tax` (anciennes versions d'API), l'octroi est complet.
+ */
+export function includedCreditsFor(
+  plan: SubscriptionPlan,
+  invoice: InvoicePayload,
+): number {
+  const net = invoice.total_excluding_tax;
+  if (net == null || plan.priceCents <= 0) return plan.includedCreditsCents;
+  const paid = Math.max(0, Math.min(net, plan.priceCents));
+  return Number(
+    (BigInt(plan.includedCreditsCents) * BigInt(paid)) /
+      BigInt(plan.priceCents),
+  );
+}
+
+/**
  * Crédits inclus d'un abonnement, reliés à la facture payée (I2) : la ligne `subscription_credit_grants`
- * sert de source aux remboursements et litiges de cette facture.
+ * sert de source aux remboursements et litiges de cette facture. Offre mensuelle : un seul versement, valable jusqu'à
+ * la fin de la période. Offre ANNUELLE : douze tranches (un douzième par mois, chacun valable le mois en cours), la
+ * première versée tout de suite, les autres par la tâche `ledger.grant-tranches` du worker (voir
+ * `packages/db/src/subscription-credits.ts`).
  */
 async function grantIncludedCredits(
   ctx: Ctx,
@@ -831,11 +914,14 @@ async function grantIncludedCredits(
     subscriptionId: string;
     plan: SubscriptionPlan;
     paidCents: number;
+    /** Crédits à verser pour cette facture (proportionnels au prix payé). */
+    creditsCents: number;
+    periodStart: Date;
     expiresAt: Date;
   },
 ): Promise<void> {
   const { tx } = ctx;
-  const creditsMicro = centsToMicro(input.plan.includedCreditsCents);
+  const creditsMicro = centsToMicro(input.creditsCents);
   const version = planConfigVersion(input.plan);
   await tx
     .insert(subscriptionCreditGrants)
@@ -853,6 +939,22 @@ async function grantIncludedCredits(
     .from(subscriptionCreditGrants)
     .where(eq(subscriptionCreditGrants.stripeInvoiceId, input.invoice.id));
   if (!grant) throw new Error("octroi introuvable après insertion");
+  if (input.plan.interval === "year") {
+    await createAnnualTranches(tx, {
+      grantId: grant.id,
+      organizationId: input.orgId,
+      stripeInvoiceId: input.invoice.id,
+      stripeSubscriptionId: input.subscriptionId,
+      totalMicro: creditsMicro,
+      periodStart: input.periodStart,
+    });
+    await grantFirstTranche(tx, {
+      grantId: grant.id,
+      configVersion: version,
+      now: ctx.at,
+    });
+    return;
+  }
   await credit(tx, {
     organizationId: input.orgId,
     amountMicro: creditsMicro,

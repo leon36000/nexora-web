@@ -1,6 +1,7 @@
 import {
   type Database,
   expireAllDue,
+  grantDueTranches,
   releaseStaleReservations,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
@@ -12,6 +13,8 @@ import type { HandlerRegistry } from "./registry.ts";
  * - `ledger.release-stale` (toutes les 10 minutes) : libère les réservations ouvertes depuis plus longtemps que
  *   `staleReservationAfterMs` (requête perdue : arrêt du serveur entre la réservation et le règlement). Le montant
  *   redevient disponible et la part retenue sur le plafond de la clé API est rendue.
+ * - `ledger.grant-tranches` (une fois par heure) : verse les douzièmes mensuels des crédits inclus des offres annuelles à
+ *   leur échéance (un abonnement terminé n'en reçoit plus, un abonnement impayé attend).
  * - `ledger.expire` (une fois par jour) : expire les crédits échus et non consommés (12 mois), pour toutes les
  *   organisations.
  *
@@ -63,6 +66,11 @@ export function registerLedgerHandlers(
         released,
         afterMs,
       });
+  });
+  registry.register("ledger.grant-tranches", async () => {
+    const out = await grantDueTranches(deps.db, { now: now() });
+    if (out.granted + out.canceled + out.waiting > 0)
+      deps.log.info("grand livre : douzièmes des offres annuelles", { ...out });
   });
   registry.register("ledger.expire", async () => {
     const out = await expireAllDue(deps.db, {

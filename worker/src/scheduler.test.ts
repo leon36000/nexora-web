@@ -150,6 +150,17 @@ describe("planificateur", () => {
     ).toHaveLength(2);
   });
 
+  it("grand livre : le versement des douzièmes des offres annuelles est déclaré une fois par heure", async () => {
+    await tickScheduler(at("2026-10-27T14:00:00Z"));
+    await tickScheduler(at("2026-10-27T14:40:00Z")); // même heure
+    await tickScheduler(at("2026-10-27T15:05:00Z")); // heure suivante
+    const grants = (await t.db.select().from(jobs)).filter(
+      (j) => j.type === "ledger.grant-tranches",
+    );
+    expect(grants).toHaveLength(2);
+    expect(new Set(grants.map((j) => j.idempotencyKey)).size).toBe(2);
+  });
+
   it("grand livre : l'expiration n'est pas déclarée avant 2 h (heure locale)", async () => {
     await tickScheduler(at("2026-10-27T05:00:00Z")); // 01:00 locale
     expect(
