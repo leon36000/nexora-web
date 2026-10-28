@@ -18,6 +18,7 @@ import type { WebhookRouteDeps } from "../stripe/webhook-route";
 import { getSecret } from "../vault";
 import type { BillingHttpDeps } from "./http";
 import { lazyPlanSource, planSourceFromEnv } from "./plans";
+import { stripeTrialInspector } from "./trial-guard";
 
 const secretDeps = () => ({
   env: process.env,
@@ -82,6 +83,13 @@ export function webhookRouteDeps(): WebhookRouteDeps {
       log,
       resolveSessionPromotion: async (sessionId) =>
         resolveSessionPromotion(await getStripe(), sessionId),
+      // Un essai gratuit par carte et par courriel : lecture et résiliation chez Stripe (voir trial-guard.ts).
+      trials: {
+        inspect: async (id) =>
+          stripeTrialInspector(await getStripe()).inspect(id),
+        cancel: async (id) =>
+          stripeTrialInspector(await getStripe()).cancel(id),
+      },
     },
     log,
   };

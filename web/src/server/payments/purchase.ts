@@ -8,6 +8,7 @@ import {
   subscriptions,
 } from "@nexora/db";
 import type { PlanSource, SubscriptionPlan } from "../billing/plans";
+import { emailTrialConsumed } from "../billing/trial-guard";
 import type { AppliedPromo } from "../stripe/checkout";
 import type { PromoRow } from "./promo";
 import { type PromoRejection, validatePromo } from "./promo-apply";
@@ -83,7 +84,7 @@ export function creditFee(
 /**
  * Essai gratuit à appliquer au Checkout d'une offre : durée de l'offre, carte exigée selon l'offre ou le réglage
  * général. Un seul essai par organisation et par offre (toutes périodes confondues) : `undefined` si elle a déjà
- * eu un abonnement à cette offre.
+ * eu un abonnement à cette offre, ou si le courriel a déjà servi à un essai de la famille (`trial-guard.ts`).
  */
 export async function trialFor(
   db: Database,
@@ -92,6 +93,8 @@ export async function trialFor(
     plans: PlanSource;
     organizationId: string;
     settings: Pick<PaymentSettings, "trialRequiresCard">;
+    /** Courriel de la personne qui s'abonne : un courriel (normalisé) déjà servi pour un essai n'en obtient plus. */
+    email?: string;
   },
 ): Promise<{ days: number; requireCard: boolean } | undefined> {
   const { plan } = input;
@@ -118,6 +121,8 @@ export async function trialFor(
     )
     .limit(1);
   if (prior) return undefined;
+  if (input.email && (await emailTrialConsumed(db, input.email, plan.family)))
+    return undefined;
   const requireCard =
     plan.trialCard === "required"
       ? true

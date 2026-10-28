@@ -53,6 +53,7 @@ import {
   type SubEvent,
   type SubState,
 } from "./subscription-state";
+import { enforceTrialUniqueness, type TrialInspector } from "./trial-guard";
 
 export interface WebhookDeps {
   db: Database;
@@ -64,6 +65,11 @@ export interface WebhookDeps {
    * Stripe (aucune métadonnée de chez nous). Facultatif et sans effet sur le paiement : un échec est ignoré.
    */
   resolveSessionPromotion?: (sessionId: string) => Promise<string | null>;
+  /**
+   * Un essai gratuit par carte et par courriel (voir `trial-guard.ts`) : lecture de la carte et du courriel chez Stripe,
+   * résiliation d'un essai déjà consommé. Absent : aucun contrôle (essais et développement sans Stripe).
+   */
+  trials?: TrialInspector;
 }
 
 export interface WebhookOutcome {
@@ -925,5 +931,25 @@ async function onSubscription(
     configVersion: cfg,
     vpsOrderId: isVps ? (sub.metadata.vps_order_id ?? null) : null,
   });
+  if (
+    type === "subscription_updated" &&
+    sub.status === "trialing" &&
+    !isVps &&
+    deps.trials
+  ) {
+    let plan: SubscriptionPlan | null = null;
+    try {
+      plan = await findPlan(deps, planCode, priceId);
+    } catch {
+      // Directus indisponible : repli sur le code du plan.
+    }
+    await enforceTrialUniqueness(tx, {
+      inspector: deps.trials,
+      subscriptionId: sub.id,
+      organizationId: orgId,
+      family: plan?.family ?? planCode ?? "inconnue",
+      log: deps.log,
+    });
+  }
   return "processed";
 }
