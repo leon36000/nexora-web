@@ -4,6 +4,7 @@ import { type Lang, localizePath } from "@/i18n/config";
 import type { SubscriptionPlan } from "../billing/plans";
 import { planConfigVersion } from "../billing/plans";
 import { type BillingConfig, configVersion } from "../ledger/config";
+import { portalConfigurationId } from "./portal";
 
 export type CheckoutErrorCode =
   | "invalid_amount"
@@ -330,10 +331,12 @@ export async function createPortalSession(
       "no_customer",
       "aucun client Stripe pour cette organisation",
     );
-  const session = await wrapStripe(() =>
+  const session = await wrapStripe(async () =>
     deps.stripe.billingPortal.sessions.create({
       customer: link.id,
       return_url: accountUrl(deps, input.lang),
+      // Portail restreint (pas de changement d'offre, résiliation en fin de période) : voir portal.ts. Échec : pas de portail.
+      configuration: await portalConfigurationId(deps.stripe),
     }),
   );
   return { url: session.url };

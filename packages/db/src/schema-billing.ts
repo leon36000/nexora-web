@@ -359,6 +359,36 @@ export const trialDenials = pgTable(
 );
 
 /**
+ * Litiges de paiement (Stripe `charge.dispute.*`) par organisation. Une organisation dont un litige est ouvert ou perdu ne
+ * reçoit plus d'essai gratuit ni de rabais (Ruling du 28/10) ; un litige gagné lève la restriction. `status` : `open`
+ * (créé), `won` (gagné ou clos sans perte), `lost`.
+ */
+export const DISPUTE_STATUSES = ["open", "won", "lost"] as const;
+export type DisputeStatus = (typeof DISPUTE_STATUSES)[number];
+
+export const paymentDisputes = pgTable(
+  "payment_disputes",
+  {
+    /** Identifiant du litige chez Stripe (`dp_…`). */
+    id: text("id").primaryKey(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    status: text("status").$type<DisputeStatus>().notNull().default("open"),
+    amountCents: integer("amount_cents").notNull(),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    closedAt: ts("closed_at"),
+  },
+  (t) => [
+    index("payment_disputes_org_idx").on(t.organizationId, t.status),
+    check(
+      "payment_disputes_status_check",
+      sql`${t.status} IN ('open','won','lost')`,
+    ),
+  ],
+);
+
+/**
  * Lien facture ↔ paiement Stripe. Depuis l'API 2025+, ni la facture ni la charge ne se
  * référencent mutuellement : seul l'événement `invoice_payment.paid` les relie. Une ligne par
  * facture ; elle peut arriver avant ou après `invoice.paid`.

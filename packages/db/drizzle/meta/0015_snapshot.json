@@ -1,5 +1,5 @@
 {
-  "id": "6a87ca50-8485-47d7-a286-92440249e145",
+  "id": "4d78aac6-43b0-42e6-860d-414bf87a2e23",
   "prevId": "c69b5f7a-ebe5-48da-9b74-16aaa6d40262",
   "version": "7",
   "dialect": "postgresql",
@@ -2528,6 +2528,98 @@
         "credit_reservations_status_check": {
           "name": "credit_reservations_status_check",
           "value": "\"credit_reservations\".\"status\" IN ('open','settled','released')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.payment_disputes": {
+      "name": "payment_disputes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "organization_id": {
+          "name": "organization_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "amount_cents": {
+          "name": "amount_cents",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "closed_at": {
+          "name": "closed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "payment_disputes_org_idx": {
+          "name": "payment_disputes_org_idx",
+          "columns": [
+            {
+              "expression": "organization_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "payment_disputes_organization_id_organizations_id_fk": {
+          "name": "payment_disputes_organization_id_organizations_id_fk",
+          "tableFrom": "payment_disputes",
+          "tableTo": "organizations",
+          "columnsFrom": [
+            "organization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "payment_disputes_status_check": {
+          "name": "payment_disputes_status_check",
+          "value": "\"payment_disputes\".\"status\" IN ('open','won','lost')"
         }
       },
       "isRLSEnabled": false

@@ -87,7 +87,15 @@ function setup(session: SessionInfo | null) {
   const stripe = {
     customers: { create: vi.fn(async () => ({ id: `cus_${id()}` })) },
     checkout: { sessions: { create: checkoutCreate } },
-    billingPortal: { sessions: { create: portalCreate } },
+    billingPortal: {
+      sessions: { create: portalCreate },
+      configurations: {
+        list: vi.fn(async () => ({
+          data: [{ id: "bpc_test", metadata: { nexora: "portal-v1" } }],
+        })),
+        create: vi.fn(),
+      },
+    },
   };
   const deps: BillingHttpDeps = {
     db: t.db,

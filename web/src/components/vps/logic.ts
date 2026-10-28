@@ -258,6 +258,7 @@ export const PROMO_ERROR_KEYS = [
   "promo_min_amount",
   "promo_not_ready",
   "promo_covers_all",
+  "promo_account_restricted",
 ] as const;
 export type PromoErrorKey = (typeof PROMO_ERROR_KEYS)[number];
 

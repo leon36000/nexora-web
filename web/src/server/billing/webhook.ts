@@ -53,6 +53,7 @@ import {
   subscriptionSchema,
 } from "../stripe/payloads";
 import { onVpsSessionExpired } from "../vps/checkout-expired";
+import { recordDisputeClosed, recordDisputeOpened } from "./disputes";
 import {
   type PlanSource,
   planConfigVersion,
@@ -564,6 +565,11 @@ async function onDisputeCreated(
     return "ignored";
   }
 
+  await recordDisputeOpened(tx, {
+    id: dispute.id,
+    organizationId: source.organizationId,
+    amountCents: dispute.amount,
+  });
   const already = await netDebitedMicro(tx, source.id);
   const wanted = creditsToDebitForRefund({
     creditsMicro: source.creditsMicro,
@@ -614,6 +620,13 @@ async function onDisputeClosed(
     charge: idOf(dispute.charge),
   });
   if (!source) return "ignored";
+  await recordDisputeClosed(tx, {
+    id: dispute.id,
+    organizationId: source.organizationId,
+    amountCents: dispute.amount,
+    status: dispute.status === "lost" ? "lost" : "won",
+    at: ctx.at,
+  });
   const [withdrawn] = await tx
     .select()
     .from(creditEntries)

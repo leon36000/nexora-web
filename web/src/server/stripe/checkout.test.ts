@@ -49,7 +49,15 @@ function fakeStripe() {
     client: {
       customers,
       checkout: { sessions },
-      billingPortal: { sessions: portal },
+      billingPortal: {
+        sessions: portal,
+        configurations: {
+          list: vi.fn(async () => ({
+            data: [{ id: "bpc_test", metadata: { nexora: "portal-v1" } }],
+          })),
+          create: vi.fn(),
+        },
+      },
     } as never,
   };
 }
@@ -371,6 +379,8 @@ describe("portail client", () => {
     >;
     expect(params.return_url).toBe("https://nexora.test/en/compte");
     expect(params.customer).toMatch(/^cus_/);
+    // Portail restreint (ni changement d'offre, ni résiliation immédiate avec prorata).
+    expect(params.configuration).toBe("bpc_test");
   });
 
   it("refuse si l'organisation n'a encore aucun client Stripe", async () => {

@@ -279,6 +279,8 @@ export const accountFrCA = {
         "Ce code n’est pas encore activé. Réessayez plus tard ou contactez-nous.",
       covers_all:
         "Ce code couvrirait la totalité de l’achat de crédits : choisissez un montant plus élevé.",
+      account_restricted:
+        "Ce code ne peut pas être appliqué à votre compte pour le moment. Contactez-nous.",
     },
     gifted: {
       subscription: "Abonnement offert : accès complet, sans paiement.",

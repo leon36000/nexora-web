@@ -7,6 +7,7 @@ import {
   type PromoScope,
   subscriptions,
 } from "@nexora/db";
+import { hasDisputeRestriction } from "../billing/disputes";
 import type { PlanSource, SubscriptionPlan } from "../billing/plans";
 import { emailTrialConsumed } from "../billing/trial-guard";
 import type { AppliedPromo } from "../stripe/checkout";
@@ -121,6 +122,8 @@ export async function trialFor(
     )
     .limit(1);
   if (prior) return undefined;
+  // Litige ouvert ou perdu : plus d'essai gratuit (voir billing/disputes.ts).
+  if (await hasDisputeRestriction(db, input.organizationId)) return undefined;
   if (input.email && (await emailTrialConsumed(db, input.email, plan.family)))
     return undefined;
   const requireCard =

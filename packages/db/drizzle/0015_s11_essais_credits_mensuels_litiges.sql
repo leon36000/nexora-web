@@ -1,3 +1,13 @@
+CREATE TABLE "payment_disputes" (
+	"id" text PRIMARY KEY NOT NULL,
+	"organization_id" text NOT NULL,
+	"status" text DEFAULT 'open' NOT NULL,
+	"amount_cents" integer NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"closed_at" timestamp with time zone,
+	CONSTRAINT "payment_disputes_status_check" CHECK ("payment_disputes"."status" IN ('open','won','lost'))
+);
+--> statement-breakpoint
 CREATE TABLE "subscription_credit_tranches" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"grant_id" uuid NOT NULL,
@@ -42,10 +52,12 @@ CREATE TABLE "trial_denials" (
 	CONSTRAINT "trial_denials_reason_check" CHECK ("trial_denials"."reason" IN ('card','email'))
 );
 --> statement-breakpoint
+ALTER TABLE "payment_disputes" ADD CONSTRAINT "payment_disputes_organization_id_organizations_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organizations"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "subscription_credit_tranches" ADD CONSTRAINT "subscription_credit_tranches_grant_id_subscription_credit_grants_id_fk" FOREIGN KEY ("grant_id") REFERENCES "public"."subscription_credit_grants"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "subscription_credit_tranches" ADD CONSTRAINT "subscription_credit_tranches_organization_id_organizations_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organizations"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "trial_claims" ADD CONSTRAINT "trial_claims_organization_id_organizations_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organizations"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "trial_denials" ADD CONSTRAINT "trial_denials_organization_id_organizations_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organizations"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "payment_disputes_org_idx" ON "payment_disputes" USING btree ("organization_id","status");--> statement-breakpoint
 CREATE UNIQUE INDEX "subscription_credit_tranches_grant_seq_unique" ON "subscription_credit_tranches" USING btree ("grant_id","seq");--> statement-breakpoint
 CREATE INDEX "subscription_credit_tranches_due_idx" ON "subscription_credit_tranches" USING btree ("status","due_at");--> statement-breakpoint
 CREATE INDEX "subscription_credit_tranches_sub_idx" ON "subscription_credit_tranches" USING btree ("stripe_subscription_id");--> statement-breakpoint

@@ -14,6 +14,7 @@ import {
   users,
   vpsOrders,
 } from "@nexora/db";
+import { hasDisputeRestriction } from "../billing/disputes";
 import { normalizeCode, type PromoRow } from "./promo";
 
 /**
@@ -33,6 +34,7 @@ export const PROMO_MESSAGE_KEYS = [
   "min_amount",
   "not_ready",
   "covers_all",
+  "account_restricted",
 ] as const;
 export type PromoRejection = (typeof PROMO_MESSAGE_KEYS)[number];
 
@@ -175,6 +177,10 @@ export async function validatePromo(
     if (status === "none") return reject("unknown");
     if (status === "needs_two_factor") return reject("two_factor_required");
   }
+
+  // Litige ouvert ou perdu : plus de rabais ni d'essai (un don du personnel reste une décision de l'équipe).
+  if (!gift && (await hasDisputeRestriction(db, input.organizationId)))
+    return reject("account_restricted");
 
   const [{ used } = { used: 0 }] = await db
     .select({ used: sql<number>`count(*)::int` })
