@@ -1,7 +1,12 @@
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import { redirect } from "next/navigation";
 import { localizePath } from "@/i18n/config";
-import { verifyPreviewLink } from "@/server/preview-link";
+import { SITE_URL } from "@/lib/site";
+import {
+  PREVIEW_SESSION_COOKIE,
+  signPreviewSession,
+  verifyPreviewLink,
+} from "@/server/preview-link";
 
 const NO_STORE = { "cache-control": "no-store" };
 
@@ -26,5 +31,16 @@ export async function GET(request: Request) {
     });
   }
   (await draftMode()).enable();
+  // Le cookie du Draft Mode n'expire jamais : cette session signée de 30 minutes décide, avec lui, de l'aperçu (proxy.ts).
+  const session = signPreviewSession({
+    secret: process.env.NEXORA_PREVIEW_SECRET,
+  });
+  (await cookies()).set(PREVIEW_SESSION_COOKIE, session.value, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: SITE_URL.startsWith("https://"),
+    path: "/",
+    maxAge: session.maxAge,
+  });
   redirect(localizePath(verdict.lang, verdict.path));
 }

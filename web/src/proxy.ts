@@ -10,6 +10,10 @@ import {
 import { isIndexableEnvironment, NOINDEX_HEADER } from "@/lib/seo/site-env";
 import { SITE_URL } from "@/lib/site";
 import { ADMIN_PATH, throttleAdminFailures } from "@/server/admin-throttle";
+import {
+  PREVIEW_SESSION_COOKIE,
+  verifyPreviewSession,
+} from "@/server/preview-link";
 
 /**
  * Routage des langues (Next.js 16 : `proxy.ts` remplace `middleware.ts`).
@@ -38,6 +42,7 @@ function isMalformedPath(pathname: string): boolean {
 }
 
 const API_PREFIX = /^\/(?:api|v1|og)(?:\/|$)/;
+const PAGE_REFUSED_METHODS = new Set(["PUT", "PATCH", "DELETE"]);
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -59,11 +64,60 @@ export async function proxy(request: NextRequest) {
     );
     if (limited) return limited;
   }
+  // Pages : ni PUT, ni PATCH, ni DELETE (les formulaires et actions serveur sont des POST) ; les routes /api et /v1
+  // gardent leurs propres méthodes. Les méthodes exotiques (TRACE…) sont refusées avant Next.js (server/http-method-guard.ts).
+  if (!API_PREFIX.test(pathname) && PAGE_REFUSED_METHODS.has(request.method))
+    return new NextResponse("Method Not Allowed", {
+      status: 405,
+      headers: {
+        allow: "GET, HEAD, POST, OPTIONS",
+        "content-type": "text/plain; charset=utf-8",
+        "cache-control": "no-store",
+        "content-security-policy": API_CSP,
+      },
+    });
   // /api, /v1 et /og ne passent ici que pour le contrôle ci-dessus : ni langue, ni CSP de page (la leur vient de next.config).
   if (API_PREFIX.test(pathname)) return NextResponse.next();
-  const response = route(request);
-  // Aperçu (Draft Mode, cookie posé par /api/preview) : jamais indexable, quelle que soit la page.
-  if (request.cookies.has("__prerender_bypass"))
+  // Aperçu (Draft Mode) : le cookie `__prerender_bypass` est constant et sans expiration ; il n'est honoré que
+  // accompagné de la session signée de 30 minutes posée par /api/preview. Sinon on l'efface (navigation : par une redirection
+  // vers la même adresse, pour que la page soit rendue sans brouillons).
+  const bypass = request.cookies.has("__prerender_bypass");
+  const previewing =
+    bypass &&
+    verifyPreviewSession({
+      secret: process.env.NEXORA_PREVIEW_SECRET,
+      value: request.cookies.get(PREVIEW_SESSION_COOKIE)?.value,
+    });
+  if (bypass && !previewing) {
+    const navigation = request.method === "GET" || request.method === "HEAD";
+    const expired = navigation
+      ? NextResponse.redirect(request.nextUrl, 307)
+      : route(request);
+    clearPreviewCookies(expired);
+    expired.headers.set("cache-control", "no-store");
+    if (navigation) return expired;
+    return finish(request, expired, false);
+  }
+  return finish(request, route(request), previewing);
+}
+
+/** Efface les cookies d'aperçu (attributs identiques à ceux posés par Next.js et /api/preview). */
+function clearPreviewCookies(response: NextResponse): void {
+  for (const name of [
+    "__prerender_bypass",
+    "__next_preview_data",
+    PREVIEW_SESSION_COOKIE,
+  ])
+    response.cookies.set(name, "", { path: "/", maxAge: 0 });
+}
+
+async function finish(
+  request: NextRequest,
+  response: NextResponse,
+  previewing: boolean,
+): Promise<NextResponse> {
+  // Aperçu valide : jamais indexable, quelle que soit la page.
+  if (previewing)
     response.headers.set("x-robots-tag", "noindex, nofollow, noarchive");
   else if (!isIndexableEnvironment())
     response.headers.set("x-robots-tag", NOINDEX_HEADER);

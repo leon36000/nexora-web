@@ -8,6 +8,7 @@ import {
   NO_ALTERNATES,
 } from "@/lib/alternates";
 import { log } from "@/server/log";
+import { pageCacheLife } from "./cache-life";
 import { slugKnownAbsent } from "./known-slugs";
 import { langCode } from "./lang";
 import type { NavItem, PageModel, PreviewInfo, SiteSettings } from "./model";
@@ -68,9 +69,9 @@ export async function getPage(lang: Lang, slug: string): Promise<PageResult> {
       () => fetchPublishedPage(readerClient(), code, slug),
     );
     if (loaded.value) cacheTag(pageIdTag(loaded.value.id));
-    if (loaded.source === "fresh")
-      cacheLife({ stale: 60, revalidate: 300, expire: 2_592_000 });
-    else cacheLife({ stale: 30, revalidate: 10, expire: 600 });
+    cacheLife(
+      pageCacheLife({ source: loaded.source, found: loaded.value !== null }),
+    );
     return loaded.value
       ? {
           status: "ok",
