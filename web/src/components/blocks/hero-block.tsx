@@ -1,4 +1,4 @@
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
+import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -9,7 +9,7 @@ import type { HeroBlock } from "@/server/cms/model";
 import { CmsImage } from "./cms-image";
 import { anchorProps, toneProps } from "./tone";
 
-/** Héros du CMS : surtitre, titre, sous-titre, deux appels à l'action, grille de périmètre en signature. */
+/** Héros du CMS : surtitre, titre, sous-titre, deux appels à l'action ; la mosaïque braise et la grille de mesure en signature. */
 export function HeroBlockView({
   block,
   level = 1,
@@ -24,25 +24,34 @@ export function HeroBlockView({
   const H = level === 1 ? "h1" : "h2";
   const titleId = `${block.key}-title`;
   const anchor = anchorProps(block.anchorId);
+  // Chaque héros a sa propre mosaïque (graine tirée de la clé du bloc) : deux pages ne se ressemblent pas à l'identique.
+  const seed = [...block.key].reduce(
+    (a, c) => (a * 31 + c.charCodeAt(0)) % 997,
+    7,
+  );
   return (
     <Section
       {...toneProps(block.variant)}
       flush
       aria-labelledby={titleId}
       id={anchor.id}
-      className={cn("pb-20 pt-14 md:pb-32 md:pt-28", anchor.className)}
+      className={cn(
+        "pb-16 pt-14 md:pb-28 md:pt-28 lg:pb-36 lg:pt-36",
+        anchor.className,
+      )}
       background={
         block.perimeterGrid ? (
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 hidden opacity-70 md:block"
+            className="absolute inset-0 -z-10 hidden md:block"
           >
-            <PerimeterGrid shape="wide" />
+            <MosaicBackdrop shape="wide" seed={seed} />
+            <div className="ruler absolute inset-x-0 bottom-0" />
           </div>
         ) : undefined
       }
     >
-      <div className={cn("max-w-2xl lg:max-w-[43rem]")}>
+      <div className={cn("max-w-2xl lg:max-w-[44rem]")}>
         {block.eyebrow ? (
           <Badge tone="accent" className="rise">
             {block.eyebrow}
@@ -58,7 +67,7 @@ export function HeroBlockView({
         {block.subheadline ? (
           <p
             style={{ "--d": 2 } as React.CSSProperties}
-            className="rise mt-7 max-w-xl text-lead text-fg-muted"
+            className="rise mt-8 max-w-xl text-lead text-fg-muted"
           >
             {block.subheadline}
           </p>
@@ -102,7 +111,7 @@ export function HeroBlockView({
         </>
       ) : null}
       {block.media ? (
-        <div className="mt-12 max-w-3xl overflow-hidden rounded-lg border border-line">
+        <div className="mt-12 max-w-3xl overflow-hidden rounded-md border border-line">
           <CmsImage
             media={block.media}
             sizes="(min-width: 1280px) 768px, 100vw"
@@ -115,9 +124,9 @@ export function HeroBlockView({
         /* Composition propre au mobile : le périmètre est un bloc sous le texte, pas un fond rogné. */
         <div
           aria-hidden="true"
-          className="mt-14 aspect-[12/7] w-full opacity-90 md:hidden"
+          className="mt-12 aspect-[13/5] w-full md:hidden"
         >
-          <PerimeterGrid shape="compact" />
+          <MosaicBackdrop shape="compact" seed={seed} />
         </div>
       ) : null}
     </Section>

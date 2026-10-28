@@ -1,6 +1,6 @@
 import { lang as getLang } from "next/root-params";
 import { Digits404 } from "@/components/brand/digits-404";
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
+import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -17,8 +17,11 @@ export default async function NotFound() {
       className="min-h-[70dvh]"
       containerClassName="flex min-h-[70dvh] flex-col justify-center"
       background={
-        <div aria-hidden="true" className="absolute inset-0 -z-10 opacity-40">
-          <PerimeterGrid />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 hidden md:block"
+        >
+          <MosaicBackdrop />
         </div>
       }
     >

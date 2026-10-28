@@ -48,6 +48,7 @@ export default async function ApiDocsPage() {
   return (
     <Section tone="light" aria-labelledby="docs-title">
       <PageIntro
+        stage="menthe"
         visual={<DashboardMock t={getVisualsDictionary(lang).dashboard} />}
       >
         <header className="max-w-3xl">

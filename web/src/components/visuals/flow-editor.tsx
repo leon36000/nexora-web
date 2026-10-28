@@ -21,7 +21,7 @@ function Glyph({ kind }: { kind: Kind }) {
             strokeWidth="1.6"
           />
           <path d="M3 10h6" stroke="currentColor" strokeWidth="1.6" />
-          <rect x="9" y="7" width="6" height="6" fill="#ce411c" />
+          <rect x="9" y="7" width="6" height="6" fill="var(--accent-graphic)" />
         </svg>
       );
     case "agent":
@@ -69,7 +69,13 @@ function Glyph({ kind }: { kind: Kind }) {
     case "approval":
       return (
         <svg viewBox="0 0 20 20" className={common} aria-hidden="true">
-          <rect x="7" y="2.5" width="6" height="6" fill="#ce411c" />
+          <rect
+            x="7"
+            y="2.5"
+            width="6"
+            height="6"
+            fill="var(--accent-graphic)"
+          />
           <path
             d="M3.5 17.5v-3.5h13v3.5z"
             fill="none"

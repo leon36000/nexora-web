@@ -48,6 +48,7 @@ export default async function ModelsPage({
   return (
     <Section tone="light" aria-labelledby="models-title">
       <PageIntro
+        stage="ciel"
         visual={<ApiCallMock t={getVisualsDictionary(lang).catalog} />}
       >
         <header className="max-w-3xl">

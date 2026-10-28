@@ -1,4 +1,4 @@
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
+import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -38,9 +38,9 @@ export function VpsHero({
       background={
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 hidden opacity-25 md:block"
+          className="absolute inset-0 -z-10 hidden opacity-60 md:block"
         >
-          <PerimeterGrid shape="wide" animated={false} />
+          <MosaicBackdrop shape="wide" animated={false} />
         </div>
       }
     >
@@ -54,6 +54,7 @@ export function VpsHero({
         />
       )}
       <PageIntro
+        stage="or"
         visual={
           skeleton ? null : (
             <VpsConsoleMock t={getVisualsDictionary(lang).vps} />

@@ -93,7 +93,7 @@ export function MobileMenu({
   const closeMenu = () => dialogRef.current?.close();
 
   return (
-    <div className="nav:hidden">
+    <div className="flex nav:hidden">
       <button
         ref={buttonRef}
         type="button"
@@ -101,7 +101,7 @@ export function MobileMenu({
         aria-expanded={open}
         aria-label={labels.openMenu}
         onClick={openMenu}
-        className="inline-flex min-h-11 items-center gap-2.5 rounded-md border border-line-strong px-4 text-[0.9375rem] text-fg transition-colors duration-150 hover:bg-fg/10"
+        className="flex h-full min-h-14 items-center gap-2.5 border-l border-line px-5 font-mono text-label uppercase text-fg transition-colors duration-150 hover:bg-fg/[0.05]"
       >
         <span aria-hidden="true" className="flex w-4 flex-col gap-1">
           <span className="h-0.5 w-full bg-current" />
@@ -132,7 +132,7 @@ export function MobileMenu({
               type="button"
               aria-label={labels.closeMenu}
               onClick={closeMenu}
-              className="inline-flex min-h-11 items-center gap-2.5 rounded-md border border-line-strong px-4 text-[0.9375rem] text-fg transition-colors duration-150 hover:bg-fg/10"
+              className="inline-flex min-h-11 items-center gap-2.5 rounded-md border border-line-strong px-4 font-mono text-label uppercase text-fg transition-colors duration-150 hover:bg-fg/10"
             >
               <svg
                 viewBox="0 0 16 16"

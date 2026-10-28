@@ -58,7 +58,7 @@ export function VpsConsoleMock({ t }: { t: VisualsDictionary["vps"] }) {
               <path
                 d={TRACES[i]}
                 fill="none"
-                stroke={i === 0 ? "#f07a52" : "#a9b3ae"}
+                stroke={i === 0 ? "var(--accent-text)" : "var(--fg-muted)"}
                 strokeWidth="1.6"
                 vectorEffect="non-scaling-stroke"
               />

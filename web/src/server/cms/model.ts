@@ -5,7 +5,7 @@ import type { LangCode } from "./lang";
 
 export type Cta = { label: string; href: string };
 
-/** Ton d'une section : sombre (encre forêt), clair (papier) ou sable (surface claire relevée). */
+/** Ton d'une section : sombre (noir profond), clair (papier) ou sable (surface claire relevée). */
 export type Tone = "sombre" | "clair" | "sable";
 export const TONES = ["sombre", "clair", "sable"] as const;
 /** Ancre facultative d'un bloc (`^[a-z0-9-]{0,40}$`), commune à tous les blocs. */

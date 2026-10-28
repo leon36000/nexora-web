@@ -1,4 +1,4 @@
-import { PerimeterGrid } from "@/components/brand/perimeter-grid";
+import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -24,7 +24,7 @@ export function Hero({
           aria-hidden="true"
           className="absolute inset-0 -z-10 hidden opacity-70 md:block"
         >
-          <PerimeterGrid shape="wide" />
+          <MosaicBackdrop shape="wide" />
         </div>
       }
     >
@@ -52,7 +52,7 @@ export function Hero({
         aria-hidden="true"
         className="mt-14 aspect-[12/7] w-full opacity-90 md:hidden"
       >
-        <PerimeterGrid shape="compact" />
+        <MosaicBackdrop shape="compact" />
       </div>
     </Section>
   );

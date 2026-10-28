@@ -6,6 +6,8 @@ import { cn } from "@/lib/cn";
 
 type ProductsMenuProps = {
   label: string;
+  /** Classes de la cellule de l'en-tête (le bouton remplit la hauteur de la barre). */
+  className?: string;
   items: ReadonlyArray<{ label: string; description: string; href: string }>;
 };
 
@@ -15,7 +17,7 @@ type ProductsMenuProps = {
  * - Échap referme et rend le focus au bouton ; un clic ou le focus hors du menu le referme ;
  * - un clic sur un lien referme le menu ; aucune trappe à focus (ce n'est pas une modale).
  */
-export function ProductsMenu({ label, items }: ProductsMenuProps) {
+export function ProductsMenu({ label, items, className }: ProductsMenuProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -51,8 +53,10 @@ export function ProductsMenu({ label, items }: ProductsMenuProps) {
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "group inline-flex min-h-11 items-center gap-1.5 rounded-xs px-3 text-[0.9375rem] transition-colors duration-150 hover:text-fg",
-          open ? "text-fg" : "text-fg-muted",
+          "group gap-1.5",
+          className ??
+            "inline-flex min-h-11 items-center px-3 text-[0.9375rem] text-fg-muted hover:text-fg",
+          open && "bg-fg/[0.05] text-fg",
         )}
       >
         {label}
@@ -78,7 +82,7 @@ export function ProductsMenu({ label, items }: ProductsMenuProps) {
       <div
         id={panelId}
         hidden={!open}
-        className="absolute left-1/2 top-full z-50 mt-2 w-[min(40rem,calc(100vw-3rem))] -translate-x-1/2 rounded-xl border border-line bg-surface p-3 shadow-pop"
+        className="absolute left-0 top-full z-50 w-[min(40rem,calc(100vw-3rem))] border border-line bg-bg p-2 shadow-card"
       >
         <ul className="grid gap-1 sm:grid-cols-2">
           {items.map((item) => (
@@ -87,7 +91,7 @@ export function ProductsMenu({ label, items }: ProductsMenuProps) {
                 href={item.href}
                 prefetch={false}
                 onClick={() => setOpen(false)}
-                className="block rounded-md px-4 py-3 transition-colors duration-150 hover:bg-surface-2"
+                className="block rounded-sm px-4 py-3 transition-colors duration-150 hover:bg-surface"
               >
                 <span className="block text-[0.9375rem] font-medium text-fg">
                   {item.label}

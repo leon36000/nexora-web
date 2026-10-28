@@ -55,7 +55,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
       <body className="min-h-dvh">
         <a
           href="#contenu"
-          className="sr-only-focusable fixed left-4 top-4 z-[100] rounded-md bg-accent px-4 py-3 font-medium text-white"
+          className="sr-only-focusable fixed left-4 top-4 z-[100] rounded-md bg-accent px-4 py-3 font-medium text-on-accent"
         >
           {dict.a11y.skipToContent}
         </a>

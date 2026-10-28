@@ -5,12 +5,12 @@ type CardProps<T extends ElementType> = {
   as?: T;
   /** Carte cliquable : affiche un survol et l'anneau de focus quand un lien interne a le focus. */
   interactive?: boolean;
-  /** "surface" : fond de surface du thème ; "outline" : simple filet, fond transparent. */
-  variant?: "surface" | "outline";
+  /** "surface" : fond de surface du thème ; "outline" : simple filet, fond transparent ; "cell" : cellule d'une grille à filets (sans bordure propre, le fond du thème). */
+  variant?: "surface" | "outline" | "cell";
 } & Omit<ComponentPropsWithoutRef<T>, "as">;
 
 /**
- * Carte sobre. Pour une carte entièrement cliquable, le titre contient un lien dont le
+ * Carte sobre (ou cellule d'une grille à filets). Pour une carte entièrement cliquable, le titre contient un lien dont le
  * pseudo-élément ::after couvre la carte (classe `card-link`), ce qui garde un seul arrêt de tabulation.
  */
 export function Card<T extends ElementType = "div">({
@@ -24,10 +24,16 @@ export function Card<T extends ElementType = "div">({
   return (
     <Tag
       className={cn(
-        "relative rounded-lg border border-line p-6 sm:p-7",
-        variant === "surface" ? "bg-surface" : "bg-transparent",
+        "relative p-6 sm:p-7",
+        variant === "cell"
+          ? "rounded-none bg-bg sm:p-8"
+          : "rounded-md border border-line",
+        variant === "surface" && "bg-surface",
+        variant === "outline" && "bg-transparent",
         interactive &&
-          "transition-[transform,border-color,background-color,box-shadow] duration-200 hover:border-line-strong hover:bg-surface-2 hover:shadow-card has-[a:focus-visible]:border-line-strong motion-safe:hover:-translate-y-0.5",
+          (variant === "cell"
+            ? "transition-colors duration-200 hover:bg-surface has-[a:focus-visible]:bg-surface"
+            : "transition-[transform,border-color,background-color,box-shadow] duration-200 hover:border-line-strong hover:bg-surface-2 hover:shadow-card has-[a:focus-visible]:border-line-strong motion-safe:hover:-translate-y-0.5"),
         className,
       )}
       {...props}

@@ -3,7 +3,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { SITE_NAME } from "@/lib/site";
 
 /**
- * Manifeste d'application (installation sur l'écran d'accueil). Tuile encre forêt et symbole Nexora AI ;
+ * Manifeste d'application (installation sur l'écran d'accueil). Tuile noir profond et symbole Nexora AI ;
  * les trois PNG sont dans `public/` (générés par `docs/marque/outils/rasteriser.mjs`). Le site est français d'abord :
  * `lang` fr-CA ; la version anglaise reste atteignable par le sélecteur de langue.
  */
@@ -16,8 +16,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     scope: "/",
     display: "browser",
-    background_color: "#0e1613",
-    theme_color: "#0e1613",
+    background_color: "#0a0a0e",
+    theme_color: "#0a0a0e",
     icons: [
       {
         src: "/icon-192.png",

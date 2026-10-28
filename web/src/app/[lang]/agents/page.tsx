@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { AgentCard } from "@/components/agents/agent-card";
+import { EmptyMark } from "@/components/brand/empty-mark";
 import { CodeSamples } from "@/components/gateway/code-samples";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +46,7 @@ export default async function AgentsPage() {
     <>
       <Section tone="light" aria-labelledby="agents-title">
         <PageIntro
+          stage="braise"
           visual={<FlowEditorMock t={getVisualsDictionary(lang).flow} />}
         >
           <header className="max-w-3xl">
@@ -75,9 +77,12 @@ export default async function AgentsPage() {
           </p>
         ) : null}
         {catalog.agents.length === 0 ? (
-          <p className="mt-6 text-body text-fg-muted">
-            {catalog.available ? t.catalog.empty : t.catalog.unavailable}
-          </p>
+          <div className="mt-6 flex flex-col items-start gap-5 rounded-md border border-line p-6 sm:flex-row sm:items-center">
+            <EmptyMark seed={4} />
+            <p className="text-body text-fg-muted">
+              {catalog.available ? t.catalog.empty : t.catalog.unavailable}
+            </p>
+          </div>
         ) : (
           <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {catalog.agents.map((a) => (

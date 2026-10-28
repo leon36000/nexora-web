@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Mosaic } from "@/components/brand/mosaic";
 import { Badge } from "@/components/ui/badge";
 import { ArrowIcon } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 import { isExternalHref } from "@/lib/safe-href";
 import type { CardsBlock } from "@/server/cms/model";
-import { CARD_GRID, cellClasses } from "./card-grid";
+import { CELL_GRID, cellClasses } from "./card-grid";
 import { CardText, textLines } from "./card-text";
 import { StatusBadge } from "./status-badge";
 import { anchorProps, toneProps } from "./tone";
@@ -20,7 +21,7 @@ type Joined = "after" | "before" | "both" | undefined;
 function CardAnchor({ card, label }: { card: CardItem; label: string }) {
   if (!card.href) return null;
   return card.href.startsWith("/") ? (
-    <Link href={card.href} className={CARD_LINK}>
+    <Link href={card.href} prefetch={false} className={CARD_LINK}>
       {label}
     </Link>
   ) : (
@@ -41,13 +42,14 @@ const cardKey = (card: CardItem) =>
 function Grid({ block }: { block: CardsBlock }) {
   const cells = cellClasses(block.cards.length, block.columns);
   return (
-    <ul className={cn(CARD_GRID, (block.title || block.intro) && "mt-12")}>
+    <ul className={cn(CELL_GRID, (block.title || block.intro) && "mt-12")}>
       {block.cards.map((card, i) => {
         const label = card.title ?? card.linkLabel ?? "";
         const link = <CardAnchor card={card} label={label} />;
         return (
           <li key={cardKey(card)} className={cn("reveal", cells[i])}>
             <Card
+              variant="cell"
               interactive={Boolean(card.href)}
               className="flex w-full flex-col"
             >
@@ -152,40 +154,31 @@ export function bentoSpans(count: number): number[] {
   return spans;
 }
 
-/** Pictogramme de tuile : neuf carrés dont quelques-uns s'allument, un seul orange (le point de passage). */
-const GLYPHS = [
-  "x.x.o.x..",
-  ".x.xox.x.",
-  "xx..o..xx",
-  "x..xox..x",
-  "..xxo.x.x",
-];
-function TileGlyph({ i }: { i: number }) {
-  const cells = GLYPHS[i % GLYPHS.length] ?? GLYPHS[0] ?? "";
+/** Teinte de la pastille de chaque tuile : on fait tourner la rampe braise, or, ciel et menthe (un produit, une couleur). */
+const CHIP_PALETTES = ["braise", "or", "ciel", "menthe"] as const;
+
+/** Pastille de tuile : un petit champ de carrés teintés (5 × 5), décoratif, différent d'une tuile à l'autre. */
+function TileChip({ i }: { i: number }) {
   return (
-    <svg viewBox="0 0 30 30" className="size-7 shrink-0" aria-hidden="true">
-      {[...cells].map((c, k) => (
-        <rect
-          // biome-ignore lint/suspicious/noArrayIndexKey: neuf cellules fixes
-          key={k}
-          x={(k % 3) * 11}
-          y={Math.floor(k / 3) * 11}
-          width="8"
-          height="8"
-          className={
-            c === "o" ? "fill-accent" : c === "x" ? "fill-fg" : "fill-fg-muted"
-          }
-          opacity={c === "." ? 0.28 : c === "x" ? 0.85 : 1}
-        />
-      ))}
-    </svg>
+    <Mosaic
+      cols={5}
+      rows={5}
+      seed={i * 7 + 2}
+      palette={CHIP_PALETTES[i % CHIP_PALETTES.length] ?? "braise"}
+      fade={0}
+      gap={0.1}
+      toward="center"
+      className="size-9 shrink-0 rounded-sm"
+    />
   );
 }
 
-/** Mosaïque : tuiles de tailles variées sur six colonnes, la première mise en valeur ; pour présenter un ensemble sans le répéter à l'identique. */
+/**
+ * Mosaïque : tuiles de tailles variées sur six colonnes, la première mise en valeur (fond noir, mosaïque braise qui
+ * se dissout dans son angle) ; pour présenter un ensemble sans le répéter à l'identique.
+ */
 function Bento({ block }: { block: CardsBlock }) {
   const spans = bentoSpans(block.cards.length);
-  const dark = block.tone === "sombre";
   return (
     <ul
       className={cn(
@@ -206,15 +199,29 @@ function Bento({ block }: { block: CardsBlock }) {
             <Card
               interactive={Boolean(card.href)}
               className={cn(
-                "flex w-full flex-col",
-                feature &&
-                  (dark
-                    ? "wash-dark border-accent/40"
-                    : "theme-dark wash-dark border-transparent bg-bg text-fg"),
+                "flex w-full flex-col overflow-hidden",
+                feature
+                  ? "theme-dark isolate border-transparent bg-bg text-fg sm:pr-28"
+                  : "bg-bg",
                 !feature && i % 4 === 3 && "tex-dots",
               )}
             >
-              <TileGlyph i={i} />
+              {feature ? (
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-y-0 right-0 -z-10 hidden w-24 [-webkit-mask-image:linear-gradient(to_right,transparent,#000_70%)] [mask-image:linear-gradient(to_right,transparent,#000_70%)] sm:block"
+                >
+                  <Mosaic
+                    cols={4}
+                    rows={12}
+                    seed={5}
+                    toward="right"
+                    fade={1}
+                    className="size-full"
+                  />
+                </div>
+              ) : null}
+              <TileChip i={i} />
               {card.title ? (
                 <h3
                   className={cn(
@@ -269,7 +276,7 @@ function Steps({ block }: { block: CardsBlock }) {
         >
           <span
             aria-hidden="true"
-            className="absolute -left-[5px] top-1 size-[9px] bg-accent lg:-top-[5px] lg:left-0"
+            className="absolute -left-[5px] top-1 size-[9px] bg-accent-graphic lg:-top-[5px] lg:left-0"
           />
           <Badge>{String(i + 1).padStart(2, "0")}</Badge>
           {card.title ? (

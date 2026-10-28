@@ -1,11 +1,12 @@
 import { cn } from "@/lib/cn";
+import { PALETTES } from "./mosaic";
 
-/** Chiffres en carrés (cinq rangées de trois) : « 4 », « 0 », « 4 ». Au centre du zéro, le point de passage orange. */
+/** Chiffres en carrés (cinq rangées de trois) : « 4 », « 0 », « 4 ». Les carrés prennent les teintes de la mosaïque braise ; au centre du zéro, le point de passage (couleur du texte). */
 const FOUR = ["x.x", "x.x", "xxx", "..x", "..x"] as const;
 const ZERO = ["xxx", "x.x", "x.o", "x.x", "xxx"] as const;
 const GLYPHS = [FOUR, ZERO, FOUR] as const;
 const CELL = 30;
-const SIZE = 22;
+const SIZE = 27;
 
 /** « 404 » dessiné avec les carrés de la grille de périmètre : décoratif (le titre de la page porte le sens). */
 export function Digits404({ className }: { className?: string }) {
@@ -32,9 +33,10 @@ export function Digits404({ className }: { className?: string }) {
                 y={y}
                 width={SIZE}
                 height={SIZE}
-                className={c === "o" ? "fill-accent" : "fill-fg"}
-                opacity={
-                  c === "o" ? 1 : 0.14 + ((g * 7 + r * 3 + k) % 5) * 0.07
+                fill={
+                  c === "o"
+                    ? "var(--fg)"
+                    : PALETTES.braise[((g * 7 + r * 3 + k * 2 + r * g) % 5) + 1]
                 }
               />
             );

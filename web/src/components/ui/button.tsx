@@ -6,16 +6,18 @@ import type {
 } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "link";
+type Variant = "primary" | "secondary" | "soft" | "link";
 type Size = "md" | "lg";
 
 const BASE =
   "group/btn inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-sans font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTS: Record<Variant, string> = {
-  // Bouton d'accent : fond orange Nexora #CE411C, texte blanc (4,8:1) ; survol #B83A18 (5,9:1).
-  primary: "rounded-md bg-accent text-white hover:bg-ember-700",
+  // Bouton d'accent : fond orange signal #FF5A1F, texte encre (6,3:1) ; survol orange clair #FF7A45 (7,6:1).
+  primary: "rounded-md bg-accent text-on-accent hover:bg-ember-400",
   secondary: "rounded-md border border-line-strong text-fg hover:bg-fg/10",
+  // Bouton discret « Découvrir › » : fond teinté à peine visible, flèche qui avance au survol.
+  soft: "rounded-md bg-fg/[0.07] text-fg hover:bg-fg/[0.13]",
   link: "rounded-xs text-accent-text underline decoration-1 underline-offset-[5px] hover:decoration-2",
 };
 
@@ -27,6 +29,10 @@ const SIZES: Record<Variant, Record<Size, string>> = {
   secondary: {
     md: "min-h-11 px-5 text-[0.9375rem]",
     lg: "min-h-12 px-6 text-base",
+  },
+  soft: {
+    md: "min-h-10 px-4 text-[0.9375rem]",
+    lg: "min-h-12 px-5 text-base",
   },
   link: { md: "text-[0.9375rem]", lg: "text-base" },
 };
@@ -119,7 +125,7 @@ export function ButtonLink({
   );
   if (href.startsWith("/")) {
     return (
-      <Link href={href} className={classes} {...props}>
+      <Link href={href} prefetch={false} className={classes} {...props}>
         {content}
       </Link>
     );
