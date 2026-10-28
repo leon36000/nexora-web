@@ -143,5 +143,14 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Équipe 
 - Hors git : arbre de travail `NexoraSite-wt/securite2` (branche fusionnée, 1,3 Go) retiré et sa branche supprimée ; anciennes exécutions `.data/e2e` et `tsconfig.tsbuildinfo` effacés. `web/.next` du dépôt principal laissé (un `next dev` sur le port 3500 s'en sert).
 - Contrôle : `bun run check` vert (lint 0 erreur ; typecheck 9 paquets ; tests db 71, net 54, seo 21, log 7, vps 241, cms 781, deploy 109, worker 167, web 1 302).
 
+## 27/10 soir — vérification finale, 404 en production, WorkStudio v3.1 non déployable sur pc6
+- Fusion `recette/securite2` (migration 0015). Vérification finale : `bun run check` vert ; e2e 8/8 strict après mise à jour des scripts (hôtes de clés déclarés `NEXORA_SECRET_HOSTS_*`, deux cookies d'aperçu, libellé « Nexora AI »).
+- Défaut trouvé et corrigé (test RED→GREEN `cache-life.test.ts`) : une adresse inconnue répondait 500 en production — le cache négatif de 2 min introduit par securite2 est « court » pour Next (expiration < 5 min), donc exclu du prérendu ; porté à 5 min.
+- Audit maison final (80 pages) : a11y 0 erreur, liens 0 cassé sur 6 294, SEO 100 ; les 80 « canonical.not-self » viennent du montage (build fait avec SITE_URL de dev, audité sur un autre port) ; Lighthouse à remesurer machine au repos.
+- Ménage fusionné dans les deux dépôts (site : 94 fichiers ; WorkStudio : 157 fichiers) ; branches et arbres de travail supprimés ; dossier `~/Bureau/NexoraAI` sur pc1 (miroirs des dépôts, image de retour arrière, archives de recette).
+- Incident : le build Docker de WorkStudio v3.1 sur pc6 a rempli le disque à 0 octet (le build sans cache dépasse 22 Go ; la garde à 2 Go par sondage de 10 s n'a pas suffi). Aucune base abîmée (journaux sans erreur d'écriture), cache de build purgé (23,5 Go). WorkStudio v3 restauré depuis l'image sauvegardée sur pc1, sain. Cause d'un échec intermédiaire corrigée dans WorkStudio (`adf0107f` : NodeSource téléchargé puis exécuté, version 24 vérifiée — l'ancien `curl | bash` retombait en silence sur Node 20).
+- Ruling : modèle local `qwen2.5:7b` supprimé de `nexora-dev-ollama` (dernier chargement le 25/10 ; règle du fondateur « jamais de 7B local ») ; `qwen2.5:0.5b` gardé (fumée).
+- Reste : déployer WorkStudio v3.1 exige ≈ 25 Go libres sur pc6 (arm64 ; pc1 est amd64 sans émulation) — décision du fondateur sur les caches go-build/uv.
+
 ## À faire par le fondateur (cumul)
 Clé Directus OIG ; acceptation de la licence MSCL et propriétaire du projet Directus ; identité légale ; prix ; clés Stripe test ; serveurs Proxmox ; domaine et HTTPS ; validations juridiques et fiscales ; publication.
