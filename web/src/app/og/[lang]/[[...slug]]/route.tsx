@@ -173,6 +173,7 @@ export async function GET(
           alignItems: "center",
           borderTop: `2px solid ${LINE}`,
           paddingTop: 24,
+          width: 700,
           color: MIST,
           fontSize: 28,
         }}
