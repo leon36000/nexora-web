@@ -56,7 +56,7 @@ export function resolveOgTarget(
 export function ogSafeTitle(title: string): string {
   return title
     .replace(
-      /[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{FE0F}\u{FE0E}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,
+      /\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]|[\u{E0020}-\u{E007F}]|\u{FE0F}|\u{FE0E}|\u{200D}|\u{20E3}/gu,
       "",
     )
     .replace(/\s{2,}/g, " ")
