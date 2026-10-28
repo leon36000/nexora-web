@@ -290,6 +290,12 @@ async function startSite(): Promise<string | null> {
         // Le site tourne en mode production : le réseau interne (LiteLLM de développement sur 127.0.0.1) doit être
         // autorisé explicitement, comme le ferait un opérateur (voir docs/guide-operateur.md).
         NEXORA_OUTBOUND_ALLOW: env.NEXORA_OUTBOUND_ALLOW ?? "127.0.0.0/8",
+        // Où une CLÉ peut partir (distinct d'où le serveur peut aller) : le LiteLLM et l'instance WorkStudio de
+        // développement sont des serveurs de l'opérateur, déclarés comme il le ferait.
+        NEXORA_SECRET_HOSTS_MODEL_PROVIDER:
+          env.NEXORA_SECRET_HOSTS_MODEL_PROVIDER ?? "127.0.0.1,localhost",
+        NEXORA_SECRET_HOSTS_WORKSTUDIO:
+          env.NEXORA_SECRET_HOSTS_WORKSTUDIO ?? "127.0.0.1,localhost",
         CMS_SNAPSHOT_DIR: join(logDir, "snapshots"),
       },
       stdio: ["ignore", fd, fd],

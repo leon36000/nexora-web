@@ -393,7 +393,18 @@ async function main() {
       forgedRes.status === 401 && !forgedRes.headers.get("set-cookie"),
     );
     const enter = await fetch(link.url, { redirect: "manual" });
-    const cookie = (enter.headers.get("set-cookie") ?? "").split(";")[0] ?? "";
+    // Tous les cookies posés : le Draft Mode (`__prerender_bypass`) ET la session d'aperçu signée (`nexora_preview`),
+    // sans laquelle le proxy efface le premier.
+    const cookie = enter.headers
+      .getSetCookie()
+      .map((c) => c.split(";")[0] ?? "")
+      .filter(Boolean)
+      .sort(
+        (a, b) =>
+          Number(b.startsWith("__prerender_bypass=")) -
+          Number(a.startsWith("__prerender_bypass=")),
+      )
+      .join("; ");
     check(
       "b2",
       `lien signé valide -> ${enter.status} vers ${enter.headers.get("location")}, cookie d'aperçu posé : ${cookie.startsWith("__prerender_bypass=")}`,

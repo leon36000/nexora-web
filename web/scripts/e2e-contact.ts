@@ -139,7 +139,7 @@ try {
   await page.getByLabel("Hébergé au Québec par Nexora").check();
   await page.getByRole("button", { name: "Continuer" }).click();
   const consent = page.getByLabel(
-    "Je souhaite aussi recevoir des nouvelles de Nexora par courriel.",
+    "Je souhaite aussi recevoir des nouvelles de Nexora AI par courriel.",
   );
   check(
     "consentement marketing décoché par défaut",

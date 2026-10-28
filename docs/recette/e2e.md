@@ -1,18 +1,18 @@
 # Parcours de bout en bout regroupés (S9)
 
-Généré par `bun run e2e` le 2026-10-27T20:01:52.006Z. Base du site de l'essai : `app_s9` (serveur PostgreSQL partagé de développement, port 15440). Site de production lancé par la commande sur le port 3790.
+Généré par `bun run e2e` le 2026-10-28T00:53:27.930Z. Base du site de l'essai : `app_s9` (serveur PostgreSQL partagé de développement, port 15440). Site de production lancé par la commande sur le port 3790.
 
 **Résultat : 8 réussi(s), 0 échec(s), 0 sauté(s).**
 
 | Parcours | Jalon | Résultat | Durée | Détail |
 |---|---|---|---|---|
-| Inscription, vérification par courriel, achat de crédits, webhook signé, rejeu sans double effet, remboursement, 20 réservations concurrentes | S4 | RÉUSSI | 2 s | 9 test(s) réussi(s), 0 échec(s), 0 sauté(s) |
-| Catalogue publié, crédits, clé nxk_, appels réels non diffusé et diffusé, débit exact, révocation (401) | S5 | RÉUSSI | 2.7 s | terminé, code 0 ((extrait du flux : "Bonjour, comment allez-vous ?")) |
-| Commande VPS, Checkout, webhook, vrai worker, simulateur Proxmox, actif, arrêt/démarrage, réinstallation, suspension, résiliation, suppression | S6 | RÉUSSI | 3.1 s | 11 test(s) réussi(s), 0 échec(s), 0 sauté(s) |
-| Brouillon -> aperçu signé -> approbation sur le hash exact -> publication -> revalidation -> page publique exacte | S2 | RÉUSSI | 8.4 s | terminé, code 0 (## Bilan : 25/25 vérifications passées) |
-| Formulaire de contact (ALTCHA réel), ligne en base, tâche, échec d'envoi repris, un seul courriel, abus refusés | S3 | RÉUSSI | 54.6 s | terminé, code 0 (17 vérification(s) réussie(s), 0 échec(s)) |
-| Gardes d'accès (401/403 sans identification sur toutes les routes), en-têtes de sécurité, aucune requête hors origine dans un navigateur réel | S9 | RÉUSSI | 12.6 s | gardes : terminé, code 0 (TOUT EST VERT) ; flux : terminé, code 0 (TOUT EST VERT : aucune requête hors origine, aucune violation de CSP.) |
-| Agent WorkStudio publié, découverte, clé du client, appels agent/<slug> non diffusé et diffusé, débit, 402, révocation, retrait | S7 | RÉUSSI | 2.7 s | terminé, code 0 (TOUT EST OK) |
+| Inscription, vérification par courriel, achat de crédits, webhook signé, rejeu sans double effet, remboursement, 20 réservations concurrentes | S4 | RÉUSSI | 4 s | 9 test(s) réussi(s), 0 échec(s), 0 sauté(s) |
+| Catalogue publié, crédits, clé nxk_, appels réels non diffusé et diffusé, débit exact, révocation (401) | S5 | RÉUSSI | 1.6 s | terminé, code 0 ((extrait du flux : "Bonjour, bonjour !")) |
+| Commande VPS, Checkout, webhook, vrai worker, simulateur Proxmox, actif, arrêt/démarrage, réinstallation, suspension, résiliation, suppression | S6 | RÉUSSI | 5.3 s | 11 test(s) réussi(s), 0 échec(s), 0 sauté(s) |
+| Brouillon -> aperçu signé -> approbation sur le hash exact -> publication -> revalidation -> page publique exacte | S2 | RÉUSSI | 9.6 s | terminé, code 0 (## Bilan : 25/25 vérifications passées) |
+| Formulaire de contact (ALTCHA réel), ligne en base, tâche, échec d'envoi repris, un seul courriel, abus refusés | S3 | RÉUSSI | 54.9 s | terminé, code 0 (17 vérification(s) réussie(s), 0 échec(s)) |
+| Gardes d'accès (401/403 sans identification sur toutes les routes), en-têtes de sécurité, aucune requête hors origine dans un navigateur réel | S9 | RÉUSSI | 14 s | gardes : terminé, code 0 (TOUT EST VERT) ; flux : terminé, code 0 (TOUT EST VERT : aucune requête hors origine, aucune violation de CSP.) |
+| Agent WorkStudio publié, découverte, clé du client, appels agent/<slug> non diffusé et diffusé, débit, 402, révocation, retrait | S7 | RÉUSSI | 2.1 s | terminé, code 0 (TOUT EST OK) |
 | Agents du site : brouillon + approbation (rien de publié), injection ignorée, source interne refusée, budget, arrêt | S8 | RÉUSSI | 1.5 s | 11 test(s) réussi(s), 0 échec(s), 0 sauté(s) |
 
 ## Lecture et limites
