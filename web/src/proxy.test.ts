@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { embedCspFor } from "@/lib/embed-policy";
 import { parseCsp } from "@/lib/security-headers";
 import { config, proxy } from "./proxy";
+import { signPreviewSession } from "./server/preview-link";
 
 vi.mock("@/lib/embed-policy", () => ({ embedCspFor: vi.fn(async () => null) }));
 
@@ -58,11 +59,90 @@ describe("proxy : X-Robots-Tag hors production", () => {
     expect(
       (await proxy(req("/solutions"))).headers.get("x-robots-tag"),
     ).toBeNull();
+    vi.stubEnv("NEXORA_PREVIEW_SECRET", PREVIEW_SECRET);
     expect(
-      (await proxy(req("/solutions", "__prerender_bypass=1"))).headers.get(
-        "x-robots-tag",
-      ),
+      (
+        await proxy(
+          req("/solutions", `__prerender_bypass=1; ${previewCookie()}`),
+        )
+      ).headers.get("x-robots-tag"),
     ).toContain("noindex");
+  });
+});
+
+const PREVIEW_SECRET = "p".repeat(48);
+const previewCookie = (now = Date.now()) =>
+  `nexora_preview=${signPreviewSession({ secret: PREVIEW_SECRET, now }).value}`;
+
+describe("proxy : l'aperçu expire (cookie signé de 30 minutes)", () => {
+  const cleared = (res: Response) => {
+    const cookies = res.headers.getSetCookie().join("\n");
+    expect(cookies).toMatch(/__prerender_bypass=;/);
+    expect(cookies).toMatch(/__next_preview_data=;/);
+    expect(cookies).toMatch(/nexora_preview=;/);
+    expect(cookies).toMatch(/Max-Age=0/i);
+  };
+
+  it("le cookie du Draft Mode seul (constant, sans expiration) ne donne plus accès aux brouillons : redirection qui l'efface", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    vi.stubEnv("NEXORA_PREVIEW_SECRET", PREVIEW_SECRET);
+    const res = await proxy(req("/solutions?a=1", "__prerender_bypass=abc"));
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe(
+      "http://localhost:3500/solutions?a=1",
+    );
+    expect(res.headers.get("cache-control")).toContain("no-store");
+    cleared(res);
+  });
+
+  it("une session expirée ou falsifiée est refusée de la même façon ; sans secret configuré, aucun aperçu", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    vi.stubEnv("NEXORA_PREVIEW_SECRET", PREVIEW_SECRET);
+    const old = previewCookie(Date.now() - 31 * 60_000);
+    expect(
+      (await proxy(req("/solutions", `__prerender_bypass=abc; ${old}`))).status,
+    ).toBe(307);
+    const forged = "nexora_preview=9999999999999.AAAA";
+    expect(
+      (await proxy(req("/solutions", `__prerender_bypass=abc; ${forged}`)))
+        .status,
+    ).toBe(307);
+    vi.stubEnv("NEXORA_PREVIEW_SECRET", "");
+    expect(
+      (
+        await proxy(
+          req("/solutions", `__prerender_bypass=abc; ${previewCookie()}`),
+        )
+      ).status,
+    ).toBe(307);
+  });
+
+  it("avec une session valide, l'aperçu passe (noindex) ; sans cookie de Draft Mode, la page est servie normalement", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    vi.stubEnv("NEXORA_PREVIEW_SECRET", PREVIEW_SECRET);
+    const ok = await proxy(
+      req("/solutions", `__prerender_bypass=abc; ${previewCookie()}`),
+    );
+    expect(ok.status).toBe(200);
+    expect(ok.headers.get("x-middleware-rewrite")).toContain("/fr/solutions");
+    expect(ok.headers.get("x-robots-tag")).toContain("noindex");
+    const plain = await proxy(req("/solutions"));
+    expect(plain.headers.get("x-middleware-rewrite")).toContain(
+      "/fr/solutions",
+    );
+    expect(plain.headers.getSetCookie()).toEqual([]);
+  });
+
+  it("une requête qui n'est pas une navigation (POST) n'est pas redirigée : le cookie est seulement effacé", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    vi.stubEnv("NEXORA_PREVIEW_SECRET", PREVIEW_SECRET);
+    const post = new NextRequest("http://localhost:3500/contact", {
+      method: "POST",
+      headers: { cookie: "__prerender_bypass=abc" },
+    });
+    const res = await proxy(post);
+    expect(res.status).not.toBe(307);
+    cleared(res);
   });
 });
 
@@ -242,5 +322,34 @@ describe("proxy : CSP des pages et de la bulle WorkStudio", () => {
       "ia.exemple.ca",
     );
     vi.mocked(embedCspFor).mockResolvedValue(null);
+  });
+});
+
+describe("proxy : méthodes sur les pages", () => {
+  it("PUT, PATCH et DELETE sur une page : 405 avec Allow ; GET, HEAD, POST et OPTIONS passent", async () => {
+    vi.stubEnv("SITE_ENV", "production");
+    for (const method of ["PUT", "PATCH", "DELETE"]) {
+      const res = await proxy(
+        new NextRequest("http://localhost:3500/solutions", { method }),
+      );
+      expect(res.status, method).toBe(405);
+      expect(res.headers.get("allow")).toBe("GET, HEAD, POST, OPTIONS");
+      expect(res.headers.get("cache-control")).toBe("no-store");
+    }
+    for (const method of ["GET", "HEAD", "POST", "OPTIONS"]) {
+      const res = await proxy(
+        new NextRequest("http://localhost:3500/solutions", { method }),
+      );
+      expect(res.status, method).not.toBe(405);
+    }
+  });
+
+  it("les routes /api et /v1 gardent leurs propres méthodes (DELETE d'une clé, par exemple)", async () => {
+    const res = await proxy(
+      new NextRequest("http://localhost:3500/api/account/keys/x", {
+        method: "DELETE",
+      }),
+    );
+    expect(res.status).not.toBe(405);
   });
 });

@@ -195,12 +195,23 @@ export const listTemplates = (db: Database, serverId?: string) =>
 /** Client Proxmox d'un serveur : le jeton est lu du coffre à chaque appel, jamais gardé. */
 export function proxmoxClientFactory(deps: {
   getSecret: (ref: string) => Promise<string>;
+  /**
+   * Contrôle de l'hôte où le jeton peut partir (R9) : null si permis, sinon le motif. Obligatoire pour qu'aucun appel
+   * n'oublie la liste fixée par l'opérateur ; la production passe `secretHostProblem("proxmox", host)` (@nexora/vault/scope).
+   */
+  checkHost: (host: string) => string | null;
 }) {
   return async (server: Server): Promise<ProxmoxClient> => {
     if (!server.tokenRef)
       throw new ProxmoxError(
         "unauthorized",
         "aucun jeton enregistré pour ce serveur",
+      );
+    const forbidden = deps.checkHost(connectionOf(server).host);
+    if (forbidden)
+      throw new ProxmoxError(
+        "host_not_allowed",
+        `jeton non envoyé : ${forbidden}`,
       );
     const token = await deps.getSecret(server.tokenRef).catch(() => {
       throw new ProxmoxError(

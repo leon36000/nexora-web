@@ -2,6 +2,7 @@ import { randomBytes } from "node:crypto";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { checkOutboundUrl, policyFromEnv } from "@nexora/net";
+import { type SecretHostCheck, secretHostProblem } from "@nexora/vault/scope";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { OutboundGuard } from "../security/outbound";
 import { loadKeyring } from "../vault/crypto";
@@ -48,6 +49,8 @@ const deps = (over: Partial<CatalogAdminDeps> = {}): CatalogAdminDeps => ({
   getSecret: (ref) => readSecret(t.db, keyring, ref),
   // Les adresses fictives des essais (« provider.test ») ne se résolvent pas : garde permissive, sauf essais dédiés.
   outbound: async (raw) => ({ ok: true, url: new URL(raw), addresses: [] }),
+  // Hôtes de clés : permissif ici (adresses fictives), strict dans les essais « R9 » ci-dessous.
+  secretHosts: () => null,
   fetch: fetchFn,
   log: createLogger({ name: "test", sink: () => {} }),
   now: () => new Date(),
@@ -466,5 +469,148 @@ describe("fournisseurs : adresses saisies (SSRF)", () => {
     expect(r.json.detail).toMatch(/refus/);
     expect(contacted).toBe(0);
     expect(JSON.stringify(r.json)).not.toContain("sk-rebond");
+  });
+});
+
+// ─── R9 : une clé du coffre ne part que vers un hôte fixé par l'opérateur ───────────────────────────────────────
+const prodHosts: SecretHostCheck = (scope, target) =>
+  secretHostProblem(scope, target, { NODE_ENV: "production" });
+
+describe("fournisseurs : hôte de la clé (R9)", () => {
+  const strict = (over: Partial<CatalogAdminDeps> = {}) =>
+    deps({ secretHosts: prodHosts, ...over });
+  const create = (body: Record<string, unknown>) =>
+    call(
+      "POST",
+      "providers",
+      {
+        code: `r9-${Math.random().toString(36).slice(2, 8)}`,
+        name: "R9",
+        type: "openai_compatible",
+        region: "canada",
+        ...body,
+      },
+      undefined,
+      strict(),
+    );
+  const patch = (id: string, body: Record<string, unknown>) =>
+    call("PATCH", `providers/${id}`, body, undefined, strict());
+
+  it("refuse à la création une clé associée à un hôte HTTPS non déclaré, avec le motif", async () => {
+    const r = await create({
+      baseUrl: "https://collecte.pirate.example/v1",
+      secretRef: "llm.provider-test",
+    });
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("secret_host");
+    expect(r.json.message).toMatch(/NEXORA_SECRET_HOSTS_MODEL_PROVIDER/);
+    expect(JSON.stringify(r.json)).not.toContain("sk-vk-provider");
+  });
+
+  it("accepte un hôte connu avec une clé, et n'importe quel hôte public sans clé", async () => {
+    expect(
+      (
+        await create({
+          baseUrl: "https://openrouter.ai/api/v1",
+          type: "openrouter",
+          secretRef: "llm.provider-test",
+        })
+      ).status,
+    ).toBe(201);
+    expect(
+      (await create({ baseUrl: "https://collecte.pirate.example/v1" })).status,
+    ).toBe(201);
+  });
+
+  it("refuse de rediriger un fournisseur qui a déjà une clé : modifier SEULEMENT l'adresse est contrôlé avec la clé enregistrée", async () => {
+    const ok = await create({
+      baseUrl: "https://api.mistral.ai/v1",
+      secretRef: "llm.provider-test",
+    });
+    expect(ok.status).toBe(201);
+    const r = await patch(ok.json.id, {
+      baseUrl: "https://collecte.pirate.example/v1",
+    });
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("secret_host");
+    expect(r.json.field).toBe("baseUrl");
+    const lite = await patch(ok.json.id, {
+      litellmBaseUrl: "https://collecte.pirate.example/v1",
+    });
+    expect(lite.status).toBe(422);
+    expect(lite.json.error).toBe("secret_host");
+    expect(lite.json.field).toBe("litellmBaseUrl");
+  });
+
+  it("refuse d'associer une clé à un fournisseur dont l'adresse n'est pas autorisée : modifier SEULEMENT la référence est contrôlé avec l'adresse enregistrée", async () => {
+    const bare = await create({
+      baseUrl: "https://collecte.pirate.example/v1",
+    });
+    expect(bare.status).toBe(201);
+    const r = await patch(bare.json.id, { secretRef: "llm.provider-test" });
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("secret_host");
+    // retirer la clé et l'adresse reste permis
+    expect((await patch(bare.json.id, { secretRef: null })).status).toBe(200);
+  });
+
+  it("« Tester » n'envoie aucune clé vers un hôte non autorisé, même déjà enregistré", async () => {
+    // Fournisseur écrit avant la règle, ou directement en base : l'écriture ne suffit pas, l'usage est contrôlé aussi.
+    const legacy = await create({ baseUrl: "https://openrouter.ai/api/v1" });
+    expect(legacy.status).toBe(201);
+    const { createProvider } = await import("./catalog");
+    const sneaky = await createProvider(t.db, {
+      code: "r9-direct",
+      name: "Posé en base",
+      type: "openai_compatible",
+      baseUrl: "https://collecte.pirate.example/v1",
+      secretRef: "llm.provider-test",
+      region: "canada",
+    });
+    const contacted: string[] = [];
+    const spy = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      contacted.push(
+        `${String(input)} ${new Headers(init?.headers).get("authorization")}`,
+      );
+      return Response.json({ data: [] });
+    }) as typeof fetch;
+    const r = await call(
+      "POST",
+      `providers/${sneaky.id}/test`,
+      undefined,
+      undefined,
+      strict({ fetch: spy }),
+    );
+    expect(r.json.ok).toBe(false);
+    expect(r.json.detail).toMatch(/non autorisé/);
+    expect(contacted).toEqual([]);
+    expect(JSON.stringify(r.json)).not.toContain("sk-vk-provider");
+  });
+
+  it("la synchronisation LiteLLM n'envoie aucune clé vers une adresse non autorisée", async () => {
+    const bodies: string[] = [];
+    const spy = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (typeof init?.body === "string") bodies.push(init.body);
+      return fetchFn(input, init);
+    }) as typeof fetch;
+    const r = await call(
+      "POST",
+      "sync-litellm",
+      undefined,
+      undefined,
+      strict({
+        fetch: spy,
+        litellm: () =>
+          createLitellmClient({
+            baseUrl: "http://litellm.test",
+            masterKey: "master",
+            fetch: spy,
+          }),
+      }),
+    );
+    // Le fournisseur publié (provider.test, clé du coffre) n'est pas déclaré par l'opérateur.
+    expect(r.status).toBe(422);
+    expect(r.json.error).toBe("secret_host");
+    expect(bodies.join("\n")).not.toContain("sk-vk-provider");
   });
 });

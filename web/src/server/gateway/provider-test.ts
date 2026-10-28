@@ -1,4 +1,5 @@
 import type { ProviderType } from "@nexora/db";
+import { envSecretHostCheck, type SecretHostCheck } from "@nexora/vault/scope";
 
 /**
  * « Tester le fournisseur » : un appel minimal (liste des modèles) avec la clé du coffre. Le résultat
@@ -27,12 +28,20 @@ export async function testProvider(
   provider: ProviderToTest,
   deps: {
     getSecret: (ref: string) => Promise<string>;
+    /** Hôtes où la clé peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_* de l'environnement. */
+    secretHosts?: SecretHostCheck;
     fetch?: typeof fetch;
     timeoutMs?: number;
   },
 ): Promise<ProviderCheck> {
   const headers: Record<string, string> = { accept: "application/json" };
   if (provider.secretRef) {
+    const forbidden = (deps.secretHosts ?? envSecretHostCheck)(
+      "model-provider",
+      provider.baseUrl,
+    );
+    if (forbidden)
+      return { ok: false, detail: `clé non envoyée : ${forbidden}` };
     try {
       headers.authorization = `Bearer ${await deps.getSecret(provider.secretRef)}`;
     } catch {

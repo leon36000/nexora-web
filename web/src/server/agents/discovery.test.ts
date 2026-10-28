@@ -34,6 +34,8 @@ function deps(fetchImpl: typeof fetch, secret: string | Error = KEY) {
       return secret;
     },
     fetch: fetchImpl,
+    // Cette suite vérifie la lecture de l'instance ; l'hôte de la clé (R9) est couvert par handlers.test.ts.
+    secretHosts: () => null,
   };
 }
 

@@ -89,7 +89,7 @@ async function connected(sim: ProxmoxSimulator, port: number) {
   const code = `pve-essai-${++counter}`;
   const r = await connectServer(
     t.db,
-    { getSecret: async () => SIM_TOKEN },
+    { getSecret: async () => SIM_TOKEN, checkHost: () => null },
     {
       code,
       host: "http://127.0.0.1",

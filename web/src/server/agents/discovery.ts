@@ -1,3 +1,4 @@
+import { envSecretHostCheck, type SecretHostCheck } from "@nexora/vault/scope";
 import type { DiscoveredAgent } from "./catalog";
 
 /**
@@ -13,6 +14,8 @@ export interface InstanceToReach {
 
 export interface DiscoveryDeps {
   getSecret: (ref: string) => Promise<string>;
+  /** Hôtes où la clé peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_* de l'environnement. */
+  secretHosts?: SecretHostCheck;
   fetch?: typeof fetch;
   timeoutMs?: number;
 }
@@ -33,6 +36,11 @@ export async function discoverAgents(
 ): Promise<DiscoveryOutcome> {
   if (!instance.secretRef)
     return { ok: false, detail: "aucune clé associée à l'instance (coffre)" };
+  const forbidden = (deps.secretHosts ?? envSecretHostCheck)(
+    "workstudio-instance",
+    instance.baseUrl,
+  );
+  if (forbidden) return { ok: false, detail: `clé non envoyée : ${forbidden}` };
   let key: string;
   try {
     key = await deps.getSecret(instance.secretRef);

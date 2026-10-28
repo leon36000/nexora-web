@@ -200,6 +200,8 @@ export const vpsFrCA = {
         "Ce code n’est pas encore activé. Réessayez plus tard ou contactez-nous.",
       promo_covers_all:
         "Ce code couvrirait la totalité de l’achat : choisissez une autre option.",
+      promo_account_restricted:
+        "Ce code ne peut pas être appliqué à votre compte pour le moment. Contactez-nous.",
     },
   },
 

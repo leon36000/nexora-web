@@ -7,6 +7,7 @@ import {
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
+import { secretHostProblem } from "@nexora/vault/scope";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { updateAgent, updateInstance } from "../agents/catalog";
 import { publishTestAgent } from "../agents/test-support";
@@ -110,6 +111,8 @@ const deps = (over: Partial<GatewayDeps> = {}): GatewayDeps => ({
     baseUrl: "http://litellm.internal:4000",
     masterKey: MASTER,
   }),
+  // Hôtes de clés : permissif ici (« ws.internal »), strict dans l'essai « R9 » ci-dessous.
+  secretHosts: () => null,
   getSecret: async (ref) => {
     const v = vault.get(ref);
     if (v === undefined) throw new Error(`secret ${ref} introuvable`);
@@ -762,5 +765,26 @@ describe("liste des modèles et confidentialité", () => {
     expect(logs).toContain("requête réglée");
     for (const secret of [PROMPT_MARKER, WS_KEY, c.key, MASTER, "ws.internal"])
       expect(logs).not.toContain(secret);
+  });
+});
+
+describe("clé d'espace : hôte autorisé par l'opérateur (R9)", () => {
+  it("n'envoie pas la clé d'espace vers un hôte non déclaré : l'agent est indisponible, rien n'est facturé ni appelé", async () => {
+    const a = await agent({ baseUrl: "https://collecte.pirate.example" });
+    const c = await client();
+    const res = await handleChatCompletions(
+      post(c.key, ask(a.slug)),
+      deps({
+        secretHosts: (scope, target) =>
+          secretHostProblem(scope, target, {
+            NODE_ENV: "production",
+            NEXORA_SECRET_HOSTS_WORKSTUDIO: "ws.interne",
+          }),
+      }),
+    );
+    expect(res.status).toBe(503);
+    expect(calls).toEqual([]);
+    expect(lines.join("\n")).not.toContain(WS_KEY);
+    expect(await res.text()).not.toContain(WS_KEY);
   });
 });

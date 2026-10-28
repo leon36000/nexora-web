@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { signPreviewLink, verifyPreviewLink } from "./preview-link";
+import {
+  PREVIEW_SESSION_SECONDS,
+  signPreviewLink,
+  signPreviewSession,
+  verifyPreviewLink,
+  verifyPreviewSession,
+} from "./preview-link";
 
 const SECRET = "s".repeat(48);
 const NOW = 1_800_000_000_000;
@@ -133,5 +139,63 @@ describe("lien d'aperçu signé", () => {
         now: NOW,
       }),
     ).toMatchObject({ ok: false });
+  });
+});
+
+describe("session d'aperçu (cookie signé de 30 minutes)", () => {
+  it("dure 30 minutes puis expire, même si le cookie du Draft Mode (constant) reste dans le navigateur", () => {
+    expect(PREVIEW_SESSION_SECONDS).toBe(30 * 60);
+    const { value, maxAge } = signPreviewSession({ secret: SECRET, now: NOW });
+    expect(maxAge).toBe(1800);
+    expect(
+      verifyPreviewSession({ secret: SECRET, value, now: NOW + 29 * 60_000 }),
+    ).toBe(true);
+    expect(
+      verifyPreviewSession({ secret: SECRET, value, now: NOW + 31 * 60_000 }),
+    ).toBe(false);
+  });
+
+  it("refuse une valeur altérée, une échéance prolongée, un autre secret, un secret absent ou du bruit", () => {
+    const { value } = signPreviewSession({ secret: SECRET, now: NOW });
+    const [exp, sig] = value.split(".") as [string, string];
+    for (const bad of [
+      `${Number(exp) + 3_600_000}.${sig}`,
+      `${exp}.${sig.slice(0, -2)}xx`,
+      exp,
+      "",
+      ".",
+      "abc.def",
+      `${exp}.${sig}.extra`,
+    ])
+      expect(
+        verifyPreviewSession({ secret: SECRET, value: bad, now: NOW }),
+        bad,
+      ).toBe(false);
+    expect(
+      verifyPreviewSession({ secret: "t".repeat(48), value, now: NOW }),
+    ).toBe(false);
+    expect(verifyPreviewSession({ secret: undefined, value, now: NOW })).toBe(
+      false,
+    );
+    expect(
+      verifyPreviewSession({ secret: SECRET, value: undefined, now: NOW }),
+    ).toBe(false);
+    expect(() => signPreviewSession({ secret: "court", now: NOW })).toThrow();
+  });
+
+  it("une signature de lien d'aperçu ne vaut pas session (domaines de signature distincts)", () => {
+    const link = signPreviewLink({
+      secret: SECRET,
+      lang: "fr",
+      path: "/",
+      now: NOW,
+    });
+    expect(
+      verifyPreviewSession({
+        secret: SECRET,
+        value: `${link.exp}.${link.sig}`,
+        now: NOW,
+      }),
+    ).toBe(false);
   });
 });

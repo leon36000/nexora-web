@@ -26,7 +26,10 @@ afterAll(async () => {
   await t.drop();
 });
 
-const client = proxmoxClientFactory({ getSecret: async () => SIM_TOKEN });
+const client = proxmoxClientFactory({
+  getSecret: async () => SIM_TOKEN,
+  checkHost: () => null,
+});
 let n = 0;
 async function server(over: Partial<Parameters<typeof createServer>[1]> = {}) {
   return createServer(t.db, {

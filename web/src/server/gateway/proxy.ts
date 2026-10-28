@@ -3,6 +3,7 @@ import type { Database } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { readLimitedBytes } from "@nexora/net";
+import { envSecretHostCheck, type SecretHostCheck } from "@nexora/vault/scope";
 import {
   AGENT_PUBLIC_PREFIX,
   type CallableAgent,
@@ -34,6 +35,8 @@ export interface GatewayDeps {
   litellm: () => { baseUrl: string; masterKey: string } | null;
   /** Valeur d'un secret du coffre (clé d'espace WorkStudio des agents hébergés) ; absent : agents indisponibles. */
   getSecret?: (ref: string) => Promise<string>;
+  /** Hôtes où la clé d'espace peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_WORKSTUDIO de l'environnement. */
+  secretHosts?: SecretHostCheck;
   log: Logger;
   now: () => Date;
   requestId: () => string;
@@ -634,6 +637,18 @@ async function agentCredentials(
 ): Promise<{ url: string; authorization: string } | null> {
   const ref = agent.instance.secretRef;
   if (!ref || !deps.getSecret) return null;
+  // La clé d'espace ne part que vers un hôte déclaré par l'opérateur, même si l'adresse enregistrée a changé (R9).
+  const forbidden = (deps.secretHosts ?? envSecretHostCheck)(
+    "workstudio-instance",
+    agent.instance.baseUrl,
+  );
+  if (forbidden) {
+    deps.log.error("passerelle : hôte d'instance d'agents non autorisé", {
+      requestId,
+      agentId: agent.id,
+    });
+    return null;
+  }
   try {
     const value = await deps.getSecret(ref);
     if (!value) return null;

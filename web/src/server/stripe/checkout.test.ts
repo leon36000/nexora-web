@@ -36,6 +36,10 @@ function fakeStripe() {
       id: "cs_test_1",
       url: "https://checkout.stripe.test/c/pay/cs_test_1",
     })),
+    list: vi.fn(async (_p: unknown) => ({
+      data: [] as Array<{ id: string; metadata: Record<string, string> }>,
+    })),
+    expire: vi.fn(async (_id: string) => ({})),
   };
   const portal = {
     create: vi.fn(async (_p: unknown) => ({
@@ -49,7 +53,15 @@ function fakeStripe() {
     client: {
       customers,
       checkout: { sessions },
-      billingPortal: { sessions: portal },
+      billingPortal: {
+        sessions: portal,
+        configurations: {
+          list: vi.fn(async () => ({
+            data: [{ id: "bpc_test", metadata: { nexora: "portal-v1" } }],
+          })),
+          create: vi.fn(),
+        },
+      },
     } as never,
   };
 }
@@ -350,6 +362,102 @@ describe("essai gratuit, codes promo et crédits nets (extras de paiement)", () 
   });
 });
 
+describe("un code « un par client » : une seule session ouverte à la fois (P2 résiduel)", () => {
+  const promo = {
+    promoCodeId: "pc-unique",
+    stripePromotionCodeId: "promo_u",
+    onePerCustomer: true,
+  };
+  const open = (id: string, promoCodeId?: string) => ({
+    id,
+    metadata: (promoCodeId ? { promo_code_id: promoCodeId } : {}) as Record<
+      string,
+      string
+    >,
+  });
+
+  it("expire les autres sessions ouvertes du client qui portent le même code, jamais la nouvelle ni celles d'un autre code", async () => {
+    const stripe = fakeStripe();
+    stripe.sessions.list.mockResolvedValueOnce({
+      data: [
+        open("cs_ancienne", "pc-unique"),
+        open("cs_test_1", "pc-unique"), // la session qui vient d'être créée
+        open("cs_autre_code", "pc-autre"),
+        open("cs_sans_code"),
+      ],
+    });
+    const org = await newOrg();
+    await createSubscriptionCheckout(base(stripe), {
+      organizationId: org,
+      plan: PLAN,
+      lang: "fr",
+      promo,
+    });
+    expect(stripe.sessions.list).toHaveBeenCalledWith(
+      expect.objectContaining({ status: "open" }),
+    );
+    expect(stripe.sessions.expire.mock.calls.map((c) => c[0])).toEqual([
+      "cs_ancienne",
+    ]);
+  });
+
+  it("vaut pour les crédits et le VPS ; un code sans limite par client ne coûte aucun appel de plus", async () => {
+    const credits = fakeStripe();
+    credits.sessions.list.mockResolvedValueOnce({
+      data: [open("cs_a", "pc-unique")],
+    });
+    const org = await newOrg();
+    await createCreditCheckout(base(credits), {
+      organizationId: org,
+      amountCents: 2000,
+      lang: "fr",
+      productName: "x",
+      promo,
+    });
+    expect(credits.sessions.expire).toHaveBeenCalledWith("cs_a");
+
+    const vps = fakeStripe();
+    vps.sessions.list.mockResolvedValueOnce({
+      data: [open("cs_v", "pc-unique")],
+    });
+    const { createVpsCheckout } = await import("./vps-checkout");
+    await createVpsCheckout(base(vps), {
+      organizationId: org,
+      orderId: "order-1",
+      priceId: "price_vps",
+      catalogVersion: "v1",
+      lang: "fr",
+      promo,
+    });
+    expect(vps.sessions.expire).toHaveBeenCalledWith("cs_v");
+
+    const free = fakeStripe();
+    await createSubscriptionCheckout(base(free), {
+      organizationId: org,
+      plan: PLAN,
+      lang: "fr",
+      promo: { promoCodeId: "pc-libre", stripePromotionCodeId: "promo_l" },
+    });
+    expect(free.sessions.list).not.toHaveBeenCalled();
+  });
+
+  it("un échec d'expiration ne fait pas échouer l'achat", async () => {
+    const stripe = fakeStripe();
+    stripe.sessions.list.mockResolvedValueOnce({
+      data: [open("cs_ancienne", "pc-unique")],
+    });
+    stripe.sessions.expire.mockRejectedValueOnce(new Error("déjà terminée"));
+    const org = await newOrg();
+    const out = await createSubscriptionCheckout(base(stripe), {
+      organizationId: org,
+      plan: PLAN,
+      lang: "fr",
+      promo,
+    });
+    expect(out.url).toContain("checkout.stripe.test");
+  });
+});
+
 describe("portail client", () => {
   it("ouvre le portail du client Stripe de l'organisation", async () => {
     const stripe = fakeStripe();
@@ -371,6 +479,8 @@ describe("portail client", () => {
     >;
     expect(params.return_url).toBe("https://nexora.test/en/compte");
     expect(params.customer).toMatch(/^cus_/);
+    // Portail restreint (ni changement d'offre, ni résiliation immédiate avec prorata).
+    expect(params.configuration).toBe("bpc_test");
   });
 
   it("refuse si l'organisation n'a encore aucun client Stripe", async () => {

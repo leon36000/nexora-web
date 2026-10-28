@@ -28,6 +28,7 @@ import {
 } from "../stripe/checkout";
 import type { PlanSource } from "./plans";
 import { consumeRateLimit } from "./rate-limit";
+import { emailTrialConsumed } from "./trial-guard";
 
 export interface SessionInfo {
   userId: string;
@@ -421,7 +422,15 @@ export async function handleSubscribeCheckout(
       plans: deps.plans(),
       organizationId: auth.organizationId,
       settings,
+      email: auth.email,
     });
+    // Un code d'essai ne donne pas un second essai à un courriel qui a déjà servi pour cette famille d'offre.
+    if (
+      promo.kind === "discount" &&
+      promo.promo.trialDays &&
+      (await emailTrialConsumed(deps.db, auth.email, plan.family))
+    )
+      return fail(deps, input, 422, "promo_already_used");
     const out = await createSubscriptionCheckout(
       checkoutDeps(deps, await stripeClient(deps)),
       {
@@ -429,11 +438,12 @@ export async function handleSubscribeCheckout(
         plan,
         lang: input.lang,
         email: auth.email,
-        // Un code d'essai sans essai d'offre suit le réglage général de carte.
+        // Un code d'essai exige TOUJOURS une carte (Ruling du 28/10 : un code public sans carte se rejoue avec des
+        // comptes jetables) ; seule une offre qui le décide elle-même (`trialCard: not_required`) fait exception.
         trial:
           trial ??
           (promo.kind === "discount" && promo.promo.trialDays
-            ? { days: 0, requireCard: settings.trialRequiresCard }
+            ? { days: 0, requireCard: true }
             : undefined),
         allowStripePageCodes:
           settings.stripePageCodes && (await stripePageCodesSafe(deps.db)),

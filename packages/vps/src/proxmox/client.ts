@@ -9,6 +9,7 @@ import {
 export type ProxmoxErrorCode =
   | "unauthorized"
   | "forbidden"
+  | "host_not_allowed"
   | "not_found"
   | "conflict"
   | "invalid_request"

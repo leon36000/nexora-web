@@ -269,6 +269,8 @@ export const accountEnCA: AccountDictionary = {
       not_ready: "This code is not active yet. Try again later or contact us.",
       covers_all:
         "This code would cover the whole credit purchase: choose a higher amount.",
+      account_restricted:
+        "This code cannot be applied to your account at the moment. Contact us.",
     },
     gifted: {
       subscription: "Subscription provided: full access, no payment.",

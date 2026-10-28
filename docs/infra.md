@@ -109,6 +109,20 @@ Montants en **micro-unités CAD entières** (`bigint`, 1 CAD = 1 000 000). `cred
 
 Garde-fous en base : contraintes de signe par type d'écriture et `credit_entries_no_overdraft_check` (une réservation ou une expiration ne peut jamais laisser un disponible négatif, même si le code était contourné). Tests : 20 réservations concurrentes (identiques et de montants inégaux), rejeux concurrents d'une même clé, précision au-delà de 2^53, mutation du verrou détectée.
 
+#### Crédits inclus d'une offre annuelle : un douzième par mois (migration 0015)
+
+Décision du fondateur, déléguée (28/10/2026) : une facture annuelle ne verse plus l'année d'un coup (coût d'inférence payé d'avance, repris par un litige ou un remboursement). `packages/db/src/subscription-credits.ts` :
+
+- La facture payée crée la ligne `subscription_credit_grants` (`credits_micro` = total de l'année, **source des remboursements et litiges**) et **douze `subscription_credit_tranches`** (`seq` 0 à 11, échéance = début de la période payée + `seq` mois civils, **sans dérive** : le 31 janvier donne le 28 février puis le 31 mars). Le total est partagé en entiers, le reste va aux premiers mois (somme exacte). La tranche 0 est versée **tout de suite**, chacune expire à la fin de son mois.
+- Tâche `ledger.grant-tranches` (planificateur, **chaque heure**, `FOR UPDATE SKIP LOCKED`, idempotente par clé `sub-credit:<facture>:m<seq>`) : verse les tranches échues. Abonnement `canceled`/`incomplete_expired` : tranche annulée (`cancel_reason = subscription_ended`) ; `unpaid`/`paused`/`incomplete` : attend et reprend. Une tranche versée en retard (worker arrêté) vaut **7 jours au moins**.
+- **Remboursement** : on retire d'abord les douzièmes pas encore versés (de la fin vers le début, `reduced_micro`), le solde du client n'est débité que du reste ; un rejeu du même cumul ne retire rien. **Litige ouvert** : les tranches à venir sont suspendues (`held`) et le versé est repris au prorata, plafonné à ce qui a été versé. **Gagné ou clos sans perte** : les crédits repris sont rendus (valables 30 jours au moins) et les tranches reprennent. **Perdu** : les tranches suspendues sont retirées à hauteur du montant contesté non repris.
+- **Crédits proportionnels au prix payé** (offres mensuelles et annuelles) : `invoice.total_excluding_tax` (après rabais, avant taxes) sur le prix de l'offre ; un code de 99 % ne donne que 1 % des crédits. Sans ce champ (anciennes versions d'API), octroi complet.
+- Offres déjà versées d'un coup avant la migration : inchangées (aucune tranche).
+
+#### Essais gratuits : un par carte et par courriel (migration 0015)
+
+`web/src/server/billing/trial-guard.ts`. Quand un abonnement (hors VPS) passe en essai, le webhook lit chez Stripe l'empreinte de la carte (`card.fingerprint`, repli sur la carte par défaut du client puis sur sa carte la plus récente) et le courriel du client, et inscrit dans `trial_claims` leurs **empreintes SHA-256** pour la famille d'offre (courriel normalisé : minuscules, alias `+étiquette` retirés, points ignorés chez Gmail, `googlemail.com` = `gmail.com`). Si l'une des clés a déjà servi pour un **autre** abonnement, l'abonnement est **résilié chez Stripe** (sans prorata ni facture, donc sans prélèvement), consigné dans `trial_denials`, et ses propres clés sont retirées. L'événement échoue (Stripe le renvoie) si Stripe est injoignable ; l'organisation qui a vu son essai annulé ne retrouve pas d'essai (règle « un par organisation et par famille »). Sans carte exigée, seul le courriel limite. Au Checkout, un courriel déjà servi n'obtient plus d'essai, et un **code d'essai exige toujours une carte**.
+
 ### Stripe
 
 - **Achat de crédits** (`POST /api/billing/checkout/credits`, champ `amount` en dollars) : Checkout en **paiement unique**, `automatic_tax` (Stripe Tax), adresse de facturation exigée, prix hors taxes, `tax_id_collection`, facture créée. Les crédits accordés valent le **montant avant taxes** ; les taxes sont à la charge du client en sus (D7, à faire confirmer par un comptable). **Abonnements** (`/api/billing/checkout/subscription`, champ `plan`) : session `subscription` distincte, prix Stripe du plan **publié** dans Directus. **Portail** (`/api/billing/portal`). Réponse : 303 vers Stripe (formulaire) ou JSON `{ url }` (`Accept: application/json`).
@@ -398,6 +412,7 @@ Recette et preuves : `docs/recette/` ; mode d'emploi : `docs/guide-operateur.md`
 - **En-têtes** : `web/src/lib/security-headers.ts` (CSP sans origine tierce, HSTS, `nosniff`, `frame-ancestors 'none'`), posés par `next.config.ts` et `proxy.ts`.
 - **Adresses saisies en administration** (fournisseurs, instances WorkStudio, serveurs Proxmox) : garde `@nexora/net`. En production, le réseau interne est refusé sauf liste `NEXORA_OUTBOUND_ALLOW` (hôtes, adresses ou plages CIDR, séparés par des virgules) ; lien local et métadonnées du nuage toujours refusés.
 - **Portée des secrets** : `@nexora/vault/scope` ; un secret ne part vers une adresse saisie que si son type convient.
+- **Hôtes des clés (R9)** : `secretHostProblem` (`@nexora/vault/scope`) ; une clé du Coffre ne part que vers un hôte listé par l'opérateur dans `NEXORA_SECRET_HOSTS_MODEL_PROVIDER` / `_WORKSTUDIO` / `_PROXMOX` (web **et** worker), contrôlé à l'écriture sur la paire adresse + clé effective et à chaque usage (test, synchronisation LiteLLM, appel d'agent, client Proxmox). Défauts et mode d'emploi : guide opérateur §8.0.
 - **Sauvegarde** : `deploy/backup.sh`, `deploy/restore.sh` ; **e2e regroupés** : `bun run e2e`.
 - **Écoute du serveur** : `next start -H localhost` (ou `0.0.0.0` en conteneur), jamais `127.0.0.1`.
 

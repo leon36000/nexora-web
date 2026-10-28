@@ -1,4 +1,5 @@
 import type { Database, ProviderType } from "@nexora/db";
+import { envSecretHostCheck, type SecretHostCheck } from "@nexora/vault/scope";
 import {
   type CatalogVersion,
   getPublishedCatalog,
@@ -207,7 +208,8 @@ export class SyncError extends Error {
   readonly code:
     | "no_published_catalog"
     | "litellm_unavailable"
-    | "secret_unavailable";
+    | "secret_unavailable"
+    | "secret_host";
   constructor(code: SyncError["code"], message: string) {
     super(message);
     this.name = "SyncError";
@@ -219,6 +221,8 @@ export interface SyncDeps {
   client: LitellmClient;
   /** Valeur du secret du coffre ; jamais journalisée ni renvoyée. */
   getSecret: (ref: string) => Promise<string>;
+  /** Hôtes où une clé peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_* de l'environnement. */
+  secretHosts?: SecretHostCheck;
   now?: () => Date;
 }
 
@@ -261,6 +265,16 @@ export async function syncLitellm(
     for (const provider of usedProviders.values()) {
       const values: { api_key?: string; api_base?: string } = {};
       if (provider.secretRef) {
+        // La clé part vers l'adresse que LiteLLM appellera : elle doit être autorisée par l'opérateur (R9).
+        const forbidden = (deps.secretHosts ?? envSecretHostCheck)(
+          "model-provider",
+          provider.litellmBaseUrl ?? provider.baseUrl,
+        );
+        if (forbidden)
+          throw new SyncError(
+            "secret_host",
+            `fournisseur « ${provider.code} » : ${forbidden}`,
+          );
         try {
           values.api_key = await deps.getSecret(provider.secretRef);
         } catch {

@@ -196,6 +196,8 @@ export const vpsEnCA: VpsDictionary = {
         "This code is not active yet. Try again later or contact us.",
       promo_covers_all:
         "This code would cover the whole purchase: choose another option.",
+      promo_account_restricted:
+        "This code cannot be applied to your account at the moment. Contact us.",
     },
   },
 

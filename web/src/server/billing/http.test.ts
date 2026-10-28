@@ -10,6 +10,7 @@ import {
   promoRedemptions,
   staffAccounts,
   subscriptions,
+  trialClaims,
   users,
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
@@ -86,7 +87,15 @@ function setup(session: SessionInfo | null) {
   const stripe = {
     customers: { create: vi.fn(async () => ({ id: `cus_${id()}` })) },
     checkout: { sessions: { create: checkoutCreate } },
-    billingPortal: { sessions: { create: portalCreate } },
+    billingPortal: {
+      sessions: { create: portalCreate },
+      configurations: {
+        list: vi.fn(async () => ({
+          data: [{ id: "bpc_test", metadata: { nexora: "portal-v1" } }],
+        })),
+        create: vi.fn(),
+      },
+    },
   };
   const deps: BillingHttpDeps = {
     db: t.db,
@@ -566,6 +575,132 @@ describe("essai gratuit, codes promo, frais de recharge et dons du personnel", (
     expect(
       sessionParams(s2).subscription_data.trial_period_days,
     ).toBeUndefined();
+  });
+
+  it("abonnement : un courriel (normalisé) qui a déjà servi à un essai de la famille n'obtient plus d'essai, même dans une nouvelle organisation", async () => {
+    const trialPlan = {
+      ...PLAN,
+      code: "essai-courriel",
+      family: "essai-courriel-famille",
+      trialDays: 14,
+    };
+    const { trialKeyHash, normalizeEmailForTrial } = await import(
+      "./trial-guard"
+    );
+    const old = await account();
+    const reused = `Jeanne.Dupont+${id()}@Exemple.CA`;
+    await t.db.insert(trialClaims).values({
+      kind: "email",
+      keyHash: trialKeyHash("email", normalizeEmailForTrial(reused) as string),
+      family: trialPlan.family,
+      organizationId: old.orgId,
+      stripeSubscriptionId: `sub_${id()}`,
+    });
+    const fresh = await account();
+    // Même personne, nouvelle organisation, alias du même courriel : plus d'essai.
+    const sameEmail = setup({
+      ...fresh.session,
+      email: reused.replace("+", "+autre"),
+    });
+    sameEmail.deps.plans = () => new FakePlanSource([trialPlan]);
+    await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "essai-courriel" },
+        {},
+        true,
+      ),
+      sameEmail.deps,
+    );
+    expect(
+      sessionParams(sameEmail).subscription_data.trial_period_days,
+    ).toBeUndefined();
+    // Un courriel neuf garde son essai.
+    const other = await account();
+    const brandNew = setup(other.session);
+    brandNew.deps.plans = () => new FakePlanSource([trialPlan]);
+    await handleSubscribeCheckout(
+      post(
+        "/api/billing/checkout/subscription",
+        { plan: "essai-courriel" },
+        {},
+        true,
+      ),
+      brandNew.deps,
+    );
+    expect(sessionParams(brandNew).subscription_data.trial_period_days).toBe(
+      14,
+    );
+  });
+
+  it("un code d'essai exige TOUJOURS une carte, même si le réglage général dispense l'essai de la carte ; un courriel qui a déjà servi à un essai ne peut pas non plus l'utiliser", async () => {
+    await t.db
+      .insert(paymentSettings)
+      .values({ id: "default", trialRequiresCard: false })
+      .onConflictDoUpdate({
+        target: paymentSettings.id,
+        set: { trialRequiresCard: false },
+      });
+    try {
+      const { createPromo } = await import("../payments/promo");
+      await createPromo(
+        t.db,
+        {
+          code: "ESSAI-7J",
+          kind: "trial",
+          trialDays: 7,
+          scopes: ["subscriptions"],
+        },
+        "admin",
+      );
+      const { session } = await account();
+      const s = setup(session);
+      const res = await handleSubscribeCheckout(
+        post(
+          "/api/billing/checkout/subscription",
+          { plan: "pro", promo: "ESSAI-7J" },
+          {},
+          true,
+        ),
+        s.deps,
+      );
+      expect(res.status).toBe(200);
+      const params = sessionParams(s);
+      expect(params.subscription_data.trial_period_days).toBe(7);
+      expect(params.payment_method_collection).toBeUndefined();
+      expect(params.subscription_data.trial_settings).toBeUndefined();
+
+      // Courriel déjà servi (famille « f » du plan) : le code n'ouvre pas un second essai.
+      const { trialKeyHash, normalizeEmailForTrial } = await import(
+        "./trial-guard"
+      );
+      const used = await account();
+      await t.db.insert(trialClaims).values({
+        kind: "email",
+        keyHash: trialKeyHash(
+          "email",
+          normalizeEmailForTrial(session.email) as string,
+        ),
+        family: "f",
+        organizationId: used.orgId,
+        stripeSubscriptionId: `sub_${id()}`,
+      });
+      const s2 = setup(session);
+      const again = await handleSubscribeCheckout(
+        post(
+          "/api/billing/checkout/subscription",
+          { plan: "pro", promo: "ESSAI-7J" },
+          {},
+          true,
+        ),
+        s2.deps,
+      );
+      expect(again.status).toBe(422);
+      expect(await again.json()).toEqual({ error: "promo_already_used" });
+      expect(s2.checkoutCreate).not.toHaveBeenCalled();
+    } finally {
+      await t.db.update(paymentSettings).set({ trialRequiresCard: true });
+    }
   });
 
   it("une session de paiement expire en 30 minutes (et non 24 h) : un code à usage limité ne peut pas être « réservé » par des sessions laissées ouvertes", async () => {

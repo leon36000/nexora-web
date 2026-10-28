@@ -88,3 +88,52 @@ export function verifyPreviewLink(input: {
     return { ok: false, reason: "expired" };
   return { ok: true, lang: input.lang, path: input.path };
 }
+
+/**
+ * Session d'aperçu : cookie `nexora_preview` SIGNÉ de 30 minutes, posé par /api/preview en plus du cookie du Draft Mode.
+ * Le cookie du Draft Mode (`__prerender_bypass`) est constant pour tout un build et sans expiration : sur un navigateur
+ * partagé il donnerait l'accès aux brouillons jusqu'au prochain build. `proxy.ts` ne l'honore plus que si cette session,
+ * dont la signature couvre l'échéance, est valide ; sinon il l'efface.
+ */
+export const PREVIEW_SESSION_COOKIE = "nexora_preview";
+export const PREVIEW_SESSION_SECONDS = 30 * 60;
+
+function sessionMac(secret: string, exp: number): string {
+  return createHmac("sha256", secret)
+    .update(`nexora-preview-session-v1\n${exp}`)
+    .digest("base64url");
+}
+
+export function signPreviewSession(input: {
+  secret: string | undefined;
+  now?: number;
+}): { value: string; maxAge: number } {
+  if (!input.secret || input.secret.length < MIN_SECRET)
+    throw new Error(
+      "NEXORA_PREVIEW_SECRET absent ou trop court (32 caractères minimum)",
+    );
+  const exp = (input.now ?? Date.now()) + PREVIEW_SESSION_SECONDS * 1000;
+  return {
+    value: `${exp}.${sessionMac(input.secret, exp)}`,
+    maxAge: PREVIEW_SESSION_SECONDS,
+  };
+}
+
+export function verifyPreviewSession(input: {
+  secret: string | undefined;
+  value: string | undefined;
+  now?: number;
+}): boolean {
+  if (!input.secret || input.secret.length < MIN_SECRET || !input.value)
+    return false;
+  const parts = input.value.split(".");
+  if (parts.length !== 2) return false;
+  const [rawExp, sig] = parts as [string, string];
+  if (!/^\d{10,16}$/.test(rawExp)) return false;
+  const exp = Number(rawExp);
+  const expected = Buffer.from(sessionMac(input.secret, exp));
+  const given = Buffer.from(sig);
+  if (expected.length !== given.length || !timingSafeEqual(expected, given))
+    return false;
+  return (input.now ?? Date.now()) <= exp;
+}

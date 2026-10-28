@@ -426,3 +426,95 @@ describe("vues en lecture seule : aucun renseignement personnel", () => {
     });
   });
 });
+
+// ─── R9 : le jeton Proxmox ne part que vers un hôte déclaré par l'opérateur ─────────────────────────────────────
+describe("serveurs Proxmox : hôte du jeton (R9)", () => {
+  const prod = (hosts = "pve1.lan") => ({
+    env: { NODE_ENV: "production", NEXORA_SECRET_HOSTS_PROXMOX: hosts },
+    // Les noms fictifs des essais ne se résolvent pas : garde SSRF permissive (couverte ailleurs).
+    outbound: async (raw: string) => ({
+      ok: true as const,
+      url: new URL(raw),
+      addresses: [],
+    }),
+  });
+  const create = (body: Record<string, unknown>) =>
+    call(
+      "POST",
+      "servers",
+      {
+        code: `r9-${Math.random().toString(36).slice(2, 8)}`,
+        name: "R9",
+        node: "pve1",
+        capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+        ipPool: SIM_POOL,
+        ...body,
+      },
+      prod(),
+    );
+
+  it("refuse un jeton associé à un hôte non déclaré, accepte l'hôte déclaré ou l'absence de jeton", async () => {
+    const bad = await create({
+      host: "collecte.pirate.example",
+      tokenRef: "proxmox.main",
+    });
+    expect(bad.status).toBe(422);
+    expect(bad.body.error).toBe("secret_host");
+    expect(bad.body.message).toMatch(/NEXORA_SECRET_HOSTS_PROXMOX/);
+    expect(
+      (await create({ host: "pve1.lan", tokenRef: "proxmox.main" })).status,
+    ).toBe(201);
+    expect((await create({ host: "collecte.pirate.example" })).status).toBe(
+      201,
+    );
+  });
+
+  it("modifier seulement l'hôte ou seulement la référence est contrôlé avec l'autre valeur enregistrée", async () => {
+    const withToken = await create({
+      host: "pve1.lan",
+      tokenRef: "proxmox.main",
+    });
+    const redirect = await call(
+      "PATCH",
+      `servers/${withToken.body.id}`,
+      { host: "collecte.pirate.example" },
+      prod(),
+    );
+    expect(redirect.status).toBe(422);
+    expect(redirect.body.error).toBe("secret_host");
+    const bare = await create({ host: "collecte.pirate.example" });
+    const attach = await call(
+      "PATCH",
+      `servers/${bare.body.id}`,
+      { tokenRef: "proxmox.main" },
+      prod(),
+    );
+    expect(attach.status).toBe(422);
+    expect(attach.body.error).toBe("secret_host");
+  });
+
+  it("« Tester la connexion » ne lit ni n'envoie le jeton vers un hôte non déclaré, même déjà enregistré", async () => {
+    const { createServer } = await import("@nexora/vps");
+    const sneaky = await createServer(t.db, {
+      code: `r9-direct-${Math.random().toString(36).slice(2, 6)}`,
+      name: "Posé en base",
+      host: "collecte.pirate.example",
+      node: "pve1",
+      capacity: { vcpu: 1, ramMb: 1, diskGb: 1 },
+      ipPool: SIM_POOL,
+      tokenRef: "proxmox.main",
+    });
+    const reads: string[] = [];
+    const r = await call("POST", `servers/${sneaky.id}/test`, undefined, {
+      ...prod(),
+      getSecret: async (ref) => {
+        reads.push(ref);
+        return secretToken;
+      },
+    });
+    expect(r.body.ok).toBe(false);
+    expect(r.body.detail).toMatch(/non autorisé/);
+    expect(reads).toEqual([]);
+    expect(JSON.stringify(r.body)).not.toContain(SIM_TOKEN);
+  });
+});

@@ -247,6 +247,148 @@ export const subscriptionCreditGrants = pgTable(
 );
 
 /**
+ * Offres annuelles : les crédits inclus sont versés MOIS PAR MOIS, un douzième chaque mois, chacun valable le mois en
+ * cours. Une facture annuelle payée crée une ligne `subscription_credit_grants` (source des remboursements et litiges,
+ * `credits_micro` = total de l'année) et douze tranches ; la première est versée tout de suite, les autres par la tâche
+ * `ledger.grant-tranches` du worker à leur échéance. `original_micro` est le douzième d'origine, `amount_micro` ce qui
+ * reste à verser (un remboursement le réduit), `reduced_micro` ce qui en a été retiré. Statuts : `pending` (à verser),
+ * `held` (suspendue par un litige ouvert : `hold_ref`), `granted` (versée), `canceled` (plus rien à verser).
+ */
+export const TRANCHE_STATUSES = [
+  "pending",
+  "held",
+  "granted",
+  "canceled",
+] as const;
+export type TrancheStatus = (typeof TRANCHE_STATUSES)[number];
+
+export const subscriptionCreditTranches = pgTable(
+  "subscription_credit_tranches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    grantId: uuid("grant_id")
+      .notNull()
+      .references(() => subscriptionCreditGrants.id, { onDelete: "restrict" }),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    stripeInvoiceId: text("stripe_invoice_id").notNull(),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    /** 0 à 11. */
+    seq: integer("seq").notNull(),
+    dueAt: ts("due_at").notNull(),
+    /** Fin du mois couvert : le douzième expire à cette date. */
+    expiresAt: ts("expires_at").notNull(),
+    originalMicro: micro("original_micro").notNull(),
+    amountMicro: micro("amount_micro").notNull(),
+    reducedMicro: micro("reduced_micro").notNull().default(sql`0`),
+    status: text("status").$type<TrancheStatus>().notNull().default("pending"),
+    /** Litige qui suspend la tranche (`status = 'held'`). */
+    holdRef: text("hold_ref"),
+    grantedAt: ts("granted_at"),
+    canceledAt: ts("canceled_at"),
+    cancelReason: text("cancel_reason"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("subscription_credit_tranches_grant_seq_unique").on(
+      t.grantId,
+      t.seq,
+    ),
+    index("subscription_credit_tranches_due_idx").on(t.status, t.dueAt),
+    index("subscription_credit_tranches_sub_idx").on(t.stripeSubscriptionId),
+    check(
+      "subscription_credit_tranches_amounts",
+      sql`${t.originalMicro} > 0 AND ${t.amountMicro} >= 0 AND ${t.reducedMicro} >= 0 AND ${t.amountMicro} + ${t.reducedMicro} <= ${t.originalMicro}`,
+    ),
+    check(
+      "subscription_credit_tranches_status_check",
+      sql`${t.status} IN ('pending','held','granted','canceled')`,
+    ),
+    check("subscription_credit_tranches_seq", sql`${t.seq} BETWEEN 0 AND 11`),
+  ],
+);
+
+/**
+ * Essais gratuits consommés, par moyen de paiement et par adresse courriel : un essai par carte (empreinte Stripe
+ * `card.fingerprint`) et par courriel normalisé, pour une famille d'offre. Les clés sont des empreintes SHA-256 : la base
+ * ne garde ni l'empreinte de carte ni le courriel en clair. Une carte ou un courriel déjà inscrit pour un AUTRE
+ * abonnement annule l'essai du nouveau (voir `billing/trial-guard.ts`).
+ */
+export const TRIAL_CLAIM_KINDS = ["card", "email"] as const;
+export type TrialClaimKind = (typeof TRIAL_CLAIM_KINDS)[number];
+
+export const trialClaims = pgTable(
+  "trial_claims",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    kind: text("kind").$type<TrialClaimKind>().notNull(),
+    keyHash: text("key_hash").notNull(),
+    family: text("family").notNull(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    stripeSubscriptionId: text("stripe_subscription_id").notNull(),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("trial_claims_key_unique").on(t.kind, t.keyHash, t.family),
+    index("trial_claims_sub_idx").on(t.stripeSubscriptionId),
+    check("trial_claims_kind_check", sql`${t.kind} IN ('card','email')`),
+  ],
+);
+
+/** Essais annulés parce que la carte ou le courriel avait déjà servi (journal d'audit, aucune donnée personnelle). */
+export const trialDenials = pgTable(
+  "trial_denials",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    stripeSubscriptionId: text("stripe_subscription_id").notNull(),
+    family: text("family").notNull(),
+    /** `card` ou `email` : la clé qui avait déjà servi. */
+    reason: text("reason").$type<TrialClaimKind>().notNull(),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("trial_denials_sub_unique").on(t.stripeSubscriptionId),
+    check("trial_denials_reason_check", sql`${t.reason} IN ('card','email')`),
+  ],
+);
+
+/**
+ * Litiges de paiement (Stripe `charge.dispute.*`) par organisation. Une organisation dont un litige est ouvert ou perdu ne
+ * reçoit plus d'essai gratuit ni de rabais (Ruling du 28/10) ; un litige gagné lève la restriction. `status` : `open`
+ * (créé), `won` (gagné ou clos sans perte), `lost`.
+ */
+export const DISPUTE_STATUSES = ["open", "won", "lost"] as const;
+export type DisputeStatus = (typeof DISPUTE_STATUSES)[number];
+
+export const paymentDisputes = pgTable(
+  "payment_disputes",
+  {
+    /** Identifiant du litige chez Stripe (`dp_…`). */
+    id: text("id").primaryKey(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    status: text("status").$type<DisputeStatus>().notNull().default("open"),
+    amountCents: integer("amount_cents").notNull(),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    closedAt: ts("closed_at"),
+  },
+  (t) => [
+    index("payment_disputes_org_idx").on(t.organizationId, t.status),
+    check(
+      "payment_disputes_status_check",
+      sql`${t.status} IN ('open','won','lost')`,
+    ),
+  ],
+);
+
+/**
  * Lien facture ↔ paiement Stripe. Depuis l'API 2025+, ni la facture ni la charge ne se
  * référencent mutuellement : seul l'événement `invoice_payment.paid` les relie. Une ligne par
  * facture ; elle peut arriver avant ou après `invoice.paid`.

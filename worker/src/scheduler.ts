@@ -21,11 +21,14 @@ import type { Logger } from "@nexora/log";
  *   chaque heure          Santé des modèles (si l'agent est activé)
  *   lundi 07:00           Veille (si activée et si une source est configurée dans l'agent)
  *   toutes les 10 minutes libération des réservations de crédits perdues (grand livre, voir ledger-handlers.ts)
+ *   chaque heure          versement des douzièmes mensuels des crédits inclus des offres annuelles
  *   02:00 chaque jour     expiration des crédits échus (12 mois)
  */
 const TZ = "America/Toronto";
 /** Tranche de la libération des réservations perdues. */
 export const LEDGER_RELEASE_EVERY_MS = 10 * 60_000;
+/** Versement des douzièmes mensuels des offres annuelles : une occurrence par heure. */
+export const LEDGER_GRANT_EVERY_MS = 60 * 60_000;
 
 export interface LocalClock {
   date: string; // YYYY-MM-DD
@@ -147,6 +150,11 @@ export async function tickScheduler(deps: SchedulerDeps): Promise<string[]> {
     type: "ledger.release-stale",
     idempotencyKey: `ledger-release-stale:${Math.floor(nowMs / LEDGER_RELEASE_EVERY_MS)}`,
     maxAttempts: 1,
+  });
+  await enqueue(db, {
+    type: "ledger.grant-tranches",
+    idempotencyKey: `ledger-grant-tranches:${Math.floor(nowMs / LEDGER_GRANT_EVERY_MS)}`,
+    maxAttempts: 3,
   });
   if (clock.hour >= 2)
     await enqueue(db, {
