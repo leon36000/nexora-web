@@ -398,6 +398,7 @@ Recette et preuves : `docs/recette/` ; mode d'emploi : `docs/guide-operateur.md`
 - **En-têtes** : `web/src/lib/security-headers.ts` (CSP sans origine tierce, HSTS, `nosniff`, `frame-ancestors 'none'`), posés par `next.config.ts` et `proxy.ts`.
 - **Adresses saisies en administration** (fournisseurs, instances WorkStudio, serveurs Proxmox) : garde `@nexora/net`. En production, le réseau interne est refusé sauf liste `NEXORA_OUTBOUND_ALLOW` (hôtes, adresses ou plages CIDR, séparés par des virgules) ; lien local et métadonnées du nuage toujours refusés.
 - **Portée des secrets** : `@nexora/vault/scope` ; un secret ne part vers une adresse saisie que si son type convient.
+- **Hôtes des clés (R9)** : `secretHostProblem` (`@nexora/vault/scope`) ; une clé du Coffre ne part que vers un hôte listé par l'opérateur dans `NEXORA_SECRET_HOSTS_MODEL_PROVIDER` / `_WORKSTUDIO` / `_PROXMOX` (web **et** worker), contrôlé à l'écriture sur la paire adresse + clé effective et à chaque usage (test, synchronisation LiteLLM, appel d'agent, client Proxmox). Défauts et mode d'emploi : guide opérateur §8.0.
 - **Sauvegarde** : `deploy/backup.sh`, `deploy/restore.sh` ; **e2e regroupés** : `bun run e2e`.
 - **Écoute du serveur** : `next start -H localhost` (ou `0.0.0.0` en conteneur), jamais `127.0.0.1`.
 

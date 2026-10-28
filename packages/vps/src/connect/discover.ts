@@ -450,6 +450,12 @@ export function explainProxmoxError(error: unknown): {
         action: `Donner ce droit via le rôle ${PROVISION_ROLE} (guide, § Droits).`,
       };
     }
+    case "host_not_allowed":
+      return {
+        cause: `Le jeton n'est pas envoyé : ${error.message.replace(/^jeton non envoyé : /, "")}.`,
+        action:
+          "Faire déclarer cet hôte par l'opérateur du serveur (liste des hôtes autorisés pour la clé d'un serveur Proxmox), puis réessayer.",
+      };
     case "tls":
       return {
         cause:

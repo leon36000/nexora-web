@@ -289,7 +289,10 @@ export function engineDeps(
   const { settings, ...rest } = over;
   return {
     db,
-    proxmox: proxmoxClientFactory({ getSecret: async () => SIM_TOKEN }),
+    proxmox: proxmoxClientFactory({
+      getSecret: async () => SIM_TOKEN,
+      checkHost: () => null,
+    }),
     runner,
     log: createLogger({ name: "vps-test", level: "error" }),
     now: () => new Date(),

@@ -302,7 +302,7 @@ describe("branchement d'un serveur (vps.server_setup)", () => {
       const deps = engineDeps(t.db, guest.runner);
       const connected = await connectServer(
         t.db,
-        { getSecret: async () => SIM_TOKEN },
+        { getSecret: async () => SIM_TOKEN, checkHost: () => null },
         {
           code: "pve-worker",
           host: "http://127.0.0.1",

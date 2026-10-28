@@ -7,7 +7,11 @@ import {
   REGIONS,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
-import { secretScopeProblem } from "@nexora/vault/scope";
+import {
+  envSecretHostCheck,
+  type SecretHostCheck,
+  secretScopeProblem,
+} from "@nexora/vault/scope";
 import { secretKindOf } from "@nexora/vault/store";
 import { z } from "zod";
 import { checkAdminAuth } from "../auth";
@@ -54,6 +58,8 @@ export interface CatalogAdminDeps {
   getSecret: (ref: string) => Promise<string>;
   /** Garde des adresses saisies (SSRF) ; défaut : politique de l'environnement (voir @nexora/net). */
   outbound?: OutboundGuard;
+  /** Hôtes où une clé du coffre peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_* de l'environnement. */
+  secretHosts?: SecretHostCheck;
   fetch: typeof fetch;
   log: Logger;
   now: () => Date;
@@ -212,7 +218,11 @@ class HttpError extends Error {
   }
 }
 
-/** Adresses du fournisseur (SSRF) et portée de la clé : refus 422 avant toute écriture. */
+/**
+ * Adresses du fournisseur (SSRF), portée de la clé et hôte de la clé (R9) : refus 422 avant toute écriture.
+ * `current` : l'état enregistré lors d'une modification ; l'hôte est contrôlé sur la paire EFFECTIVE (adresse et clé
+ * après modification), sinon changer seulement l'adresse d'un fournisseur qui a déjà une clé la redirigerait.
+ */
 async function assertProviderTargets(
   db: Database,
   deps: CatalogAdminDeps,
@@ -220,6 +230,11 @@ async function assertProviderTargets(
     baseUrl?: string;
     litellmBaseUrl?: string | null;
     secretRef?: string | null;
+  },
+  current?: {
+    baseUrl: string;
+    litellmBaseUrl: string | null;
+    secretRef: string | null;
   },
 ): Promise<void> {
   const guard = deps.outbound ?? envOutboundGuard;
@@ -247,6 +262,27 @@ async function assertProviderTargets(
       await secretKindOf(db, input.secretRef),
     );
     if (problem) throw new HttpError(422, "secret_scope", { message: problem });
+  }
+  const effective = {
+    baseUrl: input.baseUrl ?? current?.baseUrl,
+    litellmBaseUrl:
+      input.litellmBaseUrl !== undefined
+        ? input.litellmBaseUrl
+        : (current?.litellmBaseUrl ?? null),
+    secretRef:
+      input.secretRef !== undefined
+        ? input.secretRef
+        : (current?.secretRef ?? null),
+  };
+  if (effective.secretRef) {
+    const hostCheck = deps.secretHosts ?? envSecretHostCheck;
+    for (const field of ["baseUrl", "litellmBaseUrl"] as const) {
+      const target = effective[field];
+      if (!target) continue;
+      const problem = hostCheck("model-provider", target);
+      if (problem)
+        throw new HttpError(422, "secret_host", { message: problem, field });
+    }
   }
 }
 
@@ -323,7 +359,7 @@ export async function handleCatalogAdmin(
         { error: error.code, message: error.message },
         error.code === "no_published_catalog"
           ? 409
-          : error.code === "secret_unavailable"
+          : error.code === "secret_unavailable" || error.code === "secret_host"
             ? 422
             : 502,
       );
@@ -410,6 +446,7 @@ async function route(
         ? await testProvider(provider, {
             getSecret: deps.getSecret,
             fetch: deps.fetch,
+            secretHosts: deps.secretHosts ?? envSecretHostCheck,
           })
         : { ok: false, detail: `adresse refusée : ${target.reason}` };
       const updated = await recordProviderCheck(db, providerId, check, now);
@@ -423,7 +460,12 @@ async function route(
     allowed("GET", "PATCH");
     if (method === "GET") return ok(await getProvider(db, providerId));
     const patch = await body(request, providerPatch);
-    await assertProviderTargets(db, deps, patch);
+    await assertProviderTargets(
+      db,
+      deps,
+      patch,
+      await getProvider(db, providerId),
+    );
     return ok(await updateProvider(db, providerId, patch));
   }
 
@@ -545,6 +587,7 @@ async function route(
     const { version, summary } = await syncLitellm(db, {
       client,
       getSecret: deps.getSecret,
+      secretHosts: deps.secretHosts ?? envSecretHostCheck,
       now: () => now,
     });
     deps.log.info("catalogue : synchronisation LiteLLM", {

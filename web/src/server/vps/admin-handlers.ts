@@ -14,7 +14,11 @@ import {
   vpsOrders,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
-import { secretScopeProblem } from "@nexora/vault/scope";
+import {
+  type SecretHostCheck,
+  secretHostProblem,
+  secretScopeProblem,
+} from "@nexora/vault/scope";
 import { secretKindOf } from "@nexora/vault/store";
 import {
   approveCatalogVersion,
@@ -75,6 +79,8 @@ import { syncVpsCatalogToStripe, VpsSyncError } from "./stripe-sync";
 export interface VpsAdminDeps {
   /** Garde des adresses saisies (SSRF) ; défaut : réseau de l'opérateur admis, jamais lien local ni métadonnées. */
   outbound?: OutboundGuard;
+  /** Hôtes où le jeton Proxmox peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_PROXMOX de `env` (ou du processus). */
+  secretHosts?: SecretHostCheck;
   db: () => Database;
   adminToken: string | undefined;
   getSecret: (ref: string) => Promise<string>;
@@ -90,11 +96,24 @@ export interface VpsAdminDeps {
   guidePdf?: () => Promise<Uint8Array | null>;
 }
 
-/** Hôte Proxmox (SSRF) et portée du jeton : refus 422 avant toute écriture. */
+/** Contrôle d'hôte des jetons Proxmox : l'environnement des dépendances, à défaut celui du processus. */
+function hostCheckOf(deps: VpsAdminDeps): (host: string) => string | null {
+  const check: SecretHostCheck =
+    deps.secretHosts ??
+    ((scope, target) =>
+      secretHostProblem(scope, target, deps.env ?? process.env));
+  return (host) => check("proxmox", host);
+}
+
+/**
+ * Hôte Proxmox (SSRF), portée du jeton et hôte du jeton (R9) : refus 422 avant toute écriture. `current` : l'état
+ * enregistré lors d'une modification (l'hôte est contrôlé sur la paire effective hôte + jeton).
+ */
 async function assertServerTargets(
   db: Database,
   deps: VpsAdminDeps,
   input: { host?: string; port?: number; tokenRef?: string | null },
+  current?: { host: string; tokenRef: string | null },
 ): Promise<void> {
   if (input.host !== undefined) {
     const c = connectionOf({ host: input.host, port: input.port ?? 8006 });
@@ -114,6 +133,17 @@ async function assertServerTargets(
       await secretKindOf(db, input.tokenRef),
     );
     if (problem) throw new HttpError(422, "secret_scope", { message: problem });
+  }
+  const host = input.host ?? current?.host;
+  const tokenRef =
+    input.tokenRef !== undefined ? input.tokenRef : current?.tokenRef;
+  if (host && tokenRef) {
+    const problem = hostCheckOf(deps)(connectionOf({ host, port: 8006 }).host);
+    if (problem)
+      throw new HttpError(422, "secret_host", {
+        message: problem,
+        field: "host",
+      });
   }
 }
 
@@ -624,7 +654,11 @@ async function route(
       });
       const r = await connectServer(
         db,
-        { getSecret: deps.getSecret, now: () => now },
+        {
+          getSecret: deps.getSecret,
+          checkHost: hostCheckOf(deps),
+          now: () => now,
+        },
         {
           code: input.code ?? suggestServerCode(parsed.host),
           host: parsed.host,
@@ -667,7 +701,10 @@ async function route(
     if (c === "test") {
       allowed("POST");
       const check = await testServerConnection(db, serverId, {
-        client: proxmoxClientFactory({ getSecret: deps.getSecret }),
+        client: proxmoxClientFactory({
+          getSecret: deps.getSecret,
+          checkHost: hostCheckOf(deps),
+        }),
         now: () => now,
       });
       deps.log.info("vps : serveur testé", { serverId, ok: check.ok });
@@ -686,6 +723,7 @@ async function route(
       try {
         const client = await proxmoxClientFactory({
           getSecret: deps.getSecret,
+          checkHost: hostCheckOf(deps),
         })(server);
         return ok({ discovery: await discoverServer(client, options) });
       } catch (e) {
@@ -705,7 +743,10 @@ async function route(
       }
       const input = await body(request, setupBody);
       const started = await startSetup(db, serverId, input, {
-        client: proxmoxClientFactory({ getSecret: deps.getSecret }),
+        client: proxmoxClientFactory({
+          getSecret: deps.getSecret,
+          checkHost: hostCheckOf(deps),
+        }),
         now: () => now,
       });
       deps.log.info("vps : branchement demandé", {
@@ -740,7 +781,12 @@ async function route(
         templates: await listTemplates(db, serverId),
       });
     const serverInput = await body(request, serverPatch);
-    await assertServerTargets(db, deps, serverInput);
+    await assertServerTargets(
+      db,
+      deps,
+      serverInput,
+      await getServer(db, serverId),
+    );
     return ok(publicServer(await updateServer(db, serverId, serverInput)));
   }
 

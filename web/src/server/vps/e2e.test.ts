@@ -337,6 +337,7 @@ describe.skipIf(!stackUp)(
         // Le jeton est lu du Coffre (chiffré), exactement comme en production.
         proxmox: proxmoxClientFactory({
           getSecret: (ref) => readSecret(t.db, keyring, ref),
+          checkHost: () => null,
         }),
       });
       const registry = registerVpsHandlers(new HandlerRegistry(), vps);

@@ -84,6 +84,7 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 | `LITELLM_BASE_URL`, `LITELLM_MASTER_KEY` | web (les deux), worker (adresse seule) | pour `/v1` | Sans la clé maîtresse, `/v1` répond 503. Le worker n'a pas d'adresse par défaut : sans `LITELLM_BASE_URL`, la sonde LiteLLM de l'agent Santé est notée « non configurée » dans son rapport (jamais sautée en silence) |
 | `NEXORA_PASSWORD_BREACH_CHECK` | web | non | `on` / `off`. Vérification des mots de passe contre les fuites connues (HIBP « Pwned Passwords », k-anonymat : seuls 5 caractères de l'empreinte SHA-1 quittent le serveur, jamais le mot de passe). **Défaut : activée en production, coupée ailleurs.** `off` pour un serveur sans sortie Internet (la longueur de 12 caractères et la liste locale de mots de passe courants restent appliquées). Une panne du service laisse passer l'inscription (journalisée) |
 | `NEXORA_OUTBOUND_ALLOW` | web | si un amont est interne | Liste (virgules) d'hôtes, adresses ou plages CIDR internes autorisés pour fournisseurs et instances WorkStudio (§8). Défaut : réseau interne refusé en production |
+| `NEXORA_SECRET_HOSTS_MODEL_PROVIDER`, `NEXORA_SECRET_HOSTS_WORKSTUDIO`, `NEXORA_SECRET_HOSTS_PROXMOX` | web **et worker** (la même valeur dans les deux) | pour WorkStudio et Proxmox ; un fournisseur interne ou hors liste | **Hôtes vers lesquels une clé du Coffre peut partir**, fixés par l'opérateur et jamais modifiables dans l'administration (§8.0). Listes séparées par des virgules : hôtes exacts (`llm.interne.exemple`, `192.168.10.5`) ou `*.domaine` (sous-domaines, pas le domaine lui-même) ; `-hôte` retire un hôte par défaut. **Défaut** : fournisseurs de modèles connus en HTTPS (`openrouter.ai`, `api.openai.com`, `api.anthropic.com`, `api.mistral.ai`, `generativelanguage.googleapis.com`, `api.groq.com`, `api.together.xyz`, `api.deepseek.com`, `api.cohere.com`, `api.fireworks.ai`, `api.x.ai`, `api.perplexity.ai`, `api.cerebras.ai`, `api.deepinfra.com`, `integrate.api.nvidia.com`) ; **rien** pour WorkStudio et Proxmox (à déclarer). Hors production, la boucle locale est admise |
 | `SMTP_URL`, `MAIL_FROM` | web | oui | Courriels transactionnels. **Défaut = Mailpit local** : en production, rien ne part tant que ce n'est pas réglé |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_REQUIRE_TLS`, `SMTP_USER`, `SMTP_PASSWORD_FILE`, `SMTP_FROM`, `CONTACT_NOTIFY_TO`, `VPS_ALERT_TO` | worker | oui | Notification des demandes de diagnostic et alertes VPS. **Mot de passe SMTP : seulement le chemin d'un secret (`SMTP_PASSWORD_FILE`)** ; une variable `SMTP_PASSWORD` en clair est refusée (le worker ne démarre pas, avec un message qui le dit : l'environnement se lit par `docker inspect`). `SMTP_SECURE=true` : TLS implicite (port 465). `SMTP_REQUIRE_TLS=true` : STARTTLS obligatoire (port 587) ; à poser avec un vrai SMTP, laissé vide avec Mailpit qui n'a pas de TLS |
 | `NEXORA_ALTCHA_SECRET` | web | non | Secret des défis anti-abus (dérivé du jeton d'administration à défaut) |
@@ -204,16 +205,33 @@ Brancher un serveur Proxmox se fait **en un seul parcours** dans Directus : vous
 
 Le formulaire « Nouveau serveur » (saisie à la main, gabarit préparé à la main, « Tester la connexion ») reste disponible pour un serveur déjà préparé autrement ; « Tester la connexion » ne rend désormais « prêt » un serveur que s'il a au moins un gabarit prêt et un bloc d'adresses valide.
 
-**Réseau** : un Proxmox est sur le réseau de l'opérateur ; l'adresse est acceptée (sauf lien local et métadonnées du nuage, toujours refusés par `@nexora/net`). Le TLS est vérifié ou épinglé **avant** l'envoi du jeton ; `http://` n'est admis que sur la boucle locale (simulateur). Les références du Coffre réservées à la plateforme sont refusées comme jeton. Pare-feu par VM (SSH seulement), port 25 sortant fermé : appliqués par le moteur.
+**Réseau** : un Proxmox est sur le réseau de l'opérateur ; **son hôte doit être déclaré dans `NEXORA_SECRET_HOSTS_PROXMOX` (web et worker, §8.0) avant « Connecter »**, sinon le jeton n'est pas envoyé ; l'adresse est acceptée (sauf lien local et métadonnées du nuage, toujours refusés par `@nexora/net`). Le TLS est vérifié ou épinglé **avant** l'envoi du jeton ; `http://` n'est admis que sur la boucle locale (simulateur). Les références du Coffre réservées à la plateforme sont refusées comme jeton. Pare-feu par VM (SSH seulement), port 25 sortant fermé : appliqués par le moteur.
 
 **Non vérifié à ce jour** : aucun vrai Proxmox n'a été branché ; tout le parcours (découverte, téléchargement avec somme, création de VM, agent, gabarit, étapes, reprise) est prouvé de bout en bout **sur le simulateur** de Proxmox, dont les réponses sont validées contre le schéma officiel de l'API, mais ni le téléchargement réel d'une image, ni l'installation de l'agent dans une vraie VM, ni le chemin SDN `/sdn/zones/localnetwork`, ni le comportement exact de Proxmox sur certaines erreurs n'ont été confirmés. Au premier serveur réel : suivre le guide, puis lancer le test de contrat (`PROXMOX_CONTRACT_URL`… dans `docs/infra.md`) avant d'ouvrir les ventes.
 
 ## 8. Fournisseurs de modèles, LiteLLM, WorkStudio
 
+### 8.0 Hôtes autorisés pour les clés (R9)
+
+Avec le jeton d'administration, on peut déclarer un fournisseur (ou une instance WorkStudio, ou un serveur Proxmox) et lui associer une clé du Coffre : « Tester », la synchronisation LiteLLM et les appels aux agents envoient alors cette clé à l'adresse saisie. Pour qu'un jeton volé ou un administrateur malveillant ne puisse pas la faire parvenir à son propre serveur, **la liste des hôtes où une clé peut partir est fixée par l'opérateur dans l'environnement du serveur** (variables `NEXORA_SECRET_HOSTS_*`, §3), pas dans l'administration :
+
+| Type de clé | Variable | Valeurs par défaut |
+|---|---|---|
+| Fournisseur de modèles (`llm_provider`) | `NEXORA_SECRET_HOSTS_MODEL_PROVIDER` | les éditeurs connus, **en HTTPS seulement** (liste au §3) |
+| Instance WorkStudio | `NEXORA_SECRET_HOSTS_WORKSTUDIO` | aucune : déclarer l'hôte de chaque instance |
+| Serveur Proxmox (`proxmox`) | `NEXORA_SECRET_HOSTS_PROXMOX` | aucune : déclarer l'hôte de chaque serveur |
+
+- Un fournisseur **sans clé** (Ollama local, par exemple) n'est pas concerné ; la garde d'adresses `NEXORA_OUTBOUND_ALLOW` (où le serveur peut aller) reste séparée et s'applique en plus.
+- Un hôte déclaré par l'opérateur peut être en HTTP (réseau interne : `host.docker.internal`, `ws.interne`). Les hôtes par défaut ne sont admis qu'en HTTPS.
+- Le contrôle s'applique à l'écriture (création et modification : la paire adresse + clé effective est vérifiée, même si on ne change que l'un des deux), puis **à chaque usage** (test, synchronisation, appel d'agent, test d'un serveur Proxmox) : une fiche écrite directement en base ou avant la règle n'envoie rien. L'adresse vue par LiteLLM (`litellmBaseUrl`) est contrôlée comme l'adresse de l'app.
+- Refus : « hôte « x » non autorisé pour la clé d'un … : l'opérateur doit le déclarer dans NEXORA_SECRET_HOSTS_… » (HTTP 422, code `secret_host`, ou résumé du test). Exemple : `NEXORA_SECRET_HOSTS_WORKSTUDIO=ws.interne` ; `NEXORA_SECRET_HOSTS_PROXMOX=192.168.10.5,pve1.lan` ; `NEXORA_SECRET_HOSTS_MODEL_PROVIDER=llm.interne.exemple,*.ia.exemple.ca,-api.deepseek.com`. Redémarrer le site **et le worker** après un changement.
+- Une entrée illisible ou un joker seul (`*`) est ignoré : la liste ne s'ouvre jamais par erreur.
+
 ### 8.1 Modèles
 
 Module **Modèles** : ajouter un fournisseur (adresse, **région**, politique des données), coller sa clé au Coffre (type `llm_provider`), « Tester le fournisseur », ajouter des modèles, fixer **prix de vente et plancher de marge**, créer une **version de catalogue**, l'approuver, la publier, puis synchroniser vers LiteLLM. Un prix absent ou à 0 $ bloque la publication.
 
+- Une clé n'est envoyée qu'à un hôte autorisé (§8.0) : un fournisseur hors de la liste par défaut (hébergement interne avec clé, passerelle de l'opérateur) se déclare dans `NEXORA_SECRET_HOSTS_MODEL_PROVIDER`.
 - Le fournisseur doit être **joignable par l'app** (« Tester ») et, séparément, par **LiteLLM** (adresse `litellmBaseUrl`, vue de son réseau Docker).
 - Un fournisseur ou une instance sur le **réseau interne** (Ollama de Nexora, vLLM) : lister son hôte ou sa plage dans `NEXORA_OUTBOUND_ALLOW` (par exemple `ollama.interne.ca,10.20.0.0/24`) puis redémarrer le site. Sinon : « adresse du réseau interne refusée ». Les adresses de lien local (169.254.0.0/16, dont les métadonnées du nuage) sont refusées même si elles sont listées.
 - La **résidence** affichée au public est celle saisie à la fiche : la relire à chaque changement de fournisseur. Aucune bascule silencieuse vers un modèle externe n'existe dans le code ; ne pas en configurer dans LiteLLM (`fallbacks`).
@@ -221,7 +239,7 @@ Module **Modèles** : ajouter un fournisseur (adresse, **région**, politique de
 ### 8.2 WorkStudio (agents hébergés et bulle)
 
 1. Dans WorkStudio : Réglages, Clés d'API Nexora, créer une **clé d'espace** avec « Agents publiés ».
-2. Module **Agents hébergés** : créer l'instance (adresse interne, ou publique en https), coller la clé au Coffre (type `other`), « Tester », « Découvrir » (les agents arrivent en brouillon), compléter chacun (description, **prix**), publier.
+2. **Déclarer l'hôte de l'instance** dans `NEXORA_SECRET_HOSTS_WORKSTUDIO` (§8.0) et redémarrer. Module **Agents hébergés** : créer l'instance (adresse interne, ou publique en https), coller la clé au Coffre (type `other`), « Tester », « Découvrir » (les agents arrivent en brouillon), compléter chacun (description, **prix**), publier.
 3. Côté WorkStudio, avant publication : **`NEXORA_EMBED_ORIGINS=https://<domaine du site>`**. Vide, l'instance accepte toutes les origines pour la bulle.
 4. Bulle `/embed.js` : réglage dans le module (pages choisies) ; la CSP n'ouvre alors que l'origine configurée, sur ces pages seulement.
 5. Limites : la réservation d'un appel est calculée sur `run_token_cap` (32 000 jetons par défaut), mais le règlement est au coût réel (un dépassement est facturé et peut rendre le solde négatif) ; renommer un agent dans WorkStudio change son identifiant amont `agent:<nom>` (le ressaisir dans le module) ; le coût amont de WorkStudio n'est pas suivi.

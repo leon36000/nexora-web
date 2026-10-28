@@ -73,7 +73,12 @@ export function suggestServerCode(host: string): string {
  */
 export async function connectServer(
   db: Database,
-  deps: { getSecret: (ref: string) => Promise<string>; now?: () => Date },
+  deps: {
+    getSecret: (ref: string) => Promise<string>;
+    /** Hôte où le jeton peut partir (R9) : null si permis, sinon le motif (voir `proxmoxClientFactory`). */
+    checkHost: (host: string) => string | null;
+    now?: () => Date;
+  },
   input: ConnectInput,
 ): Promise<{ server: Server; discovery: Discovery; created: boolean }> {
   if (!CODE.test(input.code))
@@ -93,6 +98,13 @@ export async function connectServer(
     );
   const port = input.port ?? 8006;
   const c = connectionOf({ host: input.host, port });
+  const forbidden = deps.checkHost(c.host);
+  if (forbidden)
+    throw new ConnectError(
+      "invalid_request",
+      `Le jeton n'est pas envoyé : ${forbidden}.`,
+      "Faire déclarer cet hôte par l'opérateur du serveur, puis réessayer.",
+    );
   const token = await deps.getSecret(input.tokenRef).catch(() => {
     throw new ConnectError(
       "token_missing",

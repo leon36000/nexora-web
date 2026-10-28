@@ -1,6 +1,7 @@
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { checkOutboundUrl, policyFromEnv } from "@nexora/net";
+import { type SecretHostCheck, secretHostProblem } from "@nexora/vault/scope";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { OutboundGuard } from "../security/outbound";
 import {
@@ -29,6 +30,8 @@ const deps = (
   },
   // Les adresses fictives des essais (« a.b ») ne se résolvent pas : garde permissive, sauf essais dédiés.
   outbound: async (raw) => ({ ok: true, url: new URL(raw), addresses: [] }),
+  // Hôtes de clés : permissif ici (adresses fictives), strict dans les essais « R9 » ci-dessous.
+  secretHosts: () => null,
   fetch: (async (url) => wsFetch(String(url))) as typeof fetch,
   log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
   now: () => new Date(),
@@ -366,5 +369,105 @@ describe("instances : adresses saisies (SSRF)", () => {
     }
     DNS["ws.exemple.ca"] = ["93.184.216.34"];
     expect(contacted).toBe(0);
+  });
+});
+
+// ─── R9 : la clé d'espace WorkStudio ne part que vers un hôte fixé par l'opérateur ───────────────────────────────
+describe("instances : hôte de la clé (R9)", () => {
+  const hosts: SecretHostCheck = (scope, target) =>
+    secretHostProblem(scope, target, {
+      NODE_ENV: "production",
+      NEXORA_SECRET_HOSTS_WORKSTUDIO: "ws.interne",
+    });
+  const strict = (over: Partial<HostedAgentsAdminDeps> = {}) =>
+    deps({ secretHosts: hosts, ...over });
+  const create = (body: Record<string, unknown>) =>
+    call(
+      "POST",
+      "instances",
+      {
+        code: `r9-${Math.random().toString(36).slice(2, 8)}`,
+        name: "R9",
+        ...body,
+      },
+      TOKEN,
+      strict(),
+    );
+
+  it("refuse à la création une clé associée à un hôte non déclaré, accepte l'hôte déclaré ou l'absence de clé", async () => {
+    const bad = await create({
+      baseUrl: "https://collecte.pirate.example",
+      secretRef: "workstudio.essai",
+    });
+    expect(bad.status).toBe(422);
+    expect(bad.json.error).toBe("secret_host");
+    expect(bad.json.message).toMatch(/NEXORA_SECRET_HOSTS_WORKSTUDIO/);
+    expect(bad.text).not.toContain(WS_KEY);
+    expect(
+      (
+        await create({
+          baseUrl: "http://ws.interne:3200",
+          secretRef: "workstudio.essai",
+        })
+      ).status,
+    ).toBe(201);
+    expect(
+      (await create({ baseUrl: "https://collecte.pirate.example" })).status,
+    ).toBe(201);
+  });
+
+  it("modifier seulement l'adresse ou seulement la référence est contrôlé avec l'autre valeur enregistrée", async () => {
+    const withKey = await create({
+      baseUrl: "http://ws.interne:3200",
+      secretRef: "workstudio.essai",
+    });
+    const redirect = await call(
+      "PATCH",
+      `instances/${withKey.json.id}`,
+      { baseUrl: "https://collecte.pirate.example" },
+      TOKEN,
+      strict(),
+    );
+    expect(redirect.status).toBe(422);
+    expect(redirect.json.error).toBe("secret_host");
+    const bare = await create({ baseUrl: "https://collecte.pirate.example" });
+    const attach = await call(
+      "PATCH",
+      `instances/${bare.json.id}`,
+      { secretRef: "workstudio.essai" },
+      TOKEN,
+      strict(),
+    );
+    expect(attach.status).toBe(422);
+    expect(attach.json.error).toBe("secret_host");
+  });
+
+  it("test et découverte n'envoient pas la clé vers un hôte non déclaré, même déjà enregistré", async () => {
+    const { createInstance } = await import("./catalog");
+    const sneaky = await createInstance(t.db, {
+      code: `r9-direct-${Math.random().toString(36).slice(2, 6)}`,
+      name: "Posée en base",
+      baseUrl: "https://collecte.pirate.example",
+      secretRef: "workstudio.essai",
+    });
+    const contacted: string[] = [];
+    const d = strict({
+      fetch: (async (url: RequestInfo | URL) => {
+        contacted.push(String(url));
+        return Response.json({ data: [] });
+      }) as typeof fetch,
+    });
+    for (const action of ["test", "discover"]) {
+      const r = await call(
+        "POST",
+        `instances/${sneaky.id}/${action}`,
+        undefined,
+        TOKEN,
+        d,
+      );
+      expect(r.text, action).toMatch(/non autorisé/);
+      expect(r.text).not.toContain(WS_KEY);
+    }
+    expect(contacted).toEqual([]);
   });
 });

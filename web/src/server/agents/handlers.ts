@@ -7,7 +7,11 @@ import {
   REGIONS,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
-import { secretScopeProblem } from "@nexora/vault/scope";
+import {
+  envSecretHostCheck,
+  type SecretHostCheck,
+  secretScopeProblem,
+} from "@nexora/vault/scope";
 import { secretKindOf } from "@nexora/vault/store";
 import { z } from "zod";
 import { envOutboundGuard, type OutboundGuard } from "../security/outbound";
@@ -51,6 +55,8 @@ export interface HostedAgentsAdminDeps {
   getSecret: (ref: string) => Promise<string>;
   /** Garde des adresses saisies (SSRF) ; défaut : politique de l'environnement (voir @nexora/net). */
   outbound?: OutboundGuard;
+  /** Hôtes où une clé du coffre peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_* de l'environnement. */
+  secretHosts?: SecretHostCheck;
   fetch: typeof fetch;
   log: Logger;
   now: () => Date;
@@ -91,11 +97,15 @@ const instanceFields = {
   region: z.enum(REGIONS),
   enabled: z.boolean(),
 };
-/** Adresse de l'instance (SSRF) et portée de la clé : refus 422 avant toute écriture. */
+/**
+ * Adresse de l'instance (SSRF), portée de la clé et hôte de la clé (R9) : refus 422 avant toute écriture. `current` :
+ * l'état enregistré lors d'une modification (l'hôte est contrôlé sur la paire effective adresse + clé).
+ */
 async function assertInstanceTargets(
   db: Database,
   deps: HostedAgentsAdminDeps,
   input: { baseUrl?: string; secretRef?: string | null },
+  current?: { baseUrl: string; secretRef: string | null },
 ): Promise<void> {
   if (input.baseUrl !== undefined) {
     const r = await (deps.outbound ?? envOutboundGuard)(input.baseUrl);
@@ -112,6 +122,20 @@ async function assertInstanceTargets(
       await secretKindOf(db, input.secretRef),
     );
     if (problem) throw new HttpError(422, "secret_scope", { message: problem });
+  }
+  const baseUrl = input.baseUrl ?? current?.baseUrl;
+  const secretRef =
+    input.secretRef !== undefined ? input.secretRef : current?.secretRef;
+  if (secretRef && baseUrl) {
+    const problem = (deps.secretHosts ?? envSecretHostCheck)(
+      "workstudio-instance",
+      baseUrl,
+    );
+    if (problem)
+      throw new HttpError(422, "secret_host", {
+        message: problem,
+        field: "baseUrl",
+      });
   }
 }
 
@@ -252,7 +276,11 @@ async function route(
     if (c === "test" || c === "discover") {
       allowMethods(request, "POST");
       const instance = await getInstance(db, id);
-      const reach = { getSecret: deps.getSecret, fetch: deps.fetch };
+      const reach = {
+        getSecret: deps.getSecret,
+        fetch: deps.fetch,
+        secretHosts: deps.secretHosts ?? envSecretHostCheck,
+      };
       // L'adresse est revérifiée à chaque appel : elle a pu changer de destination depuis l'enregistrement.
       const target = await (deps.outbound ?? envOutboundGuard)(
         instance.baseUrl,
@@ -303,7 +331,7 @@ async function route(
     const method = allowMethods(request, "GET", "PATCH");
     if (method === "GET") return ok(await getInstance(db, id));
     const patch = await readBody(request, instancePatch);
-    await assertInstanceTargets(db, deps, patch);
+    await assertInstanceTargets(db, deps, patch, await getInstance(db, id));
     const updated = await updateInstance(db, id, patch);
     changed();
     return ok(updated);
