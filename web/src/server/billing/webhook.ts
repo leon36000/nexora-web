@@ -899,7 +899,7 @@ async function linkInvoicePayment(
  * rabais). Ruling du 28/10 : un code de 99 % ne donne pas 100 % des crédits de l'offre (on ne vend jamais plus de crédits
  * que le prix payé n'en achète). Sans `total_excluding_tax` (anciennes versions d'API), l'octroi est complet.
  */
-export function includedCreditsFor(
+function includedCreditsFor(
   plan: SubscriptionPlan,
   invoice: InvoicePayload,
 ): number {

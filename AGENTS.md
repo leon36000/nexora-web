@@ -17,7 +17,7 @@ Site public et commercial de Nexora (IA souveraine au Québec). Conception de r�
 - **Vérité du contenu** : aucun faux client, témoignage, chiffre, prix, certification ou « conforme à la Loi 25 ». Lexique et ton : `docs/recherche/06-mistral-marketing-souverainete.md` §11.
 - **Français québécois d'abord** (fr-CA), anglais canadien (en-CA) relu ; tout texte visible passe par les dictionnaires ou Directus, jamais en dur dans un composant.
 - **Paiements en mode test** (Stripe) tant que le fondateur n'a pas donné son accord explicite.
-- **Accessibilité WCAG 2.2 AA** et palette de la conception §5 (contrastes calculés) ; `prefers-reduced-motion` respecté.
+- **Accessibilité WCAG 2.2 AA** et palette et contrastes de `docs/marque/charte.md` (contrôle : `bun run --cwd web check:contrast`) ; `prefers-reduced-motion` respecté.
 - **Tests** : écris le test qui échoue avant le code pour toute logique (grand livre, prix, webhooks, machine à états, garde de publication, coffre). Pas de test qui recopie une déclaration.
 
 ## Outils

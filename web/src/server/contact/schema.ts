@@ -7,7 +7,7 @@ import { z } from "zod";
  * `parseContact`, chaque champ fautif reçoit un code (le navigateur le traduit avec le dictionnaire).
  */
 
-export type FieldCode =
+type FieldCode =
   | "required"
   | "invalid_email"
   | "invalid_choice"
@@ -29,7 +29,7 @@ export type ContactParse =
   | { ok: true; data: ContactData }
   | { ok: false; errors: Partial<Record<keyof ContactData, FieldCode>> };
 
-export const LIMITS = { name: 120, company: 160, email: 254, message: 4000 };
+const LIMITS = { name: 120, company: 160, email: 254, message: 4000 };
 
 const EMAIL =
   /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:"]{2,}$/;

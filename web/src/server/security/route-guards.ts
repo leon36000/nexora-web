@@ -11,7 +11,7 @@
  *  - public      : volontairement ouvert (contenu public ou formulaire protégé autrement) ;
  *  - better-auth : routes d'authentification de Better Auth (origine contrôlée, limitation de débit).
  */
-export type GuardKind =
+type GuardKind =
   | "admin-token"
   | "session"
   | "api-key"
@@ -19,7 +19,7 @@ export type GuardKind =
   | "public"
   | "better-auth";
 
-export interface Probe {
+interface Probe {
   /** Libellé lisible dans le compte rendu. */
   label: string;
   method: string;

@@ -186,12 +186,12 @@ Pages `/contact` et `/en/contact` (route de l'application, pas une page Directus
 - **Enregistrement.** Table `leads` (migration `0003_s3_leads`) ; empreinte SHA-256 du courriel et du contenu normalisé (le consentement marketing n'en fait pas partie) ; une demande identique dans les 24 h n'est ni réenregistrée ni renotifiée (`already_recorded`) ; verrou consultatif par empreinte (envois simultanés). La demande et la tâche `contact.notify` sont créées dans **la même transaction**. La charge de la tâche ne contient que l'identifiant.
 - **Notification.** Le worker (`worker/src/contact-notify.ts`) envoie le courriel à `CONTACT_NOTIFY_TO` par SMTP (`SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD_FILE`, `SMTP_FROM` ; développement : Mailpit 127.0.0.1:1026) puis renseigne `leads.notified_at`. Échec d'envoi : la demande reste en base, la tâche est reprise (8 essais, délais exponentiels) ; au-delà, la tâche est `dead` et `SELECT … FROM leads WHERE notified_at IS NULL` retrouve les demandes à traiter (remettre la tâche en `pending`). Envoi au moins une fois (un doublon est possible si le worker meurt entre l'envoi et l'écriture de `notified_at`).
 - **Vie privée.** Aucune adresse IP ni agent utilisateur n'est stocké ; aucun renseignement personnel dans les journaux ni dans la file.
-- **Preuve.** `web/scripts/e2e-contact.ts` (navigateur réel, base, worker, Mailpit) : `docs/captures/s3/e2e-contact.md`.
+- **Preuve.** `web/scripts/e2e-contact.ts` (navigateur réel, base, worker, Mailpit) : `docs/preuves/s3/e2e-contact.md`.
 
 
 ## Passerelle de modèles (jalon S5)
 
-Conception : §9 et D1, D2, D3, D4, D14 de `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Preuve de bout en bout : `docs/captures/s5/e2e-gateway.md`. Code : `web/src/server/gateway/`, `packages/db/src/schema-gateway.ts`, routes `web/src/app/v1/*`, `web/src/app/api/admin/catalog/*`, `web/src/app/api/account/api-keys/*`, pages `/modeles`, `/modeles/<id>`, `/docs/api`, section « Clés API » de `/compte`, module Directus `cms/extensions-src/nexora-cms/src/catalog/`.
+Conception : §9 et D1, D2, D3, D4, D14 de `docs/superpowers/specs/2026-10-26-nexora-site-design.md`. Preuve de bout en bout : `docs/preuves/s5/e2e-gateway.md`. Code : `web/src/server/gateway/`, `packages/db/src/schema-gateway.ts`, routes `web/src/app/v1/*`, `web/src/app/api/admin/catalog/*`, `web/src/app/api/account/api-keys/*`, pages `/modeles`, `/modeles/<id>`, `/docs/api`, section « Clés API » de `/compte`, module Directus `cms/extensions-src/nexora-cms/src/catalog/`.
 
 ```
 client ──Bearer nxk_…──▶ /v1/* (Next.js) ──Bearer clé maîtresse──▶ LiteLLM (réseau interne) ──▶ fournisseur
@@ -294,7 +294,7 @@ Côté WorkStudio (à poser par l'exploitant, non modifié ici) : `NEXORA_EMBED_
 ### Limites connues (non livrées)
 - Prix : valeurs d'essai seulement ; aucun prix public n'est fixé. Le coût amont de WorkStudio n'est pas suivi (`upstream_cost_usd_micro` = 0) : pas de plancher de marge.
 - Pas de rapprochement avec la consommation côté WorkStudio ; pas de pièces jointes ni d'outils côté appelant ; une instance par clé d'espace.
-- Le module Directus n'a pas été vu dans un navigateur connecté (voir `docs/captures/s7/module-directus-api.txt` pour la preuve par le relais).
+- Le module Directus n'a pas été vu dans un navigateur connecté (voir `docs/preuves/s7/module-directus-api.txt` pour la preuve par le relais).
 
 ## Autogestion IA et SEO (jalon S8)
 
@@ -316,7 +316,7 @@ Chromium : audits (axe, Lighthouse) utilisent le Chromium de Playwright (`bunx p
 
 ## VPS (jalon S6)
 
-Conception : §10, §11, §15 (S6) et D2, D3, D4, D7, D8, D13, D14 de `docs/superpowers/specs/2026-10-26-nexora-site-design.md` ; recherche `docs/recherche/04-vps-facturation-paiements.md`. Preuve de bout en bout : `docs/captures/s6/e2e-vps.md`. Code : `packages/vps` (`@nexora/vps` : client Proxmox, simulateur, catalogue, commandes, moteur), `packages/vault` (`@nexora/vault` : chiffrement et lecture du Coffre, désormais partagés par le site et le worker ; `web/src/server/vault/{crypto,store}.ts` ne sont plus que des réexportations), `packages/db/src/schema-vps.ts` (migrations 0006 et 0007), `worker/src/vps-handlers.ts`, `web/src/server/vps/`, `web/src/server/stripe/vps-checkout.ts`, pages `/vps`, `/vps/<application>`, `/compte/vps`, module Directus `cms/extensions-src/nexora-cms/src/vps/`.
+Conception : §10, §11, §15 (S6) et D2, D3, D4, D7, D8, D13, D14 de `docs/superpowers/specs/2026-10-26-nexora-site-design.md` ; recherche `docs/recherche/04-vps-facturation-paiements.md`. Preuve de bout en bout : `docs/preuves/s6/e2e-vps.md`. Code : `packages/vps` (`@nexora/vps` : client Proxmox, simulateur, catalogue, commandes, moteur), `packages/vault` (`@nexora/vault` : chiffrement et lecture du Coffre, désormais partagés par le site et le worker ; `web/src/server/vault/{crypto,store}.ts` ne sont plus que des réexportations), `packages/db/src/schema-vps.ts` (migrations 0006 et 0007), `worker/src/vps-handlers.ts`, `web/src/server/vps/`, `web/src/server/stripe/vps-checkout.ts`, pages `/vps`, `/vps/<application>`, `/compte/vps`, module Directus `cms/extensions-src/nexora-cms/src/vps/`.
 
 ```
 client ──▶ /vps (configurateur) ──▶ POST /api/vps/checkout ──▶ commande « awaiting_payment » + Checkout (abonnement)
@@ -399,7 +399,7 @@ Dans le bundle `nexora-cms` : endpoint relais `nexora-vps` (administrateurs Dire
 
 ### Preuve et vérifications
 
-`WRITE_CAPTURE=1 bun run --cwd web vitest run src/server/vps/e2e.test.ts` (pile de développement requise : PostgreSQL, Mailpit, stripe-mock) rejoue tout le parcours avec le vrai worker, le simulateur, des webhooks signés et une horloge simulée ; compte rendu : `docs/captures/s6/e2e-vps.md`. Tests de concurrence : `packages/vps/src/engine.test.ts` (10 workers, une seule VM), `worker/src/vps-handlers.test.ts` (deux workers réels, tâches de continuation).
+`WRITE_CAPTURE=1 bun run --cwd web vitest run src/server/vps/e2e.test.ts` (pile de développement requise : PostgreSQL, Mailpit, stripe-mock) rejoue tout le parcours avec le vrai worker, le simulateur, des webhooks signés et une horloge simulée ; compte rendu : `docs/preuves/s6/e2e-vps.md`. Tests de concurrence : `packages/vps/src/engine.test.ts` (10 workers, une seule VM), `worker/src/vps-handlers.test.ts` (deux workers réels, tâches de continuation).
 
 ### Limites connues (non livrées)
 

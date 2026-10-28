@@ -72,7 +72,7 @@ export async function readBody<T>(
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-export const isUuid = (v: string | undefined): v is string =>
+const isUuid = (v: string | undefined): v is string =>
   typeof v === "string" && UUID.test(v);
 export function uuidParam(v: string | undefined): string {
   if (!isUuid(v)) throw new HttpError(404, "not_found");

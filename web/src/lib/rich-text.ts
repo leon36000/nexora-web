@@ -12,7 +12,7 @@
  */
 import { safeHref } from "./safe-href";
 
-export type RichElementTag =
+type RichElementTag =
   | "p"
   | "br"
   | "strong"
@@ -72,7 +72,7 @@ const BLOCKS = new Set<RichElementTag>([
   "blockquote",
 ]);
 
-export const MAX_INPUT = 100_000;
+const MAX_INPUT = 100_000;
 const MAX_DEPTH = 24;
 
 const NAMED_ENTITIES: Record<string, string> = {

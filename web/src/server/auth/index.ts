@@ -58,8 +58,6 @@ export interface CreateAuthOptions {
   log?: (message: string, fields?: Record<string, unknown>) => void;
 }
 
-export { MIN_PASSWORD_LENGTH };
-
 // Deux rôles seulement (D11) : propriétaire et membre.
 const ac = createAccessControl(defaultStatements);
 const ROLES = {
@@ -452,4 +450,4 @@ export function createAuth(options: CreateAuthOptions) {
 }
 
 export type NexoraAuth = ReturnType<typeof createAuth>;
-export { createMemoryMailer, createSmtpMailer, type Mailer } from "./mailer";
+export { createSmtpMailer } from "./mailer";

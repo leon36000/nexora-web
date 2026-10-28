@@ -281,7 +281,7 @@ async function updateAgentAfterRun(
 }
 
 /** 1 234 567 -> « 1,2346 » (CAD, 4 décimales au plus). */
-export function microToCad(micro: bigint): string {
+function microToCad(micro: bigint): string {
   const whole = micro / 1_000_000n;
   const frac = (micro % 1_000_000n).toString().padStart(6, "0").slice(0, 4);
   return `${whole},${frac}`;

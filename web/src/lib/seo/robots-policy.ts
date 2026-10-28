@@ -39,16 +39,11 @@ export const USER_ACTION_BOTS = [
 ] as const;
 
 /** Chemins jamais utiles aux moteurs : API, passerelle, espace client. (/og/ reste ouvert : les aperçus sociaux le lisent.) */
-export const PRIVATE_PATHS = [
-  "/api/",
-  "/v1/",
-  "/compte",
-  "/en/compte",
-] as const;
+const PRIVATE_PATHS = ["/api/", "/v1/", "/compte", "/en/compte"] as const;
 
-export type TrainingPolicy = "allow" | "disallow";
+type TrainingPolicy = "allow" | "disallow";
 
-export function trainingPolicy(
+function trainingPolicy(
   env: Record<string, string | undefined> = process.env,
 ): TrainingPolicy {
   return env.ROBOTS_AI_TRAINING === "allow" ? "allow" : "disallow";

@@ -11,8 +11,8 @@ import {
 import { auditPayment, getSettings } from "./settings";
 import type { PaymentVault } from "./vault";
 
-export const SECRET_KEY_REF = "stripe.secret_key";
-export const WEBHOOK_SECRET_REF = "stripe.webhook_secret";
+const SECRET_KEY_REF = "stripe.secret_key";
+const WEBHOOK_SECRET_REF = "stripe.webhook_secret";
 /** Exactement les types d'événements que le serveur traite (une source de vérité : `HANDLED_EVENT_TYPES`). */
 export const WEBHOOK_EVENTS = HANDLED_EVENT_TYPES;
 const HOOK_DESCRIPTION = "Nexora AI — facturation (créé par l'administration)";
@@ -55,7 +55,7 @@ export type ConnectResult =
     }
   | { ok: false; code: ConnectErrorCode; message: string; action: string };
 
-export type ConnectErrorCode =
+type ConnectErrorCode =
   | "key_missing"
   | "key_invalid"
   | "live_not_allowed"
@@ -344,7 +344,7 @@ export async function connectStripe(deps: ConnectDeps): Promise<ConnectResult> {
   };
 }
 
-export type StripeState = "no_key" | "key_unverified" | "connected" | "error";
+type StripeState = "no_key" | "key_unverified" | "connected" | "error";
 
 export interface StripeStatus {
   state: StripeState;

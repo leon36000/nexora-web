@@ -11,7 +11,7 @@ import { z } from "zod";
  * Sans licence Open Innovation Grant, Directus renvoie aussi les brouillons au jeton de lecture :
  * le filtre `status = published` est donc appliqué dans la requête ET une seconde fois ici.
  */
-export interface PlanTranslation {
+interface PlanTranslation {
   name: string;
   description: string | null;
   features: string[];

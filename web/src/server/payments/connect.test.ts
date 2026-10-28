@@ -1,11 +1,5 @@
 import { randomBytes } from "node:crypto";
-import {
-  eq,
-  paymentAudit,
-  paymentSettings,
-  promoCodes,
-  vaultSecrets,
-} from "@nexora/db";
+import { eq, paymentAudit, paymentSettings, vaultSecrets } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import {
   afterAll,

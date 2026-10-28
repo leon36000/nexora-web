@@ -233,7 +233,7 @@ function oneOf<T extends string>(v: unknown, allowed: readonly T[], def: T): T {
 }
 
 /** Ancre d'un bloc : seul le motif `^[a-z0-9-]{0,40}$` passe ; vide ou invalide = pas d'ancre. */
-export function anchorOf(v: unknown): string | null {
+function anchorOf(v: unknown): string | null {
   return typeof v === "string" && /^[a-z0-9-]{1,40}$/.test(v) ? v : null;
 }
 

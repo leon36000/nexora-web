@@ -14,7 +14,7 @@ import { REDACTEUR_SYSTEM } from "./prompts.ts";
 /** Paramètres de l'outil présentés au modèle : le mode et le type d'approbation sont fixés par le code. */
 const ToolInput = NewPageInput.omit({ mode: true, approvalKind: true });
 
-export function toolDefinition(
+function toolDefinition(
   schema: z.ZodType,
   name: string,
   description: string,

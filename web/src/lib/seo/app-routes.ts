@@ -24,7 +24,7 @@ export type AppRoute = {
   meta: (lang: Lang) => { title: string; description: string | null } | null;
 };
 
-export const APP_ROUTES: readonly AppRoute[] = [
+const APP_ROUTES: readonly AppRoute[] = [
   {
     // Offres d'abonnement publiées (/tarifs en français, /en/pricing en anglais : voir LOCALIZED_ROUTES).
     path: "/tarifs",

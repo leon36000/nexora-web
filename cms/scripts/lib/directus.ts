@@ -48,7 +48,7 @@ export function parseEnvFile(path: string): Record<string, string> {
   return out;
 }
 
-export function repoRoot(): string {
+function repoRoot(): string {
   return resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 }
 

@@ -94,7 +94,7 @@ export function mergeCsp(base: string, override: string | null): string {
  * formulaire : sans ces deux origines, la navigation est bloquée. Elles ne sont ouvertes qu'en destination de
  * formulaire, jamais comme source de script, d'image ou de connexion, et seulement sur ces pages.
  */
-export const STRIPE_FORM_ACTION =
+const STRIPE_FORM_ACTION =
   "form-action 'self' https://checkout.stripe.com https://billing.stripe.com";
 
 const BILLING_FORM_PAGES = /^(\/en)?\/compte(\/vps)?\/?$/;

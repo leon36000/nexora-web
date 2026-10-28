@@ -7,9 +7,8 @@ export type Cta = { label: string; href: string };
 
 /** Ton d'une section : sombre (noir profond), clair (papier) ou sable (surface claire relevée). */
 export type Tone = "sombre" | "clair" | "sable";
-export const TONES = ["sombre", "clair", "sable"] as const;
 /** Ancre facultative d'un bloc (`^[a-z0-9-]{0,40}$`), commune à tous les blocs. */
-export type Anchored = { anchorId: string | null };
+type Anchored = { anchorId: string | null };
 export type CardLayout = "grille" | "liste" | "etapes" | "modules" | "bento";
 export type CardStatus =
   | "disponible"
@@ -35,7 +34,7 @@ export const SECTION_VISUALS = [
 export type SectionVisual = (typeof SECTION_VISUALS)[number];
 
 /** Image (raster) ou vidéo (MP4, WebM), d'après le type du fichier Directus. */
-export type MediaKind = "image" | "video";
+type MediaKind = "image" | "video";
 
 export type MediaRef = {
   id: string;

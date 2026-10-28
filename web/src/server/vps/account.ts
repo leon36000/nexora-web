@@ -39,7 +39,7 @@ const RECENT_DAYS = 90;
 const MAX_CLOSED = 5;
 const MAX_ORDERS = 10;
 /** Utilisateur cloud-init de repli quand le gabarit n'est plus lisible. */
-export const DEFAULT_SSH_USER = "debian";
+const DEFAULT_SSH_USER = "debian";
 
 export interface AccountVpsEvent {
   id: string;
@@ -50,7 +50,7 @@ export interface AccountVpsEvent {
   createdAt: Date;
 }
 
-export interface AccountVpsPort {
+interface AccountVpsPort {
   port: number;
   proto: "tcp" | "udp";
   /** `tunnel` : lié à 127.0.0.1 sur la VM, joignable par tunnel SSH ; `public` : ouvert au pare-feu. */

@@ -15,7 +15,7 @@ import { assetRefName, type DesiredPage, type Fields } from "./content";
 import type { Directus, Entity } from "./directus";
 
 /** Nom d'un fichier : lettres, chiffres, point, tiret ; ni chemin, ni caché. */
-export const ASSET_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
+const ASSET_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
 
 const MIME: Record<string, string> = {
   mp4: "video/mp4",

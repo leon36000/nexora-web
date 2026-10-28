@@ -28,7 +28,7 @@ const assetOf = (v: Json | undefined): string | null =>
     : null;
 
 /** HTML contrôlé des blocs de texte -> Markdown lisible. */
-export function htmlToMarkdown(html: string): string {
+function htmlToMarkdown(html: string): string {
   return html
     .replace(/<a href="([^"]*)">([^<]*)<\/a>/g, "[$2]($1)")
     .replace(/<strong>([^<]*)<\/strong>/g, "**$1**")
@@ -176,7 +176,7 @@ const MARK_END = "<!-- claims:end -->";
 const cell = (v: string) => v.replace(/\|/g, "\\|").replace(/\s+/g, " ").trim();
 
 /** Tableau « affirmation sensible → entrée du registre », avec les blocs où elle est utilisée. */
-export function claimsTable(): string {
+function claimsTable(): string {
   const claims = JSON.parse(
     readFileSync(join(dirname(PAGES_DIR), "claims.json"), "utf8"),
   ) as ClaimsFile;
@@ -212,7 +212,7 @@ export function readmeWithTable(readme: string): string {
   return `${readme.slice(0, a + MARK_START.length)}\n\n${claimsTable()}\n\n${readme.slice(b)}`;
 }
 
-export function writeAll() {
+function writeAll() {
   for (const name of readdirSync(PAGES_DIR).filter((n) =>
     n.endsWith(".json"),
   )) {

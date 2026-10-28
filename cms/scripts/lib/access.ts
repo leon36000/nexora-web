@@ -4,7 +4,7 @@
 
 import { BLOCK_TYPES, PAGE_TREE, SITE_COLLECTIONS } from "./schema";
 
-export type Action = "create" | "read" | "update" | "delete";
+type Action = "create" | "read" | "update" | "delete";
 export type Perm = {
   collection: string;
   action: Action;
@@ -137,7 +137,7 @@ const read = (collection: string, extra: Partial<Perm> = {}): Perm => ({
 });
 
 /** Lecture limitée au contenu publié (rôle public et jeton « lecteur site »). */
-export function publishedReadPerms(): Perm[] {
+function publishedReadPerms(): Perm[] {
   return [
     read("pages", {
       permissions: PUBLISHED,
@@ -207,7 +207,7 @@ export function publishedReadPerms(): Perm[] {
 }
 
 /** Lecture complète du contenu principal (éditeurs, relecteurs, agents de contenu). */
-export function contentReadPerms(): Perm[] {
+function contentReadPerms(): Perm[] {
   return [
     ...PAGE_TREE,
     ...SITE_COLLECTIONS,
@@ -217,7 +217,7 @@ export function contentReadPerms(): Perm[] {
 }
 
 /** Écriture du contenu publié : réservée à la promotion de versions et à l'administrateur (la garde de publication contrôle). */
-export function pageTreeWritePerms(): Perm[] {
+function pageTreeWritePerms(): Perm[] {
   const out: Perm[] = [];
   for (const c of PAGE_TREE)
     for (const action of ["create", "update", "delete"] as const)

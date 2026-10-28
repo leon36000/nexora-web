@@ -123,7 +123,7 @@ export function stripUnknownFields(
 }
 
 const argv = process.argv.slice(2);
-export const OPTIONS = {
+const OPTIONS = {
   publish: argv.includes("--approuver-et-publier"),
   dryRun: argv.includes("--a-blanc"),
   ignoreMissingFields: argv.includes("--ignorer-champs-absents"),
@@ -136,7 +136,7 @@ export const OPTIONS = {
 // ---------- comptes ----------
 
 /** Remplace la variable si elle existe, sinon l'ajoute ; ne journalise jamais la valeur. */
-export function setEnvVar(path: string, name: string, value: string) {
+function setEnvVar(path: string, name: string, value: string) {
   const text = readFileSync(path, "utf8");
   const re = new RegExp(`^${name}=.*$`, "m");
   const next = re.test(text)

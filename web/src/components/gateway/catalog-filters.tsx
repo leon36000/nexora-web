@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import type { GatewayDictionary } from "@/i18n/gateway";
 import { cn } from "@/lib/cn";
 
-export const SELECT_CLASS =
+const SELECT_CLASS =
   "mt-2 block min-h-11 w-full rounded-md border border-line-strong bg-bg px-3 py-2 text-body text-fg";
 
 const CAPS = [

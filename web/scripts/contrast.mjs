@@ -1,6 +1,6 @@
 // Contrôle des contrastes WCAG 2.x par calcul, à partir des jetons réels de globals.css.
 // Usage : bun web/scripts/contrast.mjs   (code de sortie 1 si une paire est sous son seuil)
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -65,5 +65,4 @@ const lines = [
   ...rows.map((x) => `${x.ok ? "OK " : "ÉCHEC"} ${x.r.toFixed(2).padStart(5)}:1  (seuil ${x.min || "—"})  ${x.name}  ${x.fg} / ${x.bg}${x.note ? "  [" + x.note + "]" : ""}`),
 ];
 console.log(lines.join("\n"));
-if (process.argv.includes("--write")) writeFileSync(join(here, "../../docs/captures/s1/contrastes.txt"), lines.join("\n") + "\n");
 process.exit(rows.every((x) => x.ok) ? 0 : 1);

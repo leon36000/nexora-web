@@ -13,8 +13,7 @@ import { z } from "zod";
  * - aucune suppression : le schéma n'a pas d'opération de suppression.
  */
 
-export const DRAFT_LANGS = ["fr-CA", "en-CA"] as const;
-export type DraftLang = (typeof DRAFT_LANGS)[number];
+const DRAFT_LANGS = ["fr-CA", "en-CA"] as const;
 
 // biome-ignore lint/suspicious/noControlCharactersInRegex: on refuse précisément les caractères de contrôle
 const CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/;
@@ -30,13 +29,13 @@ export const text = (max: number) =>
 const required = (max: number) => text(max).refine((s) => s.length > 0);
 
 /** Chemin interne seulement : commence par `/`, jamais `//`, jamais de schéma, jamais de contrôle. */
-export const internalHref = z
+const internalHref = z
   .string()
   .max(200)
   .regex(/^\/(?!\/)[A-Za-z0-9\-._~/?=&%#]*$/, "chemin interne seulement");
 
 /** Segments en minuscules et tirets ; un segment réservé par l'application est interdit. */
-export const RESERVED_SLUGS = new Set([
+const RESERVED_SLUGS = new Set([
   "api",
   "v1",
   "og",
@@ -67,7 +66,7 @@ const Tone = z.enum(["sombre", "clair", "sable"]);
 const Anchor = z.string().regex(/^[a-z0-9-]{0,40}$/);
 const optText = (max: number) => text(max).optional();
 
-export const HeroBlock = z.strictObject({
+const HeroBlock = z.strictObject({
   collection: z.literal("block_hero"),
   fields: z
     .strictObject({
@@ -87,7 +86,7 @@ export const HeroBlock = z.strictObject({
   }),
 });
 
-export const SectionBlock = z.strictObject({
+const SectionBlock = z.strictObject({
   collection: z.literal("block_section"),
   fields: z
     .strictObject({ tone: Tone.optional(), anchor_id: Anchor.optional() })
@@ -103,7 +102,7 @@ export const SectionBlock = z.strictObject({
   }),
 });
 
-export const CardsBlock = z.strictObject({
+const CardsBlock = z.strictObject({
   collection: z.literal("block_cards"),
   fields: z
     .strictObject({
@@ -131,7 +130,7 @@ export const CardsBlock = z.strictObject({
   }),
 });
 
-export const FaqBlock = z.strictObject({
+const FaqBlock = z.strictObject({
   collection: z.literal("block_faq"),
   fields: z
     .strictObject({
@@ -151,7 +150,7 @@ export const FaqBlock = z.strictObject({
   }),
 });
 
-export const CtaBlock = z.strictObject({
+const CtaBlock = z.strictObject({
   collection: z.literal("block_cta"),
   fields: z
     .strictObject({ tone: Tone.optional(), anchor_id: Anchor.optional() })
@@ -166,16 +165,15 @@ export const CtaBlock = z.strictObject({
   }),
 });
 
-export const BlockInput = z.discriminatedUnion("collection", [
+const BlockInput = z.discriminatedUnion("collection", [
   HeroBlock,
   SectionBlock,
   CardsBlock,
   FaqBlock,
   CtaBlock,
 ]);
-export type BlockInputT = z.infer<typeof BlockInput>;
 
-export const PageMeta = z.strictObject({
+const PageMeta = z.strictObject({
   slug,
   title: required(120),
   seo_title: required(70),
@@ -192,7 +190,7 @@ export const NewPageInput = z.strictObject({
 });
 
 /** Traduction d'une page existante (Traducteur) : chaînes par clé stable, la structure vient du code. */
-export const TranslationInput = z.strictObject({
+const TranslationInput = z.strictObject({
   mode: z.literal("update_translation"),
   approvalKind: z.literal("traduction"),
   summary: required(1000),
@@ -204,7 +202,7 @@ export const TranslationInput = z.strictObject({
 });
 
 /** Propositions SEO on-page (titre, description, slug) sur une page existante. */
-export const SeoInput = z.strictObject({
+const SeoInput = z.strictObject({
   mode: z.literal("update_seo"),
   approvalKind: z.literal("seo"),
   summary: required(1000),
@@ -223,9 +221,3 @@ export const CreateDraftInput = z.discriminatedUnion("mode", [
 ]);
 export type CreateDraftInputT = z.infer<typeof CreateDraftInput>;
 export type DraftMode = CreateDraftInputT["mode"];
-
-export const DRAFT_SCHEMAS = {
-  new_page: NewPageInput,
-  update_translation: TranslationInput,
-  update_seo: SeoInput,
-} as const;

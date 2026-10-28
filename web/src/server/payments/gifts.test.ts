@@ -32,7 +32,6 @@ import { createPromo } from "./promo";
 
 let t: TestDatabase;
 let fx: Fixture;
-let code: string;
 let promoId: string;
 beforeAll(async () => {
   t = await createTestDatabase();
@@ -63,7 +62,6 @@ beforeAll(async () => {
     },
     "admin",
   );
-  code = p.code;
   promoId = p.id;
 });
 afterAll(async () => {

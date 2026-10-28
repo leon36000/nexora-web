@@ -98,7 +98,6 @@ export const invoicePaymentSchema = z.object({
     })
     .nullish(),
 });
-export type InvoicePaymentPayload = z.infer<typeof invoicePaymentSchema>;
 
 export const subscriptionSchema = z.object({
   id: z.string(),
@@ -119,7 +118,6 @@ export const subscriptionSchema = z.object({
     })
     .nullish(),
 });
-export type SubscriptionPayload = z.infer<typeof subscriptionSchema>;
 
 export const chargeSchema = z.object({
   id: z.string(),
@@ -137,7 +135,6 @@ export const disputeSchema = z.object({
   amount: z.number().int(),
   status: z.string().nullish(),
 });
-export type DisputePayload = z.infer<typeof disputeSchema>;
 
 /** Identifiant de l'abonnement d'une facture, quelle que soit la version d'API. */
 export function subscriptionIdOfInvoice(inv: InvoicePayload): string | null {

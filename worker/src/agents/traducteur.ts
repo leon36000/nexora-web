@@ -11,7 +11,7 @@ const UUID = z.uuid();
 const Answer = z.record(z.string(), z.string());
 
 /** Regroupe les chaînes par lots dont la taille totale reste sous `maxChars` (une chaîne trop longue forme son propre lot). */
-export function batchStrings(
+function batchStrings(
   source: Record<string, string>,
   maxChars: number,
 ): Record<string, string>[] {
@@ -31,7 +31,7 @@ export function batchStrings(
   return batches;
 }
 
-export function slugify(input: string): string {
+function slugify(input: string): string {
   return input
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")

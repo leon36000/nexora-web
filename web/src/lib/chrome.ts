@@ -9,14 +9,14 @@ import { type Alternates, resolveHrefForLang } from "./alternates";
  * Tous les liens sortent localisés pour la langue d'affichage (voir `resolveHrefForLang`).
  */
 
-export type ChromeLink = { label: string; href: string; path: string };
-export type ChromeProduct = {
+type ChromeLink = { label: string; href: string; path: string };
+type ChromeProduct = {
   label: string;
   description: string;
   href: string;
 };
 /** Entrée de la navigation principale, dans l'ordre de Directus : un lien, ou le menu « Produits ». */
-export type HeaderNavItem =
+type HeaderNavItem =
   | ({ type: "link" } & ChromeLink)
   | { type: "menu"; label: string; items: ChromeProduct[] };
 export type HeaderModel = {

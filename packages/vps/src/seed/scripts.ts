@@ -11,7 +11,7 @@
  * (`bash -n`, shellcheck) et le parcours est prouvé contre le simulateur, pas contre un invité réel.
  */
 
-export interface ScriptSpec {
+interface ScriptSpec {
   code: string;
   name: string;
   version: string;
@@ -23,7 +23,7 @@ export interface ScriptSpec {
 
 const DOCKER_KEY_FPR = "9DC858229FC7DD38854AE2D88D81803C0EBFCD88";
 
-export function installScript(spec: ScriptSpec): string {
+function installScript(spec: ScriptSpec): string {
   return `#!/usr/bin/env bash
 # Nexora AI — installation de ${spec.name} ${spec.version} (script ${spec.scriptVersion}).
 # Exécuté par le worker de Nexora AI, une fois, juste après le premier démarrage de la VM.

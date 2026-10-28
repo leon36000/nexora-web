@@ -21,7 +21,7 @@ import type Stripe from "stripe";
  */
 
 /** Ce que Stripe sait d'un abonnement en essai : moyen de paiement et courriel du client. */
-export interface TrialCredentials {
+interface TrialCredentials {
   /** `card.fingerprint` du moyen de paiement par défaut ; null si aucune carte n'est (encore) enregistrée. */
   cardFingerprint: string | null;
   email: string | null;

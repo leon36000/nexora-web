@@ -328,7 +328,7 @@ function translationsOf(
 
 // ---------- dossiers (regroupements du panneau) ----------
 
-export const GROUPS = {
+const GROUPS = {
   site: "nexora_site",
   pages: "nexora_pages",
   validation: "nexora_validation",
@@ -430,14 +430,14 @@ export const SITE_COLLECTIONS = [
   "navigation_translations",
 ] as const;
 
-export const STATUS_PAGES: [string, string][] = [
+const STATUS_PAGES: [string, string][] = [
   ["draft", "Brouillon"],
   ["in_review", "En relecture"],
   ["published", "Publié"],
   ["archived", "Archivé"],
 ];
 
-export const APPROVAL_STATES: [string, string][] = [
+const APPROVAL_STATES: [string, string][] = [
   ["en_attente", "En attente"],
   ["approuvée", "Approuvée"],
   ["refusée", "Refusée"],
@@ -466,19 +466,19 @@ const rich: Opt["options"] = {
 export const ANCHOR_PATTERN = "^[a-z0-9-]{0,40}$";
 
 /** Tons de section (S3) : sombre = fond encre forêt, clair = papier, sable = surface claire relevée. */
-export const TONES: [string, string][] = [
+const TONES: [string, string][] = [
   ["sombre", "Sombre"],
   ["clair", "Clair"],
   ["sable", "Sable"],
 ];
-export const CARD_LAYOUTS: [string, string][] = [
+const CARD_LAYOUTS: [string, string][] = [
   ["grille", "Grille"],
   ["liste", "Liste (rangées pleine largeur)"],
   ["etapes", "Étapes numérotées"],
   ["modules", "Modules numérotés (M1…)"],
   ["bento", "Mosaïque (tuiles de tailles variées)"],
 ];
-export const SECTION_VISUALS: [string, string][] = [
+const SECTION_VISUALS: [string, string][] = [
   ["aucun", "Aucun"],
   ["perimetre-sur-place", "Périmètre : sur place"],
   ["perimetre-heberge", "Périmètre : hébergé au Québec"],

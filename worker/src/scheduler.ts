@@ -26,9 +26,9 @@ import type { Logger } from "@nexora/log";
  */
 const TZ = "America/Toronto";
 /** Tranche de la libération des réservations perdues. */
-export const LEDGER_RELEASE_EVERY_MS = 10 * 60_000;
+const LEDGER_RELEASE_EVERY_MS = 10 * 60_000;
 /** Versement des douzièmes mensuels des offres annuelles : une occurrence par heure. */
-export const LEDGER_GRANT_EVERY_MS = 60 * 60_000;
+const LEDGER_GRANT_EVERY_MS = 60 * 60_000;
 
 export interface LocalClock {
   date: string; // YYYY-MM-DD
@@ -68,7 +68,7 @@ export interface SchedulerDeps {
 }
 
 /** Crée l'exécution d'un agent ET sa tâche, une seule fois par clé (verrou consultatif + clé de tâche). */
-export async function scheduleAgentRun(
+async function scheduleAgentRun(
   db: Database,
   key: SiteAgentKey,
   occurrence: string,
@@ -111,7 +111,7 @@ export async function scheduleAgentRun(
   });
 }
 
-export async function scheduleNightlyAudit(
+async function scheduleNightlyAudit(
   db: Database,
   date: string,
 ): Promise<string | null> {

@@ -47,7 +47,7 @@ export type PageFile = {
 };
 
 /** Page prête à charger : les deux langues fusionnées. */
-export type DesiredBlock = {
+type DesiredBlock = {
   collection: string;
   fields: Fields;
   translations: Record<string, Fields>;
@@ -60,7 +60,7 @@ export type DesiredPage = {
   blocks: DesiredBlock[];
 };
 
-export type ClaimFile = {
+type ClaimFile = {
   id: string;
   kind: string;
   statement: string;
@@ -73,7 +73,7 @@ export type ClaimFile = {
   valid_until?: string | null;
 };
 
-export type RetiredClaim = {
+type RetiredClaim = {
   id: string;
   formulation: string;
   raison: string;
@@ -134,7 +134,7 @@ export function managedFields(): ManagedFields {
   return out;
 }
 
-export const PAGE_TR_FIELDS = [
+const PAGE_TR_FIELDS = [
   "slug",
   "title",
   "seo_title",
@@ -291,11 +291,11 @@ export function canonical(v: unknown): string {
 
 // ---------- état courant (lu dans Directus) ----------
 
-export type CurrentTranslation = {
+type CurrentTranslation = {
   id: number | string;
   languages_code: string;
 } & Fields;
-export type CurrentBlock = {
+type CurrentBlock = {
   id: number; // ligne de jonction pages_blocks
   sort: number | null;
   collection: string;

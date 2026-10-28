@@ -22,7 +22,7 @@ import type { HandlerRegistry } from "./registry.ts";
  */
 
 /** Version de configuration inscrite sur les écritures d'expiration faites par le worker. */
-export const EXPIRY_CONFIG_VERSION = "worker-expiration-v1";
+const EXPIRY_CONFIG_VERSION = "worker-expiration-v1";
 
 const MINUTE = 60_000;
 /** Plancher du délai de libération. */

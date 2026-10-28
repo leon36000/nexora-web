@@ -37,6 +37,6 @@ TOUT EST VERT
 (extrait du flux : "Bonjour à toi, mon ami charmant !")
 ```
 
-Navigateur (`web/scripts/verify-gateway-account.mjs`) : création d'une clé dans /compte (valeur affichée une fois, absente après fermeture et rechargement), acceptée par /v1, révoquée puis refusée (401), axe 0 violation en fr/en à 390 et 1440 px.
+Navigateur : création d'une clé dans /compte (valeur affichée une fois, absente après fermeture et rechargement), acceptée par /v1, révoquée puis refusée (401), axe 0 violation en fr/en à 390 et 1440 px.
 
-Axe (`web/scripts/axe-s2.mjs`) sur /modeles, /en/modeles, /modeles/nexora/glm-5-3, /docs/api, /en/docs/api : 0 violation. Lighthouse mobile /modeles : performance 90 à 96 selon la charge de la machine (médiane 95 sur 6 mesures, charge moyenne ≈ 22), accessibilité 100, bonnes pratiques 100, SEO 100, CLS 0 ; fiche 98 ; /docs/api 95.
+Axe sur /modeles, /en/modeles, /modeles/nexora/glm-5-3, /docs/api, /en/docs/api : 0 violation. Lighthouse mobile /modeles : performance 90 à 96 selon la charge de la machine (médiane 95 sur 6 mesures, charge moyenne ≈ 22), accessibilité 100, bonnes pratiques 100, SEO 100, CLS 0 ; fiche 98 ; /docs/api 95.

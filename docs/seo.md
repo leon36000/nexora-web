@@ -4,7 +4,7 @@ Conception : `docs/superpowers/specs/2026-10-26-nexora-site-design.md` §13, D9,
 
 ## 1. SEO technique natif
 
-Preuve sur serveur en marche : `docs/captures/s8/seo-controle.md` (production 0 erreur, préproduction vérifiée). Commande : `BASE_URL=… bun web/scripts/check-seo.ts` (`EXPECT_ENV=staging` pour la préproduction).
+Preuve sur serveur en marche : `docs/preuves/s8/seo-controle.md` (production 0 erreur, préproduction vérifiée). Commande : `BASE_URL=… bun web/scripts/check-seo.ts` (`EXPECT_ENV=staging` pour la préproduction).
 
 ### Environnement et indexation
 
@@ -16,7 +16,7 @@ Preuve sur serveur en marche : `docs/captures/s8/seo-controle.md` (production 0 
 - Routes de l'application : `/contact`, `/modeles` et chaque fiche de modèle du catalogue public, `/docs/api`, `/vps` **seulement si la page existe** (manifeste `.next/server/app-paths-manifest.json`, sinon `src/app/[lang]/vps/page.tsx` ; le site se lance depuis `web/`).
 - `alternates.languages` : seulement les langues dont la traduction existe ; `x-default` vers le français quand il existe (même règle que les balises de la page).
 - `lastmod` réel ou omis, jamais « maintenant » : page = `date_updated` de Directus ; modèles et `/modeles` = date de publication de la version du catalogue ; `/contact` et `/docs/api` = omis (pas de date connue).
-- **Essai réel** (`web/scripts/essai-lastmod.ts`, page jetable supprimée) : `date_updated` de la page **change bien** quand une promotion ne modifie que le texte d'un bloc M2A (04:31:35 -> 04:31:37). Aucune solution de contournement nécessaire.
+- **Essai réel** (page jetable, supprimée ensuite) : `date_updated` de la page **change bien** quand une promotion ne modifie que le texte d'un bloc M2A (04:31:35 -> 04:31:37). Aucune solution de contournement nécessaire.
 - Rendu à la demande (`connection()`) à partir de lectures en cache revalidées par l'étiquette `slugs` : une publication apparaît à la requête suivante.
 
 ### `robots.txt` (`lib/seo/robots-policy.ts`)

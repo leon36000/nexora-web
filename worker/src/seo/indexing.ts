@@ -1,9 +1,4 @@
-import {
-  type Database,
-  desc,
-  indexingSubmissions,
-  sitemapSnapshots,
-} from "@nexora/db";
+import { desc, indexingSubmissions, sitemapSnapshots } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { scrubString } from "@nexora/log";
 import { parseSitemapXml } from "@nexora/seo";
@@ -222,5 +217,3 @@ export async function runIndexing(
   });
   return outcome;
 }
-
-export type { Database };

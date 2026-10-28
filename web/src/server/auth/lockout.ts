@@ -22,17 +22,17 @@ import {
  * assumée : quelqu'un qui connaît votre courriel peut retarder vos connexions de 30 minutes au plus ; la
  * réinitialisation du mot de passe par courriel et la double authentification ne sont pas touchées.
  */
-export const LOCKOUT_FREE_ATTEMPTS = 4;
-export const LOCKOUT_BASE_MS = 60_000;
-export const LOCKOUT_MAX_MS = 30 * 60_000;
-export const LOCKOUT_FORGET_MS = 24 * 3_600_000;
+const LOCKOUT_FREE_ATTEMPTS = 4;
+const LOCKOUT_BASE_MS = 60_000;
+const LOCKOUT_MAX_MS = 30 * 60_000;
+const LOCKOUT_FORGET_MS = 24 * 3_600_000;
 
-export function lockoutKey(email: string): string {
+function lockoutKey(email: string): string {
   return createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
 }
 
 /** Durée du verrouillage après `failures` échecs consécutifs. */
-export function lockDurationMs(failures: number): number {
+function lockDurationMs(failures: number): number {
   const over = failures - LOCKOUT_FREE_ATTEMPTS;
   if (over <= 0) return 0;
   return Math.min(LOCKOUT_BASE_MS * 2 ** (over - 1), LOCKOUT_MAX_MS);

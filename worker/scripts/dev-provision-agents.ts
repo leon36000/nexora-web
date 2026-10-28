@@ -5,8 +5,8 @@
 //
 // 1. Directus : un compte de service par agent de contenu (rôle « Agent … » créé par apply.ts), jeton statique
 //    aléatoire, lu seulement pour être déposé dans le Coffre (`site-agent.<agent>.directus`) par l'API de l'app.
-//    Les rôles d'agents n'ont pas le droit de créer la COQUILLE d'une nouvelle page : on leur ajoute `create` sur
-//    `pages` et `pages_translations` (voir docs/propositions/s8-cms-agents.diff, à reprendre dans access.ts).
+//    Seul le Rédacteur a le droit de créer la COQUILLE d'une nouvelle page (`create` sur `pages` et
+//    `pages_translations`, posé par apply.ts) : le script vérifie ce droit et le corrige s'il manque.
 // 2. App : clé de la passerelle de chaque agent qui utilise un modèle, crédit de l'organisation interne, budget,
 //    activation. Le budget et le crédit sont des valeurs d'ESSAI.
 //
