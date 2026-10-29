@@ -5,6 +5,12 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./detectors": "./src/detectors.ts",
+    "./events": "./src/events.ts",
+    "./policy": "./src/policy.ts",
+    "./router": "./src/router.ts",
+    "./store": "./src/store.ts",
+    "./types": "./src/types.ts",
     "./test-support": "./src/test-support.ts"
   },
   "scripts": {

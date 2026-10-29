@@ -1,1 +1,1 @@
-export * from "@nexora/privacy";
+export * from "@nexora/privacy/store";
