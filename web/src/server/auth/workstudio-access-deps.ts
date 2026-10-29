@@ -1,5 +1,6 @@
 import "server-only";
 import { SITE_URL } from "@/lib/site";
+import { hasWorkstudioEntitlement } from "../billing/workstudio-entitlement";
 import { getDb } from "../db";
 import { log } from "../log";
 import { loadKeyring } from "../vault/crypto";
@@ -39,6 +40,10 @@ export function workstudioAccessDeps(): WorkstudioAccessDeps {
       };
     },
     allowLoopback,
+    requireSubscription:
+      process.env.WORKSTUDIO_REQUIRE_SUBSCRIPTION?.trim().toLowerCase() !==
+      "false",
+    entitled: hasWorkstudioEntitlement,
     log,
     now: () => new Date(),
   };

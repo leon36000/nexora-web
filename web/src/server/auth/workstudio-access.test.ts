@@ -114,6 +114,8 @@ function makeDeps(
     clientId: CLIENT_ID,
     gateway: () => ({ url: GATEWAY, model: MODEL }),
     allowLoopback: false,
+    requireSubscription: false,
+    entitled: async () => true,
     log,
     now: allowedNow,
     ...over,
@@ -263,6 +265,59 @@ describe("accès modèle par utilisateur (côté tiré)", () => {
       ok.map(async (r) => ((await r.json()) as Access).key),
     );
     expect(new Set(keys).size).toBe(1);
+  });
+});
+
+describe("abonnement WorkStudio exigé (clients ordinaires)", () => {
+  it("sans abonnement : 403 subscription_required, et aucune clé n'est créée", async () => {
+    const user = await newVerifiedUser();
+    const tokens = await fullLogin(user.cookie);
+    const [member] = await t.db
+      .select()
+      .from(members)
+      .where(eq(members.userId, user.userId));
+    const organizationId = member?.organizationId as string;
+    const deps = makeDeps({
+      requireSubscription: true,
+      entitled: async () => false,
+    });
+    const res = await access(tokens.access_token, deps);
+    expect(res.status).toBe(403);
+    expect(await res.json()).toEqual({ error: "subscription_required" });
+    const keys = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.organizationId, organizationId));
+    expect(keys).toHaveLength(0);
+  });
+
+  it("avec un abonnement (ou l'organisation maison) : 200 et la clé de l'organisation", async () => {
+    const user = await newVerifiedUser();
+    const tokens = await fullLogin(user.cookie);
+    const seen: string[] = [];
+    const deps = makeDeps({
+      requireSubscription: true,
+      entitled: async (_db, organizationId) => {
+        seen.push(organizationId);
+        return true;
+      },
+    });
+    const res = await access(tokens.access_token, deps);
+    expect(res.status).toBe(200);
+    expect(seen).toHaveLength(1);
+    expect(((await res.json()) as Access).key).toMatch(/^nxk_/);
+  });
+
+  it("l'exigence se coupe pour un essai (requireSubscription: false) : la décision d'abonnement n'est même pas lue", async () => {
+    const user = await newVerifiedUser();
+    const tokens = await fullLogin(user.cookie);
+    const deps = makeDeps({
+      requireSubscription: false,
+      entitled: async () => {
+        throw new Error("ne doit pas être appelée");
+      },
+    });
+    expect((await access(tokens.access_token, deps)).status).toBe(200);
   });
 });
 

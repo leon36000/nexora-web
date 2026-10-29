@@ -33,6 +33,16 @@ export interface WorkstudioAccessDeps {
   gateway: () => { url: string; model: string } | null;
   /** Développement seulement : admet une passerelle en http sur la boucle locale. */
   allowLoopback: boolean;
+  /**
+   * WorkStudio est un produit par abonnement : sans abonnement (ni accès « maison »), aucune clé de modèle n'est
+   * rendue (403 `subscription_required`). `WORKSTUDIO_REQUIRE_SUBSCRIPTION=false` coupe l'exigence (essais).
+   */
+  requireSubscription: boolean;
+  entitled: (
+    db: Database,
+    organizationId: string,
+    now: Date,
+  ) => Promise<boolean>;
   log: Logger;
   now: () => Date;
 }
@@ -169,6 +179,16 @@ export async function handleWorkstudioAccess(
 
   try {
     const organization = await ensureUserOrganization(db, userId);
+    if (
+      deps.requireSubscription &&
+      !(await deps.entitled(db, organization.id, now))
+    ) {
+      deps.log.warn("workstudio-access : abonnement WorkStudio requis", {
+        userId,
+        organizationId: organization.id,
+      });
+      return reply({ error: "subscription_required" }, 403);
+    }
     const access = await ensureModelAccess(db, deps.keyring(), {
       organizationId: organization.id,
       gatewayUrl: gateway.url,
