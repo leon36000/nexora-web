@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { getAccountDictionary } from "@/i18n/account";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { ActivityRow, BreakdownRow } from "@/server/gateway/activity";
+import type { ActivityDetail } from "@/server/gateway/activity-detail";
 import type { OverviewData } from "@/server/gateway/activity-overview";
 import type { ActivityPageData } from "@/server/gateway/activity-page";
 import type { PublicModel } from "@/server/gateway/public";
@@ -12,6 +13,7 @@ import { ModelsPanel } from "./models-panel";
 import { Overview } from "./overview";
 import type { WorkstudioView, workstudioView } from "./panel-logic";
 import { PanelNav } from "./panel-nav";
+import { RequestDetail } from "./request-detail";
 import { WorkstudioPanel } from "./workstudio-panel";
 
 const dashboard: DashboardData = {
@@ -687,5 +689,101 @@ describe("WorkStudio : branchement sur un modèle", () => {
     const out = html({ ...base, link: null, free: true });
     expect(out).toContain("aucun jeton n’est facturé");
     expect(out).not.toContain("Ajouter des fonds");
+  });
+});
+
+describe("page Activité : détail d'une requête", () => {
+  it("le journal lie chaque requête à son détail (adresse localisée)", () => {
+    const fr = renderActivity(pageData());
+    expect(fr).toContain(
+      'href="/compte/activite/requete?id=11111111-1111-4111-8111-111111111111"',
+    );
+    const en = renderActivity(pageData(), "en");
+    expect(en).toContain(
+      'href="/en/compte/activite/requete?id=11111111-1111-4111-8111-111111111111"',
+    );
+  });
+
+  const detail: ActivityDetail = {
+    id: "11111111-1111-4111-8111-111111111111",
+    requestId: "req_abc123",
+    createdAt: new Date("2026-10-28T12:00:00Z"),
+    model: "nexora/deepseek-v4.1-flash-1017",
+    endpoint: "chat.completions",
+    apiKeyId: "22222222-2222-4222-8222-222222222222",
+    apiKeyName: "Production",
+    apiKeyPrefix: "nxk_abcdefg",
+    status: "ok",
+    httpStatus: 200,
+    errorCode: null,
+    stream: true,
+    promptTokens: 1200,
+    completionTokens: 300,
+    cachedTokens: 200,
+    cacheWriteTokens: 0,
+    reasoningTokens: 40,
+    costMicro: 9100n,
+    valueMicro: 9100n,
+    billed: true,
+    priceInputMicro: 462_825n,
+    priceOutputMicro: 1_851_300n,
+    priceCacheMicro: 9000n,
+    priceCacheWriteMicro: null,
+    priceWindow: "creux",
+    latencyMs: 850,
+    privacyDecision: "mask",
+    destinationHost: null,
+  };
+  const render = (d: ActivityDetail | null, lang: "fr" | "en" = "fr") =>
+    renderToStaticMarkup(
+      <RequestDetail lang={lang} t={getAccountDictionary(lang)} detail={d} />,
+    );
+
+  it("montre jetons, prix appliqués, coût, délai et décision de confidentialité ; jamais de contenu", () => {
+    const html = render(detail);
+    expect(html).toContain("req_abc123");
+    expect(html).toContain("nexora/deepseek-v4.1-flash-1017");
+    expect(html).toContain("Flux continu");
+    expect(html).toContain("0,0091");
+    expect(html).toContain("0,4628");
+    expect(html).toContain("Renseignements évidents masqués");
+    expect(html).toContain("Plage horaire : creux");
+    expect(html).toContain("n’est jamais conservé");
+    expect(html).not.toMatch(/prompt|completion\b/i);
+  });
+
+  it("organisation maison : la valeur offerte, pas un coût facturé", () => {
+    const html = render({ ...detail, billed: false, costMicro: 0n });
+    expect(html).toContain("Valeur au prix public (offerte)");
+    expect(html).not.toContain("Coût facturé");
+  });
+
+  it("introuvable : message clair et retour à l'activité ; anglais", () => {
+    const html = render(null);
+    expect(html).toContain("introuvable");
+    expect(html).toContain('href="/compte/activite"');
+    expect(render(detail, "en")).toContain("Streamed");
+  });
+});
+
+describe("page Activité : période par dates", () => {
+  it("le formulaire offre « Du » et « Au », vides pour une période prédéfinie", () => {
+    const html = renderActivity(pageData());
+    expect(html).toContain('name="fromDay"');
+    expect(html).toContain('name="toDay"');
+    expect(html).not.toMatch(/name="fromDay"[^>]*value="2/);
+  });
+  it("période personnalisée : les dates actuelles (jours de Montréal, fin incluse) sont reprises", () => {
+    const html = renderActivity(
+      pageData({
+        period: "custom",
+        criteria: {
+          from: new Date("2026-10-01T04:00:00Z"),
+          to: new Date("2026-10-08T04:00:00Z"),
+        },
+      }),
+    );
+    expect(html).toMatch(/name="fromDay"[^>]*value="2026-10-01"/);
+    expect(html).toMatch(/name="toDay"[^>]*value="2026-10-07"/);
   });
 });
