@@ -58,11 +58,6 @@ export const enCA: Dictionary = {
           href: "/modeles",
         },
         {
-          label: "Agents",
-          description: "Hosted agents you can call by API with your own key.",
-          href: "/agents",
-        },
-        {
           label: "WorkStudio",
           description: "The studio for designing agents and workflows.",
           href: "/workstudio",
@@ -107,7 +102,6 @@ export const enCA: Dictionary = {
         links: [
           { label: "VPS", href: "/vps" },
           { label: "Models and API", href: "/modeles" },
-          { label: "Agents", href: "/agents" },
           { label: "WorkStudio", href: "/workstudio" },
           { label: "Software suite", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
@@ -407,12 +401,6 @@ export const enCA: Dictionary = {
           title: "A model gateway",
           text: "One access point to many models, hosted in Quebec or in the cloud, each with its data residency.",
           href: "/modeles",
-        },
-        {
-          label: "Agents",
-          title: "Hosted agents",
-          text: "Agents built in WorkStudio that you can call by API with your own key.",
-          href: "/agents",
         },
         {
           label: "WorkStudio",

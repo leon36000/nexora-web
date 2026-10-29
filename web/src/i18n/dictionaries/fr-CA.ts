@@ -60,12 +60,6 @@ export const frCA = {
           href: "/modeles",
         },
         {
-          label: "Agents",
-          description:
-            "Des agents hébergés, appelables par API avec votre clé.",
-          href: "/agents",
-        },
-        {
           label: "WorkStudio",
           description:
             "Le studio pour concevoir des agents et des flux de travaux.",
@@ -111,7 +105,6 @@ export const frCA = {
         links: [
           { label: "VPS", href: "/vps" },
           { label: "Modèles et API", href: "/modeles" },
-          { label: "Agents", href: "/agents" },
           { label: "WorkStudio", href: "/workstudio" },
           { label: "Suite logicielle", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
@@ -414,12 +407,6 @@ export const frCA = {
           title: "Une passerelle de modèles",
           text: "Un point d’accès unique à plusieurs modèles, hébergés au Québec ou infonuagiques, chacun avec sa résidence des données.",
           href: "/modeles",
-        },
-        {
-          label: "Agents",
-          title: "Agents hébergés",
-          text: "Des agents conçus dans WorkStudio, appelables par API avec votre clé.",
-          href: "/agents",
         },
         {
           label: "WorkStudio",
