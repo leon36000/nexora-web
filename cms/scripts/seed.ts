@@ -202,12 +202,34 @@ async function seedHome(d: Directus) {
 async function seedPlans(d: Directus) {
   log("Offres d'abonnement (brouillons, prix suggérés)");
   for (const plan of DRAFT_PLANS) {
-    const cur = await d.get<Entity>(
-      `/items/subscription_plans?filter[code][_eq]=${encodeURIComponent(plan.code)}&fields=id&limit=1`,
+    const cur = await d.get<
+      {
+        id: string;
+        status: string;
+        trial_days: number;
+        included_credits_cents: number;
+      }[]
+    >(
+      `/items/subscription_plans?filter[code][_eq]=${encodeURIComponent(plan.code)}&fields=id,status,trial_days,included_credits_cents&limit=1`,
       [403, 404],
     );
-    if (cur && (Array.isArray(cur) ? cur.length : cur.id)) {
-      kept(plan.code);
+    const row = Array.isArray(cur) ? cur[0] : null;
+    if (row) {
+      // Un brouillon suit la définition courante (aucun essai, forfait de 5 M de jetons) ; une offre approuvée
+      // ou publiée n'est jamais touchée par le chargement initial.
+      if (
+        row.status === "draft" &&
+        (row.trial_days !== plan.trial_days ||
+          row.included_credits_cents !== plan.included_credits_cents)
+      ) {
+        await d.patch(`/items/subscription_plans/${row.id}`, {
+          trial_days: plan.trial_days,
+          included_credits_cents: plan.included_credits_cents,
+        });
+        made(
+          `${plan.code} (brouillon mis à jour : aucun essai, forfait de jetons inclus)`,
+        );
+      } else kept(plan.code);
       continue;
     }
     await d.post("/items/subscription_plans", plan);

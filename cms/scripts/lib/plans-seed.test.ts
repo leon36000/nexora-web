@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DRAFT_PLANS } from "./plans-seed";
+import { DRAFT_PLANS, INCLUDED_CREDITS_CENTS } from "./plans-seed";
 
 describe("offres WorkStudio préparées en brouillon (prix suggérés par l'étude)", () => {
   test("trois offres, chacune avec une ligne mensuelle et une ligne annuelle", () => {
@@ -37,17 +37,27 @@ describe("offres WorkStudio préparées en brouillon (prix suggérés par l'étu
     expect(price("workstudio-affaires-annuel")).toBe(299 * 12 * 100);
   });
 
-  test("essai de 14 jours, carte exigée selon le réglage général, crédits inclus de l'étude (annuel : douze mois d'avance)", () => {
-    for (const p of DRAFT_PLANS) {
-      expect(p.trial_days).toBe(14);
-      expect(p.trial_card).toBe("default");
-    }
-    const credits = (code: string) =>
-      DRAFT_PLANS.find((p) => p.code === code)?.included_credits_cents;
-    expect(credits("workstudio-demarrage")).toBe(1000);
-    expect(credits("workstudio-equipe")).toBe(4000);
-    expect(credits("workstudio-affaires")).toBe(15000);
-    expect(credits("workstudio-equipe-annuel")).toBe(4000 * 12);
+  test("aucun essai gratuit : l'accès gratuit est réservé à l'administrateur de la maison", () => {
+    for (const p of DRAFT_PLANS) expect(p.trial_days).toBe(0);
+  });
+
+  test("crédits inclus = 5 millions de jetons du modèle par défaut (annuel : douze mois d'avance)", () => {
+    // Recalcul indépendant : DeepSeek V4.1 Flash 1017, tarif de pointe amont 0,30 / 1,20 $ US par million,
+    // taux de référence 1,4025, marge de 10 %, 70 % d'entrée et 30 % de sortie.
+    const ceil = (a: bigint, b: bigint) => (a + b - 1n) / b;
+    const sale = (usd: bigint) =>
+      ceil(ceil(usd * 1_402_500n, 1_000_000n) * 11_000n, 10_000n);
+    const micro = ceil(
+      5_000_000n * (sale(300_000n) * 7_000n + sale(1_200_000n) * 3_000n),
+      10_000_000_000n,
+    );
+    const cents = Number(ceil(micro, 10_000n));
+    expect(cents).toBe(440);
+    expect(INCLUDED_CREDITS_CENTS).toBe(cents);
+    for (const p of DRAFT_PLANS)
+      expect(p.included_credits_cents).toBe(
+        p.interval === "month" ? cents : cents * 12,
+      );
   });
 
   test("codes uniques, textes en français et en anglais, aucune promesse d'état de service", () => {

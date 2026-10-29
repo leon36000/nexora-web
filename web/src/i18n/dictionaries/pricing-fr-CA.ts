@@ -3,13 +3,13 @@ export const pricingFrCA = {
   meta: {
     title: "Tarifs | Nexora AI",
     description:
-      "Offres Nexora AI en dollars canadiens, avant taxes : prix mensuel et annuel, essai gratuit, crédits inclus. Aussi : VPS et crédits d’API à l’usage.",
+      "Offres Nexora AI en dollars canadiens, avant taxes : prix mensuel et annuel, crédits inclus. Aussi : VPS et crédits d’API à l’usage.",
   },
   nav: { home: "Accueil", pricing: "Tarifs", breadcrumb: "Fil d’Ariane" },
   hero: {
     label: "Tarifs",
     title: "Des tarifs clairs, en dollars canadiens.",
-    lead: "Choisissez une offre, essayez-la, puis payez en toute sécurité. Les prix s’affichent avant taxes ; la TPS et la TVQ sont calculées au moment du paiement.",
+    lead: "Choisissez une offre, puis payez en toute sécurité. Les prix s’affichent avant taxes ; la TPS et la TVQ sont calculées au moment du paiement.",
   },
   offers: {
     title: "Les offres d’abonnement",
@@ -33,6 +33,8 @@ export const pricingFrCA = {
   },
   taxes:
     "Tous les prix sont en dollars canadiens, avant taxes. La TPS et la TVQ sont calculées par notre prestataire de paiement selon votre adresse de facturation et s’ajoutent au prix. Les crédits inclus sont accordés à chaque période payée.",
+  includedNote:
+    "Les crédits inclus équivalent à environ 5 millions de jetons par mois du modèle par défaut de WorkStudio. Un modèle plus cher les consomme plus vite ; une fois les crédits épuisés, les jetons sont facturés au prix du catalogue, à même votre portefeuille.",
   trialNote:
     "Pendant un essai, aucun montant n’est prélevé avant la fin de la période d’essai ; vous pouvez résilier avant sans frais.",
   states: {

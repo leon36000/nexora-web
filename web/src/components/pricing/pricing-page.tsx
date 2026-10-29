@@ -97,6 +97,9 @@ export function PricingPage({
           </ul>
           <div className="mt-8 max-w-3xl space-y-2 text-small text-fg-muted">
             <p>{t.taxes}</p>
+            {offers.some((o) => o.includedCreditsCents > 0) ? (
+              <p>{t.includedNote}</p>
+            ) : null}
             {offers.some((o) => o.trialDays > 0) ? <p>{t.trialNote}</p> : null}
           </div>
         </Section>
