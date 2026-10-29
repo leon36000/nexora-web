@@ -2,21 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
-import {
-  CatalogFilters,
-  parseFilters,
-} from "@/components/gateway/catalog-filters";
-import { ModelCard } from "@/components/gateway/model-card";
+import { CatalogView } from "@/components/gateway/catalog-view";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
-import { ApiCallMock } from "@/components/visuals/model-catalog";
-import { PageIntro } from "@/components/visuals/page-intro";
-import { fmt, formatDate } from "@/i18n/account";
-import { isLang, type Lang, localizePath } from "@/i18n/config";
-import { getGatewayDictionary } from "@/i18n/gateway";
-import { getVisualsDictionary } from "@/i18n/visuals";
+import { isLang, type Lang } from "@/i18n/config";
+import { getModelsDictionary } from "@/i18n/models";
 import { buildPageMetadata } from "@/lib/metadata";
+import { parseQuery } from "@/lib/models/query";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
 import { getPublicCatalog } from "@/server/gateway/read";
@@ -24,19 +17,23 @@ import { getPublicCatalog } from "@/server/gateway/read";
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
-  const t = getGatewayDictionary(lang);
+  const t = getModelsDictionary(lang);
+  // Toutes les variantes de filtre et de tri partagent l'adresse canonique de la liste.
   return buildPageMetadata({
     lang,
     path: "/modeles",
-    title: t.meta.models.title,
-    description: t.meta.models.description,
+    title: t.meta.list.title,
+    description: t.meta.list.description,
     siteName: SITE_NAME,
   });
 }
 
 type Search = Record<string, string | string[] | undefined>;
 
-/** Catalogue public des modèles publiés (façon OpenRouter) : filtres par hébergement, capacité et type. */
+/**
+ * Catalogue public des modèles (façon OpenRouter) : recherche, filtres, tri et vue par l'adresse, rendus côté serveur ;
+ * sélection à comparer par le paramètre `m`.
+ */
 export default async function ModelsPage({
   searchParams,
 }: {
@@ -44,30 +41,25 @@ export default async function ModelsPage({
 }) {
   const lang = await getLang();
   if (!isLang(lang)) notFound();
-  const t = getGatewayDictionary(lang);
+  const t = getModelsDictionary(lang);
   return (
     <Section tone="light" aria-labelledby="models-title">
-      <PageIntro
-        stage="ciel"
-        visual={<ApiCallMock t={getVisualsDictionary(lang).catalog} />}
+      <header className="max-w-3xl">
+        <Badge tone="accent">{t.list.label}</Badge>
+        <h1 id="models-title" className="mt-4 text-h2 text-fg">
+          {t.list.title}
+        </h1>
+        <p className="mt-4 max-w-2xl text-lead text-fg-muted">{t.list.lead}</p>
+      </header>
+      <Suspense
+        fallback={<div aria-hidden="true" className="mt-10 min-h-[40rem]" />}
       >
-        <header className="max-w-3xl">
-          <Badge tone="accent">{t.catalog.label}</Badge>
-          <h1 id="models-title" className="mt-4 text-h1 text-fg">
-            {t.catalog.title}
-          </h1>
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
-            {t.catalog.lead}
-          </p>
-        </header>
-      </PageIntro>
-      <Suspense fallback={<CatalogSkeleton lang={lang} />}>
-        <CatalogList lang={lang} searchParams={searchParams} />
+        <CatalogBody lang={lang} searchParams={searchParams} />
       </Suspense>
       <JsonLd
         data={appBreadcrumb(lang, [
           {
-            name: t.meta.models.title.replace(` | ${SITE_NAME}`, ""),
+            name: t.meta.list.title.replace(` | ${SITE_NAME}`, ""),
             path: "/modeles",
           },
         ])}
@@ -76,92 +68,13 @@ export default async function ModelsPage({
   );
 }
 
-async function CatalogList({
+async function CatalogBody({
   lang,
   searchParams,
 }: {
   lang: Lang;
   searchParams: Promise<Search>;
 }) {
-  const t = getGatewayDictionary(lang);
-  const catalog = await getPublicCatalog();
-  const filters = parseFilters(await searchParams);
-  const models = catalog.models.filter(
-    (m) =>
-      (!filters.residency || m.residency === filters.residency) &&
-      (!filters.capability ||
-        m.capabilities[filters.capability as keyof typeof m.capabilities] ===
-          true) &&
-      (!filters.kind || m.kind === filters.kind),
-  );
-  // Mise en avant : les modèles hébergés au Québec d'abord, puis par nom.
-  models.sort(
-    (a, b) =>
-      Number(b.residency === "quebec") - Number(a.residency === "quebec") ||
-      a.name.localeCompare(b.name, lang === "fr" ? "fr-CA" : "en-CA"),
-  );
-
-  return (
-    <>
-      <CatalogFilters
-        t={t}
-        values={filters}
-        action={localizePath(lang, "/modeles")}
-        className="mt-10"
-      />
-      <p className="mt-8 min-h-[4rem] text-small text-fg-muted" role="status">
-        {fmt(t.catalog.count, { count: models.length })}
-        {" · "}
-        {t.catalog.priceNote}
-        {catalog.publishedAt
-          ? ` ${fmt(t.catalog.updated, { date: formatDate(lang, new Date(catalog.publishedAt)) })}`
-          : ""}
-      </p>
-      {models.length === 0 ? (
-        <p className="mt-6 text-body text-fg-muted">
-          {catalog.models.length === 0
-            ? t.catalog.emptyCatalog
-            : t.catalog.empty}
-        </p>
-      ) : (
-        <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {models.map((m) => (
-            <li key={m.id}>
-              <ModelCard model={m} lang={lang} t={t} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
-  );
-}
-
-/**
- * Coque affichée pendant la lecture des filtres de l'URL : mêmes filtres et même gabarit que la liste,
- * pour éviter tout saut de mise en page (CLS) à l'arrivée du contenu.
- */
-function CatalogSkeleton({ lang }: { lang: Lang }) {
-  const t = getGatewayDictionary(lang);
-  return (
-    <>
-      <CatalogFilters
-        t={t}
-        values={{ residency: "", capability: "", kind: "" }}
-        action={localizePath(lang, "/modeles")}
-        className="mt-10"
-      />
-      <p
-        className="mt-8 min-h-[4rem] text-small text-fg-muted"
-        aria-hidden="true"
-      >
-        {t.catalog.priceNote}
-      </p>
-      <div
-        aria-hidden="true"
-        className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        <div className="min-h-[22rem] rounded-lg border border-line bg-surface" />
-      </div>
-    </>
-  );
+  const [catalog, raw] = await Promise.all([getPublicCatalog(), searchParams]);
+  return <CatalogView lang={lang} catalog={catalog} query={parseQuery(raw)} />;
 }
