@@ -242,6 +242,85 @@ Module **Modèles** : ajouter un fournisseur (adresse, **région**, politique de
 - Un fournisseur ou une instance sur le **réseau interne** (Ollama de Nexora, vLLM) : lister son hôte ou sa plage dans `NEXORA_OUTBOUND_ALLOW` (par exemple `ollama.interne.ca,10.20.0.0/24`) puis redémarrer le site. Sinon : « adresse du réseau interne refusée ». Les adresses de lien local (169.254.0.0/16, dont les métadonnées du nuage) sont refusées même si elles sont listées.
 - La **résidence** affichée au public est celle saisie à la fiche : la relire à chaque changement de fournisseur. Aucune bascule silencieuse vers un modèle externe n'existe dans le code ; ne pas en configurer dans LiteLLM (`fallbacks`).
 
+### 8.1 bis Ajouter un fournisseur, un modèle, un prix (pas à pas)
+
+Tout se fait dans le module **Modèles** de Directus (barre de gauche, icône de robot), **sans script ni ligne de commande**. Le module est réservé aux administrateurs. Cinq onglets : **Fournisseurs**, **Modèles et prix**, **Taux de change**, **Versions et synchronisation**, **Rapprochement des coûts**. Les écrans ci-dessous sont décrits dans l'ordre où on les rencontre ; les libellés entre guillemets sont ceux des boutons.
+
+**Avant de commencer (une seule fois)**
+
+1. Un **taux de change** approuvé (onglet *Taux de change* : saisir « 1 $ US = … $ CA », « Ajouter », puis « Approuver »). Sans lui, aucun prix de vente ne peut être calculé ni publié.
+2. L'hôte du fournisseur doit être autorisé à recevoir une clé (§8.0). DeepSeek, Z.ai, MiniMax, Moonshot, DeepInfra et OpenRouter le sont déjà ; pour un autre, l'opérateur ajoute son hôte dans `NEXORA_SECRET_HOSTS_MODEL_PROVIDER` et redémarre le site (le panneau l'explique si on l'oublie).
+3. Les cinq modèles de départ (DeepSeek V4.1 Flash 1017, GLM 5.3, GLM 5.3 Flash, MiniMax M3.1 Flash, Kimi K3.1 Pro) sont chargés par `bun run --cwd web models:seed` (voir `docs/restauration.md`). Ils apparaissent en brouillon dans l'onglet *Modèles et prix* ; l'ajout d'un sixième n'a **pas** besoin de ce script.
+
+#### A. Ajouter un fournisseur (exemple : DeepInfra)
+
+Onglet **Fournisseurs** → bouton **« Ajouter un fournisseur »**. L'assistant a quatre étapes sur une seule page ; une pastille numérotée devient verte à mesure que chacune est faite.
+
+1. **Adresse et identité.** Cliquer sur **« DeepInfra »** dans « Départ rapide » (autres choix : DeepSeek, Z.ai, MiniMax, Moonshot AI (Kimi), OpenRouter) : le nom, le code, le type, l'adresse de base et la **référence du Coffre** (`llm.deepinfra`) se remplissent. Pour un autre fournisseur, taper son nom (le code et la référence se déduisent), choisir le type (« Compatible OpenAI » convient à presque tous ; « OpenRouter » pour une route de secours passant par OpenRouter) et copier l'**adresse de base** de sa documentation (elle inclut déjà la version : `…/v1`, `…/v4`, `…/v1/openai`). La **région d'hébergement** reste « Autre / non précisée » tant qu'on n'est pas certain : elle est affichée aux clients. Cliquer sur **« Enregistrer le fournisseur »** : il est créé **désactivé**.
+2. **Clé dans le Coffre.** Cliquer sur le lien **Coffre** (il s'ouvre dans un nouvel onglet), saisir la référence indiquée (`llm.deepinfra`), le type « Fournisseur de modèles », coller la clé et « Enregistrer dans le coffre ». Revenir à l'assistant et cliquer sur **« Revérifier »** : « Clé présente dans le Coffre » apparaît en vert. **La clé n'est jamais saisie dans l'assistant, ni affichée, ni enregistrée dans Directus.**
+3. **Test de la connexion.** **« Tester la connexion »** interroge la liste des modèles du fournisseur avec la clé du Coffre (aucune requête facturée) et répond, par exemple, « Connexion réussie — HTTP 200 en 150 ms, 3 modèle(s) listé(s) ». Un refus est expliqué : « clé refusée par le fournisseur, vérifiez la clé collée dans le Coffre » (401/403), « adresse introuvable, vérifiez l'adresse de base » (404), « clé introuvable ou révoquée dans le coffre » (étape 2 non faite).
+4. **Activation.** Cocher **« Fournisseur actif »**, puis **« Enregistrer les modifications »**. Le cadre bleu « Prochaine étape » indique toujours ce qu'il reste à faire (clé, test, activation).
+
+Dans la liste des fournisseurs, chaque ligne montre la clé (« Clé présente » / « Clé absente »), la connexion (« Connexion vérifiée », « Connexion en échec », « Jamais testé »), l'état (« Actif » / « Désactivé ») et la prochaine étape ; les boutons **Modifier**, **Tester la connexion** et **Activer / Désactiver** y sont aussi.
+
+#### B. Ajouter un modèle
+
+Onglet **Modèles et prix** → **« Ajouter un modèle »**. Six étapes (le fil en haut permet de revenir en arrière ; les étapes 4 à 6 se débloquent une fois le brouillon enregistré). **Rien n'est visible des clients avant l'étape 6.**
+
+1. **Identité.** Nom affiché ; **identifiant public** (proposé à partir du nom, de la forme `nexora/nom-du-modele` : c'est ce que les clients écrivent dans leurs appels ; il ne change plus ensuite) ; famille ; type (conversation ou embeddings) ; descriptions fr/en ; visibilité au catalogue ; date de retrait prévue (facultative).
+2. **Fiche technique.** Date de sortie (AAAA-MM-JJ), coupure des connaissances (AAAA-MM), licence (nom, poids ouverts ou fermés, adresse https du texte), paramètres totaux et actifs (en milliards), **fenêtre de contexte** et sortie maximale (en jetons), entrées acceptées, sorties produites, capacités, notes. **Ne remplir que ce qui est lu sur une page officielle** : un champ vide reste absent de la fiche publique, rien n'est inventé. Les mesures (benchmarks) et sources déjà enregistrées sont affichées en lecture seule et **conservées** à l'enregistrement.
+3. **Fournisseur.** Choisir le **fournisseur principal** (la liste dit s'il est actif et si sa clé est dans le Coffre ; un lien mène à l'onglet Fournisseurs si on doit en ajouter un), saisir l'**identifiant du modèle chez ce fournisseur** (celui de sa documentation, par exemple `meta-llama/Llama-3.3-70B-Instruct`), la **région d'hébergement** affichée aux clients, et, pour OpenRouter, les consignes de routage (collecte des données : « Refuser » recommandé). **« Enregistrer et continuer vers les prix »** crée le modèle en **brouillon** ; chaque champ fautif est signalé en rouge.
+4. **Prix.** Saisir les **coûts du fournisseur en dollars américains par million de jetons** : entrée, sortie, et seulement si le fournisseur les facture à part, **cache lu** et **cache écrit** (Kimi, par exemple, facture l'écriture du cache à part ; chaque poste a sa propre vente). Le tableau montre, ligne par ligne : le coût converti en dollars canadiens au taux approuvé, le **prix de vente calculé** (coût converti × (1 + marge visée)), la marge obtenue et le verdict « OK » ou « Refusé ». La **marge visée** et le **plancher de marge** sont à 10 % par défaut. Pour fixer soi-même un prix de vente, le taper dans « Prix de vente imposé » ; **sous le plancher, la ligne est refusée et le texte dit pourquoi** (« vendre à 0,30 $ CA donne 7,1 % de marge, sous le plancher de 10 %. Prix minimal : 0,462 $ CA. »), et rien ne s'enregistre. Un prix de vente à 0 $ est toujours refusé. Les **plages horaires à prix réduit** (une plage ne peut que **baisser** le prix de base ; heures en **UTC** : le Québec est à UTC−5 l'hiver, UTC−4 l'été) s'ajoutent sous le tableau. **« Enregistrer le prix »** ajoute la première version de prix ; un prix déjà enregistré ne se modifie jamais (voir C).
+5. **Routes de secours.** Si le fournisseur principal échoue, la passerelle essaie les routes **dans l'ordre affiché** (boutons **Monter / Descendre**, **Désactiver**). Ajouter une route : fournisseur, identifiant du modèle chez lui, et, facultativement, **son propre coût** (entrée, sortie, cache). Pour chaque route qui a son coût, l'écran affiche le **prix plancher** — le prix de vente minimal qui garde la marge avec CE coût — et dit si vos prix de vente (de base et de chaque plage) le tiennent. Une route dont le fournisseur est désactivé ou sans clé bloque la publication : la désactiver ou régler le fournisseur.
+6. **Publication.** L'état courant est affiché (Brouillon, Approuvé, Publié, Retiré). Les **contrôles préalables** sont listés avec une coche verte ou une croix rouge et la consigne pour chacun : taux de change approuvé ; prix saisi ; prix de vente valide (jamais 0 $, au-dessus du plancher) ; fournisseur principal actif ; **clé du fournisseur présente dans le Coffre** ; routes de secours prêtes. **« Revérifier »** les relit. **« Publier le modèle »** n'est actif que lorsque tout est vert ; il enchaîne : approuver le modèle, le publier, préparer une version du catalogue, l'approuver, la publier (et, si la case est cochée, synchroniser vers LiteLLM). Le journal des étapes et les changements publiés s'affichent. **« Garder en brouillon et fermer »** laisse le modèle non publié ; on y revient plus tard par **Modifier** (rouvre l'assistant à l'étape 1) ou par **Publier** (rouvre l'assistant directement à l'étape 6) dans la liste des modèles.
+
+Attention : publier met en ligne **une nouvelle version du catalogue**, qui inclut aussi tout autre changement en attente (prix modifié, fournisseur changé…) ; l'onglet *Versions et synchronisation* montre ces changements avant publication.
+
+#### C. Modifier les prix d'un modèle existant
+
+Onglet **Modèles et prix** → ligne du modèle → **« Modifier les prix »**. Les prix sont **immuables** : on ne modifie jamais un prix, on en crée une **nouvelle version**. L'écran montre :
+
+- **Prix en vigueur** (ventes, coûts, plancher, nombre de plages) ;
+- le formulaire de saisie (le même qu'à l'étape *Prix*), prérempli avec le prix en vigueur ; un prix de vente laissé « auto » suit la marge, un prix imposé reste imposé ;
+- la **comparaison ancien / nouveau**, poste par poste : coût du fournisseur, vente, **marge avant → après** (en rouge si elle passe sous le plancher) et une phrase par poste (« le prix de vente passe de 0,3542 $ CA à 0,4004 $ CA (+13 %) ; le coût amont varie de +13 % ; la marge passe de 10 % à 10 % ») ;
+- **« Créer la nouvelle version de prix »** (inactif si le prix est identique ou refusé) ;
+- puis, si le modèle est publié, **« Mettre en vigueur (publier une version du catalogue) »** : le nouveau prix n'atteint les clients qu'à cette étape ;
+- l'**historique des versions de prix** (date, ventes, coûts, marge / plancher, écart avec la version précédente, note) avec **« Comparer »** : compare une ancienne version à celle en vigueur.
+
+Une requête passée garde le prix de son époque. Pour répercuter la hausse d'un fournisseur : saisir le nouveau coût (la vente suit la marge), vérifier la comparaison, créer la version, la mettre en vigueur.
+
+#### D. Rapprochement des coûts
+
+Onglet **Rapprochement des coûts** (période de 7, 30 ou 90 jours). Une ligne par modèle : requêtes, **facturé** (dollars canadiens), **offert** (organisations « maison »), **coût calculé** avec nos prix amont, **coût rapporté** par le fournisseur (OpenRouter le rapporte ; les fournisseurs directs, non : « Non rapporté »), **écart**, **marge réalisée** (facturé ÷ coût du fournisseur converti au taux approuvé, corrigé de l'écart observé) et le verdict **Conforme** / **À vérifier** (écart au-delà de 5 %). Un modèle « À vérifier » : ses coûts enregistrés sont périmés ; ouvrir **Modifier les prix** et saisir les coûts à jour.
+
+#### E. Retirer un modèle
+
+**« Retirer »** (modèle publié) demande confirmation, marque le modèle « Retiré » puis publie une nouvelle version du catalogue : les clients ne peuvent plus l'appeler.
+
+#### F. Messages courants et quoi faire
+
+| Message | Cause | Action |
+|---|---|---|
+| « Aucun taux de change approuvé… » | pas de taux approuvé | onglet *Taux de change* : ajouter puis approuver |
+| « Clé absente du Coffre pour la référence « llm.x » » | clé non déposée ou révoquée | module *Coffre* : même référence, type « Fournisseur de modèles », puis « Revérifier » |
+| « hôte « x » non autorisé pour la clé d'un fournisseur de modèles… » | hôte hors de la liste de l'opérateur | l'opérateur ajoute l'hôte à `NEXORA_SECRET_HOSTS_MODEL_PROVIDER` (§8.0) et redémarre |
+| « Adresse refusée par la garde réseau » | adresse interne ou non publique | §8.1 (`NEXORA_OUTBOUND_ALLOW`) |
+| « vendre à … donne … % de marge, sous le plancher » | prix de vente trop bas pour le coût converti | augmenter le prix, ou laisser « auto » |
+| « Refusé par la garde de publication » (liste) | un contrôle préalable est rouge | suivre la consigne affichée sous chaque ligne |
+| « Cet élément existe déjà » | code de fournisseur ou identifiant public déjà pris | changer le code / l'identifiant |
+
+#### G. Décisions provisoires, modifiables par le fondateur
+
+- **Marge visée et plancher : 10 %** par défaut (constante `DEFAULT_MARGIN_BPS` du serveur, proposée par les assistants ; le plancher de chaque prix est celui enregistré avec sa version).
+- **Prix de vente explicites** : l'assistant envoie toujours les montants de vente qu'il a affichés (aperçu = enregistré) ; l'aperçu reproduit exactement le calcul du serveur (essai de parité sur des milliers de cas).
+- **Effet immédiat** : une nouvelle version de prix prend effet tout de suite (pas de date future dans l'écran) ; le catalogue servi ne change qu'à la publication d'une version.
+- **Heures des plages en UTC**, comme le serveur.
+- **Types de fournisseur proposés** : « Compatible OpenAI » et « OpenRouter ». Un fournisseur déjà enregistré avec un autre type (vLLM, Ollama, LiteLLM amont) garde son type.
+- **Région par défaut « Autre / non précisée »** et **modalités et capacités décochées par défaut** : aucune affirmation n'est faite sans qu'on l'ait choisie.
+- **Seuil d'alerte du rapprochement : 5 %** d'écart entre le coût rapporté et le coût calculé.
+- **Retirer un modèle publie tout de suite** une nouvelle version du catalogue.
+- **Adresses de base proposées** (départ rapide) : celles de la documentation des fournisseurs ; les relire avant usage. Aucun prix n'est prérempli.
+
 ### 8.2 WorkStudio (agents hébergés et bulle)
 
 1. Dans WorkStudio : Réglages, Clés d'API Nexora, créer une **clé d'espace** avec « Agents publiés ».

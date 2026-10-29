@@ -110,6 +110,12 @@ describe("rôles et politiques", () => {
     expect(p.serviceUser?.tokenEnv).toBe("DIRECTUS_PUBLISHER_TOKEN");
   });
 
+  test("aucune politique déclarée n'accorde l'accès administrateur : le module Modèles et son relais restent à l'Administrateur", () => {
+    // Le module « Modèles » (fournisseurs, prix, publication) n'est visible et le relais /nexora-catalog ne répond
+    // qu'aux administrateurs ; seule la politique livrée par Directus (renommée « Administrateur ») les porte.
+    for (const p of policies) expect(p.admin_access).toBeFalsy();
+  });
+
   test("l’Éditeur ne peut écrire aucune collection de contenu publié", () => {
     const e = byName("Éditeur");
     expect(

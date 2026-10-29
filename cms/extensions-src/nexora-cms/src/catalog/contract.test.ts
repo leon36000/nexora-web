@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { isAllowed, relayToCatalog } from "./contract";
+import { createRelayHandler, relay } from "../admin-relay/relay";
+import { CATALOG_RELAY, isAllowed, relayToCatalog } from "./contract";
 
 const env = {
   NEXORA_APP_INTERNAL_URL: "http://app.interne:3500/",
@@ -22,6 +23,8 @@ describe("liste fermée des appels", () => {
       ["POST", `fx-rates/${ID}/approve`],
       ["POST", `versions/${ID}/publish`],
       ["POST", "sync-litellm"],
+      ["GET", `models/${ID}/readiness`],
+      ["POST", `models/${ID}/routes/reorder`],
     ] as const)
       expect(isAllowed(m, p)).toBe(true);
   });
@@ -37,6 +40,10 @@ describe("liste fermée des appels", () => {
       ["DELETE", `routes/${ID}`],
       ["GET", `routes/${ID}`],
       ["PATCH", `models/${ID}/routes`],
+      ["POST", `models/${ID}/readiness`],
+      ["GET", `models/${ID}/routes/reorder`],
+      ["POST", `models/${ID}/routes/reorder/x`],
+      ["POST", `routes/${ID}/reorder`],
     ] as const)
       expect(isAllowed(m, p)).toBe(false);
   });
@@ -112,5 +119,90 @@ describe("relais", () => {
         )
       ).status,
     ).toBe(404);
+  });
+});
+
+describe("rapprochement : période transmise", () => {
+  test("transmet la période (days) et ignore tout autre paramètre", async () => {
+    let seen = "";
+    const fetchFn = (async (url: string) => {
+      seen = url;
+      return Response.json({ days: 7, rows: [] });
+    }) as unknown as typeof fetch;
+    const r = await relayToCatalog(
+      {
+        method: "GET",
+        path: "usage-report",
+        query: { days: "7", secret: "x", organization: "o" },
+      },
+      { env, fetchFn },
+    );
+    expect(r.status).toBe(200);
+    expect(seen).toBe(
+      "http://app.interne:3500/api/admin/catalog/usage-report?days=7",
+    );
+    await relayToCatalog(
+      { method: "GET", path: "usage-report", query: { days: "7&x=1" } },
+      { env, fetchFn },
+    );
+    expect(seen).toBe("http://app.interne:3500/api/admin/catalog/usage-report");
+  });
+});
+
+describe("délai", () => {
+  test("laisse 60 s à la synchronisation LiteLLM, y compris par le gestionnaire d'endpoint", async () => {
+    const original = AbortSignal.timeout;
+    const delays: number[] = [];
+    AbortSignal.timeout = ((ms: number) => {
+      delays.push(ms);
+      return original.call(AbortSignal, ms);
+    }) as typeof AbortSignal.timeout;
+    try {
+      const fetchFn = (async () =>
+        Response.json({ ok: true })) as unknown as typeof fetch;
+      await relayToCatalog(
+        { method: "POST", path: "sync-litellm" },
+        { env, fetchFn },
+      );
+      await relay(
+        CATALOG_RELAY,
+        { method: "POST", path: "sync-litellm" },
+        { env, fetchFn },
+      );
+    } finally {
+      AbortSignal.timeout = original;
+    }
+    expect(delays).toEqual([60_000, 60_000]);
+  });
+});
+
+describe("accès", () => {
+  test("le relais du catalogue est réservé aux administrateurs Directus", async () => {
+    const handler = createRelayHandler("nexora-catalog", CATALOG_RELAY, env, {
+      info() {},
+    });
+    const res = () => {
+      const out: { status: number; body?: unknown } = { status: 0 };
+      return {
+        out,
+        set() {},
+        status(code: number) {
+          out.status = code;
+          return { json: (b: unknown) => (out.body = b) };
+        },
+      };
+    };
+    const anon = res();
+    await handler(
+      { method: "GET", path: "/", accountability: null },
+      anon as never,
+    );
+    expect(anon.out.status).toBe(401);
+    const editor = res();
+    await handler(
+      { method: "GET", path: "/", accountability: { user: "u", admin: false } },
+      editor as never,
+    );
+    expect(editor.out.status).toBe(403);
   });
 });

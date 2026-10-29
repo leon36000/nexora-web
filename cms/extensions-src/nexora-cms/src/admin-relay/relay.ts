@@ -14,6 +14,8 @@ export type RelayConfig = {
   allowed: ReadonlyArray<readonly [string, RegExp]>;
   /** Paramètres de requête transmis (tous les autres sont ignorés). */
   queryKeys: readonly string[];
+  /** Délai d'un appel à l'app, en millisecondes (défaut : 30 000). */
+  timeoutMs?: number;
 };
 
 export type Relayed = { status: number; body: unknown };
@@ -101,7 +103,9 @@ export async function relay(
           "content-type": "application/json",
         },
         body: payload,
-        signal: AbortSignal.timeout(deps.timeoutMs ?? 30_000),
+        signal: AbortSignal.timeout(
+          deps.timeoutMs ?? config.timeoutMs ?? 30_000,
+        ),
       },
     );
   } catch {

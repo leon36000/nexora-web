@@ -1,4 +1,5 @@
 import { defineModule } from "@directus/extensions-sdk";
+import { adminOnly } from "../../admin-relay/access";
 import Models from "./Models.vue";
 
 export default defineModule({
@@ -6,7 +7,6 @@ export default defineModule({
   name: "Modèles",
   icon: "smart_toy",
   // Réservé aux administrateurs : le serveur applique la même règle (endpoint /nexora-catalog).
-  preRegisterCheck: (user: { admin_access?: boolean } | null) =>
-    user?.admin_access === true,
+  preRegisterCheck: adminOnly,
   routes: [{ path: "", component: Models }],
 });
