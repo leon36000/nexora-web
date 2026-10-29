@@ -295,6 +295,7 @@ export const accountFrCA = {
       overview: "Aperçu | Nexora AI",
       models: "Modèles et clés | Nexora AI",
       activity: "Activité | Nexora AI",
+      privacy: "Confidentialité | Nexora AI",
       workstudio: "WorkStudio et agents | Nexora AI",
       billing: "Facturation | Nexora AI",
     },
@@ -305,6 +306,7 @@ export const accountFrCA = {
         overview: "Aperçu",
         models: "Modèles et clés",
         activity: "Activité",
+        privacy: "Confidentialité",
         workstudio: "WorkStudio et agents",
         cloud: "Cloud et VPS",
         apps: "Nexora Apps",
@@ -466,6 +468,104 @@ export const accountFrCA = {
       export: {
         button: "Exporter en CSV",
         note: "Fichier CSV avec les mêmes critères : 100 000 lignes au plus, sans aucun contenu de requête.",
+      },
+    },
+    privacy: {
+      title: "Confidentialité.",
+      lead: "Ce qui peut quitter votre organisation vers un fournisseur d’IA, et ce qui est masqué en route. Incluse pour tous, sans supplément.",
+      readOnly:
+        "Seul le propriétaire de l’organisation peut modifier la politique. Vous la voyez en lecture seule.",
+      current: {
+        title: "Politique en vigueur",
+        version: "Version {version}, enregistrée dans l’historique",
+        isDefault:
+          "Politique par défaut de Nexora (niveau Standard) : aucune version enregistrée pour votre organisation.",
+        invalid:
+          "La politique enregistrée est illisible : par précaution, toutes les requêtes sont refusées tant qu’elle n’est pas corrigée et enregistrée de nouveau.",
+      },
+      level: {
+        legend: "Niveau",
+        standard: {
+          name: "Standard",
+          text: "Par défaut. Les renseignements personnels évidents sont masqués avant l’envoi à un fournisseur d’IA, la collecte de données chez le fournisseur amont est refusée et chaque sortie est journalisée sans contenu.",
+        },
+        renforce: {
+          name: "Renforcé",
+          text: "En plus : seuls les modèles et les destinations de vos listes sont permis (une liste vide ne limite rien), et les pièces jointes sont bloquées.",
+        },
+        souverain: {
+          name: "Souverain strict",
+          text: "Rien ne sort sauf ce que vous permettez nommément. Sans modèle permis, toute requête est refusée (échec fermé).",
+        },
+      },
+      categories: {
+        legend: "Renseignements reconnus",
+        lead: "Chaque genre reconnu est remplacé par un jeton (par exemple [COURRIEL]) avant l’envoi. Cochez « Refuser » pour rejeter la requête au lieu de la masquer.",
+        mask: "Masquer",
+        deny: "Refuser",
+        always: "Toujours masqué",
+        items: {
+          email: "Courriel",
+          phone: "Téléphone (nord-américain et international)",
+          credit_card: "Carte de crédit (contrôle de Luhn)",
+          sin: "Numéro d’assurance sociale (NAS)",
+          iban: "IBAN",
+          secret: "Clés et secrets (nxk_, sk-, Bearer…)",
+        },
+      },
+      lists: {
+        legend: "Listes",
+        lead: "Une entrée par ligne. Les listes de permissions s’appliquent aux niveaux Renforcé et Souverain ; les destinations interdites s’appliquent à tous les niveaux.",
+        allowedModels: "Modèles permis",
+        allowedModelsHint:
+          "Identifiant exact ou préfixe terminé par * (par exemple mistral-*).",
+        allowedHosts: "Destinations permises",
+        allowedHostsHint:
+          "Nom d’hôte sans https:// ni chemin : exemple.ca, ou *.exemple.ca pour les sous-domaines.",
+        blockedHosts: "Destinations interdites",
+        blockedHostsHint: "Même format que les destinations permises.",
+      },
+      attachments: {
+        label: "Bloquer les pièces jointes (images, audio, fichiers)",
+        hint: "Bloquées par défaut aux niveaux Renforcé et Souverain.",
+      },
+      save: "Enregistrer la politique",
+      saving: "Enregistrement…",
+      saved: "Politique enregistrée : version {version}. Elle s’applique en quelques secondes.",
+      unchanged: "Aucun changement : la politique est déjà celle-ci.",
+      errors: {
+        generic: "L’enregistrement a échoué. Réessayez dans un instant.",
+        unauthenticated: "Votre session a expiré. Reconnectez-vous.",
+        forbidden:
+          "Seul le propriétaire de l’organisation peut modifier la politique.",
+        invalid_origin: "Requête refusée : origine inattendue.",
+        invalid_request:
+          "Vérifiez vos listes : un hôte s’écrit sans https:// ni chemin (exemple.ca ou *.exemple.ca), un modèle sans espace.",
+        invalid_json: "La requête était illisible. Rechargez la page.",
+        rate_limited: "Trop de tentatives. Réessayez dans une minute.",
+      },
+      recent: {
+        title: "Décisions des {days} derniers jours",
+        lead: "Nombre de requêtes selon la décision. Le contenu n’est jamais conservé.",
+        allow: "Laissées passer",
+        mask: "Masquées",
+        deny: "Refusées",
+      },
+      report: {
+        title: "Rapport mensuel",
+        lead: "Décisions du mois par jour, opération, destination et règle, en CSV, sans aucun contenu.",
+        download: "Télécharger {month} (CSV)",
+      },
+      history: {
+        title: "Historique des versions",
+        empty: "Aucune version enregistrée pour l’instant.",
+        caption: "Versions de la politique",
+        columns: { version: "Version", level: "Niveau", date: "Enregistrée le" },
+        current: "en vigueur",
+      },
+      limits: {
+        title: "Ce que cela ne fait pas",
+        text: "La détection repère les renseignements évidents (courriel, téléphone, cartes, NAS, IBAN, clés). Elle ne reconnaît ni les noms de personnes ni les adresses postales, et une valeur déguisée peut lui échapper. Elle ne prouve pas où les données sont traitées et ne remplace ni un avis juridique ni un engagement de conformité.",
       },
     },
     workstudio: {
