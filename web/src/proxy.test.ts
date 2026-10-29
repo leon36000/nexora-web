@@ -185,8 +185,10 @@ describe("proxy : CSP et formulaires qui redirigent vers Stripe", () => {
     for (const path of [
       "/compte",
       "/compte/vps",
+      "/compte/facturation",
       "/en/compte",
       "/en/compte/vps",
+      "/en/compte/facturation",
     ]) {
       const csp = parseCsp(
         (await proxy(req(path))).headers.get("content-security-policy") ?? "",
@@ -207,6 +209,9 @@ describe("proxy : CSP et formulaires qui redirigent vers Stripe", () => {
       "/contact",
       "/en/contact",
       "/compte/connexion-x",
+      "/compte/activite",
+      "/compte/modeles",
+      "/compte/facturation/autre",
       "/agents",
       "/vps",
     ]) {

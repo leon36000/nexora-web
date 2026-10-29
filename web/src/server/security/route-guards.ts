@@ -138,6 +138,39 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       },
     ],
   },
+  ...(
+    [
+      [
+        "api/account/activity",
+        "Activité (synthèse, répartitions, journal) : organisation de la session seulement, métadonnées de usage_events, origine contrôlée",
+      ],
+      [
+        "api/account/activity/export",
+        "Export CSV de l'activité : organisation de la session seulement, cellules protégées contre l'injection de formules, origine contrôlée",
+      ],
+    ] as const
+  ).map(
+    ([route, why]): RouteGuard => ({
+      route,
+      kind: "session",
+      why,
+      probes: [
+        {
+          label: "sans session ni origine",
+          method: "GET",
+          path: `/${route}`,
+          expect: [401, 403],
+        },
+        {
+          label: "origine étrangère",
+          method: "GET",
+          path: `/${route}`,
+          headers: { origin: "https://evil.example" },
+          expect: [401, 403],
+        },
+      ],
+    }),
+  ),
   {
     route: "api/account/vps/[id]/action",
     kind: "session",

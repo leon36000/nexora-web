@@ -4,8 +4,8 @@ import { notFound, redirect } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
 import { Notice } from "@/components/account/field";
+import { PanelHeading, PanelLoading } from "@/components/account/panel-ui";
 import { VpsPanel } from "@/components/account/vps-panel";
-import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import { getAccountDictionary } from "@/i18n/account";
@@ -14,9 +14,9 @@ import { isLang, type Lang, localizePath } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
 import { SITE_NAME } from "@/lib/site";
 import { getAuth } from "@/server/auth/instance";
-import { getSessionContext } from "@/server/auth/session";
 import { getDb } from "@/server/db";
 import { loadAccountVps } from "@/server/vps/account";
+import { getPanelSession } from "../_lib/session";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -51,14 +51,10 @@ export default async function AccountVpsPage({
   return (
     <Suspense
       fallback={
-        <Section tone="light" aria-busy="true">
-          <h1 className="text-h1 text-fg">
-            {getAccountVpsDictionary(lang).title}
-          </h1>
-          <p className="mt-4 text-fg-muted" role="status">
-            {common.working}
-          </p>
-        </Section>
+        <PanelLoading
+          title={getAccountVpsDictionary(lang).title}
+          working={common.working}
+        />
       }
     >
       <AccountVpsContent lang={lang} searchParams={searchParams} />
@@ -73,14 +69,13 @@ async function AccountVpsContent({
   lang: Lang;
   searchParams: Promise<Search>;
 }) {
-  const requestHeaders = await headers();
-  const session = await getSessionContext(requestHeaders);
+  const session = await getPanelSession();
   const t = getAccountVpsDictionary(lang);
   const accountHref = localizePath(lang, "/compte");
 
   if (!session) {
     // Sans session : même redirection que /compte. Avec session mais sans organisation : un message.
-    const bare = await getAuth().api.getSession({ headers: requestHeaders });
+    const bare = await getAuth().api.getSession({ headers: await headers() });
     if (!bare) redirect(localizePath(lang, "/compte/connexion"));
     return (
       <Section tone="light" aria-labelledby="vps-title">
@@ -105,25 +100,12 @@ async function AccountVpsContent({
   ]);
 
   return (
-    <Section tone="light" aria-labelledby="vps-title">
-      <header>
-        <Badge tone="accent">{session.name}</Badge>
-        <h1 id="vps-title" className="mt-4 text-h1 text-fg">
-          {t.title}
-        </h1>
-        <p className="mt-4 max-w-2xl text-lead text-fg-muted">{t.lead}</p>
-        <div className="mt-6">
-          <ButtonLink href={accountHref} variant="link">
-            {t.backToAccount}
-          </ButtonLink>
-        </div>
-      </header>
+    <div className="space-y-8">
+      <PanelHeading id="vps-title" title={t.title} lead={t.lead} />
       {first(q.offert) === "vps" ? (
-        <div className="mt-8">
-          <Notice tone="success">
-            {getAccountDictionary(lang).promo.gifted.vps}
-          </Notice>
-        </div>
+        <Notice tone="success">
+          {getAccountDictionary(lang).promo.gifted.vps}
+        </Notice>
       ) : null}
       <VpsPanel
         lang={lang}
@@ -133,6 +115,9 @@ async function AccountVpsContent({
         orders={data.orders}
         justOrdered={first(q.commande) === "ok"}
       />
-    </Section>
+      <p className="text-small text-fg-muted">
+        {getAccountDictionary(lang).panel.cloud.soon}
+      </p>
+    </div>
   );
 }
