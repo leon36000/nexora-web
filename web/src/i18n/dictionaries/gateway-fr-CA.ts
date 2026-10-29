@@ -85,7 +85,13 @@ export const gatewayFrCA = {
     total: "{n} G au total",
     active: "{n} G actifs",
     modalities: "Entrées acceptées",
-    modality: { text: "texte", image: "image", video: "vidéo", audio: "audio" },
+    modality: {
+      text: "texte",
+      image: "image",
+      video: "vidéo",
+      audio: "audio",
+      embedding: "vecteurs (embeddings)",
+    },
     benchmarks: "Mesures publiées",
     benchmarksLead:
       "Mesures de l’éditeur, avec leur source. Les protocoles diffèrent d’un éditeur à l’autre : elles ne sont pas strictement comparables.",
