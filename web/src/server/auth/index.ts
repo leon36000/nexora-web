@@ -385,6 +385,8 @@ export function createAuth(options: CreateAuthOptions) {
       disableOriginCheck: false,
       disableCSRFCheck: false,
       useSecureCookies: options.secureCookies ?? false,
+      // Préfixe propre au site : WorkStudio (aussi Better Auth) peut tourner sur le même hôte, sur un autre port.
+      cookiePrefix: "nexora-site",
       defaultCookieAttributes: { httpOnly: true, sameSite: "lax" },
     },
     databaseHooks: {

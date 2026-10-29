@@ -218,6 +218,19 @@ describe("vérification du courriel et connexion", () => {
     expect(cookiesOf(ok)).toContain("session_token");
   });
 
+  it("nomme ses témoins avec un préfixe propre au site (WorkStudio, sur le même hôte, ne les écrase pas)", async () => {
+    const { email } = await signUp();
+    await verifyFromMail(email);
+    const ok = await call("/sign-in/email", {
+      body: { email, password: PASSWORD },
+    });
+    const names = ok.headers
+      .getSetCookie()
+      .map((c) => c.split("=")[0] ?? "");
+    expect(names.some((n) => n === "nexora-site.session_token")).toBe(true);
+    expect(names.some((n) => n.startsWith("better-auth."))).toBe(false);
+  });
+
   it("la session a l'organisation du compte comme organisation active", async () => {
     const u = await newVerifiedUser();
     const rows = await t.db
