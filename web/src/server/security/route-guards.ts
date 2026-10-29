@@ -174,6 +174,47 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       ],
     }),
   ),
+  ...(
+    [
+      [
+        "api/account/privacy",
+        "Politique de confidentialité (Privacy Router) : lecture et modification par le propriétaire de l'organisation de la session seulement, origine contrôlée",
+        ["GET", "PUT"],
+      ],
+      [
+        "api/account/privacy/report",
+        "Rapport mensuel des décisions du Privacy Router en CSV : propriétaire de l'organisation de la session seulement, métadonnées sans contenu, origine contrôlée",
+        ["GET"],
+      ],
+    ] as const
+  ).map(
+    ([route, why, methods]): RouteGuard => ({
+      route,
+      kind: "session",
+      why,
+      probes: methods.flatMap((method) => [
+        {
+          label: `${method} sans session ni origine`,
+          method,
+          path: `/${route}`,
+          headers: method === "PUT" ? JSON_H : undefined,
+          body: method === "PUT" ? "{}" : undefined,
+          expect: [401, 403],
+        },
+        {
+          label: `${method} origine étrangère`,
+          method,
+          path: `/${route}`,
+          headers: {
+            ...(method === "PUT" ? JSON_H : {}),
+            origin: "https://evil.example",
+          },
+          body: method === "PUT" ? "{}" : undefined,
+          expect: [401, 403],
+        },
+      ]),
+    }),
+  ),
   {
     route: "api/account/vps/[id]/action",
     kind: "session",

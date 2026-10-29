@@ -22,7 +22,11 @@ import {
   handleModels,
   resetModelsCache,
 } from "./proxy";
-import { newOrganization, publishTestCatalog } from "./test-support";
+import {
+  newOrganization,
+  publishTestCatalog,
+  testPrivacyRouter,
+} from "./test-support";
 
 const MASTER = "sk-master-litellm-key-1234567890";
 const PROMPT_MARKER = "CONTENU-SECRET-DU-CLIENT-À-NE-JAMAIS-JOURNALISER";
@@ -130,6 +134,7 @@ const deps = (
   }),
   log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
   now,
+  privacy: testPrivacyRouter(t.db),
   requestId: () => `req_test_${++counter}`,
   limits: {
     defaultRpm: 1000,

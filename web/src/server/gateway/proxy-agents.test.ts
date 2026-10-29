@@ -14,7 +14,11 @@ import { publishTestAgent } from "../agents/test-support";
 import { createApiKey, revokeApiKey } from "./keys";
 import { requestCost } from "./pricing";
 import { type GatewayDeps, handleChatCompletions, handleModels } from "./proxy";
-import { newOrganization, publishTestCatalog } from "./test-support";
+import {
+  newOrganization,
+  publishTestCatalog,
+  testPrivacyRouter,
+} from "./test-support";
 
 const MASTER = "sk-master-litellm-key-1234567890";
 const WS_KEY = "sk-nexora-CLE-WORKSTUDIO-SECRETE-0123456789abcdef";
@@ -120,6 +124,7 @@ const deps = (over: Partial<GatewayDeps> = {}): GatewayDeps => ({
   },
   log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
   now: () => new Date(),
+  privacy: testPrivacyRouter(t.db),
   requestId: () => `req_agent_${++counter}`,
   limits: {
     defaultRpm: 1000,
@@ -193,6 +198,30 @@ beforeEach(() => {
 
 const costOf = (prompt: number, completion: number) =>
   requestCost({ prompt, completion, cached: 0 }, PRICE) + RUN_FEE;
+
+describe("Privacy Router sur les agents hébergés", () => {
+  it("masque les renseignements évidents avant l'envoi à l'instance WorkStudio", async () => {
+    const a = await agent();
+    const c = await client();
+    const res = await handleChatCompletions(
+      post(
+        c.key,
+        ask(a.slug, {
+          messages: [
+            { role: "user", content: "Écris à jean.tremblay@exemple.qc.ca" },
+          ],
+        }),
+      ),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    expect(res.headers.get("x-nexora-privacy-decision")).toBe("mask");
+    expect(JSON.stringify(calls[0]?.body)).not.toContain("tremblay");
+    expect(calls[0]?.body.messages).toEqual([
+      { role: "user", content: "Écris à [COURRIEL]" },
+    ]);
+  });
+});
 
 describe("appel non diffusé d'un agent", () => {
   it("débite exactement le coût réel (jetons + exécution), écrit l'usage et ne révèle rien de l'amont", async () => {

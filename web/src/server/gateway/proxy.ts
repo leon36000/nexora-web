@@ -11,6 +11,7 @@ import {
   listCallableAgents,
 } from "../agents/catalog";
 import { consumeRateLimit } from "../billing/rate-limit";
+import type { PrivacyRouter } from "../privacy/types";
 import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
@@ -23,6 +24,7 @@ import {
   formatMicro,
   type PerMillion,
 } from "./pricing";
+import { applyPrivacy } from "./privacy-gate";
 import { type PublicModel, toPublicModel } from "./public";
 import type {
   SnapshotModel,
@@ -48,6 +50,11 @@ export interface GatewayDeps {
   getSecret?: (ref: string) => Promise<string>;
   /** Hôtes où la clé d'espace peut partir (R9) ; défaut : NEXORA_SECRET_HOSTS_WORKSTUDIO de l'environnement. */
   secretHosts?: SecretHostCheck;
+  /**
+   * Nexora Privacy Router : évalue chaque requête AVANT l'estimation, la réservation et l'appel amont (masquage,
+   * refus 403, ou 503 si la couche ne répond pas). Obligatoire : aucune requête ne part sans lui (échec fermé).
+   */
+  privacy: PrivacyRouter;
   log: Logger;
   now: () => Date;
   requestId: () => string;
@@ -856,7 +863,7 @@ async function handleInference(
       windowSeconds: 60,
       now: deps.now(),
     });
-    const rateHeaders = {
+    const rateHeaders: Record<string, string> = {
       ...rid,
       "x-ratelimit-limit-requests": String(rpm),
       "x-ratelimit-remaining-requests": String(Math.max(0, rpm - rl.count)),
@@ -893,6 +900,24 @@ async function handleInference(
         rateHeaders,
       );
 
+    // Privacy Router : avant l'estimation, la réservation et tout appel sortant. Le corps masqué remplace le
+    // corps reçu ; l'en-tête de décision accompagne toutes les réponses suivantes.
+    const received: Json = parsed;
+    const caller = auth.key;
+    const privacyGate = async (publicId: string) => {
+      const gate = await applyPrivacy({
+        router: deps.privacy,
+        organizationId: caller.organizationId,
+        apiKeyId: caller.id,
+        endpoint,
+        model: publicId,
+        body: received,
+        headers: rateHeaders,
+      });
+      if (gate.ok) rateHeaders["x-nexora-privacy-decision"] = gate.decision;
+      return gate;
+    };
+
     // Cible de la requête : un agent hébergé (`agent/<slug>`) ou un modèle du catalogue.
     let plan: Plan;
     let upstreamUrl: string;
@@ -905,7 +930,9 @@ async function handleInference(
       const agent = await findCallableAgent(db, parsed.model, deps.now());
       if (!agent || !agentKeyMayUse(key, agent))
         return E.modelNotFound(parsed.model, rateHeaders);
-      const planned = planAgentChat(parsed, agent, deps, rateHeaders);
+      const gate = await privacyGate(agent.publicId);
+      if (!gate.ok) return gate.response;
+      const planned = planAgentChat(gate.body, agent, deps, rateHeaders);
       if (planned instanceof Response) return planned;
       plan = planned;
       const creds = await agentCredentials(deps, agent, requestId);
@@ -950,10 +977,12 @@ async function handleInference(
         : null;
       if (!version || !found) return E.modelNotFound(parsed.model, rateHeaders);
       const model = found.model;
+      const gate = await privacyGate(model.publicId);
+      if (!gate.ok) return gate.response;
       const planned =
         endpoint === "chat.completions"
-          ? planChat(parsed, model, deps, rateHeaders)
-          : planEmbedding(parsed, model, rateHeaders);
+          ? planChat(gate.body, model, deps, rateHeaders)
+          : planEmbedding(gate.body, model, rateHeaders);
       if (planned instanceof Response) return planned;
       plan = planned;
       upstreamUrl = `${lit.baseUrl.replace(/\/+$/, "")}/v1/${endpoint === "chat.completions" ? "chat/completions" : "embeddings"}`;

@@ -20,6 +20,8 @@ describe("section active selon l'adresse", () => {
     ["/compte/modeles", "models"],
     ["/en/compte/activite", "activity"],
     ["/compte/activite/", "activity"],
+    ["/compte/confidentialite", "privacy"],
+    ["/en/compte/confidentialite", "privacy"],
     ["/compte/workstudio", "workstudio"],
     ["/compte/vps", "cloud"],
     ["/en/compte/vps", "cloud"],
@@ -46,11 +48,12 @@ describe("section active selon l'adresse", () => {
 });
 
 describe("navigation du panneau", () => {
-  it("huit entrées, dans l'ordre voulu, chacune avec une adresse unique", () => {
+  it("neuf entrées, dans l'ordre voulu, chacune avec une adresse unique", () => {
     expect(PANEL_NAV.map((i) => i.id)).toEqual([
       "overview",
       "models",
       "activity",
+      "privacy",
       "workstudio",
       "cloud",
       "apps",

@@ -1,5 +1,11 @@
 import { randomBytes } from "node:crypto";
 import { type Database, organizations } from "@nexora/db";
+import { createLogger, type Logger } from "@nexora/log";
+import { createPrivacyJournal } from "../privacy/events";
+import {
+  createPrivacyRouter,
+  type ManagedPrivacyRouter,
+} from "../privacy/router";
 import { loadKeyring } from "../vault/crypto";
 import { putSecret } from "../vault/store";
 import {
@@ -106,4 +112,21 @@ export async function publishTestCatalog(db: Database, specs: TestModelSpec[]) {
   const { version } = await createDraftVersion(db);
   await approveVersion(db, version.id);
   return publishVersion(db, version.id);
+}
+
+/**
+ * Privacy Router réel branché sur la base d'essai (politique par défaut « standard » pour toute organisation qui
+ * n'en a pas enregistré), sans cache : une politique enregistrée par un essai s'applique tout de suite.
+ */
+export function testPrivacyRouter(
+  db: Database,
+  log: Logger = createLogger({ name: "privacy-test", sink: () => undefined }),
+): ManagedPrivacyRouter {
+  return createPrivacyRouter({
+    db: () => db,
+    journal: createPrivacyJournal({ db: () => db, log }),
+    log,
+    now: () => new Date(),
+    cacheTtlMs: 0,
+  });
 }

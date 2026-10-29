@@ -20,6 +20,7 @@ import {
 import {
   apiBaseFor,
   createLitellmClient,
+  openrouterPreferences,
   routeDeploymentId,
   routePositionOf,
   SyncError,
@@ -388,5 +389,23 @@ describe("identifiant d'un déploiement de route", () => {
     expect(routePositionOf(routeDeploymentId("nexora/glm-r1", 0))).toBe(0);
     expect(routePositionOf(null)).toBe(0);
     expect(routePositionOf("n-importe-quoi~r0")).toBe(0);
+  });
+});
+
+describe("OpenRouter : refus de la collecte de données chez l'amont (Privacy Router, standard)", () => {
+  it("sans consigne de fiche, la collecte est refusée", () => {
+    expect(openrouterPreferences(undefined)).toEqual({
+      data_collection: "deny",
+    });
+    expect(openrouterPreferences({})).toEqual({ data_collection: "deny" });
+  });
+  it("conserve les autres consignes de la fiche et refuse la collecte même si la fiche l'autorisait", () => {
+    expect(
+      openrouterPreferences({
+        dataCollection: "allow",
+        zdr: true,
+        only: ["z-ai"],
+      }),
+    ).toEqual({ data_collection: "deny", zdr: true, only: ["z-ai"] });
   });
 });

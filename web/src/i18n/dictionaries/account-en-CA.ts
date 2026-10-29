@@ -286,6 +286,7 @@ export const accountEnCA: AccountDictionary = {
       overview: "Overview | Nexora AI",
       models: "Models and keys | Nexora AI",
       activity: "Activity | Nexora AI",
+      privacy: "Privacy | Nexora AI",
       workstudio: "WorkStudio and agents | Nexora AI",
       billing: "Billing | Nexora AI",
     },
@@ -296,6 +297,7 @@ export const accountEnCA: AccountDictionary = {
         overview: "Overview",
         models: "Models and keys",
         activity: "Activity",
+        privacy: "Privacy",
         workstudio: "WorkStudio and agents",
         cloud: "Cloud and VPS",
         apps: "Nexora Apps",
@@ -455,6 +457,103 @@ export const accountEnCA: AccountDictionary = {
       export: {
         button: "Export as CSV",
         note: "CSV file with the same criteria: up to 100,000 rows, never any request content.",
+      },
+    },
+    privacy: {
+      title: "Privacy.",
+      lead: "What can leave your organization for an AI provider, and what is masked on the way. Included for everyone, at no extra cost.",
+      readOnly:
+        "Only the organization owner can change the policy. You are viewing it read-only.",
+      current: {
+        title: "Current policy",
+        version: "Version {version}, saved in the history",
+        isDefault:
+          "Nexora default policy (Standard level): no version has been saved for your organization.",
+        invalid:
+          "The saved policy cannot be read: as a precaution, every request is refused until it is fixed and saved again.",
+      },
+      level: {
+        legend: "Level",
+        standard: {
+          name: "Standard",
+          text: "The default. Obvious personal information is masked before it goes to an AI provider, data collection by the upstream provider is refused, and every outbound call is logged without its content.",
+        },
+        renforce: {
+          name: "Enhanced",
+          text: "In addition: only the models and destinations on your lists are allowed (an empty list restricts nothing), and attachments are blocked.",
+        },
+        souverain: {
+          name: "Strict sovereign",
+          text: "Nothing leaves except what you name explicitly. With no allowed model, every request is refused (fail closed).",
+        },
+      },
+      categories: {
+        legend: "Recognized information",
+        lead: "Each recognized kind is replaced by a token (for example [COURRIEL]) before sending. Tick “Refuse” to reject the request instead of masking it.",
+        mask: "Mask",
+        deny: "Refuse",
+        always: "Always masked",
+        items: {
+          email: "Email address",
+          phone: "Phone number (North American and international)",
+          credit_card: "Credit card (Luhn check)",
+          sin: "Social Insurance Number (SIN)",
+          iban: "IBAN",
+          secret: "Keys and secrets (nxk_, sk-, Bearer…)",
+        },
+      },
+      lists: {
+        legend: "Lists",
+        lead: "One entry per line. Allow lists apply to the Enhanced and Strict sovereign levels; blocked destinations apply to every level.",
+        allowedModels: "Allowed models",
+        allowedModelsHint:
+          "Exact identifier or a prefix ending in * (for example mistral-*).",
+        allowedHosts: "Allowed destinations",
+        allowedHostsHint:
+          "Host name without https:// or a path: example.ca, or *.example.ca for subdomains.",
+        blockedHosts: "Blocked destinations",
+        blockedHostsHint: "Same format as allowed destinations.",
+      },
+      attachments: {
+        label: "Block attachments (images, audio, files)",
+        hint: "Blocked by default at the Enhanced and Strict sovereign levels.",
+      },
+      save: "Save the policy",
+      saving: "Saving…",
+      saved: "Policy saved: version {version}. It applies within a few seconds.",
+      unchanged: "No change: the policy already is this one.",
+      errors: {
+        generic: "Saving failed. Please try again in a moment.",
+        unauthenticated: "Your session has expired. Please sign in again.",
+        forbidden: "Only the organization owner can change the policy.",
+        invalid_origin: "Request refused: unexpected origin.",
+        invalid_request:
+          "Check your lists: a host is written without https:// or a path (example.ca or *.example.ca), and a model has no spaces.",
+        invalid_json: "The request could not be read. Reload the page.",
+        rate_limited: "Too many attempts. Try again in a minute.",
+      },
+      recent: {
+        title: "Decisions in the last {days} days",
+        lead: "Number of requests by decision. Content is never kept.",
+        allow: "Allowed",
+        mask: "Masked",
+        deny: "Refused",
+      },
+      report: {
+        title: "Monthly report",
+        lead: "The month’s decisions by day, operation, destination and rule, as CSV, with no content at all.",
+        download: "Download {month} (CSV)",
+      },
+      history: {
+        title: "Version history",
+        empty: "No version saved yet.",
+        caption: "Policy versions",
+        columns: { version: "Version", level: "Level", date: "Saved on" },
+        current: "current",
+      },
+      limits: {
+        title: "What this does not do",
+        text: "Detection finds obvious information (email addresses, phone numbers, cards, SINs, IBANs, keys). It does not recognize people’s names or postal addresses, and a disguised value can slip through. It does not prove where data is processed and is not a substitute for legal advice or a compliance commitment.",
       },
     },
     workstudio: {
