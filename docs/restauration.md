@@ -1,0 +1,49 @@
+# Reconstruire le site depuis GitLab seul
+
+Dépôt : `https://pc4.tail0c55ff.ts.net/root/nexora-web` (privé, branche `main`). Tout le code, les migrations, les scripts et la documentation y sont. **Rien d'autre n'est nécessaire** pour remettre le site en place, sauf ce qui suit.
+
+## Ce qui n'est PAS dans Git (et pourquoi)
+
+| Quoi | Où | Que faire |
+|---|---|---|
+| Secrets de développement (`deploy/.env`, `.env`, `web/.env.local`) | ignorés par Git | se régénèrent : `deploy/init-env.sh` puis `scripts/init-dev-env.sh` |
+| **Clé maîtresse du coffre** `NEXORA_VAULT_MASTER_KEY` | `deploy/.env` | **à garder hors ligne** (gestionnaire de mots de passe). Sans elle, les clés de fournisseurs déjà saisies dans le coffre sont illisibles : il faut les ressaisir |
+| Clés des fournisseurs (DeepSeek, Z.ai, MiniMax, Moonshot…) | coffre (base de données, chiffrées) | à ressaisir dans le module « Coffre » si la base est perdue |
+| Données (bases `app` et `directus`, fichiers Directus) | volumes Docker | `deploy/backup.sh` / `deploy/restore.sh` (voir `docs/guide-operateur.md` §10) |
+
+Au 28/10/2026 le site n'est hébergé que pour des essais (démo sur gx10) : aucune donnée client n'existe encore. Reconstruire revient donc à refaire le code et les secrets, puis à recharger le catalogue de modèles.
+
+## Prérequis (vérifiés)
+
+- **Docker Compose v5.2 ou plus récent.** Le paquet Ubuntu `docker-compose-v2` 2.40 évalue d'avance les variables « requises » de `deploy/compose.yml` et échoue (« required variable …_FILE is missing »). Binaire officiel : image `docker/compose-bin:v5.2.0` (`docker create --name c docker/compose-bin:v5.2.0 /docker-compose && docker cp c:/docker-compose ./docker-compose`).
+- **Bun 1.4.2** pour installer les dépendances (`bun install --frozen-lockfile`).
+- **Node 24** pour lancer les tests (`npx vitest run`). Sous le moteur de Bun, la bibliothèque `zod` ne se charge pas dans Vitest et une quarantaine de fichiers de tests échouent à l'import.
+- Un jeton GitLab (compte `agent-nexora-workstudio-web` ou autre) pour cloner.
+
+## Procédure (essai du 28/10/2026 sur pc1 : environ une minute, hors téléchargements)
+
+```bash
+git clone https://pc4.tail0c55ff.ts.net/root/nexora-web.git && cd nexora-web
+bash deploy/init-env.sh                                   # génère deploy/.env (secrets aléatoires, droits 0600)
+bash scripts/init-dev-env.sh                              # génère .env et web/.env.local
+docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d db   # base prête en ~6 s
+bun install --frozen-lockfile
+bun packages/db/src/migrate-cli.ts                        # applique les 21 migrations
+(cd web && npx vitest run)                                # 1 353 tests passent ; 24 sautés sans le simulateur Stripe
+```
+
+Pile complète (Directus, LiteLLM, simulateur Stripe, Mailpit) : retirer `db` de la commande `up`, puis `docs/guide-operateur.md` §2.
+
+## Recharger le catalogue de modèles
+
+```bash
+bun run --cwd web models:seed     # fournisseurs (DeepSeek, Z.ai, MiniMax, Moonshot, OpenRouter désactivé) + 5 modèles en brouillon
+bun run --cwd web house:org       # organisation « maison » (accès gratuit) ; ajouter --key FICHIER pour créer sa clé
+```
+
+Prérequis du chargement : un taux de change USD→CAD approuvé (module « Modèles »). Rien n'est publié tant que le fondateur n'a pas saisi les clés des fournisseurs dans le Coffre (`llm.deepseek`, `llm.zai`, `llm.minimax`, `llm.moonshot`, type `llm_provider`) et approuvé les modèles.
+
+## Reprise après sinistre avec des données
+
+1. Cloner et générer les secrets comme ci-dessus **sauf** `NEXORA_VAULT_MASTER_KEY` : remettre celle d'origine dans `deploy/.env` avant de démarrer le site.
+2. `deploy/restore.sh verifier ARCHIVE`, puis `deploy/restore.sh restaurer ARCHIVE --pg-container nexorasite-db-1` (voir l'en-tête du script).
