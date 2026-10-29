@@ -1077,6 +1077,51 @@ describe("llms-full.txt : le contenu essentiel en Markdown propre", () => {
     expect(full).toMatch(/prix de développement|développement/i);
   });
 
+  it("le catalogue donne, pour chaque modèle, l'éditeur, l'état (aperçu ou disponible), l'adresse de la fiche et celle des classements", () => {
+    const model = {
+      id: "nexora/c",
+      name: "Modèle C",
+      provider: "Fournisseur",
+      residency: {
+        fr: "Hébergé aux États-Unis",
+        en: "Hosted in the United States",
+      },
+      kind: "chat" as const,
+      contextMax: 32000,
+      devPrice: false,
+      inputPerMillion: "0.1",
+      outputPerMillion: "0.2",
+      author: "Éditeur A",
+      preview: true,
+      url: {
+        fr: `${SITE}/modeles/nexora/c`,
+        en: `${SITE}/en/modeles/nexora/c`,
+      },
+    };
+    const withDetails = buildLlmsFullTxt({
+      ...llmsInput,
+      docs: [],
+      catalog: { models: [model], publishedAt: null },
+      vps: null,
+    });
+    expect(withDetails).toContain(`[Modèle C](${SITE}/modeles/nexora/c)`);
+    expect(withDetails).toContain(`[Modèle C](${SITE}/en/modeles/nexora/c)`);
+    expect(withDetails).toContain("Éditeur A");
+    expect(withDetails).toMatch(/\| aperçu \|/);
+    expect(withDetails).toMatch(/\| preview \|/);
+    expect(withDetails).toContain(`${SITE}/modeles/benchmarks`);
+    expect(withDetails).toContain(`${SITE}/en/modeles/benchmarks`);
+    // un modèle disponible n'est pas marqué « aperçu »
+    const live = buildLlmsFullTxt({
+      ...llmsInput,
+      docs: [],
+      catalog: { models: [{ ...model, preview: false }], publishedAt: null },
+      vps: null,
+    });
+    expect(live).toMatch(/\| disponible \|/);
+    expect(live).not.toMatch(/\| aperçu \|/);
+  });
+
   it("une seule langue à la demande : ni sections ni faits de l'autre langue", () => {
     const only = buildLlmsFullTxt({
       ...llmsInput,

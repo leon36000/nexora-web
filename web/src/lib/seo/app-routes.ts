@@ -5,6 +5,7 @@ import { APPS, appMeta, appPath, listMeta } from "@/i18n/apps";
 import type { Lang } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getModelsDictionary } from "@/i18n/models";
 import { getPricingDictionary } from "@/i18n/pricing";
 import { getVpsDictionary } from "@/i18n/vps";
 
@@ -50,7 +51,17 @@ const APP_ROUTES: readonly AppRoute[] = [
     dir: "modeles",
     dated: "catalog",
     meta: (lang) => {
-      const m = getGatewayDictionary(lang).meta.models;
+      const m = getModelsDictionary(lang).meta.list;
+      return { title: m.title, description: m.description };
+    },
+  },
+  {
+    // Classements par épreuve. Le comparateur (/modeles/comparer) dépend de l'adresse : ni sitemap ni llms.txt.
+    path: "/modeles/benchmarks",
+    dir: "modeles/benchmarks",
+    dated: "catalog",
+    meta: (lang) => {
+      const m = getModelsDictionary(lang).meta.benchmarks;
       return { title: m.title, description: m.description };
     },
   },

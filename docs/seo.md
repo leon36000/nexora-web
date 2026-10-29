@@ -13,7 +13,7 @@ Preuve sur serveur en marche : `docs/preuves/s8/seo-controle.md` (production 0 e
 ### `sitemap.xml` (`web/src/app/sitemap.ts`, logique pure `lib/seo/sitemap.ts`)
 
 - Pages Directus **publiées** seulement (`getSeoPages`, filtre `status = published` côté serveur, revérifié par ligne), jamais `noindex` ; une traduction dont le canonical saisi pointe ailleurs n'est pas listée.
-- Routes de l'application : `/contact`, `/modeles` et chaque fiche de modèle du catalogue public, `/docs/api`, `/vps` **seulement si la page existe** (manifeste `.next/server/app-paths-manifest.json`, sinon `src/app/[lang]/vps/page.tsx` ; le site se lance depuis `web/`).
+- Routes de l'application : `/contact`, `/modeles`, `/modeles/benchmarks` (classements) et chaque fiche de modèle du catalogue public (aperçus compris ; le comparateur `/modeles/comparer`, qui dépend de l'adresse, n'y figure pas et est `noindex`), `/docs/api`, `/vps` **seulement si la page existe** (manifeste `.next/server/app-paths-manifest.json`, sinon `src/app/[lang]/vps/page.tsx` ; le site se lance depuis `web/`).
 - `alternates.languages` : seulement les langues dont la traduction existe ; `x-default` vers le français quand il existe (même règle que les balises de la page).
 - `lastmod` réel ou omis, jamais « maintenant » : page = `date_updated` de Directus ; modèles et `/modeles` = date de publication de la version du catalogue ; `/contact` et `/docs/api` = omis (pas de date connue).
 - **Essai réel** (page jetable, supprimée ensuite) : `date_updated` de la page **change bien** quand une promotion ne modifie que le texte d'un bloc M2A (04:31:35 -> 04:31:37). Aucune solution de contournement nécessaire.
@@ -71,7 +71,6 @@ Générés à la demande depuis les données réelles (jamais écrits à la main
 ### Constats réels à traiter (hors de ce jalon)
 
 - `/docs/api` : titre « API | Nexora » (12 caractères, sous le minimum de 15) : à allonger dans `gateway-*-CA.ts` (zone S5).
-- `/modeles` : titre court aussi (15–16 caractères, limite).
 
 ### Diff Directus proposé (non appliqué)
 
