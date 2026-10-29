@@ -303,6 +303,32 @@ describe("ouverture", () => {
     expect(browser.opened).toEqual([]);
   });
 
+  it("start_url : si le premier lot ne peut pas partir, la session est abandonnée sans frais", async () => {
+    const { deps, browser } = setup();
+    browser.fail.run = new BrowserServiceError("unavailable");
+    const c = await seedClient(t.db, { balance: 10n * M });
+    const res = await create(deps, c.key, {
+      max_minutes: 5,
+      start_url: "https://exemple.test/",
+    });
+    expect(res.status).toBe(503);
+    expect((await bodyOf(res)).error.message).toContain("Rien n'est facturé");
+    const acct = await getAccount(t.db, c.org);
+    expect(acct.heldMicro).toBe(0n);
+    expect(acct.balanceMicro).toBe(10n * M);
+    expect(browser.closes).toHaveLength(1);
+    const rows = await t.db
+      .select()
+      .from(webpilotSessions)
+      .where(eq(webpilotSessions.organizationId, c.org));
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      status: "closed",
+      closeReason: "browser_error",
+      minutesSettled: 0,
+    });
+  });
+
   it("start_url permise : ouvre, navigue (hôte approuvé) et rend le résultat", async () => {
     const { deps, browser } = setup();
     const c = await seedClient(t.db, { balance: 10n * M });
@@ -629,6 +655,23 @@ describe("actions : exécution et résultats", () => {
         typeof v === "bigint" ? String(v) : v,
       ),
     ).not.toContain("iVBOR");
+  });
+
+  it("les hôtes approuvés valent pour un lot : sans goto, l'hôte de la page ; avec goto, seulement les destinations", async () => {
+    const { deps, browser } = setup();
+    const a = await opened(deps, {
+      body: { start_url: "https://exemple.test/" },
+    });
+    browser.runs.length = 0;
+    await act(deps, a.key, a.id, [{ type: "click", selector: "a" }]);
+    await act(deps, a.key, a.id, [
+      { type: "goto", url: "https://autre.test/" },
+      { type: "click", selector: "a" },
+    ]);
+    expect(browser.runs.map((r) => r.approveHosts)).toEqual([
+      ["exemple.test"],
+      ["autre.test"],
+    ]);
   });
 
   it("extract : le texte de la page passe par Privacy Router puis par le modèle ; le coût du modèle est dans l'en-tête", async () => {

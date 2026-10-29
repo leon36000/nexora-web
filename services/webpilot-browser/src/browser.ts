@@ -96,7 +96,8 @@ interface PageHandle {
   /** Dernier hôte dont une navigation de premier niveau a été refusée (pour un message clair). */
   blocked(): { host: string; url: string } | null;
   resetBlocked(): void;
-  approve(hosts: string[]): void;
+  /** Remplace l'ensemble des hôtes de premier niveau permis (ceux du lot en cours, jamais cumulés d'un lot à l'autre). */
+  setApproved(hosts: string[]): void;
   close(): Promise<void>;
   onCrash(cb: () => void): void;
 }
@@ -252,7 +253,8 @@ export function createBrowserRuntime(deps: {
         resetBlocked: () => {
           blocked = null;
         },
-        approve: (hosts) => {
+        setApproved: (hosts) => {
+          approved.clear();
           for (const h of hosts) approved.add(h.toLowerCase());
         },
         close: async () => {
@@ -506,7 +508,8 @@ export function createBrowserRuntime(deps: {
       });
       return {
         async run(actions, ctx): Promise<RunOutput> {
-          handle.approve(ctx.approveHosts);
+          // Les hôtes permis valent POUR CE LOT : la politique de confidentialité peut avoir changé depuis le précédent.
+          handle.setApproved(ctx.approveHosts);
           const deadline = Date.now() + config.batchTimeoutMs;
           const results: ActionResult[] = [];
           for (const action of actions) {

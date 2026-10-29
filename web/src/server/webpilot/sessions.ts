@@ -305,6 +305,9 @@ async function planBatch(
         break;
     }
   }
+  // Les hôtes permis valent pour CE lot seulement. L'hôte de la page reste permis (les clics qui y restent), mais
+  // seulement si la politique vient de le réévaluer : un lot qui commence par `goto` ne le garde pas.
+  if (currentHost && actions[0]?.type !== "goto") approve.add(currentHost);
   const trailing = record && service.at(-1)?.type !== "screenshot";
   if (trailing) service.push({ type: "screenshot" });
   return {
@@ -542,6 +545,7 @@ async function executeBatch(
   row: SessionRow,
   actions: readonly SessionAction[],
   plan: Plan,
+  options: { fresh?: boolean } = {},
 ): Promise<Response> {
   const browser = deps.browser;
   if (!browser) return NOT_CONFIGURED(ctx.headers);
@@ -555,6 +559,15 @@ async function executeBatch(
     });
   } catch (error) {
     if (!(error instanceof BrowserServiceError)) throw error;
+    if (options.fresh) {
+      // Session à peine ouverte, son premier lot n'a pas pu partir : rien n'est facturé, la session n'existe pas pour l'appelant.
+      await failOpenSession(ctx.db, row.id, deps.now());
+      await destroyBrowser(ctx, deps, row, "browser_error");
+      return W.unavailable(
+        "Le service de navigateur n'a pas pu ouvrir la session. Rien n'est facturé.",
+        ctx.headers,
+      );
+    }
     switch (error.code) {
       case "busy":
         return W.sessionBusy(ctx.headers);
@@ -772,7 +785,9 @@ export async function handleSessionCreate(
       .from(webpilotSessions)
       .where(eq(webpilotSessions.id, opened.sessionId));
     if (!row) return W.internal(ctx.headers);
-    const res = await executeBatch(ctx, deps, row, startActions, startPlan);
+    const res = await executeBatch(ctx, deps, row, startActions, startPlan, {
+      fresh: true,
+    });
     if (res.status !== 200) return res;
     const body = (await res.json()) as Record<string, unknown>;
     return Response.json(

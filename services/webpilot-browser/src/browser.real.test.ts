@@ -275,7 +275,7 @@ describe.skipIf(!chromium)("navigateur réel (Chromium)", () => {
       const redirected = await manager.run(
         "ses_nav",
         [{ type: "goto", url: `http://${ALPHA}:${port}/redir` }],
-        { approveHosts: [] },
+        { approveHosts: [ALPHA] },
       );
       expect(redirected.results[0]).toMatchObject({
         ok: false,
@@ -285,10 +285,42 @@ describe.skipIf(!chromium)("navigateur réel (Chromium)", () => {
       const allowed = await manager.run(
         "ses_nav",
         [{ type: "goto", url: `http://${ALPHA}:${port}/redir` }],
-        { approveHosts: [BETA] },
+        { approveHosts: [ALPHA, BETA] },
       );
       expect(allowed.results[0]).toMatchObject({ ok: true });
       expect(allowed.url).toBe(`http://${BETA}:${port}/`);
+    } finally {
+      await rt.close();
+    }
+  });
+
+  it("les hôtes approuvés valent pour UN lot : ils ne se cumulent pas (la politique a pu changer entre deux lots)", async () => {
+    const { rt, manager } = await runtime(true);
+    try {
+      await open(manager, "ses_cumul");
+      const a = await manager.run(
+        "ses_cumul",
+        [{ type: "goto", url: `http://${ALPHA}:${port}/` }],
+        { approveHosts: [ALPHA] },
+      );
+      expect(a.results[0]).toMatchObject({ ok: true });
+      const b = await manager.run(
+        "ses_cumul",
+        [{ type: "goto", url: `http://${BETA}:${port}/` }],
+        { approveHosts: [BETA] },
+      );
+      expect(b.results[0]).toMatchObject({ ok: true });
+      seen.length = 0;
+      const back = await manager.run(
+        "ses_cumul",
+        [{ type: "goto", url: `http://${ALPHA}:${port}/` }],
+        { approveHosts: [BETA] },
+      );
+      expect(back.results[0]).toMatchObject({
+        ok: false,
+        error: { code: "navigation_blocked" },
+      });
+      expect(seen).toEqual([]);
     } finally {
       await rt.close();
     }
@@ -348,7 +380,7 @@ describe.skipIf(!chromium)("navigateur réel (Chromium)", () => {
       await manager.run(
         "ses_a",
         [{ type: "goto", url: `http://${ALPHA}:${port}/cookie` }],
-        { approveHosts: [] },
+        { approveHosts: [ALPHA] },
       );
       const a = await manager.run(
         "ses_a",
@@ -356,7 +388,7 @@ describe.skipIf(!chromium)("navigateur réel (Chromium)", () => {
           { type: "goto", url: `http://${ALPHA}:${port}/qui` },
           { type: "read" },
         ],
-        { approveHosts: [] },
+        { approveHosts: [ALPHA] },
       );
       expect((a.results[1] as unknown as { html: string }).html).toContain(
         "sid=abc123",
