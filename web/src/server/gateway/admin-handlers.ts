@@ -43,6 +43,7 @@ import {
 } from "./catalog";
 import { type LitellmClient, SyncError, syncLitellm } from "./litellm";
 import { testProvider } from "./provider-test";
+import { modelRoutingSchema, modelSheetSchema } from "./sheet";
 
 /**
  * API d'administration du catalogue : `/api/admin/catalog/*` (D14). Jeton d'administration en temps
@@ -155,6 +156,8 @@ const modelFields = {
     .datetime()
     .nullable()
     .transform((v) => (v ? new Date(v) : null)),
+  sheet: modelSheetSchema,
+  routing: modelRoutingSchema,
 };
 const modelCreate = z
   .object({
@@ -173,6 +176,8 @@ const modelCreate = z
     residency: modelFields.residency.optional(),
     visibility: modelFields.visibility.optional(),
     sunsetAt: modelFields.sunsetAt.optional(),
+    sheet: modelFields.sheet.optional(),
+    routing: modelFields.routing.optional(),
   })
   .strict();
 const modelPatch = z

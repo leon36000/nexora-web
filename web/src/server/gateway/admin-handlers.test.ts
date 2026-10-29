@@ -238,6 +238,53 @@ describe("flux complet de l'administration", () => {
     expect(JSON.stringify(refused.json.issues)).toContain("price_missing");
   });
 
+  it("accepte la fiche et le routage d'un modèle, refuse une fiche mal formée", async () => {
+    const sheet = {
+      family: "GLM",
+      license: { name: "MIT", openWeights: true },
+      benchmarks: [
+        {
+          name: "SWE-bench Verified",
+          score: 78.4,
+          unit: "%",
+          publisher: "Z.ai",
+          sourceUrl: "https://z.ai/blog/glm-5.3",
+        },
+      ],
+    };
+    const routing = { dataCollection: "deny", allowFallbacks: true };
+    const created = await call("POST", "models", {
+      publicId: "nexora/essai-fiche",
+      name: "Essai fiche",
+      providerId,
+      upstreamId: "up",
+      contextMax: 8000,
+      sheet,
+      routing,
+    });
+    expect(created.status).toBe(201);
+    expect(created.json.sheet).toEqual(sheet);
+    expect(created.json.routing).toEqual(routing);
+
+    const badSource = await call("PATCH", `models/${created.json.id}`, {
+      sheet: {
+        benchmarks: [{ ...sheet.benchmarks[0], sourceUrl: "http://z.ai/x" }],
+      },
+    });
+    expect(badSource.status).toBe(422);
+    expect(badSource.json.error).toBe("invalid_request");
+    const badRouting = await call("PATCH", `models/${created.json.id}`, {
+      routing: { dataCollection: "peut-etre" },
+    });
+    expect(badRouting.status).toBe(422);
+
+    const ok = await call("PATCH", `models/${created.json.id}`, {
+      sheet: { ...sheet, family: "GLM 5" },
+    });
+    expect(ok.status).toBe(200);
+    expect(ok.json.sheet.family).toBe("GLM 5");
+  });
+
   it("refuse un prix sous le plancher, accepte un prix valide, garde l'historique", async () => {
     const fx = await call("POST", "fx-rates", {
       usdToCadMicro: "1400000",

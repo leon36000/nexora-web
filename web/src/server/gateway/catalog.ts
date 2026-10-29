@@ -9,6 +9,8 @@ import {
   isNull,
   type ModelCapabilities,
   type ModelKind,
+  type ModelRouting,
+  type ModelSheet,
   type ModelStatus,
   type ModelVisibility,
   modelPrices,
@@ -164,6 +166,8 @@ export interface ModelInput {
   residency?: Region;
   visibility?: ModelVisibility;
   sunsetAt?: Date | null;
+  sheet?: ModelSheet;
+  routing?: ModelRouting;
 }
 
 export async function createModel(db: Database, input: ModelInput) {
@@ -459,6 +463,8 @@ function snapshotModel(m: Model, price: Price | null): SnapshotModel {
     residency: m.residency,
     visibility: m.visibility,
     sunsetAt: iso(m.sunsetAt),
+    sheet: m.sheet,
+    routing: m.routing,
     price: price
       ? {
           id: price.id,

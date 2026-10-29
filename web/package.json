@@ -12,7 +12,8 @@
     "check:contrast": "bun scripts/contrast.mjs",
     "verify:ui": "bun scripts/verify-ui.mjs",
     "capture": "bun scripts/capture.mjs",
-    "vps:seed": "bun scripts/seed-vps.ts"
+    "vps:seed": "bun scripts/seed-vps.ts",
+    "models:seed": "bun scripts/seed-ai-models.ts"
   },
   "dependencies": {
     "@nexora/db": "workspace:*",

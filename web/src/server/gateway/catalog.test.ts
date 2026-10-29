@@ -394,3 +394,74 @@ describe("versions de catalogue", () => {
     expect(JSON.stringify(v.snapshot)).not.toContain("sk-secret");
   });
 });
+
+describe("fiche publique et routage amont", () => {
+  const sheet = {
+    family: "GLM",
+    releasedAt: "2026-08-18",
+    license: { name: "MIT", openWeights: true },
+    parameters: { totalB: 753 },
+    benchmarks: [
+      {
+        name: "SWE-bench Verified",
+        score: 78.4,
+        unit: "%",
+        publisher: "Z.ai",
+        sourceUrl: "https://z.ai/blog/glm-5.3",
+      },
+    ],
+  };
+  const routing = {
+    dataCollection: "deny" as const,
+    allowFallbacks: true,
+    maxPriceUsdMicro: { input: "1400000", output: "4400000" },
+  };
+
+  it("un modèle sans fiche en a une vide et un routage vide", async () => {
+    const { model } = await fixture();
+    expect(model.sheet).toEqual({});
+    expect(model.routing).toEqual({});
+  });
+
+  it("conserve la fiche et le routage donnés à la création", async () => {
+    const { provider } = await fixture();
+    n += 1;
+    const created = await createModel(t.db, {
+      publicId: `nexora/fiche-${n}`,
+      name: "Avec fiche",
+      providerId: provider.id,
+      upstreamId: "z-ai/glm-5.3",
+      contextMax: 1_048_576,
+      sheet,
+      routing,
+    });
+    expect(created.sheet).toEqual(sheet);
+    expect(created.routing).toEqual(routing);
+  });
+
+  it("modifie la fiche d'un modèle existant sans toucher au reste", async () => {
+    const { model } = await fixture();
+    const updated = await updateModel(t.db, model.id, { sheet, routing });
+    expect(updated.sheet).toEqual(sheet);
+    expect(updated.routing).toEqual(routing);
+    expect(updated.contextMax).toBe(model.contextMax);
+  });
+
+  it("fige la fiche et le routage dans la version publiée", async () => {
+    const { model } = await fixture();
+    await updateModel(t.db, model.id, { sheet, routing });
+    await addPrice(t.db, model.id, goodPrice);
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const v = await publishAll();
+    const snap = v.snapshot.models.find((m) => m.publicId === model.publicId);
+    expect(snap?.sheet).toEqual(sheet);
+    expect(snap?.routing).toEqual(routing);
+    // la modification suivante n'altère pas la version déjà publiée
+    await updateModel(t.db, model.id, { sheet: { family: "autre" } });
+    const still = await getPublishedCatalog(t.db);
+    expect(
+      still?.snapshot.models.find((m) => m.publicId === model.publicId)?.sheet,
+    ).toEqual(sheet);
+  });
+});

@@ -1,6 +1,8 @@
 import type {
   ModelCapabilities,
   ModelKind,
+  ModelRouting,
+  ModelSheet,
   ModelVisibility,
   ProviderType,
   Region,
@@ -57,6 +59,9 @@ export interface SnapshotModel {
   residency: Region;
   visibility: ModelVisibility;
   sunsetAt: string | null;
+  /** Absents des versions publiées avant la tranche 1 : lire avec une valeur par défaut. */
+  sheet?: ModelSheet;
+  routing?: ModelRouting;
   price: SnapshotPrice | null;
 }
 

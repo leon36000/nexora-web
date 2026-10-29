@@ -116,6 +116,57 @@ export interface ModelCapabilities {
   json_mode?: boolean;
 }
 
+export const MODALITIES = ["text", "image", "video", "audio"] as const;
+export type Modality = (typeof MODALITIES)[number];
+
+/** Une mesure publiée : toujours rattachée à celui qui l'a publiée et à une page que l'on peut relire. */
+export interface ModelBenchmark {
+  name: string;
+  score: number;
+  /** « % », « points », « Elo »… */
+  unit: string;
+  /** Qui a publié ce chiffre (l'éditeur du modèle ou un tiers). */
+  publisher: string;
+  sourceUrl: string;
+  measuredAt?: string;
+}
+
+/**
+ * Fiche publique d'un modèle (S5, G3) : ce qu'un client voit au catalogue. Tout chiffre y est
+ * sourcé (éditeur et page) ; un champ inconnu reste absent plutôt qu'inventé.
+ */
+export interface ModelSheet {
+  family?: string;
+  /** AAAA-MM-JJ */
+  releasedAt?: string;
+  /** AAAA-MM */
+  knowledgeCutoff?: string;
+  /** `name` reste absent tant que le texte de la licence n'a pas été lu. */
+  license?: { name?: string; openWeights: boolean; url?: string };
+  /** Milliards de paramètres ; `activeB` pour les modèles à experts. */
+  parameters?: { totalB?: number; activeB?: number };
+  modalities?: { input: Modality[]; output: Modality[] };
+  benchmarks?: ModelBenchmark[];
+  sources?: { label: string; url: string; readAt: string }[];
+  notesFr?: string;
+  notesEn?: string;
+}
+
+/**
+ * Consignes de routage transmises au fournisseur amont (OpenRouter), jamais montrées aux clients.
+ * Les montants sont des micro-USD par million de jetons, en chaînes décimales.
+ */
+export interface ModelRouting {
+  dataCollection?: "allow" | "deny";
+  zdr?: boolean;
+  allowFallbacks?: boolean;
+  order?: string[];
+  only?: string[];
+  ignore?: string[];
+  quantizations?: string[];
+  maxPriceUsdMicro?: { input: string; output: string };
+}
+
 /** Modèle exposé par la passerelle, sous un identifiant public stable (ex. `nexora/glm-5-3`). */
 export const models = pgTable(
   "models",
@@ -145,6 +196,10 @@ export const models = pgTable(
       .default("public"),
     status: text("status").$type<ModelStatus>().notNull().default("draft"),
     sunsetAt: ts("sunset_at"),
+    /** Fiche publique : licence, paramètres, mesures sourcées (G3). */
+    sheet: jsonb("sheet").$type<ModelSheet>().notNull().default({}),
+    /** Consignes de routage amont (OpenRouter) : collecte des données, prix plafond, hébergeurs. */
+    routing: jsonb("routing").$type<ModelRouting>().notNull().default({}),
     createdAt: ts("created_at").notNull().defaultNow(),
     updatedAt: ts("updated_at").notNull().defaultNow(),
   },
