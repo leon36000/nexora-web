@@ -99,6 +99,7 @@ export const frCA = {
     pricing: { label: "Tarifs", href: "/tarifs" },
     resources: { label: "Ressources", href: "/ressources" },
     login: { label: "Connexion", href: "/compte" },
+    accountLabel: "Mon compte",
     cta: { label: "Planifier un diagnostic", href: "/contact" },
   },
 

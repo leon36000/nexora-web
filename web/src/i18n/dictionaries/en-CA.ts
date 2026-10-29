@@ -96,6 +96,7 @@ export const enCA: Dictionary = {
     pricing: { label: "Pricing", href: "/tarifs" },
     resources: { label: "Resources", href: "/ressources" },
     login: { label: "Sign in", href: "/compte" },
+    accountLabel: "My account",
     cta: { label: "Book a diagnostic", href: "/contact" },
   },
 

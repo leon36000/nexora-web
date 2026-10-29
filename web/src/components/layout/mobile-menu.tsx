@@ -12,6 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { NavLink } from "./nav-link";
+import { SessionLabel } from "./session-label";
 
 type NavItem = { label: string; href: string; path: string };
 
@@ -29,6 +30,7 @@ type MobileMenuProps = {
   /** Entrées du menu Produits, affichées à plat dans le menu mobile. */
   products: ReadonlyArray<{ label: string; description: string; href: string }>;
   login: NavItem;
+  accountLabel: string;
   cta: NavItem;
   /** Logo et sélecteur de langue, rendus côté serveur. */
   logo: ReactNode;
@@ -47,6 +49,7 @@ export function MobileMenu({
   links,
   products,
   login,
+  accountLabel,
   cta,
   logo,
   languageSwitcher,
@@ -212,7 +215,7 @@ export function MobileMenu({
               onClick={closeMenu}
               className="w-full"
             >
-              {login.label}
+              <SessionLabel label={login.label} signedInLabel={accountLabel} />
             </ButtonLink>
           </div>
 

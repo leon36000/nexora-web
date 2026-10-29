@@ -8,6 +8,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { MobileMenu } from "./mobile-menu";
 import { NavLink } from "./nav-link";
 import { ProductsMenu } from "./products-menu";
+import { SessionLabel } from "./session-label";
 
 /**
  * En-tête collant, sur fond papier et cadré par des filets d'un pixel : le logo, chaque entrée de navigation et
@@ -96,7 +97,10 @@ export function SiteHeader({
               {switcher}
             </div>
             <NavLink href={login.href} path={login.path} className={cell}>
-              {login.label}
+              <SessionLabel
+                label={login.label}
+                signedInLabel={dict.nav.accountLabel}
+              />
             </NavLink>
             <Link
               href={cta.href}
@@ -119,6 +123,7 @@ export function SiteHeader({
             links={links}
             products={products?.items ?? []}
             login={login}
+            accountLabel={dict.nav.accountLabel}
             cta={cta}
             logo={<Logo tone="dark" />}
             languageSwitcher={mobileSwitcher}
