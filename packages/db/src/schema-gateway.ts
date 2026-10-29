@@ -116,7 +116,13 @@ export interface ModelCapabilities {
   json_mode?: boolean;
 }
 
-export const MODALITIES = ["text", "image", "video", "audio"] as const;
+export const MODALITIES = [
+  "text",
+  "image",
+  "video",
+  "audio",
+  "embedding",
+] as const;
 export type Modality = (typeof MODALITIES)[number];
 
 /**

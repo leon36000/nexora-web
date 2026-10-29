@@ -43,6 +43,13 @@ describe("fiche de modèle", () => {
     expect(modelSheetSchema.parse(complete)).toEqual(complete);
   });
 
+  it("accepte la sortie « embedding » (modèles de vecteurs)", () => {
+    const sheet = {
+      modalities: { input: ["text", "image"], output: ["embedding"] },
+    };
+    expect(modelSheetSchema.parse(sheet)).toEqual(sheet);
+  });
+
   it("accepte une fiche vide (les modèles existants n'ont encore rien)", () => {
     expect(modelSheetSchema.parse({})).toEqual({});
   });

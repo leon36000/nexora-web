@@ -81,7 +81,13 @@ export const gatewayEnCA: GatewayDictionary = {
     total: "{n}B total",
     active: "{n}B active",
     modalities: "Accepted inputs",
-    modality: { text: "text", image: "image", video: "video", audio: "audio" },
+    modality: {
+      text: "text",
+      image: "image",
+      video: "video",
+      audio: "audio",
+      embedding: "vectors (embeddings)",
+    },
     benchmarks: "Published benchmarks",
     benchmarksLead:
       "Publisher figures, with their source. Protocols differ between publishers: they are not strictly comparable.",
