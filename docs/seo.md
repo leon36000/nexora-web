@@ -21,15 +21,15 @@ Preuve sur serveur en marche : `docs/preuves/s8/seo-controle.md` (production 0 e
 
 ### `robots.txt` (`lib/seo/robots-policy.ts`)
 
-Politique par type de robot, décision d'affaires à valider par le fondateur (revue trimestrielle) :
+**Décision du fondateur (29 octobre 2026), revue trimestrielle :** tout le contenu public est fait pour être lu, cité et appris. Par défaut, **tous** les robots listés sont autorisés, entraînement compris ; seuls `/api/`, `/v1/`, `/compte` et `/en/compte` sont fermés. Les engagements « vos données n'entraînent jamais un modèle » (CL-07, CL-E03) visent les données CONFIÉES par les clients, jamais les pages publiques. Repli : `ROBOTS_AI_TRAINING=disallow` refuse seulement l'entraînement.
 
-| Type | Robots | Règle |
+| Type | Robots (registre `AI_BOTS`, avec opérateur, rôle et page de l'opérateur) | Règle |
 |---|---|---|
-| Recherche | Googlebot, Bingbot, DuckDuckBot, OAI-SearchBot, PerplexityBot, Claude-SearchBot | autorisés (sauf chemins privés) |
-| Entraînement | GPTBot, ClaudeBot, anthropic-ai, Google-Extended, CCBot, Applebot-Extended, Meta-ExternalAgent, Bytespider | **refusés par défaut** ; `ROBOTS_AI_TRAINING=allow` les autorise |
-| Action d'un utilisateur | ChatGPT-User, Perplexity-User, Claude-User | aucune règle : selon leurs opérateurs, robots.txt ne les contrôle pas |
+| Recherche et réponses | Googlebot, Bingbot, DuckDuckBot, Applebot, OAI-SearchBot, PerplexityBot, Claude-SearchBot, MistralAI-Index, Bravebot, Amazonbot | autorisés (sauf chemins privés) |
+| Demande d'une personne | ChatGPT-User, Perplexity-User, Claude-User, MistralAI-User, DuckAssistBot | groupe explicite autorisé ; selon leurs opérateurs certains ne lisent pas robots.txt |
+| Entraînement | GPTBot, ClaudeBot, anthropic-ai, Google-Extended, CCBot, Applebot-Extended, Meta-ExternalAgent, MistralAI-Training, Bytespider | **autorisés par défaut** ; `ROBOTS_AI_TRAINING=disallow` les refuse |
 
-Chemins privés : `/api/`, `/v1/`, `/compte`, `/en/compte`. `/og/` reste ouvert (les aperçus sociaux lisent l'image). Ligne `Sitemap:` en production seulement.
+Chaque robot a son groupe, qui répète les chemins privés (un groupe nommé remplace le groupe `*`). `/og/` reste ouvert (les aperçus sociaux lisent l'image). Ligne `Sitemap:` en production seulement. Contrôle en marche : `bun web/scripts/check-seo.ts` (`EXPECT_AI_TRAINING=disallow` si le repli est posé).
 
 ### Données structurées (`lib/seo/jsonld.ts`, schema-dts, `components/seo/json-ld.tsx`)
 
@@ -37,12 +37,13 @@ Générées **par code** depuis ce que la page affiche ; chaque constructeur ref
 
 | Type | Où | Source |
 |---|---|---|
-| Organization, WebSite | accueil | nom du site ; WebSite sans `SearchAction` (pas de recherche) |
-| BreadcrumbList | toutes les pages hors accueil, y compris `/modeles/…` | chemin de la page |
-| Service | pages du registre `lib/seo/page-schema.ts` (aujourd'hui `opsys-ai`) | nom = titre de la page s'il s'affiche, sinon titre du héros ; description = sous-titre du héros s'il s'affiche |
+| Organization, WebSite, WebPage | accueil | Organization : nom, adresse du site, logo (`/icon-512.png`), région QC (CL-130), `sameAs` depuis `SITE_SAME_AS` (jamais inventé) ; WebSite sans `SearchAction` ; WebPage avec la date de modification réelle |
+| BreadcrumbList | toutes les pages hors accueil, y compris `/modeles/…` | chemin de la page ; étape de section (Solutions, Services, Déploiement, Souveraineté) pour les sous-pages |
+| WebPage, AboutPage | pages du CMS hors accueil et hors articles | nom et description affichés, langue, site, `dateModified` = `date_updated` (omise si inconnue) ; `AboutPage` pour la page Entreprise |
+| Service | pages du registre `lib/seo/page-schema.ts` (`opsys-ai`, `passerelle-api-modeles`, sections `services`, `solutions`, `deploiement`) ; le fournisseur est l'Organization (`@id`) | nom = titre de la page s'il s'affiche, sinon titre du héros ; description = sous-titre du héros s'il s'affiche |
 | SoftwareApplication | `workstudio` quand la page existe | `offers` **seulement** si un prix est affiché (aucun aujourd'hui) |
 | Product | fiches `/modeles/<id>` | nom, description et SKU affichés ; une offre par prix affiché (Entrée, Sortie, Cache), CAD, par million de jetons ; **aucune offre pour un prix de développement** ni pour un prix nul |
-| Article | slugs `blog/…` et `articles/…` | `datePublished` = création Directus, `dateModified` = `date_updated` (aucune date de publication distincte n'existe dans le schéma) |
+| Article | slugs `guides/…`, `blog/…` et `articles/…` | `datePublished` = création Directus, `dateModified` = `date_updated` (aucune date de publication distincte n'existe dans le schéma) ; image = `/og/<langue>/<chemin>` ; auteur et éditeur = l'Organization (`@id`) |
 | FAQPage | blocs FAQ qui l'autorisent | questions et réponses exactes (existant, conservé) |
 
 Conformité au visible, vérifiée par `checkJsonLdConformity` (`@nexora/seo`) en test et sur le serveur en marche : noms, descriptions, questions et réponses doivent figurer dans le texte de la page ; tout prix annoncé doit être affiché ; une offre sans prix est une erreur. Exception documentée : `BreadcrumbList` (fil d'Ariane de structure, vérifié pour sa forme seulement).
@@ -51,9 +52,13 @@ Conformité au visible, vérifiée par `checkJsonLdConformity` (`@nexora/seo`) e
 
 `/og/<fr|en>[/<chemin>]`, PNG 1200 × 630 (next/og, Satori), marque, titre de la page publiée et langue. Le texte vient **de la page**, jamais de l'adresse : page inconnue, non publiée ou chemin douteux = 404 (pas d'image-injection). Polices : instantanés WOFF locaux Geist 500 et Inter 400 (`src/fonts/og/`, Satori ne lit ni WOFF2 ni polices variables). Utilisée comme image par défaut de `buildCmsMetadata` et `buildPageMetadata` quand aucune `seo_image` n'est saisie ; `twitter:card` = `summary_large_image`. Fonctionne sur aarch64 avec Turbopack en `next dev` et `next build` (26 à 39 Ko par image).
 
-### `llms.txt` (`web/src/app/llms.txt/route.ts`)
+### `llms.txt` et `llms-full.txt` (`lib/seo/{llms,llms-full,entity,page-markdown}.ts`)
 
-Titre, résumé (réglages publiés ou dictionnaire), puis une liste de liens par langue pour chaque page publiée non `noindex` et chaque route de l'application. Aucune promesse : Google a indiqué ne pas utiliser ce fichier (docs/recherche/01 §4.9).
+Générés à la demande depuis les données réelles (jamais écrits à la main, donc jamais périmés) : pages Directus publiées et non `noindex`, routes de l'application qui ont un titre dans les dictionnaires, catalogue de modèles publié, applications VPS publiées.
+
+- `/llms.txt` : titre, résumé (réglages publiés ou dictionnaire) dans les deux langues, **faits à retenir** (phrases courtes rattachées à leurs affirmations du registre, chacune suivie de l'adresse de la page ; `CANONICAL_FACTS` dans `entity.ts`, vérifié contre `cms/content/claims.json` par `geo.test.ts`), puis le plan du site par thème (Produits et API, Solutions, Services et déploiement, Souveraineté et données, Guides, Entreprise et aide, Optional) et par langue. Un fait dont la page n'est pas publiée dans la langue disparaît : aucune adresse orpheline.
+- `/llms-full.txt` : le contenu des pages publiées converti en Markdown propre depuis le modèle de page (ce que la page affiche), avec le catalogue de modèles (**un prix de développement n'est jamais reproduit**) et les applications VPS. `?lang=fr` ou `?lang=en` pour une seule langue.
+- Aucune promesse : Google a indiqué ne pas utiliser ces fichiers (docs/recherche/01 §4.9) ; ils servent aux outils qui les lisent.
 
 ### Clé IndexNow
 

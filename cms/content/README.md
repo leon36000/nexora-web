@@ -116,8 +116,8 @@ Le brief §7 prévoit une navigation ancrée (promesse, problèmes, parcours, d�
 
 | Page | Langue | Titre SEO | Caractères | Description | Caractères |
 |---|---|---|---|---|---|
-| accueil | fr-CA | Automatisation IA pour PME au Québec | 36 | Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME : chez vous ou hébergés au Québec, sous votre contrôle. Parlons de votre projet. | 150 |
-| accueil | en-CA | AI automation for small businesses in Quebec | 44 | Nexora designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, always under your control. Let's talk. | 150 |
+| accueil | fr-CA | Nexora AI : automatisation IA pour PME au Québec | 48 | Nexora conçoit, installe et accompagne des systèmes d'IA pour les PME : chez vous ou hébergés au Québec, sous votre contrôle. Parlons de votre projet. | 150 |
+| accueil | en-CA | Nexora AI: AI for small business in Quebec | 42 | Nexora designs, installs and supports AI systems for Quebec businesses, on your own server or hosted in Quebec, always under your control. Let's talk. | 150 |
 | opsys-ai | fr-CA | OPSYS-AI : logiciel d'IA pour la construction | 45 | OPSYS-AI coordonne dix départements virtuels pour les entreprises de construction, de la demande à la facture brouillon. Un statut honnête par capacité. | 152 |
 | opsys-ai | en-CA | OPSYS-AI: AI software for construction companies | 48 | OPSYS-AI coordinates ten virtual departments for construction companies, from the first request to the draft invoice, with an honest status for each capability. | 160 |
 

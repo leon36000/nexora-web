@@ -392,6 +392,12 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     probes: [],
   },
   {
+    route: "llms-full.txt",
+    kind: "public",
+    why: "Contenu public des pages publiées en Markdown (même source que le plan du site)",
+    probes: [],
+  },
+  {
     route: "og/[lang]/[[...slug]]",
     kind: "public",
     why: "Images Open Graph des pages publiques",

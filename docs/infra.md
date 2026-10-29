@@ -305,7 +305,8 @@ Tâches du worker : `site-agent.run` { runId }, `seo.audit` { auditId }, `seo.in
 | Variable | Où | Rôle |
 |---|---|---|
 | `SITE_ENV` | site, worker | `production` rend le site indexable ; toute autre valeur : `Disallow: /`, `X-Robots-Tag: noindex`, aucune soumission aux moteurs |
-| `ROBOTS_AI_TRAINING` | site | `allow` ou `disallow` (défaut) pour les robots d'entraînement (GPTBot, ClaudeBot…) |
+| `ROBOTS_AI_TRAINING` | site | `disallow` refuse les robots d'entraînement (GPTBot, ClaudeBot…) ; toute autre valeur ou l'absence : autorisés (défaut depuis le 29/10/2026) |
+| `SITE_SAME_AS` | site | profils publics de l'entreprise (adresses https séparées par une virgule), émis comme `sameAs` de l'Organization ; absent : aucun `sameAs` (rien n'est inventé) |
 | `NEXORA_APP_INTERNAL_URL` | worker | adresse du site vue du worker : passerelle `/v1` des agents, sitemap de l'audit et de l'indexation |
 | `SEO_AUDIT_BASE_URL`, `SEO_AUDIT_PERF_MAX_PAGES` | worker | adresse interrogée par l'audit (défaut : `NEXORA_APP_INTERNAL_URL`), pages mesurées par Lighthouse (6) |
 | `LYCHEE_BIN` | worker | chemin de lychee (défaut `~/.local/bin/lychee`) |

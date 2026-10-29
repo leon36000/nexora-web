@@ -88,7 +88,8 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 | `SMTP_URL`, `MAIL_FROM` | web | oui | Courriels transactionnels. **Défaut = Mailpit local** : en production, rien ne part tant que ce n'est pas réglé |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_REQUIRE_TLS`, `SMTP_USER`, `SMTP_PASSWORD_FILE`, `SMTP_FROM`, `CONTACT_NOTIFY_TO`, `VPS_ALERT_TO` | worker | oui | Notification des demandes de diagnostic et alertes VPS. **Mot de passe SMTP : seulement le chemin d'un secret (`SMTP_PASSWORD_FILE`)** ; une variable `SMTP_PASSWORD` en clair est refusée (le worker ne démarre pas, avec un message qui le dit : l'environnement se lit par `docker inspect`). `SMTP_SECURE=true` : TLS implicite (port 465). `SMTP_REQUIRE_TLS=true` : STARTTLS obligatoire (port 587) ; à poser avec un vrai SMTP, laissé vide avec Mailpit qui n'a pas de TLS |
 | `NEXORA_ALTCHA_SECRET` | web | non | Secret des défis anti-abus (dérivé du jeton d'administration à défaut) |
-| `ROBOTS_AI_TRAINING` | web | non | `allow` autorise les robots d'entraînement ; défaut : refusés |
+| `ROBOTS_AI_TRAINING` | web | non | `disallow` refuse les robots d'entraînement ; défaut : autorisés (tout le public est ouvert, sauf `/api/`, `/v1/` et l'espace client) |
+| `SITE_SAME_AS` | web | recommandé | Profils publics de l'entreprise (adresses https séparées par une virgule : réseaux sociaux, dépôt public…), émis comme `sameAs` de l'Organization. À poser seulement avec des adresses qui existent |
 | `CMS_SNAPSHOT_DIR`, `CMS_TIMEOUT_MS` | web | recommandé | Instantanés du CMS (volume persistant) ; délai par requête vers Directus (4000) |
 | `LOG_LEVEL` | web | non | `debug` ou `info` (défaut) |
 | `WORKER_CONCURRENCY` (4), `WORKER_POLL_MS` (1000), `WORKER_SCHEDULER` | worker | non | Réglages du worker. **`WORKER_SCHEDULER=off` coupe tout le planificateur, pas seulement le SEO** : audit nocturne, indexation, santé des modèles, veille, **mais aussi `ledger.release-stale` (libération des réservations perdues, toutes les 10 minutes), `ledger.grant-tranches` (versement des douzièmes des offres annuelles, chaque heure) et `ledger.expire` (expiration quotidienne des crédits)**. À n'utiliser que pour un essai ; sans le planificateur, les réservations d'un appel interrompu restent bloquées, les clients d'une offre annuelle ne reçoivent que leur premier mois et les crédits n'expirent pas |
@@ -358,7 +359,8 @@ Cocher dans l'ordre. Une case non cochée bloque la mise en ligne.
 - [ ] Identité légale (raison sociale, NEQ, TPS, TVQ, adresse) saisie ; mentions légales, confidentialité, conditions, utilisation acceptable **relues par un avocat québécois**.
 - [ ] Registre des affirmations (`claims`) : chaque affirmation relue et **approuvée par une personne** ; les « à compléter » (CL-A01 à CL-A14) traités ; aucune affirmation de conformité à la Loi 25 sans validation.
 - [ ] Prix des plans, des modèles et des agents fixés par le fondateur ; aucun prix inventé (les prix des offres WorkStudio et des 4 plans VPS préparés sont des **suggestions** de l'étude : à confirmer, §6.2 ; un plan VPS dont le prix n'est que suggéré ne peut pas être approuvé).
-- [ ] **Robots d'entraînement** : décision d'affaires (par défaut refusés par `robots.txt`) ; poser `ROBOTS_AI_TRAINING=allow` seulement si le fondateur le décide.
+- [ ] **Robots d'entraînement** : décision d'affaires du 29/10/2026 (par défaut autorisés, comme les robots de recherche et de réponse) ; poser `ROBOTS_AI_TRAINING=disallow` si le fondateur change d'avis. Revue trimestrielle (`docs/marketing/audit-seo-geo.md`, section 3).
+- [ ] **Profils publics** : poser `SITE_SAME_AS` quand les comptes de l'entreprise existent (LinkedIn, dépôt public…) ; ils nourrissent l'identité de l'entreprise pour les moteurs.
 - [ ] Stripe : accord explicite pour passer en production (§6.4) ; comptable consulté pour TPS/TVQ.
 
 **Données de développement à retirer**

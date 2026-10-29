@@ -6,7 +6,7 @@
 
 - Page : `accueil` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/` · slug : ``
-- Titre SEO (44 caractères) : AI automation for small businesses in Quebec
+- Titre SEO (42 caractères) : Nexora AI: AI for small business in Quebec
 - Description SEO (154 caractères) : Nexora AI brings cutting-edge AI within reach of Quebec small businesses: powerful agents, a simple start, data on your premises or in Quebec. Let's talk.
 
 ## Contenu

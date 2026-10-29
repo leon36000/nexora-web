@@ -6,7 +6,7 @@
 
 - Page : `accueil` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/` · slug : ``
-- Titre SEO (36 caractères) : Automatisation IA pour PME au Québec
+- Titre SEO (48 caractères) : Nexora AI : automatisation IA pour PME au Québec
 - Description SEO (160 caractères) : Nexora AI met la pointe de l'IA à la portée des PME du Québec : agents puissants, prise en main simple, données chez vous ou au Québec. Parlons de votre projet.
 
 ## Contenu
