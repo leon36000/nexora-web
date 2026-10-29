@@ -6,6 +6,7 @@ import {
   desc,
   eq,
   fxRates,
+  inArray,
   isNull,
   type ModelCapabilities,
   type ModelKind,
@@ -36,6 +37,12 @@ import {
   type SnapshotProvider,
   type SnapshotRoute,
 } from "./snapshot";
+
+/**
+ * Marge visée et plancher de marge par défaut, en points de base (décision du fondateur : 10 %). Les assistants
+ * d'administration les proposent ; le plancher reste celui qui est enregistré avec chaque version de prix.
+ */
+export const DEFAULT_MARGIN_BPS = 1000;
 
 const CATALOG_COLLECTION = "model_catalog";
 const CATALOG_ITEM = "main";
@@ -241,6 +248,7 @@ async function modelIssues(
   db: Database,
   modelId: string,
   now: Date,
+  vault?: VaultCheck,
 ): Promise<CatalogIssue[]> {
   const model = await getModel(db, modelId);
   const fx = await currentFx(db, now);
@@ -258,8 +266,30 @@ async function modelIssues(
     providers: [provider, ...routeProviders].map(snapshotProvider),
     models: [snapshotModel(model, price, routes)],
   };
-  // La clé du fournisseur est vérifiée à la publication de la version, pas à celle d'un modèle.
-  return guardSnapshot(snapshot, { secretExists: () => true });
+  // Approuver ou publier un modèle ne vérifie pas la clé du fournisseur (elle l'est à la publication de la version) ;
+  // les contrôles préalables de l'assistant, eux, la vérifient (`vault`).
+  return vault
+    ? guard(snapshot, vault)
+    : guardSnapshot(snapshot, { secretExists: () => true });
+}
+
+/**
+ * Contrôles préalables à la publication d'un modèle (assistant d'administration) : taux de change approuvé, prix
+ * valide (jamais 0 $, jamais sous le plancher de marge), fournisseur actif et clé présente dans le coffre, routes de
+ * secours comprises. `issues` vide : le modèle peut être approuvé puis publié.
+ */
+export async function modelReadiness(
+  db: Database,
+  modelId: string,
+  now: Date = new Date(),
+) {
+  const issues = await modelIssues(db, modelId, now, vaultCheck(db));
+  const fx = await currentFx(db, now);
+  return {
+    ready: issues.length === 0,
+    issues,
+    fx: fx ? snapshotFx(fx) : null,
+  };
 }
 
 // ─── Routes de secours ──────────────────────────────────────────────────────────
@@ -351,6 +381,50 @@ export async function listRoutes(
     .from(modelRoutes)
     .where(eq(modelRoutes.modelId, modelId))
     .orderBy(asc(modelRoutes.position));
+}
+
+/**
+ * Fixe l'ordre des routes d'un modèle : `order` doit contenir EXACTEMENT les routes du modèle, une fois chacune
+ * (l'ordre est une décision d'ensemble, jamais un échange partiel). Deux temps dans une transaction, car la position
+ * est unique par modèle.
+ */
+export async function reorderRoutes(
+  db: Database,
+  modelId: string,
+  order: readonly string[],
+): Promise<Route[]> {
+  await getModel(db, modelId);
+  await db.transaction(async (tx) => {
+    const current = await tx
+      .select({ id: modelRoutes.id })
+      .from(modelRoutes)
+      .where(eq(modelRoutes.modelId, modelId))
+      .for("update");
+    const known = new Set(current.map((r) => r.id));
+    if (
+      order.length !== known.size ||
+      new Set(order).size !== order.length ||
+      order.some((id) => !known.has(id))
+    )
+      throw new CatalogError(
+        "invalid_request",
+        "l'ordre doit nommer exactement les routes du modèle, une fois chacune",
+      );
+    // Les positions de départ sont libérées avant d'écrire les définitives.
+    const offset = order.length + 1000;
+    await tx
+      .update(modelRoutes)
+      .set({ position: sql`${modelRoutes.position} + ${offset}` })
+      .where(eq(modelRoutes.modelId, modelId));
+    for (const [index, routeId] of order.entries())
+      await tx
+        .update(modelRoutes)
+        .set({ position: index + 1, updatedAt: new Date() })
+        .where(
+          and(eq(modelRoutes.modelId, modelId), eq(modelRoutes.id, routeId)),
+        );
+  });
+  return listRoutes(db, modelId);
 }
 
 async function enabledRoutes(db: Database, modelId: string): Promise<Route[]> {
@@ -817,6 +891,34 @@ const vaultCheck = (db: Database): VaultCheck => ({
     return Boolean(row && !row.revokedAt);
   },
 });
+
+/** Présence de la clé de chaque fournisseur dans le coffre (actif, non révoqué) ; null : le fournisseur n'a pas de clé. */
+export async function providersWithSecretPresence<
+  P extends { secretRef: string | null },
+>(
+  db: Database,
+  providers: readonly P[],
+): Promise<(P & { secretPresent: boolean | null })[]> {
+  const refs = [
+    ...new Set(
+      providers.map((p) => p.secretRef).filter((r): r is string => Boolean(r)),
+    ),
+  ];
+  const present = new Set<string>();
+  if (refs.length > 0) {
+    const rows = await db
+      .select({ ref: vaultSecrets.ref })
+      .from(vaultSecrets)
+      .where(
+        and(inArray(vaultSecrets.ref, refs), isNull(vaultSecrets.revokedAt)),
+      );
+    for (const r of rows) present.add(r.ref);
+  }
+  return providers.map((p) => ({
+    ...p,
+    secretPresent: p.secretRef ? present.has(p.secretRef) : null,
+  }));
+}
 
 async function guard(
   snapshot: CatalogSnapshot,

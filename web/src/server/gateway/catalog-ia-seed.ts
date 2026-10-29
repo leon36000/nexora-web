@@ -12,6 +12,7 @@ import {
   createProvider,
   currentFx,
   currentPrice,
+  DEFAULT_MARGIN_BPS,
   type ModelInput,
   type PriceWindowInput,
   type ProviderInput,
@@ -25,7 +26,7 @@ import {
  */
 
 /** Marge visée et plancher, en points de base (décision du fondateur : 10 %). */
-export const MARGIN_BPS = 1000;
+export const MARGIN_BPS = DEFAULT_MARGIN_BPS;
 
 const READ_AT = "2026-10-28";
 

@@ -28,6 +28,7 @@ import {
   createProvider,
   currentFx,
   currentPrice,
+  DEFAULT_MARGIN_BPS,
   diffVersion,
   getModel,
   getProvider,
@@ -38,8 +39,11 @@ import {
   listProviders,
   listRoutes,
   listVersions,
+  modelReadiness,
+  providersWithSecretPresence,
   publishVersion,
   recordProviderCheck,
+  reorderRoutes,
   updateModel,
   updateProvider,
   updateRoute,
@@ -210,6 +214,9 @@ const routeCreate = z
   })
   .strict();
 const routePatch = z.object(routeFields).partial().strict();
+const routeOrder = z
+  .object({ order: z.array(z.uuid()).min(1).max(20) })
+  .strict();
 
 const priceSet = z
   .object({
@@ -456,7 +463,7 @@ async function route(
       })),
     );
     return ok({
-      providers,
+      providers: await providersWithSecretPresence(db, providers),
       models: withPrice,
       fxRates: fx,
       currentFx: await currentFx(db, now),
@@ -471,13 +478,24 @@ async function route(
           }
         : null,
       litellmConfigured: deps.litellm() !== null,
+      // Marge visée et plancher proposés par les assistants (décision du fondateur : 10 %).
+      defaults: {
+        marginBps: DEFAULT_MARGIN_BPS,
+        marginFloorBps: DEFAULT_MARGIN_BPS,
+      },
     });
   }
 
   if (a === "providers") {
     if (!b) {
       allowed("GET", "POST");
-      if (method === "GET") return ok({ providers: await listProviders(db) });
+      if (method === "GET")
+        return ok({
+          providers: await providersWithSecretPresence(
+            db,
+            await listProviders(db),
+          ),
+        });
       const input = await body(request, providerCreate);
       await assertProviderTargets(db, deps, input);
       const created = await createProvider(db, input);
@@ -541,7 +559,18 @@ async function route(
       return ok(created, 201);
     }
     const modelId = id(b);
+    if (c === "readiness") {
+      allowed("GET");
+      return ok(await modelReadiness(db, modelId, now));
+    }
+    if (c === "routes" && path[3] === "reorder") {
+      if (path.length > 4) throw new HttpError(404, "not_found");
+      allowed("POST");
+      const { order } = await body(request, routeOrder);
+      return ok({ routes: await reorderRoutes(db, modelId, order) });
+    }
     if (c === "routes") {
+      if (path.length > 3) throw new HttpError(404, "not_found");
       allowed("GET", "POST");
       if (method === "GET")
         return ok({ routes: await listRoutes(db, modelId) });
