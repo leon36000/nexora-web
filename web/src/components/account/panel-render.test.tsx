@@ -5,7 +5,10 @@ import type { DashboardData } from "@/server/billing/dashboard";
 import type { ActivityRow, BreakdownRow } from "@/server/gateway/activity";
 import type { OverviewData } from "@/server/gateway/activity-overview";
 import type { ActivityPageData } from "@/server/gateway/activity-page";
+import type { PublicModel } from "@/server/gateway/public";
+import type { PublicCatalog } from "@/server/gateway/read";
 import { ActivityView } from "./activity-view";
+import { ModelsPanel } from "./models-panel";
 import { Overview } from "./overview";
 import type { workstudioView } from "./panel-logic";
 import { PanelNav } from "./panel-nav";
@@ -442,5 +445,63 @@ describe("navigation du panneau", () => {
     const html = render(true, "en");
     expect(html).toContain('href="/en/compte/activite"');
     expect(html).toContain('href="/en/apps"');
+  });
+});
+
+describe("page Modèles : identifiant à copier et lien vers la fiche", () => {
+  const model: PublicModel = {
+    id: "nexora/glm-5-3",
+    name: "GLM 5.3",
+    descriptionFr: "",
+    descriptionEn: "",
+    kind: "chat",
+    contextMax: 128_000,
+    maxOutputTokens: null,
+    capabilities: {},
+    residency: "quebec",
+    providerName: "Fournisseur",
+    dataPolicyFr: "",
+    dataPolicyEn: "",
+    inputPerMillion: "0.6",
+    outputPerMillion: "2.4",
+    cachePerMillion: null,
+    cacheWritePerMillion: null,
+    priceWindows: [],
+    sheet: {},
+    note: "",
+    sunsetAt: null,
+  };
+  const catalog = (models: PublicModel[], available = true): PublicCatalog => ({
+    models,
+    publishedAt: null,
+    version: null,
+    available,
+  });
+  const render = (c: PublicCatalog, lang: "fr" | "en" = "fr") =>
+    renderToStaticMarkup(
+      <ModelsPanel lang={lang} t={getAccountDictionary(lang)} catalog={c} />,
+    );
+
+  it("chaque modèle : identifiant visible, bouton « Copier l'identifiant » nommé, lien vers sa fiche", () => {
+    const html = render(catalog([model])).replace(/[\u00a0\u202f]/g, " ");
+    expect(html).toContain("nexora/glm-5-3");
+    expect(html).toContain("Copier l’identifiant");
+    expect(html).toContain('aria-label="Copier l’identifiant nexora/glm-5-3"');
+    expect(html).toContain('href="/modeles/nexora/glm-5-3"');
+    expect(html).toContain('href="/modeles"');
+    expect(html).toContain("0,60 $");
+    expect(html).toContain("2,40 $");
+  });
+
+  it("anglais : liens préfixés", () => {
+    const html = render(catalog([model]), "en");
+    expect(html).toContain('href="/en/modeles/nexora/glm-5-3"');
+    expect(html).toContain("Copy identifier");
+  });
+
+  it("catalogue vide ou indisponible : une phrase, aucun bouton de copie", () => {
+    const html = render(catalog([], false));
+    expect(html).toContain("n’est pas disponible");
+    expect(html).not.toContain("Copier l’identifiant");
   });
 });
