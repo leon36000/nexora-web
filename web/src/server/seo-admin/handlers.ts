@@ -22,6 +22,7 @@ import {
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { z } from "zod";
+import { aiTrainingPolicy } from "@/lib/seo/robots-policy";
 import {
   allowMethods,
   HttpError,
@@ -191,7 +192,8 @@ async function route(
       },
       robots: {
         siteEnv: deps.env.SITE_ENV ?? "development",
-        aiTraining: deps.env.ROBOTS_AI_TRAINING ?? "disallow",
+        // même règle que robots.txt : autorisé par défaut, refusé seulement par ROBOTS_AI_TRAINING=disallow
+        aiTraining: aiTrainingPolicy(deps.env),
       },
     });
   }

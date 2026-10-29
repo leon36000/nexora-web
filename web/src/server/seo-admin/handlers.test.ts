@@ -117,7 +117,7 @@ describe("vue d'ensemble et adaptateurs", () => {
     }
     expect(r.body.robots).toEqual({
       siteEnv: "staging",
-      aiTraining: "disallow",
+      aiTraining: "allow",
     });
     expect(r.body.issues.open).toEqual({ error: 0, warning: 0, info: 0 });
   });

@@ -71,12 +71,30 @@ if (EXPECT === "staging") {
         "Préproduction : robots.txt doit être « Disallow: / » pour tous, sans sitemap.",
     });
 } else {
-  const must = [
-    ["Googlebot", /User-Agent: Googlebot\s*\nAllow: \//i],
-    ["OAI-SearchBot", /User-Agent: OAI-SearchBot\s*\nAllow: \//i],
-    ["GPTBot", /User-Agent: GPTBot\s*\nDisallow: \/\s*(\n|$)/i],
-    ["ClaudeBot", /User-Agent: ClaudeBot\s*\nDisallow: \/\s*(\n|$)/i],
-  ] as const;
+  // Politique par défaut (décision du 29/10/2026) : tout le public est autorisé, entraînement compris ; seuls les
+  // chemins privés sont fermés. `EXPECT_AI_TRAINING=disallow` : le site tourne avec ROBOTS_AI_TRAINING=disallow.
+  const trainingRefused = process.env.EXPECT_AI_TRAINING === "disallow";
+  const open = (bot: string) =>
+    new RegExp(`User-Agent: ${bot}\\s*\\nAllow: \\/\\s*\\nDisallow: `, "i");
+  const refused = (bot: string) =>
+    new RegExp(`User-Agent: ${bot}\\s*\\nDisallow: \\/\\s*(\\n|$)`, "i");
+  const must: [string, RegExp][] = [
+    ["Googlebot", open("Googlebot")],
+    ["Bingbot", open("Bingbot")],
+    ["OAI-SearchBot", open("OAI-SearchBot")],
+    ["PerplexityBot", open("PerplexityBot")],
+    ["Claude-SearchBot", open("Claude-SearchBot")],
+    ["ChatGPT-User", open("ChatGPT-User")],
+    ["Claude-User", open("Claude-User")],
+    ["GPTBot", trainingRefused ? refused("GPTBot") : open("GPTBot")],
+    ["ClaudeBot", trainingRefused ? refused("ClaudeBot") : open("ClaudeBot")],
+    [
+      "Google-Extended",
+      trainingRefused ? refused("Google-Extended") : open("Google-Extended"),
+    ],
+    ["CCBot", trainingRefused ? refused("CCBot") : open("CCBot")],
+    ["*", open("\\*")],
+  ];
   for (const [bot, re] of must)
     if (!re.test(robots.text))
       note({
@@ -84,6 +102,20 @@ if (EXPECT === "staging") {
         url: `${BASE}/robots.txt`,
         message: `Politique inattendue pour ${bot}.`,
       });
+  // Un groupe qui autorise le site répète les chemins privés (un groupe nommé remplace le groupe « * »).
+  for (const group of groups.filter((g) => /^allow:\s*\/\s*$/im.test(g)))
+    for (const path of ["/api/", "/v1/", "/compte", "/en/compte"])
+      if (
+        !new RegExp(
+          `^disallow:\\s*${path.replace(/\//g, "\\/")}\\s*$`,
+          "im",
+        ).test(group)
+      )
+        note({
+          rule: "robots.private-open",
+          url: `${BASE}/robots.txt`,
+          message: `Un groupe autorise le site sans fermer ${path} : ${group.split("\n")[0]}.`,
+        });
   if (!robots.text.includes(`Sitemap: ${BASE}/sitemap.xml`))
     note({
       rule: "robots.sitemap",
