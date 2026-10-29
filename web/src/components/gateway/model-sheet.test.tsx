@@ -10,6 +10,7 @@ const base: PublicModel = {
   descriptionFr: "",
   descriptionEn: "",
   kind: "chat",
+  availability: "live",
   contextMax: 1_048_576,
   maxOutputTokens: 393_216,
   capabilities: {},

@@ -587,6 +587,7 @@ describe("page Modèles : identifiant à copier et lien vers la fiche", () => {
     descriptionFr: "",
     descriptionEn: "",
     kind: "chat",
+    availability: "live",
     contextMax: 128_000,
     maxOutputTokens: null,
     capabilities: {},
