@@ -49,12 +49,12 @@ Condition de déploiement : `SITE_URL` doit être l'origine HTTPS réelle, sinon
 
 ### 3.1 Inventaire
 
-Registre : `web/src/server/security/route-guards.ts` (31 routes `route.ts`). Test d'inventaire : `route-guards.test.ts` compare le registre aux fichiers `route.ts` du dossier `src/app` ; une route sans entrée **fait échouer le test** (démontré en ajoutant une route factice). Il n'existe **aucune Server Action** (`"use server"` : 0 occurrence).
+Registre : `web/src/server/security/route-guards.ts` (33 routes `route.ts`). Test d'inventaire : `route-guards.test.ts` compare le registre aux fichiers `route.ts` du dossier `src/app` ; une route sans entrée **fait échouer le test** (démontré en ajoutant une route factice). Il n'existe **aucune Server Action** (`"use server"` : 0 occurrence).
 
 | Genre | Routes | Qui peut appeler | Sans identification |
 |---|---|---|---|
 | `admin-token` | `/api/admin/catalog`, `hosted-agents`, `site-agents`, `seo`, `vps`, `vault`, `vault/[ref]`, `preview-link`, `stripe/publish-plan`, `/api/revalidate` | Porteur du jeton d'administration (`NEXORA_APP_ADMIN_TOKEN`, 32 caractères au moins, comparaison en temps constant, échec fermé si absent : 503) | 401 |
-| `session` | `/api/account/api-keys` (+ `[id]`), `/api/account/vps/[id]/action`, `/api/billing/checkout/credits`, `/subscription`, `/portal`, `/api/vps/checkout` | Session Better Auth, membre de l'organisation de la session ; création de clés et paiement : propriétaire seulement ; origine contrôlée (CSRF) | 401 ou 403 |
+| `session` | `/api/account/api-keys` (+ `[id]`), `/api/account/privacy` (+ `report`, propriétaire seulement), `/api/account/vps/[id]/action`, `/api/billing/checkout/credits`, `/subscription`, `/portal`, `/api/vps/checkout` | Session Better Auth, membre de l'organisation de la session ; création de clés et paiement : propriétaire seulement ; origine contrôlée (CSRF) | 401 ou 403 |
 | `api-key` | `/v1/chat/completions`, `/v1/embeddings` | Clé `nxk_` (empreinte SHA-256), solde suffisant | 401 |
 | `signature` | `/api/stripe/webhook`, `/api/preview` | Signature Stripe vérifiée sur le corps brut ; lien d'aperçu signé et daté | 400/401 (503 si le secret n'est pas au Coffre) |
 | `better-auth` | `/api/auth/*` | Origine contrôlée, limitation de débit (5/min par adresse), courriel vérifié | 403 si origine étrangère |
