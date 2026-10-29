@@ -28,19 +28,24 @@ export function PanelShell({
 }) {
   return (
     <Section tone="light" flush className="py-8 sm:py-10 lg:py-14">
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-line pb-5">
+      <div className="flex items-center justify-between gap-4 border-b border-line pb-5">
         <div className="min-w-0">
-          <p className="font-mono text-label uppercase text-fg-muted">
+          <p className="hidden font-mono text-label uppercase text-fg-muted sm:block">
             {t.dashboard.organization}
           </p>
-          <p className="mt-1 truncate text-body font-medium text-fg">
+          <p className="truncate text-body font-medium text-fg sm:mt-1">
+            <span className="sr-only sm:hidden">
+              {t.dashboard.organization} :{" "}
+            </span>
             {organizationName}
           </p>
-          <p className="text-small text-fg-muted">
+          <p className="truncate text-small text-fg-muted">
             {userName} · {t.dashboard.roles[role]}
           </p>
         </div>
-        <SignOutButton lang={lang} label={t.dashboard.signOut} />
+        <div className="shrink-0">
+          <SignOutButton lang={lang} label={t.dashboard.signOut} />
+        </div>
       </div>
       <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:gap-12">
         <div className="lg:w-60 lg:shrink-0">

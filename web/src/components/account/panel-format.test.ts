@@ -67,9 +67,15 @@ describe("latence", () => {
 });
 
 describe("date et heure du journal", () => {
-  it("heure de Montréal, avec les secondes", () => {
-    const d = new Date("2026-10-29T15:04:05Z"); // 11 h 04 à Montréal (heure d'été)
-    expect(formatDateTime("fr", d)).toMatch(/11\D+04\D+05/);
-    expect(formatDateTime("en", d)).toMatch(/11:04:05/);
+  it("AAAA-MM-JJ HH:MM:SS à l'heure de Montréal, identique dans les deux langues", () => {
+    expect(formatDateTime(new Date("2026-10-29T15:04:05Z"))).toBe(
+      "2026-10-29 11:04:05", // heure d'été (UTC-4)
+    );
+    expect(formatDateTime(new Date("2026-12-01T05:00:00Z"))).toBe(
+      "2026-12-01 00:00:00", // minuit : jamais « 24 »
+    );
+    expect(formatDateTime(new Date("2026-01-15T03:30:00Z"))).toBe(
+      "2026-01-14 22:30:00", // heure normale (UTC-5), veille
+    );
   });
 });

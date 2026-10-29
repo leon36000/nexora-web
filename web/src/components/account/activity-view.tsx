@@ -387,68 +387,64 @@ function LogTable({
 }) {
   const l = t.panel.activity.log;
   const statuses = t.panel.activity.filters.statuses;
+  const th = "px-3 py-3 font-medium";
+  const td = "px-3 py-3 text-fg";
   return (
     <ScrollRegion label={l.caption}>
-      <table className="w-full min-w-[56rem] border-collapse text-left text-small">
+      <table className="w-full min-w-[52rem] border-collapse text-left text-small">
         <caption className="sr-only">{l.caption}</caption>
         <thead>
           <tr className="border-b border-line text-fg-muted">
-            <th scope="col" className={TH}>
+            <th scope="col" className={th}>
               {l.columns.time}
             </th>
-            <th scope="col" className={TH}>
+            <th scope="col" className={th}>
               {l.columns.model}
             </th>
-            <th scope="col" className={TH}>
-              {l.columns.key}
-            </th>
-            <th scope="col" className={TH}>
+            <th scope="col" className={th}>
               {l.columns.status}
             </th>
-            <th scope="col" className={`${TH} text-right`}>
+            <th scope="col" className={`${th} text-right`}>
               {l.columns.tokens}
             </th>
-            <th scope="col" className={`${TH} text-right`}>
+            <th scope="col" className={`${th} text-right`}>
               {l.columns.cost}
             </th>
-            <th scope="col" className={`${TH} text-right`}>
+            <th scope="col" className={`${th} text-right`}>
               {l.columns.latency}
+            </th>
+            <th scope="col" className={th}>
+              {l.columns.key}
             </th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
             <tr key={r.id} className="border-b border-line last:border-0">
-              <td className={`whitespace-nowrap ${TD}`}>
+              <td className={`whitespace-nowrap ${td}`}>
                 <time dateTime={r.createdAt.toISOString()}>
-                  {formatDateTime(lang, r.createdAt)}
+                  {formatDateTime(r.createdAt)}
                 </time>
               </td>
-              <td className={TD}>
+              <td className={`${td} break-words`}>
                 <span className="font-mono">{r.model}</span>
                 {r.stream ? (
                   <span className="block text-fg-muted">{l.stream}</span>
                 ) : null}
               </td>
-              <td className={TD}>
-                {r.apiKeyName}
-                <span className="block font-mono text-fg-muted">
-                  {r.apiKeyPrefix}…
-                </span>
-              </td>
               <td
-                className={`px-4 py-3 ${r.status === "ok" ? "text-fg" : "text-accent-text"}`}
+                className={`whitespace-nowrap px-3 py-3 ${r.status === "ok" ? "text-fg" : "text-accent-text"}`}
               >
                 {statuses[r.status]} · {r.httpStatus}
                 {r.errorCode ? (
                   <span className="block font-mono">{r.errorCode}</span>
                 ) : null}
               </td>
-              <td className={`whitespace-nowrap ${TD} text-right tabular-nums`}>
+              <td className={`whitespace-nowrap ${td} text-right tabular-nums`}>
                 {formatInteger(lang, r.promptTokens)} /{" "}
                 {formatInteger(lang, r.completionTokens)}
               </td>
-              <td className={`whitespace-nowrap ${TD} text-right tabular-nums`}>
+              <td className={`whitespace-nowrap ${td} text-right tabular-nums`}>
                 {formatMicroCadExact(
                   lang,
                   r.billed ? r.costMicro : r.valueMicro,
@@ -457,8 +453,14 @@ function LogTable({
                   <span className="block text-fg-muted">{l.offered}</span>
                 )}
               </td>
-              <td className={`whitespace-nowrap ${TD} text-right tabular-nums`}>
+              <td className={`whitespace-nowrap ${td} text-right tabular-nums`}>
                 {formatLatency(lang, r.latencyMs)}
+              </td>
+              <td className={`${td} break-words`}>
+                {r.apiKeyName}
+                <span className="block font-mono text-fg-muted">
+                  {r.apiKeyPrefix}…
+                </span>
               </td>
             </tr>
           ))}
@@ -513,15 +515,7 @@ export function ActivityView({ lang, t, data, free, keys }: ActivityViewProps) {
           {a.breakdown.title}
         </SectionTitle>
         <DayChart lang={lang} t={t} rows={data.byDay} free={free} />
-        <div className="grid gap-8 xl:grid-cols-2">
-          <BreakdownTable
-            lang={lang}
-            t={t}
-            dimension="day"
-            title={a.breakdown.byDay}
-            rows={[...data.byDay].reverse()}
-            free={free}
-          />
+        <div className="space-y-10">
           <BreakdownTable
             lang={lang}
             t={t}
@@ -544,6 +538,14 @@ export function ActivityView({ lang, t, data, free, keys }: ActivityViewProps) {
             dimension="key"
             title={a.breakdown.byKey}
             rows={data.byKey}
+            free={free}
+          />
+          <BreakdownTable
+            lang={lang}
+            t={t}
+            dimension="day"
+            title={a.breakdown.byDay}
+            rows={[...data.byDay].reverse()}
             free={free}
           />
         </div>

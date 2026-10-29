@@ -8,11 +8,11 @@ import { cn } from "@/lib/cn";
 import { PANEL_NAV, type PanelSection, sectionOfPath } from "./panel-logic";
 
 const ITEM =
-  "flex min-h-11 items-center gap-2 whitespace-nowrap rounded-md border px-4 py-2 text-[0.9375rem] transition-colors duration-150 lg:w-full";
+  "flex min-h-11 items-center gap-2 whitespace-nowrap rounded-md border px-4 py-2 text-[0.9375rem] transition-colors duration-150 lg:w-full lg:rounded-none lg:border-0 lg:border-l-2";
 const IDLE =
-  "border-transparent text-fg-muted hover:bg-surface-2 hover:text-fg lg:border-l-2 lg:rounded-l-none";
+  "border-transparent text-fg-muted hover:bg-surface-2 hover:text-fg lg:border-transparent";
 const CURRENT =
-  "border-line-strong bg-surface-2 font-medium text-fg lg:border-transparent lg:border-l-accent-graphic lg:rounded-l-none";
+  "border-line-strong bg-surface-2 font-medium text-fg lg:border-accent-graphic";
 
 /**
  * Navigation du panneau client : colonne à gauche sur grand écran, onglets qui défilent sur téléphone. Ce sont de
@@ -49,7 +49,7 @@ export function PanelNav({
     <nav aria-label={label}>
       <ul
         ref={listRef}
-        className="-mx-gutter flex gap-2 overflow-x-auto px-gutter pb-2 lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0 lg:pb-0"
+        className="-mx-gutter flex gap-2 overflow-x-auto px-gutter pb-2 [scrollbar-width:thin] lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0 lg:pb-0"
       >
         {PANEL_NAV.map((item) => {
           const text = items[item.id];

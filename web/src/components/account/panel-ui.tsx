@@ -119,7 +119,7 @@ export function PanelLoading({
 }) {
   return (
     <div aria-busy="true">
-      <h1 className="text-h3 text-fg">{title}</h1>
+      <p className="font-display text-h3 text-fg">{title}</p>
       <p className="mt-4 text-fg-muted" role="status">
         {working}
       </p>

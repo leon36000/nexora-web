@@ -36,12 +36,23 @@ export function formatLatency(lang: Lang, ms: number): string {
     : `${new Intl.NumberFormat(locale(lang), { maximumFractionDigits: 1 }).format(ms / 1000)}${nbsp}s`;
 }
 
-export function formatDateTime(lang: Lang, date: Date): string {
-  return new Intl.DateTimeFormat(locale(lang), {
-    dateStyle: "short",
-    timeStyle: "medium",
-    timeZone: PANEL_TIME_ZONE,
-  }).format(date);
+/** « 2026-10-29 11:04:05 » à l'heure de Montréal : même forme en français et en anglais, sans ambiguïté. */
+export function formatDateTime(date: Date): string {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hourCycle: "h23",
+      timeZone: PANEL_TIME_ZONE,
+    })
+      .formatToParts(date)
+      .map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`;
 }
 
 /** Jour AAAA-MM-JJ (déjà au fuseau de Montréal) en texte court : « 29 oct. » / « Oct 29 ». */

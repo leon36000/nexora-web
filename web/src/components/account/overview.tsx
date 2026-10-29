@@ -166,9 +166,9 @@ export function StartCard({
                   className="underline decoration-1 underline-offset-4 hover:decoration-2"
                 >
                   {s.steps[step.id].title}
-                </Link>
+                </Link>{" "}
                 <span
-                  className={`ml-2 font-mono text-label uppercase ${step.done ? "text-success" : "text-fg-muted"}`}
+                  className={`ml-1 font-mono text-label uppercase ${step.done ? "text-success" : "text-fg-muted"}`}
                 >
                   {step.done ? s.done : s.todo}
                 </span>
