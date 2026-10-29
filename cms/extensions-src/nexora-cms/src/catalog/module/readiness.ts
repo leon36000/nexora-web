@@ -98,9 +98,11 @@ export function buildChecklist(
       help:
         found.length === 0
           ? ""
-          : [...new Set(found.map((i) => issueHelp(i.code)))]
-              .filter(Boolean)
-              .join(" "),
+          : g.id === "secret" && ctx.secretRef
+            ? `Collez la clé dans le module « Coffre », sous la référence « ${ctx.secretRef} » (type « Fournisseur de modèles »).`
+            : [...new Set(found.map((i) => issueHelp(i.code)))]
+                .filter(Boolean)
+                .join(" "),
     });
   }
   const known = new Set(GROUPS.flatMap((g) => g.codes));
