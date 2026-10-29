@@ -94,6 +94,9 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 | `LOG_LEVEL` | web | non | `debug` ou `info` (défaut) |
 | `WORKER_CONCURRENCY` (4), `WORKER_POLL_MS` (1000), `WORKER_SCHEDULER` | worker | non | Réglages du worker. **`WORKER_SCHEDULER=off` coupe tout le planificateur, pas seulement le SEO** : audit nocturne, indexation, santé des modèles, veille, **mais aussi `ledger.release-stale` (libération des réservations perdues, toutes les 10 minutes), `ledger.grant-tranches` (versement des douzièmes des offres annuelles, chaque heure) et `ledger.expire` (expiration quotidienne des crédits)**. À n'utiliser que pour un essai ; sans le planificateur, les réservations d'un appel interrompu restent bloquées, les clients d'une offre annuelle ne reçoivent que leur premier mois et les crédits n'expirent pas |
 | `GATEWAY_*`, `BILLING_*`, `VPS_*` | web, worker | non | Limites et durées (`docs/infra.md`) |
+| `WORKSTUDIO_PUBLIC_URL` | web | pour le bouton « Ouvrir WorkStudio » et le SSO | Adresse publique de WorkStudio (https). Le bouton de l'espace client y mène ; l'adresse de retour OIDC en est dérivée (`docs/workstudio-integre.md`) |
+| `WORKSTUDIO_OIDC_CLIENT_ID`, `WORKSTUDIO_OIDC_CLIENT_SECRET`, `WORKSTUDIO_OIDC_TOKEN_AUTH` | web | pour la connexion unique | Client OpenID Connect de WorkStudio (identifiant 8 à 128 caractères, secret de 32 à 256 caractères, `post` ou `basic`). **Absents, le site n'est pas fournisseur OIDC** (404). Le secret en secret Docker, jamais dans Git |
+| `WORKSTUDIO_GATEWAY_URL`, `WORKSTUDIO_DEFAULT_MODEL` | web | pour l'accès modèle par utilisateur | Passerelle rendue à WorkStudio (se termine par `/v1`) et modèle par défaut (défaut `nexora/deepseek-v4.1-flash-1017`). Sans passerelle, `GET /api/oauth/workstudio-access` répond 503 |
 | `VPS_WORKER_SSH_PUBLIC_KEY` | worker | pour les VPS | Clé publique du worker (la privée est au Coffre) |
 | `NEXT_TELEMETRY_DISABLED=1` | machine de build | oui | Désactive la télémétrie anonyme de Next.js |
 | `STRIPE_*` | web | **développement seulement** | Ignorées en production : les clés Stripe sont au Coffre (§6) |
@@ -247,6 +250,16 @@ Module **Modèles** : ajouter un fournisseur (adresse, **région**, politique de
 4. Bulle `/embed.js` : réglage dans le module (pages choisies) ; la CSP n'ouvre alors que l'origine configurée, sur ces pages seulement.
 5. Limites : la réservation d'un appel est calculée sur `run_token_cap` (32 000 jetons par défaut), mais le règlement est au coût réel (un dépassement est facturé et peut rendre le solde négatif) ; renommer un agent dans WorkStudio change son identifiant amont `agent:<nom>` (le ressaisir dans le module) ; le coût amont de WorkStudio n'est pas suivi.
 
+### 8.3 WorkStudio intégré : connexion unique et accès modèle par utilisateur
+
+Le site est le fournisseur OpenID Connect de WorkStudio : les utilisateurs du site ouvrent WorkStudio avec le même compte, chacun avec sa clé de modèle (celle de son organisation, facturée à son portefeuille ; l'organisation « maison » est gratuite). Variables : §3 (`WORKSTUDIO_*`). Mise en service, sécurité, essai en local et dépannage : **`docs/workstudio-integre.md`**.
+
+1. Migration `0021_s12_sso_workstudio_oidc` (`bun run db:migrate`) avant de démarrer la nouvelle version.
+2. Poser `WORKSTUDIO_PUBLIC_URL`, `WORKSTUDIO_OIDC_CLIENT_ID`, `WORKSTUDIO_OIDC_CLIENT_SECRET`, `WORKSTUDIO_GATEWAY_URL` ; les trois mêmes valeurs d'identité (`NEXORA_OIDC_ISSUER=${SITE_URL}/api/auth`, `NEXORA_OIDC_CLIENT_ID`, `NEXORA_OIDC_CLIENT_SECRET`) côté WorkStudio, qui doit demander les portées `openid profile email workstudio:model` et PKCE.
+3. Redémarrer le site : un seul avertissement au démarrage si une variable est invalide (il nomme la variable, jamais la valeur).
+4. Changer l'identifiant ou le secret annule l'ancien client (désactivé au premier appel OAuth) : redémarrer le site et WorkStudio avec les nouvelles valeurs.
+5. Sauvegarder `BETTER_AUTH_SECRET` comme la clé maîtresse du Coffre : il chiffre la clé privée de signature des jetons d'identité.
+
 ## 9. Proxy frontal (HTTPS)
 
 Le site ne gère pas le TLS. Un proxy (nginx, Caddy…) termine HTTPS et transmet à `localhost:3500`. Obligations :
@@ -337,6 +350,8 @@ bun audit --prod                                                # dépendances d
 | `/v1/*` répond 503 | `LITELLM_MASTER_KEY` absent ou LiteLLM injoignable | Variable, `docker ps`, `LITELLM_BASE_URL` |
 | `/v1/*` répond 402 `insufficient_quota` | Crédit du client épuisé (ou solde négatif après remboursement) | Normal ; le client recharge |
 | `/v1/*` répond 502 `upstream_unavailable` | Fournisseur de modèle injoignable | « Tester le fournisseur » ; état de LiteLLM ; clé du Coffre |
+| `/api/auth/.well-known/openid-configuration` répond 404 | Fournisseur OIDC de WorkStudio inactif (variables `WORKSTUDIO_OIDC_*` ou `WORKSTUDIO_PUBLIC_URL` absentes ou invalides) | Avertissement au démarrage ; §8.3 et `docs/workstudio-integre.md` |
+| `GET /api/oauth/workstudio-access` répond 503 | `WORKSTUDIO_GATEWAY_URL` absent ou mal formé | Variable (https, se termine par `/v1`) |
 | Webhook Stripe en 503 | Secrets Stripe absents du Coffre (en production les variables `STRIPE_*` sont ignorées) | Déposer `stripe.secret_key` et `stripe.webhook_secret` |
 | Aucun courriel de vérification | `SMTP_URL` par défaut (Mailpit local) | Régler `SMTP_URL`, `MAIL_FROM` ; vérifier SPF/DKIM du domaine |
 | Notification de diagnostic non reçue | Variables `SMTP_*` / `CONTACT_NOTIFY_TO` du worker | Corriger ; la tâche `contact.notify` reprend toute seule (demande déjà en base) |
@@ -375,6 +390,7 @@ Cocher dans l'ordre. Une case non cochée bloque la mise en ligne.
 - [ ] `SITE_URL` (https), `SITE_ENV=production`, `NODE_ENV=production`, site lancé avec `-H localhost`, proxy HTTPS en place (§9) ; `/api/admin/*` et `/api/revalidate` **non publiés**.
 - [ ] Tous les secrets au Coffre ou en secrets Docker ; **aucun** secret de développement réutilisé ; clé maîtresse du Coffre et jeton d'administration régénérés pour la production.
 - [ ] `NEXORA_EMBED_ORIGINS=https://<domaine>` posé côté WorkStudio ; `NEXORA_OUTBOUND_ALLOW` limité au strict nécessaire.
+- [ ] WorkStudio intégré : `WORKSTUDIO_PUBLIC_URL`, `WORKSTUDIO_OIDC_CLIENT_ID`, `WORKSTUDIO_OIDC_CLIENT_SECRET` (secret Docker, 32 caractères ou plus), `WORKSTUDIO_GATEWAY_URL` posés ; migration 0021 appliquée ; découverte OIDC répond 200 ; WorkStudio demande PKCE et la portée `workstudio:model` (§8.3).
 - [ ] SMTP réel testé (vérification de courriel, diagnostic) ; SPF/DKIM.
 - [ ] `MARKETPLACE_REGISTRY` de Directus : posé à une adresse injoignable dans `deploy/compose.yml` (écart E3 de `docs/recette/flux-sortants.md`, fermé) ; ne pas le retirer, ne jamais poser `MARKETPLACE_TRUST=all` ; `TELEMETRY=false` conservé ; `NEXT_TELEMETRY_DISABLED=1` sur la machine de build.
 - [ ] Domaine, DNS, certificat ; liste des sous-traitants et lieu d'hébergement documentés (Stripe, SMTP, fournisseurs de modèles, outils SEO activés).

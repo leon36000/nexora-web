@@ -1,5 +1,5 @@
 import * as schema from "@nexora/db";
-import { and, type Database, eq, isNull, ne } from "@nexora/db";
+import { and, type Database, eq, ne } from "@nexora/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import {
@@ -22,6 +22,7 @@ import {
   resetPasswordEmail,
   verificationEmail,
 } from "./emails";
+import { isActiveStaff } from "./guards";
 import {
   clearLoginFailures,
   lockedForMs,
@@ -38,6 +39,10 @@ import {
   MAX_PASSWORD_LENGTH,
   type PasswordProblem,
 } from "./password-policy";
+import {
+  type WorkstudioOidcConfig,
+  workstudioOidcPlugins,
+} from "./workstudio-oidc";
 
 export interface CreateAuthOptions {
   db: Database;
@@ -53,6 +58,11 @@ export interface CreateAuthOptions {
   secureCookies?: boolean;
   /** Vérification des mots de passe contre les fuites connues (HIBP) ; `null` renvoyé : service indisponible, on laisse passer. */
   breachCheck?: BreachChecker;
+  /**
+   * Fournisseur OpenID Connect de WorkStudio (connexion unique) : voir `workstudio-oidc.ts`. `null` ou absent :
+   * aucune route OAuth n'est montée (échec fermé).
+   */
+  workstudio?: WorkstudioOidcConfig | null;
   /** Horloge (tests du verrouillage). */
   now?: () => number;
   log?: (message: string, fields?: Record<string, unknown>) => void;
@@ -71,20 +81,6 @@ function isApiErrorLike(value: unknown): value is { statusCode: number } {
     value !== null &&
     typeof (value as { statusCode?: unknown }).statusCode === "number"
   );
-}
-
-/** Compte du personnel actif (drapeau posé depuis l'administration, non révoqué). */
-async function isActiveStaff(db: Database, userId: string): Promise<boolean> {
-  const [row] = await db
-    .select({ userId: schema.staffAccounts.userId })
-    .from(schema.staffAccounts)
-    .where(
-      and(
-        eq(schema.staffAccounts.userId, userId),
-        isNull(schema.staffAccounts.revokedAt),
-      ),
-    );
-  return Boolean(row);
 }
 
 const PASSWORD_ERRORS: Record<PasswordProblem, [string, string]> = {
@@ -181,6 +177,16 @@ export function createAuth(options: CreateAuthOptions) {
     );
   };
 
+  const oidcPlugins = options.workstudio
+    ? workstudioOidcPlugins({
+        db,
+        config: options.workstudio,
+        baseURL: options.baseURL.replace(/\/+$/, ""),
+        log,
+        now,
+      })
+    : [];
+
   return betterAuth({
     appName: "Nexora AI",
     baseURL: options.baseURL,
@@ -198,6 +204,15 @@ export function createAuth(options: CreateAuthOptions) {
         invitation: schema.invitations,
         rateLimit: schema.authRateLimits,
         twoFactor: schema.twoFactors,
+        // Fournisseur OIDC (plugins `jwt` et `oauthProvider`) : tables toujours déclarées, utilisées seulement si actif.
+        jwks: schema.jwks,
+        oauthClient: schema.oauthClients,
+        oauthResource: schema.oauthResources,
+        oauthClientResource: schema.oauthClientResources,
+        oauthRefreshToken: schema.oauthRefreshTokens,
+        oauthAccessToken: schema.oauthAccessTokens,
+        oauthConsent: schema.oauthConsents,
+        oauthClientAssertion: schema.oauthClientAssertions,
       },
     }),
     user: {
@@ -445,6 +460,9 @@ export function createAuth(options: CreateAuthOptions) {
           },
         },
       }),
+      // Fournisseur OIDC de WorkStudio, seulement si l'environnement le décrit en entier. Ajoutés par un `never[]`
+      // pour que le type de `auth.api` garde les seules routes des plugins ci-dessus.
+      ...(oidcPlugins as never[]),
     ],
   });
 }

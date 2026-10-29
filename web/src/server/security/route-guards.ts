@@ -9,6 +9,8 @@
  *  - api-key     : clé cliente `nxk_` (empreinte), organisation = celle de la clé ;
  *  - signature   : signature vérifiée (webhook Stripe, lien d'aperçu signé) ;
  *  - public      : volontairement ouvert (contenu public ou formulaire protégé autrement) ;
+ *  - oidc-token  : jeton d'accès OpenID Connect délivré par le site à WorkStudio (introspection au nom du client,
+ *                  client et portée revérifiés), sans témoin de session ;
  *  - better-auth : routes d'authentification de Better Auth (origine contrôlée, limitation de débit).
  */
 type GuardKind =
@@ -16,6 +18,7 @@ type GuardKind =
   | "session"
   | "api-key"
   | "signature"
+  | "oidc-token"
   | "public"
   | "better-auth";
 
@@ -329,6 +332,26 @@ export const ROUTE_GUARDS: RouteGuard[] = [
         headers: { ...JSON_H, origin: "https://evil.example" },
         body: '{"email":"a@exemple.ca","password":"x"}',
         expect: [403],
+      },
+    ],
+  },
+  {
+    route: "api/oauth/workstudio-access",
+    kind: "oidc-token",
+    why: "Accès modèle par utilisateur de WorkStudio intégré : jeton d'accès OIDC du client WorkStudio (portée workstudio:model), jamais mis en cache, 404 si le fournisseur est inactif",
+    probes: [
+      {
+        label: "sans jeton",
+        method: "GET",
+        path: "/api/oauth/workstudio-access",
+        expect: [401, 404],
+      },
+      {
+        label: "jeton inventé",
+        method: "GET",
+        path: "/api/oauth/workstudio-access",
+        headers: WRONG,
+        expect: [401, 404, 429],
       },
     ],
   },

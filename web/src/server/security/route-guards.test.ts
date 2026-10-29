@@ -34,7 +34,9 @@ describe("registre des gardes d'accès", () => {
 
   it("toute route d'administration, de compte, de paiement ou de passerelle facturée a au moins une sonde sans identification", () => {
     for (const g of ROUTE_GUARDS.filter((x) =>
-      ["admin-token", "session", "api-key", "signature"].includes(x.kind),
+      ["admin-token", "session", "api-key", "signature", "oidc-token"].includes(
+        x.kind,
+      ),
     ))
       expect(g.probes.length, g.route).toBeGreaterThan(0);
   });

@@ -18,6 +18,7 @@
     "workstudio:acces": "bun scripts/workstudio-access.ts"
   },
   "dependencies": {
+    "@better-auth/oauth-provider": "1.7.14",
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
     "@nexora/net": "workspace:*",
