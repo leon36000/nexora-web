@@ -88,8 +88,12 @@ export function ContactForm({
   // jamais par-dessus ce que la personne a déjà saisi.
   const prefills = t.form.message.prefill;
   useEffect(() => {
-    const subject = new URLSearchParams(window.location.search).get("sujet");
-    const { need, message } = resolveContactSubject(subject, prefills);
+    const params = new URLSearchParams(window.location.search);
+    const { need, message } = resolveContactSubject(
+      params.get("sujet"),
+      prefills,
+      params.get("modele"),
+    );
     if (need || message)
       setValues((v) => ({
         ...v,

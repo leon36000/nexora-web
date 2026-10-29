@@ -3,15 +3,6 @@ import type { GatewayDictionary } from "./gateway-fr-CA";
 /** Gateway dictionary (en-CA), milestone S5. Same structure as the fr-CA one; no invented figures or claims. */
 export const gatewayEnCA: GatewayDictionary = {
   meta: {
-    models: {
-      title: "Models | Nexora AI",
-      description:
-        "Catalogue of AI models available through the Nexora AI API: prices in Canadian dollars, context window, capabilities and hosting location for each.",
-    },
-    model: {
-      description:
-        "Model page for {name}: price per million tokens in Canadian dollars, context window, hosting and an example call.",
-    },
     docs: {
       title: "API documentation | Nexora AI",
       description:
@@ -26,13 +17,6 @@ export const gatewayEnCA: GatewayDictionary = {
     europe: "Hosted in Europe",
     autre: "Hosted outside Canada",
   },
-  residencyFilter: {
-    quebec: "Quebec",
-    canada: "Canada",
-    etats_unis: "United States",
-    europe: "Europe",
-    autre: "Other",
-  },
   capabilities: {
     tools: "Tool calling",
     vision: "Vision",
@@ -41,94 +25,6 @@ export const gatewayEnCA: GatewayDictionary = {
     json_mode: "JSON mode",
   },
   kinds: { chat: "Chat", embedding: "Embeddings" },
-
-  catalog: {
-    label: "Models",
-    title: "Every model, one API.",
-    lead: "One key, an OpenAI-compatible API, prices in Canadian dollars, and the hosting location of every model shown plainly.",
-    filtersLabel: "Filter models",
-    residencyField: "Hosting",
-    capabilityField: "Capability",
-    kindField: "Type",
-    all: "All",
-    apply: "Apply",
-    reset: "Reset",
-    count: "{count} model(s)",
-    empty: "No model matches these filters.",
-    emptyCatalog: "The catalogue is being prepared: no model is published yet.",
-    unit: "per million tokens",
-    priceNote: "Prices in Canadian dollars (CAD), before taxes.",
-    input: "Input",
-    output: "Output",
-    cachedInput: "Cached input",
-    context: "Context",
-    tokens: "tokens",
-    viewModel: "View the page for {name}",
-    devNote: "Development pricing",
-    updated: "Catalogue as of {date}",
-  },
-
-  sheet: {
-    title: "Technical sheet",
-    lead: "What the model's publisher reports. Every figure links to its source; an unknown point is left out rather than invented.",
-    family: "Family",
-    released: "Released",
-    license: "Licence",
-    licenseUnread: "Text not read",
-    openWeights: "Open weights",
-    closedWeights: "Weights not released",
-    parameters: "Parameters",
-    total: "{n}B total",
-    active: "{n}B active",
-    modalities: "Accepted inputs",
-    modality: {
-      text: "text",
-      image: "image",
-      video: "video",
-      audio: "audio",
-      embedding: "vectors (embeddings)",
-    },
-    benchmarks: "Published benchmarks",
-    benchmarksLead:
-      "Publisher figures, with their source. Protocols differ between publishers: they are not strictly comparable.",
-    noBenchmarks: "No official benchmark figures are published yet.",
-    benchmark: "Benchmark",
-    score: "Result",
-    publisher: "Published by",
-    sources: "Sources",
-    readOn: "read on {date}",
-    windows: "Time-of-day pricing",
-    windowsLead:
-      "The base price applies outside these windows; times are in UTC.",
-    window: "“{label}” window",
-    cacheWrite: "Cache write",
-    days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  },
-  detail: {
-    back: "All models",
-    pricing: "Pricing",
-    pricingLead:
-      "Billed at the actual cost of each request, based on input and output tokens.",
-    context: "Maximum context",
-    maxOutput: "Maximum output",
-    capabilities: "Capabilities",
-    noCapabilities: "No particular capability declared.",
-    hosting: "Hosting and data",
-    hostingProvider: "Provider",
-    hostingRegion: "Hosting location",
-    dataPolicy: "Data policy declared by the provider",
-    dataPolicyMissing: "The provider has not declared a data policy yet.",
-    nexoraNote:
-      "Nexora AI’s gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests.",
-    sunset: "Scheduled for retirement on {date}.",
-    example: "Example call",
-    exampleLead:
-      "Replace the example key with yours. The examples use the API address: {url}.",
-    exampleEmbeddingLead:
-      "This model produces vectors: call it through /v1/embeddings.",
-    createKey: "Create an API key",
-    docs: "Read the documentation",
-  },
 
   docs: {
     label: "API",

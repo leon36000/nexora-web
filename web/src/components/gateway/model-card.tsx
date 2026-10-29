@@ -2,101 +2,112 @@ import Link from "next/link";
 import { CARD_LINK, Card } from "@/components/ui/card";
 import { fmt } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
-import {
-  formatInteger,
-  formatPriceCad,
-  type GatewayDictionary,
-} from "@/i18n/gateway";
+import { formatPriceCad } from "@/i18n/gateway";
+import { formatTokensShort, type ModelsText } from "@/i18n/models";
+import { type CatalogQuery, modelAnchor } from "@/lib/models/query";
 import type { PublicModel } from "@/server/gateway/public";
-import { ResidencyBadge } from "./residency-badge";
+import { CompareToggle } from "./compare-toggle";
+import { LicenseBadge, PreviewBadge, TagChips } from "./model-badges";
 
-const CAPABILITY_ORDER = [
-  "tools",
-  "vision",
-  "reasoning",
-  "streaming",
-  "json_mode",
-] as const;
-
-export function activeCapabilities(model: PublicModel) {
-  return CAPABILITY_ORDER.filter((c) => model.capabilities[c] === true);
+export function modelHref(lang: Lang, id: string): string {
+  return localizePath(lang, `/modeles/${id}`);
 }
 
-/** Carte de modèle du catalogue : nom, hébergement, prix par million de jetons, contexte, capacités. */
+/**
+ * Carte d'un modèle du catalogue : nom, éditeur, étiquettes, extrait de la description, contexte et prix par million
+ * de jetons, badges de licence et d'aperçu. Le titre est le lien de la carte (un seul arrêt de tabulation) ;
+ * « Comparer » reste cliquable au-dessus.
+ */
 export function ModelCard({
   model,
   lang,
   t,
+  query,
+  base,
+  showResidency,
 }: {
   model: PublicModel;
   lang: Lang;
-  t: GatewayDictionary;
+  t: ModelsText;
+  query: CatalogQuery;
+  base: string;
+  showResidency: boolean;
 }) {
-  const c = t.catalog;
+  const c = t.list.card;
   const description = lang === "fr" ? model.descriptionFr : model.descriptionEn;
-  const caps = activeCapabilities(model);
-  const href = localizePath(lang, `/modeles/${model.id}`);
+  const sheet = model.sheet;
   return (
-    <Card interactive as="article" className="flex h-full flex-col">
-      <ResidencyBadge region={model.residency} t={t} />
-      <h2 className="mt-4 font-display text-h4 text-fg">
+    <Card
+      interactive
+      as="article"
+      id={modelAnchor(model.id)}
+      className="flex h-full scroll-mt-24 flex-col"
+    >
+      <div className="flex min-h-6 flex-wrap items-center gap-x-4 gap-y-1">
+        {model.availability === "preview" ? <PreviewBadge t={t} /> : null}
+        <LicenseBadge model={model} t={t} />
+      </div>
+      <h2 className="mt-3 font-display text-h4 text-fg">
         <Link
-          href={href}
+          href={modelHref(lang, model.id)}
           prefetch={false}
           className={CARD_LINK}
-          aria-label={fmt(c.viewModel, { name: model.name })}
+          aria-label={fmt(c.view, { name: model.name })}
         >
           {model.name}
         </Link>
       </h2>
-      <p className="mt-1 font-mono text-small text-fg-muted">{model.id}</p>
+      <p className="mt-1 text-small text-fg-muted">
+        {[sheet.author, sheet.family].filter(Boolean).join(" · ") || " "}
+      </p>
+      <p className="mt-1 break-all font-mono text-label text-fg-muted">
+        {model.id}
+      </p>
+      {sheet.tags?.length ? (
+        <TagChips tags={sheet.tags} t={t} className="mt-4" />
+      ) : null}
       {description ? (
-        <p className="mt-3 line-clamp-3 text-small text-fg-muted">
+        <p className="mt-4 line-clamp-3 text-small text-fg-muted">
           {description}
         </p>
       ) : null}
+      {showResidency ? (
+        <p className="mt-3 text-small text-fg-muted">
+          {t.residency[model.residency]}
+        </p>
+      ) : null}
 
-      <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-small">
+      <dl className="mt-auto grid grid-cols-3 gap-x-3 gap-y-1 pt-5 text-small">
+        <div>
+          <dt className="text-fg-muted">{c.context}</dt>
+          <dd className="mt-0.5 tabular-nums text-fg">
+            {formatTokensShort(lang, model.contextMax)}
+          </dd>
+        </div>
         <div>
           <dt className="text-fg-muted">{c.input}</dt>
           <dd className="mt-0.5 tabular-nums text-fg">
             {formatPriceCad(lang, model.inputPerMillion)}
           </dd>
         </div>
-        {model.kind === "chat" ? (
-          <div>
-            <dt className="text-fg-muted">{c.output}</dt>
-            <dd className="mt-0.5 tabular-nums text-fg">
-              {formatPriceCad(lang, model.outputPerMillion)}
-            </dd>
-          </div>
-        ) : null}
-        <div className="col-span-2">
-          <dt className="text-fg-muted">{c.context}</dt>
+        <div>
+          <dt className="text-fg-muted">{c.output}</dt>
           <dd className="mt-0.5 tabular-nums text-fg">
-            {formatInteger(lang, model.contextMax)} {c.tokens}
+            {model.kind === "chat"
+              ? formatPriceCad(lang, model.outputPerMillion)
+              : t.list.table.none}
           </dd>
         </div>
       </dl>
-      <p className="mt-2 text-small text-fg-muted">{c.unit}</p>
-
-      {caps.length > 0 ? (
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {caps.map((cap) => (
-            <li
-              key={cap}
-              className="rounded-xs border border-line px-2 py-0.5 text-small text-fg-muted"
-            >
-              {t.capabilities[cap]}
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      <p className="mt-2 text-label text-fg-muted">{c.unit}</p>
       {model.note ? (
-        <p className="mt-4 font-mono text-label uppercase text-fg-muted">
+        <p className="mt-2 font-mono text-label uppercase text-fg-muted">
           {c.devNote}
         </p>
       ) : null}
+      <div className="relative z-10 mt-4">
+        <CompareToggle model={model} query={query} base={base} t={t} />
+      </div>
     </Card>
   );
 }

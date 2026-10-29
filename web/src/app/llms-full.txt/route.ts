@@ -109,6 +109,12 @@ export async function GET(request: Request) {
     devPrice: m.note !== "",
     inputPerMillion: m.inputPerMillion,
     outputPerMillion: m.outputPerMillion,
+    ...(m.sheet.author ? { author: m.sheet.author } : {}),
+    preview: m.availability === "preview",
+    url: {
+      fr: `${SITE_URL}${localizePath("fr", `/modeles/${m.id}`)}`,
+      en: `${SITE_URL}${localizePath("en", `/modeles/${m.id}`)}`,
+    },
   }));
   const apps: LlmsVpsApp[] = vps.apps.map((a) => ({
     name: a.name,

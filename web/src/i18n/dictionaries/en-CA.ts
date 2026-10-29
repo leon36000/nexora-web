@@ -297,6 +297,7 @@ export const enCA: Dictionary = {
           "apps-privacy-router": "Question about Nexora Privacy Router: ",
           "apps-creative": "Waiting list: Nexora Creative.",
           "apps-outils": "Waiting list: Nexora free tools.",
+          "modele-apercu": "Please let me know when this model opens: ",
         },
       },
       consentMarketing: {

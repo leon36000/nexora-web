@@ -1,4 +1,4 @@
-import { LANGS, type Lang } from "@/i18n/config";
+import { LANGS, type Lang, localizePath } from "@/i18n/config";
 import {
   factLines,
   factsFor,
@@ -32,6 +32,12 @@ export interface LlmsModel {
   devPrice: boolean;
   inputPerMillion: string;
   outputPerMillion: string;
+  /** Éditeur du modèle (fiche), s'il est renseigné. */
+  author?: string;
+  /** Aperçu : fiche et prix publiés, pas encore appelable. */
+  preview?: boolean;
+  /** Adresse absolue de la fiche, par langue. */
+  url?: Record<Lang, string>;
 }
 
 export interface LlmsCatalog {
@@ -65,12 +71,18 @@ const T = {
     columns: [
       "Modèle",
       "Identifiant",
+      "Éditeur",
+      "État",
       "Fournisseur",
       "Hébergement",
       "Contexte (jetons)",
       "Entrée / sortie",
     ],
     devPrice: "prix de développement, non publié",
+    live: "disponible",
+    preview: "aperçu",
+    rankings:
+      "Classements par épreuve (résultats publiés, avec leur éditeur et leur source) :",
     embedding: "embeddings",
     vps: "Applications VPS",
     vpsIntro:
@@ -87,12 +99,18 @@ const T = {
     columns: [
       "Model",
       "Identifier",
+      "Publisher",
+      "Status",
       "Provider",
       "Hosting",
       "Context (tokens)",
       "Input / output",
     ],
     devPrice: "development price, not published",
+    live: "available",
+    preview: "preview",
+    rankings:
+      "Rankings by benchmark (published results, with their publisher and source):",
     embedding: "embeddings",
     vps: "VPS applications",
     vpsIntro:
@@ -110,6 +128,7 @@ function catalogSection(
   catalog: LlmsCatalog,
   lang: Lang,
   tag: string,
+  siteUrl: string,
 ): string[] {
   if (catalog.models.length === 0) return [];
   const t = T[lang];
@@ -119,7 +138,10 @@ function catalogSection(
       : m.kind === "embedding"
         ? `${m.inputPerMillion} (${t.embedding})`
         : `${m.inputPerMillion} / ${m.outputPerMillion}`;
-    return `| ${[cell(m.name), `\`${m.id}\``, cell(m.provider), cell(m.residency[lang]), grouped(m.contextMax), cell(price)].join(" | ")} |`;
+    const name = m.url
+      ? `[${cell(m.name).replace(/[[\]]/g, "")}](${m.url[lang]})`
+      : cell(m.name);
+    return `| ${[name, `\`${m.id}\``, cell(m.author ?? "—"), m.preview ? t.preview : t.live, cell(m.provider), cell(m.residency[lang]), grouped(m.contextMax), cell(price)].join(" | ")} |`;
   });
   const when = catalog.publishedAt?.slice(0, 10);
   return [
@@ -131,6 +153,8 @@ function catalogSection(
     `| ${t.columns.join(" | ")} |`,
     `| ${t.columns.map(() => "---").join(" | ")} |`,
     ...rows,
+    "",
+    `${t.rankings} ${siteUrl}${localizePath(lang, "/modeles/benchmarks")}`,
     "",
   ];
 }
@@ -185,7 +209,8 @@ export function buildLlmsFullTxt(input: LlmsFullInput): string {
         lines.push(d.markdown.trim(), "");
       }
     }
-    if (input.catalog) lines.push(...catalogSection(input.catalog, lang, tag));
+    if (input.catalog)
+      lines.push(...catalogSection(input.catalog, lang, tag, input.siteUrl));
     if (input.vps) lines.push(...vpsSection(input.vps, lang, tag));
   }
   return `${lines

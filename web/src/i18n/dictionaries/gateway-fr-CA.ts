@@ -1,20 +1,11 @@
 /**
- * Dictionnaire de la passerelle de modèles (fr-CA), jalon S5 : catalogue public, fiches, documentation
- * de l’API et section « Clés API » de l’espace client. Même règles que les autres dictionnaires :
+ * Dictionnaire de la passerelle de modèles (fr-CA), jalon S5 : documentation
+ * de l’API (le catalogue public, les fiches, le comparateur et les classements ont leur dictionnaire : `models-fr-CA.ts`) et section « Clés API » de l’espace client. Même règles que les autres dictionnaires :
  * vouvoiement, aucun chiffre, prix, certification ou promesse inventé (les prix et les lieux
  * d’hébergement viennent du catalogue publié). Marqueurs `{nom}` remplacés par `fmt()`.
  */
 export const gatewayFrCA = {
   meta: {
-    models: {
-      title: "Modèles | Nexora AI",
-      description:
-        "Catalogue des modèles d’IA accessibles par l’API de Nexora AI : prix en dollars canadiens, contexte, capacités et lieu d’hébergement de chacun.",
-    },
-    model: {
-      description:
-        "Fiche du modèle {name} : prix par million de jetons en dollars canadiens, contexte, hébergement et exemple d’appel.",
-    },
     docs: {
       title: "Documentation de l’API | Nexora AI",
       description:
@@ -29,13 +20,6 @@ export const gatewayFrCA = {
     europe: "Hébergé en Europe",
     autre: "Hébergement hors Canada",
   },
-  residencyFilter: {
-    quebec: "Québec",
-    canada: "Canada",
-    etats_unis: "États-Unis",
-    europe: "Europe",
-    autre: "Autre",
-  },
   capabilities: {
     tools: "Appel d’outils",
     vision: "Vision",
@@ -44,96 +28,6 @@ export const gatewayFrCA = {
     json_mode: "Mode JSON",
   },
   kinds: { chat: "Conversation", embedding: "Embeddings" },
-
-  catalog: {
-    label: "Modèles",
-    title: "Les modèles, une seule API.",
-    lead: "Une clé, une API compatible OpenAI, des prix en dollars canadiens et le lieu d’hébergement de chaque modèle affiché clairement.",
-    filtersLabel: "Filtrer les modèles",
-    residencyField: "Hébergement",
-    capabilityField: "Capacité",
-    kindField: "Type",
-    all: "Tous",
-    apply: "Appliquer",
-    reset: "Réinitialiser",
-    count: "{count} modèle(s)",
-    empty: "Aucun modèle ne correspond à ces filtres.",
-    emptyCatalog:
-      "Le catalogue est en cours de préparation : aucun modèle n’est publié pour le moment.",
-    unit: "par million de jetons",
-    priceNote: "Prix en dollars canadiens (CAD), avant taxes.",
-    input: "Entrée",
-    output: "Sortie",
-    cachedInput: "Entrée en cache",
-    context: "Contexte",
-    tokens: "jetons",
-    viewModel: "Voir la fiche de {name}",
-    devNote: "Prix de développement",
-    updated: "Catalogue au {date}",
-  },
-
-  sheet: {
-    title: "Fiche technique",
-    lead: "Ce que l’éditeur du modèle publie. Chaque chiffre renvoie à sa source ; un point inconnu reste absent plutôt qu’inventé.",
-    family: "Famille",
-    released: "Publié le",
-    license: "Licence",
-    licenseUnread: "Texte non lu",
-    openWeights: "Poids ouverts",
-    closedWeights: "Poids non publiés",
-    parameters: "Paramètres",
-    total: "{n} G au total",
-    active: "{n} G actifs",
-    modalities: "Entrées acceptées",
-    modality: {
-      text: "texte",
-      image: "image",
-      video: "vidéo",
-      audio: "audio",
-      embedding: "vecteurs (embeddings)",
-    },
-    benchmarks: "Mesures publiées",
-    benchmarksLead:
-      "Mesures de l’éditeur, avec leur source. Les protocoles diffèrent d’un éditeur à l’autre : elles ne sont pas strictement comparables.",
-    noBenchmarks: "Aucune mesure officielle chiffrée n’est publiée à ce jour.",
-    benchmark: "Mesure",
-    score: "Résultat",
-    publisher: "Publié par",
-    sources: "Sources",
-    readOn: "lue le {date}",
-    windows: "Tarifs selon l’heure",
-    windowsLead:
-      "Le prix de base s’applique en dehors de ces plages ; les heures sont en UTC.",
-    window: "Plage « {label} »",
-    cacheWrite: "Écriture en cache",
-    days: ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
-  },
-  detail: {
-    back: "Tous les modèles",
-    pricing: "Tarification",
-    pricingLead:
-      "Facturé au coût réel de chaque requête, selon les jetons d’entrée et de sortie.",
-    context: "Contexte maximal",
-    maxOutput: "Sortie maximale",
-    capabilities: "Capacités",
-    noCapabilities: "Aucune capacité particulière déclarée.",
-    hosting: "Hébergement et données",
-    hostingProvider: "Fournisseur",
-    hostingRegion: "Lieu d’hébergement",
-    dataPolicy: "Politique de données déclarée par le fournisseur",
-    dataPolicyMissing:
-      "Le fournisseur n’a pas encore déclaré de politique de données.",
-    nexoraNote:
-      "La passerelle de Nexora AI ne garde que des métadonnées d’usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes.",
-    sunset: "Retrait prévu le {date}.",
-    example: "Exemple d’appel",
-    exampleLead:
-      "Remplacez la clé de l’exemple par la vôtre. Les exemples utilisent l’adresse de l’API : {url}.",
-    exampleEmbeddingLead:
-      "Ce modèle produit des vecteurs : il s’appelle par /v1/embeddings.",
-    createKey: "Créer une clé API",
-    docs: "Lire la documentation",
-  },
 
   docs: {
     label: "API",
