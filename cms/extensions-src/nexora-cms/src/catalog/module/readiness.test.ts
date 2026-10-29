@@ -42,7 +42,9 @@ describe("contrôles préalables à la publication", () => {
     expect(bad).toEqual(["fx", "price", "secret"]);
     expect(items.find((i) => i.id === "secret")?.help).toContain("Coffre");
     // la consigne nomme la référence à saisir dans le Coffre
-    expect(items.find((i) => i.id === "secret")?.help).toContain("« llm.deepinfra »");
+    expect(items.find((i) => i.id === "secret")?.help).toContain(
+      "« llm.deepinfra »",
+    );
     // sans prix, la marge ne peut pas être jugée : elle n'est pas fautive
     expect(items.find((i) => i.id === "margin")?.ok).toBe(true);
   });

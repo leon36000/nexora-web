@@ -319,7 +319,7 @@ export function visibleErrors(
   form: PriceForm,
   errors: Record<string, string>,
 ): Record<string, string> {
-  const valueOf = (key: string): string | undefined => {
+  const fieldValue = (key: string): string | undefined => {
     const m = /^w(\d+)\.(\w+)$/.exec(key);
     if (m) {
       const w = form.windows[Number(m[1])];
@@ -334,7 +334,7 @@ export function visibleErrors(
   return Object.fromEntries(
     Object.entries(errors).filter(
       ([key, message]) =>
-        !(message === AMOUNT_REQUIRED && (valueOf(key) ?? "").trim() === ""),
+        !(message === AMOUNT_REQUIRED && (fieldValue(key) ?? "").trim() === ""),
     ),
   );
 }
