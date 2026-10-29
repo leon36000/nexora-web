@@ -137,7 +137,7 @@ Il n'est pas livré dans WorkStudio ; il peut être étudié sur mesure, à par
 
 #### Il ne connaît pas vos règles fiscales.
 
-Les modèles de départ sont généraux ; taxes, formats et vocabulaire s'adaptent à l'entreprise.
+Les modèles de départ sont adaptés au Québec, mais ne garantissent aucune conformité fiscale ou légale : votre comptable ou votre conseiller les valide.
 
 #### Il ne remplace pas un juriste.
 

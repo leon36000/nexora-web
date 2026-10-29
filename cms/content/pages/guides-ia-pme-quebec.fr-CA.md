@@ -135,7 +135,7 @@ Un modèle de départ résume un contrat (délais, montants, clauses à faire re
 
 #### Elle ne connaît pas vos règles fiscales.
 
-Les modèles de départ pour PME sont généraux et ne suivent pas les règles fiscales du Québec ; taxes, formats et vocabulaire s'adaptent à l'entreprise.
+Les modèles de départ pour PME sont adaptés au Québec, mais ne garantissent aucune conformité fiscale ou légale ; votre comptable ou votre conseiller les valide.
 
 #### Elle ne répond pas au téléphone.
 

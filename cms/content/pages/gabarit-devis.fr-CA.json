@@ -7,14 +7,14 @@
     "slug": "gabarits-flux-de-travaux/devis",
     "title": "Devis client",
     "seo_title": "Devis client : gabarit de flux de travaux",
-    "seo_description": "Devis client : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qu'il faut adapter au Québec avant l'usage.",
+    "seo_description": "Devis client : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qui reste à valider avec votre conseiller.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la fiche : ce que fait le gabarit « Devis client », dit sans détour.",
-      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M12", "CL-M13"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Gabarit · Ventes et clients",
         "headline": "Devis client.",
-        "subheadline": "Le gabarit Devis client rédige un devis structuré à partir du client et d'une liste de prestations avec leurs quantités et leurs prix unitaires avant taxes : un tableau, les totaux, la durée de validité et les conditions de paiement.",
+        "subheadline": "Le gabarit Devis client rédige un devis structuré à partir du client et de ses prestations, prix unitaires avant taxes : un tableau, le sous-total, la TPS à 5 %, la TVQ à 9,975 % calculée sur le sous-total, le total en dollars canadiens, la validité et les conditions de paiement.",
         "primary_label": "Voir tous les gabarits",
         "primary_href": "/gabarits-flux-de-travaux/",
         "secondary_label": "Demander une démonstration",
@@ -32,7 +32,15 @@
     {
       "collection": "block_section",
       "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -40,14 +48,22 @@
       },
       "translation": {
         "title": "La réponse en bref.",
-        "body": "<p>Le gabarit Devis client rédige un devis structuré à partir du client et d'une liste de prestations avec leurs quantités et leurs prix unitaires avant taxes : un tableau, les totaux, la durée de validité et les conditions de paiement. Une personne relit le texte avant de l'envoyer.</p><p>Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourni comme point de départ dans WorkStudio et à adapter à l'entreprise avant son déploiement.</p>",
+        "body": "<p>Le gabarit Devis client rédige un devis structuré à partir du client et de ses prestations, prix unitaires avant taxes : un tableau, le sous-total, la TPS à 5 %, la TVQ à 9,975 % calculée sur le sous-total, le total en dollars canadiens, la validité et les conditions de paiement. Une personne relit le texte avant de l'envoyer.</p><p>Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourni comme point de départ dans WorkStudio et à adapter à l'entreprise avant son déploiement.</p>",
         "items": []
       }
     },
     {
       "collection": "block_section",
       "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -55,14 +71,22 @@
       },
       "translation": {
         "title": "Ce que vous fournissez.",
-        "body": "<p>Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le client.</strong> Nom et coordonnées du client.</li><li><strong>Les prestations.</strong> Prestations, quantités et prix unitaires avant taxes.</li></ul>",
+        "body": "<p>Chaque champ de départ est prérempli d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le client.</strong> Nom et coordonnées du client.</li><li><strong>Les prestations.</strong> Prestations, quantités et prix unitaires avant taxes.</li></ul>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -74,7 +98,7 @@
         "cards": [
           {
             "title": "Rédiger le devis.",
-            "text": "Un agent présente un tableau (désignation, quantité, prix unitaire, total), puis les totaux avec la taxe, la durée de validité et les conditions de paiement."
+            "text": "Un agent présente un tableau (désignation, quantité, prix unitaire, total avant taxes), puis le sous-total, la TPS à 5 % et la TVQ à 9,975 %, chacune calculée sur le sous-total, jamais sur la TPS, et arrondie au cent. Il ajoute le total taxes incluses, la validité de trente jours, le paiement net à trente jours et, en en-tête, les numéros TPS, TVQ et NEQ à compléter."
           },
           {
             "title": "Relire.",
@@ -86,7 +110,15 @@
     {
       "collection": "block_cards",
       "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -98,11 +130,11 @@
         "cards": [
           {
             "title": "Ce qui s'adapte ici.",
-            "text": "Le gabarit calcule une TVA de type français, avec une validité et des conditions de paiement fixées d'avance. Au Québec, il faut y mettre la TPS et la TVQ et vos propres conditions."
+            "text": "Les numéros d'inscription à la TPS et à la TVQ et le numéro d'entreprise du Québec (NEQ) restent entre crochets, à compléter. Une prestation exonérée de taxes, ou une entreprise non inscrite, est signalée entre crochets plutôt que devinée. Seules la TPS fédérale et la TVQ sont prévues : les taxes d'autres provinces, comme la taxe de vente harmonisée, ne le sont pas."
           },
           {
             "title": "Ce qui vaut pour tous.",
-            "text": "Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage."
+            "text": "Les gabarits sont rédigés pour une PME du Québec : montants en dollars canadiens, TPS et TVQ quand une taxe entre en jeu, courriel et infolettre. Ils ne garantissent aucune conformité fiscale ou légale : les exemples sont fictifs, et votre comptable ou votre conseiller valide le résultat avant l'usage."
           },
           {
             "title": "Rien n'est envoyé.",
@@ -114,7 +146,15 @@
     {
       "collection": "block_faq",
       "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -129,11 +169,11 @@
           },
           {
             "question": "Le gabarit calcule-t-il la TPS et la TVQ ?",
-            "answer": "Non. Aucune logique de TPS ni de TVQ n'y figure : le calcul est celui d'une TVA unique de type français. Il faut adapter la consigne avant de l'utiliser au Québec."
+            "answer": "Oui, par sa consigne : la TPS à 5 % et la TVQ à 9,975 %, chacune sur le sous-total avant taxes et arrondie au cent. C'est un agent qui calcule à partir du texte, pas un logiciel de comptabilité : relisez les montants avant d'envoyer le devis."
           },
           {
-            "question": "Convient-il tel quel au Québec ?",
-            "answer": "Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+            "question": "Convient-il à mon entreprise ?",
+            "answer": "Il part d'un devis d'une entreprise du Québec, avec des exemples fictifs. Votre statut d'inscription aux taxes, vos prestations exonérées et vos conditions ne sont pas devinés : votre comptable ou votre conseiller valide le devis avant l'envoi."
           }
         ]
       }

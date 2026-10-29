@@ -107,7 +107,7 @@ Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce qui reste sous contrôle, y compris les limites ; carte données avec lien Vos données. · Affirmations : CL-128, CL-21, CL-125, CL-111, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
+*Ce qui reste sous contrôle, y compris les limites ; carte données avec lien Vos données. · Affirmations : CL-128, CL-21, CL-125, CL-M15, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
@@ -123,7 +123,7 @@ L'écriture dans votre logiciel comptable passe par un connecteur à qualifier, 
 
 #### Vos champs, vos taxes.
 
-Les modèles de départ sont généraux et ne suivent pas les règles fiscales du Québec : vos champs (TPS, TVQ, numéro de projet) se définissent avec nous, puis se vérifient sur vos pièces.
+Les modèles de lecture de documents ne sont pas encore adaptés aux taxes du Québec (TVA, hors taxes, toutes taxes comprises) : vos champs (TPS, TVQ, numéro de projet) se définissent avec nous, puis se vérifient sur vos pièces.
 
 #### Une personne relit les doutes.
 

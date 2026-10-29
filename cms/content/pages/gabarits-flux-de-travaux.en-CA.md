@@ -7,13 +7,13 @@
 - Page : `gabarits-flux-de-travaux` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/workflow-templates/` · slug : `workflow-templates`
 - Titre SEO (37 caractères) : Workflow templates for small business
-- Description SEO (154 caractères) : Twenty-nine WorkStudio templates for small business: quotes, follow-ups, email triage, minutes, invoices and contracts. An honest sheet for each template.
+- Description SEO (158 caractères) : Twenty-nine WorkStudio templates adapted to Quebec, to be validated: quotes, follow-ups, email triage, invoices, contracts. An honest sheet for each template.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la page : des gabarits de départ pour PME, avec leur limite (rédigés pour la France). · Affirmations : CL-M01, CL-M02, CL-M03*
+*Promesse de la page : des gabarits de départ pour PME, avec leur limite (adaptés au Québec, à valider). · Affirmations : CL-M01, CL-M02, CL-M03, CL-M12, CL-M13, CL-M14*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,25 +21,25 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Workflow templates for small businesses.
 
-Twenty-nine starter templates for a small business's everyday tasks: quotes, follow-ups, email triage, minutes, invoice and contract checks. An honest sheet for each.
+Twenty-nine starter templates for a small business's everyday tasks: quotes, follow-ups, email triage, minutes, invoice and contract checks. Adapted to Quebec, to be validated: an honest sheet for each.
 
 [See WorkStudio](/en/workstudio/) · [Request a demo](/en/contact/?sujet=demonstration)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : ce que sont les gabarits, combien, leur limite, l'envoi. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92*
+*Réponse d'abord : ce que sont les gabarits, combien, leur limite, l'envoi. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92, CL-M12, CL-M13, CL-M14*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 ## The short answer.
 
-WorkStudio provides twenty-nine workflow templates for small businesses: quotes, follow-ups, email triage, minutes, invoice and contract checks. A template is a starter flow, written for a French small business: you adapt it to your company before deploying it. Those that send an email first wait for a person's approval.
+WorkStudio provides twenty-nine workflow templates for small businesses: quotes, follow-ups, email triage, minutes, invoice and contract checks. A template is a starter flow adapted to Quebec (Canadian dollars, GST and QST), to be validated with your accountant or adviser before deployment. Those that send an email first wait for a person's approval.
 
 A workflow is an automated sequence of tasks. An agent is software that accomplishes a task with the tools you authorize.
 
 ### Bloc 3 — Section (`block_section`)
 
-*Comment on adapte un gabarit : décrire, relire, tester, déployer une version. · Affirmations : CL-92, CL-91, CL-P02*
+*Comment on adapte un gabarit : décrire, relire, tester, déployer une version. · Affirmations : CL-92, CL-91, CL-P02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=adapter`
 
@@ -51,7 +51,7 @@ Nexora AI can set the templates up with you: see the [method](/en/method/) and t
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les gabarits : ventes et clients. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : ventes et clients. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=groupe-ventes`
 
@@ -61,7 +61,7 @@ Quotes, follow-ups, replies to customers and to tenders.
 
 #### Customer quote.
 
-The Customer quote template drafts a structured quote from the customer and a list of services with quantities and unit prices before tax: a table, the totals, the validity period and the payment terms.
+The Customer quote template drafts a structured quote from the customer and their services, unit prices before tax: a table, the subtotal, GST at 5%, QST at 9.975% calculated on the subtotal, the total in Canadian dollars, the validity period and the payment terms.
 
 → [See the sheet](/en/workflow-templates/quote/)
 
@@ -115,7 +115,7 @@ The Tender response template checks each requirement in the specification agains
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Les gabarits : courriels et réunions. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : courriels et réunions. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=2`, `tone=sable`, `layout=grille`, `anchor_id=groupe-courriels`
 
@@ -149,7 +149,7 @@ The Interview minutes template turns the notes of an interview (customer, candid
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Les gabarits : finance et documents. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : finance et documents. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=3`, `tone=clair`, `layout=liste`, `anchor_id=groupe-finance`
 
@@ -159,13 +159,13 @@ Invoices, contracts, conformity and claims.
 
 #### Supplier invoice check.
 
-The Supplier invoice check template first extracts the invoice data (supplier, number, date, totals, tax, company number), then checks that the pre-tax total plus tax equals the total, that mandatory mentions are present, and concludes "À PAYER" or "À VÉRIFIER".
+The Supplier invoice check template extracts the invoice data (supplier, number, date, subtotal, GST, QST, total, registration numbers and NEQ), then checks the calculations (GST at 5%, QST at 9.975% of the subtotal) and the format of the numbers, and concludes "À PAYER" or "À VÉRIFIER".
 
 → [See the sheet](/en/workflow-templates/supplier-invoice-check/)
 
 #### Supplier invoice extraction.
 
-The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, totals, tax, due date), with null for any missing value, then checks the totals are consistent and concludes "COHÉRENTE" or "À VÉRIFIER".
+The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, subtotal, GST, QST, total, due date), with null for any missing value, then checks the totals and taxes are consistent and concludes "COHÉRENTE" or "À VÉRIFIER".
 
 → [See the sheet](/en/workflow-templates/supplier-invoice-extraction/)
 
@@ -195,7 +195,7 @@ The Claim triage template classifies a claim report (category, urgency, summary,
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Les gabarits : rapports et suivi. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : rapports et suivi. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=2`, `tone=sable`, `layout=grille`, `anchor_id=groupe-rapports`
 
@@ -229,7 +229,7 @@ The Competitor watch note template produces a structured note from extracts you 
 
 ### Bloc 8 — Cartes (`block_cards`)
 
-*Les gabarits : communication et équipe. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : communication et équipe. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=groupe-equipe`
 
@@ -245,7 +245,7 @@ The Job posting template writes a clear ad from the job title, duties and profil
 
 #### New employee welcome.
 
-The New employee welcome template prepares the warm welcome email and a two-part preparation list: what the company prepares (workstation, access, badge, contract) and what the person brings.
+The New employee welcome template prepares the warm welcome email and a two-part preparation list: what the company prepares (workstation, access, access card, employment contract) and what the person brings (identity documents, social insurance number, direct deposit, TD1 and TP-1015.3-V forms).
 
 → [See the sheet](/en/workflow-templates/new-employee-welcome/)
 
@@ -257,7 +257,7 @@ The Monthly newsletter template composes the month's newsletter from your raw in
 
 #### Social media posts.
 
-The Social media posts template proposes three posts from a news item and the style you want: one for LinkedIn (professional, six hundred characters at most), one for Facebook (friendly) and one for Instagram (short, with five keywords), each ending with a call to action.
+The Social media posts template proposes three posts from a news item and the style you want: one for LinkedIn (professional, six hundred characters at most), one for Facebook (friendly) and one for Instagram (short, with five hashtags), each ending with a call to action.
 
 → [See the sheet](/en/workflow-templates/social-media-posts/)
 
@@ -275,19 +275,21 @@ The Professional translation template translates a text into the requested langu
 
 ### Bloc 9 — Section (`block_section`)
 
-*Ce qu'un gabarit ne sait pas : règles fiscales du Québec, formats, vocabulaire. · Affirmations : CL-M02, CL-111, CL-M04*
+*Ce que fait l'adaptation au Québec (taxes, formats, vocabulaire) et ce qu'elle ne garantit pas. · Affirmations : CL-M02, CL-111, CL-M04, CL-M12, CL-M13, CL-M14, CL-M15*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
 
-## What a template does not know.
+## Adapted to Quebec, to be validated.
 
-The starter templates are general. They are written for a French small business: French-style VAT, euros, French company number. No GST, QST or Quebec business-number rule appears in them.
+The starter templates are adapted to Quebec: amounts in Canadian dollars (1,234.56$), GST at 5% and QST at 9.975% calculated on the subtotal, GST and QST registration numbers and the Quebec enterprise number (NEQ), local vocabulary and dates written out or as YYYY-MM-DD.
 
-Taxes, formats and vocabulary are adapted to the business before any use in Quebec. A template is also not accounting or legal advice: a contract summary does not replace a lawyer.
+They do not guarantee any tax or legal compliance. The examples (names, amounts, numbers) are fictional and have not been validated with Revenu Québec or the Canada Revenue Agency. Only the federal GST and the QST are covered, not other provinces' taxes. The legal references (Act respecting labour standards, Charter of human rights and freedoms, withholding forms) are only named, each time with "to be validated by your adviser". A template is not accounting or legal advice: a contract summary does not replace a lawyer.
+
+WorkStudio's scanned document reading (invoices, quotes, purchase orders, expense reports) is not covered by this adaptation: its tax fields, VAT, before tax and tax included, are still to be defined with us.
 
 ### Bloc 10 — Cartes (`block_cards`)
 
-*Ce qui s'envoie et ce qui ne s'envoie pas : cinq gabarits, tous derrière une validation. · Affirmations : CL-M03, CL-21, CL-93*
+*Ce qui s'envoie et ce qui ne s'envoie pas : cinq gabarits, tous derrière une validation. · Affirmations : CL-M03, CL-21, CL-93, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=envoi`
 
@@ -303,7 +305,7 @@ Meeting minutes, approved customer reply, conformity check, project summary and 
 
 ### Bloc 11 — FAQ (`block_faq`)
 
-*Questions de la page : définition, nombre, Québec, envoi, adaptation. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92, CL-80*
+*Questions de la page : définition, nombre, Québec, envoi, adaptation. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92, CL-80, CL-M12, CL-M13, CL-M14*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -319,7 +321,7 @@ Twenty-nine, kept in the "Modèles PME" folder that each new workspace receives.
 
 #### Do the templates suit Quebec?
 
-Not as they are. They are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business.
+They are adapted to Quebec, but to be validated: Canadian dollars, GST and QST, registration numbers and NEQ, local vocabulary. They do not guarantee any tax or legal compliance: your accountant or adviser validates the result before use.
 
 #### Can a template send emails by itself?
 

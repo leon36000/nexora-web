@@ -109,7 +109,7 @@ The expected benefit: less retyping and errors caught sooner, hence more time fo
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données. · Affirmations : CL-125, CL-126, CL-128, CL-111, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
+*Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données. · Affirmations : CL-125, CL-126, CL-128, CL-M15, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
@@ -129,7 +129,7 @@ Writing to your accounting software goes through a connector that is qualified d
 
 #### Your tax rules.
 
-The starter templates are general. Quebec taxes, categories and chart of accounts are defined with you and checked on your documents.
+The document-reading templates are not yet adapted to Quebec. Quebec taxes, categories and chart of accounts are defined with you and checked on your documents.
 
 #### No accounting advice.
 

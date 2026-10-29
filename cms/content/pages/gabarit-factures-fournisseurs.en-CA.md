@@ -7,13 +7,13 @@
 - Page : `gabarit-factures-fournisseurs` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/workflow-templates/supplier-invoice-extraction/` · slug : `workflow-templates/supplier-invoice-extraction`
 - Titre SEO (46 caractères) : Supplier invoice extraction: workflow template
-- Description SEO (158 caractères) : Supplier invoice extraction: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to adapt for Quebec before use.
+- Description SEO (157 caractères) : Supplier invoice extraction: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to validate with your adviser.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la fiche : ce que fait le gabarit « Extraction d'une facture fournisseur », dit sans détour. · Affirmations : CL-M01, CL-M02, CL-111*
+*Promesse de la fiche : ce que fait le gabarit « Extraction d'une facture fournisseur », dit sans détour. · Affirmations : CL-M01, CL-M02, CL-111, CL-M12, CL-M13, CL-M15*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,25 +21,25 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Supplier invoice extraction.
 
-The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, totals, tax, due date), with null for any missing value, then checks the totals are consistent and concludes "COHÉRENTE" or "À VÉRIFIER".
+The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, subtotal, GST, QST, total, due date), with null for any missing value, then checks the totals and taxes are consistent and concludes "COHÉRENTE" or "À VÉRIFIER".
 
 [See all templates](/en/workflow-templates/) · [Request a demo](/en/contact/?sujet=demonstration)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : ce que fait le gabarit, en trois lignes. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101*
+*Réponse d'abord : ce que fait le gabarit, en trois lignes. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101, CL-M12, CL-M13, CL-M15*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 ## The short answer.
 
-The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, totals, tax, due date), with null for any missing value, then checks the totals are consistent and concludes "COHÉRENTE" or "À VÉRIFIER". The invoice is uploaded as a PDF or image file.
+The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, subtotal, GST, QST, total, due date), with null for any missing value, then checks the totals and taxes are consistent and concludes "COHÉRENTE" or "À VÉRIFIER". The invoice is uploaded as a PDF or image file.
 
 A workflow template is an automated sequence of tasks, provided as a starting point in WorkStudio and to be adapted to the business before it is deployed.
 
 ### Bloc 3 — Section (`block_section`)
 
-*Les champs de départ du gabarit, tels que déclarés dans WorkStudio. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101*
+*Les champs de départ du gabarit, tels que déclarés dans WorkStudio. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101, CL-M12, CL-M13, CL-M15*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=champs`
 
@@ -52,7 +52,7 @@ Each starting field is pre-filled with an example value so a first run needs no 
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les étapes du flux : ce que fait chaque agent, où une personne intervient. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101*
+*Les étapes du flux : ce que fait chaque agent, où une personne intervient. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101, CL-M12, CL-M13, CL-M15*
 
 Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
@@ -60,11 +60,11 @@ Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
 #### Extract the fields.
 
-An agent answers in JSON only: supplier, number, date, totals, tax and due date; null for any value absent from the text.
+An agent answers in JSON only: fournisseur, numero, date, sous_total (before tax), tps, tvq, total and echeance, with dates as YYYY-MM-DD and amounts as numbers; null for any value absent from the text.
 
 #### Check consistency.
 
-A second agent shows the calculation, checks the due date and the absence of null values, and lists anomalies.
+A second agent shows the calculation: the subtotal, GST and QST add up to the total to within a cent, GST is 5% of the subtotal and QST 9.975% of the subtotal, never of the GST. It checks the due date and the absence of null values, flags without rejecting the missing taxes of a small unregistered supplier, and lists anomalies.
 
 #### Review.
 
@@ -72,7 +72,7 @@ You read the text produced, correct it if needed, then use or send it yourself: 
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101*
+*Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101, CL-M12, CL-M13, CL-M15*
 
 Réglages : `columns=2`, `tone=sombre`, `layout=liste`, `anchor_id=adapter`
 
@@ -80,11 +80,11 @@ Réglages : `columns=2`, `tone=sombre`, `layout=liste`, `anchor_id=adapter`
 
 #### What to adapt here.
 
-The check knows French VAT rates. For Quebec, adapt the instruction to GST and QST, and to how your suppliers present their taxes.
+The check knows federal GST and QST, not other provinces' taxes. The first agent copies the amounts from the text and recalculates nothing; the second one does the checking. An unregistered supplier adds no tax: that case is for you to check.
 
 #### What applies to all.
 
-The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use.
+The templates are written for a Quebec small business: amounts in Canadian dollars, GST and QST wherever a tax applies, and Quebec business vocabulary. They do not guarantee any tax or legal compliance: the examples are fictional, and your accountant or adviser validates the result before use.
 
 #### Nothing is sent.
 
@@ -92,7 +92,7 @@ The template produces text to review. Only five templates in the collection send
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101*
+*Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-101, CL-M12, CL-M13, CL-M15*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -104,11 +104,11 @@ No. It produces text to review; you use or send it yourself. Only five templates
 
 #### Does the template read the PDF itself?
 
-The file is uploaded to the template, and the invoice text is also requested. Reading scanned PDFs and images needs a document-reading model, to plan according to the installation.
+The file is uploaded to the template, and the invoice text is also requested. Reading scanned PDFs and images needs a document-reading model, to plan according to the installation; its tax fields (VAT, before tax, tax included) are not yet adapted to Quebec.
 
-#### Does it suit Quebec as is?
+#### Does it suit my suppliers' invoices?
 
-Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business.
+It is written for a Quebec supplier, with fictional examples. An agent checks the calculations: it does not replace your accountant, who validates the entry. Other provinces' taxes are not covered.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

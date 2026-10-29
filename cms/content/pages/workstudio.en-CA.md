@@ -284,7 +284,7 @@ Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in [Nexora Apps
 - **Verified here, not yet at a customer.** WorkStudio has been verified on Nexora AI's test server with several models hosted elsewhere than on that server. No customer result is announced.
 - **Tool-using agents need a capable model.** A small local model is not always enough for agents that call tools. The model is chosen with the case.
 - **Two options are off the beaten path.** The code interpreter is off by default and can only be turned on by an administrator. Web search sends its queries outside the instance: it is available only if an administrator turns it on.
-- **Starter templates are general.** They do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business.
+- **Starter templates are adapted to Quebec, to be validated.** They are written for Quebec (Canadian dollars, GST and QST), but do not guarantee any tax or legal compliance: your accountant or adviser validates the result.
 - **Connections are qualified.** Some services require an administrator to first register an application with the provider, and a public HTTPS address for the instance.
 
 ### Bloc 11 — FAQ (`block_faq`)
