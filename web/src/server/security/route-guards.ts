@@ -73,6 +73,15 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     }),
   ),
   {
+    route: "api/admin/webpilot/prices",
+    kind: "admin-token",
+    why: "Feuille de prix de WebPilot (lecture et publication, garde de marge) : jeton d'administration seulement",
+    probes: [
+      ...adminProbes("GET", "/api/admin/webpilot/prices"),
+      ...adminProbes("PUT", "/api/admin/webpilot/prices"),
+    ],
+  },
+  {
     route: "api/admin/vault",
     kind: "admin-token",
     why: "Coffre : dépôt et liste (jamais de valeur relue)",
