@@ -117,6 +117,8 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=sans-code`
 
 You describe the need in French; the Copilot, the building assistant, prepares a workflow that you review, test step by step, then deploy. Each deployment is a version you can return to. Starter templates for small businesses are provided. See [WorkStudio](/en/workstudio/).
 
+The starter models are described one by one in the [workflow templates](/en/workflow-templates/).
+
 ### Bloc 7 — Cartes (`block_cards`)
 
 *Ce qu'un agent ne fait pas : téléphone, rapprochement bancaire, règles fiscales, avis juridique. · Affirmations : CL-124, CL-126, CL-111, CL-129*

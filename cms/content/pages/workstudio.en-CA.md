@@ -277,6 +277,10 @@ A product is also judged by what it writes about its limits. Here are ours, as o
 
 On your premises or [with us, in Quebec](/en/deployment/), we start by understanding your case: [book a diagnosis](/en/contact/?sujet=diagnostic).
 
+The starter models for small businesses are described one by one in the [workflow templates](/en/workflow-templates/). To call a model or an agent with the OpenAI format, see the guide [OpenAI-compatible API](/en/guides/openai-compatible-api/).
+
+Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in [Nexora Apps](/en/apps/), with their real state.
+
 - **Verified here, not yet at a customer.** WorkStudio has been verified on Nexora AI's test server with several models hosted elsewhere than on that server. No customer result is announced.
 - **Tool-using agents need a capable model.** A small local model is not always enough for agents that call tools. The model is chosen with the case.
 - **Two options are off the beaten path.** The code interpreter is off by default and can only be turned on by an administrator. Web search sends its queries outside the instance: it is available only if an administrator turns it on.

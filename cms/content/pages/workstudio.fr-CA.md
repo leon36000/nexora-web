@@ -277,6 +277,10 @@ Un produit se juge aussi à ce qu'il écrit sur ses limites. Voici les nôtres, 
 
 Chez vous ou [chez nous, au Québec](/deploiement/), nous commençons par comprendre votre cas : [planifier un diagnostic](/contact/?sujet=diagnostic).
 
+Les modèles de départ pour PME sont décrits un par un dans les [gabarits de flux de travaux](/gabarits-flux-de-travaux/). Pour appeler un modèle ou un agent avec le format d'OpenAI, voir le guide [API compatible OpenAI](/guides/api-compatible-openai/).
+
+Les autres outils de Nexora AI (agent de code, RAG, WebPilot) sont réunis dans [Nexora Apps](/apps/), avec leur état réel.
+
 - **Vérifié chez nous, pas encore chez un client.** WorkStudio a été vérifié sur le serveur de test de Nexora AI avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé.
 - **Les agents à outils exigent un modèle capable.** Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas.
 - **Deux options sortent des sentiers battus.** L'interpréteur de code est désactivé par défaut et ne s'active que par un administrateur. La recherche sur le web envoie ses requêtes hors de l'instance : elle n'est disponible que si un administrateur l'active.

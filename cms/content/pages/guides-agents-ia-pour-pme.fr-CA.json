@@ -6,7 +6,7 @@
   "seo": {
     "slug": "guides/agents-ia-pour-pme",
     "title": "Agents IA pour PME",
-    "seo_title": "Qu'est-ce qu'un agent IA\u00a0? Guide pour PME",
+    "seo_title": "Qu'est-ce qu'un agent IA ? Guide pour PME",
     "seo_description": "Un agent IA suit vos consignes, utilise les outils et les documents autorisés, cite ses sources et agit sous validation humaine. Définitions et garde-fous.",
     "canonical": null
   },
@@ -21,8 +21,8 @@
       },
       "translation": {
         "eyebrow": "Guide · Agents IA",
-        "headline": "Qu'est-ce qu'un agent IA\u00a0? Réponse claire.",
-        "subheadline": "Un agent est un assistant logiciel\u00a0: il suit vos consignes, utilise les outils et les documents que vous lui autorisez, cite ses sources et peut agir. Une personne valide avant que quoi que ce soit ne parte.",
+        "headline": "Qu'est-ce qu'un agent IA ? Réponse claire.",
+        "subheadline": "Un agent est un assistant logiciel : il suit vos consignes, utilise les outils et les documents que vous lui autorisez, cite ses sources et peut agir. Une personne valide avant que quoi que ce soit ne parte.",
         "primary_label": "Voir WorkStudio",
         "primary_href": "/workstudio/",
         "secondary_label": "Demander une démonstration",
@@ -77,7 +77,7 @@
         "cards": [
           {
             "title": "Un modèle.",
-            "text": "Le moteur qui lit et produit du texte. Il répond\u00a0; il ne fait rien d'autre."
+            "text": "Le moteur qui lit et produit du texte. Il répond ; il ne fait rien d'autre."
           },
           {
             "title": "Un agent.",
@@ -101,7 +101,7 @@
       },
       "translation": {
         "title": "Ce qu'un agent fait, concrètement.",
-        "body": "<p>Ces exemples sont construits à partir de ce que WorkStudio permet\u00a0; ce ne sont pas des résultats mesurés chez des clients.</p>",
+        "body": "<p>Ces exemples sont construits à partir de ce que WorkStudio permet ; ce ne sont pas des résultats mesurés chez des clients.</p>",
         "items": [
           {
             "title": "Il classe vos courriels.",
@@ -109,7 +109,7 @@
           },
           {
             "title": "Il lit le papier.",
-            "text": "Il lit des PDF scannés et des images, extrait les champs d'une facture, d'un devis ou d'une note de frais, et marque «\u00a0à vérifier\u00a0» ce qui est manquant, illisible ou incohérent."
+            "text": "Il lit des PDF scannés et des images, extrait les champs d'une facture, d'un devis ou d'une note de frais, et marque « à vérifier » ce qui est manquant, illisible ou incohérent."
           },
           {
             "title": "Il répond à partir de vos documents.",
@@ -146,11 +146,11 @@
         "cards": [
           {
             "title": "Validation humaine.",
-            "text": "Chaque outil d'action demande par défaut l'accord d'une personne avant d'écrire ou de supprimer\u00a0; sans réponse, l'action n'a pas lieu."
+            "text": "Chaque outil d'action demande par défaut l'accord d'une personne avant d'écrire ou de supprimer ; sans réponse, l'action n'a pas lieu."
           },
           {
             "title": "Traces.",
-            "text": "Chaque appel de modèle laisse une trace consultable (étapes, durée, jetons, modèle)\u00a0; les renseignements personnels peuvent y être masqués."
+            "text": "Chaque appel de modèle laisse une trace consultable (étapes, durée, jetons, modèle) ; les renseignements personnels peuvent y être masqués."
           },
           {
             "title": "Renseignements masqués.",
@@ -158,7 +158,7 @@
           },
           {
             "title": "Outils désactivés par défaut.",
-            "text": "La recherche web d'un agent n'est disponible que si un administrateur l'active\u00a0; l'interpréteur de code est désactivé par défaut."
+            "text": "La recherche web d'un agent n'est disponible que si un administrateur l'active ; l'interpréteur de code est désactivé par défaut."
           },
           {
             "title": "Plafonds et journal.",
@@ -177,8 +177,8 @@
         "anchor_id": "sans-code"
       },
       "translation": {
-        "title": "Sans code\u00a0: comment ça marche.",
-        "body": "<p>On décrit le besoin en français\u00a0; le Copilote, l'assistant de création, prépare un flux que l'on relit, que l'on teste pas à pas, puis que l'on déploie. Chaque déploiement est une version à laquelle on peut revenir. Des modèles de départ pour PME sont fournis. Voir <a href=\"/workstudio/\">WorkStudio</a>.</p>"
+        "title": "Sans code : comment ça marche.",
+        "body": "<p>On décrit le besoin en français ; le Copilote, l'assistant de création, prépare un flux que l'on relit, que l'on teste pas à pas, puis que l'on déploie. Chaque déploiement est une version à laquelle on peut revenir. Des modèles de départ pour PME sont fournis. Voir <a href=\"/workstudio/\">WorkStudio</a>.</p><p>Les modèles de départ sont décrits un par un dans les <a href=\"/gabarits-flux-de-travaux/\">gabarits de flux de travaux</a>.</p>"
       }
     },
     {
@@ -200,15 +200,15 @@
           },
           {
             "title": "Il ne fait pas le rapprochement bancaire.",
-            "text": "Il n'est pas livré dans WorkStudio\u00a0; il peut être étudié sur mesure, à partir de relevés exportés, sans connexion bancaire."
+            "text": "Il n'est pas livré dans WorkStudio ; il peut être étudié sur mesure, à partir de relevés exportés, sans connexion bancaire."
           },
           {
             "title": "Il ne connaît pas vos règles fiscales.",
-            "text": "Les modèles de départ sont généraux\u00a0; taxes, formats et vocabulaire s'adaptent à l'entreprise."
+            "text": "Les modèles de départ sont généraux ; taxes, formats et vocabulaire s'adaptent à l'entreprise."
           },
           {
             "title": "Il ne remplace pas un juriste.",
-            "text": "Un modèle de départ résume un contrat\u00a0; il ne remplace pas un juriste."
+            "text": "Un modèle de départ résume un contrat ; il ne remplace pas un juriste."
           }
         ]
       }
@@ -232,27 +232,27 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Agents IA\u00a0: vos questions.",
+        "title": "Agents IA : vos questions.",
         "items": [
           {
-            "question": "Un agent IA, est-ce un agent conversationnel\u00a0?",
+            "question": "Un agent IA, est-ce un agent conversationnel ?",
             "answer": "Pas exactement. Un agent conversationnel dialogue. Un agent peut aussi utiliser des outils et des documents pour accomplir une tâche, avec les droits que vous lui donnez."
           },
           {
-            "question": "Un agent peut-il envoyer un courriel seul\u00a0?",
-            "answer": "Pas par défaut. Chaque outil d'action demande l'accord d'une personne avant d'écrire ou de supprimer\u00a0; sans réponse, l'action n'a pas lieu. Dans les flux que Nexora AI configure, toute action qui engage l'entreprise passe par une validation, sauf décision écrite contraire du client."
+            "question": "Un agent peut-il envoyer un courriel seul ?",
+            "answer": "Pas par défaut. Chaque outil d'action demande l'accord d'une personne avant d'écrire ou de supprimer ; sans réponse, l'action n'a pas lieu. Dans les flux que Nexora AI configure, toute action qui engage l'entreprise passe par une validation, sauf décision écrite contraire du client."
           },
           {
-            "question": "Où tournent les agents\u00a0?",
+            "question": "Où tournent les agents ?",
             "answer": "WorkStudio s'installe en une commande sur un serveur Docker, un outil qui empaquette les logiciels pour qu'ils s'installent de la même façon partout. Le système est installé chez vous ou hébergé dans l'infrastructure de Nexora AI, située au Québec."
           },
           {
-            "question": "Comment savoir si un agent répond bien\u00a0?",
+            "question": "Comment savoir si un agent répond bien ?",
             "answer": "Des jeux de tests et des juges mesurent si un agent, une consigne ou un modèle répond bien, et comparent deux versions."
           },
           {
-            "question": "Combien coûte un agent\u00a0?",
-            "answer": "Le coût dépend du cas\u00a0; une estimation écrite suit un diagnostic. La consommation se mesure en jetons, l'unité de texte que traite un modèle, avec des plafonds mensuels."
+            "question": "Combien coûte un agent ?",
+            "answer": "Le coût dépend du cas ; une estimation écrite suit un diagnostic. La consommation se mesure en jetons, l'unité de texte que traite un modèle, avec des plafonds mensuels."
           }
         ]
       }

@@ -37,6 +37,8 @@ Une passerelle de modèles est un point d'accès unique à plusieurs modèles d'
 
 Un jeton est l'unité de texte que traite un modèle. C'est lui qui sert de mesure pour le prix et pour la consommation.
 
+Pour choisir entre une passerelle et un accès direct, voir le guide [Passerelle ou accès direct](/guides/passerelle-ou-acces-direct/). Pour appeler l'API, voir [API compatible OpenAI : changer l'adresse de base](/guides/api-compatible-openai/). Pour un serveur à vous, voir [VPS au Québec pour vos agents d'IA](/guides/vps-quebec-agents-ia/).
+
 - **Un point d'accès.** Une adresse, une clé, plusieurs modèles.
 - **Un format connu.** Celui de l'API d'OpenAI, pour ne pas réécrire votre code.
 - **Une mesure claire.** Chaque réponse complète porte le coût de la requête.
@@ -116,6 +118,10 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=lieu`
 Le lieu d'hébergement affiché sur chaque fiche vient du catalogue publié : c'est une information, pas une garantie de résidence. Un modèle hébergé hors du Québec traite vos requêtes hors du Québec. Certains fournisseurs annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser. Un fournisseur soumis à la juridiction d'un autre pays peut aussi être tenu de lui remettre des données qu'il détient, même stockées au Canada.
 
 Quand la résidence des données est une exigence, le bon choix peut être un système installé chez vous ou hébergé au Québec : voir le [déploiement](/deploiement/) et les [engagements sur vos données](/vos-donnees/).
+
+Le guide [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/) explique la différence entre stockage, traitement et juridiction.
+
+Chaque requête de la passerelle passe d'abord par [Nexora Privacy Router](/apps/privacy-router/), incluse sans supplément.
 
 - **Ce que la fiche dit.** Le fournisseur, le lieu d'hébergement et la politique de données qu'il déclare.
 - **Ce qu'elle ne dit pas.** Qu'aucune loi étrangère ne s'applique : un hébergement au Québec n'écarte pas, à lui seul, les lois qui s'appliquent.

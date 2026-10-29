@@ -1,0 +1,162 @@
+{
+  "page": "gabarit-veille-concurrentielle",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "gabarits-flux-de-travaux/veille-concurrentielle",
+    "title": "Note de veille concurrentielle",
+    "seo_title": "Gabarit Note de veille concurrentielle pour PME",
+    "seo_description": "Note de veille concurrentielle : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qu'il faut adapter au Québec avant l'usage.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la fiche : ce que fait le gabarit « Note de veille concurrentielle », dit sans détour.",
+      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Gabarit · Rapports et suivi",
+        "headline": "Note de veille concurrentielle.",
+        "subheadline": "Le gabarit Note de veille concurrentielle produit une note structurée à partir d'extraits que vous collez : faits établis (chacun cité), signaux faibles marqués « hypothèse », implications pour vous et informations à rechercher.",
+        "primary_label": "Voir tous les gabarits",
+        "primary_href": "/gabarits-flux-de-travaux/",
+        "secondary_label": "Demander une démonstration",
+        "secondary_href": "/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Le gabarit Note de veille concurrentielle produit une note structurée à partir d'extraits que vous collez : faits établis (chacun cité), signaux faibles marqués « hypothèse », implications pour vous et informations à rechercher. Un fait qui n'est dans aucun extrait n'apparaît pas.</p><p>Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourni comme point de départ dans WorkStudio et à adapter à l'entreprise avant son déploiement.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "champs"
+      },
+      "translation": {
+        "title": "Ce que vous fournissez.",
+        "body": "<p>Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le concurrent.</strong> Nom du concurrent suivi.</li><li><strong>Les extraits.</strong> Extraits collés : site, communiqué, offre d'emploi, avis clients.</li><li><strong>Le contexte.</strong> Votre offre et votre positionnement, en deux phrases.</li></ul>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "Les étapes.",
+        "cards": [
+          {
+            "title": "Établir les faits.",
+            "text": "Un agent dresse la liste numérotée des faits, cite entre guillemets le passage exact de chaque extrait et sépare les affirmations douteuses ou invérifiables."
+          },
+          {
+            "title": "Rédiger la note.",
+            "text": "Un second agent écrit les faits, les signaux faibles (« hypothèse », appuyés sur un extrait cité), les implications pour vous et les informations à confirmer."
+          },
+          {
+            "title": "Relire.",
+            "text": "Vous relisez le texte produit, le corrigez au besoin, puis l'utilisez ou l'envoyez vous-même : le gabarit n'envoie rien."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "À adapter avant l'usage.",
+        "cards": [
+          {
+            "title": "Ce qui s'adapte ici.",
+            "text": "Le gabarit ne cherche rien sur le Web : il ne travaille que sur les extraits que vous collez. Vérifiez la source de chaque extrait avant de décider."
+          },
+          {
+            "title": "Ce qui vaut pour tous.",
+            "text": "Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage."
+          },
+          {
+            "title": "Rien n'est envoyé.",
+            "text": "Le gabarit produit un texte à relire. Seuls cinq gabarits de la collection envoient un courriel, et chacun attend d'abord la validation d'une personne."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions sur ce gabarit.",
+        "items": [
+          {
+            "question": "Ce gabarit envoie-t-il quelque chose à ma place ?",
+            "answer": "Non. Il produit un texte à relire ; vous l'utilisez ou l'envoyez vous-même. Seuls cinq gabarits de la collection envoient un courriel, et chacun attend d'abord la validation d'une personne."
+          },
+          {
+            "question": "Le gabarit va-t-il chercher des informations sur le concurrent ?",
+            "answer": "Non. Il ne travaille que sur les extraits que vous fournissez, et n'invente rien. Un outil de recherche web existe dans WorkStudio, mais il est désactivé tant qu'un administrateur ne l'active pas."
+          },
+          {
+            "question": "Convient-il tel quel au Québec ?",
+            "answer": "Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voyez-le à l'œuvre.",
+        "text": "Une démonstration sur données fictives, pour voir ce que le gabarit prépare et où une personne garde la main.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Tous les gabarits",
+        "secondary_href": "/gabarits-flux-de-travaux/"
+      }
+    }
+  ]
+}

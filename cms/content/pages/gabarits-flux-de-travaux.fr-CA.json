@@ -1,0 +1,412 @@
+{
+  "page": "gabarits-flux-de-travaux",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "gabarits-flux-de-travaux",
+    "title": "Gabarits de flux de travaux pour PME",
+    "seo_title": "Gabarits de flux de travaux pour PME",
+    "seo_description": "Vingt-neuf gabarits WorkStudio pour PME : devis, relances, tri des courriels, comptes rendus, factures et contrats. Une fiche honnête par gabarit.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la page : des gabarits de départ pour PME, avec leur limite (rédigés pour la France).",
+      "claims": ["CL-M01", "CL-M02", "CL-M03"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · Gabarits de WorkStudio",
+        "headline": "Gabarits de flux de travaux pour PME.",
+        "subheadline": "Vingt-neuf gabarits de départ pour les tâches courantes d'une PME : devis, relances, tri des courriels, comptes rendus, contrôles de factures et de contrats. Une fiche honnête pour chacun.",
+        "primary_label": "Voir WorkStudio",
+        "primary_href": "/workstudio/",
+        "secondary_label": "Demander une démonstration",
+        "secondary_href": "/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que sont les gabarits, combien, leur limite, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-M03", "CL-111", "CL-92"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>WorkStudio fournit vingt-neuf gabarits de flux de travaux pour PME : devis, relances, tri des courriels, comptes rendus, contrôles de factures et de contrats. Un gabarit est un flux de départ, rédigé pour une PME française : on l'adapte à son entreprise avant de le déployer. Ceux qui envoient un courriel attendent d'abord la validation d'une personne.</p><p>Un flux de travaux est un enchaînement automatisé de tâches. Un agent est un logiciel qui accomplit une tâche avec les outils que vous autorisez.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Comment on adapte un gabarit : décrire, relire, tester, déployer une version.",
+      "claims": ["CL-92", "CL-91", "CL-P02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "Comment on en adapte un.",
+        "body": "<p>On décrit en français ce que l'on veut changer ; le Copilote, l'assistant de création, prépare un flux que l'on relit, que l'on teste pas à pas, puis que l'on déploie. Chaque déploiement est une version à laquelle on peut revenir.</p><p>Nexora AI peut configurer les gabarits avec vous : voir la <a href=\"/methode/\">méthode</a> et les <a href=\"/solutions/\">solutions</a> par cas.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : ventes et clients.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "groupe-ventes"
+      },
+      "translation": {
+        "title": "Ventes et clients.",
+        "intro": "Devis, relances, réponses aux clients et aux appels d'offres.",
+        "cards": [
+          {
+            "title": "Devis client.",
+            "text": "Le gabarit Devis client rédige un devis structuré à partir du client et d'une liste de prestations avec leurs quantités et leurs prix unitaires avant taxes : un tableau, les totaux, la durée de validité et les conditions de paiement.",
+            "href": "/gabarits-flux-de-travaux/devis/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Relance de devis sans réponse.",
+            "text": "Le gabarit Relance de devis sans réponse rédige une relance commerciale aimable à partir du client, de la référence du devis et de sa date d'envoi.",
+            "href": "/gabarits-flux-de-travaux/relance-devis/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Relance de facture impayée.",
+            "text": "Le gabarit Relance de facture impayée écrit le courriel de relance (objet et corps) d'après le client, la facture, le montant, l'échéance dépassée et le niveau de relance : courtois, ferme ou mise en demeure.",
+            "href": "/gabarits-flux-de-travaux/relance-facture/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Réponse support (FAQ).",
+            "text": "Le gabarit Réponse support répond à la question d'un client uniquement à partir de la foire aux questions que vous fournissez.",
+            "href": "/gabarits-flux-de-travaux/support-faq/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Réponse à une réclamation.",
+            "text": "Le gabarit Réponse à une réclamation prépare une réponse empathique à partir du texte de la réclamation et du geste que vous pouvez proposer : remise, remplacement ou remboursement.",
+            "href": "/gabarits-flux-de-travaux/reclamation/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Réponse à un avis client.",
+            "text": "Le gabarit Réponse à un avis client écrit une réponse publique courte à un avis en ligne, positif ou négatif, d'après le texte de l'avis et sa note sur cinq.",
+            "href": "/gabarits-flux-de-travaux/avis-client/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Réponse client validée avant envoi.",
+            "text": "Le gabarit Réponse client validée avant envoi rédige la réponse à un message de client, puis la soumet à une personne.",
+            "href": "/gabarits-flux-de-travaux/reponse-validee/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Qualification d'un prospect.",
+            "text": "Le gabarit Qualification d'un prospect évalue un message entrant d'après vos critères : cote de un à cinq, besoin reformulé, budget et délai s'ils sont mentionnés, décideur, données manquantes et prochaine action.",
+            "href": "/gabarits-flux-de-travaux/qualification-prospects/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Réponse à un appel d'offres.",
+            "text": "Le gabarit Réponse à un appel d'offres analyse chaque exigence du cahier des charges contre vos éléments (couverte, partiellement couverte ou non couverte), puis rédige une première version de la réponse.",
+            "href": "/gabarits-flux-de-travaux/reponse-appel-offres/",
+            "link_label": "Voir la fiche"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : courriels et réunions.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "groupe-courriels"
+      },
+      "translation": {
+        "title": "Courriels et réunions.",
+        "intro": "Tri des courriels, comptes rendus et ordres du jour.",
+        "cards": [
+          {
+            "title": "Tri des courriels entrants.",
+            "text": "Le gabarit Tri des courriels entrants classe un courriel reçu (catégorie, urgence, résumé d'une phrase), puis prépare un brouillon de réponse adapté à la catégorie et à l'urgence.",
+            "href": "/gabarits-flux-de-travaux/tri-courriels/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Compte rendu de réunion.",
+            "text": "Le gabarit Compte rendu de réunion transcrit l'enregistrement audio en séparant les intervenants, rédige le compte rendu (participants, points abordés, décisions, tableau des actions, questions ouvertes), le soumet à une personne et ne l'envoie par courriel qu'après son approbation.",
+            "href": "/gabarits-flux-de-travaux/compte-rendu/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Ordre du jour de réunion.",
+            "text": "Le gabarit Ordre du jour de réunion construit un ordre du jour chronométré à partir des sujets à aborder et de la durée disponible : un ordre logique, le temps par sujet, qui présente, la décision attendue, et une phrase d'ouverture de la réunion.",
+            "href": "/gabarits-flux-de-travaux/ordre-du-jour/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Compte rendu d'entretien.",
+            "text": "Le gabarit Compte rendu d'entretien met en forme les notes d'un entretien (client, candidat ou annuel) en compte rendu : contexte, points abordés, engagements pris de part et d'autre (qui, quoi, quand) et prochaines étapes.",
+            "href": "/gabarits-flux-de-travaux/cr-entretien/",
+            "link_label": "Voir la fiche"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : finance et documents.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "groupe-finance"
+      },
+      "translation": {
+        "title": "Finance et documents.",
+        "intro": "Factures, contrats, conformité et sinistres.",
+        "cards": [
+          {
+            "title": "Contrôle d'une facture fournisseur.",
+            "text": "Le gabarit Contrôle d'une facture fournisseur extrait d'abord les données de la facture (fournisseur, numéro, date, totaux, taxe, numéro d'entreprise), puis vérifie que le total avant taxe plus la taxe égale le total, que les mentions obligatoires sont présentes et conclut « À PAYER »",
+            "href": "/gabarits-flux-de-travaux/controle-facture/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Extraction d'une facture fournisseur.",
+            "text": "Le gabarit Extraction d'une facture fournisseur extrait en JSON les champs d'une facture (fournisseur, numéro, date, totaux, taxe, échéance), avec nul pour toute valeur absente, puis vérifie la cohérence des totaux et conclut « COHÉRENTE »",
+            "href": "/gabarits-flux-de-travaux/factures-fournisseurs/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Résumé d'un contrat.",
+            "text": "Le gabarit Résumé d'un contrat résume un contrat en dix lignes, relève les dates et délais et les montants, puis liste les clauses à faire relire par un juriste (reconduction tacite, pénalités, résiliation, responsabilité).",
+            "href": "/gabarits-flux-de-travaux/resume-contrat/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Revue de contrat.",
+            "text": "Le gabarit Revue de contrat relève les clauses à risque (tableau avec extrait cité et niveau), les clauses courantes manquantes et les questions à poser, selon votre rôle et vos priorités.",
+            "href": "/gabarits-flux-de-travaux/revue-contrat/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Contrôle de conformité d'un document.",
+            "text": "Le gabarit Contrôle de conformité d'un document vérifie un document point par point selon votre liste de contrôles : verdict (conforme, non conforme, non vérifiable), passage cité et action corrective.",
+            "href": "/gabarits-flux-de-travaux/conformite-documents/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Tri des déclarations de sinistre.",
+            "text": "Le gabarit Tri des déclarations de sinistre classe une déclaration (catégorie, urgence, résumé, date, pièces manquantes, points de vigilance), puis rédige la réponse à l'assuré : accusé de réception et liste des pièces à fournir.",
+            "href": "/gabarits-flux-de-travaux/tri-sinistres/",
+            "link_label": "Voir la fiche"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : rapports et suivi.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "groupe-rapports"
+      },
+      "translation": {
+        "title": "Rapports et suivi.",
+        "intro": "Rapports d'activité, de projet et de ventes, et veille.",
+        "cards": [
+          {
+            "title": "Rapport d'activité hebdomadaire.",
+            "text": "Le gabarit Rapport d'activité hebdomadaire met en forme vos notes en vrac de la semaine en rapport pour la direction : réalisations, chiffres clés, difficultés, décisions à prendre et priorités de la semaine suivante.",
+            "href": "/gabarits-flux-de-travaux/rapport-hebdo/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Synthèse hebdomadaire d'un projet.",
+            "text": "Le gabarit Synthèse hebdomadaire d'un projet transforme vos notes en synthèse : avancement, risques en tableau, décisions à prendre et priorités.",
+            "href": "/gabarits-flux-de-travaux/synthese-projet-hebdo/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Rapport de ventes mensuel.",
+            "text": "Le gabarit Rapport de ventes mensuel met en forme les chiffres de vente du mois : un tableau des écarts aux objectifs et au mois précédent, puis un rapport avec les faits saillants, les écarts à expliquer (causes marquées « hypothèse ») et les actions proposées.",
+            "href": "/gabarits-flux-de-travaux/rapport-ventes-mensuel/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Note de veille concurrentielle.",
+            "text": "Le gabarit Note de veille concurrentielle produit une note structurée à partir d'extraits que vous collez : faits établis (chacun cité), signaux faibles marqués « hypothèse », implications pour vous et informations à rechercher.",
+            "href": "/gabarits-flux-de-travaux/veille-concurrentielle/",
+            "link_label": "Voir la fiche"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : communication et équipe.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "groupe-equipe"
+      },
+      "translation": {
+        "title": "Communication et équipe.",
+        "intro": "Annonces, accueil, infolettre, réseaux sociaux, fiches et traductions.",
+        "cards": [
+          {
+            "title": "Offre d'emploi.",
+            "text": "Le gabarit Offre d'emploi rédige une annonce claire à partir de l'intitulé du poste, des missions et du profil : présentation de l'entreprise (une phrase à compléter entre crochets), missions, profil recherché, conditions et comment candidater.",
+            "href": "/gabarits-flux-de-travaux/offre-emploi/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Accueil d'une nouvelle personne salariée.",
+            "text": "Le gabarit Accueil d'une nouvelle personne salariée prépare le courriel d'accueil chaleureux et une liste de préparation en deux parties : ce que l'entreprise prépare (poste de travail, accès, badge, contrat) et ce que la personne apporte.",
+            "href": "/gabarits-flux-de-travaux/accueil-nouvelle-personne/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Infolettre mensuelle.",
+            "text": "Le gabarit Infolettre mensuelle compose l'infolettre du mois à partir de vos informations brutes et du public visé : trois objets de courriel au choix, une introduction chaleureuse, une rubrique par information, puis un mot de la fin avec un appel à l'action.",
+            "href": "/gabarits-flux-de-travaux/newsletter/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Publication pour les réseaux sociaux.",
+            "text": "Le gabarit Publication pour les réseaux sociaux propose trois publications à partir d'une actualité et du registre souhaité : une pour LinkedIn (professionnelle, six cents caractères au plus), une pour Facebook (conviviale) et une pour Instagram (courte, avec cinq mots-clés), chacune terminée par un appel à l'action.",
+            "href": "/gabarits-flux-de-travaux/reseaux-sociaux/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Fiche produit.",
+            "text": "Le gabarit Fiche produit transforme les caractéristiques techniques d'un produit en fiche prête pour votre site : un titre, une description de quatre-vingts mots, cinq points forts en liste et une méta-description de cent cinquante caractères au plus.",
+            "href": "/gabarits-flux-de-travaux/fiche-produit/",
+            "link_label": "Voir la fiche"
+          },
+          {
+            "title": "Traduction professionnelle.",
+            "text": "Le gabarit Traduction professionnelle traduit un texte dans la langue demandée en conservant le registre professionnel et la mise en forme, puis ajoute, sous le titre « Points d'attention », les expressions dont la traduction est délicate.",
+            "href": "/gabarits-flux-de-travaux/traduction/",
+            "link_label": "Voir la fiche"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qu'un gabarit ne sait pas : règles fiscales du Québec, formats, vocabulaire.",
+      "claims": ["CL-M02", "CL-111", "CL-M04"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce qu'un gabarit ne sait pas.",
+        "body": "<p>Les gabarits de départ sont généraux. Ils sont rédigés pour une PME française : TVA de type français, euro, numéro d'entreprise français. Aucune règle de TPS, de TVQ ou de numéro d'entreprise du Québec n'y figure.</p><p>Taxes, formats et vocabulaire s'adaptent à l'entreprise avant tout usage au Québec. Un gabarit n'est pas non plus un avis comptable ou juridique : un résumé de contrat ne remplace pas un juriste.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'envoie et ce qui ne s'envoie pas : cinq gabarits, tous derrière une validation.",
+      "claims": ["CL-M03", "CL-21", "CL-93"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "envoi"
+      },
+      "translation": {
+        "title": "Ce qui part, ce qui reste.",
+        "cards": [
+          {
+            "title": "Vingt-quatre gabarits produisent un texte.",
+            "text": "Vous le relisez et l'utilisez ou l'envoyez vous-même. Le gabarit n'envoie rien."
+          },
+          {
+            "title": "Cinq gabarits envoient un courriel.",
+            "text": "Compte rendu de réunion, réponse client validée, contrôle de conformité, synthèse de projet et revue de contrat s'arrêtent d'abord sur la validation d'une personne. Le serveur de courriel est à renseigner."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la page : définition, nombre, Québec, envoi, adaptation.",
+      "claims": ["CL-M01", "CL-M02", "CL-M03", "CL-111", "CL-92", "CL-80"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Gabarits : vos questions.",
+        "items": [
+          {
+            "question": "Qu'est-ce qu'un gabarit de flux de travaux ?",
+            "answer": "Un flux de départ, prêt à lancer dans WorkStudio, qui enchaîne des tâches automatisées (un ou plusieurs agents, parfois une validation et un envoi). On l'adapte à son entreprise avant de le déployer."
+          },
+          {
+            "question": "Combien de gabarits WorkStudio fournit-il ?",
+            "answer": "Vingt-neuf, rangés dans le dossier « Modèles PME » que chaque nouvel espace de travail reçoit. L'exploitant peut désactiver ce dossier."
+          },
+          {
+            "question": "Les gabarits conviennent-ils au Québec ?",
+            "answer": "Pas tels quels. Ils sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+          },
+          {
+            "question": "Un gabarit peut-il envoyer des courriels seul ?",
+            "answer": "Non. Cinq gabarits envoient un courriel et chacun attend d'abord la validation d'une personne. Les autres produisent un texte à relire et n'envoient rien."
+          },
+          {
+            "question": "Peut-on modifier un gabarit ?",
+            "answer": "Oui : on décrit le changement en français, le Copilote prépare le flux modifié, on le relit, on le teste pas à pas, puis on le déploie en version."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voyez-les à l'œuvre.",
+        "text": "Une démonstration sur données fictives, pour voir ce que les gabarits préparent et où une personne garde la main.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir WorkStudio",
+        "secondary_href": "/workstudio/"
+      }
+    }
+  ]
+}

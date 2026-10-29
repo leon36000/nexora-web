@@ -1,0 +1,236 @@
+{
+  "page": "guides-ou-sont-vos-donnees-ia",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/where-is-your-ai-data",
+    "title": "Where your AI data is",
+    "seo_title": "Where is your data? Storage and processing",
+    "seo_description": "Storage, processing and jurisdiction: three questions to know where your AI data is, and the questions to put to any AI provider before you sign.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : trois questions pour savoir où sont les données, sans promesse de résidence.",
+      "claims": ["CL-E08", "CL-E09", "CL-75"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · Data and jurisdiction",
+        "headline": "Where your data really is.",
+        "subheadline": "Storage, processing, jurisdiction: three separate questions, and the questions to ask an AI provider. No promise of compliance or residency that we cannot prove.",
+        "primary_label": "See our data commitments",
+        "primary_href": "/en/your-data/",
+        "secondary_label": "Deployment study",
+        "secondary_href": "/en/contact/?sujet=etude-deploiement"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : les trois questions, la différence stockage et traitement, la juridiction.",
+      "claims": ["CL-E08", "CL-E09", "CL-75"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>Knowing where your data is takes three questions: where it is stored, where it is processed, and which jurisdiction the provider is subject to. Storage in Canada does not mean processing in Canada. A provider subject to a foreign law may have to hand over data it holds, even if stored here.</p><p>Jurisdiction is the set of a country's laws that apply to a company. Processing is the moment the model reads your request to produce a response.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les trois questions, une par carte.",
+      "claims": ["CL-E08", "CL-E09"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "trois-questions"
+      },
+      "translation": {
+        "title": "Storage, processing, jurisdiction.",
+        "cards": [
+          {
+            "title": "Where is it stored?",
+            "text": "Files, backups and logs rest somewhere. It is the location providers most readily announce."
+          },
+          {
+            "title": "Where is it processed?",
+            "text": "The model reads your request and computes its response somewhere. That place can differ from where data is stored."
+          },
+          {
+            "title": "Which law applies?",
+            "text": "A provider subject to another country's jurisdiction may have to hand over data it holds. Local laws also apply to local companies."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Services grand public : le partage des conversations est un réglage que l'utilisateur doit désactiver lui-même.",
+      "claims": ["CL-E07", "CL-E08"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "grand-public"
+      },
+      "translation": {
+        "title": "What consumer services say.",
+        "body": "<p>In some consumer AI services, sharing conversations to improve models is a setting the user must turn off themselves: not training on your data is not the default. For a large API platform, residency in Canada may cover storage without covering the processing of requests.</p><p>These findings come from each provider's documentation. They say nothing about what a given provider does today: always reread its current page.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Tableau des trois modes (chez vous, hébergé au Québec, via une API) : où sont les données, où est le traitement, quoi demander.",
+      "claims": [
+        "CL-72",
+        "CL-E01",
+        "CL-E02",
+        "CL-73",
+        "CL-S01",
+        "CL-77",
+        "CL-05",
+        "CL-87"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "trois-modes"
+      },
+      "translation": {
+        "title": "Three modes, three answers.",
+        "body": "<table><caption>Where your data is, by mode</caption><thead><tr><th>Mode</th><th>Where the data is</th><th>Where processing happens</th><th>What to ask</th></tr></thead><tbody><tr><th>On your premises</th><td>On your server; Nexora AI accesses it only if you authorize it in writing, for a specific task.</td><td>On your server, except an external model you turn on.</td><td>The list of outbound flows (updates, licences, external model) before go-live.</td></tr><tr><th>Hosted in Quebec</th><td>In Nexora AI's infrastructure, in Quebec, backups included: this is our written commitment.</td><td>In the same infrastructure, except a service you turn on.</td><td>The address and contract of the site, the location of backups, logs and subprocessors. This evidence is in preparation.</td></tr><tr><th>Through a model API</th><td>Depends on the provider; the Nexora AI gateway keeps only usage metadata.</td><td>At the chosen model's provider.</td><td>The processing location, not only the storage location, and the provider's data policy.</td></tr></tbody></table><p>See also <a href=\"/en/deployment/\">deployment</a> on your premises or hosted in Quebec.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que la fiche d'un modèle dit et ne dit pas.",
+      "claims": ["CL-S01", "CL-75", "CL-E08"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "fiche-modele"
+      },
+      "translation": {
+        "title": "What a model sheet says.",
+        "body": "<p>In the Nexora AI catalogue, each model's sheet states its provider, its hosting location (Quebec, Canada, United States, Europe or other) and the data policy that provider declares.</p><ul><li><strong>What it says.</strong> The information declared in the catalogue.</li><li><strong>What it does not say.</strong> That no foreign law applies, or that processing happens in the same place as hosting.</li></ul><p>It is information, not a residency guarantee. See the <a href=\"/en/model-gateway-api/\">model gateway API</a> and the <a href=\"/en/modeles/\">list of models</a>.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Liste de questions à poser à un fournisseur d'IA.",
+      "claims": ["CL-E08", "CL-E09", "CL-E05", "CL-E03"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "questions-a-poser"
+      },
+      "translation": {
+        "title": "What to ask a provider.",
+        "cards": [
+          {
+            "title": "Where are my requests processed?",
+            "text": "The country and the hosting provider, not just the storage location."
+          },
+          {
+            "title": "Does my data train a model?",
+            "text": "By default or only if I turn it on, and what the contract says."
+          },
+          {
+            "title": "Who are your subprocessors?",
+            "text": "Their country and role, in a register I can read."
+          },
+          {
+            "title": "Which law applies to your company?",
+            "text": "And can it require you to hand over data hosted here?"
+          },
+          {
+            "title": "What do you keep of my requests?",
+            "text": "Metadata only, or content, and for how long."
+          },
+          {
+            "title": "What happens if a model goes down?",
+            "text": "A silent switch to another provider would change the processing location."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que Nexora AI documente par écrit : schéma des flux, lieu, sous-traitants ; documents types en préparation.",
+      "claims": ["CL-05", "CL-73", "CL-E06", "CL-87", "CL-76"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "documents"
+      },
+      "translation": {
+        "title": "What Nexora AI documents in writing.",
+        "body": "<p>Before go-live, Nexora AI provides in writing the data flow diagram: where data is stored, which external services are called, which backups exist. In the hosted mode, the hosting location, the location of backups and logs and the list of subprocessors are stated in writing. The system never switches silently to an external model.</p><p>These commitments rest on a processing agreement, a subprocessor register and an access log. These template documents are in preparation: none is available yet.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : stockage au Canada, vérification, entraînement, mode API, preuve.",
+      "claims": ["CL-E08", "CL-E09", "CL-E03", "CL-S01", "CL-02", "CL-87"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Where your data is: your questions.",
+        "items": [
+          {
+            "question": "Is hosting in Canada enough?",
+            "answer": "Not by itself. Some providers state storage in Canada while requests are processed elsewhere, and a provider subject to a foreign law may have to hand over data it holds. Ask where processing happens and which jurisdiction applies."
+          },
+          {
+            "question": "What is the difference between storage and processing?",
+            "answer": "Storage is where your files, backups and logs rest. Processing is where the model reads your request and computes its response. The two can be in different countries."
+          },
+          {
+            "question": "How can I check where a model runs?",
+            "answer": "By asking the provider in writing for the country and host of the processing, and by reading its contract and subprocessor register. A catalogue sheet states what the provider declares; it does not prove it."
+          },
+          {
+            "question": "Does Nexora AI use my data to train models?",
+            "answer": "No. Nexora AI commits never to use a client's data, documents, prompts or results to train or tune a model. This commitment relies on a processing agreement that is in preparation."
+          },
+          {
+            "question": "Does Nexora AI prove its servers are in Quebec?",
+            "answer": "The hosted mode commits to keeping data in Quebec, but the technical evidence (address, contract, location of backups and subprocessors) is in preparation. It will be provided in writing before go-live."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : étude de déploiement.",
+      "claims": ["CL-80", "CL-05"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's map your flows.",
+        "text": "A deployment study maps the data flows for your case: where the data is, what leaves, what stays.",
+        "primary_label": "Request a study",
+        "primary_href": "/en/contact/?sujet=etude-deploiement",
+        "secondary_label": "Your data",
+        "secondary_href": "/en/your-data/"
+      }
+    }
+  ]
+}

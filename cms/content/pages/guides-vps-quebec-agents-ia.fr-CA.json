@@ -1,0 +1,187 @@
+{
+  "page": "guides-vps-quebec-agents-ia",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/vps-quebec-agents-ia",
+    "title": "VPS au Québec pour agents d'IA",
+    "seo_title": "VPS au Québec pour héberger vos agents d'IA",
+    "seo_description": "Un serveur privé virtuel hébergé au Québec avec l'application d'IA de votre choix : applications prévues, plans, ce qui est inclus et l'état réel.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : un VPS hébergé au Québec avec une application d'IA, avec l'état réel : rien n'est commandable.",
+      "claims": ["CL-13", "CL-12"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · VPS",
+        "headline": "Un VPS au Québec pour vos agents d'IA.",
+        "subheadline": "Un serveur privé virtuel hébergé au Québec, avec une application d'IA installée au choix. Les offres sont en préparation : la page VPS affiche ce qui est publié, et rien n'est commandable aujourd'hui.",
+        "primary_label": "Voir la page VPS",
+        "primary_href": "/vps/",
+        "secondary_label": "Parler à l'équipe",
+        "secondary_href": "/contact/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que Nexora AI prépare et l'état réel.",
+      "claims": ["CL-13", "CL-12", "CL-02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Nexora AI prépare des serveurs privés virtuels hébergés au Québec, avec une application d'IA installée au choix. Rien n'est commandable aujourd'hui : la page VPS affiche les plans et les applications publiés, et leurs prix en dollars canadiens quand ils le seront.</p><p>Un serveur privé virtuel (VPS), c'est un serveur loué rien que pour vous, auquel vous accédez par une clé SSH. Un agent d'IA est un logiciel qui accomplit une tâche avec les outils que vous autorisez.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les applications d'IA prévues sur un VPS : cinq installées par Nexora AI, trois en guide seulement.",
+      "claims": ["CL-M10", "CL-13"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "applications"
+      },
+      "translation": {
+        "title": "Les applications proposées.",
+        "intro": "La liste exacte et les plans sont ceux de la page VPS : elle fait foi.",
+        "cards": [
+          {
+            "label": "Installée",
+            "title": "Hermes Agent.",
+            "text": "Un agent qui apprend de vos tâches, sur votre propre serveur. Vous fournissez vos propres clés de modèle."
+          },
+          {
+            "label": "Installée",
+            "title": "OpenClaw, durci.",
+            "text": "Un assistant personnel multicanal, isolé et verrouillé. Un VPS par client, jamais partagé."
+          },
+          {
+            "label": "Installée",
+            "title": "Ollama et AnythingLLM.",
+            "text": "Vos modèles locaux et leur interface de chat, sans rien envoyer dehors. Sans carte graphique, seuls de petits modèles sont raisonnables."
+          },
+          {
+            "label": "Installée",
+            "title": "AnythingLLM.",
+            "text": "Discutez avec vos documents, avec les modèles de votre choix, dont la passerelle de Nexora AI."
+          },
+          {
+            "label": "Installée",
+            "title": "LibreChat.",
+            "text": "Une interface de chat multi-fournisseurs pour toute votre équipe."
+          },
+          {
+            "label": "Guide seulement",
+            "title": "n8n, Open WebUI, Dify.",
+            "text": "Leur licence empêche Nexora AI de les installer ou de les revendre : vous commandez un VPS vierge et suivez le guide.",
+            "href": "/vps/",
+            "link_label": "Voir la page VPS"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Quel plan pour quelle application : la mémoire minimale vient du catalogue ; aucun prix tant qu'aucun plan n'est publié.",
+      "claims": ["CL-13", "CL-12", "CL-10"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "plans"
+      },
+      "translation": {
+        "title": "Quel plan pour quelle application.",
+        "body": "<p>Chaque application indique la mémoire minimale qu'elle demande, et la page VPS grise les plans trop petits pour l'application choisie. Ces valeurs viennent du catalogue publié, pas de ce guide : elles peuvent changer avec une nouvelle version.</p><p>Les applications peuvent appeler des modèles par la <a href=\"/passerelle-api-modeles/\">passerelle d'API de Nexora AI</a> ; le lieu de traitement est alors celui du modèle choisi (voir <a href=\"/guides/ou-sont-vos-donnees-ia/\">Où sont vraiment vos données</a>).</p><p>Aucun plan n'est publié pour le moment, c'est pourquoi aucun prix n'est affiché ici. Les plans de développement qu'on peut y voir en test ne sont pas vendables.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui est inclus et ce qui ne l'est pas : accès par clé, durcissement, pas de support garanti, pas d'application d'un tiers sans licence.",
+      "claims": ["CL-M11", "CL-86", "CL-13"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "inclus"
+      },
+      "translation": {
+        "title": "Inclus, et pas inclus.",
+        "cards": [
+          {
+            "title": "Ce qui est inclus.",
+            "text": "Un serveur hébergé au Québec, l'application installée au choix et un accès par clé SSH publique que vous collez à la commande. Nexora AI ne demande jamais votre clé privée."
+          },
+          {
+            "title": "Ce qui ne l'est pas.",
+            "text": "Aucun niveau de service n'est annoncé. Vos clés de modèle, vos données et la conformité des modèles que vous téléchargez restent de votre ressort, et rien n'est commandable aujourd'hui."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : commande, applications, lieu, prix, clé.",
+      "claims": ["CL-13", "CL-12", "CL-M10", "CL-M11", "CL-02", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "VPS au Québec : vos questions.",
+        "items": [
+          {
+            "question": "Puis-je commander un VPS aujourd'hui ?",
+            "answer": "Non. Les offres sont en préparation : aucun plan n'est publié, aucun prix n'est affiché et les paiements ne fonctionnent qu'en mode test. Écrivez-nous pour en discuter."
+          },
+          {
+            "question": "Quelles applications d'IA seront installées ?",
+            "answer": "Hermes Agent, OpenClaw durci, Ollama avec AnythingLLM, AnythingLLM et LibreChat sont prévus. Pour n8n, Open WebUI et Dify, seul un guide est fourni, car leur licence l'impose."
+          },
+          {
+            "question": "Où le serveur est-il hébergé ?",
+            "answer": "Nexora AI prépare des serveurs hébergés au Québec. La preuve technique du lieu (adresse, contrat, sauvegardes, sous-traitants) est en préparation et sera fournie par écrit."
+          },
+          {
+            "question": "Combien coûtera un VPS ?",
+            "answer": "Aucun prix n'est publié. Quand des plans le seront, la page VPS les affichera en dollars canadiens, avant taxes."
+          },
+          {
+            "question": "Comment accède-t-on au serveur ?",
+            "answer": "Par une clé SSH : vous collez votre clé publique à la commande. Nexora AI ne demande jamais votre clé privée."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : parler du projet ; la page VPS.",
+      "claims": ["CL-13", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Dites-nous votre projet.",
+        "text": "Quelle application, combien d'utilisateurs, où doivent rester les données ? Nous vous répondons avec une proposition claire.",
+        "primary_label": "Parler à l'équipe",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir la page VPS",
+        "secondary_href": "/vps/"
+      }
+    }
+  ]
+}

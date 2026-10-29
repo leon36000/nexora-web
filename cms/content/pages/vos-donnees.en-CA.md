@@ -37,6 +37,8 @@ Your data belongs to your business. We protect it; we do not exploit it. Everyth
 
 Two commitments say **where** it is. Two say what we will **never do with it**. The last says **who else** can see it: nobody, until you decide otherwise.
 
+To tell storage, processing and jurisdiction apart, see the guide [Where your data really is](/en/guides/where-is-your-ai-data/).
+
 ### Bloc 3 — Cartes (`block_cards`)
 
 *Les cinq engagements de la décision D7, avec leurs exceptions écrites. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-77*

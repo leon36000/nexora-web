@@ -1,0 +1,162 @@
+{
+  "page": "gabarit-veille-concurrentielle",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "workflow-templates/competitor-watch-note",
+    "title": "Competitor watch note",
+    "seo_title": "Competitor watch note: workflow template",
+    "seo_description": "Competitor watch note: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to adapt for Quebec before use.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la fiche : ce que fait le gabarit « Note de veille concurrentielle », dit sans détour.",
+      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Template · Reports and follow-up",
+        "headline": "Competitor watch note.",
+        "subheadline": "The Competitor watch note template produces a structured note from extracts you paste: established facts (each quoted), weak signals marked \"hypothèse\", implications for you and information to look for.",
+        "primary_label": "See all templates",
+        "primary_href": "/en/workflow-templates/",
+        "secondary_label": "Request a demo",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>The Competitor watch note template produces a structured note from extracts you paste: established facts (each quoted), weak signals marked \"hypothèse\", implications for you and information to look for. A fact found in no extract does not appear.</p><p>A workflow template is an automated sequence of tasks, provided as a starting point in WorkStudio and to be adapted to the business before it is deployed.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "champs"
+      },
+      "translation": {
+        "title": "What you provide.",
+        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The competitor.</strong> Name of the competitor followed.</li><li><strong>The extracts.</strong> Pasted extracts: website, press release, job posting, customer reviews.</li><li><strong>The context.</strong> Your offer and positioning, in two sentences.</li></ul>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "The steps.",
+        "cards": [
+          {
+            "title": "Establish the facts.",
+            "text": "An agent lists the facts, numbered, quotes the exact passage from each extract and separates doubtful or unverifiable claims."
+          },
+          {
+            "title": "Write the note.",
+            "text": "A second agent writes the facts, the weak signals (\"hypothèse\", backed by a quoted extract), the implications for you and the information to confirm."
+          },
+          {
+            "title": "Review.",
+            "text": "You read the text produced, correct it if needed, then use or send it yourself: the template sends nothing."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "To adapt before use.",
+        "cards": [
+          {
+            "title": "What to adapt here.",
+            "text": "The template searches nothing on the web: it works only on the extracts you paste. Check each extract's source before deciding."
+          },
+          {
+            "title": "What applies to all.",
+            "text": "The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use."
+          },
+          {
+            "title": "Nothing is sent.",
+            "text": "The template produces text to review. Only five templates in the collection send an email, and each waits first for a person's approval."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-109"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions about this template.",
+        "items": [
+          {
+            "question": "Does this template send anything for me?",
+            "answer": "No. It produces text to review; you use or send it yourself. Only five templates in the collection send an email, and each waits first for a person's approval."
+          },
+          {
+            "question": "Will the template look up information about the competitor?",
+            "answer": "No. It works only on the extracts you provide, and invents nothing. A web search tool exists in WorkStudio, but it is off until an administrator turns it on."
+          },
+          {
+            "question": "Does it suit Quebec as is?",
+            "answer": "Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See it at work.",
+        "text": "A demonstration on fictional data, to see what the template prepares and where a person stays in control.",
+        "primary_label": "Request a demo",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "All templates",
+        "secondary_href": "/en/workflow-templates/"
+      }
+    }
+  ]
+}

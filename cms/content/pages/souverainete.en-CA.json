@@ -189,7 +189,7 @@
       },
       "translation": {
         "title": "Three questions for any provider.",
-        "body": "<p>We name no one and judge no one. These are general observations about industry practice, and questions to put in writing to any AI provider, ourselves included.</p><p>Put these three questions to us: <a href=\"/en/contact/?sujet=etude-deploiement\">study my project</a>.</p>",
+        "body": "<p>We name no one and judge no one. These are general observations about industry practice, and questions to put in writing to any AI provider, ourselves included.</p><p>Put these three questions to us: <a href=\"/en/contact/?sujet=etude-deploiement\">study my project</a>.</p><p>To go further, see <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a> and the <a href=\"/en/guides/sovereign-ai-checklist/\">IT director's checklist</a>.</p>",
         "items": [
           {
             "title": "Do my conversations improve the model?",

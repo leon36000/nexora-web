@@ -6,14 +6,14 @@
   "seo": {
     "slug": "centre-de-confiance",
     "title": "Centre de confiance",
-    "seo_title": "Sécurité des données IA\u00a0: centre de confiance",
-    "seo_description": "Cinq engagements sur vos données, ce que le logiciel permet déjà et les documents que nous préparons, avec leur statut\u00a0: tout ce que vous pouvez nous demander.",
+    "seo_title": "Sécurité des données IA : centre de confiance",
+    "seo_description": "Cinq engagements sur vos données, ce que le logiciel permet déjà et les documents que nous préparons, avec leur statut : tout ce que vous pouvez nous demander.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse du centre de confiance\u00a0: cinq engagements sur les données, des preuves à demander.",
+      "role": "Promesse du centre de confiance : cinq engagements sur les données, des preuves à demander.",
       "claims": ["CL-09", "CL-87", "CL-E03", "CL-E04", "CL-E05"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Centre de confiance",
         "headline": "Cinq engagements. Des preuves à demander.",
-        "subheadline": "Vos données restent à vous\u00a0: jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Voici ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.",
+        "subheadline": "Vos données restent à vous : jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Voici ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.",
         "primary_label": "Demander un document",
         "primary_href": "/contact/",
         "secondary_label": "Lire les cinq engagements",
@@ -51,7 +51,7 @@
       },
       "translation": {
         "title": "Cinq engagements sur vos données.",
-        "intro": "Chacun peut être contrôlé avant et après la mise en service. Les flux sortants (mises à jour, licences, modèle externe éventuel) sont listés avant la mise en service\u00a0: installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.",
+        "intro": "Chacun peut être contrôlé avant et après la mise en service. Les flux sortants (mises à jour, licences, modèle externe éventuel) sont listés avant la mise en service : installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.",
         "cards": [
           {
             "title": "Sur place, tout reste chez vous.",
@@ -114,7 +114,7 @@
           },
           {
             "title": "Un schéma des flux.",
-            "text": "Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent\u00a0: remis par écrit, avant la mise en service."
+            "text": "Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent : remis par écrit, avant la mise en service."
           },
           {
             "title": "Aucune bascule en silence.",
@@ -122,7 +122,7 @@
           },
           {
             "title": "Une porte de sortie.",
-            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables\u00a0; le contrat le prévoit."
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables ; le contrat le prévoit."
           },
           {
             "title": "Une personne décide.",
@@ -156,7 +156,7 @@
       },
       "translation": {
         "title": "Ce que le logiciel permet déjà.",
-        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche\u00a0; elles ne la remplacent pas.",
+        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche ; elles ne la remplacent pas.",
         "cards": [
           {
             "title": "Rôles et organisations.",
@@ -165,7 +165,7 @@
           },
           {
             "title": "Journal d'audit et plafonds.",
-            "text": "Les actions d'administration sont consignées\u00a0; la consommation est plafonnée par mois.",
+            "text": "Les actions d'administration sont consignées ; la consommation est plafonnée par mois.",
             "status": "disponible"
           },
           {
@@ -180,12 +180,12 @@
           },
           {
             "title": "Traces et masquage.",
-            "text": "Chaque appel de modèle est tracé\u00a0; les noms, courriels et numéros de téléphone peuvent y être masqués.",
+            "text": "Chaque appel de modèle est tracé ; les noms, courriels et numéros de téléphone peuvent y être masqués.",
             "status": "disponible"
           },
           {
             "title": "Lieu de chaque modèle et secrets chiffrés.",
-            "text": "Chaque modèle indique où il tourne\u00a0; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.",
+            "text": "Chaque modèle indique où il tourne ; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.",
             "status": "disponible"
           }
         ]
@@ -203,7 +203,7 @@
       },
       "translation": {
         "title": "Documents sur demande.",
-        "intro": "Voici les documents que nous nous engageons à fournir. Ils sont en préparation\u00a0: aucun n'est encore disponible, et nous vous le dirons ici dès qu'un document existe.",
+        "intro": "Voici les documents que nous nous engageons à fournir. Ils sont en préparation : aucun n'est encore disponible, et nous vous le dirons ici dès qu'un document existe.",
         "cards": [
           {
             "title": "Le schéma des flux de votre installation.",
@@ -249,19 +249,19 @@
       },
       "translation": {
         "title": "Trois plans de données.",
-        "body": "<p>Quand on parle de «\u00a0données\u00a0», on parle de trois choses différentes. Nous les traitons séparément. <a href=\"/vos-donnees/\">Lire nos engagements sur vos données</a>.</p><p>Un document vous manque\u00a0? <a href=\"/contact/\">Demander un document</a>.</p>",
+        "body": "<p>Quand on parle de « données », on parle de trois choses différentes. Nous les traitons séparément. <a href=\"/vos-donnees/\">Lire nos engagements sur vos données</a>.</p><p>Un document vous manque ? <a href=\"/contact/\">Demander un document</a>.</p><p>Pour juger un fournisseur, voir la <a href=\"/guides/ia-souveraine-liste-de-controle/\">liste de contrôle d'une DSI</a>.</p>",
         "items": [
           {
             "title": "Le contenu public du site.",
-            "text": "Ce que vous lisez ici\u00a0: fait pour être publié et indexé."
+            "text": "Ce que vous lisez ici : fait pour être publié et indexé."
           },
           {
             "title": "Vos échanges avec Nexora AI.",
-            "text": "Formulaires, courriels, facturation\u00a0: ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira."
+            "text": "Formulaires, courriels, facturation : ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira."
           },
           {
             "title": "Les données de votre système.",
-            "text": "Vos documents, vos conversations, vos bases\u00a0: elles restent dans le périmètre convenu, décrit par le schéma des flux."
+            "text": "Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux."
           }
         ]
       }
@@ -285,7 +285,7 @@
           },
           {
             "title": "Aucun chiffre sans mesure.",
-            "text": "Ni gain de temps, ni taux de réussite, ni économie\u00a0: ils se mesurent chez vous, pendant un pilote."
+            "text": "Ni gain de temps, ni taux de réussite, ni économie : ils se mesurent chez vous, pendant un pilote."
           },
           {
             "title": "Aucun niveau de service annoncé.",
@@ -293,14 +293,14 @@
           },
           {
             "title": "Aucune conformité décrétée.",
-            "text": "La Loi 25 s'adresse à votre entreprise\u00a0: sa conformité dépend de ses pratiques, de ses contrats et de sa gouvernance. Aucun fournisseur ne la confère."
+            "text": "La Loi 25 s'adresse à votre entreprise : sa conformité dépend de ses pratiques, de ses contrats et de sa gouvernance. Aucun fournisseur ne la confère."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Sécurité des sites physiques\u00a0: renvoi vers Nexora Vision, projet pilote sur invitation (CL-V01).",
+      "role": "Sécurité des sites physiques : renvoi vers Nexora Vision, projet pilote sur invitation (CL-V01).",
       "claims": ["CL-V01", "CL-V03", "CL-V04", "CL-V07"],
       "fields": {
         "media_position": "none",
@@ -309,19 +309,19 @@
       },
       "translation": {
         "title": "Vos locaux, un projet à part.",
-        "body": "<p>La sécurité physique de vos locaux ne relève pas de ce centre de confiance. <a href=\"/vision/\">Nexora Vision</a>, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation\u00a0: ce n'est pas un produit disponible, et aucune installation n'existe encore.</p>",
+        "body": "<p>La sécurité physique de vos locaux ne relève pas de ce centre de confiance. <a href=\"/vision/\">Nexora Vision</a>, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation : ce n'est pas un produit disponible, et aucune installation n'existe encore.</p>",
         "items": [
           {
             "title": "Pas de reconnaissance faciale.",
-            "text": "Nexora Vision n'offre pas de reconnaissance faciale\u00a0: la fonction n'est pas livrée."
+            "text": "Nexora Vision n'offre pas de reconnaissance faciale : la fonction n'est pas livrée."
           },
           {
             "title": "Pas d'analyse des employés.",
-            "text": "Aucune fonction d'analyse de la productivité ou du comportement\u00a0; les alertes se limitent aux zones et aux horaires que vous définissez."
+            "text": "Aucune fonction d'analyse de la productivité ou du comportement ; les alertes se limitent aux zones et aux horaires que vous définissez."
           },
           {
             "title": "Une personne vérifie.",
-            "text": "Une alerte demande la vérification d'une personne\u00a0: l'IA détecte des personnes et des objets, pas l'identité ni l'intention."
+            "text": "Une alerte demande la vérification d'une personne : l'IA détecte des personnes et des objets, pas l'identité ni l'intention."
           }
         ]
       }
@@ -344,30 +344,30 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Confiance\u00a0: vos questions.",
+        "title": "Confiance : vos questions.",
         "items": [
           {
-            "question": "Comment demander un document\u00a0?",
+            "question": "Comment demander un document ?",
             "answer": "Écrivez-nous par le formulaire de contact en nommant le document. Tant qu'il est en préparation, nous vous le disons au lieu de vous en promettre une date."
           },
           {
-            "question": "Mes données servent-elles à entraîner une IA\u00a0?",
+            "question": "Mes données servent-elles à entraîner une IA ?",
             "answer": "Non, jamais. Nexora AI n'utilise ni vos données, ni vos documents, ni vos invites, ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers."
           },
           {
-            "question": "Mes données sont-elles vendues\u00a0?",
+            "question": "Mes données sont-elles vendues ?",
             "answer": "Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée."
           },
           {
-            "question": "Avez-vous une attestation de sécurité\u00a0?",
+            "question": "Avez-vous une attestation de sécurité ?",
             "answer": "Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons."
           },
           {
-            "question": "Qui, chez Nexora AI, peut accéder à mon système\u00a0?",
+            "question": "Qui, chez Nexora AI, peut accéder à mon système ?",
             "answer": "Seulement les accès convenus à l'avance, décrits dans l'étude de déploiement. Sur place, Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé."
           },
           {
-            "question": "Utilisez-vous un modèle externe\u00a0?",
+            "question": "Utilisez-vous un modèle externe ?",
             "answer": "Seulement si vous l'avez activé par écrit, pour un agent ou un projet précis. Il apparaît alors au schéma des flux comme un flux sortant."
           }
         ]
@@ -375,7 +375,7 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: demander un document.",
+      "role": "CTA : demander un document.",
       "claims": ["CL-87"],
       "fields": {
         "tone": "sombre"

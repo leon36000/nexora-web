@@ -37,6 +37,8 @@ A model gateway is a single access point to several AI models: your application 
 
 A token is the unit of text a model processes. It is what prices and consumption are measured in.
 
+To choose between a gateway and direct access, see the guide [Gateway or direct access](/en/guides/gateway-or-direct-access/). To call the API, see [OpenAI-compatible API: change the base address](/en/guides/openai-compatible-api/). For a server of your own, see [A VPS in Quebec for your AI agents](/en/guides/quebec-vps-ai-agents/).
+
 - **One access point.** One address, one key, several models.
 - **A familiar format.** The OpenAI API format, so you do not rewrite your code.
 - **A clear measure.** Each complete response carries the cost of the request.
@@ -116,6 +118,10 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=lieu`
 The hosting location shown on each model sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers announce data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction can also be required to hand over data it holds, even if stored in Canada.
 
 When data residency is a requirement, the right choice may be a system installed on your premises or hosted in Quebec: see [deployment](/en/deployment/) and the [commitments on your data](/en/your-data/).
+
+The guide [Where your data really is](/en/guides/where-is-your-ai-data/) explains the difference between storage, processing and jurisdiction.
+
+Each gateway request first goes through [Nexora Privacy Router](/en/apps/privacy-router/), included at no extra cost.
 
 - **What the sheet says.** The provider, the hosting location and the data policy it declares.
 - **What it does not say.** That no foreign law applies: hosting in Quebec does not, by itself, rule out the laws that apply.

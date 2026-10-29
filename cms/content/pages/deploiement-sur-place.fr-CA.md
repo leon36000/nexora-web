@@ -35,6 +35,8 @@ Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-sur-place`, 
 
 Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; le schéma de votre installation vous est remis par écrit. Vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
 
+Avant d'acheter du matériel, lisez [Un serveur d'IA sur place : décider avant d'acheter](/guides/serveur-ia-sur-place/) et [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/).
+
 - **Ce qui reste dans vos murs.** Les documents, l'index de recherche, les conversations, les journaux et, si vous le choisissez, les modèles.
 - **Ce qui peut en sortir.** Les mises à jour, les vérifications de licence, et un modèle externe seulement si vous l'avez activé explicitement, par écrit.
 - **Qui peut entrer.** Nexora AI n'accède à votre serveur que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps ; chaque accès est journalisé.

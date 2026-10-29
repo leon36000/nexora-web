@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "A gateway, in one sentence.",
-        "body": "<p>A model gateway is a single access point to several AI models: your application calls one address with one key, and the gateway passes each request to the model you chose, then measures the consumption. The Nexora AI API follows the OpenAI API format: libraries and tools that speak that format connect to it by changing the base address and the key.</p><p>A token is the unit of text a model processes. It is what prices and consumption are measured in.</p>",
+        "body": "<p>A model gateway is a single access point to several AI models: your application calls one address with one key, and the gateway passes each request to the model you chose, then measures the consumption. The Nexora AI API follows the OpenAI API format: libraries and tools that speak that format connect to it by changing the base address and the key.</p><p>A token is the unit of text a model processes. It is what prices and consumption are measured in.</p><p>To choose between a gateway and direct access, see the guide <a href=\"/en/guides/gateway-or-direct-access/\">Gateway or direct access</a>. To call the API, see <a href=\"/en/guides/openai-compatible-api/\">OpenAI-compatible API: change the base address</a>. For a server of your own, see <a href=\"/en/guides/quebec-vps-ai-agents/\">A VPS in Quebec for your AI agents</a>.</p>",
         "items": [
           {
             "title": "One access point.",
@@ -146,7 +146,7 @@
       },
       "translation": {
         "title": "The location, stated plainly.",
-        "body": "<p>The hosting location shown on each model sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers announce data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction can also be required to hand over data it holds, even if stored in Canada.</p><p>When data residency is a requirement, the right choice may be a system installed on your premises or hosted in Quebec: see <a href=\"/en/deployment/\">deployment</a> and the <a href=\"/en/your-data/\">commitments on your data</a>.</p>",
+        "body": "<p>The hosting location shown on each model sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers announce data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction can also be required to hand over data it holds, even if stored in Canada.</p><p>When data residency is a requirement, the right choice may be a system installed on your premises or hosted in Quebec: see <a href=\"/en/deployment/\">deployment</a> and the <a href=\"/en/your-data/\">commitments on your data</a>.</p><p>The guide <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a> explains the difference between storage, processing and jurisdiction.</p><p>Each gateway request first goes through <a href=\"/en/apps/privacy-router/\">Nexora Privacy Router</a>, included at no extra cost.</p>",
         "items": [
           {
             "title": "What the sheet says.",

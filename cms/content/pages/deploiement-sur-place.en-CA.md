@@ -35,6 +35,8 @@ Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-sur-place`, 
 
 The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not the configuration of a real customer; the diagram of your installation is handed to you in writing. Your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
 
+Before buying hardware, read [An on-premises AI server: decide before buying](/en/guides/on-premises-ai-server/) and [Where your data really is](/en/guides/where-is-your-ai-data/).
+
 - **What stays within your walls.** Documents, the search index, conversations, logs and, if you choose, the models.
 - **What can leave.** Updates, licence checks, and an external model only if you explicitly activated it, in writing.
 - **Who can get in.** Nexora AI accesses your server only if you authorize it in writing, for a specific task and a limited time; every access is logged.

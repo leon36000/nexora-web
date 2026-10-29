@@ -117,6 +117,8 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=sans-code`
 
 On décrit le besoin en français ; le Copilote, l'assistant de création, prépare un flux que l'on relit, que l'on teste pas à pas, puis que l'on déploie. Chaque déploiement est une version à laquelle on peut revenir. Des modèles de départ pour PME sont fournis. Voir [WorkStudio](/workstudio/).
 
+Les modèles de départ sont décrits un par un dans les [gabarits de flux de travaux](/gabarits-flux-de-travaux/).
+
 ### Bloc 7 — Cartes (`block_cards`)
 
 *Ce qu'un agent ne fait pas : téléphone, rapprochement bancaire, règles fiscales, avis juridique. · Affirmations : CL-124, CL-126, CL-111, CL-129*

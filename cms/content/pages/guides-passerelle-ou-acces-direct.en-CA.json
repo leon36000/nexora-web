@@ -1,0 +1,239 @@
+{
+  "page": "guides-passerelle-ou-acces-direct",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/gateway-or-direct-access",
+    "title": "Gateway or direct access",
+    "seo_title": "Model gateway or direct access: how to choose",
+    "seo_description": "A gateway adds a middleman that helps when comparing models or keeping one key. Criteria, limits, and the cases where direct access is enough.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : choisir entre une passerelle et un accès direct, sans marque.",
+      "claims": ["CL-27", "CL-S04"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · Model gateway",
+        "headline": "Gateway or direct access: how to choose.",
+        "subheadline": "A gateway adds a middleman, and in return a single key, a single format and a single meter. Here are the criteria side by side, and the cases where a gateway is no use.",
+        "primary_label": "See the Nexora AI gateway",
+        "primary_href": "/en/model-gateway-api/",
+        "secondary_label": "Book a diagnostic",
+        "secondary_href": "/en/contact/?sujet=diagnostic"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : quand la passerelle, quand l'accès direct, avec les deux termes définis.",
+      "claims": ["CL-27", "CL-S04", "CL-S05"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>A model gateway adds a middleman between your application and AI providers. It becomes useful when you compare or switch models, or when you want a single key, a single spending cap and a single meter of consumption. With a single provider, direct access may be enough.</p><p>A model gateway is a single access point to several AI models. Direct access is a call to one provider's API, with its key and its contract. Consumption is measured in tokens, the unit of text a model processes.</p>",
+        "items": [
+          {
+            "title": "A gateway.",
+            "text": "One address, one key, several models."
+          },
+          {
+            "title": "Direct access.",
+            "text": "One provider, its key, its contract."
+          },
+          {
+            "title": "The right choice.",
+            "text": "It depends on how many models you plan to compare."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Tableau des critères, sans marque : huit critères, deux colonnes. La latence n'est pas chiffrée (aucune mesure).",
+      "claims": ["CL-S04", "CL-S05", "CL-S01", "CL-S03", "CL-M08"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "criteres"
+      },
+      "translation": {
+        "title": "The criteria, side by side.",
+        "body": "<table><caption>Direct access and gateway, criterion by criterion</caption><thead><tr><th>Criterion</th><th>Direct access</th><th>Gateway</th></tr></thead><tbody><tr><th>Number of providers</th><td>One: the simplest setup.</td><td>Several, behind a single address.</td></tr><tr><th>Key and caps</th><td>One key per provider, with each provider's settings.</td><td>One key, with spending cap, expiry and rate limit set in one place (Nexora AI API offers them).</td></tr><tr><th>Switching models</th><td>Rewrite the call if the provider's format differs.</td><td>Change the model identifier in the request, if the gateway follows the format your code speaks.</td></tr><tr><th>Metering consumption</th><td>One statement per provider.</td><td>A single statement, by day and by model.</td></tr><tr><th>Added latency</th><td>None: a single hop.</td><td>One more hop. Nexora AI has published no measurement of this latency.</td></tr><tr><th>Where it is processed</th><td>Where the provider processes it; read its contract.</td><td>Wherever each provider behind the gateway processes it; the Nexora AI model sheet shows it.</td></tr><tr><th>Contract</th><td>Directly with the provider.</td><td>With the gateway operator, who has its own contracts.</td></tr><tr><th>Fees</th><td>The provider's price.</td><td>The gateway's price: how it is calculated varies, read it before choosing.</td></tr></tbody></table>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que la passerelle apporte, avec les fonctions de Nexora AI API à l'appui.",
+      "claims": ["CL-S04", "CL-S05", "CL-S01", "CL-S03"],
+      "fields": {
+        "columns": "4",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "apports"
+      },
+      "translation": {
+        "title": "What a gateway brings.",
+        "intro": "Each line can be checked in the Nexora AI API documentation.",
+        "cards": [
+          {
+            "title": "One format.",
+            "text": "The OpenAI API format: your libraries and tools connect by changing the base address and the key.",
+            "href": "/en/guides/openai-compatible-api/",
+            "link_label": "Change the base address"
+          },
+          {
+            "title": "A managed key.",
+            "text": "Spending cap, expiry and rate limit per key; the key's value is shown only once."
+          },
+          {
+            "title": "A stated location.",
+            "text": "Each model sheet says where it is hosted and which data policy its provider declares."
+          },
+          {
+            "title": "A readable cost.",
+            "text": "The price in Canadian dollars per million tokens, and the cost of each complete response.",
+            "href": "/en/modeles/",
+            "link_label": "See the models"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Le coût en dépendance : intermédiaire, contrat, catalogue, point de passage des données.",
+      "claims": ["CL-S02", "CL-S06", "CL-E08"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "dependance"
+      },
+      "translation": {
+        "title": "What it costs in dependence.",
+        "body": "<p>A gateway always creates some dependence, even a simple one. It adds a link that can fail, one more contract to read, a catalogue that is not yours, and a point your requests pass through.</p>",
+        "items": [
+          {
+            "title": "One more link.",
+            "text": "If a model's provider is unavailable, the Nexora AI gateway returns a gateway error and charges nothing."
+          },
+          {
+            "title": "A catalogue to follow.",
+            "text": "You use the models the gateway publishes, not all those providers sell."
+          },
+          {
+            "title": "A point of passage.",
+            "text": "What the gateway keeps of your requests is a question to ask. Nexora AI's keeps only usage metadata: the model, tokens, cost and duration."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Où passent les données : stockage et traitement, juridiction, renvoi vers le guide dédié et vers Vos données.",
+      "claims": ["CL-E08", "CL-E09", "CL-75", "CL-S01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "donnees"
+      },
+      "translation": {
+        "title": "Where your data goes.",
+        "body": "<p>With a gateway, where your data is processed is where the chosen model's provider processes it. Some providers state that data is stored in Canada while requests are processed elsewhere: the difference between storage and processing is the first question to ask. A provider subject to another country's jurisdiction may also be required to hand over data it holds.</p><p>The guide <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a> covers these three questions, and the <a href=\"/en/your-data/\">Your data</a> page lists Nexora AI's commitments.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quand Nexora AI n'est pas le bon choix : quatre cas, dits sans détour.",
+      "claims": ["CL-12", "CL-86", "CL-S01", "CL-02"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "When Nexora AI is not the fit.",
+        "cards": [
+          {
+            "title": "A direct contract is required.",
+            "text": "If your organization must sign with the model's provider itself, direct access is simpler."
+          },
+          {
+            "title": "The model is not in the catalogue.",
+            "text": "The gateway serves only the models published in its catalogue."
+          },
+          {
+            "title": "You want to buy today.",
+            "text": "Self-service is not open for sale: accounts and payments work in test mode only."
+          },
+          {
+            "title": "A service level is required.",
+            "text": "No service level is announced today; availability and response times are set out in the contract."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : une passerelle en vaut-elle la peine, latence, clés, lieu, changement de modèle.",
+      "claims": ["CL-27", "CL-S04", "CL-S05", "CL-M08", "CL-E08", "CL-12"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Gateway or direct access: your questions.",
+        "items": [
+          {
+            "question": "Do I need a gateway if I only use one model?",
+            "answer": "Not necessarily. With a single provider, direct access is simpler and removes a middleman. A gateway becomes useful when you compare or switch models, or want a single key, cap and meter."
+          },
+          {
+            "question": "Does a gateway slow calls down?",
+            "answer": "It adds a network hop. Nexora AI has published no measurement of the latency its gateway adds, so we state none. Measure it on your own case before deciding."
+          },
+          {
+            "question": "Can I switch models without rewriting my code?",
+            "answer": "Yes, if the gateway follows the format your code speaks. With Nexora AI API, which follows the OpenAI API format, you only change the model identifier in the request."
+          },
+          {
+            "question": "Where are my requests processed?",
+            "answer": "At the chosen model's provider. Each Nexora AI model sheet states its hosting location and the data policy its provider declares: it is catalogue information, not a residency guarantee."
+          },
+          {
+            "question": "Can I buy access to Nexora AI API today?",
+            "answer": "Not in self-service: accounts and payments work in test mode only and no real payment is accepted. For a project, write to us: we start with a diagnostic."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : diagnostic, puis passerelle.",
+      "claims": ["CL-80", "CL-12"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's talk about your use.",
+        "text": "Tell us which models you want to compare and where your data must stay. We start with a diagnostic.",
+        "primary_label": "Book a diagnostic",
+        "primary_href": "/en/contact/?sujet=diagnostic",
+        "secondary_label": "See the gateway",
+        "secondary_href": "/en/model-gateway-api/"
+      }
+    }
+  ]
+}

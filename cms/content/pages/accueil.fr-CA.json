@@ -336,7 +336,7 @@
       },
       "translation": {
         "title": "Cinq temps. Un cas à la fois.",
-        "body": "<p>Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel : il dépend de votre situation et se mesure sur un premier cas. Vous n'avez pas à devenir informaticien : nous installons, nous exploitons avec vous et nous formons votre équipe.</p><p><a href=\"/methode/\">Lire la méthode</a></p>"
+        "body": "<p>Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel : il dépend de votre situation et se mesure sur un premier cas. Vous n'avez pas à devenir informaticien : nous installons, nous exploitons avec vous et nous formons votre équipe.</p><p><a href=\"/methode/\">Lire la méthode</a></p><p>Pour aller plus loin : <a href=\"/guides/ia-pme-quebec/\">Par où commencer avec l'IA dans une PME du Québec</a>, <a href=\"/guides/agents-ia-pour-pme/\">Qu'est-ce qu'un agent IA</a> et <a href=\"/guides/passerelle-ou-acces-direct/\">Passerelle ou accès direct</a>.</p><p>Les outils qui entourent vos modèles, vos serveurs et vos agents sont réunis dans <a href=\"/apps/\">Nexora Apps</a>, chacun avec son état réel.</p>"
       }
     },
     {

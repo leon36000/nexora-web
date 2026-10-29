@@ -1,0 +1,158 @@
+{
+  "page": "gabarit-cr-entretien",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "workflow-templates/interview-minutes",
+    "title": "Interview minutes",
+    "seo_title": "Interview minutes: workflow template",
+    "seo_description": "Interview minutes: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to adapt for Quebec before use.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la fiche : ce que fait le gabarit « Compte rendu d'entretien », dit sans détour.",
+      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Template · Emails and meetings",
+        "headline": "Interview minutes.",
+        "subheadline": "The Interview minutes template turns the notes of an interview (customer, candidate or annual) into minutes: context, points discussed, commitments on both sides (who, what, when) and next steps.",
+        "primary_label": "See all templates",
+        "primary_href": "/en/workflow-templates/",
+        "secondary_label": "Request a demo",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-06"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>The Interview minutes template turns the notes of an interview (customer, candidate or annual) into minutes: context, points discussed, commitments on both sides (who, what, when) and next steps. It separates facts from impressions, so the minutes can be read later by someone who was not in the room.</p><p>A workflow template is an automated sequence of tasks, provided as a starting point in WorkStudio and to be adapted to the business before it is deployed.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-06"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "champs"
+      },
+      "translation": {
+        "title": "What you provide.",
+        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The notes.</strong> Notes taken during the interview.</li><li><strong>The type.</strong> Type of interview.</li></ul>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "The steps.",
+        "cards": [
+          {
+            "title": "Format.",
+            "text": "An agent writes context, points discussed, commitments (who, what, when) and next steps, separating facts from impressions."
+          },
+          {
+            "title": "Review.",
+            "text": "You read the text produced, correct it if needed, then use or send it yourself: the template sends nothing."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-06"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "To adapt before use.",
+        "cards": [
+          {
+            "title": "What to adapt here.",
+            "text": "An interview with a candidate or an employee contains personal information: decide where the minutes are kept and who can access them."
+          },
+          {
+            "title": "What applies to all.",
+            "text": "The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use."
+          },
+          {
+            "title": "Nothing is sent.",
+            "text": "The template produces text to review. Only five templates in the collection send an email, and each waits first for a person's approval."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions about this template.",
+        "items": [
+          {
+            "question": "Does this template send anything for me?",
+            "answer": "No. It produces text to review; you use or send it yourself. Only five templates in the collection send an email, and each waits first for a person's approval."
+          },
+          {
+            "question": "Are my notes sent outside my premises?",
+            "answer": "It depends on the model plugged into WorkStudio, local or external. In a Nexora AI installation, no call to an external AI service is configured without your explicit activation, recorded in writing."
+          },
+          {
+            "question": "Does it suit Quebec as is?",
+            "answer": "Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See it at work.",
+        "text": "A demonstration on fictional data, to see what the template prepares and where a person stays in control.",
+        "primary_label": "Request a demo",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "All templates",
+        "secondary_href": "/en/workflow-templates/"
+      }
+    }
+  ]
+}
