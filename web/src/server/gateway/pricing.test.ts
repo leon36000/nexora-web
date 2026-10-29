@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+  activeWindow,
   checkPrice,
   costMicro,
   requestCost,
   sellFromMargin,
   upstreamCadMicro,
+  windowProblems,
 } from "./pricing";
 
 describe("costMicro", () => {
@@ -151,5 +153,111 @@ describe("formatMicro", () => {
     expect(formatMicro(12_000_000n)).toBe("12");
     expect(formatMicro(1n)).toBe("0.000001");
     expect(formatMicro(9_007_199_254_740_993n)).toBe("9007199254.740993");
+  });
+});
+
+describe("écriture du cache (Kimi) : jetons d'invite écrits en cache, facturés à part", () => {
+  const price = { input: 2_000_000n, output: 10_000_000n, cache: 200_000n };
+
+  it("facture l'écriture du cache à son tarif, une seule fois (elle fait partie de l'invite)", () => {
+    // 1 000 000 jetons d'invite dont 400 000 lus en cache et 100 000 écrits ; 0 sortie
+    const cost = requestCost(
+      {
+        prompt: 1_000_000,
+        completion: 0,
+        cached: 400_000,
+        cacheWrite: 100_000,
+      },
+      { ...price, cacheWrite: 4_000_000n },
+    );
+    // 500 000 × 2 + 400 000 × 0,2 + 100 000 × 4 = 1 000 000 + 80 000 + 400 000 (en micro, par million)
+    expect(cost).toBe(1_480_000n);
+  });
+
+  it("sans tarif d'écriture, l'écriture est facturée au tarif d'entrée", () => {
+    const withWrite = requestCost(
+      { prompt: 1_000, completion: 0, cached: 0, cacheWrite: 1_000 },
+      price,
+    );
+    const without = requestCost(
+      { prompt: 1_000, completion: 0, cached: 0 },
+      price,
+    );
+    expect(withWrite).toBe(without);
+  });
+
+  it("ne compte jamais plus de jetons écrits que d'invite restante", () => {
+    const cost = requestCost(
+      { prompt: 100, completion: 0, cached: 80, cacheWrite: 500 },
+      { ...price, cacheWrite: 4_000_000n },
+    );
+    // 80 lus + 20 écrits au plus
+    expect(cost).toBe(
+      requestCost(
+        { prompt: 100, completion: 0, cached: 80, cacheWrite: 20 },
+        { ...price, cacheWrite: 4_000_000n },
+      ),
+    );
+  });
+});
+
+describe("plages horaires de prix (DeepSeek : pointe et creux)", () => {
+  // Creux : toute la journée en fin de semaine ; en semaine 00:00–01:00, 04:00–06:00 et 10:00–24:00 UTC
+  const offPeak = [
+    { label: "creux", days: [0, 6], startMinute: 0, endMinute: 1440 },
+    { label: "creux", days: [1, 2, 3, 4, 5], startMinute: 0, endMinute: 60 },
+    { label: "creux", days: [1, 2, 3, 4, 5], startMinute: 240, endMinute: 360 },
+    {
+      label: "creux",
+      days: [1, 2, 3, 4, 5],
+      startMinute: 600,
+      endMinute: 1440,
+    },
+  ];
+  const at = (iso: string) => new Date(iso);
+
+  it("choisit la plage selon le jour et la minute UTC", () => {
+    expect(activeWindow(offPeak, at("2026-10-31T02:00:00Z"))?.label).toBe(
+      "creux",
+    ); // samedi
+    expect(activeWindow(offPeak, at("2026-10-28T05:00:00Z"))?.label).toBe(
+      "creux",
+    ); // mercredi 05 h
+    expect(activeWindow(offPeak, at("2026-10-28T02:00:00Z"))).toBeNull(); // mercredi 02 h : pointe
+    expect(activeWindow(offPeak, at("2026-10-28T08:30:00Z"))).toBeNull(); // mercredi 08 h 30 : pointe
+  });
+
+  it("le début est inclus et la fin exclue", () => {
+    expect(activeWindow(offPeak, at("2026-10-28T04:00:00Z"))).not.toBeNull();
+    expect(activeWindow(offPeak, at("2026-10-28T01:00:00Z"))).toBeNull();
+    expect(activeWindow(offPeak, at("2026-10-28T00:59:59Z"))).not.toBeNull();
+  });
+
+  it("valide les plages : bornes, jours, chevauchement", () => {
+    expect(windowProblems(offPeak)).toEqual([]);
+    expect(
+      windowProblems([{ label: "x", days: [], startMinute: 0, endMinute: 60 }]),
+    ).not.toEqual([]);
+    expect(
+      windowProblems([
+        { label: "x", days: [1], startMinute: 60, endMinute: 60 },
+      ]),
+    ).not.toEqual([]);
+    expect(
+      windowProblems([
+        { label: "x", days: [1], startMinute: 0, endMinute: 1441 },
+      ]),
+    ).not.toEqual([]);
+    expect(
+      windowProblems([
+        { label: "x", days: [7], startMinute: 0, endMinute: 60 },
+      ]),
+    ).not.toEqual([]);
+    expect(
+      windowProblems([
+        { label: "a", days: [1], startMinute: 0, endMinute: 120 },
+        { label: "b", days: [1, 2], startMinute: 60, endMinute: 180 },
+      ]),
+    ).not.toEqual([]);
   });
 });

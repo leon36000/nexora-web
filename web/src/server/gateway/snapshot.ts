@@ -4,6 +4,7 @@ import type {
   ModelRouting,
   ModelSheet,
   ModelVisibility,
+  PriceWindowRow,
   ProviderType,
   Region,
 } from "@nexora/db";
@@ -38,6 +39,10 @@ interface SnapshotPrice {
   sellInputCadMicro: string;
   sellOutputCadMicro: string;
   sellCacheCadMicro: string | null;
+  /** Absents des versions publiées avant les plages horaires : lire avec une valeur par défaut. */
+  upstreamCacheWriteUsdMicro?: string | null;
+  sellCacheWriteCadMicro?: string | null;
+  windows?: PriceWindowRow[];
   marginBps: number;
   marginFloorBps: number;
   effectiveAt: string;
@@ -94,14 +99,32 @@ function priceRowOf(price: SnapshotPrice): PriceRow {
     sellInputCadMicro: BigInt(price.sellInputCadMicro),
     sellOutputCadMicro: BigInt(price.sellOutputCadMicro),
     sellCacheCadMicro: opt(price.sellCacheCadMicro),
+    upstreamCacheWriteUsdMicro: opt(price.upstreamCacheWriteUsdMicro ?? null),
+    sellCacheWriteCadMicro: opt(price.sellCacheWriteCadMicro ?? null),
     marginFloorBps: price.marginFloorBps,
+  };
+}
+
+/** Une plage horaire vue comme un prix complet, pour passer la même garde que le prix de base. */
+function windowRowOf(w: PriceWindowRow, floor: number): PriceRow {
+  const opt = (v: string | null) => (v === null ? null : BigInt(v));
+  return {
+    upstreamInputUsdMicro: BigInt(w.upstream.input),
+    upstreamOutputUsdMicro: BigInt(w.upstream.output),
+    upstreamCacheUsdMicro: opt(w.upstream.cache),
+    sellInputCadMicro: BigInt(w.sell.input),
+    sellOutputCadMicro: BigInt(w.sell.output),
+    sellCacheCadMicro: opt(w.sell.cache),
+    upstreamCacheWriteUsdMicro: opt(w.upstream.cacheWrite),
+    sellCacheWriteCadMicro: opt(w.sell.cacheWrite),
+    marginFloorBps: floor,
   };
 }
 
 export type CatalogIssue =
   | { code: "fx_missing" }
   | { code: "price_missing"; model: string }
-  | ({ model: string } & PriceIssue)
+  | ({ model: string; window?: string } & PriceIssue)
   | { code: "provider_missing" | "provider_disabled"; model: string }
   | { code: "secret_missing"; model: string; provider: string };
 
@@ -156,6 +179,13 @@ export function guardSnapshot(
         m.kind,
       ))
         issues.push({ model: m.publicId, ...issue });
+      for (const w of m.price.windows ?? [])
+        for (const issue of checkPrice(
+          windowRowOf(w, m.price.marginFloorBps),
+          BigInt(snapshot.fx.usdToCadMicro),
+          m.kind,
+        ))
+          issues.push({ model: m.publicId, window: w.label, ...issue });
     }
   }
   return issues;

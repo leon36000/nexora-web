@@ -10,6 +10,7 @@ import {
   createDraftVersion,
   createModel,
   createProvider,
+  type PriceWindowInput,
   publishVersion,
   updateModel,
 } from "./catalog";
@@ -28,6 +29,9 @@ export interface TestModelSpec {
   sellInput?: bigint;
   sellOutput?: bigint;
   sellCache?: bigint | null;
+  /** Tarif de vente de l'écriture du cache (le coût amont d'essai est de 0,05 USD). */
+  sellCacheWrite?: bigint;
+  windows?: PriceWindowInput[];
   maxOutputTokens?: number;
   contextMax?: number;
 }
@@ -76,6 +80,13 @@ export async function publishTestCatalog(db: Database, specs: TestModelSpec[]) {
       sellInputCadMicro: spec.sellInput ?? 1_000_000n,
       sellOutputCadMicro: spec.sellOutput ?? 3_000_000n,
       sellCacheCadMicro: spec.sellCache ?? null,
+      ...(spec.sellCacheWrite === undefined
+        ? {}
+        : {
+            upstreamCacheWriteUsdMicro: 50_000n,
+            sellCacheWriteCadMicro: spec.sellCacheWrite,
+          }),
+      windows: spec.windows,
       effectiveAt: new Date(Date.now() - 5_000),
       note: "PRIX FICTIFS DE DÉVELOPPEMENT",
     });

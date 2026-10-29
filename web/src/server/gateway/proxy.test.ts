@@ -108,7 +108,10 @@ const usageChunk = (u = usageBody) =>
     usage: { ...u, cost: 0.5, cost_details: { upstream_inference_cost: 0.4 } },
   });
 
-const deps = (over: Partial<GatewayDeps["limits"]> = {}): GatewayDeps => ({
+const deps = (
+  over: Partial<GatewayDeps["limits"]> = {},
+  now: () => Date = () => new Date(),
+): GatewayDeps => ({
   db: () => t.db,
   fetch: (async (input, init) => {
     const body = JSON.parse(String(init?.body ?? "{}"));
@@ -125,7 +128,7 @@ const deps = (over: Partial<GatewayDeps["limits"]> = {}): GatewayDeps => ({
     masterKey: MASTER,
   }),
   log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
-  now: () => new Date(),
+  now,
   requestId: () => `req_test_${++counter}`,
   limits: {
     defaultRpm: 1000,
@@ -182,6 +185,24 @@ beforeAll(async () => {
   await publishTestCatalog(t.db, [
     { publicId: "nexora/test-chat" },
     { publicId: "nexora/test-private", visibility: "private" },
+    {
+      publicId: "nexora/test-windows",
+      windows: [
+        {
+          label: "creux",
+          days: [0, 6],
+          startMinute: 0,
+          endMinute: 1440,
+          upstream: { input: 50_000n, output: 100_000n },
+          sell: { input: 400_000n, output: 1_200_000n },
+        },
+      ],
+    },
+    {
+      publicId: "nexora/test-write",
+      sellCache: 200_000n,
+      sellCacheWrite: 2_000_000n,
+    },
     {
       publicId: "nexora/test-embed",
       kind: "embedding",
@@ -1235,7 +1256,12 @@ describe("embeddings et liste des modèles", () => {
     const res = await handleModels(new Request("http://x/v1/models"), deps());
     const json = await res.json();
     const ids = json.data.map((m: { id: string }) => m.id).sort();
-    expect(ids).toEqual(["nexora/test-chat", "nexora/test-embed"]);
+    expect(ids).toEqual([
+      "nexora/test-chat",
+      "nexora/test-embed",
+      "nexora/test-windows",
+      "nexora/test-write",
+    ]);
     const text = JSON.stringify(json);
     expect(text).not.toContain("upstream");
     expect(text).not.toContain("127.0.0.1");
@@ -1479,5 +1505,81 @@ describe("passerelle non configurée", () => {
       d,
     );
     expect(res.status).toBe(503);
+  });
+});
+
+describe("plages horaires et écriture du cache", () => {
+  const SATURDAY = () => new Date("2026-10-31T10:00:00Z");
+  const WEDNESDAY = () => new Date("2026-10-28T09:00:00Z");
+  const run = async (
+    model: string,
+    usage: Record<string, unknown>,
+    now: () => Date,
+  ) => {
+    const c = await client();
+    upstream = () => upstreamOk(usage);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ model })),
+      deps({}, now),
+    );
+    expect(res.status).toBe(200);
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    return { res, ev };
+  };
+  const usage = {
+    prompt_tokens: 100,
+    completion_tokens: 100,
+    total_tokens: 200,
+  };
+
+  it("applique le prix de la plage en vigueur au moment de la requête et note laquelle", async () => {
+    // 100 jetons à 1 CAD/M en entrée + 100 à 3 CAD/M en sortie = 400 micro ; en plage « creux » : 40 + 120 = 160
+    const base = await run("nexora/test-windows", usage, WEDNESDAY);
+    expect(base.res.headers.get("x-nexora-cost-micro")).toBe("400");
+    expect(base.ev?.priceWindow).toBeNull();
+    const creux = await run("nexora/test-windows", usage, SATURDAY);
+    expect(creux.res.headers.get("x-nexora-cost-micro")).toBe("160");
+    expect(creux.ev?.priceWindow).toBe("creux");
+    expect(creux.ev?.priceInputMicro).toBe(400_000n);
+    // le coût amont suit la même plage : 100 × 0,05 + 100 × 0,10 USD par million
+    expect(creux.ev?.upstreamCostUsdMicro).toBe(15n);
+  });
+
+  it("facture l'écriture du cache à son tarif et enregistre les jetons de raisonnement", async () => {
+    // 1 000 d'invite dont 200 lus et 300 écrits en cache ; 500 de sortie dont 120 de raisonnement
+    const { res, ev } = await run(
+      "nexora/test-write",
+      {
+        prompt_tokens: 1000,
+        completion_tokens: 500,
+        total_tokens: 1500,
+        prompt_tokens_details: { cached_tokens: 200, cache_write_tokens: 300 },
+        completion_tokens_details: { reasoning_tokens: 120 },
+      },
+      WEDNESDAY,
+    );
+    // 500 × 1 + 200 × 0,2 + 300 × 2 + 500 × 3 = 500 + 40 + 600 + 1500 = 2 640 micro
+    expect(res.headers.get("x-nexora-cost-micro")).toBe("2640");
+    expect(ev?.cachedTokens).toBe(200);
+    expect(ev?.cacheWriteTokens).toBe(300);
+    expect(ev?.reasoningTokens).toBe(120);
+    expect(ev?.priceCacheWriteMicro).toBe(2_000_000n);
+  });
+
+  it("reconnaît le champ d'écriture du cache d'autres fournisseurs (cache_creation_input_tokens)", async () => {
+    const { ev } = await run(
+      "nexora/test-write",
+      {
+        prompt_tokens: 1000,
+        completion_tokens: 0,
+        total_tokens: 1000,
+        cache_creation_input_tokens: 250,
+      },
+      WEDNESDAY,
+    );
+    expect(ev?.cacheWriteTokens).toBe(250);
   });
 });

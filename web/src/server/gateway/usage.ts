@@ -29,9 +29,17 @@ export interface FinalizeInput {
   status: UsageStatus;
   httpStatus: number;
   errorCode?: string | null;
-  tokens: { prompt: number; completion: number; cached: number };
+  tokens: {
+    prompt: number;
+    completion: number;
+    cached: number;
+    cacheWrite?: number;
+    reasoning?: number;
+  };
   price: PerMillion;
   upstreamPrice: PerMillion;
+  /** Étiquette de la plage horaire appliquée, null = prix de base. */
+  priceWindow?: string | null;
   reservationId: string;
   /**
    * Frais par exécution (agents hébergés, S7), en plus des jetons ; 0 pour un modèle. Dus dès qu'une exécution a
@@ -94,12 +102,16 @@ export async function finalizeRequest(
         promptTokens: input.tokens.prompt,
         completionTokens: input.tokens.completion,
         cachedTokens: input.tokens.cached,
+        cacheWriteTokens: input.tokens.cacheWrite ?? 0,
+        reasoningTokens: input.tokens.reasoning ?? 0,
         costMicro: charged,
         runFeeMicro: runFee < charged ? runFee : charged,
         upstreamCostUsdMicro: upstreamUsd,
         priceInputMicro: input.price.input,
         priceOutputMicro: input.price.output,
         priceCacheMicro: input.price.cache,
+        priceCacheWriteMicro: input.price.cacheWrite ?? null,
+        priceWindow: input.priceWindow ?? null,
         latencyMs: input.latencyMs,
         reservationId: input.reservationId,
       })

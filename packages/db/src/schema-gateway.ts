@@ -223,6 +223,27 @@ export const models = pgTable(
   ],
 );
 
+/** Quatre tarifs par million de jetons, en chaînes décimales (micro-unités). */
+export interface PriceSetRow {
+  input: string;
+  output: string;
+  cache: string | null;
+  cacheWrite: string | null;
+}
+
+/**
+ * Plage horaire UTC où le prix baisse (DeepSeek : creux). `upstream` en micro-USD, `sell` en micro-CAD.
+ * Une plage ne peut que baisser le prix de base.
+ */
+export interface PriceWindowRow {
+  label: string;
+  days: number[];
+  startMinute: number;
+  endMinute: number;
+  upstream: PriceSetRow;
+  sell: PriceSetRow;
+}
+
 /**
  * Prix d'un modèle, par MILLION de jetons. Lignes IMMUABLES (déclencheur SQL) : changer un prix
  * crée une nouvelle ligne avec une nouvelle date d'effet ; un prix ne change jamais pour une
@@ -241,6 +262,11 @@ export const modelPrices = pgTable(
     sellInputCadMicro: micro("sell_input_cad_micro").notNull(),
     sellOutputCadMicro: micro("sell_output_cad_micro").notNull(),
     sellCacheCadMicro: micro("sell_cache_cad_micro"),
+    /** Écriture du cache facturée à part par l'éditeur (Kimi) ; null : tarif d'entrée. */
+    upstreamCacheWriteUsdMicro: micro("upstream_cache_write_usd_micro"),
+    sellCacheWriteCadMicro: micro("sell_cache_write_cad_micro"),
+    /** Plages horaires UTC où le prix baisse ; vide : un seul prix toute la semaine. */
+    windows: jsonb("windows").$type<PriceWindowRow[]>().notNull().default([]),
     /** Marge visée, en points de base (informative ; le plancher est contraignant). */
     marginBps: integer("margin_bps").notNull().default(0),
     /** Plancher de marge sur le coût amont converti : une publication sous ce plancher est refusée. */
@@ -340,6 +366,10 @@ export const usageEvents = pgTable(
     promptTokens: integer("prompt_tokens").notNull().default(0),
     completionTokens: integer("completion_tokens").notNull().default(0),
     cachedTokens: integer("cached_tokens").notNull().default(0),
+    /** Jetons d'invite écrits en cache (inclus dans `prompt_tokens`). */
+    cacheWriteTokens: integer("cache_write_tokens").notNull().default(0),
+    /** Jetons de raisonnement (inclus dans `completion_tokens`) : information, déjà facturés en sortie. */
+    reasoningTokens: integer("reasoning_tokens").notNull().default(0),
     /** Prix de vente débité (micro-CAD) et coût amont (micro-USD). */
     costMicro: micro("cost_micro").notNull().default(sql`0`),
     /** Part de `cost_micro` facturée par exécution (agents hébergés, S7) ; 0 pour un modèle. */
@@ -351,6 +381,9 @@ export const usageEvents = pgTable(
     priceInputMicro: micro("price_input_micro").notNull().default(sql`0`),
     priceOutputMicro: micro("price_output_micro").notNull().default(sql`0`),
     priceCacheMicro: micro("price_cache_micro"),
+    priceCacheWriteMicro: micro("price_cache_write_micro"),
+    /** Étiquette de la plage horaire appliquée (« creux »), null = prix de base. */
+    priceWindow: text("price_window"),
     latencyMs: integer("latency_ms").notNull().default(0),
     reservationId: uuid("reservation_id"),
     createdAt: ts("created_at").notNull().defaultNow(),

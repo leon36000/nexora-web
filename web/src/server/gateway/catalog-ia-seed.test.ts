@@ -6,11 +6,14 @@ import { loadKeyring } from "../vault/crypto";
 import { putSecret } from "../vault/store";
 import {
   addFxRate,
+  addPrice,
   approveFxRate,
   createDraftVersion,
+  currentPrice,
   updateModel,
 } from "./catalog";
 import { AI_MODEL_DRAFTS, PROVIDERS, seedAiModels } from "./catalog-ia-seed";
+import { activeWindow, windowProblems } from "./pricing";
 import { modelRoutingSchema, modelSheetSchema } from "./sheet";
 
 const byId = (id: string) => {
@@ -80,6 +83,29 @@ describe("les cinq modèles du fondateur", () => {
       output: 1_200_000n,
       cache: 6_000n,
     });
+  });
+
+  it("DeepSeek : tarif de pointe en base et tarif creux en plages horaires UTC (semaine : 00-01 h, 04-06 h, 10-24 h ; fin de semaine : toute la journée)", () => {
+    const d = byId("nexora/deepseek-v4.1-flash-1017");
+    expect(d.reference.windows).toHaveLength(4);
+    expect(windowProblems(d.reference.windows ?? [])).toEqual([]);
+    for (const w of d.reference.windows ?? [])
+      expect(w.upstream).toMatchObject({
+        input: 150_000n,
+        output: 600_000n,
+        cache: 3_000n,
+      });
+    const at = (iso: string) =>
+      activeWindow(d.reference.windows ?? [], new Date(iso));
+    expect(at("2026-10-28T02:00:00Z")).toBeNull(); // mercredi 02 h : pointe
+    expect(at("2026-10-28T08:00:00Z")).toBeNull(); // mercredi 08 h : pointe
+    expect(at("2026-10-28T05:00:00Z")?.label).toBe("creux");
+    expect(at("2026-10-28T12:00:00Z")?.label).toBe("creux");
+    expect(at("2026-10-31T03:00:00Z")?.label).toBe("creux"); // samedi
+  });
+
+  it("Kimi : l'écriture du cache (5 minutes) est facturée à son tarif de l'éditeur", () => {
+    expect(byId("nexora/kimi-k3.1-pro").reference.cacheWrite).toBe(2_000_000n);
   });
 
   it("ont une fiche et un routage valides", () => {
@@ -181,6 +207,17 @@ describe("chargement dans la base", () => {
     const price = prices.find((p) => p.modelId === glm?.id);
     expect(price?.sellInputCadMicro).toBe(2_156_000n);
     expect(price?.marginBps).toBe(1000);
+    // DeepSeek : prix creux = 0,15 USD × 1,40 × 1,10 = 0,231 CAD par million de jetons d'entrée
+    const ds = rows.find(
+      (m) => m.publicId === "nexora/deepseek-v4.1-flash-1017",
+    );
+    const dsPrice = prices.find((p) => p.modelId === ds?.id);
+    expect(dsPrice?.windows[0]?.sell.input).toBe("231000");
+    // Kimi : écriture du cache 2,00 USD × 1,40 × 1,10 = 3,08 CAD
+    const kimi = rows.find((m) => m.publicId === "nexora/kimi-k3.1-pro");
+    expect(
+      prices.find((p) => p.modelId === kimi?.id)?.sellCacheWriteCadMicro,
+    ).toBe(3_080_000n);
     expect(price?.marginFloorBps).toBe(1000);
   });
 
@@ -236,6 +273,39 @@ describe("chargement dans la base", () => {
       .set({ status: "draft" })
       .where(eq(models.id, flash?.id as string));
     await seedAiModels(t.db);
+  });
+
+  it("ajoute une nouvelle ligne de prix à un brouillon dont le prix n'a pas les plages horaires, sans effacer l'ancienne", async () => {
+    const [ds] = await t.db
+      .select()
+      .from(models)
+      .where(eq(models.publicId, "nexora/deepseek-v4.1-flash-1017"));
+    await addPrice(t.db, ds?.id as string, {
+      upstreamInputUsdMicro: 300_000n,
+      upstreamOutputUsdMicro: 1_200_000n,
+      marginBps: 1000,
+      marginFloorBps: 1000,
+    });
+    expect(
+      (await currentPrice(t.db, ds?.id as string, new Date()))?.windows,
+    ).toHaveLength(0);
+    await seedAiModels(t.db);
+    expect(
+      (await currentPrice(t.db, ds?.id as string, new Date()))?.windows,
+    ).toHaveLength(4);
+    const all = await t.db
+      .select()
+      .from(modelPrices)
+      .where(eq(modelPrices.modelId, ds?.id as string));
+    expect(all).toHaveLength(3);
+    // rejouer ne rajoute rien
+    await seedAiModels(t.db);
+    expect(
+      await t.db
+        .select()
+        .from(modelPrices)
+        .where(eq(modelPrices.modelId, ds?.id as string)),
+    ).toHaveLength(3);
   });
 
   it("refuse de charger sans taux de change approuvé, sans rien écrire", async () => {

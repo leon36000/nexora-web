@@ -24,6 +24,8 @@ export interface Usage {
   completion: number;
   /** Jetons d'entrée servis par le cache (inclus dans `prompt`, comme dans l'API OpenAI). */
   cached: number;
+  /** Jetons d'entrée écrits en cache (inclus dans `prompt`), facturés à part par certains éditeurs (Kimi). */
+  cacheWrite?: number;
 }
 
 export interface PerMillion {
@@ -31,6 +33,8 @@ export interface PerMillion {
   output: bigint;
   /** null : le tarif d'entrée s'applique aux jetons en cache. */
   cache: bigint | null;
+  /** Écriture du cache ; absent ou null : le tarif d'entrée s'applique. */
+  cacheWrite?: bigint | null;
 }
 
 /** Coût d'une requête : une seule division, donc un seul arrondi. */
@@ -38,13 +42,74 @@ export function requestCost(usage: Usage, price: PerMillion): bigint {
   assertTokens(usage.prompt);
   assertTokens(usage.completion);
   assertTokens(usage.cached);
+  assertTokens(usage.cacheWrite ?? 0);
   const cached = Math.min(usage.cached, usage.prompt);
-  const fresh = usage.prompt - cached;
+  const written = Math.min(usage.cacheWrite ?? 0, usage.prompt - cached);
+  const fresh = usage.prompt - cached - written;
   const total =
     BigInt(fresh) * price.input +
     BigInt(cached) * (price.cache ?? price.input) +
+    BigInt(written) * (price.cacheWrite ?? price.input) +
     BigInt(usage.completion) * price.output;
   return ceilDiv(total, PER_MILLION);
+}
+
+/**
+ * Plage horaire d'un prix, en UTC : `days` (0 = dimanche … 6 = samedi), de `startMinute` (inclus) à
+ * `endMinute` (exclu), minutes depuis minuit UTC. Une plage ne peut que BAISSER le prix de base
+ * (le montant réservé se calcule donc toujours sur le prix de base).
+ */
+export interface TimeWindow {
+  label: string;
+  days: number[];
+  startMinute: number;
+  endMinute: number;
+}
+
+/** Première plage qui couvre `at`, ou null (prix de base). */
+export function activeWindow<W extends TimeWindow>(
+  windows: readonly W[],
+  at: Date,
+): W | null {
+  const day = at.getUTCDay();
+  const minute = at.getUTCHours() * 60 + at.getUTCMinutes();
+  return (
+    windows.find(
+      (w) =>
+        w.days.includes(day) && minute >= w.startMinute && minute < w.endMinute,
+    ) ?? null
+  );
+}
+
+/** Problèmes d'une liste de plages (vide = valide) : bornes, jours, chevauchement. */
+export function windowProblems(windows: readonly TimeWindow[]): string[] {
+  const problems: string[] = [];
+  windows.forEach((w, i) => {
+    const where = `plage ${i + 1} (« ${w.label} »)`;
+    if (w.days.length === 0) problems.push(`${where} : aucun jour`);
+    if (w.days.some((d) => !Number.isInteger(d) || d < 0 || d > 6))
+      problems.push(`${where} : jour hors de 0 à 6`);
+    if (
+      !Number.isInteger(w.startMinute) ||
+      !Number.isInteger(w.endMinute) ||
+      w.startMinute < 0 ||
+      w.endMinute > 1440 ||
+      w.startMinute >= w.endMinute
+    )
+      problems.push(`${where} : minutes invalides (0 ≤ début < fin ≤ 1440)`);
+  });
+  for (let a = 0; a < windows.length; a++)
+    for (let b = a + 1; b < windows.length; b++) {
+      const x = windows[a] as TimeWindow;
+      const y = windows[b] as TimeWindow;
+      if (
+        x.days.some((d) => y.days.includes(d)) &&
+        x.startMinute < y.endMinute &&
+        y.startMinute < x.endMinute
+      )
+        problems.push(`plages ${a + 1} et ${b + 1} : chevauchement`);
+    }
+  return problems;
 }
 
 /** Prix amont (micro-USD par million) converti en micro-CAD au taux approuvé, arrondi vers le haut. */
@@ -77,12 +142,15 @@ export interface PriceRow {
   sellInputCadMicro: bigint;
   sellOutputCadMicro: bigint;
   sellCacheCadMicro: bigint | null;
+  upstreamCacheWriteUsdMicro?: bigint | null;
+  sellCacheWriteCadMicro?: bigint | null;
   marginFloorBps: number;
 }
 
+type PriceField = "input" | "output" | "cache" | "cacheWrite";
 export type PriceIssue =
-  | { code: "price_zero"; field: "input" | "output" | "cache" }
-  | { code: "below_margin_floor"; field: "input" | "output" | "cache" };
+  | { code: "price_zero"; field: PriceField }
+  | { code: "below_margin_floor"; field: PriceField };
 
 /**
  * Garde de publication des prix (D3) : jamais 0 $ ; jamais sous le plancher de marge sur le coût
@@ -124,6 +192,17 @@ export function checkPrice(
       )
     )
       issues.push({ code: "below_margin_floor", field: "cache" });
+  }
+  const write = price.sellCacheWriteCadMicro ?? null;
+  if (write !== null) {
+    if (write <= 0n) issues.push({ code: "price_zero", field: "cacheWrite" });
+    else if (
+      !floor(
+        price.upstreamCacheWriteUsdMicro ?? price.upstreamInputUsdMicro,
+        write,
+      )
+    )
+      issues.push({ code: "below_margin_floor", field: "cacheWrite" });
   }
   return issues;
 }

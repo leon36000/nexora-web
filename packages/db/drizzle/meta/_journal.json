@@ -120,6 +120,13 @@
       "when": 1793237864448,
       "tag": "0016_s5b_fiches_modeles",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793239039972,
+      "tag": "0017_s5c_plages_et_cache",
+      "breakpoints": true
     }
   ]
 }

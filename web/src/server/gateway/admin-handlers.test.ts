@@ -335,6 +335,52 @@ describe("flux complet de l'administration", () => {
     expect(history.json.prices).toHaveLength(3);
   });
 
+  it("accepte des plages horaires et l'écriture du cache dans un prix, et refuse une plage plus chère", async () => {
+    const m = await call("POST", "models", {
+      publicId: "nexora/essai-plages",
+      name: "Essai plages",
+      providerId,
+      upstreamId: "up",
+      contextMax: 8000,
+    });
+    expect(m.status).toBe(201);
+    const window = {
+      label: "creux",
+      days: [0, 6],
+      startMinute: 0,
+      endMinute: 1440,
+      upstream: { input: "150000", output: "600000" },
+    };
+    const price = await call("POST", `models/${m.json.id}/prices`, {
+      upstreamInputUsdMicro: "300000",
+      upstreamOutputUsdMicro: "1200000",
+      upstreamCacheWriteUsdMicro: "300000",
+      marginBps: 1000,
+      marginFloorBps: 1000,
+      windows: [window],
+    });
+    expect(price.status).toBe(201);
+    expect(price.json.sellInputCadMicro).toBe("462000");
+    expect(price.json.sellCacheWriteCadMicro).toBe("462000");
+    expect(price.json.windows[0].sell.input).toBe("231000");
+
+    const dearer = await call("POST", `models/${m.json.id}/prices`, {
+      upstreamInputUsdMicro: "300000",
+      upstreamOutputUsdMicro: "1200000",
+      marginBps: 1000,
+      windows: [{ ...window, upstream: { input: "400000", output: "600000" } }],
+    });
+    expect(dearer.status).toBe(422);
+    expect(dearer.json.error).toBe("invalid_request");
+    const badMinutes = await call("POST", `models/${m.json.id}/prices`, {
+      upstreamInputUsdMicro: "300000",
+      upstreamOutputUsdMicro: "1200000",
+      marginBps: 1000,
+      windows: [{ ...window, endMinute: 1500 }],
+    });
+    expect(badMinutes.status).toBe(422);
+  });
+
   it("brouillon → aperçu des différences → approbation → publication → synchronisation", async () => {
     const draft = await call("POST", "versions");
     expect(draft.status).toBe(201);

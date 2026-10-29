@@ -16,13 +16,14 @@ import {
   modelPrices,
   modelProviders,
   models,
+  type PriceWindowRow,
   type ProviderType,
   type Region,
   sql,
   vaultSecrets,
 } from "@nexora/db";
 import { canonicalJson, sha256Hex } from "./canonical";
-import { sellFromMargin } from "./pricing";
+import { sellFromMargin, windowProblems } from "./pricing";
 import {
   type CatalogIssue,
   type CatalogSnapshot,
@@ -254,19 +255,49 @@ async function modelIssues(
 
 // ─── Prix ───────────────────────────────────────────────────────────────────────
 
+/** Quatre tarifs par million de jetons ; `cache` et `cacheWrite` absents ou null : tarif d'entrée. */
+export interface PriceSetInput {
+  input: bigint;
+  output: bigint;
+  cache?: bigint | null;
+  cacheWrite?: bigint | null;
+}
+
+export interface PriceWindowInput {
+  label: string;
+  days: number[];
+  startMinute: number;
+  endMinute: number;
+  upstream: PriceSetInput;
+  /** Absent : calculé avec la marge au taux approuvé. */
+  sell?: PriceSetInput;
+}
+
 export interface PriceInput {
   upstreamInputUsdMicro: bigint;
   upstreamOutputUsdMicro: bigint;
   upstreamCacheUsdMicro?: bigint | null;
+  /** Écriture du cache facturée à part par l'éditeur (Kimi). */
+  upstreamCacheWriteUsdMicro?: bigint | null;
   /** Absents : calculés avec `marginBps` au taux de change approuvé. */
   sellInputCadMicro?: bigint;
   sellOutputCadMicro?: bigint;
   sellCacheCadMicro?: bigint | null;
+  sellCacheWriteCadMicro?: bigint | null;
+  /** Plages horaires UTC où le prix baisse (DeepSeek : creux). */
+  windows?: PriceWindowInput[];
   marginBps?: number;
   marginFloorBps?: number;
   effectiveAt?: Date;
   note?: string;
 }
+
+const str = (v: bigint | null | undefined) =>
+  v === null || v === undefined ? null : v.toString();
+
+/** Un prix « effectif » : l'absence de tarif de cache ou d'écriture signifie le tarif d'entrée. */
+const effective = (s: PriceSetInput) =>
+  [s.input, s.output, s.cache ?? s.input, s.cacheWrite ?? s.input] as const;
 
 /** Ajoute une ligne de prix (les lignes existantes ne sont jamais modifiées : déclencheur SQL). */
 export async function addPrice(
@@ -277,30 +308,84 @@ export async function addPrice(
 ) {
   await getModel(db, modelId);
   const margin = input.marginBps ?? 0;
-  let { sellInputCadMicro, sellOutputCadMicro, sellCacheCadMicro } = input;
-  if (sellInputCadMicro === undefined || sellOutputCadMicro === undefined) {
-    const fx = await currentFx(db, now);
-    if (!fx)
+  let fxRow: Fx | null | undefined;
+  const fxOrThrow = async (): Promise<Fx> => {
+    if (fxRow === undefined) fxRow = await currentFx(db, now);
+    if (!fxRow)
       throw new CatalogError(
         "fx_missing",
         "aucun taux de change approuvé : impossible de calculer un prix à partir d'une marge",
       );
-    sellInputCadMicro ??= sellFromMargin(
-      input.upstreamInputUsdMicro,
-      fx.usdToCadMicro,
-      margin,
-    );
-    sellOutputCadMicro ??= sellFromMargin(
-      input.upstreamOutputUsdMicro,
-      fx.usdToCadMicro,
-      margin,
-    );
+    return fxRow;
+  };
+  const sellOf = async (upstream: bigint) =>
+    sellFromMargin(upstream, (await fxOrThrow()).usdToCadMicro, margin);
+
+  let { sellInputCadMicro, sellOutputCadMicro, sellCacheCadMicro } = input;
+  let { sellCacheWriteCadMicro } = input;
+  if (sellInputCadMicro === undefined || sellOutputCadMicro === undefined) {
+    sellInputCadMicro ??= await sellOf(input.upstreamInputUsdMicro);
+    sellOutputCadMicro ??= await sellOf(input.upstreamOutputUsdMicro);
     if (sellCacheCadMicro === undefined && input.upstreamCacheUsdMicro != null)
-      sellCacheCadMicro = sellFromMargin(
-        input.upstreamCacheUsdMicro,
-        fx.usdToCadMicro,
-        margin,
-      );
+      sellCacheCadMicro = await sellOf(input.upstreamCacheUsdMicro);
+  }
+  if (
+    sellCacheWriteCadMicro === undefined &&
+    input.upstreamCacheWriteUsdMicro != null
+  )
+    sellCacheWriteCadMicro = await sellOf(input.upstreamCacheWriteUsdMicro);
+
+  const windows: PriceWindowRow[] = [];
+  const given = input.windows ?? [];
+  const problems = windowProblems(given);
+  if (problems.length > 0)
+    throw new CatalogError("invalid_request", problems.join(" ; "));
+  const baseUp: PriceSetInput = {
+    input: input.upstreamInputUsdMicro,
+    output: input.upstreamOutputUsdMicro,
+    cache: input.upstreamCacheUsdMicro,
+    cacheWrite: input.upstreamCacheWriteUsdMicro,
+  };
+  const baseSell: PriceSetInput = {
+    input: sellInputCadMicro,
+    output: sellOutputCadMicro,
+    cache: sellCacheCadMicro,
+    cacheWrite: sellCacheWriteCadMicro,
+  };
+  for (const w of given) {
+    const sell: PriceSetInput = w.sell ?? {
+      input: await sellOf(w.upstream.input),
+      output: await sellOf(w.upstream.output),
+      cache: w.upstream.cache != null ? await sellOf(w.upstream.cache) : null,
+      cacheWrite:
+        w.upstream.cacheWrite != null
+          ? await sellOf(w.upstream.cacheWrite)
+          : null,
+    };
+    // Une plage ne peut que baisser le prix : la réservation se calcule toujours sur le prix de base.
+    for (const [kind, a, b] of [
+      ["coût amont", effective(w.upstream), effective(baseUp)],
+      ["prix de vente", effective(sell), effective(baseSell)],
+    ] as const)
+      if (a.some((v, k) => v > (b[k] as bigint)))
+        throw new CatalogError(
+          "invalid_request",
+          `plage « ${w.label} » : le ${kind} dépasse celui du prix de base`,
+        );
+    const set = (s: PriceSetInput) => ({
+      input: s.input.toString(),
+      output: s.output.toString(),
+      cache: str(s.cache),
+      cacheWrite: str(s.cacheWrite),
+    });
+    windows.push({
+      label: w.label,
+      days: w.days,
+      startMinute: w.startMinute,
+      endMinute: w.endMinute,
+      upstream: set(w.upstream),
+      sell: set(sell),
+    });
   }
   const [row] = await db
     .insert(modelPrices)
@@ -309,9 +394,12 @@ export async function addPrice(
       upstreamInputUsdMicro: input.upstreamInputUsdMicro,
       upstreamOutputUsdMicro: input.upstreamOutputUsdMicro,
       upstreamCacheUsdMicro: input.upstreamCacheUsdMicro ?? null,
+      upstreamCacheWriteUsdMicro: input.upstreamCacheWriteUsdMicro ?? null,
       sellInputCadMicro,
       sellOutputCadMicro,
       sellCacheCadMicro: sellCacheCadMicro ?? null,
+      sellCacheWriteCadMicro: sellCacheWriteCadMicro ?? null,
+      windows,
       marginBps: margin,
       marginFloorBps: input.marginFloorBps ?? 0,
       effectiveAt: input.effectiveAt ?? now,
@@ -422,7 +510,6 @@ export async function currentFx(db: Database, now: Date): Promise<Fx | null> {
 // ─── Instantané et versions ─────────────────────────────────────────────────────
 
 const iso = (d: Date | null) => (d ? d.toISOString() : null);
-const str = (v: bigint | null) => (v === null ? null : v.toString());
 
 function snapshotFx(fx: Fx) {
   return {
@@ -474,6 +561,9 @@ function snapshotModel(m: Model, price: Price | null): SnapshotModel {
           sellInputCadMicro: price.sellInputCadMicro.toString(),
           sellOutputCadMicro: price.sellOutputCadMicro.toString(),
           sellCacheCadMicro: str(price.sellCacheCadMicro),
+          upstreamCacheWriteUsdMicro: str(price.upstreamCacheWriteUsdMicro),
+          sellCacheWriteCadMicro: str(price.sellCacheWriteCadMicro),
+          windows: price.windows,
           marginBps: price.marginBps,
           marginFloorBps: price.marginFloorBps,
           effectiveAt: price.effectiveAt.toISOString(),

@@ -465,3 +465,129 @@ describe("fiche publique et routage amont", () => {
     ).toEqual(sheet);
   });
 });
+
+describe("prix : plages horaires et écriture du cache", () => {
+  // Les essais précédents laissent d'autres taux : on pose le taux de 1,40 voulu ici, le plus récent.
+  beforeEach(async () => {
+    const fx = await addFxRate(t.db, { usdToCadMicro: 1_400_000n });
+    await approveFxRate(t.db, fx.id, "test");
+  });
+
+  const offPeak = {
+    label: "creux",
+    days: [0, 6],
+    startMinute: 0,
+    endMinute: 1440,
+    upstream: { input: 150_000n, output: 600_000n, cache: 3_000n },
+  };
+  const deepseek = {
+    upstreamInputUsdMicro: 300_000n,
+    upstreamOutputUsdMicro: 1_200_000n,
+    upstreamCacheUsdMicro: 6_000n,
+    marginBps: 1000,
+    marginFloorBps: 1000,
+  };
+
+  it("calcule le prix de vente de chaque plage avec la marge et le garde dans la ligne de prix", async () => {
+    const { model } = await fixture();
+    const price = await addPrice(t.db, model.id, {
+      ...deepseek,
+      windows: [offPeak],
+    });
+    // base : 0,30 USD × 1,4 × 1,1 = 0,462 CAD ; creux : 0,15 USD × 1,4 × 1,1 = 0,231 CAD
+    expect(price.sellInputCadMicro).toBe(462_000n);
+    expect(price.windows).toHaveLength(1);
+    expect(price.windows[0]).toMatchObject({
+      label: "creux",
+      days: [0, 6],
+      startMinute: 0,
+      endMinute: 1440,
+      upstream: {
+        input: "150000",
+        output: "600000",
+        cache: "3000",
+        cacheWrite: null,
+      },
+      sell: {
+        input: "231000",
+        output: "924000",
+        cache: "4620",
+        cacheWrite: null,
+      },
+    });
+  });
+
+  it("calcule le prix de vente de l'écriture du cache avec la même marge", async () => {
+    const { model } = await fixture();
+    const price = await addPrice(t.db, model.id, {
+      upstreamInputUsdMicro: 2_000_000n,
+      upstreamOutputUsdMicro: 10_000_000n,
+      upstreamCacheUsdMicro: 200_000n,
+      upstreamCacheWriteUsdMicro: 2_000_000n,
+      marginBps: 1000,
+      marginFloorBps: 1000,
+    });
+    // 2,00 USD × 1,4 × 1,1 = 3,08 CAD
+    expect(price.sellCacheWriteCadMicro).toBe(3_080_000n);
+    expect(price.upstreamCacheWriteUsdMicro).toBe(2_000_000n);
+  });
+
+  it("refuse une plage plus chère que le prix de base (la réservation se fait au prix de base)", async () => {
+    const { model } = await fixture();
+    await expect(
+      addPrice(t.db, model.id, {
+        ...deepseek,
+        windows: [
+          { ...offPeak, upstream: { ...offPeak.upstream, output: 1_300_000n } },
+        ],
+      }),
+    ).rejects.toMatchObject({ code: "invalid_request" });
+  });
+
+  it("refuse des plages qui se chevauchent ou mal bornées", async () => {
+    const { model } = await fixture();
+    await expect(
+      addPrice(t.db, model.id, {
+        ...deepseek,
+        windows: [offPeak, { ...offPeak, label: "autre", days: [6] }],
+      }),
+    ).rejects.toMatchObject({ code: "invalid_request" });
+    await expect(
+      addPrice(t.db, model.id, {
+        ...deepseek,
+        windows: [{ ...offPeak, startMinute: 600, endMinute: 600 }],
+      }),
+    ).rejects.toMatchObject({ code: "invalid_request" });
+  });
+
+  it("refuse d'approuver un modèle dont une plage passe sous le plancher de marge", async () => {
+    const { model } = await fixture();
+    await addPrice(t.db, model.id, {
+      ...deepseek,
+      windows: [
+        {
+          ...offPeak,
+          sell: { input: 100_000n, output: 100_000n, cache: 1_000n },
+        },
+      ],
+    });
+    await expect(
+      updateModel(t.db, model.id, { status: "approved" }),
+    ).rejects.toMatchObject({ code: "publication_refused" });
+  });
+
+  it("fige les plages et l'écriture du cache dans la version publiée", async () => {
+    const { model } = await fixture();
+    await addPrice(t.db, model.id, {
+      ...deepseek,
+      upstreamCacheWriteUsdMicro: 300_000n,
+      windows: [offPeak],
+    });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const v = await publishAll();
+    const snap = v.snapshot.models.find((m) => m.publicId === model.publicId);
+    expect(snap?.price?.windows?.[0]?.sell.input).toBe("231000");
+    expect(snap?.price?.sellCacheWriteCadMicro).toBe("462000");
+  });
+});

@@ -11,7 +11,9 @@ import {
   createModel,
   createProvider,
   currentFx,
+  currentPrice,
   type ModelInput,
+  type PriceWindowInput,
   type ProviderInput,
   updateModel,
 } from "./catalog";
@@ -106,7 +108,15 @@ export interface AiModelDraft {
   openrouterId: string;
   model: Omit<ModelInput, "providerId">;
   /** Prix du fournisseur d'origine, en micro-USD par million de jetons. */
-  reference: { input: bigint; output: bigint; cache: bigint | null };
+  reference: {
+    input: bigint;
+    output: bigint;
+    cache: bigint | null;
+    /** Écriture du cache facturée à part par l'éditeur. */
+    cacheWrite?: bigint;
+    /** Plages horaires UTC où le prix baisse. */
+    windows?: PriceWindowInput[];
+  };
   priceNote: string;
 }
 
@@ -122,6 +132,19 @@ const base: ModelCapabilities = {
   reasoning: true,
   json_mode: true,
 };
+
+/**
+ * DeepSeek : la pointe (01 h à 04 h et 06 h à 10 h UTC, du lundi au vendredi) est le prix de base ; le reste,
+ * fin de semaine comprise, est « creux » à moitié prix. Les jours fériés chinois (creux chez DeepSeek) ne sont pas
+ * pris en compte : le client paie alors le prix publié de pointe.
+ */
+const offPeakPrice = { input: 150_000n, output: 600_000n, cache: 3_000n };
+const DEEPSEEK_OFF_PEAK: PriceWindowInput[] = [
+  { days: [0, 6], startMinute: 0, endMinute: 1440 },
+  { days: [1, 2, 3, 4, 5], startMinute: 0, endMinute: 60 },
+  { days: [1, 2, 3, 4, 5], startMinute: 240, endMinute: 360 },
+  { days: [1, 2, 3, 4, 5], startMinute: 600, endMinute: 1440 },
+].map((w) => ({ label: "creux", ...w, upstream: offPeakPrice }));
 
 export const AI_MODEL_DRAFTS: AiModelDraft[] = [
   {
@@ -173,15 +196,20 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
           },
         ],
         notesFr:
-          "Deux tarifs selon l'heure : pointe de 01 h à 04 h et de 06 h à 10 h UTC du lundi au vendredi (0,30 $ en entrée, 1,20 $ en sortie), creux le reste du temps (0,15 $ et 0,60 $). Le tarif de pointe est appliqué en attendant les plages horaires (G1).",
+          "Deux tarifs selon l'heure : pointe de 01 h à 04 h et de 06 h à 10 h UTC du lundi au vendredi (0,30 $ en entrée, 1,20 $ en sortie), creux le reste du temps (0,15 $ et 0,60 $). Les jours fériés chinois ne sont pas pris en compte : le prix de pointe s'applique alors.",
         notesEn:
-          "Two prices by time of day: peak 01:00–04:00 and 06:00–10:00 UTC Monday to Friday ($0.30 in, $1.20 out), off-peak otherwise ($0.15 and $0.60). The peak price applies until time windows are supported (G1).",
+          "Two prices by time of day: peak 01:00–04:00 and 06:00–10:00 UTC Monday to Friday ($0.30 in, $1.20 out), off-peak otherwise ($0.15 and $0.60). Chinese holidays are not taken into account: the peak price applies then.",
       },
       routing: routingFor(300_000n, 1_200_000n),
     },
-    reference: { input: 300_000n, output: 1_200_000n, cache: 6_000n },
+    reference: {
+      input: 300_000n,
+      output: 1_200_000n,
+      cache: 6_000n,
+      windows: DEEPSEEK_OFF_PEAK,
+    },
     priceNote:
-      "Tarif de pointe de DeepSeek (28/10/2026). Ne pas publier avant les plages horaires (G1) : le tarif creux est la moitié.",
+      "Tarif de pointe de DeepSeek en base, tarif creux en plages horaires UTC (28/10/2026).",
   },
   {
     providerCode: "zai",
@@ -387,17 +415,33 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
           },
         ],
         notesFr:
-          "Aucun benchmark officiel chiffré n'est publié au 28/10/2026 (le guide contient des champs vides). Poids annoncés pour le 4 novembre 2026, licence inconnue. Sortie maximale : 131 072 par défaut, jusqu'à 1 048 576 chez l'éditeur. L'écriture du cache est facturée en plus par l'éditeur (2 $ pour 5 min, 4 $ pour 1 h) : non comptée tant que G2 n'est pas livré.",
+          "Aucun benchmark officiel chiffré n'est publié au 28/10/2026 (le guide contient des champs vides). Poids annoncés pour le 4 novembre 2026, licence inconnue. Sortie maximale : 131 072 par défaut, jusqu'à 1 048 576 chez l'éditeur. L'écriture du cache est facturée en plus par l'éditeur : 2 $ pour 5 minutes (comptée), 4 $ pour 1 heure (non gérée : le palier d'une heure n'est pas distingué).",
         notesEn:
-          "No official benchmark figures are published as of 2026-10-28 (the guide has empty fields). Weights announced for November 4, 2026, licence unknown. Maximum output: 131,072 by default, up to 1,048,576 at the publisher. Cache writes are billed extra by the publisher ($2 for 5 min, $4 for 1 h): not counted until G2 ships.",
+          "No official benchmark figures are published as of 2026-10-28 (the guide has empty fields). Weights announced for November 4, 2026, licence unknown. Maximum output: 131,072 by default, up to 1,048,576 at the publisher. Cache writes are billed extra by the publisher: $2 for 5 minutes (counted), $4 for 1 hour (not handled: the one-hour tier is not distinguished).",
       },
       routing: routingFor(2_000_000n, 10_000_000n),
     },
-    reference: { input: 2_000_000n, output: 10_000_000n, cache: 200_000n },
+    reference: {
+      input: 2_000_000n,
+      output: 10_000_000n,
+      cache: 200_000n,
+      cacheWrite: 2_000_000n,
+    },
     priceNote:
-      "Prix officiel Moonshot (28/10/2026), sans l'écriture du cache (G2).",
+      "Prix officiel Moonshot (28/10/2026), écriture du cache de 5 minutes comprise.",
   },
 ];
+
+const priceOf = (draft: AiModelDraft) => ({
+  upstreamInputUsdMicro: draft.reference.input,
+  upstreamOutputUsdMicro: draft.reference.output,
+  upstreamCacheUsdMicro: draft.reference.cache,
+  upstreamCacheWriteUsdMicro: draft.reference.cacheWrite ?? null,
+  windows: draft.reference.windows,
+  marginBps: MARGIN_BPS,
+  marginFloorBps: MARGIN_BPS,
+  note: draft.priceNote,
+});
 
 /**
  * Charge le fournisseur OpenRouter et les cinq modèles en brouillon, avec un prix de vente égal à la
@@ -438,6 +482,19 @@ export async function seedAiModels(
           providerId: byCode.get(draft.providerCode) as string,
         });
         updated.push(draft.model.publicId);
+        // Les lignes de prix sont immuables : un prix périmé (plages, écriture du cache, tarif amont) reçoit une nouvelle ligne.
+        const now = new Date();
+        const current = await currentPrice(db, existing.id, now);
+        const ref = draft.reference;
+        const stale =
+          !current ||
+          current.upstreamInputUsdMicro !== ref.input ||
+          current.upstreamOutputUsdMicro !== ref.output ||
+          (current.upstreamCacheUsdMicro ?? null) !== ref.cache ||
+          (current.upstreamCacheWriteUsdMicro ?? null) !==
+            (ref.cacheWrite ?? null) ||
+          current.windows.length !== (ref.windows?.length ?? 0);
+        if (stale) await addPrice(db, existing.id, priceOf(draft), now);
       }
       continue;
     }
@@ -445,14 +502,7 @@ export async function seedAiModels(
       ...draft.model,
       providerId: byCode.get(draft.providerCode) as string,
     });
-    await addPrice(db, model.id, {
-      upstreamInputUsdMicro: draft.reference.input,
-      upstreamOutputUsdMicro: draft.reference.output,
-      upstreamCacheUsdMicro: draft.reference.cache,
-      marginBps: MARGIN_BPS,
-      marginFloorBps: MARGIN_BPS,
-      note: draft.priceNote,
-    });
+    await addPrice(db, model.id, priceOf(draft));
     created.push(draft.model.publicId);
   }
   return { created, updated };

@@ -15,7 +15,12 @@ import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
 import { type ApiKeyRow, authenticateApiKey } from "./keys";
-import { costMicro, formatMicro, type PerMillion } from "./pricing";
+import {
+  activeWindow,
+  costMicro,
+  formatMicro,
+  type PerMillion,
+} from "./pricing";
 import { type PublicModel, toPublicModel } from "./public";
 import type { SnapshotModel, SnapshotProvider } from "./snapshot";
 import { finalizeRequest } from "./usage";
@@ -82,25 +87,52 @@ const isObject = (v: unknown): v is Json =>
 const isPositiveInt = (v: unknown): v is number =>
   typeof v === "number" && Number.isSafeInteger(v) && v > 0;
 
-const perMillionOf = (m: SnapshotModel): PerMillion => {
+/**
+ * Prix de vente et coût amont en vigueur à `at` : le prix de base, ou celui de la plage horaire UTC qui couvre
+ * l'instant. Fixé au début de la requête et conservé jusqu'au règlement (une requête qui traverse une limite
+ * de plage garde son prix de départ).
+ */
+function pricesAt(
+  m: SnapshotModel,
+  at: Date,
+): { price: PerMillion; upstreamPrice: PerMillion; window: string | null } {
   const p = m.price;
   if (!p) throw new Error("modèle publié sans prix");
+  const opt = (v: string | null | undefined) =>
+    v === null || v === undefined ? null : BigInt(v);
+  const w = activeWindow(p.windows ?? [], at);
+  if (w)
+    return {
+      price: {
+        input: BigInt(w.sell.input),
+        output: BigInt(w.sell.output),
+        cache: opt(w.sell.cache),
+        cacheWrite: opt(w.sell.cacheWrite),
+      },
+      upstreamPrice: {
+        input: BigInt(w.upstream.input),
+        output: BigInt(w.upstream.output),
+        cache: opt(w.upstream.cache),
+        cacheWrite: opt(w.upstream.cacheWrite),
+      },
+      window: w.label,
+    };
   return {
-    input: BigInt(p.sellInputCadMicro),
-    output: BigInt(p.sellOutputCadMicro),
-    cache: p.sellCacheCadMicro === null ? null : BigInt(p.sellCacheCadMicro),
+    price: {
+      input: BigInt(p.sellInputCadMicro),
+      output: BigInt(p.sellOutputCadMicro),
+      cache: opt(p.sellCacheCadMicro),
+      cacheWrite: opt(p.sellCacheWriteCadMicro),
+    },
+    upstreamPrice: {
+      input: BigInt(p.upstreamInputUsdMicro),
+      output: BigInt(p.upstreamOutputUsdMicro),
+      cache: opt(p.upstreamCacheUsdMicro),
+      cacheWrite: opt(p.upstreamCacheWriteUsdMicro),
+    },
+    window: null,
   };
-};
-const upstreamPerMillionOf = (m: SnapshotModel): PerMillion => {
-  const p = m.price;
-  if (!p) throw new Error("modèle publié sans prix");
-  return {
-    input: BigInt(p.upstreamInputUsdMicro),
-    output: BigInt(p.upstreamOutputUsdMicro),
-    cache:
-      p.upstreamCacheUsdMicro === null ? null : BigInt(p.upstreamCacheUsdMicro),
-  };
-};
+}
 
 function keyMayUse(key: ApiKeyRow, model: SnapshotModel): boolean {
   if (key.allowedModels) return key.allowedModels.includes(model.publicId);
@@ -300,6 +332,10 @@ interface Usage {
   prompt: number;
   completion: number;
   cached: number;
+  /** Jetons d'invite écrits en cache (inclus dans `prompt`). */
+  cacheWrite?: number;
+  /** Jetons de raisonnement (inclus dans `completion`). */
+  reasoning?: number;
 }
 
 function readUsage(raw: unknown): Usage | null {
@@ -314,10 +350,22 @@ function readUsage(raw: unknown): Usage | null {
   const details = isObject(raw.prompt_tokens_details)
     ? raw.prompt_tokens_details
     : {};
+  const out = isObject(raw.completion_tokens_details)
+    ? raw.completion_tokens_details
+    : {};
+  const cached = Math.min(nn(details.cached_tokens) ?? 0, prompt);
+  // Écriture du cache : champ OpenRouter, puis champ Anthropic (aussi relayé par LiteLLM).
+  const written =
+    nn(details.cache_write_tokens) ??
+    nn(details.cache_creation_tokens) ??
+    nn(raw.cache_creation_input_tokens) ??
+    0;
   return {
     prompt,
     completion,
-    cached: Math.min(nn(details.cached_tokens) ?? 0, prompt),
+    cached,
+    cacheWrite: Math.min(written, prompt - cached),
+    reasoning: Math.min(nn(out.reasoning_tokens) ?? 0, completion),
   };
 }
 
@@ -532,6 +580,8 @@ interface Target {
   configVersion: string;
   price: PerMillion;
   upstreamPrice: PerMillion;
+  /** Étiquette de la plage horaire appliquée (« creux »), null = prix de base. */
+  window: string | null;
   /** Frais par exécution (agents), en plus des jetons. */
   runFee: bigint;
 }
@@ -708,6 +758,7 @@ async function handleInference(
       tokens: input.tokens,
       price: target.price,
       upstreamPrice: target.upstreamPrice,
+      priceWindow: target.window,
       runFeeMicro: target.runFee,
       reservationId: reservation.id,
       latencyMs: Math.round(performance.now() - started),
@@ -820,6 +871,7 @@ async function handleInference(
         configVersion: `agent_price_${price.id.replaceAll("-", "").slice(0, 12)}`,
         price: perToken,
         upstreamPrice: { input: 0n, output: 0n, cache: null },
+        window: null,
         runFee: price.perRunCadMicro,
       };
       // Le plafond d'exécution borne le montant RÉSERVÉ : exécution + plafond de jetons au prix le plus élevé. Le
@@ -850,8 +902,7 @@ async function handleInference(
         publicId: model.publicId,
         residency: model.residency,
         configVersion: version.short,
-        price: perMillionOf(model),
-        upstreamPrice: upstreamPerMillionOf(model),
+        ...pricesAt(model, deps.now()),
         runFee: 0n,
       };
     }

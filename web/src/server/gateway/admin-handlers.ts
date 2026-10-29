@@ -185,14 +185,36 @@ const modelPatch = z
   .partial()
   .strict();
 
+const priceSet = z
+  .object({
+    input: micro,
+    output: micro,
+    cache: micro.nullable().optional(),
+    cacheWrite: micro.nullable().optional(),
+  })
+  .strict();
+const priceWindow = z
+  .object({
+    label: z.string().min(1).max(40),
+    days: z.array(z.number().int().min(0).max(6)).min(1).max(7),
+    startMinute: z.number().int().min(0).max(1439),
+    endMinute: z.number().int().min(1).max(1440),
+    upstream: priceSet,
+    sell: priceSet.optional(),
+  })
+  .strict();
+
 const priceCreate = z
   .object({
     upstreamInputUsdMicro: micro,
     upstreamOutputUsdMicro: micro,
     upstreamCacheUsdMicro: micro.nullable().optional(),
+    upstreamCacheWriteUsdMicro: micro.nullable().optional(),
     sellInputCadMicro: micro.optional(),
     sellOutputCadMicro: micro.optional(),
     sellCacheCadMicro: micro.nullable().optional(),
+    sellCacheWriteCadMicro: micro.nullable().optional(),
+    windows: z.array(priceWindow).max(12).optional(),
     marginBps: z.number().int().min(0).max(100_000).optional(),
     marginFloorBps: z.number().int().min(0).max(100_000).optional(),
     effectiveAt: z.iso
