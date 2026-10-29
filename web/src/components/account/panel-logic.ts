@@ -112,6 +112,18 @@ export function safeInstanceUrl(raw: string | null | undefined): string | null {
   return null;
 }
 
+/**
+ * Adresse à laquelle le bouton « Ouvrir WorkStudio » mène. WorkStudio intégré : `WORKSTUDIO_PUBLIC_URL` (une seule
+ * instance multi-utilisateurs, connexion unique) l'emporte quand elle est sûre ; sinon on garde l'adresse déclarée
+ * en base (`workstudio_embed_settings`), comme avant ; sinon null (« en préparation »).
+ */
+export function workstudioInstanceOrigin(
+  publicUrl: string | null | undefined,
+  declaredOrigin: string | null,
+): string | null {
+  return safeInstanceUrl(publicUrl?.trim()) ?? safeInstanceUrl(declaredOrigin);
+}
+
 export type WorkstudioView =
   | { state: "no_subscription" }
   | { state: "suspended" }

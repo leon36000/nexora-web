@@ -7,6 +7,7 @@ import {
   PANEL_NAV,
   safeInstanceUrl,
   sectionOfPath,
+  workstudioInstanceOrigin,
   workstudioView,
 } from "./panel-logic";
 
@@ -148,6 +149,48 @@ describe("adresse d'instance WorkStudio", () => {
       "https://user:secret@studio.nexora.example",
     ])
       expect(safeInstanceUrl(bad), String(bad)).toBeNull();
+  });
+});
+
+describe("adresse d'ouverture de WorkStudio (instance intégrée)", () => {
+  it("WORKSTUDIO_PUBLIC_URL, quand elle est sûre, l'emporte sur l'adresse déclarée en base", () => {
+    expect(
+      workstudioInstanceOrigin(
+        "https://studio.nexora.example/chemin",
+        "https://ancienne.example",
+      ),
+    ).toBe("https://studio.nexora.example");
+  });
+
+  it("variable absente, vide ou non sûre : retombe sur l'adresse de la base (comportement d'avant)", () => {
+    for (const env of [
+      undefined,
+      "",
+      "   ",
+      "http://pas-local.example",
+      "oups",
+    ])
+      expect(workstudioInstanceOrigin(env, "https://ancienne.example")).toBe(
+        "https://ancienne.example",
+      );
+  });
+
+  it("rien de connu nulle part : null (« en préparation »)", () => {
+    expect(workstudioInstanceOrigin(undefined, null)).toBeNull();
+    expect(workstudioInstanceOrigin("javascript:alert(1)", null)).toBeNull();
+  });
+
+  it("une variable sûre fait passer l'état à « prêt » sans adresse en base", () => {
+    const origin = workstudioInstanceOrigin(
+      "https://studio.nexora.example",
+      null,
+    );
+    expect(
+      workstudioView({
+        subscriptions: [{ planCode: "equipe", access: "full" }],
+        instanceOrigin: origin,
+      }),
+    ).toEqual({ state: "ready", url: "https://studio.nexora.example" });
   });
 });
 

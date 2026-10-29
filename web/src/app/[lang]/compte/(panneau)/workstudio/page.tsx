@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
-import { workstudioView } from "@/components/account/panel-logic";
+import {
+  workstudioInstanceOrigin,
+  workstudioView,
+} from "@/components/account/panel-logic";
 import { PanelLoading } from "@/components/account/panel-ui";
 import { WorkstudioPanel } from "@/components/account/workstudio-panel";
 import { getAccountDictionary } from "@/i18n/account";
@@ -64,7 +67,10 @@ async function WorkstudioContent({ lang }: { lang: Lang }) {
       t={getAccountDictionary(lang)}
       view={workstudioView({
         subscriptions: dashboard.subscriptions,
-        instanceOrigin: origin,
+        instanceOrigin: workstudioInstanceOrigin(
+          process.env.WORKSTUDIO_PUBLIC_URL,
+          origin,
+        ),
       })}
       agents={agents}
     />
