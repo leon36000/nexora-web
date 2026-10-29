@@ -295,7 +295,26 @@ export async function handleModels(
           ...(view.cachePerMillion
             ? { cached_input: view.cachePerMillion }
             : {}),
+          ...(view.cacheWritePerMillion
+            ? { cache_write: view.cacheWritePerMillion }
+            : {}),
+          ...(view.priceWindows.length > 0
+            ? {
+                windows: view.priceWindows.map((w) => ({
+                  label: w.label,
+                  days: w.days,
+                  start_minute: w.startMinute,
+                  end_minute: w.endMinute,
+                  input: w.inputPerMillion,
+                  output: w.outputPerMillion,
+                  ...(w.cachePerMillion
+                    ? { cached_input: w.cachePerMillion }
+                    : {}),
+                })),
+              }
+            : {}),
         },
+        sheet: view.sheet,
       }));
     // Agents hébergés : mêmes règles d'accès que les modèles (clé restreinte → sa liste ; sinon agents publics).
     const agentData = source.agents

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { CodeSamples } from "@/components/gateway/code-samples";
 import { activeCapabilities } from "@/components/gateway/model-card";
+import { ModelSheet } from "@/components/gateway/model-sheet";
 import { ResidencyBadge } from "@/components/gateway/residency-badge";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
@@ -223,6 +224,8 @@ export default async function ModelPage(
           </p>
         </section>
       </div>
+
+      <ModelSheet model={model} t={t} lang={lang} />
 
       <section aria-labelledby="example-title" className="mt-16">
         <Badge tone="accent">{d.example}</Badge>

@@ -1,4 +1,9 @@
-import type { ModelCapabilities, ModelKind, Region } from "@nexora/db";
+import type {
+  ModelCapabilities,
+  ModelKind,
+  ModelSheet,
+  Region,
+} from "@nexora/db";
 import { formatMicro } from "./pricing";
 import type {
   CatalogSnapshot,
@@ -10,6 +15,17 @@ import type {
  * Vue PUBLIQUE d'un modèle publié : ce que le catalogue (/modeles, /v1/models) peut montrer. Ni
  * l'adresse du fournisseur, ni la référence du coffre, ni le coût amont, ni la marge n'en sortent.
  */
+/** Plage horaire UTC où le prix baisse, en CAD par million de jetons (décimaux exacts). */
+export interface PublicPriceWindow {
+  label: string;
+  days: number[];
+  startMinute: number;
+  endMinute: number;
+  inputPerMillion: string;
+  outputPerMillion: string;
+  cachePerMillion: string | null;
+}
+
 export interface PublicModel {
   id: string;
   name: string;
@@ -27,6 +43,12 @@ export interface PublicModel {
   inputPerMillion: string;
   outputPerMillion: string;
   cachePerMillion: string | null;
+  /** Écriture du cache facturée à part (Kimi) ; null = au prix d'entrée. */
+  cacheWritePerMillion: string | null;
+  /** Plages horaires où le prix baisse ; vide = un seul prix. */
+  priceWindows: PublicPriceWindow[];
+  /** Fiche : licence, paramètres, mesures sourcées. Jamais de routage ni de coût amont. */
+  sheet: ModelSheet;
   note: string;
   sunsetAt: string | null;
 }
@@ -55,6 +77,21 @@ export function toPublicModel(
       model.price.sellCacheCadMicro === null
         ? null
         : formatMicro(BigInt(model.price.sellCacheCadMicro)),
+    cacheWritePerMillion:
+      model.price.sellCacheWriteCadMicro == null
+        ? null
+        : formatMicro(BigInt(model.price.sellCacheWriteCadMicro)),
+    priceWindows: (model.price.windows ?? []).map((w) => ({
+      label: w.label,
+      days: w.days,
+      startMinute: w.startMinute,
+      endMinute: w.endMinute,
+      inputPerMillion: formatMicro(BigInt(w.sell.input)),
+      outputPerMillion: formatMicro(BigInt(w.sell.output)),
+      cachePerMillion:
+        w.sell.cache === null ? null : formatMicro(BigInt(w.sell.cache)),
+    })),
+    sheet: model.sheet ?? {},
     note: model.price.note,
     sunsetAt: model.sunsetAt,
   };

@@ -1268,6 +1268,25 @@ describe("embeddings et liste des modèles", () => {
       "nexora/test-windows",
       "nexora/test-write",
     ]);
+    // fiche, écriture du cache et plages horaires : présentes (vides ici) dans chaque entrée
+    const win = json.data.find(
+      (m: { id: string }) => m.id === "nexora/test-windows",
+    );
+    expect(win.pricing.windows).toEqual([
+      {
+        label: "creux",
+        days: [0, 6],
+        start_minute: 0,
+        end_minute: 1440,
+        input: "0.4",
+        output: "1.2",
+      },
+    ]);
+    expect(win.sheet).toEqual({});
+    const wr = json.data.find(
+      (m: { id: string }) => m.id === "nexora/test-write",
+    );
+    expect(wr.pricing.cache_write).toBe("2");
     const text = JSON.stringify(json);
     expect(text).not.toContain("upstream");
     expect(text).not.toContain("127.0.0.1");
