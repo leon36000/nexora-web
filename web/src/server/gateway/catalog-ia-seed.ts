@@ -405,7 +405,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
  */
 export async function seedAiModels(
   db: Database,
-): Promise<{ created: string[] }> {
+): Promise<{ created: string[]; updated: string[] }> {
   // Sans taux approuvé, un modèle serait créé sans prix : on refuse avant de rien écrire.
   if (!(await currentFx(db, new Date())))
     throw new CatalogError(
