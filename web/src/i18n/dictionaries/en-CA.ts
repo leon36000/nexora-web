@@ -79,18 +79,6 @@ export const enCA: Dictionary = {
             "A coordinated team for construction and field services.",
           href: "/opsys-ai",
         },
-        {
-          label: "Nexora Croissance",
-          description:
-            "Website, search, ads and social networks in one place. Early access.",
-          href: "/croissance",
-        },
-        {
-          label: "Nexora Vision",
-          description:
-            "AI video analytics that keeps your footage on your premises. Pilot project, by invitation.",
-          href: "/vision",
-        },
       ],
     },
     pricing: { label: "Pricing", href: "/tarifs" },

@@ -3,13 +3,13 @@ export const pricingFrCA = {
   meta: {
     title: "Tarifs | Nexora AI",
     description:
-      "Offres Nexora AI en dollars canadiens, avant taxes : prix mensuel et annuel, essai gratuit, crédits inclus. Aussi : VPS et crédits d’API à l’usage.",
+      "Offres Nexora AI en dollars canadiens, avant taxes : prix mensuel et annuel, crédits inclus, résiliation en tout temps. Aussi : VPS et crédits d’API à l’usage.",
   },
   nav: { home: "Accueil", pricing: "Tarifs", breadcrumb: "Fil d’Ariane" },
   hero: {
     label: "Tarifs",
     title: "Des tarifs clairs, en dollars canadiens.",
-    lead: "Choisissez une offre, essayez-la, puis payez en toute sécurité. Les prix s’affichent avant taxes ; la TPS et la TVQ sont calculées au moment du paiement.",
+    lead: "Choisissez une offre, puis payez en toute sécurité. Les prix s’affichent avant taxes ; la TPS et la TVQ sont calculées au moment du paiement.",
   },
   offers: {
     title: "Les offres d’abonnement",

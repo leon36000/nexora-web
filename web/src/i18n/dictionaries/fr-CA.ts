@@ -82,18 +82,6 @@ export const frCA = {
             "Une équipe coordonnée pour la construction et les services terrain.",
           href: "/opsys-ai",
         },
-        {
-          label: "Nexora Croissance",
-          description:
-            "Site, référencement, publicité et réseaux sociaux, au même endroit. Accès anticipé.",
-          href: "/croissance",
-        },
-        {
-          label: "Nexora Vision",
-          description:
-            "Vidéosurveillance par IA qui garde vos images chez vous. Projet pilote sur invitation.",
-          href: "/vision",
-        },
       ],
     },
     pricing: { label: "Tarifs", href: "/tarifs" },

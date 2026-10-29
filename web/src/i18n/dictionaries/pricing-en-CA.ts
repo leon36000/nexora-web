@@ -5,13 +5,13 @@ export const pricingEnCA: PricingDictionary = {
   meta: {
     title: "Pricing | Nexora AI",
     description:
-      "Nexora AI plans in Canadian dollars, before tax: monthly and yearly prices, free trial, included credits. Also: VPS and pay-as-you-go API credits.",
+      "Nexora AI plans in Canadian dollars, before tax: monthly and yearly prices, included credits, cancel any time. Also: VPS and pay-as-you-go API credits.",
   },
   nav: { home: "Home", pricing: "Pricing", breadcrumb: "Breadcrumb" },
   hero: {
     label: "Pricing",
     title: "Clear pricing, in Canadian dollars.",
-    lead: "Pick a plan, try it, then pay securely. Prices are shown before tax; GST and QST are calculated at checkout.",
+    lead: "Pick a plan, then pay securely. Prices are shown before tax; GST and QST are calculated at checkout.",
   },
   offers: {
     title: "Subscription plans",

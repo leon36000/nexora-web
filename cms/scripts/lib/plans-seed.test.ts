@@ -37,9 +37,9 @@ describe("offres WorkStudio préparées en brouillon (prix suggérés par l'étu
     expect(price("workstudio-affaires-annuel")).toBe(299 * 12 * 100);
   });
 
-  test("essai de 14 jours, carte exigée selon le réglage général, crédits inclus de l'étude (annuel : douze mois d'avance)", () => {
+  test("aucun essai gratuit (consigne du fondateur du 29/10/2026 : l'accès gratuit est réservé à l'administrateur de la maison), crédits inclus de l'étude (annuel : douze mois d'avance)", () => {
     for (const p of DRAFT_PLANS) {
-      expect(p.trial_days).toBe(14);
+      expect(p.trial_days).toBe(0);
       expect(p.trial_card).toBe("default");
     }
     const credits = (code: string) =>

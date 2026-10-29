@@ -5,6 +5,9 @@
  * le prix (module Paiements, « Adopter le prix suggéré »), puis publie. Les limites des offres sont celles
  * PROPOSÉES par l'étude : à valider avec le produit avant de publier.
  *
+ * Aucun essai gratuit : `trial_days` vaut 0 (consigne du fondateur du 29/10/2026 ; CL-61). L'accès gratuit est réservé
+ * à l'administrateur de la maison.
+ *
  * Une ligne mensuelle et une ligne annuelle par offre (même `family`). Ligne annuelle : le prix est le total de
  * l'année (12 mois au tarif annuel par mois) et les crédits inclus sont ceux de douze mois, accordés à la
  * facture annuelle et valables jusqu'à la fin de la période.
@@ -147,7 +150,7 @@ export const DRAFT_PLANS: DraftPlan[] = OFFERS.flatMap((o, i) => [
     interval: "month" as const,
     suggested_price_cents: o.monthly * 100,
     included_credits_cents: o.credits * 100,
-    trial_days: 14,
+    trial_days: 0,
     trial_card: "default" as const,
     sort: (i + 1) * 10,
     translations: [
@@ -163,7 +166,7 @@ export const DRAFT_PLANS: DraftPlan[] = OFFERS.flatMap((o, i) => [
     interval: "year" as const,
     suggested_price_cents: o.yearlyPerMonth * 12 * 100,
     included_credits_cents: o.credits * 12 * 100,
-    trial_days: 14,
+    trial_days: 0,
     trial_card: "default" as const,
     sort: (i + 1) * 10 + 1,
     translations: [
