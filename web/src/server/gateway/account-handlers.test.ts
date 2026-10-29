@@ -227,3 +227,59 @@ describe("création de clé : permission WebPilot", () => {
     ).toBe(422);
   });
 });
+
+describe("création de clé : limites de débit et modèles permis", () => {
+  it("enregistre RPM, TPM et la liste des modèles permis", async () => {
+    const res = await handleCreateKey(
+      req("POST", {
+        name: "Limitée",
+        rpmLimit: 30,
+        tpmLimit: 50_000,
+        allowedModels: ["nexora/deepseek-v4.1-flash-1017", "nexora/glm-5.3"],
+      }),
+      deps(owner(orgA)),
+    );
+    expect(res.status).toBe(201);
+    const j = await res.json();
+    const [row] = await t.db.select().from(apiKeys).where(eq(apiKeys.id, j.id));
+    expect(row?.rpmLimit).toBe(30);
+    expect(row?.tpmLimit).toBe(50_000);
+    expect(row?.allowedModels).toEqual([
+      "nexora/deepseek-v4.1-flash-1017",
+      "nexora/glm-5.3",
+    ]);
+  });
+
+  it("sans ces champs : aucune limite propre et tous les modèles publics", async () => {
+    const res = await handleCreateKey(
+      req("POST", { name: "Libre" }),
+      deps(owner(orgA)),
+    );
+    const j = await res.json();
+    const [row] = await t.db.select().from(apiKeys).where(eq(apiKeys.id, j.id));
+    expect(row?.rpmLimit).toBeNull();
+    expect(row?.tpmLimit).toBeNull();
+    expect(row?.allowedModels).toBeNull();
+  });
+
+  it("refuse une limite nulle, négative, décimale ou démesurée, et un modèle mal formé", async () => {
+    // Autre organisation : les 20 créations par minute de l'utilisateur d'essai précédent sont presque épuisées.
+    const org = await newOrganization(t.db);
+    for (const bad of [
+      { rpmLimit: 0 },
+      { rpmLimit: -5 },
+      { tpmLimit: 1.5 },
+      { rpmLimit: 10_000_000 },
+      { allowedModels: ["pas un identifiant!"] },
+      { allowedModels: [""] },
+    ])
+      expect(
+        (
+          await handleCreateKey(
+            req("POST", { name: "x", ...bad }),
+            deps(owner(org)),
+          )
+        ).status,
+      ).toBe(422);
+  });
+});

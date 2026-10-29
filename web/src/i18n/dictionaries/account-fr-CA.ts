@@ -557,7 +557,8 @@ export const accountFrCA = {
       },
       save: "Enregistrer la politique",
       saving: "Enregistrement…",
-      saved: "Politique enregistrée : version {version}. Elle s’applique en quelques secondes.",
+      saved:
+        "Politique enregistrée : version {version}. Elle s’applique en quelques secondes.",
       unchanged: "Aucun changement : la politique est déjà celle-ci.",
       errors: {
         generic: "L’enregistrement a échoué. Réessayez dans un instant.",
@@ -586,7 +587,11 @@ export const accountFrCA = {
         title: "Historique des versions",
         empty: "Aucune version enregistrée pour l’instant.",
         caption: "Versions de la politique",
-        columns: { version: "Version", level: "Niveau", date: "Enregistrée le" },
+        columns: {
+          version: "Version",
+          level: "Niveau",
+          date: "Enregistrée le",
+        },
         current: "en vigueur",
       },
       limits: {

@@ -21,7 +21,14 @@ const errorText = (t: AccountText, code: string | undefined) =>
   (t.errors as Record<string, string>)[code ?? ""] ?? t.errors.generic;
 
 /** Création d'une clé : la valeur n'est affichée qu'une fois, puis elle n'existe plus côté serveur. */
-export function CreateKeyForm({ t }: { t: AccountText }) {
+export function CreateKeyForm({
+  t,
+  models = [],
+}: {
+  t: AccountText;
+  /** Modèles du catalogue offerts à la coche (« modèles permis »). */
+  models?: { id: string; name: string }[];
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +49,12 @@ export function CreateKeyForm({ t }: { t: AccountText }) {
       body.webpilotOperations = webpilotOperations;
     if (cap) body.spendCapCad = cap;
     if (days) body.expiresInDays = Number(days);
+    const rpm = String(form.get("rpmLimit") ?? "").trim();
+    const tpm = String(form.get("tpmLimit") ?? "").trim();
+    if (rpm) body.rpmLimit = Number(rpm);
+    if (tpm) body.tpmLimit = Number(tpm);
+    const allowed = form.getAll("allowedModel").map(String);
+    if (allowed.length > 0) body.allowedModels = allowed;
     setBusy(true);
     setError(null);
     try {
@@ -165,6 +178,73 @@ export function CreateKeyForm({ t }: { t: AccountText }) {
           inputMode="numeric"
           autoComplete="off"
         />
+        <details className="sm:col-span-2 rounded-md border border-line px-4 py-3">
+          <summary className="min-h-11 cursor-pointer py-2 text-small font-medium text-fg">
+            {t.advanced.legend}
+          </summary>
+          <p className="mt-1 text-small text-fg-muted">{t.advanced.hint}</p>
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            <Field
+              id="key-rpm"
+              name="rpmLimit"
+              label={t.advanced.rpm}
+              optionalLabel={t.optional}
+              hint={t.advanced.rpmHint}
+              type="number"
+              min={1}
+              max={1000000}
+              inputMode="numeric"
+              autoComplete="off"
+            />
+            <Field
+              id="key-tpm"
+              name="tpmLimit"
+              label={t.advanced.tpm}
+              optionalLabel={t.optional}
+              hint={t.advanced.tpmHint}
+              type="number"
+              min={1}
+              max={1000000000}
+              inputMode="numeric"
+              autoComplete="off"
+            />
+          </div>
+          <fieldset className="mt-5">
+            <legend className="text-small font-medium text-fg">
+              {t.advanced.models}
+            </legend>
+            <p className="mt-1 text-small text-fg-muted">
+              {t.advanced.modelsHint}
+            </p>
+            {models.length === 0 ? (
+              <p className="mt-2 text-small text-fg-muted">
+                {t.advanced.noModels}
+              </p>
+            ) : (
+              <div className="mt-3 flex flex-col gap-1">
+                {models.map((m) => (
+                  <label
+                    key={m.id}
+                    className="flex min-h-11 items-center gap-2 text-body text-fg"
+                  >
+                    <input
+                      type="checkbox"
+                      name="allowedModel"
+                      value={m.id}
+                      className="size-5"
+                    />
+                    <span>
+                      {m.name}
+                      <span className="ml-2 break-all font-mono text-small text-fg-muted">
+                        {m.id}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </fieldset>
+        </details>
         <fieldset className="sm:col-span-2">
           <legend className="text-small font-medium text-fg">
             {t.webpilot.legend}

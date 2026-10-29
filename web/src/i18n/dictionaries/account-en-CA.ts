@@ -546,7 +546,8 @@ export const accountEnCA: AccountDictionary = {
       },
       save: "Save the policy",
       saving: "Saving…",
-      saved: "Policy saved: version {version}. It applies within a few seconds.",
+      saved:
+        "Policy saved: version {version}. It applies within a few seconds.",
       unchanged: "No change: the policy already is this one.",
       errors: {
         generic: "Saving failed. Please try again in a moment.",

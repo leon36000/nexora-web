@@ -58,7 +58,12 @@ async function ModelsContent({ lang }: { lang: Lang }) {
         title={t.panel.models.title}
         lead={t.panel.models.lead}
       />
-      <ApiKeysSection lang={lang} role={session.role} keys={keys} />
+      <ApiKeysSection
+        lang={lang}
+        role={session.role}
+        keys={keys}
+        models={catalog.models.map((m) => ({ id: m.id, name: m.name }))}
+      />
       <ModelsPanel lang={lang} t={t} catalog={catalog} />
     </div>
   );

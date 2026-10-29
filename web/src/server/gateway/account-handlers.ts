@@ -38,12 +38,20 @@ const NO_STORE = { "cache-control": "no-store" };
 const json = (body: unknown, status = 200) =>
   Response.json(body, { status, headers: NO_STORE });
 
+/** Identifiant public d'un modèle (`espace/nom`), comme dans le catalogue. */
+const MODEL_ID = /^[a-z0-9][a-z0-9._-]{0,40}\/[a-z0-9][a-z0-9._:-]{0,80}$/;
+
 const createSchema = z
   .object({
     name: z.string().trim().min(1).max(80),
     /** Plafond de dépense cumulée, en dollars canadiens (« 25 », « 25,50 »). */
     spendCapCad: z.string().trim().max(12).optional(),
     expiresInDays: z.number().int().min(1).max(3650).optional(),
+    /** Limites de débit propres à la clé (sinon celles de la passerelle). */
+    rpmLimit: z.number().int().min(1).max(1_000_000).optional(),
+    tpmLimit: z.number().int().min(1).max(1_000_000_000).optional(),
+    /** Identifiants publics des modèles permis ; absent ou vide : tous les modèles publics. */
+    allowedModels: z.array(z.string().regex(MODEL_ID)).max(200).optional(),
     /** Permission WebPilot, à cocher (décision O-8) : absente = aucune opération. */
     webpilotOperations: z
       .array(z.enum(WEBPILOT_OPERATIONS))
@@ -113,6 +121,9 @@ export async function handleCreateKey(
       name: parsed.name,
       spendCapMicro,
       webpilotOperations: parsed.webpilotOperations ?? null,
+      rpmLimit: parsed.rpmLimit ?? null,
+      tpmLimit: parsed.tpmLimit ?? null,
+      allowedModels: parsed.allowedModels ?? null,
       expiresAt: parsed.expiresInDays
         ? new Date(now.getTime() + parsed.expiresInDays * 86_400_000)
         : null,
