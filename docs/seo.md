@@ -100,3 +100,12 @@ Code : `worker/src/seo/indexing.ts`, `adapters.ts`, `handlers.ts` ; web : `web/s
 - **État affiché** (même règle côté web et worker) : *non connecté* (aucune clé, ou vérification jamais réussie) ; *connecté en lecture* (clé + vérification réussie par un appel en lecture seule) ; *autorisé en écriture* (en plus, autorisation humaine). Références du Coffre : `seo.bing.api_key`, `seo.searchconsole.credentials` (JSON du compte de service), `seo.dataforseo.credentials` (`login:motdepasse`), `seo.postiz.api_key` (+ `POSTIZ_URL`). IndexNow n'a pas de secret : sa clé (32 hex) est publique, servie à `/<clé>.txt`.
 - **Sans clé du fondateur, aucun appel externe** (testé : zéro requête). Vérifications : Bing (quota de soumission), Search Console (jeton JWT en lecture seule, liste des propriétés), DataForSEO (`user_data`), Postiz (liste des canaux), IndexNow (le site sert bien le fichier de clé). Search Console, DataForSEO et Postiz n'ont pas d'écriture câblée dans ce jalon (pas d'agent Diffusion ni de veille payante) : leur état « écriture » ne débloque rien tant que le code correspondant n'existe pas.
 - Plafonds respectés : IndexNow 10 000 URL par requête, Bing 500 par lot ici (10 000 par jour et par domaine).
+
+## 4. Ajouts du 29/10/2026 (SEO et GEO, deuxième vague)
+
+- **`pageSchemaType`** : les pages `gabarits-flux-de-travaux` et `gabarits-flux-de-travaux/<gabarit>` sont des `Article` ; la fiche d'un gabarit a l'étape de fil d'Ariane « Gabarits de flux de travaux » (`SECTION_CRUMBS`, la page de synthèse existe).
+- **`llms.txt`** : la synthèse des gabarits va dans « Guides » ; ses vingt-neuf fiches dans « Optional » (sections facultatives de llmstxt.org), pour ne pas noyer le plan. `llms-full.txt` les contient toutes.
+- **`TechArticle`** de `/docs/api` (`docsApiJsonLd`) : titre et accroche affichés, auteur et éditeur = l'entreprise ; aucune date (page statique).
+- **`SoftwareApplication` des fiches Nexora Apps** : l'éditeur renvoie à l'Organization (`@id`).
+- **`og:type = article`** et dates réelles pour les guides (`buildCmsMetadata`).
+- **Reste (décisions provisoires)** : URL anglaises localisées (`/en/modeles` garde son segment français : `LOCALIZED_ROUTES` ne gère que des chemins exacts, or `/modeles/<id>` a des sous-chemins ; à faire avec le propriétaire du catalogue) ; `/agents` reste indexable (hors menus, lié depuis la page WorkStudio).

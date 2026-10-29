@@ -508,3 +508,35 @@ Décisions D6 à D10 de `docs/superpowers/specs/2026-10-27-nexora-ai-vague-2.md`
 **Les pages Nexora Apps** (`/apps`, `/apps/<outil>`) ne passent pas par Directus : leurs textes sont dans `web/src/i18n/dictionaries/apps-*.ts` et leurs états dans `web/src/i18n/apps.ts`. Elles sont donc hors du registre des affirmations ; la même règle de vérité s'y applique (aucun chiffre, prix, date ni performance non vérifiable), vérifiée par `web/src/i18n/apps.test.ts`.
 
 **Chargement** : après approbation de la version, `bun run cms/scripts/load-content.ts --seulement=workstudio` puis `--approuver-et-publier` (voir la section 6).
+
+## 13. SEO et GEO, deuxième vague (29/10/2026) : piliers, gabarits et tableaux
+
+Plan : `docs/marketing/plan-seo-geo.md` (statut de chaque pilier à la section 5). **Trente-sept pages nouvelles** en fr-CA et en-CA (74 fichiers JSON) : sept guides, la synthèse des gabarits et vingt-neuf fiches.
+
+| Clé | Routes (fr · en) | Statut | Rôle |
+|---|---|---|---|
+| guides-passerelle-ou-acces-direct (P2) | `/guides/passerelle-ou-acces-direct/` · `/en/guides/gateway-or-direct-access/` | published | comparaison sans marque, huit critères |
+| guides-alternative-openrouter (P3) | `/guides/alternative-openrouter/` · `/en/guides/openrouter-alternative/` | **draft · noindex** | comparatif nommé : faits datés et sourcés (CL-X01 à CL-X07, **à relire**) |
+| guides-api-compatible-openai (P4) | `/guides/api-compatible-openai/` · `/en/guides/openai-compatible-api/` | published | tutoriel : exemples cURL, Python, JavaScript identiques à la documentation de l'API |
+| guides-ou-sont-vos-donnees-ia (P8) | `/guides/ou-sont-vos-donnees-ia/` · `/en/guides/where-is-your-ai-data/` | published | stockage, traitement, juridiction ; trois modes |
+| guides-ia-souveraine-liste-de-controle (P9) | `/guides/ia-souveraine-liste-de-controle/` · `/en/guides/sovereign-ai-checklist/` | published | liste de contrôle d'une DSI, douze questions |
+| guides-serveur-ia-sur-place (P10) | `/guides/serveur-ia-sur-place/` · `/en/guides/on-premises-ai-server/` | published | cinq décisions avant d'acheter, sans prix |
+| guides-vps-quebec-agents-ia (P11) | `/guides/vps-quebec-agents-ia/` · `/en/guides/quebec-vps-ai-agents/` | published | applications prévues, état réel : rien n'est commandable |
+| gabarits-flux-de-travaux (P7) | `/gabarits-flux-de-travaux/` · `/en/workflow-templates/` | published | synthèse des vingt-neuf gabarits de WorkStudio |
+| gabarit-<gabarit> (×29) | `/gabarits-flux-de-travaux/<gabarit>/` · `/en/workflow-templates/<gabarit>/` | published | une fiche par gabarit, d'après l'inventaire réel |
+
+**Méthode.** Chaque page : héros, bloc « La réponse en bref » (premier paragraphe de 38 à 66 mots, autonome), contenu en blocs, FAQ balisée (`emit_jsonld`), appel à l'action. Le test `pages-marketing.test.ts` le vérifie sur les trente-sept pages.
+
+**Tableaux et code.** Le texte riche d'une section accepte désormais `table` (légende, en-têtes, corps) et `pre`/`code` : `web/src/lib/rich-text.ts` (liste blanche, parents contrôlés), rendu accessible dans `web/src/components/blocks/rich-text.tsx` (région défilable au clavier, en-têtes avec portée). La barre d'outils de l'éditeur Directus propose « Tableau » et « Bloc de code » : **`apply.ts` doit être relancé** sur chaque Directus avant qu'une personne édite l'une de ces pages dans le panneau (sans cela, l'éditeur peut retirer les tableaux à l'enregistrement). Les pages se chargent sans cela, par `load-content.ts`.
+
+**P4 (exemples de code).** Les exemples sont ceux de `web/src/lib/api-samples.ts` (la documentation de l'API), avec l'adresse de base `https://www.example.com/v1` (adresse réservée aux exemples : le domaine de production n'est pas fixé). `pages-marketing.test.ts` compare chaque exemple à la sortie de `apiSamples` et de `streamingSample`. **Aucun résultat d'appel réussi n'est montré** (R-52) : sur la pile de développement, aucun appel de conversation n'a abouti (la migration du Privacy Router y manquait : refus par précaution, 503). Seule l'erreur 401 d'une clé invalide, observée le 29/10/2026 avec curl et les bibliothèques officielles Python et JavaScript d'OpenAI, est montrée ; la liste des modèles (`GET /v1/models`, sans clé) a été vérifiée de même.
+
+**P3 (comparatif nommé).** Page en **brouillon et non indexée** : nommer un concurrent engage la Loi sur la concurrence (R-47, CL-A10). Les faits d'OpenRouter sont lus sur `https://openrouter.ai/pricing` et `https://openrouter.ai/docs/faq` le 29/10/2026 (CL-X01 à CL-X07 : état « en revue », portée « À RELIRE », échéance 29/01/2027). La page dit ce que Nexora AI ne fait pas, une section « Quand choisir l'autre », et **divulgue que la passerelle peut s'appuyer sur OpenRouter comme fournisseur amont** (CL-M09) : cette divulgation est à confirmer par le fondateur. Les tests autorisent le nom, les pourcentages et les deux liens externes sur cette page seulement.
+
+**P7 (gabarits).** `gabarits-inventaire.json` fige l'inventaire de `templates.ts` (WorkStudio, commit 4c7b4e4f) : vingt-neuf gabarits, leurs champs et leurs étapes. `pages-marketing.test.ts` vérifie que chaque fiche liste exactement les champs de départ, dit si le gabarit envoie un courriel (cinq le font, tous derrière une validation) et que la synthèse renvoie aux vingt-neuf fiches. **Les gabarits sont rédigés pour une PME française** (TVA, euro, SIRET, indemnité forfaitaire) : chaque fiche le dit (CL-M02, CL-111). Le guide de prise en main de WorkStudio annonce encore vingt modèles : il est périmé. Pour régénérer l'inventaire après un changement de `templates.ts`, relire le fichier et comparer.
+
+**Nouvelles affirmations** : CL-M01 à CL-M11 (gabarits, passerelle, VPS), CL-X01 à CL-X07 (OpenRouter), CL-AP01 à CL-AP05 (Nexora Apps : « gratuit », « code ouvert prévu », « incluse », « abonnement », états). Les fiches Nexora Apps (hors Directus) citent leurs affirmations dans le registre `web/src/i18n/apps.ts` ; `content.test.ts` compte ces renvois comme usage. Formulations retirées : R-50 à R-53.
+
+**Maillage ajouté** aux pages existantes (un paragraphe de liens, sans changer leur structure) : accueil, passerelle d'API, WorkStudio (limites), souveraineté, déploiement sur place, Vos données, centre de confiance, guide des agents. Les fiches Nexora Apps reçoivent des liens de la passerelle, de WorkStudio et de l'accueil.
+
+**Chargement.** `bun run cms/scripts/load-content.ts --a-blanc`, puis sans option (brouillons : versions et approbations en attente), puis `--approuver-et-publier` (le comparatif P3 n'est jamais promu par le script). La page `opsys-ai` exige la vidéo `video-opsys.mp4` dans Directus ; sur une instance neuve, charger les autres pages avec `--seulement=<liste>`. Vérifié le 29/10/2026 sur une instance jetable (port 8476, schéma appliqué à neuf, 188 affirmations, toutes les pages publiées sauf P3 et les gabarits juridiques) : lecture publique conforme au JSON pour chaque page.

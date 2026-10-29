@@ -182,3 +182,81 @@ describe("buildCmsMetadata", () => {
     expect(JSON.stringify(none.openGraph?.images)).toContain("/og/fr/opsys-ai");
   });
 });
+
+describe("buildCmsMetadata : guides (og:type article)", () => {
+  const guide = (over: Partial<PageModel> = {}) =>
+    page({
+      slug: "guides/ia-pme-quebec",
+      title: "L'IA pour une PME",
+      translations: [
+        { code: "fr-CA", slug: "guides/ia-pme-quebec" },
+        { code: "en-CA", slug: "guides/ai-small-business-quebec" },
+      ],
+      ...over,
+    });
+  const dates = {
+    createdAt: "2026-10-20T14:00:00.000Z",
+    updatedAt: "2026-10-29T15:30:00.000Z",
+  };
+
+  it("un guide déclare og:type article, avec ses dates réelles et l'entreprise pour auteur", () => {
+    const m = buildCmsMetadata({
+      page: guide(),
+      lang: "fr",
+      settings,
+      siteName: "Nexora AI",
+      preview: false,
+      dates,
+    });
+    expect(m.openGraph).toMatchObject({
+      type: "article",
+      publishedTime: dates.createdAt,
+      modifiedTime: dates.updatedAt,
+      authors: ["Nexora AI"],
+      siteName: "Nexora AI",
+    });
+  });
+
+  it("une page de produit reste de type website, même si des dates sont connues", () => {
+    const m = buildCmsMetadata({
+      page: page(),
+      lang: "fr",
+      settings,
+      siteName: "Nexora AI",
+      preview: false,
+      dates,
+    });
+    expect(m.openGraph).toMatchObject({ type: "website" });
+    expect(m.openGraph).not.toHaveProperty("publishedTime");
+  });
+
+  it("n'invente aucune date : sans date, le guide est un article sans heure de publication", () => {
+    const m = buildCmsMetadata({
+      page: guide(),
+      lang: "fr",
+      settings,
+      siteName: "Nexora AI",
+      preview: false,
+    });
+    expect(m.openGraph).toMatchObject({ type: "article" });
+    expect(m.openGraph).not.toHaveProperty("publishedTime");
+    expect(m.openGraph).not.toHaveProperty("modifiedTime");
+  });
+
+  it("une fiche de gabarit est aussi un article", () => {
+    const m = buildCmsMetadata({
+      page: guide({
+        slug: "gabarits-flux-de-travaux/devis",
+        translations: [
+          { code: "fr-CA", slug: "gabarits-flux-de-travaux/devis" },
+        ],
+      }),
+      lang: "fr",
+      settings,
+      siteName: "Nexora AI",
+      preview: false,
+      dates,
+    });
+    expect(m.openGraph).toMatchObject({ type: "article" });
+  });
+});

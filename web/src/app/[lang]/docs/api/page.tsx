@@ -18,7 +18,7 @@ import {
   streamingSample,
 } from "@/lib/api-samples";
 import { buildPageMetadata } from "@/lib/metadata";
-import { appBreadcrumb } from "@/lib/seo/app-jsonld";
+import { appBreadcrumb, docsApiJsonLd } from "@/lib/seo/app-jsonld";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -196,6 +196,7 @@ export default async function ApiDocsPage() {
           </ButtonLink>
         </div>
       </div>
+      <JsonLd data={docsApiJsonLd(lang)} />
       <JsonLd
         data={appBreadcrumb(lang, [
           {

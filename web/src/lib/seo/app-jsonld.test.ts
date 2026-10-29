@@ -2,7 +2,13 @@ import { checkJsonLdConformity } from "@nexora/seo";
 import { describe, expect, it } from "vitest";
 import { APPS, getAppContent, getAppsDictionary } from "@/i18n/apps";
 import { LANGS } from "@/i18n/config";
-import { appBreadcrumb, appFaqJsonLd, appSoftwareJsonLd } from "./app-jsonld";
+import { getGatewayDictionary } from "@/i18n/gateway";
+import {
+  appBreadcrumb,
+  appFaqJsonLd,
+  appSoftwareJsonLd,
+  docsApiJsonLd,
+} from "./app-jsonld";
 
 /** Texte visible d'une fiche tel que la page l'affiche : titre, accroche, listes, questions et réponses. */
 function visibleText(lang: "fr" | "en", slug: string): string {
@@ -106,5 +112,42 @@ describe("fil d'Ariane d'une fiche", () => {
       "Nexora WebPilot",
     ]);
     expect(out?.itemListElement[2]?.item).toMatch(/\/en\/apps\/webpilot$/);
+  });
+});
+
+describe("TechArticle de la documentation de l'API (/docs/api)", () => {
+  it("décrit ce que la page montre : titre et accroche affichés, adresse localisée, éditeur et auteur = l'entreprise", () => {
+    for (const lang of LANGS) {
+      const d = getGatewayDictionary(lang).docs;
+      const out = docsApiJsonLd(lang) as unknown as Record<string, unknown>;
+      expect(out["@type"]).toBe("TechArticle");
+      expect(out.headline).toBe(d.title);
+      expect(out.description).toBe(d.lead);
+      expect(String(out.url)).toMatch(
+        lang === "fr" ? /\/docs\/api$/ : /\/en\/docs\/api$/,
+      );
+      expect(out.inLanguage).toBe(lang === "fr" ? "fr-CA" : "en-CA");
+      for (const key of ["author", "publisher"])
+        expect(out[key]).toMatchObject({
+          "@id": expect.stringMatching(/#organization$/),
+          name: "Nexora AI",
+        });
+    }
+  });
+
+  it("n'invente aucune date : la page est statique et n'a pas de date connue", () => {
+    const out = docsApiJsonLd("fr") as unknown as Record<string, unknown>;
+    expect(out).not.toHaveProperty("datePublished");
+    expect(out).not.toHaveProperty("dateModified");
+  });
+
+  it("est conforme au texte visible de la page", () => {
+    for (const lang of LANGS) {
+      const d = getGatewayDictionary(lang).docs;
+      expect(
+        checkJsonLdConformity([docsApiJsonLd(lang)], `${d.title} ${d.lead}`),
+        lang,
+      ).toEqual([]);
+    }
   });
 });
