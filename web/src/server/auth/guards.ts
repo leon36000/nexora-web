@@ -2,9 +2,11 @@ import {
   and,
   type Database,
   eq,
+  isNull,
   members,
   ORG_ROLES,
   type OrgRole,
+  staffAccounts,
 } from "@nexora/db";
 
 /**
@@ -75,4 +77,18 @@ export async function resolveOrgContext(
     .limit(1);
   if (!first || !isRole(first.role)) return null;
   return { organizationId: first.organizationId, role: first.role };
+}
+
+/** Compte du personnel actif (drapeau posé depuis l'administration, non révoqué). */
+export async function isActiveStaff(
+  db: Database,
+  userId: string,
+): Promise<boolean> {
+  const [row] = await db
+    .select({ userId: staffAccounts.userId })
+    .from(staffAccounts)
+    .where(
+      and(eq(staffAccounts.userId, userId), isNull(staffAccounts.revokedAt)),
+    );
+  return Boolean(row);
 }
