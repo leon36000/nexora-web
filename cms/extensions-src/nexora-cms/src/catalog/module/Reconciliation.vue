@@ -20,7 +20,7 @@
 		</v-notice>
 
 		<p v-if="analysis && !analysis.rows.length" class="hint">Aucune requête sur cette période.</p>
-		<table v-else-if="analysis" class="grid">
+		<div v-else-if="analysis" class="table-wrap"><table class="grid">
 			<thead>
 				<tr>
 					<th>Modèle</th>
@@ -59,7 +59,7 @@
 					<th />
 				</tr>
 			</tfoot>
-		</table>
+		</table></div>
 		<small>La marge réalisée est calculée sur le coût du fournisseur corrigé de l’écart observé ; elle n’est pas calculée quand un usage offert (organisations maison) y est mêlé.</small>
 	</section>
 </template>
@@ -120,4 +120,5 @@ label { display: grid; gap: 6px; font-weight: 600; }
 .verdict.ok { color: var(--theme--success); }
 .verdict.derive { color: var(--theme--danger); }
 small, .hint { color: var(--theme--foreground-subdued); font-weight: 400; }
+.table-wrap { overflow-x: auto; }
 </style>

@@ -10,7 +10,7 @@
 
 			<v-notice v-if="!data.providers.length" type="info">Aucun fournisseur pour l’instant. Cliquez sur « Ajouter un fournisseur » : l’assistant vous guide en trois étapes (adresse, clé, test).</v-notice>
 
-			<table v-else class="grid">
+			<div v-else class="table-wrap"><table class="grid">
 				<thead>
 					<tr><th>Fournisseur</th><th>Adresse de base</th><th>Clé (Coffre)</th><th>Connexion</th><th>État</th><th>Prochaine étape</th><th /></tr>
 				</thead>
@@ -36,7 +36,7 @@
 						</td>
 					</tr>
 				</tbody>
-			</table>
+			</table></div>
 		</template>
 	</div>
 </template>
@@ -126,4 +126,5 @@ small {
 .chip.success { color: var(--theme--success); }
 .chip.danger { color: var(--theme--danger); }
 .chip.warning { color: var(--theme--warning); }
+.table-wrap { overflow-x: auto; }
 </style>

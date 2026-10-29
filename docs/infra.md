@@ -226,9 +226,11 @@ Les tables de travail se modifient librement ; **seule une version publiée** se
 | Appel | Rôle |
 |---|---|
 | `GET /` | Vue d'ensemble (fournisseurs, modèles avec prix actuel, taux, versions, version publiée et état « appliqué »). |
-| `GET/POST /providers`, `GET/PATCH /providers/{id}` | Fournisseurs (types `openrouter`, `openai_compatible`, `litellm_upstream`, `vllm`, `ollama`). |
+| `GET/POST /providers`, `GET/PATCH /providers/{id}` | Fournisseurs (types `openrouter`, `openai_compatible`, `litellm_upstream`, `vllm`, `ollama`). Chaque fournisseur porte `secretPresent` (`true` : clé active dans le coffre, `false` : absente ou révoquée, `null` : aucune clé) ; la vue d'ensemble `GET /` ajoute `defaults` (marge visée et plancher proposés : 10 %). |
 | `POST /providers/{id}/test` | « Tester le fournisseur » : liste des modèles avec la clé du coffre ; écrit état, date et résumé (jamais la réponse). |
 | `GET/POST /models`, `GET/PATCH /models/{id}` | Modèles ; passer à `approved`/`published` exige un prix valide. |
+| `GET /models/{id}/readiness` | Contrôles préalables à la publication d'un modèle : même garde que la publication, avec la présence réelle de la clé dans le coffre (`{ ready, issues, fx }`). |
+| `POST /models/{id}/routes/reorder` | `{ order: [routeId…] }` : ordre des routes de secours (exactement les routes du modèle, une fois chacune ; deux temps en transaction). |
 | `GET/POST /models/{id}/prices` | Historique et ajout d'un prix (vente explicite, ou calculée avec `marginBps` au taux approuvé). |
 | `GET/POST /fx-rates`, `POST /fx-rates/{id}/approve` | Taux de change. |
 | `GET/POST /versions`, `GET /versions/{id}`, `POST /versions/{id}/approve`, `POST /versions/{id}/publish` | Brouillon → approuvé → publié. La publication revalide l'étiquette de cache `model-catalog` (pages publiques). |
@@ -246,7 +248,7 @@ Codes d'erreur : 401, 404, 405, 409 (`conflict`, `invalid_transition`, `stale_ve
 
 ### Module Directus « Modèles » (D14)
 
-Dans le bundle `nexora-cms` : endpoint `/nexora-catalog` (administrateurs Directus seulement ; liste fermée de méthodes et chemins relayés vers `/api/admin/catalog/*` avec `NEXORA_APP_ADMIN_TOKEN` ; rien n'est persisté, seul « méthode chemin : statut » est journalisé) et module « Modèles » (fournisseurs avec « coller la clé » → Coffre `llm_provider`, modèles et prix, taux de change, versions avec aperçu des différences, boutons Approuver / Publier / Synchroniser / Tester). Construction : `cms/scripts/stage-extensions.sh`. **Pour que le module apparaisse dans la barre de Directus**, `nexora-models` doit être ajouté à `module_bar` (comme `nexora-vault` dans `cms/scripts/apply.ts`) : non fait ici, par consigne.
+Dans le bundle `nexora-cms` : endpoint `/nexora-catalog` (administrateurs Directus seulement ; liste fermée de méthodes et chemins relayés vers `/api/admin/catalog/*` avec `NEXORA_APP_ADMIN_TOKEN` ; rien n'est persisté, seul « méthode chemin : statut » est journalisé) et module « Modèles » : assistants « Ajouter un fournisseur » (clé déposée dans le Coffre, jamais saisie dans le module) et « Ajouter un modèle » (fiche, fournisseur, prix en dollars américains avec aperçu de la vente en dollars canadiens et plancher de marge, plages horaires, routes de secours ordonnées, publication avec contrôles préalables), écran « Modifier les prix » (nouvelle version, historique, comparaison), « Rapprochement des coûts », taux de change, versions. Guide pas à pas : `docs/guide-operateur.md` §8.1 bis. Construction : `cms/scripts/stage-extensions.sh` ; `apply.ts` ajoute `nexora-models` à `module_bar`. La logique (prix, validation, corps envoyés, orchestration de la publication, rapprochement) est dans des fichiers `.ts` sous `cms/extensions-src/nexora-cms/src/catalog/module/`, testés (`bun test` dans `cms/`) ; `web/src/server/gateway/admin-parity.test.ts` vérifie que l'aperçu des prix rend les mêmes décisions que la garde du serveur et `admin-assistant-flow.test.ts` rejoue l'ajout d'un sixième fournisseur et de son modèle avec ce code contre la vraie API.
 
 ### Limites connues (non livrées)
 

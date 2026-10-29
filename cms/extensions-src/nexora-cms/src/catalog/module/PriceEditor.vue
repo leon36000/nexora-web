@@ -49,7 +49,7 @@
 		</v-notice>
 
 		<h3>Historique des versions de prix</h3>
-		<table v-if="history.length" class="grid">
+		<div v-if="history.length" class="table-wrap"><table class="grid">
 			<thead>
 				<tr><th>Date d’effet</th><th>Vente (par million, $ CA)</th><th>Coût fournisseur ($ US)</th><th>Marge / plancher</th><th>Écart avec la version précédente</th><th>Note</th><th /></tr>
 			</thead>
@@ -69,7 +69,7 @@
 					<td><v-button v-if="h.id !== current?.id && current" x-small secondary @click="compared = h.id === compared ? '' : h.id">Comparer</v-button></td>
 				</tr>
 			</tbody>
-		</table>
+		</table></div>
 		<p v-else class="hint">Aucune version de prix.</p>
 
 		<section v-if="comparedRows.length" class="compare">
@@ -189,4 +189,5 @@ small, .hint { color: var(--theme--foreground-subdued); font-weight: 400; }
 .chip.danger { color: var(--theme--danger); }
 .chip.warning { color: var(--theme--warning); }
 code { font-family: var(--theme--fonts--monospace--font-family, monospace); }
+.table-wrap { overflow-x: auto; }
 </style>

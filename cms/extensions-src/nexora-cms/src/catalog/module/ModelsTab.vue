@@ -11,7 +11,7 @@
 			<v-notice v-if="!data.models.length" type="info">Aucun modèle pour l’instant. Ajoutez d’abord un fournisseur, puis cliquez sur « Ajouter un modèle ».</v-notice>
 			<v-notice v-if="!data.currentFx" type="warning">Aucun taux de change approuvé : les prix de vente ne peuvent pas être calculés ni publiés. Approuvez un taux dans l’onglet « Taux de change ».</v-notice>
 
-			<table v-if="data.models.length" class="grid">
+			<div v-if="data.models.length" class="table-wrap"><table class="grid">
 				<thead><tr><th>Modèle</th><th>Fournisseur</th><th>État</th><th>Prix en vigueur</th><th /></tr></thead>
 				<tbody>
 					<tr v-for="m in data.models" :key="m.id">
@@ -36,7 +36,7 @@
 						</td>
 					</tr>
 				</tbody>
-			</table>
+			</table></div>
 		</template>
 	</div>
 </template>
@@ -97,4 +97,5 @@ code { font-family: var(--theme--fonts--monospace--font-family, monospace); font
 .chip.success { color: var(--theme--success); }
 .chip.danger { color: var(--theme--danger); }
 .chip.warning { color: var(--theme--warning); }
+.table-wrap { overflow-x: auto; }
 </style>
