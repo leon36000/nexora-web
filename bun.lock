@@ -74,6 +74,15 @@
         "@nexora/log": "workspace:*",
       },
     },
+    "packages/webpilot": {
+      "name": "@nexora/webpilot",
+      "version": "0.1.0",
+      "dependencies": {
+        "@nexora/db": "workspace:*",
+        "@nexora/net": "workspace:*",
+        "node-html-parser": "^9.0.5",
+      },
+    },
     "web": {
       "name": "web",
       "version": "0.1.0",
@@ -415,6 +424,8 @@
     "@nexora/vault": ["@nexora/vault@workspace:packages/vault"],
 
     "@nexora/vps": ["@nexora/vps@workspace:packages/vps"],
+
+    "@nexora/webpilot": ["@nexora/webpilot@workspace:packages/webpilot"],
 
     "@nexora/worker": ["@nexora/worker@workspace:worker"],
 
@@ -1437,6 +1448,8 @@
     "@inquirer/core/mute-stream": ["mute-stream@2.0.0", "", {}, "sha512-WWdIxpyjEn+FhQJQQv9aQAYlHoNVdzIzUySNV1gHUPDSdZJ3yZn7pAAbQcV7B56Mvu881q9FZV+0Vx2xC44VWA=="],
 
     "@inquirer/core/wrap-ansi": ["wrap-ansi@6.2.0", "", { "dependencies": { "ansi-styles": "^4.0.0", "string-width": "^4.1.0", "strip-ansi": "^6.0.0" } }, "sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA=="],
+
+    "@nexora/webpilot/node-html-parser": ["node-html-parser@9.0.5", "", { "dependencies": { "css-select": "^5.1.0", "entities": "^8.0.0" } }, "sha512-LpUc74Ax3L6AsxTEqoep0GDqCBbsPjtn74sYaiazxGXfwhe6iqD4E5sHTJFCU+wBxVMX+Dd7mvLim0QM1vsvpw=="],
 
     "@nexora/worker/node-html-parser": ["node-html-parser@9.0.5", "", { "dependencies": { "css-select": "^5.1.0", "entities": "^8.0.0" } }, "sha512-LpUc74Ax3L6AsxTEqoep0GDqCBbsPjtn74sYaiazxGXfwhe6iqD4E5sHTJFCU+wBxVMX+Dd7mvLim0QM1vsvpw=="],
 
