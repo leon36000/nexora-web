@@ -14,7 +14,8 @@
     "capture": "bun scripts/capture.mjs",
     "vps:seed": "bun scripts/seed-vps.ts",
     "models:seed": "bun scripts/seed-ai-models.ts",
-    "house:org": "bun scripts/house-org.ts"
+    "house:org": "bun scripts/house-org.ts",
+    "workstudio:acces": "bun scripts/workstudio-access.ts"
   },
   "dependencies": {
     "@nexora/db": "workspace:*",
