@@ -92,6 +92,14 @@ describe("validation", () => {
       validateProviderForm({ ...ok(), id: "u" }, ["deepinfra"]).code,
     ).toBeUndefined();
   });
+  test("une priorité saisie comme nombre est acceptée (champ numérique de Directus)", () => {
+    expect(
+      validateProviderForm({ ...ok(), priority: 20 as unknown as string }, []),
+    ).toEqual({});
+    expect(
+      providerBody({ ...ok(), priority: 20 as unknown as string }).priority,
+    ).toBe(20);
+  });
   test("les types avec clé exigent une référence du Coffre", () => {
     expect(
       validateProviderForm({ ...ok(), secretRef: "" }, []).secretRef,

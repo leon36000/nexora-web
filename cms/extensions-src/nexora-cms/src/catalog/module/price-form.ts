@@ -291,6 +291,7 @@ export interface FormPreview {
 
 type Parsed = bigint | null;
 const AMOUNT_ERROR = "Montant invalide (format 0,60).";
+const AMOUNT_REQUIRED = "Montant requis.";
 
 function amount(
   value: string,
@@ -299,7 +300,7 @@ function amount(
   required: boolean,
 ): Parsed {
   if (value.trim() === "") {
-    if (required) errors[key] = "Montant requis.";
+    if (required) errors[key] = AMOUNT_REQUIRED;
     return null;
   }
   const micro = parseDecimalMicro(value);
@@ -308,6 +309,34 @@ function amount(
     return null;
   }
   return BigInt(micro);
+}
+
+/**
+ * Erreurs à afficher pendant la saisie : un montant obligatoire encore VIDE n'est pas une faute (on n'a pas commencé) ;
+ * un montant illisible l'est. Le bouton « Enregistrer » reste désactivé tant que `ok` est faux.
+ */
+export function visibleErrors(
+  form: PriceForm,
+  errors: Record<string, string>,
+): Record<string, string> {
+  const valueOf = (key: string): string | undefined => {
+    const m = /^w(\d+)\.(\w+)$/.exec(key);
+    if (m) {
+      const w = form.windows[Number(m[1])];
+      return w
+        ? (w as unknown as Record<string, string>)[m[2] as string]
+        : undefined;
+    }
+    return (form as unknown as Record<string, unknown>)[key] as
+      | string
+      | undefined;
+  };
+  return Object.fromEntries(
+    Object.entries(errors).filter(
+      ([key, message]) =>
+        !(message === AMOUNT_REQUIRED && (valueOf(key) ?? "").trim() === ""),
+    ),
+  );
 }
 
 export function previewForm(

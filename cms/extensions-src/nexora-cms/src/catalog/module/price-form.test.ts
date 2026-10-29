@@ -11,6 +11,7 @@ import {
   priceToForm,
   shapeOfRecord,
   timeOf,
+  visibleErrors,
 } from "./price-form";
 
 const FX = 1_400_000n;
@@ -101,6 +102,14 @@ describe("aperçu du formulaire", () => {
     expect(p.ok).toBe(false);
     expect(p.problems.join(" ")).toContain("plancher");
     expect(buildPriceBody(f, p)).toBeNull();
+  });
+  test("un champ vide n'affiche pas d'erreur tant qu'on n'a rien saisi ; un montant illisible, si", () => {
+    const f = { ...emptyPriceForm(defaults), upIn: "abc" };
+    const p = previewForm(f, ctx);
+    const shown = visibleErrors(f, p.errors);
+    expect(shown.upIn).toBe("Montant invalide (format 0,60).");
+    expect(shown.upOut).toBeUndefined();
+    expect(p.errors.upOut).toBe("Montant requis.");
   });
   test("champs invalides signalés un par un", () => {
     const f = {

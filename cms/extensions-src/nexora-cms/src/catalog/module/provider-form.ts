@@ -211,8 +211,9 @@ export function validateProviderForm(
     e.secretRef =
       "Indiquez la référence de la clé dans le Coffre (ex. llm.deepinfra).";
   }
-  const priority = Number(f.priority);
-  if (!/^\d{1,5}$/.test(f.priority.trim()) || priority > 10_000)
+  // Le champ numérique de Directus peut rendre un nombre : on compare toujours sur le texte.
+  const priorityText = String(f.priority).trim();
+  if (!/^\d{1,5}$/.test(priorityText) || Number(priorityText) > 10_000)
     e.priority =
       "Priorité : entier de 0 à 10 000 (plus petit = essayé d’abord).";
   return e;
