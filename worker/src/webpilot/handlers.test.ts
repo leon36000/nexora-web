@@ -9,13 +9,19 @@ import {
   usageEvents,
   webpilotPriceItems,
   webpilotPriceSheets,
+  webpilotSessions,
   webpilotTasks,
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import {
+  type BrowserService,
+  BrowserServiceError,
+  type CloseReason,
   type CrawlDeps,
   createCrawl,
+  openSession,
+  publicSessionId,
   type SafeHttpClient,
 } from "@nexora/webpilot";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -26,6 +32,7 @@ import {
   failClosedGate,
   PURGE_JOB,
   registerWebpilotHandlers,
+  SESSIONS_SWEEP_JOB,
 } from "./handlers.ts";
 
 let t: TestDatabase;
@@ -33,9 +40,10 @@ beforeAll(async () => {
   t = await createTestDatabase();
   const [sheet] = await t.db.insert(webpilotPriceSheets).values({}).returning();
   if (!sheet) throw new Error("feuille");
-  await t.db
-    .insert(webpilotPriceItems)
-    .values({ sheetId: sheet.id, unit: "page_static", sellCadMicro: 1000n });
+  await t.db.insert(webpilotPriceItems).values([
+    { sheetId: sheet.id, unit: "page_static", sellCadMicro: 1000n },
+    { sheetId: sheet.id, unit: "browser_minute", sellCadMicro: 2000n },
+  ]);
   await t.db
     .update(webpilotPriceSheets)
     .set({ status: "published", publishedAt: new Date() })
@@ -250,5 +258,206 @@ describe("tâches WebPilot du worker", () => {
       .where(eq(jobs.type, PURGE_JOB));
     expect(purge).toHaveLength(1);
     expect(localClock(new Date()).date).toBeTruthy();
+  });
+});
+
+describe("balayage des sessions de navigateur", () => {
+  const T0 = new Date("2026-11-03T09:00:00.000Z");
+  const at = (seconds: number) => new Date(T0.getTime() + seconds * 1000);
+
+  async function session(
+    opts: { balance?: bigint; maxMinutes?: number; idleTimeoutS?: number } = {},
+  ) {
+    const org = `org_${randomBytes(5).toString("hex")}`;
+    await t.db.insert(organizations).values({ id: org, name: org, slug: org });
+    const [key] = await t.db
+      .insert(apiKeys)
+      .values({
+        organizationId: org,
+        name: "k",
+        prefix: "nxk_essai00",
+        keyHash: randomBytes(12).toString("hex"),
+      })
+      .returning();
+    await credit(t.db, {
+      organizationId: org,
+      amountMicro: opts.balance ?? 100_000n,
+      idempotencyKey: `f:${org}`,
+      configVersion: "t",
+      source: "t",
+    });
+    const { activePrices } = await import("@nexora/webpilot");
+    const opened = await openSession(t.db, {
+      organizationId: org,
+      apiKeyId: key?.id as string,
+      maxMinutes: opts.maxMinutes ?? 5,
+      idleTimeoutS: opts.idleTimeoutS ?? 600,
+      params: {},
+      prices: await activePrices(t.db, T0),
+      house: false,
+      maxOpen: 5,
+      now: T0,
+      privacy: null,
+    });
+    if (!opened.ok) throw new Error("ouverture");
+    return { org, id: opened.sessionId };
+  }
+
+  function browser() {
+    const closes: Array<{ id: string; reason: CloseReason }> = [];
+    const fail: { close?: BrowserServiceError } = {};
+    const service: BrowserService = {
+      open: async () => {
+        throw new Error("non utilisé");
+      },
+      run: async () => {
+        throw new Error("non utilisé");
+      },
+      get: async () => {
+        throw new Error("non utilisé");
+      },
+      close: async (id, reason) => {
+        if (fail.close) throw fail.close;
+        closes.push({ id, reason });
+        return {
+          id,
+          status: "closed",
+          closeReason: reason,
+          expiresAt: new Date(),
+          url: null,
+        };
+      },
+    };
+    return { service, closes, fail };
+  }
+
+  const sweep = (b: BrowserService | null, now: Date) => {
+    const registry = registerWebpilotHandlers(new HandlerRegistry(), {
+      db: t.db,
+      log: silent,
+      sessions: { browser: b, now: () => now },
+    });
+    return registry.get(SESSIONS_SWEEP_JOB)?.(
+      {
+        id: "j",
+        type: SESSIONS_SWEEP_JOB,
+        payload: {},
+        attempt: 1,
+        maxAttempts: 1,
+      },
+      ctx,
+    );
+  };
+  const rowOf = async (id: string) =>
+    (
+      await t.db
+        .select()
+        .from(webpilotSessions)
+        .where(eq(webpilotSessions.id, id))
+    )[0];
+
+  it("est enregistré par défaut et déclaré par le planificateur chaque minute (une seule fois par minute)", async () => {
+    expect(defaultRegistry({ db: t.db, log: silent }).types()).toContain(
+      SESSIONS_SWEEP_JOB,
+    );
+    const { tickScheduler } = await import("../scheduler.ts");
+    await t.db.delete(jobs);
+    const tick = (iso: string) =>
+      tickScheduler({ db: t.db, log: silent, now: () => new Date(iso) });
+    await tick("2026-11-03T09:00:05Z");
+    await tick("2026-11-03T09:00:40Z");
+    await tick("2026-11-03T09:01:10Z");
+    const rows = await t.db
+      .select()
+      .from(jobs)
+      .where(eq(jobs.type, SESSIONS_SWEEP_JOB));
+    expect(rows).toHaveLength(2);
+  });
+
+  it("règle la minute échue et réserve la suivante", async () => {
+    const { id, org } = await session();
+    await sweep(null, at(61));
+    expect(await rowOf(id)).toMatchObject({
+      status: "open",
+      minutesSettled: 1,
+      costMicro: 2000n,
+    });
+    const events = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, org));
+    expect(
+      events.filter((e) => e.endpoint === "webpilot.session"),
+    ).toHaveLength(1);
+  });
+
+  it("ferme une session échue, détruit son navigateur avec le motif et le confirme", async () => {
+    const { id } = await session({ maxMinutes: 1 });
+    const b = browser();
+    await sweep(b.service, at(61));
+    const r = await rowOf(id);
+    expect(r).toMatchObject({
+      status: "closed",
+      closeReason: "max_minutes",
+      minutesSettled: 1,
+    });
+    expect(r?.browserClosedAt).not.toBeNull();
+    expect(b.closes).toEqual([
+      { id: publicSessionId(id), reason: "max_minutes" },
+    ]);
+    await sweep(b.service, at(120));
+    expect(b.closes).toHaveLength(1);
+  });
+
+  it("ferme une session inactive et libère tout (plus rien de retenu)", async () => {
+    const { id, org } = await session({ idleTimeoutS: 20, balance: 10_000n });
+    const b = browser();
+    await sweep(b.service, at(30));
+    expect((await rowOf(id))?.closeReason).toBe("idle");
+    const { getAccount } = await import("@nexora/db");
+    const acct = await getAccount(t.db, org);
+    expect(acct.heldMicro).toBe(0n);
+    expect(acct.balanceMicro).toBe(8000n);
+  });
+
+  it("solde épuisé à la minute suivante : fermée en insufficient_quota", async () => {
+    const { id } = await session({ balance: 2000n });
+    const b = browser();
+    await sweep(b.service, at(61));
+    expect(await rowOf(id)).toMatchObject({
+      status: "closed",
+      closeReason: "insufficient_quota",
+    });
+    expect(b.closes[0]?.reason).toBe("insufficient_quota");
+  });
+
+  it("réessaie de détruire un navigateur resté en vie, sans jamais échouer la tâche", async () => {
+    const { id } = await session({ maxMinutes: 1 });
+    const b = browser();
+    b.fail.close = new BrowserServiceError("unavailable");
+    await expect(sweep(b.service, at(61))).resolves.toBeUndefined();
+    expect((await rowOf(id))?.browserClosedAt).toBeNull();
+    b.fail.close = undefined;
+    await sweep(b.service, at(120));
+    expect((await rowOf(id))?.browserClosedAt).not.toBeNull();
+    expect(b.closes).toEqual([
+      { id: publicSessionId(id), reason: "max_minutes" },
+    ]);
+  });
+
+  it("un navigateur inconnu du service (déjà détruit) compte comme détruit", async () => {
+    const { id } = await session({ maxMinutes: 1 });
+    const b = browser();
+    b.fail.close = new BrowserServiceError("not_found");
+    await sweep(b.service, at(61));
+    expect((await rowOf(id))?.browserClosedAt).not.toBeNull();
+  });
+
+  it("sans service de navigateur configuré, la facturation avance quand même", async () => {
+    const { id } = await session({ maxMinutes: 1 });
+    await sweep(null, at(61));
+    const r = await rowOf(id);
+    expect(r).toMatchObject({ status: "closed", minutesSettled: 1 });
+    expect(r?.browserClosedAt).toBeNull();
   });
 });

@@ -1,17 +1,31 @@
-import { type Database, enqueue, type Job } from "@nexora/db";
+import {
+  type Database,
+  enqueue,
+  eq,
+  type Job,
+  webpilotSessions,
+} from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import {
+  advanceSession,
+  type BrowserService,
+  BrowserServiceError,
   CRAWL_JOB,
   type CrawlDeps,
   clientConfigFromEnv,
   crawlSettingsFromEnv,
+  createBrowserService,
   createRobotsChecker,
   createSafeHttpClient,
+  dueSessions,
   finishTask,
+  markBrowserClosed,
   type PrivacyGate,
+  publicSessionId,
   purgeExpiredTasks,
   ROBOT_TOKEN,
   runCrawlSlice,
+  SESSION_SWEEP_JOB,
 } from "@nexora/webpilot";
 import type { HandlerRegistry } from "../registry.ts";
 import { workerPrivacyRouter } from "./privacy.ts";
@@ -25,6 +39,36 @@ import { workerPrivacyRouter } from "./privacy.ts";
  */
 
 export const PURGE_JOB = "webpilot.purge";
+export const SESSIONS_SWEEP_JOB = SESSION_SWEEP_JOB;
+
+/**
+ * Service de navigateur du worker (mêmes variables que le site : WEBPILOT_BROWSER_URL et WEBPILOT_BROWSER_SECRET).
+ * Absent : le balayage fait quand même avancer la facturation, seule la destruction des navigateurs est reportée (le
+ * service ferme aussi ses sessions de lui-même à leur échéance). Seul l'hôte nommé est approuvé pour le secret.
+ */
+export function browserServiceFromEnv(
+  env: Record<string, string | undefined> = process.env,
+): BrowserService | null {
+  const raw = env.WEBPILOT_BROWSER_URL?.trim();
+  const secret = env.WEBPILOT_BROWSER_SECRET?.trim();
+  if (!raw || !secret) return null;
+  try {
+    const url = new URL(raw);
+    const client = createSafeHttpClient({
+      ...clientConfigFromEnv(env),
+      timeoutMs: 30_000,
+      maxBytes: 1_000_000,
+      allowedPorts: [
+        Number(url.port) || (url.protocol === "https:" ? 443 : 80),
+      ],
+      maxRedirects: 0,
+      trustedHosts: [url.hostname],
+    });
+    return createBrowserService(client, raw, secret);
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Porte qui refuse toute sortie (échec fermé) : l'exploration échoue en `privacy_router_unavailable`. Le worker utilise
@@ -72,6 +116,8 @@ export function registerWebpilotHandlers(
     log: Logger;
     privacy?: PrivacyGate;
     crawl?: CrawlDeps;
+    /** Balayage des sessions : service de navigateur (absent : lu dans l'environnement) et horloge. */
+    sessions?: { browser: BrowserService | null; now?: () => Date };
   },
 ): HandlerRegistry {
   const crawlDeps = () =>
@@ -115,6 +161,58 @@ export function registerWebpilotHandlers(
     const purged = await purgeExpiredTasks(deps.db, new Date());
     if (purged > 0)
       ctx.log.info("webpilot : explorations échues effacées", { purged });
+  });
+  registry.register(SESSIONS_SWEEP_JOB, async (_job, ctx) => {
+    const now = deps.sessions?.now?.() ?? new Date();
+    const browser = deps.sessions
+      ? deps.sessions.browser
+      : browserServiceFromEnv();
+    const due = await dueSessions(deps.db, now, { limit: 200 });
+    let closed = 0;
+    for (const item of due) {
+      try {
+        let reason = null as string | null;
+        if (item.kind === "advance") {
+          const out = await advanceSession(deps.db, item.id, now);
+          if (!out?.closedNow) continue;
+          closed += 1;
+          reason = out.session.closeReason;
+        } else {
+          const [row] = await deps.db
+            .select({ reason: webpilotSessions.closeReason })
+            .from(webpilotSessions)
+            .where(eq(webpilotSessions.id, item.id));
+          reason = row?.reason ?? null;
+        }
+        if (!browser) continue;
+        try {
+          await browser.close(
+            publicSessionId(item.id),
+            (reason ?? "browser_error") as Parameters<
+              BrowserService["close"]
+            >[1],
+          );
+        } catch (error) {
+          // Session inconnue du service (déjà détruite) : rien à détruire. Autre panne : nouvel essai à la prochaine minute.
+          if (
+            !(
+              error instanceof BrowserServiceError && error.code === "not_found"
+            )
+          )
+            continue;
+        }
+        await markBrowserClosed(deps.db, item.id, now);
+      } catch (error) {
+        ctx.log.error("webpilot : balayage d'une session en échec", {
+          errorName: error instanceof Error ? error.name : typeof error,
+        });
+      }
+    }
+    if (due.length > 0)
+      ctx.log.info("webpilot : sessions balayées", {
+        examinées: due.length,
+        fermées: closed,
+      });
   });
   return registry;
 }

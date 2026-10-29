@@ -159,6 +159,12 @@ export async function tickScheduler(deps: SchedulerDeps): Promise<string[]> {
     idempotencyKey: `webpilot-purge:${Math.floor(nowMs / LEDGER_GRANT_EVERY_MS)}`,
     maxAttempts: 2,
   });
+  // WebPilot : balayage des sessions de navigateur, une occurrence par minute (minutes échues, échéances, inactivité).
+  await enqueue(db, {
+    type: "webpilot.sessions.sweep",
+    idempotencyKey: `webpilot-sessions:${Math.floor(nowMs / 60_000)}`,
+    maxAttempts: 1,
+  });
   // Alertes de solde bas : une occurrence par demi-heure.
   await enqueue(db, {
     type: "billing.balance-alerts",

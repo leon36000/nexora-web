@@ -1,6 +1,6 @@
 # Nexora WebPilot — contrat d'API (squelette, 29/10/2026)
 
-**Statut : v1 livrée en partie (voir `docs/webpilot.md`) ; ce document reste le contrat.** Reste à faire : sessions de navigateur, rendu par navigateur, branchement de Privacy Router. Il fixe ce que l'API doit faire : endpoints, format des erreurs, compteurs de facturation et point d'accroche de Nexora Privacy Router. Il ne publie aucun prix, aucun délai et aucune performance. La fiche publique `/apps/webpilot` (état « Bientôt ») renvoie vers la liste d'attente (`/contact?sujet=apps-webpilot`) tant que rien n'est livré.
+**Statut : v1 livrée (voir `docs/webpilot.md`) ; ce document reste le contrat.** État au 29/10/2026 : `search`, `scrape` (statique et `render: "browser"`), `crawl`, `extract`, **sessions de navigateur** et Privacy Router sont livrés ; la fiche publique reste « Bientôt » (décision du fondateur). Écarts assumés pour les sessions (détail et limites dans `docs/webpilot.md` §6) : un **processus** Chromium par session dans un conteneur durci unique (et non un conteneur par session, §7.3) ; navigation de premier niveau limitée aux hôtes approuvés ; `press` limité aux touches de navigation ; `record` vaut `none` ou `screenshot`. Il fixe ce que l'API doit faire : endpoints, format des erreurs, compteurs de facturation et point d'accroche de Nexora Privacy Router. Il ne publie aucun prix, aucun délai et aucune performance. La fiche publique `/apps/webpilot` (état « Bientôt ») renvoie vers la liste d'attente (`/contact?sujet=apps-webpilot`) tant que rien n'est livré.
 
 Demande du fondateur (résumé fidèle) : WebPilot est une API de **recherche, d'extraction et d'exploration du Web** (comme on en trouve chez les services d'exploration de sites) **plus la navigation et l'action sur des pages** (comme on en trouve chez les agents de navigation), **vendue comme OpenRouter vend des modèles** : un solde de crédits, une clé, de l'usage mesuré. **Nexora Privacy Router** est la couche de protection commune, **incluse par défaut et jamais payante** : elle contrôle ce qui sort, selon une politique par client, jusqu'à la souveraineté stricte.
 
@@ -13,7 +13,7 @@ Références du site : passerelle `/v1/*` (`docs/infra.md`, « Couche publique `
 3. **Privacy Router d'abord.** Aucune requête ne sort vers le Web sans que la politique de l'organisation ait été évaluée (section 6). La couche est toujours active et n'apparaît sur aucune ligne de facturation.
 4. **Aucun contenu stocké.** Comme la passerelle : seules des métadonnées d'usage sont conservées (opération, unités, coût, durée, décision de politique). Ni les pages récupérées, ni les requêtes, ni le texte saisi dans une session ne sont journalisés ni stockés par Nexora AI, sauf ce que l'appelant demande explicitement de garder le temps d'une tâche (section 4.4).
 5. **Format OpenAI pour les erreurs, JSON simple pour le reste.** Pas de SDK obligatoire : cURL doit suffire.
-6. **État honnête.** Tant que le code n'existe pas, `/v1/webpilot/*` répond 404 `unknown_url` (comportement actuel de `handleUnknownEndpoint`) et la fiche dit « Bientôt ».
+6. **État honnête.** La fiche dit « Bientôt » tant que le fondateur n'a pas décidé de l'ouverture, même si le code est livré.
 
 ## 2. Authentification, en-têtes, versions
 

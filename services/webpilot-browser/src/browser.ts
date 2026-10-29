@@ -573,9 +573,14 @@ export function createBrowserRuntime(deps: {
     await acquire();
     let handle: PageHandle | null = null;
     try {
-      handle = await newHandle({
-        approved: [syntax.url.hostname, ...input.approveHosts],
-      });
+      try {
+        handle = await newHandle({
+          approved: [syntax.url.hostname, ...input.approveHosts],
+        });
+      } catch {
+        // Le navigateur n'a pas démarré (ressources, bac à sable) : un échec de rendu, pas une erreur interne.
+        throw new RenderFailedError("navigation_failed");
+      }
       let status = 0;
       try {
         const response = await handle.page.goto(syntax.url.toString(), {

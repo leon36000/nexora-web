@@ -205,6 +205,49 @@ services:
     mem_limit: ${NEXORA_SEARXNG_MEM_LIMIT:-512m}
     pids_limit: 256
 
+  webpilot-browser:
+    # Service de navigateur de Nexora WebPilot (rendu render:"browser" et sessions) : services/webpilot-browser.
+    # Isolé : il n'est PAS sur le réseau de l'application (ni base, ni Directus, ni LiteLLM, ni coffre). Deux réseaux
+    # seulement : « webpilot-browser » (sans route vers l'extérieur) que le site et le worker rejoignent pour l'appeler, et
+    # « webpilot-browser-egress » pour joindre le Web public. Le navigateur n'a qu'un chemin, un mandataire local qui refuse
+    # les adresses privées, de boucle locale, de lien local et les métadonnées du nuage APRÈS résolution DNS ; ce
+    # contrôle ne dépend donc pas du pare-feu. Défense en profondeur recommandée à l'hôte : interdire à ce réseau de
+    # joindre les plages privées (règle DOCKER-USER, voir docs/webpilot.md).
+    # Profil séparé : un navigateur ne démarre pas avec la pile ordinaire. Démarrage :
+    #   docker compose --profile webpilot-browser up -d --build webpilot-browser
+    # L'image part de l'image Playwright épinglée par empreinte (voir son Dockerfile).
+    profiles: ["webpilot-browser"]
+    build:
+      context: ../services/webpilot-browser
+    image: nexora/webpilot-browser:local
+    restart: unless-stopped
+    networks: [webpilot-browser, webpilot-browser-egress]
+    environment:
+      # Secret partagé avec le site et le worker (WEBPILOT_BROWSER_SECRET) : au moins 32 caractères ; sans lui le service refuse de démarrer.
+      WEBPILOT_BROWSER_SECRET: ${WEBPILOT_BROWSER_SECRET:-}
+      WEBPILOT_CONTACT: ${WEBPILOT_CONTACT:-}
+      BROWSER_MAX_SESSIONS: ${BROWSER_MAX_SESSIONS:-4}
+      BROWSER_MAX_SECONDS: ${BROWSER_MAX_SECONDS:-3600}
+      BROWSER_MAX_IDLE_SECONDS: ${BROWSER_MAX_IDLE_SECONDS:-600}
+      BROWSER_RENDER_CONCURRENCY: ${BROWSER_RENDER_CONCURRENCY:-2}
+      BROWSER_ALLOWED_PORTS: ${BROWSER_ALLOWED_PORTS:-80,443,8080,8443}
+    ports:
+      # Développement : le site tourne sur l'hôte et appelle http://127.0.0.1:8700 (WEBPILOT_BROWSER_URL).
+      - "127.0.0.1:8700:8700"
+    user: "1001:1001"
+    # Indispensable : sans processus d'init, les processus fils de Chromium restent « zombies » et épuisent pids_limit.
+    init: true
+    read_only: true
+    tmpfs:
+      # Profils temporaires de Chromium (un par session, détruits à la fermeture) et caches.
+      - /tmp:rw,size=${NEXORA_BROWSER_TMP_SIZE:-768m},nosuid,nodev
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    mem_limit: ${NEXORA_BROWSER_MEM_LIMIT:-2g}
+    cpus: ${NEXORA_BROWSER_CPUS:-2}
+    # Chromium crée beaucoup de fils : la limite compte les fils, pas seulement les processus.
+    pids_limit: ${NEXORA_BROWSER_PIDS_LIMIT:-1024}
+
   mailpit:
     image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
     restart: unless-stopped
@@ -227,6 +270,13 @@ networks:
     internal: true
   # Sortie de SearXNG vers les moteurs publics : il est seul dessus.
   webpilot-egress: {}
+  # Service de navigateur : sans route vers l'extérieur. Le site et le worker le rejoignent (réseau externe) :
+  #   networks: { nexora-webpilot-browser: { external: true } }   puis WEBPILOT_BROWSER_URL=http://webpilot-browser:8700
+  webpilot-browser:
+    name: nexora-webpilot-browser
+    internal: true
+  # Sortie du service de navigateur vers le Web public : il est seul dessus.
+  webpilot-browser-egress: {}
 
 volumes:
   db:

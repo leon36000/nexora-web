@@ -204,7 +204,7 @@ describe("rendu par navigateur", () => {
 
 describe("rendu par navigateur : redirection vers un autre hôte", () => {
   const redirectingRenderer = (calls: string[][]): Renderer => ({
-    render: async (url, options) => {
+    render: async (_url, options) => {
       calls.push([...options.approveHosts]);
       if (!options.approveHosts.includes("b.test"))
         throw new RenderBlockedHostError("b.test", "https://b.test/ailleurs");
