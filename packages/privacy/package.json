@@ -1,0 +1,19 @@
+{
+  "name": "@nexora/privacy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./test-support": "./src/test-support.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nexora/db": "workspace:*",
+    "@nexora/log": "workspace:*",
+    "zod": "^4"
+  }
+}

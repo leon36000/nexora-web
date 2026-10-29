@@ -14,6 +14,7 @@ import {
   runCrawlSlice,
 } from "@nexora/webpilot";
 import type { HandlerRegistry } from "../registry.ts";
+import { workerPrivacyRouter } from "./privacy.ts";
 
 /**
  * Tâches WebPilot du worker (contrat §4.2) :
@@ -26,8 +27,8 @@ import type { HandlerRegistry } from "../registry.ts";
 export const PURGE_JOB = "webpilot.purge";
 
 /**
- * Nexora Privacy Router n'est pas encore branché sur le worker : toute sortie est refusée (échec fermé) et l'exploration
- * échoue en `privacy_router_unavailable`. Le branchement remplace cette fonction par l'implémentation de la couche.
+ * Porte qui refuse toute sortie (échec fermé) : l'exploration échoue en `privacy_router_unavailable`. Le worker utilise
+ * `workerPrivacyRouter` (le vrai Privacy Router) ; cette porte ne sert plus qu'aux essais de l'échec fermé.
  */
 export function failClosedGate(): PrivacyGate {
   return {
@@ -74,7 +75,11 @@ export function registerWebpilotHandlers(
   },
 ): HandlerRegistry {
   const crawlDeps = () =>
-    deps.crawl ?? crawlDepsFromEnv(deps.db, deps.privacy ?? failClosedGate());
+    deps.crawl ??
+    crawlDepsFromEnv(
+      deps.db,
+      deps.privacy ?? workerPrivacyRouter(deps.db, deps.log),
+    );
   registry.register(CRAWL_JOB, async (job, ctx) => {
     const taskId = String(job.payload.taskId ?? "");
     const slice = Number(job.payload.slice ?? 0);

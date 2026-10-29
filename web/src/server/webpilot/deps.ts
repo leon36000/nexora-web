@@ -11,6 +11,7 @@ import { getDb } from "../db";
 import { gatewayDeps } from "../gateway/deps";
 import { handleChatCompletions } from "../gateway/proxy";
 import { log } from "../log";
+import { getPrivacyRouter } from "../privacy";
 import {
   type PrivacyRouter,
   PrivacyRouterUnavailableError,
@@ -19,9 +20,8 @@ import { ROBOT_TOKEN, webpilotConfig } from "./config";
 import type { WebpilotDeps } from "./types";
 
 /**
- * Nexora Privacy Router n'est pas encore branché sur WebPilot : tant qu'il ne l'est pas, TOUTE sortie est refusée
- * (échec fermé, 503 `privacy_router_unavailable`). Le branchement remplace cette constante par l'implémentation de
- * `PrivacyRouter` (web/src/server/privacy) ; rien d'autre ne change.
+ * Porte qui refuse toute sortie (échec fermé, 503 `privacy_router_unavailable`) : réservée aux essais de l'échec
+ * fermé. WebPilot utilise le vrai Privacy Router du site (`getPrivacyRouter()`).
  */
 export const failClosedPrivacy: PrivacyRouter = {
   evaluate: async () => {
@@ -85,7 +85,7 @@ export function webpilotDeps(): WebpilotDeps {
     runtime = { key, value: buildRuntime(config) };
   return {
     db: getDb,
-    privacy: failClosedPrivacy,
+    privacy: getPrivacyRouter(),
     log,
     now: () => new Date(),
     requestId: () => `req_${randomUUID().replaceAll("-", "")}`,

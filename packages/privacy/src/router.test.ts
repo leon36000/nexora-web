@@ -2,10 +2,10 @@ import { type Database, eq, privacyEvents, privacyPolicies } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { newOrganization } from "../gateway/test-support";
 import { createPrivacyJournal } from "./events";
 import { createPrivacyRouter } from "./router";
 import { savePolicy } from "./store";
+import { newOrganization } from "./test-support";
 import { type OutboundIntent, PrivacyRouterUnavailableError } from "./types";
 
 let t: TestDatabase;

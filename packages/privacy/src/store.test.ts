@@ -1,7 +1,6 @@
 import { privacyEvents, privacyPolicies } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { newOrganization } from "../gateway/test-support";
 import {
   decisionCounts,
   listPolicyVersions,
@@ -9,6 +8,7 @@ import {
   monthlyReportRows,
   savePolicy,
 } from "./store";
+import { newOrganization } from "./test-support";
 
 let t: TestDatabase;
 beforeAll(async () => {

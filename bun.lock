@@ -52,6 +52,15 @@
       "name": "@nexora/net",
       "version": "0.1.0",
     },
+    "packages/privacy": {
+      "name": "@nexora/privacy",
+      "version": "0.1.0",
+      "dependencies": {
+        "@nexora/db": "workspace:*",
+        "@nexora/log": "workspace:*",
+        "zod": "^4",
+      },
+    },
     "packages/seo": {
       "name": "@nexora/seo",
       "version": "0.1.0",
@@ -91,6 +100,7 @@
         "@nexora/db": "workspace:*",
         "@nexora/log": "workspace:*",
         "@nexora/net": "workspace:*",
+        "@nexora/privacy": "workspace:*",
         "@nexora/seo": "workspace:*",
         "@nexora/vault": "workspace:*",
         "@nexora/vps": "workspace:*",
@@ -129,6 +139,7 @@
         "@nexora/db": "workspace:*",
         "@nexora/log": "workspace:*",
         "@nexora/net": "workspace:*",
+        "@nexora/privacy": "workspace:*",
         "@nexora/seo": "workspace:*",
         "@nexora/vault": "workspace:*",
         "@nexora/vps": "workspace:*",
@@ -420,6 +431,8 @@
     "@nexora/log": ["@nexora/log@workspace:packages/log"],
 
     "@nexora/net": ["@nexora/net@workspace:packages/net"],
+
+    "@nexora/privacy": ["@nexora/privacy@workspace:packages/privacy"],
 
     "@nexora/seo": ["@nexora/seo@workspace:packages/seo"],
 
