@@ -12,7 +12,7 @@ import {
   privacyPolicies,
   sql,
 } from "@nexora/db";
-import { type PrivacyConfigInput, parsePolicyConfig } from "./policy";
+import { type PrivacyConfigInput, parsePolicyConfig } from "./policy.ts";
 
 /**
  * Accès à la base du Privacy Router : politique courante et historique des versions, compteurs de décisions et

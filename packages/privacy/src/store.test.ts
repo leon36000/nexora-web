@@ -7,8 +7,8 @@ import {
   loadCurrentPolicy,
   monthlyReportRows,
   savePolicy,
-} from "./store";
-import { newOrganization } from "./test-support";
+} from "./store.ts";
+import { newOrganization } from "./test-support.ts";
 
 let t: TestDatabase;
 beforeAll(async () => {

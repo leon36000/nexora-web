@@ -1,6 +1,6 @@
 import { PRIVACY_LEVELS, type PrivacyLevel } from "@nexora/db";
 import { z } from "zod";
-import { DETECTOR_CATEGORIES, type DetectorCategory } from "./detectors";
+import { DETECTOR_CATEGORIES, type DetectorCategory } from "./detectors.ts";
 
 /**
  * Politique de confidentialité d'une organisation : schémas zod, politique par défaut et correspondance des

@@ -10,7 +10,8 @@ Interface partagée : `web/src/server/privacy/types.ts` (`PrivacyRouter.evaluate
 |---|---|---|
 | `POST /v1/chat/completions` (modèles et agents hébergés `agent/<slug>`) | Oui, avant l'estimation, la réservation et l'appel amont | le modèle (identifiant public) |
 | `POST /v1/embeddings` | Oui, au même endroit | le modèle |
-| WebPilot, WorkStudio | Prévu par l'interface (`product`, `operation`, `destination.host`) ; pas encore branché | l'hôte |
+| WebPilot (site et worker) | Branché depuis le 29/10/2026 : recherche, lecture, exploration (chaque page), extraction | l'hôte |
+| WorkStudio | Passe par la passerelle `/v1` avec la clé de la personne : mêmes règles que tout appel de modèle | le modèle |
 
 Une requête vers un modèle inexistant reste un 404 : la politique ne révèle rien du catalogue.
 
@@ -121,3 +122,7 @@ La synchronisation LiteLLM envoie à OpenRouter `provider.data_collection = "den
 ## Tests
 
 `web/src/server/privacy/*.test.ts` (détecteurs, politique, routeur et journal sur base d'essai, stockage, API du compte), `web/src/server/gateway/proxy-privacy.test.ts` (intégration `/v1`), `packages/db/src/privacy.test.ts` (schéma sans colonne de contenu), `web/src/components/account/privacy-*.test.ts(x)` (formulaire et rendu fr/en).
+
+## Où vit le code (29/10/2026)
+
+Le cœur (détecteurs, politiques, routeur, stockage, journal) est le paquet `packages/privacy` (`@nexora/privacy`), partagé par le site (cales d'import dans `web/src/server/privacy/`) et le worker (`worker/src/webpilot/privacy.ts`, exploration WebPilot). Le worker tourne sous Node nu : les imports relatifs du paquet portent leur extension `.ts` (un test le vérifie).

@@ -6,7 +6,7 @@ import {
   ibanValid,
   luhnValid,
   maskPersonalData,
-} from "./detectors";
+} from "./detectors.ts";
 
 const masked = (
   text: string,

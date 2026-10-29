@@ -4,8 +4,8 @@ import {
   CATEGORY_TOKEN,
   type DetectorCategory,
   findMatches,
-} from "./detectors";
-import type { PrivacyEventInput, PrivacyJournal } from "./events";
+} from "./detectors.ts";
+import type { PrivacyEventInput, PrivacyJournal } from "./events.ts";
 import {
   DEFAULT_POLICY,
   DEFAULT_POLICY_VERSION,
@@ -14,15 +14,15 @@ import {
   modelMatches,
   parsePolicyConfig,
   resolvePolicy,
-} from "./policy";
-import { loadCurrentPolicy } from "./store";
+} from "./policy.ts";
+import { loadCurrentPolicy } from "./store.ts";
 import {
   type OutboundIntent,
   type PrivacyDecision,
   type PrivacyDenyReason,
   type PrivacyRouter,
   PrivacyRouterUnavailableError,
-} from "./types";
+} from "./types.ts";
 
 /**
  * Nexora Privacy Router (v1). Toute sortie de données passe par `evaluate` AVANT d'avoir lieu.

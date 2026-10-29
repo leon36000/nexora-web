@@ -5,7 +5,7 @@ import {
   modelMatches,
   parsePolicyConfig,
   resolvePolicy,
-} from "./policy";
+} from "./policy.ts";
 
 describe("politique par défaut", () => {
   it("est « standard » : tous les genres masqués, rien de bloqué, pièces jointes permises", () => {
