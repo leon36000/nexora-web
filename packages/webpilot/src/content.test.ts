@@ -186,3 +186,26 @@ describe("contenu non HTML et décodage", () => {
     ).toBe("é");
   });
 });
+
+describe("pages sans <main> ni titre", () => {
+  it("ne laisse pas la déclaration <!doctype> dans le contenu lu", () => {
+    const html =
+      "<!doctype html><html lang=en><head><title>Exemple</title></head><body><p>Un seul paragraphe.</p></body></html>";
+    const out = extractContent(html, "https://exemple.test/", {
+      formats: ["markdown", "text"],
+      onlyMainContent: true,
+    });
+    expect(out.markdown).toBe("Un seul paragraphe.");
+    expect(out.text).toBe("Un seul paragraphe.");
+  });
+
+  it("ne laisse pas non plus un prologue XML ni un commentaire conditionnel", () => {
+    const html =
+      '<?xml version="1.0"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0//EN"><html><body><p>Texte.</p></body></html>';
+    const out = extractContent(html, "https://exemple.test/", {
+      formats: ["markdown"],
+      onlyMainContent: false,
+    });
+    expect(out.markdown).toBe("Texte.");
+  });
+});

@@ -451,11 +451,20 @@ function flattened(html: string): string {
   ).trim();
 }
 
+/** Prologue XML, déclarations `<!DOCTYPE …>` et `<!…>` : l'analyseur les garde comme du texte. */
+function withoutDeclarations(html: string): string {
+  return html
+    .replace(/^\uFEFF/, "")
+    .replace(/<\?xml[\s\S]*?\?>/gi, "")
+    .replace(/<!doctype[^>]*>/gi, "");
+}
+
 export function extractContent(
-  html: string,
+  rawHtml: string,
   pageUrl: string,
   options: ExtractOptions,
 ): PageContent {
+  const html = withoutDeclarations(rawHtml);
   if (nestingExceeds(html))
     return plainContent(flattened(html), options.formats);
   const doc = parse(html, { comment: false });
