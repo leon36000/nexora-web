@@ -167,7 +167,7 @@ export function createBrowserRuntime(deps: {
         if (topLevel) {
           const host = syntax.url.hostname.toLowerCase();
           if (!approved.has(host)) {
-            blocked = { host, url: syntax.url.origin };
+            blocked = { host, url: syntax.url.toString() };
             return route.abort("blockedbyclient");
           }
         }
@@ -218,7 +218,7 @@ export function createBrowserRuntime(deps: {
             else if (!approved.has(syntax.url.hostname.toLowerCase())) {
               blocked = {
                 host: syntax.url.hostname.toLowerCase(),
-                url: syntax.url.origin,
+                url: syntax.url.toString(),
               };
               verdict = "block";
             }

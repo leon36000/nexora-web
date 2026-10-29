@@ -22,13 +22,16 @@ import { badFieldMessage, extractSchema, paramOf } from "./schemas";
 import { hopPrivacy, vetUrl } from "./scrape";
 import type { WebpilotDeps } from "./types";
 
-const MAX_SCHEMA_CHARS = 20_000;
+export const MAX_SCHEMA_CHARS = 20_000;
 
 /**
  * Consigne système : fixe, sans aucun texte de page. Le contenu de la page ne vient JAMAIS ici : il est placé seul
  * dans un message séparé, balisé comme donnée non fiable (contrat §7.5).
  */
-function systemMessage(prompt: string | undefined, schema: unknown): string {
+export function systemMessage(
+  prompt: string | undefined,
+  schema: unknown,
+): string {
   return [
     "Tu extrais des données structurées d'une page web.",
     "Réponds uniquement par un objet JSON valide, sans texte autour ni bloc de code.",
@@ -42,12 +45,12 @@ function systemMessage(prompt: string | undefined, schema: unknown): string {
 }
 
 /** Contenu de page placé seul dans son message ; la balise de fermeture ne peut pas être forgée par la page. */
-function dataMessage(host: string, text: string): string {
+export function dataMessage(host: string, text: string): string {
   const safe = text.replace(/<\/?\s*donnees_page/gi, "<\\donnees_page");
   return `<donnees_page source="${host.replace(/[^a-z0-9.-]/gi, "")}">\n${safe}\n</donnees_page>`;
 }
 
-function parseModelJson(raw: string): unknown {
+export function parseModelJson(raw: string): unknown {
   const text = raw
     .trim()
     .replace(/^```(?:json)?\s*/i, "")
@@ -400,7 +403,7 @@ type ModelCall =
       fatal: boolean;
     };
 
-async function callModel(
+export async function callModel(
   ctx: Ctx,
   deps: WebpilotDeps,
   input: { model: string; system: string; data: string },

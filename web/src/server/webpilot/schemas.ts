@@ -91,3 +91,137 @@ export function badFieldMessage(error: z.ZodError): string {
     ? `Le champ « ${param} » est absent, mal formé ou hors limites.`
     : "Corps de requête invalide.";
 }
+
+// --- sessions de navigateur ---------------------------------------------------------------------------------------
+
+/** Touches permises pour `press` : navigation seulement, jamais un caractère imprimable (le texte passe par `type`). */
+export const PRESS_KEYS = [
+  "Enter",
+  "Tab",
+  "Escape",
+  "Backspace",
+  "Delete",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "Home",
+  "End",
+  "PageUp",
+  "PageDown",
+] as const;
+
+const selector = z.string().min(1).max(500);
+
+export const sessionOpenSchema = z
+  .object({
+    start_url: url.optional(),
+    viewport: z
+      .object({
+        width: z.number().int().min(1),
+        height: z.number().int().min(1),
+      })
+      .strict()
+      .optional(),
+    locale: z
+      .string()
+      .regex(/^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})?$/)
+      .optional(),
+    timezone: z.string().min(1).max(64).optional(),
+    max_minutes: z.number().int().min(1),
+    idle_timeout_s: z.number().int().min(1).optional(),
+    record: z.enum(["none", "screenshot"]).optional(),
+  })
+  .strict();
+
+const wait = z.discriminatedUnion("for", [
+  z
+    .object({ type: z.literal("wait"), for: z.literal("selector"), selector })
+    .strict(),
+  z.object({ type: z.literal("wait"), for: z.literal("idle") }).strict(),
+  z
+    .object({
+      type: z.literal("wait"),
+      for: z.literal("ms"),
+      ms: z.number().int().min(0),
+    })
+    .strict(),
+]);
+
+/** Une action : liste FERMÉE du contrat §3.5. Aucun code fourni par l'appelant (pas d'`evaluate`). */
+const sessionAction = z.union([
+  z
+    .object({
+      type: z.literal("goto"),
+      url,
+      wait_until: z
+        .enum(["domcontentloaded", "load", "networkidle"])
+        .optional(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("click"),
+      selector: selector.optional(),
+      text: selector.optional(),
+      x: z.number().int().min(0).optional(),
+      y: z.number().int().min(0).optional(),
+    })
+    .strict()
+    .refine(
+      (a) =>
+        Number(a.selector !== undefined) +
+          Number(a.text !== undefined) +
+          Number(a.x !== undefined || a.y !== undefined) ===
+          1 && (a.x === undefined) === (a.y === undefined),
+      { message: "click" },
+    ),
+  z
+    .object({
+      type: z.literal("type"),
+      selector,
+      text: z.string(),
+      clear: z.boolean().optional(),
+    })
+    .strict(),
+  z.object({ type: z.literal("press"), key: z.enum(PRESS_KEYS) }).strict(),
+  z
+    .object({
+      type: z.literal("select"),
+      selector,
+      value: z.string().min(1).max(500),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("scroll"),
+      direction: z.enum(["up", "down", "left", "right"]),
+      amount: z.number().int().min(1).max(5000).optional(),
+    })
+    .strict(),
+  wait,
+  z
+    .object({
+      type: z.literal("read"),
+      formats: formats.optional(),
+      only_main_content: z.boolean().optional(),
+    })
+    .strict(),
+  z.object({ type: z.literal("screenshot") }).strict(),
+  z
+    .object({
+      type: z.literal("extract"),
+      schema: z.record(z.string(), z.unknown()).optional(),
+      prompt: z.string().trim().min(1).max(4000).optional(),
+      model: z.string().min(1).max(120).optional(),
+    })
+    .strict()
+    .refine((a) => Boolean(a.schema) || Boolean(a.prompt), {
+      message: "extract",
+    }),
+]);
+
+export const sessionActionsSchema = z
+  .object({ actions: z.array(sessionAction).min(1) })
+  .strict();
+export type SessionAction = z.infer<typeof sessionAction>;

@@ -28,7 +28,10 @@ vi.mock("@/server/webpilot/handlers", () => {
     handleCrawlCreate: handler,
     handleCrawlGet: handler,
     handleCrawlDelete: handler,
-    handleSessions: handler,
+    handleSessionCreate: handler,
+    handleSessionGet: handler,
+    handleSessionActions: handler,
+    handleSessionDelete: handler,
   };
 });
 

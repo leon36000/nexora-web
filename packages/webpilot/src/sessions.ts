@@ -385,7 +385,11 @@ export async function touchSession(
   db: Database,
   sessionId: string,
   now: Date,
-  options: { currentHost?: string | null } = {},
+  options: {
+    currentHost?: string | null;
+    /** Décision de politique la plus stricte vue dans la session (inscrite dans les lignes d'usage suivantes). */
+    privacy?: { decision: string; policyVersion: string };
+  } = {},
 ): Promise<void> {
   await db
     .update(webpilotSessions)
@@ -393,6 +397,12 @@ export async function touchSession(
       lastActivityAt: now,
       ...(options.currentHost !== undefined
         ? { currentHost: options.currentHost }
+        : {}),
+      ...(options.privacy
+        ? {
+            privacyDecision: options.privacy.decision,
+            policyVersion: options.privacy.policyVersion,
+          }
         : {}),
     })
     .where(

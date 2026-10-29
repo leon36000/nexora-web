@@ -243,6 +243,8 @@ export interface WebpilotSessionParams {
   viewport?: { width: number; height: number };
   locale?: string;
   timezone?: string;
+  /** `screenshot` : chaque lot d'actions renvoie aussi une capture de sa dernière étape (jamais conservée). */
+  record?: "screenshot";
 }
 
 /**

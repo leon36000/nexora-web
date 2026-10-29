@@ -19,7 +19,6 @@ import {
   handleExtract,
   handleScrape,
   handleSearch,
-  handleSessions,
 } from "./handlers";
 import {
   allowAllPrivacy,
@@ -1038,34 +1037,6 @@ describe("extract", () => {
       deps,
     );
     expect(none.status).toBe(404);
-  });
-});
-
-describe("sessions de navigateur", () => {
-  it("501 not_implemented en français, après authentification", async () => {
-    const deps = makeDeps(t.db, site());
-    const c = await seedClient(t.db);
-    const res = await handleSessions(
-      post("/v1/webpilot/sessions", c.key, { max_minutes: 5 }),
-      deps,
-    );
-    expect(res.status).toBe(501);
-    const err = (await bodyOf(res)).error;
-    expect(err).toMatchObject({ code: "not_implemented", type: "api_error" });
-    expect(err.message).toContain("bientôt");
-    expect(
-      (await handleSessions(post("/v1/webpilot/sessions", null, {}), deps))
-        .status,
-    ).toBe(401);
-    const noPerm = await seedClient(t.db, { operations: ["scrape"] });
-    expect(
-      (
-        await handleSessions(
-          post("/v1/webpilot/sessions", noPerm.key, {}),
-          deps,
-        )
-      ).status,
-    ).toBe(403);
   });
 });
 
