@@ -7,6 +7,7 @@ import type { AccountDictionary } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { SecurityDictionary } from "@/i18n/security";
 import { authClient } from "@/lib/auth-client";
+import { resumesOAuth } from "@/lib/oauth-resume";
 import { parseOffer, withOffer } from "@/lib/offer-param";
 import { Field, Notice } from "./field";
 import { TwoFactorChallenge } from "./two-factor-challenge";
@@ -49,6 +50,8 @@ export function LoginForm({ lang, t, common, security }: Props) {
         setBusy(false);
         return;
       }
+      // Connexion unique : le client quitte la page pour reprendre l'autorisation de WorkStudio.
+      if (resumesOAuth(data)) return;
       enter();
       return;
     }

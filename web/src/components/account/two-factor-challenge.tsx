@@ -3,6 +3,7 @@ import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { SecurityDictionary } from "@/i18n/security";
 import { authClient } from "@/lib/auth-client";
+import { resumesOAuth } from "@/lib/oauth-resume";
 import { Field, Notice } from "./field";
 
 /**
@@ -28,10 +29,12 @@ export function TwoFactorChallenge({
     setBusy(true);
     setError(null);
     const value = code.replace(/\s+/g, "");
-    const { error: err } = backup
+    const { data, error: err } = backup
       ? await authClient.twoFactor.verifyBackupCode({ code: value })
       : await authClient.twoFactor.verifyTotp({ code: value });
     if (!err) {
+      // Connexion unique : le client quitte la page pour reprendre l'autorisation de WorkStudio.
+      if (resumesOAuth(data)) return;
       onDone();
       return;
     }
