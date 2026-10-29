@@ -11,6 +11,8 @@ WorkStudio ──(4)──► Site /api/auth/oauth2/userinfo                    
 WorkStudio ──(5)──► Site /api/oauth/workstudio-access   Bearer <jeton d'accès>  →  { url, model, key }
 ```
 
+**Panneau client** : la page `/compte/workstudio` montre le branchement sur un modèle (modèle par défaut, clé automatique « WorkStudio (automatique) » avec préfixe et dernier usage, solde du portefeuille ou « accès gratuit », lien vers l'activité de cette clé) et l'aperçu `/compte` résume l'état (« Branché », « Pas encore ouvert », « Abonnement requis »…). Un client ordinaire ouvre WorkStudio avec un abonnement actif ; l'organisation « maison » (administrateur, mode `house`) l'ouvre sans abonnement. La clé se crée à la première ouverture (`/api/oauth/workstudio-access`).
+
 ## 1. Variables d'environnement
 
 ### Côté site (web)
