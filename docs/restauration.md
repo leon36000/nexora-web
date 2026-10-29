@@ -55,3 +55,11 @@ Prérequis du chargement : un taux de change USD→CAD approuvé (module « Mod�
 - **Administration** : le panneau Directus relaie vers le site (`NEXORA_APP_INTERNAL_URL`, `NEXORA_APP_ADMIN_TOKEN`) ; après `cms/scripts/stage-extensions.sh`, `docker restart` du conteneur Directus suffit.
 - **WorkStudio intégré** : variables `WORKSTUDIO_*` du site et `NEXORA_OIDC_*` / `NEXORA_GATEWAY_URL` de WorkStudio : `docs/workstudio-integre.md`.
 - **Compte administrateur gratuit** : créer le compte sur le site, puis passer son organisation en mode « maison » (`bun run --cwd web house:org` pour l'organisation « Nexora — maison », ou `setBillingMode`).
+
+## Données d'essai de la démo à retirer avant la mise en service
+
+La base `app_demo` (démo sur gx10) contient des éléments d'essai posés le 29/10/2026 pour prouver WorkStudio intégré de bout en bout. Ils ne sont pas dans Git. À retirer avant d'ouvrir à de vrais clients :
+
+- le modèle `nexora/essai-dev` (non listé, **prix fictifs**), le fournisseur `dev-litellm`, sa référence du Coffre `litellm.dev-upstream` et le taux de change de développement (1,40) : les remplacer par les vraies clés de fournisseurs et un taux approuvé (panneau Directus, module « Modèles ») ;
+- la variable `WORKSTUDIO_DEFAULT_MODEL=nexora/essai-dev` et `WORKSTUDIO_REQUIRE_SUBSCRIPTION=false` du drop-in `~/.config/systemd/user/nexorasite-demo.service.d/workstudio.conf` (en production : modèle réel, abonnement exigé) ;
+- le compte `essai-sso@nexora.test`, son organisation et son crédit de test de 5 $ (écriture `dev_test_credit`), et les usages de test.
