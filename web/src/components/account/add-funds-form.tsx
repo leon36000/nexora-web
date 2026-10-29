@@ -26,8 +26,9 @@ export function AddFundsForm({
   notes: string[];
 }) {
   const b = t.dashboard.buy;
-  const initial = presetsCents.includes(5000) ? "50" : "";
-  const [amount, setAmount] = useState(initial === "" ? "50" : initial);
+  // Départ à 50 $ si c'est permis, sinon au premier montant proposé (le minimum de la configuration).
+  const start = presetsCents.find((c) => c >= 5000) ?? presetsCents[0] ?? 5000;
+  const [amount, setAmount] = useState(String(start / 100));
   const typed = Number(amount.replace(",", "."));
   const selected = presetsCents.find((c) => c / 100 === typed) ?? null;
   return (
