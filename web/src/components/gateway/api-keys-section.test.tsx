@@ -1,10 +1,17 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import type { ApiKeySummary } from "@/server/gateway/keys";
 import { ApiKeysSection } from "./api-keys-section";
 
+// Le formulaire de création est un composant client qui lit le routeur.
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: () => {} }),
+}));
+
 // Membre : pas de formulaire de création (composant client, hors du rendu statique).
 const member = { role: "member" } as const;
+const owner = { role: "owner" } as const;
 
 const key = (over: Partial<ApiKeySummary>): ApiKeySummary => ({
   id: "11111111-1111-4111-8111-111111111111",
@@ -46,5 +53,50 @@ describe("clés d'API : permission WebPilot", () => {
     );
     expect(en).toContain(">No<");
     expect(en).toContain("Search, Crawl a site");
+  });
+});
+
+describe("clés d'API : expiration, limites et modèles permis", () => {
+  const limited = key({
+    name: "Limitée",
+    rpmLimit: 30,
+    tpmLimit: 50_000,
+    allowedModels: ["nexora/glm-5.3", "nexora/kimi-k3.1-pro"],
+    expiresAt: new Date("2026-12-31T12:00:00Z"),
+  });
+
+  it("montre l'expiration, les limites propres et le nombre de modèles (fr-CA)", () => {
+    const html = renderToStaticMarkup(
+      <ApiKeysSection lang="fr" {...member} keys={[limited, key({})]} />,
+    );
+    expect(html).toContain("Expiration");
+    expect(html).toContain("2 modèles permis");
+    expect(html).toContain("30 requêtes/min");
+    // Une clé sans réglage : limites par défaut, tous les modèles, aucune expiration.
+    expect(html).toContain("Limites par défaut");
+    expect(html).toContain("Tous les modèles publics");
+  });
+
+  it("en-CA", () => {
+    const html = renderToStaticMarkup(
+      <ApiKeysSection lang="en" {...member} keys={[limited]} />,
+    );
+    expect(html).toContain("2 models allowed");
+    expect(html).toContain("30 requests/min");
+  });
+
+  it("le propriétaire voit les champs RPM, TPM et la liste des modèles à cocher", () => {
+    const html = renderToStaticMarkup(
+      <ApiKeysSection
+        lang="fr"
+        {...owner}
+        keys={[]}
+        models={[{ id: "nexora/glm-5.3", name: "GLM 5.3" }]}
+      />,
+    );
+    expect(html).toContain('name="rpmLimit"');
+    expect(html).toContain('name="tpmLimit"');
+    expect(html).toContain('name="allowedModel"');
+    expect(html).toContain("nexora/glm-5.3");
   });
 });

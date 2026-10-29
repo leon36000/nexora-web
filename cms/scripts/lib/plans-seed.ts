@@ -6,8 +6,13 @@
  * PROPOSÉES par l'étude : à valider avec le produit avant de publier.
  *
  * Une ligne mensuelle et une ligne annuelle par offre (même `family`). Ligne annuelle : le prix est le total de
- * l'année (12 mois au tarif annuel par mois) et les crédits inclus sont ceux de douze mois, accordés à la
- * facture annuelle et valables jusqu'à la fin de la période.
+ * l'année (12 mois au tarif annuel par mois) et les crédits inclus sont ceux de douze mois, versés un douzième par
+ * mois (chaque douzième expire à la fin de son mois).
+ *
+ * Aucun essai gratuit (`trial_days` = 0) : l'accès gratuit est réservé à l'organisation « maison » (l'administrateur).
+ *
+ * Crédits inclus : « 5 millions de jetons par mois » du modèle par défaut de WorkStudio, en crédits (voir
+ * `INCLUDED_CREDITS_CENTS`). Même forfait pour les trois offres (décision provisoire, docs/facturation-workstudio.md).
  */
 export interface DraftPlan {
   code: string;
@@ -37,12 +42,24 @@ interface Offer {
   en: { name: string; description: string; features: string[] };
 }
 
+/**
+ * Valeur de 5 M de jetons (70 % d'entrée, 30 % de sortie) du modèle par défaut `nexora/deepseek-v4.1-flash-1017`,
+ * en cents CAD, arrondie vers le haut :
+ *  - tarif amont de pointe 0,30 $ US (entrée) et 1,20 $ US (sortie) par million (feuille de départ du catalogue) ;
+ *  - taux de référence 1 USD = 1,4025 CAD (Banque du Canada, 26/10/2026) et marge de 10 % : vente à 0,462825 $
+ *    (entrée) et 1,8513 $ (sortie) par million ;
+ *  - 5 M × (0,7 × 0,462825 + 0,3 × 1,8513) = 4,396838 $, soit 440 cents.
+ * Le taux approuvé en production fait foi pour la facturation ; ce montant est la valeur du crédit mensuel. Le test
+ * de ce fichier et celui de `web/src/server/billing/included-tokens.test.ts` refont le calcul chacun de leur côté.
+ */
+export const INCLUDED_CREDITS_CENTS = 440;
+
 const OFFERS: Offer[] = [
   {
     family: "workstudio-demarrage",
     monthly: 39,
     yearlyPerMonth: 33,
-    credits: 10,
+    credits: INCLUDED_CREDITS_CENTS,
     fr: {
       name: "WorkStudio Démarrage",
       description: "Pour lancer vos premiers agents et automatisations.",
@@ -70,7 +87,7 @@ const OFFERS: Offer[] = [
     family: "workstudio-equipe",
     monthly: 129,
     yearlyPerMonth: 109,
-    credits: 40,
+    credits: INCLUDED_CREDITS_CENTS,
     fr: {
       name: "WorkStudio Équipe",
       description: "Pour une équipe qui automatise au quotidien.",
@@ -102,7 +119,7 @@ const OFFERS: Offer[] = [
     family: "workstudio-affaires",
     monthly: 349,
     yearlyPerMonth: 299,
-    credits: 150,
+    credits: INCLUDED_CREDITS_CENTS,
     fr: {
       name: "WorkStudio Affaires",
       description:
@@ -146,8 +163,8 @@ export const DRAFT_PLANS: DraftPlan[] = OFFERS.flatMap((o, i) => [
     status: "draft" as const,
     interval: "month" as const,
     suggested_price_cents: o.monthly * 100,
-    included_credits_cents: o.credits * 100,
-    trial_days: 14,
+    included_credits_cents: o.credits,
+    trial_days: 0,
     trial_card: "default" as const,
     sort: (i + 1) * 10,
     translations: [
@@ -162,8 +179,8 @@ export const DRAFT_PLANS: DraftPlan[] = OFFERS.flatMap((o, i) => [
     status: "draft" as const,
     interval: "year" as const,
     suggested_price_cents: o.yearlyPerMonth * 12 * 100,
-    included_credits_cents: o.credits * 12 * 100,
-    trial_days: 14,
+    included_credits_cents: o.credits * 12,
+    trial_days: 0,
     trial_card: "default" as const,
     sort: (i + 1) * 10 + 1,
     translations: [

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { applyCustomRange } from "@/components/account/activity-range";
 import { ActivityView } from "@/components/account/activity-view";
 import { isFreeAccess } from "@/components/account/panel-logic";
 import { PanelLoading } from "@/components/account/panel-ui";
@@ -76,7 +77,7 @@ async function ActivityContent({
   const session = await requirePanelSession(lang);
   const t = getAccountDictionary(lang);
   const db = getDb();
-  const params = toParams(await searchParams);
+  const params = applyCustomRange(toParams(await searchParams));
   const [data, keys, mode] = await Promise.all([
     loadActivityPage(db, session.organizationId, params, new Date()),
     listApiKeys(db, session.organizationId),

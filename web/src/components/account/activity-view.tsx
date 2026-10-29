@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ButtonLink, buttonClasses } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { type AccountDictionary, fmt, formatDate } from "@/i18n/account";
@@ -10,6 +11,7 @@ import {
 } from "@/server/gateway/activity";
 import type { ActivityPageData } from "@/server/gateway/activity-page";
 import { activityQuery } from "./activity-links";
+import { torontoDay } from "./activity-range";
 import { INPUT_CLASS, Notice } from "./field";
 import {
   formatDateTime,
@@ -155,6 +157,42 @@ function FiltersForm({
           ))}
         </select>
       </div>
+      <div>
+        <label htmlFor="activity-from-day" className={labelClass}>
+          {f.fromDay}
+        </label>
+        <input
+          id="activity-from-day"
+          name="fromDay"
+          type="date"
+          defaultValue={data.period === "custom" ? torontoDay(window.from) : ""}
+          aria-describedby="activity-days-hint"
+          className={INPUT_CLASS}
+        />
+      </div>
+      <div>
+        <label htmlFor="activity-to-day" className={labelClass}>
+          {f.toDay}
+        </label>
+        <input
+          id="activity-to-day"
+          name="toDay"
+          type="date"
+          defaultValue={
+            data.period === "custom"
+              ? torontoDay(new Date(window.to.getTime() - 1))
+              : ""
+          }
+          aria-describedby="activity-days-hint"
+          className={INPUT_CLASS}
+        />
+      </div>
+      <p
+        id="activity-days-hint"
+        className="text-small text-fg-muted sm:col-span-2"
+      >
+        {f.daysHint}
+      </p>
       <div className="flex flex-wrap items-center gap-3 sm:col-span-2 xl:col-span-4">
         <button type="submit" className={buttonClasses({ variant: "primary" })}>
           {f.apply}
@@ -523,6 +561,16 @@ function LogTable({
                 <time dateTime={r.createdAt.toISOString()}>
                   {formatDateTime(r.createdAt)}
                 </time>
+                <Link
+                  href={`${localizePath(lang, "/compte/activite/requete")}?id=${r.id}`}
+                  prefetch={false}
+                  aria-label={fmt(t.panel.activity.detail.seeDetailLabel, {
+                    time: formatDateTime(r.createdAt),
+                  })}
+                  className="mt-1 block underline decoration-1 underline-offset-4 hover:decoration-2"
+                >
+                  {t.panel.activity.detail.seeDetail}
+                </Link>
               </td>
               <td className={`${td} break-words`}>
                 <span className="font-mono">{r.model}</span>

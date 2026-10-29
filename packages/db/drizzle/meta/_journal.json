@@ -169,6 +169,13 @@
       "when": 1793270239784,
       "tag": "0023_webpilot_api_web",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1793270943110,
+      "tag": "0024_s14_alerte_solde_bas",
+      "breakpoints": true
     }
   ]
 }

@@ -224,9 +224,7 @@ describe("vérification du courriel et connexion", () => {
     const ok = await call("/sign-in/email", {
       body: { email, password: PASSWORD },
     });
-    const names = ok.headers
-      .getSetCookie()
-      .map((c) => c.split("=")[0] ?? "");
+    const names = ok.headers.getSetCookie().map((c) => c.split("=")[0] ?? "");
     expect(names.some((n) => n === "nexora-site.session_token")).toBe(true);
     expect(names.some((n) => n.startsWith("better-auth."))).toBe(false);
   });

@@ -12,6 +12,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { loadOverview } from "./activity-overview";
 import { setBillingMode } from "./house";
 import { createApiKey, revokeApiKey } from "./keys";
+import { WORKSTUDIO_KEY_NAME } from "./provision";
 import { newOrganization } from "./test-support";
 
 const NOW = new Date("2026-10-29T15:00:00.000Z");
@@ -81,6 +82,18 @@ describe("aperçu du panneau", () => {
       hasApiKey: false,
       hasModelRequest: false,
       hasVps: false,
+      activeKeys: 0,
+      workstudioKeyActive: false,
+      month: {
+        requests: 0,
+        errors: 0,
+        promptTokens: 0,
+        completionTokens: 0,
+        cachedTokens: 0,
+        costMicro: 0n,
+        valueMicro: 0n,
+        avgLatencyMs: null,
+      },
       last30: {
         requests: 0,
         errors: 0,
@@ -142,6 +155,49 @@ describe("aperçu du panneau", () => {
     await event(b, kb, { at: "2026-10-28T12:00:00Z", cost: 7_777 });
     const o = await loadOverview(t.db, a, NOW);
     expect(o.last30).toMatchObject({ requests: 2, costMicro: 500n });
+  });
+
+  it("consommation du mois : depuis le 1er du mois à Montréal, pas avant, pas une autre organisation", async () => {
+    const a = await newOrganization(t.db);
+    const b = await newOrganization(t.db);
+    const ka = (await createApiKey(t.db, { organizationId: a, name: "k" }))
+      .record.id;
+    const kb = (await createApiKey(t.db, { organizationId: b, name: "k" }))
+      .record.id;
+    // NOW = 29 octobre 2026. Le 1er octobre 00 h 30 à Montréal (UTC-4) = 04 h 30 UTC : dans le mois.
+    await event(a, ka, { at: "2026-10-01T04:30:00Z", cost: 100 });
+    // 30 septembre 23 h 30 à Montréal = 1er octobre 03 h 30 UTC : encore septembre.
+    await event(a, ka, { at: "2026-10-01T03:30:00Z", cost: 5_000 });
+    await event(a, ka, { at: "2026-10-28T12:00:00Z", cost: 200 });
+    await event(b, kb, { at: "2026-10-28T12:00:00Z", cost: 7_777 });
+    const o = await loadOverview(t.db, a, NOW);
+    expect(o.month).toMatchObject({ requests: 2, costMicro: 300n });
+    expect(o.last30.requests).toBe(3);
+  });
+
+  it("clés actives : ni révoquées ni expirées, et celle de WorkStudio est repérée à part", async () => {
+    const a = await newOrganization(t.db);
+    await createApiKey(t.db, { organizationId: a, name: "Production" });
+    const revoked = await createApiKey(t.db, {
+      organizationId: a,
+      name: "Ancienne",
+    });
+    await revokeApiKey(t.db, a, revoked.record.id, NOW);
+    await createApiKey(t.db, {
+      organizationId: a,
+      name: "Expirée",
+      expiresAt: new Date("2026-10-01T00:00:00Z"),
+    });
+    let o = await loadOverview(t.db, a, NOW);
+    expect(o.activeKeys).toBe(1);
+    expect(o.workstudioKeyActive).toBe(false);
+    await createApiKey(t.db, { organizationId: a, name: WORKSTUDIO_KEY_NAME });
+    o = await loadOverview(t.db, a, NOW);
+    expect(o.activeKeys).toBe(2);
+    expect(o.workstudioKeyActive).toBe(true);
+    // La clé de WorkStudio d'une autre organisation ne compte pas.
+    const b = await newOrganization(t.db);
+    expect((await loadOverview(t.db, b, NOW)).workstudioKeyActive).toBe(false);
   });
 
   it("le mode « maison » est lu de la table de facturation", async () => {

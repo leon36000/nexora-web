@@ -464,3 +464,25 @@ export const apiRateLimits = pgTable("api_rate_limits", {
   windowStart: ts("window_start").notNull(),
   count: integer("count").notNull(),
 });
+
+/**
+ * Alerte de solde bas d'une organisation (une ligne par organisation) : quand le solde disponible passe sous le
+ * seuil, les propriétaires reçoivent UN courriel ; `last_alerted_at` marque l'alerte envoyée et n'est effacé que
+ * lorsque le solde remonte au-dessus du seuil (pas de courriel répété tant que le solde reste bas).
+ */
+export const balanceAlerts = pgTable(
+  "balance_alerts",
+  {
+    organizationId: text("organization_id")
+      .primaryKey()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    enabled: boolean("enabled").notNull().default(true),
+    thresholdMicro: micro("threshold_micro").notNull(),
+    lastAlertedAt: ts("last_alerted_at"),
+    updatedBy: text("updated_by"),
+    updatedAt: ts("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    check("balance_alerts_threshold_check", sql`${t.thresholdMicro} > 0`),
+  ],
+);

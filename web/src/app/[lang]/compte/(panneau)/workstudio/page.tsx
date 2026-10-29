@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
 import {
+  isFreeAccess,
   workstudioInstanceOrigin,
   workstudioView,
 } from "@/components/account/panel-logic";
@@ -12,12 +13,15 @@ import { getAccountDictionary } from "@/i18n/account";
 import { isLang, type Lang } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
 import { SITE_NAME } from "@/lib/site";
+import { DEFAULT_WORKSTUDIO_MODEL } from "@/server/auth/workstudio-access-deps";
 import { loadDashboard } from "@/server/billing/dashboard";
 import { getDb } from "@/server/db";
 import {
   getWorkstudioOrigin,
   listUsedAgents,
 } from "@/server/gateway/activity-workstudio";
+import { billingModeOf } from "@/server/gateway/house";
+import { loadWorkstudioLink } from "@/server/gateway/workstudio-link";
 import { requirePanelSession } from "../_lib/session";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -56,11 +60,14 @@ export default async function WorkstudioPage() {
 async function WorkstudioContent({ lang }: { lang: Lang }) {
   const session = await requirePanelSession(lang);
   const db = getDb();
-  const [dashboard, agents, origin] = await Promise.all([
+  const [dashboard, agents, origin, mode, link] = await Promise.all([
     loadDashboard(db, session.organizationId, { entryLimit: 0 }),
     listUsedAgents(db, session.organizationId),
     getWorkstudioOrigin(db),
+    billingModeOf(db, session.organizationId),
+    loadWorkstudioLink(db, session.organizationId),
   ]);
+  const free = isFreeAccess(mode);
   return (
     <WorkstudioPanel
       lang={lang}
@@ -71,8 +78,18 @@ async function WorkstudioContent({ lang }: { lang: Lang }) {
           process.env.WORKSTUDIO_PUBLIC_URL,
           origin,
         ),
+        free,
       })}
       agents={agents}
+      connection={{
+        model:
+          process.env.WORKSTUDIO_DEFAULT_MODEL?.trim() ||
+          DEFAULT_WORKSTUDIO_MODEL,
+        link,
+        free,
+        availableMicro: dashboard.account.availableMicro,
+        owner: session.role === "owner",
+      }}
     />
   );
 }

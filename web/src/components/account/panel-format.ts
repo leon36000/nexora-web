@@ -64,3 +64,15 @@ export function formatDayLabel(lang: Lang, day: string): string {
     timeZone: "UTC",
   }).format(new Date(Date.UTC(y, m - 1, d)));
 }
+
+/** Jetons en forme courte : « 5 M », « 1,2 M », « 850 k » ; entiers sous 1 000 (nombre exact, jamais arrondi à 0). */
+export function formatTokensCompact(lang: Lang, tokens: number): string {
+  const nbsp = "\u00a0";
+  const n = (value: number, digits: number) =>
+    new Intl.NumberFormat(locale(lang), {
+      maximumFractionDigits: digits,
+    }).format(value);
+  if (tokens >= 1_000_000) return `${n(tokens / 1_000_000, 1)}${nbsp}M`;
+  if (tokens >= 1_000) return `${n(tokens / 1_000, 0)}${nbsp}k`;
+  return n(tokens, 0);
+}

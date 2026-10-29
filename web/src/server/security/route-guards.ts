@@ -138,6 +138,29 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     ],
   },
   {
+    route: "api/account/balance-alert",
+    kind: "session",
+    why: "Alerte de solde bas : propriétaire de l'organisation de la session, origine contrôlée, corps strict",
+    probes: [
+      {
+        label: "sans session ni origine",
+        method: "PUT",
+        path: "/api/account/balance-alert",
+        headers: JSON_H,
+        body: "{}",
+        expect: [401, 403],
+      },
+      {
+        label: "origine étrangère",
+        method: "PUT",
+        path: "/api/account/balance-alert",
+        headers: { ...JSON_H, origin: "https://evil.example" },
+        body: "{}",
+        expect: [401, 403],
+      },
+    ],
+  },
+  {
     route: "api/account/api-keys/[id]",
     kind: "session",
     why: "Révocation : clé de l'organisation de la session seulement (404 sinon)",

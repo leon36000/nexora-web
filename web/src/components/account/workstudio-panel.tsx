@@ -1,10 +1,11 @@
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { type AccountDictionary, formatDate } from "@/i18n/account";
+import { type AccountDictionary, fmt, formatDate } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { formatInteger } from "@/i18n/gateway";
 import type { UsedAgent } from "@/server/gateway/activity-workstudio";
-import { formatMicroCadExact } from "./panel-format";
+import type { WorkstudioLink } from "@/server/gateway/workstudio-link";
+import { formatDateTime, formatMicroCadExact } from "./panel-format";
 import type { WorkstudioView } from "./panel-logic";
 import { PanelHeading, ScrollRegion, SectionTitle, TD, TH } from "./panel-ui";
 
@@ -19,11 +20,20 @@ export function WorkstudioPanel({
   t,
   view,
   agents,
+  connection,
 }: {
   lang: Lang;
   t: AccountDictionary;
   view: WorkstudioView;
   agents: UsedAgent[];
+  /** Branchement sur un modèle : modèle par défaut, clé automatique, facturation au portefeuille. */
+  connection?: {
+    model: string;
+    link: WorkstudioLink | null;
+    free: boolean;
+    availableMicro: bigint;
+    owner: boolean;
+  };
 }) {
   const w = t.panel.workstudio;
   return (
@@ -94,6 +104,67 @@ export function WorkstudioPanel({
           )}
         </Card>
       </div>
+
+      {connection ? (
+        <Card as="section" aria-labelledby="ws-link-title">
+          <SectionTitle id="ws-link-title">{w.link.title}</SectionTitle>
+          <p className="mt-3 text-body font-medium text-fg">
+            {connection.link ? w.link.connected : w.link.notYet}
+          </p>
+          {connection.link ? null : (
+            <p className="mt-1 text-small text-fg-muted">{w.link.notYetText}</p>
+          )}
+          <ul className="mt-4 space-y-1 text-small text-fg">
+            <li>
+              <span className="font-mono break-all">
+                {fmt(w.link.model, { model: connection.model })}
+              </span>
+            </li>
+            {connection.link ? (
+              <>
+                <li className="font-mono">
+                  {fmt(w.link.key, { prefix: connection.link.prefix })}
+                </li>
+                <li className="text-fg-muted">
+                  {connection.link.lastUsedAt
+                    ? fmt(w.link.keyUsed, {
+                        date: formatDateTime(connection.link.lastUsedAt),
+                      })
+                    : w.link.keyNever}
+                </li>
+              </>
+            ) : null}
+            <li>
+              {connection.free
+                ? w.link.billingFree
+                : `${w.link.billing} ${fmt(w.link.balance, {
+                    amount: formatMicroCadExact(
+                      lang,
+                      connection.availableMicro,
+                    ),
+                  })}`}
+            </li>
+          </ul>
+          <div className="mt-5 flex flex-wrap items-center gap-4">
+            {connection.free || !connection.owner ? null : (
+              <ButtonLink
+                href={`${localizePath(lang, "/compte/facturation")}#ajouter-des-fonds`}
+                variant="secondary"
+              >
+                {w.link.addFunds}
+              </ButtonLink>
+            )}
+            {connection.link ? (
+              <ButtonLink
+                href={`${localizePath(lang, "/compte/activite")}?key=${connection.link.id}`}
+                variant="link"
+              >
+                {w.link.seeActivity}
+              </ButtonLink>
+            ) : null}
+          </div>
+        </Card>
+      ) : null}
 
       <section aria-labelledby="ws-agents-title">
         <div className="flex flex-wrap items-center justify-between gap-4">

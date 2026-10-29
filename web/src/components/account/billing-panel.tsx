@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   type AccountDictionary,
@@ -6,50 +6,23 @@ import {
   formatCad,
   formatDate,
 } from "@/i18n/account";
-import type { Lang } from "@/i18n/config";
+import { type Lang, localizePath } from "@/i18n/config";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { SubscriptionPlan } from "@/server/billing/plans";
+import type { Wallet } from "@/server/billing/wallet";
 import type { BillingConfig } from "@/server/ledger/config";
-import { INPUT_CLASS, Notice } from "./field";
+import { AddFundsForm } from "./add-funds-form";
+import { BalanceAlertForm } from "./balance-alert-form";
+import { HiddenLang, PromoField } from "./billing-fields";
+import { Notice } from "./field";
+import { IncludedMeter } from "./included-meter";
 import { formatMicroCadExact } from "./panel-format";
+import { presetAmountsCents } from "./panel-logic";
 import { PanelHeading, ScrollRegion, SectionTitle, TD, TH } from "./panel-ui";
 
 type Role = "owner" | "member";
 
 const NEGATIVE = "text-accent-text";
-
-/** Champ facultatif « code promo » : le serveur le valide ; le navigateur n'envoie que le texte saisi. */
-export function PromoField({
-  t,
-  id,
-}: {
-  lang?: Lang;
-  t: AccountDictionary;
-  id: string;
-}) {
-  return (
-    <div className="mb-3 max-w-48">
-      <label htmlFor={id} className="block text-small font-medium text-fg">
-        {t.promo.label}
-      </label>
-      <input
-        id={id}
-        name="promo"
-        type="text"
-        maxLength={60}
-        autoComplete="off"
-        autoCapitalize="characters"
-        spellCheck={false}
-        placeholder={t.promo.placeholder}
-        className={INPUT_CLASS}
-      />
-    </div>
-  );
-}
-
-export function HiddenLang({ lang }: { lang: Lang }) {
-  return <input type="hidden" name="lang" value={lang} />;
-}
 
 /**
  * Offre choisie sur la page Tarifs (`/compte?offre=…`) : publiée, vendable et pas déjà en cours. Affichée sur
@@ -114,6 +87,18 @@ export interface BillingPanelProps {
     liveMode: boolean;
     fee: { percent: number; minCents: number } | null;
   };
+  /** Lots de crédits et crédits inclus de la période. */
+  wallet: Wallet;
+  /** Organisation « maison » : accès gratuit, pas de solde à gérer. */
+  free: boolean;
+  /** Alerte de solde bas actuelle (seuil en dollars, texte), ou null. */
+  alert: {
+    enabled: boolean;
+    thresholdCad: string;
+    thresholdMicro: bigint;
+  } | null;
+  /** Le journal affiche toutes les écritures chargées (et non les dernières). */
+  historyAll: boolean;
 }
 
 /**
@@ -129,6 +114,10 @@ export function BillingPanel({
   config,
   plans,
   payment,
+  wallet,
+  free,
+  alert,
+  historyAll,
 }: BillingPanelProps) {
   const d = t.dashboard;
   const { account } = data;
@@ -149,96 +138,207 @@ export function BillingPanel({
         lead={t.panel.billing.lead}
       />
 
-      {/* Solde et achat de crédits */}
-      <div className="grid gap-6 xl:grid-cols-2">
-        <Card as="section" aria-labelledby="balance-title">
-          <SectionTitle id="balance-title">{d.balance.title}</SectionTitle>
-          <p className="mt-1 text-small text-fg-muted">{d.balance.available}</p>
-          <p
-            className={`mt-1 font-display text-h2 tabular-nums ${account.blocked ? NEGATIVE : "text-fg"}`}
-            data-testid="balance"
-          >
-            {formatMicroCadExact(lang, account.availableMicro)}
-          </p>
-          {account.heldMicro > 0n ? (
-            <p className="mt-2 text-small text-fg-muted">
-              {fmt(d.balance.held, {
-                amount: formatMicroCadExact(lang, account.heldMicro),
-              })}
-            </p>
-          ) : null}
-          {account.blocked ? (
-            <div className="mt-5">
-              <Notice tone="error">
-                <strong>{d.balance.blockedTitle}</strong>{" "}
-                {d.balance.blockedText}
-              </Notice>
-            </div>
-          ) : null}
-          <p className="mt-5 text-small text-fg-muted">
-            {fmt(d.balance.expiryNote, { months: config.creditExpiryMonths })}
+      {free ? (
+        <Card as="section" aria-labelledby="free-title">
+          <SectionTitle id="free-title">
+            {t.panel.billing.free.title}
+          </SectionTitle>
+          <p className="mt-3 max-w-2xl text-body text-fg-muted">
+            {t.panel.billing.free.text}
           </p>
         </Card>
-
-        <Card
-          as="section"
-          id="ajouter-des-fonds"
-          aria-labelledby="buy-title"
-          className="scroll-mt-28"
-        >
-          <SectionTitle id="buy-title">{d.buy.title}</SectionTitle>
-          <p className="mt-2 text-small text-fg-muted">{d.buy.lead}</p>
-          {isOwner ? (
-            <form
-              method="post"
-              action="/api/billing/checkout/credits"
-              className="mt-5 space-y-4"
-            >
-              <HiddenLang lang={lang} />
-              <div>
-                <label
-                  htmlFor="amount"
-                  className="block text-small font-medium text-fg"
-                >
-                  {d.buy.amount}
-                </label>
-                <input
-                  id="amount"
-                  name="amount"
-                  type="text"
-                  inputMode="decimal"
-                  pattern="[0-9]+([.,][0-9]{1,2})?"
-                  defaultValue="50"
-                  required
-                  aria-describedby="amount-hint"
-                  className={`${INPUT_CLASS} max-w-48`}
-                />
-                <p id="amount-hint" className="mt-1.5 text-small text-fg-muted">
-                  {fmt(d.buy.limits, { min, max })}
-                </p>
-              </div>
-              <PromoField t={t} id="promo-credits" />
-              <Button type="submit" arrow>
-                {d.buy.submit}
-              </Button>
-              <p className="text-small text-fg-muted">{d.buy.taxNote}</p>
-              {payment.fee ? (
-                <p className="text-small text-fg-muted">
-                  {fmt(d.buy.feeNote, {
-                    percent: payment.fee.percent,
-                    min: formatCad(lang, payment.fee.minCents),
+      ) : (
+        <>
+          {/* Solde et fonds */}
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Card as="section" aria-labelledby="balance-title">
+              <SectionTitle id="balance-title">{d.balance.title}</SectionTitle>
+              <p className="mt-1 text-small text-fg-muted">
+                {d.balance.available}
+              </p>
+              <p
+                className={`mt-1 font-display text-h2 tabular-nums ${account.blocked ? NEGATIVE : "text-fg"}`}
+                data-testid="balance"
+              >
+                {formatMicroCadExact(lang, account.availableMicro)}
+              </p>
+              {account.heldMicro > 0n ? (
+                <p className="mt-2 text-small text-fg-muted">
+                  {fmt(d.balance.held, {
+                    amount: formatMicroCadExact(lang, account.heldMicro),
                   })}
                 </p>
               ) : null}
-              {payment.liveMode ? null : (
-                <p className="text-small text-fg-muted">{d.buy.testNote}</p>
+              {account.blocked ? (
+                <div className="mt-5">
+                  <Notice tone="error">
+                    <strong>{d.balance.blockedTitle}</strong>{" "}
+                    {d.balance.blockedText}
+                  </Notice>
+                </div>
+              ) : null}
+              <p className="mt-5 text-small text-fg-muted">
+                {fmt(d.balance.expiryNote, {
+                  months: config.creditExpiryMonths,
+                })}
+              </p>
+            </Card>
+
+            <Card
+              as="section"
+              id="ajouter-des-fonds"
+              aria-labelledby="buy-title"
+              className="scroll-mt-28"
+            >
+              <SectionTitle id="buy-title">{d.buy.title}</SectionTitle>
+              <p className="mt-2 text-small text-fg-muted">{d.buy.lead}</p>
+              {isOwner ? (
+                <AddFundsForm
+                  lang={lang}
+                  t={t}
+                  presetsCents={presetAmountsCents(
+                    config.minPurchaseCents,
+                    config.maxPurchaseCents,
+                  )}
+                  limitsText={fmt(d.buy.limits, { min, max })}
+                  notes={[
+                    d.buy.taxNote,
+                    ...(payment.fee
+                      ? [
+                          fmt(d.buy.feeNote, {
+                            percent: payment.fee.percent,
+                            min: formatCad(lang, payment.fee.minCents),
+                          }),
+                        ]
+                      : []),
+                    ...(payment.liveMode ? [] : [d.buy.testNote]),
+                  ]}
+                />
+              ) : (
+                <p className="mt-5 text-small text-fg-muted">
+                  {d.buy.ownerOnly}
+                </p>
               )}
-            </form>
-          ) : (
-            <p className="mt-5 text-small text-fg-muted">{d.buy.ownerOnly}</p>
-          )}
-        </Card>
-      </div>
+            </Card>
+          </div>
+
+          {/* Crédits inclus et lots */}
+          <div className="grid gap-6 xl:grid-cols-2">
+            <IncludedMeter lang={lang} t={t} included={wallet.included} />
+            <Card as="section" aria-labelledby="auto-title">
+              <div className="flex flex-wrap items-center gap-3">
+                <SectionTitle id="auto-title">
+                  {t.panel.billing.autoTopUp.title}
+                </SectionTitle>
+                <span className="rounded-md border border-line-strong px-2 py-0.5 font-mono text-label uppercase text-fg-muted">
+                  {t.panel.billing.autoTopUp.badge}
+                </span>
+              </div>
+              <p className="mt-3 text-small text-fg-muted">
+                {t.panel.billing.autoTopUp.text}
+              </p>
+            </Card>
+          </div>
+
+          <Card as="section" aria-labelledby="alert-title">
+            <SectionTitle id="alert-title">
+              {t.panel.billing.alert.title}
+            </SectionTitle>
+            <p className="mt-2 max-w-2xl text-small text-fg-muted">
+              {t.panel.billing.alert.lead}
+            </p>
+            <p className="mt-3 text-small text-fg" data-testid="alert-status">
+              {alert?.enabled
+                ? fmt(t.panel.billing.alert.statusOn, {
+                    amount: formatMicroCadExact(lang, alert.thresholdMicro),
+                  })
+                : t.panel.billing.alert.statusOff}
+            </p>
+            {isOwner ? (
+              <BalanceAlertForm
+                t={t.panel.billing.alert}
+                initialEnabled={alert?.enabled ?? false}
+                initialThresholdCad={alert?.thresholdCad ?? ""}
+              />
+            ) : (
+              <p className="mt-4 text-small text-fg-muted">
+                {t.panel.billing.alert.ownerOnly}
+              </p>
+            )}
+          </Card>
+
+          <section aria-labelledby="lots-title">
+            <SectionTitle id="lots-title">
+              {t.panel.billing.lots.title}
+            </SectionTitle>
+            <p className="mt-2 max-w-2xl text-small text-fg-muted">
+              {t.panel.billing.lots.lead}
+            </p>
+            {wallet.lots.filter((l) => l.remainingMicro > 0n).length === 0 ? (
+              <p className="mt-4 text-body text-fg-muted">
+                {t.panel.billing.lots.empty}
+              </p>
+            ) : (
+              <div className="mt-5">
+                <ScrollRegion label={t.panel.billing.lots.caption}>
+                  <table className="w-full min-w-[34rem] border-collapse text-left text-small">
+                    <caption className="sr-only">
+                      {t.panel.billing.lots.caption}
+                    </caption>
+                    <thead>
+                      <tr className="border-b border-line text-fg-muted">
+                        <th scope="col" className={TH}>
+                          {t.panel.billing.lots.source}
+                        </th>
+                        <th scope="col" className={`${TH} text-right`}>
+                          {t.panel.billing.lots.amount}
+                        </th>
+                        <th scope="col" className={`${TH} text-right`}>
+                          {t.panel.billing.lots.remaining}
+                        </th>
+                        <th scope="col" className={TH}>
+                          {t.panel.billing.lots.expires}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {wallet.lots
+                        .filter((l) => l.remainingMicro > 0n)
+                        .map((l) => (
+                          <tr
+                            key={l.id}
+                            className="border-b border-line last:border-0"
+                          >
+                            <td className={TD}>
+                              {(d.history.sources as Record<string, string>)[
+                                l.source
+                              ] ?? l.source}
+                            </td>
+                            <td
+                              className={`whitespace-nowrap ${TD} text-right tabular-nums`}
+                            >
+                              {formatMicroCadExact(lang, l.amountMicro)}
+                            </td>
+                            <td
+                              className={`whitespace-nowrap ${TD} text-right tabular-nums`}
+                            >
+                              {formatMicroCadExact(lang, l.remainingMicro)}
+                            </td>
+                            <td className={`whitespace-nowrap ${TD}`}>
+                              {l.expiresAt
+                                ? formatDate(lang, l.expiresAt)
+                                : t.panel.billing.lots.never}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </ScrollRegion>
+              </div>
+            )}
+          </section>
+        </>
+      )}
 
       {/* Abonnements */}
       <section aria-labelledby="subs-title">
@@ -454,6 +554,28 @@ export function BillingPanel({
                 </tbody>
               </table>
             </ScrollRegion>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <p className="text-small text-fg-muted" role="status">
+                {fmt(t.panel.billing.history.shown, {
+                  count: data.entries.length,
+                })}
+              </p>
+              {historyAll ? (
+                <ButtonLink
+                  href={localizePath(lang, "/compte/facturation")}
+                  variant="secondary"
+                >
+                  {t.panel.billing.history.less}
+                </ButtonLink>
+              ) : (
+                <ButtonLink
+                  href={`${localizePath(lang, "/compte/facturation")}?historique=tout#history-title`}
+                  variant="secondary"
+                >
+                  {t.panel.billing.history.more}
+                </ButtonLink>
+              )}
+            </div>
           </div>
         )}
       </section>

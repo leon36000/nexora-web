@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { getAccountDictionary } from "@/i18n/account";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { ActivityRow, BreakdownRow } from "@/server/gateway/activity";
+import type { ActivityDetail } from "@/server/gateway/activity-detail";
 import type { OverviewData } from "@/server/gateway/activity-overview";
 import type { ActivityPageData } from "@/server/gateway/activity-page";
 import type { PublicModel } from "@/server/gateway/public";
@@ -10,8 +11,9 @@ import type { PublicCatalog } from "@/server/gateway/read";
 import { ActivityView } from "./activity-view";
 import { ModelsPanel } from "./models-panel";
 import { Overview } from "./overview";
-import type { workstudioView } from "./panel-logic";
+import type { WorkstudioView, workstudioView } from "./panel-logic";
 import { PanelNav } from "./panel-nav";
+import { RequestDetail } from "./request-detail";
 import { WorkstudioPanel } from "./workstudio-panel";
 
 const dashboard: DashboardData = {
@@ -44,6 +46,9 @@ const overview = (over: Partial<OverviewData> = {}): OverviewData => ({
   hasApiKey: false,
   hasModelRequest: false,
   hasVps: false,
+  activeKeys: 0,
+  workstudioKeyActive: false,
+  month: summary,
   last30: summary,
   ...over,
 });
@@ -54,6 +59,7 @@ const renderOverview = (
   role: "owner" | "member" = "owner",
   hasWorkstudio = false,
   data: DashboardData = dashboard,
+  workstudio: WorkstudioView["state"] = "no_subscription",
 ) =>
   renderToStaticMarkup(
     <Overview
@@ -63,6 +69,8 @@ const renderOverview = (
       dashboard={data}
       overview={o}
       hasWorkstudio={hasWorkstudio}
+      wallet={{ lots: [], included: null }}
+      workstudio={workstudio}
       flash={null}
     />,
   );
@@ -111,6 +119,60 @@ describe("aperçu : portefeuille", () => {
       },
     });
     expect(html).toContain("Compte bloqué");
+  });
+});
+
+describe("aperçu : où j'en suis", () => {
+  it("consommation du mois, clés actives et état de WorkStudio, en français", () => {
+    const html = renderOverview(
+      "fr",
+      overview({
+        activeKeys: 2,
+        workstudioKeyActive: true,
+        month: { ...summary, costMicro: 1_234_000n },
+      }),
+      "owner",
+      true,
+      dashboard,
+      "ready",
+    );
+    expect(html).toContain("Où j’en suis");
+    expect(html).toContain("Consommation du mois");
+    expect(html).toContain("1,23");
+    expect(html).toContain("Clés actives");
+    expect(html).toContain("Branché");
+    expect(html).toContain('href="/compte/workstudio"');
+    expect(html).toContain('href="/compte/modeles"');
+  });
+
+  it("WorkStudio : pas encore ouvert, abonnement requis, suspendu ou en préparation", () => {
+    const text = (state: WorkstudioView["state"], keyActive: boolean) =>
+      renderOverview(
+        "fr",
+        overview({ workstudioKeyActive: keyActive }),
+        "owner",
+        false,
+        dashboard,
+        state,
+      );
+    expect(text("ready", false)).toContain("Pas encore ouvert");
+    expect(text("no_subscription", false)).toContain("Abonnement requis");
+    expect(text("suspended", false)).toContain("Abonnement suspendu");
+    expect(text("pending", false)).toContain("En préparation");
+  });
+
+  it("anglais, et la maison voit la valeur offerte du mois, pas une dépense", () => {
+    const en = renderOverview("en", overview());
+    expect(en).toContain("Where I stand");
+    expect(en).toContain("Usage this month");
+    const house = renderOverview(
+      "fr",
+      overview({
+        billingMode: "house",
+        month: { ...summary, costMicro: 0n, valueMicro: 9_000_000n },
+      }),
+    );
+    expect(house).toContain("9,00");
   });
 });
 
@@ -495,7 +557,7 @@ describe("navigation du panneau", () => {
       "WorkStudio et agents",
       "Cloud et VPS",
       "Nexora Apps",
-      "Facturation",
+      "Portefeuille",
       "Sécurité",
     ])
       expect(html).toContain(text);
@@ -573,5 +635,155 @@ describe("page Modèles : identifiant à copier et lien vers la fiche", () => {
     const html = render(catalog([], false));
     expect(html).toContain("n’est pas disponible");
     expect(html).not.toContain("Copier l’identifiant");
+  });
+});
+
+describe("WorkStudio : branchement sur un modèle", () => {
+  const t = getAccountDictionary("fr");
+  const base = {
+    model: "nexora/deepseek-v4.1-flash-1017",
+    free: false,
+    availableMicro: 12_345_678n,
+    owner: true,
+  };
+  const html = (
+    connection: Parameters<typeof WorkstudioPanel>[0]["connection"],
+  ) =>
+    renderToStaticMarkup(
+      <WorkstudioPanel
+        lang="fr"
+        t={t}
+        view={{ state: "ready", url: "https://studio.nexora.example" }}
+        agents={[]}
+        connection={connection}
+      />,
+    );
+
+  it("clé automatique active : modèle par défaut, préfixe (jamais la clé), solde et lien vers l'activité de cette clé", () => {
+    const out = html({
+      ...base,
+      link: {
+        id: "11111111-1111-4111-8111-111111111111",
+        prefix: "nxk_abcdefg",
+        createdAt: new Date("2026-10-01T12:00:00Z"),
+        lastUsedAt: new Date("2026-10-28T12:00:00Z"),
+      },
+    });
+    expect(out).toContain("Branché : WorkStudio utilise votre portefeuille.");
+    expect(out).toContain("nexora/deepseek-v4.1-flash-1017");
+    expect(out).toContain("nxk_abcdefg…");
+    expect(out).toContain("12,3457");
+    expect(out).toContain(
+      'href="/compte/activite?key=11111111-1111-4111-8111-111111111111"',
+    );
+    expect(out).toContain("Ajouter des fonds");
+  });
+
+  it("pas encore de clé : le dit, rien à régler", () => {
+    const out = html({ ...base, link: null });
+    expect(out).toContain("Pas encore branché");
+    expect(out).toContain("rien à régler");
+  });
+
+  it("organisation maison : aucun jeton facturé, pas de bouton d'ajout de fonds", () => {
+    const out = html({ ...base, link: null, free: true });
+    expect(out).toContain("aucun jeton n’est facturé");
+    expect(out).not.toContain("Ajouter des fonds");
+  });
+});
+
+describe("page Activité : détail d'une requête", () => {
+  it("le journal lie chaque requête à son détail (adresse localisée)", () => {
+    const fr = renderActivity(pageData());
+    expect(fr).toContain(
+      'href="/compte/activite/requete?id=11111111-1111-4111-8111-111111111111"',
+    );
+    const en = renderActivity(pageData(), "en");
+    expect(en).toContain(
+      'href="/en/compte/activite/requete?id=11111111-1111-4111-8111-111111111111"',
+    );
+  });
+
+  const detail: ActivityDetail = {
+    id: "11111111-1111-4111-8111-111111111111",
+    requestId: "req_abc123",
+    createdAt: new Date("2026-10-28T12:00:00Z"),
+    model: "nexora/deepseek-v4.1-flash-1017",
+    endpoint: "chat.completions",
+    apiKeyId: "22222222-2222-4222-8222-222222222222",
+    apiKeyName: "Production",
+    apiKeyPrefix: "nxk_abcdefg",
+    status: "ok",
+    httpStatus: 200,
+    errorCode: null,
+    stream: true,
+    promptTokens: 1200,
+    completionTokens: 300,
+    cachedTokens: 200,
+    cacheWriteTokens: 0,
+    reasoningTokens: 40,
+    costMicro: 9100n,
+    valueMicro: 9100n,
+    billed: true,
+    priceInputMicro: 462_825n,
+    priceOutputMicro: 1_851_300n,
+    priceCacheMicro: 9000n,
+    priceCacheWriteMicro: null,
+    priceWindow: "creux",
+    latencyMs: 850,
+    privacyDecision: "mask",
+    destinationHost: null,
+  };
+  const render = (d: ActivityDetail | null, lang: "fr" | "en" = "fr") =>
+    renderToStaticMarkup(
+      <RequestDetail lang={lang} t={getAccountDictionary(lang)} detail={d} />,
+    );
+
+  it("montre jetons, prix appliqués, coût, délai et décision de confidentialité ; jamais de contenu", () => {
+    const html = render(detail);
+    expect(html).toContain("req_abc123");
+    expect(html).toContain("nexora/deepseek-v4.1-flash-1017");
+    expect(html).toContain("Flux continu");
+    expect(html).toContain("0,0091");
+    expect(html).toContain("0,4628");
+    expect(html).toContain("Renseignements évidents masqués");
+    expect(html).toContain("Plage horaire : creux");
+    expect(html).toContain("n’est jamais conservé");
+    expect(html).not.toMatch(/prompt|completion\b/i);
+  });
+
+  it("organisation maison : la valeur offerte, pas un coût facturé", () => {
+    const html = render({ ...detail, billed: false, costMicro: 0n });
+    expect(html).toContain("Valeur au prix public (offerte)");
+    expect(html).not.toContain("Coût facturé");
+  });
+
+  it("introuvable : message clair et retour à l'activité ; anglais", () => {
+    const html = render(null);
+    expect(html).toContain("introuvable");
+    expect(html).toContain('href="/compte/activite"');
+    expect(render(detail, "en")).toContain("Streamed");
+  });
+});
+
+describe("page Activité : période par dates", () => {
+  it("le formulaire offre « Du » et « Au », vides pour une période prédéfinie", () => {
+    const html = renderActivity(pageData());
+    expect(html).toContain('name="fromDay"');
+    expect(html).toContain('name="toDay"');
+    expect(html).not.toMatch(/name="fromDay"[^>]*value="2/);
+  });
+  it("période personnalisée : les dates actuelles (jours de Montréal, fin incluse) sont reprises", () => {
+    const html = renderActivity(
+      pageData({
+        period: "custom",
+        criteria: {
+          from: new Date("2026-10-01T04:00:00Z"),
+          to: new Date("2026-10-08T04:00:00Z"),
+        },
+      }),
+    );
+    expect(html).toMatch(/name="fromDay"[^>]*value="2026-10-01"/);
+    expect(html).toMatch(/name="toDay"[^>]*value="2026-10-07"/);
   });
 });

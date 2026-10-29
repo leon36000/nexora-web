@@ -5,13 +5,13 @@ export const pricingEnCA: PricingDictionary = {
   meta: {
     title: "Pricing | Nexora AI",
     description:
-      "Nexora AI plans in Canadian dollars, before tax: monthly and yearly prices, free trial, included credits. Also: VPS and pay-as-you-go API credits.",
+      "Nexora AI plans in Canadian dollars, before tax: monthly and yearly prices, included credits. Also: VPS and pay-as-you-go API credits.",
   },
   nav: { home: "Home", pricing: "Pricing", breadcrumb: "Breadcrumb" },
   hero: {
     label: "Pricing",
     title: "Clear pricing, in Canadian dollars.",
-    lead: "Pick a plan, try it, then pay securely. Prices are shown before tax; GST and QST are calculated at checkout.",
+    lead: "Pick a plan, then pay securely. Prices are shown before tax; GST and QST are calculated at checkout.",
   },
   offers: {
     title: "Subscription plans",
@@ -35,6 +35,8 @@ export const pricingEnCA: PricingDictionary = {
   },
   taxes:
     "All prices are in Canadian dollars, before tax. GST and QST are calculated by our payment provider from your billing address and added to the price. Included credits are granted every paid period.",
+  includedNote:
+    "Included credits are worth about 5 million tokens per month of WorkStudio's default model. A more expensive model uses them up faster; once they run out, tokens are billed at the catalog price from your wallet.",
   trialNote:
     "During a trial, nothing is charged until the trial ends; you can cancel before then at no cost.",
   states: {

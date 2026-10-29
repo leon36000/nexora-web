@@ -161,6 +161,17 @@ describe("planificateur", () => {
     expect(new Set(grants.map((j) => j.idempotencyKey)).size).toBe(2);
   });
 
+  it("alertes de solde bas : déclarées une fois par demi-heure", async () => {
+    await tickScheduler(at("2026-10-27T14:00:00Z"));
+    await tickScheduler(at("2026-10-27T14:20:00Z")); // même demi-heure
+    await tickScheduler(at("2026-10-27T14:35:00Z")); // demi-heure suivante
+    const alerts = (await t.db.select().from(jobs)).filter(
+      (j) => j.type === "billing.balance-alerts",
+    );
+    expect(alerts).toHaveLength(2);
+    expect(new Set(alerts.map((j) => j.idempotencyKey)).size).toBe(2);
+  });
+
   it("grand livre : l'expiration n'est pas déclarée avant 2 h (heure locale)", async () => {
     await tickScheduler(at("2026-10-27T05:00:00Z")); // 01:00 locale
     expect(
