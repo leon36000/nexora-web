@@ -199,7 +199,10 @@ describe("passer un modèle en service", () => {
   test("modifie la disponibilité, puis met en ligne une nouvelle version du catalogue", async () => {
     const bodies: unknown[] = [];
     const { call, calls } = fake({
-      "PATCH models/:id": (b) => (bodies.push(b), ok()),
+      "PATCH models/:id": (b) => {
+        bodies.push(b);
+        return ok();
+      },
       "POST versions": () => draftOk(),
       "POST versions/:id/approve": () => ok(),
       "POST versions/:id/publish": () => ok(),
