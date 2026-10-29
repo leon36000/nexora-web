@@ -12,6 +12,7 @@ import {
   availableAppRoutes,
 } from "./app-routes";
 import { buildCmsJsonLd } from "./cms-jsonld";
+import { organizationProfile } from "./entity";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
@@ -26,7 +27,10 @@ import { ogPath } from "./og";
 import { ogSafeTitle, resolveOgTarget, stripBrand } from "./og-target";
 import { pageSchemaType } from "./page-schema";
 import {
+  AI_BOTS,
+  aiTrainingPolicy,
   buildRobots,
+  PRIVATE_PATHS,
   SEARCH_BOTS,
   TRAINING_BOTS,
   USER_ACTION_BOTS,
@@ -399,31 +403,103 @@ describe("robots", () => {
     }
   });
 
-  it("production : recherche autorisée, entraînement refusé par défaut, sitemap annoncé", () => {
+  const PRIVATE = ["/api/", "/v1/", "/compte", "/en/compte"];
+  const byAgentOf = (r: ReturnType<typeof buildRobots>) =>
+    new Map(rules(r).map((x) => [x.userAgent as string, x]));
+
+  it("production, politique par défaut : tout le public est autorisé pour chaque robot d'IA (recherche, réponse, entraînement), jamais les chemins privés", () => {
     const r = buildRobots({
       siteUrl: SITE,
       env: env({ SITE_ENV: "production" }),
     });
-    const byAgent = new Map(rules(r).map((x) => [x.userAgent as string, x]));
-    for (const bot of SEARCH_BOTS) expect(byAgent.get(bot)?.allow).toBe("/");
-    for (const bot of TRAINING_BOTS)
-      expect(byAgent.get(bot)).toEqual({ userAgent: bot, disallow: "/" });
-    // les robots déclenchés par une personne ne sont pas listés : robots.txt n'a pas d'effet sur eux
-    for (const bot of USER_ACTION_BOTS) expect(byAgent.has(bot)).toBe(false);
-    expect(byAgent.get("*")?.disallow).toEqual(
-      expect.arrayContaining(["/api/", "/v1/", "/compte", "/en/compte"]),
-    );
+    const byAgent = byAgentOf(r);
+    for (const bot of [
+      ...SEARCH_BOTS,
+      ...USER_ACTION_BOTS,
+      ...TRAINING_BOTS,
+      "*",
+    ]) {
+      const rule = byAgent.get(bot);
+      expect(rule?.allow, bot).toBe("/");
+      // un groupe nommé remplace le groupe « * » : chaque groupe répète donc les chemins privés
+      expect(rule?.disallow, bot).toEqual(expect.arrayContaining(PRIVATE));
+    }
     expect(r.sitemap).toBe(`${SITE}/sitemap.xml`);
   });
 
-  it("ROBOTS_AI_TRAINING=allow autorise les robots d'entraînement (sauf chemins privés)", () => {
+  it("les robots demandés par le fondateur ont chacun un groupe explicite", () => {
+    const byAgent = byAgentOf(
+      buildRobots({ siteUrl: SITE, env: env({ SITE_ENV: "production" }) }),
+    );
+    for (const bot of [
+      "GPTBot",
+      "OAI-SearchBot",
+      "ChatGPT-User",
+      "ClaudeBot",
+      "Claude-SearchBot",
+      "Claude-User",
+      "PerplexityBot",
+      "Perplexity-User",
+      "Google-Extended",
+      "Googlebot",
+      "Bingbot",
+      "CCBot",
+    ])
+      expect(byAgent.has(bot), bot).toBe(true);
+  });
+
+  it("ROBOTS_AI_TRAINING=disallow refuse seulement les robots d'entraînement ; recherche et réponse restent autorisées", () => {
     const r = buildRobots({
       siteUrl: SITE,
-      env: env({ SITE_ENV: "production", ROBOTS_AI_TRAINING: "allow" }),
+      env: env({ SITE_ENV: "production", ROBOTS_AI_TRAINING: "disallow" }),
     });
-    const gpt = rules(r).find((x) => x.userAgent === "GPTBot");
-    expect(gpt?.allow).toBe("/");
-    expect(gpt?.disallow).toContain("/api/");
+    const byAgent = byAgentOf(r);
+    for (const bot of TRAINING_BOTS)
+      expect(byAgent.get(bot), bot).toEqual({ userAgent: bot, disallow: "/" });
+    for (const bot of [...SEARCH_BOTS, ...USER_ACTION_BOTS])
+      expect(byAgent.get(bot)?.allow, bot).toBe("/");
+    expect(byAgent.get("*")?.allow).toBe("/");
+  });
+
+  it("toute autre valeur de ROBOTS_AI_TRAINING (allow, vide, inconnue) garde la politique par défaut : autorisé", () => {
+    for (const value of ["allow", "", "oui", "DISALLOW"]) {
+      expect(
+        aiTrainingPolicy(
+          env({ SITE_ENV: "production", ROBOTS_AI_TRAINING: value }),
+        ),
+        value,
+      ).toBe("allow");
+    }
+    expect(aiTrainingPolicy(env({}))).toBe("allow");
+    expect(aiTrainingPolicy(env({ ROBOTS_AI_TRAINING: "disallow" }))).toBe(
+      "disallow",
+    );
+  });
+
+  it("le registre des robots : noms uniques, jetons valides, une seule catégorie, opérateur et source documentés", () => {
+    const names = AI_BOTS.map((b) => b.name);
+    expect(new Set(names).size).toBe(names.length);
+    for (const b of AI_BOTS) {
+      expect(b.name, b.name).toMatch(/^[A-Za-z0-9._-]+$/);
+      expect(["search", "training", "user-action"]).toContain(b.kind);
+      expect(b.operator.length, b.name).toBeGreaterThan(1);
+      expect(b.purpose.length, b.name).toBeGreaterThan(10);
+      expect(b.docUrl, b.name).toMatch(/^https:\/\//);
+    }
+    // les listes exportées sont dérivées du registre : aucune dérive possible
+    expect([...SEARCH_BOTS]).toEqual(
+      AI_BOTS.filter((b) => b.kind === "search").map((b) => b.name),
+    );
+    expect([...TRAINING_BOTS]).toEqual(
+      AI_BOTS.filter((b) => b.kind === "training").map((b) => b.name),
+    );
+    expect([...USER_ACTION_BOTS]).toEqual(
+      AI_BOTS.filter((b) => b.kind === "user-action").map((b) => b.name),
+    );
+  });
+
+  it("les chemins privés sont exportés et couvrent le compte, l'API et la passerelle dans les deux langues", () => {
+    expect([...PRIVATE_PATHS]).toEqual(PRIVATE);
   });
 });
 
@@ -483,9 +559,14 @@ describe("JSON-LD", () => {
       siteName: "Nexora",
       siteUrl: SITE,
       dates: null,
+      profile: organizationProfile(SITE, {}),
     });
     expect(out).toContainEqual(
-      organizationJsonLd({ name: "Nexora", url: SITE }),
+      organizationJsonLd({
+        name: "Nexora",
+        url: SITE,
+        profile: organizationProfile(SITE, {}),
+      }),
     );
     const site = out.find(
       (x) => (x as { "@type": string })["@type"] === "WebSite",
@@ -507,8 +588,8 @@ describe("JSON-LD", () => {
       dates: null,
     });
     const types = out.map((x) => (x as { "@type": string })["@type"]);
-    expect(types).toEqual(["BreadcrumbList", "Service", "FAQPage"]);
-    expect(out[1]).toMatchObject({
+    expect(types).toEqual(["BreadcrumbList", "WebPage", "Service", "FAQPage"]);
+    expect(out[2]).toMatchObject({
       name: "OPSYS-AI",
       description: "Installé chez vous ou hébergé au Québec.",
       url: `${SITE}/opsys-ai`,
@@ -525,7 +606,9 @@ describe("JSON-LD", () => {
       siteUrl: SITE,
       dates: null,
     });
-    expect(out[1]).toMatchObject({ name: "Un système d'IA pour vos équipes." });
+    expect(
+      out.find((x) => (x as { "@type": string })["@type"] === "Service"),
+    ).toMatchObject({ name: "Un système d'IA pour vos équipes." });
     expect(checkJsonLdConformity(out, visibleOf(p))).toEqual([]);
   });
 
@@ -537,7 +620,10 @@ describe("JSON-LD", () => {
       siteUrl: SITE,
       dates: null,
     });
-    expect(out[1]).not.toHaveProperty("description");
+    for (const type of ["Service", "WebPage"])
+      expect(
+        out.find((x) => (x as { "@type": string })["@type"] === type),
+      ).not.toHaveProperty("description");
   });
 
   it("Article pour blog/ et articles/ avec les dates réelles de Directus", () => {
@@ -704,17 +790,18 @@ describe("llms.txt", () => {
     appRoutes: [route("/contact", "contact")],
     routeMeta: (r: AppRoute, lang: "fr" | "en") => r.meta(lang),
   };
-  it("liste les pages publiées par langue, sans noindex, sans page absente d'une langue", () => {
+  it("liste les pages publiées par langue et par thème, sans noindex, sans page absente d'une langue (le détail est dans geo.test.ts)", () => {
     const txt = buildLlmsTxt(input);
     expect(txt.startsWith("# Nexora\n\n> Résumé fr.\n")).toBe(true);
-    expect(txt).toContain("## Français (fr-CA)");
-    expect(txt).toContain("## English (en-CA)");
+    expect(txt).toContain("Summary en.");
+    expect(txt).toContain("## Produits et API (fr-CA)");
+    expect(txt).toContain("## Products and API (en-CA)");
     expect(txt).toContain(`- [OPSYS-AI](${SITE}/opsys-ai): Description fr.`);
     expect(txt).toContain(`- [OPSYS-AI](${SITE}/en/opsys-ai): Description en.`);
     expect(txt).toContain(`(${SITE}/souverainete)`);
     expect(txt).not.toContain("/en/souverainete");
     expect(txt).toContain(`- [/contact fr](${SITE}/contact): desc /contact`);
-    expect(txt.match(/opsys-ai\)/g)).toHaveLength(2); // la page noindex n'y est pas
+    expect(txt.match(/opsys-ai\):/g)).toHaveLength(2); // la page noindex n'y est pas
     expect(txt.endsWith("\n")).toBe(true);
   });
 });

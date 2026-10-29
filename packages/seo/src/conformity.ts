@@ -10,6 +10,7 @@ export const KNOWN_JSONLD_TYPES = [
   "Organization",
   "WebSite",
   "WebPage",
+  "AboutPage",
   "BreadcrumbList",
   "Service",
   "Product",

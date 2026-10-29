@@ -1,4 +1,5 @@
 import type {
+  AboutPage,
   Article,
   BreadcrumbList,
   Offer,
@@ -6,10 +7,12 @@ import type {
   Product,
   Service,
   SoftwareApplication,
+  WebPage,
   WebSite,
   WithContext,
 } from "schema-dts";
 import { HTML_LANG, type Lang } from "@/i18n/config";
+import type { OrgProfile } from "./entity";
 
 /**
  * Données structurées générées PAR CODE (jamais par un modèle, jamais écrites à la main) à partir de ce que la page
@@ -21,14 +24,63 @@ const CONTEXT = "https://schema.org" as const;
 const clean = (s: string | null | undefined) =>
   (s ?? "").replace(/\s+/g, " ").trim();
 
+/** Identifiant stable de l'entreprise : le même sur toutes les pages (cohérence d'entité). */
+export const orgId = (siteUrl: string) => `${siteUrl}/#organization`;
+export const siteId = (siteUrl: string) => `${siteUrl}/#website`;
+
+/**
+ * Organization complète (accueil). `profile` apporte le logo, les profils publics (`sameAs`) et la région ;
+ * `description` seulement si elle s'affiche sur la page. Sans profil : nom, adresse et identifiant seulement.
+ */
 export function organizationJsonLd(input: {
   name: string;
   url: string;
+  description?: string | null;
+  profile?: OrgProfile;
 }): WithContext<Organization> {
+  const description = clean(input.description);
+  const { logo, sameAs, address } = input.profile ?? {
+    logo: null,
+    sameAs: [],
+    address: null,
+  };
   return {
     "@context": CONTEXT,
     "@type": "Organization",
-    "@id": `${input.url}/#organization`,
+    "@id": orgId(input.url),
+    name: input.name,
+    url: input.url,
+    ...(description ? { description } : {}),
+    ...(logo
+      ? {
+          // `width` et `height` de schema.org attendent une distance ou une quantité, pas un nombre nu : on n'émet que l'adresse.
+          logo: { "@type": "ImageObject", url: logo.url },
+        }
+      : {}),
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+    ...(address
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            addressRegion: address.addressRegion,
+            addressCountry: address.addressCountry,
+          },
+        }
+      : {}),
+  };
+}
+
+/**
+ * Référence à l'entreprise depuis une autre donnée structurée (éditeur, fournisseur, auteur) : même `@id`, même nom,
+ * même adresse, d'une page à l'autre. Le nom et l'adresse sont répétés pour que la page se suffise à elle-même.
+ */
+export function organizationRef(input: {
+  name: string;
+  url: string;
+}): Organization {
+  return {
+    "@type": "Organization",
+    "@id": orgId(input.url),
     name: input.name,
     url: input.url,
   };
@@ -43,11 +95,11 @@ export function websiteJsonLd(input: {
   return {
     "@context": CONTEXT,
     "@type": "WebSite",
-    "@id": `${input.url}/#website`,
+    "@id": siteId(input.url),
     name: input.name,
     url: input.url,
     inLanguage: HTML_LANG[input.lang],
-    publisher: { "@id": `${input.url}/#organization` },
+    publisher: { "@id": orgId(input.url) },
   };
 }
 
@@ -86,11 +138,10 @@ export function serviceJsonLd(input: {
     name,
     ...(description ? { description } : {}),
     url: input.url,
-    provider: {
-      "@type": "Organization",
+    provider: organizationRef({
       name: input.providerName,
       url: input.organizationUrl,
-    },
+    }),
   };
 }
 
@@ -161,6 +212,8 @@ export function softwareApplicationJsonLd(input: {
   url: string;
   category: "BusinessApplication" | "DeveloperApplication";
   offers: readonly PriceOffer[];
+  /** Éditeur du logiciel : l'entreprise (même `@id` que partout). */
+  publisher?: { name: string; url: string };
 }): WithContext<SoftwareApplication> | null {
   const name = clean(input.name);
   if (!name) return null;
@@ -173,6 +226,7 @@ export function softwareApplicationJsonLd(input: {
     ...(description ? { description } : {}),
     url: input.url,
     applicationCategory: input.category,
+    ...(input.publisher ? { publisher: organizationRef(input.publisher) } : {}),
     ...(offers.length > 0 ? { offers } : {}),
   };
 }
@@ -184,6 +238,8 @@ export function articleJsonLd(input: {
   url: string;
   lang: Lang;
   publisherName: string;
+  /** Adresse du site : rattache l'auteur et l'éditeur à la même Organization (`@id`). */
+  publisherUrl?: string;
   datePublished: string | null;
   dateModified: string | null;
   image: string | null;
@@ -191,6 +247,9 @@ export function articleJsonLd(input: {
   const headline = clean(input.headline);
   if (!headline) return null;
   const description = clean(input.description);
+  const publisher: Organization = input.publisherUrl
+    ? organizationRef({ name: input.publisherName, url: input.publisherUrl })
+    : { "@type": "Organization", name: input.publisherName };
   return {
     "@context": CONTEXT,
     "@type": "Article",
@@ -201,7 +260,45 @@ export function articleJsonLd(input: {
     ...(input.datePublished ? { datePublished: input.datePublished } : {}),
     ...(input.dateModified ? { dateModified: input.dateModified } : {}),
     ...(input.image ? { image: input.image } : {}),
-    author: { "@type": "Organization", name: input.publisherName },
-    publisher: { "@type": "Organization", name: input.publisherName },
+    author: publisher,
+    publisher,
+  };
+}
+
+/**
+ * WebPage (ou AboutPage) : identifie la page, sa langue, son site et sa dernière modification RÉELLE (`date_updated` de
+ * Directus ; absente = omise, jamais « maintenant »). Le nom et la description sont ceux qui s'affichent.
+ */
+export function webPageJsonLd(input: {
+  name: string | null;
+  description: string | null;
+  url: string;
+  lang: Lang;
+  siteUrl: string;
+  siteName?: string;
+  dateModified: string | null;
+  kind: "WebPage" | "AboutPage";
+}): WithContext<WebPage | AboutPage> | null {
+  const name = clean(input.name);
+  if (!name) return null;
+  const description = clean(input.description);
+  return {
+    "@context": CONTEXT,
+    "@type": input.kind,
+    "@id": `${input.url}#webpage`,
+    url: input.url,
+    name,
+    ...(description ? { description } : {}),
+    inLanguage: HTML_LANG[input.lang],
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": siteId(input.siteUrl),
+      url: input.siteUrl,
+      ...(input.siteName ? { name: input.siteName } : {}),
+    },
+    ...(input.kind === "AboutPage"
+      ? { about: { "@id": orgId(input.siteUrl) } }
+      : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
   };
 }
