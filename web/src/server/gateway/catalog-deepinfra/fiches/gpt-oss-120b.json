@@ -1,0 +1,47 @@
+{
+  "deepinfraId": "openai/gpt-oss-120b",
+  "slug": "gpt-oss-120b",
+  "name": "gpt-oss-120b",
+  "descriptionFr": "Modèle ouvert d'OpenAI de 117 Md de paramètres (5,1 Md actifs), conçu pour le raisonnement, les agents et la production générale sur un seul GPU de 80 Go. Appels de fonctions natifs ; licence Apache 2.0.",
+  "descriptionEn": "Open-weight OpenAI model with 117B parameters (5.1B active), built for reasoning, agents and general production use on a single 80 GB GPU. Native function calling; Apache 2.0 license.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "OpenAI",
+    "family": "gpt-oss",
+    "releasedAt": "2025-08-05",
+    "knowledgeCutoff": "2024-06",
+    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://huggingface.co/openai/gpt-oss-120b/blob/main/LICENSE" },
+    "parameters": { "totalB": 117, "activeB": 5.1 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["raisonnement", "agents", "code", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/openai/gpt-oss-120b",
+    "benchmarks": [
+      { "name": "AIME 2025 (no tools)", "score": 92.5, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Mathématiques" },
+      { "name": "GPQA Diamond (no tools)", "score": 80.1, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Raisonnement" },
+      { "name": "HLE (no tools)", "score": 14.9, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Connaissances" },
+      { "name": "MMLU", "score": 90.0, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Connaissances" },
+      { "name": "HealthBench", "score": 57.6, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Connaissances" },
+      { "name": "SWE-Bench Verified", "score": 62.4, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Code" },
+      { "name": "Tau-Bench Retail", "score": 67.8, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Agents" },
+      { "name": "Tau-Bench Airline", "score": 49.2, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Agents" }
+    ],
+    "sources": [
+      { "label": "Carte du modèle gpt-oss-120b & gpt-oss-20b, OpenAI (arXiv 2508.10925, tableau 3, réglage « high »)", "url": "https://arxiv.org/html/2508.10925", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, fiche du modèle openai/gpt-oss-120b", "url": "https://huggingface.co/openai/gpt-oss-120b", "readAt": "2026-10-29" },
+      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "carte : trois niveaux de raisonnement (low, medium, high) ; GPQA Diamond et AIME publiés",
+    "agents": "carte : « native capabilities for function calling », navigation et exécution de code ; Tau-Bench publié",
+    "code": "carte : SWE-Bench Verified publié",
+    "poids-ouverts": "carte : licence Apache-2.0 ; poids publiés sur Hugging Face"
+  },
+  "gaps": [
+    "La figure Codeforces Elo de la carte n'est pas dans le tableau de résultats : absente.",
+    "Sortie maximale non publiée : maxOutputTokens absent.",
+    "Fenêtre de contexte non écrite sur la carte (131 072 selon DeepInfra) : contexte-long non étiqueté.",
+    "Date de mesure des scores non indiquée séparément : measuredAt absent (la carte est datée du 5 août 2025).",
+    "streaming coché d'après l'étiquette « openai » de DeepInfra (API compatible OpenAI) ; non écrit sur la carte."
+  ]
+}

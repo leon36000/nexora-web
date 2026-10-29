@@ -1,0 +1,49 @@
+{
+  "deepinfraId": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+  "slug": "nvidia-nemotron-3-super-120b-a12b",
+  "name": "NVIDIA Nemotron 3 Super 120B-A12B",
+  "descriptionFr": "Modèle hybride Mixture-of-Experts de NVIDIA (120 Md de paramètres, 12 Md actifs), conçu pour les applications multi-agents, le raisonnement sur long contexte et l'usage d'outils. Fenêtre annoncée jusqu'à 1 M de jetons.",
+  "descriptionEn": "NVIDIA hybrid mixture-of-experts model (120B parameters, 12B active) built for multi-agent applications, long-context reasoning and tool use. Announced window up to 1M tokens.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "NVIDIA",
+    "family": "Nemotron 3",
+    "releasedAt": "2026-03-11",
+    "knowledgeCutoff": "2026-02",
+    "license": { "name": "NVIDIA Nemotron Open Model License", "openWeights": true, "url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/" },
+    "parameters": { "totalB": 120, "activeB": 12 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "multilingue", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+    "benchmarks": [
+      { "name": "MMLU-Pro", "score": 83.73, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Connaissances" },
+      { "name": "AIME25 (no tools)", "score": 90.21, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Mathématiques" },
+      { "name": "GPQA (no tools)", "score": 79.23, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Raisonnement" },
+      { "name": "HLE (no tools)", "score": 18.26, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Connaissances" },
+      { "name": "LiveCodeBench (v5 2024-07↔2024-12)", "score": 81.19, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Code" },
+      { "name": "SWE-Bench (OpenHands)", "score": 60.47, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Code" },
+      { "name": "Terminal Bench Core 2.0", "score": 31.0, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Agents" },
+      { "name": "AA-LCR", "score": 58.31, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "category": "Contexte long" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle NVIDIA-Nemotron-3-Super-120B-A12B-BF16 (résumé, tableau des résultats)", "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16", "readAt": "2026-10-29" },
+      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "fiche : mode de raisonnement activable par le modèle de conversation ; GPQA et AIME25 publiés",
+    "code": "fiche : LiveCodeBench et SWE-Bench (OpenHands) publiés",
+    "agents": "fiche : « Best For: agentic workflows … tool use » ; Terminal Bench Core 2.0 publié",
+    "multilingue": "fiche : sept langues prises en charge (anglais, français, allemand, italien, japonais, espagnol, chinois)",
+    "poids-ouverts": "fiche : licence NVIDIA Nemotron Open Model License ; poids publiés sur Hugging Face"
+  },
+  "gaps": [
+    "Fenêtre : la fiche annonce jusqu'à 1 M de jetons ; DeepInfra sert 262 144 jetons. contexte-long non étiqueté pour ce qui est vendu.",
+    "Dépôt sans suffixe « -BF16 » absent de Hugging Face (accès refusé) : la fiche est celle de la variante BF16 du même modèle.",
+    "Date limite des connaissances : la fiche donne février 2026 pour le post-entraînement et juin 2025 pour le pré-entraînement ; février 2026 retenu.",
+    "Modalités : texte seulement ; aucune entrée image n'est mentionnée sur la fiche.",
+    "Sortie maximale non publiée : maxOutputTokens absent.",
+    "Date de mesure des scores non indiquée : measuredAt absent.",
+    "streaming coché d'après l'étiquette « openai » de DeepInfra (API compatible OpenAI) ; non écrit sur la fiche."
+  ]
+}

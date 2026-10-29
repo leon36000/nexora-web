@@ -1,0 +1,50 @@
+{
+  "deepinfraId": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+  "slug": "deepseek-v4.1-flash-1017",
+  "name": "DeepSeek V4.1 Flash 1017",
+  "descriptionFr": "Mise à jour mineure de DeepSeek-V4.1-Flash : modèle multimodal (texte et image en entrée) à mode réflexion, visant le code, les tâches agentiques et les tâches visuelles, avec une fenêtre de 1 M de jetons.",
+  "descriptionEn": "Minor update to DeepSeek-V4.1-Flash: a multimodal model (text and image input) with a thinking mode, aimed at coding, agentic tasks and visual tasks, with a 1M-token context window.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "DeepSeek",
+    "family": "DeepSeek V4.1",
+    "releasedAt": "2026-10-17",
+    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017/tree/main/LICENSE" },
+    "parameters": { "totalB": 763 },
+    "modalities": { "input": ["text", "image"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts", "rapide", "economique"],
+    "homepageUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "benchmarks": [
+      { "name": "HLE w/o tools", "score": 42.6, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Connaissances" },
+      { "name": "Terminal-Bench 4.0", "score": 42.3, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Code" },
+      { "name": "DeepSWE v1.1", "score": 77.0, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Code" },
+      { "name": "NL2Repo-Bench", "score": 68.2, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Code" },
+      { "name": "Automation-Bench v1.0.6", "score": 60.5, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Agents" },
+      { "name": "Agents’ Last Exam", "score": 35.4, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Agents" },
+      { "name": "Chartography (w/tools)", "score": 83.0, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Multimodal" },
+      { "name": "BabyVision (w/tools)", "score": 92.5, "unit": "%", "publisher": "DeepSeek", "sourceUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle", "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash-1017", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/deepseek-ai/DeepSeek-V4.1-Flash-1017", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Fiche, section « Prompt Encoding » : mode réflexion et effort de raisonnement numérique ; étiquette DeepInfra « reasoning ».",
+    "code": "Fiche, tableau de résultats : Terminal-Bench 4.0, DeepSWE v1.1, NL2Repo-Bench.",
+    "agents": "Fiche, introduction : « agentic tasks » et « agent harnesses » ; tableau : Automation-Bench, Agents’ Last Exam.",
+    "vision": "Fiche : pipeline image-text-to-text ; entrée image (« interleaved image content » dans la documentation d'encodage).",
+    "contexte-long": "DeepInfra : contexte de 1 048 576 jetons (1 M), au-dessus du seuil de 500 000.",
+    "poids-ouverts": "Fiche : licence MIT, texte de licence dans le dépôt ; poids publiés sur Hugging Face.",
+    "rapide": "Palier « Flash » de la gamme DeepSeek V4.1 ; la fiche indique que la version réduit le temps d'exécution des tâches.",
+    "economique": "Palier « Flash » de la gamme ; la fiche indique un coût plus bas pour un même travail (« at lower cost »)."
+  },
+  "gaps": [
+    "Sortie maximale : non publiée sur la fiche ni sur DeepInfra (seul un réglage recommandé « max_tokens ≥ 256K » figure sur la fiche).",
+    "Paramètres actifs : non publiés (seul le total de 763 B figure sur la page Hugging Face).",
+    "Date de coupure des connaissances : non publiée.",
+    "Date de sortie : date de création du dépôt Hugging Face (API), aucune date de sortie annoncée sur la fiche.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai » (API compatible OpenAI), à vérifier."
+  ]
+}

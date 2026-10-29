@@ -1,0 +1,40 @@
+{
+  "deepinfraId": "BAAI/bge-m3-multi-8k",
+  "slug": "bge-m3-multi-8k",
+  "name": "BGE-M3 multi 8k",
+  "descriptionFr": "Modèle d'embeddings multilingue de BAAI (plus de 100 langues) pour la recherche dense, avec des entrées allant jusqu'à 8 192 jetons. Vecteurs denses de 1 024 dimensions.",
+  "descriptionEn": "Multilingual embedding model from BAAI (more than 100 languages) for dense retrieval, with inputs up to 8,192 tokens. Dense vectors of 1,024 dimensions.",
+  "capabilities": { "streaming": false, "tools": false, "reasoning": false, "json_mode": false, "vision": false },
+  "sheet": {
+    "author": "BAAI",
+    "family": "BGE-M3",
+    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/BAAI/bge-m3" },
+    "modalities": { "input": ["text"], "output": ["embedding"] },
+    "tags": ["embeddings", "multilingue", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/BAAI/bge-m3",
+    "benchmarks": [
+      { "name": "MIRACL dev set (nDCG@10), moyenne All", "score": 71.5, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
+      { "name": "MIRACL dev set (nDCG@10), moyenne Dense", "score": 69.2, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
+      { "name": "MKQA (Recall@100), moyenne All", "score": 75.5, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
+      { "name": "MKQA (Recall@100), moyenne Dense", "score": 75.1, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
+      { "name": "MLDR test set (nDCG@10), moyenne All", "score": 65.0, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Documents longs" },
+      { "name": "MLDR test set (nDCG@10), moyenne Dense", "score": 52.5, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Documents longs" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle BAAI/bge-m3 (spécifications et résultats)", "url": "https://huggingface.co/BAAI/bge-m3", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/BAAI/bge-m3-multi-8k", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "embeddings": "Modèle d'embeddings selon la fiche (denses, creux et multi-vecteurs ; DeepInfra n'expose que le dense).",
+    "multilingue": "La fiche annonce plus de 100 langues de travail et publie des résultats MIRACL et MKQA.",
+    "poids-ouverts": "Licence MIT lue dans les métadonnées de la fiche ; poids publiés sur Hugging Face."
+  },
+  "gaps": [
+    "Variante « multi-8k » de DeepInfra : aucun dépôt Hugging Face de ce nom (recherche API) ; la fiche est établie sur BAAI/bge-m3, dont la longueur maximale est 8 192 jetons.",
+    "Scores publiés en images dans la fiche : valeurs lues sur les images ; unité « points » ajoutée (nDCG@10 et Recall@100 sont des métriques, non des unités).",
+    "Nombre de paramètres non publié dans la fiche lue ; pas de date de sortie ni de date de mesure.",
+    "Benchmarks sparse et multi-vecteur (non servis par DeepInfra) non retenus.",
+    "Streaming, outils, réflexion, JSON et vision sans objet pour un modèle d'embeddings."
+  ]
+}

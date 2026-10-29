@@ -1,0 +1,49 @@
+{
+  "deepinfraId": "meta-models/Muse-Glimmer-30B",
+  "slug": "muse-glimmer-30b",
+  "name": "Muse Glimmer-30B",
+  "descriptionFr": "Modèle de 30 Md de paramètres de Meta, distillé de Muse Spark et conçu pour les agents : appels d'outils, raisonnement en plusieurs étapes, reprise après erreur. Il accepte texte et images en entrée.",
+  "descriptionEn": "30B-parameter model from Meta, distilled from Muse Spark and built for agents: tool calls, multi-step reasoning and failure recovery. It accepts text and image input.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Meta",
+    "family": "Muse",
+    "knowledgeCutoff": "2026-01",
+    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://www.apache.org/licenses/LICENSE-2.0" },
+    "parameters": { "totalB": 29.6 },
+    "modalities": { "input": ["text", "image"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "vision", "multilingue", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B",
+    "benchmarks": [
+      { "name": "SWE-Bench Verified", "score": 76.0, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Code" },
+      { "name": "SWE-Bench Pro", "score": 51.2, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Code" },
+      { "name": "TerminalBench 2.1 (with terminus2)", "score": 51.7, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Agents" },
+      { "name": "MCP Atlas (Public)", "score": 75.5, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Agents" },
+      { "name": "DeepSearch QA", "score": 74.6, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Agents" },
+      { "name": "AIME 2026", "score": 94.7, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Mathématiques" },
+      { "name": "GPQA Diamond (AA)", "score": 83.5, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Raisonnement" },
+      { "name": "Charxiv Reasoning", "score": 78.8, "unit": "%", "publisher": "Meta", "sourceUrl": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle Muse Glimmer (tableau des évaluations)", "url": "https://huggingface.co/meta-models/Muse-Glimmer-30B", "readAt": "2026-10-29" },
+      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "fiche : « Multi-Step Reasoning » et niveaux d'effort de raisonnement (low à xhigh) ; AIME 2026 et GPQA Diamond publiés",
+    "code": "fiche : SWE-Bench Verified et SWE-Bench Pro publiés",
+    "agents": "fiche : « End-to-end Agentic Task Completion » et « Reliable Tool Use » ; MCP Atlas et DeepSearch QA publiés",
+    "vision": "fiche : entrée de texte et d'images entrelacés (encodeur de perception dédié)",
+    "multilingue": "fiche : entraîné sur des données de plus de 100 langues",
+    "poids-ouverts": "fiche : licence Apache 2.0 ; poids BF16 et versions quantifiées publiés"
+  },
+  "gaps": [
+    "Les scores sont ceux de la colonne « High Reasoning » du tableau de l'éditeur ; le mode est indiqué ici et non dans le nom de l'épreuve.",
+    "Date de sortie partielle sur la fiche (« August 2026 », sans jour) : releasedAt absent.",
+    "Architecture dense publiée (environ 29,6 Md de paramètres au total) ; paramètres actifs non écrits : activeB absent.",
+    "Sortie maximale non publiée : maxOutputTokens absent.",
+    "Audio non pris en charge selon la fiche (« Audio input/output is not supported »).",
+    "Date de mesure des scores non indiquée : measuredAt absent.",
+    "streaming coché d'après l'étiquette « openai » de DeepInfra (API compatible OpenAI) ; non écrit sur la fiche."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "deepinfraId": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+  "slug": "qwen3-coder-480b-a35b-instruct-turbo",
+  "name": "Qwen3 Coder 480B A35B Instruct Turbo",
+  "descriptionFr": "Modèle de code agentique de Qwen (480 milliards de paramètres au total, 35 milliards actifs), sans mode de réflexion. Il est conçu pour le codage agentique, l'usage de navigateur et l'appel d'outils.",
+  "descriptionEn": "Agentic code model from Qwen (480 billion total parameters, 35 billion active), without a thinking mode. It is built for agentic coding, browser use and tool calling.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": false, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "Qwen Team",
+    "family": "Qwen3-Coder",
+    "releasedAt": "2025-07-22",
+    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct/blob/main/LICENSE" },
+    "parameters": { "totalB": 480, "activeB": 35 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["code", "agents", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "benchmarks": [],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle Qwen/Qwen3-Coder-480B-A35B-Instruct (modèle de base)", "url": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct", "readAt": "2026-10-29" },
+      { "label": "Qwen, blogue « Qwen3-Coder: Agentic Coding in the World »", "url": "https://qwenlm.github.io/blog/qwen3-coder/", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "code": "La fiche présente le modèle comme un modèle de code (codage agentique et tâches de code fondamentales).",
+    "agents": "La fiche met en avant le codage agentique, l'usage de navigateur et l'appel d'outils.",
+    "poids-ouverts": "Licence Apache 2.0 lue dans la fiche ; poids publiés sur Hugging Face (modèle de base)."
+  },
+  "gaps": [
+    "Aucun score numérique publié : la fiche Hugging Face, le blogue et le dépôt GitHub ne donnent que des formulations qualitatives (par exemple SWE-bench Verified). Liste de benchmarks vide.",
+    "Variante « Turbo » de DeepInfra : aucun dépôt Hugging Face portant ce nom (recherche API) ; la fiche décrit le modèle de base Qwen/Qwen3-Coder-480B-A35B-Instruct.",
+    "Fenêtre : 256K natif, extensible à 1M par YaRN selon la fiche ; étiquette contexte-long non posée.",
+    "Aucune longueur de sortie maximale publiée (la fiche ne recommande qu'une longueur adéquate de 65 536 jetons) ; maxOutputTokens absent.",
+    "Aucune date de connaissances publiée dans les pages lues.",
+    "Streaming : vérifié au niveau de la documentation DeepInfra de l'API compatible OpenAI seulement."
+  ]
+}

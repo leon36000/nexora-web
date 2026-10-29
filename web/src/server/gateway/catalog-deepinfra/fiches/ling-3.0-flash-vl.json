@@ -1,0 +1,46 @@
+{
+  "deepinfraId": "inclusionAI/Ling-3.0-flash-VL",
+  "slug": "ling-3.0-flash-vl",
+  "name": "Ling 3.0 Flash VL",
+  "descriptionFr": "Modèle multimodal natif d'inclusionAI (124 milliards de paramètres au total, 5,5 milliards actifs par jeton) qui traite texte, images et vidéos, avec mode de réflexion et usage d'agents.",
+  "descriptionEn": "Native multimodal model from inclusionAI (124 billion total parameters, 5.5 billion active per token) that handles text, images and video, with a thinking mode and agent use.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "inclusionAI",
+    "family": "Ling 3.0",
+    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL" },
+    "parameters": { "totalB": 124, "activeB": 5.5 },
+    "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
+    "tags": ["raisonnement", "agents", "vision", "rapide", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+    "benchmarks": [
+      { "name": "Artificial Analysis Intelligence Index v4.1.1", "score": 42, "unit": "points", "publisher": "Artificial Analysis (citée par inclusionAI)", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Général" },
+      { "name": "CountBench", "score": 97.33, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
+      { "name": "MMMU-Pro", "score": 79.00, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
+      { "name": "MathVision", "score": 84.87, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Mathématiques" },
+      { "name": "OmniDocBench1.5", "score": 91.35, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
+      { "name": "CharXiv_RQ", "score": 81.30, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
+      { "name": "WebVoyager", "score": 90.83, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Agents" },
+      { "name": "MMSearch", "score": 79.00, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Agents" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle inclusionAI/Ling-3.0-flash-VL", "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/inclusionAI/Ling-3.0-flash-VL", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "La fiche indique que le mode de réflexion est activé par défaut dans le modèle de chat.",
+    "agents": "La fiche décrit des flux agentiques multimodaux (interaction avec des interfaces, actions) ; scores WebVoyager et MMSearch publiés.",
+    "vision": "La fiche décrit des entrées image et vidéo.",
+    "rapide": "Palier « flash » de la gamme Ling 3.0, selon la règle du brief (la fiche ne le dit pas en ces termes).",
+    "poids-ouverts": "Licence MIT lue dans les métadonnées de la fiche ; dépôt public avec poids."
+  },
+  "gaps": [
+    "Aucune date de sortie, date de connaissances ni longueur de sortie maximale publiées sur les pages lues.",
+    "Les scores de benchmark sont publiés en images : valeurs lues sur l'image de la colonne Ling-3.0-flash-VL ; unité « % » ajoutée (aucune unité écrite).",
+    "Score de l'indice Artificial Analysis cité par l'éditeur dans le texte de la fiche (et non mesuré par inclusionAI).",
+    "Benchmark AntBench-Medical exclu : l'éditeur indique une épreuve interne, non publiée.",
+    "Fenêtre de contexte : la fiche annonce 256K (YaRN) ; DeepInfra expose 131 072. Étiquette contexte-long non posée.",
+    "Streaming : la fiche DeepInfra et la documentation de l'API ne le mentionnent pas pour ce modèle ; valeur true non vérifiée au niveau du modèle."
+  ]
+}

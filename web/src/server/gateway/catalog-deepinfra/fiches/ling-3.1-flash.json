@@ -1,0 +1,47 @@
+{
+  "deepinfraId": "inclusionAI/Ling-3.1-flash",
+  "slug": "ling-3.1-flash",
+  "name": "Ling 3.1 Flash",
+  "descriptionFr": "Modèle à raisonnement hybride de inclusionAI (560 B paramètres, 25 B actifs) pour les tâches réelles complexes : agents généralistes, recherche, bureautique et génie logiciel.",
+  "descriptionEn": "Hybrid reasoning model from inclusionAI (560B parameters, 25B active) for complex real-world tasks: general agents, search, office work and software engineering.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "inclusionAI",
+    "family": "Ling 3.1",
+    "releasedAt": "2026-10-13",
+    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/inclusionAI/Ling-3.1-flash" },
+    "parameters": { "totalB": 560, "activeB": 25 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "poids-ouverts", "rapide", "economique"],
+    "homepageUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+    "benchmarks": [
+      { "name": "Terminal-Bench 2.1", "score": 81.18, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
+      { "name": "SWE-bench Pro", "score": 68.74, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
+      { "name": "SWE-bench Multilingual (resolved)", "score": 88.5, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
+      { "name": "DeepSWE", "score": 59.7, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
+      { "name": "Terminal-Bench 4.0", "score": 46.03, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
+      { "name": "SkillsBench v1.1", "score": 68.7, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Agents" },
+      { "name": "HLE", "score": 37.44, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Connaissances" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle (présentation, résultats d'évaluation)", "url": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/inclusionAI/Ling-3.1-flash", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/inclusionAI/Ling-3.1-flash", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Fiche : « hybrid reasoning model » ; étiquette DeepInfra « reasoning ».",
+    "code": "Fiche : résultats SWE-bench Pro (68,74) et Terminal-Bench 2.1 (81,18).",
+    "agents": "Fiche : « general-purpose agents » ; résultat SkillsBench v1.1 (68,7).",
+    "poids-ouverts": "Licence MIT déclarée sur la fiche et sur DeepInfra ; poids publiés sur Hugging Face.",
+    "rapide": "Palier « flash » de la gamme Ling 3.1 (règle de palier).",
+    "economique": "Palier « flash » de la gamme Ling 3.1 (règle de palier)."
+  },
+  "gaps": [
+    "Contexte : la fiche annonce une fenêtre de 1 M de jetons, DeepInfra sert 262 144 : étiquette contexte-long non posée.",
+    "Benchmarks : listés comme résultats d'évaluation attachés à la fiche ; le protocole de chaque score n'est pas détaillé dans le texte lu.",
+    "Sortie maximale : non publiée.",
+    "Date de coupure des connaissances : non publiée.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai », à vérifier."
+  ]
+}

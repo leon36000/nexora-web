@@ -1,0 +1,50 @@
+{
+  "deepinfraId": "nvidia/NVIDIA-Nemotron-3.5-Lightning",
+  "slug": "nvidia-nemotron-3.5-lightning",
+  "name": "NVIDIA Nemotron 3.5 Lightning 30B-A3B",
+  "descriptionFr": "Modèle ouvert de NVIDIA de 30 Md de paramètres (3 Md actifs), orienté vers les agents permanents et les tâches spécialisées à fort volume. Entrée et sortie en texte, mode de raisonnement activable.",
+  "descriptionEn": "Open model from NVIDIA with 30B parameters (3B active), aimed at always-on agents and high-volume specialized tasks. Text input and output, with a switchable reasoning mode.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "NVIDIA",
+    "family": "Nemotron 3.5",
+    "releasedAt": "2026-08-11",
+    "knowledgeCutoff": "2026-05",
+    "license": { "name": "OpenMDW-1.1", "openWeights": true, "url": "https://openmdw.ai/license/1-1/" },
+    "parameters": { "totalB": 30, "activeB": 3 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "multilingue", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "benchmarks": [
+      { "name": "MMLU Pro", "score": 81.94, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Connaissances" },
+      { "name": "GPQA Diamond (no tools)", "score": 75.44, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Raisonnement" },
+      { "name": "HLE (text-only, no tools)", "score": 11.72, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Connaissances" },
+      { "name": "SWE-bench Verified", "score": 51.56, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Code" },
+      { "name": "Terminal-Bench 2.1", "score": 24.58, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Agents" },
+      { "name": "BrowseComp", "score": 36.97, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Agents" },
+      { "name": "AA-LCR", "score": 52.00, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Contexte long" },
+      { "name": "IFBench (loose)", "score": 71.88, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Suivi d'instructions" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 (résumé, tableau des résultats)", "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "readAt": "2026-10-29" },
+      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "fiche : mode de raisonnement activable par le modèle de conversation ; GPQA Diamond publié",
+    "code": "fiche : SWE-bench Verified publié (rubrique « Coding & Agentic »)",
+    "agents": "fiche : Terminal-Bench 2.1 et BrowseComp publiés ; rubrique « Coding & Agentic »",
+    "multilingue": "fiche : anglais (et langages de programmation), espagnol, français, allemand, italien, japonais",
+    "poids-ouverts": "fiche : licence OpenMDW 1.1 ; poids BF16 publiés sur Hugging Face"
+  },
+  "gaps": [
+    "Fenêtre : la fiche annonce jusqu'à 1 M de jetons, validée à 256 K sur un H100 ; DeepInfra sert 262 144 jetons. contexte-long non étiqueté pour ce qui est vendu.",
+    "Scores mesurés par NVIDIA avec son harnais (NeMo Gym) ; la fiche précise qu'ils peuvent différer des chiffres auto-déclarés par les éditeurs.",
+    "Date limite des connaissances : la fiche donne septembre 2025 pour le pré-entraînement et mai 2026 pour le post-entraînement ; mai 2026 retenu.",
+    "Modalités : texte seulement ; aucune entrée image n'est mentionnée sur la fiche.",
+    "Dépôt sans suffixe absent de Hugging Face (accès refusé) : la fiche est celle de la variante BF16 30B-A3B.",
+    "Sortie maximale non publiée : maxOutputTokens absent.",
+    "Date de mesure des scores non indiquée : measuredAt absent.",
+    "streaming coché d'après l'étiquette « openai » de DeepInfra (API compatible OpenAI) ; non écrit sur la fiche."
+  ]
+}

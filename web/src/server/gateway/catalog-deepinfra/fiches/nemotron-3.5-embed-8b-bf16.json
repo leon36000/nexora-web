@@ -1,0 +1,40 @@
+{
+  "deepinfraId": "nvidia/Nemotron-3.5-Embed-8B-BF16",
+  "slug": "nemotron-3.5-embed-8b-bf16",
+  "name": "Nemotron 3.5 Embed 8B BF16",
+  "descriptionFr": "Modèle d'embeddings multimodal de NVIDIA (8,38 milliards de paramètres) qui place texte, images et pages de documents dans un même espace vectoriel de 4 096 dimensions, pour la recherche de documents visuels.",
+  "descriptionEn": "Multimodal embedding model from NVIDIA (8.38 billion parameters) that places text, images and document pages in one 4,096-dimension vector space, for visual document retrieval.",
+  "capabilities": { "streaming": false, "tools": false, "reasoning": false, "json_mode": false, "vision": true },
+  "sheet": {
+    "author": "NVIDIA",
+    "family": "Nemotron 3.5",
+    "releasedAt": "2026-10-20",
+    "license": { "name": "OpenMDW-1.1", "openWeights": true, "url": "https://openmdw.ai/license/1-1/" },
+    "parameters": { "totalB": 8.38 },
+    "modalities": { "input": ["text", "image"], "output": ["embedding"] },
+    "tags": ["embeddings", "vision", "multilingue", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16",
+    "benchmarks": [
+      { "name": "ViDoRe V3 (image), NDCG@10", "score": 60.39, "unit": "points", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16", "category": "Documents visuels" },
+      { "name": "ViDoRe V3 (texte), NDCG@10", "score": 60.65, "unit": "points", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16", "category": "Documents visuels" },
+      { "name": "ViDoRe V3 (image + texte), NDCG@10", "score": 61.47, "unit": "points", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16", "category": "Documents visuels" },
+      { "name": "MIRACL-VISION (image), NDCG@10", "score": 72.64, "unit": "points", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle nvidia/Nemotron-3.5-Embed-8B-BF16", "url": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-8B-BF16", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/nvidia/Nemotron-3.5-Embed-8B-BF16", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "embeddings": "Modèle d'embeddings selon la fiche (vecteur de sortie pour chaque entrée).",
+    "vision": "La fiche décrit des entrées image et pages de documents (texte, tableaux, graphiques).",
+    "multilingue": "La fiche indique une évaluation du texte dans 34 langues.",
+    "poids-ouverts": "Licence OpenMDW-1.1 lue dans la fiche ; poids téléchargeables sur Hugging Face."
+  },
+  "gaps": [
+    "Scores lus dans le tableau d'évaluation de la fiche (NDCG@10) ; les autres modèles du tableau ne sont pas retenus. Unité « points » ajoutée (score sur 100).",
+    "Dimension : 4 096 par défaut, vecteurs tronquables à 1 024 ou 512 selon la fiche. L'interface de démonstration DeepInfra affiche 768 par défaut : non retenu.",
+    "Pas de date de connaissances ni de mesure publiée ; date de sortie 2026-10-20 selon la fiche.",
+    "Streaming et réflexion sans objet pour un modèle d'embeddings."
+  ]
+}

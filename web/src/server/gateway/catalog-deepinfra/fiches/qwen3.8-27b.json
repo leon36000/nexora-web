@@ -1,0 +1,47 @@
+{
+  "deepinfraId": "Qwen/Qwen3.8-27B",
+  "slug": "qwen3.8-27b",
+  "name": "Qwen3.8 27B",
+  "descriptionFr": "Modèle dense ouvert de 27 B paramètres de Qwen, vision-langage (images et vidéos), à réflexion activable ou réglable, pour le code, les tâches professionnelles et les agents à long horizon.",
+  "descriptionEn": "Open-weight dense 27B vision-language model from Qwen, with image and video understanding and adjustable thinking, for coding, professional work and long-horizon agents.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Alibaba (Qwen)",
+    "family": "Qwen3.8",
+    "releasedAt": "2026-08-05",
+    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3.8-27B" },
+    "parameters": { "totalB": 27 },
+    "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "vision", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/Qwen/Qwen3.8-27B",
+    "benchmarks": [
+      { "name": "Terminal Bench 2.1 (Terminus)", "score": 73.0, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Code" },
+      { "name": "SWE-bench Pro", "score": 61.7, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Code" },
+      { "name": "QwenSWEBench", "score": 79.0, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Code" },
+      { "name": "DeepSWE 1.1", "score": 42.2, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Code" },
+      { "name": "LiveCodeBench v6", "score": 90.3, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Code" },
+      { "name": "GPQA Diamond", "score": 89.2, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Raisonnement" },
+      { "name": "OSWorld-Verified", "score": 84.3, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Agents" },
+      { "name": "MathVision (sans CI)", "score": 90.0, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.8-27B", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle", "url": "https://huggingface.co/Qwen/Qwen3.8-27B", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt (licence Apache-2.0, date de création, taille)", "url": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/Qwen/Qwen3.8-27B", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Fiche : réflexion activée par défaut, désactivable par requête, et paramètre reasoning_effort ; étiquette DeepInfra « reasoning ».",
+    "code": "Fiche : « coding » en tête des capacités ; résultats SWE-bench Pro (61,7) et LiveCodeBench v6 (90,3).",
+    "agents": "Fiche : « Agent Execution » ; résultat OSWorld-Verified (84,3).",
+    "vision": "Fiche : « Native support for image and video understanding » ; pipeline image-text-to-text.",
+    "poids-ouverts": "Licence Apache-2.0 déclarée dans les métadonnées du dépôt ; poids publiés sur Hugging Face."
+  },
+  "gaps": [
+    "Contexte natif de 262 144 jetons ; le 1 M annoncé pour le service hébergé est « coming soon » sur la fiche : étiquette contexte-long non posée.",
+    "Paramètres actifs : non applicables (modèle dense) ; non renseignés.",
+    "Sortie maximale : non publiée.",
+    "Date de coupure des connaissances : non publiée.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai », à vérifier."
+  ]
+}

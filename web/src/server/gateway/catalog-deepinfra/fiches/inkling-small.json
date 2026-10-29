@@ -1,0 +1,47 @@
+{
+  "deepinfraId": "thinkingmachines/Inkling-Small",
+  "slug": "inkling-small",
+  "name": "Inkling-Small",
+  "descriptionFr": "Modèle multimodal à mélange d'experts de Thinking Machines Lab (276 Md de paramètres, 12 Md actifs). Il reçoit texte, image et audio, et répond en texte. Conçu pour les agents, le code et les assistants.",
+  "descriptionEn": "Multimodal mixture-of-experts model from Thinking Machines Lab (276B parameters, 12B active). It takes text, image and audio input and returns text. Built for agents, coding and assistants.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Thinking Machines Lab",
+    "family": "Inkling",
+    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://www.apache.org/licenses/LICENSE-2.0" },
+    "parameters": { "totalB": 276, "activeB": 12 },
+    "modalities": { "input": ["text", "image", "audio"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "vision", "multilingue", "contexte-long", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/thinkingmachines/Inkling-Small",
+    "benchmarks": [
+      { "name": "GPQA Diamond", "score": 89.5, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Raisonnement" },
+      { "name": "AIME 2026", "score": 95.5, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Mathématiques" },
+      { "name": "HMMT Feb 2026", "score": 90.2, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Mathématiques" },
+      { "name": "HLE (text only)", "score": 31.6, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Connaissances" },
+      { "name": "SWEBench Verified", "score": 80.2, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Code" },
+      { "name": "SWEBench Pro (public)", "score": 55.9, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Code" },
+      { "name": "Terminal Bench 2.1 (best harness)", "score": 64.7, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Agents" },
+      { "name": "MMMU Pro (Standard 10)", "score": 74.0, "unit": "%", "publisher": "Thinking Machines Lab", "sourceUrl": "https://huggingface.co/thinkingmachines/Inkling-Small", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle Inkling-Small (tableau d'évaluations)", "url": "https://huggingface.co/thinkingmachines/Inkling-Small", "readAt": "2026-10-29" },
+      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "fiche : évaluations de raisonnement publiées (GPQA Diamond, AIME 2026, HMMT Feb 2026) ; étiquette DeepInfra « reasoning »",
+    "code": "fiche : SWEBench Verified et SWEBench Pro publiés",
+    "agents": "fiche : « agentic and tool-use systems » ; Terminal Bench 2.1 publié",
+    "vision": "fiche : « accepts text, image and audio inputs »",
+    "multilingue": "fiche : « general multilingual capabilities across other languages »",
+    "contexte-long": "fenêtre de 524 288 jetons servie par DeepInfra (contextMax, sélection DeepInfra) ; la fiche ne donne pas de fenêtre",
+    "poids-ouverts": "fiche : licence Apache-2.0 ; « released with open weights » sur Hugging Face"
+  },
+  "gaps": [
+    "Date de sortie non publiée sur la fiche : releasedAt absent (la date de création du dépôt, 27/07/2026, n'est pas une date de sortie).",
+    "Date limite des connaissances non publiée sur la fiche : knowledgeCutoff absent.",
+    "Sortie maximale et fenêtre de contexte non publiées sur la fiche : maxOutputTokens absent.",
+    "Date de mesure des scores non indiquée : measuredAt absent.",
+    "streaming coché d'après l'étiquette « openai » de DeepInfra (API compatible OpenAI) ; non écrit sur la fiche."
+  ]
+}

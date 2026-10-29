@@ -1,0 +1,49 @@
+{
+  "deepinfraId": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+  "slug": "nvidia-nemotron-3-ultra-550b-a55b",
+  "name": "NVIDIA Nemotron 3 Ultra",
+  "descriptionFr": "Modèle de raisonnement et d'agents de NVIDIA (550 B paramètres, 55 B actifs) pour le raisonnement de pointe, les agents de code et la recherche approfondie ; fenêtre annoncée jusqu'à 1 M de jetons.",
+  "descriptionEn": "NVIDIA reasoning and agent model (550B parameters, 55B active) for frontier reasoning, coding agents and deep research; announced context up to 1M tokens.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "NVIDIA",
+    "family": "Nemotron 3",
+    "releasedAt": "2026-06-04",
+    "knowledgeCutoff": "2026-05",
+    "license": { "name": "OpenMDW-1.1", "openWeights": true, "url": "https://openmdw.ai/license/1-1/" },
+    "parameters": { "totalB": 550, "activeB": 55 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "multilingue", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16",
+    "benchmarks": [
+      { "name": "SWE-Bench Verified", "score": 70.7, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Code" },
+      { "name": "LiveCodeBench (v6)", "score": 89.0, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Code" },
+      { "name": "Terminal Bench 2.1", "score": 56.4, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Code" },
+      { "name": "BrowseComp", "score": 44.4, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Agents" },
+      { "name": "HLE (no tools)", "score": 26.7, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Connaissances" },
+      { "name": "GPQA (no tools)", "score": 87.0, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Raisonnement" },
+      { "name": "IMOAnswerBench (no tools)", "score": 88.6, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Mathématiques" },
+      { "name": "RULER (1M)", "score": 94.7, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "category": "Contexte long" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle BF16 (licence, benchmarks, dates)", "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt BF16 (date de création, taille)", "url": "https://huggingface.co/api/models/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16", "readAt": "2026-10-29" },
+      { "label": "Données DeepInfra (contexte, quantification) : data/selection-deepinfra.json, source API DeepInfra", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Fiche : mode de réflexion activable (enable_thinking) ; étiquette DeepInfra « reasoning ».",
+    "code": "Fiche : résultats SWE-Bench Verified (70,7) et LiveCodeBench v6 (89,0).",
+    "agents": "Fiche : « complex agentic workflows » ; résultat BrowseComp (44,4) et Terminal Bench 2.1 (56,4).",
+    "multilingue": "Fiche : usage prévu « in English, Code, and supported multilingual contexts ».",
+    "poids-ouverts": "Licence OpenMDW-1.1 déclarée sur la fiche ; poids publiés sur Hugging Face."
+  },
+  "gaps": [
+    "Variante servie par DeepInfra : quantification fp4, donc vraisemblablement le dépôt -NVFP4 ; seule la fiche BF16 est lue, ses chiffres sont retenus.",
+    "Contexte : la fiche annonce « up to 1M tokens », DeepInfra sert 262 144 : étiquette contexte-long non posée.",
+    "Licence OpenMDW-1.1 : nom lu dans l'en-tête de la fiche ; le texte de licence n'a pas été ouvert.",
+    "Sortie maximale : non publiée.",
+    "Coupure des connaissances : 2026-05 pour le post-entraînement ; la fiche indique septembre 2025 pour le pré-entraînement.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai », à vérifier."
+  ]
+}

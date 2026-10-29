@@ -1,0 +1,52 @@
+{
+  "deepinfraId": "XiaomiMiMo/MiMo-V2.6-Flash",
+  "slug": "mimo-v2.6-flash",
+  "name": "MiMo V2.6 Flash",
+  "descriptionFr": "Modèle au meilleur équilibre efficacité-puissance de la série MiMo-V2.6 de Xiaomi : mélange d'experts de 309 B paramètres (15 B actifs), omnimodal (texte, image, vidéo, audio), fenêtre de 1 M de jetons.",
+  "descriptionEn": "Efficiency-balanced model of Xiaomi's MiMo-V2.6 series: a 309B-parameter Mixture-of-Experts model (15B active), omnimodal (text, image, video, audio) with a 1M-token context.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Xiaomi",
+    "family": "MiMo V2.6",
+    "releasedAt": "2026-09-21",
+    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL" },
+    "parameters": { "totalB": 309, "activeB": 15 },
+    "modalities": { "input": ["text", "image", "video", "audio"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts", "rapide", "economique"],
+    "homepageUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL",
+    "benchmarks": [
+      { "name": "Terminal Bench 2.1", "score": 87.6, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Code" },
+      { "name": "DeepSWE v1.1", "score": 67.9, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Code" },
+      { "name": "Terminal Bench 4.0", "score": 28.8, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Code" },
+      { "name": "OSWorld-Verified", "score": 80.8, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
+      { "name": "Toolathlon-Verified", "score": 73.6, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
+      { "name": "Agents’ Last Exam", "score": 27.6, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
+      { "name": "AutomationBench v1.0.6", "score": 52.3, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
+      { "name": "CyberGym", "score": 95.1, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Cybersécurité" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche MiMo-V2.6-Flash-RL (architecture, licence MIT)", "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-RL", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, tableau de résultats commun MiMo-V2.6 (colonne Flash) sur la fiche MiMo-V2.6-Pro-RL", "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt MiMo-V2.6-Flash-RL (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/XiaomiMiMo/MiMo-V2.6-Flash-RL", "readAt": "2026-10-29" },
+      { "label": "Données DeepInfra (contexte, quantification) : data/selection-deepinfra.json, source API DeepInfra", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Étiquettes DeepInfra « reasoning » et « can-disable-reasoning ».",
+    "code": "Tableau commun MiMo-V2.6 : DeepSWE v1.1 (67,9) et Terminal Bench 2.1 (87,6), colonne Flash.",
+    "agents": "Tableau commun : Toolathlon-Verified (73,6) et OSWorld-Verified (80,8), colonne Flash.",
+    "vision": "Fiche : « Modalities: Text, Image, Video, Audio » ; encodeur de vision de 681 M paramètres.",
+    "contexte-long": "Fiche : « Context Length: 1M tokens » ; contexte de 1 048 576 jetons selon les données DeepInfra.",
+    "poids-ouverts": "Licence MIT déclarée sur la fiche ; poids publiés sur Hugging Face.",
+    "rapide": "Palier « Flash » de la gamme MiMo-V2.6 (règle de palier).",
+    "economique": "Palier « Flash » de la gamme MiMo-V2.6 (règle de palier)."
+  },
+  "gaps": [
+    "Identifiant DeepInfra XiaomiMiMo/MiMo-V2.6-Flash absent de Hugging Face (401) ; dépôt MiMo-V2.6-Flash-RL retenu. La variante MOPD n'est pas documentée ici.",
+    "Benchmarks : aucun tableau propre dans la fiche Flash-RL ; les chiffres viennent du tableau commun publié sur la fiche Pro-RL.",
+    "Sortie maximale : non publiée.",
+    "Date de coupure des connaissances : non publiée.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai », à vérifier.",
+    "Date de sortie : date de création du dépôt Hugging Face (API), aucune date de sortie annoncée sur la fiche."
+  ]
+}

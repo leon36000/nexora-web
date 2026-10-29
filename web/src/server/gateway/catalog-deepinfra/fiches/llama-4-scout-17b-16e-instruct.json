@@ -1,0 +1,48 @@
+{
+  "deepinfraId": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+  "slug": "llama-4-scout-17b-16e-instruct",
+  "name": "Llama 4 Scout 17B 16E Instruct",
+  "descriptionFr": "Modèle multimodal de Meta à mélange d'experts (109 milliards de paramètres au total, 17 milliards actifs, 16 experts) qui lit texte et images, pour le dialogue, la compréhension d'images et le raisonnement visuel.",
+  "descriptionEn": "Meta's mixture-of-experts multimodal model (109 billion total parameters, 17 billion active, 16 experts) that reads text and images, for chat, image understanding and visual reasoning.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": false, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Meta",
+    "family": "Llama 4",
+    "releasedAt": "2025-04-05",
+    "knowledgeCutoff": "2024-08",
+    "license": { "name": "Llama 4 Community License Agreement", "openWeights": true, "url": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE" },
+    "parameters": { "totalB": 109, "activeB": 17 },
+    "modalities": { "input": ["text", "image"], "output": ["text"] },
+    "tags": ["vision", "multilingue", "contexte-long", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "benchmarks": [
+      { "name": "MMLU Pro", "score": 74.3, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Connaissances" },
+      { "name": "GPQA Diamond", "score": 57.2, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Raisonnement" },
+      { "name": "LiveCodeBench (10/01/2024-02/01/2025)", "score": 32.8, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Code" },
+      { "name": "MGSM", "score": 90.6, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Multilingue" },
+      { "name": "MMMU", "score": 69.4, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Multimodal" },
+      { "name": "MathVista", "score": 70.7, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Multimodal" },
+      { "name": "ChartQA", "score": 88.8, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Multimodal" },
+      { "name": "DocVQA (test)", "score": 94.4, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "GitHub meta-llama/llama-models, carte du modèle Llama 4", "url": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, dépôt meta-llama/Llama-4-Scout-17B-16E-Instruct (accès restreint : métadonnées seulement)", "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/meta-llama/Llama-4-Scout-17B-16E-Instruct", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "vision": "La carte décrit un modèle multimodal natif acceptant texte et image en entrée.",
+    "multilingue": "La carte liste 12 langues prises en charge.",
+    "contexte-long": "La carte indique une longueur de contexte de 10M dans son tableau de caractéristiques.",
+    "poids-ouverts": "Licence Llama 4 Community License lue dans la carte ; poids publiés sous condition de licence."
+  },
+  "gaps": [
+    "Scores de la version instruct (colonne Llama 4 Scout), pas ceux des modèles pré-entraînés. Unité « % » ajoutée (aucune unité écrite).",
+    "Fenêtre : la carte annonce 10M ; DeepInfra expose 327 680. L'étiquette contexte-long suit la carte : à confirmer pour l'offre DeepInfra.",
+    "Le dépôt Hugging Face est en accès restreint : la carte lue est celle publiée sur GitHub par Meta.",
+    "Aucune longueur de sortie maximale publiée ; maxOutputTokens absent.",
+    "Streaming : vérifié au niveau de la documentation DeepInfra de l'API compatible OpenAI seulement.",
+    "Benchmarks retenus : 8 sur une vingtaine du tableau instruct."
+  ]
+}

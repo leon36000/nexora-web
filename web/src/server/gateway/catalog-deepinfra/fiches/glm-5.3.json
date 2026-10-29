@@ -1,0 +1,47 @@
+{
+  "deepinfraId": "zai-org/GLM-5.3",
+  "slug": "glm-5.3",
+  "name": "GLM 5.3",
+  "descriptionFr": "Modèle de raisonnement à grande échelle de Z.ai pour le génie logiciel complexe et les tâches d'agent à long horizon ; texte en entrée et en sortie, fenêtre de 1 M de jetons.",
+  "descriptionEn": "Large-scale reasoning model from Z.ai for complex software engineering and long-horizon agent tasks; text input and output, with a 1M-token window.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "sheet": {
+    "author": "Z.ai",
+    "family": "GLM 5",
+    "releasedAt": "2026-08-25",
+    "license": { "name": "GLM-5.3 License", "openWeights": true, "url": "https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE" },
+    "parameters": { "totalB": 753 },
+    "modalities": { "input": ["text"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "contexte-long", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/zai-org/GLM-5.3",
+    "benchmarks": [
+      { "name": "Terminal Bench 2.1", "score": 88.2, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Code" },
+      { "name": "DeepSWE (v1.1)", "score": 66.9, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Code" },
+      { "name": "NL2Repo", "score": 58.0, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Code" },
+      { "name": "CyberGym", "score": 84.5, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Cybersécurité" },
+      { "name": "Toolathlon Verified", "score": 73.0, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Agents" },
+      { "name": "AutomationBench (v1.0.6)", "score": 48.2, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Agents" },
+      { "name": "Agents' Last Exam (ALE-CLI)", "score": 28.5, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Agents" },
+      { "name": "HLE w/ Tools", "score": 62.5, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Connaissances" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle", "url": "https://huggingface.co/zai-org/GLM-5.3", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt (licence, date de création, taille)", "url": "https://huggingface.co/api/models/zai-org/GLM-5.3", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/zai-org/GLM-5.3", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Fiche : paramètre reasoning_effort (low, high, max) ; étiquette DeepInfra « reasoning ».",
+    "code": "Fiche : « the most capable open-weights model for coding » ; tableau : Terminal Bench 2.1, DeepSWE, NL2Repo.",
+    "agents": "Fiche : tâches « long-horizon » ; tableau : Toolathlon Verified, AutomationBench, Agents' Last Exam.",
+    "contexte-long": "DeepInfra : contexte de 1 048 576 jetons, au-dessus du seuil de 500 000.",
+    "poids-ouverts": "Licence « GLM-5.3 License » (fichier LICENSE : « including the model weights ») ; poids publiés sur Hugging Face."
+  },
+  "gaps": [
+    "Paramètres actifs : non publiés sur la fiche (seul le total de 753 B figure sur la page Hugging Face).",
+    "Sortie maximale : non publiée (la fiche n'indique que des réglages d'évaluation de 128 K).",
+    "Date de coupure des connaissances : non publiée.",
+    "Date de sortie : date de création du dépôt Hugging Face (API), aucune date de sortie annoncée sur la fiche.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai », à vérifier."
+  ]
+}

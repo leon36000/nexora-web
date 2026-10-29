@@ -1,0 +1,46 @@
+{
+  "deepinfraId": "zai-org/GLM-5.3-Flash",
+  "slug": "glm-5.3-flash",
+  "name": "GLM 5.3 Flash",
+  "descriptionFr": "Premier modèle natif multimodal de la série GLM-5, au palier Flash : 320 B paramètres au total, 18 B actifs, pour le code efficace et les tâches d'agent à long horizon.",
+  "descriptionEn": "First natively multimodal model of the GLM-5 series, Flash tier: 320B total parameters, 18B active, for efficient coding and long-horizon agent tasks.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Z.ai",
+    "family": "GLM 5",
+    "releasedAt": "2026-08-25",
+    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/zai-org/GLM-5.3-Flash" },
+    "parameters": { "totalB": 320, "activeB": 18 },
+    "modalities": { "input": ["text", "image"], "output": ["text"] },
+    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts", "rapide", "economique"],
+    "homepageUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+    "benchmarks": [
+      { "name": "Agents' Last Exam (ALE-CLI)", "score": 26.3, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash", "category": "Agents" },
+      { "name": "DeepSWE (v1.1)", "score": 63.4, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash", "category": "Code" },
+      { "name": "OmniCompass VL", "score": 30.8, "unit": "points", "publisher": "VCLab-PolyU (OmniCompass)", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle (résultats d'évaluation)", "url": "https://huggingface.co/zai-org/GLM-5.3-Flash", "readAt": "2026-10-29" },
+      { "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/zai-org/GLM-5.3-Flash", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/zai-org/GLM-5.3-Flash", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "raisonnement": "Fiche : paramètre reasoning_effort (low, high, max) ; étiquette DeepInfra « reasoning ».",
+    "code": "Fiche : « efficient coding » ; résultat DeepSWE v1.1 de 63,4 publié sur la fiche.",
+    "agents": "Fiche : « long-horizon agent tasks » ; résultat Agents' Last Exam (ALE-CLI) de 26,3.",
+    "vision": "Fiche : « natively multimodal model » ; pipeline image-text-to-text.",
+    "contexte-long": "DeepInfra : contexte de 1 048 576 jetons, au-dessus du seuil de 500 000.",
+    "poids-ouverts": "Licence MIT déclarée dans les métadonnées du dépôt ; poids publiés sur Hugging Face.",
+    "rapide": "Palier « Flash » de la gamme GLM-5 (règle de palier).",
+    "economique": "Palier « Flash » de la gamme ; la fiche affirme des résultats supérieurs à GLM-5.2 « at one-tenth the price »."
+  },
+  "gaps": [
+    "Tableau de benchmarks de la fiche en image : non lisible ; seuls trois scores figurent en texte (résultats d'évaluation).",
+    "Vidéo en entrée : indiquée par l'étiquette DeepInfra « input-video » mais non confirmée sur la fiche ; non retenue.",
+    "Sortie maximale : non publiée.",
+    "Date de coupure des connaissances : non publiée.",
+    "Date de sortie : date de création du dépôt Hugging Face (API), aucune date de sortie annoncée sur la fiche.",
+    "Diffusion en continu (streaming) : non lue sur une page ; déduite de l'étiquette DeepInfra « openai », à vérifier."
+  ]
+}

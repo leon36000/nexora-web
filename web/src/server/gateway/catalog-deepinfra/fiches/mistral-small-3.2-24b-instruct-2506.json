@@ -1,0 +1,46 @@
+{
+  "deepinfraId": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+  "slug": "mistral-small-3.2-24b-instruct-2506",
+  "name": "Mistral Small 3.2 24B Instruct 2506",
+  "descriptionFr": "Modèle de 24 milliards de paramètres de Mistral AI, mise à jour mineure de Mistral Small 3.1 avec un meilleur suivi des instructions, un appel de fonctions plus robuste et l'entrée d'images.",
+  "descriptionEn": "24-billion-parameter model from Mistral AI, a minor update of Mistral Small 3.1 with better instruction following, more robust function calling and image input.",
+  "capabilities": { "streaming": true, "tools": true, "reasoning": false, "json_mode": true, "vision": true },
+  "sheet": {
+    "author": "Mistral AI",
+    "family": "Mistral Small 3",
+    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506" },
+    "parameters": { "totalB": 24 },
+    "modalities": { "input": ["text", "image"], "output": ["text"] },
+    "tags": ["vision", "agents", "multilingue", "economique", "poids-ouverts"],
+    "homepageUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+    "benchmarks": [
+      { "name": "Arena Hard v2", "score": 43.1, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Chat" },
+      { "name": "Wildbench v2", "score": 65.33, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Chat" },
+      { "name": "MMLU", "score": 80.50, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Connaissances" },
+      { "name": "MMLU Pro (5-shot CoT)", "score": 69.06, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Connaissances" },
+      { "name": "MATH", "score": 69.42, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Mathématiques" },
+      { "name": "GPQA Diamond (5-shot CoT)", "score": 46.13, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Raisonnement" },
+      { "name": "HumanEval Plus - Pass@5", "score": 92.90, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Code" },
+      { "name": "MMMU", "score": 62.50, "unit": "%", "publisher": "Mistral AI", "sourceUrl": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506#benchmark-results", "category": "Multimodal" }
+    ],
+    "sources": [
+      { "label": "Hugging Face, fiche du modèle mistralai/Mistral-Small-3.2-24B-Instruct-2506", "url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506", "readAt": "2026-10-29" },
+      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/mistralai/Mistral-Small-3.2-24B-Instruct-2506", "readAt": "2026-10-29" }
+    ]
+  },
+  "tagsWhy": {
+    "vision": "La fiche documente les entrées image (section Vision et exemples d'images).",
+    "agents": "La fiche décrit un appel de fonctions plus robuste et des exemples d'outils ; le modèle est présenté comme adapté aux tâches d'appel de fonctions.",
+    "multilingue": "Les métadonnées de la fiche listent plus de vingt langues.",
+    "economique": "Palier « Small » de la gamme Mistral, selon la règle du brief (la fiche ne le dit pas en ces termes).",
+    "poids-ouverts": "Licence Apache 2.0 lue dans les métadonnées de la fiche ; poids publiés sur Hugging Face."
+  },
+  "gaps": [
+    "Date de sortie et date de connaissances absentes des pages lues ; la date de création du dépôt Hugging Face n'est pas retenue.",
+    "Les tableaux comparent à Mistral Small 3.1 : seules les valeurs de Small 3.2 sont retenues.",
+    "Aucune longueur de sortie maximale publiée ; maxOutputTokens absent.",
+    "Nombre de paramètres (24B) tiré du nom du modèle publié ; la fiche n'indique pas de total chiffré dans les parties lues.",
+    "Streaming : vérifié au niveau de la documentation DeepInfra de l'API compatible OpenAI seulement.",
+    "Benchmarks retenus : 8 sur 11 de la fiche ; scores de la colonne Small 3.2 uniquement."
+  ]
+}
