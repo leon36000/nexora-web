@@ -63,6 +63,12 @@ export const enCA: Dictionary = {
           href: "/workstudio",
         },
         {
+          label: "Nexora Apps",
+          description:
+            "Code agent, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
+          href: "/apps",
+        },
+        {
           label: "Software suite",
           description: "Code, Corpus, and the Quanta and Helix models.",
           href: "/suite",
@@ -103,6 +109,7 @@ export const enCA: Dictionary = {
           { label: "VPS", href: "/vps" },
           { label: "Models and API", href: "/modeles" },
           { label: "WorkStudio", href: "/workstudio" },
+          { label: "Nexora Apps", href: "/apps" },
           { label: "Software suite", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
           { label: "Nexora Croissance", href: "/croissance" },
@@ -284,6 +291,16 @@ export const enCA: Dictionary = {
       message: {
         label: "Your message",
         hint: "Optional: the context, where you lose time, the tools you use today.",
+        // Text filled in by the "waiting list" links of the Nexora Apps pages (?sujet=apps-…), editable.
+        prefill: {
+          "apps-code": "Waiting list: Nexora Code Agent.",
+          "apps-gitspace": "Waiting list: Nexora Gitspace.",
+          "apps-rag": "Waiting list: Nexora RAG.",
+          "apps-webpilot": "Waiting list: Nexora WebPilot.",
+          "apps-privacy-router": "Question about Nexora Privacy Router: ",
+          "apps-creative": "Waiting list: Nexora Creative.",
+          "apps-outils": "Waiting list: Nexora free tools.",
+        },
       },
       consentMarketing: {
         label: "I would also like to receive news from Nexora AI by email.",

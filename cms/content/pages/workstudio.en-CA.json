@@ -373,6 +373,34 @@
     },
     {
       "collection": "block_section",
+      "role": "Hosted agents: agents published in Nexora AI's catalogue are called through the API. The /agents page is no longer in the menus, WorkStudio links to it.",
+      "claims": ["CL-27", "CL-H01", "CL-12"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "agents-heberges"
+      },
+      "translation": {
+        "title": "Hosted agents, callable by API.",
+        "body": "<p>An agent built in WorkStudio and published in Nexora AI's catalogue can also be called through the API, the way you call a model. Hosted agents are part of WorkStudio: <a href=\"/en/agents/\">see the hosted agents catalogue</a>.</p>",
+        "items": [
+          {
+            "title": "One key, one balance.",
+            "text": "The agent is called with your Nexora AI API key and credit balance, at the real cost of each run."
+          },
+          {
+            "title": "Hosting is shown.",
+            "text": "Each agent's page says where its instance runs, what its limits are and how to call it."
+          },
+          {
+            "title": "Not on sale yet.",
+            "text": "Self-service is not yet open for sale: accounts and payments only work in test mode."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
       "role": "Limites dites franchement.",
       "claims": ["CL-83", "CL-109", "CL-111", "CL-110", "CL-103"],
       "fields": {

@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "date": "2026-10-27",
+  "version": 4,
+  "date": "2026-10-29",
   "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ».",
   "claims": [
     {
@@ -1897,6 +1897,18 @@
       "source_version": "Brochure OPSYS-AI « Vision produit » v2 (octobre 2026), docs/sources/opsys-ai-brochure-fr-v2.pdf, p. 21 (27/10/2026)",
       "approval_status": "en_revue",
       "valid_from": "2026-10-27",
+      "valid_until": null
+    },
+    {
+      "id": "CL-H01",
+      "kind": "produit",
+      "statement": "Les agents conçus dans WorkStudio et publiés au catalogue de Nexora AI s'appellent par l'API de Nexora AI, avec une clé et le solde de crédits, au coût réel de chaque exécution ; la fiche de chaque agent indique l'hébergement de son instance, ses limites et des exemples d'appel.",
+      "scope": "Agents hébergés (jalon S7) : catalogue public /agents. Valeurs d'essai de développement seulement ; le libre-service n'est pas ouvert à la vente (CL-12).",
+      "evidence": "docs/infra.md, section « Agents hébergés » : appel de POST /v1/chat/completions avec le modèle agent/<identifiant>, réservation puis règlement au coût réel, réponse 402 avant tout appel en amont sans solde suffisant. Pages /agents et /agents/<identifiant> du site. Parcours de bout en bout avec un agent WorkStudio hébergé : docs/recette/e2e.md.",
+      "evidence_url": null,
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (28/10/2026) ; journal docs/superpowers/plans/ledger.md (27/10/2026, e2e 8 sur 8)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
       "valid_until": null
     }
   ],

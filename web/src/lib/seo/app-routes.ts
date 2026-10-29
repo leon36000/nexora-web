@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { getAgentsDictionary } from "@/i18n/agents";
+import { APPS, appMeta, appPath, listMeta } from "@/i18n/apps";
 import type { Lang } from "@/i18n/config";
 import { getGatewayDictionary } from "@/i18n/gateway";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -72,6 +73,22 @@ const APP_ROUTES: readonly AppRoute[] = [
       return { title: m.title, description: m.description };
     },
   },
+  {
+    // Nexora Apps : la liste, puis une fiche par outil du registre (`i18n/apps.ts`). Les textes viennent des
+    // dictionnaires, comme les balises des pages : titre et description identiques partout.
+    path: "/apps",
+    dir: "apps",
+    dated: null,
+    meta: (lang) => listMeta(lang),
+  },
+  ...APPS.map(
+    (app): AppRoute => ({
+      path: appPath(app.slug),
+      dir: "apps/[slug]",
+      dated: null,
+      meta: (lang) => appMeta(lang, app.slug),
+    }),
+  ),
   {
     // Jalon VPS : listée seulement si la page existe.
     path: "/vps",

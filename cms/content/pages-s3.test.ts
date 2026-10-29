@@ -394,6 +394,8 @@ describe("S3 : SEO", () => {
         ...KEYS.map((k) => route(l, page(k, l).seo.slug)),
         route(l, "opsys-ai"),
         route(l, "contact"),
+        // routes de l'application (code du site, pas des pages Directus) vers lesquelles une page renvoie
+        route(l, "agents"),
       ]);
     for (const k of KEYS)
       for (const l of LOCALES) {
@@ -765,6 +767,44 @@ describe("S3 : VÉRITÉ", () => {
       21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
     ])
       expect(ids).toContain(`R-${n}`);
+  });
+});
+
+describe("WorkStudio : agents hébergés", () => {
+  // Les agents hébergés appartiennent à WorkStudio : la page /agents n'est plus dans les menus, WorkStudio y renvoie.
+  for (const l of LOCALES)
+    test(`workstudio ${l} : un bloc court renvoie à la page des agents hébergés et cite le registre`, () => {
+      const f = page("workstudio", l);
+      const blocks = f.blocks.filter(
+        (b) =>
+          (b.fields as Record<string, unknown>)?.anchor_id ===
+          "agents-heberges",
+      );
+      expect(blocks).toHaveLength(1);
+      const block = blocks[0] as BlockFile;
+      expect(hrefsOf({ ...f, blocks: [block] })).toContain(route(l, "agents"));
+      // court : un titre, un paragraphe, quelques repères
+      const words = texts(block)
+        .map((t) => plain(t.value))
+        .join(" ")
+        .split(/\s+/)
+        .filter(Boolean).length;
+      expect(words).toBeLessThanOrEqual(120);
+      // chaque affirmation citée existe au registre, et le libre-service non ouvert (CL-12) est rappelé
+      const claims = block.claims ?? [];
+      expect(claims.length).toBeGreaterThan(0);
+      for (const c of claims) expect(CODES.has(c), c).toBe(true);
+      expect(claims).toContain("CL-12");
+      expect(claims).toContain("CL-27");
+    });
+
+  test("le bloc suit la section « Brancher » et précède les limites : jamais en tête de page", () => {
+    const anchors = page("workstudio", "fr-CA").blocks.map(
+      (b) => (b.fields as Record<string, unknown>)?.anchor_id,
+    );
+    const at = anchors.indexOf("agents-heberges");
+    expect(at).toBeGreaterThan(anchors.indexOf("brancher"));
+    expect(at).toBeLessThan(anchors.indexOf("limites"));
   });
 });
 

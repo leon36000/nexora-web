@@ -13,6 +13,7 @@ import {
 import { Button, ButtonLink } from "@/components/ui/button";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
+import { resolveContactSubject } from "@/lib/contact-subject";
 
 type T = Dictionary["contact"];
 type Lang = "fr" | "en";
@@ -41,15 +42,6 @@ const EMPTY: Values = {
 };
 const STEP_ONE: (keyof Values)[] = ["need", "sector", "deployment"];
 const STEP_TWO: (keyof Values)[] = ["name", "email", "company", "message"];
-
-/** Valeur de `?sujet=` (liens des pages) -> besoin présélectionné. */
-const SUBJECTS: Record<string, string> = {
-  demonstration: "opsys-ai",
-  "etude-deploiement": "installation",
-  diagnostic: "diagnostic",
-  "pilote-vision": "vision",
-  "acces-croissance": "croissance",
-};
 
 const INPUT =
   "mt-2 block min-h-11 w-full rounded-md border bg-bg px-3.5 py-2 text-body text-fg placeholder:text-fg-muted";
@@ -92,12 +84,19 @@ export function ContactForm({
     if (errors[key]) setErrors((e) => ({ ...e, [key]: undefined }));
   };
 
-  // Besoin présélectionné par les liens du site (?sujet=demonstration)
+  // Besoin présélectionné (et message prérempli pour les fiches Nexora Apps) par les liens du site (?sujet=…) ;
+  // jamais par-dessus ce que la personne a déjà saisi.
+  const prefills = t.form.message.prefill;
   useEffect(() => {
     const subject = new URLSearchParams(window.location.search).get("sujet");
-    const need = subject ? SUBJECTS[subject] : undefined;
-    if (need) setValues((v) => (v.need === "" ? { ...v, need } : v));
-  }, []);
+    const { need, message } = resolveContactSubject(subject, prefills);
+    if (need || message)
+      setValues((v) => ({
+        ...v,
+        need: v.need === "" && need ? need : v.need,
+        message: v.message === "" && message ? message : v.message,
+      }));
+  }, [prefills]);
 
   // Le widget ALTCHA (≈ 100 Ko) ne se charge qu'à l'étape des coordonnées : la première étape reste légère.
   useEffect(() => {
