@@ -17,7 +17,7 @@ export const APP_STATES = ["disponible", "bientot", "plus_tard"] as const;
 export type AppState = (typeof APP_STATES)[number];
 
 /** Mode d'accès : `inclus` est réservé à Nexora Privacy Router (incluse par défaut, jamais payante). */
-export const APP_ACCESS = [
+const APP_ACCESS = [
   "gratuit",
   "abonnement",
   "usage",
@@ -100,7 +100,7 @@ export const APPS = [
   },
 ] as const satisfies readonly AppDef[];
 
-export type AppSlug = (typeof APPS)[number]["slug"];
+type AppSlug = (typeof APPS)[number]["slug"];
 export type AppContent = AppsDictionary["apps"][AppSlug];
 
 const dictionaries: Record<Lang, AppsDictionary> = {
