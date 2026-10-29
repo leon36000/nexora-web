@@ -73,10 +73,18 @@ const GROUPS: { id: CheckItem["id"]; label: string; codes: string[] }[] = [
   },
 ];
 
+const SECRET_PREVIEW_LABEL = "Clé du fournisseur (non exigée en aperçu)";
+
 export function buildChecklist(
   r: Readiness,
-  ctx: { secretRef: string | null; hasRoutes: boolean },
+  ctx: {
+    secretRef: string | null;
+    hasRoutes: boolean;
+    /** `preview` : la clé du fournisseur n'est pas exigée (la garde du serveur ne la réclame pas). */
+    availability?: "live" | "preview";
+  },
 ): CheckItem[] {
+  const preview = ctx.availability === "preview";
   const items: CheckItem[] = [];
   for (const g of GROUPS) {
     if (g.id === "routes" && !ctx.hasRoutes) continue;
@@ -84,14 +92,16 @@ export function buildChecklist(
     const okDetail =
       g.id === "fx" && r.fx
         ? `1 $ US = ${formatDecimalMicro(r.fx.usdToCadMicro)} $ CA`
-        : g.id === "secret"
-          ? ctx.secretRef
-            ? `Référence « ${ctx.secretRef} » présente dans le Coffre.`
-            : "Aucune clé requise."
-          : "Conforme.";
+        : g.id === "secret" && preview
+          ? "Non exigée en aperçu : elle le sera au moment de « Passer en service »."
+          : g.id === "secret"
+            ? ctx.secretRef
+              ? `Référence « ${ctx.secretRef} » présente dans le Coffre.`
+              : "Aucune clé requise."
+            : "Conforme.";
     items.push({
       id: g.id,
-      label: g.label,
+      label: preview && g.id === "secret" ? SECRET_PREVIEW_LABEL : g.label,
       ok: found.length === 0,
       detail: found.length === 0 ? okDetail : `${found.length} problème(s).`,
       lines: found.map(line),

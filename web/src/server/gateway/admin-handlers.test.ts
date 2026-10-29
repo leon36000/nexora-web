@@ -765,3 +765,120 @@ describe("fournisseurs : hôte de la clé (R9)", () => {
     expect(bodies.join("\n")).not.toContain("sk-vk-provider");
   });
 });
+
+describe("modèles en aperçu : API d'administration", () => {
+  let providerId = "";
+  const body = (publicId: string, extra: Record<string, unknown> = {}) => ({
+    publicId,
+    name: publicId,
+    providerId,
+    upstreamId: "org/Modele",
+    contextMax: 8000,
+    ...extra,
+  });
+  const price = {
+    upstreamInputUsdMicro: "500000",
+    upstreamOutputUsdMicro: "1000000",
+    marginBps: 1000,
+    marginFloorBps: 1000,
+  };
+
+  it("accepte et rend la disponibilité d'un modèle (« live » par défaut), refuse une valeur inconnue", async () => {
+    const provider = await call("POST", "providers", {
+      code: "prov-apercu",
+      name: "Fournisseur sans clé",
+      type: "openai_compatible",
+      baseUrl: "http://provider.test/v1",
+      secretRef: "llm.apercu-absent",
+      region: "autre",
+    });
+    expect(provider.status).toBe(201);
+    providerId = provider.json.id;
+
+    const live = await call("POST", "models", body("nexora/apercu-defaut"));
+    expect(live.status).toBe(201);
+    expect(live.json.availability).toBe("live");
+    const preview = await call(
+      "POST",
+      "models",
+      body("nexora/apercu-1", { availability: "preview" }),
+    );
+    expect(preview.status).toBe(201);
+    expect(preview.json.availability).toBe("preview");
+    const bad = await call(
+      "POST",
+      "models",
+      body("nexora/apercu-2", { availability: "demain" }),
+    );
+    expect(bad.status).toBe(422);
+    expect(bad.json.error).toBe("invalid_request");
+    const badPatch = await call("PATCH", `models/${preview.json.id}`, {
+      availability: "demain",
+    });
+    expect(badPatch.status).toBe(422);
+
+    const one = await call("GET", `models/${preview.json.id}`);
+    expect(one.json.availability).toBe("preview");
+    const list = await call("GET", "models");
+    const found = list.json.models.find(
+      (m: { publicId: string }) => m.publicId === "nexora/apercu-1",
+    );
+    expect(found.availability).toBe("preview");
+    const overview = await call("GET", "");
+    expect(
+      overview.json.models.find(
+        (m: { publicId: string }) => m.publicId === "nexora/apercu-1",
+      ).availability,
+    ).toBe("preview");
+  });
+
+  it("les contrôles préalables d'un modèle en aperçu ne réclament pas la clé ; ceux d'un modèle appelable, oui", async () => {
+    const list = await call("GET", "models");
+    const idOf = (publicId: string) =>
+      list.json.models.find(
+        (m: { publicId: string }) => m.publicId === publicId,
+      ).id as string;
+    for (const publicId of ["nexora/apercu-1", "nexora/apercu-defaut"])
+      expect(
+        (await call("POST", `models/${idOf(publicId)}/prices`, price)).status,
+      ).toBe(201);
+    const preview = await call(
+      "GET",
+      `models/${idOf("nexora/apercu-1")}/readiness`,
+    );
+    expect(preview.json.ready).toBe(true);
+    const live = await call(
+      "GET",
+      `models/${idOf("nexora/apercu-defaut")}/readiness`,
+    );
+    expect(live.json.ready).toBe(false);
+    expect(JSON.stringify(live.json.issues)).toContain("secret_missing");
+  });
+
+  it("« Passer en service » : refusé sans clé (le modèle reste en aperçu), accepté une fois la clé saisie", async () => {
+    const list = await call("GET", "models");
+    const preview = list.json.models.find(
+      (m: { publicId: string }) => m.publicId === "nexora/apercu-1",
+    );
+    const refused = await call("PATCH", `models/${preview.id}`, {
+      availability: "live",
+    });
+    expect(refused.status).toBe(422);
+    expect(refused.json.error).toBe("publication_refused");
+    expect(JSON.stringify(refused.json.issues)).toContain("secret_missing");
+    expect((await call("GET", `models/${preview.id}`)).json.availability).toBe(
+      "preview",
+    );
+
+    await putSecret(t.db, keyring, {
+      ref: "llm.apercu-absent",
+      value: "sk-vk-apercu-secret-0002",
+      kind: "llm_provider",
+    });
+    const ok = await call("PATCH", `models/${preview.id}`, {
+      availability: "live",
+    });
+    expect(ok.status).toBe(200);
+    expect(ok.json.availability).toBe("live");
+  });
+});

@@ -101,3 +101,54 @@ describe("contrôles préalables à la publication", () => {
     expect(items.at(-1)).toMatchObject({ id: "other", ok: false });
   });
 });
+
+describe("contrôles préalables d'un modèle en aperçu", () => {
+  const fxOk = {
+    id: "f",
+    usdToCadMicro: "1400000",
+    effectiveAt: "2026-10-29T00:00:00.000Z",
+  };
+  test("la clé n'est pas exigée : le contrôle est vert et le dit", () => {
+    const items = buildChecklist(
+      { ready: true, issues: [], fx: fxOk },
+      { secretRef: "llm.deepinfra", hasRoutes: false, availability: "preview" },
+    );
+    const secret = items.find((i) => i.id === "secret");
+    expect(secret?.ok).toBe(true);
+    expect(secret?.label).toContain("aperçu");
+    expect(secret?.detail).toContain("Passer en service");
+    expect(items.every((i) => i.ok)).toBe(true);
+  });
+  test("un modèle en service garde le contrôle de la clé", () => {
+    const items = buildChecklist(
+      {
+        ready: false,
+        fx: fxOk,
+        issues: [
+          { code: "secret_missing", model: "nexora/x", provider: "deepinfra" },
+        ],
+      },
+      { secretRef: "llm.deepinfra", hasRoutes: false, availability: "live" },
+    );
+    const secret = items.find((i) => i.id === "secret");
+    expect(secret?.ok).toBe(false);
+    expect(secret?.label).toBe("Clé du fournisseur dans le Coffre");
+  });
+  test("un aperçu ne cache pas les autres problèmes (prix, fournisseur désactivé)", () => {
+    const items = buildChecklist(
+      {
+        ready: false,
+        fx: fxOk,
+        issues: [
+          { code: "price_missing", model: "nexora/x" },
+          { code: "provider_disabled", model: "nexora/x" },
+        ],
+      },
+      { secretRef: "llm.deepinfra", hasRoutes: false, availability: "preview" },
+    );
+    expect(items.filter((i) => !i.ok).map((i) => i.id)).toEqual([
+      "price",
+      "provider",
+    ]);
+  });
+});

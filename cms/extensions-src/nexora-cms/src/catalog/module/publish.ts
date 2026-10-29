@@ -8,6 +8,7 @@ export type PublishStep =
   | "model_draft"
   | "model_approved"
   | "model_published"
+  | "model_live"
   | "version_drafted"
   | "version_approved"
   | "version_published"
@@ -17,6 +18,7 @@ export const STEP_LABELS: Record<PublishStep, string> = {
   model_draft: "Modèle remis en brouillon",
   model_approved: "Modèle approuvé",
   model_published: "Modèle publié",
+  model_live: "Modèle passé en service",
   version_drafted: "Version du catalogue préparée",
   version_approved: "Version approuvée",
   version_published: "Version publiée : le modèle est en ligne",
@@ -78,6 +80,25 @@ export async function publishModel(
     onStep("model_published");
   }
 
+  return publishCatalog(call, options, onStep);
+}
+
+/**
+ * « Passer en service » : un modèle publié en aperçu devient appelable. Le serveur applique la garde COMPLÈTE (clé du
+ * fournisseur dans le Coffre, prix, routes) avant d'accepter ; s'il refuse, rien n'est publié et les problèmes sont
+ * rendus. Sinon, une nouvelle version du catalogue (sans la mention d'aperçu) est mise en ligne.
+ */
+export async function promoteToLive(
+  call: CatalogCall,
+  model: { id: string },
+  options: { sync: boolean },
+  onStep: (step: PublishStep) => void = () => {},
+): Promise<PublishOutcome> {
+  const r = await call("PATCH", `models/${model.id}`, {
+    availability: "live",
+  });
+  if (!r.ok) return fail("model_live", r);
+  onStep("model_live");
   return publishCatalog(call, options, onStep);
 }
 

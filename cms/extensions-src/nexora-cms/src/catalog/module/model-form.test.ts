@@ -255,3 +255,22 @@ describe("aides", () => {
     expect(sheetExtras({}).benchmarks).toEqual([]);
   });
 });
+
+describe("disponibilité (aperçu) dans l'assistant", () => {
+  test("un nouveau modèle est en service par défaut, l'aperçu est une case à cocher", () => {
+    expect(emptyModelForm().availability).toBe("live");
+  });
+  test("un modèle enregistré en aperçu rouvre en aperçu ; sans mention, en service", () => {
+    expect(
+      modelToForm({ ...deepseek, availability: "preview" } as never)
+        .availability,
+    ).toBe("preview");
+    expect(modelToForm(deepseek as never).availability).toBe("live");
+  });
+  test("le corps envoyé porte la disponibilité choisie", () => {
+    const form = { ...emptyModelForm(), availability: "preview" as const };
+    expect(formToBody(form, null).availability).toBe("preview");
+    const live = modelToForm(deepseek as never);
+    expect(formToBody(live, deepseek as never).availability).toBe("live");
+  });
+});

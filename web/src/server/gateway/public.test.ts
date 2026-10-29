@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { toPublicModel } from "./public";
+import { publicModels, toPublicModel } from "./public";
 import type { SnapshotModel, SnapshotProvider } from "./snapshot";
 
 const provider: SnapshotProvider = {
@@ -148,5 +148,24 @@ describe("vue publique d'un modèle", () => {
       toPublicModel({ ...model, availability: "preview" }, provider)
         ?.availability,
     ).toBe("preview");
+  });
+
+  it("le catalogue public liste un modèle en aperçu avec sa fiche et ses prix, sans rien qui trahisse l'amont", () => {
+    const list = publicModels({
+      schema: 1,
+      fx: null,
+      providers: [provider],
+      models: [{ ...model, availability: "preview" }],
+    });
+    expect(list).toHaveLength(1);
+    expect(list[0]).toMatchObject({
+      id: model.publicId,
+      availability: "preview",
+      inputPerMillion: "0.462",
+    });
+    expect(list[0]?.sheet.benchmarks).toHaveLength(1);
+    const text = JSON.stringify(list);
+    expect(text).not.toContain("llm.deepseek");
+    expect(text).not.toContain("api.deepseek.com");
   });
 });

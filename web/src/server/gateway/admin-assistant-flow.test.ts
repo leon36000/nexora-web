@@ -40,7 +40,8 @@ import { loadKeyring } from "../vault/crypto";
 import { putSecret, readSecret } from "../vault/store";
 import { type CatalogAdminDeps, handleCatalogAdmin } from "./admin-handlers";
 import { addFxRate, approveFxRate } from "./catalog";
-import { AI_MODEL_DRAFTS, seedAiModels } from "./catalog-ia-seed";
+import { DEEPINFRA_PROVIDER, loadDeepinfraCatalog } from "./deepinfra-loader";
+import { buildSource } from "./deepinfra-source";
 
 /**
  * Essai de bout en bout des assistants : le CODE DU MODULE (formulaires, validation, corps, orchestration de la
@@ -116,25 +117,96 @@ const must = async <T = any>(
   return r.data;
 };
 
+/** Modèles INVENTÉS pour l'essai (fiche avec mesure sourcée et sources) : le chargement DeepInfra les met en aperçu. */
+const fixtureRow = (
+  deepinfraId: string,
+  extra: Record<string, unknown> = {},
+) => ({
+  deepinfraId,
+  kind: "chat",
+  contextMax: 131072,
+  quantization: "fp8",
+  upstreamInputUsdMicro: 200000,
+  upstreamOutputUsdMicro: 600000,
+  cacheReadRate: 0.2,
+  ...extra,
+});
+const fixtureFiche = (deepinfraId: string, name: string) => ({
+  deepinfraId,
+  slug: (deepinfraId.split("/").pop() ?? "").toLowerCase(),
+  name,
+  descriptionFr: `${name} : modèle d'essai.`,
+  descriptionEn: `${name}: test model.`,
+  capabilities: { streaming: true, tools: true, reasoning: true },
+  maxOutputTokens: 16384,
+  sheet: {
+    author: "Acme",
+    family: "Acme 1",
+    tags: ["code", "agents"],
+    license: { name: "MIT", openWeights: true },
+    parameters: { totalB: 30, activeB: 3 },
+    modalities: { input: ["text"], output: ["text"] },
+    benchmarks: [
+      {
+        name: "Épreuve d'essai",
+        score: 50,
+        unit: "%",
+        publisher: "Acme",
+        sourceUrl: "https://exemple.test/epreuve",
+        category: "Code",
+      },
+    ],
+    sources: [
+      {
+        label: "Fiche d'essai",
+        url: "https://exemple.test/fiche",
+        readAt: "2026-10-29",
+      },
+    ],
+  },
+});
+const loaded = buildSource({
+  selection: {
+    readAt: "2026-10-29",
+    source: "https://api.deepinfra.com/models/list",
+    models: [
+      fixtureRow("acme/Alpha-30B-A3B"),
+      fixtureRow("acme/Beta-8B", {
+        upstreamInputUsdMicro: 60000,
+        upstreamOutputUsdMicro: 160000,
+        cacheReadRate: null,
+      }),
+    ],
+  },
+  fiches: [
+    {
+      file: "alpha-30b-a3b.json",
+      raw: fixtureFiche("acme/Alpha-30B-A3B", "Alpha 30B"),
+    },
+    { file: "beta-8b.json", raw: fixtureFiche("acme/Beta-8B", "Beta 8B") },
+  ],
+});
+
 beforeAll(async () => {
   t = await createTestDatabase();
   const fx = await addFxRate(t.db, { usdToCadMicro: 1_400_000n });
   await approveFxRate(t.db, fx.id, "essai");
-  await seedAiModels(t.db);
+  await loadDeepinfraCatalog(t.db, loaded);
 });
 afterAll(async () => {
   await t.drop();
 });
 
-describe("les cinq modèles de départ dans les assistants", () => {
+describe("les modèles chargés (DeepInfra, aperçu) dans les assistants", () => {
   it("chaque modèle s'ouvre complètement et se réenregistre sans rien perdre (fiche, mesures, sources, routage, capacités)", async () => {
     const overview = await must("GET", "");
-    expect(overview.models).toHaveLength(AI_MODEL_DRAFTS.length);
-    for (const draft of AI_MODEL_DRAFTS) {
+    expect(overview.models).toHaveLength(loaded.entries.length);
+    expect(loaded.problems).toEqual([]);
+    for (const draft of loaded.entries) {
       const record = overview.models.find(
-        (m: { publicId: string }) => m.publicId === draft.model.publicId,
+        (m: { publicId: string }) => m.publicId === draft.publicId,
       );
-      expect(record, draft.model.publicId).toBeDefined();
+      expect(record, draft.publicId).toBeDefined();
       const form = modelToForm(record);
       // Les étapes de l'assistant acceptent le modèle tel quel.
       const others = overview.models.map(
@@ -143,7 +215,7 @@ describe("les cinq modèles de départ dans les assistants", () => {
       for (const step of ["sheet", "provider"] as const)
         expect(
           validateStep(step, form, others),
-          `${draft.model.publicId} / ${step}`,
+          `${draft.publicId} / ${step}`,
         ).toEqual({});
       const body = formToBody(form, record);
       expect(body.sheet).toEqual(record.sheet);
@@ -163,11 +235,9 @@ describe("les cinq modèles de départ dans les assistants", () => {
       // Les mesures et sources sont affichées (lecture seule), une ligne chacune.
       const extras = sheetExtras(record.sheet);
       expect(extras.benchmarks).toHaveLength(
-        draft.model.sheet?.benchmarks?.length ?? 0,
+        draft.sheet.benchmarks?.length ?? 0,
       );
-      expect(extras.sources).toHaveLength(
-        draft.model.sheet?.sources?.length ?? 0,
-      );
+      expect(extras.sources).toHaveLength(draft.sheet.sources?.length ?? 0);
       // Et la fiche enregistrée est acceptée telle quelle par l'API (aucune perte, aucune valeur refusée).
       await must("PATCH", `models/${record.id}`, body);
     }
@@ -175,10 +245,10 @@ describe("les cinq modèles de départ dans les assistants", () => {
 
   it("l'écran des prix rouvre chaque prix de départ à l'identique : ventes, plages horaires, cache écrit ; aucune version parasite", async () => {
     const fx = (await must("GET", "")).currentFx.usdToCadMicro;
-    for (const draft of AI_MODEL_DRAFTS) {
+    for (const draft of loaded.entries) {
       const overview = await must("GET", "");
       const model = overview.models.find(
-        (m: { publicId: string }) => m.publicId === draft.model.publicId,
+        (m: { publicId: string }) => m.publicId === draft.publicId,
       );
       const { prices } = await must("GET", `models/${model.id}/prices`);
       const current = prices[0];
@@ -187,12 +257,12 @@ describe("les cinq modèles de départ dans les assistants", () => {
         fxMicro: BigInt(fx),
         kind: model.kind,
       });
-      expect(preview.problems, draft.model.publicId).toEqual([]);
-      expect(preview.ok, draft.model.publicId).toBe(true);
+      expect(preview.problems, draft.publicId).toEqual([]);
+      expect(preview.ok, draft.publicId).toBe(true);
       expect(preview.shape).not.toBeNull();
       expect(
         isSamePrice(shapeOfRecord(current), preview.shape),
-        `${draft.model.publicId} : prix identique`,
+        `${draft.publicId} : prix identique`,
       ).toBe(true);
       const body = buildPriceBody(form, preview) as Record<string, unknown>;
       // Les montants envoyés sont exactement ceux enregistrés.
@@ -215,27 +285,36 @@ describe("les cinq modèles de départ dans les assistants", () => {
   });
 });
 
-describe("ajouter un sixième fournisseur et son modèle, entièrement par l'interface", () => {
+describe("DeepInfra chargé : clé, ajout d'un modèle, route de secours et publication, entièrement par l'interface", () => {
   let providerId = "";
   let modelId = "";
 
-  it("fournisseur : départ rapide DeepInfra, enregistrement désactivé, clé absente puis déposée, test de connexion, activation", async () => {
+  it("fournisseur : DeepInfra chargé par le script (actif, clé absente), clé déposée, test de connexion ; le départ rapide de l'assistant décrit le même fournisseur", async () => {
     const form = applyPreset(emptyProviderForm(), "deepinfra");
+    // Le départ rapide et le chargement parlent du même fournisseur (adresse, type, référence du Coffre).
+    expect(providerBody(form)).toMatchObject({
+      name: DEEPINFRA_PROVIDER.name,
+      type: DEEPINFRA_PROVIDER.type,
+      baseUrl: DEEPINFRA_PROVIDER.baseUrl,
+      secretRef: DEEPINFRA_PROVIDER.secretRef,
+      code: DEEPINFRA_PROVIDER.code,
+    });
+    // Le code est déjà pris : l'assistant le dit avant tout envoi.
     expect(
       validateProviderForm(
         form,
         (await must("GET", "providers")).providers.map(
           (p: { code: string }) => p.code,
         ),
-      ),
-    ).toEqual({});
-    const created = await must("POST", "providers", providerBody(form));
-    providerId = created.id;
-    expect(created.enabled).toBe(false);
-
-    let provider = (await must("GET", "providers")).providers.find(
-      (p: { id: string }) => p.id === providerId,
+      ).code,
+    ).toContain("déjà pris");
+    const existing = (await must("GET", "providers")).providers.find(
+      (p: { code: string }) => p.code === "deepinfra",
     );
+    providerId = existing.id;
+    expect(existing.enabled).toBe(true);
+
+    let provider = existing;
     expect(provider.secretPresent).toBe(false);
     expect(providerNextStep(provider).id).toBe("secret");
 
@@ -265,7 +344,6 @@ describe("ajouter un sixième fournisseur et son modèle, entièrement par l'int
     expect(probe?.auth).toBe("Bearer sk-di-secret-0001");
     expect(JSON.stringify(test)).not.toContain("sk-di-secret");
 
-    await must("PATCH", `providers/${providerId}`, { enabled: true });
     provider = (await must("GET", "providers")).providers.find(
       (p: { id: string }) => p.id === providerId,
     );

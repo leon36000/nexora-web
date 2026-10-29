@@ -19,6 +19,14 @@ const MODEL_STATUS: Record<string, StateView> = {
 export const modelStatusView = (s: string): StateView =>
   MODEL_STATUS[s] ?? { label: s, tone: "neutral", icon: "help" };
 
+const AVAILABILITY: Record<string, StateView> = {
+  live: { label: "En service", tone: "success", icon: "bolt" },
+  preview: { label: "Aperçu", tone: "warning", icon: "visibility" },
+};
+/** Un modèle enregistré avant l'aperçu n'a pas la mention : il est en service. */
+export const availabilityView = (a: string | undefined): StateView =>
+  AVAILABILITY[a ?? "live"] ?? (AVAILABILITY.live as StateView);
+
 const HEALTH: Record<string, StateView> = {
   ok: { label: "Connexion vérifiée", tone: "success", icon: "check_circle" },
   error: { label: "Connexion en échec", tone: "danger", icon: "error" },

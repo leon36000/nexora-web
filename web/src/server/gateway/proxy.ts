@@ -276,6 +276,8 @@ export async function handleModels(
         if (!m.price) return false;
         if (m.sunsetAt && Date.parse(m.sunsetAt) <= now.getTime()) return false;
         if (!providers.get(m.providerId)?.enabled) return false;
+        // Un modèle en aperçu n'est pas appelable : il reste au catalogue public (pages), pas dans cette liste.
+        if (m.availability === "preview") return false;
         return key?.allowedModels
           ? key.allowedModels.includes(m.publicId)
           : m.visibility === "public";
@@ -977,6 +979,9 @@ async function handleInference(
         : null;
       if (!version || !found) return E.modelNotFound(parsed.model, rateHeaders);
       const model = found.model;
+      // Aperçu : visible au catalogue, jamais appelable. Refus AVANT la confidentialité, l'estimation, la réservation
+      // et tout appel amont.
+      if (model.availability === "preview") return E.modelPreview(rateHeaders);
       const gate = await privacyGate(model.publicId);
       if (!gate.ok) return gate.response;
       const planned =

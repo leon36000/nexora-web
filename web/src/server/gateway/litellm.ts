@@ -303,6 +303,9 @@ export async function syncLitellm(
     const wanted: Deployment[] = [];
     for (const model of published.snapshot.models) {
       if (model.sunsetAt && Date.parse(model.sunsetAt) <= nowMs) continue;
+      // Aperçu : pas appelable, donc ni déploiement ni crédential (et aucune lecture de secret) ; un déploiement
+      // déjà poussé pour ce modèle disparaît au passage suivant.
+      if (model.availability === "preview") continue;
       const main = providers.get(model.providerId);
       if (main?.enabled)
         wanted.push({

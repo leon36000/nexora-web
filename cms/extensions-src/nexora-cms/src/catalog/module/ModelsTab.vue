@@ -21,7 +21,8 @@
 						</td>
 						<td>{{ providerName(m.providerId) }}<br /><small>{{ m.upstreamId }}</small></td>
 						<td>
-							<span :class="'chip ' + modelStatusView(m.status).tone">{{ modelStatusView(m.status).label }}</span><br />
+							<span :class="'chip ' + modelStatusView(m.status).tone">{{ modelStatusView(m.status).label }}</span>
+							<span v-if="m.status !== 'retired'" :class="'chip ' + availabilityView(m.availability).tone" :title="m.availability === 'preview' ? 'Visible au catalogue, pas encore appelable' : 'Appelable'">{{ availabilityView(m.availability).label }}</span><br />
 							<small>{{ regionLabel(m.residency) }}</small>
 						</td>
 						<td>
@@ -32,6 +33,7 @@
 							<v-button x-small @click="open('wizard', m)">Modifier</v-button>
 							<v-button x-small secondary @click="open('prices', m)">Modifier les prix</v-button>
 							<v-button v-if="m.status !== 'published' && m.status !== 'retired'" x-small secondary @click="open('wizard', m, 'publish')">Publier</v-button>
+							<v-button v-if="canPromote(m)" x-small :loading="busy === 'live' + m.id" @click="goLive(m)">Passer en service</v-button>
 							<v-button v-if="m.status === 'published'" x-small secondary :loading="busy === m.id" @click="retire(m)">Retirer</v-button>
 						</td>
 					</tr>
@@ -46,8 +48,10 @@ import { ref } from 'vue';
 import type { CatalogCall } from './errors';
 import ModelWizard from './ModelWizard.vue';
 import PriceEditor from './PriceEditor.vue';
-import { publishCatalog } from './publish';
-import { modelStatusView, priceSummary, regionLabel } from './view';
+import { canPromote } from './availability';
+import { describeIssue } from './format';
+import { promoteToLive, publishCatalog } from './publish';
+import { availabilityView, modelStatusView, priceSummary, regionLabel } from './view';
 
 const props = defineProps<{ data: any; call: CatalogCall }>();
 const emit = defineEmits<{ (e: 'changed'): void; (e: 'notify', message: string, kind?: 'success' | 'danger'): void; (e: 'goto', tab: string): void }>();
@@ -66,6 +70,16 @@ function open(m: 'wizard' | 'prices', model: any, step = 'identity') {
 function close() {
 	mode.value = 'list';
 	target.value = null;
+}
+
+async function goLive(m: any) {
+	if (!window.confirm(`Passer « ${m.publicId} » en service ? Les contrôles complets s’appliquent (clé du fournisseur dans le Coffre) et une nouvelle version du catalogue sera publiée : le modèle deviendra appelable.`)) return;
+	busy.value = 'live' + m.id;
+	const r = await promoteToLive(props.call, m, { sync: !!props.data.litellmConfigured });
+	if (r.ok) emit('notify', `${m.publicId} est en service (version ${r.version}).`, 'success');
+	else emit('notify', `${m.publicId} reste en aperçu : ${r.error.text}${r.error.issues.length ? ' ' + r.error.issues.map((i: any) => describeIssue(i)).join(' ; ') : ''}`, 'danger');
+	emit('changed');
+	busy.value = '';
 }
 
 async function retire(m: any) {

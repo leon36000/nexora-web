@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AI_MODEL_DRAFTS, MARGIN_BPS } from "../gateway/catalog-ia-seed";
+import { DEFAULT_MARGIN_BPS } from "../gateway/catalog";
 import { type PerMillion, sellFromMargin } from "../gateway/pricing";
 import {
   INCLUDED_OUTPUT_SHARE_BPS,
@@ -11,12 +11,22 @@ import {
 /** Taux de la Banque du Canada du 26/10/2026 (docs/recherche/10) : référence du calcul, le taux approuvé fait foi en production. */
 const FX_REFERENCE = 1_402_500n;
 
+/**
+ * Coûts amont de la feuille de départ du 28/10/2026 (fournisseurs directs, tarif de pointe), micro-USD par million.
+ * Ils servent de référence au calcul du forfait : le catalogue DeepInfra (29/10/2026) a d'autres prix, et la valeur
+ * du forfait suit le prix PUBLIÉ du modèle par défaut (voir docs/catalogue-deepinfra.md).
+ */
+const REFERENCE_UPSTREAM: Record<string, { input: bigint; output: bigint }> = {
+  "nexora/deepseek-v4.1-flash-1017": { input: 300_000n, output: 1_200_000n },
+  "nexora/glm-5.3": { input: 1_400_000n, output: 4_400_000n },
+};
+
 function salePriceOf(publicId: string): PerMillion {
-  const draft = AI_MODEL_DRAFTS.find((d) => d.model.publicId === publicId);
-  if (!draft) throw new Error(`modèle absent de la feuille de départ`);
+  const ref = REFERENCE_UPSTREAM[publicId];
+  if (!ref) throw new Error("modèle absent de la référence de calcul");
   return {
-    input: sellFromMargin(draft.reference.input, FX_REFERENCE, MARGIN_BPS),
-    output: sellFromMargin(draft.reference.output, FX_REFERENCE, MARGIN_BPS),
+    input: sellFromMargin(ref.input, FX_REFERENCE, DEFAULT_MARGIN_BPS),
+    output: sellFromMargin(ref.output, FX_REFERENCE, DEFAULT_MARGIN_BPS),
     cache: null,
   };
 }
@@ -27,7 +37,7 @@ describe("forfait de 5 millions de jetons inclus", () => {
     expect(INCLUDED_OUTPUT_SHARE_BPS).toBe(3000);
   });
 
-  it("valeur du modèle par défaut (tarif de pointe de la feuille de départ, taux de référence, marge de 10 %) : 440 cents", () => {
+  it("valeur du modèle par défaut (tarif de pointe de référence, taux de référence, marge de 10 %) : 440 cents", () => {
     const price = salePriceOf("nexora/deepseek-v4.1-flash-1017");
     // 0,462825 $ / M en entrée et 1,8513 $ / M en sortie.
     expect(price).toMatchObject({ input: 462_825n, output: 1_851_300n });

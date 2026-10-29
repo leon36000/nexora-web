@@ -33,6 +33,8 @@ export interface TestModelSpec {
   publicId: string;
   kind?: "chat" | "embedding";
   visibility?: "public" | "unlisted" | "private";
+  /** `preview` : visible au catalogue, pas encore appelable. */
+  availability?: "live" | "preview";
   sellInput?: bigint;
   sellOutput?: bigint;
   sellCache?: bigint | null;
@@ -80,6 +82,7 @@ export async function publishTestCatalog(db: Database, specs: TestModelSpec[]) {
       contextMax: spec.contextMax ?? 32_000,
       maxOutputTokens: spec.maxOutputTokens ?? 1000,
       visibility: spec.visibility ?? "public",
+      availability: spec.availability ?? "live",
       capabilities: { streaming: true },
     });
     await addPrice(db, model.id, {

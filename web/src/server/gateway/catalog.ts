@@ -8,6 +8,7 @@ import {
   fxRates,
   inArray,
   isNull,
+  type ModelAvailability,
   type ModelCapabilities,
   type ModelKind,
   type ModelRouting,
@@ -176,6 +177,8 @@ export interface ModelInput {
   capabilities?: ModelCapabilities;
   residency?: Region;
   visibility?: ModelVisibility;
+  /** `preview` : visible au catalogue, pas encore appelable (clé du fournisseur non exigée). Défaut : `live`. */
+  availability?: ModelAvailability;
   sunsetAt?: Date | null;
   sheet?: ModelSheet;
   routing?: ModelRouting;
@@ -225,6 +228,17 @@ export async function updateModel(
       `passage de « ${current.status} » à « ${patch.status} » impossible`,
     );
   if (patch.providerId) await getProvider(db, patch.providerId);
+  if (patch.availability === "live" && current.availability === "preview") {
+    // Passer en service : la garde COMPLÈTE s'applique, clé du fournisseur et des routes comprises. La nouvelle
+    // version du catalogue qui retire la mention d'aperçu est ensuite publiée par la chaîne officielle.
+    const issues = await modelIssues(db, id, now, vaultCheck(db), "live");
+    if (issues.length > 0)
+      throw new CatalogError(
+        "publication_refused",
+        "le modèle ne peut pas passer en service",
+        issues,
+      );
+  }
   if (patch.status === "approved" || patch.status === "published") {
     // Approuver ou publier un modèle exige un prix valide (jamais 0 $, jamais sous le plancher).
     const issues = await modelIssues(db, id, now);
@@ -249,8 +263,13 @@ async function modelIssues(
   modelId: string,
   now: Date,
   vault?: VaultCheck,
+  /** Disponibilité à juger (passage en service) ; défaut : celle du modèle. */
+  availability?: ModelAvailability,
 ): Promise<CatalogIssue[]> {
-  const model = await getModel(db, modelId);
+  const model = {
+    ...(await getModel(db, modelId)),
+    ...(availability ? { availability } : {}),
+  };
   const fx = await currentFx(db, now);
   const price = await currentPrice(db, modelId, now);
   const provider = await getProvider(db, model.providerId);
@@ -748,6 +767,10 @@ function snapshotModel(
     capabilities: m.capabilities,
     residency: m.residency,
     visibility: m.visibility,
+    // Seul l'aperçu est écrit : la version d'un modèle appelable reste identique à celles d'avant l'aperçu.
+    ...(m.availability === "preview"
+      ? { availability: "preview" as const }
+      : {}),
     sunsetAt: iso(m.sunsetAt),
     sheet: m.sheet,
     routing: m.routing,

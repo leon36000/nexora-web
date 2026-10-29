@@ -28,7 +28,7 @@ bash deploy/init-env.sh                                   # génère deploy/.env
 bash scripts/init-dev-env.sh                              # génère .env et web/.env.local
 docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d db   # base prête en ~6 s
 bun install --frozen-lockfile
-bun packages/db/src/migrate-cli.ts                        # applique les 26 migrations (0000 à 0025)
+bun packages/db/src/migrate-cli.ts                        # applique les 27 migrations (0000 à 0026)
 (cd web && npx vitest run)                                # environ 1 970 tests ; les paquets (db, privacy, webpilot, net) et le worker ont leurs propres suites : `npx vitest run` dans chaque dossier ; le CMS : `bun test` dans cms/
 ```
 
@@ -37,11 +37,11 @@ Pile complète (Directus, LiteLLM, simulateur Stripe, Mailpit) : retirer `db` de
 ## Recharger le catalogue de modèles
 
 ```bash
-bun run --cwd web models:seed     # fournisseurs (DeepSeek, Z.ai, MiniMax, Moonshot, OpenRouter désactivé) + 5 modèles en brouillon
+bun run --cwd web models:seed     # fournisseurs (DeepInfra actif, OpenRouter désactivé) + modèles du dossier catalog-deepinfra/, en aperçu (voir docs/catalogue-deepinfra.md)
 bun run --cwd web house:org       # organisation « maison » (accès gratuit) ; ajouter --key FICHIER pour créer sa clé
 ```
 
-Prérequis du chargement : un taux de change USD→CAD approuvé (module « Modèles »). Rien n'est publié tant que le fondateur n'a pas saisi les clés des fournisseurs dans le Coffre (`llm.deepseek`, `llm.zai`, `llm.minimax`, `llm.moonshot`, type `llm_provider`) et approuvé les modèles.
+Prérequis du chargement : un taux de change USD→CAD approuvé (module « Modèles »), sinon les modèles sont chargés en brouillon sans prix. Les modèles sont publiés **en aperçu** (visibles, pas appelables) sans clé ; pour les rendre appelables, saisir la clé de DeepInfra dans le Coffre (`llm.deepinfra`, type `llm_provider`) puis « Passer en service » (guide de l'opérateur §8.1 bis, H).
 
 ## Reprise après sinistre avec des données
 
