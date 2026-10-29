@@ -112,7 +112,7 @@
       },
       "translation": {
         "title": "Pourquoi un seul cas d'abord.",
-        "body": "<p>Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèle aussi ce que votre entreprise attend vraiment du système, ce qu'aucun schéma ne dit. Nous élargissons ensuite, sans multiplier les outils déconnectés.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour choisir le vôtre.</p>",
+        "body": "<p>Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèle aussi ce que votre entreprise attend vraiment du système, ce qu'aucun schéma ne dit. Nous élargissons ensuite, sans multiplier les outils déconnectés.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour choisir le vôtre.</p><p>Pour choisir votre premier cas, lisez le <a href=\"/guides/ia-pme-quebec/\">guide de l'IA pour une PME du Québec</a>.</p>",
         "items": [
           {
             "title": "Aucun délai universel.",

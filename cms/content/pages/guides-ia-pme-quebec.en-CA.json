@@ -1,0 +1,264 @@
+{
+  "page": "guides-ia-pme-quebec",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/ai-small-business-quebec",
+    "title": "AI for a Quebec small business",
+    "seo_title": "AI for small business in Quebec: where to start",
+    "seo_description": "A guide for a Quebec small business: pick one precise case, decide where your data lives, name who approves, then measure on a pilot before expanding.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : trois décisions avant tout outil.",
+      "claims": ["CL-01", "CL-03", "CL-80", "CL-128"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · AI for small business",
+        "headline": "AI for a Quebec small business. Where to start.",
+        "subheadline": "Three decisions before any tool: a precise case to handle, a place where your data lives, a person who approves. The rest follows, one case at a time.",
+        "primary_label": "Book a diagnosis",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See the method",
+        "secondary_href": "/en/method/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : par où commencer, en un paragraphe, avec les quatre gestes.",
+      "claims": ["CL-03", "CL-80", "CL-02", "CL-128", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>For a small business, starting with AI means choosing a repetitive, precise case (sorting email, reading invoices, booking appointments, searching your documents), deciding whether the system lives on your premises or is hosted in Quebec, naming the person who approves what the AI prepares, then measuring on a pilot before expanding.</p><p>No timeline and no gain is universal: they depend on the case and are measured on the pilot. A diagnosis comes before any written estimate.</p>",
+        "items": [
+          {
+            "title": "One case.",
+            "text": "A repetitive job whose steps you can describe."
+          },
+          {
+            "title": "One place.",
+            "text": "On your premises, or hosted in Quebec."
+          },
+          {
+            "title": "One approval.",
+            "text": "A person approves what commits the business."
+          },
+          {
+            "title": "One pilot.",
+            "text": "We measure on one case before expanding."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre questions à se poser avant de choisir, chacune avec le lien utile.",
+      "claims": ["CL-132", "CL-02", "CL-128", "CL-08"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "questions-cles"
+      },
+      "translation": {
+        "title": "Four questions before you choose.",
+        "cards": [
+          {
+            "title": "Which case, exactly?",
+            "text": "A repetitive, frequent job. Nexora AI's six solutions are examples: email, invoices, customer service, appointments, accounting, documents.",
+            "href": "/en/solutions/",
+            "link_label": "See the solutions"
+          },
+          {
+            "title": "Which data is involved?",
+            "text": "List the documents and the software touched. That decides the location: on your premises, or hosted in Quebec.",
+            "href": "/en/deployment/",
+            "link_label": "Compare the two modes"
+          },
+          {
+            "title": "Who approves?",
+            "text": "Any action that commits the business (sending, paying, writing) is placed behind a person's approval, unless the client decides otherwise in writing."
+          },
+          {
+            "title": "What if you stop?",
+            "text": "Your documents, configurations and workflows remain exportable; the contract provides for it."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "La méthode de Nexora AI en cinq temps, résumée, avec renvoi à la page Méthode.",
+      "claims": ["CL-03", "CL-04", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "methode"
+      },
+      "translation": {
+        "title": "The method, in five stages.",
+        "body": "<p>Nexora AI installs the system, runs it with you and keeps it evolving; your team's training covers use and supervision. No universal go-live timeline is announced: it is measured on a pilot. The detail is on the <a href=\"/en/method/\">Method</a> page.</p>",
+        "items": [
+          {
+            "title": "Understand.",
+            "text": "The case, the existing software, the data."
+          },
+          {
+            "title": "Integrate.",
+            "text": "The system is connected to what you already use."
+          },
+          {
+            "title": "Verify.",
+            "text": "The system is tested on real cases."
+          },
+          {
+            "title": "Train.",
+            "text": "Your team learns to use and supervise it."
+          },
+          {
+            "title": "Operate and improve.",
+            "text": "We run it with you and keep it evolving."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les deux lieux possibles : chez vous ou hébergé au Québec, avec les limites.",
+      "claims": ["CL-72", "CL-73", "CL-02", "CL-75", "CL-77"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "lieu"
+      },
+      "translation": {
+        "title": "On your premises or in Quebec.",
+        "body": "<p><strong>On your premises.</strong> The hardware, the access and the backups belong to you; Nexora AI installs and configures, and operation is agreed in the contract. <a href=\"/en/deployment/on-premises/\">See on-premises deployment</a>.</p><p><strong>Hosted in Quebec.</strong> The hosting location, the location of backups and logs and the list of subcontractors are specified in writing before go-live. <a href=\"/en/deployment/hosted-quebec/\">See hosting in Quebec</a>.</p><p>In both cases, a server in Quebec or on your premises does not, by itself, rule out the laws that apply, and the system has outgoing flows (updates, licences, any external model) that are listed before go-live.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les six solutions les plus courantes, en liste de liens, avec la précision qu'elles sont des configurations et non des produits prêts à l'emploi.",
+      "claims": ["CL-132", "CL-84"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "solutions"
+      },
+      "translation": {
+        "title": "The most common solutions.",
+        "body": "<p>These are configurations built on WorkStudio's components and adapted to each business after a diagnosis, not ready-to-use products.</p><ul><li><a href=\"/en/solutions/email/\">Email</a>: sort, summarize, draft a reply.</li><li><a href=\"/en/solutions/invoices/\">Invoices</a>: read, extract, flag discrepancies.</li><li><a href=\"/en/solutions/customer-service/\">Customer service</a>: answer from your documents.</li><li><a href=\"/en/solutions/appointments/\">Appointments</a>: propose slots, send reminders.</li><li><a href=\"/en/solutions/accounting/\">Accounting</a>: prepare the pre-entry.</li><li><a href=\"/en/solutions/documents/\">Documents</a>: find, summarize, extract.</li></ul>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que l'IA ne fait pas : décision, avis juridique, règles fiscales, téléphone.",
+      "claims": ["CL-128", "CL-129", "CL-111", "CL-124"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What AI does not do.",
+        "cards": [
+          {
+            "title": "It does not decide for you.",
+            "text": "A person approves before any sending, payment or entry."
+          },
+          {
+            "title": "It does not replace a lawyer.",
+            "text": "A starter template summarizes a contract (deadlines, amounts, clauses to have reviewed); it does not replace a lawyer."
+          },
+          {
+            "title": "It does not know your tax rules.",
+            "text": "The starter templates for small businesses are general and do not follow Quebec tax rules; taxes, formats and vocabulary are adapted to the business."
+          },
+          {
+            "title": "It does not answer the phone.",
+            "text": "No phone-answering service is delivered to date."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : par où commencer, délai, matériel, lieu des données, employés, savoir programmer.",
+      "claims": [
+        "CL-80",
+        "CL-14",
+        "CL-82",
+        "CL-E01",
+        "CL-E02",
+        "CL-77",
+        "CL-E05",
+        "CL-128",
+        "CL-P02",
+        "CL-92",
+        "CL-04"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "AI for small business: your questions.",
+        "items": [
+          {
+            "question": "Where do I start, concretely?",
+            "answer": "With a diagnosis of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate."
+          },
+          {
+            "question": "How long does it take?",
+            "answer": "No universal timeline is announced: it depends on the case and is measured on a pilot."
+          },
+          {
+            "question": "Do I need a powerful server?",
+            "answer": "It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the diagnosis, before any purchase."
+          },
+          {
+            "question": "Does my data leave Quebec?",
+            "answer": "On your premises, your data stays on your server. Hosted, it stays in Quebec. The exceptions are written down: updates, licences and any external model you explicitly enable."
+          },
+          {
+            "question": "Will AI replace my employees?",
+            "answer": "It takes over repetitive tasks; the decision stays human. Any action that commits the business goes through a person's approval."
+          },
+          {
+            "question": "Do I need to know how to code?",
+            "answer": "No. You describe the need in French, the Copilot prepares a workflow that you review, and Nexora AI installs the system, runs it with you and trains your team."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : choisir le premier cas, par un diagnostic.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's choose your first case.",
+        "text": "Describe your most repetitive job. We tell you what is realistic, and what is not.",
+        "primary_label": "Book a diagnosis",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See the solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    }
+  ]
+}

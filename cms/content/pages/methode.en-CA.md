@@ -84,6 +84,8 @@ A well-chosen case goes into service, gets verified and is corrected quickly. It
 
 [Plan a diagnosis](/en/contact/?sujet=diagnostic) to choose yours.
 
+To choose your first case, read the [guide to AI for a Quebec small business](/en/guides/ai-small-business-quebec/).
+
 - **No universal timeline.** It depends on your situation: software to connect, quality of documents, rules to write. It is measured on a first case.
 - **A measured goal, not a promise.** We set with you what we want to observe during the pilot. We announce no percentage and no time saved before measuring it at your site.
 - **A written estimate.** After the diagnosis, it states what is included and what is not. There is no public price yet.

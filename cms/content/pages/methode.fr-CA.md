@@ -84,6 +84,8 @@ Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèl
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) pour choisir le vôtre.
 
+Pour choisir votre premier cas, lisez le [guide de l'IA pour une PME du Québec](/guides/ia-pme-quebec/).
+
 - **Aucun délai universel.** Il dépend de votre situation : logiciels à relier, qualité des documents, règles à écrire. Il se mesure sur un premier cas.
 - **Un objectif mesuré, pas promis.** Nous fixons avec vous ce que nous voulons observer pendant le pilote. Nous n'annonçons ni pourcentage, ni gain de temps avant de l'avoir mesuré chez vous.
 - **Une estimation écrite.** Après le diagnostic, elle indique ce qui est inclus et ce qui ne l'est pas. Il n'y a pas encore de prix public.

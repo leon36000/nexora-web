@@ -61,7 +61,9 @@
           },
           {
             "title": "Des agents qui agissent.",
-            "text": "Un agent est un assistant spécialisé : il suit vos consignes, utilise les outils et les documents que vous lui autorisez, et cite ses sources."
+            "text": "Un agent est un assistant spécialisé : il suit vos consignes, utilise les outils et les documents que vous lui autorisez, et cite ses sources.",
+            "href": "/guides/agents-ia-pour-pme/",
+            "link_label": "Qu'est-ce qu'un agent IA ?"
           },
           {
             "title": "Vos documents répondent.",
@@ -344,7 +346,9 @@
           {
             "title": "Une API au format OpenAI.",
             "text": "Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès aux modèles et aux agents publiés, au format OpenAI que de nombreux outils comprennent déjà : clés, quotas, mesure de la consommation.",
-            "status": "disponible"
+            "status": "disponible",
+            "href": "/passerelle-api-modeles/",
+            "link_label": "Voir la passerelle de modèles"
           },
           {
             "title": "Votre site.",

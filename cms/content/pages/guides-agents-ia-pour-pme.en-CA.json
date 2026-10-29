@@ -1,0 +1,277 @@
+{
+  "page": "guides-agents-ia-pour-pme",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/ai-agents-small-business",
+    "title": "AI agents for small business",
+    "seo_title": "What is an AI agent? A guide for small business",
+    "seo_description": "An AI agent follows your instructions, uses the tools and documents you allow, cites its sources and acts under human approval. Definitions and safeguards.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : définir un agent IA simplement, avec la validation humaine dès le sous-titre.",
+      "claims": ["CL-90", "CL-93", "CL-21"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · AI agents",
+        "headline": "What is an AI agent? A clear answer.",
+        "subheadline": "An agent is a software assistant: it follows your instructions, uses the tools and documents you allow, cites its sources and can act. A person approves before anything goes out.",
+        "primary_label": "See WorkStudio",
+        "primary_href": "/en/workstudio/",
+        "secondary_label": "Request a demonstration",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : la définition d'un agent, en un paragraphe, et ses quatre composantes.",
+      "claims": ["CL-90", "CL-20", "CL-93"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>An AI agent is a software assistant that carries out a task with the tools you allow. It follows your instructions, uses the tools and documents you open to it, cites its sources and can be published in a chat. In WorkStudio, each action tool by default asks for a person's approval before writing or deleting.</p><p>A language model on its own produces text. An agent combines a model, instructions, tools and documents to see a task through.</p>",
+        "items": [
+          {
+            "title": "A model.",
+            "text": "The engine that reads and produces text."
+          },
+          {
+            "title": "Instructions.",
+            "text": "What you ask it to do, and how."
+          },
+          {
+            "title": "Tools.",
+            "text": "What it is allowed to use."
+          },
+          {
+            "title": "Documents.",
+            "text": "What it relies on to answer."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Trois mots qu'on confond : modèle, agent, flux de travaux.",
+      "claims": ["CL-90", "CL-91", "CL-21"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "vocabulaire"
+      },
+      "translation": {
+        "title": "Model, agent, workflow.",
+        "intro": "Three words people often confuse.",
+        "cards": [
+          {
+            "title": "A model.",
+            "text": "The engine that reads and produces text. It answers; it does nothing else."
+          },
+          {
+            "title": "An agent.",
+            "text": "A model, instructions, tools and allowed documents. It follows your instructions and cites its sources."
+          },
+          {
+            "title": "A workflow.",
+            "text": "An automated chain of tasks. It can stop for a person's approval, who approves or refuses before the action goes out."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qu'un agent fait, concrètement : quatre exemples construits à partir de ce que WorkStudio permet, étiquetés comme exemples.",
+      "claims": ["CL-120", "CL-101", "CL-122", "CL-102", "CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "exemples"
+      },
+      "translation": {
+        "title": "What an agent does, concretely.",
+        "body": "<p>These examples are built from what WorkStudio allows; they are not results measured at clients.</p>",
+        "items": [
+          {
+            "title": "It sorts your email.",
+            "text": "When an email arrives, it classifies it (category, urgency, summary), drafts a reply and sends only after a person's approval."
+          },
+          {
+            "title": "It reads paper.",
+            "text": "It reads scanned PDFs and images, extracts the fields of an invoice, quote or expense report, and marks what is missing, illegible or inconsistent as \"to check\"."
+          },
+          {
+            "title": "It answers from your documents.",
+            "text": "It answers customers' questions in a chat from the documents opened to it, cites its sources and, when it has no answer, offers a callback by a person."
+          },
+          {
+            "title": "It transcribes a meeting.",
+            "text": "It transcribes audio recordings, with the speakers, and reads a text aloud. It does not answer the phone."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les garde-fous un par un : validation, traces, masquage, outils désactivés par défaut, plafonds.",
+      "claims": [
+        "CL-93",
+        "CL-21",
+        "CL-96",
+        "CL-24",
+        "CL-105",
+        "CL-109",
+        "CL-22",
+        "CL-106"
+      ],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "garde-fous"
+      },
+      "translation": {
+        "title": "The safeguards, one by one.",
+        "cards": [
+          {
+            "title": "Human approval.",
+            "text": "Each action tool by default asks for a person's approval before writing or deleting; with no answer, the action does not happen."
+          },
+          {
+            "title": "Traces.",
+            "text": "Each model call leaves a viewable trace (steps, duration, tokens, model); personal information can be masked in it."
+          },
+          {
+            "title": "Information masked.",
+            "text": "A policy per workspace decides whether personal information is allowed, masked or refused before a call to a model outside the instance."
+          },
+          {
+            "title": "Tools off by default.",
+            "text": "An agent's web search is only available if an administrator turns it on; the code interpreter is off by default."
+          },
+          {
+            "title": "Caps and log.",
+            "text": "Organizations, roles, an audit log and monthly consumption caps."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Sans code : comment on construit, avec le Copilote, un flux relu avant création.",
+      "claims": ["CL-92", "CL-P02", "CL-91"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "sans-code"
+      },
+      "translation": {
+        "title": "No code: how it works.",
+        "body": "<p>You describe the need in French; the Copilot, the building assistant, prepares a workflow that you review, test step by step, then deploy. Each deployment is a version you can return to. Starter templates for small businesses are provided. See <a href=\"/en/workstudio/\">WorkStudio</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qu'un agent ne fait pas : téléphone, rapprochement bancaire, règles fiscales, avis juridique.",
+      "claims": ["CL-124", "CL-126", "CL-111", "CL-129"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What an agent does not do.",
+        "cards": [
+          {
+            "title": "It does not answer the phone.",
+            "text": "No phone-answering service is delivered to date."
+          },
+          {
+            "title": "It does not do bank reconciliation.",
+            "text": "It is not delivered in WorkStudio; it can be studied as custom work, from exported statements, with no bank connection."
+          },
+          {
+            "title": "It does not know your tax rules.",
+            "text": "The starter templates are general; taxes, formats and vocabulary are adapted to the business."
+          },
+          {
+            "title": "It does not replace a lawyer.",
+            "text": "A starter template summarizes a contract; it does not replace a lawyer."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : agent et agent conversationnel, envoi autonome, lieu d'exécution, mesure, coût.",
+      "claims": [
+        "CL-90",
+        "CL-122",
+        "CL-93",
+        "CL-26",
+        "CL-02",
+        "CL-97",
+        "CL-80",
+        "CL-106"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "AI agents: your questions.",
+        "items": [
+          {
+            "question": "Is an AI agent the same as a chatbot?",
+            "answer": "Not exactly. A chatbot converses. An agent can also use tools and documents to carry out a task, with the rights you give it."
+          },
+          {
+            "question": "Can an agent send an email on its own?",
+            "answer": "Not by default. Each action tool asks for a person's approval before writing or deleting; with no answer, the action does not happen. In the workflows Nexora AI configures, any action that commits the business goes through an approval, unless the client decides otherwise in writing."
+          },
+          {
+            "question": "Where do agents run?",
+            "answer": "WorkStudio installs with one command on a Docker server, a tool that packages software so it installs the same way everywhere. The system is installed on your premises or hosted in Nexora AI's infrastructure, located in Quebec."
+          },
+          {
+            "question": "How do I know whether an agent answers well?",
+            "answer": "Test sets and judges measure whether an agent, an instruction or a model answers well, and compare two versions."
+          },
+          {
+            "question": "How much does an agent cost?",
+            "answer": "The cost depends on the case; a written estimate follows a diagnosis. Consumption is measured in tokens, the unit of text a model processes, with monthly caps."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : voir un agent à l'œuvre, sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See an agent at work.",
+        "text": "A demonstration on fictitious data, to see what an agent prepares and where it stops before you approve.",
+        "primary_label": "Request a demonstration",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See the solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    }
+  ]
+}

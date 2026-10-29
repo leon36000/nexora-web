@@ -1,0 +1,277 @@
+{
+  "page": "guides-agents-ia-pour-pme",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/agents-ia-pour-pme",
+    "title": "Agents IA pour PME",
+    "seo_title": "Qu'est-ce qu'un agent IA\u00a0? Guide pour PME",
+    "seo_description": "Un agent IA suit vos consignes, utilise les outils et les documents autorisés, cite ses sources et agit sous validation humaine. Définitions et garde-fous.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : définir un agent IA simplement, avec la validation humaine dès le sous-titre.",
+      "claims": ["CL-90", "CL-93", "CL-21"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · Agents IA",
+        "headline": "Qu'est-ce qu'un agent IA\u00a0? Réponse claire.",
+        "subheadline": "Un agent est un assistant logiciel\u00a0: il suit vos consignes, utilise les outils et les documents que vous lui autorisez, cite ses sources et peut agir. Une personne valide avant que quoi que ce soit ne parte.",
+        "primary_label": "Voir WorkStudio",
+        "primary_href": "/workstudio/",
+        "secondary_label": "Demander une démonstration",
+        "secondary_href": "/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : la définition d'un agent, en un paragraphe, et ses quatre composantes.",
+      "claims": ["CL-90", "CL-20", "CL-93"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Un agent IA est un assistant logiciel qui accomplit une tâche avec les outils que vous autorisez. Il suit vos consignes, utilise les outils et les documents que vous lui ouvrez, cite ses sources et peut être publié dans un chat. Dans WorkStudio, chaque outil d'action demande par défaut l'accord d'une personne avant d'écrire ou de supprimer.</p><p>Un modèle de langage, seul, produit du texte. Un agent combine un modèle, des consignes, des outils et des documents pour mener une tâche à son terme.</p>",
+        "items": [
+          {
+            "title": "Un modèle.",
+            "text": "Le moteur qui lit et produit du texte."
+          },
+          {
+            "title": "Des consignes.",
+            "text": "Ce que vous lui demandez de faire, et comment."
+          },
+          {
+            "title": "Des outils.",
+            "text": "Ce qu'il a le droit d'utiliser."
+          },
+          {
+            "title": "Des documents.",
+            "text": "Ce sur quoi il s'appuie pour répondre."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Trois mots qu'on confond : modèle, agent, flux de travaux.",
+      "claims": ["CL-90", "CL-91", "CL-21"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "vocabulaire"
+      },
+      "translation": {
+        "title": "Modèle, agent, flux de travaux.",
+        "intro": "Trois mots qu'on confond souvent.",
+        "cards": [
+          {
+            "title": "Un modèle.",
+            "text": "Le moteur qui lit et produit du texte. Il répond\u00a0; il ne fait rien d'autre."
+          },
+          {
+            "title": "Un agent.",
+            "text": "Un modèle, des consignes, des outils et des documents autorisés. Il suit vos consignes et cite ses sources."
+          },
+          {
+            "title": "Un flux de travaux.",
+            "text": "Un enchaînement automatisé de tâches. Il peut s'arrêter sur la validation d'une personne, qui approuve ou refuse avant que l'action ne parte."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qu'un agent fait, concrètement : quatre exemples construits à partir de ce que WorkStudio permet, étiquetés comme exemples.",
+      "claims": ["CL-120", "CL-101", "CL-122", "CL-102", "CL-11"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "exemples"
+      },
+      "translation": {
+        "title": "Ce qu'un agent fait, concrètement.",
+        "body": "<p>Ces exemples sont construits à partir de ce que WorkStudio permet\u00a0; ce ne sont pas des résultats mesurés chez des clients.</p>",
+        "items": [
+          {
+            "title": "Il classe vos courriels.",
+            "text": "À l'arrivée d'un courriel, il le classe (catégorie, urgence, résumé), prépare un brouillon de réponse et n'envoie qu'après la validation d'une personne."
+          },
+          {
+            "title": "Il lit le papier.",
+            "text": "Il lit des PDF scannés et des images, extrait les champs d'une facture, d'un devis ou d'une note de frais, et marque «\u00a0à vérifier\u00a0» ce qui est manquant, illisible ou incohérent."
+          },
+          {
+            "title": "Il répond à partir de vos documents.",
+            "text": "Il répond aux questions de clients dans un chat à partir des documents qui lui sont ouverts, cite ses sources et, à défaut de réponse, propose un rappel par une personne."
+          },
+          {
+            "title": "Il transcrit une réunion.",
+            "text": "Il transcrit des enregistrements audio, avec les intervenants, et lit un texte à voix haute. Il ne répond pas au téléphone."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les garde-fous un par un : validation, traces, masquage, outils désactivés par défaut, plafonds.",
+      "claims": [
+        "CL-93",
+        "CL-21",
+        "CL-96",
+        "CL-24",
+        "CL-105",
+        "CL-109",
+        "CL-22",
+        "CL-106"
+      ],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "garde-fous"
+      },
+      "translation": {
+        "title": "Les garde-fous, un par un.",
+        "cards": [
+          {
+            "title": "Validation humaine.",
+            "text": "Chaque outil d'action demande par défaut l'accord d'une personne avant d'écrire ou de supprimer\u00a0; sans réponse, l'action n'a pas lieu."
+          },
+          {
+            "title": "Traces.",
+            "text": "Chaque appel de modèle laisse une trace consultable (étapes, durée, jetons, modèle)\u00a0; les renseignements personnels peuvent y être masqués."
+          },
+          {
+            "title": "Renseignements masqués.",
+            "text": "Une politique par espace décide si les renseignements personnels sont autorisés, masqués ou refusés avant un appel à un modèle hors de l'instance."
+          },
+          {
+            "title": "Outils désactivés par défaut.",
+            "text": "La recherche web d'un agent n'est disponible que si un administrateur l'active\u00a0; l'interpréteur de code est désactivé par défaut."
+          },
+          {
+            "title": "Plafonds et journal.",
+            "text": "Organisations, rôles, journal d'audit et plafonds mensuels de consommation."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Sans code : comment on construit, avec le Copilote, un flux relu avant création.",
+      "claims": ["CL-92", "CL-P02", "CL-91"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "sans-code"
+      },
+      "translation": {
+        "title": "Sans code\u00a0: comment ça marche.",
+        "body": "<p>On décrit le besoin en français\u00a0; le Copilote, l'assistant de création, prépare un flux que l'on relit, que l'on teste pas à pas, puis que l'on déploie. Chaque déploiement est une version à laquelle on peut revenir. Des modèles de départ pour PME sont fournis. Voir <a href=\"/workstudio/\">WorkStudio</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qu'un agent ne fait pas : téléphone, rapprochement bancaire, règles fiscales, avis juridique.",
+      "claims": ["CL-124", "CL-126", "CL-111", "CL-129"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce qu'un agent ne fait pas.",
+        "cards": [
+          {
+            "title": "Il ne répond pas au téléphone.",
+            "text": "Aucun service de réception d'appels téléphoniques n'est livré à ce jour."
+          },
+          {
+            "title": "Il ne fait pas le rapprochement bancaire.",
+            "text": "Il n'est pas livré dans WorkStudio\u00a0; il peut être étudié sur mesure, à partir de relevés exportés, sans connexion bancaire."
+          },
+          {
+            "title": "Il ne connaît pas vos règles fiscales.",
+            "text": "Les modèles de départ sont généraux\u00a0; taxes, formats et vocabulaire s'adaptent à l'entreprise."
+          },
+          {
+            "title": "Il ne remplace pas un juriste.",
+            "text": "Un modèle de départ résume un contrat\u00a0; il ne remplace pas un juriste."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : agent et agent conversationnel, envoi autonome, lieu d'exécution, mesure, coût.",
+      "claims": [
+        "CL-90",
+        "CL-122",
+        "CL-93",
+        "CL-26",
+        "CL-02",
+        "CL-97",
+        "CL-80",
+        "CL-106"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Agents IA\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Un agent IA, est-ce un agent conversationnel\u00a0?",
+            "answer": "Pas exactement. Un agent conversationnel dialogue. Un agent peut aussi utiliser des outils et des documents pour accomplir une tâche, avec les droits que vous lui donnez."
+          },
+          {
+            "question": "Un agent peut-il envoyer un courriel seul\u00a0?",
+            "answer": "Pas par défaut. Chaque outil d'action demande l'accord d'une personne avant d'écrire ou de supprimer\u00a0; sans réponse, l'action n'a pas lieu. Dans les flux que Nexora AI configure, toute action qui engage l'entreprise passe par une validation, sauf décision écrite contraire du client."
+          },
+          {
+            "question": "Où tournent les agents\u00a0?",
+            "answer": "WorkStudio s'installe en une commande sur un serveur Docker, un outil qui empaquette les logiciels pour qu'ils s'installent de la même façon partout. Le système est installé chez vous ou hébergé dans l'infrastructure de Nexora AI, située au Québec."
+          },
+          {
+            "question": "Comment savoir si un agent répond bien\u00a0?",
+            "answer": "Des jeux de tests et des juges mesurent si un agent, une consigne ou un modèle répond bien, et comparent deux versions."
+          },
+          {
+            "question": "Combien coûte un agent\u00a0?",
+            "answer": "Le coût dépend du cas\u00a0; une estimation écrite suit un diagnostic. La consommation se mesure en jetons, l'unité de texte que traite un modèle, avec des plafonds mensuels."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : voir un agent à l'œuvre, sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voyez un agent à l'œuvre.",
+        "text": "Une démonstration sur données fictives, pour voir ce qu'un agent prépare et où il s'arrête avant que vous validiez.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir les solutions",
+        "secondary_href": "/solutions/"
+      }
+    }
+  ]
+}

@@ -43,6 +43,8 @@ Write what you want to automate, as you would to a colleague. The Copilot, the c
 
 An agent is a specialized assistant: it follows your instructions, uses the tools and documents you authorize, and cites its sources.
 
+→ [What is an AI agent?](/en/guides/ai-agents-small-business/)
+
 #### Your documents answer.
 
 Ask a question: the answer comes from your own documents, with the source alongside.
@@ -228,6 +230,8 @@ Nexora Connect plugs in a broad catalogue of services: mail, calendar, customer 
 #### An OpenAI-format API.
 
 An API (the door through which other software calls a service) gives access to models and published agents, in the OpenAI format that many tools already understand: keys, quotas, consumption metering.
+
+→ [See the model gateway](/en/model-gateway-api/)
 
 #### Your website.
 

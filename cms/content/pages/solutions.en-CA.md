@@ -103,6 +103,8 @@ Every go-live starts with a diagnosis of your case: we check that your software 
 
 [Book a diagnosis](/en/contact/?sujet=diagnostic)
 
+To choose your first case, read the [guide to AI for a Quebec small business](/en/guides/ai-small-business-quebec/).
+
 - **1. The problem, named.** What costs you time, described in your own words.
 - **2. The system at work.** The steps, in order, and the ones that wait for a person.
 - **3. What your team receives.** Drafts, tables, sourced answers: something concrete to review.

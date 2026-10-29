@@ -1,7 +1,7 @@
 {
-  "version": 4,
+  "version": 5,
   "date": "2026-10-29",
-  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ».",
+  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06.",
   "claims": [
     {
       "id": "CL-01",
@@ -1907,6 +1907,78 @@
       "evidence": "docs/infra.md, section « Agents hébergés » : appel de POST /v1/chat/completions avec le modèle agent/<identifiant>, réservation puis règlement au coût réel, réponse 402 avant tout appel en amont sans solde suffisant. Pages /agents et /agents/<identifiant> du site. Parcours de bout en bout avec un agent WorkStudio hébergé : docs/recette/e2e.md.",
       "evidence_url": null,
       "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (28/10/2026) ; journal docs/superpowers/plans/ledger.md (27/10/2026, e2e 8 sur 8)",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-S01",
+      "kind": "produit",
+      "statement": "Le catalogue public de modèles affiche, pour chaque modèle, son prix en dollars canadiens par million de jetons (entrée et sortie), son contexte, ses capacités et son lieu d'hébergement (Québec, Canada, États-Unis, Europe ou autre), avec la politique de données déclarée par son fournisseur.",
+      "scope": "Pages publiques /modeles et /modeles/<identifiant>. Le lieu affiché est une information du catalogue publié, pas une garantie de résidence ; les prix du catalogue actuel sont des prix de développement (CL-12).",
+      "evidence": "Dictionnaire de la passerelle (meta.models, catalog, residency, detail.hosting, detail.dataPolicy) et composants du catalogue ; pages /modeles et /modeles/<id> vérifiées sur un serveur de développement le 29/10/2026.",
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/i18n/dictionaries/gateway-fr-CA.ts, web/src/components/gateway/model-card.tsx",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-S02",
+      "kind": "produit",
+      "statement": "Les événements d'usage de la passerelle ne contiennent que des métadonnées (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses ; la politique de données de chaque fournisseur de modèle est affichée sur la fiche du modèle.",
+      "scope": "Ce que la passerelle de Nexora AI enregistre dans sa base. Elle ne décrit pas ce que le fournisseur d'un modèle conserve de son côté : c'est sa politique, affichée sur la fiche.",
+      "evidence": "Commentaire et structure de l'événement d'usage (« L'événement ne contient que des métadonnées : jamais le contenu de la requête ni de la réponse ») ; dictionnaire (docs.privacy, detail.nexoraNote). À CONFIRMER par le fondateur : journaux de la couche de routage amont et clauses des fournisseurs (CL-A12).",
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/server/gateway/usage.ts, web/src/i18n/dictionaries/gateway-fr-CA.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-S03",
+      "kind": "produit",
+      "statement": "L'API se facture au jeton, en dollars canadiens : chaque requête réserve d'abord son coût maximal, puis est réglée au coût réel d'après les jetons d'entrée et de sortie, et le reste est libéré ; sans solde suffisant, l'API répond par une erreur de paiement avant tout appel au modèle ; chaque réponse complète porte son coût.",
+      "scope": "Fonctionnement de la facturation de la passerelle. Aucune vente n'est ouverte et aucun prix n'est publié à ce jour (CL-12).",
+      "evidence": "Documentation de l'API (docs.billing, detail.pricingLead) ; règlement au coût réel dans le grand livre (usage.ts) ; en-tête x-nexora-cost-micro.",
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/i18n/dictionaries/gateway-fr-CA.ts, web/src/server/gateway/usage.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-S04",
+      "kind": "produit",
+      "statement": "L'API suit le format de l'API d'OpenAI : conversation (avec diffusion en continu, outils et formats de réponse), embeddings et liste des modèles ; une requête renvoie un seul choix, les paramètres propres à un fournisseur sont ignorés et les erreurs suivent le format d'OpenAI.",
+      "scope": "Points d'accès pris en charge par la passerelle ; le modèle se choisit par un identifiant dans la requête.",
+      "evidence": "Documentation de l'API (docs.compat, docs.errors) ; test des points d'accès inconnus (unknown-endpoint.test.ts).",
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/i18n/dictionaries/gateway-fr-CA.ts, web/src/server/gateway/unknown-endpoint.test.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-S05",
+      "kind": "produit",
+      "statement": "Chaque clé d'API peut recevoir un plafond de dépense, une expiration et une limite de débit ; la valeur d'une clé n'est affichée qu'une fois et Nexora AI n'en conserve que l'empreinte.",
+      "scope": "Clés de la passerelle, gérées par le propriétaire de l'organisation dans l'espace client.",
+      "evidence": "Dictionnaire (account.spendCap, account.expires, account.createdWarn, docs.billing) ; gestion des clés (keys.ts).",
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/i18n/dictionaries/gateway-fr-CA.ts, web/src/server/gateway/keys.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-S06",
+      "kind": "produit",
+      "statement": "Quand le fournisseur d'un modèle est indisponible ou surchargé, l'API répond par une erreur de passerelle et rien n'est débité.",
+      "scope": "Erreurs en amont de la passerelle.",
+      "evidence": "Documentation de l'API (docs.errors : « Le fournisseur du modèle est indisponible ou surchargé : réessayez. Rien n'est débité. »).",
+      "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/i18n/dictionaries/gateway-fr-CA.ts",
+      "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
       "valid_until": null

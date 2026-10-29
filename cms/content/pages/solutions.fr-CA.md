@@ -103,6 +103,8 @@ Chaque mise en service commence par un diagnostic de votre cas : nous vérifion
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic)
 
+Pour choisir votre premier cas, lisez le [guide de l'IA pour une PME du Québec](/guides/ia-pme-quebec/).
+
 - **1. Le problème, nommé.** Ce qui vous coûte du temps, décrit avec vos mots.
 - **2. Le système au travail.** Les étapes, dans l'ordre, et celles qui attendent une personne.
 - **3. Le résultat livré à l'équipe.** Brouillons, tables, réponses sourcées : du concret à relire.

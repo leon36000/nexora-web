@@ -1,0 +1,264 @@
+{
+  "page": "guides-ia-pme-quebec",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/ia-pme-quebec",
+    "title": "L'IA pour une PME du Québec",
+    "seo_title": "IA pour PME au Québec\u00a0: par où commencer",
+    "seo_description": "Guide pour une PME du Québec\u00a0: choisir un cas précis, décider où vivent vos données, nommer qui valide, puis mesurer sur un pilote avant d'étendre.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : trois décisions avant tout outil.",
+      "claims": ["CL-01", "CL-03", "CL-80", "CL-128"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · IA pour PME",
+        "headline": "L'IA pour une PME du Québec. Par où commencer.",
+        "subheadline": "Trois décisions avant tout outil\u00a0: un cas précis à traiter, un endroit où vivent vos données, une personne qui valide. Le reste suit, un cas à la fois.",
+        "primary_label": "Planifier un diagnostic",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir la méthode",
+        "secondary_href": "/methode/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : par où commencer, en un paragraphe, avec les quatre gestes.",
+      "claims": ["CL-03", "CL-80", "CL-02", "CL-128", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Pour une PME, commencer par l'IA, c'est choisir un cas répétitif et précis (le tri des courriels, la lecture des factures, la prise de rendez-vous, la recherche dans vos documents), décider si le système vit chez vous ou s'il est hébergé au Québec, nommer la personne qui valide ce que l'IA prépare, puis mesurer sur un pilote avant d'étendre.</p><p>Aucun délai ni aucun gain n'est universel\u00a0: ils dépendent du cas et se mesurent sur le pilote. Un diagnostic précède toute estimation écrite.</p>",
+        "items": [
+          {
+            "title": "Un cas.",
+            "text": "Un travail répétitif dont vous pouvez décrire les étapes."
+          },
+          {
+            "title": "Un lieu.",
+            "text": "Chez vous, ou hébergé au Québec."
+          },
+          {
+            "title": "Une validation.",
+            "text": "Une personne approuve ce qui engage l'entreprise."
+          },
+          {
+            "title": "Un pilote.",
+            "text": "On mesure sur un cas avant d'étendre."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Quatre questions à se poser avant de choisir, chacune avec le lien utile.",
+      "claims": ["CL-132", "CL-02", "CL-128", "CL-08"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "questions-cles"
+      },
+      "translation": {
+        "title": "Quatre questions avant de choisir.",
+        "cards": [
+          {
+            "title": "Quel cas, précisément\u00a0?",
+            "text": "Un travail répétitif et fréquent. Les six solutions de Nexora AI en sont des exemples\u00a0: courriels, factures, service client, rendez-vous, comptabilité, documents.",
+            "href": "/solutions/",
+            "link_label": "Voir les solutions"
+          },
+          {
+            "title": "Quelles données sont en jeu\u00a0?",
+            "text": "Listez les documents et les logiciels touchés. Cela décide du lieu\u00a0: chez vous, ou hébergé au Québec.",
+            "href": "/deploiement/",
+            "link_label": "Comparer les deux modes"
+          },
+          {
+            "title": "Qui valide\u00a0?",
+            "text": "Toute action qui engage l'entreprise (envoi, paiement, écriture) est placée derrière la validation d'une personne, sauf décision écrite contraire."
+          },
+          {
+            "title": "Et si vous arrêtez\u00a0?",
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables\u00a0; le contrat le prévoit."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "La méthode de Nexora AI en cinq temps, résumée, avec renvoi à la page Méthode.",
+      "claims": ["CL-03", "CL-04", "CL-14"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "methode"
+      },
+      "translation": {
+        "title": "La méthode, en cinq temps.",
+        "body": "<p>Nexora AI installe le système, l'exploite avec vous et le fait évoluer\u00a0; la formation de votre équipe porte sur l'usage et la supervision. Aucun délai de mise en service universel n'est annoncé\u00a0: il se mesure sur un pilote. Le détail est sur la page <a href=\"/methode/\">Méthode</a>.</p>",
+        "items": [
+          {
+            "title": "Comprendre.",
+            "text": "Le cas, les logiciels existants, les données."
+          },
+          {
+            "title": "Intégrer.",
+            "text": "Le système est relié à ce que vous utilisez déjà."
+          },
+          {
+            "title": "Vérifier.",
+            "text": "Le système est mis à l'épreuve sur des cas réels."
+          },
+          {
+            "title": "Former.",
+            "text": "Votre équipe apprend à s'en servir et à le superviser."
+          },
+          {
+            "title": "Exploiter et améliorer.",
+            "text": "Nous l'exploitons avec vous et le faisons évoluer."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les deux lieux possibles : chez vous ou hébergé au Québec, avec les limites.",
+      "claims": ["CL-72", "CL-73", "CL-02", "CL-75", "CL-77"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "lieu"
+      },
+      "translation": {
+        "title": "Chez vous ou au Québec.",
+        "body": "<p><strong>Chez vous.</strong> Le matériel, les accès et les sauvegardes vous appartiennent\u00a0; Nexora AI installe et configure, et l'exploitation se convient au contrat. <a href=\"/deploiement/sur-place/\">Voir le déploiement sur place</a>.</p><p><strong>Hébergé au Québec.</strong> Le lieu de l'hébergement, celui des sauvegardes et des journaux et la liste des sous-traitants sont précisés par écrit avant la mise en service. <a href=\"/deploiement/heberge-quebec/\">Voir l'hébergement au Québec</a>.</p><p>Dans les deux cas, un serveur au Québec ou chez vous n'écarte pas, à lui seul, les lois qui s'appliquent, et le système a des flux sortants (mises à jour, licences, modèle externe éventuel) qui sont listés avant la mise en service.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les six solutions les plus courantes, en liste de liens, avec la précision qu'elles sont des configurations et non des produits prêts à l'emploi.",
+      "claims": ["CL-132", "CL-84"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "solutions"
+      },
+      "translation": {
+        "title": "Les solutions les plus courantes.",
+        "body": "<p>Ce sont des configurations bâties sur les composantes de WorkStudio et adaptées à chaque entreprise après diagnostic, pas des produits prêts à l'emploi.</p><ul><li><a href=\"/solutions/courriels/\">Courriels</a>\u00a0: classer, résumer, préparer un brouillon.</li><li><a href=\"/solutions/factures/\">Factures</a>\u00a0: lire, extraire, signaler les écarts.</li><li><a href=\"/solutions/service-client/\">Service client</a>\u00a0: répondre à partir de vos documents.</li><li><a href=\"/solutions/rendez-vous/\">Rendez-vous</a>\u00a0: proposer des créneaux, rappeler.</li><li><a href=\"/solutions/comptabilite/\">Comptabilité</a>\u00a0: préparer la pré-saisie.</li><li><a href=\"/solutions/documents/\">Documents</a>\u00a0: retrouver, résumer, extraire.</li></ul>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce que l'IA ne fait pas : décision, avis juridique, règles fiscales, téléphone.",
+      "claims": ["CL-128", "CL-129", "CL-111", "CL-124"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce que l'IA ne fait pas.",
+        "cards": [
+          {
+            "title": "Elle ne décide pas à votre place.",
+            "text": "Une personne valide avant tout envoi, paiement ou écriture."
+          },
+          {
+            "title": "Elle ne remplace pas un juriste.",
+            "text": "Un modèle de départ résume un contrat (délais, montants, clauses à faire relire)\u00a0; il ne remplace pas un juriste."
+          },
+          {
+            "title": "Elle ne connaît pas vos règles fiscales.",
+            "text": "Les modèles de départ pour PME sont généraux et ne suivent pas les règles fiscales du Québec\u00a0; taxes, formats et vocabulaire s'adaptent à l'entreprise."
+          },
+          {
+            "title": "Elle ne répond pas au téléphone.",
+            "text": "Aucun service de réception d'appels téléphoniques n'est livré à ce jour."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : par où commencer, délai, matériel, lieu des données, employés, savoir programmer.",
+      "claims": [
+        "CL-80",
+        "CL-14",
+        "CL-82",
+        "CL-E01",
+        "CL-E02",
+        "CL-77",
+        "CL-E05",
+        "CL-128",
+        "CL-P02",
+        "CL-92",
+        "CL-04"
+      ],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "IA pour PME\u00a0: vos questions.",
+        "items": [
+          {
+            "question": "Par où commencer concrètement\u00a0?",
+            "answer": "Par un diagnostic du cas visé\u00a0: logiciels existants, volumes, mode de déploiement, intégrations. Il précède toute estimation écrite."
+          },
+          {
+            "question": "Combien de temps faut-il\u00a0?",
+            "answer": "Aucun délai universel n'est annoncé\u00a0: il dépend du cas et se mesure sur un pilote."
+          },
+          {
+            "question": "Faut-il un serveur puissant\u00a0?",
+            "answer": "Cela dépend du nombre d'utilisateurs, du volume de documents, du modèle choisi et des usages. Le matériel est établi au diagnostic, avant tout achat."
+          },
+          {
+            "question": "Mes données quittent-elles le Québec\u00a0?",
+            "answer": "Sur place, vos données restent sur votre serveur. Hébergées, elles restent au Québec. Les exceptions sont écrites\u00a0: les mises à jour, les licences et tout modèle externe que vous activez explicitement."
+          },
+          {
+            "question": "L'IA va-t-elle remplacer mes employés\u00a0?",
+            "answer": "Elle prend en charge des tâches répétitives\u00a0; la décision reste humaine. Toute action qui engage l'entreprise passe par la validation d'une personne."
+          },
+          {
+            "question": "Dois-je savoir programmer\u00a0?",
+            "answer": "Non. On décrit le besoin en français, le Copilote prépare un flux que l'on relit, et Nexora AI installe le système, l'exploite avec vous et forme votre équipe."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : choisir le premier cas, par un diagnostic.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Choisissons votre premier cas.",
+        "text": "Décrivez votre travail le plus répétitif. Nous vous disons ce qui est réaliste, et ce qui ne l'est pas.",
+        "primary_label": "Planifier un diagnostic",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les solutions",
+        "secondary_href": "/solutions/"
+      }
+    }
+  ]
+}

@@ -93,6 +93,19 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
     en: "acceptable-use",
     draft: true,
   },
+  // SEO et GEO (29/10/2026) : passerelle d'API de modèles et guides (voir docs/marketing/plan-seo-geo.md)
+  "passerelle-api-modeles": {
+    fr: "passerelle-api-modeles",
+    en: "model-gateway-api",
+  },
+  "guides-ia-pme-quebec": {
+    fr: "guides/ia-pme-quebec",
+    en: "guides/ai-small-business-quebec",
+  },
+  "guides-agents-ia-pour-pme": {
+    fr: "guides/agents-ia-pour-pme",
+    en: "guides/ai-agents-small-business",
+  },
 };
 const KEYS = Object.keys(EXPECTED);
 const DRAFTS = KEYS.filter((k) => EXPECTED[k]?.draft);
@@ -178,7 +191,7 @@ const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);
 
 describe("S3 : structure", () => {
-  test("les 28 pages attendues existent, et rien d'autre ne s'ajoute sans être déclaré ici", () => {
+  test("les 31 pages attendues existent, et rien d'autre ne s'ajoute sans être déclaré ici", () => {
     const found = discoverPages(PAGES_DIR).filter(
       (k) => k !== "accueil" && k !== "opsys-ai",
     );
@@ -396,6 +409,10 @@ describe("S3 : SEO", () => {
         route(l, "contact"),
         // routes de l'application (code du site, pas des pages Directus) vers lesquelles une page renvoie
         route(l, "agents"),
+        // routes de l'application (lib/seo/app-routes.ts) vers lesquelles une page du CMS peut renvoyer
+        route(l, "modeles"),
+        route(l, "docs/api"),
+        route(l, "vps"),
       ]);
     for (const k of KEYS)
       for (const l of LOCALES) {
@@ -916,7 +933,7 @@ describe("chargement dans Directus", () => {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
       expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
     }
-    expect(PUBLISHED).toHaveLength(23);
+    expect(PUBLISHED).toHaveLength(26);
     expect(DRAFTS).toHaveLength(5);
   });
 

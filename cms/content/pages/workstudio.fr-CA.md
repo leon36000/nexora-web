@@ -43,6 +43,8 @@ Un seul outil, en français, pour ce que l'IA fait de plus récent. Les grands m
 
 Un agent est un assistant spécialisé : il suit vos consignes, utilise les outils et les documents que vous lui autorisez, et cite ses sources.
 
+→ [Qu'est-ce qu'un agent IA ?](/guides/agents-ia-pour-pme/)
+
 #### Vos documents répondent.
 
 Posez une question : la réponse vient de vos propres documents, avec la source à l'appui.
@@ -228,6 +230,8 @@ Nexora Connect branche un large catalogue de services : messagerie, agenda, rel
 #### Une API au format OpenAI.
 
 Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès aux modèles et aux agents publiés, au format OpenAI que de nombreux outils comprennent déjà : clés, quotas, mesure de la consommation.
+
+→ [Voir la passerelle de modèles](/passerelle-api-modeles/)
 
 #### Votre site.
 
