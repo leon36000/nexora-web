@@ -298,6 +298,8 @@ export const frCA = {
         // Texte prérempli par les liens « liste d'attente » des fiches Nexora Apps (?sujet=apps-…), modifiable.
         prefill: {
           "apps-code": "Liste d’attente : Agent de code Nexora.",
+          "apps-bot": "Liste d’attente : Nexora Bot.",
+          "apps-wordpress": "Liste d’attente : Plugins WordPress Nexora.",
           "apps-gitspace": "Liste d’attente : Nexora Gitspace.",
           "apps-rag": "Liste d’attente : Nexora RAG.",
           "apps-webpilot": "Liste d’attente : Nexora WebPilot.",

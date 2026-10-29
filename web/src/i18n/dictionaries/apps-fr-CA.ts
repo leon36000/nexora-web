@@ -199,6 +199,79 @@ export const appsFrCA = {
       ],
     },
 
+    bot: {
+      name: "Nexora Bot",
+      hook: "Un bot gratuit, branché sur les modèles de Nexora AI, que vous pouvez aussi installer vous-même : le code sera ouvert.",
+      audience:
+        "Pour toute personne ou petite équipe qui veut un assistant sans rien configurer, et pour les développeurs qui veulent s’en servir comme base.",
+      accessLabel: "Gratuit",
+      accessText:
+        "Nexora Bot est gratuit. Il utilise les modèles de Nexora AI ; l’usage des modèles se règle depuis votre portefeuille.",
+      ready: [] as string[],
+      coming: [
+        "Le bot, branché sur les modèles de Nexora AI.",
+        "Le code publié en logiciel libre, pour l’étudier, le modifier et l’améliorer avec nous.",
+        "Une installation simple, sans configuration de modèle.",
+      ],
+      faq: [
+        {
+          question: "Nexora Bot est-il disponible ?",
+          answer:
+            "Pas encore en téléchargement ni en ligne sur ce site. Nous n’annonçons pas de date. La liste d’attente est le meilleur moyen d’être averti.",
+        },
+        {
+          question: "Sous quelle licence sera-t-il publié ?",
+          answer:
+            "Le code sera publié en logiciel libre. La licence exacte sera annoncée avec la publication, et non avant.",
+        },
+        {
+          question: "Est-ce que l’usage des modèles est gratuit ?",
+          answer:
+            "Le bot est gratuit ; les jetons consommés auprès des modèles sont facturés à votre portefeuille, au prix affiché au catalogue.",
+        },
+      ],
+    },
+
+    wordpress: {
+      name: "Plugins WordPress Nexora",
+      hook: "Un plugin WordPress gratuit, et l’automatisation de votre site par abonnement : référencement, articles de blogue, mises à jour.",
+      audience:
+        "Pour les propriétaires de sites WordPress, les PME et les agences qui veulent un site qui se tient à jour et se fait trouver, sans y passer leurs soirées.",
+      accessLabel: "Plugin gratuit, automatisation sur abonnement (prévu)",
+      accessText:
+        "Le plugin est prévu gratuit et ouvert. L’automatisation du site (référencement, articles) est prévue sur abonnement. Aucun prix n’est publié à ce jour.",
+      ready: [] as string[],
+      coming: [
+        "Un plugin WordPress gratuit, dont le code sera ouvert.",
+        "L’automatisation du référencement de votre site.",
+        "La rédaction d’articles de blogue, que vous relisez avant publication.",
+        "Une logique de flux de travaux pour un site, dans l’esprit de WorkStudio.",
+        "Des conditions claires pour l’usage commercial, annoncées avec la licence.",
+      ],
+      faq: [
+        {
+          question: "Le plugin est-il disponible ?",
+          answer:
+            "Non, pas encore. Nous n’annonçons pas de date. La liste d’attente est le meilleur moyen d’être averti.",
+        },
+        {
+          question: "Qu’est-ce qui est gratuit, et qu’est-ce qui est payant ?",
+          answer:
+            "Le plugin est prévu gratuit. L’automatisation (référencement, articles) est prévue sur abonnement. Les prix seront affichés avant toute vente.",
+        },
+        {
+          question: "Et pour un usage commercial ?",
+          answer:
+            "Des conditions d’usage commercial sont prévues. Elles seront publiées avec la licence ; rien n’est arrêté à ce jour.",
+        },
+        {
+          question: "Les articles sont-ils publiés sans que je les voie ?",
+          answer:
+            "Le principe retenu est que vous relisez avant publication, comme dans WorkStudio où un humain valide les étapes sensibles.",
+        },
+      ],
+    },
+
     webpilot: {
       name: "Nexora WebPilot",
       hook: "Une API pour chercher, lire et explorer le Web, puis naviguer et agir sur des pages. Vendue à l’usage, comme un modèle.",

@@ -294,6 +294,8 @@ export const enCA: Dictionary = {
         // Text filled in by the "waiting list" links of the Nexora Apps pages (?sujet=apps-…), editable.
         prefill: {
           "apps-code": "Waiting list: Nexora Code Agent.",
+          "apps-bot": "Waiting list: Nexora Bot.",
+          "apps-wordpress": "Waiting list: Nexora WordPress plugins.",
           "apps-gitspace": "Waiting list: Nexora Gitspace.",
           "apps-rag": "Waiting list: Nexora RAG.",
           "apps-webpilot": "Waiting list: Nexora WebPilot.",

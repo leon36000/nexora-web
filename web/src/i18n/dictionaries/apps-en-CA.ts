@@ -198,6 +198,79 @@ export const appsEnCA: AppsDictionary = {
       ],
     },
 
+    bot: {
+      name: "Nexora Bot",
+      hook: "A free bot connected to Nexora AI's models, which you can also install yourself: the code will be open.",
+      audience:
+        "For anyone or any small team who wants an assistant with nothing to configure, and for developers who want a base to build on.",
+      accessLabel: "Free",
+      accessText:
+        "Nexora Bot is free. It uses Nexora AI's models; model usage is paid from your wallet.",
+      ready: [] as string[],
+      coming: [
+        "The bot, connected to Nexora AI's models.",
+        "The code published as free software, to study, change and improve with us.",
+        "A simple install, with no model setup.",
+      ],
+      faq: [
+        {
+          question: "Is Nexora Bot available?",
+          answer:
+            "Not yet for download or online on this site. We are not announcing a date. The waiting list is the best way to be told.",
+        },
+        {
+          question: "Under which licence will it be released?",
+          answer:
+            "The code will be published as free software. The exact licence will be announced with the release, not before.",
+        },
+        {
+          question: "Is model usage free?",
+          answer:
+            "The bot is free; the tokens used with the models are charged to your wallet, at the price shown in the catalogue.",
+        },
+      ],
+    },
+
+    wordpress: {
+      name: "Nexora WordPress plugins",
+      hook: "A free WordPress plugin, and website automation on subscription: search ranking, blog articles, updates.",
+      audience:
+        "For WordPress site owners, small businesses and agencies who want a site that stays up to date and gets found, without spending their evenings on it.",
+      accessLabel: "Free plugin, automation on subscription (planned)",
+      accessText:
+        "The plugin is planned to be free and open. Site automation (search ranking, articles) is planned on subscription. No price is published yet.",
+      ready: [] as string[],
+      coming: [
+        "A free WordPress plugin, with open code.",
+        "Automation of your site's search ranking.",
+        "Writing blog articles, which you review before publishing.",
+        "Workflow logic for a website, in the spirit of WorkStudio.",
+        "Clear terms for commercial use, announced with the licence.",
+      ],
+      faq: [
+        {
+          question: "Is the plugin available?",
+          answer:
+            "No, not yet. We are not announcing a date. The waiting list is the best way to be told.",
+        },
+        {
+          question: "What is free and what is paid?",
+          answer:
+            "The plugin is planned to be free. Automation (search ranking, articles) is planned on subscription. Prices will be shown before any sale.",
+        },
+        {
+          question: "What about commercial use?",
+          answer:
+            "Commercial-use terms are planned. They will be published with the licence; nothing is settled yet.",
+        },
+        {
+          question: "Are articles published without my seeing them?",
+          answer:
+            "The principle is that you review before publishing, as in WorkStudio where a person validates sensitive steps.",
+        },
+      ],
+    },
+
     webpilot: {
       name: "Nexora WebPilot",
       hook: "An API to search, read and explore the web, then navigate and act on pages. Sold by usage, like a model.",

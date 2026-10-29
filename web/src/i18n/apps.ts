@@ -51,6 +51,14 @@ export const APPS = [
     related: ["rag", "privacy-router"],
   },
   {
+    slug: "bot",
+    state: "bientot",
+    access: "gratuit",
+    category: "BusinessApplication",
+    cta: "waitlist",
+    related: ["code", "wordpress"],
+  },
+  {
     slug: "gitspace",
     state: "bientot",
     access: "abonnement",
@@ -73,6 +81,14 @@ export const APPS = [
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["privacy-router", "code"],
+  },
+  {
+    slug: "wordpress",
+    state: "bientot",
+    access: "abonnement",
+    category: "BusinessApplication",
+    cta: "waitlist",
+    related: ["bot", "webpilot"],
   },
   {
     slug: "privacy-router",
