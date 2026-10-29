@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  hasWorkstudioAccess,
   isFreeAccess,
   onboardingProgress,
   onboardingSteps,
@@ -209,5 +210,26 @@ describe("état de WorkStudio", () => {
         instanceOrigin: origin,
       }),
     ).toEqual({ state: "ready", url: origin });
+  });
+});
+
+describe("accès WorkStudio", () => {
+  it("vrai seulement pour un abonnement lié à une offre, en accès complet ou en délai de grâce", () => {
+    expect(hasWorkstudioAccess([])).toBe(false);
+    expect(hasWorkstudioAccess([{ planCode: null, access: "full" }])).toBe(
+      false,
+    );
+    expect(hasWorkstudioAccess([{ planCode: "equipe", access: "none" }])).toBe(
+      false,
+    );
+    expect(
+      hasWorkstudioAccess([{ planCode: "equipe", access: "suspended" }]),
+    ).toBe(false);
+    expect(hasWorkstudioAccess([{ planCode: "equipe", access: "full" }])).toBe(
+      true,
+    );
+    expect(hasWorkstudioAccess([{ planCode: "equipe", access: "grace" }])).toBe(
+      true,
+    );
   });
 });

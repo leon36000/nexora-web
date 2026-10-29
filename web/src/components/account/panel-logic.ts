@@ -123,12 +123,23 @@ export type WorkstudioView =
  * catalogue (`planCode`) ; ceux des VPS n'en portent pas. Le bouton d'ouverture n'existe que si l'accès est
  * actif (complet ou en délai de grâce) ET qu'une adresse sûre est connue ; sinon on le dit honnêtement.
  */
+type OfferSubscription = { planCode: string | null; access: AccessLevel };
+
+/** Un abonnement lié à une offre donne actuellement accès (complet, ou délai de grâce après un paiement raté). */
+export function hasWorkstudioAccess(
+  subscriptions: readonly OfferSubscription[],
+): boolean {
+  return subscriptions.some(
+    (s) => s.planCode !== null && (s.access === "full" || s.access === "grace"),
+  );
+}
+
 export function workstudioView(input: {
-  subscriptions: readonly { planCode: string | null; access: AccessLevel }[];
+  subscriptions: readonly OfferSubscription[];
   instanceOrigin: string | null;
 }): WorkstudioView {
   const offers = input.subscriptions.filter((s) => s.planCode !== null);
-  if (offers.some((s) => s.access === "full" || s.access === "grace")) {
+  if (hasWorkstudioAccess(offers)) {
     const url = safeInstanceUrl(input.instanceOrigin);
     return url ? { state: "ready", url } : { state: "pending" };
   }

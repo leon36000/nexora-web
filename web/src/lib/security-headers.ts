@@ -89,7 +89,7 @@ export function mergeCsp(base: string, override: string | null): string {
 }
 
 /**
- * Pages de l'espace client qui envoient un formulaire à `/api/billing/*` : l'API répond par une redirection (303)
+ * Pages de l'espace client qui envoient un formulaire à `/api/billing/*` (aperçu, facturation, VPS) : l'API répond par une redirection (303)
  * vers la page de paiement ou de portail hébergée par Stripe. Chrome applique `form-action` aux redirections d'un
  * formulaire : sans ces deux origines, la navigation est bloquée. Elles ne sont ouvertes qu'en destination de
  * formulaire, jamais comme source de script, d'image ou de connexion, et seulement sur ces pages.
@@ -97,7 +97,7 @@ export function mergeCsp(base: string, override: string | null): string {
 const STRIPE_FORM_ACTION =
   "form-action 'self' https://checkout.stripe.com https://billing.stripe.com";
 
-const BILLING_FORM_PAGES = /^(\/en)?\/compte(\/vps)?\/?$/;
+const BILLING_FORM_PAGES = /^(\/en)?\/compte(\/vps|\/facturation)?\/?$/;
 
 export function billingFormCsp(pathname: string): string | null {
   return BILLING_FORM_PAGES.test(pathname) ? STRIPE_FORM_ACTION : null;
