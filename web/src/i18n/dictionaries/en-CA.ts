@@ -171,6 +171,11 @@ export const enCA: Dictionary = {
   cms: {
     priceOnRequest: "On request",
     toc: { label: "On this page" },
+    byline: {
+      by: "By {name}",
+      published: "Published",
+      updated: "Updated",
+    },
     status: {
       disponible: "Available",
       "acces-anticipe": "Early access",

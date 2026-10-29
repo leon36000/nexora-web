@@ -2,7 +2,7 @@
  * Texte riche contrôlé (liste blanche).
  *
  * Le CMS fournit du HTML produit par un éditeur restreint (gras, italique, lien, listes, titres 2 et 3,
- * citation). On ne le réinjecte JAMAIS tel quel : il est analysé en un arbre de nœuds reconstruits
+ * citation, tableau, code). On ne le réinjecte JAMAIS tel quel : il est analysé en un arbre de nœuds reconstruits
  * uniquement à partir de balises autorisées, puis rendu en éléments React (le texte est échappé par React,
  * il n'y a aucun `dangerouslySetInnerHTML`). Ce qui n'est pas autorisé est écarté :
  * - script, style, iframe, objets, svg… : supprimés AVEC leur contenu ;
@@ -23,7 +23,17 @@ type RichElementTag =
   | "li"
   | "h2"
   | "h3"
-  | "blockquote";
+  | "blockquote"
+  | "table"
+  | "caption"
+  | "thead"
+  | "tbody"
+  | "tfoot"
+  | "tr"
+  | "th"
+  | "td"
+  | "pre"
+  | "code";
 
 export type RichNode =
   | { type: "text"; value: string }
@@ -43,6 +53,32 @@ const ALIASES: Record<string, RichElementTag> = {
   h2: "h2",
   h3: "h3",
   blockquote: "blockquote",
+  table: "table",
+  caption: "caption",
+  thead: "thead",
+  tbody: "tbody",
+  tfoot: "tfoot",
+  tr: "tr",
+  th: "th",
+  td: "td",
+  pre: "pre",
+  code: "code",
+};
+
+/**
+ * Parents permis des éléments de tableau : un élément hors de son parent (cellule seule, ligne dans une liste) est
+ * « déballé » (son texte reste), jamais rendu mal placé.
+ */
+const TABLE_PARENTS: Partial<
+  Record<RichElementTag, readonly RichElementTag[]>
+> = {
+  caption: ["table"],
+  thead: ["table"],
+  tbody: ["table"],
+  tfoot: ["table"],
+  tr: ["table", "thead", "tbody", "tfoot"],
+  th: ["tr"],
+  td: ["tr"],
 };
 
 /** Éléments supprimés avec leur contenu. */
@@ -70,6 +106,8 @@ const BLOCKS = new Set<RichElementTag>([
   "h2",
   "h3",
   "blockquote",
+  "table",
+  "pre",
 ]);
 
 const MAX_INPUT = 100_000;
@@ -374,6 +412,23 @@ export function parseRichText(html: string): RichNode[] {
       if (tag === "li") {
         while (stack.length > 1 && topAllowedTag() === "li") closeTop();
       }
+      // fermetures implicites d'un tableau : une cellule ferme la précédente, une ligne ferme sa dernière cellule…
+      if (tag === "th" || tag === "td")
+        while (topAllowedTag() === "th" || topAllowedTag() === "td") closeTop();
+      else if (tag === "tr")
+        while (["th", "td", "tr"].includes(topAllowedTag() ?? "")) closeTop();
+      else if (tag === "thead" || tag === "tbody" || tag === "tfoot")
+        while (
+          ["th", "td", "tr", "thead", "tbody", "tfoot"].includes(
+            topAllowedTag() ?? "",
+          )
+        )
+          closeTop();
+      const parents = TABLE_PARENTS[tag];
+      if (parents && !parents.includes(topAllowedTag() as RichElementTag)) {
+        if (!selfClosed) stack.push({ tag: null, name, children: [] });
+        continue;
+      }
       stack.push({ tag, name, children: [] });
       continue;
     }
@@ -386,6 +441,15 @@ export function parseRichText(html: string): RichNode[] {
   return root.children;
 }
 
+/** Le texte contient-il un tableau ou un bloc de code ? Ces éléments demandent une colonne plus large que le texte courant. */
+export function hasWideContent(nodes: RichNode[]): boolean {
+  return nodes.some(
+    (n) =>
+      n.type === "el" &&
+      (n.tag === "table" || n.tag === "pre" || hasWideContent(n.children)),
+  );
+}
+
 /** Texte visible d'un arbre (entités décodées), une espace entre les blocs. */
 export function richTextToPlain(nodes: RichNode[]): string {
   const parts: string[] = [];
@@ -394,7 +458,11 @@ export function richTextToPlain(nodes: RichNode[]): string {
       if (n.type === "text") parts.push(n.value);
       else if (n.tag === "br") parts.push(" ");
       else {
-        const block = n.tag !== "strong" && n.tag !== "em" && n.tag !== "a";
+        const block =
+          n.tag !== "strong" &&
+          n.tag !== "em" &&
+          n.tag !== "a" &&
+          n.tag !== "code";
         if (block) parts.push(" ");
         walk(n.children);
         if (block) parts.push(" ");

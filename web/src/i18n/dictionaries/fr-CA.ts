@@ -174,6 +174,11 @@ export const frCA = {
   cms: {
     priceOnRequest: "Sur demande",
     toc: { label: "Sur cette page" },
+    byline: {
+      by: "Par {name}",
+      published: "Publié le",
+      updated: "Mis à jour le",
+    },
     status: {
       disponible: "Disponible",
       "acces-anticipe": "Accès anticipé",

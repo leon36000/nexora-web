@@ -17,10 +17,17 @@ const BY_SLUG: Record<string, PageSchemaType> = {
   workstudio: "software",
   "nexora-workstudio": "software",
   entreprise: "about",
+  // page de synthèse des gabarits de flux de travaux (guide) ; ses fiches suivent le préfixe ci-dessous
+  "gabarits-flux-de-travaux": "article",
 };
 /** Sections dont chaque sous-page décrit un service. */
 const SERVICE_SECTIONS = ["services", "solutions", "deploiement"] as const;
-const ARTICLE_PREFIXES = ["blog/", "articles/", "guides/"] as const;
+const ARTICLE_PREFIXES = [
+  "blog/",
+  "articles/",
+  "guides/",
+  "gabarits-flux-de-travaux/",
+] as const;
 
 export function pageSchemaType(frSlug: string): PageSchemaType | null {
   const known = BY_SLUG[frSlug];
@@ -42,4 +49,8 @@ export const SECTION_CRUMBS: Record<string, { fr: string; en: string }> = {
   services: { fr: "Services", en: "Services" },
   deploiement: { fr: "Déploiement", en: "Deployment" },
   souverainete: { fr: "Souveraineté", en: "Sovereignty" },
+  "gabarits-flux-de-travaux": {
+    fr: "Gabarits de flux de travaux",
+    en: "Workflow templates",
+  },
 };

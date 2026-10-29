@@ -455,6 +455,8 @@ const rich: Opt["options"] = {
     "h2",
     "h3",
     "blockquote",
+    "table",
+    "codeblock",
     "removeformat",
     "undo",
     "redo",
