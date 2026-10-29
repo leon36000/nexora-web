@@ -1,0 +1,18 @@
+{
+  "name": "@nexora/webpilot-browser",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Service interne de navigateur de Nexora WebPilot (rendu de pages et sessions). Isolé du réseau de l'application.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "playwright-core": "1.64.1"
+  }
+}
