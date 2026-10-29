@@ -75,18 +75,18 @@ export const NAVIGATION: NavEntry[] = [
         "One gateway to many models, with data residency shown for each.",
       ),
       both(
-        "Agents",
-        "Agents",
-        "/agents/",
-        "Des agents hébergés, appelables par API avec votre clé.",
-        "Hosted agents you call through the API with your own key.",
-      ),
-      both(
         "WorkStudio",
         "WorkStudio",
         "/workstudio/",
         "Le studio pour concevoir des agents et des flux de travaux.",
         "The studio for designing agents and workflows.",
+      ),
+      both(
+        "Nexora Apps",
+        "Nexora Apps",
+        "/apps/",
+        "Agent de code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
+        "Code agent, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
       ),
       both(
         "Suite logicielle",
@@ -138,8 +138,8 @@ export const NAVIGATION: NavEntry[] = [
     [
       both("VPS", "VPS", "/vps/"),
       both("Modèles et API", "Models and API", "/modeles/"),
-      both("Agents", "Agents", "/agents/"),
       both("WorkStudio", "WorkStudio", "/workstudio/"),
+      both("Nexora Apps", "Nexora Apps", "/apps/"),
       both("Suite logicielle", "Software suite", "/suite/"),
       both("OPSYS-AI", "OPSYS-AI", "/opsys-ai/"),
       both("Nexora Croissance", "Nexora Croissance", "/croissance/"),
