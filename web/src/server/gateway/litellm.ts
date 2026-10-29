@@ -183,13 +183,15 @@ function litellmModelString(type: ProviderType, upstreamId: string): string {
 }
 
 /** Adresse de base attendue par LiteLLM : `/v1` ajouté pour les API compatibles OpenAI. */
-function apiBaseFor(type: ProviderType, url: string): string | undefined {
+export function apiBaseFor(
+  type: ProviderType,
+  url: string,
+): string | undefined {
   const clean = url.replace(/\/+$/, "");
   if (type === "ollama") return clean.replace(/\/v1$/, "");
   if (type === "openrouter" && /openrouter\.ai/.test(clean)) return undefined;
-  return /\/v1$/.test(clean) || /\/api\/v1$/.test(clean)
-    ? clean
-    : `${clean}/v1`;
+  // déjà versionnée (/v1, /api/v1, /api/paas/v4…) : telle quelle
+  return /\/v\d+$/.test(clean) ? clean : `${clean}/v1`;
 }
 
 export interface SyncSummary {

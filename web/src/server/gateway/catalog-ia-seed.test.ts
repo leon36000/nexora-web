@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { modelPrices, models } from "@nexora/db";
+import { eq, modelPrices, modelProviders, models } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { loadKeyring } from "../vault/crypto";
@@ -10,11 +10,7 @@ import {
   createDraftVersion,
   updateModel,
 } from "./catalog";
-import {
-  AI_MODEL_DRAFTS,
-  OPENROUTER_PROVIDER,
-  seedAiModels,
-} from "./catalog-ia-seed";
+import { AI_MODEL_DRAFTS, PROVIDERS, seedAiModels } from "./catalog-ia-seed";
 import { modelRoutingSchema, modelSheetSchema } from "./sheet";
 
 const byId = (id: string) => {
@@ -24,15 +20,35 @@ const byId = (id: string) => {
 };
 
 describe("les cinq modèles du fondateur", () => {
-  it("sont exactement ceux demandés, sous leur identifiant chez OpenRouter", () => {
+  it("sont exactement ceux demandés, chez leur fournisseur d'origine, avec leur équivalent OpenRouter", () => {
     expect(
-      AI_MODEL_DRAFTS.map((d) => [d.model.publicId, d.model.upstreamId]),
+      AI_MODEL_DRAFTS.map((d) => [
+        d.model.publicId,
+        d.providerCode,
+        d.model.upstreamId,
+        d.openrouterId,
+      ]),
     ).toEqual([
-      ["nexora/deepseek-v4.1-flash-1017", "deepseek/deepseek-v4.1-flash-1017"],
-      ["nexora/glm-5.3", "z-ai/glm-5.3"],
-      ["nexora/glm-5.3-flash", "z-ai/glm-5.3-flash"],
-      ["nexora/minimax-m3.1-flash", "minimax/minimax-m3.1-flash"],
-      ["nexora/kimi-k3.1-pro", "moonshotai/kimi-k3.1-pro"],
+      [
+        "nexora/deepseek-v4.1-flash-1017",
+        "deepseek",
+        "deepseek-flash",
+        "deepseek/deepseek-v4.1-flash-1017",
+      ],
+      ["nexora/glm-5.3", "zai", "glm-5.3", "z-ai/glm-5.3"],
+      ["nexora/glm-5.3-flash", "zai", "glm-5.3-flash", "z-ai/glm-5.3-flash"],
+      [
+        "nexora/minimax-m3.1-flash",
+        "minimax",
+        "MiniMax-M3.1-Flash",
+        "minimax/minimax-m3.1-flash",
+      ],
+      [
+        "nexora/kimi-k3.1-pro",
+        "moonshot",
+        "kimi-k3.1-pro",
+        "moonshotai/kimi-k3.1-pro",
+      ],
     ]);
   });
 
@@ -118,11 +134,18 @@ describe("les cinq modèles du fondateur", () => {
     });
   });
 
-  it("passent par OpenRouter, avec une clé à saisir dans le coffre", () => {
-    expect(OPENROUTER_PROVIDER).toMatchObject({
-      code: "openrouter",
+  it("ont un fournisseur déclaré par modèle, avec une clé à saisir dans le coffre", () => {
+    const codes = PROVIDERS.map((p) => p.code);
+    for (const d of AI_MODEL_DRAFTS) expect(codes).toContain(d.providerCode);
+    expect(PROVIDERS.find((p) => p.code === "zai")).toMatchObject({
+      type: "openai_compatible",
+      baseUrl: "https://api.z.ai/api/paas/v4",
+      secretRef: "llm.zai",
+    });
+    // OpenRouter n'est qu'une route de secours : désactivée tant qu'on n'y met pas de clé
+    expect(PROVIDERS.find((p) => p.code === "openrouter")).toMatchObject({
       type: "openrouter",
-      baseUrl: "https://openrouter.ai/api/v1",
+      enabled: false,
       secretRef: "llm.openrouter",
     });
   });
@@ -168,6 +191,53 @@ describe("chargement dans la base", () => {
     expect(await t.db.select().from(modelPrices)).toHaveLength(5);
   });
 
+  it("remet à jour un brouillon resté sur l'ancienne route, sans toucher à un modèle approuvé", async () => {
+    const [openrouter] = await t.db
+      .select()
+      .from(modelProviders)
+      .where(eq(modelProviders.code, "openrouter"));
+    const [zai] = await t.db
+      .select()
+      .from(modelProviders)
+      .where(eq(modelProviders.code, "zai"));
+    const [glm] = await t.db
+      .select()
+      .from(models)
+      .where(eq(models.publicId, "nexora/glm-5.3"));
+    const [flash] = await t.db
+      .select()
+      .from(models)
+      .where(eq(models.publicId, "nexora/glm-5.3-flash"));
+    // GLM 5.3 : brouillon resté chez OpenRouter ; GLM 5.3 Flash : approuvé, on n'y touche pas
+    await t.db
+      .update(models)
+      .set({ providerId: openrouter?.id as string, upstreamId: "z-ai/glm-5.3" })
+      .where(eq(models.id, glm?.id as string));
+    await t.db
+      .update(models)
+      .set({ status: "approved", upstreamId: "choix-manuel" })
+      .where(eq(models.id, flash?.id as string));
+    const out = await seedAiModels(t.db);
+    expect(out.updated).toContain("nexora/glm-5.3");
+    expect(out.updated).not.toContain("nexora/glm-5.3-flash");
+    const [after] = await t.db
+      .select()
+      .from(models)
+      .where(eq(models.id, glm?.id as string));
+    expect(after?.providerId).toBe(zai?.id);
+    expect(after?.upstreamId).toBe("glm-5.3");
+    const [kept] = await t.db
+      .select()
+      .from(models)
+      .where(eq(models.id, flash?.id as string));
+    expect(kept?.upstreamId).toBe("choix-manuel");
+    await t.db
+      .update(models)
+      .set({ status: "draft" })
+      .where(eq(models.id, flash?.id as string));
+    await seedAiModels(t.db);
+  });
+
   it("refuse de charger sans taux de change approuvé, sans rien écrire", async () => {
     const empty = await createTestDatabase();
     try {
@@ -180,7 +250,7 @@ describe("chargement dans la base", () => {
     }
   });
 
-  it("n'est pas publiable tant que la clé OpenRouter n'est pas dans le coffre", async () => {
+  it("n'est pas publiable tant que les clés des fournisseurs ne sont pas dans le coffre", async () => {
     const rows = await t.db.select().from(models);
     for (const m of rows) {
       await updateModel(t.db, m.id, { status: "approved" });
@@ -189,11 +259,12 @@ describe("chargement dans la base", () => {
     const sans = await createDraftVersion(t.db);
     expect(sans.issues.some((i) => i.code === "secret_missing")).toBe(true);
 
-    await putSecret(t.db, keyring, {
-      ref: "llm.openrouter",
-      value: "sk-or-test-xxxxxxxxxxxxxxxx",
-      kind: "llm_provider",
-    });
+    for (const code of ["deepseek", "zai", "minimax", "moonshot"])
+      await putSecret(t.db, keyring, {
+        ref: `llm.${code}`,
+        value: `sk-test-${code}-xxxxxxxxxxxxxxxx`,
+        kind: "llm_provider",
+      });
     const avec = await createDraftVersion(t.db);
     expect(avec.issues.filter((i) => i.code === "secret_missing")).toEqual([]);
   });

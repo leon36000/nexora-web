@@ -15,7 +15,12 @@ import {
   publishVersion,
   updateModel,
 } from "./catalog";
-import { createLitellmClient, SyncError, syncLitellm } from "./litellm";
+import {
+  apiBaseFor,
+  createLitellmClient,
+  SyncError,
+  syncLitellm,
+} from "./litellm";
 
 /** Simulateur minimal de l'API d'administration de LiteLLM (état en mémoire). */
 function fakeLitellm() {
@@ -238,5 +243,22 @@ describe("synchronisation LiteLLM", () => {
     expect(JSON.stringify(rows[0]?.appliedDetail)).not.toContain(
       "vk-super-secret",
     );
+  });
+});
+
+describe("adresse de base transmise à LiteLLM", () => {
+  it("garde telle quelle une adresse déjà versionnée (/v1, /api/v1, /v4) et ajoute /v1 sinon", () => {
+    expect(
+      apiBaseFor("openai_compatible", "https://api.z.ai/api/paas/v4"),
+    ).toBe("https://api.z.ai/api/paas/v4");
+    expect(apiBaseFor("openai_compatible", "https://api.minimax.io/v1/")).toBe(
+      "https://api.minimax.io/v1",
+    );
+    expect(apiBaseFor("openai_compatible", "https://llm.exemple.ca")).toBe(
+      "https://llm.exemple.ca/v1",
+    );
+    expect(
+      apiBaseFor("openrouter", "https://openrouter.ai/api/v1"),
+    ).toBeUndefined();
   });
 });

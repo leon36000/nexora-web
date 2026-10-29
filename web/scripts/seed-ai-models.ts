@@ -1,11 +1,12 @@
 #!/usr/bin/env bun
-// Charge dans la base « app » le fournisseur OpenRouter et les cinq modèles du fondateur, en BROUILLON
+// Charge dans la base « app » les fournisseurs d'origine (OpenRouter en secours) et les cinq modèles du fondateur, en BROUILLON
 // (fiches sourcées, prix du fournisseur d'origine, marge de 10 %). Rejouable : ne touche à rien d'existant.
 //
 //   bun web/scripts/seed-ai-models.ts
 //
-// Prérequis : un taux de change USD→CAD approuvé. Rien n'est publié : la clé OpenRouter se saisit dans
-// le coffre (référence `llm.openrouter`) par le fondateur, puis les modèles s'approuvent depuis le panneau.
+// Prérequis : un taux de change USD→CAD approuvé. Rien n'est publié : le fondateur saisit la clé de chaque
+// fournisseur dans le coffre (références `llm.deepseek`, `llm.zai`, `llm.minimax`, `llm.moonshot`), puis
+// approuve les modèles depuis le panneau.
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { createDb } from "@nexora/db";
@@ -31,6 +32,7 @@ try {
   console.log(
     `modèles créés en brouillon : ${out.created.join(", ") || "aucun (déjà présents)"}`,
   );
+  console.log(`brouillons remis à jour : ${out.updated.join(", ") || "aucun"}`);
 } finally {
   await close();
 }

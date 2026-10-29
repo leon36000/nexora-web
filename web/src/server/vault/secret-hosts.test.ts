@@ -20,6 +20,19 @@ describe("hôtes autorisés pour une clé du coffre (R9 : la clé ne part que ve
     ).toMatch(/HTTPS/);
   });
 
+  it("les interfaces officielles de DeepSeek, Z.ai, MiniMax et Moonshot passent par défaut, en HTTPS seulement", () => {
+    for (const url of [
+      "https://api.deepseek.com/v1",
+      "https://api.z.ai/api/paas/v4",
+      "https://api.minimax.io/v1",
+      "https://api.moonshot.ai/v1",
+    ])
+      expect(secretHostProblem("model-provider", url, PROD), url).toBeNull();
+    expect(
+      secretHostProblem("model-provider", "http://api.z.ai/api/paas/v4", PROD),
+    ).toMatch(/HTTPS/);
+  });
+
   it("refuse un hôte HTTPS public que l'administrateur contrôle, avec un motif clair", () => {
     const problem = secretHostProblem(
       "model-provider",

@@ -13,12 +13,13 @@ import {
   currentFx,
   type ModelInput,
   type ProviderInput,
+  updateModel,
 } from "./catalog";
 
 /**
  * Les cinq modèles demandés par le fondateur (28/10/2026), chargés en BROUILLON : fiches lues sur
  * les pages officielles, prix du fournisseur d'origine comme référence de coût, marge de 10 %.
- * Rien n'est publié : la clé OpenRouter doit d'abord être saisie dans le coffre par le fondateur.
+ * Rien n'est publié : le fondateur saisit lui-même la clé de chaque fournisseur dans le coffre.
  */
 
 /** Marge visée et plancher, en points de base (décision du fondateur : 10 %). */
@@ -26,21 +27,83 @@ export const MARGIN_BPS = 1000;
 
 const READ_AT = "2026-10-28";
 
-export const OPENROUTER_PROVIDER: ProviderInput = {
-  code: "openrouter",
-  name: "OpenRouter",
-  type: "openrouter",
-  baseUrl: "https://openrouter.ai/api/v1",
-  secretRef: "llm.openrouter",
+const direct = (
+  code: string,
+  name: string,
+  baseUrl: string,
+  priority: number,
+  fr: string,
+  en: string,
+): ProviderInput => ({
+  code,
+  name,
+  type: "openai_compatible",
+  baseUrl,
+  secretRef: `llm.${code}`,
   region: "autre",
-  priority: 10,
-  dataPolicyFr:
-    "Les requêtes passent par OpenRouter, qui les transmet à un hébergeur tiers du modèle. Nos consignes de routage refusent les hébergeurs qui conservent ou réutilisent les données.",
-  dataPolicyEn:
-    "Requests go through OpenRouter, which forwards them to a third-party host of the model. Our routing rules exclude hosts that keep or reuse data.",
-};
+  priority,
+  dataPolicyFr: fr,
+  dataPolicyEn: en,
+});
+
+/**
+ * Fournisseurs d'origine, chacun avec la clé du fondateur (saisie par lui dans le coffre, référence
+ * `llm.<code>`), et OpenRouter en route de secours, désactivé tant que le fondateur n'y met pas de clé.
+ */
+export const PROVIDERS: ProviderInput[] = [
+  direct(
+    "deepseek",
+    "DeepSeek",
+    "https://api.deepseek.com/v1",
+    10,
+    "Requêtes envoyées directement à DeepSeek.",
+    "Requests sent directly to DeepSeek.",
+  ),
+  direct(
+    "zai",
+    "Z.ai",
+    "https://api.z.ai/api/paas/v4",
+    10,
+    "Requêtes envoyées directement à Z.ai.",
+    "Requests sent directly to Z.ai.",
+  ),
+  direct(
+    "minimax",
+    "MiniMax",
+    "https://api.minimax.io/v1",
+    10,
+    "Requêtes envoyées directement à MiniMax.",
+    "Requests sent directly to MiniMax.",
+  ),
+  direct(
+    "moonshot",
+    "Moonshot AI (Kimi)",
+    "https://api.moonshot.ai/v1",
+    10,
+    "Requêtes envoyées directement à Moonshot AI.",
+    "Requests sent directly to Moonshot AI.",
+  ),
+  {
+    code: "openrouter",
+    name: "OpenRouter",
+    type: "openrouter",
+    baseUrl: "https://openrouter.ai/api/v1",
+    secretRef: "llm.openrouter",
+    region: "autre",
+    priority: 50,
+    enabled: false,
+    dataPolicyFr:
+      "Route de secours : les requêtes passent par OpenRouter, qui les transmet à un hébergeur tiers. Nos consignes de routage refusent les hébergeurs qui conservent ou réutilisent les données.",
+    dataPolicyEn:
+      "Fallback route: requests go through OpenRouter, which forwards them to a third-party host. Our routing rules exclude hosts that keep or reuse data.",
+  },
+];
 
 export interface AiModelDraft {
+  /** Code du fournisseur d'origine (route principale). */
+  providerCode: string;
+  /** Identifiant du même modèle chez OpenRouter (route de secours, G6). */
+  openrouterId: string;
   model: Omit<ModelInput, "providerId">;
   /** Prix du fournisseur d'origine, en micro-USD par million de jetons. */
   reference: { input: bigint; output: bigint; cache: bigint | null };
@@ -62,6 +125,8 @@ const base: ModelCapabilities = {
 
 export const AI_MODEL_DRAFTS: AiModelDraft[] = [
   {
+    providerCode: "deepseek",
+    openrouterId: "deepseek/deepseek-v4.1-flash-1017",
     model: {
       publicId: "nexora/deepseek-v4.1-flash-1017",
       name: "DeepSeek V4.1 Flash 1017",
@@ -69,7 +134,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
         "Version du 17 octobre 2026 de DeepSeek V4.1 Flash : modèle à experts rapide et très économique, lecture d'images, appels d'outils, raisonnement activable, contexte de 1 million de jetons.",
       descriptionEn:
         "October 17, 2026 snapshot of DeepSeek V4.1 Flash: a fast, very low-cost mixture-of-experts model with image input, tool calls, optional reasoning and a 1-million-token context.",
-      upstreamId: "deepseek/deepseek-v4.1-flash-1017",
+      upstreamId: "deepseek-flash",
       contextMax: 1_048_576,
       maxOutputTokens: 393_216,
       capabilities: { ...base, vision: true },
@@ -119,6 +184,8 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
       "Tarif de pointe de DeepSeek (28/10/2026). Ne pas publier avant les plages horaires (G1) : le tarif creux est la moitié.",
   },
   {
+    providerCode: "zai",
+    openrouterId: "z-ai/glm-5.3",
     model: {
       publicId: "nexora/glm-5.3",
       name: "GLM 5.3",
@@ -126,7 +193,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
         "Modèle de raisonnement de Z.ai pour le génie logiciel complexe et les agents de longue durée : texte seulement, contexte de 1 million de jetons, poids ouverts.",
       descriptionEn:
         "Z.ai reasoning model for complex software engineering and long-horizon agents: text only, 1-million-token context, open weights.",
-      upstreamId: "z-ai/glm-5.3",
+      upstreamId: "glm-5.3",
       contextMax: 1_048_576,
       maxOutputTokens: 131_072,
       capabilities: { ...base, vision: false },
@@ -173,6 +240,8 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
     priceNote: "Prix officiel Z.ai (28/10/2026).",
   },
   {
+    providerCode: "zai",
+    openrouterId: "z-ai/glm-5.3-flash",
     model: {
       publicId: "nexora/glm-5.3-flash",
       name: "GLM 5.3 Flash",
@@ -180,7 +249,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
         "Version rapide et multimodale de GLM 5.3 (images, vidéo, fichiers) pour le code et les agents, à très bas prix, poids ouverts sous licence MIT.",
       descriptionEn:
         "Fast multimodal version of GLM 5.3 (images, video, files) for coding and agents, at a very low price, open weights under the MIT licence.",
-      upstreamId: "z-ai/glm-5.3-flash",
+      upstreamId: "glm-5.3-flash",
       contextMax: 1_048_576,
       maxOutputTokens: 131_072,
       capabilities: { ...base, vision: true },
@@ -220,6 +289,8 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
     priceNote: "Prix officiel Z.ai (28/10/2026).",
   },
   {
+    providerCode: "minimax",
+    openrouterId: "minimax/minimax-m3.1-flash",
     model: {
       publicId: "nexora/minimax-m3.1-flash",
       name: "MiniMax M3.1 Flash",
@@ -227,7 +298,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
         "Modèle multimodal de MiniMax, en progrès sur les tâches d'agents, le code et la cybersécurité par rapport à M3. Contexte de 1 million de jetons, poids ouverts.",
       descriptionEn:
         "MiniMax multimodal model, improved over M3 on agentic tasks, coding and cybersecurity. 1-million-token context, open weights.",
-      upstreamId: "minimax/minimax-m3.1-flash",
+      upstreamId: "MiniMax-M3.1-Flash",
       contextMax: 1_048_576,
       maxOutputTokens: 524_288,
       capabilities: {
@@ -284,6 +355,8 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
     priceNote: "Prix officiel MiniMax (28/10/2026).",
   },
   {
+    providerCode: "moonshot",
+    openrouterId: "moonshotai/kimi-k3.1-pro",
     model: {
       publicId: "nexora/kimi-k3.1-pro",
       name: "Kimi K3.1 Pro",
@@ -291,7 +364,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
         "Modèle phare de Moonshot AI : raisonnement multimodal, code de longue durée, appels d'outils, sortie JSON à schéma strict. Contexte de 1 million de jetons.",
       descriptionEn:
         "Moonshot AI's flagship: multimodal reasoning, long-horizon coding, tool calls, strict-schema JSON output. 1-million-token context.",
-      upstreamId: "moonshotai/kimi-k3.1-pro",
+      upstreamId: "kimi-k3.1-pro",
       contextMax: 1_048_576,
       maxOutputTokens: 131_072,
       capabilities: { ...base, vision: true },
@@ -328,7 +401,7 @@ export const AI_MODEL_DRAFTS: AiModelDraft[] = [
 
 /**
  * Charge le fournisseur OpenRouter et les cinq modèles en brouillon, avec un prix de vente égal à la
- * référence × (1 + marge) au taux de change approuvé. Rejouable : ne touche à rien d'existant.
+ * référence × (1 + marge) au taux de change approuvé. Rejouable : les brouillons suivent la définition courante, le reste n'est pas touché.
  */
 export async function seedAiModels(
   db: Database,
@@ -339,22 +412,38 @@ export async function seedAiModels(
       "fx_missing",
       "aucun taux de change approuvé : approuver un taux USD→CAD avant de charger les modèles",
     );
-  let [provider] = await db
-    .select()
-    .from(modelProviders)
-    .where(eq(modelProviders.code, OPENROUTER_PROVIDER.code));
-  if (!provider) provider = await createProvider(db, OPENROUTER_PROVIDER);
+  const byCode = new Map<string, string>();
+  for (const spec of PROVIDERS) {
+    let [row] = await db
+      .select()
+      .from(modelProviders)
+      .where(eq(modelProviders.code, spec.code));
+    if (!row) row = await createProvider(db, spec);
+    byCode.set(spec.code, row.id);
+  }
 
   const created: string[] = [];
+  const updated: string[] = [];
   for (const draft of AI_MODEL_DRAFTS) {
     const [existing] = await db
-      .select({ id: models.id })
+      .select({ id: models.id, status: models.status })
       .from(models)
       .where(eq(models.publicId, draft.model.publicId));
-    if (existing) continue;
+    if (existing) {
+      // Un brouillon suit la définition courante (route, fiche) ; un modèle approuvé ou publié n'est jamais touché.
+      if (existing.status === "draft") {
+        const { publicId: _id, ...fields } = draft.model;
+        await updateModel(db, existing.id, {
+          ...fields,
+          providerId: byCode.get(draft.providerCode) as string,
+        });
+        updated.push(draft.model.publicId);
+      }
+      continue;
+    }
     const model = await createModel(db, {
       ...draft.model,
-      providerId: provider.id,
+      providerId: byCode.get(draft.providerCode) as string,
     });
     await addPrice(db, model.id, {
       upstreamInputUsdMicro: draft.reference.input,
@@ -366,5 +455,5 @@ export async function seedAiModels(
     });
     created.push(draft.model.publicId);
   }
-  return { created };
+  return { created, updated };
 }
