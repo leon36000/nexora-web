@@ -1,4 +1,5 @@
 export * from "./billing.ts";
+export * from "./config.ts";
 export * from "./content.ts";
 export * from "./crawl.ts";
 export * from "./http.ts";

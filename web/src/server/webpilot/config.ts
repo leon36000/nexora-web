@@ -1,3 +1,5 @@
+import { clientConfigFromEnv, ROBOT_TOKEN } from "@nexora/webpilot";
+
 /**
  * Paramètres de WebPilot, lus dans l'environnement (contrat §9 : « jamais en dur dans le code »). Les valeurs par défaut
  * ci-dessous ne sont que des plafonds prudents de départ, provisoires, à ajuster avec le fondateur et sur un pilote
@@ -49,21 +51,13 @@ const list = (raw: string | undefined, fallback: string[]): string[] => {
   return items.length ? items : fallback;
 };
 
-export const ROBOT_TOKEN = "NexoraWebPilot";
+export { ROBOT_TOKEN };
 
 export function webpilotConfig(
   env: Record<string, string | undefined> = process.env,
 ): WebpilotConfig {
-  const contact = env.WEBPILOT_CONTACT?.trim();
-  const ports = list(env.WEBPILOT_ALLOWED_PORTS, ["80", "443", "8080", "8443"])
-    .map(Number)
-    .filter((p) => Number.isInteger(p) && p > 0 && p < 65536);
   return {
-    userAgent: `${ROBOT_TOKEN}/1.0${contact ? ` (+${contact})` : ""}`,
-    allowedPorts: ports.length ? ports : [80, 443],
-    maxBytes: int(env.WEBPILOT_MAX_BYTES, 5_000_000),
-    timeoutMs: int(env.WEBPILOT_TIMEOUT_MS, 20_000),
-    maxRedirects: int(env.WEBPILOT_MAX_REDIRECTS, 5, 0),
+    ...clientConfigFromEnv(env),
     defaultRpm: int(env.WEBPILOT_DEFAULT_RPM, 60),
     maxBodyBytes: int(env.WEBPILOT_MAX_BODY_BYTES, 100_000),
     maxSearchResults: int(env.WEBPILOT_MAX_SEARCH_RESULTS, 20),

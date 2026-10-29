@@ -10,6 +10,7 @@ import { registerLedgerHandlers } from "./ledger-handlers.ts";
 import { HandlerRegistry } from "./registry.ts";
 import { registerSeoHandlers } from "./seo/handlers.ts";
 import { registerVpsHandlers } from "./vps-handlers.ts";
+import { registerWebpilotHandlers } from "./webpilot/handlers.ts";
 
 /**
  * Gestionnaires du worker : contrôle de vie (S1), notification des demandes de contact (S3),
@@ -45,5 +46,7 @@ export function defaultRegistry(
     registerSeoHandlers(registry, { db: deps.db, log: deps.log });
   if (deps.db && deps.log)
     registerLedgerHandlers(registry, { db: deps.db, log: deps.log });
+  if (deps.db && deps.log)
+    registerWebpilotHandlers(registry, { db: deps.db, log: deps.log });
   return registry;
 }
