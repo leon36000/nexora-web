@@ -9,6 +9,9 @@ import type { GatewayDictionary } from "@/i18n/gateway";
 
 type AccountText = GatewayDictionary["account"];
 
+/** Opérations WebPilot offertes à la coche (les sessions de navigateur ne sont pas encore ouvertes). */
+const WEBPILOT_CHOICES = ["search", "scrape", "crawl", "extract"] as const;
+
 interface Created {
   key: string;
   name: string;
@@ -34,6 +37,9 @@ export function CreateKeyForm({ t }: { t: AccountText }) {
     };
     const cap = String(form.get("spendCapCad") ?? "").trim();
     const days = String(form.get("expiresInDays") ?? "").trim();
+    const webpilotOperations = form.getAll("webpilot").map(String);
+    if (webpilotOperations.length > 0)
+      body.webpilotOperations = webpilotOperations;
     if (cap) body.spendCapCad = cap;
     if (days) body.expiresInDays = Number(days);
     setBusy(true);
@@ -159,6 +165,28 @@ export function CreateKeyForm({ t }: { t: AccountText }) {
           inputMode="numeric"
           autoComplete="off"
         />
+        <fieldset className="sm:col-span-2">
+          <legend className="text-small font-medium text-fg">
+            {t.webpilot.legend}
+          </legend>
+          <p className="mt-1 text-small text-fg-muted">{t.webpilot.hint}</p>
+          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+            {WEBPILOT_CHOICES.map((operation) => (
+              <label
+                key={operation}
+                className="flex min-h-11 items-center gap-2 text-body text-fg"
+              >
+                <input
+                  type="checkbox"
+                  name="webpilot"
+                  value={operation}
+                  className="size-5"
+                />
+                {t.webpilot.operations[operation]}
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <div className="flex flex-wrap items-center gap-4 sm:col-span-2">
           <Button type="submit" disabled={busy}>
             {busy ? t.creating : t.create}

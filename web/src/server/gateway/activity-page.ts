@@ -1,4 +1,5 @@
 import type { Database } from "@nexora/db";
+import { type WebpilotActivity, webpilotActivity } from "../webpilot/activity";
 import {
   type ActivityCriteria,
   type ActivityPage,
@@ -26,6 +27,8 @@ export interface ActivityPageData {
   byModel: BreakdownRow[];
   byAgent: BreakdownRow[];
   byKey: BreakdownRow[];
+  /** Section « WebPilot » : pages lues, minutes, coût (zéros si l'organisation ne l'utilise pas). */
+  webpilot: WebpilotActivity;
   /** Modèles et agents vus dans la période, pour la liste de choix du filtre. */
   models: string[];
   page: ActivityPage;
@@ -44,7 +47,7 @@ export async function loadActivityPage(
   if (!query.ok) query = parseActivityParams(new URLSearchParams(), now);
   if (!query.ok) throw new Error("activité : critères par défaut invalides");
   const filter = { ...query.filter, organizationId };
-  const [summary, byDay, byModel, byAgent, byKey, models, page] =
+  const [summary, byDay, byModel, byAgent, byKey, models, page, webpilot] =
     await Promise.all([
       activitySummary(db, filter),
       activityBreakdown(db, filter, "day"),
@@ -53,6 +56,7 @@ export async function loadActivityPage(
       activityBreakdown(db, filter, "key"),
       listActivityModels(db, filter),
       listActivity(db, filter, { limit: query.limit, cursor: query.cursor }),
+      webpilotActivity(db, filter),
     ]);
   return {
     period: query.period,
@@ -63,6 +67,7 @@ export async function loadActivityPage(
     byModel,
     byAgent,
     byKey,
+    webpilot,
     models,
     page,
     hasCursor: query.cursor !== null,

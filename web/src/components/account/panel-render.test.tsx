@@ -187,6 +187,17 @@ const row = (over: Partial<ActivityRow> = {}): ActivityRow => ({
   ...over,
 });
 
+const noWebpilot: ActivityPageData["webpilot"] = {
+  requests: 0,
+  errors: 0,
+  pagesStatic: 0,
+  pagesBrowser: 0,
+  browserMinutes: 0,
+  costMicro: 0n,
+  valueMicro: 0n,
+  byOperation: [],
+};
+
 const pageData = (over: Partial<ActivityPageData> = {}): ActivityPageData => ({
   period: "30d",
   criteria: {
@@ -201,6 +212,7 @@ const pageData = (over: Partial<ActivityPageData> = {}): ActivityPageData => ({
   byKey: [
     { ...day("k1", 3, 5_900n), label: "Production", keyPrefix: "nxk_abc" },
   ],
+  webpilot: noWebpilot,
   models: ["agent/facturation", "nexora/grand"],
   page: { rows: [row()], nextCursor: null },
   hasCursor: false,
@@ -229,6 +241,64 @@ const renderActivity = (
       keys={keys}
     />,
   );
+
+describe("page Activité : section WebPilot", () => {
+  const used: ActivityPageData["webpilot"] = {
+    requests: 5,
+    errors: 1,
+    pagesStatic: 12,
+    pagesBrowser: 2,
+    browserMinutes: 0,
+    costMicro: 70_000n,
+    valueMicro: 70_000n,
+    byOperation: [
+      {
+        operation: "crawl",
+        requests: 1,
+        pages: 10,
+        minutes: 0,
+        costMicro: 50_000n,
+      },
+      {
+        operation: "scrape",
+        requests: 4,
+        pages: 4,
+        minutes: 0,
+        costMicro: 20_000n,
+      },
+    ],
+  };
+
+  it("absente tant que l'organisation n'a pas utilisé WebPilot", () => {
+    expect(renderActivity(pageData())).not.toContain("WebPilot");
+  });
+
+  it("montre pages lues, minutes, coût et opérations (fr-CA et en-CA)", () => {
+    const fr = renderActivity(pageData({ webpilot: used }));
+    for (const text of [
+      "WebPilot",
+      "Pages lues",
+      "Minutes de navigateur",
+      "Exploration d’un site",
+      "Lecture d’une page",
+      "dont 1 en échec",
+    ])
+      expect(fr).toContain(text);
+    const en = renderActivity(pageData({ webpilot: used }), "en");
+    for (const text of [
+      "Pages read",
+      "Browser minutes",
+      "Site crawl",
+      "1 failed",
+    ])
+      expect(en).toContain(text);
+  });
+
+  it("organisation maison : valeur offerte au lieu du coût", () => {
+    const html = renderActivity(pageData({ webpilot: used }), "fr", true);
+    expect(html).toContain("Valeur offerte (prix public)");
+  });
+});
 
 describe("page Activité", () => {
   it("montre synthèse, répartitions, journal, filtres accessibles et export", () => {

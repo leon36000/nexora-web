@@ -222,6 +222,104 @@ function Summary({
   );
 }
 
+/**
+ * Section « WebPilot » : pages lues, minutes de navigateur, coût. Absente tant que l'organisation n'a jamais utilisé
+ * WebPilot dans la période (rien n'est affiché pour un produit qu'elle n'emploie pas).
+ */
+function WebpilotSection({
+  lang,
+  t,
+  data,
+  free,
+}: Pick<ActivityViewProps, "lang" | "t" | "data" | "free">) {
+  const w = t.panel.activity.webpilot;
+  const x = data.webpilot;
+  if (x.requests === 0) return null;
+  const operationLabel = (op: string) =>
+    (w.operations as Record<string, string>)[op] ?? op;
+  return (
+    <section aria-labelledby="activity-webpilot-title" className="space-y-6">
+      <SectionTitle id="activity-webpilot-title">{w.title}</SectionTitle>
+      <p className="max-w-2xl text-body text-fg-muted">{w.lead}</p>
+      <dl className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+        <StatCard
+          label={w.pagesStatic}
+          value={formatInteger(lang, x.pagesStatic)}
+        />
+        <StatCard
+          label={w.pagesBrowser}
+          value={formatInteger(lang, x.pagesBrowser)}
+        />
+        <StatCard
+          label={w.minutes}
+          value={formatInteger(lang, x.browserMinutes)}
+        />
+        <StatCard
+          label={free ? w.spendFree : w.spend}
+          value={formatMicroCadExact(lang, free ? x.valueMicro : x.costMicro)}
+        />
+        <StatCard
+          label={w.requests}
+          value={formatInteger(lang, x.requests)}
+          note={
+            x.errors > 0
+              ? fmt(w.failures, { count: formatInteger(lang, x.errors) })
+              : undefined
+          }
+        />
+      </dl>
+      <ScrollRegion label={w.caption}>
+        <table className="w-full min-w-[32rem] border-collapse text-left text-small">
+          <caption className="sr-only">{w.caption}</caption>
+          <thead>
+            <tr className="border-b border-line text-fg-muted">
+              <th scope="col" className={TH}>
+                {w.columns.operation}
+              </th>
+              <th scope="col" className={`${TH} text-right`}>
+                {w.columns.requests}
+              </th>
+              <th scope="col" className={`${TH} text-right`}>
+                {w.columns.pages}
+              </th>
+              <th scope="col" className={`${TH} text-right`}>
+                {w.columns.minutes}
+              </th>
+              <th scope="col" className={`${TH} text-right`}>
+                {w.columns.cost}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {x.byOperation.map((r) => (
+              <tr
+                key={r.operation}
+                className="border-b border-line last:border-0"
+              >
+                <th scope="row" className={`${TD} font-normal text-fg`}>
+                  {operationLabel(r.operation)}
+                </th>
+                <td className={`${TD} text-right tabular-nums text-fg`}>
+                  {formatInteger(lang, r.requests)}
+                </td>
+                <td className={`${TD} text-right tabular-nums text-fg`}>
+                  {formatInteger(lang, r.pages)}
+                </td>
+                <td className={`${TD} text-right tabular-nums text-fg`}>
+                  {formatInteger(lang, r.minutes)}
+                </td>
+                <td className={`${TD} text-right tabular-nums text-fg`}>
+                  {free ? "—" : formatMicroCadExact(lang, r.costMicro)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollRegion>
+    </section>
+  );
+}
+
 /** Histogramme de la dépense par jour (décoratif) : le tableau « Par jour » porte les mêmes chiffres. */
 function DayChart({
   lang,
@@ -550,6 +648,8 @@ export function ActivityView({ lang, t, data, free, keys }: ActivityViewProps) {
           />
         </div>
       </section>
+
+      <WebpilotSection lang={lang} t={t} data={data} free={free} />
 
       <section aria-labelledby="activity-log-title">
         <div className="flex flex-wrap items-center justify-between gap-4">
