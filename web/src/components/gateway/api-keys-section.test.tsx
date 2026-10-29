@@ -3,6 +3,9 @@ import { describe, expect, it } from "vitest";
 import type { ApiKeySummary } from "@/server/gateway/keys";
 import { ApiKeysSection } from "./api-keys-section";
 
+// Membre : pas de formulaire de création (composant client, hors du rendu statique).
+const member = { role: "member" } as const;
+
 const key = (over: Partial<ApiKeySummary>): ApiKeySummary => ({
   id: "11111111-1111-4111-8111-111111111111",
   organizationId: "org",
@@ -33,13 +36,13 @@ describe("clés d'API : permission WebPilot", () => {
       }),
     ];
     const fr = renderToStaticMarkup(
-      <ApiKeysSection lang="fr" role="member" keys={keys} />,
+      <ApiKeysSection lang="fr" {...member} keys={keys} />,
     );
     expect(fr).toContain("WebPilot");
     expect(fr).toContain(">Non<");
     expect(fr).toContain("Recherche, Exploration d’un site");
     const en = renderToStaticMarkup(
-      <ApiKeysSection lang="en" role="member" keys={keys} />,
+      <ApiKeysSection lang="en" {...member} keys={keys} />,
     );
     expect(en).toContain(">No<");
     expect(en).toContain("Search, Crawl a site");
