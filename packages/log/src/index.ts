@@ -2,7 +2,7 @@ const REDACTED = "[REDACTED]";
 
 /** Noms de champs dont la valeur n'est jamais journalisée. */
 const SENSITIVE_KEY =
-  /secret|token|password|passwd|authorization|api[-_]?key|cookie|ciphertext|plaintext|private[-_]?key|^value$|^iv$|auth[-_]?tag/i;
+  /secret|token|password|passwd|authorization|api[-_]?key|cookie|ciphertext|plaintext|private[-_]?key|^value$|^iv$|auth[-_]?tag|form[-_]?input|typed[-_]?text|search[-_]?query/i;
 
 const STRING_PATTERNS: Array<[RegExp, string]> = [
   [/(bearer\s+)[A-Za-z0-9._~+/=-]{8,}/gi, `$1${REDACTED}`],
@@ -11,6 +11,9 @@ const STRING_PATTERNS: Array<[RegExp, string]> = [
   [/\bnxk_[A-Za-z0-9_-]{16,}/g, REDACTED],
   [/\b(?:pk|rk|whsec|sk)_(?:live|test)_[A-Za-z0-9]{8,}/g, REDACTED],
   [/(\b[a-z][a-z0-9+.-]*:\/\/[^\s:/@]+:)[^\s@/]+@/gi, `$1${REDACTED}@`],
+  // Adresses visitées par WebPilot : la chaîne de requête et l'ancre peuvent porter un jeton ou des renseignements
+  // personnels ; seuls l'hôte et le chemin restent.
+  [/(\bhttps?:\/\/[^\s?#"'<>]+)[?#][^\s"'<>]*/gi, `$1?${REDACTED}`],
 ];
 
 /** Nettoie une chaîne libre (message d'erreur, URL) des motifs de secrets connus. */
