@@ -49,7 +49,7 @@ Condition de déploiement : `SITE_URL` doit être l'origine HTTPS réelle, sinon
 
 ### 3.1 Inventaire
 
-Registre : `web/src/server/security/route-guards.ts` (33 routes `route.ts`). Test d'inventaire : `route-guards.test.ts` compare le registre aux fichiers `route.ts` du dossier `src/app` ; une route sans entrée **fait échouer le test** (démontré en ajoutant une route factice). Il n'existe **aucune Server Action** (`"use server"` : 0 occurrence).
+Registre : `web/src/server/security/route-guards.ts` (38 routes `route.ts`). Test d'inventaire : `route-guards.test.ts` compare le registre aux fichiers `route.ts` du dossier `src/app` ; une route sans entrée **fait échouer le test** (démontré en ajoutant une route factice). Il n'existe **aucune Server Action** (`"use server"` : 0 occurrence).
 
 | Genre | Routes | Qui peut appeler | Sans identification |
 |---|---|---|---|

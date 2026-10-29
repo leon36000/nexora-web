@@ -35,7 +35,9 @@ const PHONE = "514-555-0199";
 let t: TestDatabase;
 let lines: string[];
 let counter = 0;
-let calls: { url: string; body: Record<string, any> }[];
+// biome-ignore lint/suspicious/noExplicitAny: corps JSON de l'amont lu librement par les essais
+type AnyJson = Record<string, any>;
+let calls: { url: string; body: AnyJson }[];
 
 const upstreamChat = () =>
   Response.json({
