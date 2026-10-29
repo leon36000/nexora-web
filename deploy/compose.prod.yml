@@ -82,6 +82,10 @@ services:
       - --
     secrets: [litellm_db_password, litellm_master_key, litellm_salt_key]
 
+  searxng:
+    # Aucun port publié : seuls le site et le worker (réseau « nexora-webpilot-search ») l'appellent.
+    ports: !reset []
+
   # Développement seulement : jamais démarrés en production (aucun port, aucun secret).
   mailpit:
     profiles: [dev]
