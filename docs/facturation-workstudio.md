@@ -5,7 +5,8 @@
 ## Comment c'est branché
 
 1. À la mise en service, `ensureModelAccess` (`web/src/server/gateway/provision.ts`) crée la clé de la passerelle de l'organisation du client, la range chiffrée dans le coffre et rend `NEXORA_UPSTREAM_URL`, `NEXORA_UPSTREAM_MODEL`, `NEXORA_UPSTREAM_KEY` (réglages que WorkStudio lit déjà). Script : `bun run --cwd web workstudio:acces`.
-2. Chaque requête de WorkStudio passe par la passerelle : elle apparaît dans l'Activité du client (jetons entrée, sortie, cache, coût).
+2. **WorkStudio intégré au site** (une instance, plusieurs utilisateurs, connexion unique) : la clé n'est plus rendue par un script mais **à la demande, par utilisateur**, via `GET /api/oauth/workstudio-access` (jeton OIDC de l'utilisateur) : même `ensureModelAccess`, pour l'organisation de la personne connectée. Voir `docs/workstudio-integre.md`.
+3. Chaque requête de WorkStudio passe par la passerelle : elle apparaît dans l'Activité du client (jetons entrée, sortie, cache, coût).
 
 ## Jetons inclus : proposition
 
