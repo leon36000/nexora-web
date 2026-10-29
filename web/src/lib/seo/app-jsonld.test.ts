@@ -15,6 +15,7 @@ function visibleText(lang: "fr" | "en", slug: string): string {
     c.hook,
     c.audience,
     c.accessText,
+    c.answer,
     ...c.ready,
     ...c.coming,
     ...c.faq.flatMap((q) => [q.question, q.answer]),
@@ -35,6 +36,14 @@ describe("SoftwareApplication d'une fiche Nexora Apps", () => {
     // un produit non livré n'a ni prix, ni note, ni système d'exploitation annoncés
     for (const key of ["offers", "aggregateRating", "operatingSystem"])
       expect(out).not.toHaveProperty(key);
+  });
+
+  it("rattache l'éditeur à l'Organization de l'entreprise (même @id que le reste du site)", () => {
+    const out = appSoftwareJsonLd("fr", "rag") as unknown as {
+      publisher?: { "@id"?: string; name?: string };
+    };
+    expect(out.publisher?.["@id"]).toMatch(/#organization$/);
+    expect(out.publisher?.name).toBe("Nexora AI");
   });
 
   it("l'adresse anglaise porte le préfixe /en", () => {

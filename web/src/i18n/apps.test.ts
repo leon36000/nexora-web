@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CONTACT_SUBJECTS, resolveContactSubject } from "@/lib/contact-subject";
 import {
@@ -193,5 +195,94 @@ describe("appel à l'action", () => {
       expect(r.message?.trim(), `${slug} ${lang}`).toBeTruthy();
       expect(CONTACT_SUBJECTS).toHaveProperty(subject);
     });
+  });
+});
+
+/** Registre des affirmations du dépôt (cms/content/claims.json) : les fiches y renvoient par leurs identifiants. */
+const claims = JSON.parse(
+  readFileSync(
+    join(__dirname, "..", "..", "..", "cms", "content", "claims.json"),
+    "utf8",
+  ),
+) as { claims: { id: string; approval_status: string }[] };
+
+describe("gouvernance du contenu : chaque fiche cite le registre des affirmations", () => {
+  it("chaque outil renvoie à au moins une affirmation, qui existe au registre et n'est pas retirée", () => {
+    const known = new Map(claims.claims.map((c) => [c.id, c.approval_status]));
+    for (const app of APPS) {
+      expect(app.claims.length, app.slug).toBeGreaterThan(0);
+      for (const id of app.claims) {
+        expect(known.has(id), `${app.slug} : ${id}`).toBe(true);
+        expect(known.get(id), `${app.slug} : ${id}`).not.toBe("retirée");
+      }
+    }
+  });
+
+  it("« gratuit », « abonnement » et « inclus » sont tous adossés à leur affirmation", () => {
+    const needs: Record<string, string> = {
+      gratuit: "CL-AP01",
+      abonnement: "CL-AP04",
+      inclus: "CL-AP03",
+    };
+    for (const app of APPS) {
+      const id = needs[app.access];
+      if (id) expect(app.claims, app.slug).toContain(id);
+    }
+  });
+
+  it("Nexora Bot cite aussi « code ouvert prévu » (CL-AP02)", () => {
+    expect(findApp("bot")?.claims).toContain("CL-AP02");
+  });
+});
+
+describe("La réponse en bref (GEO)", () => {
+  it("chaque fiche a une réponse autonome de 30 à 65 mots qui nomme l'outil, dans les deux langues", () => {
+    eachApp((slug, lang) => {
+      const c = getAppContent(lang, slug);
+      const words = (c?.answer ?? "").split(/\s+/).filter(Boolean).length;
+      expect(words, `${slug} ${lang}`).toBeGreaterThanOrEqual(30);
+      expect(words, `${slug} ${lang}`).toBeLessThanOrEqual(65);
+      expect(c?.answer.toLowerCase(), `${slug} ${lang}`).toContain(
+        c?.name.toLowerCase() ?? "?",
+      );
+    });
+  });
+});
+
+describe("Nexora Cloud", () => {
+  it("est au registre : sur abonnement, bientôt, liste d'attente, relié à Gitspace et à RAG", () => {
+    const cloud = findApp("cloud");
+    expect(cloud?.state).toBe("bientot");
+    expect(cloud?.access).toBe("abonnement");
+    expect(cloud?.cta).toBe("waitlist");
+    expect(cloud?.related).toEqual(expect.arrayContaining(["gitspace", "rag"]));
+    expect(getAppContent("fr", "cloud")?.ready).toEqual([]);
+  });
+
+  it("dit les trois dépôts de code possibles sans en promettre la livraison", () => {
+    const fr = JSON.stringify(getAppContent("fr", "cloud"));
+    for (const name of ["GitLab", "Gitspace", "Forgejo"])
+      expect(fr).toContain(name);
+    expect(getAppContent("fr", "cloud")?.coming.length).toBeGreaterThanOrEqual(
+      2,
+    );
+  });
+});
+
+describe("Nexora Privacy Router : état réel du code", () => {
+  it("dit que la passerelle l'applique déjà (sans que la passerelle soit ouverte à la vente) et que la détection est heuristique", () => {
+    for (const lang of LANGS) {
+      const c = getAppContent(lang, "privacy-router");
+      const ready = (c?.ready ?? []).join(" ");
+      expect(ready, lang).toMatch(lang === "fr" ? /passerelle/i : /gateway/i);
+      const everything = JSON.stringify(c);
+      expect(everything, lang).toMatch(
+        lang === "fr" ? /heuristique/i : /heuristic/i,
+      );
+      // plus aucune phrase qui prétend que la couche « n'est pas livrée »
+      expect(everything, lang).not.toMatch(
+        /n’est pas livrée sous ce nom|is not shipped under this name/,
+      );
+    }
   });
 });

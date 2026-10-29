@@ -306,6 +306,7 @@ export const frCA = {
           "apps-bot": "Liste d’attente : Nexora Bot.",
           "apps-wordpress": "Liste d’attente : Plugins WordPress Nexora.",
           "apps-gitspace": "Liste d’attente : Nexora Gitspace.",
+          "apps-cloud": "Liste d’attente : Nexora Cloud.",
           "apps-rag": "Liste d’attente : Nexora RAG.",
           "apps-webpilot": "Liste d’attente : Nexora WebPilot.",
           "apps-privacy-router": "Question sur Nexora Privacy Router : ",

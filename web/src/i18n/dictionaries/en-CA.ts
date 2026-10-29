@@ -302,6 +302,7 @@ export const enCA: Dictionary = {
           "apps-bot": "Waiting list: Nexora Bot.",
           "apps-wordpress": "Waiting list: Nexora WordPress plugins.",
           "apps-gitspace": "Waiting list: Nexora Gitspace.",
+          "apps-cloud": "Waiting list: Nexora Cloud.",
           "apps-rag": "Waiting list: Nexora RAG.",
           "apps-webpilot": "Waiting list: Nexora WebPilot.",
           "apps-privacy-router": "Question about Nexora Privacy Router: ",

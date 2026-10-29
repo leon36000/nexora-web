@@ -59,6 +59,7 @@ export const appsFrCA = {
   detail: {
     back: "Toutes les Nexora Apps",
     stateLabel: "État",
+    answerTitle: "La réponse en bref",
     audienceTitle: "Pour qui",
     accessTitle: "Comment on y accède",
     readyTitle: "Ce qui est prêt",
@@ -82,6 +83,8 @@ export const appsFrCA = {
   apps: {
     code: {
       name: "Agent de code Nexora",
+      answer:
+        "L’agent de code Nexora est un assistant qui comprend, modifie et teste du code avec vous. Il est conçu pour être offert gratuitement, à télécharger ou à utiliser depuis votre panneau client. Il n’est pas encore livré : aucune date et aucune condition d’utilisation ne sont annoncées.",
       hook: "Un agent qui comprend, modifie et teste du code avec vous. Prévu gratuit, à télécharger ou à utiliser depuis votre panneau client.",
       audience:
         "Pour les développeuses, les développeurs et les équipes techniques qui veulent un assistant de code branché sur les modèles de Nexora AI.",
@@ -121,6 +124,8 @@ export const appsFrCA = {
 
     gitspace: {
       name: "Nexora Gitspace",
+      answer:
+        "Nexora Gitspace héberge vos dépôts de code dans votre espace infonuagique Nexora AI, avec Forgejo ou GitLab. Il est prévu sur abonnement. Il n’est pas encore livré : aucun prix et aucune date ne sont annoncés, et le lieu d’hébergement exact sera indiqué avant toute souscription.",
       hook: "Forgejo et GitLab intégrés à votre espace infonuagique Nexora AI : hébergez vos dépôts de code avec le reste. Sur abonnement.",
       audience:
         "Pour les équipes qui veulent garder leurs dépôts de code dans l’espace infonuagique de leur entreprise plutôt que chez un service tiers.",
@@ -157,8 +162,50 @@ export const appsFrCA = {
       ],
     },
 
+    cloud: {
+      name: "Nexora Cloud",
+      answer:
+        "Nexora Cloud est l’espace infonuagique de Nexora AI, avec un dépôt de code intégré au choix : GitLab, Nexora Gitspace ou Forgejo. Il est prévu sur abonnement. Il n’est pas encore livré : aucun prix et aucune date ne sont annoncés, et le lieu d’hébergement sera indiqué avant toute souscription.",
+      hook: "Votre espace infonuagique Nexora AI, avec un dépôt de code intégré : GitLab, Nexora Gitspace ou Forgejo. Sur abonnement.",
+      audience:
+        "Pour les entreprises qui veulent regrouper leur travail et leur code dans un espace à elles, chez Nexora AI, plutôt que sur plusieurs services tiers.",
+      accessLabel: "Sur abonnement (prévu)",
+      accessText:
+        "Nexora Cloud sera offert sur abonnement. Aucun prix n’est publié à ce jour ; il sera affiché ici avant toute vente.",
+      ready: [] as string[],
+      coming: [
+        "Un espace infonuagique géré depuis votre espace client Nexora AI.",
+        "Un dépôt de code intégré, au choix : GitLab, Nexora Gitspace ou Forgejo.",
+        "Un branchement au RAG de Nexora AI, à l’agent de code et à OPSYS-AI.",
+      ],
+      faq: [
+        {
+          question: "Qu’est-ce que Nexora Cloud ?",
+          answer:
+            "L’espace infonuagique de Nexora AI : un endroit à vous, géré depuis votre espace client, où s’intègre un dépôt de code. Rien n’est livré à ce jour.",
+        },
+        {
+          question: "Quelle différence avec Nexora Gitspace ?",
+          answer:
+            "Nexora Gitspace est la fiche du dépôt de code (Forgejo ou GitLab). Nexora Cloud est l’espace qui l’accueille. Les deux sont prévus sur abonnement et aucun n’est livré.",
+        },
+        {
+          question: "Où sera-t-il hébergé ?",
+          answer:
+            "Dans l’infrastructure de Nexora AI. Le lieu d’hébergement exact sera indiqué avant toute souscription ; nous n’en annonçons aucun avant de pouvoir le prouver.",
+        },
+        {
+          question: "Combien coûtera Nexora Cloud ?",
+          answer:
+            "Il sera offert sur abonnement. Aucun prix n’est publié à ce jour : nous n’annonçons que ce que nous pouvons tenir.",
+        },
+      ],
+    },
+
     rag: {
       name: "Nexora RAG",
+      answer:
+        "Nexora RAG transforme vos documents en une base que l’IA interroge en montrant ses sources. Il est prévu sur abonnement, branchable à l’agent de code, à OPSYS-AI ou à votre infrastructure. Les bases de connaissances de WorkStudio existent déjà ; le service distinct n’est pas encore livré.",
       hook: "Vos documents deviennent une base que l’IA interroge, sources à l’appui. Sur abonnement, branchable à l’agent de code, à OPSYS-AI ou à votre infrastructure.",
       audience:
         "Pour les entreprises dont les réponses se trouvent déjà dans leurs documents : procédures, contrats, manuels, fiches techniques.",
@@ -201,6 +248,8 @@ export const appsFrCA = {
 
     bot: {
       name: "Nexora Bot",
+      answer:
+        "Nexora Bot est un bot branché sur les modèles de Nexora AI. Il est conçu pour être offert gratuitement, et son code est prévu ouvert pour que vous puissiez l’installer vous-même. Il n’est pas encore livré : aucune date n’est annoncée et aucun code n’est publié à ce jour.",
       hook: "Un bot gratuit, branché sur les modèles de Nexora AI, que vous pouvez aussi installer vous-même : le code sera ouvert.",
       audience:
         "Pour toute personne ou petite équipe qui veut un assistant sans rien configurer, et pour les développeurs qui veulent s’en servir comme base.",
@@ -234,6 +283,8 @@ export const appsFrCA = {
 
     wordpress: {
       name: "Plugins WordPress Nexora",
+      answer:
+        "Les plugins WordPress Nexora comprennent un plugin prévu gratuit et une automatisation de votre site prévue sur abonnement : référencement, articles de blogue, mises à jour. Rien n’est encore livré, et ni prix ni date ne sont annoncés.",
       hook: "Un plugin WordPress gratuit, et l’automatisation de votre site par abonnement : référencement, articles de blogue, mises à jour.",
       audience:
         "Pour les propriétaires de sites WordPress, les PME et les agences qui veulent un site qui se tient à jour et se fait trouver, sans y passer leurs soirées.",
@@ -274,6 +325,8 @@ export const appsFrCA = {
 
     webpilot: {
       name: "Nexora WebPilot",
+      answer:
+        "Nexora WebPilot est une API pour chercher, lire et explorer le Web, puis naviguer et agir sur des pages. Elle est prévue à l’usage, comme un modèle, avec Nexora Privacy Router. Elle n’est pas encore livrée : aucune date n’est annoncée.",
       hook: "Une API pour chercher, lire et explorer le Web, puis naviguer et agir sur des pages. Vendue à l’usage, comme un modèle.",
       audience:
         "Pour les développeurs et les agents IA qui ont besoin du Web : recherche, lecture de pages, exploration de sites, navigation automatisée.",
@@ -316,6 +369,8 @@ export const appsFrCA = {
 
     "privacy-router": {
       name: "Nexora Privacy Router",
+      answer:
+        "Nexora Privacy Router est la couche qui contrôle ce qui sort de Nexora AI vers un tiers, selon la politique de votre organisation. Elle est incluse par défaut dans tous les produits, sans supplément. Elle est déjà en place dans la passerelle d’API, qui n’est pas encore ouverte à la vente ; les autres produits viendront ensuite.",
       hook: "La couche de protection commune de Nexora AI : elle contrôle ce qui sort, selon la politique de votre organisation. Incluse, jamais payante.",
       audience:
         "Pour toute organisation qui veut décider quelles données peuvent quitter son environnement, vers quels modèles et quels services, sans acheter un produit de plus.",
@@ -325,38 +380,41 @@ export const appsFrCA = {
       ready: [
         "Le catalogue public des modèles indique déjà, pour chaque modèle, où il tourne.",
         "Dans WorkStudio, les politiques de données d’un espace autorisent, masquent ou refusent l’envoi de renseignements personnels à un modèle hors de l’instance.",
+        "Dans la passerelle d’API, chaque requête de conversation et d’embeddings est évaluée avant l’appel au fournisseur : masquage de six genres de renseignements évidents, refus selon la politique de l’organisation, refus par précaution si la couche ne peut pas décider, journal des décisions sans contenu. La passerelle n’est pas encore ouverte à la vente.",
+        "Trois niveaux de politique par organisation (standard, renforcé, souverain strict), réglés par le propriétaire dans l’espace client.",
       ],
       coming: [
-        "Un point de contrôle commun avant toute sortie de données, pour les modèles, WebPilot et les autres outils.",
-        "Une politique par client, que vous réglez pour votre organisation.",
-        "Une souveraineté stricte, possible : rien n’est envoyé hors de l’environnement que vous avez choisi.",
+        "Le branchement de WebPilot et de WorkStudio à la même couche : l’interface le prévoit, mais ce n’est pas encore fait.",
+        "Une durée de conservation du journal à fixer : aucune purge automatique n’existe encore.",
       ],
       faq: [
         {
-          question: "Privacy Router est-elle payante ?",
+          question: "Privacy Router est-elle payante ?",
           answer:
-            "Non. Elle est incluse par défaut et elle ne sera jamais payante : ni vendue à part, ni facturée en supplément. Elle fait partie de la façon dont Nexora AI traite vos données.",
+            "Non. Elle est incluse par défaut et elle ne sera jamais payante : ni vendue à part, ni facturée en supplément. Elle fait partie de la façon dont Nexora AI traite vos données.",
         },
         {
-          question: "Que contrôle-t-elle exactement ?",
+          question: "Que contrôle-t-elle exactement ?",
           answer:
-            "Ce qui sort de votre environnement : quelles données peuvent aller vers quel modèle ou quel service. Chaque organisation a sa politique. Le détail des réglages sera publié avec la documentation ; la couche commune n’est pas livrée sous ce nom à ce jour.",
+            "Ce qui sort de votre environnement : quelles données peuvent aller vers quel modèle ou quel service. Chaque organisation a sa politique : un niveau, des genres de renseignements masqués ou refusés, des listes de modèles et de destinations. Dans la passerelle d’API, elle masque six genres de renseignements évidents ; sa détection est heuristique (elle ne reconnaît ni les noms ni les adresses postales) et elle ne prouve pas où un fournisseur traite ensuite les données.",
         },
         {
-          question: "Qu’est-ce que la souveraineté stricte ?",
+          question: "Qu’est-ce que la souveraineté stricte ?",
           answer:
-            "Une politique où rien ne quitte l’environnement que vous avez choisi : aucune donnée n’est envoyée à un modèle ou à un service extérieur. Elle est possible dans le plan de Privacy Router, sans être livrée, et elle ne remplace pas un avis juridique.",
+            "Un niveau de politique où rien ne part sans être explicitement permis : sans liste de modèles et de destinations permis, tout est refusé. Elle ne remplace ni un avis juridique ni une preuve de résidence des données.",
         },
         {
-          question: "Est-ce déjà utilisé aujourd’hui ?",
+          question: "Est-ce déjà utilisé aujourd’hui ?",
           answer:
-            "Une partie du principe existe déjà : le catalogue affiche où chaque modèle tourne, et WorkStudio permet d’autoriser, de masquer ou de refuser l’envoi de renseignements personnels à un modèle externe. La couche commune, elle, est à venir.",
+            "Oui, dans la passerelle d’API, qui n’est cependant pas encore ouverte à la vente. Le catalogue affiche aussi où chaque modèle tourne, et WorkStudio permet d’autoriser, de masquer ou de refuser l’envoi de renseignements personnels à un modèle externe. Le branchement de WebPilot et de WorkStudio à la même couche reste à faire.",
         },
       ],
     },
 
     creative: {
       name: "Nexora Creative",
+      answer:
+        "Nexora Creative est une famille d’outils d’image, de son et de vidéo pour le marketing, avec l’IA. C’est une étape ultérieure de Nexora Apps : rien n’est livré, et aucune date ni aucun accès n’est annoncé.",
       hook: "Des outils d’image, de son et de vidéo pour le marketing, avec l’IA. Une étape ultérieure de Nexora Apps : rien n’est livré, aucune date.",
       audience:
         "Pour les équipes marketing et les PME qui produisent des visuels, des sons et des vidéos pour leurs campagnes.",
@@ -390,6 +448,8 @@ export const appsFrCA = {
 
     outils: {
       name: "Outils gratuits Nexora",
+      answer:
+        "Les outils gratuits Nexora sont de petits outils d’IA, offerts gratuitement, qui utilisent les modèles et les serveurs de Nexora AI. Aucun d’entre eux n’est livré à ce jour, et aucune date de sortie n’est annoncée pour l’un d’eux.",
       hook: "De petits outils d’IA offerts gratuitement, qui utilisent les modèles et les serveurs de Nexora AI. Aucun n’est livré à ce jour.",
       audience:
         "Pour toute personne qui veut essayer l’IA de Nexora AI sans installer ni louer de serveur.",

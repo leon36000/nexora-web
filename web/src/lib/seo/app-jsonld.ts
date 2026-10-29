@@ -1,6 +1,6 @@
 import { appPath, findApp, getAppContent } from "@/i18n/apps";
 import { type Lang, localizePath } from "@/i18n/config";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { HOME_CRUMB } from "./cms-jsonld";
 import { breadcrumbJsonLd, softwareApplicationJsonLd } from "./jsonld";
 
@@ -35,6 +35,8 @@ export function appSoftwareJsonLd(lang: Lang, slug: string) {
     url: `${SITE_URL}${localizePath(lang, appPath(app.slug))}`,
     category: app.category,
     offers: [],
+    // L'éditeur est l'entreprise : même Organization (@id) que sur toutes les autres pages.
+    publisher: { name: SITE_NAME, url: SITE_URL },
   });
 }
 

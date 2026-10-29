@@ -16,6 +16,7 @@ export const CONTACT_SUBJECTS: Readonly<Record<string, string>> = {
   "apps-bot": "autre",
   "apps-wordpress": "autre",
   "apps-gitspace": "autre",
+  "apps-cloud": "autre",
   "apps-rag": "autre",
   "apps-webpilot": "vps-api",
   "apps-privacy-router": "vps-api",
