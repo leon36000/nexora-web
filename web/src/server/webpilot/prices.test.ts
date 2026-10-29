@@ -196,6 +196,7 @@ describe("API d'administration", () => {
     );
     return {
       status: res.status,
+      // biome-ignore lint/suspicious/noExplicitAny: corps JSON de réponse, forme libre dans les essais
       json: (await res.json()) as Record<string, any>,
     };
   };

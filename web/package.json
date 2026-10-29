@@ -15,6 +15,7 @@
     "vps:seed": "bun scripts/seed-vps.ts",
     "models:seed": "bun scripts/seed-ai-models.ts",
     "house:org": "bun scripts/house-org.ts",
+    "webpilot:prix": "bun scripts/webpilot-prix.ts",
     "workstudio:acces": "bun scripts/workstudio-access.ts"
   },
   "dependencies": {

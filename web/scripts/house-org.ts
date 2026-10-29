@@ -3,6 +3,7 @@
 //
 //   bun web/scripts/house-org.ts                   crée (ou retrouve) « Nexora — maison » et la passe en mode maison
 //   bun web/scripts/house-org.ts --key <fichier>   + crée une clé d'API et l'écrit dans <fichier> (droits 600), jamais à l'écran
+//   bun web/scripts/house-org.ts --key <fichier> --webpilot   + donne à cette clé la permission WebPilot (search, scrape, crawl, extract)
 //   bun web/scripts/house-org.ts --standard        remet l'organisation en mode ordinaire
 //
 // Les requêtes de cette organisation passent par la passerelle sans solde et sans débit ; l'usage, la valeur
@@ -56,6 +57,9 @@ try {
     const { key } = await createApiKey(db, {
       organizationId: org.id,
       name: "maison",
+      ...(args.includes("--webpilot")
+        ? { webpilotOperations: ["search", "scrape", "crawl", "extract"] }
+        : {}),
     });
     writeFileSync(keyFile, `${key}\n`, { mode: 0o600 });
     chmodSync(keyFile, 0o600);
