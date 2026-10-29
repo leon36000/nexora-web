@@ -17,6 +17,19 @@ function keyStatus(
   return "active";
 }
 
+type KeysText = ReturnType<typeof getGatewayDictionary>["account"];
+
+/** Opérations WebPilot permises à la clé, ou « Non » (permission à cocher, désactivée par défaut). */
+function webpilotLabel(key: ApiKeySummary, t: KeysText): string {
+  const ops = (key.webpilotOperations ?? []).filter(
+    (o): o is keyof KeysText["webpilot"]["operations"] =>
+      o in t.webpilot.operations,
+  );
+  return ops.length === 0
+    ? t.webpilot.none
+    : ops.map((o) => t.webpilot.operations[o]).join(", ");
+}
+
 /**
  * Clés d'API de l'organisation, dans la page « Modèles et clés » du panneau client. Mêmes règles qu'avant le
  * panneau : tout membre voit la liste, seul le propriétaire crée ou révoque (les routes le refusent aux autres).
@@ -54,7 +67,7 @@ export function ApiKeysSection({
         ) : (
           <div className="mt-4">
             <ScrollRegion label={`${t.list} (${t.tableLabel})`}>
-              <table className="w-full min-w-[52rem] border-collapse text-left text-small">
+              <table className="w-full min-w-[60rem] border-collapse text-left text-small">
                 <caption className="sr-only">{t.list}</caption>
                 <thead>
                   <tr className="border-b border-line text-fg-muted">
@@ -75,6 +88,9 @@ export function ApiKeysSection({
                     </th>
                     <th scope="col" className={`${TH} text-right`}>
                       {t.columns.cap}
+                    </th>
+                    <th scope="col" className={TH}>
+                      {t.webpilot.column}
                     </th>
                     <th scope="col" className={TH}>
                       {t.columns.status}
@@ -111,6 +127,9 @@ export function ApiKeysSection({
                           {k.spendCapMicro === null
                             ? t.noCap
                             : formatMicroCadExact(lang, k.spendCapMicro)}
+                        </td>
+                        <td className="px-4 py-3 text-fg">
+                          {webpilotLabel(k, t)}
                         </td>
                         <td
                           className={`whitespace-nowrap px-4 py-3 ${status === "active" ? "text-fg" : "text-accent-text"}`}

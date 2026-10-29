@@ -246,6 +246,18 @@ export const gatewayEnCA: GatewayDictionary = {
     },
     never: "Never",
     noCap: "None",
+    webpilot: {
+      legend: "WebPilot access",
+      hint: "WebPilot reads the Web for you (search, read, crawl, extract). Off by default: tick only what this key needs.",
+      operations: {
+        search: "Search",
+        scrape: "Read a page",
+        crawl: "Crawl a site",
+        extract: "Extract data",
+      },
+      column: "WebPilot",
+      none: "No",
+    },
     status: { active: "Active", revoked: "Revoked", expired: "Expired" },
     revoke: "Revoke",
     revokeLabel: "Revoke key {name}",

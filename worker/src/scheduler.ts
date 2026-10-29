@@ -151,6 +151,12 @@ export async function tickScheduler(deps: SchedulerDeps): Promise<string[]> {
     idempotencyKey: `ledger-release-stale:${Math.floor(nowMs / LEDGER_RELEASE_EVERY_MS)}`,
     maxAttempts: 1,
   });
+  // WebPilot : effacement horaire des explorations dont la conservation est échue.
+  await enqueue(db, {
+    type: "webpilot.purge",
+    idempotencyKey: `webpilot-purge:${Math.floor(nowMs / LEDGER_GRANT_EVERY_MS)}`,
+    maxAttempts: 2,
+  });
   await enqueue(db, {
     type: "ledger.grant-tranches",
     idempotencyKey: `ledger-grant-tranches:${Math.floor(nowMs / LEDGER_GRANT_EVERY_MS)}`,

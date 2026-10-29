@@ -252,6 +252,18 @@ export const gatewayFrCA = {
     },
     never: "Jamais",
     noCap: "Aucun",
+    webpilot: {
+      legend: "Accès à WebPilot",
+      hint: "WebPilot lit le Web pour vous (recherche, lecture, exploration, extraction). Désactivé par défaut : cochez seulement ce dont cette clé a besoin.",
+      operations: {
+        search: "Recherche",
+        scrape: "Lecture d’une page",
+        crawl: "Exploration d’un site",
+        extract: "Extraction de données",
+      },
+      column: "WebPilot",
+      none: "Non",
+    },
     status: { active: "Active", revoked: "Révoquée", expired: "Expirée" },
     revoke: "Révoquer",
     revokeLabel: "Révoquer la clé {name}",

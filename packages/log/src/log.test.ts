@@ -55,6 +55,34 @@ describe("redact", () => {
   });
 });
 
+describe("adresses visitées et texte saisi (WebPilot)", () => {
+  it("masque la chaîne de requête et l'ancre d'une adresse, garde l'hôte et le chemin", () => {
+    expect(
+      scrubString("échec sur https://exemple.test/a/b?jeton=abc&nom=Jean#haut"),
+    ).toBe("échec sur https://exemple.test/a/b?[REDACTED]");
+    expect(scrubString("http://x.test/page")).toBe("http://x.test/page");
+    expect(scrubString('{"u":"https://x.test/p?q=1"}')).toBe(
+      '{"u":"https://x.test/p?[REDACTED]"}',
+    );
+  });
+
+  it("ne journalise jamais le texte saisi ni la requête de recherche", () => {
+    expect(
+      redact({
+        form_input: "mon nom",
+        typedText: "x",
+        searchQuery: "avocat Jean",
+        ok: 1,
+      }),
+    ).toEqual({
+      form_input: "[REDACTED]",
+      typedText: "[REDACTED]",
+      searchQuery: "[REDACTED]",
+      ok: 1,
+    });
+  });
+});
+
 describe("createLogger", () => {
   it("écrit une ligne JSON par événement avec niveau, nom et champs masqués", () => {
     const lines: string[] = [];

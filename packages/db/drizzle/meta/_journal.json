@@ -162,6 +162,13 @@
       "when": 1793267804001,
       "tag": "0022_s13_privacy_router",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1793270239784,
+      "tag": "0023_webpilot_api_web",
+      "breakpoints": true
     }
   ]
 }

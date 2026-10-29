@@ -48,6 +48,21 @@ devcfg() { docker compose -p essai -f "$base" --env-file "$dev" config --format 
 prodcfg() { docker compose -p essai -f "$base" -f "$prod" --env-file "$work/prod.env" config --format json 2> "$work/err"; }
 j() { jq -r "$1" <<< "$cfg"; }
 
+echo "compose.yml : SearXNG de WebPilot, isolé du réseau de l'application"
+cfg=$(devcfg) || true
+sx() { jq -r ".services.searxng.$1" <<< "$cfg"; }
+[ "$(sx 'networks | keys | join(",")')" = "webpilot-egress,webpilot-search" ] && ok "searxng : seulement ses deux réseaux (webpilot-search, webpilot-egress)" || ko "searxng : réseaux inattendus ($(sx 'networks | keys | join(",")'))"
+[ "$(jq -r '.networks["webpilot-search"].internal' <<< "$cfg")" = "true" ] && ok "webpilot-search : internal (aucune route vers l'extérieur)" || ko "webpilot-search n'est pas internal"
+[ "$(jq -r '.networks["webpilot-egress"].internal // false' <<< "$cfg")" = "false" ] && ok "webpilot-egress : réseau de sortie, searxng seul dessus" || ko "webpilot-egress inattendu"
+[ "$(jq -r '[.services[] | select(.networks != null and (.networks | has("webpilot-egress")))] | length' <<< "$cfg")" = "1" ] && ok "webpilot-egress : un seul service dessus" || ko "webpilot-egress partagé"
+[ "$(jq -r '[.services | to_entries[] | select(.key != "searxng") | select(.value.networks != null and (.value.networks | has("webpilot-search")))] | length' <<< "$cfg")" = "0" ] && ok "aucun autre service de la pile sur webpilot-search (le site et le worker le rejoignent à part)" || ko "un service de la pile est sur webpilot-search"
+sx image | grep -qE '@sha256:[0-9a-f]{64}$' && ok "searxng : image épinglée par empreinte" || ko "searxng : image non épinglée"
+[ "$(sx 'cap_drop | join(",")')" = "ALL" ] && ok "searxng : aucune capacité" || ko "searxng : capacités"
+[ "$(sx 'security_opt | join(",")')" = "no-new-privileges:true" ] && ok "searxng : no-new-privileges" || ko "searxng : no-new-privileges absent"
+sx 'ports[0].published' | grep -qx 8890 && sx 'ports[0].host_ip' | grep -qx 127.0.0.1 && ok "searxng (développement) : publié sur la boucle locale seulement" || ko "searxng : port de développement"
+cfg=$(prodcfg) || true
+[ "$(sx 'ports // [] | length')" = "0" ] && ok "searxng (production) : aucun port publié" || ko "searxng (production) : port publié"
+
 echo "compose.yml : durcissement de Directus"
 cfg=$(devcfg) && ok "configuration valide" || ko "configuration invalide : $(head -c 300 "$work/err")"
 env_is() { [ "$(j ".services.directus.environment.$1")" = "$2" ] && ok "$1 = $2" || ko "$1 = $(j ".services.directus.environment.$1") (attendu $2)"; }

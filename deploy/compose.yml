@@ -186,6 +186,25 @@ services:
       retries: 5
       start_period: 90s
 
+  searxng:
+    # Moteur de recherche de Nexora WebPilot (POST /v1/webpilot/search), SearXNG 2026.10.13. Isolé : il n'est PAS sur le
+    # réseau de l'application (ni base, ni Directus, ni LiteLLM, ni coffre). Il n'a que deux réseaux : « webpilot-search »
+    # (sans route vers l'extérieur) que le site et le worker rejoignent pour l'appeler, et « webpilot-egress » pour
+    # interroger les moteurs publics. Image épinglée par l'empreinte de l'index multi-architectures (amd64, arm64) ;
+    # durcissement posé mais non éprouvé par exécution ici (image non téléchargée : disque de pc6 plein).
+    image: searxng/searxng:2026.10.13-22c64b8d3@sha256:9b61996edcc679fb6665290f95fda15389a14eda6060e41a25c63ab2758f2436
+    restart: unless-stopped
+    networks: [webpilot-search, webpilot-egress]
+    volumes:
+      - ./searxng/settings.yml:/etc/searxng/settings.yml:ro
+    ports:
+      # Développement : le site tourne sur l'hôte et appelle http://127.0.0.1:8890 (WEBPILOT_SEARCH_URL).
+      - "127.0.0.1:8890:8080"
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    mem_limit: ${NEXORA_SEARXNG_MEM_LIMIT:-512m}
+    pids_limit: 256
+
   mailpit:
     image: axllent/mailpit:v1.32.0@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
     restart: unless-stopped
@@ -199,6 +218,15 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:12111:12111"
+
+networks:
+  # Réseau de WebPilot : sans route vers l'extérieur. Le site et le worker le rejoignent (réseau externe) :
+  #   networks: { nexora-webpilot-search: { external: true } }   puis WEBPILOT_SEARCH_URL=http://searxng:8080
+  webpilot-search:
+    name: nexora-webpilot-search
+    internal: true
+  # Sortie de SearXNG vers les moteurs publics : il est seul dessus.
+  webpilot-egress: {}
 
 volumes:
   db:

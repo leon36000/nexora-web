@@ -337,6 +337,8 @@ export interface BreakdownRow {
 }
 
 const AGENT_PREFIX_LIKE = "agent/%";
+/** Les événements WebPilot (`webpilot/<opération>`) ont leur propre section, ils ne sont pas des modèles. */
+const WEBPILOT_PREFIX_LIKE = "webpilot/%";
 
 /**
  * Répartition de la période. « model » exclut les agents (`agent/…`) et « agent » ne garde qu'eux ; les modèles et
@@ -349,7 +351,7 @@ export async function activityBreakdown(
 ): Promise<BreakdownRow[]> {
   const extra =
     dimension === "model"
-      ? sql` AND e.model_public_id NOT LIKE ${AGENT_PREFIX_LIKE}`
+      ? sql` AND e.model_public_id NOT LIKE ${AGENT_PREFIX_LIKE} AND e.model_public_id NOT LIKE ${WEBPILOT_PREFIX_LIKE}`
       : dimension === "agent"
         ? sql` AND e.model_public_id LIKE ${AGENT_PREFIX_LIKE}`
         : sql``;

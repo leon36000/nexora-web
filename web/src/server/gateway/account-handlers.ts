@@ -1,4 +1,5 @@
 import type { Database, OrgRole } from "@nexora/db";
+import { WEBPILOT_OPERATIONS } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { z } from "zod";
 import { isSameOriginRequest } from "../auth/origin";
@@ -43,6 +44,11 @@ const createSchema = z
     /** Plafond de dépense cumulée, en dollars canadiens (« 25 », « 25,50 »). */
     spendCapCad: z.string().trim().max(12).optional(),
     expiresInDays: z.number().int().min(1).max(3650).optional(),
+    /** Permission WebPilot, à cocher (décision O-8) : absente = aucune opération. */
+    webpilotOperations: z
+      .array(z.enum(WEBPILOT_OPERATIONS))
+      .max(WEBPILOT_OPERATIONS.length)
+      .optional(),
   })
   .strict();
 
@@ -106,6 +112,7 @@ export async function handleCreateKey(
       organizationId: auth.ctx.organizationId,
       name: parsed.name,
       spendCapMicro,
+      webpilotOperations: parsed.webpilotOperations ?? null,
       expiresAt: parsed.expiresInDays
         ? new Date(now.getTime() + parsed.expiresInDays * 86_400_000)
         : null,

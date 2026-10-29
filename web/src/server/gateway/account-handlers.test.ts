@@ -194,3 +194,36 @@ describe("révocation", () => {
     expect((await secondRes.json()).revokedAt).toBe(first.revokedAt);
   });
 });
+
+describe("création de clé : permission WebPilot", () => {
+  it("désactivée par défaut ; cochée, elle est enregistrée sans doublon ; une opération inconnue est refusée", async () => {
+    const { apiKeys, eq } = await import("@nexora/db");
+    const make = async (body: unknown) =>
+      handleCreateKey(req("POST", body), deps(owner(orgA)));
+    const plain = await (await make({ name: "Sans WebPilot" })).json();
+    const [row0] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.id, plain.id));
+    expect(row0?.webpilotOperations).toBeNull();
+
+    const res = await make({
+      name: "Avec WebPilot",
+      webpilotOperations: ["scrape", "search", "scrape"],
+    });
+    expect(res.status).toBe(201);
+    const created = await res.json();
+    const [row] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.id, created.id));
+    expect(row?.webpilotOperations).toEqual(["scrape", "search"]);
+
+    expect(
+      (await make({ name: "x", webpilotOperations: ["evaluate"] })).status,
+    ).toBe(422);
+    expect(
+      (await make({ name: "x", webpilotOperations: "scrape" })).status,
+    ).toBe(422);
+  });
+});

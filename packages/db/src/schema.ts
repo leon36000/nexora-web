@@ -183,3 +183,4 @@ export * from "./schema-payments.ts";
 export * from "./schema-privacy.ts";
 export * from "./schema-site.ts";
 export * from "./schema-vps.ts";
+export * from "./schema-webpilot.ts";
