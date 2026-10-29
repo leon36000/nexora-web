@@ -9,7 +9,7 @@ import {
   publishDraft,
   WebpilotPriceError,
 } from "./prices";
-import { handlePricesAdmin } from "./prices-admin";
+import { handlePricesAdmin, type PricesAdminDeps } from "./prices-admin";
 
 let t: TestDatabase;
 beforeAll(async () => {
@@ -171,7 +171,7 @@ describe("feuille de prix", () => {
 
 describe("API d'administration", () => {
   const TOKEN = "t".repeat(40);
-  const deps = (adminToken: string | undefined = TOKEN) => ({
+  const deps = (adminToken: string | undefined = TOKEN): PricesAdminDeps => ({
     db: () => t.db,
     adminToken,
     log: createLogger({ name: "t", sink: () => undefined }),
