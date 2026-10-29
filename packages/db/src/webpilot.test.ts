@@ -7,6 +7,7 @@ import {
   usageEvents,
   webpilotPriceItems,
   webpilotPriceSheets,
+  webpilotSessions,
   webpilotTaskResults,
   webpilotTasks,
 } from "./schema.ts";
@@ -202,5 +203,80 @@ describe("migration WebPilot : tâches", () => {
       .where(eq(webpilotTasks.id, task?.id as string));
     const left = await t.db.select().from(webpilotTaskResults);
     expect(left).toHaveLength(0);
+  });
+});
+
+describe("migration WebPilot : sessions de navigateur", () => {
+  async function sessionBase() {
+    const organizationId = await org();
+    const [key] = await t.db
+      .insert(apiKeys)
+      .values({
+        organizationId,
+        name: "k",
+        prefix: `nxk_${randomBytes(4).toString("hex")}`,
+        keyHash: randomBytes(16).toString("hex"),
+      })
+      .returning();
+    const now = Date.now();
+    return {
+      organizationId,
+      apiKeyId: key?.id as string,
+      maxMinutes: 5,
+      idleTimeoutS: 60,
+      expiresAt: new Date(now + 5 * 60_000),
+      minuteEndsAt: new Date(now + 60_000),
+      configVersion: "webpilot_prices_v1",
+    };
+  }
+
+  it("une session s'ouvre ouverte, sans motif de fermeture ni minute réglée", async () => {
+    const [row] = await t.db
+      .insert(webpilotSessions)
+      .values(await sessionBase())
+      .returning();
+    expect(row).toMatchObject({
+      status: "open",
+      closeReason: null,
+      minutesSettled: 0,
+      costMicro: 0n,
+      billed: true,
+      browserClosedAt: null,
+    });
+  });
+
+  it("refuse un statut ou un motif inconnu, et une session fermée sans motif", async () => {
+    const base = await sessionBase();
+    await expect(
+      t.db
+        .insert(webpilotSessions)
+        .values({ ...base, status: "ouverte" as never }),
+    ).rejects.toThrow();
+    await expect(
+      t.db
+        .insert(webpilotSessions)
+        .values({ ...base, status: "closed", closeReason: "pirate" as never }),
+    ).rejects.toThrow();
+    await expect(
+      t.db.insert(webpilotSessions).values({ ...base, status: "closed" }),
+    ).rejects.toThrow();
+    await expect(
+      t.db
+        .insert(webpilotSessions)
+        .values({ ...base, status: "closed", closeReason: "idle" }),
+    ).resolves.toBeDefined();
+  });
+
+  it("refuse des bornes absurdes (minutes, inactivité, montants négatifs)", async () => {
+    const base = await sessionBase();
+    for (const bad of [
+      { maxMinutes: 0 },
+      { idleTimeoutS: 0 },
+      { costMicro: -1n },
+      { minutesSettled: -1 },
+    ])
+      await expect(
+        t.db.insert(webpilotSessions).values({ ...base, ...bad }),
+      ).rejects.toThrow();
   });
 });

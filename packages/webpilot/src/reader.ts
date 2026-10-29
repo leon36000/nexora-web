@@ -8,6 +8,7 @@ import {
   plainContent,
 } from "./content.ts";
 import type { SafeHttpClient } from "./http.ts";
+import { RenderBlockedHostError } from "./renderer.ts";
 import type { RobotsChecker } from "./robots.ts";
 
 /**
@@ -27,11 +28,15 @@ export class ReadError extends Error {
   }
 }
 
-/** Service de rendu par navigateur (isolé du réseau de l'application ; protocole à confirmer, décision O-7). */
+/**
+ * Service de rendu par navigateur (isolé du réseau de l'application). `approveHosts` : hôtes de redirection que
+ * l'appelant a déjà fait évaluer (le service n'en suit aucun autre). Une redirection vers un hôte non approuvé lève
+ * `RenderBlockedHostError` : `readPage` l'évalue (robots.txt, politique) puis relance le rendu.
+ */
 export interface Renderer {
   render(
     url: string,
-    options: { waitMs: number },
+    options: { waitMs: number; approveHosts: readonly string[] },
   ): Promise<{ html: string; status: number; url: string }>;
 }
 
@@ -107,11 +112,29 @@ export async function readPage(
       // Le service de rendu navigue lui-même : l'adresse doit passer la garde SSRF AVANT de lui être confiée.
       const checked = await deps.client.check(request.url);
       await guard(checked);
-      const out = await deps.renderer.render(checked.toString(), {
-        waitMs: request.waitMs ?? 0,
-      });
+      const approveHosts: string[] = [];
+      let out: Awaited<ReturnType<Renderer["render"]>> | null = null;
+      for (let attempt = 0; out === null; attempt++) {
+        try {
+          out = await deps.renderer.render(checked.toString(), {
+            waitMs: request.waitMs ?? 0,
+            approveHosts,
+          });
+        } catch (error) {
+          if (!(error instanceof RenderBlockedHostError) || attempt >= 3)
+            throw error;
+          // Redirection vers un autre hôte : nouvelle sortie, évaluée AVANT d'être permise au navigateur.
+          const next = await deps.client.check(error.url);
+          await guard(next);
+          approveHosts.push(error.host.toLowerCase());
+        }
+      }
       const finalUrl = await deps.client.check(out.url);
-      if (finalUrl.origin !== checked.origin) await guard(finalUrl);
+      if (
+        finalUrl.origin !== checked.origin &&
+        !approveHosts.includes(finalUrl.hostname.toLowerCase())
+      )
+        await guard(finalUrl);
       if (out.status < 200 || out.status >= 300)
         return { kind: "http_error", url: out.url, status: out.status };
       return {

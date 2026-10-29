@@ -93,6 +93,20 @@ export interface SafeHttpClient {
   check(rawUrl: string): Promise<URL>;
 }
 
+/** Client sûr + appels authentifiés vers les services internes approuvés (service de navigateur). */
+export interface TrustedHttpClient extends SafeHttpClient {
+  /**
+   * Appel authentifié d'un service interne approuvé (`trustedHosts`, ex. le service de navigateur) : GET, POST ou DELETE,
+   * JSON facultatif, en-têtes fournis (dont `authorization`). Refusé pour tout hôte non approuvé : l'autorisation ne part
+   * JAMAIS vers un tiers. Aucune redirection suivie, mêmes gardes d'adresse, de taille et de durée.
+   */
+  request(
+    method: "GET" | "POST" | "DELETE",
+    rawUrl: string,
+    options?: Pick<GetOptions, "maxBytes" | "headers"> & { json?: unknown },
+  ): Promise<SafeResponse>;
+}
+
 const DEFAULT_PORT = { "http:": 80, "https:": 443 } as const;
 const INTERNAL_SUFFIXES = [
   ".local",
@@ -125,7 +139,9 @@ async function defaultResolve(host: string): Promise<string[]> {
   return all.map((a) => a.address);
 }
 
-export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
+export function createSafeHttpClient(
+  options: SafeHttpOptions,
+): TrustedHttpClient {
   const trusted = (options.trustedHosts ?? []).map((h) => h.toLowerCase());
   const resolveImpl = options.resolve ?? defaultResolve;
 
@@ -189,7 +205,10 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
     headers: Record<string, string>,
     maxBytes: number,
     signal: AbortSignal,
-    request: { method: "GET" | "POST"; body?: string } = { method: "GET" },
+    request: {
+      method: "GET" | "POST" | "DELETE";
+      body?: string;
+    } = { method: "GET" },
   ): Promise<{
     status: number;
     headers: Record<string, string>;
@@ -284,7 +303,7 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
     headers: Record<string, string>,
     maxBytes: number,
     signal: AbortSignal,
-    request?: { method: "GET" | "POST"; body?: string },
+    request?: { method: "GET" | "POST" | "DELETE"; body?: string },
   ) {
     let last: unknown;
     for (const address of addresses) {
@@ -366,6 +385,61 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
             redirects,
           };
         }
+      } catch (error) {
+        throw mapError(error, signal);
+      }
+    },
+    async request(method, rawUrl, opts = {}) {
+      if (method !== "GET" && method !== "POST" && method !== "DELETE")
+        throw new Error("méthode non permise");
+      const maxBytes = Math.min(
+        opts.maxBytes ?? options.maxBytes,
+        options.maxBytes,
+      );
+      const signal = AbortSignal.timeout(options.timeoutMs);
+      try {
+        const { url, addresses, port } = await vet(rawUrl);
+        // L'autorisation (secret de service à service) ne sort que vers un hôte nommé par l'opérateur.
+        if (
+          !trusted.includes(url.hostname.replace(/^\[|\]$/g, "").toLowerCase())
+        )
+          throw reject("service interne non approuvé");
+        const body =
+          opts.json === undefined ? undefined : JSON.stringify(opts.json);
+        const res = await hop(
+          url,
+          addresses,
+          port,
+          {
+            "user-agent": options.userAgent,
+            accept: "application/json",
+            "accept-encoding": "identity",
+            ...(body !== undefined
+              ? { "content-type": "application/json" }
+              : {}),
+            ...Object.fromEntries(
+              Object.entries(opts.headers ?? {}).map(([k, v]) => [
+                k.toLowerCase(),
+                v,
+              ]),
+            ),
+          },
+          maxBytes,
+          signal,
+          { method, ...(body !== undefined ? { body } : {}) },
+        );
+        if (REDIRECT.has(res.status))
+          throw new SafeFetchError(
+            "target_unreachable",
+            "redirection non suivie",
+          );
+        return {
+          url: url.toString(),
+          status: res.status,
+          headers: res.headers,
+          body: res.body,
+          redirects: 0,
+        };
       } catch (error) {
         throw mapError(error, signal);
       }
