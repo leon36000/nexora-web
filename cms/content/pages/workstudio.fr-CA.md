@@ -249,6 +249,20 @@ Une commande sur un serveur Docker (un outil qui empaquette les logiciels), sous
 
 ### Bloc 9 — Section (`block_section`)
 
+*Agents hébergés : les agents publiés au catalogue de Nexora AI s'appellent par l'API. La page /agents n'est plus dans les menus, WorkStudio y renvoie. · Affirmations : CL-27, CL-H01, CL-12*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=agents-heberges`
+
+## Des agents hébergés, appelables par API.
+
+Un agent conçu dans WorkStudio et publié au catalogue de Nexora AI s'appelle aussi par l'API, comme on appelle un modèle. Les agents hébergés font partie de WorkStudio : [voir le catalogue des agents hébergés](/agents/).
+
+- **Une clé, un solde.** L'agent s'appelle avec la clé API et le solde de crédits de Nexora AI, au coût réel de chaque exécution.
+- **L'hébergement est indiqué.** La fiche de chaque agent dit où tourne son instance, quelles sont ses limites et comment l'appeler.
+- **Pas encore en vente.** Le libre-service n'est pas encore ouvert à la vente : les comptes et les paiements ne fonctionnent qu'en mode test.
+
+### Bloc 10 — Section (`block_section`)
+
 *Limites dites franchement. · Affirmations : CL-83, CL-109, CL-111, CL-110, CL-103*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
@@ -265,7 +279,7 @@ Chez vous ou [chez nous, au Québec](/deploiement/), nous commençons par compre
 - **Les modèles de départ sont généraux.** Ils ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise.
 - **Les connexions se qualifient.** Certains services demandent qu'un administrateur enregistre d'abord une application chez le fournisseur, et une adresse HTTPS publique pour l'instance.
 
-### Bloc 10 — FAQ (`block_faq`)
+### Bloc 11 — FAQ (`block_faq`)
 
 *FAQ propre à WorkStudio. · Affirmations : CL-12, CL-20, CL-26, CL-06, CL-27, CL-E03, CL-E04, CL-E05, CL-P02*
 
@@ -297,7 +311,7 @@ Oui, par des connecteurs, par une API au format OpenAI, ou en affichant un agent
 
 L'installation tient en une commande sur un serveur Docker ; la mise en service d'un cas dépend de votre situation, sans délai universel.
 
-### Bloc 11 — Appel à l'action (`block_cta`)
+### Bloc 12 — Appel à l'action (`block_cta`)
 
 *CTA : démonstration. · Affirmations : CL-12*
 

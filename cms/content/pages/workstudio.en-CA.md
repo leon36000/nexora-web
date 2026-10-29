@@ -249,6 +249,20 @@ One command on a Docker server (a tool that packages software), on Linux or macO
 
 ### Bloc 9 — Section (`block_section`)
 
+*Hosted agents: agents published in Nexora AI's catalogue are called through the API. The /agents page is no longer in the menus, WorkStudio links to it. · Affirmations : CL-27, CL-H01, CL-12*
+
+Réglages : `media_position=none`, `tone=clair`, `anchor_id=agents-heberges`
+
+## Hosted agents, callable by API.
+
+An agent built in WorkStudio and published in Nexora AI's catalogue can also be called through the API, the way you call a model. Hosted agents are part of WorkStudio: [see the hosted agents catalogue](/en/agents/).
+
+- **One key, one balance.** The agent is called with your Nexora AI API key and credit balance, at the real cost of each run.
+- **Hosting is shown.** Each agent's page says where its instance runs, what its limits are and how to call it.
+- **Not on sale yet.** Self-service is not yet open for sale: accounts and payments only work in test mode.
+
+### Bloc 10 — Section (`block_section`)
+
 *Limites dites franchement. · Affirmations : CL-83, CL-109, CL-111, CL-110, CL-103*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
@@ -265,7 +279,7 @@ On your premises or [with us, in Quebec](/en/deployment/), we start by understan
 - **Starter templates are general.** They do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business.
 - **Connections are qualified.** Some services require an administrator to first register an application with the provider, and a public HTTPS address for the instance.
 
-### Bloc 10 — FAQ (`block_faq`)
+### Bloc 11 — FAQ (`block_faq`)
 
 *FAQ propre à WorkStudio. · Affirmations : CL-12, CL-20, CL-26, CL-06, CL-27, CL-E03, CL-E04, CL-E05, CL-P02*
 
@@ -297,7 +311,7 @@ Yes, through connectors, an OpenAI-format API, or by displaying an agent on your
 
 Installation is one command on a Docker server; putting a case into service depends on your situation, with no universal timeline.
 
-### Bloc 11 — Appel à l'action (`block_cta`)
+### Bloc 12 — Appel à l'action (`block_cta`)
 
 *CTA : démonstration. · Affirmations : CL-12*
 

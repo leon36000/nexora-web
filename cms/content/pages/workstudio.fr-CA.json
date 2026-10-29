@@ -373,6 +373,34 @@
     },
     {
       "collection": "block_section",
+      "role": "Agents hébergés : les agents publiés au catalogue de Nexora AI s'appellent par l'API. La page /agents n'est plus dans les menus, WorkStudio y renvoie.",
+      "claims": ["CL-27", "CL-H01", "CL-12"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "agents-heberges"
+      },
+      "translation": {
+        "title": "Des agents hébergés, appelables par API.",
+        "body": "<p>Un agent conçu dans WorkStudio et publié au catalogue de Nexora AI s'appelle aussi par l'API, comme on appelle un modèle. Les agents hébergés font partie de WorkStudio : <a href=\"/agents/\">voir le catalogue des agents hébergés</a>.</p>",
+        "items": [
+          {
+            "title": "Une clé, un solde.",
+            "text": "L'agent s'appelle avec la clé API et le solde de crédits de Nexora AI, au coût réel de chaque exécution."
+          },
+          {
+            "title": "L'hébergement est indiqué.",
+            "text": "La fiche de chaque agent dit où tourne son instance, quelles sont ses limites et comment l'appeler."
+          },
+          {
+            "title": "Pas encore en vente.",
+            "text": "Le libre-service n'est pas encore ouvert à la vente : les comptes et les paiements ne fonctionnent qu'en mode test."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
       "role": "Limites dites franchement.",
       "claims": ["CL-83", "CL-109", "CL-111", "CL-110", "CL-103"],
       "fields": {
