@@ -6,15 +6,18 @@ import { type Lang, localizePath } from "@/i18n/config";
 import { formatInteger } from "@/i18n/gateway";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { SubscriptionPlan } from "@/server/billing/plans";
+import type { Wallet } from "@/server/billing/wallet";
 import type { OverviewData } from "@/server/gateway/activity-overview";
 import { ChosenOfferCard } from "./billing-panel";
 import { Notice } from "./field";
-import { formatMicroCadExact } from "./panel-format";
+import { IncludedMeter } from "./included-meter";
+import { formatMicroCadExact, formatTokensCompact } from "./panel-format";
 import {
   isFreeAccess,
   type OnboardingStep,
   onboardingProgress,
   onboardingSteps,
+  type WorkstudioView,
 } from "./panel-logic";
 import { PanelHeading, SectionTitle, StatCard } from "./panel-ui";
 
@@ -29,6 +32,10 @@ export interface OverviewProps {
   overview: OverviewData;
   /** Un abonnement WorkStudio donne actuellement accès (étape « Ouvrir WorkStudio »). */
   hasWorkstudio: boolean;
+  /** Crédits inclus de la période (compteur « X de 5 M de jetons »). */
+  wallet: Wallet;
+  /** État de WorkStudio : abonnement, instance, accès gratuit de la maison. */
+  workstudio: WorkstudioView["state"];
   /** Offre choisie sur la page Tarifs (`?offre=`), publiée, vendable et pas déjà en cours. */
   chosenOffer?: SubscriptionPlan | null;
   flash: { kind: "success" | "info" | "error"; message: string } | null;
@@ -136,6 +143,77 @@ export function WalletCard({
   );
 }
 
+/** « Où j'en suis » : consommation du mois, clés actives, état de WorkStudio, en trois chiffres lisibles d'un coup d'œil. */
+export function NowCards({
+  lang,
+  t,
+  overview,
+  workstudio,
+}: {
+  lang: Lang;
+  t: AccountDictionary;
+  overview: OverviewData;
+  workstudio: WorkstudioView["state"];
+}) {
+  const n = t.panel.overview.now;
+  const free = isFreeAccess(overview.billingMode);
+  const { month } = overview;
+  const wsLabel =
+    workstudio === "ready"
+      ? overview.workstudioKeyActive
+        ? n.wsConnected
+        : n.wsNotYet
+      : workstudio === "pending"
+        ? n.wsPending
+        : workstudio === "suspended"
+          ? n.wsSuspended
+          : n.wsNoSub;
+  const link = (href: string, text: string) => (
+    <Link
+      href={localizePath(lang, href)}
+      prefetch={false}
+      className="underline decoration-1 underline-offset-4 hover:decoration-2"
+    >
+      {text}
+    </Link>
+  );
+  return (
+    <section aria-labelledby="now-title">
+      <SectionTitle id="now-title">{n.title}</SectionTitle>
+      <dl className="mt-5 grid gap-4 md:grid-cols-3">
+        <StatCard
+          label={n.month}
+          value={formatMicroCadExact(
+            lang,
+            free ? month.valueMicro : month.costMicro,
+          )}
+          note={
+            month.requests === 0
+              ? n.monthNoteEmpty
+              : fmt(n.monthNote, {
+                  requests: formatInteger(lang, month.requests),
+                  tokens: formatTokensCompact(
+                    lang,
+                    month.promptTokens + month.completionTokens,
+                  ),
+                })
+          }
+        />
+        <StatCard
+          label={n.keys}
+          value={formatInteger(lang, overview.activeKeys)}
+          note={link("/compte/modeles", n.keysManage)}
+        />
+        <StatCard
+          label={n.workstudio}
+          value={wsLabel}
+          note={link("/compte/workstudio", n.wsLink)}
+        />
+      </dl>
+    </section>
+  );
+}
+
 /** Liste « Pour démarrer » : quatre pas, cochés d'après les données réelles. */
 export function StartCard({
   lang,
@@ -192,6 +270,8 @@ export function Overview({
   dashboard,
   overview,
   hasWorkstudio,
+  wallet,
+  workstudio,
   chosenOffer,
   flash,
 }: OverviewProps) {
@@ -224,8 +304,21 @@ export function Overview({
           dashboard={dashboard}
           overview={overview}
         />
-        <StartCard lang={lang} t={t} steps={steps} />
+        {free ? (
+          <StartCard lang={lang} t={t} steps={steps} />
+        ) : (
+          <IncludedMeter
+            lang={lang}
+            t={t}
+            included={wallet.included}
+            headingId="overview-included-title"
+          />
+        )}
       </div>
+
+      <NowCards lang={lang} t={t} overview={overview} workstudio={workstudio} />
+
+      {free ? null : <StartCard lang={lang} t={t} steps={steps} />}
 
       <section aria-labelledby="last30-title">
         <div className="flex flex-wrap items-center justify-between gap-4">

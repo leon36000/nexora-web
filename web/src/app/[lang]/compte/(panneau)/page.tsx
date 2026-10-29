@@ -3,7 +3,12 @@ import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
 import { Overview } from "@/components/account/overview";
-import { hasWorkstudioAccess } from "@/components/account/panel-logic";
+import {
+  hasWorkstudioAccess,
+  isFreeAccess,
+  workstudioInstanceOrigin,
+  workstudioView,
+} from "@/components/account/panel-logic";
 import { PanelLoading } from "@/components/account/panel-ui";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, type Lang } from "@/i18n/config";
@@ -16,8 +21,10 @@ import {
   planSourceFromEnv,
   type SubscriptionPlan,
 } from "@/server/billing/plans";
+import { loadWallet } from "@/server/billing/wallet";
 import { getDb } from "@/server/db";
 import { loadOverview } from "@/server/gateway/activity-overview";
+import { getWorkstudioOrigin } from "@/server/gateway/activity-workstudio";
 import { loadBillingConfig } from "@/server/ledger/config";
 import { first, flashFromSearch, type Search } from "./_lib/flash";
 import { requirePanelSession } from "./_lib/session";
@@ -73,11 +80,22 @@ async function OverviewContent({
   const session = await requirePanelSession(lang);
   const t = getAccountDictionary(lang);
   const db = getDb();
-  const [dashboard, overview, q] = await Promise.all([
+  const [dashboard, overview, wallet, declaredOrigin, q] = await Promise.all([
     loadDashboard(db, session.organizationId),
     loadOverview(db, session.organizationId),
+    loadWallet(db, session.organizationId),
+    getWorkstudioOrigin(db),
     searchParams,
   ]);
+  const free = isFreeAccess(overview.billingMode);
+  const workstudio = workstudioView({
+    subscriptions: dashboard.subscriptions,
+    instanceOrigin: workstudioInstanceOrigin(
+      process.env.WORKSTUDIO_PUBLIC_URL,
+      declaredOrigin,
+    ),
+    free,
+  });
 
   // L'offre choisie sur la page Tarifs : les offres publiées ne sont lues dans Directus que dans ce cas ;
   // en cas d'échec, la page reste utilisable sans elle.
@@ -109,7 +127,9 @@ async function OverviewContent({
       role={session.role}
       dashboard={dashboard}
       overview={overview}
-      hasWorkstudio={hasWorkstudioAccess(dashboard.subscriptions)}
+      hasWorkstudio={hasWorkstudioAccess(dashboard.subscriptions, free)}
+      wallet={wallet}
+      workstudio={workstudio.state}
       chosenOffer={chosenOffer}
       flash={flashFromSearch(lang, t, q, loadBillingConfig())}
     />

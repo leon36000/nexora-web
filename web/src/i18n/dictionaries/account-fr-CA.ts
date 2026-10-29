@@ -316,7 +316,24 @@ export const accountFrCA = {
     },
     overview: {
       title: "Aperçu.",
-      lead: "Votre portefeuille, vos premiers pas et vos 30 derniers jours.",
+      lead: "Où vous en êtes en un coup d’œil : solde, consommation du mois, clés et WorkStudio.",
+      now: {
+        title: "Où j’en suis",
+        balance: "Solde disponible",
+        addFunds: "Ajouter des fonds",
+        month: "Consommation du mois",
+        monthNote: "{requests} requêtes · {tokens} jetons",
+        monthNoteEmpty: "Aucune requête ce mois-ci",
+        keys: "Clés actives",
+        keysManage: "Gérer les clés",
+        workstudio: "WorkStudio",
+        wsConnected: "Branché",
+        wsNotYet: "Pas encore ouvert",
+        wsPending: "En préparation",
+        wsNoSub: "Abonnement requis",
+        wsSuspended: "Abonnement suspendu",
+        wsLink: "Voir WorkStudio",
+      },
       wallet: {
         title: "Portefeuille",
         addFunds: "Ajouter des fonds",
@@ -602,6 +619,24 @@ export const accountFrCA = {
     workstudio: {
       title: "WorkStudio et agents.",
       lead: "Votre espace de travail pour concevoir des agents, et les agents que votre organisation appelle.",
+      link: {
+        title: "Branché sur un modèle",
+        connected: "Branché : WorkStudio utilise votre portefeuille.",
+        notYet: "Pas encore branché.",
+        notYetText:
+          "La clé se crée toute seule la première fois que vous ouvrez WorkStudio : vous n’avez rien à régler.",
+        model: "Modèle par défaut : {model}",
+        key: "Clé automatique : {prefix}…",
+        keyUsed: "Dernier usage : {date}",
+        keyNever: "Pas encore utilisée.",
+        billing:
+          "Les jetons sont facturés à votre portefeuille, au prix du catalogue.",
+        billingFree:
+          "Accès administrateur gratuit : aucun jeton n’est facturé.",
+        balance: "Solde disponible : {amount}",
+        addFunds: "Ajouter des fonds",
+        seeActivity: "Voir la consommation de WorkStudio",
+      },
       subscription: {
         title: "Abonnement WorkStudio",
         none: "Aucun abonnement WorkStudio pour le moment.",

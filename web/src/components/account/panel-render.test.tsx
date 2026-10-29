@@ -10,7 +10,7 @@ import type { PublicCatalog } from "@/server/gateway/read";
 import { ActivityView } from "./activity-view";
 import { ModelsPanel } from "./models-panel";
 import { Overview } from "./overview";
-import type { workstudioView } from "./panel-logic";
+import type { WorkstudioView, workstudioView } from "./panel-logic";
 import { PanelNav } from "./panel-nav";
 import { WorkstudioPanel } from "./workstudio-panel";
 
@@ -44,6 +44,9 @@ const overview = (over: Partial<OverviewData> = {}): OverviewData => ({
   hasApiKey: false,
   hasModelRequest: false,
   hasVps: false,
+  activeKeys: 0,
+  workstudioKeyActive: false,
+  month: summary,
   last30: summary,
   ...over,
 });
@@ -54,6 +57,7 @@ const renderOverview = (
   role: "owner" | "member" = "owner",
   hasWorkstudio = false,
   data: DashboardData = dashboard,
+  workstudio: WorkstudioView["state"] = "no_subscription",
 ) =>
   renderToStaticMarkup(
     <Overview
@@ -63,6 +67,8 @@ const renderOverview = (
       dashboard={data}
       overview={o}
       hasWorkstudio={hasWorkstudio}
+      wallet={{ lots: [], included: null }}
+      workstudio={workstudio}
       flash={null}
     />,
   );
@@ -111,6 +117,60 @@ describe("aperçu : portefeuille", () => {
       },
     });
     expect(html).toContain("Compte bloqué");
+  });
+});
+
+describe("aperçu : où j'en suis", () => {
+  it("consommation du mois, clés actives et état de WorkStudio, en français", () => {
+    const html = renderOverview(
+      "fr",
+      overview({
+        activeKeys: 2,
+        workstudioKeyActive: true,
+        month: { ...summary, costMicro: 1_234_000n },
+      }),
+      "owner",
+      true,
+      dashboard,
+      "ready",
+    );
+    expect(html).toContain("Où j’en suis");
+    expect(html).toContain("Consommation du mois");
+    expect(html).toContain("1,23");
+    expect(html).toContain("Clés actives");
+    expect(html).toContain("Branché");
+    expect(html).toContain('href="/compte/workstudio"');
+    expect(html).toContain('href="/compte/modeles"');
+  });
+
+  it("WorkStudio : pas encore ouvert, abonnement requis, suspendu ou en préparation", () => {
+    const text = (state: WorkstudioView["state"], keyActive: boolean) =>
+      renderOverview(
+        "fr",
+        overview({ workstudioKeyActive: keyActive }),
+        "owner",
+        false,
+        dashboard,
+        state,
+      );
+    expect(text("ready", false)).toContain("Pas encore ouvert");
+    expect(text("no_subscription", false)).toContain("Abonnement requis");
+    expect(text("suspended", false)).toContain("Abonnement suspendu");
+    expect(text("pending", false)).toContain("En préparation");
+  });
+
+  it("anglais, et la maison voit la valeur offerte du mois, pas une dépense", () => {
+    const en = renderOverview("en", overview());
+    expect(en).toContain("Where I stand");
+    expect(en).toContain("Usage this month");
+    const house = renderOverview(
+      "fr",
+      overview({
+        billingMode: "house",
+        month: { ...summary, costMicro: 0n, valueMicro: 9_000_000n },
+      }),
+    );
+    expect(house).toContain("9,00");
   });
 });
 
@@ -573,5 +633,59 @@ describe("page Modèles : identifiant à copier et lien vers la fiche", () => {
     const html = render(catalog([], false));
     expect(html).toContain("n’est pas disponible");
     expect(html).not.toContain("Copier l’identifiant");
+  });
+});
+
+describe("WorkStudio : branchement sur un modèle", () => {
+  const t = getAccountDictionary("fr");
+  const base = {
+    model: "nexora/deepseek-v4.1-flash-1017",
+    free: false,
+    availableMicro: 12_345_678n,
+    owner: true,
+  };
+  const html = (
+    connection: Parameters<typeof WorkstudioPanel>[0]["connection"],
+  ) =>
+    renderToStaticMarkup(
+      <WorkstudioPanel
+        lang="fr"
+        t={t}
+        view={{ state: "ready", url: "https://studio.nexora.example" }}
+        agents={[]}
+        connection={connection}
+      />,
+    );
+
+  it("clé automatique active : modèle par défaut, préfixe (jamais la clé), solde et lien vers l'activité de cette clé", () => {
+    const out = html({
+      ...base,
+      link: {
+        id: "11111111-1111-4111-8111-111111111111",
+        prefix: "nxk_abcdefg",
+        createdAt: new Date("2026-10-01T12:00:00Z"),
+        lastUsedAt: new Date("2026-10-28T12:00:00Z"),
+      },
+    });
+    expect(out).toContain("Branché : WorkStudio utilise votre portefeuille.");
+    expect(out).toContain("nexora/deepseek-v4.1-flash-1017");
+    expect(out).toContain("nxk_abcdefg…");
+    expect(out).toContain("12,3457");
+    expect(out).toContain(
+      'href="/compte/activite?key=11111111-1111-4111-8111-111111111111"',
+    );
+    expect(out).toContain("Ajouter des fonds");
+  });
+
+  it("pas encore de clé : le dit, rien à régler", () => {
+    const out = html({ ...base, link: null });
+    expect(out).toContain("Pas encore branché");
+    expect(out).toContain("rien à régler");
+  });
+
+  it("organisation maison : aucun jeton facturé, pas de bouton d'ajout de fonds", () => {
+    const out = html({ ...base, link: null, free: true });
+    expect(out).toContain("aucun jeton n’est facturé");
+    expect(out).not.toContain("Ajouter des fonds");
   });
 });

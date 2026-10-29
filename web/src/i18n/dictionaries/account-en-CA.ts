@@ -307,7 +307,24 @@ export const accountEnCA: AccountDictionary = {
     },
     overview: {
       title: "Overview.",
-      lead: "Your wallet, your first steps and your last 30 days.",
+      lead: "Where you stand at a glance: balance, this month’s usage, keys and WorkStudio.",
+      now: {
+        title: "Where I stand",
+        balance: "Available balance",
+        addFunds: "Add funds",
+        month: "Usage this month",
+        monthNote: "{requests} requests · {tokens} tokens",
+        monthNoteEmpty: "No requests this month",
+        keys: "Active keys",
+        keysManage: "Manage keys",
+        workstudio: "WorkStudio",
+        wsConnected: "Connected",
+        wsNotYet: "Not opened yet",
+        wsPending: "Being set up",
+        wsNoSub: "Subscription required",
+        wsSuspended: "Subscription suspended",
+        wsLink: "See WorkStudio",
+      },
       wallet: {
         title: "Wallet",
         addFunds: "Add funds",
@@ -586,6 +603,22 @@ export const accountEnCA: AccountDictionary = {
     workstudio: {
       title: "WorkStudio and agents.",
       lead: "Your workspace for building agents, and the agents your organization calls.",
+      link: {
+        title: "Connected to a model",
+        connected: "Connected: WorkStudio uses your wallet.",
+        notYet: "Not connected yet.",
+        notYetText:
+          "The key creates itself the first time you open WorkStudio: there is nothing for you to set up.",
+        model: "Default model: {model}",
+        key: "Automatic key: {prefix}…",
+        keyUsed: "Last used: {date}",
+        keyNever: "Not used yet.",
+        billing: "Tokens are billed to your wallet, at the catalog price.",
+        billingFree: "Free administrator access: no tokens are billed.",
+        balance: "Available balance: {amount}",
+        addFunds: "Add funds",
+        seeActivity: "See WorkStudio usage",
+      },
       subscription: {
         title: "WorkStudio subscription",
         none: "No WorkStudio subscription yet.",

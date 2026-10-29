@@ -300,3 +300,32 @@ describe("montants proposés pour ajouter des fonds", () => {
     expect(presetAmountsCents(5000, 2000)).toEqual([]);
   });
 });
+
+describe("WorkStudio pour l'organisation maison (accès gratuit)", () => {
+  const origin = "https://ws.exemple.ca";
+  it("sans abonnement, un client ordinaire n'a pas l'accès, même si l'adresse est connue", () => {
+    expect(
+      workstudioView({ subscriptions: [], instanceOrigin: origin }),
+    ).toEqual({ state: "no_subscription" });
+    expect(
+      workstudioView({
+        subscriptions: [],
+        instanceOrigin: origin,
+        free: false,
+      }),
+    ).toEqual({ state: "no_subscription" });
+  });
+  it("l'organisation maison ouvre WorkStudio sans abonnement", () => {
+    expect(
+      workstudioView({ subscriptions: [], instanceOrigin: origin, free: true }),
+    ).toEqual({ state: "ready", url: origin });
+    expect(
+      workstudioView({ subscriptions: [], instanceOrigin: null, free: true }),
+    ).toEqual({ state: "pending" });
+  });
+  it("l'étape « Ouvrir WorkStudio » est cochée pour l'organisation maison", () => {
+    expect(hasWorkstudioAccess([], true)).toBe(true);
+    expect(hasWorkstudioAccess([], false)).toBe(false);
+    expect(hasWorkstudioAccess([])).toBe(false);
+  });
+});

@@ -161,18 +161,26 @@ type OfferSubscription = { planCode: string | null; access: AccessLevel };
 /** Un abonnement lié à une offre donne actuellement accès (complet, ou délai de grâce après un paiement raté). */
 export function hasWorkstudioAccess(
   subscriptions: readonly OfferSubscription[],
+  free = false,
 ): boolean {
-  return subscriptions.some(
-    (s) => s.planCode !== null && (s.access === "full" || s.access === "grace"),
+  // L'organisation « maison » (accès gratuit) n'a pas besoin d'abonnement ; aucun autre compte n'a ce droit.
+  return (
+    free ||
+    subscriptions.some(
+      (s) =>
+        s.planCode !== null && (s.access === "full" || s.access === "grace"),
+    )
   );
 }
 
 export function workstudioView(input: {
   subscriptions: readonly OfferSubscription[];
   instanceOrigin: string | null;
+  /** Organisation « maison » : accès gratuit, donc ouverture possible sans abonnement. */
+  free?: boolean;
 }): WorkstudioView {
   const offers = input.subscriptions.filter((s) => s.planCode !== null);
-  if (hasWorkstudioAccess(offers)) {
+  if (hasWorkstudioAccess(offers, input.free ?? false)) {
     const url = safeInstanceUrl(input.instanceOrigin);
     return url ? { state: "ready", url } : { state: "pending" };
   }
