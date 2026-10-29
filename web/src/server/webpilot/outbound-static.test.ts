@@ -59,14 +59,17 @@ describe("sortie vers le Web : un seul client", () => {
     expect(offenders).toEqual([]);
   });
 
-  it("le client HTTP de sortie ne se construit que dans la configuration de production", () => {
+  it("le client HTTP de sortie ne se construit que dans les deux configurations de production (site et worker)", () => {
     const users = FILES.filter(
       (f) =>
         f !== HTTP_MODULE &&
         f !== "packages/webpilot/src/index.ts" &&
         readFileSync(join(REPO, f), "utf8").includes("createSafeHttpClient("),
     );
-    expect(users).toEqual(["web/src/server/webpilot/deps.ts"]);
+    expect(users.sort()).toEqual([
+      "web/src/server/webpilot/deps.ts",
+      "worker/src/webpilot/handlers.ts",
+    ]);
   });
 
   it("la couche de confidentialité du site est acceptée telle quelle par le moteur partagé", () => {
