@@ -12,6 +12,7 @@ import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { estimateOutputTokens } from "./estimate";
+import { setBillingMode } from "./house";
 import { createApiKey, revokeApiKey } from "./keys";
 import { requestCost } from "./pricing";
 import {
@@ -1581,5 +1582,85 @@ describe("plages horaires et écriture du cache", () => {
       WEDNESDAY,
     );
     expect(ev?.cacheWriteTokens).toBe(250);
+  });
+});
+
+describe("organisation maison (accès gratuit du fondateur)", () => {
+  async function houseClient() {
+    const org = await newOrganization(t.db);
+    await setBillingMode(t.db, org, "house");
+    const { key } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "maison",
+    });
+    return { org, key };
+  }
+  const usage = {
+    prompt_tokens: 100,
+    completion_tokens: 100,
+    total_tokens: 200,
+  };
+
+  it("sert la requête sans solde, ne débite rien et note la valeur offerte et le coût amont", async () => {
+    const { org, key } = await houseClient();
+    upstream = () => upstreamOk(usage);
+    const res = await handleChatCompletions(post(key, chat()), deps());
+    expect(res.status).toBe(200);
+    expect(res.headers.get("x-nexora-cost-micro")).toBe("0");
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, org));
+    expect(ev?.costMicro).toBe(0n);
+    expect(ev?.billed).toBe(false);
+    // 100 × 1 CAD/M + 100 × 3 CAD/M = 400 micro-CAD offerts ; coût amont réel : 100 × 0,10 + 100 × 0,20 USD/M = 30
+    expect(ev?.valueMicro).toBe(400n);
+    expect(ev?.upstreamCostUsdMicro).toBe(30n);
+    expect(ev?.promptTokens).toBe(100);
+    // aucune réservation ni écriture au grand livre
+    expect(
+      await t.db
+        .select()
+        .from(creditReservations)
+        .where(eq(creditReservations.organizationId, org)),
+    ).toHaveLength(0);
+    expect(await getAccount(t.db, org)).toMatchObject({
+      balanceMicro: 0n,
+      heldMicro: 0n,
+    });
+  });
+
+  it("sert aussi une réponse en flux, sans débit", async () => {
+    const { org, key } = await houseClient();
+    upstream = () => sse([chunk("Bon"), usageChunk(usage), "data: [DONE]\n\n"]);
+    const res = await handleChatCompletions(
+      post(key, chat({ stream: true })),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    await res.text();
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, org));
+    expect(ev?.billed).toBe(false);
+    expect(ev?.costMicro).toBe(0n);
+    expect(ev?.valueMicro).toBe(400n);
+  });
+
+  it("une organisation ordinaire sans solde reste refusée (402), et le mode se remet à ordinaire", async () => {
+    const poor = await client(0n);
+    const refused = await handleChatCompletions(post(poor.key, chat()), deps());
+    expect(refused.status).toBe(402);
+    const { org, key } = await houseClient();
+    await setBillingMode(t.db, org, "standard");
+    const again = await handleChatCompletions(post(key, chat()), deps());
+    expect(again.status).toBe(402);
+  });
+
+  it("refuse un mode inconnu", async () => {
+    const org = await newOrganization(t.db);
+    // biome-ignore lint/suspicious/noExplicitAny: mode volontairement invalide
+    await expect(setBillingMode(t.db, org, "gratuit" as any)).rejects.toThrow();
   });
 });

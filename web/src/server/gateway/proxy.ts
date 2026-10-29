@@ -14,6 +14,7 @@ import { consumeRateLimit } from "../billing/rate-limit";
 import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
+import { billingModeOf } from "./house";
 import { type ApiKeyRow, authenticateApiKey } from "./keys";
 import {
   activeWindow,
@@ -23,7 +24,7 @@ import {
 } from "./pricing";
 import { type PublicModel, toPublicModel } from "./public";
 import type { SnapshotModel, SnapshotProvider } from "./snapshot";
-import { finalizeRequest } from "./usage";
+import { finalizeHouseRequest, finalizeRequest } from "./usage";
 
 /**
  * Couche publique `/v1/*` compatible OpenAI (D1) : authentifie la clé Nexora, réserve le coût
@@ -732,6 +733,8 @@ async function handleInference(
   let db: Database | undefined;
   let key: ApiKeyRow | undefined;
   let reservation: { id: string; amount: bigint } | undefined;
+  // Organisation « maison » : aucune réservation ni débit (G9).
+  let house = false;
   let settled = false;
   let target: Target | undefined;
   let streamHandedOff = false;
@@ -744,7 +747,8 @@ async function handleInference(
     stream: boolean;
   }) => {
     if (settled || !db || !key || !reservation || !target) return null;
-    const result = await finalizeRequest(db, {
+    const settle = house ? finalizeHouseRequest : finalizeRequest;
+    const result = await settle(db, {
       requestId,
       organizationId: key.organizationId,
       apiKeyId: key.id,
@@ -933,23 +937,31 @@ async function handleInference(
         costMicro(plan.maxOutput, price.output);
     const amount = maxCost > 0n ? maxCost : 1n;
 
+    house = (await billingModeOf(db, key.organizationId)) === "house";
+    if (house) {
+      reservation = { id: "house", amount: 0n };
+    }
     // Plafond de la clé et grand livre dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
-    const reserved = await reserve(db, {
-      organizationId: key.organizationId,
-      amountMicro: amount,
-      idempotencyKey: `gw:${requestId}`,
-      configVersion: served.configVersion,
-      apiKeyId: key.id,
-    });
-    if (reserved.status === "key_cap_exceeded") return E.keyCap(rateHeaders);
-    if (
-      reserved.status === "insufficient_funds" ||
-      reserved.status === "blocked"
-    )
-      return reserved.status === "blocked"
-        ? E.blocked(rateHeaders)
-        : E.insufficient(rateHeaders);
-    reservation = { id: reserved.reservation.id, amount };
+    const reserved = house
+      ? null
+      : await reserve(db, {
+          organizationId: key.organizationId,
+          amountMicro: amount,
+          idempotencyKey: `gw:${requestId}`,
+          configVersion: served.configVersion,
+          apiKeyId: key.id,
+        });
+    if (reserved) {
+      if (reserved.status === "key_cap_exceeded") return E.keyCap(rateHeaders);
+      if (
+        reserved.status === "insufficient_funds" ||
+        reserved.status === "blocked"
+      )
+        return reserved.status === "blocked"
+          ? E.blocked(rateHeaders)
+          : E.insufficient(rateHeaders);
+      reservation = { id: reserved.reservation.id, amount };
+    }
 
     const headers: Record<string, string> = {
       ...rateHeaders,

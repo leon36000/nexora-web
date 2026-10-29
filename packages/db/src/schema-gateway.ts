@@ -338,6 +338,33 @@ export const apiKeys = pgTable(
   ],
 );
 
+export const BILLING_MODES = ["standard", "house"] as const;
+export type BillingMode = (typeof BILLING_MODES)[number];
+
+/**
+ * Mode de facturation d'une organisation. Absente de cette table = `standard`. `house` : organisation
+ * « maison » (accès gratuit du fondateur et de l'équipe) : ses requêtes passent sans solde et sans
+ * débit ; l'usage, la valeur offerte et le coût amont réel sont comptés comme pour les autres.
+ * Table à part : celles de l'authentification suivent le schéma de Better Auth.
+ */
+export const organizationBilling = pgTable(
+  "organization_billing",
+  {
+    organizationId: text("organization_id")
+      .primaryKey()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    mode: text("mode").$type<BillingMode>().notNull().default("standard"),
+    setBy: text("set_by"),
+    updatedAt: ts("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    check(
+      "organization_billing_mode_check",
+      sql`${t.mode} IN (${inList(BILLING_MODES)})`,
+    ),
+  ],
+);
+
 export const USAGE_STATUSES = ["ok", "error", "aborted"] as const;
 export type UsageStatus = (typeof USAGE_STATUSES)[number];
 
@@ -374,6 +401,10 @@ export const usageEvents = pgTable(
     costMicro: micro("cost_micro").notNull().default(sql`0`),
     /** Part de `cost_micro` facturée par exécution (agents hébergés, S7) ; 0 pour un modèle. */
     runFeeMicro: micro("run_fee_micro").notNull().default(sql`0`),
+    /** Faux pour une organisation « maison » : rien n'a été débité (`cost_micro` = 0). */
+    billed: boolean("billed").notNull().default(true),
+    /** Valeur de la requête au prix public (micro-CAD) ; égale à `cost_micro` quand elle est facturée. */
+    valueMicro: micro("value_micro").notNull().default(sql`0`),
     upstreamCostUsdMicro: micro("upstream_cost_usd_micro")
       .notNull()
       .default(sql`0`),

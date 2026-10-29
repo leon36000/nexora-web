@@ -105,6 +105,7 @@ export async function finalizeRequest(
         cacheWriteTokens: input.tokens.cacheWrite ?? 0,
         reasoningTokens: input.tokens.reasoning ?? 0,
         costMicro: charged,
+        valueMicro: charged,
         runFeeMicro: runFee < charged ? runFee : charged,
         upstreamCostUsdMicro: upstreamUsd,
         priceInputMicro: input.price.input,
@@ -133,6 +134,64 @@ export async function finalizeRequest(
       .set({ lastUsedAt: new Date() })
       .where(eq(keysTable.id, input.apiKeyId));
     return { costMicro: charged, overageMicro: overage, replayed: false };
+  });
+}
+
+/**
+ * Règlement d'une requête d'une organisation « maison » (G9) : aucune réservation, aucun débit. L'événement
+ * d'usage garde les jetons, la valeur au prix public (ce qu'une organisation ordinaire aurait payé) et le coût
+ * amont réel ; `billed` est faux et `cost_micro` vaut 0. Idempotent par `requestId`.
+ */
+export async function finalizeHouseRequest(
+  db: Database,
+  input: Omit<FinalizeInput, "reservationId">,
+): Promise<FinalizeResult> {
+  const failed = input.status === "error";
+  const runFee = failed ? 0n : (input.runFeeMicro ?? 0n);
+  const value = failed ? 0n : requestCost(input.tokens, input.price) + runFee;
+  const upstreamUsd = failed
+    ? 0n
+    : requestCost(input.tokens, input.upstreamPrice);
+  return db.transaction(async (tx) => {
+    const [inserted] = await tx
+      .insert(usageEvents)
+      .values({
+        requestId: input.requestId,
+        organizationId: input.organizationId,
+        apiKeyId: input.apiKeyId,
+        modelPublicId: input.modelPublicId,
+        endpoint: input.endpoint,
+        configVersion: input.configVersion,
+        status: input.status,
+        httpStatus: input.httpStatus,
+        errorCode: input.errorCode ?? null,
+        stream: input.stream,
+        promptTokens: input.tokens.prompt,
+        completionTokens: input.tokens.completion,
+        cachedTokens: input.tokens.cached,
+        cacheWriteTokens: input.tokens.cacheWrite ?? 0,
+        reasoningTokens: input.tokens.reasoning ?? 0,
+        costMicro: 0n,
+        billed: false,
+        valueMicro: value,
+        runFeeMicro: 0n,
+        upstreamCostUsdMicro: upstreamUsd,
+        priceInputMicro: input.price.input,
+        priceOutputMicro: input.price.output,
+        priceCacheMicro: input.price.cache,
+        priceCacheWriteMicro: input.price.cacheWrite ?? null,
+        priceWindow: input.priceWindow ?? null,
+        latencyMs: input.latencyMs,
+        reservationId: null,
+      })
+      .onConflictDoNothing({ target: usageEvents.requestId })
+      .returning({ id: usageEvents.id });
+    if (inserted)
+      await tx
+        .update(keysTable)
+        .set({ lastUsedAt: new Date() })
+        .where(eq(keysTable.id, input.apiKeyId));
+    return { costMicro: 0n, overageMicro: 0n, replayed: !inserted };
   });
 }
 

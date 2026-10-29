@@ -13,7 +13,8 @@
     "verify:ui": "bun scripts/verify-ui.mjs",
     "capture": "bun scripts/capture.mjs",
     "vps:seed": "bun scripts/seed-vps.ts",
-    "models:seed": "bun scripts/seed-ai-models.ts"
+    "models:seed": "bun scripts/seed-ai-models.ts",
+    "house:org": "bun scripts/house-org.ts"
   },
   "dependencies": {
     "@nexora/db": "workspace:*",
