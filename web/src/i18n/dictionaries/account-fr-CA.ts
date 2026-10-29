@@ -168,10 +168,10 @@ export const accountFrCA = {
         "Les crédits achetés expirent {months} mois après l’achat ; les plus proches de leur échéance sont utilisés en premier.",
     },
     buy: {
-      title: "Acheter des crédits",
+      title: "Ajouter des fonds",
       productName: "Crédits Nexora AI",
-      lead: "Paiement unique, sans abonnement. Vous recevez en crédits le montant avant taxes.",
-      amount: "Montant en dollars canadiens",
+      lead: "Paiement unique, sans abonnement. Vous recevez en crédits le montant avant taxes, utilisables sur tous les modèles.",
+      amount: "Autre montant en dollars canadiens",
       choose: "Montants proposés",
       submit: "Payer avec Stripe",
       taxNote:
@@ -247,8 +247,8 @@ export const accountFrCA = {
       },
     },
     portal: {
-      title: "Facturation",
-      lead: "Factures, moyens de paiement et résiliation, dans le portail sécurisé de Stripe.",
+      title: "Reçus et factures",
+      lead: "Chaque paiement donne lieu à un reçu et à une facture de Stripe. Retrouvez-les, avec vos moyens de paiement et la résiliation, dans le portail sécurisé.",
       button: "Ouvrir le portail de facturation",
       none: "Le portail sera disponible après votre premier paiement.",
     },
@@ -297,7 +297,7 @@ export const accountFrCA = {
       activity: "Activité | Nexora AI",
       privacy: "Confidentialité | Nexora AI",
       workstudio: "WorkStudio et agents | Nexora AI",
-      billing: "Facturation | Nexora AI",
+      billing: "Portefeuille et facturation | Nexora AI",
     },
     nav: {
       label: "Espace client",
@@ -310,7 +310,7 @@ export const accountFrCA = {
         workstudio: "WorkStudio et agents",
         cloud: "Cloud et VPS",
         apps: "Nexora Apps",
-        billing: "Facturation",
+        billing: "Portefeuille",
         security: "Sécurité",
       },
     },
@@ -637,8 +637,66 @@ export const accountFrCA = {
       soon: "Autres services cloud : bientôt.",
     },
     billing: {
-      title: "Facturation.",
-      lead: "Crédits, abonnements, factures et historique de votre organisation.",
+      title: "Portefeuille et facturation.",
+      lead: "Votre solde, vos crédits inclus, vos recharges, vos reçus et l’historique de votre organisation.",
+      free: {
+        title: "Accès administrateur gratuit",
+        text: "Votre organisation fait partie de l’équipe de Nexora : vos requêtes ne débitent aucun portefeuille. Les crédits, les recharges et les alertes de solde ne s’appliquent pas à elle.",
+      },
+      included: {
+        title: "Crédits inclus de la période",
+        meter: "{used} de {total} de jetons inclus utilisés",
+        meterLabel: "Part des jetons inclus utilisés",
+        remaining:
+          "Il reste {amount} de crédits inclus, valables jusqu’au {date}.",
+        remainingNoDate: "Il reste {amount} de crédits inclus.",
+        note: "Les {total} de jetons sont une équivalence en valeur : ils correspondent au prix du modèle par défaut de WorkStudio. Un modèle plus cher consomme vos crédits inclus plus vite. Ils servent en premier, puisqu’ils expirent d’abord ; ensuite, les jetons sont facturés à même votre solde.",
+        none: "Aucun crédit inclus pour l’instant. Un abonnement WorkStudio en verse à chaque période.",
+        seeOffers: "Voir les offres",
+      },
+      lots: {
+        title: "D’où viennent vos crédits",
+        lead: "Chaque lot expire à sa date ; celui qui expire en premier sert en premier.",
+        caption: "Lots de crédits qui n’ont pas expiré",
+        source: "Origine",
+        amount: "Reçu",
+        remaining: "Restant",
+        expires: "Expire le",
+        never: "Sans échéance",
+        empty: "Aucun lot de crédits en cours.",
+      },
+      autoTopUp: {
+        title: "Recharge automatique",
+        badge: "Bientôt",
+        text: "Cette option n’est pas encore disponible : aucun prélèvement ne se fera sans votre geste. Pour éviter une interruption, activez l’alerte de solde bas ci-dessous : nous vous écrivons quand le solde passe sous votre seuil.",
+      },
+      alert: {
+        title: "Alerte de solde bas",
+        lead: "Nous écrivons aux propriétaires de l’organisation quand le solde disponible passe sous ce seuil. Un seul courriel par passage sous le seuil.",
+        enabled: "Activer l’alerte par courriel",
+        threshold: "Seuil (CAD)",
+        thresholdHint: "Par exemple 10 ou 12,50.",
+        save: "Enregistrer l’alerte",
+        saving: "Enregistrement…",
+        saved: "Alerte enregistrée.",
+        statusOn: "Alerte active : seuil de {amount}.",
+        statusOff: "Aucune alerte active.",
+        ownerOnly:
+          "Seul le propriétaire de l’organisation peut régler l’alerte.",
+        errors: {
+          invalid_threshold:
+            "Seuil invalide : entrez un montant en dollars, par exemple 10 ou 12,50.",
+          forbidden:
+            "Seul le propriétaire de l’organisation peut régler l’alerte.",
+          rate_limited: "Trop de demandes. Patientez une minute.",
+          generic: "L’enregistrement a échoué. Réessayez dans un moment.",
+        },
+      },
+      history: {
+        more: "Afficher plus d’écritures",
+        less: "Revenir aux dernières écritures",
+        shown: "{count} écritures affichées",
+      },
     },
   },
 };

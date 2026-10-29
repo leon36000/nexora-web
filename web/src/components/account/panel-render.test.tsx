@@ -495,7 +495,7 @@ describe("navigation du panneau", () => {
       "WorkStudio et agents",
       "Cloud et VPS",
       "Nexora Apps",
-      "Facturation",
+      "Portefeuille",
       "Sécurité",
     ])
       expect(html).toContain(text);
