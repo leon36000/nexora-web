@@ -107,11 +107,20 @@ export const W = {
     ),
   unavailable: (message: string, headers?: H) =>
     api(503, "webpilot_unavailable", message, headers),
-  notImplemented: (headers?: H) =>
-    api(
-      501,
-      "not_implemented",
-      "Les sessions de navigateur arrivent bientôt. Le contrat de l'API est en place, la fonction n'est pas encore ouverte.",
+  sessionClosed: (reason: string | null, headers?: H) =>
+    invalid(
+      409,
+      "session_closed",
+      `La session est fermée${reason ? ` (motif : ${reason})` : ""}. Ouvrez-en une nouvelle.`,
+      null,
+      headers,
+    ),
+  sessionBusy: (headers?: H) =>
+    invalid(
+      409,
+      "session_busy",
+      "Un lot d'actions est déjà en cours dans cette session. Attendez sa réponse.",
+      null,
       headers,
     ),
   internal: (headers?: H) =>
@@ -141,6 +150,15 @@ export const tooManyCrawls = (headers?: Record<string, string>) =>
     429,
     "rate_limit_exceeded",
     "Trop d'explorations actives pour cette organisation. Attendez la fin de l'une d'elles ou annulez-en une.",
+    "rate_limit_error",
+    { "retry-after": "60", ...headers },
+  );
+
+export const tooManySessions = (headers?: Record<string, string>) =>
+  openAiError(
+    429,
+    "rate_limit_exceeded",
+    "Trop de sessions de navigateur ouvertes pour cette organisation. Fermez-en une avant d'en ouvrir une autre.",
     "rate_limit_error",
     { "retry-after": "60", ...headers },
   );

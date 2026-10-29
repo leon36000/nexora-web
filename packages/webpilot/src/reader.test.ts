@@ -6,6 +6,7 @@ import {
   type SafeResponse,
 } from "./http.ts";
 import { type Renderer, readPage } from "./reader.ts";
+import { RenderBlockedHostError } from "./renderer.ts";
 
 function res(partial: Partial<SafeResponse> & { text?: string }): SafeResponse {
   return {
@@ -26,6 +27,7 @@ function setup(response: SafeResponse | Error, allowed = true) {
     post: async () => {
       throw new Error("non utilisé");
     },
+
     check: async (u) => new URL(u),
     get: async (u, o) => {
       await o?.beforeHop?.(new URL(u));
@@ -197,5 +199,85 @@ describe("rendu par navigateur", () => {
       ),
     ).rejects.toMatchObject({ code: "url_not_allowed" });
     expect(calls).toEqual([]);
+  });
+});
+
+describe("rendu par navigateur : redirection vers un autre hôte", () => {
+  const redirectingRenderer = (calls: string[][]): Renderer => ({
+    render: async (_url, options) => {
+      calls.push([...options.approveHosts]);
+      if (!options.approveHosts.includes("b.test"))
+        throw new RenderBlockedHostError("b.test", "https://b.test/ailleurs");
+      return {
+        html: "<main><h1>Chez B</h1></main>",
+        status: 200,
+        url: "https://b.test/ailleurs",
+      };
+    },
+  });
+
+  it("évalue le nouvel hôte (robots, politique) AVANT de lui permettre la redirection, puis relance le rendu", async () => {
+    const calls: string[][] = [];
+    const hops: string[] = [];
+    const { deps } = setup(res({}));
+    const out = await readPage(
+      { ...deps, renderer: redirectingRenderer(calls) },
+      {
+        ...base,
+        render: "browser",
+        beforeHop: async (u) => void hops.push(u.hostname),
+      },
+    );
+    expect(out.kind === "page" && out.content.markdown).toBe("# Chez B");
+    expect(calls).toEqual([[], ["b.test"]]);
+    expect(hops).toEqual(["a.test", "b.test"]);
+  });
+
+  it("si la politique refuse le nouvel hôte, le rendu n'est pas relancé", async () => {
+    const calls: string[][] = [];
+    const { deps } = setup(res({}));
+    await expect(
+      readPage(
+        { ...deps, renderer: redirectingRenderer(calls) },
+        {
+          ...base,
+          render: "browser",
+          beforeHop: async (u) => {
+            if (u.hostname === "b.test") throw new Error("refusé");
+          },
+        },
+      ),
+    ).rejects.toThrow("refusé");
+    expect(calls).toEqual([[]]);
+  });
+
+  it("si robots.txt interdit le nouvel hôte, la page est écartée", async () => {
+    const calls: string[][] = [];
+    const { deps } = setup(res({}));
+    const out = await readPage(
+      {
+        ...deps,
+        robots: { allowed: async (u: URL) => u.hostname !== "b.test" },
+        renderer: redirectingRenderer(calls),
+      },
+      { ...base, render: "browser" },
+    );
+    expect(out).toMatchObject({ kind: "robots_blocked" });
+    expect(calls).toEqual([[]]);
+  });
+
+  it("s'arrête après quelques redirections successives", async () => {
+    let n = 0;
+    const { deps } = setup(res({}));
+    const endless: Renderer = {
+      render: async () => {
+        n += 1;
+        throw new RenderBlockedHostError(`h${n}.test`, `https://h${n}.test/`);
+      },
+    };
+    await expect(
+      readPage({ ...deps, renderer: endless }, { ...base, render: "browser" }),
+    ).rejects.toBeInstanceOf(RenderBlockedHostError);
+    expect(n).toBeLessThanOrEqual(4);
   });
 });

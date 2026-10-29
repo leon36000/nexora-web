@@ -1,6 +1,8 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import {
+  type BrowserService,
+  createBrowserService,
   createHttpRenderer,
   createRobotsChecker,
   createSafeHttpClient,
@@ -34,6 +36,7 @@ export const failClosedPrivacy: PrivacyRouter = {
 interface Runtime {
   reader: ReaderDeps;
   searchClient: SafeHttpClient | null;
+  browser: BrowserService | null;
 }
 let runtime: { key: string; value: Runtime } | null = null;
 
@@ -47,12 +50,16 @@ function buildRuntime(config: ReturnType<typeof webpilotConfig>): Runtime {
   };
   const client = createSafeHttpClient(base);
   // Services internes nommés par l'opérateur : seuls leurs hôtes sont approuvés, avec leur port.
-  const internal = (raw: string | null) => {
+  const internal = (
+    raw: string | null,
+    over: { timeoutMs?: number; maxBytes?: number } = {},
+  ) => {
     if (!raw) return null;
     try {
       const url = new URL(raw);
       return createSafeHttpClient({
         ...base,
+        ...over,
         allowedPorts: [
           Number(url.port) || (url.protocol === "https:" ? 443 : 80),
         ],
@@ -63,17 +70,37 @@ function buildRuntime(config: ReturnType<typeof webpilotConfig>): Runtime {
       return null;
     }
   };
-  const rendererClient = internal(config.rendererUrl);
+  // Le service de navigateur reçoit le secret de service à service : seul son hôte nommé est approuvé.
+  const browserClient =
+    config.browserUrl && config.browserSecret
+      ? // Un lot d'actions peut durer plus d'une minute et rendre du HTML et une capture : plafonds propres au service.
+        internal(config.browserUrl, {
+          timeoutMs: 150_000,
+          maxBytes: 12_000_000,
+        })
+      : null;
+  const browserReady =
+    browserClient && config.browserUrl && config.browserSecret;
   return {
     reader: {
       client,
       robots: createRobotsChecker({ client, userAgentToken: ROBOT_TOKEN }),
-      renderer:
-        rendererClient && config.rendererUrl
-          ? createHttpRenderer(rendererClient, config.rendererUrl)
-          : null,
+      renderer: browserReady
+        ? createHttpRenderer(
+            browserClient,
+            config.browserUrl as string,
+            config.browserSecret as string,
+          )
+        : null,
     },
     searchClient: internal(config.searchUrl),
+    browser: browserReady
+      ? createBrowserService(
+          browserClient,
+          config.browserUrl as string,
+          config.browserSecret as string,
+        )
+      : null,
   };
 }
 
@@ -92,6 +119,7 @@ export function webpilotDeps(): WebpilotDeps {
     config,
     reader: runtime.value.reader,
     searchClient: runtime.value.searchClient,
+    browser: runtime.value.browser,
     chat: (request) => handleChatCompletions(request, gatewayDeps()),
   };
 }

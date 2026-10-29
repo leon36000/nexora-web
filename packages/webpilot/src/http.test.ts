@@ -53,6 +53,21 @@ beforeAll(async () => {
         );
       });
       return;
+    } else if (path === "/headers") {
+      let data = "";
+      req.on("data", (c) => (data += c));
+      req.on("end", () => {
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(
+          JSON.stringify({
+            method: req.method,
+            body: data,
+            authorization: req.headers.authorization ?? null,
+            type: req.headers["content-type"] ?? null,
+          }),
+        );
+      });
+      return;
     } else if (path === "/empty") {
       res.writeHead(204);
       res.end();
@@ -305,5 +320,70 @@ describe("client HTTP de sortie : POST vers un service interne approuvé", () =>
     expect(await code(client().post("http://localhost/render", {}))).toBe(
       "url_not_allowed",
     );
+  });
+});
+
+describe("client HTTP de sortie : appels authentifiés vers un service interne approuvé", () => {
+  const trusted = () =>
+    createSafeHttpClient({
+      userAgent: "t",
+      allowedPorts: [port],
+      maxBytes: 5000,
+      timeoutMs: 1000,
+      maxRedirects: 0,
+      trustedHosts: ["127.0.0.1"],
+    });
+  const json = (res: { body: Uint8Array }) =>
+    JSON.parse(new TextDecoder().decode(res.body));
+
+  it("envoie GET, POST et DELETE avec l'autorisation fournie", async () => {
+    const c = trusted();
+    const base = `http://127.0.0.1:${port}/headers`;
+    const headers = { authorization: "Bearer secret-de-service" };
+    expect(json(await c.request("GET", base, { headers }))).toMatchObject({
+      method: "GET",
+      authorization: "Bearer secret-de-service",
+      body: "",
+    });
+    expect(
+      json(await c.request("POST", base, { headers, json: { a: 1 } })),
+    ).toMatchObject({
+      method: "POST",
+      body: '{"a":1}',
+      type: "application/json",
+    });
+    expect(
+      json(await c.request("DELETE", base, { headers, json: { r: "idle" } })),
+    ).toMatchObject({ method: "DELETE", body: '{"r":"idle"}' });
+  });
+
+  it("n'envoie JAMAIS l'autorisation à un hôte non approuvé, même public", async () => {
+    hits.length = 0;
+    const err = await code(
+      client().request("GET", url("/headers"), {
+        headers: { authorization: "Bearer secret-de-service" },
+      }),
+    );
+    expect(err).toBe("url_not_allowed");
+    expect(hits).toEqual([]);
+  });
+
+  it("ne suit pas les redirections et garde les mêmes plafonds", async () => {
+    expect(
+      await code(trusted().request("GET", `http://127.0.0.1:${port}/to-ok`)),
+    ).toBe("target_unreachable");
+    expect(
+      await code(
+        trusted().request("GET", `http://127.0.0.1:${port}/big`, {
+          maxBytes: 100,
+        }),
+      ),
+    ).toBe("response_too_large");
+  });
+
+  it("refuse une méthode hors liste", async () => {
+    await expect(
+      trusted().request("PUT" as never, `http://127.0.0.1:${port}/headers`),
+    ).rejects.toThrow();
   });
 });

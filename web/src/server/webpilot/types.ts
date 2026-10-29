@@ -1,6 +1,10 @@
 import type { Database } from "@nexora/db";
 import type { Logger } from "@nexora/log";
-import type { ReaderDeps, SafeHttpClient } from "@nexora/webpilot";
+import type {
+  BrowserService,
+  ReaderDeps,
+  SafeHttpClient,
+} from "@nexora/webpilot";
 import type { PrivacyRouter } from "../privacy/types";
 import type { WebpilotConfig } from "./config";
 
@@ -17,6 +21,8 @@ export interface WebpilotDeps {
   reader: ReaderDeps;
   /** Client du moteur de recherche (hôte interne approuvé) ; null si WEBPILOT_SEARCH_URL est absent. */
   searchClient: SafeHttpClient | null;
+  /** Service de navigateur des sessions ; null si WEBPILOT_BROWSER_URL ou le secret manquent (sessions : 503). */
+  browser: BrowserService | null;
   /** Passerelle de modèles interne (extraction) : reçoit une requête `chat/completions` portant la clé de l'appelant. */
   chat: (request: Request) => Promise<Response>;
 }

@@ -8,6 +8,11 @@ import {
 } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
+import {
+  RenderBlockedHostError,
+  RenderError,
+  type Renderer,
+} from "@nexora/webpilot";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { E } from "../gateway/errors";
 import type { PrivacyRouter } from "../privacy/types";
@@ -19,7 +24,6 @@ import {
   handleExtract,
   handleScrape,
   handleSearch,
-  handleSessions,
 } from "./handlers";
 import {
   allowAllPrivacy,
@@ -420,6 +424,45 @@ describe("scrape", () => {
     expect(events.find((e) => e.unitsPageBrowser === 1)?.unitsPageStatic).toBe(
       0,
     );
+  });
+
+  it("rendu par navigateur : un échec du service donne 502 target_error, une redirection sans fin 422, rien n'est facturé", async () => {
+    await publishPrices(t.db, {
+      page_static: { sell: 1000n },
+      page_browser: { sell: 9000n },
+    });
+    const c = await seedClient(t.db, { balance: 10n * M });
+    const ask = async (renderer: Renderer) => {
+      const res = await handleScrape(
+        post("/v1/webpilot/scrape", c.key, {
+          url: "https://exemple.test/",
+          render: "browser",
+        }),
+        makeDeps(t.db, site(), { renderer }),
+      );
+      return [
+        res.status,
+        (await bodyOf(res)).error.code,
+        res.headers.get("x-nexora-cost-micro"),
+      ];
+    };
+    expect(
+      await ask({
+        render: async () => {
+          throw new RenderError("le rendu a échoué");
+        },
+      }),
+    ).toEqual([502, "target_error", "0"]);
+    expect(
+      await ask({
+        render: async () => {
+          throw new RenderBlockedHostError("autre.test", "https://autre.test/");
+        },
+      }),
+    ).toEqual([422, "target_unreachable", "0"]);
+    const acct = await getAccount(t.db, c.org);
+    expect(acct.balanceMicro).toBe(10n * M);
+    expect(acct.heldMicro).toBe(0n);
   });
 
   it("validation : champ inconnu, absent, en-tête interdit, corps illisible ou trop gros", async () => {
@@ -1038,34 +1081,6 @@ describe("extract", () => {
       deps,
     );
     expect(none.status).toBe(404);
-  });
-});
-
-describe("sessions de navigateur", () => {
-  it("501 not_implemented en français, après authentification", async () => {
-    const deps = makeDeps(t.db, site());
-    const c = await seedClient(t.db);
-    const res = await handleSessions(
-      post("/v1/webpilot/sessions", c.key, { max_minutes: 5 }),
-      deps,
-    );
-    expect(res.status).toBe(501);
-    const err = (await bodyOf(res)).error;
-    expect(err).toMatchObject({ code: "not_implemented", type: "api_error" });
-    expect(err.message).toContain("bientôt");
-    expect(
-      (await handleSessions(post("/v1/webpilot/sessions", null, {}), deps))
-        .status,
-    ).toBe(401);
-    const noPerm = await seedClient(t.db, { operations: ["scrape"] });
-    expect(
-      (
-        await handleSessions(
-          post("/v1/webpilot/sessions", noPerm.key, {}),
-          deps,
-        )
-      ).status,
-    ).toBe(403);
   });
 });
 

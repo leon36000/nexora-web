@@ -223,3 +223,104 @@ export const webpilotTaskResults = pgTable(
   },
   (t) => [uniqueIndex("webpilot_task_results_seq_unique").on(t.taskId, t.seq)],
 );
+
+/** Motifs de fermeture d'une session de navigateur (contrat §3.5). */
+export const WEBPILOT_SESSION_CLOSE_REASONS = [
+  "closed_by_client",
+  "max_minutes",
+  "idle",
+  "insufficient_quota",
+  "privacy_policy",
+  "browser_error",
+] as const;
+export type WebpilotSessionCloseReason =
+  (typeof WEBPILOT_SESSION_CLOSE_REASONS)[number];
+export const WEBPILOT_SESSION_STATUSES = ["open", "closed"] as const;
+export type WebpilotSessionStatus = (typeof WEBPILOT_SESSION_STATUSES)[number];
+
+/** Paramètres d'ouverture d'une session (copie validée de la demande). */
+export interface WebpilotSessionParams {
+  viewport?: { width: number; height: number };
+  locale?: string;
+  timezone?: string;
+  /** `screenshot` : chaque lot d'actions renvoie aussi une capture de sa dernière étape (jamais conservée). */
+  record?: "screenshot";
+}
+
+/**
+ * Sessions de navigateur de WebPilot. Cette table est la VÉRITÉ de la facturation et de l'état côté site : le service
+ * de navigateur ne garde qu'un navigateur éphémère (jamais de montant). Facturation par tranches d'une minute
+ * entamée : la minute courante est RÉSERVÉE (`reservation_id`, jusqu'à `minute_ends_at`), réglée à son échéance ou à
+ * la fermeture, puis la suivante est réservée dans la même transaction ; une réservation refusée ferme la session
+ * (`insufficient_quota`). Aucun contenu : pas d'adresse complète (hôte courant seulement), pas de texte saisi.
+ */
+export const webpilotSessions = pgTable(
+  "webpilot_sessions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    apiKeyId: uuid("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "restrict" }),
+    status: text("status")
+      .$type<WebpilotSessionStatus>()
+      .notNull()
+      .default("open"),
+    closeReason: text("close_reason").$type<WebpilotSessionCloseReason>(),
+    maxMinutes: integer("max_minutes").notNull(),
+    idleTimeoutS: integer("idle_timeout_s").notNull(),
+    params: jsonb("params")
+      .$type<WebpilotSessionParams>()
+      .notNull()
+      .default({}),
+    openedAt: ts("opened_at").notNull().defaultNow(),
+    /** Fin au plus tard : ouverture + `max_minutes`. */
+    expiresAt: ts("expires_at").notNull(),
+    lastActivityAt: ts("last_activity_at").notNull().defaultNow(),
+    closedAt: ts("closed_at"),
+    /** Hôte de la page courante (jamais l'adresse complète). */
+    currentHost: text("current_host"),
+    /** Faux pour une organisation « maison » : aucune réservation ni débit. */
+    billed: boolean("billed").notNull().default(true),
+    /** Prix de la minute figés à l'ouverture. */
+    sellCadMicro: micro("sell_cad_micro").notNull().default(sql`0`),
+    upstreamUsdMicro: micro("upstream_usd_micro").notNull().default(sql`0`),
+    configVersion: text("config_version").notNull(),
+    /** Minutes réglées (la minute k est réglée à sa fin ou à la fermeture). */
+    minutesSettled: integer("minutes_settled").notNull().default(0),
+    /** Réservation de la minute courante ; nulle une fois la session fermée (ou pour la maison). */
+    reservationId: uuid("reservation_id"),
+    reservedMicro: micro("reserved_micro").notNull().default(sql`0`),
+    /** Fin de la minute courante : ouverture + (minutes réglées + 1) minutes. */
+    minuteEndsAt: ts("minute_ends_at").notNull(),
+    costMicro: micro("cost_micro").notNull().default(sql`0`),
+    privacyDecision: text("privacy_decision"),
+    policyVersion: text("policy_version"),
+    /** Posé quand le service a confirmé la destruction du navigateur (le worker réessaie tant qu'il est nul). */
+    browserClosedAt: ts("browser_closed_at"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("webpilot_sessions_org_idx").on(t.organizationId, t.status),
+    index("webpilot_sessions_due_idx").on(t.status, t.minuteEndsAt),
+    index("webpilot_sessions_cleanup_idx").on(t.status, t.browserClosedAt),
+    check(
+      "webpilot_sessions_status_check",
+      sql`${t.status} IN (${inList(WEBPILOT_SESSION_STATUSES)})`,
+    ),
+    check(
+      "webpilot_sessions_reason_check",
+      sql`${t.closeReason} IS NULL OR ${t.closeReason} IN (${inList(WEBPILOT_SESSION_CLOSE_REASONS)})`,
+    ),
+    check(
+      "webpilot_sessions_closed_has_reason",
+      sql`${t.status} = 'open' OR ${t.closeReason} IS NOT NULL`,
+    ),
+    check(
+      "webpilot_sessions_counts",
+      sql`${t.maxMinutes} > 0 AND ${t.idleTimeoutS} > 0 AND ${t.minutesSettled} >= 0 AND ${t.costMicro} >= 0`,
+    ),
+  ],
+);

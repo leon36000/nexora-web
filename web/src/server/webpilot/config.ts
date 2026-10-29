@@ -35,8 +35,25 @@ export interface WebpilotConfig {
   maxWaitMs: number;
   /** Adresse du moteur de recherche (SearXNG) ; absent : `search` répond 503 `webpilot_unavailable`. */
   searchUrl: string | null;
-  /** Adresse du service de rendu par navigateur ; absent : `render: "browser"` répond 422 `render_unavailable`. */
-  rendererUrl: string | null;
+  /**
+   * Adresse du service de navigateur (rendu de pages et sessions), sur un réseau isolé. Absent : `render: "browser"`
+   * répond 422 `render_unavailable` et les sessions 503 `webpilot_unavailable`.
+   */
+  browserUrl: string | null;
+  /** Secret partagé site <-> service de navigateur (jamais exposé au client). Absent : service considéré non réglé. */
+  browserSecret: string | null;
+  /** Plafond de `max_minutes` d'une session. */
+  sessionMaxMinutes: number;
+  /** Inactivité par défaut et plafond, en secondes. */
+  sessionDefaultIdleSeconds: number;
+  sessionMaxIdleSeconds: number;
+  /** Sessions ouvertes au plus par organisation. */
+  sessionMaxOpen: number;
+  /** Actions au plus par requête, et caractères au plus par saisie. */
+  sessionMaxActions: number;
+  sessionMaxTextChars: number;
+  /** Fenêtre au plus (largeur, hauteur) d'une session. */
+  sessionMaxViewport: { width: number; height: number };
 }
 
 const int = (raw: string | undefined, fallback: number, min = 1): number => {
@@ -76,6 +93,17 @@ export function webpilotConfig(
     ]),
     maxWaitMs: int(env.WEBPILOT_MAX_WAIT_MS, 10_000, 0),
     searchUrl: env.WEBPILOT_SEARCH_URL?.trim() || null,
-    rendererUrl: env.WEBPILOT_RENDERER_URL?.trim() || null,
+    browserUrl: env.WEBPILOT_BROWSER_URL?.trim() || null,
+    browserSecret: env.WEBPILOT_BROWSER_SECRET?.trim() || null,
+    sessionMaxMinutes: int(env.WEBPILOT_SESSION_MAX_MINUTES, 30),
+    sessionDefaultIdleSeconds: int(env.WEBPILOT_SESSION_IDLE_SECONDS, 120),
+    sessionMaxIdleSeconds: int(env.WEBPILOT_SESSION_MAX_IDLE_SECONDS, 600),
+    sessionMaxOpen: int(env.WEBPILOT_SESSION_MAX_OPEN, 2),
+    sessionMaxActions: int(env.WEBPILOT_SESSION_MAX_ACTIONS, 20),
+    sessionMaxTextChars: int(env.WEBPILOT_SESSION_MAX_TEXT_CHARS, 5_000),
+    sessionMaxViewport: {
+      width: int(env.WEBPILOT_SESSION_MAX_VIEWPORT_WIDTH, 1920, 320),
+      height: int(env.WEBPILOT_SESSION_MAX_VIEWPORT_HEIGHT, 1200, 240),
+    },
   };
 }

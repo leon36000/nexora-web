@@ -10,11 +10,16 @@ import {
 } from "@nexora/db";
 import { createLogger } from "@nexora/log";
 import {
+  type BrowserService,
+  type BrowserServiceError,
+  type CloseReason,
   createRobotsChecker,
   type ReaderDeps,
   type Renderer,
   SafeFetchError,
   type SafeHttpClient,
+  type ServiceAction,
+  type ServiceActionResult,
 } from "@nexora/webpilot";
 import { createApiKey } from "../gateway/keys";
 import { newOrganization } from "../gateway/test-support";
@@ -128,6 +133,7 @@ export function makeDeps(
     }),
     reader,
     searchClient: null,
+    browser: null,
     chat: async () =>
       new Response("pas de passerelle d'essai", { status: 500 }),
     ...rest,
@@ -205,4 +211,130 @@ export function post(
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
+}
+
+/** Faux service de navigateur : enregistre les appels, simule des pages, peut échouer à la demande. */
+export interface FakeBrowser {
+  service: BrowserService;
+  opened: Array<{
+    id: string;
+    maxSeconds: number;
+    idleSeconds: number;
+    viewport?: { width: number; height: number };
+    locale?: string;
+    timezone?: string;
+  }>;
+  runs: Array<{
+    id: string;
+    actions: readonly ServiceAction[];
+    approveHosts: readonly string[];
+  }>;
+  closes: Array<{ id: string; reason: CloseReason }>;
+  /** Pages simulées par adresse : HTML rendu. */
+  pages: Record<string, string>;
+  /** Erreur à lever à la prochaine opération de ce type. */
+  fail: {
+    open?: BrowserServiceError;
+    run?: BrowserServiceError;
+    close?: BrowserServiceError;
+  };
+}
+
+export function fakeBrowser(): FakeBrowser {
+  const urls = new Map<string, string | null>();
+  const f: FakeBrowser = {
+    opened: [],
+    runs: [],
+    closes: [],
+    pages: {},
+    fail: {},
+    service: {
+      async open(input) {
+        if (f.fail.open) throw f.fail.open;
+        f.opened.push(input);
+        urls.set(input.id, null);
+        return {
+          id: input.id,
+          status: "open",
+          closeReason: null,
+          expiresAt: new Date(Date.now() + input.maxSeconds * 1000),
+          url: null,
+        };
+      },
+      async run(id, actions, options) {
+        if (f.fail.run) throw f.fail.run;
+        f.runs.push({ id, actions, approveHosts: options.approveHosts });
+        const results: ServiceActionResult[] = [];
+        let ok = true;
+        for (const a of actions) {
+          if (a.type === "goto") {
+            urls.set(id, a.url);
+            results.push({ type: "goto", ok: true, url: a.url, status: 200 });
+          } else if (
+            a.type === "click" &&
+            "selector" in a &&
+            a.selector === "#absent"
+          ) {
+            results.push({
+              type: "click",
+              ok: false,
+              error: { code: "element_unavailable", message: "Introuvable." },
+            });
+            ok = false;
+            break;
+          } else if (a.type === "read") {
+            const url = urls.get(id) ?? "about:blank";
+            results.push({
+              type: "read",
+              ok: true,
+              url,
+              title: "Titre de la page",
+              html:
+                f.pages[url] ??
+                "<html><head><title>Titre de la page</title></head><body><main><h1>Bonjour</h1><p>Contenu.</p><script>alert(1)</script></main></body></html>",
+              truncated: false,
+            });
+          } else if (a.type === "screenshot") {
+            results.push({
+              type: "screenshot",
+              ok: true,
+              mime: "image/png",
+              data_base64: "iVBORw0KGgo=",
+            });
+          } else results.push({ type: a.type, ok: true });
+        }
+        return {
+          id,
+          status: "open",
+          closeReason: null,
+          expiresAt: new Date(Date.now() + 60_000),
+          url: urls.get(id) ?? null,
+          title: "Titre de la page",
+          results,
+          completed: ok && results.length === actions.length,
+        };
+      },
+      async get(id) {
+        return {
+          id,
+          status: "open",
+          closeReason: null,
+          expiresAt: new Date(Date.now() + 60_000),
+          url: urls.get(id) ?? null,
+        };
+      },
+      async close(id, reason) {
+        if (f.fail.close) throw f.fail.close;
+        f.closes.push({ id, reason });
+        return {
+          id,
+          status: "closed",
+          closeReason: reason,
+          expiresAt: new Date(),
+          url: null,
+        };
+      },
+    },
+  };
+  return f;
 }

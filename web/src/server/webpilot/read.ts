@@ -1,4 +1,10 @@
-import { ReadError, type ReadResult, SafeFetchError } from "@nexora/webpilot";
+import {
+  ReadError,
+  type ReadResult,
+  RenderBlockedHostError,
+  RenderError,
+  SafeFetchError,
+} from "@nexora/webpilot";
 import { W } from "./errors";
 import type { Outcome } from "./pipeline";
 
@@ -28,6 +34,17 @@ export function readFailure(error: unknown): Outcome {
     return fail(error.httpStatus, error.errorCode, () => error.response);
   if (error instanceof ReadError)
     return fail(422, "render_unavailable", (h) => W.renderUnavailable(h));
+  if (error instanceof RenderBlockedHostError)
+    return fail(422, "target_unreachable", (h) =>
+      W.targetUnreachable(
+        "La cible redirige trop de fois vers d'autres sites.",
+        h,
+      ),
+    );
+  if (error instanceof RenderError)
+    return fail(502, "target_error", (h) =>
+      W.targetError("Le rendu par navigateur a échoué.", h),
+    );
   if (error instanceof SafeFetchError) {
     switch (error.code) {
       case "url_not_allowed":
