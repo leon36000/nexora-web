@@ -1,5 +1,6 @@
 import {
   type Database,
+  MODEL_AVAILABILITIES,
   MODEL_KINDS,
   MODEL_STATUSES,
   MODEL_VISIBILITIES,
@@ -160,6 +161,7 @@ const modelFields = {
   capabilities,
   residency: z.enum(REGIONS),
   visibility: z.enum(MODEL_VISIBILITIES),
+  availability: z.enum(MODEL_AVAILABILITIES),
   sunsetAt: z.iso
     .datetime()
     .nullable()
@@ -183,6 +185,7 @@ const modelCreate = z
     capabilities: modelFields.capabilities.optional(),
     residency: modelFields.residency.optional(),
     visibility: modelFields.visibility.optional(),
+    availability: modelFields.availability.optional(),
     sunsetAt: modelFields.sunsetAt.optional(),
     sheet: modelFields.sheet.optional(),
     routing: modelFields.routing.optional(),

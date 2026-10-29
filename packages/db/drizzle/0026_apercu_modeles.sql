@@ -1,0 +1,2 @@
+ALTER TABLE "models" ADD COLUMN "availability" text DEFAULT 'live' NOT NULL;--> statement-breakpoint
+ALTER TABLE "models" ADD CONSTRAINT "models_availability_check" CHECK ("models"."availability" IN ('live', 'preview'));

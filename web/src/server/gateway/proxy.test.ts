@@ -219,6 +219,14 @@ beforeAll(async () => {
       sellInput: 200_000n,
       sellOutput: 0n,
     },
+    { publicId: "nexora/test-apercu", availability: "preview" },
+    {
+      publicId: "nexora/test-apercu-embed",
+      kind: "embedding",
+      sellInput: 200_000n,
+      sellOutput: 0n,
+      availability: "preview",
+    },
   ]);
 });
 afterAll(async () => {
@@ -1744,5 +1752,102 @@ describe("route qui a servi et coût rapporté par l'amont (G7)", () => {
     const { ev } = await run({});
     expect(ev?.routePosition).toBe(0);
     expect(ev?.upstreamCostUsdMicro).toBe(300n);
+  });
+});
+
+describe("modèle en aperçu : visible au catalogue, jamais appelable", () => {
+  const MESSAGE =
+    "Ce modèle est en aperçu : il n'est pas encore disponible à l'appel.";
+
+  async function expectRefused(res: Response) {
+    expect(res.status).toBe(404);
+    expect((await res.json()).error).toEqual({
+      message: MESSAGE,
+      type: "invalid_request_error",
+      param: "model",
+      code: "model_not_available",
+    });
+  }
+
+  it("un appel de conversation répond 404 model_not_available, sans réservation, sans appel amont, sans débit", async () => {
+    const c = await client(10n);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ model: "nexora/test-apercu" })),
+      deps(),
+    );
+    await expectRefused(res);
+    expect(res.headers.get("x-request-id")).toMatch(/^req_test_/);
+    expect(calls).toHaveLength(0);
+    const held = await t.db
+      .select()
+      .from(creditReservations)
+      .where(eq(creditReservations.organizationId, c.org));
+    expect(held).toHaveLength(0);
+    const acct = await getAccount(t.db, c.org);
+    expect(acct.balanceMicro).toBe(10n * M);
+    expect(acct.heldMicro).toBe(0n);
+    const events = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    expect(events).toHaveLength(0);
+  });
+
+  it("un appel d'embeddings répond de même", async () => {
+    const c = await client(10n);
+    await expectRefused(
+      await handleEmbeddings(
+        post(
+          c.key,
+          { model: "nexora/test-apercu-embed", input: "x" },
+          "embeddings",
+        ),
+        deps(),
+      ),
+    );
+    expect(calls).toHaveLength(0);
+  });
+
+  it("même une clé qui nomme le modèle dans ses modèles autorisés reçoit le refus", async () => {
+    const c = await client(10n, { allowedModels: ["nexora/test-apercu"] });
+    await expectRefused(
+      await handleChatCompletions(
+        post(c.key, chat({ model: "nexora/test-apercu" })),
+        deps(),
+      ),
+    );
+    expect(calls).toHaveLength(0);
+  });
+
+  it("un modèle inconnu reste « model_not_found » (l'aperçu n'est annoncé que pour un modèle publié)", async () => {
+    const c = await client(10n);
+    const res = await handleChatCompletions(
+      post(c.key, chat({ model: "nexora/n-existe-pas" })),
+      deps(),
+    );
+    expect(res.status).toBe(404);
+    expect((await res.json()).error.code).toBe("model_not_found");
+  });
+
+  it("GET /v1/models ne le liste pas, avec ou sans clé", async () => {
+    resetModelsCache();
+    const anon = await (
+      await handleModels(new Request("http://x/v1/models"), deps())
+    ).json();
+    const ids = anon.data.map((m: { id: string }) => m.id);
+    expect(ids).not.toContain("nexora/test-apercu");
+    expect(ids).not.toContain("nexora/test-apercu-embed");
+    const c = await client(10n, { allowedModels: ["nexora/test-apercu"] });
+    const withKey = await (
+      await handleModels(
+        new Request("http://x/v1/models", {
+          headers: { authorization: `Bearer ${c.key}` },
+        }),
+        deps(),
+      )
+    ).json();
+    expect(withKey.data.map((m: { id: string }) => m.id)).not.toContain(
+      "nexora/test-apercu",
+    );
   });
 });

@@ -15,10 +15,13 @@ import {
   createModel,
   createProvider,
   diffVersion,
+  getModel,
   getPublishedCatalog,
   listRoutes,
+  modelReadiness,
   publishVersion,
   updateModel,
+  updateProvider,
   updateRoute,
 } from "./catalog";
 
@@ -719,5 +722,132 @@ describe("routes de secours d'un modèle (G6)", () => {
     expect(draft.issues.some((i) => i.code === "route_secret_missing")).toBe(
       true,
     );
+  });
+});
+
+describe("aperçu : visible au catalogue, pas encore appelable", () => {
+  it("un modèle appelable naît « live » et son instantané ne porte pas la mention (versions anciennes inchangées)", async () => {
+    const { model } = await fixture();
+    expect(model.availability).toBe("live");
+    await addPrice(t.db, model.id, goodPrice);
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const { version } = await createDraftVersion(t.db);
+    const snap = version.snapshot.models.find(
+      (m) => m.publicId === model.publicId,
+    );
+    expect(snap).toBeDefined();
+    expect(snap).not.toHaveProperty("availability");
+  });
+
+  it("publie un modèle en aperçu sans clé dans le Coffre, jusqu'à la version publiée", async () => {
+    const { model } = await fixture({ secret: false });
+    await addPrice(t.db, model.id, goodPrice);
+    await updateModel(t.db, model.id, { availability: "preview" });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const draft = await createDraftVersion(t.db);
+    expect(draft.issues).toEqual([]);
+    await approveVersion(t.db, draft.version.id);
+    const published = await publishVersion(t.db, draft.version.id);
+    expect(
+      published.snapshot.models.find((m) => m.publicId === model.publicId)
+        ?.availability,
+    ).toBe("preview");
+  });
+
+  it("les contrôles préalables d'un modèle en aperçu ne demandent pas la clé", async () => {
+    const { model } = await fixture({ secret: false });
+    await addPrice(t.db, model.id, goodPrice);
+    const live = await modelReadiness(t.db, model.id);
+    expect(live.issues.map((i) => i.code)).toContain("secret_missing");
+    await updateModel(t.db, model.id, { availability: "preview" });
+    const preview = await modelReadiness(t.db, model.id);
+    expect(preview.issues).toEqual([]);
+    expect(preview.ready).toBe(true);
+  });
+
+  it("un modèle en aperçu exige toujours un prix valide et un fournisseur actif", async () => {
+    const { model, provider } = await fixture({ secret: false });
+    await updateModel(t.db, model.id, { availability: "preview" });
+    await expect(
+      updateModel(t.db, model.id, { status: "approved" }),
+    ).rejects.toMatchObject({ code: "publication_refused" });
+    await addPrice(t.db, model.id, goodPrice);
+    await updateProvider(t.db, provider.id, { enabled: false });
+    const r = await modelReadiness(t.db, model.id);
+    expect(r.issues.map((i) => i.code)).toEqual(["provider_disabled"]);
+  });
+
+  it("repasser en service exige la garde complète : sans clé, c'est refusé et le modèle reste en aperçu", async () => {
+    const { model } = await fixture({ secret: false });
+    await addPrice(t.db, model.id, goodPrice);
+    await updateModel(t.db, model.id, { availability: "preview" });
+    const err = await updateModel(t.db, model.id, {
+      availability: "live",
+    }).catch((e) => e);
+    expect(err).toBeInstanceOf(CatalogError);
+    expect((err as CatalogError).code).toBe("publication_refused");
+    expect(JSON.stringify((err as CatalogError).details)).toContain(
+      "secret_missing",
+    );
+    expect((await getModel(t.db, model.id)).availability).toBe("preview");
+  });
+
+  it("avec la clé, le passage en service est accepté et la version suivante retire l'aperçu", async () => {
+    const { model, ref } = await fixture({ secret: false });
+    await addPrice(t.db, model.id, goodPrice);
+    await updateModel(t.db, model.id, { availability: "preview" });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const first = await createDraftVersion(t.db);
+    await approveVersion(t.db, first.version.id);
+    await publishVersion(t.db, first.version.id);
+
+    await putSecret(t.db, keyring, {
+      ref,
+      value: "sk-secret-promotion-xxxxxxxx",
+      kind: "llm_provider",
+    });
+    const updated = await updateModel(t.db, model.id, { availability: "live" });
+    expect(updated.availability).toBe("live");
+    const second = await createDraftVersion(t.db);
+    expect(second.created).toBe(true);
+    expect(second.diff).toContainEqual(
+      expect.objectContaining({ kind: "model_changed", model: model.publicId }),
+    );
+    await approveVersion(t.db, second.version.id);
+    const live = await publishVersion(t.db, second.version.id);
+    expect(
+      live.snapshot.models.find((m) => m.publicId === model.publicId),
+    ).not.toHaveProperty("availability");
+  });
+
+  it("une version contenant un modèle repassé « live » sans clé est refusée à l'approbation", async () => {
+    const { model } = await fixture({ secret: false });
+    await addPrice(t.db, model.id, goodPrice);
+    await updateModel(t.db, model.id, { availability: "preview" });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    // contournement : disponibilité forcée en base, sans passer par updateModel
+    await t.db
+      .update(models)
+      .set({ availability: "live" })
+      .where(eq(models.id, model.id));
+    const { version, issues } = await createDraftVersion(t.db);
+    expect(issues.map((i) => i.code)).toContain("secret_missing");
+    await expect(approveVersion(t.db, version.id)).rejects.toMatchObject({
+      code: "publication_refused",
+    });
+  });
+
+  it("la base refuse une disponibilité inconnue", async () => {
+    const { model } = await fixture();
+    await expect(
+      t.db
+        .update(models)
+        .set({ availability: "demain" as never })
+        .where(eq(models.id, model.id)),
+    ).rejects.toThrow();
   });
 });

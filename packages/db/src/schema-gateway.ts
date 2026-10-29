@@ -100,6 +100,13 @@ export const MODEL_KINDS = ["chat", "embedding"] as const;
 export type ModelKind = (typeof MODEL_KINDS)[number];
 export const MODEL_VISIBILITIES = ["public", "unlisted", "private"] as const;
 export type ModelVisibility = (typeof MODEL_VISIBILITIES)[number];
+/**
+ * Disponibilité à l'appel. `live` : appelable (la clé du fournisseur est exigée à la publication). `preview` :
+ * « aperçu », visible au catalogue public avec sa fiche et ses prix, mais pas encore appelable : la clé du
+ * fournisseur n'est pas exigée, `/v1/models` ne le liste pas, LiteLLM ne le reçoit pas et un appel répond 404.
+ */
+export const MODEL_AVAILABILITIES = ["live", "preview"] as const;
+export type ModelAvailability = (typeof MODEL_AVAILABILITIES)[number];
 export const MODEL_STATUSES = [
   "draft",
   "approved",
@@ -223,6 +230,10 @@ export const models = pgTable(
       .notNull()
       .default("public"),
     status: text("status").$type<ModelStatus>().notNull().default("draft"),
+    availability: text("availability")
+      .$type<ModelAvailability>()
+      .notNull()
+      .default("live"),
     sunsetAt: ts("sunset_at"),
     /** Fiche publique : licence, paramètres, mesures sourcées (G3). */
     sheet: jsonb("sheet").$type<ModelSheet>().notNull().default({}),
@@ -238,6 +249,10 @@ export const models = pgTable(
     check(
       "models_visibility_check",
       sql`${t.visibility} IN (${inList(MODEL_VISIBILITIES)})`,
+    ),
+    check(
+      "models_availability_check",
+      sql`${t.availability} IN (${inList(MODEL_AVAILABILITIES)})`,
     ),
     check(
       "models_status_check",

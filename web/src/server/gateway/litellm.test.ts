@@ -409,3 +409,98 @@ describe("OpenRouter : refus de la collecte de données chez l'amont (Privacy Ro
     ).toEqual({ data_collection: "deny", zdr: true, only: ["z-ai"] });
   });
 });
+
+describe("synchronisation LiteLLM : modèles en aperçu", () => {
+  let p: TestDatabase;
+  beforeAll(async () => {
+    p = await createTestDatabase();
+  });
+  afterAll(async () => {
+    await p.drop();
+  });
+
+  it("saute un modèle en aperçu sans lire le moindre secret, et pousse seulement le modèle appelable", async () => {
+    // Fournisseur sans clé dans le Coffre (la clé n'est pas encore saisie) : modèle en aperçu.
+    const noKey = await createProvider(p.db, {
+      code: "deepinfra",
+      name: "DeepInfra",
+      type: "openai_compatible",
+      baseUrl: "https://api.deepinfra.com/v1/openai",
+      secretRef: "llm.deepinfra",
+      region: "autre",
+    });
+    const preview = await createModel(p.db, {
+      publicId: "nexora/apercu",
+      name: "Aperçu",
+      providerId: noKey.id,
+      upstreamId: "org/Apercu",
+      contextMax: 100_000,
+      availability: "preview",
+    });
+    // Fournisseur avec clé : modèle appelable.
+    await putSecret(p.db, keyring, {
+      ref: "llm.autre",
+      value: "vk-autre-secret-value-9",
+      kind: "llm_provider",
+    });
+    const other = await createProvider(p.db, {
+      code: "autre",
+      name: "Autre",
+      type: "litellm_upstream",
+      baseUrl: "http://127.0.0.1:4400",
+      secretRef: "llm.autre",
+      region: "autre",
+    });
+    const live = await createModel(p.db, {
+      publicId: "nexora/service",
+      name: "Service",
+      providerId: other.id,
+      upstreamId: "up/service",
+      contextMax: 100_000,
+    });
+    const fx = await addFxRate(p.db, {
+      usdToCadMicro: 1_400_000n,
+      effectiveAt: new Date(Date.now() - 1000),
+    });
+    await approveFxRate(p.db, fx.id, "test");
+    for (const m of [preview, live]) {
+      await addPrice(p.db, m.id, {
+        upstreamInputUsdMicro: 100_000n,
+        upstreamOutputUsdMicro: 200_000n,
+        sellInputCadMicro: 500_000n,
+        sellOutputCadMicro: 1_000_000n,
+      });
+      await updateModel(p.db, m.id, { status: "approved" });
+      await updateModel(p.db, m.id, { status: "published" });
+    }
+    const draft = await createDraftVersion(p.db);
+    expect(draft.issues).toEqual([]);
+    await approveVersion(p.db, draft.version.id);
+    await publishVersion(p.db, draft.version.id);
+
+    const asked: string[] = [];
+    const { state, client } = fakeLitellm();
+    const { summary } = await syncLitellm(p.db, {
+      client,
+      getSecret: async (ref) => {
+        asked.push(ref);
+        return readSecret(p.db, keyring, ref);
+      },
+    });
+    expect(asked).toEqual(["llm.autre"]);
+    expect(summary.models.created).toEqual(["nexora/service"]);
+    expect(summary.credentials.upserted).toEqual(["nexora-prov-autre"]);
+    expect(state.models.has("nxm-nexora-apercu")).toBe(false);
+    expect(state.credentials.has("nexora-prov-deepinfra")).toBe(false);
+  });
+
+  it("retire de LiteLLM le déploiement géré d'un modèle en aperçu (jamais appelable)", async () => {
+    const { state, client } = fakeLitellm();
+    state.models.set("nxm-nexora-apercu", { model_name: "nexora/apercu" });
+    const { summary } = await syncLitellm(p.db, {
+      client,
+      getSecret: (ref) => readSecret(p.db, keyring, ref),
+    });
+    expect(summary.models.deleted).toEqual(["nxm-nexora-apercu"]);
+  });
+});

@@ -58,6 +58,16 @@ export const E = {
       headers,
       "model",
     ),
+  /** Modèle publié au catalogue en « aperçu » : visible, pas encore appelable. Rien n'est réservé ni appelé en amont. */
+  modelPreview: (headers?: Record<string, string>) =>
+    openAiError(
+      404,
+      "model_not_available",
+      "Ce modèle est en aperçu : il n'est pas encore disponible à l'appel.",
+      "invalid_request_error",
+      headers,
+      "model",
+    ),
   insufficient: (headers?: Record<string, string>) =>
     openAiError(
       402,

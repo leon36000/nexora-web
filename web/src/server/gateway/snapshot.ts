@@ -1,4 +1,5 @@
 import type {
+  ModelAvailability,
   ModelCapabilities,
   ModelKind,
   ModelRouting,
@@ -58,7 +59,7 @@ export interface SnapshotRoute {
   upstream: { input: string; output: string; cache: string | null } | null;
 }
 
-export type ModelAvailability = "live" | "preview";
+export type { ModelAvailability };
 
 export interface SnapshotModel {
   id: string;
@@ -169,7 +170,8 @@ const KEY_REQUIRED: Record<ProviderType, boolean> = {
 /**
  * Garde de publication : un prix absent, nul ou sous le plancher de marge, un taux de change non
  * approuvé, un fournisseur désactivé ou sans clé dans le coffre bloquent l'approbation et la
- * publication. Renvoie la liste complète des problèmes (vide = publiable).
+ * publication. Un modèle en « aperçu » (visible, pas encore appelable) est dispensé de la clé de son fournisseur et de
+ * celles de ses routes : le reste de la garde s'applique. Renvoie la liste complète des problèmes (vide = publiable).
  */
 export function guardSnapshot(
   snapshot: CatalogSnapshot,
@@ -181,6 +183,7 @@ export function guardSnapshot(
   const providers = new Map(snapshot.providers.map((p) => [p.id, p]));
   for (const m of snapshot.models) {
     const provider = providers.get(m.providerId);
+    const preview = m.availability === "preview";
     if (!provider) {
       issues.push({ code: "provider_missing", model: m.publicId });
     } else {
@@ -188,7 +191,9 @@ export function guardSnapshot(
         issues.push({ code: "provider_disabled", model: m.publicId });
       const needsKey =
         KEY_REQUIRED[provider.type] || provider.secretRef !== null;
+      // Un modèle en aperçu n'est pas appelable : sa clé n'existe peut-être pas encore (elle sera exigée au passage en service).
       if (
+        !preview &&
         needsKey &&
         (!provider.secretRef || !options.secretExists(provider.secretRef))
       )
@@ -215,6 +220,7 @@ export function guardSnapshot(
           route: r.position,
         });
       if (
+        !preview &&
         (KEY_REQUIRED[rp.type] || rp.secretRef !== null) &&
         (!rp.secretRef || !options.secretExists(rp.secretRef))
       )
