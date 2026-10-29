@@ -1,0 +1,15 @@
+{
+  "note": "Modèles du premier chargement (fournisseurs directs, 28/10/2026) absents du catalogue DeepInfra à la lecture du 29/10/2026 : ils passent au statut « retiré ».",
+  "retraits": [
+    {
+      "publicId": "nexora/minimax-m3.1-flash",
+      "noteFr": "Retiré le 29 octobre 2026 : ce modèle n'est pas offert par DeepInfra, l'hébergeur unique de Nexora AI.",
+      "noteEn": "Retired on October 29, 2026: this model is not offered by DeepInfra, Nexora AI's single host."
+    },
+    {
+      "publicId": "nexora/kimi-k3.1-pro",
+      "noteFr": "Retiré le 29 octobre 2026 : ce modèle n'est pas offert par DeepInfra, l'hébergeur unique de Nexora AI.",
+      "noteEn": "Retired on October 29, 2026: this model is not offered by DeepInfra, Nexora AI's single host."
+    }
+  ]
+}
