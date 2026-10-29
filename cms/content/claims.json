@@ -1962,9 +1962,9 @@
     {
       "id": "CL-S05",
       "kind": "produit",
-      "statement": "Chaque clé d'API peut recevoir un plafond de dépense, une expiration et une limite de débit ; la valeur d'une clé n'est affichée qu'une fois et Nexora AI n'en conserve que l'empreinte.",
+      "statement": "Chaque clé d'API peut recevoir un plafond de dépense, une expiration et une limite de débit ; la valeur d'une clé n'est affichée qu'une fois et Nexora AI n'en conserve que l'empreinte ; l'espace client affiche l'usage de la passerelle (requêtes, jetons, coût) par jour et par modèle.",
       "scope": "Clés de la passerelle, gérées par le propriétaire de l'organisation dans l'espace client.",
-      "evidence": "Dictionnaire (account.spendCap, account.expires, account.createdWarn, docs.billing) ; gestion des clés (keys.ts).",
+      "evidence": "Dictionnaire (account.spendCap, account.expires, account.createdWarn, account.usageTitle, account.usageColumns, docs.billing) ; gestion des clés (keys.ts) ; panneau client (activité de la passerelle).",
       "source_version": "Dépôt NexoraSite, branche main, commit b9e99b1 (29/10/2026), web/src/i18n/dictionaries/gateway-fr-CA.ts, web/src/server/gateway/keys.ts",
       "evidence_url": null,
       "approval_status": "en_revue",

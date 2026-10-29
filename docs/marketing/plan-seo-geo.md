@@ -17,7 +17,7 @@ Date : 29 octobre 2026. Horizon : 90 jours (2 novembre 2026 au 30 janvier 2027).
 | WorkStudio | agents et flux de travaux sans code, en français, validation humaine, gabarits de départ, Nexora Connect | livré, démonstration sur demande, aucun client cité | CL-20 à CL-26, CL-90 à CL-113 |
 | OPSYS-AI | flagship : équipe d'agents coordonnée pour les PME de services terrain | **produit en développement, partiel** ; installation par les techniciens de Nexora AI | CL-O01 à CL-O10, CL-D01 à CL-D10 |
 | VPS au Québec | serveurs privés virtuels avec une application d'IA au choix | « Nexora AI prépare… » ; rien de commandable | CL-13 |
-| Nexora Apps | agent de code, Gitspace, RAG, WebPilot, Privacy Router, Creative | page en cours chez un autre agent ; **affirmations à enregistrer** (voir 11) | à créer |
+| Nexora Apps | agent de code, Gitspace, RAG, WebPilot, Privacy Router, Creative, Nexora Bot | page `/apps` et fiches `/apps/<outil>` dans l'application, états « disponible / bientôt / plus tard » dans `i18n/apps.ts` ; **affirmations (gratuit, code ouvert prévu, inclus) absentes du registre `claims.json`** | à enregistrer (voir P12 et 11) |
 | Québec et souveraineté | quatre couches de contrôle (données, modèles, calcul, exploitation) ; deux modes (chez vous, hébergé au Québec) | définition de travail, aucune valeur légale ; preuve de l'hébergement à produire (CL-A05) | CL-70 à CL-77, CL-E01 à CL-E09 |
 
 **Phrase canonique de l'entreprise (à approuver, voir 11.2)** : « Nexora AI est une entreprise du Québec qui conçoit, installe et accompagne des systèmes d'IA : accès aux modèles par une API, WorkStudio, OPSYS-AI et serveurs privés virtuels, installés chez vous ou hébergés au Québec. » Elle s'appuie sur CL-130, CL-01, CL-02, CL-13, CL-27 ; elle remplacerait les trois descriptions courtes qui coexistent aujourd'hui (audit, section 4).
@@ -182,10 +182,11 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Données structurées** : Article, ItemList des applications, SoftwareApplication par fiche (existant). `Offer` seulement quand un prix est publié (CL-12).
 - **Remarque** : cette page vit mieux dans l'application (données du catalogue) qu'en CMS.
 
-### P12. Nexora Apps : l'agent de code et la suite d'outils — **À valider** (page en cours chez un autre agent)
+### P12. Nexora Apps : l'agent de code et la suite d'outils — **Existe dans l'application ; à compléter et à enregistrer**
 
+- **État constaté (29 octobre 2026, après la fusion de la page Apps)** : `/apps` et une fiche par outil (`/apps/bot`, `/apps/code`, `/apps/creative`, `/apps/gitspace`, …) sont dans le plan du site et dans `llms.txt` ; chaque outil dit son état (disponible, bientôt, plus tard) ; le balisage `SoftwareApplication` n'émet aucune offre.
 - **Intention** : produit (Samuel). **Mot-clé** : *agent de code privé*, *RAG*, *routeur de confidentialité*, *Gitspace*.
-- **Ce que le plan demande à cette page** : (1) une « réponse d'abord » par outil ; (2) un état réel par outil (disponible, partiel, prévu) ; (3) **chaque affirmation au registre** : en particulier « gratuit » (l'agent de code gratuit : les tests S3 interdisent « gratuit » hors des pages autorisées ; décision et preuve requises : durée, conditions, limites d'usage) ; (4) SoftwareApplication par outil, sans `Offer` tant qu'aucun prix n'est affiché ; (5) déclaration de ses routes dans `lib/seo/app-routes.ts` : le sitemap et `llms.txt` la reprennent automatiquement.
+- **Ce que le plan demande encore** : (1) un bloc « La réponse en bref » par fiche et sur l'index ; (2) **les affirmations au registre** : « gratuit », « code ouvert prévu », « inclus par défaut » (Privacy Router) sont dans le dictionnaire `i18n/apps`, pas dans `claims.json` : les enregistrer avec leur source, leurs conditions (durée, limites d'usage) et leur état ; (3) renvoyer l'éditeur à l'Organization (`softwareApplicationJsonLd` accepte désormais `publisher`) ; (4) des liens entrants depuis l'accueil, WorkStudio et P1 ; (5) une FAQ qui dit ce qui est prêt et ce qui ne l'est pas.
 - **Liens** : ← accueil, WorkStudio, P1 ; → documentation, contact.
 
 ## 6. Comparatifs honnêtes (méthode)
@@ -255,9 +256,9 @@ Début : lundi 2 novembre 2026. Les semaines 8 et 9 (fêtes) sont allégées. Le
 | 6 | 7 au 13 déc. | Publier P9, P10. Rédiger **P7** (gabarits) avec l'inventaire. Première lecture des requêtes réelles de la Search Console : ajuster titres et descriptions. | P7 en revue |
 | 7 | 14 au 20 déc. | Publier P7. **P4** (tutoriel API) avec le propriétaire de `/docs/api`. | P4 en revue |
 | 8 | 21 au 27 déc. | Allégée : mesures hebdomadaires seulement ; revue des faits de `llms.txt`. | — |
-| 9 | 28 déc. au 3 janv. | Allégée : idem. Préparer P11 (VPS) et P12 (Nexora Apps) avec leurs propriétaires. | — |
+| 9 | 28 déc. au 3 janv. | Allégée : idem. Préparer P11 (VPS) et P12 (Nexora Apps : registre, réponse d'abord) avec leurs propriétaires. | — |
 | 10 | 4 au 10 janv. | Publier P4. Rédiger **P11**. **P3** seulement si le fondateur a décidé (section 6). | P11 en revue |
-| 11 | 11 au 17 janv. | Publier P11, et **P12** si ses affirmations sont au registre. Deuxième passage du panel de requêtes. | rapport n° 2 |
+| 11 | 11 au 17 janv. | Publier P11 ; compléter **P12** (Nexora Apps) une fois ses affirmations au registre. Deuxième passage du panel de requêtes. | rapport n° 2 |
 | 12 | 18 au 24 janv. | Rafraîchir les pages dont un fait a changé (jamais « pour la date ») ; corriger les faits restitués faux ; compléter le maillage. | pages à jour |
 | 13 | 25 au 30 janv. | **Revue trimestrielle** : robots d'IA (registre), faits canoniques, claims, rapport final de 90 jours, plan des 90 jours suivants. | rapport et décisions |
 
@@ -283,7 +284,7 @@ Le code ne produit pas ces signaux ; ils dépendent du fondateur. Ils comptent p
 | 4 | Approbation des 146 affirmations « en revue » (les 18 points « à compléter » restent des brouillons), dont CL-S01 à CL-S06 ; **confirmation de CL-S02** (journaux de la couche de routage amont, clauses des fournisseurs : CL-A12) | rien n'est « approuvé » par un script | publication sans réserve |
 | 5 | Chargement des trois pages dans Directus ; connexion Bing Webmaster et Search Console ; autorisation d'écriture IndexNow | actions d'écriture | indexation active |
 | 6 | Comparatif nominatif (P3) : oui ou non ; si oui, faits à revérifier et avis d'un avocat (CL-A10) | Loi sur la concurrence, R-47 | P3 |
-| 7 | Nexora Apps : affirmations de chaque outil, **conditions de « gratuit »** (durée, limites), état réel | tests S3, registre | P12 |
+| 7 | Nexora Apps : enregistrer au registre les affirmations de chaque outil, **conditions de « gratuit »** (durée, limites d'usage), « code ouvert prévu », état réel | gouvernance du contenu (le dictionnaire n'est pas le registre) | P12 |
 | 8 | Analytique sans témoins et auto-hébergée (Umami) : oui ou non ; emplacement des données | mesure du trafic et des conversions | section 8 |
 | 9 | Date de dernière mise à jour **visible** sur les guides (affichage, pas seulement dans le balisage) | fraîcheur lisible par les personnes et par les machines | composant d'affichage |
 | 10 | Page `/tarifs` : « essai gratuit » dans la description SEO alors que CL-61 dit « pas d'essai gratuit en libre-service » | contradiction publique | cohérence |

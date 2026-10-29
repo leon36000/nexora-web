@@ -10,9 +10,9 @@ Légende : **✓** conforme et prouvé ; **✗** écart ; **◐** partiel (le d�
 **Ce qui a été fait.**
 
 1. Lecture du code de `web/src/lib/seo/`, `web/src/app/{robots,sitemap}.ts`, `llms.txt`, des dictionnaires, des modèles de page et des tests.
-2. Un serveur de développement jetable (`next dev`, port 3591, `SITE_ENV=production`, `SITE_URL=http://localhost:3591`, Directus et PostgreSQL de développement) et le contrôle maison `BASE_URL=http://localhost:3591 bun web/scripts/check-seo.ts` : robots.txt, sitemap.xml, llms.txt, puis **80 pages** du plan du site (40 en fr-CA, 40 en en-CA) : titres, descriptions, canonical, hreflang réciproques, `x-default`, noindex, un seul h1, JSON-LD lisible **et conforme au visible**, image Open Graph servie. Résultat sur cette branche : **0 erreur, 0 avertissement**.
-3. Un parcours du maillage interne (80 pages, tous les liens internes, en-tête et pied compris), des en-têtes HTTP et des redirections (`curl`), le contrôle des contrastes (`bun run --cwd web check:contrast` : 29 rapports, tous « OK »).
-4. Tests : `web/src/lib/seo/` (88 tests, dont `geo.test.ts`), `bun test cms/content` (521 tests), validation des données structurées contre un extrait du vocabulaire schema.org (`web/src/lib/seo/testing/`).
+2. Un serveur de développement jetable (`next dev`, port 3591, `SITE_ENV=production`, `SITE_URL=http://localhost:3591`, Directus et PostgreSQL de développement) et le contrôle maison `BASE_URL=http://localhost:3591 bun web/scripts/check-seo.ts` : robots.txt, sitemap.xml, llms.txt, puis **100 pages** du plan du site (50 en fr-CA, 50 en en-CA, Nexora Apps comprise après la fusion de `main` du 29 octobre) : titres, descriptions, canonical, hreflang réciproques, `x-default`, noindex, un seul h1, JSON-LD lisible **et conforme au visible**, image Open Graph servie. Résultat sur cette branche : **0 erreur, 0 avertissement**.
+3. Un parcours du maillage interne (100 pages, tous les liens internes, en-tête et pied compris), des en-têtes HTTP et des redirections (`curl`), le contrôle des contrastes (`bun run --cwd web check:contrast` : 29 rapports, tous « OK »).
+4. Tests : `web/src/lib/seo/` (98 tests, dont `geo.test.ts`) ; suite complète `web` : 137 fichiers, 1 601 tests, `bun test cms/content` (524 tests), validation des données structurées contre un extrait du vocabulaire schema.org (`web/src/lib/seo/testing/`).
 
 **Ce qui n'a PAS été mesuré, et qu'aucun test ne remplace.**
 
@@ -64,9 +64,9 @@ Revue trimestrielle : relire le registre communautaire, ajouter les robots nouve
 
 | # | Contrôle | Avant | Après | Preuve |
 |---|---|---|---|---|
-| A1 | `title` présent, unique par langue, 15 à 65 caractères avec la marque | ✓ | ✓ | check-seo : 80/80 ; longueurs 18 à 60 ; titres uniques par langue (règle `@nexora/seo`) |
-| A2 | `meta description` unique par langue, 70 à 160 caractères | ✓ | ✓ | 80/80 ; longueurs 108 à 160 |
-| A3 | Un seul `h1`, des `h2` | ✓ | ✓ | 80/80 `h1=1` ; 80/80 pages avec au moins un `h2` (parcours du maillage) |
+| A1 | `title` présent, unique par langue, 15 à 65 caractères avec la marque | ✓ | ✓ | check-seo : 100/100 ; longueurs 18 à 60 ; titres uniques par langue (règle `@nexora/seo`) |
+| A2 | `meta description` unique par langue, 70 à 160 caractères | ✓ | ✓ | 100/100 ; longueurs 98 à 160 |
+| A3 | Un seul `h1`, des `h2` | ✓ | ✓ | 100/100 `h1=1` ; 100/100 pages avec au moins un `h2` (parcours du maillage) |
 | A4 | Marque dans le titre de l'accueil | ✗ « Automatisation IA pour PME au Québec » | ✓ « Nexora AI : automatisation IA pour PME au Québec » (48) ; en : « Nexora AI: AI for small business in Quebec » (42) | `cms/content/pages/accueil.*.json` |
 | A5 | `lang` de `<html>` | ✓ | ✓ | `fr-CA` / `en-CA` (probe HTML) |
 | A6 | Pages privées hors index | ✓ | ✓ | `/compte/connexion` : `<meta name="robots" content="noindex, nofollow">` ; `/compte` aussi |
@@ -86,9 +86,9 @@ Revue trimestrielle : relire le registre communautaire, ajouter les robots nouve
 
 | # | Contrôle | Avant | Après | Preuve |
 |---|---|---|---|---|
-| C1 | `sitemap.xml` déclaré dans robots.txt | ✓ | ✓ | 80 URL ; ligne `Sitemap:` en production seulement |
+| C1 | `sitemap.xml` déclaré dans robots.txt | ✓ | ✓ | 100 URL ; ligne `Sitemap:` en production seulement |
 | C2 | `lastmod` réel ou omis | ✓ | ✓ | pages = `date_updated` Directus ; omis pour `/tarifs`, `/contact`, `/docs/api`, `/agents` (aucune date connue) |
-| C3 | `alternates` et `x-default` | ✓ | ✓ | 80/80 |
+| C3 | `alternates` et `x-default` | ✓ | ✓ | 100/100 |
 | C4 | `noindex` et traductions à canonical étranger exclus | ✓ | ✓ | tests |
 | C5 | Slugs hostiles refusés | ✓ | ✓ | test « slugs hostiles saisis dans Directus » |
 
@@ -129,24 +129,24 @@ Rappel : Google a indiqué ne pas utiliser ces fichiers (docs/recherche/01 §4.9
 | F7 | WebPage avec `dateModified` réel | ✗ | ✓ 50 pages du CMS, accueil comprise (WebPage 48, AboutPage 2) | check-seo : types par page |
 | F8 | AboutPage pour « Entreprise » | ✗ | ✓ | `/entreprise`, `/en/company` |
 | F9 | Service (services, solutions, déploiement, OPSYS-AI) | ◐ OPSYS-AI seul | ✓ 28 pages | check-seo |
-| F10 | SoftwareApplication (WorkStudio, applications VPS) | ✓ | ✓ éditeur = l'entreprise (`@id`) | 12 pages |
+| F10 | SoftwareApplication (WorkStudio, applications VPS, fiches Nexora Apps) | ✓ | ✓ ; éditeur = l'entreprise (`@id`) pour WorkStudio ; les fiches Nexora Apps n'en déclarent pas encore (5.2 bis) | 30 pages |
 | F11 | Product + Offer (modèles) | ✓ | ✓ **aucune offre pour un prix de développement** | `/modeles/nexora/glm-5-3` : Product sans `offers` |
-| F12 | FAQPage | ✓ | ✓ 48 pages | check-seo |
+| F12 | FAQPage | ✓ | ✓ 66 pages | check-seo |
 | F13 | BreadcrumbList | ✓ 2 niveaux | ✓ 3 niveaux pour les sous-pages (Accueil > Solutions > Factures) | tests `fil d'Ariane` |
 | F14 | Article (guides) avec image et dates réelles | ◐ sans image | ✓ code et tests ; pages à charger | `geo.test.ts` |
 | F15 | Une seule entité : même `@id`, même nom partout | ✗ (fournisseur anonyme) | ✓ Service, SoftwareApplication, Article, WebSite renvoient à `…/#organization` | tests de cohérence d'entité |
 | F16 | Valide au regard du vocabulaire schema.org | non testé | ✓ propriétés et types de valeurs contrôlés | `testing/schemaorg.ts` (extrait du vocabulaire lu le 29/10/2026) |
-| F17 | Conforme au visible (règle de Google) | ✓ | ✓ | check-seo : 0 erreur sur 80 pages |
+| F17 | Conforme au visible (règle de Google) | ✓ | ✓ | check-seo : 0 erreur sur 100 pages |
 | F18 | Test de résultats enrichis de Google | ✗ | ✗ non exécuté (outil externe) | à faire en recette |
 
-Répartition mesurée sur les 80 pages : BreadcrumbList 78, WebPage 48, FAQPage 48, Service 28, SoftwareApplication 12, Organization 2, WebSite 2, AboutPage 2, Product 2. L'accueil porte Organization + WebSite + WebPage ; les pages à `Article` n'émettent pas de WebPage.
+Répartition mesurée sur les 100 pages : BreadcrumbList 98, FAQPage 66, WebPage 48, SoftwareApplication 30, Service 28, Organization 2, WebSite 2, AboutPage 2, Product 2. L'accueil porte Organization + WebSite + WebPage ; les pages à `Article` n'émettent pas de WebPage.
 
 ### G. Open Graph et Twitter
 
 | # | Contrôle | Avant | Après | Preuve |
 |---|---|---|---|---|
 | G1 | `og:title`, `og:description`, `og:url`, `og:site_name`, `og:locale`, `og:locale:alternate`, `og:type` | ✓ | ✓ | probe HTML |
-| G2 | Image `og:image` 1200 × 630, servie en PNG, avec `og:image:alt` | ✓ | ✓ | 80/80 → `200 image/png` (26 à 55 Ko) |
+| G2 | Image `og:image` 1200 × 630, servie en PNG, avec `og:image:alt` | ✓ | ✓ | 100/100 → `200 image/png` (33 à 55 Ko) |
 | G3 | `twitter:card = summary_large_image`, titre, description, image | ✓ | ✓ | probe HTML |
 | G4 | `twitter:site` | ✗ | ✗ | aucun compte connu |
 | G5 | `og:type = article` et `article:published_time` pour les guides | ✗ | ✗ | `lib/seo.ts` (hors périmètre, 5.2) |
@@ -163,7 +163,7 @@ Répartition mesurée sur les 80 pages : BreadcrumbList 78, WebPage 48, FAQPage 
 
 | # | Contrôle | Avant | Après | Preuve |
 |---|---|---|---|---|
-| I1 | Pages orphelines | ✓ 0/80 | ✓ 0/80 | parcours du maillage (en-tête et pied compris) |
+| I1 | Pages orphelines | ✓ 0/100 | ✓ 0/100 | parcours du maillage (en-tête et pied compris) |
 | I2 | Liens dans le contenu de chaque page | ◐ | ◐ | 8 pages sans lien dans `<main>` : `/tarifs`, `/en/pricing`, `/contact`, `/en/contact`, `/modeles`, `/en/modeles`, `/vps`, `/en/vps` |
 | I3 | Pages minces (moins de 300 mots) | ◐ | ◐ | les 6 mêmes pages d'application (148 à 248 mots), hors contact |
 | I4 | Nouvelles pages liées | — | ✓ passerelle ← WorkStudio ; guide agents ← WorkStudio ; guide PME ← Méthode, Solutions | test S3 « lien entrant » |
@@ -173,7 +173,7 @@ Répartition mesurée sur les 80 pages : BreadcrumbList 78, WebPage 48, FAQPage 
 | # | Contrôle | Avant | Après | Preuve |
 |---|---|---|---|---|
 | J1 | Réponse d'abord (bloc « La réponse en bref ») | ◐ | ✓ sur les 3 nouvelles pages ; à étendre | `cms/content/pages/` |
-| J2 | FAQ en question/réponse complète, balisée | ✓ 48 pages | ✓ | check-seo |
+| J2 | FAQ en question/réponse complète, balisée | ✓ 66 pages | ✓ | check-seo |
 | J3 | Termes définis à leur premier usage (agent, jeton, passerelle, flux de travaux) | ✓ | ✓ | tests S3 « jargon défini » |
 | J4 | Chaque affirmation tracée au registre, avec source | ✓ | ✓ 164 affirmations (+ 6) | `claims.json`, tests |
 | J5 | Aucune promesse chiffrée, aucun client cité, aucune mention de la Loi 25 sur les nouvelles pages | ✓ | ✓ | tests S3 |
@@ -225,6 +225,10 @@ Répartition mesurée sur les 80 pages : BreadcrumbList 78, WebPage 48, FAQPage 
 - `og:type = article`, `article:published_time` et `article:modified_time` pour les pages `guides/…` (aujourd'hui `website`).
 - `/docs/api` : un `TechArticle` daté (nom, description, `dateModified`) à côté du fil d'Ariane.
 - Un `ItemList` pour `/modeles` et `/vps` **seulement** quand des prix seront publiés (CL-12).
+
+### 5.2 bis. Nexora Apps (fusionnée après le début de l'audit)
+
+`/apps` et ses fiches passent le contrôle en marche (0 erreur, 100 URL au plan du site, `llms.txt` à jour automatiquement). Écarts : `SoftwareApplication` sans `publisher` (rattacher à l'Organization) ; affirmations « gratuit », « code ouvert prévu », « inclus par défaut » dans le dictionnaire et non au registre `claims.json` (gouvernance du contenu) ; pas de « réponse d'abord » ni de FAQ balisée.
 
 ### 5.3 Nécessite une décision ou une information du fondateur
 
