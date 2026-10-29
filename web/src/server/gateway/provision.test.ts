@@ -61,6 +61,22 @@ describe("accès modèle automatique d'une instance WorkStudio", () => {
     expect(rows).toHaveLength(1);
   });
 
+  it("appels simultanés pour une même organisation : une seule clé est créée (deux onglets, deux connexions)", async () => {
+    const org = await newOrganization(t.db);
+    const results = await Promise.all(
+      Array.from({ length: 25 }, () =>
+        ensureModelAccess(t.db, keyring, input(org)),
+      ),
+    );
+    expect(new Set(results.map((r) => r.env.NEXORA_UPSTREAM_KEY)).size).toBe(1);
+    expect(results.filter((r) => r.created)).toHaveLength(1);
+    const rows = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.organizationId, org));
+    expect(rows).toHaveLength(1);
+  });
+
   it("remplace la clé si le client l'a révoquée", async () => {
     const org = await newOrganization(t.db);
     const first = await ensureModelAccess(t.db, keyring, input(org));

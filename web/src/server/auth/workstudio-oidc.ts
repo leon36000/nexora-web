@@ -345,3 +345,91 @@ export function workstudioOidcPlugins(
     guard,
   ];
 }
+
+export interface TokenIntrospection {
+  active: boolean;
+  /** Client auquel le jeton a été délivré. */
+  clientId?: string;
+  /** Identifiant de l'utilisateur du site (`sub`, jamais pseudonymisé ici). */
+  userId?: string;
+  scopes: string[];
+}
+
+const INACTIVE: TokenIntrospection = { active: false, scopes: [] };
+
+type IntrospectFn = (context: {
+  body: Record<string, string>;
+  headers: Headers;
+  request: Request;
+}) => Promise<unknown>;
+
+/**
+ * Introspection d'un jeton d'accès AU NOM du client WorkStudio, en appel direct (sans passer par HTTP, donc sans
+ * entamer la limite de débit des routes publiques). Le paquet ne renvoie « actif » que pour les jetons délivrés à
+ * ce client, non expirés, non révoqués, et dont la session du site existe encore.
+ */
+export function createWorkstudioIntrospector(
+  auth: { api: unknown },
+  config: WorkstudioOidcConfig,
+  baseURL: string,
+): (token: string) => Promise<TokenIntrospection> {
+  const api = auth.api as { oauth2Introspect?: IntrospectFn };
+  const url = `${baseURL.replace(/\/+$/, "")}/api/auth/oauth2/introspect`;
+  return async (token) => {
+    if (typeof api.oauth2Introspect !== "function") return INACTIVE;
+    const form: Record<string, string> = {
+      token,
+      token_type_hint: "access_token",
+    };
+    const headers = new Headers({
+      "content-type": "application/x-www-form-urlencoded",
+    });
+    if (config.tokenEndpointAuthMethod === "client_secret_basic") {
+      const basic = Buffer.from(
+        `${encodeURIComponent(config.clientId)}:${encodeURIComponent(config.clientSecret)}`,
+      ).toString("base64");
+      headers.set("authorization", `Basic ${basic}`);
+    } else {
+      form.client_id = config.clientId;
+      form.client_secret = config.clientSecret;
+    }
+    const request = new Request(url, {
+      method: "POST",
+      headers,
+      body: new URLSearchParams(form).toString(),
+    });
+    let result: unknown;
+    try {
+      result = await api.oauth2Introspect({ body: form, headers, request });
+      // Avec une requête fournie, le paquet répond par un objet Response (JSON).
+      if (result instanceof Response) {
+        if (result.status === 400 || result.status === 401) return INACTIVE;
+        if (!result.ok)
+          throw new Error(`introspection : HTTP ${result.status}`);
+        result = await result.json();
+      }
+    } catch (error) {
+      // Jeton inconnu ou mal formé : inactif. Toute autre panne remonte (la route répond alors 503).
+      const status = (error as { statusCode?: number }).statusCode;
+      if (status === 400 || status === 401) return INACTIVE;
+      throw error;
+    }
+    const payload = (result ?? {}) as {
+      active?: unknown;
+      client_id?: unknown;
+      sub?: unknown;
+      scope?: unknown;
+    };
+    if (payload.active !== true) return INACTIVE;
+    return {
+      active: true,
+      clientId:
+        typeof payload.client_id === "string" ? payload.client_id : undefined,
+      userId: typeof payload.sub === "string" ? payload.sub : undefined,
+      scopes:
+        typeof payload.scope === "string"
+          ? payload.scope.split(/\s+/).filter(Boolean)
+          : [],
+    };
+  };
+}

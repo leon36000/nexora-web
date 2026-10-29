@@ -1,4 +1,13 @@
-import { and, apiKeys, type Database, eq, gt, isNull, or } from "@nexora/db";
+import {
+  and,
+  apiKeys,
+  type Database,
+  eq,
+  gt,
+  isNull,
+  or,
+  sql,
+} from "@nexora/db";
 import type { Keyring } from "../vault/crypto";
 import { putSecret, readSecret } from "../vault/store";
 import {
@@ -75,33 +84,42 @@ export async function ensureModelAccess(
     NEXORA_UPSTREAM_KEY: key,
   });
 
-  // Clé déjà rangée : elle sert tant qu'elle est active et à cette organisation.
-  let stored: string | null = null;
-  try {
-    stored = await readSecret(db, keyring, ref);
-  } catch {
-    stored = null;
-  }
-  if (stored) {
-    const [row] = await db
-      .select({ id: apiKeys.id })
-      .from(apiKeys)
-      .where(
-        and(
-          eq(apiKeys.keyHash, hashApiKey(stored)),
-          eq(apiKeys.organizationId, input.organizationId),
-          isNull(apiKeys.revokedAt),
-          or(isNull(apiKeys.expiresAt), gt(apiKeys.expiresAt, now)),
-        ),
-      );
-    if (row) return { created: false, env: env(stored) };
-  }
+  // Verrou par organisation, tenu jusqu'à la fin : deux appels simultanés (deux onglets, deux connexions)
+  // ne créent pas deux clés, le second relit celle du premier.
+  return db.transaction(async (tx) => {
+    const d = tx as unknown as Database;
+    await d.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext(${`workstudio-key:${input.organizationId}`}))`,
+    );
 
-  const { key } = await createApiKey(db, {
-    organizationId: input.organizationId,
-    name: WORKSTUDIO_KEY_NAME,
-    maxActiveKeys: MAX_ACTIVE_KEYS_PER_ORGANIZATION,
+    // Clé déjà rangée : elle sert tant qu'elle est active et à cette organisation.
+    let stored: string | null = null;
+    try {
+      stored = await readSecret(d, keyring, ref);
+    } catch {
+      stored = null;
+    }
+    if (stored) {
+      const [row] = await d
+        .select({ id: apiKeys.id })
+        .from(apiKeys)
+        .where(
+          and(
+            eq(apiKeys.keyHash, hashApiKey(stored)),
+            eq(apiKeys.organizationId, input.organizationId),
+            isNull(apiKeys.revokedAt),
+            or(isNull(apiKeys.expiresAt), gt(apiKeys.expiresAt, now)),
+          ),
+        );
+      if (row) return { created: false, env: env(stored) };
+    }
+
+    const { key } = await createApiKey(d, {
+      organizationId: input.organizationId,
+      name: WORKSTUDIO_KEY_NAME,
+      maxActiveKeys: MAX_ACTIVE_KEYS_PER_ORGANIZATION,
+    });
+    await putSecret(d, keyring, { ref, value: key, kind: "other" });
+    return { created: true, env: env(key) };
   });
-  await putSecret(db, keyring, { ref, value: key, kind: "other" });
-  return { created: true, env: env(key) };
 }
