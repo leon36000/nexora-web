@@ -4,28 +4,119 @@
   "name": "Qwen3 VL 235B A22B Instruct",
   "descriptionFr": "Modèle vision-langage de Qwen (235 milliards de paramètres au total, 22 milliards actifs) qui lit images et vidéos et pilote des interfaces graphiques, sans mode de réflexion. Il sert à l'OCR, à l'analyse de documents et aux agents visuels.",
   "descriptionEn": "Vision-language model from Qwen (235 billion total parameters, 22 billion active) that reads images and video and operates graphical interfaces, without a thinking mode. Used for OCR, document analysis and visual agents.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": false, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": false,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
-    "author": "Qwen Team",
+    "author": "Qwen",
     "family": "Qwen3-VL",
-    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct" },
-    "parameters": { "totalB": 235, "activeB": 22 },
-    "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
-    "tags": ["vision", "code", "agents", "poids-ouverts"],
+    "license": {
+      "name": "Apache 2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct"
+    },
+    "parameters": {
+      "totalB": 235,
+      "activeB": 22
+    },
+    "modalities": {
+      "input": [
+        "text",
+        "image",
+        "video"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "tags": [
+      "vision",
+      "code",
+      "agents",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct",
     "benchmarks": [
-      { "name": "MMLU-Redux", "score": 92.2, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Connaissances" },
-      { "name": "AIME25", "score": 74.7, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Mathématiques" },
-      { "name": "LCBV6 (25.02 – 25.05)", "score": 54.3, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Code" },
-      { "name": "IFEval", "score": 87.8, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Instructions" },
-      { "name": "BFCL-v3", "score": 67.7, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Agents" },
-      { "name": "MMMU_VAL", "score": 78.7, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Multimodal" },
-      { "name": "MathVista_mini", "score": 84.9, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Multimodal" },
-      { "name": "DocVQA_TEST", "score": 97.1, "unit": "%", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance", "category": "Multimodal" }
+      {
+        "name": "MMLU-Redux",
+        "score": 92.2,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Connaissances"
+      },
+      {
+        "name": "AIME25",
+        "score": 74.7,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "LCBV6 (25.02 – 25.05)",
+        "score": 54.3,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Code"
+      },
+      {
+        "name": "IFEval",
+        "score": 87.8,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Instructions"
+      },
+      {
+        "name": "BFCL-v3",
+        "score": 67.7,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Agents"
+      },
+      {
+        "name": "MMMU_VAL",
+        "score": 78.7,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MathVista_mini",
+        "score": 84.9,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Multimodal"
+      },
+      {
+        "name": "DocVQA_TEST",
+        "score": 97.1,
+        "unit": "%",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct#model-performance",
+        "category": "Multimodal"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle Qwen/Qwen3-VL-235B-A22B-Instruct", "url": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/Qwen/Qwen3-VL-235B-A22B-Instruct", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle Qwen/Qwen3-VL-235B-A22B-Instruct",
+        "url": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/Qwen/Qwen3-VL-235B-A22B-Instruct",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

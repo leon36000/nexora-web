@@ -4,30 +4,127 @@
   "name": "Qwen3.5 397B A17B",
   "descriptionFr": "Modèle multimodal à mélange d'experts d'Alibaba (397 B paramètres, 17 B actifs) avec mode réflexion, appel d'outils et prise en charge de 201 langues et dialectes ; contexte natif de 262 144 jetons.",
   "descriptionEn": "Alibaba's Mixture-of-Experts multimodal model (397B parameters, 17B active) with thinking mode, tool calling and support for 201 languages and dialects; native 262,144-token context.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
-    "author": "Alibaba (Qwen)",
+    "author": "Qwen",
     "family": "Qwen3.5",
     "releasedAt": "2026-02-16",
-    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B/blob/main/LICENSE" },
-    "parameters": { "totalB": 397, "activeB": 17 },
-    "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "multilingue", "poids-ouverts"],
+    "license": {
+      "name": "Apache-2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B/blob/main/LICENSE"
+    },
+    "parameters": {
+      "totalB": 397,
+      "activeB": 17
+    },
+    "modalities": {
+      "input": [
+        "text",
+        "image",
+        "video"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "multilingue",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
     "benchmarks": [
-      { "name": "SWE-bench Verified", "score": 76.4, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Code" },
-      { "name": "Terminal Bench 2", "score": 52.5, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Code" },
-      { "name": "LiveCodeBench v6", "score": 83.6, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Code" },
-      { "name": "MMLU-Pro", "score": 87.8, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Connaissances" },
-      { "name": "HLE", "score": 28.7, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Connaissances" },
-      { "name": "BFCL-V4", "score": 72.9, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Agents" },
-      { "name": "TAU2-Bench", "score": 86.7, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Agents" },
-      { "name": "MMMU", "score": 85.0, "unit": "%", "publisher": "Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "category": "Multimodal" }
+      {
+        "name": "SWE-bench Verified",
+        "score": 76.4,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Code"
+      },
+      {
+        "name": "Terminal Bench 2",
+        "score": 52.5,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Code"
+      },
+      {
+        "name": "LiveCodeBench v6",
+        "score": 83.6,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Code"
+      },
+      {
+        "name": "MMLU-Pro",
+        "score": 87.8,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Connaissances"
+      },
+      {
+        "name": "HLE",
+        "score": 28.7,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Connaissances"
+      },
+      {
+        "name": "BFCL-V4",
+        "score": 72.9,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Agents"
+      },
+      {
+        "name": "TAU2-Bench",
+        "score": 86.7,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Agents"
+      },
+      {
+        "name": "MMMU",
+        "score": 85.0,
+        "unit": "%",
+        "publisher": "Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "category": "Multimodal"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle", "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt (licence Apache-2.0, date de création, taille)", "url": "https://huggingface.co/api/models/Qwen/Qwen3.5-397B-A17B", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/Qwen/Qwen3.5-397B-A17B", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle",
+        "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt (licence Apache-2.0, date de création, taille)",
+        "url": "https://huggingface.co/api/models/Qwen/Qwen3.5-397B-A17B",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/Qwen/Qwen3.5-397B-A17B",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

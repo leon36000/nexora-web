@@ -4,28 +4,116 @@
   "name": "Qwen3 Embedding 8B",
   "descriptionFr": "Modèle d'embeddings textuels de Qwen (8 milliards de paramètres) pour la recherche, la classification, le regroupement et la recherche de code, dans plus de 100 langues. Vecteurs de 32 à 4 096 dimensions.",
   "descriptionEn": "Text embedding model from Qwen (8 billion parameters) for retrieval, classification, clustering and code retrieval, across more than 100 languages. Vectors from 32 to 4,096 dimensions.",
-  "capabilities": { "streaming": false, "tools": false, "reasoning": false, "json_mode": false, "vision": false },
+  "capabilities": {
+    "streaming": false,
+    "tools": false,
+    "reasoning": false,
+    "json_mode": false,
+    "vision": false
+  },
   "sheet": {
-    "author": "Qwen Team",
+    "author": "Qwen",
     "family": "Qwen3 Embedding",
-    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3-Embedding-8B" },
-    "parameters": { "totalB": 8 },
-    "modalities": { "input": ["text"], "output": ["embedding"] },
-    "tags": ["embeddings", "multilingue", "poids-ouverts"],
+    "license": {
+      "name": "Apache 2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-8B"
+    },
+    "parameters": {
+      "totalB": 8
+    },
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "embedding"
+      ]
+    },
+    "tags": [
+      "embeddings",
+      "multilingue",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B",
     "benchmarks": [
-      { "name": "MTEB (Multilingual) Mean (Task)", "score": 70.58, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual", "measuredAt": "2025-06-05", "category": "Embeddings" },
-      { "name": "MTEB (Multilingual) Mean (Type)", "score": 61.69, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual", "category": "Embeddings" },
-      { "name": "MTEB (Multilingual) Retrieval", "score": 70.88, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual", "category": "Recherche" },
-      { "name": "MTEB (Multilingual) Bitext Mining", "score": 80.89, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual", "category": "Embeddings" },
-      { "name": "MTEB (Multilingual) Classification", "score": 74.00, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual", "category": "Embeddings" },
-      { "name": "MTEB (Multilingual) STS", "score": 81.08, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual", "category": "Embeddings" },
-      { "name": "MTEB (Eng v2) Mean (Task)", "score": 75.22, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-eng-v2", "category": "Embeddings" },
-      { "name": "MTEB (Eng v2) Retrieval", "score": 69.44, "unit": "points", "publisher": "Qwen Team", "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-eng-v2", "category": "Recherche" }
+      {
+        "name": "MTEB (Multilingual) Mean (Task)",
+        "score": 70.58,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual",
+        "measuredAt": "2025-06-05",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (Multilingual) Mean (Type)",
+        "score": 61.69,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (Multilingual) Retrieval",
+        "score": 70.88,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual",
+        "category": "Recherche"
+      },
+      {
+        "name": "MTEB (Multilingual) Bitext Mining",
+        "score": 80.89,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (Multilingual) Classification",
+        "score": 74.0,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (Multilingual) STS",
+        "score": 81.08,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-multilingual",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (Eng v2) Mean (Task)",
+        "score": 75.22,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-eng-v2",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (Eng v2) Retrieval",
+        "score": 69.44,
+        "unit": "points",
+        "publisher": "Qwen Team",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B#mteb-eng-v2",
+        "category": "Recherche"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle Qwen/Qwen3-Embedding-8B", "url": "https://huggingface.co/Qwen/Qwen3-Embedding-8B", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/Qwen/Qwen3-Embedding-8B", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle Qwen/Qwen3-Embedding-8B",
+        "url": "https://huggingface.co/Qwen/Qwen3-Embedding-8B",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/Qwen/Qwen3-Embedding-8B",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

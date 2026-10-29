@@ -4,21 +4,57 @@
   "name": "Qwen3 Coder 480B A35B Instruct Turbo",
   "descriptionFr": "Modèle de code agentique de Qwen (480 milliards de paramètres au total, 35 milliards actifs), sans mode de réflexion. Il est conçu pour le codage agentique, l'usage de navigateur et l'appel d'outils.",
   "descriptionEn": "Agentic code model from Qwen (480 billion total parameters, 35 billion active), without a thinking mode. It is built for agentic coding, browser use and tool calling.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": false, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": false,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
-    "author": "Qwen Team",
+    "author": "Qwen",
     "family": "Qwen3-Coder",
     "releasedAt": "2025-07-22",
-    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct/blob/main/LICENSE" },
-    "parameters": { "totalB": 480, "activeB": 35 },
-    "modalities": { "input": ["text"], "output": ["text"] },
-    "tags": ["code", "agents", "poids-ouverts"],
+    "license": {
+      "name": "Apache 2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct/blob/main/LICENSE"
+    },
+    "parameters": {
+      "totalB": 480,
+      "activeB": 35
+    },
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "tags": [
+      "code",
+      "agents",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct",
     "benchmarks": [],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle Qwen/Qwen3-Coder-480B-A35B-Instruct (modèle de base)", "url": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct", "readAt": "2026-10-29" },
-      { "label": "Qwen, blogue « Qwen3-Coder: Agentic Coding in the World »", "url": "https://qwenlm.github.io/blog/qwen3-coder/", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle Qwen/Qwen3-Coder-480B-A35B-Instruct (modèle de base)",
+        "url": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Qwen, blogue « Qwen3-Coder: Agentic Coding in the World »",
+        "url": "https://qwenlm.github.io/blog/qwen3-coder/",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

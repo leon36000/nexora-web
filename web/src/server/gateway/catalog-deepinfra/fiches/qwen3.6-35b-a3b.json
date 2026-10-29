@@ -4,28 +4,120 @@
   "name": "Qwen3.6-35B-A3B",
   "descriptionFr": "Modèle Mixture-of-Experts d'Alibaba Qwen : 35 Md de paramètres dont 3 Md actifs par jeton. Il reçoit texte, image et vidéo, avec une fenêtre de 262 144 jetons, un mode réflexion et des appels d'outils.",
   "descriptionEn": "Mixture-of-experts model from Alibaba's Qwen team: 35B parameters with 3B active per token. It takes text, image and video input, with a 262,144-token window, a thinking mode and tool calling.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
-    "author": "Alibaba Qwen",
+    "author": "Qwen",
     "family": "Qwen 3.6",
-    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B/blob/main/LICENSE" },
-    "parameters": { "totalB": 35, "activeB": 3 },
-    "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "poids-ouverts"],
+    "license": {
+      "name": "Apache-2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B/blob/main/LICENSE"
+    },
+    "parameters": {
+      "totalB": 35,
+      "activeB": 3
+    },
+    "modalities": {
+      "input": [
+        "text",
+        "image",
+        "video"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
     "benchmarks": [
-      { "name": "SWE-bench Verified", "score": 73.4, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Code" },
-      { "name": "SWE-bench Pro", "score": 49.5, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Code" },
-      { "name": "LiveCodeBench v6", "score": 80.4, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Code" },
-      { "name": "Terminal-Bench 2.0", "score": 51.5, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Agents" },
-      { "name": "MCP-Atlas", "score": 62.8, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Agents" },
-      { "name": "GPQA", "score": 86.0, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Raisonnement" },
-      { "name": "MMLU-Pro", "score": 85.2, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Connaissances" },
-      { "name": "AIME26", "score": 92.7, "unit": "%", "publisher": "Alibaba Qwen", "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "category": "Mathématiques" }
+      {
+        "name": "SWE-bench Verified",
+        "score": 73.4,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Code"
+      },
+      {
+        "name": "SWE-bench Pro",
+        "score": 49.5,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Code"
+      },
+      {
+        "name": "LiveCodeBench v6",
+        "score": 80.4,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Code"
+      },
+      {
+        "name": "Terminal-Bench 2.0",
+        "score": 51.5,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Agents"
+      },
+      {
+        "name": "MCP-Atlas",
+        "score": 62.8,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Agents"
+      },
+      {
+        "name": "GPQA",
+        "score": 86.0,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "MMLU-Pro",
+        "score": 85.2,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Connaissances"
+      },
+      {
+        "name": "AIME26",
+        "score": 92.7,
+        "unit": "%",
+        "publisher": "Alibaba Qwen",
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "category": "Mathématiques"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle Qwen3.6-35B-A3B (tableau des résultats)", "url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B", "readAt": "2026-10-29" },
-      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle Qwen3.6-35B-A3B (tableau des résultats)",
+        "url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)",
+        "url": "https://api.deepinfra.com/models/list",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {
