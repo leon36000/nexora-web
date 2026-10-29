@@ -15,6 +15,7 @@ import {
   type ModelVisibility,
   modelPrices,
   modelProviders,
+  modelRoutes,
   models,
   type PriceWindowRow,
   type ProviderType,
@@ -33,6 +34,7 @@ import {
   guardSnapshot,
   type SnapshotModel,
   type SnapshotProvider,
+  type SnapshotRoute,
 } from "./snapshot";
 
 const CATALOG_COLLECTION = "model_catalog";
@@ -62,6 +64,7 @@ export class CatalogError extends Error {
 type Provider = typeof modelProviders.$inferSelect;
 type Model = typeof models.$inferSelect;
 type Price = typeof modelPrices.$inferSelect;
+type Route = typeof modelRoutes.$inferSelect;
 type Fx = typeof fxRates.$inferSelect;
 type Version = typeof configVersions.$inferSelect;
 
@@ -243,14 +246,115 @@ async function modelIssues(
   const fx = await currentFx(db, now);
   const price = await currentPrice(db, modelId, now);
   const provider = await getProvider(db, model.providerId);
+  const routes = await enabledRoutes(db, modelId);
+  const routeProviders = await Promise.all(
+    [...new Set(routes.map((r) => r.providerId))]
+      .filter((id) => id !== provider.id)
+      .map((id) => getProvider(db, id)),
+  );
   const snapshot: CatalogSnapshot = {
     schema: 1,
     fx: fx ? snapshotFx(fx) : null,
-    providers: [snapshotProvider(provider)],
-    models: [snapshotModel(model, price)],
+    providers: [provider, ...routeProviders].map(snapshotProvider),
+    models: [snapshotModel(model, price, routes)],
   };
   // La clé du fournisseur est vérifiée à la publication de la version, pas à celle d'un modèle.
   return guardSnapshot(snapshot, { secretExists: () => true });
+}
+
+// ─── Routes de secours ──────────────────────────────────────────────────────────
+
+export interface RouteInput {
+  providerId: string;
+  upstreamId: string;
+  /** Prix amont de cette route (micro-USD par million) ; absent : comme le prix du modèle. */
+  upstreamInputUsdMicro?: bigint | null;
+  upstreamOutputUsdMicro?: bigint | null;
+  upstreamCacheUsdMicro?: bigint | null;
+  enabled?: boolean;
+  note?: string;
+}
+
+function checkRoutePrice(input: {
+  upstreamInputUsdMicro?: bigint | null;
+  upstreamOutputUsdMicro?: bigint | null;
+}) {
+  if (
+    (input.upstreamInputUsdMicro == null) !==
+    (input.upstreamOutputUsdMicro == null)
+  )
+    throw new CatalogError(
+      "invalid_request",
+      "route : le prix d'entrée et le prix de sortie vont ensemble",
+    );
+}
+
+/** Ajoute une route à la fin de la liste (position suivante). */
+export async function addRoute(
+  db: Database,
+  modelId: string,
+  input: RouteInput,
+): Promise<Route> {
+  await getModel(db, modelId);
+  await getProvider(db, input.providerId);
+  checkRoutePrice(input);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const [last] = await db
+      .select({ position: modelRoutes.position })
+      .from(modelRoutes)
+      .where(eq(modelRoutes.modelId, modelId))
+      .orderBy(desc(modelRoutes.position))
+      .limit(1);
+    try {
+      const [row] = await db
+        .insert(modelRoutes)
+        .values({ ...input, modelId, position: (last?.position ?? 0) + 1 })
+        .returning();
+      if (!row) throw new Error("route non créée");
+      return row;
+    } catch (e) {
+      // deux ajouts simultanés : la position est prise, on relit et on réessaie
+      if (dbCode(e) !== "23505" || attempt === 2) throw e;
+    }
+  }
+  throw new Error("route non créée");
+}
+
+export async function updateRoute(
+  db: Database,
+  routeId: string,
+  patch: Partial<RouteInput>,
+): Promise<Route> {
+  const [current] = await db
+    .select()
+    .from(modelRoutes)
+    .where(eq(modelRoutes.id, routeId));
+  if (!current) throw new CatalogError("not_found", "route introuvable");
+  if (patch.providerId) await getProvider(db, patch.providerId);
+  const merged = { ...current, ...patch };
+  checkRoutePrice(merged);
+  const [row] = await db
+    .update(modelRoutes)
+    .set({ ...patch, updatedAt: new Date() })
+    .where(eq(modelRoutes.id, routeId))
+    .returning();
+  if (!row) throw new CatalogError("not_found", "route introuvable");
+  return row;
+}
+
+export async function listRoutes(
+  db: Database,
+  modelId: string,
+): Promise<Route[]> {
+  return db
+    .select()
+    .from(modelRoutes)
+    .where(eq(modelRoutes.modelId, modelId))
+    .orderBy(asc(modelRoutes.position));
+}
+
+async function enabledRoutes(db: Database, modelId: string): Promise<Route[]> {
+  return (await listRoutes(db, modelId)).filter((r) => r.enabled);
 }
 
 // ─── Prix ───────────────────────────────────────────────────────────────────────
@@ -534,7 +638,28 @@ function snapshotProvider(p: Provider): SnapshotProvider {
     enabled: p.enabled,
   };
 }
-function snapshotModel(m: Model, price: Price | null): SnapshotModel {
+function snapshotRoute(r: Route): SnapshotRoute {
+  return {
+    id: r.id,
+    providerId: r.providerId,
+    upstreamId: r.upstreamId,
+    position: r.position,
+    upstream:
+      r.upstreamInputUsdMicro == null || r.upstreamOutputUsdMicro == null
+        ? null
+        : {
+            input: r.upstreamInputUsdMicro.toString(),
+            output: r.upstreamOutputUsdMicro.toString(),
+            cache: str(r.upstreamCacheUsdMicro),
+          },
+  };
+}
+
+function snapshotModel(
+  m: Model,
+  price: Price | null,
+  routes: Route[] = [],
+): SnapshotModel {
   return {
     id: m.id,
     publicId: m.publicId,
@@ -552,6 +677,7 @@ function snapshotModel(m: Model, price: Price | null): SnapshotModel {
     sunsetAt: iso(m.sunsetAt),
     sheet: m.sheet,
     routing: m.routing,
+    routes: routes.map(snapshotRoute),
     price: price
       ? {
           id: price.id,
@@ -588,8 +714,11 @@ async function buildSnapshot(
   const providers = await listProviders(db);
   const used = new Set(published.map((m) => m.providerId));
   const out: SnapshotModel[] = [];
-  for (const m of published)
-    out.push(snapshotModel(m, await currentPrice(db, m.id, now)));
+  for (const m of published) {
+    const routes = await enabledRoutes(db, m.id);
+    for (const r of routes) used.add(r.providerId);
+    out.push(snapshotModel(m, await currentPrice(db, m.id, now), routes));
+  }
   return {
     schema: 1,
     fx: await fxOrNull(db, now),

@@ -7,6 +7,7 @@ import { putSecret } from "../vault/store";
 import {
   addFxRate,
   addPrice,
+  addRoute,
   approveFxRate,
   approveVersion,
   CatalogError,
@@ -15,8 +16,10 @@ import {
   createProvider,
   diffVersion,
   getPublishedCatalog,
+  listRoutes,
   publishVersion,
   updateModel,
+  updateRoute,
 } from "./catalog";
 
 let t: TestDatabase;
@@ -589,5 +592,132 @@ describe("prix : plages horaires et écriture du cache", () => {
     const snap = v.snapshot.models.find((m) => m.publicId === model.publicId);
     expect(snap?.price?.windows?.[0]?.sell.input).toBe("231000");
     expect(snap?.price?.sellCacheWriteCadMicro).toBe("462000");
+  });
+});
+
+describe("routes de secours d'un modèle (G6)", () => {
+  beforeEach(async () => {
+    const fx = await addFxRate(t.db, { usdToCadMicro: 1_400_000n });
+    await approveFxRate(t.db, fx.id, "test");
+  });
+
+  async function second(withSecret = true) {
+    n += 1;
+    const ref = `llm.route-${n}`;
+    if (withSecret)
+      await putSecret(t.db, keyring, {
+        ref,
+        value: `sk-route-${n}-xxxxxxxxxxxx`,
+        kind: "llm_provider",
+      });
+    return createProvider(t.db, {
+      code: `deepinfra-${n}`,
+      name: `DeepInfra ${n}`,
+      type: "openai_compatible",
+      baseUrl: "https://api.deepinfra.com/v1/openai",
+      secretRef: ref,
+      region: "etats_unis",
+    });
+  }
+  const cheap = {
+    upstreamInputUsdMicro: 500_000n,
+    upstreamOutputUsdMicro: 1_000_000n,
+    marginBps: 3000,
+    marginFloorBps: 3000,
+  };
+
+  it("ajoute des routes classées par position, avec leur propre prix amont", async () => {
+    const { model } = await fixture();
+    const other = await second();
+    const r1 = await addRoute(t.db, model.id, {
+      providerId: other.id,
+      upstreamId: "zai-org/GLM-5.3",
+      upstreamInputUsdMicro: 400_000n,
+      upstreamOutputUsdMicro: 900_000n,
+    });
+    expect(r1.position).toBe(1);
+    const r2 = await addRoute(t.db, model.id, {
+      providerId: other.id,
+      upstreamId: "autre",
+    });
+    expect(r2.position).toBe(2);
+    expect(r2.upstreamInputUsdMicro).toBeNull();
+    const list = await listRoutes(t.db, model.id);
+    expect(list.map((r) => r.position)).toEqual([1, 2]);
+  });
+
+  it("refuse un fournisseur inconnu et un prix amont à moitié renseigné", async () => {
+    const { model } = await fixture();
+    await expect(
+      addRoute(t.db, model.id, {
+        providerId: "00000000-0000-4000-8000-000000000000",
+        upstreamId: "x",
+      }),
+    ).rejects.toMatchObject({ code: "not_found" });
+    const other = await second();
+    await expect(
+      addRoute(t.db, model.id, {
+        providerId: other.id,
+        upstreamId: "x",
+        upstreamInputUsdMicro: 1n,
+      }),
+    ).rejects.toMatchObject({ code: "invalid_request" });
+  });
+
+  it("fige les routes actives dans la version publiée et laisse de côté les routes désactivées", async () => {
+    const { model } = await fixture();
+    const other = await second();
+    await addPrice(t.db, model.id, cheap);
+    const on = await addRoute(t.db, model.id, {
+      providerId: other.id,
+      upstreamId: "actif",
+      upstreamInputUsdMicro: 400_000n,
+      upstreamOutputUsdMicro: 900_000n,
+    });
+    const off = await addRoute(t.db, model.id, {
+      providerId: other.id,
+      upstreamId: "inactif",
+    });
+    await updateRoute(t.db, off.id, { enabled: false });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const v = await publishAll();
+    const snap = v.snapshot.models.find((m) => m.publicId === model.publicId);
+    expect(snap?.routes?.map((r) => r.upstreamId)).toEqual(["actif"]);
+    expect(snap?.routes?.[0]).toMatchObject({
+      id: on.id,
+      providerId: other.id,
+      position: 1,
+      upstream: { input: "400000", output: "900000" },
+    });
+  });
+
+  it("refuse d'approuver un modèle dont une route coûte trop cher pour la marge garantie", async () => {
+    const { model } = await fixture();
+    const other = await second();
+    await addPrice(t.db, model.id, cheap);
+    // 0,5 USD × 1,4 × 1,3 = 0,91 CAD de vente ; une route à 0,9 USD coûte 1,26 CAD : sous le plancher
+    await addRoute(t.db, model.id, {
+      providerId: other.id,
+      upstreamId: "trop-cher",
+      upstreamInputUsdMicro: 900_000n,
+      upstreamOutputUsdMicro: 900_000n,
+    });
+    await expect(
+      updateModel(t.db, model.id, { status: "approved" }),
+    ).rejects.toMatchObject({ code: "publication_refused" });
+  });
+
+  it("signale la clé manquante du fournisseur d'une route à la version", async () => {
+    const { model } = await fixture();
+    const noKey = await second(false);
+    await addPrice(t.db, model.id, cheap);
+    await addRoute(t.db, model.id, { providerId: noKey.id, upstreamId: "x" });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const draft = await createDraftVersion(t.db);
+    expect(draft.issues.some((i) => i.code === "route_secret_missing")).toBe(
+      true,
+    );
   });
 });

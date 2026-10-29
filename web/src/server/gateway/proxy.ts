@@ -16,6 +16,7 @@ import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
 import { billingModeOf } from "./house";
 import { type ApiKeyRow, authenticateApiKey } from "./keys";
+import { routePositionOf } from "./litellm";
 import {
   activeWindow,
   costMicro,
@@ -23,7 +24,11 @@ import {
   type PerMillion,
 } from "./pricing";
 import { type PublicModel, toPublicModel } from "./public";
-import type { SnapshotModel, SnapshotProvider } from "./snapshot";
+import type {
+  SnapshotModel,
+  SnapshotProvider,
+  SnapshotRoute,
+} from "./snapshot";
 import { finalizeHouseRequest, finalizeRequest } from "./usage";
 
 /**
@@ -132,6 +137,24 @@ function pricesAt(
       cacheWrite: opt(p.upstreamCacheWriteUsdMicro),
     },
     window: null,
+  };
+}
+
+/**
+ * Coût amont de la requête : le prix de la route qui a servi si elle a le sien, sinon celui du modèle (au tarif
+ * de la plage horaire en vigueur au départ). Une route inconnue (version de catalogue changée en cours de
+ * route) retombe sur le prix du modèle.
+ */
+function routeUpstreamPrice(target: Target, position: number): PerMillion {
+  const route =
+    position > 0
+      ? target.routes.find((r) => r.position === position)
+      : undefined;
+  if (!route?.upstream) return target.upstreamPrice;
+  return {
+    input: BigInt(route.upstream.input),
+    output: BigInt(route.upstream.output),
+    cache: route.upstream.cache === null ? null : BigInt(route.upstream.cache),
   };
 }
 
@@ -337,6 +360,8 @@ interface Usage {
   cacheWrite?: number;
   /** Jetons de raisonnement (inclus dans `completion`). */
   reasoning?: number;
+  /** Coût rapporté par l'amont (OpenRouter : `usage.cost`), micro-USD ; jamais montré au client. */
+  reportedUsdMicro?: number;
 }
 
 function readUsage(raw: unknown): Usage | null {
@@ -361,12 +386,19 @@ function readUsage(raw: unknown): Usage | null {
     nn(details.cache_creation_tokens) ??
     nn(raw.cache_creation_input_tokens) ??
     0;
+  const cost =
+    typeof raw.cost === "number" && Number.isFinite(raw.cost) && raw.cost >= 0
+      ? Math.round(raw.cost * 1_000_000)
+      : null;
   return {
     prompt,
     completion,
     cached,
     cacheWrite: Math.min(written, prompt - cached),
     reasoning: Math.min(nn(out.reasoning_tokens) ?? 0, completion),
+    ...(cost !== null && Number.isSafeInteger(cost)
+      ? { reportedUsdMicro: cost }
+      : {}),
   };
 }
 
@@ -583,6 +615,8 @@ interface Target {
   upstreamPrice: PerMillion;
   /** Étiquette de la plage horaire appliquée (« creux »), null = prix de base. */
   window: string | null;
+  /** Routes de secours du modèle (coût amont propre à chacune). */
+  routes: SnapshotRoute[];
   /** Frais par exécution (agents), en plus des jetons. */
   runFee: bigint;
 }
@@ -735,6 +769,8 @@ async function handleInference(
   let reservation: { id: string; amount: bigint } | undefined;
   // Organisation « maison » : aucune réservation ni débit (G9).
   let house = false;
+  // Route qui a servi (0 = principale), lue dans la réponse de LiteLLM.
+  let routePosition = 0;
   let settled = false;
   let target: Target | undefined;
   let streamHandedOff = false;
@@ -761,8 +797,9 @@ async function handleInference(
       errorCode: input.errorCode,
       tokens: input.tokens,
       price: target.price,
-      upstreamPrice: target.upstreamPrice,
+      upstreamPrice: routeUpstreamPrice(target, routePosition),
       priceWindow: target.window,
+      routePosition,
       runFeeMicro: target.runFee,
       reservationId: reservation.id,
       latencyMs: Math.round(performance.now() - started),
@@ -876,6 +913,7 @@ async function handleInference(
         price: perToken,
         upstreamPrice: { input: 0n, output: 0n, cache: null },
         window: null,
+        routes: [],
         runFee: price.perRunCadMicro,
       };
       // Le plafond d'exécution borne le montant RÉSERVÉ : exécution + plafond de jetons au prix le plus élevé. Le
@@ -907,6 +945,7 @@ async function handleInference(
         residency: model.residency,
         configVersion: version.short,
         ...pricesAt(model, deps.now()),
+        routes: model.routes ?? [],
         runFee: 0n,
       };
     }
@@ -1021,6 +1060,10 @@ async function handleInference(
           );
     }
 
+    routePosition =
+      served.kind === "model"
+        ? routePositionOf(upstream.headers.get("x-litellm-model-id"))
+        : 0;
     if (!upstream.ok) {
       // Le corps de l'erreur amont n'est jamais relayé : on libère la connexion sans le lire.
       await upstream.body?.cancel().catch(() => undefined);

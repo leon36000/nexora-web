@@ -15,6 +15,10 @@ describe("liste fermée des appels", () => {
       ["PATCH", `models/${ID}`],
       ["POST", `providers/${ID}/test`],
       ["POST", `models/${ID}/prices`],
+      ["GET", "usage-report"],
+      ["GET", `models/${ID}/routes`],
+      ["POST", `models/${ID}/routes`],
+      ["PATCH", `routes/${ID}`],
       ["POST", `fx-rates/${ID}/approve`],
       ["POST", `versions/${ID}/publish`],
       ["POST", "sync-litellm"],
@@ -30,6 +34,9 @@ describe("liste fermée des appels", () => {
       ["POST", "sync-litellm/x"],
       ["PATCH", "models/pas-un-uuid"],
       ["GET", `models/${ID}/../x`],
+      ["DELETE", `routes/${ID}`],
+      ["GET", `routes/${ID}`],
+      ["PATCH", `models/${ID}/routes`],
     ] as const)
       expect(isAllowed(m, p)).toBe(false);
   });

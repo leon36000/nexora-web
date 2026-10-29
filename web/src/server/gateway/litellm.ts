@@ -1,10 +1,11 @@
-import type { Database, ProviderType } from "@nexora/db";
+import type { Database, ModelRouting, ProviderType } from "@nexora/db";
 import { envSecretHostCheck, type SecretHostCheck } from "@nexora/vault/scope";
 import {
   type CatalogVersion,
   getPublishedCatalog,
   markApplied,
 } from "./catalog";
+import { formatMicro } from "./pricing";
 import type { SnapshotModel, SnapshotProvider } from "./snapshot";
 
 /**
@@ -42,6 +43,10 @@ export type LitellmModelParams = {
   model: string;
   credentialName: string;
   mode: "chat" | "embedding";
+  /** Rang du déploiement parmi ceux du même modèle : LiteLLM essaie le plus petit d'abord. */
+  order: number;
+  /** Corps ajouté à chaque appel (consignes de routage d'OpenRouter). */
+  extraBody?: Record<string, unknown>;
 };
 
 export function createLitellmClient(config: LitellmConfig) {
@@ -84,6 +89,8 @@ export function createLitellmClient(config: LitellmConfig) {
     litellm_params: {
       model: m.model,
       litellm_credential_name: m.credentialName,
+      order: m.order,
+      ...(m.extraBody ? { extra_body: m.extraBody } : {}),
     },
     model_info: { id: m.id, mode: m.mode },
   });
@@ -175,6 +182,21 @@ const credentialNameOf = (provider: Pick<SnapshotProvider, "code">) =>
 const modelIdOf = (publicId: string) =>
   `${MODEL_ID_PREFIX}${publicId.replace(/[^a-z0-9._-]+/gi, "-")}`;
 
+/**
+ * Identifiant du déploiement LiteLLM d'une route : `nxm-<id>` pour la principale (position 0), `nxm-<id>~rN`
+ * pour la route de secours N. Le `~` ne peut pas figurer dans un identifiant public : aucune ambiguïté.
+ */
+export const routeDeploymentId = (publicId: string, position: number) =>
+  position > 0 ? `${modelIdOf(publicId)}~r${position}` : modelIdOf(publicId);
+
+/** Position de la route lue dans l'identifiant de déploiement (en-tête `x-litellm-model-id`) ; 0 si absent ou illisible. */
+export function routePositionOf(
+  deploymentId: string | null | undefined,
+): number {
+  const m = /~r([1-9]\d{0,2})$/.exec(deploymentId ?? "");
+  return m ? Number(m[1]) : 0;
+}
+
 /** Nom de modèle LiteLLM selon le type de fournisseur. */
 function litellmModelString(type: ProviderType, upstreamId: string): string {
   if (type === "openrouter") return `openrouter/${upstreamId}`;
@@ -192,6 +214,28 @@ export function apiBaseFor(
   if (type === "openrouter" && /openrouter\.ai/.test(clean)) return undefined;
   // déjà versionnée (/v1, /api/v1, /api/paas/v4…) : telle quelle
   return /\/v\d+$/.test(clean) ? clean : `${clean}/v1`;
+}
+
+/** Consignes de routage d'une fiche, au format `provider` d'OpenRouter (prix plafond en USD par million). */
+export function openrouterPreferences(
+  routing: ModelRouting | undefined,
+): Record<string, unknown> | undefined {
+  if (!routing) return undefined;
+  const p: Record<string, unknown> = {};
+  if (routing.dataCollection) p.data_collection = routing.dataCollection;
+  if (routing.zdr !== undefined) p.zdr = routing.zdr;
+  if (routing.allowFallbacks !== undefined)
+    p.allow_fallbacks = routing.allowFallbacks;
+  if (routing.order?.length) p.order = routing.order;
+  if (routing.only?.length) p.only = routing.only;
+  if (routing.ignore?.length) p.ignore = routing.ignore;
+  if (routing.quantizations?.length) p.quantizations = routing.quantizations;
+  if (routing.maxPriceUsdMicro)
+    p.max_price = {
+      prompt: Number(formatMicro(BigInt(routing.maxPriceUsdMicro.input))),
+      completion: Number(formatMicro(BigInt(routing.maxPriceUsdMicro.output))),
+    };
+  return Object.keys(p).length > 0 ? p : undefined;
 }
 
 export interface SyncSummary {
@@ -246,12 +290,40 @@ export async function syncLitellm(
       published.snapshot.providers.map((p) => [p.id, p]),
     );
     const nowMs = now().getTime();
-    const wanted: { model: SnapshotModel; provider: SnapshotProvider }[] = [];
+    // Un déploiement par route : la principale (rang 1), puis les routes de secours par position.
+    interface Deployment {
+      model: SnapshotModel;
+      provider: SnapshotProvider;
+      id: string;
+      label: string;
+      upstreamId: string;
+      order: number;
+    }
+    const wanted: Deployment[] = [];
     for (const model of published.snapshot.models) {
-      const provider = providers.get(model.providerId);
-      if (!provider?.enabled) continue;
       if (model.sunsetAt && Date.parse(model.sunsetAt) <= nowMs) continue;
-      wanted.push({ model, provider });
+      const main = providers.get(model.providerId);
+      if (main?.enabled)
+        wanted.push({
+          model,
+          provider: main,
+          id: modelIdOf(model.publicId),
+          label: model.publicId,
+          upstreamId: model.upstreamId,
+          order: 1,
+        });
+      for (const r of model.routes ?? []) {
+        const provider = providers.get(r.providerId);
+        if (!provider?.enabled) continue;
+        wanted.push({
+          model,
+          provider,
+          id: routeDeploymentId(model.publicId, r.position),
+          label: `${model.publicId} (route ${r.position})`,
+          upstreamId: r.upstreamId,
+          order: 1 + r.position,
+        });
+      }
     }
 
     const existingCreds = new Set(await client.listCredentialNames());
@@ -292,21 +364,27 @@ export async function syncLitellm(
 
     const existingModels = new Set(await client.listManagedModelIds());
     const wantedIds = new Set<string>();
-    for (const { model, provider } of wanted) {
+    for (const { model, provider, id, label, upstreamId, order } of wanted) {
+      const hints =
+        provider.type === "openrouter"
+          ? openrouterPreferences(model.routing)
+          : undefined;
       const params: LitellmModelParams = {
-        id: modelIdOf(model.publicId),
+        id,
         modelName: model.publicId,
-        model: litellmModelString(provider.type, model.upstreamId),
+        model: litellmModelString(provider.type, upstreamId),
         credentialName: credentialNameOf(provider),
         mode: model.kind,
+        order,
+        ...(hints ? { extraBody: { provider: hints } } : {}),
       };
       wantedIds.add(params.id);
       if (existingModels.has(params.id)) {
         await client.updateModel(params);
-        summary.models.updated.push(model.publicId);
+        summary.models.updated.push(label);
       } else {
         await client.createModel(params);
-        summary.models.created.push(model.publicId);
+        summary.models.created.push(label);
       }
     }
     for (const id of existingModels) {

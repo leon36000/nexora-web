@@ -49,6 +49,15 @@ interface SnapshotPrice {
   note: string;
 }
 
+/** Route de secours figée dans la version publiée ; `upstream` null = même coût que le modèle. */
+export interface SnapshotRoute {
+  id: string;
+  providerId: string;
+  upstreamId: string;
+  position: number;
+  upstream: { input: string; output: string; cache: string | null } | null;
+}
+
 export interface SnapshotModel {
   id: string;
   publicId: string;
@@ -67,6 +76,8 @@ export interface SnapshotModel {
   /** Absents des versions publiées avant la tranche 1 : lire avec une valeur par défaut. */
   sheet?: ModelSheet;
   routing?: ModelRouting;
+  /** Routes de secours actives, par position ; absentes des versions publiées avant les routes. */
+  routes?: SnapshotRoute[];
   price: SnapshotPrice | null;
 }
 
@@ -126,7 +137,19 @@ export type CatalogIssue =
   | { code: "price_missing"; model: string }
   | ({ model: string; window?: string } & PriceIssue)
   | { code: "provider_missing" | "provider_disabled"; model: string }
-  | { code: "secret_missing"; model: string; provider: string };
+  | { code: "secret_missing"; model: string; provider: string }
+  | {
+      code:
+        | "route_provider_missing"
+        | "route_provider_disabled"
+        | "route_secret_missing";
+      model: string;
+      route: number;
+    }
+  | ({ model: string; route: number } & {
+      code: "route_below_margin_floor";
+      field: "input" | "output" | "cache";
+    });
 
 const KEY_REQUIRED: Record<ProviderType, boolean> = {
   openrouter: true,
@@ -168,6 +191,32 @@ export function guardSnapshot(
           provider: provider.code,
         });
     }
+    for (const r of m.routes ?? []) {
+      const rp = providers.get(r.providerId);
+      if (!rp) {
+        issues.push({
+          code: "route_provider_missing",
+          model: m.publicId,
+          route: r.position,
+        });
+        continue;
+      }
+      if (!rp.enabled)
+        issues.push({
+          code: "route_provider_disabled",
+          model: m.publicId,
+          route: r.position,
+        });
+      if (
+        (KEY_REQUIRED[rp.type] || rp.secretRef !== null) &&
+        (!rp.secretRef || !options.secretExists(rp.secretRef))
+      )
+        issues.push({
+          code: "route_secret_missing",
+          model: m.publicId,
+          route: r.position,
+        });
+    }
     if (!m.price) {
       issues.push({ code: "price_missing", model: m.publicId });
       continue;
@@ -186,6 +235,44 @@ export function guardSnapshot(
           m.kind,
         ))
           issues.push({ model: m.publicId, window: w.label, ...issue });
+      // Chaque route qui a son propre coût doit tenir la marge garantie, au prix de base comme dans chaque plage.
+      for (const r of m.routes ?? []) {
+        if (!r.upstream) continue;
+        const sells = [
+          priceRowOf(m.price),
+          ...(m.price.windows ?? []).map((w) =>
+            windowRowOf(w, m.price?.marginFloorBps ?? 0),
+          ),
+        ];
+        const bad = new Set<string>();
+        for (const sell of sells)
+          for (const issue of checkPrice(
+            {
+              ...sell,
+              upstreamInputUsdMicro: BigInt(r.upstream.input),
+              upstreamOutputUsdMicro: BigInt(r.upstream.output),
+              upstreamCacheUsdMicro:
+                r.upstream.cache === null ? null : BigInt(r.upstream.cache),
+              upstreamCacheWriteUsdMicro: null,
+              sellCacheWriteCadMicro: null,
+            },
+            BigInt(snapshot.fx.usdToCadMicro),
+            m.kind,
+          ))
+            if (
+              issue.code === "below_margin_floor" &&
+              issue.field !== "cacheWrite" &&
+              !bad.has(issue.field)
+            ) {
+              bad.add(issue.field);
+              issues.push({
+                code: "route_below_margin_floor",
+                model: m.publicId,
+                route: r.position,
+                field: issue.field,
+              });
+            }
+      }
     }
   }
   return issues;

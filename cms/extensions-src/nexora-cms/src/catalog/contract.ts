@@ -8,13 +8,16 @@ const UUID =
 /** Liste fermée des appels relayés. Tout le reste est refusé (404), y compris le coffre et les autres routes d'administration. */
 const ALLOWED: ReadonlyArray<readonly [string, RegExp]> = [
   ["GET", /^$/],
-  ["GET", /^(providers|models|fx-rates|versions)$/],
+  ["GET", /^(providers|models|fx-rates|versions|usage-report)$/],
   ["POST", /^(providers|models|fx-rates|versions)$/],
   ["GET", new RegExp(`^(providers|models|versions)/${UUID}$`)],
   ["PATCH", new RegExp(`^(providers|models)/${UUID}$`)],
   ["POST", new RegExp(`^providers/${UUID}/test$`)],
   ["GET", new RegExp(`^models/${UUID}/prices$`)],
   ["POST", new RegExp(`^models/${UUID}/prices$`)],
+  ["GET", new RegExp(`^models/${UUID}/routes$`)],
+  ["POST", new RegExp(`^models/${UUID}/routes$`)],
+  ["PATCH", new RegExp(`^routes/${UUID}$`)],
   ["POST", new RegExp(`^fx-rates/${UUID}/approve$`)],
   ["POST", new RegExp(`^versions/${UUID}/(approve|publish)$`)],
   ["POST", /^sync-litellm$/],

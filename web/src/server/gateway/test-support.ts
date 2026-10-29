@@ -5,6 +5,7 @@ import { putSecret } from "../vault/store";
 import {
   addFxRate,
   addPrice,
+  addRoute,
   approveFxRate,
   approveVersion,
   createDraftVersion,
@@ -32,6 +33,8 @@ export interface TestModelSpec {
   /** Tarif de vente de l'écriture du cache (le coût amont d'essai est de 0,05 USD). */
   sellCacheWrite?: bigint;
   windows?: PriceWindowInput[];
+  /** Routes de secours (même fournisseur), avec leur prix amont en micro-USD par million. */
+  routes?: { input: bigint; output: bigint }[];
   maxOutputTokens?: number;
   contextMax?: number;
 }
@@ -90,6 +93,13 @@ export async function publishTestCatalog(db: Database, specs: TestModelSpec[]) {
       effectiveAt: new Date(Date.now() - 5_000),
       note: "PRIX FICTIFS DE DÉVELOPPEMENT",
     });
+    for (const r of spec.routes ?? [])
+      await addRoute(db, model.id, {
+        providerId: provider.id,
+        upstreamId: "route-up",
+        upstreamInputUsdMicro: r.input,
+        upstreamOutputUsdMicro: r.output,
+      });
     await updateModel(db, model.id, { status: "approved" });
     await updateModel(db, model.id, { status: "published" });
   }

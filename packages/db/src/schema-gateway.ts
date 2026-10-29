@@ -245,6 +245,47 @@ export interface PriceWindowRow {
 }
 
 /**
+ * Route de secours d'un modèle (G6) : le même modèle chez un autre fournisseur (DeepInfra, OpenRouter…), essayé
+ * quand la route principale (`models.provider_id` / `upstream_id`) échoue. `position` ≥ 1 donne l'ordre.
+ * Prix amont propre à la route en micro-USD par million (null = comme le prix du modèle) : il sert à
+ * garantir le plancher de marge sur CHAQUE route et à calculer le coût amont quand elle a servi.
+ */
+export const modelRoutes = pgTable(
+  "model_routes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    modelId: uuid("model_id")
+      .notNull()
+      .references(() => models.id, { onDelete: "restrict" }),
+    providerId: uuid("provider_id")
+      .notNull()
+      .references(() => modelProviders.id, { onDelete: "restrict" }),
+    upstreamId: text("upstream_id").notNull(),
+    position: integer("position").notNull(),
+    enabled: boolean("enabled").notNull().default(true),
+    upstreamInputUsdMicro: micro("upstream_input_usd_micro"),
+    upstreamOutputUsdMicro: micro("upstream_output_usd_micro"),
+    upstreamCacheUsdMicro: micro("upstream_cache_usd_micro"),
+    note: text("note").notNull().default(""),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    updatedAt: ts("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("model_routes_position_unique").on(t.modelId, t.position),
+    index("model_routes_provider_idx").on(t.providerId),
+    check("model_routes_position_pos", sql`${t.position} >= 1`),
+    check(
+      "model_routes_price_pair",
+      sql`(${t.upstreamInputUsdMicro} IS NULL) = (${t.upstreamOutputUsdMicro} IS NULL)`,
+    ),
+    check(
+      "model_routes_price_nonneg",
+      sql`COALESCE(${t.upstreamInputUsdMicro}, 0) >= 0 AND COALESCE(${t.upstreamOutputUsdMicro}, 0) >= 0`,
+    ),
+  ],
+);
+
+/**
  * Prix d'un modèle, par MILLION de jetons. Lignes IMMUABLES (déclencheur SQL) : changer un prix
  * crée une nouvelle ligne avec une nouvelle date d'effet ; un prix ne change jamais pour une
  * requête passée. Coûts amont en micro-USD, prix de vente en micro-CAD.
@@ -415,6 +456,10 @@ export const usageEvents = pgTable(
     priceCacheWriteMicro: micro("price_cache_write_micro"),
     /** Étiquette de la plage horaire appliquée (« creux »), null = prix de base. */
     priceWindow: text("price_window"),
+    /** Route qui a servi : 0 = principale, n = route de secours n (G6). */
+    routePosition: integer("route_position").notNull().default(0),
+    /** Coût rapporté par l'amont pour la requête (OpenRouter : `usage.cost`), micro-USD ; null = non rapporté. */
+    reportedCostUsdMicro: micro("reported_cost_usd_micro"),
     latencyMs: integer("latency_ms").notNull().default(0),
     reservationId: uuid("reservation_id"),
     createdAt: ts("created_at").notNull().defaultNow(),

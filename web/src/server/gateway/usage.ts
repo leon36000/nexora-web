@@ -35,11 +35,14 @@ export interface FinalizeInput {
     cached: number;
     cacheWrite?: number;
     reasoning?: number;
+    reportedUsdMicro?: number;
   };
   price: PerMillion;
   upstreamPrice: PerMillion;
   /** Étiquette de la plage horaire appliquée, null = prix de base. */
   priceWindow?: string | null;
+  /** Route qui a servi : 0 = principale, n = route de secours n. */
+  routePosition?: number;
   reservationId: string;
   /**
    * Frais par exécution (agents hébergés, S7), en plus des jetons ; 0 pour un modèle. Dus dès qu'une exécution a
@@ -56,6 +59,15 @@ export interface FinalizeResult {
   overageMicro: bigint;
   replayed: boolean;
 }
+
+/** Coût rapporté par l'amont, gardé à part du coût calculé ; null si l'amont n'en donne pas ou si la requête a échoué. */
+const reportedOf = (input: {
+  status: string;
+  tokens: { reportedUsdMicro?: number };
+}): bigint | null =>
+  input.status === "error" || input.tokens.reportedUsdMicro === undefined
+    ? null
+    : BigInt(input.tokens.reportedUsdMicro);
 
 export async function finalizeRequest(
   db: Database,
@@ -113,6 +125,8 @@ export async function finalizeRequest(
         priceCacheMicro: input.price.cache,
         priceCacheWriteMicro: input.price.cacheWrite ?? null,
         priceWindow: input.priceWindow ?? null,
+        routePosition: input.routePosition ?? 0,
+        reportedCostUsdMicro: reportedOf(input),
         latencyMs: input.latencyMs,
         reservationId: input.reservationId,
       })
@@ -181,6 +195,8 @@ export async function finalizeHouseRequest(
         priceCacheMicro: input.price.cache,
         priceCacheWriteMicro: input.price.cacheWrite ?? null,
         priceWindow: input.priceWindow ?? null,
+        routePosition: input.routePosition ?? 0,
+        reportedCostUsdMicro: reportedOf(input),
         latencyMs: input.latencyMs,
         reservationId: null,
       })
@@ -238,5 +254,63 @@ export async function usageByDayAndModel(
     promptTokens: Number(r.prompt),
     completionTokens: Number(r.completion),
     costMicro: BigInt(r.cost),
+  }));
+}
+
+export interface ReconciliationRow {
+  model: string;
+  requests: number;
+  /** Total débité aux clients (micro-CAD). */
+  billedMicro: bigint;
+  /** Valeur offerte aux organisations « maison » (micro-CAD). */
+  offeredMicro: bigint;
+  /** Coût amont calculé avec nos prix de route (micro-USD). */
+  upstreamComputedUsdMicro: bigint;
+  /** Requêtes pour lesquelles l'amont a rapporté son coût (OpenRouter). */
+  reportedRequests: number;
+  upstreamReportedUsdMicro: bigint;
+  /** Rapporté moins calculé, sur les seules requêtes qui ont un coût rapporté : positif = on sous-estime nos coûts. */
+  driftUsdMicro: bigint;
+}
+
+/** Rapprochement par modèle sur `days` jours : ce qui est facturé, offert, et ce que coûte l'amont (calculé et rapporté). */
+export async function reconciliationByModel(
+  db: Database,
+  days = 30,
+  now: Date = new Date(),
+): Promise<ReconciliationRow[]> {
+  const since = new Date(now.getTime() - days * 86_400_000);
+  const rows = await db.execute<{
+    model: string;
+    requests: string;
+    billed: string;
+    offered: string;
+    computed: string;
+    reported_requests: string;
+    reported: string;
+    computed_for_reported: string;
+  }>(sql`
+    SELECT model_public_id AS model,
+           count(*)::text AS requests,
+           COALESCE(sum(cost_micro) FILTER (WHERE billed), 0)::text AS billed,
+           COALESCE(sum(value_micro) FILTER (WHERE NOT billed), 0)::text AS offered,
+           COALESCE(sum(upstream_cost_usd_micro), 0)::text AS computed,
+           (count(*) FILTER (WHERE reported_cost_usd_micro IS NOT NULL))::text AS reported_requests,
+           COALESCE(sum(reported_cost_usd_micro), 0)::text AS reported,
+           COALESCE(sum(upstream_cost_usd_micro) FILTER (WHERE reported_cost_usd_micro IS NOT NULL), 0)::text AS computed_for_reported
+    FROM usage_events
+    WHERE created_at >= ${since.toISOString()}::timestamptz AND status <> 'error'
+    GROUP BY 1
+    ORDER BY 1
+  `);
+  return [...rows].map((r) => ({
+    model: r.model,
+    requests: Number(r.requests),
+    billedMicro: BigInt(r.billed),
+    offeredMicro: BigInt(r.offered),
+    upstreamComputedUsdMicro: BigInt(r.computed),
+    reportedRequests: Number(r.reported_requests),
+    upstreamReportedUsdMicro: BigInt(r.reported),
+    driftUsdMicro: BigInt(r.reported) - BigInt(r.computed_for_reported),
   }));
 }

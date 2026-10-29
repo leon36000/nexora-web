@@ -19,6 +19,7 @@ import { envOutboundGuard, type OutboundGuard } from "../security/outbound";
 import {
   addFxRate,
   addPrice,
+  addRoute,
   approveFxRate,
   approveVersion,
   CatalogError,
@@ -35,15 +36,18 @@ import {
   listModels,
   listPrices,
   listProviders,
+  listRoutes,
   listVersions,
   publishVersion,
   recordProviderCheck,
   updateModel,
   updateProvider,
+  updateRoute,
 } from "./catalog";
 import { type LitellmClient, SyncError, syncLitellm } from "./litellm";
 import { testProvider } from "./provider-test";
 import { modelRoutingSchema, modelSheetSchema } from "./sheet";
+import { reconciliationByModel } from "./usage";
 
 /**
  * API d'administration du catalogue : `/api/admin/catalog/*` (D14). Jeton d'administration en temps
@@ -184,6 +188,28 @@ const modelPatch = z
   .object({ ...modelFields, status: z.enum(MODEL_STATUSES) })
   .partial()
   .strict();
+
+const routeFields = {
+  providerId: z.uuid(),
+  upstreamId: z.string().min(1).max(200),
+  upstreamInputUsdMicro: micro.nullable(),
+  upstreamOutputUsdMicro: micro.nullable(),
+  upstreamCacheUsdMicro: micro.nullable(),
+  enabled: z.boolean(),
+  note: z.string().max(500),
+};
+const routeCreate = z
+  .object({
+    providerId: routeFields.providerId,
+    upstreamId: routeFields.upstreamId,
+    upstreamInputUsdMicro: routeFields.upstreamInputUsdMicro.optional(),
+    upstreamOutputUsdMicro: routeFields.upstreamOutputUsdMicro.optional(),
+    upstreamCacheUsdMicro: routeFields.upstreamCacheUsdMicro.optional(),
+    enabled: routeFields.enabled.optional(),
+    note: routeFields.note.optional(),
+  })
+  .strict();
+const routePatch = z.object(routeFields).partial().strict();
 
 const priceSet = z
   .object({
@@ -515,6 +541,18 @@ async function route(
       return ok(created, 201);
     }
     const modelId = id(b);
+    if (c === "routes") {
+      allowed("GET", "POST");
+      if (method === "GET")
+        return ok({ routes: await listRoutes(db, modelId) });
+      const route = await addRoute(
+        db,
+        modelId,
+        await body(request, routeCreate),
+      );
+      deps.log.info("catalogue : route ajoutée", { modelId });
+      return ok(route, 201);
+    }
     if (c === "prices") {
       allowed("GET", "POST");
       if (method === "GET")
@@ -544,6 +582,24 @@ async function route(
         status: updated.status,
       });
     return ok(updated);
+  }
+
+  if (a === "usage-report") {
+    if (b) throw new HttpError(404, "not_found");
+    allowed("GET");
+    const raw = new URL(request.url).searchParams.get("days") ?? "30";
+    const days = Number(raw);
+    if (!/^\d{1,3}$/.test(raw) || days < 1 || days > 366)
+      throw new HttpError(422, "invalid_request", {
+        message: "days : entier de 1 à 366",
+      });
+    return ok({ days, rows: await reconciliationByModel(db, days, now) });
+  }
+
+  if (a === "routes") {
+    if (!b || c) throw new HttpError(404, "not_found");
+    allowed("PATCH");
+    return ok(await updateRoute(db, id(b), await body(request, routePatch)));
   }
 
   if (a === "fx-rates") {

@@ -7,6 +7,7 @@ import { putSecret, readSecret } from "../vault/store";
 import {
   addFxRate,
   addPrice,
+  addRoute,
   approveFxRate,
   approveVersion,
   createDraftVersion,
@@ -14,10 +15,13 @@ import {
   createProvider,
   publishVersion,
   updateModel,
+  updateRoute,
 } from "./catalog";
 import {
   apiBaseFor,
   createLitellmClient,
+  routeDeploymentId,
+  routePositionOf,
   SyncError,
   syncLitellm,
 } from "./litellm";
@@ -260,5 +264,129 @@ describe("adresse de base transmise à LiteLLM", () => {
     expect(
       apiBaseFor("openrouter", "https://openrouter.ai/api/v1"),
     ).toBeUndefined();
+  });
+});
+
+describe("synchronisation LiteLLM : routes de secours et consignes de routage", () => {
+  async function publishWithRoute() {
+    await t.db.update(models).set({ status: "retired" });
+    await putSecret(t.db, keyring, {
+      ref: "llm.zai-r",
+      value: "sk-zai-r-xxxxxxxxxxxx",
+      kind: "llm_provider",
+    });
+    await putSecret(t.db, keyring, {
+      ref: "llm.or-r",
+      value: "sk-or-r-xxxxxxxxxxxxx",
+      kind: "llm_provider",
+    });
+    const zai = await createProvider(t.db, {
+      code: "zai-r",
+      name: "Z.ai",
+      type: "openai_compatible",
+      baseUrl: "https://api.z.ai/api/paas/v4",
+      secretRef: "llm.zai-r",
+      region: "autre",
+    });
+    const or = await createProvider(t.db, {
+      code: "or-r",
+      name: "OpenRouter",
+      type: "openrouter",
+      baseUrl: "https://openrouter.ai/api/v1",
+      secretRef: "llm.or-r",
+      region: "autre",
+    });
+    const model = await createModel(t.db, {
+      publicId: "nexora/route-test",
+      name: "Route test",
+      providerId: zai.id,
+      upstreamId: "glm-5.3",
+      contextMax: 100_000,
+      routing: {
+        dataCollection: "deny",
+        allowFallbacks: true,
+        ignore: ["alibaba"],
+        maxPriceUsdMicro: { input: "1400000", output: "4400000" },
+      },
+    });
+    const fx = await addFxRate(t.db, {
+      usdToCadMicro: 1_400_000n,
+      effectiveAt: new Date(Date.now() - 1000),
+    });
+    await approveFxRate(t.db, fx.id, "test");
+    await addPrice(t.db, model.id, {
+      upstreamInputUsdMicro: 1_400_000n,
+      upstreamOutputUsdMicro: 4_400_000n,
+      marginBps: 1000,
+      marginFloorBps: 1000,
+    });
+    const route = await addRoute(t.db, model.id, {
+      providerId: or.id,
+      upstreamId: "z-ai/glm-5.3",
+    });
+    await updateModel(t.db, model.id, { status: "approved" });
+    await updateModel(t.db, model.id, { status: "published" });
+    const publish = async () => {
+      const { version } = await createDraftVersion(t.db);
+      await approveVersion(t.db, version.id);
+      return publishVersion(t.db, version.id);
+    };
+    await publish();
+    return { model, route, publish };
+  }
+
+  it("crée un déploiement par route dans l'ordre, transmet les consignes à OpenRouter, et retire une route désactivée", async () => {
+    const { route, publish } = await publishWithRoute();
+    const { state, client } = fakeLitellm();
+    await syncLitellm(t.db, { client, getSecret });
+    const primary = state.models.get("nxm-nexora-route-test") as Record<
+      string,
+      any
+    >;
+    const fallback = state.models.get("nxm-nexora-route-test~r1") as Record<
+      string,
+      any
+    >;
+    expect(primary.model_name).toBe("nexora/route-test");
+    expect(fallback.model_name).toBe("nexora/route-test");
+    expect(primary.litellm_params.order).toBe(1);
+    expect(fallback.litellm_params.order).toBe(2);
+    expect(primary.litellm_params.model).toBe("openai/glm-5.3");
+    expect(primary.litellm_params.extra_body).toBeUndefined();
+    expect(fallback.litellm_params.model).toBe("openrouter/z-ai/glm-5.3");
+    expect(fallback.litellm_params.extra_body).toEqual({
+      provider: {
+        data_collection: "deny",
+        allow_fallbacks: true,
+        ignore: ["alibaba"],
+        max_price: { prompt: 1.4, completion: 4.4 },
+      },
+    });
+    // la clé de chaque fournisseur est dans son crédential, jamais dans un modèle
+    expect(state.credentials.get("nexora-prov-or-r")).toMatchObject({
+      api_key: "sk-or-r-xxxxxxxxxxxxx",
+    });
+    expect(JSON.stringify([primary, fallback])).not.toContain("sk-");
+
+    await updateRoute(t.db, route.id, { enabled: false });
+    await publish();
+    await syncLitellm(t.db, { client, getSecret });
+    expect(state.models.has("nxm-nexora-route-test")).toBe(true);
+    expect(state.models.has("nxm-nexora-route-test~r1")).toBe(false);
+    // le crédential du fournisseur de secours n'est plus utilisé : retiré
+    expect(state.credentials.has("nexora-prov-or-r")).toBe(false);
+  });
+});
+
+describe("identifiant d'un déploiement de route", () => {
+  it("se relit sans ambiguïté, même si l'identifiant public finit comme une route", () => {
+    expect(routeDeploymentId("nexora/glm", 0)).toBe("nxm-nexora-glm");
+    expect(routeDeploymentId("nexora/glm", 2)).toBe("nxm-nexora-glm~r2");
+    expect(routePositionOf("nxm-nexora-glm~r2")).toBe(2);
+    expect(routePositionOf("nxm-nexora-glm")).toBe(0);
+    // un modèle dont l'identifiant public finit par « -r1 » n'est pas pris pour une route
+    expect(routePositionOf(routeDeploymentId("nexora/glm-r1", 0))).toBe(0);
+    expect(routePositionOf(null)).toBe(0);
+    expect(routePositionOf("n-importe-quoi~r0")).toBe(0);
   });
 });

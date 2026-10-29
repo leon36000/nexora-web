@@ -73,7 +73,7 @@ async function call(
       headers: { "content-type": "application/json", ...headers },
       body: body === undefined ? undefined : JSON.stringify(body),
     }),
-    path.split("/").filter(Boolean),
+    (path.split("?")[0] ?? "").split("/").filter(Boolean),
     d,
   );
   return {
@@ -379,6 +379,64 @@ describe("flux complet de l'administration", () => {
       windows: [{ ...window, endMinute: 1500 }],
     });
     expect(badMinutes.status).toBe(422);
+  });
+
+  it("gère les routes de secours d'un modèle : ajout, liste, désactivation, refus d'un prix à moitié renseigné", async () => {
+    const m = await call("POST", "models", {
+      publicId: "nexora/essai-routes",
+      name: "Essai routes",
+      providerId,
+      upstreamId: "up",
+      contextMax: 8000,
+    });
+    expect(m.status).toBe(201);
+    const added = await call("POST", `models/${m.json.id}/routes`, {
+      providerId,
+      upstreamId: "zai-org/GLM-5.3",
+      upstreamInputUsdMicro: "400000",
+      upstreamOutputUsdMicro: "900000",
+    });
+    expect(added.status).toBe(201);
+    expect(added.json.position).toBe(1);
+    const second = await call("POST", `models/${m.json.id}/routes`, {
+      providerId,
+      upstreamId: "autre",
+    });
+    expect(second.json.position).toBe(2);
+
+    const list = await call("GET", `models/${m.json.id}/routes`);
+    expect(
+      list.json.routes.map((r: { upstreamId: string }) => r.upstreamId),
+    ).toEqual(["zai-org/GLM-5.3", "autre"]);
+
+    const off = await call("PATCH", `routes/${added.json.id}`, {
+      enabled: false,
+    });
+    expect(off.status).toBe(200);
+    expect(off.json.enabled).toBe(false);
+
+    const half = await call("POST", `models/${m.json.id}/routes`, {
+      providerId,
+      upstreamId: "x",
+      upstreamInputUsdMicro: "1",
+    });
+    expect(half.status).toBe(422);
+    const unknown = await call(
+      "PATCH",
+      "routes/00000000-0000-4000-8000-000000000000",
+      { enabled: true },
+    );
+    expect(unknown.status).toBe(404);
+  });
+
+  it("rend le rapprochement des coûts par modèle et refuse une période absurde", async () => {
+    const ok = await call("GET", "usage-report?days=7");
+    expect(ok.status).toBe(200);
+    expect(Array.isArray(ok.json.rows)).toBe(true);
+    expect(ok.json.days).toBe(7);
+    expect((await call("GET", "usage-report?days=0")).status).toBe(422);
+    expect((await call("GET", "usage-report?days=abc")).status).toBe(422);
+    expect((await call("POST", "usage-report")).status).toBe(405);
   });
 
   it("brouillon → aperçu des différences → approbation → publication → synchronisation", async () => {

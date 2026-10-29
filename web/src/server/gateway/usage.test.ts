@@ -12,7 +12,12 @@ import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createApiKey } from "./keys";
 import { newOrganization } from "./test-support";
-import { finalizeRequest, usageByDayAndModel } from "./usage";
+import {
+  finalizeHouseRequest,
+  finalizeRequest,
+  reconciliationByModel,
+  usageByDayAndModel,
+} from "./usage";
 
 let t: TestDatabase;
 beforeAll(async () => {
@@ -286,5 +291,43 @@ describe("usage par jour et par modèle", () => {
     });
     const other = await newOrganization(t.db);
     expect(await usageByDayAndModel(t.db, other, 7)).toEqual([]);
+  });
+});
+
+describe("rapprochement du coût calculé et du coût rapporté par l'amont (G7)", () => {
+  it("additionne facturé, offert, coût calculé et coût rapporté, et mesure l'écart sur les requêtes qui en ont un", async () => {
+    const std = await setup();
+    const withReported = {
+      ...input(std, "req_rec_1"),
+      modelPublicId: "nexora/rec",
+      tokens: { prompt: 100, completion: 50, cached: 0, reportedUsdMicro: 25 },
+    };
+    await finalizeRequest(t.db, withReported);
+    const std2 = await setup();
+    await finalizeRequest(t.db, {
+      ...input(std2, "req_rec_2"),
+      modelPublicId: "nexora/rec",
+    });
+    const house = await setup();
+    const { reservationId: _r, ...houseInput } = input(house, "req_rec_3");
+    await finalizeHouseRequest(t.db, {
+      ...houseInput,
+      modelPublicId: "nexora/rec",
+      tokens: { prompt: 100, completion: 50, cached: 0, reportedUsdMicro: 18 },
+    });
+
+    const rows = await reconciliationByModel(t.db, 1);
+    const row = rows.find((r) => r.model === "nexora/rec");
+    expect(row).toEqual({
+      model: "nexora/rec",
+      requests: 3,
+      billedMicro: 500n,
+      offeredMicro: 250n,
+      upstreamComputedUsdMicro: 60n,
+      reportedRequests: 2,
+      upstreamReportedUsdMicro: 43n,
+      // 43 rapportés contre 20 + 20 calculés pour les deux mêmes requêtes
+      driftUsdMicro: 3n,
+    });
   });
 });

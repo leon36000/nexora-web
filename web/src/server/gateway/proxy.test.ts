@@ -205,6 +205,10 @@ beforeAll(async () => {
       sellCacheWrite: 2_000_000n,
     },
     {
+      publicId: "nexora/test-route",
+      routes: [{ input: 40_000n, output: 80_000n }],
+    },
+    {
       publicId: "nexora/test-embed",
       kind: "embedding",
       sellInput: 200_000n,
@@ -1260,6 +1264,7 @@ describe("embeddings et liste des modèles", () => {
     expect(ids).toEqual([
       "nexora/test-chat",
       "nexora/test-embed",
+      "nexora/test-route",
       "nexora/test-windows",
       "nexora/test-write",
     ]);
@@ -1662,5 +1667,58 @@ describe("organisation maison (accès gratuit du fondateur)", () => {
     const org = await newOrganization(t.db);
     // biome-ignore lint/suspicious/noExplicitAny: mode volontairement invalide
     await expect(setBillingMode(t.db, org, "gratuit" as any)).rejects.toThrow();
+  });
+});
+
+describe("route qui a servi et coût rapporté par l'amont (G7)", () => {
+  const usage = {
+    prompt_tokens: 1000,
+    completion_tokens: 1000,
+    total_tokens: 2000,
+  };
+  const run = async (headers: Record<string, string>) => {
+    const c = await client();
+    upstream = () => {
+      const r = upstreamOk(usage);
+      for (const [k, v] of Object.entries(headers)) r.headers.set(k, v);
+      return r;
+    };
+    const res = await handleChatCompletions(
+      post(c.key, chat({ model: "nexora/test-route" })),
+      deps(),
+    );
+    expect(res.status).toBe(200);
+    const [ev] = await t.db
+      .select()
+      .from(usageEvents)
+      .where(eq(usageEvents.organizationId, c.org));
+    return { res, ev };
+  };
+
+  it("route principale : coût amont au prix du modèle, position 0, coût rapporté enregistré", async () => {
+    const { ev, res } = await run({
+      "x-litellm-model-id": "nxm-nexora-test-route",
+    });
+    expect(ev?.routePosition).toBe(0);
+    // 1 000 × 0,10 + 1 000 × 0,20 USD par million = 300 micro-USD
+    expect(ev?.upstreamCostUsdMicro).toBe(300n);
+    // le coût rapporté (0,123 USD) est gardé à part, jamais montré au client
+    expect(ev?.reportedCostUsdMicro).toBe(123_000n);
+    expect(await res.text()).not.toContain("0.123");
+  });
+
+  it("route de secours : coût amont au prix de la route et position enregistrée", async () => {
+    const { ev } = await run({
+      "x-litellm-model-id": "nxm-nexora-test-route~r1",
+    });
+    expect(ev?.routePosition).toBe(1);
+    // 1 000 × 0,04 + 1 000 × 0,08 USD par million = 120 micro-USD
+    expect(ev?.upstreamCostUsdMicro).toBe(120n);
+  });
+
+  it("sans en-tête d'identifiant : route principale", async () => {
+    const { ev } = await run({});
+    expect(ev?.routePosition).toBe(0);
+    expect(ev?.upstreamCostUsdMicro).toBe(300n);
   });
 });
