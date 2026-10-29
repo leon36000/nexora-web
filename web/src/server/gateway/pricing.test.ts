@@ -5,6 +5,7 @@ import {
   costMicro,
   requestCost,
   sellFromMargin,
+  tokensValueMicro,
   upstreamCadMicro,
   windowProblems,
 } from "./pricing";
@@ -259,5 +260,22 @@ describe("plages horaires de prix (DeepSeek : pointe et creux)", () => {
         { label: "b", days: [1, 2], startMinute: 60, endMinute: 180 },
       ]),
     ).not.toEqual([]);
+  });
+});
+
+describe("valeur d'un forfait de jetons inclus (WorkStudio)", () => {
+  // GLM 5.3 Flash : 0,231 $ CA en entrée et 0,77 $ CA en sortie par million de jetons
+  const flash = { input: 231_000n, output: 770_000n, cache: null };
+
+  it("calcule la valeur de 5 millions de jetons avec une part de sortie donnée, sans nombre à virgule", () => {
+    // 70 % entrée, 30 % sortie : 3,5 M × 0,231 + 1,5 M × 0,77 = 0,8085 + 1,155 = 1,9635 $
+    expect(tokensValueMicro(5_000_000, flash, 3000)).toBe(1_963_500n);
+  });
+
+  it("arrondit vers le haut et refuse une part hors de 0 à 10 000", () => {
+    expect(tokensValueMicro(1, flash, 0)).toBe(1n);
+    expect(() => tokensValueMicro(1000, flash, -1)).toThrow(RangeError);
+    expect(() => tokensValueMicro(1000, flash, 10_001)).toThrow(RangeError);
+    expect(tokensValueMicro(0, flash, 3000)).toBe(0n);
   });
 });
