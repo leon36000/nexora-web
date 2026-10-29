@@ -155,6 +155,13 @@
       "when": 1793255100859,
       "tag": "0021_s12_sso_workstudio_oidc",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1793267863303,
+      "tag": "0023_webpilot_api_web",
+      "breakpoints": true
     }
   ]
 }

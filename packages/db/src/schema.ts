@@ -182,3 +182,4 @@ export * from "./schema-oauth.ts";
 export * from "./schema-payments.ts";
 export * from "./schema-site.ts";
 export * from "./schema-vps.ts";
+export * from "./schema-webpilot.ts";

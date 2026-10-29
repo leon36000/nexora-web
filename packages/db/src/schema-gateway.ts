@@ -369,6 +369,11 @@ export const apiKeys = pgTable(
     expiresAt: ts("expires_at"),
     revokedAt: ts("revoked_at"),
     lastUsedAt: ts("last_used_at"),
+    /**
+     * Permission WebPilot : opérations permises (`search`, `scrape`, `crawl`, `extract`, `sessions`). Null (défaut) :
+     * la clé n'a PAS accès à WebPilot tant qu'une personne ne l'a pas cochée.
+     */
+    webpilotOperations: jsonb("webpilot_operations").$type<string[] | null>(),
     createdBy: text("created_by"),
     createdAt: ts("created_at").notNull().defaultNow(),
   },
@@ -462,6 +467,15 @@ export const usageEvents = pgTable(
     reportedCostUsdMicro: micro("reported_cost_usd_micro"),
     latencyMs: integer("latency_ms").notNull().default(0),
     reservationId: uuid("reservation_id"),
+    /** WebPilot : unités facturées (pages lues sans navigateur, pages rendues par navigateur, minutes de session). */
+    unitsPageStatic: integer("units_page_static").notNull().default(0),
+    unitsPageBrowser: integer("units_page_browser").notNull().default(0),
+    unitsBrowserMinute: integer("units_browser_minute").notNull().default(0),
+    /** WebPilot : HÔTE visité (jamais l'adresse complète), pour l'audit du client (décision O-6). */
+    destinationHost: text("destination_host"),
+    /** Nexora Privacy Router : décision (`allow`, `mask`) et version de la politique appliquée. */
+    privacyDecision: text("privacy_decision"),
+    policyVersion: text("policy_version"),
     createdAt: ts("created_at").notNull().defaultNow(),
   },
   (t) => [
