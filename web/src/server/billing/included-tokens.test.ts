@@ -43,9 +43,9 @@ describe("forfait de 5 millions de jetons inclus", () => {
   });
 
   it("arrondit vers le haut au cent : jamais moins que 5 M de jetons", () => {
-    expect(
-      includedCreditsCents({ input: 1n, output: 1n, cache: null }),
-    ).toBe(1);
+    expect(includedCreditsCents({ input: 1n, output: 1n, cache: null })).toBe(
+      1,
+    );
   });
 });
 

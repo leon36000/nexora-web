@@ -5,6 +5,7 @@ import {
   createSiteAgentRunHandler,
   productionRunnerDeps,
 } from "./agents/index.ts";
+import { registerBalanceAlertHandler } from "./balance-alerts.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { registerLedgerHandlers } from "./ledger-handlers.ts";
 import { HandlerRegistry } from "./registry.ts";
@@ -46,6 +47,14 @@ export function defaultRegistry(
     registerSeoHandlers(registry, { db: deps.db, log: deps.log });
   if (deps.db && deps.log)
     registerLedgerHandlers(registry, { db: deps.db, log: deps.log });
+  if (deps.db && deps.log)
+    registerBalanceAlertHandler(registry, {
+      db: deps.db,
+      log: deps.log,
+      mailer: mailerFromEnv(),
+      from: process.env.SMTP_FROM?.trim() || "site@nexora.dev",
+      siteUrl: process.env.SITE_URL?.trim() || "http://localhost:3500",
+    });
   if (deps.db && deps.log)
     registerWebpilotHandlers(registry, { db: deps.db, log: deps.log });
   return registry;

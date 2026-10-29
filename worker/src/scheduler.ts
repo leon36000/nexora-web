@@ -21,6 +21,7 @@ import type { Logger } from "@nexora/log";
  *   chaque heure          Santé des modèles (si l'agent est activé)
  *   lundi 07:00           Veille (si activée et si une source est configurée dans l'agent)
  *   toutes les 10 minutes libération des réservations de crédits perdues (grand livre, voir ledger-handlers.ts)
+ *   toutes les 30 minutes alertes de solde bas (courriel aux propriétaires, voir balance-alerts.ts)
  *   chaque heure          versement des douzièmes mensuels des crédits inclus des offres annuelles
  *   02:00 chaque jour     expiration des crédits échus (12 mois)
  */
@@ -29,6 +30,7 @@ const TZ = "America/Toronto";
 const LEDGER_RELEASE_EVERY_MS = 10 * 60_000;
 /** Versement des douzièmes mensuels des offres annuelles : une occurrence par heure. */
 const LEDGER_GRANT_EVERY_MS = 60 * 60_000;
+const BALANCE_ALERT_EVERY_MS = 30 * 60_000;
 
 export interface LocalClock {
   date: string; // YYYY-MM-DD
@@ -155,6 +157,12 @@ export async function tickScheduler(deps: SchedulerDeps): Promise<string[]> {
   await enqueue(db, {
     type: "webpilot.purge",
     idempotencyKey: `webpilot-purge:${Math.floor(nowMs / LEDGER_GRANT_EVERY_MS)}`,
+    maxAttempts: 2,
+  });
+  // Alertes de solde bas : une occurrence par demi-heure.
+  await enqueue(db, {
+    type: "billing.balance-alerts",
+    idempotencyKey: `billing-balance-alerts:${Math.floor(nowMs / BALANCE_ALERT_EVERY_MS)}`,
     maxAttempts: 2,
   });
   await enqueue(db, {

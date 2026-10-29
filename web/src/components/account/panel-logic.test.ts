@@ -5,6 +5,7 @@ import {
   onboardingProgress,
   onboardingSteps,
   PANEL_NAV,
+  presetAmountsCents,
   safeInstanceUrl,
   sectionOfPath,
   workstudioInstanceOrigin,
@@ -277,5 +278,25 @@ describe("accès WorkStudio", () => {
     expect(hasWorkstudioAccess([{ planCode: "equipe", access: "grace" }])).toBe(
       true,
     );
+  });
+});
+
+describe("montants proposés pour ajouter des fonds", () => {
+  it("20, 50, 100, 250 et 500 $ quand les bornes le permettent", () => {
+    expect(presetAmountsCents(2000, 500_000)).toEqual([
+      2000, 5000, 10_000, 25_000, 50_000,
+    ]);
+  });
+  it("écarte ce qui est sous le minimum ou au-dessus du maximum", () => {
+    expect(presetAmountsCents(5000, 20_000)).toEqual([5000, 10_000]);
+  });
+  it("le minimum de la configuration est toujours proposé, même hors liste", () => {
+    expect(presetAmountsCents(1000, 3000)).toEqual([1000, 2000]);
+    expect(presetAmountsCents(3000, 500_000)).toEqual([
+      3000, 5000, 10_000, 25_000, 50_000,
+    ]);
+  });
+  it("bornes incohérentes : aucune proposition (le champ libre reste)", () => {
+    expect(presetAmountsCents(5000, 2000)).toEqual([]);
   });
 });

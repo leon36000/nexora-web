@@ -90,6 +90,25 @@ export function onboardingProgress(steps: readonly OnboardingStep[]): {
   return { done: steps.filter((s) => s.done).length, total: steps.length };
 }
 
+const PRESET_AMOUNTS_CENTS = [2000, 5000, 10_000, 25_000, 50_000] as const;
+
+/**
+ * Montants proposés (cents) au bouton « Ajouter des fonds » : 20, 50, 100, 250 et 500 $ dans les bornes de la
+ * configuration ; le minimum de la configuration est toujours proposé en premier. Le champ libre reste disponible.
+ */
+export function presetAmountsCents(
+  minCents: number,
+  maxCents: number,
+): number[] {
+  if (minCents > maxCents) return [];
+  const within = PRESET_AMOUNTS_CENTS.filter(
+    (c) => c >= minCents && c <= maxCents,
+  );
+  return within.includes(minCents as never)
+    ? [...within]
+    : [minCents, ...within.filter((c) => c > minCents)];
+}
+
 /** Seule une organisation « maison » (équipe de Nexora) a un accès gratuit ; toute autre valeur : jamais. */
 export function isFreeAccess(mode: BillingMode): boolean {
   return mode === "house";

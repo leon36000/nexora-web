@@ -3,6 +3,7 @@ import {
   formatDateTime,
   formatLatency,
   formatMicroCadExact,
+  formatTokensCompact,
   sharePercent,
 } from "./panel-format";
 
@@ -77,5 +78,19 @@ describe("date et heure du journal", () => {
     expect(formatDateTime(new Date("2026-01-15T03:30:00Z"))).toBe(
       "2026-01-14 22:30:00", // heure normale (UTC-5), veille
     );
+  });
+});
+
+describe("jetons en millions", () => {
+  it("français : « 1,2 M », « 5 M », « 850 k », entiers sous 1 000", () => {
+    expect(plain(formatTokensCompact("fr", 5_000_000))).toBe("5 M");
+    expect(plain(formatTokensCompact("fr", 1_234_000))).toBe("1,2 M");
+    expect(plain(formatTokensCompact("fr", 850_000))).toBe("850 k");
+    expect(plain(formatTokensCompact("fr", 0))).toBe("0");
+    expect(plain(formatTokensCompact("fr", 999))).toBe("999");
+  });
+  it("anglais : point décimal", () => {
+    expect(plain(formatTokensCompact("en", 1_234_000))).toBe("1.2 M");
+    expect(plain(formatTokensCompact("en", 5_000_000))).toBe("5 M");
   });
 });
