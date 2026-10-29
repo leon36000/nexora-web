@@ -11,7 +11,7 @@ Dépôt : `https://pc4.tail0c55ff.ts.net/root/nexora-web` (privé, branche `main
 | Clés des fournisseurs (DeepSeek, Z.ai, MiniMax, Moonshot…) | coffre (base de données, chiffrées) | à ressaisir dans le module « Coffre » si la base est perdue |
 | Données (bases `app` et `directus`, fichiers Directus) | volumes Docker | `deploy/backup.sh` / `deploy/restore.sh` (voir `docs/guide-operateur.md` §10) |
 
-Au 28/10/2026 le site n'est hébergé que pour des essais (démo sur gx10) : aucune donnée client n'existe encore. Reconstruire revient donc à refaire le code et les secrets, puis à recharger le catalogue de modèles.
+Au 29/10/2026 le site n'est hébergé que pour des essais (démo sur gx10) : aucune donnée client n'existe encore. Reconstruire revient donc à refaire le code et les secrets, puis à recharger le catalogue de modèles.
 
 ## Prérequis (vérifiés)
 
@@ -28,8 +28,8 @@ bash deploy/init-env.sh                                   # génère deploy/.env
 bash scripts/init-dev-env.sh                              # génère .env et web/.env.local
 docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d db   # base prête en ~6 s
 bun install --frozen-lockfile
-bun packages/db/src/migrate-cli.ts                        # applique les 21 migrations
-(cd web && npx vitest run)                                # 1 353 tests passent ; 24 sautés sans le simulateur Stripe
+bun packages/db/src/migrate-cli.ts                        # applique les 26 migrations (0000 à 0025)
+(cd web && npx vitest run)                                # environ 1 970 tests ; les paquets (db, privacy, webpilot, net) et le worker ont leurs propres suites : `npx vitest run` dans chaque dossier ; le CMS : `bun test` dans cms/
 ```
 
 Pile complète (Directus, LiteLLM, simulateur Stripe, Mailpit) : retirer `db` de la commande `up`, puis `docs/guide-operateur.md` §2.
@@ -47,3 +47,11 @@ Prérequis du chargement : un taux de change USD→CAD approuvé (module « Mod�
 
 1. Cloner et générer les secrets comme ci-dessus **sauf** `NEXORA_VAULT_MASTER_KEY` : remettre celle d'origine dans `deploy/.env` avant de démarrer le site.
 2. `deploy/restore.sh verifier ARCHIVE`, puis `deploy/restore.sh restaurer ARCHIVE --pg-container nexorasite-db-1` (voir l'en-tête du script).
+
+## Ce qui s'ajoute depuis le 29/10/2026
+
+- **Paquets partagés** : `packages/privacy` (Privacy Router : site et worker) et `packages/webpilot` (moteur WebPilot). Le worker tourne sous Node nu : les imports relatifs de ces paquets portent leur extension `.ts`.
+- **Service navigateur de WebPilot** (`services/webpilot-browser/`, hors workspace bun, image propre : `npm ci` dans son dossier avant ses tests ; profil Compose `webpilot-browser`). SearXNG (`searxng`) pour la recherche. Aucun des deux n'est nécessaire pour redémarrer le site ; sans eux, `search` et le rendu navigateur répondent `503 webpilot_unavailable`.
+- **Administration** : le panneau Directus relaie vers le site (`NEXORA_APP_INTERNAL_URL`, `NEXORA_APP_ADMIN_TOKEN`) ; après `cms/scripts/stage-extensions.sh`, `docker restart` du conteneur Directus suffit.
+- **WorkStudio intégré** : variables `WORKSTUDIO_*` du site et `NEXORA_OIDC_*` / `NEXORA_GATEWAY_URL` de WorkStudio : `docs/workstudio-integre.md`.
+- **Compte administrateur gratuit** : créer le compte sur le site, puis passer son organisation en mode « maison » (`bun run --cwd web house:org` pour l'organisation « Nexora — maison », ou `setBillingMode`).
