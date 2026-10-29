@@ -58,6 +58,8 @@ export interface SnapshotRoute {
   upstream: { input: string; output: string; cache: string | null } | null;
 }
 
+export type ModelAvailability = "live" | "preview";
+
 export interface SnapshotModel {
   id: string;
   publicId: string;
@@ -72,6 +74,11 @@ export interface SnapshotModel {
   capabilities: ModelCapabilities;
   residency: Region;
   visibility: ModelVisibility;
+  /**
+   * `preview` : visible au catalogue public (fiche, prix) mais pas encore appelable (clé du fournisseur non saisie).
+   * Absent des versions publiées avant l'aperçu : lire « live ».
+   */
+  availability?: ModelAvailability;
   sunsetAt: string | null;
   /** Absents des versions publiées avant la tranche 1 : lire avec une valeur par défaut. */
   sheet?: ModelSheet;

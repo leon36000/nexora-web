@@ -141,4 +141,12 @@ describe("vue publique d'un modèle", () => {
     const { sheet: _s, routing: _r, routes: _rt, ...old } = model;
     expect(toPublicModel(old, provider)?.sheet).toEqual({});
   });
+
+  it("un modèle sans disponibilité enregistrée est « live » ; un modèle en aperçu le reste (visible, pas appelable)", () => {
+    expect(toPublicModel(model, provider)?.availability).toBe("live");
+    expect(
+      toPublicModel({ ...model, availability: "preview" }, provider)
+        ?.availability,
+    ).toBe("preview");
+  });
 });

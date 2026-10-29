@@ -36,6 +36,8 @@ export interface PublicModel {
   maxOutputTokens: number | null;
   capabilities: ModelCapabilities;
   residency: Region;
+  /** `preview` : visible avec sa fiche et ses prix, mais pas encore appelable. */
+  availability: "live" | "preview";
   providerName: string;
   dataPolicyFr: string;
   dataPolicyEn: string;
@@ -68,6 +70,7 @@ export function toPublicModel(
     maxOutputTokens: model.maxOutputTokens,
     capabilities: model.capabilities,
     residency: model.residency,
+    availability: model.availability ?? "live",
     providerName: provider?.name ?? "",
     dataPolicyFr: provider?.dataPolicyFr ?? "",
     dataPolicyEn: provider?.dataPolicyEn ?? "",
