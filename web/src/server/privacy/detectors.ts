@@ -137,13 +137,21 @@ function detectEmails(text: string): Match[] {
   let at = text.indexOf("@");
   while (at !== -1) {
     let start = at;
-    while (start > 0 && at - start < 64 && LOCAL_CHAR.test(text[start - 1]!))
+    while (
+      start > 0 &&
+      at - start < 64 &&
+      LOCAL_CHAR.test(text.charAt(start - 1))
+    )
       start--;
-    while (start < at && /[.'%+-]/.test(text[start]!)) start++;
+    while (start < at && /[.'%+-]/.test(text.charAt(start))) start++;
     let end = at + 1;
-    while (end < text.length && end - at < 255 && DOMAIN_CHAR.test(text[end]!))
+    while (
+      end < text.length &&
+      end - at < 255 &&
+      DOMAIN_CHAR.test(text.charAt(end))
+    )
       end++;
-    while (end > at + 1 && /[.-]/.test(text[end - 1]!)) end--;
+    while (end > at + 1 && /[.-]/.test(text.charAt(end - 1))) end--;
     const labels = text.slice(at + 1, end).split(".");
     const tld = labels.at(-1) ?? "";
     const valid =
@@ -174,7 +182,8 @@ function detectPhones(text: string): Match[] {
     const national = digits.length === 11 ? digits.slice(1) : digits;
     if (digits.length === 11 && digits[0] !== "1") continue;
     // Plan de numérotation nord-américain : l'indicatif régional et l'indicatif de central commencent par 2 à 9.
-    if (!/[2-9]/.test(national[0]!) || !/[2-9]/.test(national[3]!)) continue;
+    if (!/[2-9]/.test(national.charAt(0)) || !/[2-9]/.test(national.charAt(3)))
+      continue;
     out.push({
       category: "phone",
       start: m.index,
@@ -221,7 +230,7 @@ function digitChains(text: string): Group[][] {
     if (
       previous &&
       group.start - previous.end === 1 &&
-      GROUP_SEPARATORS.has(text[previous.end]!)
+      GROUP_SEPARATORS.has(text.charAt(previous.end))
     ) {
       current.push(group);
     } else {
@@ -235,8 +244,8 @@ function digitChains(text: string): Group[][] {
 
 /** Les caractères voisins de la fenêtre ne prolongent pas le numéro (lettre, soulignement, signe plus). */
 function isolated(text: string, start: number, end: number): boolean {
-  const before = start > 0 ? text[start - 1]! : "";
-  const after = end < text.length ? text[end]! : "";
+  const before = start > 0 ? text.charAt(start - 1) : "";
+  const after = end < text.length ? text.charAt(end) : "";
   return !(
     (before && (WORD_NEIGHBOR.test(before) || before === "+")) ||
     (after && WORD_NEIGHBOR.test(after))
@@ -248,30 +257,31 @@ function detectCards(text: string, chains: Group[][]): Match[] {
   for (const chain of chains) {
     let i = 0;
     while (i < chain.length) {
-      let found: number | null = null;
+      const first = chain[i];
+      let found: Group | null = null;
+      let foundIndex = i;
       let digits = "";
-      for (let j = i; j < chain.length && j < i + MAX_GROUPS; j++) {
-        const group = chain[j]!;
+      for (let j = i; first && j < chain.length && j < i + MAX_GROUPS; j++) {
+        const group = chain[j];
+        if (!group) break;
         digits += text.slice(group.start, group.end);
         if (digits.length > 19) break;
         if (
           digits.length >= 13 &&
           /^[2-6]/.test(digits) &&
           luhnValid(digits) &&
-          isolated(text, chain[i]!.start, group.end)
-        )
-          found = j;
+          isolated(text, first.start, group.end)
+        ) {
+          found = group;
+          foundIndex = j;
+        }
       }
-      if (found === null) {
+      if (!found || !first) {
         i++;
         continue;
       }
-      out.push({
-        category: "credit_card",
-        start: chain[i]!.start,
-        end: chain[found]!.end,
-      });
-      i = found + 1;
+      out.push({ category: "credit_card", start: first.start, end: found.end });
+      i = foundIndex + 1;
     }
   }
   return out;
@@ -283,8 +293,9 @@ function detectSins(text: string, chains: Group[][]): Match[] {
   for (const chain of chains) {
     const shape = chain.map((g) => g.len).join("-");
     if (shape !== "9" && shape !== "3-3-3") continue;
-    const first = chain[0]!;
-    const last = chain.at(-1)!;
+    const first = chain[0];
+    const last = chain.at(-1);
+    if (!first || !last) continue;
     const digits = chain.map((g) => text.slice(g.start, g.end)).join("");
     // Le NAS ne commence jamais par 8 ; contrôle de Luhn.
     if (digits[0] === "8" || !luhnValid(digits)) continue;
@@ -421,7 +432,8 @@ export function findMatches(
   if (wanted.has("phone")) candidates.push(...detectPhones(text));
   if (wanted.has("credit_card") || wanted.has("sin")) {
     const chains = digitChains(text);
-    if (wanted.has("credit_card")) candidates.push(...detectCards(text, chains));
+    if (wanted.has("credit_card"))
+      candidates.push(...detectCards(text, chains));
     if (wanted.has("sin")) candidates.push(...detectSins(text, chains));
   }
   return resolveOverlaps(candidates);

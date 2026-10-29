@@ -19,7 +19,14 @@ export type PrivacyOperation =
   | "session.type"
   | "webhook";
 
-export type PrivacyKind = "query" | "url" | "form_input" | "page_content" | "prompt";
+export type PrivacyKind =
+  | "query"
+  | "url"
+  | "form_input"
+  | "page_content"
+  | "prompt"
+  /** Pièce jointe (image, audio, fichier) envoyée avec la requête. */
+  | "attachment";
 
 export type OutboundIntent = {
   organizationId: string;
@@ -40,6 +47,7 @@ export type PrivacyDenyReason =
   | "model_not_allowed"
   | "sensitive_data"
   | "strict_sovereignty"
+  | "attachment_blocked"
   | "policy_invalid";
 
 export type PrivacyDecision =

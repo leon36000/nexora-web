@@ -141,7 +141,9 @@ describe("clés et secrets", () => {
     expect(masked("AKIAIOSFODNN7EXAMPLE")).toBe("[SECRET]");
     expect(masked("ghp_abcdefghijklmnopqrstuvwxyz0123456789")).toBe("[SECRET]");
     expect(
-      masked("jeton eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.abc123_-xyz"),
+      masked(
+        "jeton eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.abc123_-xyz",
+      ),
     ).toBe("jeton [SECRET]");
     expect(
       masked(
