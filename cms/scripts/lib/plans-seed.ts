@@ -48,14 +48,14 @@ interface Offer {
 /**
  * Valeur de 5 M de jetons (70 % d'entrée, 30 % de sortie) du modèle par défaut `nexora/deepseek-v4.1-flash-1017`,
  * en cents CAD, arrondie vers le haut :
- *  - tarif amont de pointe 0,30 $ US (entrée) et 1,20 $ US (sortie) par million (feuille de départ du catalogue) ;
- *  - taux de référence 1 USD = 1,4025 CAD (Banque du Canada, 26/10/2026) et marge de 10 % : vente à 0,462825 $
- *    (entrée) et 1,8513 $ (sortie) par million ;
- *  - 5 M × (0,7 × 0,462825 + 0,3 × 1,8513) = 4,396838 $, soit 440 cents.
+ *  - tarif amont de DeepInfra 0,20 $ US (entrée) et 0,60 $ US (sortie) par million (catalogue DeepInfra lu le 29/10/2026) ;
+ *  - taux de référence 1 USD = 1,4025 CAD (Banque du Canada, 26/10/2026) et marge de 10 % : vente à 0,30855 $
+ *    (entrée) et 0,92565 $ (sortie) par million ;
+ *  - 5 M × (0,7 × 0,30855 + 0,3 × 0,92565) = 2,4684 $, soit 247 cents.
  * Le taux approuvé en production fait foi pour la facturation ; ce montant est la valeur du crédit mensuel. Le test
  * de ce fichier et celui de `web/src/server/billing/included-tokens.test.ts` refont le calcul chacun de leur côté.
  */
-export const INCLUDED_CREDITS_CENTS = 440;
+export const INCLUDED_CREDITS_CENTS = 247;
 
 const OFFERS: Offer[] = [
   {

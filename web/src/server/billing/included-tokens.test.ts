@@ -12,13 +12,12 @@ import {
 const FX_REFERENCE = 1_402_500n;
 
 /**
- * Coûts amont de la feuille de départ du 28/10/2026 (fournisseurs directs, tarif de pointe), micro-USD par million.
- * Ils servent de référence au calcul du forfait : le catalogue DeepInfra (29/10/2026) a d'autres prix, et la valeur
- * du forfait suit le prix PUBLIÉ du modèle par défaut (voir docs/catalogue-deepinfra.md).
+ * Coûts amont du catalogue DeepInfra (lu le 29/10/2026), micro-USD par million. Ils servent de référence au calcul du
+ * forfait ; la valeur suit le prix PUBLIÉ du modèle par défaut (voir docs/catalogue-deepinfra.md).
  */
 const REFERENCE_UPSTREAM: Record<string, { input: bigint; output: bigint }> = {
-  "nexora/deepseek-v4.1-flash-1017": { input: 300_000n, output: 1_200_000n },
-  "nexora/glm-5.3": { input: 1_400_000n, output: 4_400_000n },
+  "nexora/deepseek-v4.1-flash-1017": { input: 200_000n, output: 600_000n },
+  "nexora/glm-5.3": { input: 900_000n, output: 4_000_000n },
 };
 
 function salePriceOf(publicId: string): PerMillion {
@@ -37,11 +36,11 @@ describe("forfait de 5 millions de jetons inclus", () => {
     expect(INCLUDED_OUTPUT_SHARE_BPS).toBe(3000);
   });
 
-  it("valeur du modèle par défaut (tarif de pointe de référence, taux de référence, marge de 10 %) : 440 cents", () => {
+  it("valeur du modèle par défaut (prix DeepInfra, taux de référence, marge de 10 %) : 247 cents", () => {
     const price = salePriceOf("nexora/deepseek-v4.1-flash-1017");
-    // 0,462825 $ / M en entrée et 1,8513 $ / M en sortie.
-    expect(price).toMatchObject({ input: 462_825n, output: 1_851_300n });
-    expect(includedCreditsCents(price)).toBe(440);
+    // 0,30855 $ / M en entrée et 0,92565 $ / M en sortie.
+    expect(price).toMatchObject({ input: 308_550n, output: 925_650n });
+    expect(includedCreditsCents(price)).toBe(247);
   });
 
   it("un modèle plus cher donne un forfait plus grand en dollars (GLM 5.3) : la valeur suit le prix", () => {
@@ -60,12 +59,12 @@ describe("forfait de 5 millions de jetons inclus", () => {
 });
 
 describe("jetons inclus utilisés (équivalent en valeur)", () => {
-  const included = 4_400_000n; // 4,40 $
+  const included = 2_470_000n; // 2,47 $
   it("rien consommé : 0 jeton", () => {
     expect(includedTokensUsed(0n, included)).toBe(0);
   });
   it("la moitié de la valeur : la moitié des jetons nominaux", () => {
-    expect(includedTokensUsed(2_200_000n, included)).toBe(2_500_000);
+    expect(includedTokensUsed(1_235_000n, included)).toBe(2_500_000);
   });
   it("tout consommé ou davantage : plafonné à 5 M", () => {
     expect(includedTokensUsed(included, included)).toBe(INCLUDED_TOKENS);

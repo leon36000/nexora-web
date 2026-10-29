@@ -16,12 +16,12 @@
 
 | Étape | Entrée | Sortie |
 |---|---|---|
-| Coût amont, tarif de **pointe** (feuille de départ du 28/10/2026, fournisseurs directs : remplacée le 29/10 par le catalogue DeepInfra, voir `docs/catalogue-deepinfra.md`), $ US par million | 0,30 | 1,20 |
-| × taux de référence 1,4025 (Banque du Canada, 26/10/2026) = $ CA | 0,420750 | 1,683000 |
-| × 1,10 (marge de 10 %) = prix de vente $ CA par million | 0,462825 | 1,851300 |
+| Coût amont chez DeepInfra (catalogue lu le 29/10/2026, voir `docs/catalogue-deepinfra.md`), $ US par million | 0,20 | 0,60 |
+| × taux de référence 1,4025 (Banque du Canada, 26/10/2026) = $ CA | 0,280500 | 0,841500 |
+| × 1,10 (marge de 10 %) = prix de vente $ CA par million | 0,308550 | 0,925650 |
 
-5 M × (0,7 × 0,462825 + 0,3 × 1,8513) = **4,396838 $ CA**, arrondi au cent supérieur : **440 cents** (`INCLUDED_CREDITS_CENTS` dans `cms/scripts/lib/plans-seed.ts` ; offre annuelle : 5 280). Deux tests refont le calcul chacun de leur côté (`cms/scripts/lib/plans-seed.test.ts` et `web/src/server/billing/included-tokens.test.ts`, qui part des prix réels de la feuille de départ).
-- **Honnêteté** : le taux de change approuvé en production fait foi pour la facturation ; le forfait est un montant fixe en dollars. Au tarif creux de DeepSeek (moitié du tarif de pointe) les 4,40 $ couvrent environ deux fois plus de jetons ; avec un modèle plus cher, moins. Le compteur de l'espace client convertit la part consommée du crédit inclus en « jetons équivalents » du modèle par défaut (`includedTokensUsed`).
+5 M × (0,7 × 0,30855 + 0,3 × 0,92565) = **2,4684 $ CA**, arrondi au cent supérieur : **247 cents** (`INCLUDED_CREDITS_CENTS` dans `cms/scripts/lib/plans-seed.ts` ; offre annuelle : 2 964). Deux tests refont le calcul chacun de leur côté (`cms/scripts/lib/plans-seed.test.ts` et `web/src/server/billing/included-tokens.test.ts`, qui part des prix réels de la feuille de départ).
+- **Honnêteté** : le taux de change approuvé en production fait foi pour la facturation ; le forfait est un montant fixe en dollars. Avec un modèle plus cher que le modèle par défaut, les 2,47 $ couvrent moins de jetons. Le compteur de l'espace client convertit la part consommée du crédit inclus en « jetons équivalents » du modèle par défaut (`includedTokensUsed`).
 - **Aucun essai gratuit** : `trial_days` = 0 sur toutes les offres préparées. L'accès gratuit est réservé à l'organisation « maison » (administrateur, mode `house`). Le mécanisme d'essai de Stripe reste dans le code (donnée par offre dans Directus), mais aucune offre n'en porte et la page Tarifs n'en promet plus.
 
 ### Décisions provisoires, modifiables par le fondateur

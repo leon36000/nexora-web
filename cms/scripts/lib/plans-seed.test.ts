@@ -42,17 +42,17 @@ describe("offres WorkStudio préparées en brouillon (prix suggérés par l'étu
   });
 
   test("crédits inclus = 5 millions de jetons du modèle par défaut (annuel : douze mois d'avance)", () => {
-    // Recalcul indépendant : DeepSeek V4.1 Flash 1017, tarif de pointe amont 0,30 / 1,20 $ US par million,
+    // Recalcul indépendant : DeepSeek V4.1 Flash 1017 chez DeepInfra, tarif amont 0,20 / 0,60 $ US par million,
     // taux de référence 1,4025, marge de 10 %, 70 % d'entrée et 30 % de sortie.
     const ceil = (a: bigint, b: bigint) => (a + b - 1n) / b;
     const sale = (usd: bigint) =>
       ceil(ceil(usd * 1_402_500n, 1_000_000n) * 11_000n, 10_000n);
     const micro = ceil(
-      5_000_000n * (sale(300_000n) * 7_000n + sale(1_200_000n) * 3_000n),
+      5_000_000n * (sale(200_000n) * 7_000n + sale(600_000n) * 3_000n),
       10_000_000_000n,
     );
     const cents = Number(ceil(micro, 10_000n));
-    expect(cents).toBe(440);
+    expect(cents).toBe(247);
     expect(INCLUDED_CREDITS_CENTS).toBe(cents);
     for (const p of DRAFT_PLANS)
       expect(p.included_credits_cents).toBe(
