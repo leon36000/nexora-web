@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { checkJsonLdConformity } from "@nexora/seo";
 import { describe, expect, it } from "vitest";
+import { APPS, appMeta } from "@/i18n/apps";
 import type { Block, PageModel } from "@/server/cms/model";
 import type { SeoPage } from "@/server/cms/seo-pages";
 import {
@@ -263,6 +264,64 @@ describe("sitemap", () => {
     ]);
     for (const e of sm)
       expect(e.lastModified).toEqual(new Date("2026-10-27T10:00:00.000Z"));
+  });
+
+  it("/apps et chaque fiche Nexora Apps : deux adresses par page, hreflang réciproques, aucune date inventée", () => {
+    const routes = availableAppRoutes(() => true).filter((r) =>
+      r.path.startsWith("/apps"),
+    );
+    const sm = buildSitemap({ ...baseInput, appRoutes: routes });
+    const urls = sm.map((e) => e.url);
+    expect(routes.map((r) => r.path)).toEqual([
+      "/apps",
+      ...APPS.map((a) => `/apps/${a.slug}`),
+    ]);
+    expect(urls).toContain(`${SITE}/apps`);
+    expect(urls).toContain(`${SITE}/en/apps`);
+    expect(urls).toContain(`${SITE}/apps/webpilot`);
+    expect(urls).toContain(`${SITE}/en/apps/privacy-router`);
+    expect(urls).toHaveLength((APPS.length + 1) * 2);
+    expect(new Set(urls).size).toBe(urls.length);
+    expect(
+      sm.find((e) => e.url === `${SITE}/en/apps/webpilot`)?.alternates
+        ?.languages,
+    ).toEqual({
+      "fr-CA": `${SITE}/apps/webpilot`,
+      "en-CA": `${SITE}/en/apps/webpilot`,
+      "x-default": `${SITE}/apps/webpilot`,
+    });
+    // la page n'est pas datée par un catalogue : pas de lastmod plutôt qu'une date inventée
+    for (const e of sm) expect(e.lastModified).toBeUndefined();
+  });
+
+  it("les fiches Nexora Apps ne sont listées que si leur page existe, la liste seule reste", () => {
+    const paths = availableAppRoutes((dir) => dir !== "apps/[slug]").map(
+      (r) => r.path,
+    );
+    expect(paths).toContain("/apps");
+    expect(paths.some((p) => p.startsWith("/apps/"))).toBe(false);
+    const none = availableAppRoutes((dir) => dir !== "apps").map((r) => r.path);
+    expect(none).not.toContain("/apps");
+  });
+
+  it("l’image Open Graph retrouve le titre de chaque fiche Nexora Apps depuis les dictionnaires", () => {
+    for (const app of APPS) {
+      const target = resolveOgTarget(
+        ["apps", app.slug],
+        availableAppRoutes(() => true),
+      );
+      expect(target?.kind, app.slug).toBe("app");
+      if (target?.kind !== "app") continue;
+      for (const lang of ["fr", "en"] as const)
+        expect(target.route.meta(lang)).toEqual(appMeta(lang, app.slug));
+    }
+    // un identifiant inconnu n'est pas une route : il retombe sur le chemin des pages Directus
+    expect(
+      resolveOgTarget(
+        ["apps", "inconnu"],
+        availableAppRoutes(() => true),
+      )?.kind,
+    ).toBe("page");
   });
 
   it("/vps et ses fiches d'application publiées, datées par la publication du catalogue VPS", () => {

@@ -66,6 +66,12 @@ export const frCA = {
           href: "/workstudio",
         },
         {
+          label: "Nexora Apps",
+          description:
+            "Agent de code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
+          href: "/apps",
+        },
+        {
           label: "Suite logicielle",
           description: "Code, Corpus et les modèles Quanta et Helix.",
           href: "/suite",
@@ -106,6 +112,7 @@ export const frCA = {
           { label: "VPS", href: "/vps" },
           { label: "Modèles et API", href: "/modeles" },
           { label: "WorkStudio", href: "/workstudio" },
+          { label: "Nexora Apps", href: "/apps" },
           { label: "Suite logicielle", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
           { label: "Nexora Croissance", href: "/croissance" },
@@ -288,6 +295,16 @@ export const frCA = {
       message: {
         label: "Votre message",
         hint: "Facultatif : le contexte, ce qui vous fait perdre du temps, vos outils actuels.",
+        // Texte prérempli par les liens « liste d'attente » des fiches Nexora Apps (?sujet=apps-…), modifiable.
+        prefill: {
+          "apps-code": "Liste d’attente : Agent de code Nexora.",
+          "apps-gitspace": "Liste d’attente : Nexora Gitspace.",
+          "apps-rag": "Liste d’attente : Nexora RAG.",
+          "apps-webpilot": "Liste d’attente : Nexora WebPilot.",
+          "apps-privacy-router": "Question sur Nexora Privacy Router : ",
+          "apps-creative": "Liste d’attente : Nexora Creative.",
+          "apps-outils": "Liste d’attente : outils gratuits Nexora.",
+        } as Record<string, string>,
       },
       consentMarketing: {
         label:
