@@ -284,7 +284,7 @@ Les autres outils de Nexora AI (agent de code, RAG, WebPilot) sont réunis dans 
 - **Vérifié chez nous, pas encore chez un client.** WorkStudio a été vérifié sur le serveur de test de Nexora AI avec plusieurs modèles hébergés ailleurs que sur ce serveur. Aucun résultat chez un client n'est annoncé.
 - **Les agents à outils exigent un modèle capable.** Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas.
 - **Deux options sortent des sentiers battus.** L'interpréteur de code est désactivé par défaut et ne s'active que par un administrateur. La recherche sur le web envoie ses requêtes hors de l'instance : elle n'est disponible que si un administrateur l'active.
-- **Les modèles de départ sont généraux.** Ils ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise.
+- **Les modèles de départ sont adaptés au Québec, à valider.** Ils sont rédigés pour le Québec (dollars canadiens, TPS et TVQ), mais ne garantissent aucune conformité fiscale ou légale : votre comptable ou votre conseiller valide le résultat.
 - **Les connexions se qualifient.** Certains services demandent qu'un administrateur enregistre d'abord une application chez le fournisseur, et une adresse HTTPS publique pour l'instance.
 
 ### Bloc 11 — FAQ (`block_faq`)

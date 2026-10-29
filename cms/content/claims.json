@@ -1,7 +1,7 @@
 {
-  "version": 6,
+  "version": 7,
   "date": "2026-10-29",
-  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06.",
+  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56).",
   "claims": [
     {
       "id": "CL-01",
@@ -918,13 +918,13 @@
     {
       "id": "CL-111",
       "kind": "fait",
-      "statement": "Les modèles de départ pour PME sont généraux et ne suivent pas les règles fiscales du Québec ; taxes, formats et vocabulaire s'adaptent à l'entreprise.",
-      "scope": "WorkStudio.",
-      "evidence": "Guide de prise en main : les exemples de modèles (devis, relances, factures) utilisent une TVA unique de type français. Aucune logique de TPS ni de TVQ n'est documentée.",
+      "statement": "Les modèles de départ pour PME sont adaptés au Québec (dollars canadiens, TPS et TVQ, courriel, infolettre) mais restent à valider : ils ne garantissent aucune conformité fiscale ou légale, et taxes, formats et vocabulaire s'adaptent à l'entreprise.",
+      "scope": "WorkStudio. Résumé de CL-M02, CL-M12 et CL-M13 ; la lecture de documents scannés est à part (CL-M15).",
+      "evidence": "Mise à jour le 29/10/2026 : les 29 gabarits de templates.ts sont adaptés au Québec (docs/gabarits-quebec.md). Remplace la preuve du 26/10/2026 (TVA unique de type français, aucune logique de TPS ni de TVQ), devenue fausse pour les gabarits ; elle reste vraie pour la lecture de documents (CL-M15).",
       "evidence_url": null,
-      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 5ed08d6d (26/10/2026), docs/guide/prise-en-main.md",
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, docs/gabarits-quebec.md",
       "approval_status": "en_revue",
-      "valid_from": "2026-10-26",
+      "valid_from": "2026-10-29",
       "valid_until": null
     },
     {
@@ -1988,8 +1988,8 @@
       "kind": "produit",
       "statement": "Chaque nouvel espace de travail de WorkStudio reçoit un dossier « Modèles PME » de vingt-neuf gabarits de flux de travaux, reliés au modèle par défaut de l'installation ; l'exploitant peut désactiver ce dossier.",
       "scope": "WorkStudio : gabarits de départ.",
-      "evidence": "templates.ts (liste NEXORA_TEMPLATES) et templates.test.ts (29 gabarits aux noms et aux adresses distincts) ; seed-templates.ts (dossier créé à chaque nouvel espace, sauf si NEXORA_TEMPLATES_DISABLED). Le guide de prise en main indique encore vingt modèles : il est périmé depuis l'ajout de dix gabarits le 28/10/2026.",
-      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, seed-templates.ts, templates.test.ts",
+      "evidence": "templates.ts (liste NEXORA_TEMPLATES) et templates.test.ts (29 gabarits aux noms et aux adresses distincts) ; seed-templates.ts (dossier créé à chaque nouvel espace, sauf si NEXORA_TEMPLATES_DISABLED). Relu le 29/10/2026 après l'adaptation au Québec : toujours vingt-neuf gabarits aux mêmes adresses (la structure n'a pas bougé). Le guide de prise en main indique encore vingt modèles dans la version relue le 26/10/2026 : à vérifier.",
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, seed-templates.ts, templates.test.ts",
       "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
@@ -1998,10 +1998,10 @@
     {
       "id": "CL-M02",
       "kind": "fait",
-      "statement": "Les gabarits de départ sont rédigés pour une PME française (TVA de type français, euro, numéro SIRET, indemnité forfaitaire de recouvrement) ; aucune règle de TPS, de TVQ ou de numéro d'entreprise du Québec n'y figure, et ils s'adaptent avant tout usage au Québec.",
-      "scope": "WorkStudio : gabarits de départ. Précise CL-111.",
-      "evidence": "Consigne commune « PME française » ; devis avec TVA de type français et paiement fin de mois ; relance de facture de niveau 3 avec l'indemnité forfaitaire française ; contrôle de facture avec SIRET et taux de TVA français ; exemples en euros.",
-      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts",
+      "statement": "Les gabarits de départ sont rédigés pour une PME du Québec : montants en dollars canadiens (1 234,56 $), TPS de 5 % et TVQ de 9,975 % (calculée sur le sous-total, jamais sur la TPS) là où une taxe entre en jeu, numéros d'inscription à la TPS et à la TVQ et numéro d'entreprise du Québec (NEQ) au lieu du SIRET, vocabulaire d'ici (courriel, infolettre, pourriel, jours ouvrables), dates en toutes lettres ou en AAAA-MM-JJ. Seules la TPS fédérale et la TVQ sont gérées : ni la taxe de vente harmonisée ni les taxes d'autres provinces. Les exemples sont fictifs et n'ont pas été validés auprès de Revenu Québec ni de l'Agence du revenu du Canada.",
+      "scope": "WorkStudio : gabarits de départ. Précise CL-111. Remplace la formulation « PME française » (R-54).",
+      "evidence": "templates.ts (NEXORA_TEMPLATES) lu le 29/10/2026 : consigne commune STYLE (PME québécoise, dollars canadiens, courriel, infolettre, jours ouvrables) ; devis, contrôle et extraction de facture (TPS 5 %, TVQ 9,975 % sur le sous-total, formes RT 0001 et TQ 0001, NEQ) ; exemples en dollars canadiens. docs/gabarits-quebec.md du même dépôt (avant/après des 29 gabarits et hypothèses : client et fournisseur situés au Québec, taxes d'autres provinces non gérées, numéros d'exemple fictifs non validés). Inventaire figé : cms/content/gabarits-inventaire.json. À relire : les taux ne sont pas revérifiés au-delà du 29/10/2026 et la justesse fiscale n'est pas attestée par un comptable.",
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, docs/gabarits-quebec.md",
       "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
@@ -2013,7 +2013,7 @@
       "statement": "Cinq gabarits envoient un courriel (compte rendu de réunion, réponse client validée avant envoi, contrôle de conformité d'un document, synthèse hebdomadaire d'un projet, revue de contrat) : chacun s'arrête d'abord sur la validation d'une personne et n'envoie que si elle approuve ; le serveur de courriel (hôte, port, compte, expéditeur) est laissé à renseigner. Les vingt-quatre autres gabarits produisent un texte à relire et n'envoient rien.",
       "scope": "WorkStudio : gabarits de départ.",
       "evidence": "Étapes des gabarits : une étape de validation, une condition sur son approbation, puis un envoi par SMTP, dans ces cinq gabarits seulement ; paramètres SMTP vides dans le gabarit.",
-      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (étapes approval, gate, email)",
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (étapes approval, gate, email)",
       "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
@@ -2025,7 +2025,7 @@
       "statement": "Chaque gabarit déclare ses champs de départ avec des données d'exemple déjà remplies, sauf les adresses de courriel et les fichiers ; deux gabarits attendent un fichier (l'enregistrement audio d'une réunion, une facture en PDF ou en image).",
       "scope": "WorkStudio : gabarits de départ.",
       "evidence": "Champs d'entrée (nom, description, exemple) de chaque gabarit ; fonction sampleValue (exemple laissé vide pour un fichier ou une adresse de courriel).",
-      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts",
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts",
       "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
@@ -2037,7 +2037,7 @@
       "statement": "Le gabarit de compte rendu de réunion transcrit l'enregistrement en séparant les intervenants (« Intervenant 1 », « Intervenant 2 »…) : ces mentions désignent des voix, pas des noms, et la consigne demande de rapprocher les noms cités des intervenants quand le texte le permet.",
       "scope": "WorkStudio : gabarit « Compte rendu de réunion ».",
       "evidence": "Étape de transcription par intervenant, puis consigne de rédaction du compte rendu (participants, points abordés, décisions, tableau des actions, questions ouvertes).",
-      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (slug compte-rendu)",
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (slug compte-rendu)",
       "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
@@ -2255,6 +2255,54 @@
       "evidence": "Configurateur de commande (dictionnaire vps : clé SSH publique ed25519, ECDSA ou RSA de 2048 bits ou plus, « ne collez jamais votre clé privée » ; la clé qui ressemble à une clé privée est refusée avant tout envoi).",
       "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/dictionaries/vps-fr-CA.ts",
       "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M12",
+      "kind": "fait",
+      "statement": "Les gabarits ne garantissent aucune conformité fiscale ou légale et ne remplacent ni un comptable ni un conseiller : les exemples (noms, montants, numéros) sont fictifs, les calculs et les textes sont produits par des agents d'IA à relire, et les références légales sont seulement nommées, chaque fois avec la mention « à valider par votre conseiller ».",
+      "scope": "WorkStudio : gabarits de départ. Limite honnête reprise sur chaque fiche.",
+      "evidence": "templates.ts : mention « à valider par votre conseiller » dans l'offre d'emploi, l'accueil d'un salarié et la mise en demeure ; « ne constitue pas un avis juridique » dans la revue de contrat ; « ne remplace pas l'avis d'un juriste » dans le résumé de contrat. templates.test.ts exige la mention à côté de chaque référence légale. docs/gabarits-quebec.md, « Hypothèses » : aucune conformité n'est garantie.",
+      "evidence_url": null,
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, templates.test.ts, docs/gabarits-quebec.md",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M13",
+      "kind": "fait",
+      "statement": "Le gabarit de devis calcule la TPS (5 %) et la TVQ (9,975 %) chacune sur le sous-total avant taxes, arrondies au cent, et prévoit en en-tête les numéros TPS, TVQ et NEQ à compléter ; le contrôle de facture et l'extraction de facture vérifient que le sous-total, la TPS et la TVQ donnent le total à un cent près, rendent leurs résultats en JSON sous les clés sous_total, tps, tvq et total (le contrôle y ajoute numero_tps, numero_tvq et neq) et signalent « à vérifier » un petit fournisseur non inscrit sans le déclarer fautif. Ces calculs sont demandés à un agent d'IA par la consigne : aucun logiciel de comptabilité ne les refait. Ailleurs, les montants sont avant ou après taxes selon le gabarit : relance de facture taxes incluses, fiche produit à préciser, appel d'offres avant taxes (la TPS et la TVQ s'ajoutent), rapport de ventes avant taxes.",
+      "scope": "WorkStudio : gabarits de devis, de contrôle de facture, d'extraction de facture, de relance de facture, d'appel d'offres, de fiche produit et de rapport de ventes.",
+      "evidence": "Consignes des étapes d'agent de templates.ts (slugs devis, controle-facture, factures-fournisseurs, relance-facture, reponse-appel-offres, fiche-produit, rapport-ventes-mensuel) ; clés JSON et taux relevés par cms/content/gabarits-inventaire.json (jsonKeys, taxRates). docs/gabarits-quebec.md : la TVQ se calcule sur le sous-total, jamais sur la TPS (règle depuis 2013), chaque taxe arrondie au cent.",
+      "evidence_url": null,
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, docs/gabarits-quebec.md",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M14",
+      "kind": "fait",
+      "statement": "L'offre d'emploi cite la Loi sur les normes du travail et la Charte des droits et libertés de la personne, et l'accueil d'un salarié nomme les formulaires de retenues à la source TD1 et TP-1015.3-V, chaque fois avec la mention « à valider par votre conseiller » ; les gabarits de contrat renvoient à un juriste (avocat ou notaire) et ne constituent pas un avis juridique. Aucune autre référence légale n'y figure.",
+      "scope": "WorkStudio : gabarits d'offre d'emploi, d'accueil d'un salarié, de résumé et de revue de contrat.",
+      "evidence": "Consignes de templates.ts (slugs offre-emploi, accueil-salarie, resume-contrat, revue-contrat) ; références relevées par cms/content/gabarits-inventaire.json (references). docs/gabarits-quebec.md, « Décisions provisoires » : pas de référence légale en plus, faute de certitude sur leur formulation exacte.",
+      "evidence_url": null,
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, docs/gabarits-quebec.md",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M15",
+      "kind": "fait",
+      "statement": "La lecture de documents scannés de WorkStudio (factures, devis, bons de commande, notes de frais) n'est pas visée par l'adaptation des gabarits au Québec : ses champs de taxes restent TVA, hors taxes et toutes taxes comprises, et les champs de TPS et de TVQ se définissent avec Nexora AI.",
+      "scope": "WorkStudio : lecture de documents (extraction de champs), distincte des gabarits de flux de travaux.",
+      "evidence": "workstudio/apps/sim/lib/nexora/document-ai/fields.ts : champs total_ht, total_tva, total_ttc, montant_ttc et montant_tva. docs/gabarits-quebec.md, « Décisions provisoires » : l'extraction de documents n'est pas touchée et mérite sa propre adaptation (schémas, fixtures, fumée).",
+      "evidence_url": null,
+      "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/document-ai/fields.ts, docs/gabarits-quebec.md",
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
       "valid_until": null
@@ -2576,8 +2624,26 @@
     {
       "id": "R-53",
       "formulation": "Promettre que les gabarits de flux de travaux conviennent tels quels au Québec (TPS, TVQ, numéro d'entreprise).",
-      "raison": "Ils sont rédigés pour une PME française (CL-M02, CL-111).",
-      "remplacement": "Chaque fiche dit ce qui s'adapte avant l'usage."
+      "raison": "Les gabarits sont adaptés au Québec, mais à valider et sans garantie de conformité (CL-M02, CL-M12, CL-111) : « tels quels » reste une promesse que personne ne peut tenir.",
+      "remplacement": "Chaque fiche dit ce qui est à valider avant l'usage."
+    },
+    {
+      "id": "R-54",
+      "formulation": "Dire que les gabarits de flux de travaux sont rédigés pour une PME française (TVA de type français, euro, SIRET, indemnité forfaitaire de recouvrement), ou qu'aucune règle de TPS, de TVQ ou de numéro d'entreprise du Québec n'y figure.",
+      "raison": "Vrai jusqu'au 28/10/2026 : les 29 gabarits ont été adaptés au Québec (commit 0888af53 de WorkStudio, CL-M02). La formulation est retirée dès qu'aucune fiche ne la porte plus.",
+      "remplacement": "Gabarits adaptés au Québec, à valider : dollars canadiens, TPS et TVQ, NEQ ; aucune conformité garantie (CL-M02, CL-M12)."
+    },
+    {
+      "id": "R-55",
+      "formulation": "Présenter les gabarits adaptés au Québec comme conformes à la fiscalité ou à la loi, ou promettre que leurs taux, leurs numéros et leurs références légales sont exacts et à jour.",
+      "raison": "Exemples fictifs, calculs faits par un agent d'IA, taux non revérifiés après le 29/10/2026 et références légales seulement nommées (CL-M12, CL-M13, CL-M14).",
+      "remplacement": "« À valider par votre comptable ou votre conseiller »."
+    },
+    {
+      "id": "R-56",
+      "formulation": "Dire que l'adaptation au Québec s'étend à la lecture de documents scannés de WorkStudio (champs TPS et TVQ prêts à l'emploi).",
+      "raison": "Cette lecture garde les champs TVA, hors taxes et toutes taxes comprises (CL-M15).",
+      "remplacement": "Les champs de TPS et de TVQ de la lecture de documents se définissent avec Nexora AI."
     }
   ]
 }

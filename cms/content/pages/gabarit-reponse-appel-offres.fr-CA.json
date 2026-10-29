@@ -7,14 +7,14 @@
     "slug": "gabarits-flux-de-travaux/reponse-appel-offres",
     "title": "Réponse à un appel d'offres",
     "seo_title": "Réponse à un appel d'offres : gabarit WorkStudio",
-    "seo_description": "Réponse à un appel d'offres : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qu'il faut adapter au Québec avant l'usage.",
+    "seo_description": "Réponse à un appel d'offres : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qui reste à valider avec votre conseiller.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la fiche : ce que fait le gabarit « Réponse à un appel d'offres », dit sans détour.",
-      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M12", "CL-M13"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -32,7 +32,15 @@
     {
       "collection": "block_section",
       "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -47,7 +55,15 @@
     {
       "collection": "block_section",
       "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -55,14 +71,22 @@
       },
       "translation": {
         "title": "Ce que vous fournissez.",
-        "body": "<p>Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le cahier des charges.</strong> Extrait du cahier des charges : exigences et critères de sélection.</li><li><strong>Vos éléments.</strong> Vos éléments de réponse : offre, références, moyens, prix.</li></ul>",
+        "body": "<p>Chaque champ de départ est prérempli d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le cahier des charges.</strong> Extrait du cahier des charges : exigences et critères de sélection.</li><li><strong>Vos éléments.</strong> Vos éléments de réponse : offre, références, moyens, prix.</li></ul>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "3",
         "tone": "clair",
@@ -78,7 +102,7 @@
           },
           {
             "title": "Rédiger la première version.",
-            "text": "Un second agent écrit la réponse exigence par exigence, avec un encadré « Exigences non couvertes » à traiter avant l'envoi."
+            "text": "Un second agent écrit la réponse exigence par exigence, avec le prix en dollars canadiens avant taxes (la TPS et la TVQ s'ajoutent) et un encadré « Exigences non couvertes » à traiter avant l'envoi."
           },
           {
             "title": "Relire.",
@@ -90,7 +114,15 @@
     {
       "collection": "block_cards",
       "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -102,11 +134,11 @@
         "cards": [
           {
             "title": "Ce qui s'adapte ici.",
-            "text": "Le gabarit ne connaît ni vos références ni votre prix : tout ce qui n'est pas dans vos éléments reste à compléter. Une première version n'est pas une soumission prête à déposer."
+            "text": "Le gabarit ne connaît ni vos références ni votre prix : tout ce qui n'est pas dans vos éléments reste à compléter. Le prix est écrit avant taxes, en précisant que la TPS et la TVQ s'ajoutent. Une première version n'est pas une soumission prête à déposer."
           },
           {
             "title": "Ce qui vaut pour tous.",
-            "text": "Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage."
+            "text": "Les gabarits sont rédigés pour une PME du Québec : montants en dollars canadiens, TPS et TVQ quand une taxe entre en jeu, courriel et infolettre. Ils ne garantissent aucune conformité fiscale ou légale : les exemples sont fictifs, et votre comptable ou votre conseiller valide le résultat avant l'usage."
           },
           {
             "title": "Rien n'est envoyé.",
@@ -118,7 +150,15 @@
     {
       "collection": "block_faq",
       "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -136,8 +176,8 @@
             "answer": "Non. Pour une exigence que vos éléments ne couvrent pas, il écrit « [à compléter : …] » plutôt que d'affirmer quelque chose."
           },
           {
-            "question": "Convient-il tel quel au Québec ?",
-            "answer": "Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+            "question": "Convient-il à une PME du Québec ?",
+            "answer": "Il est rédigé pour le Québec, mais à valider : les exemples sont fictifs, et le gabarit ne remplace ni votre comptable ni votre conseiller. Relisez chaque résultat avant de l'utiliser et adaptez la consigne à votre entreprise."
           }
         ]
       }

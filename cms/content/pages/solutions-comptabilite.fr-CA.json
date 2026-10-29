@@ -146,7 +146,7 @@
         "CL-125",
         "CL-126",
         "CL-128",
-        "CL-111",
+        "CL-M15",
         "CL-06",
         "CL-E01",
         "CL-E02",
@@ -177,7 +177,7 @@
           },
           {
             "title": "Vos règles fiscales.",
-            "text": "Les modèles de départ sont généraux. Taxes, catégories et plan comptable du Québec se définissent avec vous et se vérifient sur vos pièces."
+            "text": "Les modèles de lecture de documents ne sont pas encore adaptés au Québec. Taxes, catégories et plan comptable du Québec se définissent avec vous et se vérifient sur vos pièces."
           },
           {
             "title": "Aucun conseil comptable.",

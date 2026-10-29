@@ -1,18 +1,21 @@
 {
-  "source": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (NEXORA_TEMPLATES) ; dernier changement du fichier : f3f8205b (28/10/2026)",
-  "note": "Inventaire figé des gabarits « Modèles PME » de WorkStudio : sert de référence aux tests des fiches (champs, étapes, envoi). À regénérer à chaque changement de templates.ts.",
+  "source": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (NEXORA_TEMPLATES) ; dernier changement du fichier : 0f76fe95 (29/10/2026, adaptation des 29 gabarits au Québec, décrite dans docs/gabarits-quebec.md du même dépôt)",
+  "note": "Inventaire figé des gabarits « Modèles PME » de WorkStudio : sert de référence aux tests des fiches (noms, descriptions, champs, étapes, envoi, clés JSON, références légales, taux de taxes). Régénéré à chaque changement de templates.ts : charger le fichier en remplaçant ses deux imports (@sim/utils/id, STEPS_MARKER) par des valeurs factices, puis écrire pour chaque gabarit slug, name, description, les champs (nom, type, description) et les étapes (genre, nom) ; pour les étapes d'agent, jsonKeys (clés citées entre guillemets français dans une consigne qui demande du JSON), references (Loi sur les normes du travail, Charte des droits et libertés de la personne, formulaires TD1 et TP-1015.3-V) et taxRates (taux écrits à côté de TPS ou de TVQ). Aucune de ces valeurs n'est écrite à la main.",
   "templates": [
     {
       "slug": "devis",
       "name": "Devis client",
+      "description": "Rédige un devis structuré (sous-total avant taxes, TPS 5 %, TVQ 9,975 %, total) à partir d’une liste de prestations.",
       "inputs": [
         {
           "name": "client",
-          "type": "string"
+          "type": "string",
+          "description": "Nom et coordonnées du client"
         },
         {
           "name": "prestations",
-          "type": "string"
+          "type": "string",
+          "description": "Prestations, quantités et prix unitaires (avant taxes)"
         }
       ],
       "steps": [
@@ -20,31 +23,41 @@
           "kind": "agent",
           "name": "Devis"
         }
-      ]
+      ],
+      "taxRates": {
+        "TPS": "5",
+        "TVQ": "9,975"
+      }
     },
     {
       "slug": "relance-facture",
       "name": "Relance de facture impayée",
+      "description": "Écrit le courriel de relance adapté au niveau de relance (1, 2 ou 3).",
       "inputs": [
         {
           "name": "client",
-          "type": "string"
+          "type": "string",
+          "description": "Nom du client"
         },
         {
           "name": "facture",
-          "type": "string"
+          "type": "string",
+          "description": "Numéro de la facture"
         },
         {
           "name": "montant",
-          "type": "string"
+          "type": "string",
+          "description": "Montant dû, taxes incluses"
         },
         {
           "name": "echeance",
-          "type": "string"
+          "type": "string",
+          "description": "Date d’échéance dépassée"
         },
         {
           "name": "niveau",
-          "type": "string"
+          "type": "string",
+          "description": "Niveau de relance : 1 (courtois), 2 (ferme) ou 3 (mise en demeure)"
         }
       ],
       "steps": [
@@ -57,14 +70,17 @@
     {
       "slug": "support-faq",
       "name": "Réponse support (FAQ)",
+      "description": "Répond à une question client à partir de votre FAQ, ou propose de transmettre à un conseiller.",
       "inputs": [
         {
           "name": "question",
-          "type": "string"
+          "type": "string",
+          "description": "Question posée par le client"
         },
         {
           "name": "faq",
-          "type": "string"
+          "type": "string",
+          "description": "Texte de votre FAQ ou de vos conditions"
         }
       ],
       "steps": [
@@ -76,11 +92,13 @@
     },
     {
       "slug": "tri-emails",
-      "name": "Tri des e-mails entrants",
+      "name": "Tri des courriels entrants",
+      "description": "Classe un courriel (catégorie, urgence, résumé), puis prépare un brouillon de réponse adapté.",
       "inputs": [
         {
           "name": "email",
-          "type": "string"
+          "type": "string",
+          "description": "Courriel reçu (expéditeur, objet, corps)"
         }
       ],
       "steps": [
@@ -92,23 +110,28 @@
           "kind": "agent",
           "name": "Brouillon"
         }
-      ]
+      ],
+      "jsonKeys": ["categorie", "urgence", "resume"]
     },
     {
       "slug": "compte-rendu",
       "name": "Compte rendu de réunion",
+      "description": "Enregistrement de la réunion → transcription par intervenant → compte rendu → validation → courriel.",
       "inputs": [
         {
           "name": "enregistrement",
-          "type": "file"
+          "type": "file",
+          "description": "Enregistrement audio de la réunion (une heure au plus)"
         },
         {
           "name": "participants",
-          "type": "string"
+          "type": "string",
+          "description": "Participants, avec leur fonction (facultatif)"
         },
         {
           "name": "destinataire",
-          "type": "string"
+          "type": "string",
+          "description": "Adresse courriel à laquelle envoyer le compte rendu"
         }
       ],
       "steps": [
@@ -137,18 +160,22 @@
     {
       "slug": "offre-emploi",
       "name": "Offre d’emploi",
+      "description": "Rédige une annonce claire et attractive à partir du poste, des missions et du profil.",
       "inputs": [
         {
           "name": "poste",
-          "type": "string"
+          "type": "string",
+          "description": "Intitulé du poste"
         },
         {
           "name": "missions",
-          "type": "string"
+          "type": "string",
+          "description": "Missions principales"
         },
         {
           "name": "profil",
-          "type": "string"
+          "type": "string",
+          "description": "Profil recherché et conditions (contrat, lieu, salaire)"
         }
       ],
       "steps": [
@@ -156,19 +183,26 @@
           "kind": "agent",
           "name": "Annonce"
         }
+      ],
+      "references": [
+        "Charte des droits et libertés de la personne",
+        "Loi sur les normes du travail"
       ]
     },
     {
       "slug": "fiche-produit",
       "name": "Fiche produit",
+      "description": "Transforme des caractéristiques techniques en fiche produit prête pour votre site.",
       "inputs": [
         {
           "name": "produit",
-          "type": "string"
+          "type": "string",
+          "description": "Nom du produit"
         },
         {
           "name": "caracteristiques",
-          "type": "string"
+          "type": "string",
+          "description": "Caractéristiques, composition, prix (avant taxes)"
         }
       ],
       "steps": [
@@ -181,14 +215,17 @@
     {
       "slug": "reseaux-sociaux",
       "name": "Publication réseaux sociaux",
+      "description": "Propose trois publications (LinkedIn, Facebook, Instagram) à partir d’une actualité.",
       "inputs": [
         {
           "name": "actualite",
-          "type": "string"
+          "type": "string",
+          "description": "Ce que vous voulez annoncer"
         },
         {
           "name": "ton",
-          "type": "string"
+          "type": "string",
+          "description": "Ton souhaité"
         }
       ],
       "steps": [
@@ -201,14 +238,17 @@
     {
       "slug": "reclamation",
       "name": "Réponse à une réclamation",
+      "description": "Prépare une réponse empathique à une réclamation, avec une proposition de geste commercial.",
       "inputs": [
         {
           "name": "reclamation",
-          "type": "string"
+          "type": "string",
+          "description": "Texte de la réclamation du client"
         },
         {
           "name": "marge",
-          "type": "string"
+          "type": "string",
+          "description": "Ce que vous pouvez proposer (rabais, remplacement, remboursement)"
         }
       ],
       "steps": [
@@ -220,15 +260,18 @@
     },
     {
       "slug": "newsletter",
-      "name": "Newsletter mensuelle",
+      "name": "Infolettre mensuelle",
+      "description": "Compose l’infolettre du mois à partir de vos informations brutes.",
       "inputs": [
         {
           "name": "infos",
-          "type": "string"
+          "type": "string",
+          "description": "Actualités, nouveautés, événements du mois"
         },
         {
           "name": "cible",
-          "type": "string"
+          "type": "string",
+          "description": "À qui s’adresse la lettre"
         }
       ],
       "steps": [
@@ -241,18 +284,22 @@
     {
       "slug": "relance-devis",
       "name": "Relance de devis sans réponse",
+      "description": "Rédige une relance commerciale aimable pour un devis resté sans réponse.",
       "inputs": [
         {
           "name": "client",
-          "type": "string"
+          "type": "string",
+          "description": "Nom du client"
         },
         {
           "name": "devis",
-          "type": "string"
+          "type": "string",
+          "description": "Référence et objet du devis"
         },
         {
           "name": "envoi",
-          "type": "string"
+          "type": "string",
+          "description": "Date d’envoi du devis"
         }
       ],
       "steps": [
@@ -265,10 +312,12 @@
     {
       "slug": "rapport-hebdo",
       "name": "Rapport d’activité hebdomadaire",
+      "description": "Met en forme vos notes de la semaine en rapport clair pour la direction.",
       "inputs": [
         {
           "name": "notes",
-          "type": "string"
+          "type": "string",
+          "description": "Vos notes en vrac de la semaine"
         }
       ],
       "steps": [
@@ -281,14 +330,17 @@
     {
       "slug": "traduction",
       "name": "Traduction professionnelle",
+      "description": "Traduit un texte en conservant le ton professionnel, puis signale les points délicats.",
       "inputs": [
         {
           "name": "texte",
-          "type": "string"
+          "type": "string",
+          "description": "Texte à traduire"
         },
         {
           "name": "langue",
-          "type": "string"
+          "type": "string",
+          "description": "Langue cible"
         }
       ],
       "steps": [
@@ -301,10 +353,12 @@
     {
       "slug": "resume-contrat",
       "name": "Résumé d’un contrat",
+      "description": "Résume un contrat et signale les clauses à faire relire (ne remplace pas un avocat).",
       "inputs": [
         {
           "name": "contrat",
-          "type": "string"
+          "type": "string",
+          "description": "Texte du contrat"
         }
       ],
       "steps": [
@@ -317,10 +371,12 @@
     {
       "slug": "controle-facture",
       "name": "Contrôle d’une facture fournisseur",
+      "description": "Extrait les données d’une facture, puis vérifie les calculs (TPS, TVQ) et les numéros d’inscription.",
       "inputs": [
         {
           "name": "facture",
-          "type": "string"
+          "type": "string",
+          "description": "Texte de la facture"
         }
       ],
       "steps": [
@@ -332,23 +388,43 @@
           "kind": "agent",
           "name": "Controle"
         }
-      ]
+      ],
+      "jsonKeys": [
+        "fournisseur",
+        "numero",
+        "date",
+        "sous_total",
+        "tps",
+        "tvq",
+        "total",
+        "numero_tps",
+        "numero_tvq",
+        "neq"
+      ],
+      "taxRates": {
+        "TPS": "5",
+        "TVQ": "9,975"
+      }
     },
     {
       "slug": "accueil-salarie",
       "name": "Accueil d’un nouveau salarié",
+      "description": "Prépare le courriel d’accueil et la liste des choses à faire avant le premier jour.",
       "inputs": [
         {
           "name": "prenom",
-          "type": "string"
+          "type": "string",
+          "description": "Prénom du salarié"
         },
         {
           "name": "poste",
-          "type": "string"
+          "type": "string",
+          "description": "Poste et service"
         },
         {
           "name": "arrivee",
-          "type": "string"
+          "type": "string",
+          "description": "Date et lieu d’arrivée"
         }
       ],
       "steps": [
@@ -356,19 +432,23 @@
           "kind": "agent",
           "name": "Accueil"
         }
-      ]
+      ],
+      "references": ["TD1", "TP-1015.3-V"]
     },
     {
       "slug": "avis-client",
       "name": "Réponse à un avis client",
+      "description": "Répond à un avis en ligne, positif ou négatif, avec le bon ton.",
       "inputs": [
         {
           "name": "avis",
-          "type": "string"
+          "type": "string",
+          "description": "Texte de l’avis"
         },
         {
           "name": "note",
-          "type": "string"
+          "type": "string",
+          "description": "Note donnée (sur 5)"
         }
       ],
       "steps": [
@@ -381,14 +461,17 @@
     {
       "slug": "ordre-du-jour",
       "name": "Ordre du jour de réunion",
+      "description": "Construit un ordre du jour chronométré à partir des sujets à traiter.",
       "inputs": [
         {
           "name": "sujets",
-          "type": "string"
+          "type": "string",
+          "description": "Sujets à aborder"
         },
         {
           "name": "duree",
-          "type": "string"
+          "type": "string",
+          "description": "Durée totale"
         }
       ],
       "steps": [
@@ -401,14 +484,17 @@
     {
       "slug": "reponse-validee",
       "name": "Réponse client validée avant envoi",
+      "description": "Rédige la réponse à un client, la soumet à validation, puis l’envoie par courriel.",
       "inputs": [
         {
           "name": "message",
-          "type": "string"
+          "type": "string",
+          "description": "Message reçu du client"
         },
         {
           "name": "destinataire",
-          "type": "string"
+          "type": "string",
+          "description": "Adresse courriel du client"
         }
       ],
       "steps": [
@@ -433,14 +519,17 @@
     {
       "slug": "cr-entretien",
       "name": "Compte rendu d’entretien",
+      "description": "Met en forme les notes d’un entretien (client, candidat ou annuel) en compte rendu.",
       "inputs": [
         {
           "name": "notes",
-          "type": "string"
+          "type": "string",
+          "description": "Notes prises pendant l’entretien"
         },
         {
           "name": "type",
-          "type": "string"
+          "type": "string",
+          "description": "Type d’entretien"
         }
       ],
       "steps": [
@@ -453,14 +542,17 @@
     {
       "slug": "tri-sinistres",
       "name": "Tri des déclarations de sinistre",
+      "description": "Classe une déclaration de sinistre (catégorie, urgence, pièces manquantes) et propose une réponse à l’assuré.",
       "inputs": [
         {
           "name": "declaration",
-          "type": "string"
+          "type": "string",
+          "description": "Texte de la déclaration de sinistre reçue"
         },
         {
           "name": "garanties",
-          "type": "string"
+          "type": "string",
+          "description": "Garanties et franchises du contrat de l’assuré, si vous les avez"
         }
       ],
       "steps": [
@@ -472,23 +564,35 @@
           "kind": "agent",
           "name": "Reponse"
         }
+      ],
+      "jsonKeys": [
+        "categorie",
+        "urgence",
+        "resume",
+        "date_sinistre",
+        "pieces_manquantes",
+        "points_de_vigilance"
       ]
     },
     {
       "slug": "conformite-documents",
       "name": "Contrôle de conformité d’un document",
+      "description": "Vérifie un document point par point selon votre liste de contrôles, puis envoie le rapport après validation.",
       "inputs": [
         {
           "name": "document",
-          "type": "string"
+          "type": "string",
+          "description": "Texte du document à contrôler"
         },
         {
           "name": "controles",
-          "type": "string"
+          "type": "string",
+          "description": "Liste des contrôles à appliquer, un par ligne"
         },
         {
           "name": "destinataire",
-          "type": "string"
+          "type": "string",
+          "description": "Adresse courriel à laquelle envoyer le rapport"
         }
       ],
       "steps": [
@@ -513,14 +617,17 @@
     {
       "slug": "factures-fournisseurs",
       "name": "Extraction d’une facture fournisseur",
+      "description": "Extrait les champs d’une facture en JSON (fournisseur, numéro, montants, taxes, échéance) et vérifie la cohérence des totaux, de la TPS et de la TVQ.",
       "inputs": [
         {
           "name": "facture",
-          "type": "file"
+          "type": "file",
+          "description": "Facture déposée en fichier (PDF ou image)"
         },
         {
           "name": "texte",
-          "type": "string"
+          "type": "string",
+          "description": "Texte de la facture, tel qu’il apparaît dans le fichier"
         }
       ],
       "steps": [
@@ -532,19 +639,36 @@
           "kind": "agent",
           "name": "Coherence"
         }
-      ]
+      ],
+      "jsonKeys": [
+        "fournisseur",
+        "numero",
+        "date",
+        "sous_total",
+        "tps",
+        "tvq",
+        "total",
+        "echeance"
+      ],
+      "taxRates": {
+        "TPS": "5",
+        "TVQ": "9,975"
+      }
     },
     {
       "slug": "qualification-prospects",
       "name": "Qualification d’un prospect",
+      "description": "Évalue un message entrant (score, besoin, budget, prochaine action) et prépare la réponse au prospect.",
       "inputs": [
         {
           "name": "message",
-          "type": "string"
+          "type": "string",
+          "description": "Message reçu du prospect (formulaire, courriel ou appel noté)"
         },
         {
           "name": "criteres",
-          "type": "string"
+          "type": "string",
+          "description": "Vos critères de qualification (cible, taille, budget minimum)"
         }
       ],
       "steps": [
@@ -556,23 +680,37 @@
           "kind": "agent",
           "name": "Reponse"
         }
+      ],
+      "jsonKeys": [
+        "score",
+        "justification",
+        "besoin",
+        "budget",
+        "delai",
+        "decideur",
+        "donnees_manquantes",
+        "prochaine_action"
       ]
     },
     {
       "slug": "synthese-projet-hebdo",
       "name": "Synthèse hebdomadaire d’un projet",
+      "description": "Transforme vos notes de la semaine en synthèse de projet, qui part par courriel après votre validation.",
       "inputs": [
         {
           "name": "projet",
-          "type": "string"
+          "type": "string",
+          "description": "Nom du projet"
         },
         {
           "name": "notes",
-          "type": "string"
+          "type": "string",
+          "description": "Vos notes en vrac de la semaine sur le projet"
         },
         {
           "name": "destinataire",
-          "type": "string"
+          "type": "string",
+          "description": "Adresse courriel à laquelle envoyer la synthèse"
         }
       ],
       "steps": [
@@ -597,18 +735,22 @@
     {
       "slug": "veille-concurrentielle",
       "name": "Note de veille concurrentielle",
+      "description": "Produit une note structurée (faits, signaux faibles, implications pour vous) à partir d’extraits que vous collez.",
       "inputs": [
         {
           "name": "concurrent",
-          "type": "string"
+          "type": "string",
+          "description": "Nom du concurrent suivi"
         },
         {
           "name": "extraits",
-          "type": "string"
+          "type": "string",
+          "description": "Extraits collés (site, communiqué, offre d’emploi, avis clients)"
         },
         {
           "name": "contexte",
-          "type": "string"
+          "type": "string",
+          "description": "Votre offre et votre positionnement, en deux phrases"
         }
       ],
       "steps": [
@@ -625,14 +767,17 @@
     {
       "slug": "reponse-appel-offres",
       "name": "Réponse à un appel d’offres",
+      "description": "Prépare une première version de réponse à un appel d’offres et liste les exigences que vos éléments ne couvrent pas.",
       "inputs": [
         {
           "name": "cahier",
-          "type": "string"
+          "type": "string",
+          "description": "Extrait du cahier des charges (exigences, critères de sélection)"
         },
         {
           "name": "elements",
-          "type": "string"
+          "type": "string",
+          "description": "Vos éléments de réponse (offre, références, moyens, prix)"
         }
       ],
       "steps": [
@@ -649,18 +794,22 @@
     {
       "slug": "revue-contrat",
       "name": "Revue de contrat",
+      "description": "Relève les clauses à risque, les clauses manquantes et les questions à poser, puis envoie le résumé après validation.",
       "inputs": [
         {
           "name": "contrat",
-          "type": "string"
+          "type": "string",
+          "description": "Texte du contrat ou des clauses à relire"
         },
         {
           "name": "contexte",
-          "type": "string"
+          "type": "string",
+          "description": "Votre rôle dans le contrat et vos priorités"
         },
         {
           "name": "destinataire",
-          "type": "string"
+          "type": "string",
+          "description": "Adresse courriel à laquelle envoyer le résumé"
         }
       ],
       "steps": [
@@ -685,18 +834,22 @@
     {
       "slug": "rapport-ventes-mensuel",
       "name": "Rapport de ventes mensuel",
+      "description": "Met en forme les chiffres de vente du mois en rapport : faits saillants, écarts aux objectifs et actions.",
       "inputs": [
         {
           "name": "mois",
-          "type": "string"
+          "type": "string",
+          "description": "Mois concerné"
         },
         {
           "name": "chiffres",
-          "type": "string"
+          "type": "string",
+          "description": "Chiffres du mois collés (chiffre d’affaires avant taxes, ventes par produit ou par représentant)"
         },
         {
           "name": "objectifs",
-          "type": "string"
+          "type": "string",
+          "description": "Objectifs du mois et chiffres du mois précédent"
         }
       ],
       "steps": [

@@ -693,8 +693,17 @@ describe("S3 : VÉRITÉ", () => {
       "gabarit-reseaux-sociaux",
       "gabarits-flux-de-travaux",
     ],
-    // Frais du concurrent, avec leur source et leur date de lecture (CL-X02).
-    pourcentage: ["guides-alternative-openrouter"],
+    // Frais du concurrent, avec leur source et leur date de lecture (CL-X02) ; taux fédéral et provincial des taxes
+    // que les gabarits de devis et de facture appliquent (CL-M13), lus dans templates.ts : ce ne sont pas des chiffres de Nexora AI.
+    pourcentage: [
+      "guides-alternative-openrouter",
+      "gabarits-flux-de-travaux",
+      "gabarit-devis",
+      "gabarit-controle-facture",
+      "gabarit-factures-fournisseurs",
+    ],
+    // Un seul exemple de format de montant (1 234,56 $), que l'adaptation au Québec demande aux gabarits (CL-M02).
+    prix: ["gabarits-flux-de-travaux"],
   };
 
   for (const k of KEYS)

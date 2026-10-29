@@ -135,7 +135,7 @@ A starter template summarizes a contract (deadlines, amounts, clauses to have re
 
 #### It does not know your tax rules.
 
-The starter templates for small businesses are general and do not follow Quebec tax rules; taxes, formats and vocabulary are adapted to the business.
+The starter templates for small businesses are adapted to Quebec, but do not guarantee any tax or legal compliance; your accountant or adviser validates them.
 
 #### It does not answer the phone.
 

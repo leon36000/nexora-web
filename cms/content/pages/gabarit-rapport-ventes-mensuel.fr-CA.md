@@ -7,13 +7,13 @@
 - Page : `gabarit-rapport-ventes-mensuel` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/gabarits-flux-de-travaux/rapport-ventes-mensuel/` · slug : `gabarits-flux-de-travaux/rapport-ventes-mensuel`
 - Titre SEO (46 caractères) : Rapport de ventes mensuel : gabarit WorkStudio
-- Description SEO (154 caractères) : Rapport de ventes mensuel : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qu'il faut adapter au Québec avant l'usage.
+- Description SEO (153 caractères) : Rapport de ventes mensuel : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qui reste à valider avec votre conseiller.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la fiche : ce que fait le gabarit « Rapport de ventes mensuel », dit sans détour. · Affirmations : CL-M01, CL-M02, CL-111*
+*Promesse de la fiche : ce que fait le gabarit « Rapport de ventes mensuel », dit sans détour. · Affirmations : CL-M01, CL-M02, CL-111, CL-M12, CL-M13*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -27,7 +27,7 @@ Le gabarit Rapport de ventes mensuel met en forme les chiffres de vente du mois�
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : ce que fait le gabarit, en trois lignes. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03*
+*Réponse d'abord : ce que fait le gabarit, en trois lignes. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-M12, CL-M13*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
@@ -39,21 +39,21 @@ Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourn
 
 ### Bloc 3 — Section (`block_section`)
 
-*Les champs de départ du gabarit, tels que déclarés dans WorkStudio. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03*
+*Les champs de départ du gabarit, tels que déclarés dans WorkStudio. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-M12, CL-M13*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=champs`
 
 ## Ce que vous fournissez.
 
-Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.
+Chaque champ de départ est prérempli d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.
 
 - **Le mois.** Mois concerné.
-- **Les chiffres.** Chiffres du mois : chiffre d'affaires, ventes par produit ou par vendeur.
+- **Les chiffres.** Chiffres du mois : chiffre d'affaires avant taxes, ventes par produit ou par représentant.
 - **Les objectifs.** Objectifs du mois et chiffres du mois précédent.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les étapes du flux : ce que fait chaque agent, où une personne intervient. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03*
+*Les étapes du flux : ce que fait chaque agent, où une personne intervient. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-M12, CL-M13*
 
 Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
@@ -61,7 +61,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
 #### Dresser le tableau des écarts.
 
-Un agent compare chaque indicateur à l'objectif et au mois précédent ; une comparaison impossible est marquée « [donnée manquante] ».
+Un agent compare chaque indicateur à l'objectif et au mois précédent, montants avant taxes (TPS et TVQ exclues) ; une comparaison impossible est marquée « [donnée manquante] ».
 
 #### Rédiger le rapport.
 
@@ -73,7 +73,7 @@ Vous relisez le texte produit, le corrigez au besoin, puis l'utilisez ou l'envoy
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03*
+*Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-M12, CL-M13*
 
 Réglages : `columns=2`, `tone=sombre`, `layout=liste`, `anchor_id=adapter`
 
@@ -85,7 +85,7 @@ Les causes proposées sont des hypothèses : vérifiez-les avant d'en tirer une
 
 #### Ce qui vaut pour tous.
 
-Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage.
+Les gabarits sont rédigés pour une PME du Québec : montants en dollars canadiens, TPS et TVQ quand une taxe entre en jeu, courriel et infolettre. Ils ne garantissent aucune conformité fiscale ou légale : les exemples sont fictifs, et votre comptable ou votre conseiller valide le résultat avant l'usage.
 
 #### Rien n'est envoyé.
 
@@ -93,7 +93,7 @@ Le gabarit produit un texte à relire. Seuls cinq gabarits de la collection envo
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03*
+*Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-M12, CL-M13*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -107,9 +107,9 @@ Non. Il produit un texte à relire ; vous l'utilisez ou l'envoyez vous-même. S
 
 Non. Vous collez les chiffres dans le champ de départ. Un branchement à vos logiciels passe par un connecteur, qualifié au diagnostic.
 
-#### Convient-il tel quel au Québec ?
+#### Convient-il à une PME du Québec ?
 
-Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise.
+Il est rédigé pour le Québec, mais à valider : les exemples sont fictifs, et le gabarit ne remplace ni votre comptable ni votre conseiller. Relisez chaque résultat avant de l'utiliser et adaptez la consigne à votre entreprise.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

@@ -7,14 +7,14 @@
     "slug": "workflow-templates/overdue-invoice-reminder",
     "title": "Overdue invoice reminder",
     "seo_title": "Overdue invoice reminder: workflow template",
-    "seo_description": "Overdue invoice reminder: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to adapt for Quebec before use.",
+    "seo_description": "Overdue invoice reminder: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to validate with your adviser.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la fiche : ce que fait le gabarit « Relance de facture impayée », dit sans détour.",
-      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M12", "CL-M13"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -32,7 +32,15 @@
     {
       "collection": "block_section",
       "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -47,7 +55,15 @@
     {
       "collection": "block_section",
       "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -55,14 +71,22 @@
       },
       "translation": {
         "title": "What you provide.",
-        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The customer.</strong> Customer name.</li><li><strong>The invoice.</strong> Invoice number.</li><li><strong>The amount.</strong> Amount due, tax included.</li><li><strong>The due date.</strong> Missed due date.</li><li><strong>The level.</strong> Reminder level: 1 courteous, 2 firm or 3 formal notice.</li></ul>",
+        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The customer.</strong> Customer name.</li><li><strong>The invoice.</strong> Invoice number.</li><li><strong>The amount.</strong> Amount due, taxes included.</li><li><strong>The due date.</strong> Missed due date.</li><li><strong>The level.</strong> Reminder level: 1 courteous, 2 firm or 3 formal notice.</li></ul>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -74,7 +98,7 @@
         "cards": [
           {
             "title": "Write the reminder.",
-            "text": "An agent writes the email at the requested level: simple reminder, new deadline, or formal notice recalling late-payment penalties."
+            "text": "An agent writes the email at the level requested: a simple reminder, a new deadline of eight days, or a formal notice. At level three it mentions late fees or interest only if they already appear on the invoice or in your terms, without inventing a rate or an amount, and ends with the internal note \"Mise en demeure à valider par votre conseiller avant l'envoi.\""
           },
           {
             "title": "Review.",
@@ -86,7 +110,15 @@
     {
       "collection": "block_cards",
       "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -98,11 +130,11 @@
         "cards": [
           {
             "title": "What to adapt here.",
-            "text": "At level three, the instruction recalls a flat recovery indemnity provided by French law. It does not apply as is in Quebec: replace it with your terms and what your contract allows."
+            "text": "At level three, the instruction cites no rate and no indemnity: late fees or interest appear only if they are already on the invoice or in your terms. The note \"to be validated by your adviser\" is a reminder that a formal notice commits you: have it reviewed before sending."
           },
           {
             "title": "What applies to all.",
-            "text": "The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use."
+            "text": "The templates are written for a Quebec small business: amounts in Canadian dollars, GST and QST wherever a tax applies, and Quebec business vocabulary. They do not guarantee any tax or legal compliance: the examples are fictional, and your accountant or adviser validates the result before use."
           },
           {
             "title": "Nothing is sent.",
@@ -114,7 +146,15 @@
     {
       "collection": "block_faq",
       "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -132,8 +172,8 @@
             "answer": "The template drafts text, not a legal notice. Have a formal notice reviewed by the competent person before sending it, taking Quebec law into account."
           },
           {
-            "question": "Does it suit Quebec as is?",
-            "answer": "Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+            "question": "Is it suited to a Quebec invoice?",
+            "answer": "It is written for a Quebec invoice, with the amount taxes included in Canadian dollars, but it knows neither your contract nor your payment terms. A formal notice is to be validated by your adviser before sending."
           }
         ]
       }

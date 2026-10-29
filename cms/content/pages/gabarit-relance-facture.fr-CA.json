@@ -7,14 +7,14 @@
     "slug": "gabarits-flux-de-travaux/relance-facture",
     "title": "Relance de facture impayée",
     "seo_title": "Relance de facture impayée : gabarit WorkStudio",
-    "seo_description": "Relance de facture impayée : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qu'il faut adapter au Québec avant l'usage.",
+    "seo_description": "Relance de facture impayée : gabarit de départ de WorkStudio pour PME. Champs, étapes, validation humaine et ce qui reste à valider avec votre conseiller.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la fiche : ce que fait le gabarit « Relance de facture impayée », dit sans détour.",
-      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M12", "CL-M13"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -32,7 +32,15 @@
     {
       "collection": "block_section",
       "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -47,7 +55,15 @@
     {
       "collection": "block_section",
       "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -55,14 +71,22 @@
       },
       "translation": {
         "title": "Ce que vous fournissez.",
-        "body": "<p>Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le client.</strong> Nom du client.</li><li><strong>La facture.</strong> Numéro de la facture.</li><li><strong>Le montant.</strong> Montant dû, taxes comprises.</li><li><strong>L'échéance.</strong> Date d'échéance dépassée.</li><li><strong>Le niveau.</strong> Niveau de relance : 1 courtois, 2 ferme ou 3 mise en demeure.</li></ul>",
+        "body": "<p>Chaque champ de départ est prérempli d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>Le client.</strong> Nom du client.</li><li><strong>La facture.</strong> Numéro de la facture.</li><li><strong>Le montant.</strong> Montant dû, taxes incluses.</li><li><strong>L'échéance.</strong> Date d'échéance dépassée.</li><li><strong>Le niveau.</strong> Niveau de relance : 1 courtois, 2 ferme ou 3 mise en demeure.</li></ul>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -74,7 +98,7 @@
         "cards": [
           {
             "title": "Rédiger la relance.",
-            "text": "Un agent écrit le courriel au niveau demandé : rappel simple, nouveau délai, ou mise en demeure avec rappel des pénalités de retard."
+            "text": "Un agent écrit le courriel au niveau demandé : rappel simple, nouveau délai de huit jours, ou mise en demeure. Au niveau trois, il rappelle des frais ou intérêts de retard seulement s'ils figurent déjà sur la facture ou dans vos conditions, sans en inventer le taux ni le montant, et termine par la note interne « Mise en demeure à valider par votre conseiller avant l'envoi. »"
           },
           {
             "title": "Relire.",
@@ -86,7 +110,15 @@
     {
       "collection": "block_cards",
       "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -98,11 +130,11 @@
         "cards": [
           {
             "title": "Ce qui s'adapte ici.",
-            "text": "Au niveau trois, la consigne rappelle une indemnité forfaitaire de recouvrement prévue par le droit français. Elle ne s'applique pas telle quelle au Québec : remplacez-la par vos conditions et ce que votre contrat permet."
+            "text": "Au niveau trois, la consigne ne cite aucun taux ni aucune indemnité : les frais ou intérêts de retard n'apparaissent que s'ils figurent déjà sur la facture ou dans vos conditions. La note « à valider par votre conseiller » rappelle qu'une mise en demeure engage : faites-la relire avant l'envoi."
           },
           {
             "title": "Ce qui vaut pour tous.",
-            "text": "Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage."
+            "text": "Les gabarits sont rédigés pour une PME du Québec : montants en dollars canadiens, TPS et TVQ quand une taxe entre en jeu, courriel et infolettre. Ils ne garantissent aucune conformité fiscale ou légale : les exemples sont fictifs, et votre comptable ou votre conseiller valide le résultat avant l'usage."
           },
           {
             "title": "Rien n'est envoyé.",
@@ -114,7 +146,15 @@
     {
       "collection": "block_faq",
       "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -132,8 +172,8 @@
             "answer": "Le gabarit rédige un texte, pas un avis juridique. Faites relire une mise en demeure par la personne compétente avant de l'envoyer, en tenant compte du droit applicable au Québec."
           },
           {
-            "question": "Convient-il tel quel au Québec ?",
-            "answer": "Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+            "question": "Convient-il à une facture du Québec ?",
+            "answer": "Il est écrit pour une facture du Québec, montant taxes incluses en dollars canadiens, mais il ne connaît ni votre contrat ni vos conditions de paiement. Une mise en demeure se fait valider par votre conseiller avant l'envoi."
           }
         ]
       }

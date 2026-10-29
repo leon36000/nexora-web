@@ -13,7 +13,7 @@
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution factures\u00a0: fini de retaper, les écarts remontent.",
+      "role": "Promesse de la solution factures : fini de retaper, les écarts remontent.",
       "claims": ["CL-101", "CL-121"],
       "fields": {
         "variant": "sombre",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème\u00a0: exemple construit d'un atelier d'usinage qui reçoit des formats variés.",
+      "role": "Problème : exemple construit d'un atelier d'usinage qui reçoit des formats variés.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -40,11 +40,11 @@
       },
       "translation": {
         "title": "Quand chaque facture arrive autrement.",
-        "body": "<p>Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée en travers. Quelqu'un retape les numéros, les dates et les montants, puis cherche qui doit approuver.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée en travers. Quelqu'un retape les numéros, les dates et les montants, puis cherche qui doit approuver.</p><p>L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Des formats variés.",
-            "text": "PDF numérique, scan, photo\u00a0: chacun se lit différemment."
+            "text": "PDF numérique, scan, photo : chacun se lit différemment."
           },
           {
             "title": "Des erreurs de frappe.",
@@ -59,7 +59,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système\u00a0: lecture, extraction, vérification, rangement.",
+      "role": "Ce que fait le système : lecture, extraction, vérification, rangement.",
       "claims": ["CL-101", "CL-121", "CL-21", "CL-P01", "CL-P02"],
       "fields": {
         "columns": "4",
@@ -73,15 +73,15 @@
         "cards": [
           {
             "title": "Il lit.",
-            "text": "Un PDF numérique est lu directement\u00a0; une image ou un PDF scanné passe par un modèle de lecture de documents. Les scans se lisent plus lentement."
+            "text": "Un PDF numérique est lu directement ; une image ou un PDF scanné passe par un modèle de lecture de documents. Les scans se lisent plus lentement."
           },
           {
             "title": "Il extrait.",
-            "text": "Vous définissez les champs (numéro, date, fournisseur, montants, taxes, numéro de projet)\u00a0; le système les cherche dans chaque pièce."
+            "text": "Vous définissez les champs (numéro, date, fournisseur, montants, taxes, numéro de projet) ; le système les cherche dans chaque pièce."
           },
           {
             "title": "Il vérifie.",
-            "text": "Un champ obligatoire manquant, une valeur illisible ou un total qui ne concorde pas\u00a0: la pièce est marquée «\u00a0à vérifier\u00a0», avec le motif."
+            "text": "Un champ obligatoire manquant, une valeur illisible ou un total qui ne concorde pas : la pièce est marquée « à vérifier », avec le motif."
           },
           {
             "title": "Il range.",
@@ -92,7 +92,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que reçoit l'équipe\u00a0: mosaïque de bénéfices concrets (bento).",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices concrets (bento).",
       "claims": ["CL-101", "CL-121"],
       "fields": {
         "columns": "2",
@@ -102,19 +102,19 @@
       },
       "translation": {
         "title": "Une table plutôt qu'une pile.",
-        "intro": "L'équipe ouvre une table, pas une pile de courriels. Les pièces sûres se parcourent vite\u00a0; celles qui sont douteuses remontent en tête.",
+        "intro": "L'équipe ouvre une table, pas une pile de courriels. Les pièces sûres se parcourent vite ; celles qui sont douteuses remontent en tête.",
         "cards": [
           {
             "title": "Une table de pièces.",
             "text": "Une ligne par facture, avec les champs que vous avez choisis."
           },
           {
-            "title": "Un indicateur «\u00a0à vérifier\u00a0».",
-            "text": "Avec le motif\u00a0: champ manquant, valeur illisible, total qui ne concorde pas."
+            "title": "Un indicateur « à vérifier ».",
+            "text": "Avec le motif : champ manquant, valeur illisible, total qui ne concorde pas."
           },
           {
             "title": "Une conclusion simple.",
-            "text": "Le modèle de départ «\u00a0contrôle d'une facture fournisseur\u00a0» conclut «\u00a0à payer\u00a0» ou «\u00a0à vérifier\u00a0»."
+            "text": "Le modèle de départ « contrôle d'une facture fournisseur » conclut « à payer » ou « à vérifier »."
           },
           {
             "title": "Le texte lu, conservé.",
@@ -125,7 +125,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic.",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic.",
       "claims": ["CL-14", "CL-09"],
       "fields": {
         "media_position": "none",
@@ -134,17 +134,17 @@
       },
       "translation": {
         "title": "Des erreurs vues avant le paiement.",
-        "body": "<p>Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Nous n'annonçons aucun pourcentage de précision ni aucun temps gagné\u00a0: la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour essayer la lecture sur vos pièces.</p>"
+        "body": "<p>Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Nous n'annonçons aucun pourcentage de précision ni aucun temps gagné : la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour essayer la lecture sur vos pièces.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, y compris les limites\u00a0; carte données avec lien Vos données.",
+      "role": "Ce qui reste sous contrôle, y compris les limites ; carte données avec lien Vos données.",
       "claims": [
         "CL-128",
         "CL-21",
         "CL-125",
-        "CL-111",
+        "CL-M15",
         "CL-06",
         "CL-E01",
         "CL-E02",
@@ -171,15 +171,15 @@
           },
           {
             "title": "Vos champs, vos taxes.",
-            "text": "Les modèles de départ sont généraux et ne suivent pas les règles fiscales du Québec\u00a0: vos champs (TPS, TVQ, numéro de projet) se définissent avec nous, puis se vérifient sur vos pièces."
+            "text": "Les modèles de lecture de documents ne sont pas encore adaptés aux taxes du Québec (TVA, hors taxes, toutes taxes comprises) : vos champs (TPS, TVQ, numéro de projet) se définissent avec nous, puis se vérifient sur vos pièces."
           },
           {
             "title": "Une personne relit les doutes.",
-            "text": "Tout ce qui est marqué «\u00a0à vérifier\u00a0» passe sous les yeux de quelqu'un."
+            "text": "Tout ce qui est marqué « à vérifier » passe sous les yeux de quelqu'un."
           },
           {
             "title": "Vos données restent à vous.",
-            "text": "Sur votre serveur ou chez nous, au Québec\u00a0: jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle de lecture sur votre serveur garde les pièces chez vous\u00a0; un service externe n'entre qu'avec votre activation explicite, consignée par écrit.",
+            "text": "Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle de lecture sur votre serveur garde les pièces chez vous ; un service externe n'entre qu'avec votre activation explicite, consignée par écrit.",
             "href": "/vos-donnees/",
             "link_label": "Lire nos engagements"
           }
@@ -196,22 +196,22 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Facturation automatisée\u00a0: vos questions.",
+        "title": "Facturation automatisée : vos questions.",
         "items": [
           {
-            "question": "Lit-il les factures scannées de travers\u00a0?",
-            "answer": "Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan\u00a0; ce qui est douteux est marqué «\u00a0à vérifier\u00a0»."
+            "question": "Lit-il les factures scannées de travers ?",
+            "answer": "Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan ; ce qui est douteux est marqué « à vérifier »."
           },
           {
-            "question": "Se relie-t-il à mon logiciel comptable\u00a0?",
-            "answer": "Peut-être\u00a0: cela dépend du logiciel. Nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable."
+            "question": "Se relie-t-il à mon logiciel comptable ?",
+            "answer": "Peut-être : cela dépend du logiciel. Nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable."
           },
           {
-            "question": "Et les taxes du Québec\u00a0?",
+            "question": "Et les taxes du Québec ?",
             "answer": "Elles ne sont pas gérées par défaut. Nous définissons avec vous les champs de taxes à extraire et les vérifications à faire, puis nous les mettons à l'épreuve sur vos pièces."
           },
           {
-            "question": "Peut-on aussi traiter devis et notes de frais\u00a0?",
+            "question": "Peut-on aussi traiter devis et notes de frais ?",
             "answer": "Des modèles de départ existent pour les devis, les bons de commande et les notes de frais. Ils se personnalisent comme celui des factures."
           }
         ]
@@ -219,7 +219,7 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: démonstration\u00a0; partenaire d'ici.",
+      "role": "CTA : démonstration ; partenaire d'ici.",
       "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"

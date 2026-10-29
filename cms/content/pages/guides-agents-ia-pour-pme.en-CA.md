@@ -137,7 +137,7 @@ It is not delivered in WorkStudio; it can be studied as custom work, from export
 
 #### It does not know your tax rules.
 
-The starter templates are general; taxes, formats and vocabulary are adapted to the business.
+The starter templates are adapted to Quebec, but do not guarantee any tax or legal compliance: your accountant or adviser validates them.
 
 #### It does not replace a lawyer.
 

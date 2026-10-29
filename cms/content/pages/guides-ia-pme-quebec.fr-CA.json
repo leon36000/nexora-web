@@ -6,8 +6,8 @@
   "seo": {
     "slug": "guides/ia-pme-quebec",
     "title": "L'IA pour une PME du Québec",
-    "seo_title": "IA pour PME au Québec\u00a0: par où commencer",
-    "seo_description": "Guide pour une PME du Québec\u00a0: choisir un cas précis, décider où vivent vos données, nommer qui valide, puis mesurer sur un pilote avant d'étendre.",
+    "seo_title": "IA pour PME au Québec : par où commencer",
+    "seo_description": "Guide pour une PME du Québec : choisir un cas précis, décider où vivent vos données, nommer qui valide, puis mesurer sur un pilote avant d'étendre.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Guide · IA pour PME",
         "headline": "L'IA pour une PME du Québec. Par où commencer.",
-        "subheadline": "Trois décisions avant tout outil\u00a0: un cas précis à traiter, un endroit où vivent vos données, une personne qui valide. Le reste suit, un cas à la fois.",
+        "subheadline": "Trois décisions avant tout outil : un cas précis à traiter, un endroit où vivent vos données, une personne qui valide. Le reste suit, un cas à la fois.",
         "primary_label": "Planifier un diagnostic",
         "primary_href": "/contact/",
         "secondary_label": "Voir la méthode",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "La réponse en bref.",
-        "body": "<p>Pour une PME, commencer par l'IA, c'est choisir un cas répétitif et précis (le tri des courriels, la lecture des factures, la prise de rendez-vous, la recherche dans vos documents), décider si le système vit chez vous ou s'il est hébergé au Québec, nommer la personne qui valide ce que l'IA prépare, puis mesurer sur un pilote avant d'étendre.</p><p>Aucun délai ni aucun gain n'est universel\u00a0: ils dépendent du cas et se mesurent sur le pilote. Un diagnostic précède toute estimation écrite.</p>",
+        "body": "<p>Pour une PME, commencer par l'IA, c'est choisir un cas répétitif et précis (le tri des courriels, la lecture des factures, la prise de rendez-vous, la recherche dans vos documents), décider si le système vit chez vous ou s'il est hébergé au Québec, nommer la personne qui valide ce que l'IA prépare, puis mesurer sur un pilote avant d'étendre.</p><p>Aucun délai ni aucun gain n'est universel : ils dépendent du cas et se mesurent sur le pilote. Un diagnostic précède toute estimation écrite.</p>",
         "items": [
           {
             "title": "Un cas.",
@@ -75,24 +75,24 @@
         "title": "Quatre questions avant de choisir.",
         "cards": [
           {
-            "title": "Quel cas, précisément\u00a0?",
-            "text": "Un travail répétitif et fréquent. Les six solutions de Nexora AI en sont des exemples\u00a0: courriels, factures, service client, rendez-vous, comptabilité, documents.",
+            "title": "Quel cas, précisément ?",
+            "text": "Un travail répétitif et fréquent. Les six solutions de Nexora AI en sont des exemples : courriels, factures, service client, rendez-vous, comptabilité, documents.",
             "href": "/solutions/",
             "link_label": "Voir les solutions"
           },
           {
-            "title": "Quelles données sont en jeu\u00a0?",
-            "text": "Listez les documents et les logiciels touchés. Cela décide du lieu\u00a0: chez vous, ou hébergé au Québec.",
+            "title": "Quelles données sont en jeu ?",
+            "text": "Listez les documents et les logiciels touchés. Cela décide du lieu : chez vous, ou hébergé au Québec.",
             "href": "/deploiement/",
             "link_label": "Comparer les deux modes"
           },
           {
-            "title": "Qui valide\u00a0?",
+            "title": "Qui valide ?",
             "text": "Toute action qui engage l'entreprise (envoi, paiement, écriture) est placée derrière la validation d'une personne, sauf décision écrite contraire."
           },
           {
-            "title": "Et si vous arrêtez\u00a0?",
-            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables\u00a0; le contrat le prévoit."
+            "title": "Et si vous arrêtez ?",
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables ; le contrat le prévoit."
           }
         ]
       }
@@ -108,7 +108,7 @@
       },
       "translation": {
         "title": "La méthode, en cinq temps.",
-        "body": "<p>Nexora AI installe le système, l'exploite avec vous et le fait évoluer\u00a0; la formation de votre équipe porte sur l'usage et la supervision. Aucun délai de mise en service universel n'est annoncé\u00a0: il se mesure sur un pilote. Le détail est sur la page <a href=\"/methode/\">Méthode</a>.</p>",
+        "body": "<p>Nexora AI installe le système, l'exploite avec vous et le fait évoluer ; la formation de votre équipe porte sur l'usage et la supervision. Aucun délai de mise en service universel n'est annoncé : il se mesure sur un pilote. Le détail est sur la page <a href=\"/methode/\">Méthode</a>.</p>",
         "items": [
           {
             "title": "Comprendre.",
@@ -144,7 +144,7 @@
       },
       "translation": {
         "title": "Chez vous ou au Québec.",
-        "body": "<p><strong>Chez vous.</strong> Le matériel, les accès et les sauvegardes vous appartiennent\u00a0; Nexora AI installe et configure, et l'exploitation se convient au contrat. <a href=\"/deploiement/sur-place/\">Voir le déploiement sur place</a>.</p><p><strong>Hébergé au Québec.</strong> Le lieu de l'hébergement, celui des sauvegardes et des journaux et la liste des sous-traitants sont précisés par écrit avant la mise en service. <a href=\"/deploiement/heberge-quebec/\">Voir l'hébergement au Québec</a>.</p><p>Dans les deux cas, un serveur au Québec ou chez vous n'écarte pas, à lui seul, les lois qui s'appliquent, et le système a des flux sortants (mises à jour, licences, modèle externe éventuel) qui sont listés avant la mise en service.</p>"
+        "body": "<p><strong>Chez vous.</strong> Le matériel, les accès et les sauvegardes vous appartiennent ; Nexora AI installe et configure, et l'exploitation se convient au contrat. <a href=\"/deploiement/sur-place/\">Voir le déploiement sur place</a>.</p><p><strong>Hébergé au Québec.</strong> Le lieu de l'hébergement, celui des sauvegardes et des journaux et la liste des sous-traitants sont précisés par écrit avant la mise en service. <a href=\"/deploiement/heberge-quebec/\">Voir l'hébergement au Québec</a>.</p><p>Dans les deux cas, un serveur au Québec ou chez vous n'écarte pas, à lui seul, les lois qui s'appliquent, et le système a des flux sortants (mises à jour, licences, modèle externe éventuel) qui sont listés avant la mise en service.</p>"
       }
     },
     {
@@ -158,7 +158,7 @@
       },
       "translation": {
         "title": "Les solutions les plus courantes.",
-        "body": "<p>Ce sont des configurations bâties sur les composantes de WorkStudio et adaptées à chaque entreprise après diagnostic, pas des produits prêts à l'emploi.</p><ul><li><a href=\"/solutions/courriels/\">Courriels</a>\u00a0: classer, résumer, préparer un brouillon.</li><li><a href=\"/solutions/factures/\">Factures</a>\u00a0: lire, extraire, signaler les écarts.</li><li><a href=\"/solutions/service-client/\">Service client</a>\u00a0: répondre à partir de vos documents.</li><li><a href=\"/solutions/rendez-vous/\">Rendez-vous</a>\u00a0: proposer des créneaux, rappeler.</li><li><a href=\"/solutions/comptabilite/\">Comptabilité</a>\u00a0: préparer la pré-saisie.</li><li><a href=\"/solutions/documents/\">Documents</a>\u00a0: retrouver, résumer, extraire.</li></ul>"
+        "body": "<p>Ce sont des configurations bâties sur les composantes de WorkStudio et adaptées à chaque entreprise après diagnostic, pas des produits prêts à l'emploi.</p><ul><li><a href=\"/solutions/courriels/\">Courriels</a> : classer, résumer, préparer un brouillon.</li><li><a href=\"/solutions/factures/\">Factures</a> : lire, extraire, signaler les écarts.</li><li><a href=\"/solutions/service-client/\">Service client</a> : répondre à partir de vos documents.</li><li><a href=\"/solutions/rendez-vous/\">Rendez-vous</a> : proposer des créneaux, rappeler.</li><li><a href=\"/solutions/comptabilite/\">Comptabilité</a> : préparer la pré-saisie.</li><li><a href=\"/solutions/documents/\">Documents</a> : retrouver, résumer, extraire.</li></ul>"
       }
     },
     {
@@ -180,11 +180,11 @@
           },
           {
             "title": "Elle ne remplace pas un juriste.",
-            "text": "Un modèle de départ résume un contrat (délais, montants, clauses à faire relire)\u00a0; il ne remplace pas un juriste."
+            "text": "Un modèle de départ résume un contrat (délais, montants, clauses à faire relire) ; il ne remplace pas un juriste."
           },
           {
             "title": "Elle ne connaît pas vos règles fiscales.",
-            "text": "Les modèles de départ pour PME sont généraux et ne suivent pas les règles fiscales du Québec\u00a0; taxes, formats et vocabulaire s'adaptent à l'entreprise."
+            "text": "Les modèles de départ pour PME sont adaptés au Québec, mais ne garantissent aucune conformité fiscale ou légale ; votre comptable ou votre conseiller les valide."
           },
           {
             "title": "Elle ne répond pas au téléphone.",
@@ -215,30 +215,30 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "IA pour PME\u00a0: vos questions.",
+        "title": "IA pour PME : vos questions.",
         "items": [
           {
-            "question": "Par où commencer concrètement\u00a0?",
-            "answer": "Par un diagnostic du cas visé\u00a0: logiciels existants, volumes, mode de déploiement, intégrations. Il précède toute estimation écrite."
+            "question": "Par où commencer concrètement ?",
+            "answer": "Par un diagnostic du cas visé : logiciels existants, volumes, mode de déploiement, intégrations. Il précède toute estimation écrite."
           },
           {
-            "question": "Combien de temps faut-il\u00a0?",
-            "answer": "Aucun délai universel n'est annoncé\u00a0: il dépend du cas et se mesure sur un pilote."
+            "question": "Combien de temps faut-il ?",
+            "answer": "Aucun délai universel n'est annoncé : il dépend du cas et se mesure sur un pilote."
           },
           {
-            "question": "Faut-il un serveur puissant\u00a0?",
+            "question": "Faut-il un serveur puissant ?",
             "answer": "Cela dépend du nombre d'utilisateurs, du volume de documents, du modèle choisi et des usages. Le matériel est établi au diagnostic, avant tout achat."
           },
           {
-            "question": "Mes données quittent-elles le Québec\u00a0?",
-            "answer": "Sur place, vos données restent sur votre serveur. Hébergées, elles restent au Québec. Les exceptions sont écrites\u00a0: les mises à jour, les licences et tout modèle externe que vous activez explicitement."
+            "question": "Mes données quittent-elles le Québec ?",
+            "answer": "Sur place, vos données restent sur votre serveur. Hébergées, elles restent au Québec. Les exceptions sont écrites : les mises à jour, les licences et tout modèle externe que vous activez explicitement."
           },
           {
-            "question": "L'IA va-t-elle remplacer mes employés\u00a0?",
-            "answer": "Elle prend en charge des tâches répétitives\u00a0; la décision reste humaine. Toute action qui engage l'entreprise passe par la validation d'une personne."
+            "question": "L'IA va-t-elle remplacer mes employés ?",
+            "answer": "Elle prend en charge des tâches répétitives ; la décision reste humaine. Toute action qui engage l'entreprise passe par la validation d'une personne."
           },
           {
-            "question": "Dois-je savoir programmer\u00a0?",
+            "question": "Dois-je savoir programmer ?",
             "answer": "Non. On décrit le besoin en français, le Copilote prépare un flux que l'on relit, et Nexora AI installe le système, l'exploite avec vous et forme votre équipe."
           }
         ]

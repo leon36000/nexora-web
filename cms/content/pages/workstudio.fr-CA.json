@@ -429,8 +429,8 @@
             "text": "L'interpréteur de code est désactivé par défaut et ne s'active que par un administrateur. La recherche sur le web envoie ses requêtes hors de l'instance : elle n'est disponible que si un administrateur l'active."
           },
           {
-            "title": "Les modèles de départ sont généraux.",
-            "text": "Ils ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+            "title": "Les modèles de départ sont adaptés au Québec, à valider.",
+            "text": "Ils sont rédigés pour le Québec (dollars canadiens, TPS et TVQ), mais ne garantissent aucune conformité fiscale ou légale : votre comptable ou votre conseiller valide le résultat."
           },
           {
             "title": "Les connexions se qualifient.",

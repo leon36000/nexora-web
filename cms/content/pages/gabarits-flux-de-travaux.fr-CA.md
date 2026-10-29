@@ -7,13 +7,13 @@
 - Page : `gabarits-flux-de-travaux` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/gabarits-flux-de-travaux/` · slug : `gabarits-flux-de-travaux`
 - Titre SEO (36 caractères) : Gabarits de flux de travaux pour PME
-- Description SEO (146 caractères) : Vingt-neuf gabarits WorkStudio pour PME : devis, relances, tri des courriels, comptes rendus, factures et contrats. Une fiche honnête par gabarit.
+- Description SEO (148 caractères) : Vingt-neuf gabarits WorkStudio adaptés au Québec, à valider : devis, relances, tri des courriels, factures, contrats. Une fiche honnête par gabarit.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la page : des gabarits de départ pour PME, avec leur limite (rédigés pour la France). · Affirmations : CL-M01, CL-M02, CL-M03*
+*Promesse de la page : des gabarits de départ pour PME, avec leur limite (adaptés au Québec, à valider). · Affirmations : CL-M01, CL-M02, CL-M03, CL-M12, CL-M13, CL-M14*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,25 +21,25 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Gabarits de flux de travaux pour PME.
 
-Vingt-neuf gabarits de départ pour les tâches courantes d'une PME : devis, relances, tri des courriels, comptes rendus, contrôles de factures et de contrats. Une fiche honnête pour chacun.
+Vingt-neuf gabarits de départ pour les tâches courantes d'une PME : devis, relances, tri des courriels, comptes rendus, contrôles de factures et de contrats. Adaptés au Québec, à valider : une fiche honnête pour chacun.
 
 [Voir WorkStudio](/workstudio/) · [Demander une démonstration](/contact/?sujet=demonstration)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : ce que sont les gabarits, combien, leur limite, l'envoi. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92*
+*Réponse d'abord : ce que sont les gabarits, combien, leur limite, l'envoi. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92, CL-M12, CL-M13, CL-M14*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 ## La réponse en bref.
 
-WorkStudio fournit vingt-neuf gabarits de flux de travaux pour PME : devis, relances, tri des courriels, comptes rendus, contrôles de factures et de contrats. Un gabarit est un flux de départ, rédigé pour une PME française : on l'adapte à son entreprise avant de le déployer. Ceux qui envoient un courriel attendent d'abord la validation d'une personne.
+WorkStudio fournit vingt-neuf gabarits de flux de travaux pour PME : devis, relances, tri des courriels, comptes rendus, contrôles de factures et de contrats. Un gabarit est un flux de départ adapté au Québec (dollars canadiens, TPS et TVQ), à valider avec votre comptable ou votre conseiller avant le déploiement. Ceux qui envoient un courriel attendent d'abord la validation d'une personne.
 
 Un flux de travaux est un enchaînement automatisé de tâches. Un agent est un logiciel qui accomplit une tâche avec les outils que vous autorisez.
 
 ### Bloc 3 — Section (`block_section`)
 
-*Comment on adapte un gabarit : décrire, relire, tester, déployer une version. · Affirmations : CL-92, CL-91, CL-P02*
+*Comment on adapte un gabarit : décrire, relire, tester, déployer une version. · Affirmations : CL-92, CL-91, CL-P02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=adapter`
 
@@ -51,7 +51,7 @@ Nexora AI peut configurer les gabarits avec vous : voir la [méthode](/methode/
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les gabarits : ventes et clients. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : ventes et clients. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=groupe-ventes`
 
@@ -61,7 +61,7 @@ Devis, relances, réponses aux clients et aux appels d'offres.
 
 #### Devis client.
 
-Le gabarit Devis client rédige un devis structuré à partir du client et d'une liste de prestations avec leurs quantités et leurs prix unitaires avant taxes : un tableau, les totaux, la durée de validité et les conditions de paiement.
+Le gabarit Devis client rédige un devis structuré à partir du client et de ses prestations, prix unitaires avant taxes : un tableau, le sous-total, la TPS à 5 %, la TVQ à 9,975 % calculée sur le sous-total, le total en dollars canadiens, la validité et les conditions de paiement.
 
 → [Voir la fiche](/gabarits-flux-de-travaux/devis/)
 
@@ -85,7 +85,7 @@ Le gabarit Réponse support répond à la question d'un client uniquement à par
 
 #### Réponse à une réclamation.
 
-Le gabarit Réponse à une réclamation prépare une réponse empathique à partir du texte de la réclamation et du geste que vous pouvez proposer : remise, remplacement ou remboursement.
+Le gabarit Réponse à une réclamation prépare une réponse empathique à partir du texte de la réclamation et du geste que vous pouvez proposer : rabais, remplacement ou remboursement.
 
 → [Voir la fiche](/gabarits-flux-de-travaux/reclamation/)
 
@@ -115,7 +115,7 @@ Le gabarit Réponse à un appel d'offres analyse chaque exigence du cahier des c
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Les gabarits : courriels et réunions. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : courriels et réunions. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=2`, `tone=sable`, `layout=grille`, `anchor_id=groupe-courriels`
 
@@ -149,7 +149,7 @@ Le gabarit Compte rendu d'entretien met en forme les notes d'un entretien (clien
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Les gabarits : finance et documents. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : finance et documents. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=3`, `tone=clair`, `layout=liste`, `anchor_id=groupe-finance`
 
@@ -159,13 +159,13 @@ Factures, contrats, conformité et sinistres.
 
 #### Contrôle d'une facture fournisseur.
 
-Le gabarit Contrôle d'une facture fournisseur extrait d'abord les données de la facture (fournisseur, numéro, date, totaux, taxe, numéro d'entreprise), puis vérifie que le total avant taxe plus la taxe égale le total, que les mentions obligatoires sont présentes et conclut « À PAYER »
+Le gabarit Contrôle d'une facture fournisseur extrait les données de la facture (fournisseur, numéro, date, sous-total, TPS, TVQ, total, numéros d'inscription et NEQ), puis vérifie les calculs (TPS à 5 %, TVQ à 9,975 % du sous-total) et le format des numéros, et conclut « À PAYER »
 
 → [Voir la fiche](/gabarits-flux-de-travaux/controle-facture/)
 
 #### Extraction d'une facture fournisseur.
 
-Le gabarit Extraction d'une facture fournisseur extrait en JSON les champs d'une facture (fournisseur, numéro, date, totaux, taxe, échéance), avec nul pour toute valeur absente, puis vérifie la cohérence des totaux et conclut « COHÉRENTE »
+Le gabarit Extraction d'une facture fournisseur extrait en JSON les champs d'une facture (fournisseur, numéro, date, sous-total, TPS, TVQ, total, échéance), avec nul pour toute valeur absente, puis vérifie la cohérence des totaux et des taxes et conclut « COHÉRENTE »
 
 → [Voir la fiche](/gabarits-flux-de-travaux/factures-fournisseurs/)
 
@@ -195,7 +195,7 @@ Le gabarit Tri des déclarations de sinistre classe une déclaration (catégorie
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Les gabarits : rapports et suivi. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : rapports et suivi. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=2`, `tone=sable`, `layout=grille`, `anchor_id=groupe-rapports`
 
@@ -229,7 +229,7 @@ Le gabarit Note de veille concurrentielle produit une note structurée à partir
 
 ### Bloc 8 — Cartes (`block_cards`)
 
-*Les gabarits : communication et équipe. · Affirmations : CL-M01, CL-M02*
+*Les gabarits : communication et équipe. · Affirmations : CL-M01, CL-M02, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=groupe-equipe`
 
@@ -245,7 +245,7 @@ Le gabarit Offre d'emploi rédige une annonce claire à partir de l'intitulé du
 
 #### Accueil d'une nouvelle personne salariée.
 
-Le gabarit Accueil d'une nouvelle personne salariée prépare le courriel d'accueil chaleureux et une liste de préparation en deux parties : ce que l'entreprise prépare (poste de travail, accès, badge, contrat) et ce que la personne apporte.
+Le gabarit Accueil d'une nouvelle personne salariée prépare le courriel d'accueil chaleureux et une liste de préparation en deux parties : ce que l'entreprise prépare (poste de travail, accès, carte d'accès, contrat de travail) et ce que la personne apporte (pièces d'identité, numéro d'assurance sociale, dépôt direct, formulaires TD1 et TP-1015.3-V).
 
 → [Voir la fiche](/gabarits-flux-de-travaux/accueil-nouvelle-personne/)
 
@@ -257,7 +257,7 @@ Le gabarit Infolettre mensuelle compose l'infolettre du mois à partir de vos in
 
 #### Publication pour les réseaux sociaux.
 
-Le gabarit Publication pour les réseaux sociaux propose trois publications à partir d'une actualité et du registre souhaité : une pour LinkedIn (professionnelle, six cents caractères au plus), une pour Facebook (conviviale) et une pour Instagram (courte, avec cinq mots-clés), chacune terminée par un appel à l'action.
+Le gabarit Publication pour les réseaux sociaux propose trois publications à partir d'une actualité et du registre souhaité : une pour LinkedIn (professionnelle, six cents caractères au plus), une pour Facebook (conviviale) et une pour Instagram (courte, avec cinq mots-clics), chacune terminée par un appel à l'action.
 
 → [Voir la fiche](/gabarits-flux-de-travaux/reseaux-sociaux/)
 
@@ -275,19 +275,21 @@ Le gabarit Traduction professionnelle traduit un texte dans la langue demandée 
 
 ### Bloc 9 — Section (`block_section`)
 
-*Ce qu'un gabarit ne sait pas : règles fiscales du Québec, formats, vocabulaire. · Affirmations : CL-M02, CL-111, CL-M04*
+*Ce que fait l'adaptation au Québec (taxes, formats, vocabulaire) et ce qu'elle ne garantit pas. · Affirmations : CL-M02, CL-111, CL-M04, CL-M12, CL-M13, CL-M14, CL-M15*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
 
-## Ce qu'un gabarit ne sait pas.
+## Adaptés au Québec, à valider.
 
-Les gabarits de départ sont généraux. Ils sont rédigés pour une PME française : TVA de type français, euro, numéro d'entreprise français. Aucune règle de TPS, de TVQ ou de numéro d'entreprise du Québec n'y figure.
+Les gabarits de départ sont adaptés au Québec : montants en dollars canadiens (1 234,56 $), TPS de 5 % et TVQ de 9,975 % calculée sur le sous-total, numéros d'inscription à la TPS et à la TVQ et numéro d'entreprise du Québec (NEQ), vocabulaire d'ici (courriel, infolettre, pourriel) et dates en toutes lettres ou en AAAA-MM-JJ.
 
-Taxes, formats et vocabulaire s'adaptent à l'entreprise avant tout usage au Québec. Un gabarit n'est pas non plus un avis comptable ou juridique : un résumé de contrat ne remplace pas un juriste.
+Ils ne garantissent aucune conformité fiscale ou légale. Les exemples (noms, montants, numéros) sont fictifs et n'ont pas été validés auprès de Revenu Québec ni de l'Agence du revenu du Canada. Seules la TPS fédérale et la TVQ sont gérées, pas les taxes des autres provinces. Les références légales (Loi sur les normes du travail, Charte des droits et libertés de la personne, formulaires de retenues à la source) sont seulement nommées, chaque fois avec « à valider par votre conseiller ». Un gabarit n'est pas un avis comptable ou juridique : un résumé de contrat ne remplace pas un juriste.
+
+La lecture de documents scannés de WorkStudio (factures, devis, bons de commande, notes de frais) n'est pas visée par cette adaptation : ses champs de taxes, TVA, hors taxes et toutes taxes comprises, restent à définir avec nous.
 
 ### Bloc 10 — Cartes (`block_cards`)
 
-*Ce qui s'envoie et ce qui ne s'envoie pas : cinq gabarits, tous derrière une validation. · Affirmations : CL-M03, CL-21, CL-93*
+*Ce qui s'envoie et ce qui ne s'envoie pas : cinq gabarits, tous derrière une validation. · Affirmations : CL-M03, CL-21, CL-93, CL-M12, CL-M13, CL-M14*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=envoi`
 
@@ -303,7 +305,7 @@ Compte rendu de réunion, réponse client validée, contrôle de conformité, sy
 
 ### Bloc 11 — FAQ (`block_faq`)
 
-*Questions de la page : définition, nombre, Québec, envoi, adaptation. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92, CL-80*
+*Questions de la page : définition, nombre, Québec, envoi, adaptation. · Affirmations : CL-M01, CL-M02, CL-M03, CL-111, CL-92, CL-80, CL-M12, CL-M13, CL-M14*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -319,7 +321,7 @@ Vingt-neuf, rangés dans le dossier « Modèles PME » que chaque nouvel espac
 
 #### Les gabarits conviennent-ils au Québec ?
 
-Pas tels quels. Ils sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise.
+Ils sont adaptés au Québec, mais à valider : dollars canadiens, TPS et TVQ, numéros d'inscription et NEQ, vocabulaire d'ici. Ils ne garantissent aucune conformité fiscale ou légale : votre comptable ou votre conseiller valide le résultat avant l'usage.
 
 #### Un gabarit peut-il envoyer des courriels seul ?
 

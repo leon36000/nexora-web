@@ -7,13 +7,13 @@
 - Page : `gabarit-resume-contrat` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/workflow-templates/contract-summary/` · slug : `workflow-templates/contract-summary`
 - Titre SEO (35 caractères) : Contract summary: workflow template
-- Description SEO (147 caractères) : Contract summary: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to adapt for Quebec before use.
+- Description SEO (154 caractères) : Contract summary: a WorkStudio starter template for small business. Starting fields, steps, human approval and what is left to validate with your adviser.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la fiche : ce que fait le gabarit « Résumé d'un contrat », dit sans détour. · Affirmations : CL-M01, CL-M02, CL-111*
+*Promesse de la fiche : ce que fait le gabarit « Résumé d'un contrat », dit sans détour. · Affirmations : CL-M01, CL-M02, CL-111, CL-M12, CL-M14*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -27,7 +27,7 @@ The Contract summary template summarizes a contract in ten lines, lists dates, d
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : ce que fait le gabarit, en trois lignes. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129*
+*Réponse d'abord : ce que fait le gabarit, en trois lignes. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129, CL-M12, CL-M14*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
@@ -39,7 +39,7 @@ A workflow template is an automated sequence of tasks, provided as a starting po
 
 ### Bloc 3 — Section (`block_section`)
 
-*Les champs de départ du gabarit, tels que déclarés dans WorkStudio. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129*
+*Les champs de départ du gabarit, tels que déclarés dans WorkStudio. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129, CL-M12, CL-M14*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=champs`
 
@@ -51,7 +51,7 @@ Each starting field is pre-filled with an example value so a first run needs no 
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les étapes du flux : ce que fait chaque agent, où une personne intervient. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129*
+*Les étapes du flux : ce que fait chaque agent, où une personne intervient. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129, CL-M12, CL-M14*
 
 Réglages : `columns=2`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
@@ -59,7 +59,7 @@ Réglages : `columns=2`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
 #### Summarize.
 
-An agent gives a ten-line summary, the dates and deadlines, the amounts and the list of clauses to have a lawyer review.
+An agent gives a ten-line summary, the dates and deadlines, the amounts and the list of clauses to have a lawyer or notary review.
 
 #### Review.
 
@@ -67,7 +67,7 @@ You read the text produced, correct it if needed, then use or send it yourself: 
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129*
+*Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129, CL-M12, CL-M14*
 
 Réglages : `columns=2`, `tone=sombre`, `layout=liste`, `anchor_id=adapter`
 
@@ -79,7 +79,7 @@ The template does not know the law that applies in Quebec. It flags clauses to r
 
 #### What applies to all.
 
-The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use.
+The templates are written for a Quebec small business: amounts in Canadian dollars, GST and QST wherever a tax applies, and Quebec business vocabulary. They do not guarantee any tax or legal compliance: the examples are fictional, and your accountant or adviser validates the result before use.
 
 #### Nothing is sent.
 
@@ -87,7 +87,7 @@ The template produces text to review. Only five templates in the collection send
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129*
+*Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec. · Affirmations : CL-M01, CL-M02, CL-111, CL-M04, CL-M03, CL-129, CL-M12, CL-M14*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -101,9 +101,9 @@ No. It produces text to review; you use or send it yourself. Only five templates
 
 No, and the template says so at the end: "Ce résumé ne remplace pas l'avis d'un juriste." It helps spot clauses to have reviewed.
 
-#### Does it suit Quebec as is?
+#### Is it suited to a Quebec business?
 
-Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business.
+It is written for Quebec but still needs validating: the examples are fictional, and the template does not replace your accountant or adviser. Review every result before using it and adapt the instructions to your business.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

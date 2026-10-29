@@ -7,14 +7,14 @@
     "slug": "gabarits-flux-de-travaux/controle-facture",
     "title": "Contrôle d'une facture fournisseur",
     "seo_title": "Contrôle d'une facture fournisseur : gabarit PME",
-    "seo_description": "Contrôle d'une facture fournisseur : gabarit de départ de WorkStudio. Champs, étapes, validation humaine et points à adapter au Québec avant l'usage.",
+    "seo_description": "Contrôle d'une facture fournisseur : gabarit de départ de WorkStudio. Champs, étapes, validation humaine et points à valider avec votre conseiller.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la fiche : ce que fait le gabarit « Contrôle d'une facture fournisseur », dit sans détour.",
-      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M12", "CL-M13"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Gabarit · Finance et documents",
         "headline": "Contrôle d'une facture fournisseur.",
-        "subheadline": "Le gabarit Contrôle d'une facture fournisseur extrait d'abord les données de la facture (fournisseur, numéro, date, totaux, taxe, numéro d'entreprise), puis vérifie que le total avant taxe plus la taxe égale le total, que les mentions obligatoires sont présentes et conclut « À PAYER »",
+        "subheadline": "Le gabarit Contrôle d'une facture fournisseur extrait les données de la facture (fournisseur, numéro, date, sous-total, TPS, TVQ, total, numéros d'inscription et NEQ), puis vérifie les calculs (TPS à 5 %, TVQ à 9,975 % du sous-total) et le format des numéros, et conclut « À PAYER »",
         "primary_label": "Voir tous les gabarits",
         "primary_href": "/gabarits-flux-de-travaux/",
         "secondary_label": "Demander une démonstration",
@@ -32,7 +32,16 @@
     {
       "collection": "block_section",
       "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-101"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-101",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -40,14 +49,23 @@
       },
       "translation": {
         "title": "La réponse en bref.",
-        "body": "<p>Le gabarit Contrôle d'une facture fournisseur extrait d'abord les données de la facture (fournisseur, numéro, date, totaux, taxe, numéro d'entreprise), puis vérifie que le total avant taxe plus la taxe égale le total, que les mentions obligatoires sont présentes et conclut « À PAYER » ou « À VÉRIFIER ».</p><p>Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourni comme point de départ dans WorkStudio et à adapter à l'entreprise avant son déploiement.</p>",
+        "body": "<p>Le gabarit Contrôle d'une facture fournisseur extrait les données de la facture (fournisseur, numéro, date, sous-total, TPS, TVQ, total, numéros d'inscription et NEQ), puis vérifie les calculs (TPS à 5 %, TVQ à 9,975 % du sous-total) et le format des numéros, et conclut « À PAYER » ou « À VÉRIFIER ».</p><p>Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourni comme point de départ dans WorkStudio et à adapter à l'entreprise avant son déploiement.</p>",
         "items": []
       }
     },
     {
       "collection": "block_section",
       "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-101"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-101",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -55,14 +73,23 @@
       },
       "translation": {
         "title": "Ce que vous fournissez.",
-        "body": "<p>Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>La facture.</strong> Texte de la facture.</li></ul>",
+        "body": "<p>Chaque champ de départ est prérempli d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>La facture.</strong> Texte de la facture.</li></ul>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-101"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-101",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "3",
         "tone": "clair",
@@ -74,11 +101,11 @@
         "cards": [
           {
             "title": "Extraire les données.",
-            "text": "Un agent répond en JSON : fournisseur, numéro, date, total avant taxe, taxe, total et numéro d'entreprise (nul s'il est absent)."
+            "text": "Un agent répond en JSON avec les clés fournisseur, numero, date, sous_total (avant taxes), tps, tvq, total, numero_tps, numero_tvq et neq ; la valeur est nulle si elle est absente."
           },
           {
             "title": "Contrôler.",
-            "text": "Un second agent vérifie le calcul, la plausibilité du taux de taxe, la présence du numéro d'entreprise, du numéro et de la date, puis liste les anomalies."
+            "text": "Un second agent vérifie que le sous-total, la TPS et la TVQ donnent le total à un cent près, que la TPS vaut 5 % du sous-total et la TVQ 9,975 % du sous-total, jamais de la TPS, et que les numéros d'inscription à la TPS (neuf chiffres, RT, quatre chiffres) et à la TVQ (dix chiffres, TQ, quatre chiffres) sont présents. Un petit fournisseur non inscrit est signalé « à vérifier », sans être déclaré fautif ; les anomalies sont listées."
           },
           {
             "title": "Relire.",
@@ -90,7 +117,16 @@
     {
       "collection": "block_cards",
       "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-101"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-101",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -102,11 +138,11 @@
         "cards": [
           {
             "title": "Ce qui s'adapte ici.",
-            "text": "Le contrôle est celui d'une facture française : taux de TVA français, numéro SIRET. Au Québec, remplacez-les par la TPS, la TVQ et le numéro d'entreprise du Québec, et leurs formats."
+            "text": "Le contrôle vise un fournisseur du Québec : TPS fédérale et TVQ seulement, avec les formes RT et TQ. Il contrôle la forme des numéros, pas leur existence auprès de Revenu Québec ou de l'Agence du revenu du Canada. Les numéros des exemples sont fictifs."
           },
           {
             "title": "Ce qui vaut pour tous.",
-            "text": "Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage."
+            "text": "Les gabarits sont rédigés pour une PME du Québec : montants en dollars canadiens, TPS et TVQ quand une taxe entre en jeu, courriel et infolettre. Ils ne garantissent aucune conformité fiscale ou légale : les exemples sont fictifs, et votre comptable ou votre conseiller valide le résultat avant l'usage."
           },
           {
             "title": "Rien n'est envoyé.",
@@ -118,7 +154,16 @@
     {
       "collection": "block_faq",
       "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03", "CL-101"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-101",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -136,8 +181,8 @@
             "answer": "Non. Il conclut « À PAYER » ou « À VÉRIFIER » avec la liste des anomalies. Le paiement et la décision restent à une personne."
           },
           {
-            "question": "Convient-il tel quel au Québec ?",
-            "answer": "Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+            "question": "Convient-il aux factures de mes fournisseurs ?",
+            "answer": "Il est écrit pour un fournisseur du Québec. Les exemples et les numéros sont fictifs, et c'est un agent qui contrôle : il ne remplace pas votre comptable. Les taxes des autres provinces ne sont pas gérées."
           }
         ]
       }

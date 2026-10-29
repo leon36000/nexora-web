@@ -429,8 +429,8 @@
             "text": "The code interpreter is off by default and can only be turned on by an administrator. Web search sends its queries outside the instance: it is available only if an administrator turns it on."
           },
           {
-            "title": "Starter templates are general.",
-            "text": "They do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+            "title": "Starter templates are adapted to Quebec, to be validated.",
+            "text": "They are written for Quebec (Canadian dollars, GST and QST), but do not guarantee any tax or legal compliance: your accountant or adviser validates the result."
           },
           {
             "title": "Connections are qualified.",

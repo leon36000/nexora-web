@@ -7,14 +7,14 @@
     "slug": "workflow-templates/monthly-sales-report",
     "title": "Monthly sales report",
     "seo_title": "Monthly sales report: workflow template",
-    "seo_description": "Monthly sales report: a WorkStudio starter template for small business. Starting fields, steps, human approval and what to adapt for Quebec before use.",
+    "seo_description": "Monthly sales report: a WorkStudio starter template for small business. Starting fields, steps, human approval and what is left to validate with your adviser.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la fiche : ce que fait le gabarit « Rapport de ventes mensuel », dit sans détour.",
-      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M12", "CL-M13"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -32,7 +32,15 @@
     {
       "collection": "block_section",
       "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -47,7 +55,15 @@
     {
       "collection": "block_section",
       "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -55,14 +71,22 @@
       },
       "translation": {
         "title": "What you provide.",
-        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The month.</strong> Month concerned.</li><li><strong>The figures.</strong> The month's figures: revenue, sales by product or by salesperson.</li><li><strong>The targets.</strong> The month's targets and the previous month's figures.</li></ul>",
+        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The month.</strong> Month concerned.</li><li><strong>The figures.</strong> The month's figures: revenue before tax, sales by product or by representative.</li><li><strong>The targets.</strong> The month's targets and the previous month's figures.</li></ul>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "3",
         "tone": "clair",
@@ -74,7 +98,7 @@
         "cards": [
           {
             "title": "Build the gap table.",
-            "text": "An agent compares each indicator with the target and the previous month; an impossible comparison is marked \"[donnée manquante]\"."
+            "text": "An agent compares each indicator with the target and the previous month, amounts before tax (GST and QST excluded); an impossible comparison is marked \"[donnée manquante]\"."
           },
           {
             "title": "Write the report.",
@@ -90,7 +114,15 @@
     {
       "collection": "block_cards",
       "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -106,7 +138,7 @@
           },
           {
             "title": "What applies to all.",
-            "text": "The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use."
+            "text": "The templates are written for a Quebec small business: amounts in Canadian dollars, GST and QST wherever a tax applies, and Quebec business vocabulary. They do not guarantee any tax or legal compliance: the examples are fictional, and your accountant or adviser validates the result before use."
           },
           {
             "title": "Nothing is sent.",
@@ -118,7 +150,15 @@
     {
       "collection": "block_faq",
       "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
-      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "claims": [
+        "CL-M01",
+        "CL-M02",
+        "CL-111",
+        "CL-M04",
+        "CL-M03",
+        "CL-M12",
+        "CL-M13"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -136,8 +176,8 @@
             "answer": "No. You paste the figures in the starting field. Connecting to your software goes through a connector, qualified at the diagnostic."
           },
           {
-            "question": "Does it suit Quebec as is?",
-            "answer": "Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+            "question": "Is it suited to a Quebec business?",
+            "answer": "It is written for Quebec but still needs validating: the examples are fictional, and the template does not replace your accountant or adviser. Review every result before using it and adapt the instructions to your business."
           }
         ]
       }

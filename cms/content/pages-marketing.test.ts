@@ -43,8 +43,12 @@ type Inventaire = {
   templates: {
     slug: string;
     name: string;
-    inputs: { name: string; type: string }[];
+    description: string;
+    inputs: { name: string; type: string; description: string }[];
     steps: { kind: string; name: string }[];
+    jsonKeys?: string[];
+    references?: string[];
+    taxRates?: Record<string, string>;
   }[];
 };
 const inventaire = JSON.parse(
@@ -269,8 +273,42 @@ describe("P7 : les gabarits, d'après l'inventaire réel de WorkStudio", () => {
   test("l'inventaire figé compte vingt-neuf gabarits aux adresses distinctes, et sa source est tracée", () => {
     expect(inventaire.templates).toHaveLength(29);
     expect(new Set(inventaire.templates.map((t) => t.slug)).size).toBe(29);
-    expect(inventaire.source).toMatch(/commit 4c7b4e4f/);
+    expect(inventaire.source).toMatch(/commit 0888af53/);
     expect(claim("CL-M01")?.statement).toMatch(/vingt-neuf gabarits/);
+  });
+
+  test("le registre cite le commit de l'inventaire pour chaque fait sur les gabarits (CL-M01 à CL-M05, CL-M12 à CL-M15)", () => {
+    const commit = /commit ([0-9a-f]{7,})/.exec(inventaire.source)?.[1];
+    expect(commit).toBeDefined();
+    for (const id of [
+      "CL-M01",
+      "CL-M02",
+      "CL-M03",
+      "CL-M04",
+      "CL-M05",
+      "CL-M12",
+      "CL-M13",
+      "CL-M14",
+      "CL-M15",
+    ])
+      expect(claim(id)?.source_version, id).toContain(commit as string);
+  });
+
+  test("les noms de l'inventaire sont ceux des fiches renommées : « Tri des courriels entrants » et « Infolettre mensuelle »", () => {
+    const name = (slug: string) =>
+      inventaire.templates.find((t) => t.slug === slug)?.name;
+    expect(name("tri-emails")).toBe("Tri des courriels entrants");
+    expect(name("newsletter")).toBe("Infolettre mensuelle");
+    for (const slug of ["tri-emails", "newsletter"]) {
+      const f = page(`gabarit-${slug}`, "fr-CA");
+      const hero = blocksOf(`gabarit-${slug}`, "fr-CA")[0] as BlockFile;
+      expect(f.seo.title).toBe(name(slug) as string);
+      expect(f.seo.seo_title).toContain(name(slug) as string);
+      expect(String(hero.translation.headline)).toBe(`${name(slug)}.`);
+      expect(JSON.stringify({ seo: f.seo, blocks: f.blocks })).not.toMatch(
+        /Newsletter|\be-mails?\b/,
+      );
+    }
   });
 
   test("une fiche par gabarit de l'inventaire, ni plus ni moins", () => {
@@ -351,15 +389,184 @@ describe("P7 : les gabarits, d'après l'inventaire réel de WorkStudio", () => {
     }
   });
 
-  test("honnêteté sur le Québec : chaque fiche et la synthèse disent que les gabarits sont rédigés pour la France", () => {
+  const OBSOLETE: [RegExp, RegExp][] = [
+    // [fr-CA, en-CA] : ce que les fiches disaient avant l'adaptation au Québec
+    [/PME française/, /French small business/],
+    [/rédigés? pour la France/, /written for France/],
+    [/TVA de type français|TVA unique/, /French-style VAT|single French/],
+    [/\bSIRET\b/, /\bSIRET\b/],
+    [/en euros?\b|salaire en euros/, /in euros|euros\b/],
+    [/indemnité forfaitaire/, /fixed (recovery )?(indemnity|allowance)/],
+    [
+      /aucune (logique|règle) de TPS/i,
+      /no (GST|QST|logic)[^.]{0,40}(GST|QST)|has no GST/i,
+    ],
+    [
+      /ne suivent pas les règles fiscales du Québec/,
+      /do not follow Quebec tax rules/,
+    ],
+  ];
+
+  test("plus aucune fiche ni la synthèse ne dit que les gabarits sont rédigés pour la France", () => {
     for (const k of [HUB, ...FICHES])
       for (const l of LOCALES) {
         const text = JSON.stringify(blocksOf(k, l));
+        for (const [fr, en] of OBSOLETE)
+          expect(text, `${k} ${l}`).not.toMatch(l === "fr-CA" ? fr : en);
+      }
+  });
+
+  test("honnêteté sur le Québec : chaque fiche et la synthèse disent que les gabarits sont adaptés au Québec, à valider, sans garantie de conformité", () => {
+    for (const k of [HUB, ...FICHES])
+      for (const l of LOCALES) {
+        const text = JSON.stringify(blocksOf(k, l));
+        const fr = l === "fr-CA";
         expect(text, `${k} ${l}`).toMatch(
-          l === "fr-CA" ? /PME française/ : /French small business/,
+          fr ? /adaptés? au Québec|PME du Québec/ : /Quebec/,
+        );
+        expect(text, `${k} ${l}`).toMatch(
+          fr
+            ? /ne garantissent aucune conformité fiscale ou légale/
+            : /do not guarantee any tax or legal compliance/,
+        );
+        expect(text, `${k} ${l}`).toMatch(
+          fr ? /votre comptable ou votre conseiller/ : /accountant or adviser/,
+        );
+        expect(text, `${k} ${l}`).toMatch(
+          fr
+            ? /exemples[^"]{0,40}sont fictifs/
+            : /examples[^"]{0,40}are fictional/,
         );
       }
-    expect(claim("CL-M02")?.statement).toMatch(/aucune règle de TPS/);
+    expect(claim("CL-M02")?.statement).toMatch(/dollars canadiens/);
+    expect(claim("CL-M02")?.statement).toMatch(/TPS/);
+    expect(claim("CL-M02")?.statement).not.toMatch(/PME française/);
+    expect(claim("CL-M12")?.statement).toMatch(/aucune conformité/);
+  });
+
+  // Les gabarits qui touchent aux taxes sont ceux dont la description de templates.ts cite la TPS ou la TVQ.
+  const FISCAUX = inventaire.templates.filter((t) =>
+    /TPS|TVQ/.test(t.description),
+  );
+
+  test("les gabarits fiscaux sont ceux de la facture et du devis (déduits de l'inventaire)", () => {
+    expect(FISCAUX.map((t) => t.slug).sort()).toEqual([
+      "controle-facture",
+      "devis",
+      "factures-fournisseurs",
+    ]);
+  });
+
+  for (const t of FISCAUX)
+    for (const l of LOCALES)
+      test(`${t.slug} ${l} : la fiche cite la TPS et la TVQ avec leurs taux, et les clés de sortie du gabarit`, () => {
+        const fr = l === "fr-CA";
+        const b = blocksOf(`gabarit-${t.slug}`, l);
+        const text = JSON.stringify(b);
+        expect(text).toMatch(fr ? /TPS/ : /GST/);
+        expect(text).toMatch(fr ? /TVQ/ : /QST/);
+        const rates = t.taxRates as Record<string, string>;
+        for (const rate of Object.values(rates))
+          expect(text).toContain(
+            fr ? `${rate}\u00a0%` : `${rate.replace(",", ".")}%`,
+          );
+        // la TVQ se calcule sur le sous-total, jamais sur la TPS
+        expect(text).toMatch(
+          fr
+            ? /sous-total[^"]{0,120}pas (de|sur) la TPS|jamais (de|sur) la TPS/
+            : /subtotal[^"]{0,120}(not|never)[^"]{0,20}GST/,
+        );
+        const etapes = JSON.stringify(
+          (b.find((x) => anchorOf(x) === "etapes") as BlockFile).translation,
+        );
+        for (const key of (t.jsonKeys ?? []).filter((k) =>
+          /^(sous_total|tps|tvq|total|numero_tps|numero_tvq|neq)$/.test(k),
+        ))
+          expect(etapes, key).toContain(key);
+      });
+
+  test("les clés de sortie des gabarits de facture sont celles de l'adaptation au Québec", () => {
+    const keys = (slug: string) =>
+      inventaire.templates.find((t) => t.slug === slug)?.jsonKeys;
+    expect(keys("controle-facture")).toEqual(
+      expect.arrayContaining([
+        "sous_total",
+        "tps",
+        "tvq",
+        "total",
+        "numero_tps",
+        "numero_tvq",
+        "neq",
+      ]),
+    );
+    expect(keys("controle-facture")).not.toContain("siret");
+    expect(keys("factures-fournisseurs")).toEqual(
+      expect.arrayContaining(["sous_total", "tps", "tvq", "total"]),
+    );
+    expect(keys("factures-fournisseurs")).not.toContain("total_ht");
+  });
+
+  const LEGAL_EN: Record<string, string> = {
+    "Loi sur les normes du travail": "Act respecting labour standards",
+    "Charte des droits et libertés de la personne":
+      "Charter of human rights and freedoms",
+    TD1: "TD1",
+    "TP-1015.3-V": "TP-1015.3-V",
+  };
+  for (const t of inventaire.templates.filter((x) => x.references?.length))
+    for (const l of LOCALES)
+      test(`${t.slug} ${l} : la fiche nomme chaque référence légale du gabarit, toujours avec « à valider par votre conseiller »`, () => {
+        const fr = l === "fr-CA";
+        const text = JSON.stringify(blocksOf(`gabarit-${t.slug}`, l));
+        for (const ref of t.references as string[])
+          expect(text, ref).toContain(fr ? ref : (LEGAL_EN[ref] as string));
+        expect(text).toMatch(
+          fr
+            ? /à valider par votre conseiller/
+            : /to be validated by your adviser/,
+        );
+      });
+
+  test("la synthèse dit que la lecture de documents scannés garde TVA, hors taxes et toutes taxes comprises, et que les pages d'extraction citent ce fait", () => {
+    for (const l of LOCALES) {
+      const fr = l === "fr-CA";
+      const text = JSON.stringify(blocksOf(HUB, l));
+      expect(text).toMatch(fr ? /TVA/ : /VAT/);
+      expect(text).toMatch(
+        fr
+          ? /lecture de documents scannés[^"]{0,160}n'est pas visée/
+          : /document reading[^"]{0,160}not covered/,
+      );
+      for (const k of ["solutions-factures", "solutions-comptabilite"]) {
+        const claims = blocksOf(k, l).flatMap((b) => b.claims ?? []);
+        expect(claims, `${k} ${l}`).toContain("CL-M15");
+        expect(claims, `${k} ${l}`).not.toContain("CL-111");
+      }
+    }
+    expect(claim("CL-M15")?.statement).toMatch(/TVA/);
+    expect(claim("CL-M15")?.statement).toMatch(/hors taxes/);
+  });
+
+  test("les pages qui citent les modèles de départ ne disent plus qu'ils ignorent la fiscalité du Québec", () => {
+    for (const k of [
+      "workstudio",
+      "guides-ia-pme-quebec",
+      "guides-agents-ia-pour-pme",
+    ])
+      for (const l of LOCALES) {
+        const text = JSON.stringify(blocksOf(k, l));
+        expect(text, `${k} ${l}`).not.toMatch(
+          /ne suivent pas les règles fiscales du Québec|do not follow Quebec tax rules|modèles de départ sont généraux|starter templates are general/,
+        );
+      }
+  });
+
+  test("les affirmations d'origine sont tracées : l'ancienne formulation « PME française » est retirée au registre (R-54) et R-53 ne renvoie plus à elle", () => {
+    expect(claimsFile.retirees.map((r) => r.id)).toContain("R-54");
+    const r54 = claimsFile.retirees.find((r) => r.id === "R-54");
+    expect(r54?.formulation).toMatch(/PME française/);
+    const r53 = claimsFile.retirees.find((r) => r.id === "R-53");
+    expect(r53?.raison).not.toMatch(/rédigés pour une PME française/);
   });
 });
 

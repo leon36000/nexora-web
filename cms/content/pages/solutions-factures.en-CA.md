@@ -107,7 +107,7 @@ Less retyping, errors caught before approval rather than after payment, a clear 
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce qui reste sous contrôle, y compris les limites ; carte données avec lien Vos données. · Affirmations : CL-128, CL-21, CL-125, CL-111, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
+*Ce qui reste sous contrôle, y compris les limites ; carte données avec lien Vos données. · Affirmations : CL-128, CL-21, CL-125, CL-M15, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
@@ -123,7 +123,7 @@ Writing to your accounting software goes through a connector to be qualified, af
 
 #### Your fields, your taxes.
 
-The starter templates are general and do not follow Quebec tax rules: your fields (GST, QST, project number) are defined with us, then checked on your documents.
+The document-reading templates are not yet adapted to Quebec taxes (VAT, before tax, tax included): your fields (GST, QST, project number) are defined with us, then checked on your documents.
 
 #### A person reviews the doubts.
 

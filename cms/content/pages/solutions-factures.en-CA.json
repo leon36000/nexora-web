@@ -144,7 +144,7 @@
         "CL-128",
         "CL-21",
         "CL-125",
-        "CL-111",
+        "CL-M15",
         "CL-06",
         "CL-E01",
         "CL-E02",
@@ -171,7 +171,7 @@
           },
           {
             "title": "Your fields, your taxes.",
-            "text": "The starter templates are general and do not follow Quebec tax rules: your fields (GST, QST, project number) are defined with us, then checked on your documents."
+            "text": "The document-reading templates are not yet adapted to Quebec taxes (VAT, before tax, tax included): your fields (GST, QST, project number) are defined with us, then checked on your documents."
           },
           {
             "title": "A person reviews the doubts.",

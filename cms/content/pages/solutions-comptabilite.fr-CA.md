@@ -109,7 +109,7 @@ Le bénéfice attendu : moins de ressaisie et des erreurs repérées plus tôt,
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données. · Affirmations : CL-125, CL-126, CL-128, CL-111, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
+*Ce qui reste sous contrôle, et ce qui n'est pas livré (rapprochement bancaire) ; carte données avec lien Vos données. · Affirmations : CL-125, CL-126, CL-128, CL-M15, CL-06, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=controle`
 
@@ -129,7 +129,7 @@ L'écriture dans votre logiciel comptable passe par un connecteur qui se qualifi
 
 #### Vos règles fiscales.
 
-Les modèles de départ sont généraux. Taxes, catégories et plan comptable du Québec se définissent avec vous et se vérifient sur vos pièces.
+Les modèles de lecture de documents ne sont pas encore adaptés au Québec. Taxes, catégories et plan comptable du Québec se définissent avec vous et se vérifient sur vos pièces.
 
 #### Aucun conseil comptable.
 
