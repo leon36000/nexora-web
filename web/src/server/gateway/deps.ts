@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { getDb } from "../db";
 import { log } from "../log";
+import { getPrivacyRouter } from "../privacy";
 import { getSecretForScope } from "../vault";
 import type { CatalogAdminDeps } from "./admin-handlers";
 import { createLitellmClient } from "./litellm";
@@ -33,6 +34,8 @@ export function gatewayDeps(): GatewayDeps {
     litellm: litellmConfig,
     // Clé d'espace WorkStudio des agents hébergés : lue du coffre à chaque appel (jamais en cache ni en variable).
     getSecret: (ref) => getSecretForScope("workstudio-instance", ref),
+    // Nexora Privacy Router : évalue chaque requête avant la réservation et l'appel amont (échec fermé).
+    privacy: getPrivacyRouter(),
     log,
     now: () => new Date(),
     requestId: () => `req_${randomUUID().replaceAll("-", "")}`,

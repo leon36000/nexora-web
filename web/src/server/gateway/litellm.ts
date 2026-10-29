@@ -219,10 +219,11 @@ export function apiBaseFor(
 /** Consignes de routage d'une fiche, au format `provider` d'OpenRouter (prix plafond en USD par million). */
 export function openrouterPreferences(
   routing: ModelRouting | undefined,
-): Record<string, unknown> | undefined {
-  if (!routing) return undefined;
-  const p: Record<string, unknown> = {};
-  if (routing.dataCollection) p.data_collection = routing.dataCollection;
+): Record<string, unknown> {
+  // Nexora Privacy Router (politique « standard », incluse pour tous) : la collecte des données par l'hébergeur
+  // amont est TOUJOURS refusée. Une consigne « allow » dans la fiche d'un modèle est ignorée.
+  const p: Record<string, unknown> = { data_collection: "deny" };
+  if (!routing) return p;
   if (routing.zdr !== undefined) p.zdr = routing.zdr;
   if (routing.allowFallbacks !== undefined)
     p.allow_fallbacks = routing.allowFallbacks;
@@ -235,7 +236,7 @@ export function openrouterPreferences(
       prompt: Number(formatMicro(BigInt(routing.maxPriceUsdMicro.input))),
       completion: Number(formatMicro(BigInt(routing.maxPriceUsdMicro.output))),
     };
-  return Object.keys(p).length > 0 ? p : undefined;
+  return p;
 }
 
 export interface SyncSummary {

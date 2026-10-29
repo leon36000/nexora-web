@@ -5,6 +5,7 @@ export type ErrorType =
   | "authentication_error"
   | "insufficient_quota"
   | "rate_limit_error"
+  | "permission_error"
   | "api_error";
 
 export function openAiError(
@@ -95,6 +96,29 @@ export const E = {
     message: string,
     headers?: Record<string, string>,
   ) => openAiError(status, code, message, "api_error", headers),
+  /** Privacy Router a refusé la sortie : la règle est nommée, jamais le contenu. */
+  privacyDenied: (
+    message: string,
+    param: string | null,
+    headers?: Record<string, string>,
+  ) =>
+    openAiError(
+      403,
+      "privacy_policy_denied",
+      message,
+      "permission_error",
+      headers,
+      param,
+    ),
+  /** Privacy Router ne répond pas : refus par précaution (échec fermé), rien n'est réservé ni facturé. */
+  privacyUnavailable: (headers?: Record<string, string>) =>
+    openAiError(
+      503,
+      "privacy_router_unavailable",
+      "La couche de confidentialité est indisponible : la requête est refusée par précaution et rien n'est facturé. Réessayez dans un instant.",
+      "api_error",
+      headers,
+    ),
   unavailable: (headers?: Record<string, string>) =>
     openAiError(
       503,

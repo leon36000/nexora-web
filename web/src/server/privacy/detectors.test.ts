@@ -1,14 +1,17 @@
 import { describe, expect, it } from "vitest";
 import {
   DETECTOR_CATEGORIES,
+  type DetectorCategory,
   findMatches,
   ibanValid,
   luhnValid,
   maskPersonalData,
 } from "./detectors";
 
-const masked = (text: string, categories = DETECTOR_CATEGORIES) =>
-  maskPersonalData(text, categories).text;
+const masked = (
+  text: string,
+  categories: readonly DetectorCategory[] = DETECTOR_CATEGORIES,
+) => maskPersonalData(text, categories).text;
 
 describe("luhnValid", () => {
   it("accepte les numéros d'essai connus et refuse une erreur d'un chiffre", () => {
