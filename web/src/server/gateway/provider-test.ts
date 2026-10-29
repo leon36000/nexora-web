@@ -18,10 +18,33 @@ export interface ProviderCheck {
   detail: string;
 }
 
-function listUrl(type: ProviderType, baseUrl: string): string {
+/**
+ * Adresse de la liste des modèles. Une adresse de base de fournisseur contient déjà sa version (`/v1`, `/api/paas/v4`,
+ * `/v1/openai`…) : la liste est alors `<base>/models`. Seul un hôte nu suit la convention OpenAI (`/v1/models`).
+ */
+export function modelsListUrl(type: ProviderType, baseUrl: string): string {
   const base = baseUrl.replace(/\/+$/, "");
   if (type === "ollama") return `${base.replace(/\/v1$/, "")}/api/tags`;
-  return /\/v1$/.test(base) ? `${base}/models` : `${base}/v1/models`;
+  let bare = false;
+  try {
+    bare = new URL(base).pathname.replace(/\/+$/, "") === "";
+  } catch {
+    bare = false;
+  }
+  return bare ? `${base}/v1/models` : `${base}/models`;
+}
+
+/** Résumé en français d'un refus HTTP, avec la piste à suivre (jamais le corps de la réponse). */
+function refusal(status: number, ms: number): string {
+  const hint =
+    status === 401 || status === 403
+      ? " : clé refusée par le fournisseur, vérifiez la clé collée dans le Coffre"
+      : status === 404
+        ? " : adresse introuvable, vérifiez l'adresse de base du fournisseur"
+        : status === 429
+          ? " : limite de débit atteinte, réessayez plus tard"
+          : "";
+  return `HTTP ${status} en ${ms} ms${hint}`;
 }
 
 export async function testProvider(
@@ -55,7 +78,7 @@ export async function testProvider(
   let res: Response;
   try {
     res = await (deps.fetch ?? fetch)(
-      listUrl(provider.type, provider.baseUrl),
+      modelsListUrl(provider.type, provider.baseUrl),
       {
         headers,
         // La garde d'adresse n'a vérifié que l'adresse d'origine : une redirection ne doit jamais être suivie
@@ -76,7 +99,7 @@ export async function testProvider(
       ok: false,
       detail: `redirection HTTP ${res.status} non suivie : indiquez l'adresse finale du fournisseur`,
     };
-  if (!res.ok) return { ok: false, detail: `HTTP ${res.status} en ${ms} ms` };
+  if (!res.ok) return { ok: false, detail: refusal(res.status, ms) };
   let count: number | null = null;
   try {
     const json = (await res.json()) as { data?: unknown[]; models?: unknown[] };
