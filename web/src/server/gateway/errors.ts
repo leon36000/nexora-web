@@ -111,7 +111,7 @@ export function handleUnknownEndpoint(request: Request): Response {
   return openAiError(
     404,
     "unknown_url",
-    `Adresse inconnue : ${request.method} ${path}. Adresses prises en charge : /v1/models, /v1/chat/completions, /v1/embeddings.`,
+    `Adresse inconnue : ${request.method} ${path}. Adresses prises en charge : /v1/models, /v1/chat/completions, /v1/embeddings, /v1/webpilot/{search,scrape,crawl,extract}.`,
     "invalid_request_error",
   );
 }

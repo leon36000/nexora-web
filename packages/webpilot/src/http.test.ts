@@ -39,6 +39,20 @@ beforeAll(async () => {
         res.writeHead(200);
         res.end("lent");
       }, 2000);
+    } else if (path === "/echo") {
+      let data = "";
+      req.on("data", (c) => (data += c));
+      req.on("end", () => {
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(
+          JSON.stringify({
+            method: req.method,
+            body: data,
+            type: req.headers["content-type"],
+          }),
+        );
+      });
+      return;
     } else if (path === "/empty") {
       res.writeHead(204);
       res.end();
@@ -258,5 +272,38 @@ describe("client HTTP de sortie : garde SSRF", () => {
     );
     expect(out).toBe("url_not_allowed");
     expect(seen).toEqual(["/to-ok", "/ok"]);
+  });
+});
+
+describe("client HTTP de sortie : POST vers un service interne approuvé", () => {
+  const trusted = () =>
+    createSafeHttpClient({
+      userAgent: "t",
+      allowedPorts: [port],
+      maxBytes: 5000,
+      timeoutMs: 1000,
+      maxRedirects: 0,
+      trustedHosts: ["127.0.0.1"],
+    });
+
+  it("envoie le JSON en POST", async () => {
+    const res = await trusted().post(`http://127.0.0.1:${port}/echo`, { a: 1 });
+    expect(JSON.parse(new TextDecoder().decode(res.body))).toEqual({
+      method: "POST",
+      body: '{"a":1}',
+      type: "application/json",
+    });
+  });
+
+  it("ne suit pas les redirections et applique la même garde d'adresse", async () => {
+    expect(
+      await code(trusted().post(`http://127.0.0.1:${port}/to-ok`, {})),
+    ).toBe("target_unreachable");
+    expect(await code(client().post("http://10.0.0.5:80/render", {}))).toBe(
+      "url_not_allowed",
+    );
+    expect(await code(client().post("http://localhost/render", {}))).toBe(
+      "url_not_allowed",
+    );
   });
 });

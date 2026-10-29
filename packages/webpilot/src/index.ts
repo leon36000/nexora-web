@@ -4,5 +4,6 @@ export * from "./crawl.ts";
 export * from "./http.ts";
 export * from "./privacy.ts";
 export * from "./reader.ts";
+export * from "./renderer.ts";
 export * from "./robots.ts";
 export * from "./search.ts";

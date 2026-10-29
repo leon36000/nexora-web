@@ -10,6 +10,7 @@ import {
   isNull,
   or,
   sql,
+  WEBPILOT_OPERATIONS,
 } from "@nexora/db";
 
 /**
@@ -67,6 +68,8 @@ export interface CreateApiKeyInput {
   organizationId: string;
   name: string;
   allowedModels?: string[] | null;
+  /** Opérations WebPilot permises (`search`, `scrape`, `crawl`, `extract`, `sessions`) ; absent ou vide : aucune. */
+  webpilotOperations?: string[] | null;
   spendCapMicro?: bigint | null;
   rpmLimit?: number | null;
   tpmLimit?: number | null;
@@ -100,6 +103,13 @@ export async function createApiKey(
       input.allowedModels.some((m) => typeof m !== "string" || m.length > 120))
   )
     throw new ApiKeyInputError("allowedModels");
+  if (
+    input.webpilotOperations &&
+    input.webpilotOperations.some(
+      (o) => !(WEBPILOT_OPERATIONS as readonly string[]).includes(o),
+    )
+  )
+    throw new ApiKeyInputError("webpilotOperations");
 
   const { key, prefix, hash } = generateApiKey();
   const insertRow = async (d: Database) => {
@@ -113,6 +123,10 @@ export async function createApiKey(
         allowedModels:
           input.allowedModels && input.allowedModels.length > 0
             ? input.allowedModels
+            : null,
+        webpilotOperations:
+          input.webpilotOperations && input.webpilotOperations.length > 0
+            ? [...new Set(input.webpilotOperations)]
             : null,
         spendCapMicro: input.spendCapMicro ?? null,
         rpmLimit: input.rpmLimit ?? null,

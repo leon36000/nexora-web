@@ -46,6 +46,9 @@ const SITE: Record<string, string> = {
 function fakeReader(opts: { blocked?: string[]; failing?: string[] } = {}) {
   const gets: string[] = [];
   const client: SafeHttpClient = {
+    post: async () => {
+      throw new Error("non utilisé");
+    },
     check: async (u) => new URL(u),
     get: async (u, o) => {
       await o?.beforeHop?.(new URL(u));

@@ -8,6 +8,9 @@ function clientReturning(
   calls: string[] = [],
 ): SafeHttpClient {
   return {
+    post: async () => {
+      throw new Error("non utilisé");
+    },
     check: async (u) => new URL(u),
     get: async (u) => {
       calls.push(u);

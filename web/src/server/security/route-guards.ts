@@ -246,6 +246,54 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       ],
     }),
   ),
+  ...(
+    [
+      ["v1/webpilot/search", ["POST"], "/v1/webpilot/search"],
+      ["v1/webpilot/scrape", ["POST"], "/v1/webpilot/scrape"],
+      ["v1/webpilot/crawl", ["POST"], "/v1/webpilot/crawl"],
+      [
+        "v1/webpilot/crawl/[id]",
+        ["GET", "DELETE"],
+        "/v1/webpilot/crawl/crawl_0",
+      ],
+      ["v1/webpilot/extract", ["POST"], "/v1/webpilot/extract"],
+      ["v1/webpilot/sessions", ["POST"], "/v1/webpilot/sessions"],
+      [
+        "v1/webpilot/sessions/[id]",
+        ["GET", "DELETE"],
+        "/v1/webpilot/sessions/ses_0",
+      ],
+      [
+        "v1/webpilot/sessions/[id]/actions",
+        ["POST"],
+        "/v1/webpilot/sessions/ses_0/actions",
+      ],
+    ] as const
+  ).map(
+    ([route, methods, path]): RouteGuard => ({
+      route,
+      kind: "api-key",
+      why: "WebPilot facturé : clé nxk_ valide AVEC la permission webpilot (à cocher), mêmes solde et quotas que la passerelle",
+      probes: methods.flatMap((method) => [
+        {
+          label: `${method} sans clé`,
+          method,
+          path,
+          headers: JSON_H,
+          ...(method === "POST" ? { body: "{}" } : {}),
+          expect: [401],
+        },
+        {
+          label: `${method} clé inconnue`,
+          method,
+          path,
+          headers: { ...JSON_H, authorization: "Bearer nxk_inconnue" },
+          ...(method === "POST" ? { body: "{}" } : {}),
+          expect: [401],
+        },
+      ]),
+    }),
+  ),
   {
     route: "v1/models",
     kind: "public",

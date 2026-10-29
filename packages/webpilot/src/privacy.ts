@@ -7,7 +7,7 @@
 export interface PrivacyIntent {
   organizationId: string;
   apiKeyId: string | null;
-  product: "webpilot";
+  product: string;
   operation: string;
   destination: { host: string; path?: string } | { model: string };
   kinds: readonly string[];

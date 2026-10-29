@@ -23,6 +23,9 @@ function res(partial: Partial<SafeResponse> & { text?: string }): SafeResponse {
 function setup(response: SafeResponse | Error, allowed = true) {
   const hops: string[] = [];
   const client: SafeHttpClient = {
+    post: async () => {
+      throw new Error("non utilisé");
+    },
     check: async (u) => new URL(u),
     get: async (u, o) => {
       await o?.beforeHop?.(new URL(u));
@@ -105,6 +108,9 @@ describe("lecture d'une page", () => {
   it("vérifie robots.txt à chaque saut et l'appelant peut refuser un saut", async () => {
     const seen: string[] = [];
     const client: SafeHttpClient = {
+      post: async () => {
+        throw new Error("non utilisé");
+      },
       check: async (u) => new URL(u),
       get: async (u, o) => {
         await o?.beforeHop?.(new URL(u));
@@ -170,13 +176,19 @@ describe("rendu par navigateur", () => {
   it("le service ne reçoit jamais une adresse refusée par la garde", async () => {
     const calls: string[] = [];
     const client: SafeHttpClient = {
+      post: async () => {
+        throw new Error("non utilisé");
+      },
       check: async () => {
         throw new SafeFetchError("url_not_allowed", "privé");
       },
       get: async () => res({}),
     };
     const r: Renderer = {
-      render: async (u) => (calls.push(u), { html: "", status: 200, url: u }),
+      render: async (u) => {
+        calls.push(u);
+        return { html: "", status: 200, url: u };
+      },
     };
     await expect(
       readPage(

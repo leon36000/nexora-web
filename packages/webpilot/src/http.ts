@@ -80,6 +80,15 @@ export interface GetOptions {
 
 export interface SafeHttpClient {
   get(rawUrl: string, options?: GetOptions): Promise<SafeResponse>;
+  /**
+   * POST JSON vers un service interne approuvé (`trustedHosts`, ex. le rendu par navigateur). Une seule requête, aucune
+   * redirection suivie (une redirection est une erreur), mêmes gardes d'adresse, de taille et de durée.
+   */
+  post(
+    rawUrl: string,
+    json: unknown,
+    options?: Pick<GetOptions, "maxBytes">,
+  ): Promise<SafeResponse>;
   /** Valide une adresse comme le ferait `get` (schéma, port, nom, résolution) sans la joindre. */
   check(rawUrl: string): Promise<URL>;
 }
@@ -180,6 +189,7 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
     headers: Record<string, string>,
     maxBytes: number,
     signal: AbortSignal,
+    request: { method: "GET" | "POST"; body?: string } = { method: "GET" },
   ): Promise<{
     status: number;
     headers: Record<string, string>;
@@ -195,8 +205,14 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
           hostname: host,
           port: dialed.port,
           path: `${url.pathname}${url.search}`,
-          method: "GET",
-          headers: { ...headers, host: url.host },
+          method: request.method,
+          headers: {
+            ...headers,
+            host: url.host,
+            ...(request.body !== undefined
+              ? { "content-length": String(Buffer.byteLength(request.body)) }
+              : {}),
+          },
           lookup: lookupTo(dialed.address),
           servername: isIP(host) ? undefined : host,
           agent: false,
@@ -248,7 +264,7 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
         },
       );
       req.on("error", (e) => reject_(e));
-      req.end();
+      req.end(request.body);
     });
   }
 
@@ -268,11 +284,20 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
     headers: Record<string, string>,
     maxBytes: number,
     signal: AbortSignal,
+    request?: { method: "GET" | "POST"; body?: string },
   ) {
     let last: unknown;
     for (const address of addresses) {
       try {
-        return await once(url, address, port, headers, maxBytes, signal);
+        return await once(
+          url,
+          address,
+          port,
+          headers,
+          maxBytes,
+          signal,
+          request,
+        );
       } catch (error) {
         last = error;
         const errno = (error as NodeJS.ErrnoException)?.code;
@@ -342,19 +367,61 @@ export function createSafeHttpClient(options: SafeHttpOptions): SafeHttpClient {
           };
         }
       } catch (error) {
-        if (error instanceof SafeFetchError) throw error;
-        if (signal.aborted)
-          throw new SafeFetchError("target_timeout", "délai dépassé");
-        const errno = (error as NodeJS.ErrnoException)?.code ?? "";
-        if (errno === "ABORT_ERR" || (error as Error)?.name === "AbortError")
-          throw new SafeFetchError("target_timeout", "délai dépassé");
-        throw new SafeFetchError(
-          "target_unreachable",
-          errno.startsWith("ERR_TLS") || errno.includes("CERT")
-            ? "certificat invalide"
-            : "la cible n'a pas répondu",
+        throw mapError(error, signal);
+      }
+    },
+    async post(rawUrl, json, opts = {}) {
+      const maxBytes = Math.min(
+        opts.maxBytes ?? options.maxBytes,
+        options.maxBytes,
+      );
+      const signal = AbortSignal.timeout(options.timeoutMs);
+      try {
+        const { url, addresses, port } = await vet(rawUrl);
+        const res = await hop(
+          url,
+          addresses,
+          port,
+          {
+            "user-agent": options.userAgent,
+            accept: "application/json",
+            "accept-encoding": "identity",
+            "content-type": "application/json",
+          },
+          maxBytes,
+          signal,
+          { method: "POST", body: JSON.stringify(json) },
         );
+        if (REDIRECT.has(res.status))
+          throw new SafeFetchError(
+            "target_unreachable",
+            "redirection non suivie",
+          );
+        return {
+          url: url.toString(),
+          status: res.status,
+          headers: res.headers,
+          body: res.body,
+          redirects: 0,
+        };
+      } catch (error) {
+        throw mapError(error, signal);
       }
     },
   };
+}
+
+function mapError(error: unknown, signal: AbortSignal): SafeFetchError {
+  if (error instanceof SafeFetchError) return error;
+  if (signal.aborted)
+    return new SafeFetchError("target_timeout", "délai dépassé");
+  const errno = (error as NodeJS.ErrnoException)?.code ?? "";
+  if (errno === "ABORT_ERR" || (error as Error)?.name === "AbortError")
+    return new SafeFetchError("target_timeout", "délai dépassé");
+  return new SafeFetchError(
+    "target_unreachable",
+    errno.startsWith("ERR_TLS") || errno.includes("CERT")
+      ? "certificat invalide"
+      : "la cible n'a pas répondu",
+  );
 }
