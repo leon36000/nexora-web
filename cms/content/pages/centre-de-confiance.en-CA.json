@@ -249,7 +249,7 @@
       },
       "translation": {
         "title": "Three planes of data.",
-        "body": "<p>When we say “data”, we mean three different things. We treat them separately. <a href=\"/en/your-data/\">Read our commitments on your data</a>.</p><p>Missing a document? <a href=\"/en/contact/\">Ask for a document</a>.</p>",
+        "body": "<p>When we say “data”, we mean three different things. We treat them separately. <a href=\"/en/your-data/\">Read our commitments on your data</a>.</p><p>Missing a document? <a href=\"/en/contact/\">Ask for a document</a>.</p><p>To judge a provider, see the <a href=\"/en/guides/sovereign-ai-checklist/\">IT director's checklist</a>.</p>",
         "items": [
           {
             "title": "The site's public content.",

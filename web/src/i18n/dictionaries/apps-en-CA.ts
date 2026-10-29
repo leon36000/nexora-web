@@ -59,6 +59,7 @@ export const appsEnCA: AppsDictionary = {
   detail: {
     back: "All Nexora Apps",
     stateLabel: "State",
+    answerTitle: "The short answer",
     audienceTitle: "Who it is for",
     accessTitle: "How you get it",
     readyTitle: "What is ready",
@@ -82,6 +83,8 @@ export const appsEnCA: AppsDictionary = {
   apps: {
     code: {
       name: "Nexora Code Agent",
+      answer:
+        "The Nexora code agent is an assistant that understands, edits and tests code with you. It is designed to be offered free of charge, to download or to use from your customer panel. It is not delivered yet: no date and no terms of use are announced.",
       hook: "An agent that understands, edits and tests code with you. Planned as free, to download or to use from your client panel.",
       audience:
         "For developers and technical teams who want a code assistant connected to Nexora AI models.",
@@ -121,6 +124,8 @@ export const appsEnCA: AppsDictionary = {
 
     gitspace: {
       name: "Nexora Gitspace",
+      answer:
+        "Nexora Gitspace hosts your code repositories in your Nexora AI cloud space, with Forgejo or GitLab. It is planned as a subscription. It is not delivered yet: no price and no date are announced, and the exact hosting location will be stated before any subscription.",
       hook: "Forgejo and GitLab built into your Nexora AI cloud space: host your code repositories alongside everything else. By subscription.",
       audience:
         "For teams that want to keep their code repositories in their company’s cloud space rather than with a third-party service.",
@@ -157,8 +162,50 @@ export const appsEnCA: AppsDictionary = {
       ],
     },
 
+    cloud: {
+      name: "Nexora Cloud",
+      answer:
+        "Nexora Cloud is the Nexora AI cloud space, with a built-in code repository of your choice: GitLab, Nexora Gitspace or Forgejo. It is planned as a subscription. It is not delivered yet: no price and no date are announced, and the hosting location will be stated before any subscription.",
+      hook: "Your Nexora AI cloud space, with a built-in code repository: GitLab, Nexora Gitspace or Forgejo. As a subscription.",
+      audience:
+        "For companies that want their work and their code in a space of their own, at Nexora AI, rather than across several third-party services.",
+      accessLabel: "Subscription (planned)",
+      accessText:
+        "Nexora Cloud will be offered as a subscription. No price is published to date; it will be shown here before any sale.",
+      ready: [] as string[],
+      coming: [
+        "A cloud space managed from your Nexora AI customer area.",
+        "A built-in code repository, of your choice: GitLab, Nexora Gitspace or Forgejo.",
+        "A connection to Nexora AI’s RAG, to the code agent and to OPSYS-AI.",
+      ],
+      faq: [
+        {
+          question: "What is Nexora Cloud?",
+          answer:
+            "Nexora AI’s cloud space: a place of your own, managed from your customer area, where a code repository is built in. Nothing is delivered to date.",
+        },
+        {
+          question: "How does it differ from Nexora Gitspace?",
+          answer:
+            "Nexora Gitspace is the code repository (Forgejo or GitLab). Nexora Cloud is the space that hosts it. Both are planned as subscriptions and neither is delivered.",
+        },
+        {
+          question: "Where will it be hosted?",
+          answer:
+            "In Nexora AI’s infrastructure. The exact hosting location will be stated before any subscription; we announce none before we can prove it.",
+        },
+        {
+          question: "How much will Nexora Cloud cost?",
+          answer:
+            "It will be offered as a subscription. No price is published to date: we announce only what we can hold.",
+        },
+      ],
+    },
+
     rag: {
       name: "Nexora RAG",
+      answer:
+        "Nexora RAG turns your documents into a base the AI queries while showing its sources. It is planned as a subscription, connectable to the code agent, to OPSYS-AI or to your infrastructure. WorkStudio knowledge bases already exist; the separate service is not delivered yet.",
       hook: "Your documents become a base that AI queries, with sources to back it up. By subscription, connectable to the code agent, OPSYS-AI or your infrastructure.",
       audience:
         "For companies whose answers already sit in their documents: procedures, contracts, manuals, technical sheets.",
@@ -200,6 +247,8 @@ export const appsEnCA: AppsDictionary = {
 
     bot: {
       name: "Nexora Bot",
+      answer:
+        "Nexora Bot is a bot plugged into Nexora AI models. It is designed to be offered free of charge, and its code is planned to be open so you can install it yourself. It is not delivered yet: no date is announced and no code is published to date.",
       hook: "A free bot connected to Nexora AI's models, which you can also install yourself: the code will be open.",
       audience:
         "For anyone or any small team who wants an assistant with nothing to configure, and for developers who want a base to build on.",
@@ -233,6 +282,8 @@ export const appsEnCA: AppsDictionary = {
 
     wordpress: {
       name: "Nexora WordPress plugins",
+      answer:
+        "The Nexora WordPress plugins include a plugin planned as free and a site automation planned as a subscription: search visibility, blog posts, updates. Nothing is delivered yet, and neither price nor date is announced.",
       hook: "A free WordPress plugin, and website automation on subscription: search ranking, blog articles, updates.",
       audience:
         "For WordPress site owners, small businesses and agencies who want a site that stays up to date and gets found, without spending their evenings on it.",
@@ -273,6 +324,8 @@ export const appsEnCA: AppsDictionary = {
 
     webpilot: {
       name: "Nexora WebPilot",
+      answer:
+        "Nexora WebPilot is an API to search, read and explore the web, then browse and act on pages. It is planned as pay-as-you-go, like a model, with Nexora Privacy Router. It is not delivered yet: no date is announced.",
       hook: "An API to search, read and explore the web, then navigate and act on pages. Sold by usage, like a model.",
       audience:
         "For developers and AI agents that need the web: search, page reading, site exploration, automated browsing.",
@@ -315,6 +368,8 @@ export const appsEnCA: AppsDictionary = {
 
     "privacy-router": {
       name: "Nexora Privacy Router",
+      answer:
+        "Nexora Privacy Router is the layer that controls what leaves Nexora AI toward a third party, according to your organization’s policy. It is included by default in all products, at no extra cost. It is already in place in the API gateway, which is not yet open for sale; the other products will follow.",
       hook: "Nexora AI’s shared protection layer: it controls what leaves, according to your organization’s policy. Included, never paid.",
       audience:
         "For any organization that wants to decide which data may leave its environment, toward which models and services, without buying one more product.",
@@ -324,11 +379,12 @@ export const appsEnCA: AppsDictionary = {
       ready: [
         "The public model catalogue already shows, for each model, where it runs.",
         "In WorkStudio, a workspace’s data policies allow, mask or refuse sending personal information to a model outside the instance.",
+        "In the API gateway, each chat and embeddings request is evaluated before the call to the provider: masking of six kinds of obvious information, refusal according to the organization’s policy, refusal as a precaution if the layer cannot decide, a log of decisions without content. The gateway is not yet open for sale.",
+        "Three policy levels per organization (standard, reinforced, strict sovereign), set by the owner in the customer area.",
       ],
       coming: [
-        "A shared checkpoint before any data leaves, for models, WebPilot and the other tools.",
-        "A policy per customer, which you set for your organization.",
-        "Strict sovereignty, as an option: nothing is sent outside the environment you chose.",
+        "Connecting WebPilot and WorkStudio to the same layer: the interface provides for it, but it is not done yet.",
+        "A retention period for the log, still to be set: no automatic purge exists yet.",
       ],
       faq: [
         {
@@ -339,23 +395,25 @@ export const appsEnCA: AppsDictionary = {
         {
           question: "What exactly does it control?",
           answer:
-            "What leaves your environment: which data may go to which model or service. Each organization has its own policy. The details of the settings will be published with the documentation; the shared layer is not shipped under this name today.",
+            "What leaves your environment: which data may go to which model or service. Each organization has its own policy: a level, kinds of information masked or refused, lists of models and destinations. In the API gateway, it masks six kinds of obvious information; its detection is heuristic (it does not recognize names or postal addresses) and it does not prove where a provider then processes the data.",
         },
         {
           question: "What is strict sovereignty?",
           answer:
-            "A policy where nothing leaves the environment you chose: no data is sent to an outside model or service. It is possible in Privacy Router’s plan, without being shipped, and it does not replace legal advice.",
+            "A policy level where nothing leaves unless explicitly allowed: without a list of allowed models and destinations, everything is refused. It replaces neither legal advice nor proof of data residency.",
         },
         {
           question: "Is any of it used today?",
           answer:
-            "Part of the principle already exists: the catalogue shows where each model runs, and WorkStudio lets you allow, mask or refuse sending personal information to an external model. The shared layer itself is still to come.",
+            "Yes, in the API gateway, which is however not yet open for sale. The catalogue also shows where each model runs, and WorkStudio lets you allow, mask or refuse sending personal information to an external model. Connecting WebPilot and WorkStudio to the same layer is still to do.",
         },
       ],
     },
 
     creative: {
       name: "Nexora Creative",
+      answer:
+        "Nexora Creative is a family of image, sound and video tools for marketing, using AI. It is a later stage of Nexora Apps: nothing is delivered, and no date or access is announced.",
       hook: "Image, sound and video tools for marketing, with AI. A later stage of Nexora Apps: nothing is shipped, and there is no date.",
       audience:
         "For marketing teams and small businesses that produce visuals, sounds and videos for their campaigns.",
@@ -389,6 +447,8 @@ export const appsEnCA: AppsDictionary = {
 
     outils: {
       name: "Nexora Free Tools",
+      answer:
+        "The Nexora free tools are small AI tools, offered free of charge, that use Nexora AI models and servers. None of them is delivered to date, and no release date is announced for any of them.",
       hook: "Small AI tools offered for free, running on Nexora AI’s models and servers. None is shipped today.",
       audience:
         "For anyone who wants to try Nexora AI’s AI without installing or renting a server.",

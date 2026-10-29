@@ -213,3 +213,27 @@ describe("vidéo : sous-titres et média vidéo d'une section (S10)", () => {
     expect(collections.map((c) => c.collection)).toHaveLength(24);
   });
 });
+
+describe("texte riche des sections (tableaux et code)", () => {
+  test("la barre d'outils de l'éditeur propose le tableau et le bloc de code, que le site sait rendre", () => {
+    const toolbar =
+      (
+        field("block_section_translations", "body").meta?.options as
+          | { toolbar: string[] }
+          | undefined
+      )?.toolbar ?? [];
+    expect(toolbar).toContain("table");
+    expect(toolbar).toContain("codeblock");
+    // les anciens boutons restent
+    for (const b of [
+      "bold",
+      "italic",
+      "link",
+      "bullist",
+      "numlist",
+      "h2",
+      "h3",
+    ])
+      expect(toolbar).toContain(b);
+  });
+});

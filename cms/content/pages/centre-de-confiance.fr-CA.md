@@ -177,6 +177,8 @@ Quand on parle de « données », on parle de trois choses différentes. Nous 
 
 Un document vous manque ? [Demander un document](/contact/).
 
+Pour juger un fournisseur, voir la [liste de contrôle d'une DSI](/guides/ia-souveraine-liste-de-controle/).
+
 - **Le contenu public du site.** Ce que vous lisez ici : fait pour être publié et indexé.
 - **Vos échanges avec Nexora AI.** Formulaires, courriels, facturation : ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira.
 - **Les données de votre système.** Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux.

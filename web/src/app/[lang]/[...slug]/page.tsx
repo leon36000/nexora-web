@@ -13,6 +13,7 @@ import {
   getSiteSettings,
   listPublishedSlugs,
 } from "@/server/cms/read";
+import { getSeoPages } from "@/server/cms/seo-read";
 
 /**
  * Pages publiées connues au moment du build ; les autres se rendent à la demande puis restent en cache.
@@ -37,12 +38,18 @@ export async function generateMetadata(
   if (result.status === "unavailable")
     return { robots: { index: false, follow: false } };
   const settings = await getSiteSettings(lang);
+  // Dates réelles (Directus) pour les guides ; sans plan du site lisible, le guide reste un article sans dates.
+  const dates =
+    result.preview === null
+      ? ((await getSeoPages()).find((p) => p.id === result.page.id) ?? null)
+      : null;
   return buildCmsMetadata({
     page: result.page,
     lang,
     settings,
     siteName: getDictionary(lang).meta.siteName,
     preview: result.preview !== null,
+    dates,
   });
 }
 

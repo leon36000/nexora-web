@@ -1,0 +1,205 @@
+{
+  "page": "guides-api-compatible-openai",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/api-compatible-openai",
+    "title": "API compatible OpenAI",
+    "seo_title": "API compatible OpenAI : adresse de base",
+    "seo_description": "Changez l'adresse de base et la clé de votre client OpenAI pour appeler Nexora AI API : exemples cURL, Python et JavaScript, erreurs et facturation.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du tutoriel : changer l'adresse de base et la clé, le reste du code ne bouge pas.",
+      "claims": ["CL-S04", "CL-M07"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · API",
+        "headline": "Changez l'adresse de base, gardez votre code.",
+        "subheadline": "Nexora AI API suit le format de l'API d'OpenAI. Trois lignes changent dans un client existant : l'adresse de base, la clé et l'identifiant du modèle. Exemples cURL, Python et JavaScript.",
+        "primary_label": "Lire la documentation",
+        "primary_href": "/docs/api/",
+        "secondary_label": "Voir les modèles",
+        "secondary_href": "/modeles/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : les trois éléments à changer et les points d'accès pris en charge.",
+      "claims": ["CL-S04", "CL-M07"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Pour utiliser Nexora AI API, changez l'adresse de base et la clé de votre client OpenAI ; le reste du code ne bouge pas. L'adresse de base est celle du site suivie de /v1, la clé commence par nxk_ et le modèle s'indique par son identifiant public. La conversation, les embeddings et la liste des modèles sont pris en charge.</p><p>Une adresse de base est le début commun de toutes les adresses de l'API. Un embedding est un texte transformé en suite de nombres que l'on peut comparer.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les trois lignes à changer, avec trois exemples exacts (cURL, Python, JavaScript) tirés de la documentation de l'API.",
+      "claims": ["CL-S04", "CL-M07"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "trois-lignes"
+      },
+      "translation": {
+        "title": "Les trois lignes à changer.",
+        "body": "<p>Remplacez <code>https://www.example.com/v1</code> par l'adresse de base affichée dans la documentation de l'API, <code>nxk_votre_cle_api</code> par votre clé et <code>nexora/nom-du-modele</code> par l'identifiant d'un modèle du catalogue. Ces exemples sont ceux de la documentation ; ils n'affichent aucun résultat, car la passerelle n'est pas ouverte à la vente.</p><h3>cURL</h3><pre><code>curl https://www.example.com/v1/chat/completions \\\n  -H \"Authorization: Bearer nxk_votre_cle_api\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"nexora/nom-du-modele\",\n    \"messages\": [{ \"role\": \"user\", \"content\": \"Bonjour !\" }],\n    \"max_tokens\": 200\n  }'</code></pre><h3>Python</h3><pre><code>from openai import OpenAI\n\nclient = OpenAI(base_url=\"https://www.example.com/v1\", api_key=\"nxk_votre_cle_api\")\n\nresponse = client.chat.completions.create(\n    model=\"nexora/nom-du-modele\",\n    messages=[{\"role\": \"user\", \"content\": \"Bonjour !\"}],\n    max_tokens=200,\n)\nprint(response.choices[0].message.content)</code></pre><h3>JavaScript</h3><pre><code>import OpenAI from \"openai\";\n\nconst client = new OpenAI({ baseURL: \"https://www.example.com/v1\", apiKey: \"nxk_votre_cle_api\" });\n\nconst response = await client.chat.completions.create({\n  model: \"nexora/nom-du-modele\",\n  messages: [{ role: \"user\", content: \"Bonjour !\" }],\n  max_tokens: 200,\n});\nconsole.log(response.choices[0].message.content);</code></pre>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Points d'accès pris en charge, sous forme de tableau.",
+      "claims": ["CL-S04", "CL-M07"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "pris-en-charge"
+      },
+      "translation": {
+        "title": "Ce qui est pris en charge.",
+        "body": "<table><caption>Points d'accès de l'API pris en charge</caption><thead><tr><th>Point d'accès</th><th>Rôle</th><th>Précisions</th></tr></thead><tbody><tr><th>POST /v1/chat/completions</th><td>Conversation</td><td>Diffusion en continu, outils et formats de réponse ; une clé est requise.</td></tr><tr><th>POST /v1/embeddings</th><td>Textes transformés en nombres</td><td>Un texte ou une liste de textes, pour les modèles de type embeddings.</td></tr><tr><th>GET /v1/models</th><td>Liste des modèles publiés</td><td>Prix, contexte et lieu d'hébergement ; le catalogue public n'exige pas de clé.</td></tr></tbody></table><p>Pour recevoir la réponse au fil de l'eau, ajoutez <code>stream: true</code>. Le coût est réglé à la fin du flux, d'après l'usage réel.</p><pre><code>const stream = await client.chat.completions.create({\n  model: \"nexora/nom-du-modele\",\n  messages: [{ role: \"user\", content: \"Raconte une courte histoire.\" }],\n  max_tokens: 400,\n  stream: true,\n});\n\nfor await (const chunk of stream) {\n  process.stdout.write(chunk.choices[0]?.delta?.content ?? \"\");\n}</code></pre>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui n'est pas pris en charge : un seul choix, paramètres propres à un fournisseur ignorés, plafond de max_tokens.",
+      "claims": ["CL-S04", "CL-M07"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "non-pris-en-charge"
+      },
+      "translation": {
+        "title": "Ce qui ne l'est pas.",
+        "cards": [
+          {
+            "title": "Un seul choix par requête.",
+            "text": "Le paramètre n doit valoir 1 ; toute autre valeur donne l'erreur 400 unsupported_parameter."
+          },
+          {
+            "title": "Les paramètres propres à un fournisseur.",
+            "text": "Seuls les paramètres connus du format d'OpenAI sont transmis ; les autres sont ignorés."
+          },
+          {
+            "title": "Un max_tokens trop grand.",
+            "text": "Il ne peut pas dépasser le plafond du modèle ni le contexte restant : l'API répond 400 plutôt que de tronquer."
+          },
+          {
+            "title": "Les identifiants d'un autre fournisseur.",
+            "text": "Le modèle s'indique par l'identifiant public du catalogue de Nexora AI ; l'identifiant d'un autre service ne s'y trouve pas."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Erreurs : tableau des statuts, avec un exemple réel de réponse à une clé invalide observé sur la pile de développement.",
+      "claims": ["CL-M07", "CL-S06", "CL-S03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "erreurs"
+      },
+      "translation": {
+        "title": "Erreurs et limites.",
+        "body": "<p>Les erreurs suivent le format d'OpenAI : un objet <code>error</code> avec un message, un type et un code. Les messages sont en français ; c'est le champ <code>code</code> qu'il faut tester. Voici la réponse réellement observée le 29 octobre 2026, sur un serveur de développement, pour une clé invalide :</p><pre><code>HTTP 401\n{\"error\":{\"message\":\"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».\",\"type\":\"authentication_error\",\"param\":null,\"code\":\"invalid_api_key\"}}</code></pre><table><caption>Erreurs de l'API</caption><thead><tr><th>Statut</th><th>Code</th><th>Signification</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Clé absente ou inconnue, révoquée ou expirée.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Solde insuffisant, compte bloqué ou plafond de dépense de la clé atteint.</td></tr><tr><th>404</th><td>model_not_found</td><td>Modèle inexistant ou non autorisé pour cette clé.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Requête invalide ; le champ param nomme le paramètre fautif.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Limite de requêtes ou de jetons par minute atteinte ; voir l'en-tête Retry-After.</td></tr><tr><th>502 ou 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>Le fournisseur du modèle est indisponible ou surchargé : réessayez. Rien n'est débité.</td></tr></tbody></table>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Facturation en trois temps : réserver, régler, lire le coût ; état de la vente.",
+      "claims": ["CL-S03", "CL-S05", "CL-12"],
+      "fields": {
+        "columns": "3",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "facturation"
+      },
+      "translation": {
+        "title": "La facturation en trois temps.",
+        "intro": "Les comptes et les paiements ne fonctionnent qu'en mode test pour l'instant : ce qui suit décrit le fonctionnement, pas une offre ouverte à la vente.",
+        "cards": [
+          {
+            "title": "Réserver.",
+            "text": "Chaque requête réserve d'abord son coût maximal. Sans solde suffisant, l'API répond 402 avant tout appel au modèle."
+          },
+          {
+            "title": "Régler.",
+            "text": "La requête est réglée au coût réel d'après les jetons d'entrée et de sortie ; le reste de la réservation est libéré."
+          },
+          {
+            "title": "Lire le coût.",
+            "text": "Chaque réponse complète porte l'en-tête x-nexora-cost-micro, en millionièmes de dollar canadien. Une clé peut avoir un plafond de dépense."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du tutoriel : modifications du code, identifiant de modèle, flux, coût, achat.",
+      "claims": ["CL-S04", "CL-S03", "CL-M07", "CL-12"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "API compatible OpenAI : vos questions.",
+        "items": [
+          {
+            "question": "Que faut-il changer dans mon code ?",
+            "answer": "Trois valeurs : l'adresse de base (celle du site suivie de /v1), la clé (elle commence par nxk_) et l'identifiant du modèle. Le reste de l'appel, y compris les bibliothèques officielles d'OpenAI, ne change pas."
+          },
+          {
+            "question": "Où trouver l'identifiant d'un modèle ?",
+            "answer": "Dans le catalogue public ou par GET /v1/models, qui ne demande pas de clé. L'identifiant a la forme espace/nom, par exemple nexora/nom-du-modele."
+          },
+          {
+            "question": "La diffusion en continu fonctionne-t-elle ?",
+            "answer": "Oui : ajoutez le paramètre stream avec la valeur true. Le coût est réglé à la fin du flux ; si vous fermez la connexion en cours de route, seuls les jetons déjà livrés sont facturés."
+          },
+          {
+            "question": "Comment connaître le coût d'une requête ?",
+            "answer": "Chaque réponse complète porte l'en-tête x-nexora-cost-micro, en millionièmes de dollar canadien. L'usage par jour et par modèle s'affiche aussi dans l'espace client."
+          },
+          {
+            "question": "Puis-je utiliser l'API en production aujourd'hui ?",
+            "answer": "Pas en libre-service : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté. Pour un projet, écrivez-nous."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : documentation, puis diagnostic.",
+      "claims": ["CL-80", "CL-12"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voyez la documentation.",
+        "text": "La documentation de l'API donne l'adresse de base exacte, les erreurs et les exemples. Pour un projet, nous commençons par un diagnostic.",
+        "primary_label": "Lire la documentation",
+        "primary_href": "/docs/api/",
+        "secondary_label": "Planifier un diagnostic",
+        "secondary_href": "/contact/?sujet=diagnostic"
+      }
+    }
+  ]
+}

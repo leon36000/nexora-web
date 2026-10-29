@@ -5,6 +5,9 @@
  * le prix (module Paiements, « Adopter le prix suggéré »), puis publie. Les limites des offres sont celles
  * PROPOSÉES par l'étude : à valider avec le produit avant de publier.
  *
+ * Aucun essai gratuit : `trial_days` vaut 0 (consigne du fondateur du 29/10/2026 ; CL-61). L'accès gratuit est réservé
+ * à l'administrateur de la maison.
+ *
  * Une ligne mensuelle et une ligne annuelle par offre (même `family`). Ligne annuelle : le prix est le total de
  * l'année (12 mois au tarif annuel par mois) et les crédits inclus sont ceux de douze mois, versés un douzième par
  * mois (chaque douzième expire à la fin de son mois).

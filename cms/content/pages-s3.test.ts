@@ -106,11 +106,92 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
     fr: "guides/agents-ia-pour-pme",
     en: "guides/ai-agents-small-business",
   },
+  // SEO et GEO, deuxième vague (29/10/2026) : piliers du plan (voir pages-marketing.test.ts)
+  "guides-passerelle-ou-acces-direct": {
+    fr: "guides/passerelle-ou-acces-direct",
+    en: "guides/gateway-or-direct-access",
+  },
+  "guides-alternative-openrouter": {
+    fr: "guides/alternative-openrouter",
+    en: "guides/openrouter-alternative",
+    draft: true,
+  },
+  "guides-api-compatible-openai": {
+    fr: "guides/api-compatible-openai",
+    en: "guides/openai-compatible-api",
+  },
+  "guides-ou-sont-vos-donnees-ia": {
+    fr: "guides/ou-sont-vos-donnees-ia",
+    en: "guides/where-is-your-ai-data",
+  },
+  "guides-ia-souveraine-liste-de-controle": {
+    fr: "guides/ia-souveraine-liste-de-controle",
+    en: "guides/sovereign-ai-checklist",
+  },
+  "guides-serveur-ia-sur-place": {
+    fr: "guides/serveur-ia-sur-place",
+    en: "guides/on-premises-ai-server",
+  },
+  "guides-vps-quebec-agents-ia": {
+    fr: "guides/vps-quebec-agents-ia",
+    en: "guides/quebec-vps-ai-agents",
+  },
+  // Gabarits de flux de travaux de WorkStudio : synthèse (P7) et une fiche par gabarit (inventaire figé)
+  "gabarits-flux-de-travaux": {
+    fr: "gabarits-flux-de-travaux",
+    en: "workflow-templates",
+  },
 };
+
+// Une fiche par gabarit de l'inventaire figé (gabarits-inventaire.json) : adresses française et anglaise attendues.
+const GABARIT_EN: Record<string, string> = {
+  devis: "quote",
+  "relance-facture": "overdue-invoice-reminder",
+  "relance-devis": "unanswered-quote-follow-up",
+  "support-faq": "faq-support-reply",
+  reclamation: "complaint-reply",
+  "avis-client": "customer-review-reply",
+  "reponse-validee": "validated-customer-reply",
+  "qualification-prospects": "prospect-qualification",
+  "reponse-appel-offres": "tender-response",
+  "tri-emails": "incoming-email-triage",
+  "compte-rendu": "meeting-minutes",
+  "ordre-du-jour": "meeting-agenda",
+  "cr-entretien": "interview-minutes",
+  "controle-facture": "supplier-invoice-check",
+  "factures-fournisseurs": "supplier-invoice-extraction",
+  "resume-contrat": "contract-summary",
+  "revue-contrat": "contract-review",
+  "conformite-documents": "document-conformity-check",
+  "tri-sinistres": "claim-triage",
+  "rapport-hebdo": "weekly-activity-report",
+  "synthese-projet-hebdo": "weekly-project-summary",
+  "rapport-ventes-mensuel": "monthly-sales-report",
+  "veille-concurrentielle": "competitor-watch-note",
+  "offre-emploi": "job-posting",
+  "accueil-salarie": "new-employee-welcome",
+  newsletter: "monthly-newsletter",
+  "reseaux-sociaux": "social-media-posts",
+  "fiche-produit": "product-sheet",
+  traduction: "professional-translation",
+};
+const GABARIT_FR: Record<string, string> = {
+  "tri-emails": "tri-courriels",
+  "accueil-salarie": "accueil-nouvelle-personne",
+};
+for (const [slug, en] of Object.entries(GABARIT_EN))
+  EXPECTED[`gabarit-${slug}`] = {
+    fr: `gabarits-flux-de-travaux/${GABARIT_FR[slug] ?? slug}`,
+    en: `workflow-templates/${en}`,
+  };
 const KEYS = Object.keys(EXPECTED);
 const DRAFTS = KEYS.filter((k) => EXPECTED[k]?.draft);
 const PUBLISHED = KEYS.filter((k) => !EXPECTED[k]?.draft);
-const LEGAL = DRAFTS.filter((k) => k !== "souverainete-loi-25");
+// Gabarits juridiques : les brouillons qui portent des marqueurs [À COMPLÉTER…]. Le guide Loi 25 et le comparatif
+// nommé (« à relire ») sont des brouillons rédigés en entier : ils n'en font pas partie.
+const LEGAL = DRAFTS.filter(
+  (k) => k !== "souverainete-loi-25" && k !== "guides-alternative-openrouter",
+);
 
 const claimsFile = JSON.parse(
   readFileSync(join(import.meta.dir, "claims.json"), "utf8"),
@@ -138,6 +219,11 @@ function texts(b: BlockFile): { path: string; value: string }[] {
   walk(b.translation, "");
   return out;
 }
+/** Le code d'un tutoriel n'est pas de la prose : ni espaces insécables, ni lexique, ni guillemets français. */
+const withoutCode = (s: string) =>
+  s
+    .replace(/<pre>[\s\S]*?<\/pre>/g, "")
+    .replace(/<code>[\s\S]*?<\/code>/g, "code");
 const plain = (s: string) =>
   s
     .replace(/<\/(p|li|h2|h3)>/g, " ")
@@ -191,7 +277,7 @@ const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);
 
 describe("S3 : structure", () => {
-  test("les 31 pages attendues existent, et rien d'autre ne s'ajoute sans être déclaré ici", () => {
+  test("les pages attendues existent, et rien d'autre ne s'ajoute sans être déclaré ici", () => {
     const found = discoverPages(PAGES_DIR).filter(
       (k) => k !== "accueil" && k !== "opsys-ai",
     );
@@ -413,6 +499,9 @@ describe("S3 : SEO", () => {
         route(l, "modeles"),
         route(l, "docs/api"),
         route(l, "vps"),
+        // Nexora Apps (registre web/src/i18n/apps.ts) : la liste et la fiche de Privacy Router
+        route(l, "apps"),
+        route(l, "apps/privacy-router"),
       ]);
     for (const k of KEYS)
       for (const l of LOCALES) {
@@ -432,14 +521,21 @@ describe("S3 : SEO", () => {
       }
   });
 
-  test("les liens externes ne figurent que dans le guide Loi 25, vers des sites officiels, en https", () => {
+  test("les liens externes ne figurent que dans le guide Loi 25 (sites officiels) et dans le comparatif (pages publiques datées du concurrent), en https", () => {
     for (const k of KEYS)
       for (const l of LOCALES)
         for (const h of hrefsOf(page(k, l)).filter((x) => /^https?:/.test(x))) {
-          expect(k).toBe("souverainete-loi-25");
-          expect(h).toMatch(
-            /^https:\/\/www\.(legisquebec\.gouv\.qc\.ca|cai\.gouv\.qc\.ca)\//,
-          );
+          // Sources officielles du guide Loi 25 ; pages publiques du concurrent cité par le comparatif (sources datées).
+          if (k === "guides-alternative-openrouter")
+            expect(h).toMatch(
+              /^https:\/\/openrouter\.ai\/(pricing|docs\/faq)$/,
+            );
+          else {
+            expect(k).toBe("souverainete-loi-25");
+            expect(h).toMatch(
+              /^https:\/\/www\.(legisquebec\.gouv\.qc\.ca|cai\.gouv\.qc\.ca)\//,
+            );
+          }
         }
   });
 
@@ -590,7 +686,15 @@ describe("S3 : VÉRITÉ", () => {
   // Mots permis seulement sur certaines pages, avec leurs conditions (contrôlées dans pages-vague2.test.ts).
   const ONLY_ON: Record<string, string[]> = {
     gratuité: ["croissance", "faq", "confidentialite", "conditions"],
-    "marque ou prestataire non qualifié": ["croissance"],
+    // Le comparatif cite son concurrent (faits datés et sourcés) ; le gabarit de publication nomme les réseaux visés.
+    "marque ou prestataire non qualifié": [
+      "croissance",
+      "guides-alternative-openrouter",
+      "gabarit-reseaux-sociaux",
+      "gabarits-flux-de-travaux",
+    ],
+    // Frais du concurrent, avec leur source et leur date de lecture (CL-X02).
+    pourcentage: ["guides-alternative-openrouter"],
   };
 
   for (const k of KEYS)
@@ -849,7 +953,7 @@ describe("S3 : CLARTÉ et typographie", () => {
     test(`${k} fr-CA : lexique OQLF, vouvoiement, espaces insécables avant : ; ? ! et dans « »`, () => {
       const bad: string[] = [];
       for (const t of allTexts(page(k, "fr-CA"))) {
-        const v = plain(t.value);
+        const v = plain(withoutCode(t.value));
         for (const [re, use] of FR_LEXIQUE)
           if (re.test(v)) bad.push(`${t.path} : employer « ${use} »`);
         for (const m of v.matchAll(/([^\s]?)(\s?)([:;?!])/g)) {
@@ -870,9 +974,9 @@ describe("S3 : CLARTÉ et typographie", () => {
   for (const k of KEYS)
     test(`${k} en-CA : typographie anglaise (aucune espace insécable, guillemets anglais, pas de lexique français)`, () => {
       for (const t of allTexts(page(k, "en-CA"))) {
-        expect(t.value, t.path).not.toMatch(/ |«|»/);
-        expect(t.value, t.path).not.toMatch(/ [:;?!]/);
-        expect(plain(t.value), t.path).not.toMatch(
+        expect(withoutCode(t.value), t.path).not.toMatch(/ |«|»/);
+        expect(withoutCode(t.value), t.path).not.toMatch(/ [:;?!]/);
+        expect(plain(withoutCode(t.value)), t.path).not.toMatch(
           /\b(courriel|renseignements|flux de travaux)\b/i,
         );
       }
@@ -933,8 +1037,10 @@ describe("chargement dans Directus", () => {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
       expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
     }
-    expect(PUBLISHED).toHaveLength(26);
-    expect(DRAFTS).toHaveLength(5);
+    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches ; 5 gabarits juridiques + le comparatif nommé
+    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29);
+    expect(DRAFTS).toHaveLength(6);
+    expect(DRAFTS).toContain("guides-alternative-openrouter");
   });
 
   const pair = {

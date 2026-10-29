@@ -134,6 +134,8 @@ Nous ne nommons personne et ne jugeons personne. Ce sont des constats généraux
 
 Posez-nous ces trois questions : [étudier mon projet](/contact/?sujet=etude-deploiement).
 
+Pour aller plus loin, voir [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/) et la [liste de contrôle d'une DSI](/guides/ia-souveraine-liste-de-controle/).
+
 - **Mes conversations améliorent-elles le modèle ?** Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même. Chez Nexora AI, la réponse est écrite : jamais.
 - **Stockées au Canada, traitées où ?** Certains fournisseurs d'IA annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser. Dans notre mode hébergé, les données sont stockées et traitées au Québec, sauvegardes comprises.
 - **Quel pays peut exiger l'accès ?** Un fournisseur soumis à la juridiction d'un autre pays peut être tenu de lui remettre des données qu'il détient, même stockées au Canada (exemple : une loi américaine adoptée en 2018). Les lois canadiennes et québécoises s'appliquent aussi aux entreprises d'ici. « Souverain » désigne un contrôle, pas une immunité.

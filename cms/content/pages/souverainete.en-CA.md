@@ -134,6 +134,8 @@ We name no one and judge no one. These are general observations about industry p
 
 Put these three questions to us: [study my project](/en/contact/?sujet=etude-deploiement).
 
+To go further, see [Where your data really is](/en/guides/where-is-your-ai-data/) and the [IT director's checklist](/en/guides/sovereign-ai-checklist/).
+
 - **Do my conversations improve the model?** In some consumer AI services, sharing conversations to improve the models is a setting the user has to switch off personally. At Nexora AI, the answer is written down: never.
 - **Stored in Canada, processed where?** Some AI providers advertise data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. In our hosted mode, data is stored and processed in Quebec, backups included.
 - **Which country can demand access?** A provider subject to another country's jurisdiction may be required to hand over data it holds, even data stored in Canada (for example, a U.S. law passed in 2018). Canadian and Quebec laws also apply to businesses here. “Sovereign” describes control, not immunity.

@@ -66,7 +66,7 @@ Dossiers du panneau : `nexora_site`, `nexora_pages`, `nexora_validation`. **22 c
 | Validation | `claims` (registre privé), `approvals` |
 
 - **Pages.** `pages` : `status` (`draft`, `in_review`, `published`, `archived`), `publish_at`, `noindex`, `seo_image` (image Open Graph), `blocks` (M2A), `translations`. `pages_translations` : `slug` (vide pour l'accueil), `title`, `seo_title`, `seo_description`, `canonical`, et `slug_key` (calculé `langue:slug`, unique : un slug est unique **par langue**, vérifié par le hook avec le message `NEXORA_SLUG_DEJA_UTILISE`).
-- **Blocs.** Texte riche contrôlé de `block_section.body` : éditeur HTML restreint (gras, italique, lien, listes, titres 2 et 3, citation) ; le site doit l'assainir une seconde fois au rendu. Les listes (cartes, offres, questions) sont des champs JSON de la table de traduction, pour économiser des collections. `block_pricing` : « Sur demande » tant que le fondateur n'a pas publié de prix (aucun prix n'est semé).
+- **Blocs.** Texte riche contrôlé de `block_section.body` : éditeur HTML restreint (gras, italique, lien, listes, titres 2 et 3, citation, tableau, bloc de code ; le site accepte aussi le code en ligne) ; le site doit l'assainir une seconde fois au rendu. Les listes (cartes, offres, questions) sont des champs JSON de la table de traduction, pour économiser des collections. `block_pricing` : « Sur demande » tant que le fondateur n'a pas publié de prix (aucun prix n'est semé).
 - **Requête type pour le site** (jeton `DIRECTUS_READER_TOKEN`) :
 
 ```
@@ -327,3 +327,11 @@ Soupçon : les rôles Éditeur et Relecteur lisent `directus_revisions` ; les r�
 
 Les réglages d'environnement de Directus (limitation de débit, durée des jetons, témoins, liste de refus des importations par URL, types de fichiers, introspection GraphQL, CSP, HSTS) sont dans `deploy/compose.yml` et décrits dans `docs/infra.md`. Les scripts de ce dossier réessaient seuls après un `429` (`withRateLimitRetry`). L'essai de la garde (§6) compte désormais **59** vérifications (étape `b3b` : un relecteur n'approuve pas sa propre proposition) ; `ESSAI_DB_CONTAINER` choisit le conteneur PostgreSQL qu'il lit et altère (défaut : `nexorasite-db-1`, le cluster partagé : **à changer pour viser un cluster jetable**).
 
+
+## 12. Tableaux, code et signature des guides (29/10/2026)
+
+- **Texte riche** : `web/src/lib/rich-text.ts` accepte maintenant `table`, `caption`, `thead`, `tbody`, `tfoot`, `tr`, `th`, `td`, `pre` et `code` (aucun attribut). Une cellule hors de sa ligne, une ligne hors d'un tableau sont « déballées » (le texte reste) ; les cellules et lignes non fermées se ferment seules ; la profondeur reste bornée. Rendu : `components/blocks/rich-text.tsx` (région défilable au clavier nommée par la légende, `scope` des en-têtes), colonne élargie (`hasWideContent`) pour un tableau ou un bloc de code.
+- **Éditeur Directus** : la barre d'outils de `block_section_translations.body` propose « Tableau » et « Bloc de code » (`schema.ts`). **Relancer `apply.ts`** sur chaque Directus avant d'éditer une page à tableau dans le panneau.
+- **Signature des guides** : `components/blocks/page-byline.tsx` affiche l'auteur (l'entreprise) et les dates **réelles** de publication et de mise à jour (`date_created`, `date_updated` de Directus, jour compté à l'heure de l'Est ; une mise à jour du jour de la publication n'est pas répétée) sous le héros des guides et des fiches de gabarits (`lib/byline.ts`). Même contenu que l'`Article` JSON-LD.
+- **`og:type = article`** pour ces pages, avec `article:published_time`, `article:modified_time` et l'auteur (`lib/seo.ts`).
+- **Chargement des pages** : voir `cms/content/README.md`, section 13.

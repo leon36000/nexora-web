@@ -1,0 +1,412 @@
+{
+  "page": "gabarits-flux-de-travaux",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "workflow-templates",
+    "title": "Workflow templates for small business",
+    "seo_title": "Workflow templates for small business",
+    "seo_description": "Twenty-nine WorkStudio templates for small business: quotes, follow-ups, email triage, minutes, invoices and contracts. An honest sheet for each template.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la page : des gabarits de départ pour PME, avec leur limite (rédigés pour la France).",
+      "claims": ["CL-M01", "CL-M02", "CL-M03"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · WorkStudio templates",
+        "headline": "Workflow templates for small businesses.",
+        "subheadline": "Twenty-nine starter templates for a small business's everyday tasks: quotes, follow-ups, email triage, minutes, invoice and contract checks. An honest sheet for each.",
+        "primary_label": "See WorkStudio",
+        "primary_href": "/en/workstudio/",
+        "secondary_label": "Request a demo",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que sont les gabarits, combien, leur limite, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-M03", "CL-111", "CL-92"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>WorkStudio provides twenty-nine workflow templates for small businesses: quotes, follow-ups, email triage, minutes, invoice and contract checks. A template is a starter flow, written for a French small business: you adapt it to your company before deploying it. Those that send an email first wait for a person's approval.</p><p>A workflow is an automated sequence of tasks. An agent is software that accomplishes a task with the tools you authorize.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Comment on adapte un gabarit : décrire, relire, tester, déployer une version.",
+      "claims": ["CL-92", "CL-91", "CL-P02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "How you adapt one.",
+        "body": "<p>You describe in plain language what you want to change; the Copilot, the builder assistant, prepares a flow that you review, test step by step, then deploy. Each deployment is a version you can go back to.</p><p>Nexora AI can set the templates up with you: see the <a href=\"/en/method/\">method</a> and the <a href=\"/en/solutions/\">solutions</a> by use case.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : ventes et clients.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "groupe-ventes"
+      },
+      "translation": {
+        "title": "Sales and customers.",
+        "intro": "Quotes, follow-ups, replies to customers and to tenders.",
+        "cards": [
+          {
+            "title": "Customer quote.",
+            "text": "The Customer quote template drafts a structured quote from the customer and a list of services with quantities and unit prices before tax: a table, the totals, the validity period and the payment terms.",
+            "href": "/en/workflow-templates/quote/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Unanswered quote follow-up.",
+            "text": "The Unanswered quote follow-up template writes a friendly sales follow-up from the customer, the quote reference and the date it was sent.",
+            "href": "/en/workflow-templates/unanswered-quote-follow-up/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Overdue invoice reminder.",
+            "text": "The Overdue invoice reminder template writes the reminder email (subject and body) from the customer, the invoice, the amount, the missed due date and the reminder level: courteous, firm or formal notice.",
+            "href": "/en/workflow-templates/overdue-invoice-reminder/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Support reply (FAQ).",
+            "text": "The Support reply template answers a customer's question only from the frequently asked questions you provide.",
+            "href": "/en/workflow-templates/faq-support-reply/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Complaint reply.",
+            "text": "The Complaint reply template prepares an empathetic answer from the complaint text and the gesture you can offer: discount, replacement or refund.",
+            "href": "/en/workflow-templates/complaint-reply/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Customer review reply.",
+            "text": "The Customer review reply template writes a short public reply to an online review, positive or negative, from the review text and its rating out of five.",
+            "href": "/en/workflow-templates/customer-review-reply/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Customer reply approved before sending.",
+            "text": "The Customer reply approved before sending template drafts the answer to a customer's message, then submits it to a person.",
+            "href": "/en/workflow-templates/validated-customer-reply/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Prospect qualification.",
+            "text": "The Prospect qualification template assesses an incoming message against your criteria: a score from one to five, the restated need, budget and timing if mentioned, decision-maker, missing data and next action.",
+            "href": "/en/workflow-templates/prospect-qualification/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Tender response.",
+            "text": "The Tender response template checks each requirement in the specification against your material (covered, partly covered or not covered), then drafts a first version of the response.",
+            "href": "/en/workflow-templates/tender-response/",
+            "link_label": "See the sheet"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : courriels et réunions.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "groupe-courriels"
+      },
+      "translation": {
+        "title": "Emails and meetings.",
+        "intro": "Email triage, minutes and agendas.",
+        "cards": [
+          {
+            "title": "Incoming email triage.",
+            "text": "The Incoming email triage template classifies a received email (category, urgency, one-sentence summary), then prepares a draft reply suited to the category and urgency.",
+            "href": "/en/workflow-templates/incoming-email-triage/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Meeting minutes.",
+            "text": "The Meeting minutes template transcribes the audio recording while separating the speakers, writes the minutes (participants, points discussed, decisions, action table, open questions), submits them to a person and emails them to the recipient you name only after that person approves.",
+            "href": "/en/workflow-templates/meeting-minutes/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Meeting agenda.",
+            "text": "The Meeting agenda template builds a timed agenda from the topics to cover and the time available: a logical order, time per topic, who presents, the decision expected, and an opening sentence for the meeting, ready to review and circulate.",
+            "href": "/en/workflow-templates/meeting-agenda/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Interview minutes.",
+            "text": "The Interview minutes template turns the notes of an interview (customer, candidate or annual) into minutes: context, points discussed, commitments on both sides (who, what, when) and next steps.",
+            "href": "/en/workflow-templates/interview-minutes/",
+            "link_label": "See the sheet"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : finance et documents.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "groupe-finance"
+      },
+      "translation": {
+        "title": "Finance and documents.",
+        "intro": "Invoices, contracts, conformity and claims.",
+        "cards": [
+          {
+            "title": "Supplier invoice check.",
+            "text": "The Supplier invoice check template first extracts the invoice data (supplier, number, date, totals, tax, company number), then checks that the pre-tax total plus tax equals the total, that mandatory mentions are present, and concludes \"À PAYER\" or \"À VÉRIFIER\".",
+            "href": "/en/workflow-templates/supplier-invoice-check/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Supplier invoice extraction.",
+            "text": "The Supplier invoice extraction template extracts an invoice's fields as JSON (supplier, number, date, totals, tax, due date), with null for any missing value, then checks the totals are consistent and concludes \"COHÉRENTE\" or \"À VÉRIFIER\".",
+            "href": "/en/workflow-templates/supplier-invoice-extraction/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Contract summary.",
+            "text": "The Contract summary template summarizes a contract in ten lines, lists dates, deadlines and amounts, then lists the clauses to have a lawyer review (tacit renewal, penalties, termination, liability).",
+            "href": "/en/workflow-templates/contract-summary/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Contract review.",
+            "text": "The Contract review template flags risky clauses (a table with quoted extract and level), common missing clauses and questions to ask, according to your role and priorities.",
+            "href": "/en/workflow-templates/contract-review/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Document conformity check.",
+            "text": "The Document conformity check template checks a document point by point against your checklist: verdict (conforming, non-conforming, not verifiable), quoted passage and corrective action.",
+            "href": "/en/workflow-templates/document-conformity-check/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Claim triage.",
+            "text": "The Claim triage template classifies a claim report (category, urgency, summary, date, missing documents, points of attention), then writes the reply to the policyholder: acknowledgement and list of documents to provide.",
+            "href": "/en/workflow-templates/claim-triage/",
+            "link_label": "See the sheet"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : rapports et suivi.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "groupe-rapports"
+      },
+      "translation": {
+        "title": "Reports and follow-up.",
+        "intro": "Activity, project and sales reports, and watch notes.",
+        "cards": [
+          {
+            "title": "Weekly activity report.",
+            "text": "The Weekly activity report template turns your loose notes from the week into a report for management: achievements, key figures, difficulties, decisions to make and next week's priorities.",
+            "href": "/en/workflow-templates/weekly-activity-report/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Weekly project summary.",
+            "text": "The Weekly project summary template turns your notes into a summary: progress, risks in a table, decisions to make and priorities.",
+            "href": "/en/workflow-templates/weekly-project-summary/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Monthly sales report.",
+            "text": "The Monthly sales report template formats the month's sales figures: a table of gaps against targets and the previous month, then a report with highlights, gaps to explain (causes marked \"hypothèse\") and proposed actions.",
+            "href": "/en/workflow-templates/monthly-sales-report/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Competitor watch note.",
+            "text": "The Competitor watch note template produces a structured note from extracts you paste: established facts (each quoted), weak signals marked \"hypothèse\", implications for you and information to look for.",
+            "href": "/en/workflow-templates/competitor-watch-note/",
+            "link_label": "See the sheet"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les gabarits : communication et équipe.",
+      "claims": ["CL-M01", "CL-M02"],
+      "fields": {
+        "columns": "3",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "groupe-equipe"
+      },
+      "translation": {
+        "title": "Communication and team.",
+        "intro": "Job ads, onboarding, newsletter, social media, sheets and translations.",
+        "cards": [
+          {
+            "title": "Job posting.",
+            "text": "The Job posting template writes a clear ad from the job title, duties and profile: company presentation (one sentence to fill in, in brackets), duties, profile sought, conditions and how to apply.",
+            "href": "/en/workflow-templates/job-posting/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "New employee welcome.",
+            "text": "The New employee welcome template prepares the warm welcome email and a two-part preparation list: what the company prepares (workstation, access, badge, contract) and what the person brings.",
+            "href": "/en/workflow-templates/new-employee-welcome/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Monthly newsletter.",
+            "text": "The Monthly newsletter template composes the month's newsletter from your raw information and the readers it is for: three email subjects to choose from, a warm introduction, one section per item, then a closing note with a call to action.",
+            "href": "/en/workflow-templates/monthly-newsletter/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Social media posts.",
+            "text": "The Social media posts template proposes three posts from a news item and the style you want: one for LinkedIn (professional, six hundred characters at most), one for Facebook (friendly) and one for Instagram (short, with five keywords), each ending with a call to action.",
+            "href": "/en/workflow-templates/social-media-posts/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Product sheet.",
+            "text": "The Product sheet template turns a product's technical characteristics into a sheet ready for your website: a title, an eighty-word description, five highlights as a list and a meta description of one hundred and fifty characters at most.",
+            "href": "/en/workflow-templates/product-sheet/",
+            "link_label": "See the sheet"
+          },
+          {
+            "title": "Professional translation.",
+            "text": "The Professional translation template translates a text into the requested language while keeping the professional register and formatting, then adds, under the heading \"Points d'attention\", the expressions that are tricky to translate.",
+            "href": "/en/workflow-templates/professional-translation/",
+            "link_label": "See the sheet"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qu'un gabarit ne sait pas : règles fiscales du Québec, formats, vocabulaire.",
+      "claims": ["CL-M02", "CL-111", "CL-M04"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "What a template does not know.",
+        "body": "<p>The starter templates are general. They are written for a French small business: French-style VAT, euros, French company number. No GST, QST or Quebec business-number rule appears in them.</p><p>Taxes, formats and vocabulary are adapted to the business before any use in Quebec. A template is also not accounting or legal advice: a contract summary does not replace a lawyer.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'envoie et ce qui ne s'envoie pas : cinq gabarits, tous derrière une validation.",
+      "claims": ["CL-M03", "CL-21", "CL-93"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "envoi"
+      },
+      "translation": {
+        "title": "What goes out, what stays.",
+        "cards": [
+          {
+            "title": "Twenty-four templates produce text.",
+            "text": "You review it and use or send it yourself. The template sends nothing."
+          },
+          {
+            "title": "Five templates send an email.",
+            "text": "Meeting minutes, approved customer reply, conformity check, project summary and contract review first stop for a person's approval. The mail server must be filled in."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la page : définition, nombre, Québec, envoi, adaptation.",
+      "claims": ["CL-M01", "CL-M02", "CL-M03", "CL-111", "CL-92", "CL-80"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Templates: your questions.",
+        "items": [
+          {
+            "question": "What is a workflow template?",
+            "answer": "A starter flow, ready to run in WorkStudio, that chains automated tasks (one or more agents, sometimes an approval and a send). You adapt it to your business before deploying it."
+          },
+          {
+            "question": "How many templates does WorkStudio provide?",
+            "answer": "Twenty-nine, kept in the \"Modèles PME\" folder that each new workspace receives. The operator can disable that folder."
+          },
+          {
+            "question": "Do the templates suit Quebec?",
+            "answer": "Not as they are. They are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+          },
+          {
+            "question": "Can a template send emails by itself?",
+            "answer": "No. Five templates send an email and each first waits for a person's approval. The others produce text to review and send nothing."
+          },
+          {
+            "question": "Can you modify a template?",
+            "answer": "Yes: you describe the change in plain language, the Copilot prepares the modified flow, you review it, test it step by step, then deploy it as a version."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See them at work.",
+        "text": "A demonstration on fictional data, to see what the templates prepare and where a person stays in control.",
+        "primary_label": "Request a demo",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "See WorkStudio",
+        "secondary_href": "/en/workstudio/"
+      }
+    }
+  ]
+}

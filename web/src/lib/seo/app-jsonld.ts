@@ -1,8 +1,13 @@
 import { appPath, findApp, getAppContent } from "@/i18n/apps";
-import { type Lang, localizePath } from "@/i18n/config";
-import { SITE_URL } from "@/lib/site";
+import { HTML_LANG, type Lang, localizePath } from "@/i18n/config";
+import { getGatewayDictionary } from "@/i18n/gateway";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { HOME_CRUMB } from "./cms-jsonld";
-import { breadcrumbJsonLd, softwareApplicationJsonLd } from "./jsonld";
+import {
+  breadcrumbJsonLd,
+  organizationRef,
+  softwareApplicationJsonLd,
+} from "./jsonld";
 
 /** Fil d'Ariane d'une route de l'application : Accueil > ...trail (chemins neutres, sans préfixe de langue). */
 export function appBreadcrumb(
@@ -35,6 +40,8 @@ export function appSoftwareJsonLd(lang: Lang, slug: string) {
     url: `${SITE_URL}${localizePath(lang, appPath(app.slug))}`,
     category: app.category,
     offers: [],
+    // L'éditeur est l'entreprise : même Organization (@id) que sur toutes les autres pages.
+    publisher: { name: SITE_NAME, url: SITE_URL },
   });
 }
 
@@ -50,5 +57,25 @@ export function appFaqJsonLd(lang: Lang, slug: string) {
       name: q.question,
       acceptedAnswer: { "@type": "Answer", text: q.answer },
     })),
+  };
+}
+
+/**
+ * TechArticle de la documentation de l'API (`/docs/api`) : le titre et l'accroche affichés, l'adresse localisée, l'entreprise
+ * pour auteur et éditeur (même @id). La page est statique : aucune date n'est connue, aucune n'est émise.
+ */
+export function docsApiJsonLd(lang: Lang) {
+  const d = getGatewayDictionary(lang).docs;
+  const org = organizationRef({ name: SITE_NAME, url: SITE_URL });
+  return {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: d.title,
+    description: d.lead,
+    url: `${SITE_URL}${localizePath(lang, "/docs/api")}`,
+    mainEntityOfPage: `${SITE_URL}${localizePath(lang, "/docs/api")}`,
+    inLanguage: HTML_LANG[lang],
+    author: org,
+    publisher: org,
   };
 }

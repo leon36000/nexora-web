@@ -269,6 +269,10 @@ Nous commençons par un problème concret, mis en service et vérifié, avant d'
 
 [Lire la méthode](/methode/)
 
+Pour aller plus loin : [Par où commencer avec l'IA dans une PME du Québec](/guides/ia-pme-quebec/), [Qu'est-ce qu'un agent IA](/guides/agents-ia-pour-pme/) et [Passerelle ou accès direct](/guides/passerelle-ou-acces-direct/).
+
+Les outils qui entourent vos modèles, vos serveurs et vos agents sont réunis dans [Nexora Apps](/apps/), chacun avec son état réel.
+
 ### Bloc 12 — Cartes (`block_cards`)
 
 *Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*

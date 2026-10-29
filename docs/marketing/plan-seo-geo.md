@@ -1,6 +1,6 @@
 # Plan de marketing SEO et GEO — Nexora AI
 
-Date : 29 octobre 2026. Horizon : 90 jours (2 novembre 2026 au 30 janvier 2027). Documents liés : `audit-seo-geo.md` (état des lieux), `docs/seo.md` (code), `cms/content/README.md` (gouvernance du contenu), `docs/recherche/01`, `02`, `06`, `09`.
+Date : 29 octobre 2026 (mise à jour du jour : piliers rédigés, voir la section 5). Horizon : 90 jours (2 novembre 2026 au 30 janvier 2027). Documents liés : `audit-seo-geo.md` (état des lieux), `docs/seo.md` (code), `cms/content/README.md` (gouvernance du contenu), `docs/recherche/01`, `02`, `06`, `09`.
 
 **Règles du plan.**
 
@@ -89,7 +89,7 @@ Hypothèses de travail tirées de docs/recherche/01 §4.9 et de la littérature 
 
 ## 5. Les douze pages piliers
 
-Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédiger** = plan prêt ; **À valider** = attend une décision ou une preuve du fondateur. Les « réponses d'abord » ci-dessous sont des **brouillons** : toute phrase qui n'est pas adossée à une affirmation existante est signalée « (à enregistrer) ». Liens internes : sortants et entrants listés ; chaque page publiée doit recevoir au moins un lien entrant (test S3).
+Légende (mise à jour du 29/10/2026) : **Publiée** = rédigée en fr-CA et en-CA, au statut `published` dans le dépôt, tests verts, chargée et vérifiée sur une instance Directus d'essai ; **elle n'est en ligne qu'après le chargement dans le Directus de production et l'approbation des affirmations par une personne habilitée** ; **Brouillon** = rédigée mais au statut `draft` et non indexée ; **À relire** = les faits externes doivent être relus à la publication ; **À rédiger** = plan prêt ; **À valider** = attend une décision ou une preuve du fondateur. Les « réponses d'abord » ci-dessous sont des **brouillons** : toute phrase qui n'est pas adossée à une affirmation existante est signalée « (à enregistrer) ». Liens internes : sortants et entrants listés ; chaque page publiée doit recevoir au moins un lien entrant (test S3).
 
 ### P1. Passerelle d'API de modèles d'IA — **Publiée** (`passerelle-api-modeles` / `model-gateway-api`)
 
@@ -101,7 +101,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Liens** : sortants → `/modeles`, `/docs/api`, `/deploiement`, `/vos-donnees`, `/contact` ; entrants ← WorkStudio (carte API) ; à ajouter ← accueil (carte « Modèles et API »), P2, P3, P4, P11.
 - **Prérequis** : CL-S01 à CL-S06 en revue ; **CL-S02 à confirmer** (journaux de la couche de routage amont).
 
-### P2. Passerelle de modèles ou accès direct : comment choisir — **À rédiger** (`guides/passerelle-ou-acces-direct`)
+### P2. Passerelle de modèles ou accès direct : comment choisir — **Publiée** (`guides/passerelle-ou-acces-direct` / `guides/gateway-or-direct-access`)
+
+- **État (29/10/2026)** : rédigée comme prévu (tableau de huit critères sans marque, « Quand Nexora AI ne convient pas », FAQ). La ligne « latence ajoutée » dit qu'**aucune mesure n'est publiée** (CL-M08, décision 14 inchangée). Liens ajoutés : ← passerelle (P1), accueil ; → P4, P8, `/modeles`.
 
 - **Intention** : comparaison, sans marque. **Mot-clé** : *passerelle de modèles ou accès direct*, *faut-il une passerelle LLM*.
 - **Réponse d'abord (brouillon)** : « Une passerelle ajoute un intermédiaire ; elle devient utile quand vous comparez ou changez de modèle, ou quand vous voulez une seule clé, un seul plafond de dépense et une seule mesure de la consommation. Avec un seul fournisseur, un accès direct peut suffire. » (CL-27 ; raisonnement d'architecture, déjà publié dans la FAQ de P1.)
@@ -111,7 +113,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Données structurées** : Article, FAQPage, BreadcrumbList. **Liens** : → P1, `/modeles`, `/docs/api`, P8 ; ← P1, P3.
 - **Prérequis** : aucune nouvelle affirmation si le tableau ne chiffre rien ; la latence n'y figure qu'avec une mesure.
 
-### P3. Alternative à OpenRouter : comparatif honnête — **À valider par le fondateur**
+### P3. Alternative à OpenRouter : comparatif honnête — **Brouillon, à relire** (`guides/alternative-openrouter` / `guides/openrouter-alternative`, statut `draft`, `noindex`)
+
+- **État (29/10/2026)** : page rédigée selon la méthode de la section 6, **non publiée**. Faits d'OpenRouter lus le 29/10/2026 sur `openrouter.ai/pricing` et `openrouter.ai/docs/faq` (CL-X01 à CL-X07, « en revue », portée « À RELIRE », échéance 29/01/2027) ; aucun adjectif de valeur, aucun prix de Nexora AI (aucun n'est publié), une section « Quand choisir l'autre ». **Elle divulgue que la passerelle peut s'appuyer sur OpenRouter comme fournisseur amont** (CL-M09, d'après `docs/privacy-router.md`) : sans cette phrase, le titre serait trompeur ; le fondateur la confirme ou la retire. Aucune page publiée ne renvoie vers elle (test). Reste : décision écrite du fondateur, relecture d'un avocat (CL-A10), revérification des faits le jour de la publication.
 
 - **Pourquoi à valider** : nommer un concurrent engage la Loi sur la concurrence (art. 74.01 : représentation trompeuse) et la formulation retirée R-47 interdit toute « comparaison nominative ou dénigrante » sans faits sourcés. Les tests S3 refusent aujourd'hui le nom d'un prestataire non qualifié dans les pages.
 - **Si le fondateur autorise** : une page « OpenRouter et Nexora AI API : ce qui diffère » avec **un tableau de faits sourcés et datés** de chaque côté, sans adjectif de valeur. Faits du concurrent relevés le 26 octobre 2026 (docs/recherche/06 §3.2) et **à revérifier le jour de la publication** : interface unique pour de nombreux modèles ; frais à l'achat de crédits ; options de données par fournisseur ; formule gratuite limitée ; routage régional réservé à une formule. Faits Nexora : CL-27, CL-S01 à S06, CL-12, CL-86.
@@ -120,7 +124,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Variante sans marque** : P2 couvre la même intention sans nommer personne ; elle peut sortir seule.
 - **Données structurées** : Article, FAQPage. **Prérequis** : décision écrite du fondateur ; extension du test S3 (liste de noms permis pour cette page) ; revue d'un avocat québécois (CL-A10).
 
-### P4. API compatible OpenAI : changer de modèle en changeant l'adresse de base — **À rédiger avec le propriétaire de `/docs/api`**
+### P4. API compatible OpenAI : changer de modèle en changeant l'adresse de base — **Publiée** (`guides/api-compatible-openai` / `guides/openai-compatible-api`)
+
+- **État (29/10/2026)** : tutoriel en page du CMS (le texte riche accepte maintenant tableaux et code). Exemples cURL, Python et JavaScript **identiques mot pour mot** à ceux de `/docs/api` (test), adresse de base d'exemple `https://www.example.com/v1`. Vérifié sur la pile de développement avec curl et les bibliothèques officielles Python et JavaScript : liste des modèles (200, sans clé), clé invalide (401 `invalid_api_key`), modèle inconnu (404 `model_not_found`). **Aucun résultat d'appel réussi n'est montré** : la pile de développement refusait par précaution (migration du Privacy Router absente, 503). La page `/docs/api` a un `TechArticle`. Reste : un appel de conversation réussi, à constater sur une pile complète, pour pouvoir montrer un résultat.
 
 - **Intention** : tutoriel (Samuel). **Mot-clé** : *API compatible OpenAI*, *changer l'adresse de base*.
 - **Pourquoi hors CMS** : les blocs du CMS n'ont pas de bloc de code ; la documentation vit dans `app/[lang]/docs/api` (dictionnaire `gateway-*`). Proposition : ajouter à cette page une section « Changer de fournisseur en trois lignes » et un `TechArticle` daté.
@@ -142,7 +148,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **H2** : La réponse en bref · Modèle, agent, flux de travaux · Ce qu'un agent fait, concrètement · Les garde-fous, un par un · Sans code : comment ça marche · Ce qu'un agent ne fait pas · Agents IA : vos questions · Voyez un agent à l'œuvre.
 - **Données structurées** : BreadcrumbList, Article, FAQPage. **Liens** : → WorkStudio, solutions, contact ; ← WorkStudio ; à ajouter ← accueil, solutions courriels et documents.
 
-### P7. Gabarits de flux de travaux pour PME — **À rédiger**
+### P7. Gabarits de flux de travaux pour PME — **Publiée** (`gabarits-flux-de-travaux` et 29 fiches `gabarits-flux-de-travaux/<gabarit>`)
+
+- **État (29/10/2026)** : inventaire réel fait (`templates.ts`, commit 4c7b4e4f : **vingt-neuf gabarits**, cinq qui envoient un courriel derrière une validation, deux qui reçoivent un fichier), figé dans `cms/content/gabarits-inventaire.json` et vérifié par test. Une synthèse (cinq familles, limites, envoi) et une fiche fidèle par gabarit (champs de départ, étapes, ce qui s'adapte, FAQ). **Constat honnête repris sur chaque page** : les gabarits sont rédigés pour une PME française (TVA, euro, SIRET, indemnité de recouvrement) et ne suivent pas la TPS ni la TVQ (CL-M02, CL-111). Le guide de prise en main de WorkStudio annonce encore vingt modèles (périmé). Reste : adapter les gabarits au Québec dans WorkStudio (décision produit).
 
 - **Intention** : commerciale (Nathalie). **Mot-clé** : *gabarits de flux de travaux PME*, *modèles d'automatisation PME*, *AI workflow templates*.
 - **Réponse d'abord (brouillon)** : « WorkStudio fournit des modèles de départ pour PME (devis, relances, tri des courriels, comptes rendus) : on les adapte à son entreprise avant de les déployer. » (CL-92 ; liste de la page WorkStudio ; CL-111 : modèles généraux, taxes et formats à adapter.)
@@ -150,7 +158,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **À faire avant** : **inventorier les gabarits réellement livrés** dans le dépôt de WorkStudio (noms, étapes) pour une page par gabarit ; sans inventaire, la page reste générale.
 - **Données structurées** : Article, FAQPage, ItemList si une liste de gabarits nommés s'affiche. **Liens** : ← WorkStudio, P6 ; → solutions, contact.
 
-### P8. Où sont vraiment vos données ? Stockage, traitement et juridiction — **À rédiger**
+### P8. Où sont vraiment vos données ? Stockage, traitement et juridiction — **Publiée** (`guides/ou-sont-vos-donnees-ia` / `guides/where-is-your-ai-data`)
+
+- **État (29/10/2026)** : trois questions, tableau des trois modes, liste de six questions à poser, documents que Nexora AI remet. Aucune mention de la Loi 25, aucune promesse de résidence : la preuve du lieu d'hébergement est dite « en préparation » (CL-87).
 
 - **Intention** : informationnelle (Marc). **Mot-clé** : *où sont mes données IA*, *hébergement de données IA Québec*, *Quebec data residency AI*.
 - **Réponse d'abord (brouillon)** : « Savoir où sont vos données demande trois questions : où elles sont stockées, où elles sont traitées, et à quelle juridiction est soumis le fournisseur. Un stockage au Canada n'implique pas un traitement au Canada. » (CL-E08, CL-E09, CL-75.)
@@ -158,7 +168,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Données structurées** : Article, FAQPage. **Liens** : → souveraineté, vos données, P1, déploiement (2), centre de confiance ; ← P1, P9, P10.
 - **Prérequis** : aucune nouvelle affirmation si on reste aux CL existantes. **Ne pas** écrire « conforme à la Loi 25 » ni citer la loi hors du guide dédié (brouillon, non publié).
 
-### P9. IA souveraine : liste de contrôle pour une DSI — **À rédiger**
+### P9. IA souveraine : liste de contrôle pour une DSI — **Publiée** (`guides/ia-souveraine-liste-de-controle` / `guides/sovereign-ai-checklist`)
+
+- **État (29/10/2026)** : quatre couches, douze questions, preuves à demander, pièges, « ce que Nexora AI ne promet pas ». Ni « 100 % souverain », ni certification.
 
 - **Intention** : informationnelle puis commerciale (Marc). **Mot-clé** : *IA souveraine Québec*, *liste de contrôle IA souveraine*, *questions à poser à un fournisseur d'IA*.
 - **Réponse d'abord (brouillon)** : « Une IA est souveraine quand on sait où elle tourne et où vont les données. Nexora AI la décrit par quatre couches de contrôle : les données, les modèles, le calcul et l'exploitation ; c'est une définition de travail, sans valeur légale. » (CL-70, CL-71.)
@@ -166,7 +178,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Données structurées** : Article, FAQPage. **Liens** : → souveraineté, P8, centre de confiance, déploiement ; ← souveraineté.
 - **Attention** : « 100 % souverain », « inviolable » interdits (docs/recherche/06 §4.5).
 
-### P10. Serveur d'IA sur place : ce qu'il faut décider avant d'acheter — **À rédiger**
+### P10. Serveur d'IA sur place : ce qu'il faut décider avant d'acheter — **Publiée** (`guides/serveur-ia-sur-place` / `guides/on-premises-ai-server`)
+
+- **État (29/10/2026)** : cinq décisions, flux sortants, qui fait quoi, installation en une commande, limites. **Aucun prix ni dimensionnement** (décision 13 inchangée).
 
 - **Intention** : informationnelle puis commerciale (Marc, Nathalie). **Mot-clé** : *serveur IA sur place PME*, *IA locale entreprise*, *peut-on faire tourner une IA sans internet*.
 - **Réponse d'abord (brouillon)** : « Le matériel nécessaire dépend du nombre d'utilisateurs, du volume de documents, du modèle choisi et des usages ; il est établi au diagnostic, avant tout achat. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. » (CL-82, CL-83.)
@@ -174,7 +188,9 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Données structurées** : Article, FAQPage. **Liens** : → sur place, installation de serveurs, P8 ; ← sur place, services.
 - **Prérequis** : **aucun prix ni dimensionnement chiffré** tant que le fondateur n'a pas de grille (docs/recherche/11 : enquête de prix VPS).
 
-### P11. VPS au Québec pour agents d'IA : choisir son application et son plan — **À rédiger (avec le propriétaire de `/vps`)**
+### P11. VPS au Québec pour agents d'IA : choisir son application et son plan — **Publiée** (`guides/vps-quebec-agents-ia` / `guides/quebec-vps-ai-agents`)
+
+- **État (29/10/2026)** : écrite d'après la page `/vps` réelle et le jeu de départ des applications (cinq installées par Nexora AI, trois en guide seulement pour des raisons de licence). Dit que rien n'est commandable (CL-13, CL-12) ; ni prix ni mémoire minimale chiffrée (le catalogue publié fait foi).
 
 - **Intention** : transactionnelle (Samuel). **Mot-clé** : *VPS Québec IA*, *héberger un agent IA*.
 - **Réponse d'abord (brouillon)** : « Nexora AI prépare des serveurs privés virtuels hébergés au Québec, avec une application d'IA installée au choix. » (CL-13 : **rien n'est commandable aujourd'hui**, la page doit le dire.)
@@ -182,7 +198,10 @@ Légende : **Publiée** = dans le dépôt, à charger dans Directus ; **À rédi
 - **Données structurées** : Article, ItemList des applications, SoftwareApplication par fiche (existant). `Offer` seulement quand un prix est publié (CL-12).
 - **Remarque** : cette page vit mieux dans l'application (données du catalogue) qu'en CMS.
 
-### P12. Nexora Apps : l'agent de code et la suite d'outils — **Existe dans l'application ; à compléter et à enregistrer**
+### P12. Nexora Apps : l'agent de code et la suite d'outils — **Publiée dans l'application (affirmations enregistrées)**
+
+- **État (29/10/2026)** : (1) « La réponse en bref » sur chaque fiche ; (2) affirmations au registre : CL-AP01 (gratuit prévu), CL-AP02 (code ouvert prévu), CL-AP03 (Privacy Router incluse), CL-AP04 (abonnement), CL-AP05 (à l'usage, plus tard), chaque outil les cite (`claims` du registre `i18n/apps.ts`, vérifié par test) ; (3) `publisher` = l'Organization dans le `SoftwareApplication` ; (4) liens entrants ajoutés (accueil, WorkStudio, passerelle) ; (5) FAQ qui dit ce qui est prêt. **Nexora Cloud** (espace infonuagique avec dépôt de code) est ajoutée. La fiche de Privacy Router dit désormais ce que la passerelle applique déjà. Reste : fixer les conditions de « gratuit » (durée, limites d'usage) avant toute sortie.
+- **Ancien état constaté** :
 
 - **État constaté (29 octobre 2026, après la fusion de la page Apps)** : `/apps` et une fiche par outil (`/apps/bot`, `/apps/code`, `/apps/creative`, `/apps/gitspace`, …) sont dans le plan du site et dans `llms.txt` ; chaque outil dit son état (disponible, bientôt, plus tard) ; le balisage `SoftwareApplication` n'émet aucune offre.
 - **Intention** : produit (Samuel). **Mot-clé** : *agent de code privé*, *RAG*, *routeur de confidentialité*, *Gitspace*.
@@ -195,23 +214,23 @@ Un comparatif honnête suit six règles : (1) **critères d'abord**, choisis ava
 
 | Comparatif | Nommé ? | État | Condition |
 |---|---|---|---|
-| Passerelle ou accès direct (P2) | non | à rédiger | aucune |
-| Chez vous, hébergé au Québec ou API (dans P8) | non | à rédiger | aucune |
-| Outils d'automatisation génériques ou WorkStudio (dans P6, P7) | non | à rédiger | décrire les approches, pas les marques |
-| OpenRouter et Nexora AI API (P3) | **oui** | à valider | décision écrite du fondateur, faits revérifiés, avis d'un avocat (R-47, CL-A10) |
+| Passerelle ou accès direct (P2) | non | **publiée** | aucune |
+| Chez vous, hébergé au Québec ou API (dans P8) | non | **publiée** | aucune |
+| Outils d'automatisation génériques ou WorkStudio (dans P6, P7) | non | publiée (P6) ; P7 décrit les gabarits sans comparer | décrire les approches, pas les marques |
+| OpenRouter et Nexora AI API (P3) | **oui** | **brouillon, à relire** | décision écrite du fondateur, faits revérifiés le jour de la publication, avis d'un avocat (R-47, CL-A10) |
 
 ## 7. Plan de maillage interne
 
 | Page | Liens sortants (cibles principales) | Liens entrants à créer |
 |---|---|---|
-| Accueil | solutions, WorkStudio, OPSYS-AI, `/modeles`, `/vps` (existants) | **→ P1, P5, P6** (une carte « Guides » ou des liens dans les cartes existantes) |
-| WorkStudio | solutions, contact | → P1 (fait), P6 (fait), P7 |
+| Accueil | solutions, WorkStudio, OPSYS-AI, `/modeles`, `/vps` (existants) | **fait** → P5, P6, P2, Nexora Apps (paragraphe de la méthode) ; P1 par WorkStudio et `/modeles` |
+| WorkStudio | solutions, contact | → P1 (fait), P6 (fait), **P7 et P4 (fait)**, Nexora Apps (fait) |
 | Solutions (hub) | six solutions, WorkStudio | → P5 (fait) |
 | Méthode | contact, services, WorkStudio | → P5 (fait) |
-| Souveraineté | déploiement, vos données | → P8, P9 |
-| Déploiement sur place | contact | → P10, P8 |
-| `/modeles`, `/docs/api` | catalogue, fiches | → P1, P2, P4 |
-| FAQ | contact, solutions | → P5, P6, P8 |
+| Souveraineté | déploiement, vos données | **fait** → P8, P9 |
+| Déploiement sur place | contact | **fait** → P10, P8 |
+| `/modeles`, `/docs/api` | catalogue, fiches | P1 → P2, P4, P11 (fait) ; les pages d'application elles-mêmes restent minces (audit 5.1) |
+| FAQ | contact, solutions | → P5, P6, P8 (réponses en texte brut : liens à ajouter plus tard) |
 
 Règle : un lien dans le **corps** d'un texte vaut plus qu'un lien de menu ; un texte de lien décrit la cible (« le guide de l'IA pour une PME du Québec », pas « cliquez ici »).
 
@@ -242,6 +261,8 @@ Règle : un lien dans le **corps** d'un texte vaut plus qu'un lien de menu ; un 
 5. **Limites** : résultats non déterministes, personnalisés, variables dans le temps ; échantillon petit ; **aucune conclusion statistique** ; on suit une tendance qualitative et on cherche les faits faux, pas un « score ».
 
 ## 9. Calendrier sur 90 jours
+
+**Avancement au 29/10/2026** : les piliers P2, P4, P7, P8, P9, P10 et P11 sont rédigés d'avance (et P3 en brouillon) ; il reste leur approbation, leur chargement en production et la mesure de référence. Les semaines 3 à 10 se réduisent donc au contrôle des faits, au maillage et aux mesures.
 
 Début : lundi 2 novembre 2026. Les semaines 8 et 9 (fêtes) sont allégées. Les tâches « fondateur » bloquent d'autres tâches : elles sont en tête.
 
@@ -276,22 +297,37 @@ Le code ne produit pas ces signaux ; ils dépendent du fondateur. Ils comptent p
 
 ## 11. À valider par le fondateur
 
-| # | Décision ou information | Pourquoi | Bloque |
+Mise à jour du 29/10/2026. Les lignes **faites** sont gardées pour la trace ; la liste à traiter est celle des lignes « reste ».
+
+| # | Décision ou information | Pourquoi | État |
 |---|---|---|---|
-| 1 | Politique des robots d'IA : tout autorisé, entraînement compris (décision du 29/10/2026) ; revue trimestrielle ; repli `ROBOTS_AI_TRAINING=disallow` | engage l'usage du contenu public par des tiers | confirmation écrite |
-| 2 | **Une** description canonique de l'entreprise (phrase de la section 1 ou autre) ; à poser dans les réglages publiés (`seoDescription`), le dictionnaire et l'accueil | une seule description pour les moteurs | cohérence d'entité |
-| 3 | Profils publics (`SITE_SAME_AS`), adresse, courriel, téléphone (CL-A01, CL-A02) | Organization complète, citations locales | `sameAs`, `contactPoint`, annuaires |
-| 4 | Approbation des 146 affirmations « en revue » (les 18 points « à compléter » restent des brouillons), dont CL-S01 à CL-S06 ; **confirmation de CL-S02** (journaux de la couche de routage amont, clauses des fournisseurs : CL-A12) | rien n'est « approuvé » par un script | publication sans réserve |
-| 5 | Chargement des trois pages dans Directus ; connexion Bing Webmaster et Search Console ; autorisation d'écriture IndexNow | actions d'écriture | indexation active |
-| 6 | Comparatif nominatif (P3) : oui ou non ; si oui, faits à revérifier et avis d'un avocat (CL-A10) | Loi sur la concurrence, R-47 | P3 |
-| 7 | Nexora Apps : enregistrer au registre les affirmations de chaque outil, **conditions de « gratuit »** (durée, limites d'usage), « code ouvert prévu », état réel | gouvernance du contenu (le dictionnaire n'est pas le registre) | P12 |
-| 8 | Analytique sans témoins et auto-hébergée (Umami) : oui ou non ; emplacement des données | mesure du trafic et des conversions | section 8 |
-| 9 | Date de dernière mise à jour **visible** sur les guides (affichage, pas seulement dans le balisage) | fraîcheur lisible par les personnes et par les machines | composant d'affichage |
-| 10 | Page `/tarifs` : « essai gratuit » dans la description SEO alors que CL-61 dit « pas d'essai gratuit en libre-service » | contradiction publique | cohérence |
-| 11 | Réouverture du libre-service : quand les paiements passent en production, publier prix et `Offer` (JSON-LD, tableaux de P1, P11) | CL-12 | données structurées d'offre |
-| 12 | Gabarits de WorkStudio : inventaire réel (noms, étapes) | P7 | P7 |
-| 13 | Grille de matériel et de prix pour le serveur sur place | P10 | P10 |
-| 14 | Faits sur la latence ajoutée par la passerelle : une mesure existe-t-elle ? | P2 | tableau de P2 |
+| 1 | Politique des robots d'IA : tout autorisé, entraînement compris (décision du 29/10/2026) ; revue trimestrielle ; repli `ROBOTS_AI_TRAINING=disallow` | engage l'usage du contenu public par des tiers | **reste** : confirmation écrite |
+| 2 | **Une** description canonique de l'entreprise (phrase de la section 1 ou autre) ; à poser dans les réglages publiés (`seoDescription`), le dictionnaire et l'accueil | une seule description pour les moteurs | **reste** |
+| 3 | Profils publics (`SITE_SAME_AS`), adresse, courriel, téléphone (CL-A01, CL-A02) | Organization complète, citations locales | **reste** |
+| 4 | Approbation des affirmations « en revue » (188 au registre, dont les 30 nouvelles : CL-M01 à M11, CL-X01 à X07, CL-AP01 à AP05, plus CL-S01 à S06) ; **confirmation de CL-S02** (journaux de la couche de routage amont, clauses des fournisseurs : CL-A12) | rien n'est « approuvé » par un script | **reste** |
+| 5 | Chargement des pages dans le Directus de production ; connexion Bing Webmaster et Search Console ; autorisation d'écriture IndexNow | actions d'écriture | **reste** : les 37 pages nouvelles et les pages modifiées sont chargées **en brouillon** (versions et approbations en attente) sur le Directus de développement (8456) ; la chaîne complète (approbation, promotion, lecture publique conforme) est vérifiée sur une instance jetable. Relancer `apply.ts` (barre d'outils « Tableau », « Bloc de code ») avant toute édition dans le panneau |
+| 6 | Comparatif nommé (P3) : le publier ou non ; confirmer la divulgation du fournisseur amont (CL-M09) ; avis d'un avocat (CL-A10) ; faits d'OpenRouter à relire le jour de la publication | Loi sur la concurrence, R-47 | **reste** : page rédigée, en brouillon non indexé |
+| 7 | Nexora Apps : conditions de « gratuit » (durée, limites d'usage), « code ouvert prévu » ; état réel | gouvernance du contenu | **fait en partie** : affirmations enregistrées (CL-AP01 à AP05), citées par chaque fiche ; **reste** les conditions |
+| 8 | Analytique sans témoins et auto-hébergée (Umami) : oui ou non ; emplacement des données | mesure du trafic et des conversions | **reste** |
+| 9 | Date de dernière mise à jour **visible** sur les guides | fraîcheur lisible | **fait** : ligne de signature (auteur, publication, mise à jour réelles) |
+| 10 | Page `/tarifs` : « essai gratuit » alors que CL-61 | contradiction publique | **fait** : retiré de la description et de l'accroche ; `trial_days` = 0 dans le jeu de départ (**à confirmer** : l'accès gratuit reste réservé à l'administrateur de la maison) |
+| 11 | Réouverture du libre-service : quand les paiements passent en production, publier prix et `Offer` (JSON-LD, tableaux de P1, P11) | CL-12 | **reste** |
+| 12 | Gabarits de WorkStudio : inventaire réel | P7 | **fait** (29 gabarits) ; **reste** : adapter les gabarits au Québec (TPS, TVQ, vocabulaire) |
+| 13 | Grille de matériel et de prix pour le serveur sur place | P10 | **reste** : P10 n'en publie aucune |
+| 14 | Latence ajoutée par la passerelle : une mesure existe-t-elle ? | P2 | **reste** : aucune mesure, la page le dit (CL-M08) |
+| 15 | Domaine de production : les exemples de P4 utilisent `https://www.example.com/v1` | exemples exacts | **nouveau** : fixer le domaine, puis remplacer |
+| 16 | Menu public « Produits » à six entrées (VPS, Modèles et API, WorkStudio, Nexora Apps, Suite logicielle, OPSYS-AI) : Croissance et Vision n'y sont plus (restent au pied de page) | consigne du 29/10/2026 | **à confirmer** |
+| 17 | `/agents` : indexable (état actuel) ou non | audit 5.1 | **à décider** |
+| 18 | URL anglaises localisées (`/en/modeles` → `/en/models`) | mot-clé anglais dans l'adresse | **reporté** (sous-chemins de fiches, redirections à tester) |
+
+### Décisions provisoires, modifiables par le fondateur
+
+- **P3 en brouillon.** Rédigée mais non publiée ; elle nomme OpenRouter et le dit amont de la passerelle (CL-M09).
+- **Pas de résultat d'appel réussi dans P4** (R-52) : seul le 401 observé est montré.
+- **Les fiches de gabarits disent la vérité sur la France** plutôt que de se taire : un lecteur québécois ne doit pas croire que la TPS et la TVQ y sont gérées.
+- **Les piliers sont « Publiée » au sens du dépôt** : rien n'est en ligne tant qu'une personne n'a pas approuvé les affirmations et chargé le Directus de production.
+- **Privacy Router** : la fiche reste « Bientôt » (la passerelle qui l'applique n'est pas ouverte à la vente), mais ne la dit plus non livrée.
+- **Pas de page « VPS en un clic » dans Nexora Apps** : `/apps` présente déjà le VPS parmi les produits principaux (lien vers `/vps`) ; Nexora Cloud est la seule fiche ajoutée.
 
 ## Annexe A. Panel de requêtes de mesure (30, à figer au début du jour 1)
 

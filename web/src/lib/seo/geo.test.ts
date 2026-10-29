@@ -24,10 +24,10 @@ import {
   webPageJsonLd,
   websiteJsonLd,
 } from "./jsonld";
-import { buildLlmsTxt } from "./llms";
+import { buildLlmsTxt, sectionOf } from "./llms";
 import { buildLlmsFullTxt } from "./llms-full";
 import { pageToMarkdown, richToMarkdown } from "./page-markdown";
-import { pageSchemaType } from "./page-schema";
+import { pageSchemaType, SECTION_CRUMBS } from "./page-schema";
 import { validateSchemaOrg } from "./testing/schemaorg";
 
 const SITE = "https://nexora.test";
@@ -515,9 +515,27 @@ describe("registre des types de page", () => {
     expect(pageSchemaType("workstudio")).toBe("software");
     expect(pageSchemaType("guides/ia-pme-quebec")).toBe("article");
     expect(pageSchemaType("blog/x")).toBe("article");
+    // gabarits de flux de travaux : la page de synthèse et chaque fiche sont des articles
+    expect(pageSchemaType("gabarits-flux-de-travaux")).toBe("article");
+    expect(pageSchemaType("gabarits-flux-de-travaux/devis")).toBe("article");
     expect(pageSchemaType("entreprise")).toBe("about");
     expect(pageSchemaType("contact")).toBeNull();
     expect(pageSchemaType("faq")).toBeNull();
+  });
+});
+
+describe("fiches de gabarits : fil d'Ariane et llms.txt", () => {
+  it("la fiche d'un gabarit a l'étape de section « Gabarits de flux de travaux » (page de synthèse qui existe)", () => {
+    expect(SECTION_CRUMBS["gabarits-flux-de-travaux"]).toEqual({
+      fr: "Gabarits de flux de travaux",
+      en: "Workflow templates",
+    });
+  });
+
+  it("llms.txt : la synthèse est un guide, les fiches vont dans la section facultative (29 pages qui n'étouffent pas le plan)", () => {
+    expect(sectionOf("/gabarits-flux-de-travaux")).toBe("guides");
+    expect(sectionOf("/gabarits-flux-de-travaux/devis")).toBe("optional");
+    expect(sectionOf("/guides/ia-pme-quebec")).toBe("guides");
   });
 });
 

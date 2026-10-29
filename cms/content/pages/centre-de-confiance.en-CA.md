@@ -177,6 +177,8 @@ When we say “data”, we mean three different things. We treat them separately
 
 Missing a document? [Ask for a document](/en/contact/).
 
+To judge a provider, see the [IT director's checklist](/en/guides/sovereign-ai-checklist/).
+
 - **The site's public content.** What you read here: made to be published and indexed.
 - **Your exchanges with Nexora AI.** Forms, emails, billing: they serve only to answer you and to serve you. The site's privacy policy, in preparation, will describe them.
 - **Your system's data.** Your documents, conversations and databases: they stay inside the agreed perimeter, described by the data-flow diagram.

@@ -28,7 +28,16 @@ const joinable = (block: Block | undefined): block is Block =>
  * du même ton ne forment qu'une bande (espacement resserré). Un seul h1 par page (premier héros, sinon un h1
  * réservé aux lecteurs d'écran). Avec au moins trois ancres, un sommaire collant suit le premier bloc.
  */
-export function PageBlocks({ lang, page }: { lang: Lang; page: PageModel }) {
+export function PageBlocks({
+  lang,
+  page,
+  byline = null,
+}: {
+  lang: Lang;
+  page: PageModel;
+  /** Ligne de signature d'un guide (auteur, dates réelles), placée juste après le héros. */
+  byline?: React.ReactNode;
+}) {
   const { cms } = getDictionary(lang);
   const visuals = getVisualsDictionary(lang);
   const hasHero = page.blocks.some((b) => b.type === "hero");
@@ -93,6 +102,7 @@ export function PageBlocks({ lang, page }: { lang: Lang; page: PageModel }) {
         return (
           <Fragment key={block.key}>
             {view}
+            {i === tocAfter ? byline : null}
             {i === tocAfter ? tocNode : null}
           </Fragment>
         );

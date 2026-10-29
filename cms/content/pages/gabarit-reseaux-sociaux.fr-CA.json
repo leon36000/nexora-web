@@ -1,0 +1,158 @@
+{
+  "page": "gabarit-reseaux-sociaux",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "gabarits-flux-de-travaux/reseaux-sociaux",
+    "title": "Publication pour les réseaux sociaux",
+    "seo_title": "Gabarit Publication pour les réseaux sociaux",
+    "seo_description": "Publication pour les réseaux sociaux : gabarit de départ de WorkStudio. Champs, étapes, validation humaine et points à adapter au Québec avant l'usage.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la fiche : ce que fait le gabarit « Publication pour les réseaux sociaux », dit sans détour.",
+      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Gabarit · Communication et équipe",
+        "headline": "Publication pour les réseaux sociaux.",
+        "subheadline": "Le gabarit Publication pour les réseaux sociaux propose trois publications à partir d'une actualité et du registre souhaité : une pour LinkedIn (professionnelle, six cents caractères au plus), une pour Facebook (conviviale) et une pour Instagram (courte, avec cinq mots-clés), chacune terminée par un appel à l'action.",
+        "primary_label": "Voir tous les gabarits",
+        "primary_href": "/gabarits-flux-de-travaux/",
+        "secondary_label": "Demander une démonstration",
+        "secondary_href": "/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Le gabarit Publication pour les réseaux sociaux propose trois publications à partir d'une actualité et du registre souhaité : une pour LinkedIn (professionnelle, six cents caractères au plus), une pour Facebook (conviviale) et une pour Instagram (courte, avec cinq mots-clés), chacune terminée par un appel à l'action.</p><p>Un gabarit de flux de travaux est un enchaînement automatisé de tâches, fourni comme point de départ dans WorkStudio et à adapter à l'entreprise avant son déploiement.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "champs"
+      },
+      "translation": {
+        "title": "Ce que vous fournissez.",
+        "body": "<p>Chaque champ de départ est préremplit d'une donnée d'exemple pour un premier lancement sans saisie, sauf les adresses de courriel et les fichiers.</p><ul><li><strong>L'actualité.</strong> Ce que vous voulez annoncer.</li><li><strong>Le registre.</strong> Registre souhaité.</li></ul>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "Les étapes.",
+        "cards": [
+          {
+            "title": "Écrire les trois publications.",
+            "text": "Un agent écrit une publication par réseau, adaptée à son format, et termine chacune par un appel à l'action."
+          },
+          {
+            "title": "Relire.",
+            "text": "Vous relisez le texte produit, le corrigez au besoin, puis l'utilisez ou l'envoyez vous-même : le gabarit n'envoie rien."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "À adapter avant l'usage.",
+        "cards": [
+          {
+            "title": "Ce qui s'adapte ici.",
+            "text": "Le gabarit n'est relié à aucun compte : il ne publie rien. Relisez les textes, surtout si vous annoncez une date ou une offre."
+          },
+          {
+            "title": "Ce qui vaut pour tous.",
+            "text": "Les gabarits sont rédigés pour une PME française. Taxes, monnaie, vocabulaire et formats s'adaptent à votre entreprise et au Québec avant tout usage."
+          },
+          {
+            "title": "Rien n'est envoyé.",
+            "text": "Le gabarit produit un texte à relire. Seuls cinq gabarits de la collection envoient un courriel, et chacun attend d'abord la validation d'une personne."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions sur ce gabarit.",
+        "items": [
+          {
+            "question": "Ce gabarit envoie-t-il quelque chose à ma place ?",
+            "answer": "Non. Il produit un texte à relire ; vous l'utilisez ou l'envoyez vous-même. Seuls cinq gabarits de la collection envoient un courriel, et chacun attend d'abord la validation d'une personne."
+          },
+          {
+            "question": "Le gabarit publie-t-il sur mes comptes ?",
+            "answer": "Non. Il rédige les textes. La publication reste manuelle, ou passe par un outil de diffusion que vous validez."
+          },
+          {
+            "question": "Convient-il tel quel au Québec ?",
+            "answer": "Pas tel quel. Les gabarits de départ sont rédigés pour une PME française et ne suivent pas les règles fiscales du Québec : taxes, formats et vocabulaire s'adaptent à votre entreprise."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voyez-le à l'œuvre.",
+        "text": "Une démonstration sur données fictives, pour voir ce que le gabarit prépare et où une personne garde la main.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Tous les gabarits",
+        "secondary_href": "/gabarits-flux-de-travaux/"
+      }
+    }
+  ]
+}

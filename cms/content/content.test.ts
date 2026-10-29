@@ -367,6 +367,12 @@ describe("VÉRITÉ", () => {
 
   test("chaque entrée du registre est utilisée au moins une fois (aucune affirmation orpheline), sauf les points à compléter par le fondateur", () => {
     const used = new Set<string>();
+    // Les fiches Nexora Apps ne sont pas des pages Directus : elles citent leurs affirmations dans le registre du code.
+    const appsRegistry = readFileSync(
+      join(import.meta.dir, "..", "..", "web", "src", "i18n", "apps.ts"),
+      "utf8",
+    );
+    for (const m of appsRegistry.matchAll(/CL-[A-Z]*\d+/g)) used.add(m[0]);
     for (const page of EVERY_PAGE)
       for (const l of LOCALES)
         for (const b of (everyPair[page] as Record<Locale, PageFile>)[l].blocks)

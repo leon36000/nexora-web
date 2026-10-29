@@ -37,6 +37,8 @@ Vos données appartiennent à votre entreprise. Nous les protégeons, nous ne le
 
 Deux engagements disent **où** elles se trouvent. Deux disent ce que nous **n'en ferons jamais**. Le dernier dit **qui d'autre** peut les voir : personne, tant que vous ne l'avez pas décidé.
 
+Pour distinguer stockage, traitement et juridiction, voir le guide [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/).
+
 ### Bloc 3 — Cartes (`block_cards`)
 
 *Les cinq engagements de la décision D7, avec leurs exceptions écrites. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-77*

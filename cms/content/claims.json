@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "date": "2026-10-29",
   "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06.",
   "claims": [
@@ -1982,6 +1982,282 @@
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
       "valid_until": null
+    },
+    {
+      "id": "CL-M01",
+      "kind": "produit",
+      "statement": "Chaque nouvel espace de travail de WorkStudio reçoit un dossier « Modèles PME » de vingt-neuf gabarits de flux de travaux, reliés au modèle par défaut de l'installation ; l'exploitant peut désactiver ce dossier.",
+      "scope": "WorkStudio : gabarits de départ.",
+      "evidence": "templates.ts (liste NEXORA_TEMPLATES) et templates.test.ts (29 gabarits aux noms et aux adresses distincts) ; seed-templates.ts (dossier créé à chaque nouvel espace, sauf si NEXORA_TEMPLATES_DISABLED). Le guide de prise en main indique encore vingt modèles : il est périmé depuis l'ajout de dix gabarits le 28/10/2026.",
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts, seed-templates.ts, templates.test.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M02",
+      "kind": "fait",
+      "statement": "Les gabarits de départ sont rédigés pour une PME française (TVA de type français, euro, numéro SIRET, indemnité forfaitaire de recouvrement) ; aucune règle de TPS, de TVQ ou de numéro d'entreprise du Québec n'y figure, et ils s'adaptent avant tout usage au Québec.",
+      "scope": "WorkStudio : gabarits de départ. Précise CL-111.",
+      "evidence": "Consigne commune « PME française » ; devis avec TVA de type français et paiement fin de mois ; relance de facture de niveau 3 avec l'indemnité forfaitaire française ; contrôle de facture avec SIRET et taux de TVA français ; exemples en euros.",
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M03",
+      "kind": "produit",
+      "statement": "Cinq gabarits envoient un courriel (compte rendu de réunion, réponse client validée avant envoi, contrôle de conformité d'un document, synthèse hebdomadaire d'un projet, revue de contrat) : chacun s'arrête d'abord sur la validation d'une personne et n'envoie que si elle approuve ; le serveur de courriel (hôte, port, compte, expéditeur) est laissé à renseigner. Les vingt-quatre autres gabarits produisent un texte à relire et n'envoient rien.",
+      "scope": "WorkStudio : gabarits de départ.",
+      "evidence": "Étapes des gabarits : une étape de validation, une condition sur son approbation, puis un envoi par SMTP, dans ces cinq gabarits seulement ; paramètres SMTP vides dans le gabarit.",
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (étapes approval, gate, email)",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M04",
+      "kind": "fait",
+      "statement": "Chaque gabarit déclare ses champs de départ avec des données d'exemple déjà remplies, sauf les adresses de courriel et les fichiers ; deux gabarits attendent un fichier (l'enregistrement audio d'une réunion, une facture en PDF ou en image).",
+      "scope": "WorkStudio : gabarits de départ.",
+      "evidence": "Champs d'entrée (nom, description, exemple) de chaque gabarit ; fonction sampleValue (exemple laissé vide pour un fichier ou une adresse de courriel).",
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M05",
+      "kind": "fait",
+      "statement": "Le gabarit de compte rendu de réunion transcrit l'enregistrement en séparant les intervenants (« Intervenant 1 », « Intervenant 2 »…) : ces mentions désignent des voix, pas des noms, et la consigne demande de rapprocher les noms cités des intervenants quand le texte le permet.",
+      "scope": "WorkStudio : gabarit « Compte rendu de réunion ».",
+      "evidence": "Étape de transcription par intervenant, puis consigne de rédaction du compte rendu (participants, points abordés, décisions, tableau des actions, questions ouvertes).",
+      "source_version": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (slug compte-rendu)",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M06",
+      "kind": "produit",
+      "statement": "Avant tout appel à un fournisseur, chaque requête de conversation et d'embeddings de la passerelle est évaluée par Nexora Privacy Router : masquage de six genres de renseignements évidents (courriel, téléphone, carte de crédit, NAS, IBAN, clés et secrets), refus selon la politique de l'organisation, refus par précaution si la couche ne peut pas décider, journal des décisions sans contenu. Elle est incluse sans supplément ; sa détection est heuristique (ni noms, ni adresses postales) et elle ne prouve pas où un fournisseur traite ensuite les données.",
+      "scope": "Passerelle /v1/chat/completions et /v1/embeddings.",
+      "evidence": "docs/privacy-router.md (portée, niveaux de politique, genres masqués, échec fermé, journal sans contenu, limites honnêtes) ; web/src/server/privacy et proxy-privacy.test.ts. La passerelle n'est pas ouverte à la vente (CL-12).",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026)",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M07",
+      "kind": "produit",
+      "statement": "L'API s'appelle à l'adresse de base du site suivie de /v1, avec l'en-tête Authorization: Bearer et une clé qui commence par nxk_ ; le modèle s'indique par son identifiant public (par exemple nexora/nom-du-modele) ; GET /v1/models répond sans clé avec le catalogue public ; une clé invalide donne l'erreur 401 invalid_api_key, un modèle inconnu l'erreur 404 model_not_found, un paramètre n différent de 1 l'erreur 400 unsupported_parameter, toutes au format d'erreur d'OpenAI. Les messages d'erreur sont en français ; le champ code est la partie stable.",
+      "scope": "Passerelle /v1.",
+      "evidence": "Documentation de l'API (docs.baseUrlText, docs.errors) ; proxy.ts (planChat, CHAT_PARAMS) ; essais du 29/10/2026 sur la pile de développement avec curl et les bibliothèques officielles Python et JavaScript d'OpenAI : GET /v1/models répond 200 sans clé, l'appel avec une clé invalide donne 401 invalid_api_key dans le format d'OpenAI, un modèle inconnu donne 404 model_not_found. Aucun appel de conversation réussi n'a été fait sur cette pile (la migration du Privacy Router y manquait : refus par précaution, 503). Les messages d'erreur du serveur (errors.ts) sont rédigés en français.",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026)",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M08",
+      "kind": "fait",
+      "statement": "Nexora AI n'a publié aucune mesure de la latence que la passerelle ajoute à un appel direct au fournisseur, et le site n'en annonce aucune.",
+      "scope": "Passerelle de modèles.",
+      "evidence": "Aucune mesure ni documentation de latence ajoutée dans le dépôt (recherche du 29/10/2026) ; la décision n° 14 du plan SEO reste ouverte.",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026)",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M09",
+      "kind": "fait",
+      "statement": "La passerelle peut s'appuyer sur OpenRouter comme fournisseur amont pour une partie du catalogue ; pour ces modèles, Nexora AI demande à OpenRouter de refuser la collecte des données par l'hébergeur final, mais ne peut pas vérifier que ce refus est appliqué.",
+      "scope": "Passerelle de modèles. À CONFIRMER par le fondateur avant la publication du comparatif (divulgation du fournisseur amont).",
+      "evidence": "docs/privacy-router.md (« Refus de la collecte chez l'amont » et « Limites honnêtes ») ; litellm.ts (openrouterPreferences) ; types de fournisseurs du catalogue (docs/infra.md).",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026)",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-X01",
+      "kind": "fait",
+      "statement": "OpenRouter donne accès à de nombreux modèles par une interface unique au format de l'API d'OpenAI (points d'accès /completions et /chat/completions), avec des clés d'API passées en jeton porteur.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "FAQ d'OpenRouter, rubriques « Why should I use OpenRouter? », « What API endpoints are available? » et « What authentication methods are supported? ».",
+      "source_version": "Page publique d'OpenRouter lue le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/docs/faq",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-X02",
+      "kind": "fait",
+      "statement": "OpenRouter facture l'inférence au prix de liste du fournisseur, sans majoration, et prélève des frais à l'achat de crédits : 5,5 % pour la formule Standard et 8 % pour la formule Business. Le prix de base est en dollars américains et les taxes s'ajoutent.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "Page des tarifs d'OpenRouter (questions « Do you mark up provider pricing? » et « Are taxes included in prices? ») ; FAQ (« What purchase options exist? » : monnaie de base en dollars américains).",
+      "source_version": "Pages publiques d'OpenRouter lues le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/pricing",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-X03",
+      "kind": "fait",
+      "statement": "Selon ses conditions, OpenRouter se réserve le droit de faire expirer les crédits non utilisés un an après l'achat.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "FAQ d'OpenRouter, rubrique « Do credits expire? ».",
+      "source_version": "Page publique d'OpenRouter lue le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/docs/faq",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-X04",
+      "kind": "fait",
+      "statement": "OpenRouter journalise des métadonnées de base (horodatage, modèle, nombre de jetons) et ne journalise pas les invites ni les réponses par défaut ; un réglage facultatif permet de les journaliser en échange d'un rabais d'un pour cent.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "FAQ d'OpenRouter, rubrique « What data is logged during API use? ».",
+      "source_version": "Page publique d'OpenRouter lue le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/docs/faq",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-X05",
+      "kind": "fait",
+      "statement": "OpenRouter indique qu'il n'achemine pas vers les fournisseurs qui journalisent les données ou dont la politique n'est pas confirmée, sauf si le réglage d'entraînement des modèles est activé ; le routage selon les politiques de données figure à partir de la formule Standard.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "FAQ d'OpenRouter, rubrique « What third-party sharing occurs? » ; page des tarifs (ligne « Data Policy-Based Routing »).",
+      "source_version": "Pages publiques d'OpenRouter lues le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/docs/faq",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-X06",
+      "kind": "fait",
+      "statement": "OpenRouter propose un routage régional pour l'Europe (adresse eu.openrouter.ai) et pour les États-Unis, réservé aux formules Business et Enterprise ; ses données de compte et de facturation peuvent être stockées ou traitées aux États-Unis. La page des tarifs ne mentionne pas de routage régional pour le Canada.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "FAQ d'OpenRouter, rubrique « Does OpenRouter support EU data residency? » ; page des tarifs (lignes « EU in-region routing » et « US in-region routing »).",
+      "source_version": "Pages publiques d'OpenRouter lues le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/pricing",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-X07",
+      "kind": "fait",
+      "statement": "OpenRouter annonce plus de cinq cents modèles et plus de quatre-vingts fournisseurs dans ses formules payantes, et réserve les niveaux de service contractuels à la formule Enterprise.",
+      "scope": "À RELIRE. Fait externe lu le 29/10/2026 ; à revérifier à la publication et tous les trois mois.",
+      "evidence": "Page des tarifs d'OpenRouter (lignes « Models », « Providers » et « Contractual SLAs »).",
+      "source_version": "Page publique d'OpenRouter lue le 29/10/2026",
+      "evidence_url": "https://openrouter.ai/pricing",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": "2027-01-29"
+    },
+    {
+      "id": "CL-M10",
+      "kind": "offre",
+      "statement": "Le catalogue d'applications prévu pour les VPS comprend cinq applications que Nexora AI installe (Hermes Agent, OpenClaw durci, Ollama avec AnythingLLM, AnythingLLM, LibreChat) et trois pour lesquelles Nexora AI ne fournit qu'un guide d'installation, parce que leur licence l'empêche de les installer ou de les revendre (n8n, Open WebUI, Dify) ; la liste publiée et les plans affichés sur la page VPS font foi.",
+      "scope": "VPS au Québec. Offre en préparation (CL-13) : rien n'est commandable.",
+      "evidence": "Jeu de départ des applications du catalogue VPS (nom, mode d'installation, licence et avertissement de licence de chacune), en brouillon tant que le fondateur ne les publie pas ; journal du jalon S6. Les descriptions (taglines) citées dans le guide reprennent celles du jeu de départ.",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), packages/vps/src/seed/apps.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP01",
+      "kind": "statut",
+      "statement": "L'agent de code Nexora, Nexora Bot, le plugin WordPress de base et les outils gratuits Nexora sont conçus pour être offerts gratuitement ; aucun n'est livré et aucune condition d'utilisation n'est publiée.",
+      "scope": "Nexora Apps.",
+      "evidence": "Fiches /apps/code, /apps/bot, /apps/wordpress et /apps/outils (registre i18n/apps.ts : état « Bientôt »).",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/apps.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP02",
+      "kind": "statut",
+      "statement": "Le code de Nexora Bot est prévu ouvert ; rien n'est publié à ce jour.",
+      "scope": "Nexora Apps.",
+      "evidence": "Fiche /apps/bot (« le code sera ouvert »). Intention du fondateur, sans dépôt public.",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/dictionaries/apps-fr-CA.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP03",
+      "kind": "politique",
+      "statement": "Nexora Privacy Router est incluse par défaut dans tous les produits de Nexora AI, sans supplément : la confidentialité n'est jamais une option payante.",
+      "scope": "Nexora Apps, passerelle.",
+      "evidence": "docs/privacy-router.md (« incluse par défaut dans tous les produits, sans supplément »). Aujourd'hui, elle protège la passerelle ; WebPilot et WorkStudio sont prévus par l'interface, pas encore branchés. Détail de ce qui est en place dans la passerelle : CL-M06.",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), docs/privacy-router.md",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP04",
+      "kind": "offre",
+      "statement": "Nexora Cloud (espace infonuagique avec dépôt de code), Nexora Gitspace, Nexora RAG et l'automatisation des plugins WordPress sont prévus sur abonnement ; aucun prix n'est publié et aucun n'est livré.",
+      "scope": "Nexora Apps.",
+      "evidence": "Fiches /apps/cloud, /apps/gitspace, /apps/rag et /apps/wordpress (accès « abonnement », état « Bientôt »). Vision dite par le fondateur le 29/10/2026.",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/apps.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP05",
+      "kind": "statut",
+      "statement": "Nexora WebPilot est prévu à l'usage, comme un modèle, et Nexora Creative (image, son, vidéo) est prévu à une étape ultérieure ; aucun des deux n'est livré et aucune date n'est annoncée.",
+      "scope": "Nexora Apps.",
+      "evidence": "Fiches /apps/webpilot (état « Bientôt », accès « usage ») et /apps/creative (état « Plus tard »).",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/apps.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-M11",
+      "kind": "produit",
+      "statement": "L'accès à un VPS de Nexora AI se fait par une clé SSH : le client colle sa clé publique à la commande, et Nexora AI ne lui demande jamais sa clé privée.",
+      "scope": "VPS au Québec. Offre en préparation (CL-13) : rien n'est commandable.",
+      "evidence": "Configurateur de commande (dictionnaire vps : clé SSH publique ed25519, ECDSA ou RSA de 2048 bits ou plus, « ne collez jamais votre clé privée » ; la clé qui ressemble à une clé privée est refusée avant tout envoi).",
+      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/dictionaries/vps-fr-CA.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-29",
+      "valid_until": null
     }
   ],
   "retirees": [
@@ -2278,6 +2554,30 @@
       "formulation": "« Mode souverain » d'OPSYS-AI non défini ; passerelle de modèles pouvant appeler des fournisseurs externes (ancien CL-59).",
       "raison": "Absent de la brochure ; remplacé par l'hébergement visé (modèles locaux, infonuagiques ou hybrides) et les engagements sur les données (CL-E01 à CL-E05).",
       "remplacement": "CL-O09, CL-E05."
+    },
+    {
+      "id": "R-50",
+      "formulation": "Dire que Nexora AI API est « meilleure », « moins chère », « plus sûre » ou propose « plus de modèles » qu'OpenRouter.",
+      "raison": "Aucune comparaison mesurée ; les faits d'OpenRouter changent et sont lus sur ses pages publiques (CL-X01 à CL-X07).",
+      "remplacement": "Tableau de faits datés et sourcés des deux côtés, section « Quand choisir l'autre » (P3)."
+    },
+    {
+      "id": "R-51",
+      "formulation": "Annoncer une latence, un débit ou un gain de vitesse de la passerelle.",
+      "raison": "Aucune mesure n'existe (CL-M08).",
+      "remplacement": "Phrase qui dit qu'aucune mesure n'est publiée."
+    },
+    {
+      "id": "R-52",
+      "formulation": "Présenter un résultat d'appel réussi de l'API dans un exemple de code.",
+      "raison": "Aucun appel de conversation réussi n'a été fait sur la pile de développement (CL-M07) ; un faux résultat serait un faux fait.",
+      "remplacement": "Exemples de requêtes seulement, avec les erreurs réellement observées."
+    },
+    {
+      "id": "R-53",
+      "formulation": "Promettre que les gabarits de flux de travaux conviennent tels quels au Québec (TPS, TVQ, numéro d'entreprise).",
+      "raison": "Ils sont rédigés pour une PME française (CL-M02, CL-111).",
+      "remplacement": "Chaque fiche dit ce qui s'adapte avant l'usage."
     }
   ]
 }

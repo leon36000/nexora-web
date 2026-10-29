@@ -1,0 +1,208 @@
+{
+  "page": "guides-ia-souveraine-liste-de-controle",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/ia-souveraine-liste-de-controle",
+    "title": "IA souveraine : liste de contrôle",
+    "seo_title": "IA souveraine : la liste de contrôle d'une DSI",
+    "seo_description": "Quatre couches de contrôle, douze questions, les preuves à demander et les pièges : la liste de contrôle d'une DSI pour juger une IA souveraine au Québec.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : une liste de contrôle pour une DSI, avec la définition de travail de la souveraineté.",
+      "claims": ["CL-70", "CL-71", "CL-75"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · IA souveraine",
+        "headline": "IA souveraine : la liste de contrôle d'une DSI.",
+        "subheadline": "Quatre couches de contrôle, les questions qui comptent, les preuves à demander et les pièges. Une définition de travail, sans valeur légale, qui vaut aussi pour juger Nexora AI.",
+        "primary_label": "Voir la souveraineté chez Nexora AI",
+        "primary_href": "/souverainete/",
+        "secondary_label": "Étude de déploiement",
+        "secondary_href": "/contact/?sujet=etude-deploiement"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : la définition de travail en quatre couches, sans valeur légale.",
+      "claims": ["CL-70", "CL-71", "CL-75"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>On parle d'IA souveraine quand on sait où elle tourne et où vont les données. Nexora AI la décrit par quatre couches de contrôle : les données, les modèles, le calcul et l'exploitation. C'est une définition de travail, sans valeur légale : aucune définition légale de « souverain » n'existe, et un serveur au Québec n'écarte pas, à lui seul, les lois qui s'appliquent.</p><p>Une DSI (direction des systèmes d'information) peut s'en servir comme grille, pour Nexora AI comme pour tout autre fournisseur.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les quatre couches de contrôle, une question directrice par couche.",
+      "claims": ["CL-70", "CL-71"],
+      "fields": {
+        "columns": "4",
+        "tone": "sable",
+        "layout": "grille",
+        "anchor_id": "couches"
+      },
+      "translation": {
+        "title": "Les quatre couches.",
+        "cards": [
+          {
+            "title": "Les données.",
+            "text": "Où sont-elles stockées, qui y accède, et que devient une sauvegarde ?"
+          },
+          {
+            "title": "Les modèles.",
+            "text": "Qui les exécute, avec quelle licence, et peuvent-ils être remplacés ?"
+          },
+          {
+            "title": "Le calcul.",
+            "text": "Sur quel matériel et dans quel pays les requêtes sont-elles traitées ?"
+          },
+          {
+            "title": "L'exploitation.",
+            "text": "Qui administre le système, avec quels accès, et lesquels sont journalisés ?"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Liste de contrôle : douze questions, trois par couche, sous forme de liste.",
+      "claims": ["CL-70", "CL-E08", "CL-E05", "CL-76", "CL-77"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Les questions qui comptent.",
+        "body": "<h3>Les données</h3><ul><li>Où sont stockés les fichiers, les sauvegardes et les journaux ?</li><li>Le fournisseur peut-il lire mes données, et dans quelles conditions ?</li><li>Mes données servent-elles à entraîner un modèle, par défaut ou sur activation ?</li></ul><h3>Les modèles</h3><ul><li>Quels modèles sont utilisés, et sous quelle licence ?</li><li>Un appel à un modèle externe est-il possible, et qui l'active ?</li><li>Le système peut-il basculer en silence vers un autre modèle en cas de panne ?</li></ul><h3>Le calcul</h3><ul><li>Où le traitement a-t-il lieu : pays, hébergeur, matériel ?</li><li>Quels flux sortants existent (mises à jour, licences, télémétrie) ?</li><li>Le système fonctionne-t-il sans accès à l'extérieur, et jusqu'où ?</li></ul><h3>L'exploitation</h3><ul><li>Qui administre, avec quels accès, et chaque accès est-il journalisé ?</li><li>Quels sous-traitants interviennent, dans quel pays, pour quel rôle ?</li><li>Que se passe-t-il à la fin du contrat : exportation, suppression ?</li></ul>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Preuves à demander, avec l'état réel des documents de Nexora AI (en préparation).",
+      "claims": ["CL-05", "CL-73", "CL-E06", "CL-87"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "preuves"
+      },
+      "translation": {
+        "title": "Les preuves à demander.",
+        "body": "<p>Une réponse orale ne prouve rien. Demandez des documents :</p><ul><li><strong>Le schéma des flux</strong> : où vont les données, quels services externes sont appelés.</li><li><strong>Le registre des sous-traitants</strong> : leur pays et leur rôle.</li><li><strong>Le contrat de traitement</strong> : ce qui est promis, par écrit.</li><li><strong>L'adresse et le contrat du lieu d'hébergement</strong>, et celui des sauvegardes et des journaux.</li><li><strong>Le journal d'accès</strong> : qui est entré dans vos données, quand et pour quelle tâche.</li></ul><p>Nexora AI s'engage à remettre le schéma des flux avant la mise en service. Le contrat type, le registre des sous-traitants et la preuve du lieu d'hébergement sont en préparation : aucun n'est encore disponible.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les pièges : flux sortants, bascule silencieuse, stockage et traitement, serveur local, vocabulaire.",
+      "claims": ["CL-77", "CL-76", "CL-E08", "CL-75"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "liste",
+        "anchor_id": "pieges"
+      },
+      "translation": {
+        "title": "Les pièges.",
+        "cards": [
+          {
+            "title": "Installé chez vous n'est pas isolé.",
+            "text": "Installer un système sur votre serveur n'équivaut pas à n'avoir aucun flux sortant : mises à jour, licences et modèle externe éventuel sont à lister avant la mise en service."
+          },
+          {
+            "title": "La bascule silencieuse.",
+            "text": "Un système qui passe seul à un modèle externe en cas de panne change le lieu de traitement sans vous le dire. Exigez qu'il ne le fasse jamais."
+          },
+          {
+            "title": "Stockage n'est pas traitement.",
+            "text": "Un stockage au Canada ne dit pas où le modèle lit vos requêtes."
+          },
+          {
+            "title": "Un serveur ici ne suffit pas.",
+            "text": "Il n'écarte pas à lui seul les lois qui s'appliquent au fournisseur. Les lois d'ici s'appliquent aussi aux entreprises d'ici."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce que Nexora AI ne promet pas : risque nul, immunité, conformité automatique, certification.",
+      "claims": ["CL-75", "CL-09", "CL-86"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Ce que Nexora AI ne promet pas.",
+        "body": "<p>Nexora AI ne promet ni risque nul, ni immunité juridique, ni conformité automatique. Elle n'affiche aucune certification qu'elle ne peut pas prouver et n'annonce aucun niveau de service à ce jour. Une IA souveraine est une IA dont on sait où elle tourne : ce n'est pas une IA que rien ne peut atteindre.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : définition, hébergement canadien, vérification, auto-hébergement, Nexora AI.",
+      "claims": ["CL-70", "CL-75", "CL-E08", "CL-77", "CL-02", "CL-87"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "faq"
+      },
+      "translation": {
+        "title": "IA souveraine : vos questions.",
+        "items": [
+          {
+            "question": "Qu'est-ce qu'une IA souveraine ?",
+            "answer": "Une IA dont on sait où elle tourne et où vont les données. Nexora AI la décrit par quatre couches de contrôle : les données, les modèles, le calcul et l'exploitation. C'est une définition de travail, sans valeur légale."
+          },
+          {
+            "question": "Un hébergement au Canada suffit-il ?",
+            "answer": "Pas à lui seul : un stockage au Canada n'implique pas un traitement au Canada, et un fournisseur soumis à une loi étrangère peut devoir remettre des données qu'il détient. Voir le guide sur le lieu des données."
+          },
+          {
+            "question": "Un serveur chez moi garantit-il l'absence de flux sortants ?",
+            "answer": "Non. Installer le système sur votre serveur n'équivaut ni à une absence de télémétrie ni à un fonctionnement hors ligne garanti : les flux sortants sont listés avant la mise en service."
+          },
+          {
+            "question": "Comment vérifier les réponses d'un fournisseur ?",
+            "answer": "En demandant des documents plutôt que des réponses orales : schéma des flux, registre des sous-traitants, contrat de traitement, adresse et contrat du lieu d'hébergement, journal d'accès."
+          },
+          {
+            "question": "Nexora AI est-elle une IA souveraine ?",
+            "answer": "Nexora AI propose deux modes, chez vous ou hébergé au Québec, et s'engage à documenter les flux par écrit. Le contrat type et la preuve du lieu d'hébergement sont en préparation : jugez-la avec la liste ci-dessus, pièces en main."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : étude de déploiement.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Appliquons la liste à votre cas.",
+        "text": "Une étude de déploiement passe ces questions en revue pour votre contexte : couches, flux sortants, preuves.",
+        "primary_label": "Demander une étude",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Où sont vos données",
+        "secondary_href": "/guides/ou-sont-vos-donnees-ia/"
+      }
+    }
+  ]
+}

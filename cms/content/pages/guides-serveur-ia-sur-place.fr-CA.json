@@ -1,0 +1,222 @@
+{
+  "page": "guides-serveur-ia-sur-place",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/serveur-ia-sur-place",
+    "title": "Serveur d'IA sur place",
+    "seo_title": "Serveur d'IA sur place : décider avant d'acheter",
+    "seo_description": "Les cinq décisions avant d'acheter un serveur d'IA sur place : usagers, documents, modèle, outils, sauvegardes. Ce qui reste chez vous et ce qui sort.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : les décisions à prendre avant d'acheter un serveur d'IA sur place, sans prix ni dimensionnement.",
+      "claims": ["CL-82", "CL-80"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · IA sur place",
+        "headline": "Un serveur d'IA sur place : décider avant d'acheter.",
+        "subheadline": "Cinq décisions, ce qui reste chez vous, ce qui sort, et qui fait quoi. Le matériel s'établit au diagnostic, avant tout achat : aucun prix ni dimensionnement n'est publié ici.",
+        "primary_label": "Voir le déploiement sur place",
+        "primary_href": "/deploiement/sur-place/",
+        "secondary_label": "Demander une étude",
+        "secondary_href": "/contact/?sujet=etude-deploiement"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : le matériel dépend du cas et se décide au diagnostic ; un petit modèle ne suffit pas toujours.",
+      "claims": ["CL-82", "CL-83", "CL-80"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "La réponse en bref.",
+        "body": "<p>Le matériel nécessaire dépend du nombre d'utilisateurs, du volume de documents, du modèle choisi et des usages ; il est établi au diagnostic, avant tout achat. Un petit modèle local ne suffit pas toujours pour les agents qui appellent des outils. Aucun prix ni dimensionnement n'est publié : ils dépendent de votre cas.</p><p>Un serveur d'IA sur place est un serveur installé chez vous, qui exécute le système d'IA et garde vos documents sur votre site.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les cinq décisions, dans l'ordre où on les prend.",
+      "claims": ["CL-82", "CL-83", "CL-26"],
+      "fields": {
+        "columns": "4",
+        "tone": "sable",
+        "layout": "etapes",
+        "anchor_id": "decisions"
+      },
+      "translation": {
+        "title": "Les cinq décisions.",
+        "intro": "Chacune change le matériel. Le diagnostic les tranche avec vous.",
+        "cards": [
+          {
+            "title": "Les usagers.",
+            "text": "Combien de personnes s'en servent, et en même temps ?"
+          },
+          {
+            "title": "Les documents.",
+            "text": "Quel volume, quels formats, et faut-il lire des PDF scannés ou transcrire de la voix ?"
+          },
+          {
+            "title": "Le modèle.",
+            "text": "Un modèle plus capable demande plus de mémoire. Un petit modèle ne suffit pas toujours pour des agents à outils."
+          },
+          {
+            "title": "Les outils.",
+            "text": "Que doivent pouvoir faire les agents : lire, écrire, envoyer ?"
+          },
+          {
+            "title": "Les sauvegardes.",
+            "text": "Où, à quelle fréquence, et qui restaure ?"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Ce qui reste chez vous et ce qui sort : flux sortants à lister, jamais de bascule silencieuse.",
+      "claims": ["CL-77", "CL-76", "CL-E01", "CL-06"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "flux"
+      },
+      "translation": {
+        "title": "Ce qui reste, ce qui sort.",
+        "body": "<p>Sur place, vos données restent sur votre serveur. Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé.</p><p>Installer le système sur votre serveur n'équivaut pourtant pas à n'avoir aucun flux sortant. Les mises à jour, les licences et un éventuel modèle externe sont listés avant la mise en service. Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, consignée par écrit, et le système ne bascule jamais en silence vers un modèle externe, par exemple en cas de panne d'un modèle local.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Qui fait quoi : le client, Nexora AI.",
+      "claims": ["CL-72", "CL-04", "CL-81"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "qui-fait-quoi"
+      },
+      "translation": {
+        "title": "Qui fait quoi.",
+        "cards": [
+          {
+            "title": "Vous.",
+            "text": "Le matériel, les accès et les sauvegardes vous appartiennent. Vous nommez la personne qui valide les actions."
+          },
+          {
+            "title": "Nexora AI.",
+            "text": "Elle installe et configure le système, puis l'exploite avec vous et le fait évoluer. L'exploitation se convient au contrat."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Installation en une commande : WorkStudio, Docker défini, choix du modèle, sauvegarde, restauration, mise à jour.",
+      "claims": ["CL-26", "CL-88"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "installation"
+      },
+      "translation": {
+        "title": "Installation en une commande.",
+        "body": "<p>WorkStudio s'installe en une commande sur un serveur Docker, Linux ou macOS, d'architecture amd64 ou arm64. Docker est un outil qui empaquette les logiciels pour qu'ils s'installent de la même façon partout.</p><p>L'installateur propose un modèle local ou un service tiers compatible avec le format d'OpenAI, génère les secrets sur la machine et installe des commandes de sauvegarde, de restauration et de mise à jour. Voir <a href=\"/workstudio/\">WorkStudio</a> et l'<a href=\"/services/installation-serveurs-ia/\">installation de serveurs d'IA</a>.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Limites : niveau de service, modèle local, voix et documents, absence de réseau.",
+      "claims": ["CL-86", "CL-83", "CL-82", "CL-77"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "modules",
+        "anchor_id": "limites"
+      },
+      "translation": {
+        "title": "Limites à connaître.",
+        "cards": [
+          {
+            "title": "Aucun niveau de service.",
+            "text": "La disponibilité et les délais de réponse se précisent au contrat."
+          },
+          {
+            "title": "Le modèle local a ses limites.",
+            "text": "Un petit modèle ne suffit pas toujours pour les agents qui appellent des outils : le modèle se choisit avec le cas."
+          },
+          {
+            "title": "Voix et documents.",
+            "text": "La lecture de documents et la voix demandent des modèles supplémentaires, donc plus de matériel."
+          },
+          {
+            "title": "Hors ligne non garanti.",
+            "text": "Le fonctionnement sans réseau n'est pas garanti : mises à jour et licences ont des flux sortants."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : serveur puissant, sans internet, matériel, prix, responsabilité.",
+      "claims": ["CL-82", "CL-83", "CL-77", "CL-10", "CL-72", "CL-86"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Serveur d'IA sur place : vos questions.",
+        "items": [
+          {
+            "question": "Faut-il un serveur puissant pour faire tourner une IA dans une PME ?",
+            "answer": "Cela dépend du cas : nombre d'utilisateurs, volume de documents, modèle choisi et usages. Le diagnostic répond, avant tout achat."
+          },
+          {
+            "question": "Peut-on faire tourner une IA sans internet ?",
+            "answer": "En partie. Installer le système sur votre serveur n'équivaut pas à un fonctionnement hors ligne garanti : mises à jour, licences et modèle externe éventuel sont des flux sortants, listés avant la mise en service."
+          },
+          {
+            "question": "Un petit modèle local suffit-il ?",
+            "answer": "Pas toujours. Il suffit pour certaines tâches, mais pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas."
+          },
+          {
+            "question": "Combien coûte un serveur d'IA sur place ?",
+            "answer": "Il n'y a pas de prix public : une estimation écrite suit le diagnostic. Aucune grille de matériel n'est publiée."
+          },
+          {
+            "question": "À qui appartiennent le matériel et les données ?",
+            "answer": "À vous : le matériel, les accès et les sauvegardes vous appartiennent. Nexora AI installe, configure et exploite avec vous."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : étude de déploiement sur place.",
+      "claims": ["CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Commençons par le diagnostic.",
+        "text": "Dites-nous vos usagers, vos documents et vos usages. Nous établissons le matériel avec vous avant tout achat.",
+        "primary_label": "Demander une étude",
+        "primary_href": "/contact/?sujet=etude-deploiement",
+        "secondary_label": "Déploiement sur place",
+        "secondary_href": "/deploiement/sur-place/"
+      }
+    }
+  ]
+}

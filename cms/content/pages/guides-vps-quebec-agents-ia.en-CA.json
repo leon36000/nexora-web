@@ -1,0 +1,187 @@
+{
+  "page": "guides-vps-quebec-agents-ia",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "guides/quebec-vps-ai-agents",
+    "title": "Quebec VPS for AI agents",
+    "seo_title": "A VPS in Quebec to host your AI agents",
+    "seo_description": "A virtual private server hosted in Quebec with the AI application of your choice: planned applications, plans, what is included and the real state of the offer.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse du guide : un VPS hébergé au Québec avec une application d'IA, avec l'état réel : rien n'est commandable.",
+      "claims": ["CL-13", "CL-12"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Guide · VPS",
+        "headline": "A VPS in Quebec for your AI agents.",
+        "subheadline": "A virtual private server hosted in Quebec, with an AI application installed of your choice. The offers are in preparation: the VPS page shows what is published, and nothing can be ordered today.",
+        "primary_label": "See the VPS page",
+        "primary_href": "/en/vps/",
+        "secondary_label": "Talk to the team",
+        "secondary_href": "/en/contact/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que Nexora AI prépare et l'état réel.",
+      "claims": ["CL-13", "CL-12", "CL-02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>Nexora AI is preparing virtual private servers hosted in Quebec, with an AI application installed of your choice. Nothing can be ordered today: the VPS page shows the published plans and applications, and their prices in Canadian dollars once they are.</p><p>A virtual private server (VPS) is a server rented just for you, which you reach with an SSH key. An AI agent is software that accomplishes a task with the tools you authorize.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les applications d'IA prévues sur un VPS : cinq installées par Nexora AI, trois en guide seulement.",
+      "claims": ["CL-M10", "CL-13"],
+      "fields": {
+        "columns": "2",
+        "tone": "sable",
+        "layout": "liste",
+        "anchor_id": "applications"
+      },
+      "translation": {
+        "title": "The applications offered.",
+        "intro": "The exact list and the plans are those on the VPS page: it is authoritative.",
+        "cards": [
+          {
+            "label": "Installed",
+            "title": "Hermes Agent.",
+            "text": "An agent that learns from your tasks, on your own server. You bring your own model keys."
+          },
+          {
+            "label": "Installed",
+            "title": "OpenClaw, hardened.",
+            "text": "A multi-channel personal assistant, isolated and locked down. One VPS per customer, never shared."
+          },
+          {
+            "label": "Installed",
+            "title": "Ollama and AnythingLLM.",
+            "text": "Your local models and their chat interface, with nothing sent out. Without a graphics card, only small models are reasonable."
+          },
+          {
+            "label": "Installed",
+            "title": "AnythingLLM.",
+            "text": "Chat with your documents, using the models you choose, including the Nexora AI gateway."
+          },
+          {
+            "label": "Installed",
+            "title": "LibreChat.",
+            "text": "A multi-provider chat interface for your whole team."
+          },
+          {
+            "label": "Guide only",
+            "title": "n8n, Open WebUI, Dify.",
+            "text": "Their licence prevents Nexora AI from installing or reselling them: you order a blank VPS and follow the guide.",
+            "href": "/en/vps/",
+            "link_label": "See the VPS page"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Quel plan pour quelle application : la mémoire minimale vient du catalogue ; aucun prix tant qu'aucun plan n'est publié.",
+      "claims": ["CL-13", "CL-12", "CL-10"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "plans"
+      },
+      "translation": {
+        "title": "Which plan for which application.",
+        "body": "<p>Each application states the minimum memory it needs, and the VPS page greys out plans too small for the chosen application. These values come from the published catalogue, not from this guide: they may change with a new version.</p><p>Applications can call models through the <a href=\"/en/model-gateway-api/\">Nexora AI API gateway</a>; the processing location is then the chosen model's (see <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a>).</p><p>No plan is published at the moment, which is why no price is shown here. The development plans you can see there in test are not for sale.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui est inclus et ce qui ne l'est pas : accès par clé, durcissement, pas de support garanti, pas d'application d'un tiers sans licence.",
+      "claims": ["CL-M11", "CL-86", "CL-13"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "grille",
+        "anchor_id": "inclus"
+      },
+      "translation": {
+        "title": "Included, and not included.",
+        "cards": [
+          {
+            "title": "What is included.",
+            "text": "A server hosted in Quebec, the application installed of your choice and access by a public SSH key that you paste when ordering. Nexora AI never asks for your private key."
+          },
+          {
+            "title": "What is not.",
+            "text": "No service level is announced. Your model keys, your data and the compliance of the models you download remain your responsibility, and nothing can be ordered today."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions du guide : commande, applications, lieu, prix, clé.",
+      "claims": ["CL-13", "CL-12", "CL-M10", "CL-M11", "CL-02", "CL-10"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "VPS in Quebec: your questions.",
+        "items": [
+          {
+            "question": "Can I order a VPS today?",
+            "answer": "No. The offers are in preparation: no plan is published, no price is shown and payments work in test mode only. Write to us to discuss it."
+          },
+          {
+            "question": "Which AI applications will be installed?",
+            "answer": "Hermes Agent, hardened OpenClaw, Ollama with AnythingLLM, AnythingLLM and LibreChat are planned. For n8n, Open WebUI and Dify, only a guide is provided, because their licence requires it."
+          },
+          {
+            "question": "Where is the server hosted?",
+            "answer": "Nexora AI is preparing servers hosted in Quebec. The technical evidence of the location (address, contract, backups, subprocessors) is in preparation and will be provided in writing."
+          },
+          {
+            "question": "How much will a VPS cost?",
+            "answer": "No price is published. When plans are, the VPS page will show them in Canadian dollars, before tax."
+          },
+          {
+            "question": "How do you access the server?",
+            "answer": "By an SSH key: you paste your public key when ordering. Nexora AI never asks for your private key."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : parler du projet ; la page VPS.",
+      "claims": ["CL-13", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Tell us about your project.",
+        "text": "Which application, how many users, where must the data stay? We answer with a clear proposal.",
+        "primary_label": "Talk to the team",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See the VPS page",
+        "secondary_href": "/en/vps/"
+      }
+    }
+  ]
+}

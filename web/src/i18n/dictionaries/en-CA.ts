@@ -79,18 +79,6 @@ export const enCA: Dictionary = {
             "A coordinated team for construction and field services.",
           href: "/opsys-ai",
         },
-        {
-          label: "Nexora Croissance",
-          description:
-            "Website, search, ads and social networks in one place. Early access.",
-          href: "/croissance",
-        },
-        {
-          label: "Nexora Vision",
-          description:
-            "AI video analytics that keeps your footage on your premises. Pilot project, by invitation.",
-          href: "/vision",
-        },
       ],
     },
     pricing: { label: "Pricing", href: "/tarifs" },
@@ -172,6 +160,11 @@ export const enCA: Dictionary = {
   cms: {
     priceOnRequest: "On request",
     toc: { label: "On this page" },
+    byline: {
+      by: "By {name}",
+      published: "Published",
+      updated: "Updated",
+    },
     status: {
       disponible: "Available",
       "acces-anticipe": "Early access",
@@ -298,6 +291,7 @@ export const enCA: Dictionary = {
           "apps-bot": "Waiting list: Nexora Bot.",
           "apps-wordpress": "Waiting list: Nexora WordPress plugins.",
           "apps-gitspace": "Waiting list: Nexora Gitspace.",
+          "apps-cloud": "Waiting list: Nexora Cloud.",
           "apps-rag": "Waiting list: Nexora RAG.",
           "apps-webpilot": "Waiting list: Nexora WebPilot.",
           "apps-privacy-router": "Question about Nexora Privacy Router: ",

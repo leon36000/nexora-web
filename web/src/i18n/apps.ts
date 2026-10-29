@@ -39,6 +39,11 @@ export type AppDef = {
   cta: "waitlist" | "contact";
   /** Fiches proposées en bas de page. */
   related: readonly string[];
+  /**
+   * Affirmations du registre (`cms/content/claims.json`) sur lesquelles la fiche s'appuie : « gratuit », « sur
+   * abonnement », « incluse », « code ouvert prévu », état réel. Un test vérifie qu'elles existent.
+   */
+  claims: readonly string[];
 };
 
 export const APPS = [
@@ -49,6 +54,7 @@ export const APPS = [
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["rag", "privacy-router"],
+    claims: ["CL-AP01"],
   },
   {
     slug: "bot",
@@ -57,6 +63,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["code", "wordpress"],
+    claims: ["CL-AP01", "CL-AP02"],
   },
   {
     slug: "gitspace",
@@ -65,6 +72,16 @@ export const APPS = [
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["code", "rag"],
+    claims: ["CL-AP04"],
+  },
+  {
+    slug: "cloud",
+    state: "bientot",
+    access: "abonnement",
+    category: "BusinessApplication",
+    cta: "waitlist",
+    related: ["gitspace", "rag"],
+    claims: ["CL-AP04"],
   },
   {
     slug: "rag",
@@ -73,6 +90,7 @@ export const APPS = [
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["code", "privacy-router"],
+    claims: ["CL-AP04"],
   },
   {
     slug: "webpilot",
@@ -81,6 +99,7 @@ export const APPS = [
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["privacy-router", "code"],
+    claims: ["CL-AP05"],
   },
   {
     slug: "wordpress",
@@ -89,6 +108,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["bot", "webpilot"],
+    claims: ["CL-AP01", "CL-AP04"],
   },
   {
     slug: "privacy-router",
@@ -97,6 +117,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "contact",
     related: ["webpilot", "rag"],
+    claims: ["CL-AP03", "CL-M06"],
   },
   {
     slug: "creative",
@@ -105,6 +126,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["outils"],
+    claims: ["CL-AP05"],
   },
   {
     slug: "outils",
@@ -113,6 +135,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["code", "creative"],
+    claims: ["CL-AP01"],
   },
 ] as const satisfies readonly AppDef[];
 

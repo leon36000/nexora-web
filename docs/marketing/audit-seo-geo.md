@@ -1,7 +1,7 @@
 # Audit SEO technique et GEO — Nexora AI
 
 Date : 29 octobre 2026. Branche `feat/seo-geo` (base : `main`, commit `b9e99b1`). Auteur : agent de marketing SEO/GEO.
-Plan d'action associé : `plan-seo-geo.md`. Documentation du code : `docs/seo.md`.
+Plan d'action associé : `plan-seo-geo.md` (mis à jour le 29/10/2026 : piliers rédigés, `og:type` article, `TechArticle` de `/docs/api`, éditeur des fiches Nexora Apps, `/tarifs` sans essai gratuit, signature des guides ; voir la section 4 de `docs/seo.md`). Documentation du code : `docs/seo.md`.
 
 Légende : **✓** conforme et prouvé ; **✗** écart ; **◐** partiel (le détail dit pourquoi). « Avant » = `main` ; « Après » = cette branche. Chaque ligne renvoie à sa preuve ; les écarts qui sortent de mon périmètre ou qui attendent le fondateur sont repris en section 5.
 

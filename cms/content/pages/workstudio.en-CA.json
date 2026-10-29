@@ -414,7 +414,7 @@
       },
       "translation": {
         "title": "The limits, stated plainly.",
-        "body": "<p>A product is also judged by what it writes about its limits. Here are ours, as of this page's date.</p><p>On your premises or <a href=\"/en/deployment/\">with us, in Quebec</a>, we start by understanding your case: <a href=\"/en/contact/?sujet=diagnostic\">book a diagnosis</a>.</p>",
+        "body": "<p>A product is also judged by what it writes about its limits. Here are ours, as of this page's date.</p><p>On your premises or <a href=\"/en/deployment/\">with us, in Quebec</a>, we start by understanding your case: <a href=\"/en/contact/?sujet=diagnostic\">book a diagnosis</a>.</p><p>The starter models for small businesses are described one by one in the <a href=\"/en/workflow-templates/\">workflow templates</a>. To call a model or an agent with the OpenAI format, see the guide <a href=\"/en/guides/openai-compatible-api/\">OpenAI-compatible API</a>.</p><p>Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in <a href=\"/en/apps/\">Nexora Apps</a>, with their real state.</p>",
         "items": [
           {
             "title": "Verified here, not yet at a customer.",

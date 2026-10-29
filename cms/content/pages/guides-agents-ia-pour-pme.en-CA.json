@@ -178,7 +178,7 @@
       },
       "translation": {
         "title": "No code: how it works.",
-        "body": "<p>You describe the need in French; the Copilot, the building assistant, prepares a workflow that you review, test step by step, then deploy. Each deployment is a version you can return to. Starter templates for small businesses are provided. See <a href=\"/en/workstudio/\">WorkStudio</a>.</p>"
+        "body": "<p>You describe the need in French; the Copilot, the building assistant, prepares a workflow that you review, test step by step, then deploy. Each deployment is a version you can return to. Starter templates for small businesses are provided. See <a href=\"/en/workstudio/\">WorkStudio</a>.</p><p>The starter models are described one by one in the <a href=\"/en/workflow-templates/\">workflow templates</a>.</p>"
       }
     },
     {

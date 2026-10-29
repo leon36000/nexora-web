@@ -102,6 +102,9 @@ export function sectionOf(frPath: string): SectionKey {
   if (["souverainete", "vos-donnees", "centre-de-confiance"].includes(head))
     return "trust";
   if (["guides", "blog", "articles"].includes(head)) return "guides";
+  // Gabarits de flux de travaux : la page de synthèse est un guide, ses fiches (une par gabarit) restent facultatives.
+  if (head === "gabarits-flux-de-travaux")
+    return p === head ? "guides" : "optional";
   if (["entreprise", "faq", "contact"].includes(head)) return "company";
   return "optional";
 }

@@ -1,0 +1,158 @@
+{
+  "page": "gabarit-relance-devis",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "workflow-templates/unanswered-quote-follow-up",
+    "title": "Unanswered quote follow-up",
+    "seo_title": "Unanswered quote follow-up: workflow template",
+    "seo_description": "The Unanswered quote follow-up template writes a friendly sales follow-up from the customer, the quote reference and the date it was sent. WorkStudio template.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse de la fiche : ce que fait le gabarit « Relance de devis sans réponse », dit sans détour.",
+      "claims": ["CL-M01", "CL-M02", "CL-111"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true
+      },
+      "translation": {
+        "eyebrow": "Template · Sales and customers",
+        "headline": "Unanswered quote follow-up.",
+        "subheadline": "The Unanswered quote follow-up template writes a friendly sales follow-up from the customer, the quote reference and the date it was sent.",
+        "primary_label": "See all templates",
+        "primary_href": "/en/workflow-templates/",
+        "secondary_label": "Request a demo",
+        "secondary_href": "/en/contact/?sujet=demonstration"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Réponse d'abord : ce que fait le gabarit, en trois lignes.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "reponse"
+      },
+      "translation": {
+        "title": "The short answer.",
+        "body": "<p>The Unanswered quote follow-up template writes a friendly sales follow-up from the customer, the quote reference and the date it was sent. It offers a short call, recalls the validity period and leaves a polite way out. The text is reviewed before sending.</p><p>A workflow template is an automated sequence of tasks, provided as a starting point in WorkStudio and to be adapted to the business before it is deployed.</p>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Les champs de départ du gabarit, tels que déclarés dans WorkStudio.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "champs"
+      },
+      "translation": {
+        "title": "What you provide.",
+        "body": "<p>Each starting field is pre-filled with an example value so a first run needs no typing, except email addresses and files.</p><ul><li><strong>The customer.</strong> Customer name.</li><li><strong>The quote.</strong> Quote reference and subject.</li><li><strong>The sending date.</strong> Date the quote was sent.</li></ul>",
+        "items": []
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les étapes du flux : ce que fait chaque agent, où une personne intervient.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "columns": "2",
+        "tone": "clair",
+        "layout": "etapes",
+        "anchor_id": "etapes"
+      },
+      "translation": {
+        "title": "The steps.",
+        "cards": [
+          {
+            "title": "Write the follow-up.",
+            "text": "An agent writes the email (subject and body): a fifteen-minute call offered, the validity period recalled, a polite way out."
+          },
+          {
+            "title": "Review.",
+            "text": "You read the text produced, correct it if needed, then use or send it yourself: the template sends nothing."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui s'adapte avant l'usage : le propre du gabarit, le commun, l'envoi.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "columns": "2",
+        "tone": "sombre",
+        "layout": "liste",
+        "anchor_id": "adapter"
+      },
+      "translation": {
+        "title": "To adapt before use.",
+        "cards": [
+          {
+            "title": "What to adapt here.",
+            "text": "The validity period recalled is your quote's: check that it matches your real terms before sending."
+          },
+          {
+            "title": "What applies to all.",
+            "text": "The templates are written for a French small business. Taxes, currency, vocabulary and formats are adapted to your business and to Quebec before any use."
+          },
+          {
+            "title": "Nothing is sent.",
+            "text": "The template produces text to review. Only five templates in the collection send an email, and each waits first for a person's approval."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions de la fiche : envoi, point propre au gabarit, adaptation au Québec.",
+      "claims": ["CL-M01", "CL-M02", "CL-111", "CL-M04", "CL-M03"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions about this template.",
+        "items": [
+          {
+            "question": "Does this template send anything for me?",
+            "answer": "No. It produces text to review; you use or send it yourself. Only five templates in the collection send an email, and each waits first for a person's approval."
+          },
+          {
+            "question": "Does the template send the follow-up to the customer?",
+            "answer": "No. It produces the email text. You review it and send it yourself, with your own mailbox."
+          },
+          {
+            "question": "Does it suit Quebec as is?",
+            "answer": "Not as is. The starter templates are written for a French small business and do not follow Quebec tax rules: taxes, formats and vocabulary are adapted to your business."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "Appel à l'action : démonstration sur données fictives.",
+      "claims": ["CL-61", "CL-80"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See it at work.",
+        "text": "A demonstration on fictional data, to see what the template prepares and where a person stays in control.",
+        "primary_label": "Request a demo",
+        "primary_href": "/en/contact/?sujet=demonstration",
+        "secondary_label": "All templates",
+        "secondary_href": "/en/workflow-templates/"
+      }
+    }
+  ]
+}

@@ -414,7 +414,7 @@
       },
       "translation": {
         "title": "Les limites, dites franchement.",
-        "body": "<p>Un produit se juge aussi à ce qu'il écrit sur ses limites. Voici les nôtres, à la date de cette page.</p><p>Chez vous ou <a href=\"/deploiement/\">chez nous, au Québec</a>, nous commençons par comprendre votre cas : <a href=\"/contact/?sujet=diagnostic\">planifier un diagnostic</a>.</p>",
+        "body": "<p>Un produit se juge aussi à ce qu'il écrit sur ses limites. Voici les nôtres, à la date de cette page.</p><p>Chez vous ou <a href=\"/deploiement/\">chez nous, au Québec</a>, nous commençons par comprendre votre cas : <a href=\"/contact/?sujet=diagnostic\">planifier un diagnostic</a>.</p><p>Les modèles de départ pour PME sont décrits un par un dans les <a href=\"/gabarits-flux-de-travaux/\">gabarits de flux de travaux</a>. Pour appeler un modèle ou un agent avec le format d'OpenAI, voir le guide <a href=\"/guides/api-compatible-openai/\">API compatible OpenAI</a>.</p><p>Les autres outils de Nexora AI (agent de code, RAG, WebPilot) sont réunis dans <a href=\"/apps/\">Nexora Apps</a>, avec leur état réel.</p>",
         "items": [
           {
             "title": "Vérifié chez nous, pas encore chez un client.",

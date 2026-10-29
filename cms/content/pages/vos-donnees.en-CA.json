@@ -41,7 +41,7 @@
       },
       "translation": {
         "title": "Five commitments, one principle.",
-        "body": "<p>Your data belongs to your business. We protect it; we do not exploit it. Everything else follows from that principle.</p><p>Two commitments say <strong>where</strong> it is. Two say what we will <strong>never do with it</strong>. The last says <strong>who else</strong> can see it: nobody, until you decide otherwise.</p>"
+        "body": "<p>Your data belongs to your business. We protect it; we do not exploit it. Everything else follows from that principle.</p><p>Two commitments say <strong>where</strong> it is. Two say what we will <strong>never do with it</strong>. The last says <strong>who else</strong> can see it: nobody, until you decide otherwise.</p><p>To tell storage, processing and jurisdiction apart, see the guide <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a>.</p>"
       }
     },
     {

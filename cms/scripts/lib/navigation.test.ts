@@ -10,7 +10,7 @@ import {
 describe("navigation du §6", () => {
   const header = NAVIGATION.filter((n) => n.placement === "header");
 
-  test("en-tête : IA souveraine, Solutions, Produits (8 entrées), Tarifs, Ressources, puis Connexion et le bouton", () => {
+  test("en-tête : IA souveraine, Solutions, Produits (6 entrées), Tarifs, Ressources, puis Connexion et le bouton", () => {
     expect(header.map((n) => n.fr.label)).toEqual([
       "IA souveraine",
       "Solutions",
@@ -22,7 +22,7 @@ describe("navigation du §6", () => {
     ]);
     expect(
       header.find((n) => n.fr.label === "Produits")?.children,
-    ).toHaveLength(8);
+    ).toHaveLength(6);
     expect(header.find((n) => n.fr.label === "Connexion")?.style).toBe(
       "utility",
     );
@@ -35,10 +35,26 @@ describe("navigation du §6", () => {
     expect(header.some((n) => n.fr.label === "IA souveraine")).toBe(true);
     const produits = header.find((n) => n.fr.label === "Produits");
     expect(produits?.children?.map((c) => c.fr.label)).toContain("OPSYS-AI");
-    // vague 2 : Croissance et Vision sont au menu, et « Vos données » dans la colonne de confiance du pied de page
-    expect(produits?.children?.map((c) => c.fr.href)).toEqual(
-      expect.arrayContaining(["/croissance/", "/vision/"]),
+    // Le menu public « Produits » ne garde que six entrées (consigne du fondateur du 29/10/2026) : VPS, Modèles et API,
+    // WorkStudio, Nexora Apps, Suite logicielle, OPSYS-AI. Les agents hébergés vivent sur la page WorkStudio ;
+    // Croissance et Vision restent atteignables depuis le pied de page, l'accueil et leurs pages.
+    expect(produits?.children?.map((c) => c.fr.href)).toEqual([
+      "/vps/",
+      "/modeles/",
+      "/workstudio/",
+      "/apps/",
+      "/suite/",
+      "/opsys-ai/",
+    ]);
+    const hrefsPied = NAVIGATION.filter((n) => n.placement === "footer")
+      .flatMap((n) => n.children ?? [])
+      .map((c) => c.fr.href);
+    expect(hrefsPied).toEqual(
+      expect.arrayContaining(
+        ["/croissance/", "/vision/", "/agents/"].slice(0, 2),
+      ),
     );
+    expect(produits?.children?.map((c) => c.fr.href)).not.toContain("/agents/");
     const confiance = NAVIGATION.find(
       (n) => n.placement === "footer" && n.fr.label === "Centre de confiance",
     );

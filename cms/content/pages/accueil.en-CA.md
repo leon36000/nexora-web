@@ -269,6 +269,10 @@ We start with one concrete problem, put into service and verified, before wideni
 
 [Read the method](/en/method/)
 
+To go further: [Where to start with AI in a Quebec small business](/en/guides/ai-small-business-quebec/), [What is an AI agent](/en/guides/ai-agents-small-business/) and [Gateway or direct access](/en/guides/gateway-or-direct-access/).
+
+The tools around your models, servers and agents are gathered in [Nexora Apps](/en/apps/), each with its real state.
+
 ### Bloc 12 — Cartes (`block_cards`)
 
 *Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*

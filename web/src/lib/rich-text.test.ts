@@ -200,3 +200,72 @@ describe("parseRichText : entrée hostile (temps borné)", () => {
     );
   });
 });
+
+describe("parseRichText : tableaux et code (pages de comparaison et tutoriels)", () => {
+  it("conserve un tableau avec légende, en-tête, corps, lignes et cellules, sans aucun attribut", () => {
+    const html =
+      '<table class="x" style="width:9px"><caption>Critères</caption><thead><tr><th scope="col" onclick="x()">Critère</th><th>Passerelle</th></tr></thead><tbody><tr><td>Clé</td><td>Une seule</td></tr></tbody></table>';
+    expect(show(parseRichText(html))).toBe(
+      "<table><caption>Critères</caption><thead><tr><th>Critère</th><th>Passerelle</th></tr></thead><tbody><tr><td>Clé</td><td>Une seule</td></tr></tbody></table>",
+    );
+  });
+
+  it("ferme une cellule ou une ligne devant la suivante (HTML d'éditeur non fermé)", () => {
+    expect(
+      show(parseRichText("<table><tr><td>a<td>b<tr><td>c<td>d</table>")),
+    ).toBe(
+      "<table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table>",
+    );
+  });
+
+  it("déballe une cellule, une ligne ou une légende hors de leur parent (jamais d'élément mal placé)", () => {
+    expect(show(parseRichText("<p>a</p><td>seule</td><tr>x</tr>"))).toBe(
+      "<p>a</p>seulex",
+    );
+    expect(show(parseRichText("<ul><li><td>z</td></li></ul>"))).toBe(
+      "<ul><li>z</li></ul>",
+    );
+  });
+
+  it("ferme le paragraphe ouvert devant un tableau", () => {
+    expect(show(parseRichText("<p>a<table><tr><td>1</td></tr></table>"))).toBe(
+      "<p>a</p><table><tr><td>1</td></tr></table>",
+    );
+  });
+
+  it("garde les retours à la ligne et les retraits d'un bloc de code", () => {
+    const code =
+      'from openai import OpenAI\n\nclient = OpenAI(\n    base_url="x",\n)';
+    const out = parseRichText(
+      `<pre><code class="language-python">${code.replace(/"/g, "&quot;")}</code></pre>`,
+    );
+    expect(show(out)).toBe(`<pre><code>${code}</code></pre>`);
+    expect(richTextToPlain(out)).toContain("client = OpenAI(");
+  });
+
+  it("traite le contenu d'un bloc de code comme du texte : une balise y est écartée, jamais exécutée", () => {
+    const out = show(
+      parseRichText(
+        "<pre><code>a &lt;script&gt;x&lt;/script&gt;<script>alert(1)</script>b</code></pre>",
+      ),
+    );
+    expect(out).toBe("<pre><code>a <script>x</script>b</code></pre>");
+  });
+
+  it("accepte le code en ligne", () => {
+    expect(show(parseRichText("<p>Changez <code>base_url</code>.</p>"))).toBe(
+      "<p>Changez <code>base_url</code>.</p>",
+    );
+  });
+
+  it("ferme le paragraphe ouvert devant un bloc de code", () => {
+    expect(show(parseRichText("<p>a<pre>x</pre>"))).toBe(
+      "<p>a</p><pre>x</pre>",
+    );
+  });
+
+  it("borne la profondeur des tableaux imbriqués", () => {
+    const deep = `${"<table><tr><td>".repeat(300)}x${"</td></tr></table>".repeat(300)}`;
+    expect(() => parseRichText(deep)).not.toThrow();
+  });
+});

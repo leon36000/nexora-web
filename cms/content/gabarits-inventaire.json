@@ -1,0 +1,714 @@
+{
+  "source": "Dépôt leon36000/Nexora-Studio-, branche main, commit 4c7b4e4f (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/templates.ts (NEXORA_TEMPLATES) ; dernier changement du fichier : f3f8205b (28/10/2026)",
+  "note": "Inventaire figé des gabarits « Modèles PME » de WorkStudio : sert de référence aux tests des fiches (champs, étapes, envoi). À regénérer à chaque changement de templates.ts.",
+  "templates": [
+    {
+      "slug": "devis",
+      "name": "Devis client",
+      "inputs": [
+        {
+          "name": "client",
+          "type": "string"
+        },
+        {
+          "name": "prestations",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Devis"
+        }
+      ]
+    },
+    {
+      "slug": "relance-facture",
+      "name": "Relance de facture impayée",
+      "inputs": [
+        {
+          "name": "client",
+          "type": "string"
+        },
+        {
+          "name": "facture",
+          "type": "string"
+        },
+        {
+          "name": "montant",
+          "type": "string"
+        },
+        {
+          "name": "echeance",
+          "type": "string"
+        },
+        {
+          "name": "niveau",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Relance"
+        }
+      ]
+    },
+    {
+      "slug": "support-faq",
+      "name": "Réponse support (FAQ)",
+      "inputs": [
+        {
+          "name": "question",
+          "type": "string"
+        },
+        {
+          "name": "faq",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Reponse"
+        }
+      ]
+    },
+    {
+      "slug": "tri-emails",
+      "name": "Tri des e-mails entrants",
+      "inputs": [
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Classification"
+        },
+        {
+          "kind": "agent",
+          "name": "Brouillon"
+        }
+      ]
+    },
+    {
+      "slug": "compte-rendu",
+      "name": "Compte rendu de réunion",
+      "inputs": [
+        {
+          "name": "enregistrement",
+          "type": "file"
+        },
+        {
+          "name": "participants",
+          "type": "string"
+        },
+        {
+          "name": "destinataire",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "transcription",
+          "name": "Transcription"
+        },
+        {
+          "kind": "agent",
+          "name": "CompteRendu"
+        },
+        {
+          "kind": "approval",
+          "name": "Validation"
+        },
+        {
+          "kind": "gate",
+          "name": "Approbation"
+        },
+        {
+          "kind": "email",
+          "name": "Email"
+        }
+      ]
+    },
+    {
+      "slug": "offre-emploi",
+      "name": "Offre d’emploi",
+      "inputs": [
+        {
+          "name": "poste",
+          "type": "string"
+        },
+        {
+          "name": "missions",
+          "type": "string"
+        },
+        {
+          "name": "profil",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Annonce"
+        }
+      ]
+    },
+    {
+      "slug": "fiche-produit",
+      "name": "Fiche produit",
+      "inputs": [
+        {
+          "name": "produit",
+          "type": "string"
+        },
+        {
+          "name": "caracteristiques",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Fiche"
+        }
+      ]
+    },
+    {
+      "slug": "reseaux-sociaux",
+      "name": "Publication réseaux sociaux",
+      "inputs": [
+        {
+          "name": "actualite",
+          "type": "string"
+        },
+        {
+          "name": "ton",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Publications"
+        }
+      ]
+    },
+    {
+      "slug": "reclamation",
+      "name": "Réponse à une réclamation",
+      "inputs": [
+        {
+          "name": "reclamation",
+          "type": "string"
+        },
+        {
+          "name": "marge",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Reponse"
+        }
+      ]
+    },
+    {
+      "slug": "newsletter",
+      "name": "Newsletter mensuelle",
+      "inputs": [
+        {
+          "name": "infos",
+          "type": "string"
+        },
+        {
+          "name": "cible",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Newsletter"
+        }
+      ]
+    },
+    {
+      "slug": "relance-devis",
+      "name": "Relance de devis sans réponse",
+      "inputs": [
+        {
+          "name": "client",
+          "type": "string"
+        },
+        {
+          "name": "devis",
+          "type": "string"
+        },
+        {
+          "name": "envoi",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Relance"
+        }
+      ]
+    },
+    {
+      "slug": "rapport-hebdo",
+      "name": "Rapport d’activité hebdomadaire",
+      "inputs": [
+        {
+          "name": "notes",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Rapport"
+        }
+      ]
+    },
+    {
+      "slug": "traduction",
+      "name": "Traduction professionnelle",
+      "inputs": [
+        {
+          "name": "texte",
+          "type": "string"
+        },
+        {
+          "name": "langue",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Traduction"
+        }
+      ]
+    },
+    {
+      "slug": "resume-contrat",
+      "name": "Résumé d’un contrat",
+      "inputs": [
+        {
+          "name": "contrat",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Resume"
+        }
+      ]
+    },
+    {
+      "slug": "controle-facture",
+      "name": "Contrôle d’une facture fournisseur",
+      "inputs": [
+        {
+          "name": "facture",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Extraction"
+        },
+        {
+          "kind": "agent",
+          "name": "Controle"
+        }
+      ]
+    },
+    {
+      "slug": "accueil-salarie",
+      "name": "Accueil d’un nouveau salarié",
+      "inputs": [
+        {
+          "name": "prenom",
+          "type": "string"
+        },
+        {
+          "name": "poste",
+          "type": "string"
+        },
+        {
+          "name": "arrivee",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Accueil"
+        }
+      ]
+    },
+    {
+      "slug": "avis-client",
+      "name": "Réponse à un avis client",
+      "inputs": [
+        {
+          "name": "avis",
+          "type": "string"
+        },
+        {
+          "name": "note",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Reponse"
+        }
+      ]
+    },
+    {
+      "slug": "ordre-du-jour",
+      "name": "Ordre du jour de réunion",
+      "inputs": [
+        {
+          "name": "sujets",
+          "type": "string"
+        },
+        {
+          "name": "duree",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Ordre"
+        }
+      ]
+    },
+    {
+      "slug": "reponse-validee",
+      "name": "Réponse client validée avant envoi",
+      "inputs": [
+        {
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "name": "destinataire",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Brouillon"
+        },
+        {
+          "kind": "approval",
+          "name": "Validation"
+        },
+        {
+          "kind": "gate",
+          "name": "Approbation"
+        },
+        {
+          "kind": "email",
+          "name": "Email"
+        }
+      ]
+    },
+    {
+      "slug": "cr-entretien",
+      "name": "Compte rendu d’entretien",
+      "inputs": [
+        {
+          "name": "notes",
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "CompteRenduEntretien"
+        }
+      ]
+    },
+    {
+      "slug": "tri-sinistres",
+      "name": "Tri des déclarations de sinistre",
+      "inputs": [
+        {
+          "name": "declaration",
+          "type": "string"
+        },
+        {
+          "name": "garanties",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Analyse"
+        },
+        {
+          "kind": "agent",
+          "name": "Reponse"
+        }
+      ]
+    },
+    {
+      "slug": "conformite-documents",
+      "name": "Contrôle de conformité d’un document",
+      "inputs": [
+        {
+          "name": "document",
+          "type": "string"
+        },
+        {
+          "name": "controles",
+          "type": "string"
+        },
+        {
+          "name": "destinataire",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Controle"
+        },
+        {
+          "kind": "approval",
+          "name": "Validation"
+        },
+        {
+          "kind": "gate",
+          "name": "Approbation"
+        },
+        {
+          "kind": "email",
+          "name": "Email"
+        }
+      ]
+    },
+    {
+      "slug": "factures-fournisseurs",
+      "name": "Extraction d’une facture fournisseur",
+      "inputs": [
+        {
+          "name": "facture",
+          "type": "file"
+        },
+        {
+          "name": "texte",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Extraction"
+        },
+        {
+          "kind": "agent",
+          "name": "Coherence"
+        }
+      ]
+    },
+    {
+      "slug": "qualification-prospects",
+      "name": "Qualification d’un prospect",
+      "inputs": [
+        {
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "name": "criteres",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Qualification"
+        },
+        {
+          "kind": "agent",
+          "name": "Reponse"
+        }
+      ]
+    },
+    {
+      "slug": "synthese-projet-hebdo",
+      "name": "Synthèse hebdomadaire d’un projet",
+      "inputs": [
+        {
+          "name": "projet",
+          "type": "string"
+        },
+        {
+          "name": "notes",
+          "type": "string"
+        },
+        {
+          "name": "destinataire",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Synthese"
+        },
+        {
+          "kind": "approval",
+          "name": "Validation"
+        },
+        {
+          "kind": "gate",
+          "name": "Approbation"
+        },
+        {
+          "kind": "email",
+          "name": "Email"
+        }
+      ]
+    },
+    {
+      "slug": "veille-concurrentielle",
+      "name": "Note de veille concurrentielle",
+      "inputs": [
+        {
+          "name": "concurrent",
+          "type": "string"
+        },
+        {
+          "name": "extraits",
+          "type": "string"
+        },
+        {
+          "name": "contexte",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Faits"
+        },
+        {
+          "kind": "agent",
+          "name": "Note"
+        }
+      ]
+    },
+    {
+      "slug": "reponse-appel-offres",
+      "name": "Réponse à un appel d’offres",
+      "inputs": [
+        {
+          "name": "cahier",
+          "type": "string"
+        },
+        {
+          "name": "elements",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Exigences"
+        },
+        {
+          "kind": "agent",
+          "name": "Reponse"
+        }
+      ]
+    },
+    {
+      "slug": "revue-contrat",
+      "name": "Revue de contrat",
+      "inputs": [
+        {
+          "name": "contrat",
+          "type": "string"
+        },
+        {
+          "name": "contexte",
+          "type": "string"
+        },
+        {
+          "name": "destinataire",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Revue"
+        },
+        {
+          "kind": "approval",
+          "name": "Validation"
+        },
+        {
+          "kind": "gate",
+          "name": "Approbation"
+        },
+        {
+          "kind": "email",
+          "name": "Email"
+        }
+      ]
+    },
+    {
+      "slug": "rapport-ventes-mensuel",
+      "name": "Rapport de ventes mensuel",
+      "inputs": [
+        {
+          "name": "mois",
+          "type": "string"
+        },
+        {
+          "name": "chiffres",
+          "type": "string"
+        },
+        {
+          "name": "objectifs",
+          "type": "string"
+        }
+      ],
+      "steps": [
+        {
+          "kind": "agent",
+          "name": "Ecarts"
+        },
+        {
+          "kind": "agent",
+          "name": "Rapport"
+        }
+      ]
+    }
+  ]
+}

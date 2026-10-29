@@ -4,6 +4,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { SectionVisualFigure } from "@/components/visuals";
 import type { Lang } from "@/i18n/config";
 import { cn } from "@/lib/cn";
+import { hasWideContent } from "@/lib/rich-text";
 import type { SectionBlock } from "@/server/cms/model";
 import { CELL_GRID, cellClasses } from "./card-grid";
 import { CmsImage } from "./cms-image";
@@ -65,7 +66,9 @@ export function SectionBlockView({
           nodes={block.body}
           demote={Boolean(block.title)}
           className={cn(
-            "max-w-2xl text-lead text-fg-muted",
+            // un tableau ou un bloc de code a besoin de plus de largeur que le texte courant
+            hasWideContent(block.body) ? "max-w-4xl" : "max-w-2xl",
+            "text-lead text-fg-muted",
             block.title && "mt-6",
           )}
         />

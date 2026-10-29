@@ -6,14 +6,14 @@
   "seo": {
     "slug": "souverainete",
     "title": "Souveraineté",
-    "seo_title": "IA souveraine au Québec\u00a0: les quatre couches",
-    "seo_description": "Une IA est souveraine quand vous savez où elle tourne et où vont vos données. Chez vous ou au Québec\u00a0: jamais d'entraînement, jamais vendues. Cinq engagements.",
+    "seo_title": "IA souveraine au Québec : les quatre couches",
+    "seo_description": "Une IA est souveraine quand vous savez où elle tourne et où vont vos données. Chez vous ou au Québec : jamais d'entraînement, jamais vendues. Cinq engagements.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse du pilier\u00a0: vos données restent où vous le décidez\u00a0; définition courte, deux CTA.",
+      "role": "Promesse du pilier : vos données restent où vous le décidez ; définition courte, deux CTA.",
       "claims": ["CL-70", "CL-71", "CL-E03", "CL-E04", "CL-E05"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Souveraineté",
         "headline": "Vos données restent où vous le décidez.",
-        "subheadline": "Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Chez vous ou chez nous, au Québec\u00a0: jamais d'entraînement, jamais vendues, aucun modèle externe sans votre activation.",
+        "subheadline": "Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Chez vous ou chez nous, au Québec : jamais d'entraînement, jamais vendues, aucun modèle externe sans votre activation.",
         "primary_label": "Étudier mon projet",
         "primary_href": "/contact/?sujet=etude-deploiement",
         "secondary_label": "Lire les cinq engagements",
@@ -51,7 +51,7 @@
       },
       "translation": {
         "title": "L'IA souveraine, en cinq engagements.",
-        "intro": "Cinq engagements en langage clair. Ils s'appuient sur un contrat de traitement signé avec chaque client\u00a0; le contrat type et le registre des sous-traitants sont en préparation.",
+        "intro": "Cinq engagements en langage clair. Ils s'appuient sur un contrat de traitement signé avec chaque client ; le contrat type et le registre des sous-traitants sont en préparation.",
         "cards": [
           {
             "title": "Sur place, tout reste chez vous.",
@@ -78,7 +78,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Définition vérifiable\u00a0: quatre questions, une réponse écrite chacune.",
+      "role": "Définition vérifiable : quatre questions, une réponse écrite chacune.",
       "claims": ["CL-70", "CL-75", "CL-05", "CL-08"],
       "fields": {
         "media_position": "none",
@@ -87,7 +87,7 @@
       },
       "translation": {
         "title": "Souverain, ça se vérifie.",
-        "body": "<p>«\u00a0Souverain\u00a0» désigne ici un contrôle, pas une étiquette. Chez Nexora AI, une IA est souveraine quand quatre questions ont une réponse écrite, précise, que votre équipe peut vérifier.</p><p>Nous ne parlons pas d'immunité. La souveraineté réduit les dépendances que vous n'avez pas choisies\u00a0; elle ne supprime ni les lois qui s'appliquent à votre entreprise, ni vos obligations.</p>",
+        "body": "<p>« Souverain » désigne ici un contrôle, pas une étiquette. Chez Nexora AI, une IA est souveraine quand quatre questions ont une réponse écrite, précise, que votre équipe peut vérifier.</p><p>Nous ne parlons pas d'immunité. La souveraineté réduit les dépendances que vous n'avez pas choisies ; elle ne supprime ni les lois qui s'appliquent à votre entreprise, ni vos obligations.</p>",
         "items": [
           {
             "title": "Où elle tourne.",
@@ -136,13 +136,13 @@
           },
           {
             "title": "3. Le calcul.",
-            "text": "Les machines qui exécutent les modèles\u00a0: votre serveur, ou notre infrastructure au Québec. Le matériel, le lieu de l'hébergement et les sous-traitants sont nommés dans l'étude de déploiement.",
+            "text": "Les machines qui exécutent les modèles : votre serveur, ou notre infrastructure au Québec. Le matériel, le lieu de l'hébergement et les sous-traitants sont nommés dans l'étude de déploiement.",
             "href": "/deploiement/",
             "link_label": "Comparer les modes"
           },
           {
             "title": "4. L'exploitation.",
-            "text": "Qui installe, met à jour, surveille et dépanne. Les mises à jour, les licences et toute communication sortante sont listées\u00a0: installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.",
+            "text": "Qui installe, met à jour, surveille et dépanne. Les mises à jour, les licences et toute communication sortante sont listées : installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.",
             "href": "/services/",
             "link_label": "Voir les services"
           }
@@ -151,7 +151,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Schéma de flux (exemple)\u00a0: ce qui reste dans le périmètre, ce qui peut en sortir.",
+      "role": "Schéma de flux (exemple) : ce qui reste dans le périmètre, ce qui peut en sortir.",
       "claims": ["CL-05", "CL-06", "CL-78", "CL-79"],
       "fields": {
         "media_position": "none",
@@ -161,7 +161,7 @@
       },
       "translation": {
         "title": "Un exemple de parcours des données.",
-        "body": "<p>Le schéma montre un parcours type\u00a0: votre équipe, le système, vos documents, le modèle. À chaque flèche, une seule question\u00a0: cette donnée reste-t-elle dans le périmètre convenu\u00a0?</p><p>C'est un exemple, pas la configuration d'un client réel. Le schéma de votre installation vous est remis par écrit avant la mise en service. <a href=\"/centre-de-confiance/\">Voir le centre de confiance</a>.</p>",
+        "body": "<p>Le schéma montre un parcours type : votre équipe, le système, vos documents, le modèle. À chaque flèche, une seule question : cette donnée reste-t-elle dans le périmètre convenu ?</p><p>C'est un exemple, pas la configuration d'un client réel. Le schéma de votre installation vous est remis par écrit avant la mise en service. <a href=\"/centre-de-confiance/\">Voir le centre de confiance</a>.</p>",
         "items": [
           {
             "title": "Dans le périmètre.",
@@ -189,19 +189,19 @@
       },
       "translation": {
         "title": "Trois questions à poser à tout fournisseur.",
-        "body": "<p>Nous ne nommons personne et ne jugeons personne. Ce sont des constats généraux sur les pratiques du secteur, et des questions à poser, par écrit, à tout fournisseur d'IA, nous compris.</p><p>Posez-nous ces trois questions\u00a0: <a href=\"/contact/?sujet=etude-deploiement\">étudier mon projet</a>.</p>",
+        "body": "<p>Nous ne nommons personne et ne jugeons personne. Ce sont des constats généraux sur les pratiques du secteur, et des questions à poser, par écrit, à tout fournisseur d'IA, nous compris.</p><p>Posez-nous ces trois questions : <a href=\"/contact/?sujet=etude-deploiement\">étudier mon projet</a>.</p><p>Pour aller plus loin, voir <a href=\"/guides/ou-sont-vos-donnees-ia/\">Où sont vraiment vos données</a> et la <a href=\"/guides/ia-souveraine-liste-de-controle/\">liste de contrôle d'une DSI</a>.</p>",
         "items": [
           {
-            "title": "Mes conversations améliorent-elles le modèle\u00a0?",
-            "text": "Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même. Chez Nexora AI, la réponse est écrite\u00a0: jamais."
+            "title": "Mes conversations améliorent-elles le modèle ?",
+            "text": "Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même. Chez Nexora AI, la réponse est écrite : jamais."
           },
           {
-            "title": "Stockées au Canada, traitées où\u00a0?",
-            "text": "Certains fournisseurs d'IA annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs\u00a0: la différence entre stockage et traitement est une question à poser. Dans notre mode hébergé, les données sont stockées et traitées au Québec, sauvegardes comprises."
+            "title": "Stockées au Canada, traitées où ?",
+            "text": "Certains fournisseurs d'IA annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser. Dans notre mode hébergé, les données sont stockées et traitées au Québec, sauvegardes comprises."
           },
           {
-            "title": "Quel pays peut exiger l'accès\u00a0?",
-            "text": "Un fournisseur soumis à la juridiction d'un autre pays peut être tenu de lui remettre des données qu'il détient, même stockées au Canada (exemple\u00a0: une loi américaine adoptée en 2018). Les lois canadiennes et québécoises s'appliquent aussi aux entreprises d'ici. «\u00a0Souverain\u00a0» désigne un contrôle, pas une immunité."
+            "title": "Quel pays peut exiger l'accès ?",
+            "text": "Un fournisseur soumis à la juridiction d'un autre pays peut être tenu de lui remettre des données qu'il détient, même stockées au Canada (exemple : une loi américaine adoptée en 2018). Les lois canadiennes et québécoises s'appliquent aussi aux entreprises d'ici. « Souverain » désigne un contrôle, pas une immunité."
           }
         ]
       }
@@ -218,11 +218,11 @@
       },
       "translation": {
         "title": "Chez vous ou chez nous, au Québec.",
-        "intro": "Le principe est le même dans les deux cas\u00a0: vous savez où tout se trouve. Ce qui change, c'est qui possède les machines.",
+        "intro": "Le principe est le même dans les deux cas : vous savez où tout se trouve. Ce qui change, c'est qui possède les machines.",
         "cards": [
           {
             "title": "Chez vous.",
-            "text": "Le matériel, les accès et les sauvegardes vous appartiennent. Nous installons et configurons\u00a0; l'exploitation se convient au contrat.",
+            "text": "Le matériel, les accès et les sauvegardes vous appartiennent. Nous installons et configurons ; l'exploitation se convient au contrat.",
             "href": "/deploiement/sur-place/",
             "link_label": "Voir le mode sur place"
           },
@@ -234,7 +234,7 @@
           },
           {
             "title": "Les deux, côte à côte.",
-            "text": "Qui contrôle quoi, point par point. Une combinaison des deux modes peut être étudiée au cas par cas\u00a0; aucune offre mixte n'est définie à ce jour.",
+            "text": "Qui contrôle quoi, point par point. Une combinaison des deux modes peut être étudiée au cas par cas ; aucune offre mixte n'est définie à ce jour.",
             "href": "/deploiement/",
             "link_label": "Comparer les modes"
           }
@@ -275,7 +275,7 @@
           },
           {
             "title": "Un schéma des flux avant le départ.",
-            "text": "Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent\u00a0: par écrit, avant la mise en service."
+            "text": "Où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent : par écrit, avant la mise en service."
           },
           {
             "title": "Aucune bascule en silence.",
@@ -283,7 +283,7 @@
           },
           {
             "title": "Un système réversible.",
-            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables\u00a0; le contrat le prévoit."
+            "text": "Vos documents, vos configurations et vos flux de travaux restent exportables ; le contrat le prévoit."
           },
           {
             "title": "Un état dit tel qu'il est.",
@@ -294,7 +294,7 @@
     },
     {
       "collection": "block_section",
-      "role": "La Loi 25\u00a0: ce que la loi demande à l'entreprise, ce que Nexora AI fournit, ce qui reste à l'entreprise (CL-L05).",
+      "role": "La Loi 25 : ce que la loi demande à l'entreprise, ce que Nexora AI fournit, ce qui reste à l'entreprise (CL-L05).",
       "claims": [
         "CL-L01",
         "CL-L02",
@@ -311,7 +311,7 @@
       },
       "translation": {
         "title": "La Loi 25 et votre entreprise.",
-        "body": "<p>La Loi 25 (la loi québécoise sur la protection des renseignements personnels dans le secteur privé) s'adresse à votre entreprise, pas à votre fournisseur. Aucun logiciel ni aucun fournisseur ne rend une entreprise conforme\u00a0: la responsabilité reste à celle qui détient les renseignements.</p><p>Notre rôle\u00a0: vous donner de quoi répondre, par écrit, aux questions que la loi vous oblige à poser. <a href=\"/vos-donnees/\">Voir les cinq engagements sur vos données</a>.</p>",
+        "body": "<p>La Loi 25 (la loi québécoise sur la protection des renseignements personnels dans le secteur privé) s'adresse à votre entreprise, pas à votre fournisseur. Aucun logiciel ni aucun fournisseur ne rend une entreprise conforme : la responsabilité reste à celle qui détient les renseignements.</p><p>Notre rôle : vous donner de quoi répondre, par écrit, aux questions que la loi vous oblige à poser. <a href=\"/vos-donnees/\">Voir les cinq engagements sur vos données</a>.</p>",
         "items": [
           {
             "title": "Ce que la loi demande à votre entreprise.",
@@ -330,7 +330,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que Nexora AI ne promet pas\u00a0: cinq limites écrites.",
+      "role": "Ce que Nexora AI ne promet pas : cinq limites écrites.",
       "claims": ["CL-75", "CL-77", "CL-L05", "CL-87"],
       "fields": {
         "columns": "3",
@@ -344,7 +344,7 @@
         "cards": [
           {
             "title": "Un risque nul.",
-            "text": "Aucun système n'en est exempt. Nous réduisons les expositions et nous les décrivons\u00a0; nous ne les déclarons pas inexistantes."
+            "text": "Aucun système n'en est exempt. Nous réduisons les expositions et nous les décrivons ; nous ne les déclarons pas inexistantes."
           },
           {
             "title": "Une immunité juridique.",
@@ -352,14 +352,14 @@
           },
           {
             "title": "Une conformité automatique.",
-            "text": "Aucun logiciel et aucun fournisseur ne rend une entreprise conforme à la loi sur la protection des renseignements personnels\u00a0: cela dépend de ses pratiques, de ses contrats et de sa gouvernance. Nous préparons des documents types pour y contribuer\u00a0; ils ne sont pas encore disponibles."
+            "text": "Aucun logiciel et aucun fournisseur ne rend une entreprise conforme à la loi sur la protection des renseignements personnels : cela dépend de ses pratiques, de ses contrats et de sa gouvernance. Nous préparons des documents types pour y contribuer ; ils ne sont pas encore disponibles."
           },
           {
             "title": "Un fonctionnement sans aucun flux sortant.",
-            "text": "Mises à jour, licences, modèles externes éventuels\u00a0: tout flux sortant est listé, et nous ne disons «\u00a0aucune donnée ne sort\u00a0» que si nous l'avons vérifié sur votre configuration."
+            "text": "Mises à jour, licences, modèles externes éventuels : tout flux sortant est listé, et nous ne disons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration."
           },
           {
-            "title": "Une souveraineté «\u00a0totale\u00a0».",
+            "title": "Une souveraineté « totale ».",
             "text": "Le mot n'a pas de définition légale, et certaines dépendances (modèles de base, composants, matériel) viennent toujours d'ailleurs. Nous préférons nommer chaque dépendance."
           }
         ]
@@ -383,34 +383,34 @@
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Souveraineté\u00a0: vos questions.",
+        "title": "Souveraineté : vos questions.",
         "items": [
           {
-            "question": "Souverain veut-il dire hors ligne\u00a0?",
-            "answer": "Non, pas automatiquement. Un système peut fonctionner sur votre serveur et pourtant recevoir des mises à jour, vérifier une licence ou appeler un modèle externe si vous l'avez choisi. Nous listons chaque flux sortant avant la mise en service\u00a0; un fonctionnement sans aucun flux sortant se décide et se vérifie au cas par cas."
+            "question": "Souverain veut-il dire hors ligne ?",
+            "answer": "Non, pas automatiquement. Un système peut fonctionner sur votre serveur et pourtant recevoir des mises à jour, vérifier une licence ou appeler un modèle externe si vous l'avez choisi. Nous listons chaque flux sortant avant la mise en service ; un fonctionnement sans aucun flux sortant se décide et se vérifie au cas par cas."
           },
           {
-            "question": "Un serveur au Québec suffit-il\u00a0?",
+            "question": "Un serveur au Québec suffit-il ?",
             "answer": "Non. La localisation des machines ne dit rien des modèles appelés, des sauvegardes, des journaux ni des sous-traitants. C'est pourquoi nous examinons quatre couches, et pas une seule."
           },
           {
-            "question": "Mes données servent-elles à entraîner un modèle\u00a0?",
+            "question": "Mes données servent-elles à entraîner un modèle ?",
             "answer": "Non, jamais. Nexora AI n'utilise ni vos données, ni vos documents, ni vos invites, ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers."
           },
           {
-            "question": "Mes données sont-elles vendues\u00a0?",
+            "question": "Mes données sont-elles vendues ?",
             "answer": "Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui lui est confiée."
           },
           {
-            "question": "Pouvez-vous prouver où sont mes données\u00a0?",
+            "question": "Pouvez-vous prouver où sont mes données ?",
             "answer": "Nous remettons par écrit le schéma des flux de votre installation et, dans le mode hébergé, le lieu de l'hébergement, des sauvegardes et des journaux ainsi que la liste des sous-traitants. Ce sont des documents que vous pouvez faire vérifier."
           },
           {
-            "question": "Et si je veux utiliser un modèle externe\u00a0?",
-            "answer": "C'est possible, à deux conditions\u00a0: vous l'activez par écrit, et il apparaît au schéma des flux comme un flux sortant. Dans WorkStudio, chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers."
+            "question": "Et si je veux utiliser un modèle externe ?",
+            "answer": "C'est possible, à deux conditions : vous l'activez par écrit, et il apparaît au schéma des flux comme un flux sortant. Dans WorkStudio, chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers."
           },
           {
-            "question": "Que deviennent mes données à la fin du contrat\u00a0?",
+            "question": "Que deviennent mes données à la fin du contrat ?",
             "answer": "Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit. La conservation et l'effacement applicables sont décrits dans l'étude de déploiement."
           }
         ]
@@ -418,7 +418,7 @@
     },
     {
       "collection": "block_cta",
-      "role": "CTA final\u00a0: étude de déploiement.",
+      "role": "CTA final : étude de déploiement.",
       "claims": ["CL-05", "CL-10"],
       "fields": {
         "tone": "sombre"

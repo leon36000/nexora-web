@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { HTML_LANG, type Lang, localizePath, OG_LOCALE } from "@/i18n/config";
 import { langOfCode } from "@/server/cms/lang";
 import type { PageModel, SiteSettings } from "@/server/cms/model";
+import { isArticleLike } from "./byline";
 import { mediaPath } from "./media";
 import { ogImage } from "./seo/og";
 
@@ -12,6 +13,8 @@ type Input = {
   siteName: string;
   /** Aperçu authentifié : jamais indexable. */
   preview: boolean;
+  /** Dates réelles de la page (Directus) : servent aux guides ; absentes = omises, jamais inventées. */
+  dates?: { createdAt: string | null; updatedAt: string | null } | null;
 };
 
 const pathOf = (slug: string) => (slug === "" ? "/" : `/${slug}`);
@@ -26,6 +29,7 @@ export function buildCmsMetadata({
   settings,
   siteName,
   preview,
+  dates = null,
 }: Input): Metadata {
   const base = page.seoTitle ?? page.title;
   const template = settings?.seoTitleTemplate;
@@ -54,6 +58,9 @@ export function buildCmsMetadata({
     ? [{ url: mediaPath(imageId) }]
     : [ogImage(lang, pathOf(page.slug), title)];
   const hidden = preview || page.noindex;
+  // Un guide est un article (comme son Article JSON-LD) : type, dates réelles et auteur (l'entreprise).
+  const frSlug = fr?.slug ?? page.slug;
+  const article = page.slug !== "" && isArticleLike(frSlug);
 
   return {
     title,
@@ -63,7 +70,14 @@ export function buildCmsMetadata({
       ? { index: false, follow: false, nocache: true }
       : { index: true, follow: true },
     openGraph: {
-      type: "website",
+      ...(article
+        ? {
+            type: "article" as const,
+            ...(dates?.createdAt ? { publishedTime: dates.createdAt } : {}),
+            ...(dates?.updatedAt ? { modifiedTime: dates.updatedAt } : {}),
+            authors: [siteName],
+          }
+        : { type: "website" as const }),
       siteName,
       title,
       description,

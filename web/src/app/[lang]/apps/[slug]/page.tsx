@@ -86,6 +86,12 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
             {content.hook}
           </p>
         </header>
+        <section aria-labelledby="answer-title" className="mt-10 max-w-3xl">
+          <h2 id="answer-title" className="text-h4 text-fg">
+            {d.answerTitle}
+          </h2>
+          <p className="mt-2 text-body text-fg-muted">{content.answer}</p>
+        </section>
         <dl className="mt-12 grid gap-10 md:grid-cols-2">
           <div>
             <dt className="text-h4 text-fg">{d.audienceTitle}</dt>
