@@ -1,4 +1,4 @@
-import { MODALITIES } from "@nexora/db";
+import { MODALITIES, MODEL_TAGS } from "@nexora/db";
 import { z } from "zod";
 
 /**
@@ -22,6 +22,7 @@ const benchmark = z
     publisher: text(80),
     sourceUrl: httpsUrl,
     measuredAt: day.optional(),
+    category: text(40).optional(),
   })
   .strict();
 
@@ -29,7 +30,14 @@ const modalities = z.array(z.enum(MODALITIES)).max(MODALITIES.length);
 
 export const modelSheetSchema = z
   .object({
+    author: text(80).optional(),
     family: text(80).optional(),
+    tags: z.array(z.enum(MODEL_TAGS)).max(MODEL_TAGS.length).optional(),
+    quantization: z
+      .string()
+      .regex(/^[a-z0-9._-]{2,16}$/)
+      .optional(),
+    homepageUrl: httpsUrl.optional(),
     releasedAt: day.optional(),
     knowledgeCutoff: month.optional(),
     license: z

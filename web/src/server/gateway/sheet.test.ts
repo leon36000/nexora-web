@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest";
 import { modelRoutingSchema, modelSheetSchema } from "./sheet";
 
 const complete = {
+  author: "Z.ai",
   family: "GLM",
+  tags: ["raisonnement", "code", "contexte-long", "poids-ouverts"],
+  quantization: "fp4",
+  homepageUrl: "https://huggingface.co/zai-org/GLM-5.3",
   releasedAt: "2026-08-18",
   knowledgeCutoff: "2026-05",
   license: {
@@ -20,6 +24,7 @@ const complete = {
       publisher: "Z.ai",
       sourceUrl: "https://z.ai/blog/glm-5.3",
       measuredAt: "2026-08-18",
+      category: "Code",
     },
   ],
   sources: [
@@ -82,6 +87,15 @@ describe("fiche de modèle", () => {
   it("refuse une date de sortie qui n'existe pas", () => {
     expect(() =>
       modelSheetSchema.parse({ ...complete, releasedAt: "2026-13-45" }),
+    ).toThrow();
+  });
+
+  it("refuse une étiquette hors du vocabulaire fermé et une quantification mal formée", () => {
+    expect(() =>
+      modelSheetSchema.parse({ ...complete, tags: ["meilleur-du-monde"] }),
+    ).toThrow();
+    expect(() =>
+      modelSheetSchema.parse({ ...complete, quantization: "FP 8 bits" }),
     ).toThrow();
   });
 

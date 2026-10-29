@@ -119,6 +119,24 @@ export interface ModelCapabilities {
 export const MODALITIES = ["text", "image", "video", "audio"] as const;
 export type Modality = (typeof MODALITIES)[number];
 
+/**
+ * Étiquettes de tri du catalogue public (filtres façon OpenRouter). Vocabulaire fermé : une étiquette n'est posée que
+ * si la fiche ou les capacités du modèle la justifient.
+ */
+export const MODEL_TAGS = [
+  "raisonnement",
+  "code",
+  "agents",
+  "vision",
+  "multilingue",
+  "contexte-long",
+  "rapide",
+  "economique",
+  "poids-ouverts",
+  "embeddings",
+] as const;
+export type ModelTag = (typeof MODEL_TAGS)[number];
+
 /** Une mesure publiée : toujours rattachée à celui qui l'a publiée et à une page que l'on peut relire. */
 export interface ModelBenchmark {
   name: string;
@@ -129,6 +147,8 @@ export interface ModelBenchmark {
   publisher: string;
   sourceUrl: string;
   measuredAt?: string;
+  /** Regroupement d'affichage : « Code », « Raisonnement », « Agents », « Connaissances »… */
+  category?: string;
 }
 
 /**
@@ -136,7 +156,15 @@ export interface ModelBenchmark {
  * sourcé (éditeur et page) ; un champ inconnu reste absent plutôt qu'inventé.
  */
 export interface ModelSheet {
+  /** Éditeur du modèle (« DeepSeek », « Z.ai », « Qwen »…). */
+  author?: string;
   family?: string;
+  /** Étiquettes de tri du catalogue public. */
+  tags?: ModelTag[];
+  /** Précision de calcul chez l'hébergeur (« fp8 », « fp4 », « bf16 »). */
+  quantization?: string;
+  /** Page du modèle chez l'éditeur ou sur Hugging Face. */
+  homepageUrl?: string;
   /** AAAA-MM-JJ */
   releasedAt?: string;
   /** AAAA-MM */
