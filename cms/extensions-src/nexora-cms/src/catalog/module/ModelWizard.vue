@@ -154,6 +154,14 @@
 					{{ provider.secretPresent === null ? 'aucune clé requise' : provider.secretPresent ? 'clé présente dans le Coffre' : `clé absente du Coffre (référence ${provider.secretRef})` }}.
 					<a v-if="provider.secretPresent === false || !provider.enabled" href="#" @click.prevent="$emit('goto-providers')">Ouvrir l’onglet Fournisseurs</a>
 				</v-notice>
+				<div class="preview-box">
+					<v-checkbox v-model="previewChecked" :label="PREVIEW_LABEL" />
+					<small>{{ PREVIEW_HELP }}</small>
+					<v-notice v-if="suggestion && !previewChecked" type="info">{{ suggestion }}</v-notice>
+					<v-notice v-if="saved && saved.availability === 'preview' && !previewChecked" type="warning">
+						En décochant cette case, vous demandez de passer le modèle en service : le serveur exigera la clé du fournisseur dans le Coffre, et une nouvelle version du catalogue devra être publiée. Le bouton « Passer en service » (étape Publication) fait les deux d’un coup.
+					</v-notice>
+				</div>
 				<p class="hint">Le fournisseur n’est pas dans la liste ? <a href="#" @click.prevent="$emit('goto-providers')">Ajoutez-le d’abord</a> (onglet Fournisseurs, bouton « Ajouter un fournisseur »).</p>
 				<label>
 					Identifiant du modèle chez ce fournisseur
@@ -254,6 +262,16 @@
 				Un brouillon n’est visible d’aucun client. Publier met le modèle en ligne dans une nouvelle version du catalogue
 				<small>(elle inclut aussi tout autre changement en attente : voir l’onglet « Versions »)</small>.
 			</p>
+			<p v-if="saved">
+				Disponibilité : <span :class="'chip ' + availabilityView(saved.availability).tone">{{ availabilityView(saved.availability).label }}</span>
+				<small v-if="saved.availability === 'preview'"> Visible au catalogue public, pas encore appelable.</small>
+			</p>
+			<v-notice v-if="saved && saved.availability === 'preview' && saved.status === 'published'" type="info">
+				<div class="row">
+					<span>Ce modèle est en aperçu. Une fois la clé du fournisseur dans le Coffre, passez-le en service : les contrôles complets s’appliquent et une nouvelle version du catalogue est publiée.</span>
+					<v-button small :loading="busy === 'live'" @click="goLive">Passer en service</v-button>
+				</div>
+			</v-notice>
 			<div class="row">
 				<h4>Contrôles préalables</h4>
 				<v-button x-small secondary :loading="busy === 'ready'" @click="loadReadiness">Revérifier</v-button>
@@ -323,10 +341,11 @@ import {
 	shapeOfRecord,
 } from './price-form';
 import { REGION_OPTIONS } from './provider-form';
-import { publishModel, STEP_LABELS } from './publish';
+import { canPromote, PREVIEW_HELP, PREVIEW_LABEL, previewSuggestion } from './availability';
+import { promoteToLive, publishModel, STEP_LABELS } from './publish';
 import { buildChecklist, type Readiness } from './readiness';
 import { emptyRouteForm, moveItem, routeBody, routeFloorRows, validateRouteForm } from './route-form';
-import { modelStatusView } from './view';
+import { availabilityView, modelStatusView } from './view';
 
 const props = defineProps<{ data: any; call: CatalogCall; model: any | null; startStep?: string }>();
 const emit = defineEmits<{
@@ -558,9 +577,22 @@ const sync = ref(!!props.data.litellmConfigured);
 const outcome = ref<any>(null);
 const log = ref<string[]>([]);
 const checklist = computed(() =>
-	readiness.value ? buildChecklist(readiness.value, { secretRef: provider.value?.secretRef ?? null, hasRoutes: routes.value.some((r) => r.enabled) }) : [],
+	readiness.value
+		? buildChecklist(readiness.value, {
+				secretRef: provider.value?.secretRef ?? null,
+				hasRoutes: routes.value.some((r) => r.enabled),
+				availability: saved.value?.availability === 'preview' ? 'preview' : 'live',
+			})
+		: [],
 );
 const ready = computed(() => readiness.value?.ready === true);
+const previewChecked = computed({
+	get: () => form.availability === 'preview',
+	set: (v: boolean) => {
+		form.availability = v ? 'preview' : 'live';
+	},
+});
+const suggestion = computed(() => previewSuggestion(provider.value));
 const stepLabel = (s: keyof typeof STEP_LABELS) => STEP_LABELS[s];
 
 async function loadReadiness() {
@@ -586,6 +618,24 @@ async function publish() {
 	const fresh = await props.call('GET', `models/${form.id}`);
 	if (fresh.ok) saved.value = fresh.data;
 	if (outcome.value.ok) emit('notify', `${form.publicId} : publié.`, 'success');
+	await loadReadiness();
+	busy.value = '';
+}
+
+async function goLive() {
+	if (!saved.value || !canPromote(saved.value)) return;
+	if (!window.confirm(`Passer « ${form.publicId} » en service ? Les contrôles complets s’appliquent (clé du fournisseur dans le Coffre) et une nouvelle version du catalogue sera publiée : le modèle deviendra appelable.`)) return;
+	busy.value = 'live';
+	error.value = info.value = '';
+	log.value = [];
+	outcome.value = await promoteToLive(props.call, { id: form.id }, { sync: sync.value && !!props.data.litellmConfigured }, (s) => log.value.push(STEP_LABELS[s]));
+	emit('changed');
+	const fresh = await props.call('GET', `models/${form.id}`);
+	if (fresh.ok) {
+		saved.value = fresh.data;
+		form.availability = fresh.data.availability === 'preview' ? 'preview' : 'live';
+	}
+	if (outcome.value.ok) emit('notify', `${form.publicId} : en service.`, 'success');
 	await loadReadiness();
 	busy.value = '';
 }
@@ -623,6 +673,7 @@ onMounted(async () => {
 .checks > div { display: grid; gap: 4px; }
 small, .hint { color: var(--theme--foreground-subdued); font-weight: 400; }
 .err { color: var(--theme--danger); }
+.preview-box { display: grid; gap: 8px; border: 1px dashed var(--theme--border-color); border-radius: var(--theme--border-radius); padding: 12px; }
 .ok { color: var(--theme--success); }
 .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .nav { display: flex; flex-wrap: wrap; gap: 8px; }

@@ -38,6 +38,8 @@ export interface ModelForm {
   descriptionEn: string;
   kind: string;
   visibility: string;
+  /** `preview` : visible au catalogue, pas encore appelable (case « Aperçu »). */
+  availability: "live" | "preview";
   residency: string;
   releasedAt: string;
   knowledgeCutoff: string;
@@ -70,6 +72,7 @@ export const emptyModelForm = (): ModelForm => ({
   descriptionEn: "",
   kind: "chat",
   visibility: "public",
+  availability: "live",
   residency: "autre",
   releasedAt: "",
   knowledgeCutoff: "",
@@ -127,6 +130,8 @@ export interface ModelRecord {
   capabilities: Record<string, boolean | undefined>;
   residency: string;
   visibility: string;
+  /** Absente des modèles enregistrés avant l'aperçu : « live ». */
+  availability?: string;
   status: string;
   sunsetAt: string | null;
   sheet: Sheet;
@@ -157,6 +162,7 @@ export function modelToForm(m: ModelRecord): ModelForm {
     descriptionEn: m.descriptionEn,
     kind: m.kind,
     visibility: m.visibility,
+    availability: m.availability === "preview" ? "preview" : "live",
     residency: m.residency,
     releasedAt: s.releasedAt ?? "",
     knowledgeCutoff: s.knowledgeCutoff ?? "",
@@ -249,6 +255,7 @@ export function formToBody(
     ),
     residency: f.residency,
     visibility: f.visibility,
+    availability: f.availability,
     sunsetAt: f.sunsetAt.trim()
       ? keepSunset
         ? existing?.sunsetAt

@@ -59,3 +59,19 @@ describe("lien vers le Coffre", () => {
     expect(vaultUrl("/")).toBe("/admin/nexora-vault");
   });
 });
+
+describe("disponibilité d'un modèle", () => {
+  test("aperçu et service", async () => {
+    const { availabilityView } = await import("./view");
+    expect(availabilityView("preview")).toMatchObject({
+      label: "Aperçu",
+      tone: "warning",
+    });
+    expect(availabilityView("live")).toMatchObject({
+      label: "En service",
+      tone: "success",
+    });
+    // Un modèle enregistré avant l'aperçu n'a pas la mention : il est en service.
+    expect(availabilityView(undefined).label).toBe("En service");
+  });
+});

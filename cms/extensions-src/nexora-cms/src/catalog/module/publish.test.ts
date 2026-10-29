@@ -1,6 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import type { CallResult } from "./errors";
-import { publishCatalog, publishModel } from "./publish";
+import {
+  promoteToLive,
+  publishCatalog,
+  publishModel,
+  STEP_LABELS,
+} from "./publish";
 
 type Handler = (body: unknown) => CallResult;
 function fake(handlers: Record<string, Handler>) {
@@ -187,5 +192,63 @@ describe("mettre en ligne une version du catalogue", () => {
       "POST versions/:id/publish",
     ]);
     expect(r).toMatchObject({ ok: true, version: "cat_abc" });
+  });
+});
+
+describe("passer un modèle en service", () => {
+  test("modifie la disponibilité, puis met en ligne une nouvelle version du catalogue", async () => {
+    const bodies: unknown[] = [];
+    const { call, calls } = fake({
+      "PATCH models/:id": (b) => (bodies.push(b), ok()),
+      "POST versions": () => draftOk(),
+      "POST versions/:id/approve": () => ok(),
+      "POST versions/:id/publish": () => ok(),
+      "POST sync-litellm": () => ok(),
+    });
+    const steps: string[] = [];
+    const r = await promoteToLive(
+      call,
+      model("published"),
+      { sync: true },
+      (s) => steps.push(s),
+    );
+    expect(bodies).toEqual([{ availability: "live" }]);
+    expect(calls).toEqual([
+      "PATCH models/:id",
+      "POST versions",
+      "POST versions/:id/approve",
+      "POST versions/:id/publish",
+      "POST sync-litellm",
+    ]);
+    expect(steps).toEqual([
+      "model_live",
+      "version_drafted",
+      "version_approved",
+      "version_published",
+      "synced",
+    ]);
+    expect(r).toMatchObject({ ok: true, synced: true });
+  });
+
+  test("sans clé dans le Coffre, le serveur refuse : rien n'est publié et les problèmes sont rendus", async () => {
+    const { call, calls } = fake({
+      "PATCH models/:id": () => ({
+        ok: false,
+        error: {
+          code: "publication_refused",
+          status: 422,
+          text: "Refusé par la garde de publication.",
+          issues: [{ code: "secret_missing", provider: "deepinfra" }],
+        },
+      }),
+    });
+    const r = await promoteToLive(call, model("published"), { sync: false });
+    expect(calls).toEqual(["PATCH models/:id"]);
+    expect(r).toMatchObject({ ok: false, failedStep: "model_live" });
+    if (!r.ok) expect(r.error.issues[0]?.code).toBe("secret_missing");
+  });
+
+  test("a un libellé d'étape lisible", () => {
+    expect(STEP_LABELS.model_live).toBe("Modèle passé en service");
   });
 });

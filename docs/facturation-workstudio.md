@@ -16,7 +16,7 @@
 
 | Étape | Entrée | Sortie |
 |---|---|---|
-| Coût amont, tarif de **pointe** (feuille de départ `catalog-ia-seed.ts`), $ US par million | 0,30 | 1,20 |
+| Coût amont, tarif de **pointe** (feuille de départ du 28/10/2026, fournisseurs directs : remplacée le 29/10 par le catalogue DeepInfra, voir `docs/catalogue-deepinfra.md`), $ US par million | 0,30 | 1,20 |
 | × taux de référence 1,4025 (Banque du Canada, 26/10/2026) = $ CA | 0,420750 | 1,683000 |
 | × 1,10 (marge de 10 %) = prix de vente $ CA par million | 0,462825 | 1,851300 |
 
