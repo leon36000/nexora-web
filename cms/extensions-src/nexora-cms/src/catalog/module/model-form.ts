@@ -173,7 +173,9 @@ export function modelToForm(m: ModelRecord): ModelForm {
     maxOutputTokens:
       m.maxOutputTokens === null ? "" : String(m.maxOutputTokens),
     capabilities: Object.fromEntries(
-      Object.entries(m.capabilities ?? {}).filter(([, v]) => v === true),
+      Object.entries(m.capabilities ?? {}).filter(
+        ([, v]) => typeof v === "boolean",
+      ),
     ) as Record<string, boolean>,
     providerId: m.providerId,
     upstreamId: m.upstreamId,
@@ -243,7 +245,7 @@ export function formToBody(
       ? Number(f.maxOutputTokens)
       : null,
     capabilities: Object.fromEntries(
-      Object.entries(f.capabilities).filter(([, v]) => v === true),
+      Object.entries(f.capabilities).filter(([, v]) => typeof v === "boolean"),
     ),
     residency: f.residency,
     visibility: f.visibility,

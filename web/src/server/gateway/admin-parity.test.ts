@@ -5,12 +5,14 @@ import {
   upstreamCadMicro as cmsUpstreamCad,
   windowProblems as cmsWindowProblems,
 } from "../../../../cms/extensions-src/nexora-cms/src/catalog/module/pricing";
+import { routeFloorRows } from "../../../../cms/extensions-src/nexora-cms/src/catalog/module/route-form";
 import {
   checkPrice,
   sellFromMargin,
   upstreamCadMicro,
   windowProblems,
 } from "./pricing";
+import { guardSnapshot, type SnapshotModel } from "./snapshot";
 
 /**
  * Parité : l'aperçu du prix de vente du module Directus (cms/…/module/pricing.ts) doit rendre EXACTEMENT les mêmes
@@ -38,7 +40,9 @@ describe("parité de l'aperçu des prix avec le serveur", () => {
       const fx = 900_000n + big(r, 1_500_000);
       const margin = int(r, 5000);
       expect(cmsUpstreamCad(up, fx)).toBe(upstreamCadMicro(up, fx));
-      expect(cmsSellFromMargin(up, fx, margin)).toBe(sellFromMargin(up, fx, margin));
+      expect(cmsSellFromMargin(up, fx, margin)).toBe(
+        sellFromMargin(up, fx, margin),
+      );
     }
   });
 
@@ -64,8 +68,14 @@ describe("parité de l'aperçu des prix avec le serveur", () => {
       const sell = {
         input: pos(near(upstream.input)),
         output: pos(near(upstream.output)),
-        cache: upstream.cache === null && r() < 0.5 ? null : pos(near(upstream.cache ?? upstream.input)),
-        cacheWrite: upstream.cacheWrite === null && r() < 0.5 ? null : pos(near(upstream.cacheWrite ?? upstream.input)),
+        cache:
+          upstream.cache === null && r() < 0.5
+            ? null
+            : pos(near(upstream.cache ?? upstream.input)),
+        cacheWrite:
+          upstream.cacheWrite === null && r() < 0.5
+            ? null
+            : pos(near(upstream.cacheWrite ?? upstream.input)),
       };
       const server = checkPrice(
         {
@@ -95,12 +105,175 @@ describe("parité de l'aperçu des prix avec le serveur", () => {
     for (let i = 0; i < 2000; i++) {
       const windows = Array.from({ length: int(r, 3) }, (_, k) => ({
         label: `p${k}`,
-        days: Array.from({ length: int(r, 3) }, () => int(r, 7) - (r() < 0.05 ? 1 : 0)),
+        days: Array.from(
+          { length: int(r, 3) },
+          () => int(r, 7) - (r() < 0.05 ? 1 : 0),
+        ),
         startMinute: int(r, 1500) - 20,
         endMinute: int(r, 1500) - 20,
         upstream: set,
       }));
       expect(cmsWindowProblems(windows)).toEqual(windowProblems(windows));
+    }
+  });
+
+  it("mêmes routes de secours qui ne tiennent pas le plancher, au prix de base comme dans chaque plage (1 500 cas)", () => {
+    const r = rng(2026);
+    const maybe = <T>(v: T): T | null => (r() < 0.5 ? null : v);
+    for (let i = 0; i < 1500; i++) {
+      const fx = 900_000n + big(r, 1_500_000);
+      const floor = int(r, 2500);
+      const sellOf = (cost: bigint) => {
+        const around = sellFromMargin(cost, fx, floor) + BigInt(int(r, 6)) - 3n;
+        return around < 1n ? 1n : around;
+      };
+      const base = {
+        input: big(r, 3_000_000),
+        output: big(r, 6_000_000),
+        cache: maybe(big(r, 600_000)),
+      };
+      const baseSell = {
+        input: sellOf(base.input),
+        output: sellOf(base.output),
+        cache: base.cache === null ? null : sellOf(base.cache),
+      };
+      const route = {
+        input: big(r, 3_000_000),
+        output: big(r, 6_000_000),
+        cache: maybe(big(r, 600_000)),
+      };
+      const windows = Array.from({ length: int(r, 2) }, (_, k) => {
+        const up = {
+          input: base.input / 2n,
+          output: base.output / 2n,
+          cache: base.cache === null ? null : base.cache / 2n,
+        };
+        const sell = {
+          input: sellOf(up.input),
+          output: sellOf(up.output),
+          cache: up.cache === null ? null : sellOf(up.cache),
+        };
+        return {
+          label: `p${k}`,
+          days: [k],
+          startMinute: 0,
+          endMinute: 60,
+          up,
+          sell,
+        };
+      });
+      const s = (v: bigint | null) => (v === null ? null : v.toString());
+      const model: SnapshotModel = {
+        id: "m",
+        publicId: "nexora/x",
+        name: "x",
+        descriptionFr: "",
+        descriptionEn: "",
+        kind: "chat",
+        providerId: "p",
+        upstreamId: "u",
+        contextMax: 1,
+        maxOutputTokens: null,
+        capabilities: {},
+        residency: "autre",
+        visibility: "public",
+        sunsetAt: null,
+        routes: [
+          {
+            id: "r",
+            providerId: "p",
+            upstreamId: "u2",
+            position: 1,
+            upstream: {
+              input: route.input.toString(),
+              output: route.output.toString(),
+              cache: s(route.cache),
+            },
+          },
+        ],
+        price: {
+          id: "pr",
+          upstreamInputUsdMicro: base.input.toString(),
+          upstreamOutputUsdMicro: base.output.toString(),
+          upstreamCacheUsdMicro: s(base.cache),
+          sellInputCadMicro: baseSell.input.toString(),
+          sellOutputCadMicro: baseSell.output.toString(),
+          sellCacheCadMicro: s(baseSell.cache),
+          windows: windows.map((w) => ({
+            label: w.label,
+            days: w.days,
+            startMinute: w.startMinute,
+            endMinute: w.endMinute,
+            upstream: {
+              input: w.up.input.toString(),
+              output: w.up.output.toString(),
+              cache: s(w.up.cache),
+              cacheWrite: null,
+            },
+            sell: {
+              input: w.sell.input.toString(),
+              output: w.sell.output.toString(),
+              cache: s(w.sell.cache),
+              cacheWrite: null,
+            },
+          })),
+          marginBps: 0,
+          marginFloorBps: floor,
+          effectiveAt: "2026-01-01T00:00:00.000Z",
+          note: "",
+        },
+      };
+      const issues = guardSnapshot(
+        {
+          schema: 1,
+          fx: {
+            id: "f",
+            usdToCadMicro: fx.toString(),
+            effectiveAt: "2026-01-01T00:00:00.000Z",
+          },
+          providers: [
+            {
+              id: "p",
+              code: "p",
+              name: "p",
+              type: "vllm",
+              baseUrl: "http://x",
+              litellmBaseUrl: null,
+              secretRef: null,
+              region: "autre",
+              dataPolicyFr: "",
+              dataPolicyEn: "",
+              priority: 1,
+              enabled: true,
+            },
+          ],
+          models: [model],
+        },
+        { secretExists: () => true },
+      );
+      const server = issues
+        .filter((x) => x.code === "route_below_margin_floor")
+        .map((x) => (x as { field: string }).field)
+        .sort();
+      const shape = {
+        upstream: { ...base, cacheWrite: null },
+        sell: { ...baseSell, cacheWrite: null },
+        marginBps: 0,
+        floorBps: floor,
+        windows: windows.map((w) => ({
+          label: w.label,
+          days: w.days,
+          startMinute: w.startMinute,
+          endMinute: w.endMinute,
+          upstream: { ...w.up, cacheWrite: null },
+          sell: { ...w.sell, cacheWrite: null },
+        })),
+      };
+      const client = routeFloorRows(route, shape, fx, "chat")
+        .filter((row) => !row.holds)
+        .map((row) => row.dim)
+        .sort();
+      expect(client).toEqual(server);
     }
   });
 });

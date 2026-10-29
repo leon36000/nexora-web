@@ -111,6 +111,16 @@ describe("aller-retour fiche -> formulaire -> corps", () => {
     expect(sheet).not.toHaveProperty("modalities");
     expect(sheet.benchmarks).toBeDefined();
   });
+  test("une capacité explicitement fausse n'est pas perdue", () => {
+    const m = { ...deepseek, capabilities: { tools: true, vision: false } };
+    expect(formToBody(modelToForm(m), m).capabilities).toEqual({
+      tools: true,
+      vision: false,
+    });
+    const f = modelToForm(m);
+    delete f.capabilities.vision;
+    expect(formToBody(f, m).capabilities).toEqual({ tools: true });
+  });
   test("licence sans nom (poids ouverts seulement) et date de retrait conservée telle quelle", () => {
     const m = {
       ...deepseek,

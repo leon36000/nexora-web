@@ -94,10 +94,12 @@ export function routeFloorRows(
           ...(failing.get(issue.field) ?? []),
           s.where,
         ]);
+  // Le poste « cache » n'existe que si un prix de vente de cache est fixé, au prix de base ou dans une plage.
+  const hasCache = sells.some((s) => s.sell.cache !== null);
   const dims: { dim: Dim; cost: bigint }[] = [
     { dim: "input", cost: route.input },
     { dim: "output", cost: route.output },
-    ...(price.sell.cache !== null
+    ...(hasCache
       ? [{ dim: "cache" as Dim, cost: route.cache ?? route.input }]
       : []),
   ];
