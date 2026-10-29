@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { CONTACT_SUBJECTS, resolveContactSubject } from "./contact-subject";
 
-const prefills = { "apps-webpilot": "Liste d’attente : Nexora WebPilot." };
+const prefills = {
+  "apps-webpilot": "Liste d’attente : Nexora WebPilot.",
+  "modele-apercu": "Prévenez-moi à l’ouverture du modèle : ",
+};
 
 describe("sujet du formulaire de contact (?sujet=)", () => {
   it("garde les sujets existants des pages (démonstration, étude, diagnostic, Vision, Croissance)", () => {
@@ -35,5 +38,23 @@ describe("sujet du formulaire de contact (?sujet=)", () => {
     expect(resolveContactSubject("inconnu", prefills)).toEqual({});
     for (const subject of ["__proto__", "constructor", "toString", "valueOf"])
       expect(resolveContactSubject(subject, prefills), subject).toEqual({});
+  });
+
+  it("« modele-apercu » préremplit le message avec l'identifiant du modèle, s'il a la forme d'un identifiant", () => {
+    expect(
+      resolveContactSubject("modele-apercu", prefills, "nexora/exemple-moe"),
+    ).toEqual({
+      need: CONTACT_SUBJECTS["modele-apercu"],
+      message: "Prévenez-moi à l’ouverture du modèle : nexora/exemple-moe",
+    });
+    // sans identifiant ou avec un identifiant douteux : le message de base seulement
+    for (const detail of [null, "", "<script>", "a b", "../x"])
+      expect(
+        resolveContactSubject("modele-apercu", prefills, detail).message,
+      ).toBe("Prévenez-moi à l’ouverture du modèle : ");
+    // l'identifiant ne s'ajoute à aucun autre sujet
+    expect(
+      resolveContactSubject("apps-webpilot", prefills, "nexora/x-1").message,
+    ).toBe("Liste d’attente : Nexora WebPilot.");
   });
 });

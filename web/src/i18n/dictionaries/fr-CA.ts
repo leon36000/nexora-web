@@ -301,6 +301,7 @@ export const frCA = {
           "apps-privacy-router": "Question sur Nexora Privacy Router : ",
           "apps-creative": "Liste d’attente : Nexora Creative.",
           "apps-outils": "Liste d’attente : outils gratuits Nexora.",
+          "modele-apercu": "Prévenez-moi à l’ouverture du modèle : ",
         } as Record<string, string>,
       },
       consentMarketing: {
