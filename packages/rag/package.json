@@ -1,0 +1,22 @@
+{
+  "name": "@nexora/rag",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./chunk": "./src/chunk.ts",
+    "./extract": "./src/extract.ts",
+    "./vector": "./src/vector.ts",
+    "./queries": "./src/queries.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nexora/db": "workspace:*",
+    "node-html-parser": "^9.0.5",
+    "unpdf": "1.8.1"
+  }
+}

@@ -190,6 +190,13 @@
       "when": 1793313323955,
       "tag": "0026_apercu_modeles",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1793359298171,
+      "tag": "0028_rag_gere",
+      "breakpoints": true
     }
   ]
 }
