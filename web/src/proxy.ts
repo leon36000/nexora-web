@@ -42,6 +42,7 @@ function isMalformedPath(pathname: string): boolean {
   }
 }
 
+const DEDICATED_HOST = /^[0-9a-f]{32}\./i;
 const API_PREFIX = /^\/(?:api|v1|og|code\/ws)(?:\/|$)/;
 const PAGE_REFUSED_METHODS = new Set(["PUT", "PATCH", "DELETE"]);
 
@@ -57,6 +58,10 @@ export async function proxy(request: NextRequest) {
         "content-security-policy": API_CSP,
       },
     });
+  // Origine dédiée de l'interface de Nexora Code (`<32 hex>.<suffixe>`) : ni langue, ni CSP de page (c'est l'application de
+  // l'environnement) ; `next.config.ts` réécrit vers `/code/ws/<id>/…`, la route vérifie le suffixe et le cookie.
+  if (DEDICATED_HOST.test(request.headers.get("host") ?? ""))
+    return NextResponse.next();
   // API d'administration : trop de jetons faux depuis une même adresse -> 429 (un jeton valide passe toujours).
   if (ADMIN_PATH.test(pathname)) {
     const limited = throttleAdminFailures(

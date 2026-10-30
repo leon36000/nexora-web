@@ -45,6 +45,19 @@ export interface ProxyDeps {
   getContext: (headers: Headers) => Promise<ProxySession | null>;
   /** Appartenance à l'organisation de l'environnement (défaut : adhésions en base). */
   isMember?: (userId: string, organizationId: string) => Promise<boolean>;
+  /**
+   * Origine dédiée de l'interface web (`<id>.<suffixe>`, voir `workspace-dedicated.ts`) ; `null` : non configurée, les
+   * pages HTML de l'environnement ne sont servies nulle part.
+   */
+  dedicated?: {
+    suffix: string;
+    secret: string;
+    loadUser: (userId: string) => Promise<{
+      emailVerified: boolean;
+      isStaff: boolean;
+      twoFactorEnabled: boolean;
+    } | null>;
+  } | null;
 }
 
 export interface ProxyTarget {
@@ -207,7 +220,10 @@ const NAVIGATION_DEST = new Set([
 /** Chemin à transmettre : refuse `..`, `.`, antislash, NUL (même encodés). `null` : chemin refusé. */
 function upstreamPath(pathname: string, prefix: string): string | null {
   if (!pathname.startsWith(prefix)) return null;
-  const rest = pathname.slice(prefix.length);
+  return safeRest(pathname.slice(prefix.length));
+}
+
+function safeRest(rest: string): string | null {
   if (rest !== "" && !rest.startsWith("/")) return null;
   for (const raw of rest.split("/")) {
     let seg: string;
@@ -234,10 +250,19 @@ async function touchActivity(deps: ProxyDeps, workspaceId: string) {
     );
 }
 
+export interface ProxyOptions {
+  /**
+   * Origine dédiée (`<id>.<suffixe>`) : le chemin à transmettre est donné (et non lu sous le préfixe `/code/ws/<id>`),
+   * et la page HTML de l'environnement peut être servie (l'origine est à part de celle du site).
+   */
+  dedicatedPath?: string;
+}
+
 export async function handleWorkspaceProxy(
   request: Request,
   proxyId: string,
   deps: ProxyDeps,
+  options: ProxyOptions = {},
 ): Promise<Response> {
   try {
     // Les méthodes qui modifient exigent la même origine, AVANT toute transmission.
@@ -259,7 +284,10 @@ export async function handleWorkspaceProxy(
       );
 
     const url = new URL(request.url);
-    const path = upstreamPath(url.pathname, `/code/ws/${proxyId}`);
+    const path =
+      options.dedicatedPath !== undefined
+        ? safeRest(options.dedicatedPath)
+        : upstreamPath(url.pathname, `/code/ws/${proxyId}`);
     if (path === null)
       return errorJson(400, "invalid_path", "Adresse invalide.");
 

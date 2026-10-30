@@ -66,6 +66,11 @@ export interface WorkspaceServiceDeps {
   ) => Promise<{ ok: true } | { ok: false; reason: "quota_exceeded" }>;
   /** Commande d'installation du CLI ; `null` tant que la sortie n'est pas publiée. */
   installCommand: string | null;
+  /**
+   * Adresse d'ouverture d'un environnement prêt. Défaut : le mandataire sous `/code/ws/<id>/` (API seulement : les pages HTML
+   * n'y sont pas servies). Avec une origine dédiée (`NEXORA_CODE_HOST_SUFFIX`) : `/api/account/code/open`, qui y envoie la personne.
+   */
+  openUrl?: (proxyId: string) => string;
 }
 
 type Who = { orgId: string; userId: string };
@@ -82,7 +87,7 @@ export const workspaceOpenUrl = (siteUrl: string, proxyId: string) =>
   `${siteUrl.replace(/\/+$/, "")}/code/ws/${proxyId}/`;
 
 function stateFrom(
-  deps: Pick<WorkspaceServiceDeps, "siteUrl">,
+  deps: Pick<WorkspaceServiceDeps, "siteUrl" | "openUrl">,
   row: WorkspaceRow,
   runtime: WorkspaceRuntimeState,
 ): CodeWorkspaceState {
@@ -95,7 +100,9 @@ function stateFrom(
       return {
         status: "ready",
         usedBytes,
-        openUrl: workspaceOpenUrl(deps.siteUrl, row.proxyId),
+        openUrl:
+          deps.openUrl?.(row.proxyId) ??
+          workspaceOpenUrl(deps.siteUrl, row.proxyId),
       };
     case "restarting":
       return { status: "starting", ...base };

@@ -5,6 +5,7 @@ import { recordStorageUsageIn } from "../billing/entitlements";
 import { getDb } from "../db";
 import { log } from "../log";
 import { loadKeyring } from "../vault/crypto";
+import { dedicatedFromEnv } from "./proxy-deps";
 import {
   createWorkspaceService,
   type WorkspaceService,
@@ -41,5 +42,9 @@ export function codeWorkspaceServiceFromEnv(
     record: (orgId, delta) =>
       recordStorageUsageIn(getDb(), orgId, "code", delta),
     installCommand: env.NEXORA_CODE_INSTALL_COMMAND?.trim() || null,
+    // Origine dédiée configurée : « Ouvrir » passe par /api/account/code/open, qui envoie la personne sur son hôte.
+    openUrl: dedicatedFromEnv(env)
+      ? () => `${SITE_URL}/api/account/code/open`
+      : undefined,
   });
 }

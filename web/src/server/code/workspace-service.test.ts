@@ -400,6 +400,22 @@ describe("état selon le conteneur", () => {
     }
   });
 
+  it("avec une origine dédiée, l'adresse d'ouverture est celle qui y envoie la personne", async () => {
+    const { service, driver } = setup({
+      openUrl: () => "http://localhost:3722/api/account/code/open",
+    });
+    const p = await person();
+    await service.start(p);
+    const [row] = await t.db
+      .select()
+      .from(codeWorkspaces)
+      .where(eq(codeWorkspaces.userId, p.userId));
+    driver.set(row?.containerName as string, { health: "healthy" });
+    const state = await service.getState(p);
+    expect(state.status).toBe("ready");
+    expect(state.openUrl).toBe("http://localhost:3722/api/account/code/open");
+  });
+
   it("non sain, ou arrêté alors qu'il devait tourner : erreur", async () => {
     const { service, driver, p, name } = await started();
     driver.set(name, { health: "unhealthy" });

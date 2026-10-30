@@ -275,6 +275,19 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     ],
   },
   {
+    route: "api/account/code/open",
+    kind: "session",
+    why: "Ouverture de l'interface web de Nexora Code : session de la personne propriétaire, envoyée sur son hôte dédié avec un billet d'entrée de 60 s ; aucune écriture",
+    probes: [
+      {
+        label: "sans session",
+        method: "GET",
+        path: "/api/account/code/open",
+        expect: [401, 404],
+      },
+    ],
+  },
+  {
     route: "api/account/api-keys/[id]",
     kind: "session",
     why: "Révocation : clé de l'organisation de la session seulement (404 sinon)",
