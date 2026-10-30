@@ -87,13 +87,31 @@ export const frCA = {
     pricing: { label: "Tarifs", href: "/tarifs" },
     resources: { label: "Ressources", href: "/ressources" },
     login: { label: "Connexion", href: "/compte" },
-    accountLabel: "Mon compte",
+    accountLabel: "Mes outils",
     cta: { label: "Planifier un diagnostic", href: "/contact" },
   },
 
   footer: {
     tagline: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
     location: "Entreprise québécoise d’IA.",
+    quick: {
+      title: "Accès rapide",
+      myTools: {
+        label: "Mes outils",
+        text: "Vos outils, vos crédits et votre accès, au même endroit.",
+        href: "/compte",
+      },
+      pricing: {
+        label: "Tarifs",
+        text: "L’abonnement, les crédits et ce qu’ils couvrent.",
+        href: "/tarifs",
+      },
+      contact: {
+        label: "Planifier un diagnostic",
+        text: "Parlons de votre projet, sans engagement.",
+        href: "/contact",
+      },
+    },
     columns: [
       {
         title: "Produits",

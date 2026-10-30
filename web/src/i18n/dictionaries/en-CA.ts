@@ -84,13 +84,31 @@ export const enCA: Dictionary = {
     pricing: { label: "Pricing", href: "/tarifs" },
     resources: { label: "Resources", href: "/ressources" },
     login: { label: "Sign in", href: "/compte" },
-    accountLabel: "My account",
+    accountLabel: "My tools",
     cta: { label: "Book a diagnostic", href: "/contact" },
   },
 
   footer: {
     tagline: "AI that works for your business. Under your control.",
     location: "A Quebec AI company.",
+    quick: {
+      title: "Quick access",
+      myTools: {
+        label: "My tools",
+        text: "Your tools, credits and access in one place.",
+        href: "/compte",
+      },
+      pricing: {
+        label: "Pricing",
+        text: "The subscription, the credits and what they cover.",
+        href: "/tarifs",
+      },
+      contact: {
+        label: "Book an assessment",
+        text: "Let’s talk about your project, no strings attached.",
+        href: "/contact",
+      },
+    },
     columns: [
       {
         title: "Products",

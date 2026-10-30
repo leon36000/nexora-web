@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const css = readFileSync(new URL("./globals.css", import.meta.url), "utf8");
@@ -49,5 +50,81 @@ describe("jetons de la direction « Instrument »", () => {
       expect(name).not.toMatch(
         /three|lottie|framer-motion|gsap|motion|pixi|babylon/i,
       );
+  });
+
+  describe("système de cartes, de sections et de mouvement (polissage visuel)", () => {
+    /** Tous les fichiers .tsx d'un dossier, récursivement (hors tests). */
+    const tsx = (dir: string): string[] =>
+      readdirSync(dir).flatMap((name) => {
+        const path = join(dir, name);
+        if (statSync(path).isDirectory()) return tsx(path);
+        return path.endsWith(".tsx") && !path.endsWith(".test.tsx")
+          ? [path]
+          : [];
+      });
+    const root = new URL("..", import.meta.url).pathname;
+
+    it("les durées de transition sont 150, 200 ou 250 ms (jetons --dur-*), partout hors du panneau du compte", () => {
+      expect(css).toMatch(/--dur-fast:\s*150ms/);
+      expect(css).toMatch(/--dur-base:\s*200ms/);
+      expect(css).toMatch(/--dur-slow:\s*250ms/);
+      const bad: string[] = [];
+      for (const file of [
+        ...tsx(join(root, "components")),
+        ...tsx(join(root, "app")),
+      ]) {
+        if (file.includes("/components/account/")) continue;
+        for (const m of readFileSync(file, "utf8").matchAll(
+          /\bduration-(\d+)\b/g,
+        ))
+          if (![150, 200, 250].includes(Number(m[1])))
+            bad.push(`${file.replace(root, "")}: duration-${m[1]}`);
+      }
+      expect(bad).toEqual([]);
+    });
+
+    it("toute animation CSS est déclarée sous prefers-reduced-motion: no-preference (les @keyframes seuls en sortent)", () => {
+      // Parcours des accolades : chaque `{` est étiqueté par le texte qui le précède.
+      const stack: string[] = [];
+      const outside: string[] = [];
+      let from = 0;
+      for (let i = 0; i < css.length; i++) {
+        const c = css[i];
+        if (c === "{") {
+          stack.push(css.slice(from, i).trim());
+          from = i + 1;
+        } else if (c === "}") {
+          stack.pop();
+          from = i + 1;
+        } else if (c === ";") {
+          const decl = css.slice(from, i).trim();
+          from = i + 1;
+          if (
+            /^animation(-name)?\s*:/.test(decl) &&
+            !stack.some((s) => s.startsWith("@keyframes")) &&
+            !stack.some((s) =>
+              s.includes("prefers-reduced-motion: no-preference"),
+            )
+          )
+            outside.push(decl);
+        }
+      }
+      expect(outside).toEqual([]);
+    });
+
+    it("les cartes, les cadres de grille et les puces ont un rayon par rôle, tous dans l'échelle de 2 à 12 px", () => {
+      for (const role of ["card", "frame", "chip"])
+        expect(css).toMatch(
+          new RegExp(`--radius-${role}:\\s*var\\(--radius-(xs|sm|md|lg|xl)\\)`),
+        );
+    });
+
+    it("une carte n'a qu'un jeu d'espacements (24 px, puis 32 px dès sm)", () => {
+      expect(css).toMatch(/--pad-card:\s*1\.5rem/);
+      expect(css).toMatch(/--pad-card-lg:\s*2rem/);
+      const card = readFileSync(join(root, "components/ui/card.tsx"), "utf8");
+      expect(card).toContain("p-6 sm:p-8");
+      expect(card).not.toContain("sm:p-7");
+    });
   });
 });

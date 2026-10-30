@@ -525,6 +525,16 @@
   }
 }
 
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
 @keyframes mo-blink {
   0%,
   100% {
@@ -584,6 +594,10 @@
   .mo-animate .mo-layer {
     animation: mo-twinkle 7s ease-in-out infinite;
     animation-delay: calc(var(--i, 0) * -1.3s);
+  }
+
+  .skeleton {
+    animation: skeleton-pulse 1.6s ease-in-out infinite;
   }
 
   .mo-blink {

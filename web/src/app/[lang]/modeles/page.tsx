@@ -6,6 +6,7 @@ import { CatalogView } from "@/components/gateway/catalog-view";
 import { JsonLd } from "@/components/seo/json-ld";
 import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
+import { CatalogSkeleton } from "@/components/ui/skeleton";
 import { isLang, type Lang } from "@/i18n/config";
 import { getModelsDictionary } from "@/i18n/models";
 import { buildPageMetadata } from "@/lib/metadata";
@@ -53,9 +54,7 @@ export default async function ModelsPage({
         lead={t.list.lead}
       />
       <Section tone="light" joined="after" className="pt-8 md:pt-12">
-        <Suspense
-          fallback={<div aria-hidden="true" className="mt-10 min-h-[40rem]" />}
-        >
+        <Suspense fallback={<CatalogSkeleton />}>
           <CatalogBody lang={lang} searchParams={searchParams} />
         </Suspense>
         <JsonLd

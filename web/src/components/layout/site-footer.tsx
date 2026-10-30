@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo, LogoMark } from "@/components/brand/logo";
+import { ArrowIcon } from "@/components/ui/button";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Alternates } from "@/lib/alternates";
@@ -25,13 +26,40 @@ export function SiteFooter({
 }) {
   const { footer, a11y, language } = dict;
   const linkClass =
-    "inline-flex min-h-8 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4";
+    "inline-flex min-h-11 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4 sm:min-h-9";
+  const quick = [
+    footer.quick.myTools,
+    footer.quick.pricing,
+    footer.quick.contact,
+  ];
 
   return (
     <footer className="theme-light relative isolate overflow-hidden border-t border-line bg-bg text-fg">
       <div aria-hidden="true" className="rails" />
-      <div className="relative mx-auto w-full max-w-page px-gutter pt-14 sm:pt-20">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)]">
+      <div className="relative mx-auto w-full max-w-page px-gutter pt-10 sm:pt-14">
+        <nav aria-label={footer.quick.title}>
+          <ul className="grid gap-px overflow-hidden rounded-frame border border-line bg-line sm:grid-cols-3">
+            {quick.map((item, i) => (
+              <li key={item.href} className="flex">
+                <Link
+                  href={localizePath(lang, item.href)}
+                  prefetch={false}
+                  className="group/btn flex min-h-11 w-full flex-col justify-between gap-3 bg-bg p-5 transition-colors duration-200 hover:bg-surface sm:p-6"
+                >
+                  <span className="flex items-center justify-between gap-3 font-display text-h4 text-fg">
+                    {item.label}
+                    <ArrowIcon
+                      className={i === 0 ? "text-accent-text" : "text-fg-muted"}
+                    />
+                  </span>
+                  <span className="text-small text-fg-muted">{item.text}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="mt-12 grid gap-12 sm:mt-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,3fr)]">
           <div>
             <Link
               href={localizePath(lang, "/")}
