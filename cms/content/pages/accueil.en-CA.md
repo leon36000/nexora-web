@@ -185,7 +185,7 @@ In some consumer AI services, sharing conversations to improve the models is a s
 
 Réglages : `media_position=right`, `visual=tableau-de-bord`, `tone=sombre`
 
-## One account, your credits, all your tools.
+## Credits, space, one dashboard.
 
 One Nexora AI account brings your tools together in the “My tools” panel: your credits, your storage and the real status of each product.
 

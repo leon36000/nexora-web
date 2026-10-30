@@ -243,7 +243,7 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "One account, your credits, all your tools.",
+        "title": "Credits, space, one dashboard.",
         "body": "<p>One Nexora AI account brings your tools together in the “My tools” panel: your credits, your storage and the real status of each product.</p><p>A plan gives you credits every month and storage space; without a plan, you top up credits. Anything that calls an AI model uses credits, and tools that call no model use none.</p><p>Sales are not open yet: no price is published. Prices will appear on the <a href=\"/en/pricing/\">Pricing</a> page once they are published.</p>",
         "items": [
           {

@@ -185,7 +185,7 @@ Dans certains services d'IA grand public, le partage des conversations pour amé
 
 Réglages : `media_position=right`, `visual=tableau-de-bord`, `tone=sombre`
 
-## Un compte, des crédits, tous vos outils.
+## Des crédits, de l'espace, un seul panneau.
 
 Un seul compte Nexora AI réunit vos outils dans le panneau « Mes outils » : vos crédits, votre espace disque et l'état réel de chaque produit.
 

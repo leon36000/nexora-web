@@ -243,7 +243,7 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "Un compte, des crédits, tous vos outils.",
+        "title": "Des crédits, de l'espace, un seul panneau.",
         "body": "<p>Un seul compte Nexora AI réunit vos outils dans le panneau « Mes outils » : vos crédits, votre espace disque et l'état réel de chaque produit.</p><p>Un abonnement donne des crédits chaque mois et de l'espace disque ; sans abonnement, vous rechargez des crédits. Tout ce qui appelle un modèle d'IA consomme des crédits, et les outils qui n'en appellent aucun n'en consomment pas.</p><p>La vente n'est pas encore ouverte : aucun prix n'est publié. Les prix s'afficheront sur la page <a href=\"/tarifs/\">Tarifs</a> dès leur publication.</p>",
         "items": [
           {
