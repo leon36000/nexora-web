@@ -1,6 +1,6 @@
 # Nexora AI : modèle à crédits, produits du panneau, RAG et agent de code (conception)
 
-Date : 30/10/2026. Origine : demande du fondateur du 30/10 (voir « Ce que le fondateur a décidé »). Dépôts : site `root/nexora-web` (`~/Desktop/NexoraSite`), nouvel agent de code `root/nexora-code` (`~/Desktop/NexoraCode`, fork d'`anomalyco/opencode`).
+Date : 30/10/2026. Origine : demande du fondateur du 30/10 (voir « Ce que le fondateur a décidé »). Dépôts : site `root/nexora-web` (`~/Desktop/NexoraSite`), agent de code `root/nexora-code-agent` (le nom `nexora-code` est pris par l'application de bureau `nexora/nexora-code`, voir le journal) (`~/Desktop/NexoraCode`, fork d'`anomalyco/opencode`).
 
 ## But
 
