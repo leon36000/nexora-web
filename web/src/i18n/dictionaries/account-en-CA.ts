@@ -285,22 +285,26 @@ export const accountEnCA: AccountDictionary = {
   /** Customer panel (`/compte/…`): side navigation, overview, models and keys, activity, WorkStudio, cloud. */
   panel: {
     meta: {
-      overview: "Overview | Nexora AI",
+      overview: "My tools | Nexora AI",
       models: "Models and keys | Nexora AI",
       activity: "Activity | Nexora AI",
       privacy: "Privacy | Nexora AI",
       workstudio: "WorkStudio and agents | Nexora AI",
+      code: "Nexora Code, hosted environment | Nexora AI",
+      rag: "Nexora RAG, your knowledge bases | Nexora AI",
       billing: "Wallet and billing | Nexora AI",
     },
     nav: {
       label: "Customer area",
       soon: "Coming soon",
       items: {
-        overview: "Overview",
+        overview: "My tools",
         models: "Models and keys",
         activity: "Activity",
         privacy: "Privacy",
         workstudio: "WorkStudio and agents",
+        code: "Nexora Code",
+        rag: "Nexora RAG",
         cloud: "Cloud and VPS",
         apps: "Nexora Apps",
         billing: "Wallet",
@@ -308,8 +312,8 @@ export const accountEnCA: AccountDictionary = {
       },
     },
     overview: {
-      title: "Overview.",
-      lead: "Where you stand at a glance: balance, this month’s usage, keys and WorkStudio.",
+      title: "My tools.",
+      lead: "Your Nexora tools, your credits and your storage, all in one place.",
       now: {
         title: "Where I stand",
         balance: "Available balance",
@@ -323,7 +327,7 @@ export const accountEnCA: AccountDictionary = {
         wsConnected: "Connected",
         wsNotYet: "Not opened yet",
         wsPending: "Being set up",
-        wsNoSub: "Subscription required",
+        wsNoSub: "Credits required",
         wsSuspended: "Subscription suspended",
         wsLink: "See WorkStudio",
       },
@@ -352,7 +356,7 @@ export const accountEnCA: AccountDictionary = {
           },
           workstudio: {
             title: "Open WorkStudio",
-            text: "Choose a plan to get access to your workspace.",
+            text: "Open your workspace; you need credits to use the models.",
           },
           vps: {
             title: "Install a VPS",
@@ -365,6 +369,370 @@ export const accountEnCA: AccountDictionary = {
         empty:
           "No requests in the last 30 days. Create a key and try a model: your activity will show up here.",
         seeAll: "See all activity",
+      },
+    },
+    tools: {
+      summaryTitle: "My account at a glance",
+      loading: "Loading your tools…",
+      unavailable: {
+        title: "Your credits and storage can’t be read right now.",
+        text: "An error occurred while reading your account. Your tools below are still available; reload the page in a moment.",
+      },
+      credits: {
+        title: "Credits",
+        available: "Available",
+        total: "{count} credits",
+        totalOne: "{count} credit",
+        subscription: "Subscription credits",
+        refill: "Top-up credits",
+        expires: "Expire on {date}",
+        refillNever: "Do not expire",
+        rule: "The tools are free or included. Anything that calls a model uses credits, subscription credits first.",
+        empty:
+          "You have no credits left. Top up your account or choose a plan.",
+        addFunds: "Add funds",
+        seeOffers: "See plans",
+        ownerOnly: "Only the organization owner can add funds.",
+        freeTitle: "Free administrator access",
+        freeText:
+          "Your organization is part of the Nexora team: your requests don’t use any credits.",
+      },
+      storage: {
+        title: "Storage",
+        usage: "{used} used of {total}",
+        meterLabel: "Storage used",
+        meterValue: "{percent}% of storage used",
+        breakdownTitle: "Breakdown by tool",
+        nothingStored: "Nothing is stored with Nexora yet.",
+        none: "No storage yet. Storage is included in every plan: choose a plan.",
+        warning:
+          "Your storage is almost full: {percent}% used. Free up space or choose a larger plan before writes are refused.",
+        full: "Your storage is full. New writes are refused until you free up space or choose a larger plan; you can still read and delete your data.",
+        house:
+          "Your organization is part of the Nexora team: storage is not limited. {used} used.",
+        seeOffers: "See plans",
+        products: {
+          workstudio: "WorkStudio",
+          code: "Nexora Code",
+          rag: "Nexora RAG",
+          creative: "Nexora Creative",
+          bot: "Nexora Bot",
+        },
+      },
+      plan: {
+        title: "My plan",
+        none: "No subscription: top up or choose a plan.",
+        seeOffers: "See plans",
+        names: {
+          "nexora-base": "Nexora Base",
+          "nexora-pro": "Nexora Pro",
+          "nexora-equipe": "Nexora Team",
+        },
+        interval: {
+          month: "Billed monthly",
+          year: "Billed yearly",
+        },
+        renews: "Renews on {date}",
+        ends: "Ends on {date} (cancellation requested)",
+        pastDue: "Payment overdue: your access is kept until {date}.",
+        pastDueNoDate: "Payment overdue: settle it to keep your access.",
+        manage: "Manage my subscription",
+      },
+      groups: {
+        work: {
+          title: "Your tools",
+          lead: "The tools are free or included. Anything that calls a model uses credits; whatever is stored with Nexora counts toward your storage.",
+        },
+        around: {
+          title: "Around your models",
+          lead: "The Web, the protection of your data and servers.",
+        },
+      },
+      states: {
+        label: "Status",
+        disponible: "Available",
+        bientot: "Coming soon",
+        plus_tard: "Later",
+      },
+      consumes: {
+        title: "What it uses",
+        credits: "Credits",
+        space: "Storage",
+      },
+      hints: {
+        needsCredits:
+          "You need credits to use the models: top up or choose a plan.",
+        needsStorage: "You need storage: choose a plan or free up space.",
+      },
+      actions: {
+        openWorkstudio: "Open WorkStudio",
+        openCode: "Open Nexora Code",
+        createRag: "Create my RAG",
+        waitlist: "Notify me",
+        waitlistLabel: "Notify me when {name} is released",
+        openApp: "See the page",
+        openAppLabel: "See the page for {name}",
+      },
+      products: {
+        workstudio: {
+          name: "WorkStudio",
+          text: "Your workspace for designing agents and workflows, with your documents.",
+          soon: "Your WorkStudio instance is being set up: the open button will appear as soon as it is ready.",
+          credits:
+            "The models your agents call use credits. The tool itself is included.",
+          space: "Your files and knowledge bases count toward your storage.",
+          pageAction: "See WorkStudio",
+        },
+        code: {
+          name: "Nexora Code",
+          text: "A coding agent in a work environment hosted on our servers: nothing to install on your computer.",
+          soon: "A coding agent that will open in a work environment hosted on our servers, with nothing to install on your computer. It is not shipped yet.",
+          credits: "Anything the agent has a model do uses credits.",
+          space: "Whatever is stored in your environment counts toward your storage.",
+          pageAction: "See Nexora Code",
+        },
+        rag: {
+          name: "Nexora RAG",
+          text: "Your documents become a knowledge base that AI queries, with sources. Create it in one click, then connect it to your tools with an API key.",
+          soon: "Your documents will become a knowledge base that AI queries, with sources, created in one click and reachable with an API key. It is not shipped yet.",
+          credits: "You pay embedding and rerank tokens, in credits.",
+          space: "Your documents and their vectors count toward your storage.",
+          pageAction: "See my RAG",
+        },
+        bot: {
+          name: "Nexora Bot",
+          text: "A bot that connects to your Nexora account and works with your subscription or your top-ups.",
+          soon: "A bot that will connect to your Nexora account and work with your subscription or your top-ups. It is not shipped yet.",
+          credits: "Anything the bot has a model do uses credits.",
+          space: "Whatever the bot stores counts toward your storage.",
+          pageAction: "See the page",
+        },
+        creative: {
+          name: "Nexora Creative",
+          text: "Image, sound and video tools for marketing.",
+          soon: "Image, sound and video tools for marketing, at a later stage. Nothing is shipped.",
+          credits: "The access model has not been decided yet.",
+          space: "Whatever is stored counts toward your storage.",
+          pageAction: "See the page",
+        },
+        webpilot: {
+          name: "Nexora WebPilot",
+          text: "An API to search, read and explore the Web.",
+          soon: "An API to search, read and explore the Web, planned as pay-per-use from your credit balance. It is not shipped yet.",
+          credits: "Billed per use, from the same credit balance as the models.",
+          space: "Stores nothing in your storage.",
+          pageAction: "See the page",
+        },
+        "privacy-router": {
+          name: "Nexora Privacy Router",
+          text: "Controls what leaves your organization for an AI provider, according to your policy.",
+          soon: "Already in place in the API gateway, which is not yet open for sale. You can set your organization’s policy now.",
+          credits: "None: included by default, never paid.",
+          space: "Takes up no storage.",
+          pageAction: "Set my policy",
+        },
+        vps: {
+          name: "VPS",
+          text: "Virtual private servers in Quebec: status, SSH access and everyday operations.",
+          soon: "Virtual private servers in Quebec: status, SSH access and everyday operations.",
+          credits: "A subscription of its own for each server, apart from your credits.",
+          space: "A server’s disk is outside your plan’s storage quota.",
+          pageAction: "See my VPS",
+        },
+      },
+    },
+    rag: {
+      title: "Nexora RAG.",
+      lead: "Your documents become a knowledge base that AI queries, with sources. Create it in one click and connect it to Nexora Code, a bot or any tool with an API key.",
+      soon: {
+        title: "Coming soon.",
+        text: "Nexora RAG is not shipped yet. No date is announced.",
+        comingTitle: "What is planned",
+        coming: [
+          "A knowledge base created in one click, with its API key.",
+          "Your documents indexed and queried, with their sources.",
+          "A connection to Nexora Code, a bot or any MCP-compatible tool.",
+          "The space used counted in your plan, and embedding and rerank tokens paid with your credits.",
+        ],
+        waitlist: "Notify me",
+        card: "Nexora RAG page",
+      },
+      unavailable: {
+        title: "The service is not available right now.",
+        text: "Nexora RAG is turned on, but the service is not responding yet. Try again in a moment.",
+      },
+      error: {
+        title: "Your knowledge bases can’t be read.",
+        text: "An error occurred. Try again in a moment; your data is not affected.",
+        retry: "Try again",
+      },
+      cost: {
+        title: "What it uses",
+        text: "You pay for the space your documents and their vectors take, counted in your storage, and for embedding and rerank tokens, paid with your credits.",
+        space: "Space used by your knowledge bases: {amount}",
+        manage: "See my credits and storage",
+      },
+      bases: {
+        title: "My knowledge bases",
+        caption: "My RAG knowledge bases",
+        empty: {
+          title: "No knowledge base yet.",
+          text: "Create your RAG in one click: we create the knowledge base and its API key, then you add your documents.",
+        },
+        columns: {
+          name: "Knowledge base",
+          documents: "Documents",
+          space: "Storage",
+          created: "Created on",
+        },
+        documents: "{count} documents",
+        documentsOne: "{count} document",
+        pending: "{count} waiting to be indexed",
+        failed: "{count} failed",
+      },
+      create: {
+        title: "Create my RAG",
+        nameLabel: "Knowledge base name",
+        optional: "optional",
+        nameHint: "Without a name, we suggest “{name}”.",
+        button: "Create my RAG",
+        working: "Creating…",
+        ownerOnly:
+          "Only the organization owner can create a RAG, because it creates an API key.",
+        errors: {
+          quota_exceeded:
+            "Your storage is used up or missing. Choose a plan or free up space, then try again.",
+          no_credits:
+            "You need credits to create a RAG. Top up your account or choose a plan.",
+          base_exists:
+            "A knowledge base already has this name. Choose another one.",
+          base_limit:
+            "You have reached the maximum number of knowledge bases. Delete an unused one or write to us.",
+          key_limit:
+            "You have reached the maximum number of active keys. Revoke an unused key in Models and keys.",
+          unavailable:
+            "The service is not available right now. Try again in a moment.",
+          rate_limited: "Too many attempts. Wait a minute, then try again.",
+          forbidden: "Only the organization owner can create a RAG.",
+          unauthenticated: "Your session has expired. Sign in again.",
+          generic: "Creation failed. Try again in a moment.",
+        },
+      },
+      created: {
+        title: "Your RAG is ready.",
+        keyTitle: "Your API key",
+        keyWarn:
+          "Copy it now: it is shown only once. Nexora keeps only its fingerprint.",
+        copy: "Copy the key",
+        copied: "Key copied",
+        copyLabel: "Copy the API key",
+        next: "Now add your documents with the API or the MCP server, then query the knowledge base.",
+        dismiss: "I have copied my key",
+      },
+      connect: {
+        title: "Connect",
+        lead: "Use your RAG from Nexora Code, a bot or any tool. The API key is created with the knowledge base and managed in Models and keys.",
+        manageKeys: "Manage my keys",
+        apiUrl: "API address",
+        mcpUrl: "MCP server address",
+        keyHint:
+          "The key goes in the Authorization: Bearer header. It is never shown again: keep it in a secrets manager.",
+        keyPlaceholder: "YOUR_API_KEY",
+        snippets: {
+          code: "Nexora Code (MCP)",
+          mcp: "Another MCP-compatible tool",
+          http: "HTTP call (curl)",
+        },
+        copy: "Copy",
+        copied: "Copied",
+        copyLabel: "Copy: {label}",
+      },
+    },
+    code: {
+      title: "Nexora Code.",
+      lead: "A coding agent in a work environment hosted on our servers. Nothing to install on your computer: everything opens from your Nexora account.",
+      soon: {
+        title: "Coming soon.",
+        text: "Nexora Code is not shipped yet. No date is announced.",
+        comingTitle: "What is planned",
+        coming: [
+          "A work environment hosted on our servers, one per person, opened from your account.",
+          "A volume whose space counts toward your plan.",
+          "A coding agent connected to Nexora AI’s models, using your credits.",
+          "A connection to your RAG, and compatibility with Claude Code and Codex plugins.",
+        ],
+        waitlist: "Notify me",
+        card: "Nexora Code page",
+      },
+      unavailable: {
+        title: "The service is not available right now.",
+        text: "Nexora Code is turned on, but the hosted environment is not responding yet. Try again in a moment.",
+      },
+      error: {
+        title: "Your environment’s status can’t be read.",
+        text: "An error occurred. Try again in a moment; your files are not affected.",
+        retry: "Try again",
+      },
+      workspace: {
+        title: "My environment",
+        statusLabel: "Status",
+        status: {
+          stopped: "Stopped",
+          starting: "Starting",
+          ready: "Ready",
+          error: "Failed",
+        },
+        stoppedText:
+          "Your environment is stopped. Start it to begin working.",
+        startingText:
+          "Your environment is starting. This may take a moment; this page updates by itself.",
+        readyText: "Your environment is ready.",
+        errorText:
+          "The start failed. Try again; if the problem continues, write to us.",
+        open: "Open Nexora Code",
+        start: "Start my environment",
+        working: "Starting…",
+        volumeTitle: "Volume storage",
+        volume: "{used} used in your environment",
+        volumeNote:
+          "This volume counts toward your storage, together with your other tools.",
+        seeSpace: "See my storage",
+        errors: {
+          quota_exceeded:
+            "Your storage is used up or missing. Choose a plan or free up space, then try again.",
+          unavailable:
+            "The service is not available right now. Try again in a moment.",
+          rate_limited: "Too many attempts. Wait a minute, then try again.",
+          unauthenticated: "Your session has expired. Sign in again.",
+          generic: "The start failed. Try again in a moment.",
+        },
+      },
+      cli: {
+        title: "On your computer (optional)",
+        lead: "You can also use Nexora Code in your terminal, linked to your Nexora account.",
+        install: "Install the CLI",
+        installSoon: "The install command will be published here at release.",
+        login: "Sign in to your account",
+        loginHint:
+          "The command sends you to your Nexora account to confirm the sign-in.",
+        copy: "Copy",
+        copied: "Copied",
+        copyLabel: "Copy: {label}",
+      },
+      plugins: {
+        title: "Compatible plugins",
+        lead: "Compatibility with Claude Code and Codex plugins is planned, in addition to Nexora Code’s own plugins.",
+        items: {
+          claude: {
+            name: "Claude Code plugins",
+            text: "Commands, agents, skills, hooks and MCP servers described in the plugin folder.",
+          },
+          codex: {
+            name: "Codex plugins (Agent Plugins)",
+            text: "Skills and MCP servers described by the plugin’s plugin.json file.",
+          },
+        },
+        note: "Whatever cannot be translated will be flagged, never silently ignored.",
       },
     },
     models: {
@@ -668,8 +1036,8 @@ export const accountEnCA: AccountDictionary = {
         seeActivity: "See WorkStudio usage",
       },
       subscription: {
-        title: "WorkStudio subscription",
-        none: "No WorkStudio subscription yet.",
+        title: "Credits and subscription",
+        none: "You have no credits left. WorkStudio is included, but the models it calls use credits: top up your account or choose a plan.",
         seeOffers: "See plans",
         manage: "Manage subscription",
         suspended:
@@ -681,7 +1049,7 @@ export const accountEnCA: AccountDictionary = {
         pending: "Your instance is being prepared.",
         pendingText:
           "The open button will show up here as soon as its address is known.",
-        locked: "The instance opens with an active subscription.",
+        locked: "The instance opens as soon as you have credits left.",
       },
       agents: {
         title: "Agents called by your organization",

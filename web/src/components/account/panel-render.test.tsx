@@ -1,3 +1,4 @@
+import type { ComponentProps } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { getAccountDictionary } from "@/i18n/account";
@@ -8,9 +9,10 @@ import type { OverviewData } from "@/server/gateway/activity-overview";
 import type { ActivityPageData } from "@/server/gateway/activity-page";
 import type { PublicModel } from "@/server/gateway/public";
 import type { PublicCatalog } from "@/server/gateway/read";
+import { resolveProducts } from "@/server/products/registry";
 import { ActivityView } from "./activity-view";
 import { ModelsPanel } from "./models-panel";
-import { Overview } from "./overview";
+import { Overview, type ToolsSummaryData } from "./overview";
 import type { WorkstudioView, workstudioView } from "./panel-logic";
 import { PanelNav } from "./panel-nav";
 import { RequestDetail } from "./request-detail";
@@ -53,39 +55,65 @@ const overview = (over: Partial<OverviewData> = {}): OverviewData => ({
   ...over,
 });
 
+const GO = 1_000_000_000;
+const emptySummary: ToolsSummaryData = {
+  credits: {
+    level: "ok",
+    subscription: 0,
+    refill: 1234,
+    total: 1234,
+    subscriptionExpiresAt: null,
+    canUseModels: true,
+  },
+  storage: {
+    level: "ok",
+    totalBytes: GO,
+    usedBytes: 0,
+    percent: 0,
+    remainingBytes: GO,
+    products: [],
+  },
+  plan: { kind: "none" },
+};
+
 const renderOverview = (
   lang: "fr" | "en",
   o: OverviewData,
   role: "owner" | "member" = "owner",
   hasWorkstudio = false,
-  data: DashboardData = dashboard,
-  workstudio: WorkstudioView["state"] = "no_subscription",
+  summary: ToolsSummaryData | null = emptySummary,
+  extra: Partial<ComponentProps<typeof Overview>> = {},
 ) =>
   renderToStaticMarkup(
     <Overview
       lang={lang}
       t={getAccountDictionary(lang)}
       role={role}
-      dashboard={data}
       overview={o}
       hasWorkstudio={hasWorkstudio}
-      wallet={{ lots: [], included: null }}
-      workstudio={workstudio}
+      products={resolveProducts({ env: {}, workstudioUrl: null })}
+      hints={{}}
+      workstudioUrl={null}
+      summary={summary}
       flash={null}
+      {...extra}
     />,
   );
 
-describe("aperçu : portefeuille", () => {
-  it("organisation ordinaire : solde et bouton « Ajouter des fonds » vers le flux d'achat existant, jamais « gratuit »", () => {
+describe("Mes outils : crédits et ajout de fonds", () => {
+  it("organisation ordinaire : crédits, bouton « Ajouter des fonds » vers le flux d'achat existant, jamais « Accès administrateur gratuit »", () => {
     const html = renderOverview("fr", overview());
     expect(html).toContain("Ajouter des fonds");
     expect(html).toContain('href="/compte/facturation#ajouter-des-fonds"');
-    expect(html).toContain("12,3457");
-    expect(html).not.toContain("gratuit");
+    expect(html).toMatch(/1[\s\u00a0\u202f]234/);
+    expect(html).not.toContain("Accès administrateur gratuit");
   });
 
   it("organisation « maison » : « Accès administrateur gratuit » à la place du bouton de recharge", () => {
-    const html = renderOverview("fr", overview({ billingMode: "house" }));
+    const html = renderOverview("fr", overview({ billingMode: "house" }), "owner", false, {
+      ...emptySummary,
+      credits: { ...emptySummary.credits, level: "free" },
+    });
     expect(html).toContain("Accès administrateur gratuit");
     expect(html).not.toContain("Ajouter des fonds");
     expect(html).not.toContain("compte/facturation#ajouter-des-fonds");
@@ -103,27 +131,25 @@ describe("aperçu : portefeuille", () => {
     const html = renderOverview("en", overview());
     expect(html).toContain("Add funds");
     expect(html).toContain('href="/en/compte/facturation#ajouter-des-fonds"');
-    expect(renderOverview("en", overview({ billingMode: "house" }))).toContain(
-      "Free administrator access",
-    );
+    expect(
+      renderOverview("en", overview({ billingMode: "house" }), "owner", false, {
+        ...emptySummary,
+        credits: { ...emptySummary.credits, level: "free" },
+      }),
+    ).toContain("Free administrator access");
   });
 
   it("solde bloqué : l'alerte l'explique", () => {
     const html = renderOverview("fr", overview(), "owner", false, {
-      ...dashboard,
-      account: {
-        ...dashboard.account,
-        availableMicro: -5_000n,
-        balanceMicro: -5_000n,
-        blocked: true,
-      },
+      ...emptySummary,
+      credits: { ...emptySummary.credits, level: "blocked", total: 0 },
     });
     expect(html).toContain("Compte bloqué");
   });
 });
 
-describe("aperçu : où j'en suis", () => {
-  it("consommation du mois, clés actives et état de WorkStudio, en français", () => {
+describe("Mes outils : où j'en suis", () => {
+  it("consommation du mois et clés actives, en français ; l'état de WorkStudio vit dans la carte du produit", () => {
     const html = renderOverview(
       "fr",
       overview({
@@ -133,32 +159,14 @@ describe("aperçu : où j'en suis", () => {
       }),
       "owner",
       true,
-      dashboard,
-      "ready",
     );
     expect(html).toContain("Où j’en suis");
     expect(html).toContain("Consommation du mois");
     expect(html).toContain("1,23");
     expect(html).toContain("Clés actives");
-    expect(html).toContain("Branché");
-    expect(html).toContain('href="/compte/workstudio"');
     expect(html).toContain('href="/compte/modeles"');
-  });
-
-  it("WorkStudio : pas encore ouvert, abonnement requis, suspendu ou en préparation", () => {
-    const text = (state: WorkstudioView["state"], keyActive: boolean) =>
-      renderOverview(
-        "fr",
-        overview({ workstudioKeyActive: keyActive }),
-        "owner",
-        false,
-        dashboard,
-        state,
-      );
-    expect(text("ready", false)).toContain("Pas encore ouvert");
-    expect(text("no_subscription", false)).toContain("Abonnement requis");
-    expect(text("suspended", false)).toContain("Abonnement suspendu");
-    expect(text("pending", false)).toContain("En préparation");
+    // plus aucun libellé « Abonnement requis » : la règle est celle des crédits
+    expect(html).not.toContain("Abonnement requis");
   });
 
   it("anglais, et la maison voit la valeur offerte du mois, pas une dépense", () => {
@@ -176,7 +184,7 @@ describe("aperçu : où j'en suis", () => {
   });
 });
 
-describe("aperçu : pour démarrer", () => {
+describe("Mes outils : pour démarrer", () => {
   it("coche seulement les étapes dont les données le prouvent, et le dit en texte", () => {
     const none = renderOverview("fr", overview());
     expect(none).toContain("0 étapes sur 4 faites");
@@ -547,14 +555,16 @@ describe("navigation du panneau", () => {
       />,
     );
 
-  it("huit entrées dans une navigation nommée ; Nexora Apps renvoie à /apps quand la page existe", () => {
+  it("onze entrées dans une navigation nommée ; Nexora Apps renvoie à /apps quand la page existe", () => {
     const html = render(true);
     expect(html).toContain('aria-label="Espace client"');
     for (const text of [
-      "Aperçu",
+      "Mes outils",
       "Modèles et clés",
       "Activité",
       "WorkStudio et agents",
+      "Nexora Code",
+      "Nexora RAG",
       "Cloud et VPS",
       "Nexora Apps",
       "Portefeuille",
@@ -562,6 +572,8 @@ describe("navigation du panneau", () => {
     ])
       expect(html).toContain(text);
     expect(html).toContain('href="/apps"');
+    expect(html).toContain('href="/compte/code"');
+    expect(html).toContain('href="/compte/rag"');
     expect(html).toContain('href="/compte/activite"');
     expect(html).toContain('href="/compte/vps"');
     expect(html).not.toContain("Bientôt");
