@@ -103,7 +103,7 @@ export async function GET(request: Request) {
     name: m.name,
     provider: m.providerName,
     residency: residency(m.residency),
-    kind: m.kind === "embedding" ? "embedding" : "chat",
+    kind: m.kind,
     contextMax: m.contextMax,
     // « note » non vide = prix de développement : il n'est jamais reproduit dans ce fichier.
     devPrice: m.note !== "",

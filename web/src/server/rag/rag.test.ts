@@ -8,6 +8,7 @@ import {
 } from "@nexora/db";
 import { chunkStorageBytes, chunkText, embeddingInput } from "@nexora/rag";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { savePolicy } from "../privacy/store";
 import {
   createBase,
   createBaseWithKey,
@@ -822,6 +823,68 @@ describe("recherche", () => {
           .where(eq(ragChunks.baseId, s.base.id))
       ).length,
     ).toBeGreaterThan(0);
+  });
+});
+
+describe("Privacy Router (inclus par défaut, comme pour tout appel de modèle)", () => {
+  it("masque les renseignements personnels avant l'embedding des extraits et de la requête, mais garde l'extrait d'origine pour le client", async () => {
+    const { base, ctx } = await setup();
+    const text =
+      "Pour joindre le service, écrivez à jean.tremblay@exemple.ca ou appelez le 514-555-0199 pendant les heures d'ouverture.";
+    ok(
+      await addDocument(env.deps, ctx, {
+        baseId: base.id,
+        title: "Contact",
+        text,
+      }),
+    );
+    const sent = env.upstream.embedInputs.join("\n");
+    expect(sent).not.toContain("jean.tremblay@exemple.ca");
+    expect(sent).not.toContain("514-555-0199");
+    expect(sent).toContain("[COURRIEL]");
+    const found = ok(
+      await searchBase(env.deps, ctx, {
+        baseId: base.id,
+        query: "écrire à jean.tremblay@exemple.ca",
+        topK: 1,
+        rerank: false,
+      }),
+    );
+    expect(env.upstream.embedInputs.at(-1)).not.toContain(
+      "jean.tremblay@exemple.ca",
+    );
+    // Le client récupère son propre texte tel qu'il l'a fourni.
+    expect(found.data[0]?.text).toContain("jean.tremblay@exemple.ca");
+  });
+
+  it("une politique qui refuse le modèle bloque l'indexation (403), sans rien garder, ni payer, ni appeler le modèle", async () => {
+    const { org, base, ctx } = await setup();
+    await savePolicy(env.t.db, {
+      organizationId: org,
+      level: "renforce",
+      config: { allowedModels: ["nexora/autre"] },
+      createdBy: null,
+    });
+    const before = await balanceOf(org);
+    const calls = env.upstream.embedCalls;
+    const r = await addDocument(env.deps, ctx, {
+      baseId: base.id,
+      title: "Refusé",
+      text: DOCS.securite,
+    });
+    expect(r).toMatchObject({
+      ok: false,
+      failure: { status: 403, code: "privacy_policy_denied" },
+    });
+    expect(env.upstream.embedCalls).toBe(calls);
+    expect(await balanceOf(org)).toBe(before);
+    expect(
+      await env.t.db
+        .select()
+        .from(ragDocuments)
+        .where(eq(ragDocuments.baseId, base.id)),
+    ).toHaveLength(0);
+    expect(env.storage.usedBytes(org)).toBe(0);
   });
 });
 

@@ -34,6 +34,7 @@ export type CatalogView = (typeof VIEWS)[number];
 export const KINDS = [
   "chat",
   "embedding",
+  "rerank",
 ] as const satisfies readonly ModelKind[];
 export const CAPABILITY_FILTERS = [
   "tools",

@@ -10,6 +10,8 @@ Interface partagée : `web/src/server/privacy/types.ts` (`PrivacyRouter.evaluate
 |---|---|---|
 | `POST /v1/chat/completions` (modèles et agents hébergés `agent/<slug>`) | Oui, avant l'estimation, la réservation et l'appel amont | le modèle (identifiant public) |
 | `POST /v1/embeddings` | Oui, au même endroit | le modèle |
+| `POST /v1/rerank` (reclassement) | Oui : la requête et chaque document sont des emplacements de texte masquables (opération `rerank`) | le modèle |
+| RAG managé (`/v1/rag`, serveur MCP, panneau) | Par la passerelle : l'embedding des extraits et des requêtes et le reclassement sont évalués comme tout appel de modèle (`docs/rag.md`) | le modèle |
 | WebPilot (site et worker) | Branché depuis le 29/10/2026 : recherche, lecture, exploration (chaque page), extraction | l'hôte |
 | WorkStudio | Passe par la passerelle `/v1` avec la clé de la personne : mêmes règles que tout appel de modèle | le modèle |
 

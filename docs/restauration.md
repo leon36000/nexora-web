@@ -28,7 +28,7 @@ bash deploy/init-env.sh                                   # génère deploy/.env
 bash scripts/init-dev-env.sh                              # génère .env et web/.env.local
 docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d db   # base prête en ~6 s
 bun install --frozen-lockfile
-bun packages/db/src/migrate-cli.ts                        # applique les 27 migrations (0000 à 0026)
+bun packages/db/src/migrate-cli.ts                        # applique les migrations (jusqu'à 0028_rag_gere, qui crée l'extension pgvector : voir docs/rag.md §6)
 (cd web && npx vitest run)                                # environ 1 970 tests ; les paquets (db, privacy, webpilot, net) et le worker ont leurs propres suites : `npx vitest run` dans chaque dossier ; le CMS : `bun test` dans cms/
 ```
 
@@ -55,6 +55,10 @@ Prérequis du chargement : un taux de change USD→CAD approuvé (module « Mod�
 - **Administration** : le panneau Directus relaie vers le site (`NEXORA_APP_INTERNAL_URL`, `NEXORA_APP_ADMIN_TOKEN`) ; après `cms/scripts/stage-extensions.sh`, `docker restart` du conteneur Directus suffit.
 - **WorkStudio intégré** : variables `WORKSTUDIO_*` du site et `NEXORA_OIDC_*` / `NEXORA_GATEWAY_URL` de WorkStudio : `docs/workstudio-integre.md`.
 - **Compte administrateur gratuit** : créer le compte sur le site, puis passer son organisation en mode « maison » (`bun run --cwd web house:org` pour l'organisation « Nexora — maison », ou `setBillingMode`).
+
+## Ce qui s'ajoute depuis le 30/10/2026
+
+- **RAG managé** : paquet `packages/rag` (importable par le worker sous Node nu), tâche `rag.index` du worker, routes `/v1/rag`, `/v1/rerank`, `/api/account/rag`, `/api/admin/rag/index`. La migration 0028 crée l'extension `vector` (image `pgvector/pgvector:pg17` du service `db`, super-utilisateur requis). Détails, variables `RAG_*` et prérequis : `docs/rag.md`.
 
 ## Données d'essai de la démo à retirer avant la mise en service
 
