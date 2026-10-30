@@ -190,6 +190,13 @@
       "when": 1793313323955,
       "tag": "0026_apercu_modeles",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1793358746503,
+      "tag": "0027_credits_espace_quota",
+      "breakpoints": true
     }
   ]
 }
