@@ -1,7 +1,7 @@
 {
-  "version": 8,
+  "version": 9,
   "date": "2026-10-30",
-  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56). Version 8 (30/10/2026) : page Tarifs refaite pour le modèle à crédits (affirmations CL-T01 à CL-T10, citées par web/src/i18n/dictionaries/pricing-fr-CA.ts).",
+  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56). Version 8 (30/10/2026) : page Tarifs refaite pour le modèle à crédits (affirmations CL-T01 à CL-T10, citées par web/src/i18n/dictionaries/pricing-fr-CA.ts). Version 9 (30/10/2026) : panneau « Mes outils » et fiches Nexora Apps pour le modèle à crédits (CL-AP01 et CL-AP04 mises à jour, CL-AP06 à CL-AP08 ajoutées pour Nexora Code hébergé, le RAG et Nexora Bot, citées par web/src/i18n/apps.ts).",
   "claims": [
     {
       "id": "CL-01",
@@ -2190,13 +2190,13 @@
     {
       "id": "CL-AP01",
       "kind": "statut",
-      "statement": "L'agent de code Nexora, Nexora Bot, le plugin WordPress de base et les outils gratuits Nexora sont conçus pour être offerts gratuitement ; aucun n'est livré et aucune condition d'utilisation n'est publiée.",
+      "statement": "L'agent de code Nexora, Nexora Bot, le plugin WordPress de base et les outils gratuits Nexora sont conçus pour être gratuits ou inclus ; ce que ces outils font appeler à un modèle d'IA consomme des crédits (CL-T04). Aucun n'est livré et aucune condition d'utilisation n'est publiée.",
       "scope": "Nexora Apps.",
-      "evidence": "Fiches /apps/code, /apps/bot, /apps/wordpress et /apps/outils (registre i18n/apps.ts : état « Bientôt »).",
-      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/apps.ts",
+      "evidence": "Fiches /apps/code, /apps/bot, /apps/wordpress et /apps/outils (registre i18n/apps.ts : état « Bientôt »). Modèle à crédits du 30/10/2026 : les outils sont gratuits ou inclus, les modèles consomment des crédits.",
+      "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
       "evidence_url": null,
       "approval_status": "en_revue",
-      "valid_from": "2026-10-29",
+      "valid_from": "2026-10-30",
       "valid_until": null
     },
     {
@@ -2226,13 +2226,13 @@
     {
       "id": "CL-AP04",
       "kind": "offre",
-      "statement": "Nexora Cloud (espace infonuagique avec dépôt de code), Nexora Gitspace, Nexora RAG et l'automatisation des plugins WordPress sont prévus sur abonnement ; aucun prix n'est publié et aucun n'est livré.",
+      "statement": "Nexora Cloud (espace infonuagique avec dépôt de code), Nexora Gitspace et l'automatisation des plugins WordPress sont prévus sur abonnement ; aucun prix n'est publié et aucun n'est livré.",
       "scope": "Nexora Apps.",
-      "evidence": "Fiches /apps/cloud, /apps/gitspace, /apps/rag et /apps/wordpress (accès « abonnement », état « Bientôt »). Vision dite par le fondateur le 29/10/2026.",
-      "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/apps.ts",
+      "evidence": "Fiches /apps/cloud, /apps/gitspace et /apps/wordpress (accès « abonnement », état « Bientôt »). Vision dite par le fondateur le 29/10/2026. Nexora RAG n'y figure plus : il se paie à l'espace et aux jetons (CL-AP07).",
+      "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
       "evidence_url": null,
       "approval_status": "en_revue",
-      "valid_from": "2026-10-29",
+      "valid_from": "2026-10-30",
       "valid_until": null
     },
     {
@@ -2245,6 +2245,42 @@
       "evidence_url": null,
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP06",
+      "kind": "statut",
+      "statement": "Nexora Code s'ouvrira depuis le panneau du compte dans un environnement de travail hébergé sur les serveurs de Nexora AI, avec un espace compté au quota de l'offre et rien d'installé sur le poste du client ; il est prévu compatible avec les plugins de Claude Code et de Codex. Rien de cela n'est livré et aucune date n'est annoncée.",
+      "scope": "Nexora Apps et panneau « Mes outils » : fiche /apps/code, page /compte/code.",
+      "evidence": "Conception du 30/10/2026, décisions 8 à 10 (fork d'OpenCode, chargeur de plugins, environnement hébergé par personne) et demande du fondateur du même jour. État « Bientôt » tant que NEXORA_PRODUCT_CODE est éteint (web/src/server/products/registry.ts).",
+      "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP07",
+      "kind": "offre",
+      "statement": "Nexora RAG est prévu avec une base créée en un clic et une clé d'API pour l'utiliser ailleurs ; le client paierait l'espace occupé (quota de l'offre) et les jetons d'embedding et de rerank (crédits). Rien de cela n'est livré à ce jour et aucun prix n'est publié.",
+      "scope": "Nexora Apps et panneau « Mes outils » : fiche /apps/rag, page /compte/rag.",
+      "evidence": "Conception du 30/10/2026, décision 6 (RAG managé v1) et demande du fondateur du même jour. État « Bientôt » tant que NEXORA_PRODUCT_RAG est éteint (web/src/server/products/registry.ts).",
+      "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-AP08",
+      "kind": "statut",
+      "statement": "Nexora Bot est prévu pour se connecter au compte Nexora et fonctionner avec l'abonnement ou la recharge ; les modèles qu'il appelle consomment des crédits. Il n'est pas livré et aucune date n'est annoncée.",
+      "scope": "Nexora Apps et panneau « Mes outils » : fiche /apps/bot.",
+      "evidence": "Conception du 30/10/2026, décision 7 (Bot et Creative non construits, états réels « Bientôt » et « Plus tard ») et demande du fondateur du même jour.",
+      "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
       "valid_until": null
     },
     {
