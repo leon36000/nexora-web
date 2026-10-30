@@ -14,7 +14,7 @@ export const frCA = {
     home: {
       title: "Nexora AI | IA souveraine pour votre entreprise, au Québec",
       description:
-        "Nexora AI conçoit des systèmes d’IA pour votre entreprise, installés chez vous ou hébergés au Québec. Vous gardez la maîtrise de vos données et de vos accès.",
+        "Nexora AI : un compte, des crédits, tous vos outils d’IA, et des systèmes conçus pour votre entreprise, chez vous ou au Québec. Vous gardez la maîtrise de vos données.",
     },
     notFound: {
       title: "Page introuvable | Nexora AI",
@@ -73,7 +73,8 @@ export const frCA = {
         },
         {
           label: "Suite logicielle",
-          description: "Code, Corpus et les modèles Quanta et Helix.",
+          description:
+            "Nexora Code et RAG en préparation, Corpus, Quanta et Helix : l’état de chacun est indiqué.",
           href: "/suite",
         },
         {
@@ -219,11 +220,11 @@ export const frCA = {
 
   contact: {
     meta: {
-      title: "Planifier un diagnostic | Nexora AI",
+      title: "Nous joindre | Nexora AI",
       description:
         "Décrivez votre besoin en quelques questions : Nexora AI enregistre votre demande et l'équipe vous écrit. Installation chez vous ou hébergement au Québec.",
     },
-    label: "Diagnostic",
+    label: "Contact",
     title: "Parlons de votre besoin.",
     lead: "Quelques questions pour comprendre votre situation, puis vos coordonnées. Le message est facultatif.",
     next: {
@@ -238,7 +239,7 @@ export const frCA = {
     noscript:
       "Ce formulaire exige JavaScript : la vérification anti-abus est calculée dans votre navigateur, sans service tiers.",
     form: {
-      label: "Demande de diagnostic",
+      label: "Demande de contact",
       step: "Étape {n} sur {total}",
       steps: ["Votre besoin", "Vos coordonnées"],
       required: "obligatoire",
@@ -352,7 +353,7 @@ export const frCA = {
       label: "IA souveraine au Québec",
       title: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
       subtitle:
-        "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora AI conçoit des systèmes IA adaptés à votre métier.",
+        "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora AI conçoit des systèmes IA adaptés à votre métier. Un compte, des crédits, tous vos outils.",
       primary: "Planifier un diagnostic",
       secondary: "Voir les solutions",
     },
@@ -432,8 +433,8 @@ export const frCA = {
         },
         {
           label: "Suite",
-          title: "Code, Corpus, Quanta et Helix",
-          text: "Les autres composants de la suite, présentés avec leur état réel de disponibilité.",
+          title: "Code, RAG, Corpus, Quanta et Helix",
+          text: "Nexora Code et RAG sont en préparation ; Corpus, Quanta et Helix n’ont aucune date. L’état réel de chacun est affiché.",
           href: "/suite",
         },
       ],

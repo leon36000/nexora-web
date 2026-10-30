@@ -77,7 +77,7 @@
         "cards": [
           {
             "title": "1. Size.",
-            "text": "Number of users, volume of documents, chosen model: the diagnosis sets what is needed, before any purchase."
+            "text": "Number of users, volume of documents, chosen model: the assessment sets what is needed, before any purchase."
           },
           {
             "title": "2. Install.",
@@ -114,7 +114,7 @@
       },
       "translation": {
         "title": "What makes the hardware vary.",
-        "intro": "We give no standard configuration: it depends on these four factors, which the diagnosis measures before any purchase.",
+        "intro": "We give no standard configuration: it depends on these four factors, which the assessment measures before any purchase.",
         "cards": [
           {
             "title": "The number of users.",
@@ -126,7 +126,7 @@
           },
           {
             "title": "The chosen model.",
-            "text": "A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the diagnosis."
+            "text": "A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the assessment."
           },
           {
             "title": "The uses.",
@@ -195,7 +195,7 @@
         "cards": [
           {
             "title": "No public price.",
-            "text": "For support, a written estimate follows the diagnosis. Use of the platform is paid for in credits, and their prices will appear on the Pricing page."
+            "text": "For support, a written estimate follows the assessment. Use of the platform is paid for in credits, and their prices will appear on the Pricing page."
           },
           {
             "title": "No universal timeline.",
@@ -241,11 +241,11 @@
         "items": [
           {
             "question": "Do I need to buy a powerful server?",
-            "answer": "It depends on the case. The diagnosis answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model."
+            "answer": "It depends on the case. The assessment answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model."
           },
           {
             "question": "Can it go on an existing server?",
-            "answer": "Yes, if it is a Linux or macOS server running Docker. We check during the diagnosis that it suits the intended uses."
+            "answer": "Yes, if it is a Linux or macOS server running Docker. We check during the assessment that it suits the intended uses."
           },
           {
             "question": "Does my data leave the server?",

@@ -103,7 +103,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot, on your calendar.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to connect your calendar.
+[Book an assessment](/en/contact/?sujet=diagnostic) to connect your calendar.
 
 A full calendar starts with customers who find you: [Nexora Croissance](/en/growth/), our automated marketing service, is in early access, on request.
 
@@ -147,7 +147,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Which calendars does the solution work with?
 
-Calendars that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider.
+Calendars that connect to WorkStudio through a connector. Each calendar is qualified during the assessment, and some connections require prior registration with the provider.
 
 #### Can the system answer the phone?
 

@@ -93,7 +93,7 @@ We announce no universal timeline: it depends on your software, your documents a
 
 #### Is my current software compatible?
 
-A broad catalogue of services connects to WorkStudio, but whether a given piece of software can be connected depends on the service concerned. We check it during the diagnosis, package by package.
+A broad catalogue of services connects to WorkStudio, but whether a given piece of software can be connected depends on the service concerned. We check it during the assessment, package by package.
 
 #### How will my employees be trained?
 

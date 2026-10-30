@@ -440,7 +440,7 @@ A consumer assistant answers general questions well. What Nexora AI adds: the ch
 
 #### Do we need a powerful server?
 
-It depends on the case. At our site, you buy no server. At yours, we size the hardware to your uses: number of users, volume of documents, chosen model. The diagnostic answers this before any purchase.
+It depends on the case. At our site, you buy no server. At yours, we size the hardware to your uses: number of users, volume of documents, chosen model. The assessment answers this before any purchase.
 
 #### What is an AI agent?
 

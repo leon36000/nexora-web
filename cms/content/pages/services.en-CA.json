@@ -22,8 +22,8 @@
       "translation": {
         "eyebrow": "AI services for small business",
         "headline": "AI installed, run and improved. With you.",
-        "subheadline": "We install, run and evolve with you an AI system for your Quebec small business, without you becoming an IT specialist. A diagnosis first, then a written estimate, then a first case in service.",
-        "primary_label": "Plan a diagnosis",
+        "subheadline": "We install, run and evolve with you an AI system for your Quebec small business, without you becoming an IT specialist. An assessment first, then a written estimate, then a first case in service.",
+        "primary_label": "Plan an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"
@@ -51,7 +51,7 @@
       },
       "translation": {
         "title": "What changes for you.",
-        "body": "<p>Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a></p>",
+        "body": "<p>Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan an assessment</a></p>",
         "items": [
           {
             "title": "The leading edge of AI, without the complexity.",
@@ -83,7 +83,7 @@
         "intro": "From the first conversation to daily operation, the same people follow you, in French or English, and the same control rules apply.",
         "cards": [
           {
-            "title": "The diagnosis.",
+            "title": "The assessment.",
             "text": "We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. You leave with a written estimate."
           },
           {
@@ -128,7 +128,7 @@
       },
       "translation": {
         "title": "What is paid, what varies.",
-        "body": "<p>Nexora AI offers two paths. <strong>Support</strong> (assessment, installation on your premises or hosted in Quebec, operations) is paid for on a written estimate, handed over after the diagnosis, that states what is included and what is not. The <strong>credit platform</strong> (account, credits, tools) is paid for by use: anything that calls an AI model uses credits, which a plan provides every month or which you top up.</p><p>There is no public price yet, the platform is not open for sale and we announce no universal timeline. <a href=\"/en/pricing/\">See the upcoming pricing</a>. Here is what makes the support estimate vary.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a> to get yours.</p>",
+        "body": "<p>Nexora AI offers two paths. <strong>Support</strong> (assessment, installation on your premises or hosted in Quebec, operations) is paid for on a written estimate, handed over after the assessment, that states what is included and what is not. The <strong>credit platform</strong> (account, credits, tools) is paid for by use: anything that calls an AI model uses credits, which a plan provides every month or which you top up.</p><p>There is no public price yet, the platform is not open for sale and we announce no universal timeline. <a href=\"/en/pricing/\">See the upcoming pricing</a>. Here is what makes the support estimate vary.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan an assessment</a> to get yours.</p>",
         "items": [
           {
             "title": "The number of cases handled.",
@@ -246,9 +246,9 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "Let's start with a diagnosis.",
+        "title": "Let's start with an assessment.",
         "text": "Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.",
-        "primary_label": "Plan a diagnosis",
+        "primary_label": "Plan an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a deployment study",
         "secondary_href": "/en/contact/?sujet=etude-deploiement"

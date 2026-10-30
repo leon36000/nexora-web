@@ -134,7 +134,7 @@
       },
       "translation": {
         "title": "Fewer lost slots.",
-        "body": "<p>The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot, on your calendar.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to connect your calendar.</p><p>A full calendar starts with customers who find you: <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service, is in early access, on request.</p>"
+        "body": "<p>The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot, on your calendar.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book an assessment</a> to connect your calendar.</p><p>A full calendar starts with customers who find you: <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service, is in early access, on request.</p>"
       }
     },
     {
@@ -212,7 +212,7 @@
         "items": [
           {
             "question": "Which calendars does the solution work with?",
-            "answer": "Calendars that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider."
+            "answer": "Calendars that connect to WorkStudio through a connector. Each calendar is qualified during the assessment, and some connections require prior registration with the provider."
           },
           {
             "question": "Can the system answer the phone?",

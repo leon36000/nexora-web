@@ -23,7 +23,7 @@
         "eyebrow": "Services · Custom",
         "headline": "Your processes, automated your way.",
         "subheadline": "When an off-the-shelf solution is not enough, we build with you the agents and workflows that connect your software and your documents. You describe the need in plain French, the WorkStudio Copilot prepares a first version, and we test it on your real cases before go-live.",
-        "primary_label": "Plan a diagnosis",
+        "primary_label": "Plan an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "See the standard solutions",
         "secondary_href": "/en/solutions/"
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "Three processes, three builds.",
-        "body": "<p>Custom work begins where standard solutions stop. Three built examples that do not resemble each other; they are not customer results.</p><p>Does yours look like one of them, or none? <a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a>.</p>",
+        "body": "<p>Custom work begins where standard solutions stop. Three built examples that do not resemble each other; they are not customer results.</p><p>Does yours look like one of them, or none? <a href=\"/en/contact/?sujet=diagnostic\">Plan an assessment</a>.</p>",
         "items": [
           {
             "title": "A contractor finds their quotes again.",
@@ -236,7 +236,7 @@
       "translation": {
         "title": "Describe your process to us.",
         "text": "Tell us what costs you time and with which software. We will tell you if it is feasible, how, and which case to start with.",
-        "primary_label": "Plan a diagnosis",
+        "primary_label": "Plan an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"

@@ -40,7 +40,7 @@ export const gatewayEnCA: GatewayDictionary = {
     steps: {
       title: "In four steps",
       items: [
-        "Create an account and top up your credits from your customer area.",
+        "Create an account, then add credits (top-up or plan) from your customer area. With no credits left, the API answers 402.",
         "Create an API key (Account, API keys section): its value is shown only once.",
         "Pick a model in the catalogue and note its identifier, for example {model}.",
         "Make your first call with one of the examples below.",

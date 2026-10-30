@@ -103,7 +103,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. No percentage and no time saved is announced: they depend on your volume and your rules, and are measured during a pilot, on your own email.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to see what it would look like for you.
+[Book an assessment](/en/contact/?sujet=diagnostic) to see what it would look like for you.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
@@ -145,7 +145,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Does the solution work with my mail service?
 
-It depends on the service. A wide catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first.
+It depends on the service. A wide catalogue of services connects to WorkStudio, but each mail service is qualified during the assessment, and some connections require an administrator to register an application with the provider first.
 
 #### Can the AI get a draft wrong?
 

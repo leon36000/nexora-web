@@ -50,7 +50,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=etapes`, `anchor_id=etapes`
 
 #### 1. Size.
 
-Number of users, volume of documents, chosen model: the diagnosis sets what is needed, before any purchase.
+Number of users, volume of documents, chosen model: the assessment sets what is needed, before any purchase.
 
 #### 2. Install.
 
@@ -80,7 +80,7 @@ Réglages : `columns=2`, `tone=sombre`, `layout=modules`, `anchor_id=dimensionne
 
 ## What makes the hardware vary.
 
-We give no standard configuration: it depends on these four factors, which the diagnosis measures before any purchase.
+We give no standard configuration: it depends on these four factors, which the assessment measures before any purchase.
 
 #### The number of users.
 
@@ -92,7 +92,7 @@ It sets the size of the knowledge base and the indexing time.
 
 #### The chosen model.
 
-A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the diagnosis.
+A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the assessment.
 
 #### The uses.
 
@@ -124,7 +124,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 #### No public price.
 
-For support, a written estimate follows the diagnosis. Use of the platform is paid for in credits, and their prices will appear on the Pricing page.
+For support, a written estimate follows the assessment. Use of the platform is paid for in credits, and their prices will appear on the Pricing page.
 
 #### No universal timeline.
 
@@ -148,11 +148,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Do I need to buy a powerful server?
 
-It depends on the case. The diagnosis answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model.
+It depends on the case. The assessment answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model.
 
 #### Can it go on an existing server?
 
-Yes, if it is a Linux or macOS server running Docker. We check during the diagnosis that it suits the intended uses.
+Yes, if it is a Linux or macOS server running Docker. We check during the assessment that it suits the intended uses.
 
 #### Does my data leave the server?
 

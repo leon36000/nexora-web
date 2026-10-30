@@ -21,9 +21,9 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # AI installed, run and improved. With you.
 
-We install, run and evolve with you an AI system for your Quebec small business, without you becoming an IT specialist. A diagnosis first, then a written estimate, then a first case in service.
+We install, run and evolve with you an AI system for your Quebec small business, without you becoming an IT specialist. An assessment first, then a written estimate, then a first case in service.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
+[Plan an assessment](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -35,7 +35,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=reve`
 
 Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic)
+[Plan an assessment](/en/contact/?sujet=diagnostic)
 
 - **The leading edge of AI, without the complexity.** Agents (software that carries out a task with the tools you authorize), a Copilot that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice: all in one tool, without writing a line of code.
 - **A person decides.** Any action that commits the business (sending, paying, writing) waits for a person's approval, unless you decide otherwise in writing.
@@ -51,7 +51,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=services`
 
 From the first conversation to daily operation, the same people follow you, in French or English, and the same control rules apply.
 
-#### The diagnosis.
+#### The assessment.
 
 We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. You leave with a written estimate.
 
@@ -81,11 +81,11 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=estimation`
 
 ## What is paid, what varies.
 
-Nexora AI offers two paths. **Support** (assessment, installation on your premises or hosted in Quebec, operations) is paid for on a written estimate, handed over after the diagnosis, that states what is included and what is not. The **credit platform** (account, credits, tools) is paid for by use: anything that calls an AI model uses credits, which a plan provides every month or which you top up.
+Nexora AI offers two paths. **Support** (assessment, installation on your premises or hosted in Quebec, operations) is paid for on a written estimate, handed over after the assessment, that states what is included and what is not. The **credit platform** (account, credits, tools) is paid for by use: anything that calls an AI model uses credits, which a plan provides every month or which you top up.
 
 There is no public price yet, the platform is not open for sale and we announce no universal timeline. [See the upcoming pricing](/en/pricing/). Here is what makes the support estimate vary.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) to get yours.
+[Plan an assessment](/en/contact/?sujet=diagnostic) to get yours.
 
 - **The number of cases handled.** One well-chosen case first; others afterward.
 - **The volume of documents.** It weighs on indexing and on storage.
@@ -157,8 +157,8 @@ Nexora AI offers two paths: custom support (assessment, installation, operations
 
 Réglages : `tone=sombre`
 
-## Let's start with a diagnosis.
+## Let's start with an assessment.
 
 Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Request a deployment study](/en/contact/?sujet=etude-deploiement)
+[Plan an assessment](/en/contact/?sujet=diagnostic) · [Request a deployment study](/en/contact/?sujet=etude-deploiement)

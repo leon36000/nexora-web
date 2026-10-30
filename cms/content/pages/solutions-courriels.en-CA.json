@@ -134,7 +134,7 @@
       },
       "translation": {
         "title": "What you gain.",
-        "body": "<p>Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. No percentage and no time saved is announced: they depend on your volume and your rules, and are measured during a pilot, on your own email.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to see what it would look like for you.</p>"
+        "body": "<p>Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. No percentage and no time saved is announced: they depend on your volume and your rules, and are measured during a pilot, on your own email.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book an assessment</a> to see what it would look like for you.</p>"
       }
     },
     {
@@ -213,7 +213,7 @@
         "items": [
           {
             "question": "Does the solution work with my mail service?",
-            "answer": "It depends on the service. A wide catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first."
+            "answer": "It depends on the service. A wide catalogue of services connects to WorkStudio, but each mail service is qualified during the assessment, and some connections require an administrator to register an application with the provider first."
           },
           {
             "question": "Can the AI get a draft wrong?",

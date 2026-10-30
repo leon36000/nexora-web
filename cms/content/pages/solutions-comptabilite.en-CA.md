@@ -105,7 +105,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 The expected benefit: less retyping and errors caught sooner, hence more time for what the client really pays for, their accountant's judgment. No quantified gain is announced; it is measured during a pilot, on your own files.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to define your fields and your control rules.
+[Book an assessment](/en/contact/?sujet=diagnostic) to define your fields and your control rules.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
@@ -125,7 +125,7 @@ Bank reconciliation is not delivered in WorkStudio. It can be studied as custom 
 
 #### Your software, to be qualified.
 
-Writing to your accounting software goes through a connector that is qualified during the diagnosis, software by software.
+Writing to your accounting software goes through a connector that is qualified during the assessment, software by software.
 
 #### Your tax rules.
 
@@ -183,4 +183,4 @@ Réglages : `tone=sombre`
 
 Describe your documents and your software. We will tell you what can be prepared, what can be connected and what stays with your accountant. A partner from here installs, runs and trains with you.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) · [See invoices](/en/solutions/invoices/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [See invoices](/en/solutions/invoices/)

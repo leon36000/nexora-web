@@ -103,7 +103,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 The expected benefit: less time spent searching, less dependence on one person's memory. No time saved is announced; the effect is measured during a pilot, on your real questions.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to choose which documents to query first.
+[Book an assessment](/en/contact/?sujet=diagnostic) to choose which documents to query first.
 
 ### Bloc 6 — Cartes (`block_cards`)
 

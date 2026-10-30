@@ -99,7 +99,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=benefice`
 
 The expected benefit: fewer interruptions, more consistent answers, customers who get what they are looking for faster. No percentage is announced; the effect is measured during a pilot, on your real questions.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to assess your frequent questions.
+[Book an assessment](/en/contact/?sujet=diagnostic) to assess your frequent questions.
 
 Want more customers to find you, too? [Nexora Croissance](/en/growth/), our automated marketing service, is in early access: access is on request.
 

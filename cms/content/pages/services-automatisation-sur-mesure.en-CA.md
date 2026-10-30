@@ -23,7 +23,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 When an off-the-shelf solution is not enough, we build with you the agents and workflows that connect your software and your documents. You describe the need in plain French, the WorkStudio Copilot prepares a first version, and we test it on your real cases before go-live.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [See the standard solutions](/en/solutions/)
+[Plan an assessment](/en/contact/?sujet=diagnostic) · [See the standard solutions](/en/solutions/)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -35,7 +35,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=exemples`
 
 Custom work begins where standard solutions stop. Three built examples that do not resemble each other; they are not customer results.
 
-Does yours look like one of them, or none? [Plan a diagnosis](/en/contact/?sujet=diagnostic).
+Does yours look like one of them, or none? [Plan an assessment](/en/contact/?sujet=diagnostic).
 
 - **A contractor finds their quotes again.** They want to start from older, comparable quotes to prepare a new one, then track real costs afterward. We would connect the quote database, an estimating agent and an approval step: the estimator approves the price before anything is sent. For construction, <a href="/en/opsys-ai/">OPSYS-AI</a> aims at this path, as a product in development that shows every availability level.
 - **A distributor processes its suppliers' documents.** Delivery slips, order confirmations and invoices arrive in different formats. The workflow reads them, compares them with each other and flags what does not match; the purchasing person decides before any action.
@@ -156,4 +156,4 @@ Réglages : `tone=sombre`
 
 Tell us what costs you time and with which software. We will tell you if it is feasible, how, and which case to start with.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
+[Plan an assessment](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)

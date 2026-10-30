@@ -23,7 +23,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 Three decisions before any tool: a precise case to handle, a place where your data lives, a person who approves. Then a pilot to measure, one case at a time.
 
-[Book a diagnosis](/en/contact/) · [See the method](/en/method/)
+[Book an assessment](/en/contact/) · [See the method](/en/method/)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -35,7 +35,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 For a Quebec small business, starting with AI means choosing a repetitive, precise case (sorting email, reading invoices, booking appointments or searching your documents), deciding whether the system lives on your premises or is hosted in Quebec, naming the person who approves what the AI prepares, then measuring on a pilot before expanding.
 
-No timeline and no gain is universal: they depend on the case and are measured on the pilot. A diagnosis comes before any written estimate. Two things are paid for: support, on a written estimate, and use of the platform, in credits.
+No timeline and no gain is universal: they depend on the case and are measured on the pilot. An assessment comes before any written estimate. Two things are paid for: support, on a written estimate, and use of the platform, in credits.
 
 - **One case.** A repetitive job whose steps you can describe.
 - **One place.** On your premises, or hosted in Quebec.
@@ -108,7 +108,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=solutions`
 
 ## The most common solutions.
 
-These are configurations built on WorkStudio's components and adapted to each business after a diagnosis, not ready-to-use products.
+These are configurations built on WorkStudio's components and adapted to each business after an assessment, not ready-to-use products.
 
 - [Email](/en/solutions/email/): sort, summarize, draft a reply.
 - [Invoices](/en/solutions/invoices/): read, extract, flag discrepancies.
@@ -152,7 +152,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Where do I start, concretely, with AI?
 
-With a diagnosis of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate.
+With an assessment of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate.
 
 #### How long does it take to put AI into service?
 
@@ -160,7 +160,7 @@ No universal timeline is announced: it depends on the case and is measured on a 
 
 #### Do I need a powerful server?
 
-It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the diagnosis, before any purchase.
+It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the assessment, before any purchase.
 
 #### Does my data leave Quebec?
 
@@ -192,4 +192,4 @@ Réglages : `tone=sombre`
 
 Describe your most repetitive job. We tell you what is realistic, and what is not.
 
-[Book a diagnosis](/en/contact/) · [See the solutions](/en/solutions/)
+[Book an assessment](/en/contact/) · [See the solutions](/en/solutions/)

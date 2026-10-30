@@ -134,7 +134,7 @@
       },
       "translation": {
         "title": "Errors caught before payment.",
-        "body": "<p>Less retyping, errors caught before approval rather than after payment, a clear view of what is left to process. No accuracy percentage and no time saved is announced: reading quality depends on your documents and is measured during a pilot, on your own invoices.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to put the reading to the test on your documents.</p>"
+        "body": "<p>Less retyping, errors caught before approval rather than after payment, a clear view of what is left to process. No accuracy percentage and no time saved is announced: reading quality depends on your documents and is measured during a pilot, on your own invoices.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book an assessment</a> to put the reading to the test on your documents.</p>"
       }
     },
     {
@@ -216,7 +216,7 @@
           },
           {
             "question": "Does it connect to my accounting software?",
-            "answer": "Possibly: it depends on the software, and we check it during the diagnosis. Without a connection, the table can serve as a basis for faster entry, approved by your accountant."
+            "answer": "Possibly: it depends on the software, and we check it during the assessment. Without a connection, the table can serve as a basis for faster entry, approved by your accountant."
           },
           {
             "question": "Are Quebec taxes taken into account?",

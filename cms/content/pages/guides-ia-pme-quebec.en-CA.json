@@ -23,7 +23,7 @@
         "eyebrow": "Guide · AI for small business",
         "headline": "AI for a Quebec small business. Where to start.",
         "subheadline": "Three decisions before any tool: a precise case to handle, a place where your data lives, a person who approves. Then a pilot to measure, one case at a time.",
-        "primary_label": "Book a diagnosis",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/",
         "secondary_label": "See the method",
         "secondary_href": "/en/method/"
@@ -49,7 +49,7 @@
       },
       "translation": {
         "title": "The short answer.",
-        "body": "<p>For a Quebec small business, starting with AI means choosing a repetitive, precise case (sorting email, reading invoices, booking appointments or searching your documents), deciding whether the system lives on your premises or is hosted in Quebec, naming the person who approves what the AI prepares, then measuring on a pilot before expanding.</p><p>No timeline and no gain is universal: they depend on the case and are measured on the pilot. A diagnosis comes before any written estimate. Two things are paid for: support, on a written estimate, and use of the platform, in credits.</p>",
+        "body": "<p>For a Quebec small business, starting with AI means choosing a repetitive, precise case (sorting email, reading invoices, booking appointments or searching your documents), deciding whether the system lives on your premises or is hosted in Quebec, naming the person who approves what the AI prepares, then measuring on a pilot before expanding.</p><p>No timeline and no gain is universal: they depend on the case and are measured on the pilot. An assessment comes before any written estimate. Two things are paid for: support, on a written estimate, and use of the platform, in credits.</p>",
         "items": [
           {
             "title": "One case.",
@@ -175,7 +175,7 @@
       },
       "translation": {
         "title": "The most common solutions.",
-        "body": "<p>These are configurations built on WorkStudio's components and adapted to each business after a diagnosis, not ready-to-use products.</p><ul><li><a href=\"/en/solutions/email/\">Email</a>: sort, summarize, draft a reply.</li><li><a href=\"/en/solutions/invoices/\">Invoices</a>: read, extract, flag discrepancies.</li><li><a href=\"/en/solutions/customer-service/\">Customer service</a>: answer from your documents.</li><li><a href=\"/en/solutions/appointments/\">Appointments</a>: propose slots, send reminders.</li><li><a href=\"/en/solutions/accounting/\">Accounting</a>: prepare the pre-entry.</li><li><a href=\"/en/solutions/documents/\">Documents</a>: find, summarize, extract.</li></ul><p>The Nexora AI account brings credits, storage and tools together in the \"My tools\" panel. The platform is not yet open for sale; prices will appear on the <a href=\"/en/pricing/\">Pricing</a> page.</p>"
+        "body": "<p>These are configurations built on WorkStudio's components and adapted to each business after an assessment, not ready-to-use products.</p><ul><li><a href=\"/en/solutions/email/\">Email</a>: sort, summarize, draft a reply.</li><li><a href=\"/en/solutions/invoices/\">Invoices</a>: read, extract, flag discrepancies.</li><li><a href=\"/en/solutions/customer-service/\">Customer service</a>: answer from your documents.</li><li><a href=\"/en/solutions/appointments/\">Appointments</a>: propose slots, send reminders.</li><li><a href=\"/en/solutions/accounting/\">Accounting</a>: prepare the pre-entry.</li><li><a href=\"/en/solutions/documents/\">Documents</a>: find, summarize, extract.</li></ul><p>The Nexora AI account brings credits, storage and tools together in the \"My tools\" panel. The platform is not yet open for sale; prices will appear on the <a href=\"/en/pricing/\">Pricing</a> page.</p>"
       }
     },
     {
@@ -244,7 +244,7 @@
         "items": [
           {
             "question": "Where do I start, concretely, with AI?",
-            "answer": "With a diagnosis of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate."
+            "answer": "With an assessment of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate."
           },
           {
             "question": "How long does it take to put AI into service?",
@@ -252,7 +252,7 @@
           },
           {
             "question": "Do I need a powerful server?",
-            "answer": "It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the diagnosis, before any purchase."
+            "answer": "It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the assessment, before any purchase."
           },
           {
             "question": "Does my data leave Quebec?",
@@ -287,7 +287,7 @@
       "translation": {
         "title": "Let's choose your first case.",
         "text": "Describe your most repetitive job. We tell you what is realistic, and what is not.",
-        "primary_label": "Book a diagnosis",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/",
         "secondary_label": "See the solutions",
         "secondary_href": "/en/solutions/"

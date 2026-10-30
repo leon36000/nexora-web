@@ -103,7 +103,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 Less retyping, errors caught before approval rather than after payment, a clear view of what is left to process. No accuracy percentage and no time saved is announced: reading quality depends on your documents and is measured during a pilot, on your own invoices.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to put the reading to the test on your documents.
+[Book an assessment](/en/contact/?sujet=diagnostic) to put the reading to the test on your documents.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
@@ -149,7 +149,7 @@ It reads images and scanned PDFs with a document-reading model, more slowly than
 
 #### Does it connect to my accounting software?
 
-Possibly: it depends on the software, and we check it during the diagnosis. Without a connection, the table can serve as a basis for faster entry, approved by your accountant.
+Possibly: it depends on the software, and we check it during the assessment. Without a connection, the table can serve as a basis for faster entry, approved by your accountant.
 
 #### Are Quebec taxes taken into account?
 

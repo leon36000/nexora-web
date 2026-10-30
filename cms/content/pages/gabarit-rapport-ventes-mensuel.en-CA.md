@@ -105,7 +105,7 @@ No. It produces text to review; you use or send it yourself. Only five templates
 
 #### Does the template connect to my sales software?
 
-No. You paste the figures in the starting field. Connecting to your software goes through a connector, qualified at the diagnostic.
+No. You paste the figures in the starting field. Connecting to your software goes through a connector, qualified at the assessment.
 
 #### Is it suited to a Quebec business?
 

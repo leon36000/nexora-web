@@ -103,7 +103,7 @@ No. It produces text to review; you use or send it yourself. Only five templates
 
 #### Does the template read my mailbox?
 
-No. It receives the email you give it in the starting field. Connecting a mailbox is a connector matter, qualified at the diagnostic.
+No. It receives the email you give it in the starting field. Connecting a mailbox is a connector matter, qualified at the assessment.
 
 #### Is it suited to a Quebec business?
 

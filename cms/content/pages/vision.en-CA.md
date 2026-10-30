@@ -244,7 +244,7 @@ Every alert is checked by a person and recorded in the log. The pilot measures t
 
 #### How much does it cost?
 
-There is no public price yet. It will depend on the number of cameras, the storage and the retention period; a written estimate follows the diagnostic.
+There is no public price yet. It will depend on the number of cameras, the storage and the retention period; a written estimate follows the assessment.
 
 #### How do I join the pilot?
 

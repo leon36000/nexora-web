@@ -43,7 +43,7 @@ export const gatewayFrCA = {
     steps: {
       title: "En quatre étapes",
       items: [
-        "Créez un compte et rechargez vos crédits depuis votre espace client.",
+        "Créez un compte, puis ajoutez des crédits (recharge ou abonnement) depuis votre espace client. Sans crédits, l’API répond 402.",
         "Créez une clé API (Compte, section Clés API) : sa valeur n’est affichée qu’une seule fois.",
         "Choisissez un modèle dans le catalogue et notez son identifiant, par exemple {model}.",
         "Faites votre premier appel avec l’un des exemples ci-dessous.",

@@ -23,7 +23,7 @@
         "eyebrow": "Solutions",
         "headline": "Repetitive tasks, finally behind you.",
         "subheadline": "Sorted email, invoices read, customers served, a full calendar: six small-business situations in Quebec where repetitive work fades away. Your team keeps the decision, and nobody writes a line of code.",
-        "primary_label": "Book a diagnosis",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a demonstration",
         "secondary_href": "/en/contact/?sujet=demonstration"
@@ -142,7 +142,7 @@
       },
       "translation": {
         "title": "Powerful underneath, simple on top.",
-        "body": "<p>These solutions come together in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, a single tool that puts the latest of what AI can do within your reach: agents (software that completes a task using the tools you authorize), answers drawn from your own documents, reading of scanned documents, transcription and read-aloud, and side-by-side comparison of several models.</p><p>It is simple to use: you describe the need in plain language, a building assistant (the Copilot) prepares a workflow (an automated sequence of tasks) for you to review, then you build it with cards or on a canvas, without writing code. The workflow pictured here receives an invoice by email, prepares the entry and stops for a person's approval before writing anything.</p><p><strong>One account, your credits, all your tools.</strong> Your Nexora AI account brings your credits, your storage and your products together in the \"My tools\" panel, with the real status of each. WorkStudio opens from there as long as at least one credit remains. Anything that calls an AI model uses credits: a plan gives you some every month, otherwise you top up. The platform is not yet open for sale and no price is published. <a href=\"/en/pricing/\">See the upcoming pricing</a></p><p>On the support side, every go-live starts with a diagnosis of your case: we check that your software can be connected, and we announce no universal timeline. These are tailored configurations, not off-the-shelf boxes. <a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a></p><p>To choose your first case, read the <a href=\"/en/guides/ai-small-business-quebec/\">guide to AI for a Quebec small business</a>.</p>",
+        "body": "<p>These solutions come together in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, a single tool that puts the latest of what AI can do within your reach: agents (software that completes a task using the tools you authorize), answers drawn from your own documents, reading of scanned documents, transcription and read-aloud, and side-by-side comparison of several models.</p><p>It is simple to use: you describe the need in plain language, a building assistant (the Copilot) prepares a workflow (an automated sequence of tasks) for you to review, then you build it with cards or on a canvas, without writing code. The workflow pictured here receives an invoice by email, prepares the entry and stops for a person's approval before writing anything.</p><p><strong>One account, your credits, all your tools.</strong> Your Nexora AI account brings your credits, your storage and your products together in the \"My tools\" panel, with the real status of each. WorkStudio opens from there as long as at least one credit remains. Anything that calls an AI model uses credits: a plan gives you some every month, otherwise you top up. The platform is not yet open for sale and no price is published. <a href=\"/en/pricing/\">See the upcoming pricing</a></p><p>On the support side, every go-live starts with an assessment of your case: we check that your software can be connected, and we announce no universal timeline. These are tailored configurations, not off-the-shelf boxes. <a href=\"/en/contact/?sujet=diagnostic\">Book an assessment</a></p><p>To choose your first case, read the <a href=\"/en/guides/ai-small-business-quebec/\">guide to AI for a Quebec small business</a>.</p>",
         "items": [
           {
             "title": "1. The problem, named.",
@@ -294,11 +294,11 @@
         "items": [
           {
             "question": "Where do I start with AI in my small business?",
-            "answer": "With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding. A diagnosis opens the process."
+            "answer": "With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding. An assessment opens the process."
           },
           {
             "question": "Do I have to change my software?",
-            "answer": "Generally not: the system connects to what you already use. Whether a given piece of software can be connected depends on the service concerned; we check it during the diagnosis."
+            "answer": "Generally not: the system connects to what you already use. Whether a given piece of software can be connected depends on the service concerned; we check it during the assessment."
           },
           {
             "question": "Are the solutions ready to use?",
@@ -322,7 +322,7 @@
           },
           {
             "question": "Can I open an account and buy credits now?",
-            "answer": "Not yet. The credit platform is not open for sale: accounts and payments only work in test mode and no price is published. You can book a diagnosis now, though; prices will appear on the Pricing page once they are published."
+            "answer": "Not yet. The credit platform is not open for sale: accounts and payments only work in test mode and no price is published. You can book an assessment now, though; prices will appear on the Pricing page once they are published."
           }
         ]
       }
@@ -337,7 +337,7 @@
       "translation": {
         "title": "Pick the first chore to erase.",
         "text": "Describe a concrete problem. We will tell you which of these solutions applies, in which mode, and where to start. A partner from here installs, runs and trains your team with you.",
-        "primary_label": "Book a diagnosis",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a demonstration",
         "secondary_href": "/en/contact/?sujet=demonstration"

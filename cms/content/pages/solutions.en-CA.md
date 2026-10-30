@@ -23,7 +23,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 Sorted email, invoices read, customers served, a full calendar: six small-business situations in Quebec where repetitive work fades away. Your team keeps the decision, and nobody writes a line of code.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) · [Request a demonstration](/en/contact/?sujet=demonstration)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [Request a demonstration](/en/contact/?sujet=demonstration)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -101,7 +101,7 @@ It is simple to use: you describe the need in plain language, a building assista
 
 **One account, your credits, all your tools.** Your Nexora AI account brings your credits, your storage and your products together in the "My tools" panel, with the real status of each. WorkStudio opens from there as long as at least one credit remains. Anything that calls an AI model uses credits: a plan gives you some every month, otherwise you top up. The platform is not yet open for sale and no price is published. [See the upcoming pricing](/en/pricing/)
 
-On the support side, every go-live starts with a diagnosis of your case: we check that your software can be connected, and we announce no universal timeline. These are tailored configurations, not off-the-shelf boxes. [Book a diagnosis](/en/contact/?sujet=diagnostic)
+On the support side, every go-live starts with an assessment of your case: we check that your software can be connected, and we announce no universal timeline. These are tailored configurations, not off-the-shelf boxes. [Book an assessment](/en/contact/?sujet=diagnostic)
 
 To choose your first case, read the [guide to AI for a Quebec small business](/en/guides/ai-small-business-quebec/).
 
@@ -182,11 +182,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Where do I start with AI in my small business?
 
-With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding. A diagnosis opens the process.
+With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding. An assessment opens the process.
 
 #### Do I have to change my software?
 
-Generally not: the system connects to what you already use. Whether a given piece of software can be connected depends on the service concerned; we check it during the diagnosis.
+Generally not: the system connects to what you already use. Whether a given piece of software can be connected depends on the service concerned; we check it during the assessment.
 
 #### Are the solutions ready to use?
 
@@ -210,7 +210,7 @@ Any call to an AI model: reading a document, drafting a reply, sorting a message
 
 #### Can I open an account and buy credits now?
 
-Not yet. The credit platform is not open for sale: accounts and payments only work in test mode and no price is published. You can book a diagnosis now, though; prices will appear on the Pricing page once they are published.
+Not yet. The credit platform is not open for sale: accounts and payments only work in test mode and no price is published. You can book an assessment now, though; prices will appear on the Pricing page once they are published.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
@@ -222,4 +222,4 @@ Réglages : `tone=sombre`
 
 Describe a concrete problem. We will tell you which of these solutions applies, in which mode, and where to start. A partner from here installs, runs and trains your team with you.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) · [Request a demonstration](/en/contact/?sujet=demonstration)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [Request a demonstration](/en/contact/?sujet=demonstration)

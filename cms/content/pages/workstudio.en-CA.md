@@ -290,7 +290,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
 
 A product is also judged by what it writes about its limits. Here are ours, as of this page's date.
 
-On your premises or [with us, in Quebec](/en/deployment/), we start by understanding your case: [book a diagnosis](/en/contact/?sujet=diagnostic).
+On your premises or [with us, in Quebec](/en/deployment/), we start by understanding your case: [book an assessment](/en/contact/?sujet=diagnostic).
 
 The starter models for small businesses are described one by one in the [workflow templates](/en/workflow-templates/). To call a model or an agent with the OpenAI format, see the guide [OpenAI-compatible API](/en/guides/openai-compatible-api/).
 
