@@ -106,10 +106,19 @@ export function buildRankings(
     r.publishers = [...new Set(r.rows.map((x) => x.benchmark.publisher))];
     out.push(r);
   }
-  return out.sort(
+  const sorted = out.sort(
     (a, b) =>
       b.modelCount - a.modelCount || a.name.localeCompare(b.name, locale),
   );
+  // Deux épreuves qui ne diffèrent que par la ponctuation (« MMLU Pro », « MMLU-Pro ») donneraient la même ancre :
+  // la seconde reçoit un suffixe, pour que chaque tableau garde un identifiant unique dans la page.
+  const seen = new Map<string, number>();
+  for (const r of sorted) {
+    const n = (seen.get(r.slug) ?? 0) + 1;
+    seen.set(r.slug, n);
+    if (n > 1) r.slug = `${r.slug}-${n}`;
+  }
+  return sorted;
 }
 
 export interface CompareRow {

@@ -55,9 +55,11 @@ for (const [name, path] of PAGES) {
         const vw = window.innerWidth;
         const small = [...document.querySelectorAll("a, button, input, select, textarea, summary")]
           .filter((el) => {
-            const r = el.getBoundingClientRect();
+            // une case ou une pastille radio se touche par son libellé : on mesure la cible réelle
+            const target = el.matches("input[type=checkbox], input[type=radio]") ? (el.closest("label") ?? el) : el;
+            const r = target.getBoundingClientRect();
             const cs = getComputedStyle(el);
-            return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && (r.height < 44 || r.width < 44)
+            return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && (r.height < 44 || r.width < 44) && !(el.matches("input[type=checkbox], input[type=radio]") && r.height >= 44)
               && !el.closest(".sr-only, [hidden]") && !(el.tagName === "A" && cs.display === "inline" );
           })
           .map((el) => `${el.tagName.toLowerCase()}:${(el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 24)}:${Math.round(el.getBoundingClientRect().width)}x${Math.round(el.getBoundingClientRect().height)}`);

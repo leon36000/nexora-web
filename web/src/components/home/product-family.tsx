@@ -17,7 +17,7 @@ import { cn } from "@/lib/cn";
  * de fiche Nexora Apps, leur état suit ce que le site en dit déjà : WorkStudio « disponible » (affirmation CL-P01 du
  * registre `cms/content/claims.json`) et les VPS « bientôt » (« en préparation », aucune date annoncée).
  */
-const FAMILY: readonly {
+export const FAMILY: readonly {
   id:
     | "workstudio"
     | "code"

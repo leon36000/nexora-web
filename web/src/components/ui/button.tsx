@@ -18,7 +18,7 @@ const VARIANTS: Record<Variant, string> = {
   secondary: "rounded-md border border-line-strong text-fg hover:bg-fg/10",
   // Bouton discret « Découvrir › » : fond teinté à peine visible, flèche qui avance au survol.
   soft: "rounded-md bg-fg/[0.07] text-fg hover:bg-fg/[0.13]",
-  link: "rounded-xs text-accent-text underline decoration-1 underline-offset-[5px] hover:decoration-2",
+  link: "min-h-11 rounded-xs text-accent-text underline sm:min-h-8 decoration-1 underline-offset-[5px] hover:decoration-2",
 };
 
 const SIZES: Record<Variant, Record<Size, string>> = {

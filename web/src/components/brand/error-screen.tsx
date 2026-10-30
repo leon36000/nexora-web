@@ -30,7 +30,7 @@ export function ErrorScreen({
       background={
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 hidden md:block"
+          className="absolute inset-0 -z-10 hidden opacity-30 md:block"
         >
           <MosaicBackdrop />
         </div>

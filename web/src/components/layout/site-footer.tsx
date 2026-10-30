@@ -26,7 +26,7 @@ export function SiteFooter({
 }) {
   const { footer, a11y, language } = dict;
   const linkClass =
-    "inline-flex min-h-11 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4 sm:min-h-9";
+    "inline-flex min-h-11 min-w-11 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4 md:min-h-9 md:min-w-0";
   const quick = [
     footer.quick.myTools,
     footer.quick.pricing,
@@ -65,7 +65,7 @@ export function SiteFooter({
               href={localizePath(lang, "/")}
               prefetch={false}
               aria-label={a11y.homeLink}
-              className="inline-block rounded-xs"
+              className="inline-flex min-h-11 items-center rounded-xs"
             >
               <Logo tone="light" />
             </Link>
