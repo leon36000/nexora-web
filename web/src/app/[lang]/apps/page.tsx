@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * Nexora Apps : une seule page pour les outils qui entourent les produits principaux (agent de code, Gitspace, RAG,
+ * Nexora Apps : une seule page pour les outils qui entourent les produits principaux (Nexora Code, Gitspace, RAG,
  * WebPilot, Privacy Router, Creative, outils gratuits). Chaque outil affiche son état réel ; les fiches ne sont pas
  * dans la barre principale.
  */

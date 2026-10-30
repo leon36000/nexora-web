@@ -49,13 +49,15 @@ describe("section active selon l'adresse", () => {
 });
 
 describe("navigation du panneau", () => {
-  it("neuf entrées, dans l'ordre voulu, chacune avec une adresse unique", () => {
+  it("onze entrées, dans l'ordre voulu, chacune avec une adresse unique", () => {
     expect(PANEL_NAV.map((i) => i.id)).toEqual([
       "overview",
       "models",
       "activity",
       "privacy",
       "workstudio",
+      "code",
+      "rag",
       "cloud",
       "apps",
       "billing",

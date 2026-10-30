@@ -7,9 +7,8 @@ import {
   hasWorkstudioAccess,
   isFreeAccess,
   workstudioInstanceOrigin,
-  workstudioView,
 } from "@/components/account/panel-logic";
-import { PanelLoading } from "@/components/account/panel-ui";
+import { ToolsLoading } from "@/components/account/tools-loading";
 import { getAccountDictionary } from "@/i18n/account";
 import { isLang, type Lang } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/metadata";
@@ -21,12 +20,12 @@ import {
   planSourceFromEnv,
   type SubscriptionPlan,
 } from "@/server/billing/plans";
-import { loadWallet } from "@/server/billing/wallet";
 import { getDb } from "@/server/db";
 import { loadOverview } from "@/server/gateway/activity-overview";
 import { getWorkstudioOrigin } from "@/server/gateway/activity-workstudio";
 import { loadBillingConfig } from "@/server/ledger/config";
 import { MICRO_PER_CREDIT } from "@/server/ledger/money";
+import { loadToolsHome } from "@/server/products/home";
 import { first, flashFromSearch, type Search } from "./_lib/flash";
 import { requirePanelSession } from "./_lib/session";
 
@@ -45,9 +44,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * Aperçu du panneau client : portefeuille, pour démarrer, 30 derniers jours. C'est aussi la page de retour des
- * paiements (`?achat=ok`…) et du choix d'offre de la page Tarifs (`?offre=…`). Les données (session, cookies, base)
- * sont propres à la requête : elles sont lues dans une frontière Suspense pour que la page garde une coque statique.
+ * « Mes outils » : crédits (abonnement et recharge), espace disque, offre en cours, puis les produits avec leur état
+ * réel, et l'activité. C'est aussi la page de retour des paiements (`?achat=ok`…) et du choix d'offre de la page Tarifs
+ * (`?offre=…`). Les données (session, cookies, base) sont propres à la requête : elles sont lues dans une frontière
+ * Suspense pour que la page garde une coque statique.
  */
 export default async function AccountPage({
   searchParams,
@@ -60,9 +60,9 @@ export default async function AccountPage({
   return (
     <Suspense
       fallback={
-        <PanelLoading
+        <ToolsLoading
           title={t.panel.overview.title}
-          working={t.common.working}
+          working={t.panel.tools.loading}
         />
       }
     >
@@ -81,23 +81,23 @@ async function OverviewContent({
   const session = await requirePanelSession(lang);
   const t = getAccountDictionary(lang);
   const db = getDb();
-  const [dashboard, overview, wallet, declaredOrigin, q] = await Promise.all([
+  const [dashboard, overview, declaredOrigin, q] = await Promise.all([
     loadDashboard(db, session.organizationId),
     loadOverview(db, session.organizationId),
-    loadWallet(db, session.organizationId),
     getWorkstudioOrigin(db),
     searchParams,
   ]);
   const free = isFreeAccess(overview.billingMode);
   const hasCredits = dashboard.account.availableMicro >= MICRO_PER_CREDIT;
-  const workstudio = workstudioView({
-    subscriptions: dashboard.subscriptions,
-    instanceOrigin: workstudioInstanceOrigin(
+  const home = await loadToolsHome(db, session.organizationId, {
+    env: process.env,
+    workstudioOrigin: workstudioInstanceOrigin(
       process.env.WORKSTUDIO_PUBLIC_URL,
       declaredOrigin,
     ),
-    free,
-    hasCredits,
+    house: free,
+    blocked: dashboard.account.blocked,
+    subscriptions: dashboard.subscriptions,
   });
 
   // L'offre choisie sur la page Tarifs : les offres publiées ne sont lues dans Directus que dans ce cas ;
@@ -128,15 +128,16 @@ async function OverviewContent({
       lang={lang}
       t={t}
       role={session.role}
-      dashboard={dashboard}
       overview={overview}
       hasWorkstudio={hasWorkstudioAccess(
         dashboard.subscriptions,
         free,
         hasCredits,
       )}
-      wallet={wallet}
-      workstudio={workstudio.state}
+      products={home.products}
+      hints={home.hints}
+      workstudioUrl={home.workstudioUrl}
+      summary={home.summary}
       chosenOffer={chosenOffer}
       flash={flashFromSearch(lang, t, q, loadBillingConfig())}
     />

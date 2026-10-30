@@ -54,8 +54,16 @@ describe("dictionnaires du panneau client (fr-CA / en-CA)", () => {
         .replace(/\{\w+\}/g, "")
         .split(/\s+/)
         .filter((w) => /[a-zà-ÿ]{2,}/i.test(w));
+    // Les noms propres de produits ne se traduisent pas : « Nexora Privacy Router », « Nexora Code (MCP) ».
+    const PROPER_NOUNS = new Set([
+      "Nexora Privacy Router",
+      "Nexora Code (MCP)",
+    ]);
     const same = frPanel.filter(
-      ([key, text]) => text === enByKey.get(key) && words(text).length >= 3,
+      ([key, text]) =>
+        text === enByKey.get(key) &&
+        words(text).length >= 3 &&
+        !PROPER_NOUNS.has(text),
     );
     expect(same).toEqual([]);
   });

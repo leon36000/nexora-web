@@ -6,36 +6,52 @@ import { type Lang, localizePath } from "@/i18n/config";
 import { formatInteger } from "@/i18n/gateway";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { SubscriptionPlan } from "@/server/billing/plans";
-import type { Wallet } from "@/server/billing/wallet";
 import type { OverviewData } from "@/server/gateway/activity-overview";
+import type {
+  CreditsView,
+  PlanView,
+  ProductHint,
+  StorageView,
+} from "@/server/products/panel-data";
+import type { ProductId, ResolvedProduct } from "@/server/products/registry";
 import { ChosenOfferCard } from "./billing-panel";
 import { Notice } from "./field";
-import { IncludedMeter } from "./included-meter";
 import { formatMicroCadExact, formatTokensCompact } from "./panel-format";
 import {
   isFreeAccess,
   type OnboardingStep,
   onboardingProgress,
   onboardingSteps,
-  type WorkstudioView,
 } from "./panel-logic";
 import { PanelHeading, SectionTitle, StatCard } from "./panel-ui";
+import { ProductGroup } from "./tools-products";
+import { CreditsCard, PlanStrip, StorageCard } from "./tools-summary";
 
 type Role = "owner" | "member";
+
+/** Crédits, espace et offre de l'organisation, lus par `getOrgEntitlements` ; null si la lecture a échoué. */
+export interface ToolsSummaryData {
+  credits: CreditsView;
+  storage: StorageView;
+  plan: PlanView;
+}
 
 export interface OverviewProps {
   lang: Lang;
   t: AccountDictionary;
   role: Role;
-  /** Solde, abonnements : lus par `loadDashboard`, comme la page de facturation. */
-  dashboard: DashboardData;
+  /** Activité : consommation du mois, clés actives, 30 derniers jours (aucune donnée de solde). */
   overview: OverviewData;
-  /** Un abonnement WorkStudio donne actuellement accès (étape « Ouvrir WorkStudio »). */
+  /** Un accès à WorkStudio est ouvert (étape « Ouvrir WorkStudio » de la liste « Pour démarrer »). */
   hasWorkstudio: boolean;
-  /** Crédits inclus de la période (compteur « X de 5 M de jetons »). */
-  wallet: Wallet;
-  /** État de WorkStudio : abonnement, instance, accès gratuit de la maison. */
-  workstudio: WorkstudioView["state"];
+  /** Produits du panneau avec leur état réel (`resolveProducts`). */
+  products: readonly ResolvedProduct[];
+  /** Ce qui manque à chaque produit (crédits, espace). Vide si les droits n'ont pas pu être lus. */
+  hints: Partial<Record<ProductId, ProductHint>>;
+  /** Adresse sûre de l'instance WorkStudio, null tant qu'elle n'est pas connue. */
+  workstudioUrl: string | null;
+  /** Crédits, espace et offre ; null quand la lecture des droits a échoué (état d'erreur, jamais de faux chiffres). */
+  summary: ToolsSummaryData | null;
   /** Offre choisie sur la page Tarifs (`?offre=`), publiée, vendable et pas déjà en cours. */
   chosenOffer?: SubscriptionPlan | null;
   flash: { kind: "success" | "info" | "error"; message: string } | null;
@@ -75,112 +91,23 @@ function StepIcon({ done }: { done: boolean }) {
   );
 }
 
-/** Carte « Portefeuille » : solde et bouton d'ajout de fonds, ou « Accès administrateur gratuit » (mode maison). */
-export function WalletCard({
-  lang,
-  t,
-  role,
-  dashboard,
-  overview,
-}: Pick<OverviewProps, "lang" | "t" | "role" | "dashboard" | "overview">) {
-  const w = t.panel.overview.wallet;
-  const b = t.dashboard.balance;
-  const { account } = dashboard;
-  const free = isFreeAccess(overview.billingMode);
-  return (
-    <Card as="section" aria-labelledby="wallet-title">
-      <SectionTitle id="wallet-title">{w.title}</SectionTitle>
-      {free ? (
-        <>
-          <p className="mt-3 font-display text-h3 text-fg">{w.freeTitle}</p>
-          <p className="mt-2 text-small text-fg-muted">{w.freeText}</p>
-          {overview.last30.valueMicro > 0n ? (
-            <p className="mt-3 text-small text-fg">
-              {fmt(w.freeValue, {
-                amount: formatMicroCadExact(lang, overview.last30.valueMicro),
-              })}
-            </p>
-          ) : null}
-        </>
-      ) : (
-        <>
-          <p className="mt-1 text-small text-fg-muted">{b.available}</p>
-          <p
-            className={`mt-1 font-display text-h2 tabular-nums ${account.blocked ? "text-accent-text" : "text-fg"}`}
-            data-testid="balance"
-          >
-            {formatMicroCadExact(lang, account.availableMicro)}
-          </p>
-          {account.heldMicro > 0n ? (
-            <p className="mt-2 text-small text-fg-muted">
-              {fmt(b.held, {
-                amount: formatMicroCadExact(lang, account.heldMicro),
-              })}
-            </p>
-          ) : null}
-          {account.blocked ? (
-            <div className="mt-5">
-              <Notice tone="error">
-                <strong>{b.blockedTitle}</strong> {b.blockedText}
-              </Notice>
-            </div>
-          ) : null}
-          <div className="mt-6">
-            {role === "owner" ? (
-              <ButtonLink
-                href={`${localizePath(lang, "/compte/facturation")}#ajouter-des-fonds`}
-                arrow
-              >
-                {w.addFunds}
-              </ButtonLink>
-            ) : (
-              <p className="text-small text-fg-muted">{w.ownerOnly}</p>
-            )}
-          </div>
-        </>
-      )}
-    </Card>
-  );
-}
-
-/** « Où j'en suis » : consommation du mois, clés actives, état de WorkStudio, en trois chiffres lisibles d'un coup d'œil. */
+/** « Où j'en suis » : consommation du mois et clés actives, en deux chiffres lisibles d'un coup d'œil. */
 export function NowCards({
   lang,
   t,
   overview,
-  workstudio,
 }: {
   lang: Lang;
   t: AccountDictionary;
   overview: OverviewData;
-  workstudio: WorkstudioView["state"];
 }) {
   const n = t.panel.overview.now;
   const free = isFreeAccess(overview.billingMode);
   const { month } = overview;
-  const wsLabel =
-    workstudio === "ready"
-      ? overview.workstudioKeyActive
-        ? n.wsConnected
-        : n.wsNotYet
-      : workstudio === "pending"
-        ? n.wsPending
-        : workstudio === "suspended"
-          ? n.wsSuspended
-          : n.wsNoSub;
-  const link = (href: string, text: string) => (
-    <Link
-      href={localizePath(lang, href)}
-      prefetch={false}
-      className="underline decoration-1 underline-offset-4 hover:decoration-2"
-    >
-      {text}
-    </Link>
-  );
   return (
     <section aria-labelledby="now-title">
       <SectionTitle id="now-title">{n.title}</SectionTitle>
-      <dl className="mt-5 grid gap-4 md:grid-cols-3">
+      <dl className="mt-5 grid gap-4 sm:grid-cols-2">
         <StatCard
           label={n.month}
           value={formatMicroCadExact(
@@ -202,12 +129,15 @@ export function NowCards({
         <StatCard
           label={n.keys}
           value={formatInteger(lang, overview.activeKeys)}
-          note={link("/compte/modeles", n.keysManage)}
-        />
-        <StatCard
-          label={n.workstudio}
-          value={wsLabel}
-          note={link("/compte/workstudio", n.wsLink)}
+          note={
+            <Link
+              href={localizePath(lang, "/compte/modeles")}
+              prefetch={false}
+              className="underline decoration-1 underline-offset-4 hover:decoration-2"
+            >
+              {n.keysManage}
+            </Link>
+          }
         />
       </dl>
     </section>
@@ -262,16 +192,17 @@ export function StartCard({
   );
 }
 
-/** Aperçu du panneau : portefeuille, pour démarrer, résumé des 30 derniers jours. */
+/** Page « Mes outils » : crédits, espace et offre, grille des produits avec leur état réel, puis l'activité. */
 export function Overview({
   lang,
   t,
   role,
-  dashboard,
   overview,
   hasWorkstudio,
-  wallet,
-  workstudio,
+  products,
+  hints,
+  workstudioUrl,
+  summary,
   chosenOffer,
   flash,
 }: OverviewProps) {
@@ -287,7 +218,7 @@ export function Overview({
   const { last30 } = overview;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <PanelHeading id="overview-title" title={o.title} lead={o.lead} />
 
       {flash ? <Notice tone={flash.kind}>{flash.message}</Notice> : null}
@@ -296,29 +227,56 @@ export function Overview({
         <ChosenOfferCard lang={lang} t={t} offer={chosenOffer} />
       ) : null}
 
-      <div className="grid gap-6 xl:grid-cols-2">
-        <WalletCard
-          lang={lang}
-          t={t}
-          role={role}
-          dashboard={dashboard}
-          overview={overview}
-        />
-        {free ? (
-          <StartCard lang={lang} t={t} steps={steps} />
+      <section
+        aria-label={t.panel.tools.summaryTitle}
+        className="space-y-6"
+        data-testid="tools-summary"
+      >
+        {summary ? (
+          <>
+            <div className="grid gap-6 lg:grid-cols-2">
+              <CreditsCard
+                lang={lang}
+                t={t}
+                role={role}
+                view={summary.credits}
+              />
+              <StorageCard lang={lang} t={t} view={summary.storage} />
+            </div>
+            <PlanStrip lang={lang} t={t} role={role} view={summary.plan} />
+          </>
         ) : (
-          <IncludedMeter
-            lang={lang}
-            t={t}
-            included={wallet.included}
-            headingId="overview-included-title"
-          />
+          <Card as="div" variant="outline">
+            <p className="text-body font-medium text-fg">
+              {t.panel.tools.unavailable.title}
+            </p>
+            <p role="alert" className="mt-2 text-small text-fg-muted">
+              {t.panel.tools.unavailable.text}
+            </p>
+          </Card>
         )}
-      </div>
+      </section>
 
-      <NowCards lang={lang} t={t} overview={overview} workstudio={workstudio} />
+      <ProductGroup
+        lang={lang}
+        t={t}
+        group="work"
+        products={products}
+        hints={hints}
+        workstudioUrl={workstudioUrl}
+      />
+      <ProductGroup
+        lang={lang}
+        t={t}
+        group="around"
+        products={products}
+        hints={hints}
+        workstudioUrl={workstudioUrl}
+      />
 
-      {free ? null : <StartCard lang={lang} t={t} steps={steps} />}
+      <NowCards lang={lang} t={t} overview={overview} />
+
+      <StartCard lang={lang} t={t} steps={steps} />
 
       <section aria-labelledby="last30-title">
         <div className="flex flex-wrap items-center justify-between gap-4">

@@ -80,4 +80,4 @@ Structure : crédit (avec tableau d'équivalence en jetons calculé du catalogue
 - **L'achat du Go supplémentaire** n'est pas branché au paiement (quantité Stripe) : `setExtraStorage` existe, aucun webhook ne l'appelle encore.
 - Les forfaits de recharge de Directus ne pilotent pas encore le paiement : l'achat reste un montant libre (≥ 10 $) ; les forfaits servent à l'affichage de `/tarifs`.
 - Rien ne **supprime** de données quand l'abonnement tombe : le quota passe à 0, les écritures sont refusées, les lectures restent. La politique de conservation reste à décider.
-- Le panneau « Mes outils » (chantier D) doit afficher `getOrgEntitlements` et remplacer le libellé « Abonnement requis » de WorkStudio.
+- ~~Le panneau « Mes outils »~~ : fait (chantier D, `docs/panneau-mes-outils.md`). Il lit `getOrgEntitlements`, affiche l'avertissement d'espace à 80 % et le message à 100 %, et le libellé « Abonnement requis » de WorkStudio est remplacé par « Crédits requis ».

@@ -65,7 +65,7 @@ export const enCA: Dictionary = {
         {
           label: "Nexora Apps",
           description:
-            "Code agent, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
+            "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
           href: "/apps",
         },
         {
@@ -99,6 +99,7 @@ export const enCA: Dictionary = {
           { label: "Models and API", href: "/modeles" },
           { label: "WorkStudio", href: "/workstudio" },
           { label: "Nexora Apps", href: "/apps" },
+          { label: "My tools", href: "/compte" },
           { label: "Software suite", href: "/suite" },
           { label: "OPSYS-AI", href: "/opsys-ai" },
           { label: "Nexora Croissance", href: "/croissance" },
@@ -287,7 +288,7 @@ export const enCA: Dictionary = {
         hint: "Optional: the context, where you lose time, the tools you use today.",
         // Text filled in by the "waiting list" links of the Nexora Apps pages (?sujet=apps-…), editable.
         prefill: {
-          "apps-code": "Waiting list: Nexora Code Agent.",
+          "apps-code": "Waiting list: Nexora Code.",
           "apps-bot": "Waiting list: Nexora Bot.",
           "apps-wordpress": "Waiting list: Nexora WordPress plugins.",
           "apps-gitspace": "Waiting list: Nexora Gitspace.",

@@ -85,8 +85,8 @@ export const NAVIGATION: NavEntry[] = [
         "Nexora Apps",
         "Nexora Apps",
         "/apps/",
-        "Agent de code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
-        "Code agent, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
+        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
+        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
       ),
       both(
         "Suite logicielle",
@@ -126,6 +126,7 @@ export const NAVIGATION: NavEntry[] = [
       both("Modèles et API", "Models and API", "/modeles/"),
       both("WorkStudio", "WorkStudio", "/workstudio/"),
       both("Nexora Apps", "Nexora Apps", "/apps/"),
+      both("Mes outils", "My tools", "/compte/"),
       both("Suite logicielle", "Software suite", "/suite/"),
       both("OPSYS-AI", "OPSYS-AI", "/opsys-ai/"),
       both("Nexora Croissance", "Nexora Croissance", "/croissance/"),

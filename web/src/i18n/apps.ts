@@ -16,7 +16,11 @@ export type { AppsDictionary };
 export const APP_STATES = ["disponible", "bientot", "plus_tard"] as const;
 export type AppState = (typeof APP_STATES)[number];
 
-/** Mode d'accès : `inclus` est réservé à Nexora Privacy Router (incluse par défaut, jamais payante). */
+/**
+ * Mode d'accès : `gratuit` (l'outil l'est ; ce qu'il fait appeler à un modèle consomme des crédits), `abonnement`
+ * (abonnement propre au produit), `usage` (payé à l'usage : jetons, espace, en crédits), `inclus` (réservé à Nexora
+ * Privacy Router : incluse par défaut, jamais payante), `a_definir`.
+ */
 const APP_ACCESS = [
   "gratuit",
   "abonnement",
@@ -54,7 +58,7 @@ export const APPS = [
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["rag", "privacy-router"],
-    claims: ["CL-AP01"],
+    claims: ["CL-AP01", "CL-AP06", "CL-T04"],
   },
   {
     slug: "bot",
@@ -63,7 +67,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["code", "wordpress"],
-    claims: ["CL-AP01", "CL-AP02"],
+    claims: ["CL-AP01", "CL-AP02", "CL-AP08"],
   },
   {
     slug: "gitspace",
@@ -86,11 +90,11 @@ export const APPS = [
   {
     slug: "rag",
     state: "bientot",
-    access: "abonnement",
+    access: "usage",
     category: "DeveloperApplication",
     cta: "waitlist",
     related: ["code", "privacy-router"],
-    claims: ["CL-AP04"],
+    claims: ["CL-AP07", "CL-T05"],
   },
   {
     slug: "webpilot",
@@ -108,7 +112,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["bot", "webpilot"],
-    claims: ["CL-AP01", "CL-AP04"],
+    claims: ["CL-AP01", "CL-AP04", "CL-T04"],
   },
   {
     slug: "privacy-router",
@@ -126,7 +130,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["outils"],
-    claims: ["CL-AP05"],
+    claims: ["CL-AP05", "CL-T04"],
   },
   {
     slug: "outils",
@@ -135,7 +139,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["code", "creative"],
-    claims: ["CL-AP01"],
+    claims: ["CL-AP01", "CL-T04"],
   },
 ] as const satisfies readonly AppDef[];
 

@@ -76,3 +76,5 @@ export function formatTokensCompact(lang: Lang, tokens: number): string {
   if (tokens >= 1_000) return `${n(tokens / 1_000, 0)}${nbsp}k`;
   return n(tokens, 0);
 }
+
+export { formatBytes } from "./format-bytes";
