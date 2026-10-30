@@ -541,7 +541,8 @@
         "CL-T05",
         "CL-T06",
         "CL-T07",
-        "CL-T09"
+        "CL-T09",
+        "CL-PL04"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -580,7 +581,7 @@
           },
           {
             "question": "What happens when I run out of credits?",
-            "answer": "Calls to models stop: the API returns a payment error and the message points you to top-ups and plans. As soon as your balance is above zero, you pick up where you left off. Your documents and settings are not deleted."
+            "answer": "Calls to models stop: the API returns a payment error and the message points you to top-ups and plans. As soon as your balance is above zero, you pick up where you left off. A zero balance erases neither your documents nor your settings; how long data is kept after a cancellation is not decided yet."
           },
           {
             "question": "Do my credits expire?",

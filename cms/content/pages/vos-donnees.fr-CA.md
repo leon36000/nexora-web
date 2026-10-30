@@ -214,7 +214,7 @@ La loi exige de déclarer à la Commission d'accès à l'information et aux pers
 
 #### Que garde la passerelle de modèles de mes requêtes ?
 
-Rien de leur contenu. Les événements d'usage de la passerelle ne contiennent que des métadonnées (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses. Chaque modèle affiche la politique de données de son fournisseur, qui décide de ce que celui-ci conserve de son côté, et Nexora Privacy Router évalue chaque requête avant l'appel.
+Les événements d'usage de la passerelle ne contiennent que des métadonnées (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses. Chaque modèle affiche la politique de données de son fournisseur, qui décide de ce que celui-ci conserve de son côté, et Nexora Privacy Router évalue chaque requête avant l'appel.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

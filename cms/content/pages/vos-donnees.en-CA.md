@@ -214,7 +214,7 @@ The law requires reporting to the Commission d'accès à l'information and to th
 
 #### What does the model gateway keep of my requests?
 
-None of their content. The gateway's usage events hold only metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its provider's data policy, which governs what that provider keeps on its side, and Nexora Privacy Router evaluates every request before the call.
+The gateway's usage events hold only metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its provider's data policy, which governs what that provider keeps on its side, and Nexora Privacy Router evaluates every request before the call.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

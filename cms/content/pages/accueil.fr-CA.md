@@ -13,7 +13,7 @@
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-PL01, CL-E01, CL-E02*
+*Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-PL01, CL-E01, CL-E02*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -181,7 +181,7 @@ Dans certains services d'IA grand public, le partage des conversations pour amé
 
 ### Bloc 9 — Section (`block_section`)
 
-*Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
+*Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
 
@@ -376,7 +376,7 @@ Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvon
 
 ### Bloc 15 — FAQ (`block_faq`)
 
-*FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09*
+*FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09, CL-PL04*
 
 Réglages : `emit_jsonld=true`, `tone=clair`
 
@@ -412,7 +412,7 @@ Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (dia
 
 #### Que se passe-t-il quand il n'y a plus de crédits ?
 
-Les appels aux modèles s'arrêtent : l'API répond par une erreur de paiement et le message vous renvoie vers la recharge et vers l'abonnement. Dès que votre solde dépasse zéro, vous reprenez là où vous étiez. Vos documents et vos réglages ne sont pas supprimés.
+Les appels aux modèles s'arrêtent : l'API répond par une erreur de paiement et le message vous renvoie vers la recharge et vers l'abonnement. Dès que votre solde dépasse zéro, vous reprenez là où vous étiez. Un solde à zéro n'efface ni vos documents ni vos réglages ; la durée de conservation après une résiliation n'est pas encore décidée.
 
 #### Mes crédits expirent-ils ?
 

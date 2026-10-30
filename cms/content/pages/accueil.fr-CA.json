@@ -13,7 +13,7 @@
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA.",
+      "role": "Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA.",
       "claims": [
         "CL-01",
         "CL-02",
@@ -224,7 +224,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente.",
+      "role": "Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente.",
       "claims": [
         "CL-PL01",
         "CL-PL02",
@@ -506,7 +506,7 @@
     },
     {
       "collection": "block_faq",
-      "role": "FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables.",
+      "role": "FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables.",
       "claims": [
         "CL-02",
         "CL-04",
@@ -541,7 +541,8 @@
         "CL-T05",
         "CL-T06",
         "CL-T07",
-        "CL-T09"
+        "CL-T09",
+        "CL-PL04"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -580,7 +581,7 @@
           },
           {
             "question": "Que se passe-t-il quand il n'y a plus de crédits ?",
-            "answer": "Les appels aux modèles s'arrêtent : l'API répond par une erreur de paiement et le message vous renvoie vers la recharge et vers l'abonnement. Dès que votre solde dépasse zéro, vous reprenez là où vous étiez. Vos documents et vos réglages ne sont pas supprimés."
+            "answer": "Les appels aux modèles s'arrêtent : l'API répond par une erreur de paiement et le message vous renvoie vers la recharge et vers l'abonnement. Dès que votre solde dépasse zéro, vous reprenez là où vous étiez. Un solde à zéro n'efface ni vos documents ni vos réglages ; la durée de conservation après une résiliation n'est pas encore décidée."
           },
           {
             "question": "Mes crédits expirent-ils ?",

@@ -376,7 +376,7 @@ We publish no testimonial, figure or certification that we cannot prove. When a 
 
 ### Bloc 15 — FAQ (`block_faq`)
 
-*FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09*
+*FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09, CL-PL04*
 
 Réglages : `emit_jsonld=true`, `tone=clair`
 
@@ -412,7 +412,7 @@ There is no public price yet. Two things are paid for. Support (assessment, inst
 
 #### What happens when I run out of credits?
 
-Calls to models stop: the API returns a payment error and the message points you to top-ups and plans. As soon as your balance is above zero, you pick up where you left off. Your documents and settings are not deleted.
+Calls to models stop: the API returns a payment error and the message points you to top-ups and plans. As soon as your balance is above zero, you pick up where you left off. A zero balance erases neither your documents nor your settings; how long data is kept after a cancellation is not decided yet.
 
 #### Do my credits expire?
 
