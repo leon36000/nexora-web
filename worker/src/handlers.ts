@@ -8,6 +8,7 @@ import {
 import { registerBalanceAlertHandler } from "./balance-alerts.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { registerLedgerHandlers } from "./ledger-handlers.ts";
+import { indexClientFromEnv, registerRagHandlers } from "./rag/handlers.ts";
 import { HandlerRegistry } from "./registry.ts";
 import { registerSeoHandlers } from "./seo/handlers.ts";
 import { registerVpsHandlers } from "./vps-handlers.ts";
@@ -57,5 +58,13 @@ export function defaultRegistry(
     });
   if (deps.db && deps.log)
     registerWebpilotHandlers(registry, { db: deps.db, log: deps.log });
+  if (deps.db && deps.log) {
+    const index = indexClientFromEnv(process.env);
+    if (!index)
+      deps.log.warn(
+        "RAG : NEXORA_APP_INTERNAL_URL ou NEXORA_APP_ADMIN_TOKEN absent, les gros documents resteront en file",
+      );
+    registerRagHandlers(registry, { db: deps.db, log: deps.log, index });
+  }
   return registry;
 }

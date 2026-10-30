@@ -15,6 +15,7 @@
     "@nexora/log": "workspace:*",
     "@nexora/net": "workspace:*",
     "@nexora/privacy": "workspace:*",
+    "@nexora/rag": "workspace:*",
     "@nexora/seo": "workspace:*",
     "@nexora/vault": "workspace:*",
     "@nexora/vps": "workspace:*",

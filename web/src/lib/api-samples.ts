@@ -2,7 +2,7 @@ import type { Lang } from "@/i18n/config";
 
 /** Exemples d'appel de l'API (curl, Python, JavaScript) pour la documentation et les fiches de modèles. */
 
-export type SampleKind = "chat" | "embedding";
+export type SampleKind = "chat" | "embedding" | "rerank";
 
 export interface Sample {
   id: "curl" | "python" | "javascript";
@@ -18,6 +18,11 @@ export const SAMPLE_TEXT = {
     helloWorld: "Bonjour le monde",
     story: "Raconte une courte histoire.",
     modelId: "nexora/nom-du-modele",
+    rerankQuery: "Quelle est la capitale de la France ?",
+    rerankDocs: [
+      "Berlin est la capitale de l'Allemagne.",
+      "Paris est la capitale de la France.",
+    ],
   },
   en: {
     key: "nxk_your_api_key",
@@ -25,8 +30,13 @@ export const SAMPLE_TEXT = {
     helloWorld: "Hello world",
     story: "Tell me a short story.",
     modelId: "nexora/model-name",
+    rerankQuery: "What is the capital of France?",
+    rerankDocs: [
+      "Berlin is the capital of Germany.",
+      "Paris is the capital of France.",
+    ],
   },
-} as const satisfies Record<Lang, Record<string, string>>;
+} as const satisfies Record<Lang, Record<string, string | readonly string[]>>;
 
 /** Identifiant de modèle fictif des exemples de la documentation. */
 export function apiExampleModelId(lang: Lang): string {
@@ -42,6 +52,60 @@ export function apiSamples(
   const KEY = SAMPLE_TEXT[lang].key;
   const HELLO = SAMPLE_TEXT[lang].hello;
   const HELLO_WORLD = SAMPLE_TEXT[lang].helloWorld;
+  if (kind === "rerank") {
+    const QUERY = SAMPLE_TEXT[lang].rerankQuery;
+    const DOCS = SAMPLE_TEXT[lang].rerankDocs;
+    return [
+      {
+        id: "curl",
+        label: "curl",
+        code: `curl ${baseUrl}/rerank \\
+  -H "Authorization: Bearer ${KEY}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "${modelId}",
+    "query": "${QUERY}",
+    "documents": ["${DOCS[0]}", "${DOCS[1]}"],
+    "top_n": 1
+  }'`,
+      },
+      {
+        id: "python",
+        label: "Python",
+        code: `import requests
+
+response = requests.post(
+    "${baseUrl}/rerank",
+    headers={"Authorization": "Bearer ${KEY}"},
+    json={
+        "model": "${modelId}",
+        "query": "${QUERY}",
+        "documents": ["${DOCS[0]}", "${DOCS[1]}"],
+        "top_n": 1,
+    },
+)
+print(response.json()["results"])`,
+      },
+      {
+        id: "javascript",
+        label: "JavaScript",
+        code: `const response = await fetch("${baseUrl}/rerank", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer ${KEY}",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    model: "${modelId}",
+    query: "${QUERY}",
+    documents: ["${DOCS[0]}", "${DOCS[1]}"],
+    top_n: 1,
+  }),
+});
+console.log((await response.json()).results);`,
+      },
+    ];
+  }
   if (kind === "embedding") {
     return [
       {

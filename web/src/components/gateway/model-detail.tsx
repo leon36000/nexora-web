@@ -335,6 +335,7 @@ export function ModelDetail({
               <p className="mt-3 max-w-2xl text-body text-fg-muted">
                 {fmt(d.api.lead, { url: baseUrl })}
                 {model.kind === "embedding" ? ` ${d.api.embeddingLead}` : ""}
+                {model.kind === "rerank" ? ` ${d.api.rerankLead}` : ""}
               </p>
               <div className="mt-6">
                 <CodeSamples

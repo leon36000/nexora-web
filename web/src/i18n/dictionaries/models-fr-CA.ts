@@ -100,7 +100,11 @@ export const modelsFrCA = {
     any: "Peu importe",
     anyPrice: "Aucun plafond",
     anyContext: "Aucun minimum",
-    kinds: { chat: "Conversation", embedding: "Embeddings" },
+    kinds: {
+      chat: "Conversation",
+      embedding: "Embeddings",
+      rerank: "Reclassement",
+    },
     licenseOptions: { ouverte: "Poids ouverts", fermee: "Poids non publiés" },
     availabilityOptions: {
       disponible: "Disponibles",
@@ -277,6 +281,8 @@ export const modelsFrCA = {
       lead: "Remplacez la clé de l’exemple par la vôtre. Les exemples utilisent l’adresse de l’API : {url}.",
       embeddingLead:
         "Ce modèle produit des vecteurs : il s’appelle par /v1/embeddings.",
+      rerankLead:
+        "Ce modèle classe des documents selon leur pertinence pour une requête : il s’appelle par /v1/rerank.",
       idLabel: "Identifiant à passer dans le champ model",
       previewTitle: "Bientôt disponible",
       previewText:

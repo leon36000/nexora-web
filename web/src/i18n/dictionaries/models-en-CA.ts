@@ -100,7 +100,11 @@ export const modelsEnCA: ModelsDictionary = {
     any: "Any",
     anyPrice: "No limit",
     anyContext: "No minimum",
-    kinds: { chat: "Chat", embedding: "Embeddings" },
+    kinds: {
+      chat: "Chat",
+      embedding: "Embeddings",
+      rerank: "Reranking",
+    },
     licenseOptions: {
       ouverte: "Open weights",
       fermee: "Weights not published",
@@ -278,6 +282,8 @@ export const modelsEnCA: ModelsDictionary = {
       lead: "Replace the example key with yours. The examples use the API address: {url}.",
       embeddingLead:
         "This model produces vectors: it is called through /v1/embeddings.",
+      rerankLead:
+        "This model ranks documents by relevance to a query: it is called through /v1/rerank.",
       idLabel: "Identifier to pass in the model field",
       previewTitle: "Coming soon",
       previewText:

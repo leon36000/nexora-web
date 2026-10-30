@@ -24,7 +24,11 @@ export const gatewayEnCA: GatewayDictionary = {
     streaming: "Streaming",
     json_mode: "JSON mode",
   },
-  kinds: { chat: "Chat", embedding: "Embeddings" },
+  kinds: {
+    chat: "Chat",
+    embedding: "Embeddings",
+    rerank: "Reranking",
+  },
 
   docs: {
     label: "API",

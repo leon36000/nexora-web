@@ -31,7 +31,7 @@ export async function newOrganization(db: Database): Promise<string> {
 
 export interface TestModelSpec {
   publicId: string;
-  kind?: "chat" | "embedding";
+  kind?: "chat" | "embedding" | "rerank";
   visibility?: "public" | "unlisted" | "private";
   /** `preview` : visible au catalogue, pas encore appelable. */
   availability?: "live" | "preview";

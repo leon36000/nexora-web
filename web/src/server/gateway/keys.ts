@@ -9,6 +9,8 @@ import {
   gt,
   isNull,
   or,
+  RAG_KEY_MODES,
+  type RagAccess,
   sql,
   WEBPILOT_OPERATIONS,
 } from "@nexora/db";
@@ -70,6 +72,8 @@ export interface CreateApiKeyInput {
   allowedModels?: string[] | null;
   /** Opérations WebPilot permises (`search`, `scrape`, `crawl`, `extract`, `sessions`) ; absent ou vide : aucune. */
   webpilotOperations?: string[] | null;
+  /** Permission RAG : bases accessibles (de l'organisation, vérifié par l'appelant) et droits ; absent : aucune. */
+  ragAccess?: RagAccess | null;
   spendCapMicro?: bigint | null;
   rpmLimit?: number | null;
   tpmLimit?: number | null;
@@ -111,6 +115,17 @@ export async function createApiKey(
   )
     throw new ApiKeyInputError("webpilotOperations");
 
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  if (
+    input.ragAccess &&
+    (!(RAG_KEY_MODES as readonly string[]).includes(input.ragAccess.mode) ||
+      input.ragAccess.bases.length < 1 ||
+      input.ragAccess.bases.length > 20 ||
+      new Set(input.ragAccess.bases).size !== input.ragAccess.bases.length ||
+      input.ragAccess.bases.some((b) => !uuid.test(b)))
+  )
+    throw new ApiKeyInputError("ragAccess");
+
   const { key, prefix, hash } = generateApiKey();
   const insertRow = async (d: Database) => {
     const [inserted] = await d
@@ -128,6 +143,7 @@ export async function createApiKey(
           input.webpilotOperations && input.webpilotOperations.length > 0
             ? [...new Set(input.webpilotOperations)]
             : null,
+        ragAccess: input.ragAccess ?? null,
         spendCapMicro: input.spendCapMicro ?? null,
         rpmLimit: input.rpmLimit ?? null,
         tpmLimit: input.tpmLimit ?? null,

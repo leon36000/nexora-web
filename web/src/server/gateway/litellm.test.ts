@@ -20,6 +20,7 @@ import {
 import {
   apiBaseFor,
   createLitellmClient,
+  litellmModelString,
   openrouterPreferences,
   routeDeploymentId,
   routePositionOf,
@@ -502,5 +503,57 @@ describe("synchronisation LiteLLM : modèles en aperçu", () => {
       getSecret: (ref) => readSecret(p.db, keyring, ref),
     });
     expect(summary.models.deleted).toEqual(["nxm-nexora-apercu"]);
+  });
+});
+
+describe("chaîne de modèle LiteLLM selon le type", () => {
+  it("garde openai/ pour la conversation et les embeddings, passe un reclasseur DeepInfra par deepinfra/", () => {
+    expect(
+      litellmModelString(
+        "openai_compatible",
+        "Qwen/Qwen3-Embedding-8B",
+        "embedding",
+        "https://api.deepinfra.com/v1/openai",
+      ),
+    ).toBe("openai/Qwen/Qwen3-Embedding-8B");
+    expect(
+      litellmModelString(
+        "openai_compatible",
+        "zai-org/GLM-5.3",
+        "chat",
+        "https://api.deepinfra.com/v1/openai",
+      ),
+    ).toBe("openai/zai-org/GLM-5.3");
+    expect(
+      litellmModelString(
+        "openai_compatible",
+        "Qwen/Qwen3-Reranker-4B",
+        "rerank",
+        "https://api.deepinfra.com/v1/openai",
+      ),
+    ).toBe("deepinfra/Qwen/Qwen3-Reranker-4B");
+  });
+  it("utilise le protocole Cohere pour un reclasseur d'un autre hébergeur compatible", () => {
+    expect(
+      litellmModelString(
+        "openai_compatible",
+        "bge-reranker",
+        "rerank",
+        "https://api.exemple.ca/v1",
+      ),
+    ).toBe("cohere/bge-reranker");
+  });
+  it("ne change rien pour OpenRouter et Ollama", () => {
+    expect(
+      litellmModelString(
+        "openrouter",
+        "a/b",
+        "chat",
+        "https://openrouter.ai/api/v1",
+      ),
+    ).toBe("openrouter/a/b");
+    expect(
+      litellmModelString("ollama", "qwen", "chat", "http://localhost:11434"),
+    ).toBe("ollama_chat/qwen");
   });
 });

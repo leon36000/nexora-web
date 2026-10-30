@@ -84,6 +84,32 @@ function collectChat(body: Json): Collected {
   return { slots, attachment };
 }
 
+/** Reclassement : la requête puis chaque document (texte ou objet `{ text }`) sont des emplacements de texte. */
+function collectRerank(body: Json): Collected {
+  const slots: Slot[] = [];
+  if (typeof body.query === "string" && body.query.length > 0)
+    slots.push({
+      text: body.query,
+      write: (b, text) => ({ ...b, query: text }),
+    });
+  const docs = body.documents;
+  if (Array.isArray(docs))
+    docs.forEach((item, i) => {
+      const asObject = isObject(item);
+      const text = asObject ? item.text : item;
+      if (typeof text !== "string" || text.length === 0) return;
+      slots.push({
+        text,
+        write: (b, masked) => {
+          const list = (b.documents as unknown[]).slice();
+          list[i] = asObject ? { ...(list[i] as Json), text: masked } : masked;
+          return { ...b, documents: list };
+        },
+      });
+    });
+  return { slots, attachment: false };
+}
+
 function collectEmbedding(body: Json): Collected {
   const slots: Slot[] = [];
   const input = body.input;
@@ -134,7 +160,7 @@ export async function applyPrivacy(input: {
   router: PrivacyRouter;
   organizationId: string;
   apiKeyId: string;
-  endpoint: "chat.completions" | "embeddings";
+  endpoint: "chat.completions" | "embeddings" | "rerank";
   /** Identifiant public du modèle (ou de l'agent) visé. */
   model: string;
   body: Json;
@@ -149,14 +175,21 @@ export async function applyPrivacy(input: {
     const { slots, attachment } =
       input.endpoint === "chat.completions"
         ? collectChat(body)
-        : collectEmbedding(body);
+        : input.endpoint === "rerank"
+          ? collectRerank(body)
+          : collectEmbedding(body);
     const separator = pickSeparator(slots);
     if (separator === null) return unavailable();
     const decision = await input.router.evaluate({
       organizationId: input.organizationId,
       apiKeyId: input.apiKeyId,
       product: "gateway",
-      operation: input.endpoint === "chat.completions" ? "chat" : "embeddings",
+      operation:
+        input.endpoint === "chat.completions"
+          ? "chat"
+          : input.endpoint === "rerank"
+            ? "rerank"
+            : "embeddings",
       destination: { model: input.model },
       kinds: attachment ? ["prompt", "attachment"] : ["prompt"],
       content:
