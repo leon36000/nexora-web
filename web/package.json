@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@better-auth/oauth-provider": "1.7.14",
+    "@nexora/code": "workspace:*",
     "@nexora/db": "workspace:*",
     "@nexora/log": "workspace:*",
     "@nexora/net": "workspace:*",
