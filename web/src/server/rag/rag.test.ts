@@ -8,6 +8,7 @@ import {
 } from "@nexora/db";
 import { chunkStorageBytes, chunkText, embeddingInput } from "@nexora/rag";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { noCreditsMessage } from "../billing/credit-messages";
 import { savePolicy } from "../privacy/store";
 import {
   createBase,
@@ -388,8 +389,8 @@ describe("ajout de documents : indexation, facturation, espace", () => {
       failure: {
         status: 402,
         code: "insufficient_quota",
-        message:
-          "Solde de crédits insuffisant pour cette requête. Rechargez votre compte.",
+        // Même message que la passerelle (le texte vient du module des crédits).
+        message: noCreditsMessage(),
       },
     });
     expect(
@@ -577,6 +578,26 @@ describe("ajout de documents : indexation, facturation, espace", () => {
       }),
     );
     expect(added.document.status).toBe("ready");
+  });
+
+  it("une exception imprévue pendant l'indexation immédiate ne perd pas le document : il part au worker", async () => {
+    const { base, ctx } = await setup();
+    const flaky = {
+      ...env.deps,
+      log: {
+        ...env.deps.log,
+        info: () => {
+          throw new Error("boum");
+        },
+      },
+    };
+    const r = await addDocument(flaky, ctx, {
+      baseId: base.id,
+      title: "Fragile",
+      text: DOCS.vacances,
+    });
+    expect(r.ok).toBe(true);
+    expect(env.jobs.map((j) => j.type)).toEqual(["rag.index"]);
   });
 
   it("une panne passagère du modèle laisse le document en file pour le worker, sans rien perdre", async () => {

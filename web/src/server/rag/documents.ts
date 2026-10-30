@@ -304,9 +304,19 @@ export async function addDocument(
     await queue();
     return good({ document: toDocumentView(row), duplicate: false });
   }
-  const outcome = await indexSlice(deps, ctx.key, row.id, {
-    budgetMs: cfg.sliceMs,
-  });
+  let outcome: SliceOutcome;
+  try {
+    outcome = await indexSlice(deps, ctx.key, row.id, {
+      budgetMs: cfg.sliceMs,
+    });
+  } catch (error) {
+    // Rien n'est perdu : le document et l'espace réservé restent, le worker reprend là où l'indexation s'est arrêtée.
+    deps.log.error("rag : exception pendant l'indexation immédiate", {
+      documentId: row.id,
+      errorName: error instanceof Error ? error.name : typeof error,
+    });
+    outcome = { state: "partial" };
+  }
   if (outcome.state === "ready")
     return good({ document: outcome.document, duplicate: false });
   if (outcome.state === "failed") {

@@ -8,10 +8,7 @@ import { log } from "../log";
 import type { RagAccountDeps } from "./account";
 import { ragConfig } from "./config";
 import type { RagHttpDeps } from "./http";
-import {
-  provisionalQuotaBytes,
-  provisionalStorage,
-} from "./provisional-storage";
+import { entitlementsStorage } from "./storage";
 import type { RagDeps } from "./types";
 
 /**
@@ -19,10 +16,7 @@ import type { RagDeps } from "./types";
  * passerelle (`handleEmbeddings`, `handleRerank`) avec la clé déjà authentifiée : mêmes limites, même Privacy Router,
  * même débit en crédits et même Activité que `/v1`.
  *
- * Espace : compteur PROVISOIRE (voir `provisional-storage.ts`). Dès que `billing/entitlements.ts` (module des offres) est
- * fusionné, remplacer `storage` par :
- *   { record: (org, delta) => recordStorageUsage(org, "rag", delta),
- *     used: async (org) => (await getOrgEntitlements(org)).storage.byProduct.rag }
+ * Espace : `recordStorageUsage(org, "rag", delta)` du module des offres (`billing/entitlements.ts`).
  */
 export function ragDeps(): RagDeps {
   const gw = gatewayDeps();
@@ -44,7 +38,7 @@ export function ragDeps(): RagDeps {
           authenticate: async () => ({ ok: true, key }),
         }),
     },
-    storage: provisionalStorage(getDb, provisionalQuotaBytes()),
+    storage: entitlementsStorage(getDb),
     enqueue: async (job) => {
       await enqueue(getDb(), job);
     },

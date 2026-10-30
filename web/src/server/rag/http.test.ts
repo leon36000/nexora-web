@@ -1,5 +1,6 @@
 import { apiKeys, eq } from "@nexora/db";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { noCreditsMessage } from "../billing/credit-messages";
 import { createBase, createBaseWithKey, createRagKey } from "./bases";
 import { handleRag } from "./http";
 import { handleMcp } from "./mcp";
@@ -364,8 +365,8 @@ describe("API REST /v1/rag : documents et recherche", () => {
     expect(res.status).toBe(402);
     expect((await res.json()).error).toMatchObject({
       code: "insufficient_quota",
-      message:
-        "Solde de crédits insuffisant pour cette requête. Rechargez votre compte.",
+      // Même message que la passerelle (le texte vient du module des crédits).
+      message: noCreditsMessage(),
     });
   });
 
@@ -597,9 +598,7 @@ describe("serveur MCP /v1/rag/mcp", () => {
       }),
     );
     expect(res.result.isError).toBe(true);
-    expect(res.result.content[0].text).toContain(
-      "Solde de crédits insuffisant",
-    );
+    expect(res.result.content[0].text).toContain(noCreditsMessage());
   });
 
   it("erreurs du protocole : méthode inconnue, outil inconnu, JSON invalide, lot", async () => {

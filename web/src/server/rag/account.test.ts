@@ -4,7 +4,6 @@ import { handleAccountRag, type RagAccountDeps } from "./account";
 import { createBaseWithKey } from "./bases";
 import { addDocument } from "./documents";
 import { handleIndexJob } from "./internal";
-import { provisionalStorage } from "./provisional-storage";
 import { connectionSnippets } from "./snippets";
 import { type RagTestEnv, ragTestEnv } from "./test-support";
 
@@ -287,42 +286,6 @@ describe("tâche d'indexation du worker (POST /api/admin/rag/index)", () => {
       storedBytes: 0,
     });
     expect(env.storage.usedBytes(org)).toBe(0);
-  });
-});
-
-describe("compteur d'espace provisoire (en attendant le module des offres)", () => {
-  it("refuse quand les documents enregistrés dépassent le quota, rend toujours une libération", async () => {
-    const org = await env.org();
-    const made = await createBaseWithKey(env.deps, {
-      organizationId: org,
-      userId: null,
-      name: "Quota",
-    });
-    if (!made.ok) throw new Error("base");
-    const [doc] = await env.t.db
-      .insert(ragDocuments)
-      .values({
-        baseId: made.value.base.id,
-        organizationId: org,
-        title: "t",
-        status: "ready",
-        contentHash: "h",
-        storedBytes: 1500,
-      })
-      .returning();
-    expect(doc).toBeTruthy();
-    const storage = provisionalStorage(() => env.t.db, 2000);
-    expect(await storage.used(org)).toBe(1500);
-    expect(await storage.record(org, 400)).toEqual({ ok: true });
-    await env.t.db
-      .update(ragDocuments)
-      .set({ storedBytes: 2500 })
-      .where(eq(ragDocuments.baseId, made.value.base.id));
-    expect(await storage.record(org, 1000)).toEqual({
-      ok: false,
-      reason: "quota_exceeded",
-    });
-    expect(await storage.record(org, -1000)).toEqual({ ok: true });
   });
 });
 
