@@ -27,7 +27,7 @@ Une lecture de droits qui échoue ne casse pas la page : le résumé est remplac
 
 **Interrupteurs** : `NEXORA_PRODUCT_CODE` et `NEXORA_PRODUCT_RAG` valent `1`, `true`, `on`, `oui` ou `yes` pour allumer ; tout le reste (absent, vide, `0`, faute de frappe) éteint. Éteints par défaut. Aucun interrupteur ne commande WorkStudio, Bot, Creative, WebPilot, Privacy Router ni VPS. « Me prévenir » mène au formulaire de contact prérempli (`?sujet=apps-<produit>`), la liste d'attente existante.
 
-**À la mise en service du RAG puis de Nexora Code** (les gestes vont ensemble, un test ne peut pas les lier) : (1) RAG : déjà branché ; Nexora Code : renvoyer le service dans `web/src/server/products/services.ts` ; (2) allumer `NEXORA_PRODUCT_RAG=1` / `NEXORA_PRODUCT_CODE=1` ; (3) passer l'état de la fiche `rag` / `code` à `disponible` dans `web/src/i18n/apps.ts` et compléter leur liste « ce qui est prêt » (fr et en : un test exige du livré pour « disponible ») ; (4) mettre à jour les affirmations CL-AP06 / CL-AP07 de `cms/content/claims.json` (leur texte parle au futur).
+**À la mise en service du RAG puis de Nexora Code** (les gestes vont ensemble, un test ne peut pas les lier) : (1) RAG et Nexora Code : déjà branchés (Nexora Code : `services.ts` rend le service de `web/src/server/code/` seulement si `NEXORA_PRODUCT_CODE` est allumé ET si un pilote est configuré, `docs/nexora-code.md` § 6) ; (2) allumer `NEXORA_PRODUCT_RAG=1` / `NEXORA_PRODUCT_CODE=1` ; (3) passer l'état de la fiche `rag` / `code` à `disponible` dans `web/src/i18n/apps.ts` et compléter leur liste « ce qui est prêt » (fr et en : un test exige du livré pour « disponible ») ; (4) mettre à jour les affirmations CL-AP06 / CL-AP07 de `cms/content/claims.json` (leur texte parle au futur).
 
 ## Interfaces à remplir
 
@@ -40,24 +40,28 @@ connection(): { siteUrl, apiUrl, mcpUrl }       // https://<site>, …/v1/rag, �
 
 **Déjà branché** : `createRagPanelService` (`rag-service.ts`) lit `listBases` de `web/src/server/rag` (octets = `stats.bytes`) ; `services.ts` l'instancie. La **création** n'est pas dans l'interface : « Créer mon RAG » appelle `POST /api/account/rag { name }` du chantier B (`docs/rag.md` §1), qui crée la base et sa clé dédiée (valeur montrée une seule fois). Le panneau n'affiche jamais un message du serveur : un code connu (`quota_exceeded`, `insufficient_quota`, `base_exists`, `base_limit`, `key_limit`, `model_unavailable`, `rag_unavailable`, 429, 401, 403) choisit un message du dictionnaire (`rag-create-response.ts`). Les extraits à copier viennent de `server/rag/snippets.ts` (une seule source). **Tant que les modèles d'embedding du catalogue sont en « aperçu »**, créer une base répond `409 model_unavailable` : ne pas allumer `NEXORA_PRODUCT_RAG` avant leur mise en service.
 
-### `CodeWorkspaceService` (`web/src/server/products/code-workspace.ts`) : chantier C
+### `CodeWorkspaceService` (`web/src/server/products/code-workspace.ts`) : chantier C (interface), chantier F (service)
 
 ```ts
 getState({ orgId, userId }): Promise<{ status: "stopped" | "starting" | "ready" | "error"; usedBytes; openUrl: string | null }>
 start({ orgId, userId }): Promise<{ ok: true, state } | { ok: false, reason: "quota_exceeded" | "unavailable" }>
+remove?(input: { orgId, userId }): Promise<void>   // supprime l'environnement et son volume, libère l'espace (DELETE)
 cli(): { installCommand: string | null; loginCommand: "nexora-code login" }
 ```
+
+**Déjà branché** (chantier F) : `createWorkspaceService` (`web/src/server/code/workspace-service.ts`) implémente cette interface avec un pilote Docker (client injectable, essai à blanc), la table `code_workspaces` (migration 0029), le Coffre pour le mot de passe, une clé `nxk_` dédiée et le quota d'espace ; l'adresse d'ouverture est celle du mandataire inverse `/code/ws/<id>/` du site. Tout est décrit dans `docs/nexora-code.md` (contrat de connexion de l'appareil, sécurité, mandataire, variables, exploitation, ce qui reste). `installCommand` vient de `NEXORA_CODE_INSTALL_COMMAND`.
 
 Un environnement **par personne** ; `usedBytes` = volume (à compter par `recordStorageUsage(orgId, "code", …)` avant d'écrire). `openUrl` : https (ou http local en dev), sinon écarté et l'état retombe à « en démarrage ». `installCommand` null affiche « sera publiée ici à la sortie ». Le panneau relit l'état toutes les 3 s tant qu'il vaut `starting`.
 
 ### Où brancher
 
-`web/src/server/products/services.ts` : `getRagPanelService()` et `getCodeWorkspaceService()` rendent `null` aujourd'hui. Import statique volontaire (un registre mutable ne serait pas partagé entre les routes et les pages). Allumé sans service : page « indisponible », jamais de faux contenu.
+`web/src/server/products/services.ts` : `getRagPanelService()` rend le service du RAG ; `getCodeWorkspaceService()` rend le service de l'environnement hébergé **derrière `NEXORA_PRODUCT_CODE`** (éteint : `null`, la page dit « Bientôt » ; allumé sans pilote valide : `null`, la page dit « indisponible »). Import statique volontaire (un registre mutable ne serait pas partagé entre les routes et les pages). Allumé sans service : page « indisponible », jamais de faux contenu.
 
 ## Routes
 
 - RAG : `/api/account/rag/*` est celui du chantier B (`server/rag/account.ts`), sans interrupteur côté route : c'est la page qui est cachée tant que `NEXORA_PRODUCT_RAG` est éteint.
-- `GET` / `POST /api/account/code/workspace` : toute personne de l'organisation, pour SON environnement ; POST démarre (202).
+- `GET` / `POST` / `DELETE /api/account/code/workspace` : toute personne de l'organisation, pour SON environnement ; POST démarre (202), DELETE le supprime (204) pour libérer l'espace (501 si le service ne sait pas le faire).
+- Chantier F : `/api/code/device/{start,poll,approve}`, `/api/code/credits`, `/code/ws/<id>/…` (mandataire), `/api/code/ws-auth`, `/api/admin/code/usage` (worker) : voir `docs/nexora-code.md`.
 
 ## Extraits « Se connecter » (page RAG)
 

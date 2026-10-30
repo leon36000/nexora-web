@@ -67,7 +67,7 @@ const fr: CodeDeviceDictionary = {
     organization: "Organisation : {organization}",
     allowsTitle: "Ce que cette autorisation permet",
     allows:
-      "Utiliser les modèles Nexora depuis cet appareil, avec les crédits de l’organisation {organization}.",
+      "Utiliser les modèles Nexora depuis cet appareil, avec les crédits de {organization}.",
     notAllows:
       "Rien d’autre : la clé ne donne accès ni à WebPilot ni à vos bases RAG, et elle ne vous donne aucun droit d’administration.",
     revoke:
@@ -136,7 +136,7 @@ const en: CodeDeviceDictionary = {
     organization: "Organization: {organization}",
     allowsTitle: "What this authorization allows",
     allows:
-      "Use Nexora models from this device, with the credits of the {organization} organization.",
+      "Use Nexora models from this device, with the credits of {organization}.",
     notAllows:
       "Nothing else: the key does not give access to WebPilot or to your RAG bases, and it grants no administration rights.",
     revoke:
