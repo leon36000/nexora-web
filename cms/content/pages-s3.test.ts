@@ -502,6 +502,14 @@ describe("S3 : SEO", () => {
         // Nexora Apps (registre web/src/i18n/apps.ts) : la liste et la fiche de Privacy Router
         route(l, "apps"),
         route(l, "apps/privacy-router"),
+        // Plateforme à crédits (30/10/2026) : page Tarifs (`/tarifs` en français, `/en/pricing` en anglais, voir
+        // LOCALIZED_ROUTES), panneau « Mes outils » et fiches des outils annoncés.
+        l === "fr-CA" ? "/tarifs/" : "/en/pricing/",
+        route(l, "compte"),
+        route(l, "apps/code"),
+        route(l, "apps/rag"),
+        route(l, "apps/bot"),
+        route(l, "apps/creative"),
       ]);
     for (const k of KEYS)
       for (const l of LOCALES) {

@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "date": "2026-10-30",
   "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56). Version 8 (30/10/2026) : page Tarifs refaite pour le modèle à crédits (affirmations CL-T01 à CL-T10, citées par web/src/i18n/dictionaries/pricing-fr-CA.ts). Version 9 (30/10/2026) : panneau « Mes outils » et fiches Nexora Apps pour le modèle à crédits (CL-AP01 et CL-AP04 mises à jour, CL-AP06 à CL-AP08 ajoutées pour Nexora Code hébergé, le RAG et Nexora Bot, citées par web/src/i18n/apps.ts).",
   "claims": [
@@ -270,11 +270,11 @@
     {
       "id": "CL-28",
       "kind": "fait",
-      "statement": "Nexora Code, Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade.",
+      "statement": "Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade. Nexora Code a sa propre affirmation (CL-AP06) : « Bientôt », sans date.",
       "scope": "Absence d'annonce, volontaire.",
-      "evidence": "Brief §6 : ni taille, ni performance, ni garantie de disponibilité tant que les fiches canoniques n'existent pas. Aucune fiche canonique n'a été fournie.",
+      "evidence": "Brief §6 : ni taille, ni performance, ni garantie de disponibilité tant que les fiches canoniques n'existent pas. Aucune fiche canonique n'a été fournie. Mise à jour du 30/10/2026 : Nexora Code est sorti de cette liste, il a une fiche (/apps/code) et un état « Bientôt » (CL-AP06).",
       "evidence_url": null,
-      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §6",
+      "source_version": "Brief du fondateur v1.0 (22/10/2026), PROMPT_MAITRE_SITE_NEXORA_DIRECTUS.md, §6 ; mise à jour du 30/10/2026 (CL-AP06)",
       "approval_status": "en_revue",
       "valid_from": "2026-10-26",
       "valid_until": null
@@ -2460,6 +2460,42 @@
       "evidence_url": null,
       "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
       "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "approval_status": "en_revue",
+      "evidence": "docs/panneau-mes-outils.md (« Ce que la page montre », registre des produits) ; web/src/server/products/registry.ts. Les offres ne sont pas ouvertes à la vente (CL-12, CL-T06) : le panneau fonctionne en mode test.",
+      "evidence_url": null,
+      "id": "CL-PL01",
+      "kind": "offre",
+      "scope": "Accueil, WorkStudio, suite logicielle, FAQ, entreprise : fil conducteur « un compte, des crédits, tous vos outils ».",
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "statement": "Un seul compte Nexora AI réunit, dans le panneau « Mes outils », les crédits, l'espace disque et l'accès aux produits de Nexora AI, avec l'état réel de chacun.",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "approval_status": "en_revue",
+      "evidence": "docs/credits-et-offres.md (« Règle d'accès aux modèles » : le bouton « Ouvrir WorkStudio » s'active dès qu'il reste au moins 1 crédit, hasWorkstudioAccess) ; docs/panneau-mes-outils.md (registre des produits). Voir aussi CL-T04.",
+      "evidence_url": null,
+      "id": "CL-PL02",
+      "kind": "fait",
+      "scope": "Pages WorkStudio, accueil, FAQ : ce que WorkStudio demande pour s'ouvrir.",
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "statement": "WorkStudio s'ouvre depuis le panneau « Mes outils » tant qu'il reste au moins un crédit ; les modèles qu'il appelle consomment des crédits.",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "approval_status": "en_revue",
+      "evidence": "CL-01 (accompagnement) ; CL-T01 (crédits et abonnement) ; CL-12 et CL-T06 (vente non ouverte, prix non publiés, comptes et paiements en mode test).",
+      "evidence_url": null,
+      "id": "CL-PL03",
+      "kind": "offre",
+      "scope": "Pages qui répondent à « Combien cela coûte-t-il ? » et présentent la plateforme : accueil, FAQ, solutions, services, WorkStudio.",
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "statement": "Nexora AI propose deux voies : l'accompagnement sur mesure (diagnostic, installation, exploitation, estimation écrite) et la plateforme à crédits (compte, crédits, outils), cette dernière n'étant pas encore ouverte à la vente.",
       "valid_from": "2026-10-30",
       "valid_until": null
     }
