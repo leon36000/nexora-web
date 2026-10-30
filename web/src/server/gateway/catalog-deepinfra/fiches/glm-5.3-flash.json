@@ -4,25 +4,77 @@
   "name": "GLM 5.3 Flash",
   "descriptionFr": "Premier modèle natif multimodal de la série GLM-5, au palier Flash : 320 B paramètres au total, 18 B actifs, pour le code efficace et les tâches d'agent à long horizon.",
   "descriptionEn": "First natively multimodal model of the GLM-5 series, Flash tier: 320B total parameters, 18B active, for efficient coding and long-horizon agent tasks.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "Z.ai",
     "family": "GLM 5",
     "releasedAt": "2026-08-25",
-    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/zai-org/GLM-5.3-Flash" },
+    "license": {
+      "name": "MIT",
+      "openWeights": true,
+      "url": "https://huggingface.co/zai-org/GLM-5.3-Flash"
+    },
     "parameters": { "totalB": 320, "activeB": 18 },
     "modalities": { "input": ["text", "image"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts", "rapide", "economique"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "contexte-long",
+      "poids-ouverts",
+      "rapide",
+      "economique"
+    ],
     "homepageUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash",
     "benchmarks": [
-      { "name": "Agents' Last Exam (ALE-CLI)", "score": 26.3, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash", "category": "Agents" },
-      { "name": "DeepSWE (v1.1)", "score": 63.4, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash", "category": "Code" },
-      { "name": "OmniCompass VL", "score": 30.8, "unit": "points", "publisher": "VCLab-PolyU (OmniCompass)", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash", "category": "Multimodal" }
+      {
+        "name": "Agents' Last Exam (ALE-CLI)",
+        "score": 26.3,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+        "category": "Agents"
+      },
+      {
+        "name": "DeepSWE (v1.1)",
+        "score": 63.4,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+        "category": "Code"
+      },
+      {
+        "name": "OmniCompass VL",
+        "score": 30.8,
+        "unit": "points",
+        "publisher": "VCLab-PolyU (OmniCompass)",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+        "category": "Multimodal"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle (résultats d'évaluation)", "url": "https://huggingface.co/zai-org/GLM-5.3-Flash", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/zai-org/GLM-5.3-Flash", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/zai-org/GLM-5.3-Flash", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle (résultats d'évaluation)",
+        "url": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)",
+        "url": "https://huggingface.co/api/models/zai-org/GLM-5.3-Flash",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/zai-org/GLM-5.3-Flash",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

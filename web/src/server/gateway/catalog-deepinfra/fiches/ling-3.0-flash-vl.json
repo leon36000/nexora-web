@@ -4,28 +4,102 @@
   "name": "Ling 3.0 Flash VL",
   "descriptionFr": "Modèle multimodal natif d'inclusionAI (124 milliards de paramètres au total, 5,5 milliards actifs par jeton) qui traite texte, images et vidéos, avec mode de réflexion et usage d'agents.",
   "descriptionEn": "Native multimodal model from inclusionAI (124 billion total parameters, 5.5 billion active per token) that handles text, images and video, with a thinking mode and agent use.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "inclusionAI",
     "family": "Ling 3.0",
-    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL" },
+    "license": {
+      "name": "MIT",
+      "openWeights": true,
+      "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL"
+    },
     "parameters": { "totalB": 124, "activeB": 5.5 },
     "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
     "tags": ["raisonnement", "agents", "vision", "rapide", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
     "benchmarks": [
-      { "name": "Artificial Analysis Intelligence Index v4.1.1", "score": 42, "unit": "points", "publisher": "Artificial Analysis (citée par inclusionAI)", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Général" },
-      { "name": "CountBench", "score": 97.33, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
-      { "name": "MMMU-Pro", "score": 79.00, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
-      { "name": "MathVision", "score": 84.87, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Mathématiques" },
-      { "name": "OmniDocBench1.5", "score": 91.35, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
-      { "name": "CharXiv_RQ", "score": 81.30, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Multimodal" },
-      { "name": "WebVoyager", "score": 90.83, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Agents" },
-      { "name": "MMSearch", "score": 79.00, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation", "category": "Agents" }
+      {
+        "name": "Artificial Analysis Intelligence Index v4.1.1",
+        "score": 42,
+        "unit": "points",
+        "publisher": "Artificial Analysis (citée par inclusionAI)",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Général"
+      },
+      {
+        "name": "CountBench",
+        "score": 97.33,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MMMU-Pro",
+        "score": 79.0,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MathVision",
+        "score": 84.87,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "OmniDocBench1.5",
+        "score": 91.35,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Multimodal"
+      },
+      {
+        "name": "CharXiv_RQ",
+        "score": 81.3,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Multimodal"
+      },
+      {
+        "name": "WebVoyager",
+        "score": 90.83,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Agents"
+      },
+      {
+        "name": "MMSearch",
+        "score": 79.0,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL#evaluation",
+        "category": "Agents"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle inclusionAI/Ling-3.0-flash-VL", "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/inclusionAI/Ling-3.0-flash-VL", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle inclusionAI/Ling-3.0-flash-VL",
+        "url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/inclusionAI/Ling-3.0-flash-VL",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

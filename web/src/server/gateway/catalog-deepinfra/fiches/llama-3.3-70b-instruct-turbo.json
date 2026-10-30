@@ -4,31 +4,109 @@
   "name": "Llama 3.3 70B Instruct Turbo",
   "descriptionFr": "Modèle de dialogue multilingue de Meta (70 milliards de paramètres), optimisé pour suivre des instructions et utiliser des outils. Cette entrée désigne la variante Turbo hébergée par DeepInfra.",
   "descriptionEn": "Multilingual dialogue model from Meta (70 billion parameters), tuned to follow instructions and use tools. This entry is the Turbo variant hosted by DeepInfra.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": false, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": false,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
     "author": "Meta",
     "family": "Llama 3.3",
     "releasedAt": "2024-12-06",
     "knowledgeCutoff": "2023-12",
-    "license": { "name": "Llama 3.3 Community License Agreement", "openWeights": true, "url": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE" },
+    "license": {
+      "name": "Llama 3.3 Community License Agreement",
+      "openWeights": true,
+      "url": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE"
+    },
     "parameters": { "totalB": 70 },
     "modalities": { "input": ["text"], "output": ["text"] },
     "tags": ["multilingue", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
     "benchmarks": [
-      { "name": "MMLU (CoT)", "score": 86.0, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Connaissances" },
-      { "name": "MMLU Pro (CoT)", "score": 68.9, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Connaissances" },
-      { "name": "IFEval", "score": 92.1, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Instructions" },
-      { "name": "GPQA Diamond (CoT)", "score": 50.5, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Raisonnement" },
-      { "name": "HumanEval", "score": 88.4, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Code" },
-      { "name": "MBPP EvalPlus (base)", "score": 87.6, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Code" },
-      { "name": "MATH (CoT)", "score": 77.0, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Mathématiques" },
-      { "name": "BFCL v2", "score": 77.3, "unit": "%", "publisher": "Meta", "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "category": "Agents" }
+      {
+        "name": "MMLU (CoT)",
+        "score": 86.0,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Connaissances"
+      },
+      {
+        "name": "MMLU Pro (CoT)",
+        "score": 68.9,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Connaissances"
+      },
+      {
+        "name": "IFEval",
+        "score": 92.1,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Instructions"
+      },
+      {
+        "name": "GPQA Diamond (CoT)",
+        "score": 50.5,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "HumanEval",
+        "score": 88.4,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Code"
+      },
+      {
+        "name": "MBPP EvalPlus (base)",
+        "score": 87.6,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Code"
+      },
+      {
+        "name": "MATH (CoT)",
+        "score": 77.0,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "BFCL v2",
+        "score": 77.3,
+        "unit": "%",
+        "publisher": "Meta",
+        "sourceUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "category": "Agents"
+      }
     ],
     "sources": [
-      { "label": "GitHub meta-llama/llama-models, carte du modèle Llama 3.3 70B", "url": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, dépôt meta-llama/Llama-3.3-70B-Instruct (accès restreint : métadonnées seulement)", "url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/meta-llama/Llama-3.3-70B-Instruct-Turbo", "readAt": "2026-10-29" }
+      {
+        "label": "GitHub meta-llama/llama-models, carte du modèle Llama 3.3 70B",
+        "url": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, dépôt meta-llama/Llama-3.3-70B-Instruct (accès restreint : métadonnées seulement)",
+        "url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

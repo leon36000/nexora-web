@@ -4,29 +4,110 @@
   "name": "NVIDIA Nemotron 3.5 Super VL",
   "descriptionFr": "Modèle multimodal ouvert de NVIDIA (120 Md de paramètres, 12 Md actifs). Il reçoit texte, images et vidéo, avec raisonnement et appels d'outils, pour des agents qui voient, raisonnent et agissent.",
   "descriptionEn": "Open multimodal model from NVIDIA (120B parameters, 12B active). It takes text, image and video input, with reasoning and tool calling, for agents that see, reason and act.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "NVIDIA",
     "family": "Nemotron 3.5",
     "releasedAt": "2026-10-15",
-    "license": { "name": "OpenMDW-1.1", "openWeights": true, "url": "https://openmdw.ai/license/1-1/" },
+    "license": {
+      "name": "OpenMDW-1.1",
+      "openWeights": true,
+      "url": "https://openmdw.ai/license/1-1/"
+    },
     "parameters": { "totalB": 120, "activeB": 12 },
     "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "multilingue", "poids-ouverts"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "multilingue",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
     "benchmarks": [
-      { "name": "GPQA-Diamond", "score": 89.52, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Raisonnement" },
-      { "name": "HLE, text-only", "score": 31.79, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Connaissances" },
-      { "name": "LiveCodeBench v6", "score": 88.22, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Code" },
-      { "name": "SWE-bench Verified", "score": 71.10, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Code" },
-      { "name": "tau2-bench airline", "score": 76.50, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Agents" },
-      { "name": "Terminal-Bench 2.1", "score": 60.67, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Agents" },
-      { "name": "CharXiv reasoning", "score": 80.82, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Multimodal" },
-      { "name": "MathVision", "score": 78.16, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "category": "Multimodal" }
+      {
+        "name": "GPQA-Diamond",
+        "score": 89.52,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "HLE, text-only",
+        "score": 31.79,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Connaissances"
+      },
+      {
+        "name": "LiveCodeBench v6",
+        "score": 88.22,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Code"
+      },
+      {
+        "name": "SWE-bench Verified",
+        "score": 71.1,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Code"
+      },
+      {
+        "name": "tau2-bench airline",
+        "score": 76.5,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Agents"
+      },
+      {
+        "name": "Terminal-Bench 2.1",
+        "score": 60.67,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Agents"
+      },
+      {
+        "name": "CharXiv reasoning",
+        "score": 80.82,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MathVision",
+        "score": 78.16,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "category": "Multimodal"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16 (résumé, tableau des résultats)", "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "readAt": "2026-10-29" },
-      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16 (résumé, tableau des résultats)",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)",
+        "url": "https://api.deepinfra.com/models/list",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

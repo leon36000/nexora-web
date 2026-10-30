@@ -4,29 +4,106 @@
   "name": "EmbeddingGemma 2",
   "descriptionFr": "Modèle d'embeddings multimodal de Google DeepMind (740 millions de paramètres) qui projette texte, images, vidéos et audio dans un même espace de 768 dimensions, avec troncature Matryoshka à 512, 256 ou 128.",
   "descriptionEn": "Multimodal embedding model from Google DeepMind (740 million parameters) that maps text, images, video and audio into one 768-dimension space, with Matryoshka truncation to 512, 256 or 128.",
-  "capabilities": { "streaming": false, "tools": false, "reasoning": false, "json_mode": false, "vision": true },
+  "capabilities": {
+    "streaming": false,
+    "tools": false,
+    "reasoning": false,
+    "json_mode": false,
+    "vision": true
+  },
   "sheet": {
     "author": "Google DeepMind",
     "family": "EmbeddingGemma",
     "knowledgeCutoff": "2025-01",
-    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://huggingface.co/google/embeddinggemma-2" },
+    "license": {
+      "name": "Apache 2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/google/embeddinggemma-2"
+    },
     "parameters": { "totalB": 0.74 },
-    "modalities": { "input": ["text", "image", "video", "audio"], "output": ["embedding"] },
+    "modalities": {
+      "input": ["text", "image", "video", "audio"],
+      "output": ["embedding"]
+    },
     "tags": ["embeddings", "vision", "multilingue", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/google/embeddinggemma-2",
     "benchmarks": [
-      { "name": "MTEB (multilingual, v2), Mean(Task)", "score": 61.36, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Embeddings" },
-      { "name": "MTEB (code, v1), Mean(Task), NDCG@10", "score": 78.68, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Code" },
-      { "name": "MIEB (lite), Mean(TaskType)", "score": 65.67, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Multimodal" },
-      { "name": "MMEB v2 - Image, Mean(Task), Hit@1", "score": 57.28, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Multimodal" },
-      { "name": "MMEB v2 - VisDoc, Mean(Task), NDCG@5", "score": 67.84, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Multimodal" },
-      { "name": "MMEB v2 - Video, Mean(Task), Hit@1", "score": 50.67, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Multimodal" },
-      { "name": "MSEB (Retrieval), Mean(Task), MRR@10", "score": 69.54, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Audio" },
-      { "name": "MAEB, Mean(Task)", "score": 49.87, "unit": "points", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results", "category": "Audio" }
+      {
+        "name": "MTEB (multilingual, v2), Mean(Task)",
+        "score": 61.36,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Embeddings"
+      },
+      {
+        "name": "MTEB (code, v1), Mean(Task), NDCG@10",
+        "score": 78.68,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Code"
+      },
+      {
+        "name": "MIEB (lite), Mean(TaskType)",
+        "score": 65.67,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MMEB v2 - Image, Mean(Task), Hit@1",
+        "score": 57.28,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MMEB v2 - VisDoc, Mean(Task), NDCG@5",
+        "score": 67.84,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MMEB v2 - Video, Mean(Task), Hit@1",
+        "score": 50.67,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Multimodal"
+      },
+      {
+        "name": "MSEB (Retrieval), Mean(Task), MRR@10",
+        "score": 69.54,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Audio"
+      },
+      {
+        "name": "MAEB, Mean(Task)",
+        "score": 49.87,
+        "unit": "points",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/embeddinggemma-2#benchmark-results",
+        "category": "Audio"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle google/embeddinggemma-2", "url": "https://huggingface.co/google/embeddinggemma-2", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/google/embeddinggemma-2", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle google/embeddinggemma-2",
+        "url": "https://huggingface.co/google/embeddinggemma-2",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/google/embeddinggemma-2",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

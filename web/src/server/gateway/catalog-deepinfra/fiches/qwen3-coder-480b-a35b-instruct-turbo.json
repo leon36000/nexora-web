@@ -25,18 +25,10 @@
       "activeB": 35
     },
     "modalities": {
-      "input": [
-        "text"
-      ],
-      "output": [
-        "text"
-      ]
+      "input": ["text"],
+      "output": ["text"]
     },
-    "tags": [
-      "code",
-      "agents",
-      "poids-ouverts"
-    ],
+    "tags": ["code", "agents", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct",
     "benchmarks": [],
     "sources": [

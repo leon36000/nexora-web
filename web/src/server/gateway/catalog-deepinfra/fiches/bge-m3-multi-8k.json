@@ -4,25 +4,85 @@
   "name": "BGE-M3 multi 8k",
   "descriptionFr": "Modèle d'embeddings multilingue de BAAI (plus de 100 langues) pour la recherche dense, avec des entrées allant jusqu'à 8 192 jetons. Vecteurs denses de 1 024 dimensions.",
   "descriptionEn": "Multilingual embedding model from BAAI (more than 100 languages) for dense retrieval, with inputs up to 8,192 tokens. Dense vectors of 1,024 dimensions.",
-  "capabilities": { "streaming": false, "tools": false, "reasoning": false, "json_mode": false, "vision": false },
+  "capabilities": {
+    "streaming": false,
+    "tools": false,
+    "reasoning": false,
+    "json_mode": false,
+    "vision": false
+  },
   "sheet": {
     "author": "BAAI",
     "family": "BGE-M3",
-    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/BAAI/bge-m3" },
+    "license": {
+      "name": "MIT",
+      "openWeights": true,
+      "url": "https://huggingface.co/BAAI/bge-m3"
+    },
     "modalities": { "input": ["text"], "output": ["embedding"] },
     "tags": ["embeddings", "multilingue", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/BAAI/bge-m3",
     "benchmarks": [
-      { "name": "MIRACL dev set (nDCG@10), moyenne All", "score": 71.5, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
-      { "name": "MIRACL dev set (nDCG@10), moyenne Dense", "score": 69.2, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
-      { "name": "MKQA (Recall@100), moyenne All", "score": 75.5, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
-      { "name": "MKQA (Recall@100), moyenne Dense", "score": 75.1, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Multilingue" },
-      { "name": "MLDR test set (nDCG@10), moyenne All", "score": 65.0, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Documents longs" },
-      { "name": "MLDR test set (nDCG@10), moyenne Dense", "score": 52.5, "unit": "points", "publisher": "BAAI", "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results", "category": "Documents longs" }
+      {
+        "name": "MIRACL dev set (nDCG@10), moyenne All",
+        "score": 71.5,
+        "unit": "points",
+        "publisher": "BAAI",
+        "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results",
+        "category": "Multilingue"
+      },
+      {
+        "name": "MIRACL dev set (nDCG@10), moyenne Dense",
+        "score": 69.2,
+        "unit": "points",
+        "publisher": "BAAI",
+        "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results",
+        "category": "Multilingue"
+      },
+      {
+        "name": "MKQA (Recall@100), moyenne All",
+        "score": 75.5,
+        "unit": "points",
+        "publisher": "BAAI",
+        "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results",
+        "category": "Multilingue"
+      },
+      {
+        "name": "MKQA (Recall@100), moyenne Dense",
+        "score": 75.1,
+        "unit": "points",
+        "publisher": "BAAI",
+        "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results",
+        "category": "Multilingue"
+      },
+      {
+        "name": "MLDR test set (nDCG@10), moyenne All",
+        "score": 65.0,
+        "unit": "points",
+        "publisher": "BAAI",
+        "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results",
+        "category": "Documents longs"
+      },
+      {
+        "name": "MLDR test set (nDCG@10), moyenne Dense",
+        "score": 52.5,
+        "unit": "points",
+        "publisher": "BAAI",
+        "sourceUrl": "https://huggingface.co/BAAI/bge-m3#our-results",
+        "category": "Documents longs"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle BAAI/bge-m3 (spécifications et résultats)", "url": "https://huggingface.co/BAAI/bge-m3", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/BAAI/bge-m3-multi-8k", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle BAAI/bge-m3 (spécifications et résultats)",
+        "url": "https://huggingface.co/BAAI/bge-m3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/BAAI/bge-m3-multi-8k",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {
