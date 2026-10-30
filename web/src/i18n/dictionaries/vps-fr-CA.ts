@@ -250,7 +250,7 @@ export const vpsFrCA = {
       },
       renewal: {
         q: "Comment fonctionne le renouvellement ?",
-        a: "Le VPS est renouvelé automatiquement au même tarif à chaque période, mensuelle ou annuelle. Vous pouvez résilier à tout moment : le service court jusqu’à la fin de la période payée.",
+        a: "Le VPS a son propre abonnement, distinct de vos crédits. Il est renouvelé automatiquement au même tarif à chaque période, mensuelle ou annuelle. Vous pouvez résilier à tout moment : le service court jusqu’à la fin de la période payée.",
       },
       unpaid: {
         q: "Que se passe-t-il en cas d’impayé ?",

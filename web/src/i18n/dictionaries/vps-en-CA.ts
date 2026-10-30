@@ -246,7 +246,7 @@ export const vpsEnCA: VpsDictionary = {
       },
       renewal: {
         q: "How does renewal work?",
-        a: "The VPS renews automatically at the same rate each period, monthly or yearly. You can cancel at any time: service runs until the end of the paid period.",
+        a: "The VPS has its own subscription, separate from your credits. It renews automatically at the same rate each period, monthly or yearly. You can cancel at any time: service runs until the end of the paid period.",
       },
       unpaid: {
         q: "What happens if a payment fails?",

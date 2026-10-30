@@ -270,7 +270,7 @@
     {
       "id": "CL-28",
       "kind": "fait",
-      "statement": "Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade. Nexora Code a sa propre affirmation (CL-AP06) : « Bientôt », sans date.",
+      "statement": "Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade.",
       "scope": "Absence d'annonce, volontaire.",
       "evidence": "Brief §6 : ni taille, ni performance, ni garantie de disponibilité tant que les fiches canoniques n'existent pas. Aucune fiche canonique n'a été fournie. Mise à jour du 30/10/2026 : Nexora Code est sorti de cette liste, il a une fiche (/apps/code) et un état « Bientôt » (CL-AP06).",
       "evidence_url": null,

@@ -217,8 +217,17 @@ export const CANONICAL_FACTS: readonly CanonicalFact[] = [
     path: "/suite",
     exact: true,
     text: {
-      fr: "Nexora Code, Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade.",
-      en: "Nexora Code, Nexora Corpus and the Quanta and Helix models: no availability or date is announced at this stage.",
+      fr: "Nexora Corpus et les modèles Quanta et Helix : aucune disponibilité ni date n'est annoncée à ce stade.",
+      en: "Nexora Corpus and the Quanta and Helix models: no availability or date is announced at this stage.",
+    },
+  },
+  {
+    id: "credits",
+    claims: ["CL-T01", "CL-T04"],
+    path: "/tarifs",
+    text: {
+      fr: "Un abonnement Nexora AI donne des crédits chaque mois et de l'espace disque ; sans abonnement, on recharge des crédits. Tout ce qui appelle un modèle d'IA consomme des crédits.",
+      en: "A Nexora AI plan gives you credits every month and storage space; without a plan, you top up credits. Anything that calls an AI model uses credits.",
     },
   },
 ];
