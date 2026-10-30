@@ -72,6 +72,26 @@ const embedFiche = {
   sheet: { tags: ["embeddings"] },
 };
 
+const rerankRow = {
+  rank: 3,
+  deepinfraId: "acme/Classeur-Rerank-4B",
+  kind: "rerank",
+  contextMax: 32768,
+  quantization: null,
+  upstreamInputUsdMicro: 25000,
+  upstreamOutputUsdMicro: null,
+  cacheReadRate: null,
+};
+const rerankFiche = {
+  deepinfraId: "acme/Classeur-Rerank-4B",
+  slug: "classeur-rerank-4b",
+  name: "Classeur Rerank",
+  descriptionFr: "Reclassement d'essai.",
+  descriptionEn: "Test reranker.",
+  capabilities: { streaming: false, tools: false },
+  sheet: { modalities: { input: ["text"], output: ["text"] } },
+};
+
 describe("identifiant public", () => {
   it("le slug est le dernier segment de l'identifiant DeepInfra, en minuscules", () => {
     expect(slugOf("zai-org/GLM-5.3")).toBe("glm-5.3");
@@ -130,6 +150,20 @@ describe("assemblage de la sélection et des fiches", () => {
     rows: Record<string, unknown>[],
     fiches: { file: string; raw: unknown }[],
   ) => buildSource({ selection: selectionOf(rows), fiches });
+
+  it("accepte un modèle de reclassement comme un modèle d'embeddings : prix d'entrée seulement, ni sortie ni plafond de sortie", () => {
+    const s = build(
+      [rerankRow],
+      [{ file: "classeur-rerank-4b.json", raw: rerankFiche }],
+    );
+    expect(s.problems).toEqual([]);
+    expect(s.entries[0]).toMatchObject({
+      kind: "rerank",
+      publicId: "nexora/classeur-rerank-4b",
+      maxOutputTokens: null,
+      upstream: { input: 25_000n, output: 0n, cache: null },
+    });
+  });
 
   it("assemble prix amont, cache, contexte, quantification et fiche, sans écrire de champ qui n'est pas dans la fiche", () => {
     const s = build(

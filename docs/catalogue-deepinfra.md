@@ -48,6 +48,10 @@ Rejouable : un second passage sans changement des données ne crée ni modèle, 
 
 Écrite à partir de la documentation de DeepInfra, lue le 29/10/2026 (`docs.deepinfra.com/account/data-privacy`) : données soumises non stockées sur disque (entrées en mémoire le temps du calcul, sorties effacées une fois envoyées ; le traitement par lots, que Nexora n'offre pas, peut les garder chiffrées), pas d'entraînement sur ces données **sauf pour les modèles de Google ou d'Anthropic** (la politique de l'éditeur s'applique : plusieurs modèles Gemma sont au catalogue), et **aucune indication du pays ou de la région** : la région du fournisseur est donc « autre ». Aucune certification n'est affirmée. À relire avant le lancement.
 
+### Reclasseurs (type de modèle `rerank`)
+
+Trois modèles Qwen3-Reranker (0,6B, 4B, 8B) sont dans `selection.json` et `fiches/` (`kind: "rerank"`, prix d'entrée seulement, comme un modèle d'embeddings ; prix et contexte relevés le 30/10/2026 sur `deepinfra.com/models/reranker`). Ils sont appelés par `POST /v1/rerank` (format Cohere) et servent au RAG (`docs/rag.md`). Leurs fiches ne contiennent aucun résultat de benchmark ni le nom de la licence (non relus, signalés dans `gaps`). Côté LiteLLM un reclasseur est déployé avec la chaîne `deepinfra/<modèle>` ; non éprouvé contre un vrai LiteLLM.
+
 ## 3. Avant le lancement (ordre conseillé)
 
 1. Module Modèles, onglet Taux de change : ajouter et approuver un taux USD→CAD.

@@ -17,6 +17,8 @@ describe("adresse inconnue sous /v1", () => {
     });
     expect(body.error.message).toContain("/v1/completions");
     expect(body.error.message).toContain("/v1/chat/completions");
+    expect(body.error.message).toContain("/v1/rerank");
+    expect(body.error.message).toContain("/v1/rag/");
   });
 
   it("n'écho pas un chemin démesuré ni du contenu injecté", async () => {

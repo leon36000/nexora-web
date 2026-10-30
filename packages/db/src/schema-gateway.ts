@@ -96,7 +96,7 @@ export const modelProviders = pgTable(
   ],
 );
 
-export const MODEL_KINDS = ["chat", "embedding"] as const;
+export const MODEL_KINDS = ["chat", "embedding", "rerank"] as const;
 export type ModelKind = (typeof MODEL_KINDS)[number];
 export const MODEL_VISIBILITIES = ["public", "unlisted", "private"] as const;
 export type ModelVisibility = (typeof MODEL_VISIBILITIES)[number];
@@ -423,6 +423,14 @@ export const apiKeys = pgTable(
      * la clé n'a PAS accès à WebPilot tant qu'une personne ne l'a pas cochée.
      */
     webpilotOperations: jsonb("webpilot_operations").$type<string[] | null>(),
+    /**
+     * Permission RAG : bases accessibles et droits (`read` ou `write`). Null (défaut) : la clé n'a PAS accès au RAG.
+     * Les bases appartiennent toutes à l'organisation de la clé (vérifié à la création et à chaque requête).
+     */
+    ragAccess: jsonb("rag_access").$type<{
+      bases: string[];
+      mode: "read" | "write";
+    } | null>(),
     createdBy: text("created_by"),
     createdAt: ts("created_at").notNull().defaultNow(),
   },

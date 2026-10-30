@@ -11,6 +11,7 @@ export type PrivacyProduct = "gateway" | "webpilot" | "workstudio";
 export type PrivacyOperation =
   | "chat"
   | "embeddings"
+  | "rerank"
   | "search"
   | "scrape"
   | "crawl"

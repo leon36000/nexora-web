@@ -82,6 +82,12 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     ],
   },
   {
+    route: "api/admin/rag/index",
+    kind: "admin-token",
+    why: "Indexation d'une tranche de document RAG par le worker : jeton d'administration seulement",
+    probes: adminProbes("POST", "/api/admin/rag/index"),
+  },
+  {
     route: "api/admin/vault",
     kind: "admin-token",
     why: "Coffre : dépôt et liste (jamais de valeur relue)",
@@ -337,6 +343,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     [
       ["v1/chat/completions", "POST", "/v1/chat/completions"],
       ["v1/embeddings", "POST", "/v1/embeddings"],
+      ["v1/rerank", "POST", "/v1/rerank"],
     ] as const
   ).map(
     ([route, method, path]): RouteGuard => ({
@@ -411,6 +418,70 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       ]),
     }),
   ),
+  {
+    route: "v1/rag/[[...path]]",
+    kind: "api-key",
+    why: "RAG managé (API et serveur MCP) : clé nxk_ avec la permission RAG, limitée à ses bases (404 pour les autres), droits lecture ou écriture",
+    probes: [
+      {
+        label: "GET sans clé",
+        method: "GET",
+        path: "/v1/rag/bases",
+        expect: [401],
+      },
+      {
+        label: "POST requête sans clé",
+        method: "POST",
+        path: `/v1/rag/bases/${ZERO}/query`,
+        headers: JSON_H,
+        body: "{}",
+        expect: [401],
+      },
+      {
+        label: "MCP sans clé",
+        method: "POST",
+        path: "/v1/rag/mcp",
+        headers: JSON_H,
+        body: "{}",
+        expect: [401],
+      },
+      {
+        label: "clé inconnue",
+        method: "GET",
+        path: "/v1/rag/bases",
+        headers: { authorization: "Bearer nxk_inconnue" },
+        expect: [401],
+      },
+    ],
+  },
+  {
+    route: "api/account/rag/[[...path]]",
+    kind: "session",
+    why: "RAG de l'espace client : session, propriétaire pour toute écriture, origine contrôlée",
+    probes: [
+      {
+        label: "GET sans session",
+        method: "GET",
+        path: "/api/account/rag",
+        expect: [401],
+      },
+      {
+        label: "POST sans session ni origine",
+        method: "POST",
+        path: "/api/account/rag",
+        headers: JSON_H,
+        body: "{}",
+        expect: [401, 403],
+      },
+      {
+        label: "DELETE origine étrangère",
+        method: "DELETE",
+        path: `/api/account/rag/${ZERO}`,
+        headers: { origin: "https://evil.example" },
+        expect: [401, 403],
+      },
+    ],
+  },
   {
     route: "v1/models",
     kind: "public",

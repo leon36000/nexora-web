@@ -26,7 +26,7 @@ export interface LlmsModel {
   provider: string;
   /** Libellé du lieu d'hébergement, par langue (« Hébergé au Québec »). */
   residency: Record<Lang, string>;
-  kind: "chat" | "embedding";
+  kind: "chat" | "embedding" | "rerank";
   contextMax: number;
   /** Prix de développement (catalogue d'essai) : il n'est jamais reproduit ici. */
   devPrice: boolean;
@@ -84,6 +84,7 @@ const T = {
     rankings:
       "Classements par épreuve (résultats publiés, avec leur éditeur et leur source) :",
     embedding: "embeddings",
+    rerank: "reclassement",
     vps: "Applications VPS",
     vpsIntro:
       "Applications d'IA installables sur un serveur privé virtuel (VPS) hébergé au Québec. Plans et prix : voir la page VPS.",
@@ -112,6 +113,7 @@ const T = {
     rankings:
       "Rankings by benchmark (published results, with their publisher and source):",
     embedding: "embeddings",
+    rerank: "reranking",
     vps: "VPS applications",
     vpsIntro:
       "AI applications that can be installed on a virtual private server (VPS) hosted in Quebec. Plans and prices: see the VPS page.",
@@ -137,7 +139,9 @@ function catalogSection(
       ? t.devPrice
       : m.kind === "embedding"
         ? `${m.inputPerMillion} (${t.embedding})`
-        : `${m.inputPerMillion} / ${m.outputPerMillion}`;
+        : m.kind === "rerank"
+          ? `${m.inputPerMillion} (${t.rerank})`
+          : `${m.inputPerMillion} / ${m.outputPerMillion}`;
     const name = m.url
       ? `[${cell(m.name).replace(/[[\]]/g, "")}](${m.url[lang]})`
       : cell(m.name);

@@ -27,7 +27,11 @@ export const gatewayFrCA = {
     streaming: "Diffusion en continu",
     json_mode: "Mode JSON",
   },
-  kinds: { chat: "Conversation", embedding: "Embeddings" },
+  kinds: {
+    chat: "Conversation",
+    embedding: "Embeddings",
+    rerank: "Reclassement",
+  },
 
   docs: {
     label: "API",

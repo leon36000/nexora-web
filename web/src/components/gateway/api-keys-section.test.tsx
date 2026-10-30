@@ -27,6 +27,7 @@ const key = (over: Partial<ApiKeySummary>): ApiKeySummary => ({
   revokedAt: null,
   lastUsedAt: null,
   webpilotOperations: null,
+  ragAccess: null,
   createdBy: null,
   createdAt: new Date("2026-10-01T12:00:00Z"),
   ...over,

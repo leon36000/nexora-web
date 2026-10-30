@@ -197,6 +197,13 @@
       "when": 1793358746503,
       "tag": "0027_credits_espace_quota",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1793361319777,
+      "tag": "0028_rag_gere",
+      "breakpoints": true
     }
   ]
 }
