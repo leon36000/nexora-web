@@ -1,24 +1,24 @@
 /**
- * Textes de la page Tarifs (fr-CA). Aucun prix ici : les prix, les crédits et l’espace des paliers viennent des offres
+ * Textes de la page Tarifs (fr-CA). Aucun prix ici : les prix, les crédits et l’espace des paliers viennent des offres
  * publiées dans Directus (jamais en dur). Les affirmations de la page renvoient au registre `cms/content/claims.json`
- * par leurs identifiants (`claims`) ; un test vérifie qu’ils existent et que chacun est utilisé.
+ * par leurs identifiants (`claims`) ; un test vérifie qu’ils existent et que chacun est utilisé.
  */
 export const pricingFrCA = {
   meta: {
     title: "Tarifs | Nexora AI",
     description:
-      "Crédits, abonnements, recharge et espace disque de Nexora AI : ce qui consomme des crédits, ce qui est inclus, et les prix publiés en dollars canadiens.",
+      "Crédits, abonnements, recharge et espace disque de Nexora AI : ce qui consomme des crédits, ce qui est inclus, et les prix publiés en dollars canadiens.",
   },
   nav: { home: "Accueil", pricing: "Tarifs", breadcrumb: "Fil d’Ariane" },
   hero: {
     label: "Tarifs",
     title: "Des crédits pour l’IA, de l’espace pour vos données.",
-    lead: "Un abonnement vous donne des crédits chaque mois et de l’espace disque. Sans abonnement, vous rechargez des crédits. Tout ce qui appelle un modèle d’IA consomme des crédits ; le reste est inclus.",
+    lead: "Un abonnement vous donne des crédits chaque mois et de l’espace disque. Sans abonnement, vous rechargez des crédits. Tout ce qui appelle un modèle d’IA consomme des crédits ; le reste est inclus.",
     claims: ["CL-T01"],
   },
   offers: {
     title: "Les paliers d’abonnement",
-    lead: "Chaque palier donne des crédits chaque mois et de l’espace disque ; les paliers plus élevés donnent plus des deux.",
+    lead: "Chaque palier donne des crédits chaque mois et de l’espace disque ; les paliers plus élevés donnent plus des deux.",
     claims: ["CL-T01"],
   },
   card: {
@@ -30,7 +30,7 @@ export const pricingFrCA = {
     saving: "{percent} % d’économie par rapport au mensuel",
     trial: "Essai gratuit de {days} jours",
     credits: "{credits} crédits par mois",
-    creditsYearly: "Facturation annuelle : crédits versés un douzième par mois",
+    creditsYearly: "Facturation annuelle : crédits versés un douzième par mois",
     storage: "{gb} Go d’espace disque",
     choose: "Choisir cette offre",
     chooseYearly: "Choisir la facturation annuelle",
@@ -42,34 +42,34 @@ export const pricingFrCA = {
   taxes:
     "Tous les prix sont en dollars canadiens, avant taxes. La TPS et la TVQ sont calculées par notre prestataire de paiement selon votre adresse de facturation et s’ajoutent au prix. Les crédits inclus sont accordés à chaque période payée.",
   trialNote:
-    "Pendant un essai, aucun montant n’est prélevé avant la fin de la période d’essai ; vous pouvez résilier avant sans frais.",
+    "Pendant un essai, aucun montant n’est prélevé avant la fin de la période d’essai ; vous pouvez résilier avant sans frais.",
   states: {
     empty: {
       label: "Prix à venir",
       title: "Les prix ne sont pas encore publiés.",
-      text: "Nous vous montrons déjà comment tout fonctionne : ce qu’est un crédit, ce qui en consomme, comment se comptent la recharge et l’espace. Les paliers, leurs quantités et leurs prix s’afficheront ici dès leur publication ; nous n’avançons aucun prix en attendant. Pour un besoin précis, écrivez-nous.",
+      text: "Nous vous montrons déjà comment tout fonctionne : ce qu’est un crédit, ce qui en consomme, comment se comptent la recharge et l’espace. Les paliers, leurs quantités et leurs prix s’afficheront ici dès leur publication ; nous n’avançons aucun prix en attendant. Pour un besoin précis, écrivez-nous.",
       cta: "Nous écrire",
       claims: ["CL-T06"],
     },
     unavailable: {
       label: "Momentanément indisponible",
       title: "Les prix ne peuvent pas s’afficher pour le moment.",
-      text: "Le service qui publie nos offres ne répond pas. Réessayez dans un moment, ou écrivez-nous : nous répondons à toute demande. Le reste de la page reste valable.",
+      text: "Le service qui publie nos offres ne répond pas. Réessayez dans un moment, ou écrivez-nous : nous répondons à toute demande. Le reste de la page reste valable.",
       cta: "Nous écrire",
     },
   },
   credit: {
     title: "Ce qu’est un crédit",
-    lead: "Un crédit vaut un cent canadien (1 ¢) de jetons, au prix du catalogue de modèles. Un modèle économe donne plus de jetons pour un crédit ; un modèle puissant en donne moins.",
+    lead: "Un crédit vaut un cent canadien (1 ¢) de jetons, au prix du catalogue de modèles. Un modèle économe donne plus de jetons pour un crédit ; un modèle puissant en donne moins.",
     points: [
-      "Les prix du catalogue sont publics : chaque fiche de modèle indique son prix par million de jetons.",
+      "Les prix du catalogue sont publics : chaque fiche de modèle indique son prix par million de jetons.",
       "Chaque requête est débitée au coût réel, calculé avec le prix de la fiche du modèle utilisé.",
-      "Tout appel à un modèle d’IA consomme des crédits ; les outils Nexora qui n’appellent aucun modèle n’en consomment pas.",
+      "Tout appel à un modèle d’IA consomme des crédits ; les outils Nexora qui n’appellent aucun modèle n’en consomment pas.",
     ],
     claims: ["CL-T02", "CL-T04"],
     equivalents: {
       title: "Ce que {credits} crédits achètent",
-      lead: "Calculé depuis les prix publiés au catalogue, pour quelques modèles. Les jetons d’entrée sont ceux de votre demande ; les jetons de sortie sont ceux de la réponse.",
+      lead: "Calculé depuis les prix publiés au catalogue, pour quelques modèles. Les jetons d’entrée sont ceux de votre demande ; les jetons de sortie sont ceux de la réponse.",
       caption:
         "Équivalent de {credits} crédits en jetons, selon les prix du catalogue",
       model: "Modèle",
@@ -77,7 +77,7 @@ export const pricingFrCA = {
       output: "Jetons de sortie",
       note: "Les prix du catalogue peuvent changer, et l’équivalent change avec eux.",
       unavailable:
-        "Le catalogue de modèles n’est pas disponible pour le moment : l’équivalent en jetons s’affichera dès son retour. Rien n’est estimé en attendant.",
+        "Le catalogue de modèles n’est pas disponible pour le moment : l’équivalent en jetons s’affichera dès son retour. Rien n’est estimé en attendant.",
       cta: "Voir tous les modèles et leurs prix",
       claims: ["CL-T02"],
     },
@@ -86,8 +86,8 @@ export const pricingFrCA = {
     title: "La recharge",
     lead: "Sans abonnement, ou en plus de lui, rechargez des crédits quand vous le voulez.",
     points: [
-      "Les crédits d’abonnement expirent à la fin de leur période ; ils sont utilisés en premier.",
-      "Les crédits de recharge n’expirent pas : ils servent une fois ceux de l’abonnement épuisés.",
+      "Les crédits d’abonnement expirent à la fin de leur période ; ils sont utilisés en premier.",
+      "Les crédits de recharge n’expirent pas : ils servent une fois ceux de l’abonnement épuisés.",
       "Un solde de crédits supérieur à zéro suffit pour appeler les modèles, qu’il vienne d’un abonnement ou d’une recharge.",
     ],
     claims: ["CL-T01", "CL-T03"],
@@ -124,7 +124,7 @@ export const pricingFrCA = {
     credits: {
       title: "Consomme des crédits",
       items: [
-        "Tout appel à un modèle d’IA : requêtes à l’API, agents, automatisations qui utilisent un modèle.",
+        "Tout appel à un modèle d’IA : requêtes à l’API, agents, automatisations qui utilisent un modèle.",
         "Les jetons d’entrée et de sortie de chaque requête, au prix du catalogue.",
       ],
     },
@@ -140,53 +140,53 @@ export const pricingFrCA = {
     lead: "Des réponses franches, y compris sur ce qui n’est pas encore décidé.",
     items: {
       noCredits: {
-        q: "Que se passe-t-il quand il ne me reste plus de crédits ?",
+        q: "Que se passe-t-il quand il ne me reste plus de crédits ?",
         a: "Les appels aux modèles sont refusés, avec un message qui renvoie vers la recharge et vers les abonnements. Dès que votre solde dépasse zéro, vous pouvez recommencer.",
         claims: ["CL-T09"],
       },
       expiry: {
-        q: "Mes crédits expirent-ils ?",
+        q: "Mes crédits expirent-ils ?",
         a: "Les crédits d’abonnement expirent à la fin de la période pour laquelle ils ont été versés, et ils sont utilisés en premier. Les crédits de recharge n’expirent pas.",
         claims: ["CL-T03"],
       },
       annual: {
-        q: "Comment les crédits d’une offre annuelle sont-ils versés ?",
+        q: "Comment les crédits d’une offre annuelle sont-ils versés ?",
         a: "Un douzième chaque mois, et non d’un seul coup. Chaque douzième expire à la fin de son mois.",
         claims: ["CL-T08"],
       },
       trial: {
-        q: "Puis-je essayer avant de payer ?",
+        q: "Puis-je essayer avant de payer ?",
         a: "Il n’y a pas d’essai gratuit des offres. Le catalogue des modèles et leurs prix sont publics, et une recharge vous permet de n’acheter que ce que vous consommez.",
         claims: ["CL-T07"],
       },
       space: {
-        q: "Que se passe-t-il si je dépasse mon espace disque ?",
-        a: "L’écriture est refusée avec un message clair. Libérez de l’espace, ou ajoutez des gigaoctets à votre offre ; ce que vous avez déjà enregistré n’est pas supprimé par ce refus.",
+        q: "Que se passe-t-il si je dépasse mon espace disque ?",
+        a: "L’écriture est refusée avec un message clair. Libérez de l’espace, ou ajoutez des gigaoctets à votre offre ; ce que vous avez déjà enregistré n’est pas supprimé par ce refus.",
         claims: ["CL-T05"],
       },
       cancel: {
-        q: "Puis-je résilier un abonnement ?",
+        q: "Puis-je résilier un abonnement ?",
         a: "Oui, depuis votre espace client. La résiliation prend effet à la fin de la période payée.",
         claims: ["CL-T10"],
       },
       prices: {
-        q: "Quand les prix seront-ils publiés ?",
-        a: "Nous n’avons pas de date à annoncer. Les prix s’afficheront sur cette page dès leur publication ; d’ici là, aucun prix n’est valable.",
+        q: "Quand les prix seront-ils publiés ?",
+        a: "Nous n’avons pas de date à annoncer. Les prix s’afficheront sur cette page dès leur publication ; d’ici là, aucun prix n’est valable.",
         claims: ["CL-T06"],
       },
     },
   },
   more: {
     title: "D’autres façons de commencer",
-    lead: "Un abonnement n’est pas la seule voie : prenez un serveur, ou parlons de votre besoin.",
+    lead: "Un abonnement n’est pas la seule voie : prenez un serveur, ou parlons de votre besoin.",
     vps: {
       title: "Serveurs privés (VPS)",
       text: "Un serveur privé virtuel, au prix affiché sur sa page, avec l’application de votre choix déjà installée.",
       cta: "Voir les VPS",
     },
     contact: {
-      title: "Un besoin précis ?",
-      text: "Dites-nous ce que vous voulez accomplir : nous répondons avec une proposition claire, sans engagement.",
+      title: "Un besoin précis ?",
+      text: "Dites-nous ce que vous voulez accomplir : nous répondons avec une proposition claire, sans engagement.",
       cta: "Nous écrire",
     },
   },
