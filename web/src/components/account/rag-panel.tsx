@@ -181,6 +181,7 @@ export function RagPanel({
                 t={r}
                 defaultName={model.defaultName}
                 canCreate={role === "owner"}
+                siteUrl={model.connection.siteUrl}
                 apiUrl={model.connection.apiUrl}
                 mcpUrl={model.connection.mcpUrl}
               />
@@ -197,10 +198,12 @@ export function RagPanel({
             <div className="mt-6">
               <RagConnectBlock
                 text={r.connect}
+                siteUrl={model.connection.siteUrl}
                 apiUrl={model.connection.apiUrl}
                 mcpUrl={model.connection.mcpUrl}
                 keyValue={null}
                 baseId={model.bases[0]?.id ?? null}
+                baseName={model.bases[0]?.name ?? null}
               />
             </div>
             <div className="mt-6">

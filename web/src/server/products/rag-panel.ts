@@ -1,13 +1,10 @@
 /**
  * Interface entre le panneau « Mes outils » et le RAG géré (chantier B : `packages/rag`, `web/src/server/rag`,
- * `/v1/rag`). Le panneau ne connaît que cette interface : il est testé avec un faux (`test-support.ts`), et le chantier B
- * la remplit en une fonction (`createRagPanelService`, branchée dans `services.ts`). Contrat complet :
- * `docs/panneau-mes-outils.md`.
+ * `/v1/rag`, `/api/account/rag`). La page ne connaît que cette interface : elle est testée avec un faux
+ * (`test-support.ts`) ; l'implémentation réelle est `createRagPanelService` (`rag-service.ts`).
  *
- * Correspondance avec le chantier B (au moment de l'écriture) : `listBases` ← `listBases(deps, orgId)` ;
- * `createBaseWithKey` ← `createBaseWithKey(deps, …)` (la base ET sa clé dédiée en une seule transaction ; la valeur de la
- * clé n'existe qu'à cet instant) ; `usedBytes` ← `getOrgEntitlements(orgId).storage.byProduct.rag` réparti, ou la somme
- * des octets de la base.
+ * La CRÉATION n'est pas dans l'interface : « Créer mon RAG » appelle `POST /api/account/rag { name }` du chantier B,
+ * qui crée la base et sa clé dédiée (valeur montrée une seule fois). Voir `docs/rag.md` §1.
  */
 
 export interface RagBaseSummary {
@@ -25,44 +22,17 @@ export interface RagBaseSummary {
 }
 
 export interface RagConnectionInfo {
+  /** Adresse publique du site (`SITE_URL`) : base des extraits à copier. */
+  siteUrl: string;
   /** Racine de l'API HTTP du RAG (par exemple `https://…/v1/rag`). */
   apiUrl: string;
   /** Adresse du serveur MCP (par exemple `https://…/v1/rag/mcp`). */
   mcpUrl: string;
 }
 
-/**
- * Raisons d'un refus de création, traduites par le panneau (jamais de message du service affiché tel quel) :
- * `quota_exceeded` (espace de l'offre épuisé ou absent), `no_credits`, `base_exists` (nom déjà pris), `base_limit`
- * (nombre maximal de bases), `key_limit` (nombre maximal de clés actives), `unavailable` (service ou catalogue de
- * modèles indisponible).
- */
-export type RagCreateFailure =
-  | "quota_exceeded"
-  | "no_credits"
-  | "base_exists"
-  | "base_limit"
-  | "key_limit"
-  | "unavailable";
-
-export type RagCreateResult =
-  | {
-      ok: true;
-      base: RagBaseSummary;
-      /** Clé dédiée à cette base. `secret` n'est montré qu'UNE fois : le panneau ne le conserve nulle part. */
-      key: { id: string; prefix: string; secret: string };
-    }
-  | { ok: false; reason: RagCreateFailure };
-
 export interface RagPanelService {
   /** Bases de l'organisation, de la plus récente à la plus ancienne. */
   listBases(orgId: string): Promise<RagBaseSummary[]>;
-  /** « Créer mon RAG » en un clic : la base et sa clé d'API dédiée. */
-  createBaseWithKey(input: {
-    orgId: string;
-    userId: string;
-    name: string;
-  }): Promise<RagCreateResult>;
   /** Adresses à donner à un bot, à Nexora Code ou à un autre outil. */
   connection(): RagConnectionInfo;
 }

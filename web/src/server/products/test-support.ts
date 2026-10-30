@@ -2,11 +2,7 @@ import type {
   CodeWorkspaceService,
   CodeWorkspaceState,
 } from "./code-workspace";
-import type {
-  RagBaseSummary,
-  RagCreateResult,
-  RagPanelService,
-} from "./rag-panel";
+import type { RagBaseSummary, RagPanelService } from "./rag-panel";
 
 /** Faux services du panneau : ce que les chantiers B (RAG) et C (Nexora Code) remplaceront par les vrais. */
 
@@ -26,36 +22,16 @@ export const baseSummary = (
 
 export class FakeRagPanel implements RagPanelService {
   bases: RagBaseSummary[] = [];
-  created: { orgId: string; userId: string; name: string }[] = [];
   failList: Error | null = null;
-  nextCreate: RagCreateResult | Error | null = null;
 
   async listBases(orgId: string): Promise<RagBaseSummary[]> {
     if (this.failList) throw this.failList;
     void orgId;
     return this.bases;
   }
-  async createBaseWithKey(input: {
-    orgId: string;
-    userId: string;
-    name: string;
-  }): Promise<RagCreateResult> {
-    this.created.push(input);
-    if (this.nextCreate instanceof Error) throw this.nextCreate;
-    if (this.nextCreate) return this.nextCreate;
-    const base = baseSummary({
-      id: `b${this.created.length}`,
-      name: input.name,
-    });
-    this.bases.unshift(base);
-    return {
-      ok: true,
-      base,
-      key: { id: "k1", prefix: "nxk_abcd", secret: "nxk_abcd_SECRET_VALUE" },
-    };
-  }
   connection() {
     return {
+      siteUrl: "https://site.example",
       apiUrl: "https://site.example/v1/rag",
       mcpUrl: "https://site.example/v1/rag/mcp",
     };

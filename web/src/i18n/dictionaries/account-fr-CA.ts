@@ -627,6 +627,8 @@ export const accountFrCA = {
           no_credits:
             "Il vous faut des crédits pour créer un RAG. Rechargez votre compte ou choisissez une offre.",
           base_exists: "Une base porte déjà ce nom. Choisissez-en un autre.",
+          model_unavailable:
+            "Le modèle d’embedding n’est pas encore en service. Réessayez plus tard.",
           base_limit:
             "Vous avez atteint le nombre maximal de bases. Supprimez une base inutilisée ou écrivez-nous.",
           key_limit:
@@ -660,13 +662,12 @@ export const accountFrCA = {
         mcpUrl: "Adresse du serveur MCP",
         keyHint:
           "La clé se passe dans l’en-tête Authorization: Bearer. Elle n’est jamais affichée de nouveau : gardez-la dans un gestionnaire de secrets.",
-        keyPlaceholder: "VOTRE_CLE_API",
         baseIdPlaceholder: "ID_DE_LA_BASE",
-        questionPlaceholder: "Votre question",
         snippets: {
           code: "Nexora Code (MCP)",
           mcp: "Autre outil compatible MCP",
           http: "Appel HTTP (curl)",
+          env: "Variables d’environnement (bot, script)",
         },
         copy: "Copier",
         copied: "Copié",

@@ -14,6 +14,7 @@ vi.mock("next/navigation", () => ({
 
 const plain = (s: string) => s.replace(/[  ]/g, " ");
 const connection = {
+  siteUrl: "https://site.example",
   apiUrl: "https://site.example/v1/rag",
   mcpUrl: "https://site.example/v1/rag/mcp",
 };
@@ -83,7 +84,7 @@ describe("page RAG du panneau", () => {
     expect(html).toContain(connection.apiUrl);
     expect(html).toContain(connection.mcpUrl);
     expect(html).toContain("Nexora Code (MCP)");
-    expect(html).toContain("VOTRE_CLE_API");
+    expect(html).toContain("nxk_votre_cle");
     expect(html).toContain('href="/compte/modeles"');
   });
 
@@ -135,7 +136,8 @@ describe("page RAG du panneau", () => {
   });
 
   it("aucune clé n'est présente dans la page rendue côté serveur", () => {
-    expect(rag(ready())).not.toContain("nxk_");
+    // seul l'exemple « nxk_votre_cle » du chantier B figure dans la page : jamais une vraie valeur
+    expect(rag(ready())).not.toMatch(/nxk_(?!votre_cle)/);
   });
 
   it("anglais : libellés anglais et adresse préfixée", () => {

@@ -8,18 +8,17 @@ import { type AccountDictionary, fmt } from "@/i18n/account";
 import { CopyButton } from "./copy-button";
 import { Field, Notice } from "./field";
 import { RagConnectBlock } from "./rag-connect-block";
+import {
+  parseRagCreated,
+  type RagCreated,
+  ragErrorKey,
+} from "./rag-create-response";
 
 type RagText = AccountDictionary["panel"]["rag"];
 
-interface Created {
-  baseId: string;
-  baseName: string;
-  keyValue: string;
-}
-
-const errorText = (t: RagText, code: string | undefined) =>
-  (t.create.errors as Record<string, string>)[code ?? ""] ??
-  t.create.errors.generic;
+/** Message du dictionnaire pour un code d'erreur du serveur (jamais le texte du serveur lui-même). */
+const errorText = (t: RagText, key: ReturnType<typeof ragErrorKey>) =>
+  t.create.errors[key];
 
 /**
  * « Créer mon RAG » en un clic : un seul champ facultatif (le nom), un bouton. La base et sa clé d'API dédiée sont
@@ -30,6 +29,7 @@ export function CreateRagForm({
   t,
   defaultName,
   canCreate,
+  siteUrl,
   apiUrl,
   mcpUrl,
 }: {
@@ -37,6 +37,7 @@ export function CreateRagForm({
   defaultName: string;
   /** Seul le propriétaire crée un RAG (cela crée une clé d'API). */
   canCreate: boolean;
+  siteUrl: string;
   apiUrl: string;
   mcpUrl: string;
 }) {
@@ -44,7 +45,7 @@ export function CreateRagForm({
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [created, setCreated] = useState<Created | null>(null);
+  const [created, setCreated] = useState<RagCreated | null>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   // Après la création, le focus va au titre de la confirmation : la personne entend « Votre RAG est prêt ».
@@ -63,20 +64,13 @@ export function CreateRagForm({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ name: name.trim() || defaultName }),
       });
-      const json = (await res.json().catch(() => ({}))) as {
-        base?: { id: string; name: string };
-        key?: { secret: string };
-        error?: string;
-      };
-      if (res.status !== 201 || !json.base || !json.key) {
-        setError(errorText(t, json.error));
+      const json: unknown = await res.json().catch(() => null);
+      const made = res.status === 201 ? parseRagCreated(json) : null;
+      if (!made) {
+        setError(errorText(t, ragErrorKey(res.status, json)));
         return;
       }
-      setCreated({
-        baseId: json.base.id,
-        baseName: json.base.name,
-        keyValue: json.key.secret,
-      });
+      setCreated(made);
       setName("");
       // La liste des bases se met à jour pendant que la clé reste affichée ici.
       router.refresh();
@@ -135,10 +129,12 @@ export function CreateRagForm({
         <div className="mt-8 border-t border-line pt-6">
           <RagConnectBlock
             text={t.connect}
+            siteUrl={siteUrl}
             apiUrl={apiUrl}
             mcpUrl={mcpUrl}
             keyValue={created.keyValue}
             baseId={created.baseId}
+            baseName={created.baseName}
             idPrefix="rag-created"
             headingLevel={4}
           />

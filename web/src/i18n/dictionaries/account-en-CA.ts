@@ -610,6 +610,8 @@ export const accountEnCA: AccountDictionary = {
             "You need credits to create a RAG. Top up your account or choose a plan.",
           base_exists:
             "A knowledge base already has this name. Choose another one.",
+          model_unavailable:
+            "The embedding model is not in service yet. Try again later.",
           base_limit:
             "You have reached the maximum number of knowledge bases. Delete an unused one or write to us.",
           key_limit:
@@ -641,13 +643,12 @@ export const accountEnCA: AccountDictionary = {
         mcpUrl: "MCP server address",
         keyHint:
           "The key goes in the Authorization: Bearer header. It is never shown again: keep it in a secrets manager.",
-        keyPlaceholder: "YOUR_API_KEY",
         baseIdPlaceholder: "KNOWLEDGE_BASE_ID",
-        questionPlaceholder: "Your question",
         snippets: {
           code: "Nexora Code (MCP)",
           mcp: "Another MCP-compatible tool",
           http: "HTTP call (curl)",
+          env: "Environment variables (bot, script)",
         },
         copy: "Copy",
         copied: "Copied",
