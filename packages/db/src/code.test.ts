@@ -86,7 +86,7 @@ describe("migration 0029 : codes d'appareil", () => {
         deviceCodeHash: hex(32),
         userCodeHash: hex(32),
         expiresAt: new Date(),
-        status: "bizarre",
+        status: "bizarre" as never,
       }),
     ).rejects.toThrow();
   });
@@ -127,9 +127,10 @@ describe("migration 0029 : environnements hébergés", () => {
     ).rejects.toThrow();
     const r = await person();
     await expect(
-      t.db
-        .insert(codeWorkspaces)
-        .values({ ...workspaceRow(r, 20_022), desiredStatus: "ailleurs" }),
+      t.db.insert(codeWorkspaces).values({
+        ...workspaceRow(r, 20_022),
+        desiredStatus: "ailleurs" as never,
+      }),
     ).rejects.toThrow();
   });
 });
