@@ -11,12 +11,15 @@ function Snippet({
   text,
   value,
   Heading,
+  regionName,
 }: {
   id: string;
   label: string;
   text: ConnectText;
   value: string;
   Heading: "h3" | "h4";
+  /** Nom de la zone quand le même extrait figure deux fois dans la page (repères uniques). */
+  regionName?: string;
 }) {
   return (
     <div>
@@ -32,7 +35,9 @@ function Snippet({
         />
       </div>
       <section
-        aria-labelledby={id}
+        {...(regionName
+          ? { "aria-label": regionName }
+          : { "aria-labelledby": id })}
         // biome-ignore lint/a11y/noNoninteractiveTabindex: zone de code défilable atteignable au clavier
         tabIndex={0}
         className="mt-2 overflow-x-auto rounded-md border border-line bg-bg p-4"
@@ -59,6 +64,7 @@ export function RagConnectBlock({
   baseName,
   idPrefix = "rag-connect",
   headingLevel = 3,
+  regionSuffix,
 }: {
   text: ConnectText;
   siteUrl: string;
@@ -70,6 +76,8 @@ export function RagConnectBlock({
   idPrefix?: string;
   /** Niveau des titres d'extraits : 3 sous le titre de section de la page, 4 sous la carte de confirmation. */
   headingLevel?: 3 | 4;
+  /** Rend les noms de zones uniques quand le bloc figure deux fois dans la page (clé fraîche et bloc permanent). */
+  regionSuffix?: string;
 }) {
   const Heading = headingLevel === 3 ? "h3" : "h4";
   // Les extraits sont ceux du chantier B (`server/rag/snippets.ts`) : une seule source pour le panneau et la documentation.
@@ -111,6 +119,9 @@ export function RagConnectBlock({
           text={text}
           value={item.value}
           Heading={Heading}
+          regionName={
+            regionSuffix ? `${item.label} — ${regionSuffix}` : undefined
+          }
         />
       ))}
     </div>

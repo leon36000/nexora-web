@@ -137,6 +137,7 @@ export function CreateRagForm({
             baseName={created.baseName}
             idPrefix="rag-created"
             headingLevel={4}
+            regionSuffix={created.baseName}
           />
         </div>
       </Card>
