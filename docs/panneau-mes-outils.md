@@ -27,21 +27,18 @@ Une lecture de droits qui échoue ne casse pas la page : le résumé est remplac
 
 **Interrupteurs** : `NEXORA_PRODUCT_CODE` et `NEXORA_PRODUCT_RAG` valent `1`, `true`, `on`, `oui` ou `yes` pour allumer ; tout le reste (absent, vide, `0`, faute de frappe) éteint. Éteints par défaut. Aucun interrupteur ne commande WorkStudio, Bot, Creative, WebPilot, Privacy Router ni VPS. « Me prévenir » mène au formulaire de contact prérempli (`?sujet=apps-<produit>`), la liste d'attente existante.
 
-**À la fusion de B ou de C** (les deux gestes vont ensemble, un test ne peut pas les lier) : (1) brancher le service dans `web/src/server/products/services.ts` ; (2) allumer `NEXORA_PRODUCT_RAG=1` / `NEXORA_PRODUCT_CODE=1` ; (3) passer l'état de la fiche `rag` / `code` à `disponible` dans `web/src/i18n/apps.ts` et compléter leur liste « ce qui est prêt » (fr et en : un test exige du livré pour « disponible ») ; (4) mettre à jour les affirmations CL-AP06 / CL-AP07 de `cms/content/claims.json` (leur texte parle au futur).
+**À la mise en service du RAG puis de Nexora Code** (les gestes vont ensemble, un test ne peut pas les lier) : (1) RAG : déjà branché ; Nexora Code : renvoyer le service dans `web/src/server/products/services.ts` ; (2) allumer `NEXORA_PRODUCT_RAG=1` / `NEXORA_PRODUCT_CODE=1` ; (3) passer l'état de la fiche `rag` / `code` à `disponible` dans `web/src/i18n/apps.ts` et compléter leur liste « ce qui est prêt » (fr et en : un test exige du livré pour « disponible ») ; (4) mettre à jour les affirmations CL-AP06 / CL-AP07 de `cms/content/claims.json` (leur texte parle au futur).
 
 ## Interfaces à remplir
 
-### `RagPanelService` (`web/src/server/products/rag-panel.ts`) : chantier B
+### `RagPanelService` (`web/src/server/products/rag-panel.ts`) : chantier B (fusionné dans `main`)
 
 ```ts
-listBases(orgId): Promise<RagBaseSummary[]>            // id, name, description, createdAt, documents, pending, failed, usedBytes
-createBaseWithKey({ orgId, userId, name }): Promise<RagCreateResult>
-  // { ok: true, base, key: { id, prefix, secret } } | { ok: false, reason }
-  // reason : quota_exceeded | no_credits | base_exists | base_limit | key_limit | unavailable
-connection(): { apiUrl, mcpUrl }                        // ex. https://<site>/v1/rag et https://<site>/v1/rag/mcp
+listBases(orgId): Promise<RagBaseSummary[]>   // id, name, description, createdAt, documents, pending, failed, usedBytes
+connection(): { siteUrl, apiUrl, mcpUrl }       // https://<site>, …/v1/rag, …/v1/rag/mcp
 ```
 
-Correspondance avec B (branche `feat/rag` au moment de l'écriture) : `listBases(deps, orgId)` (octets : `stats.bytes` de la base), `createBaseWithKey(deps, …)` (la base ET sa clé dédiée en une transaction ; `key` = `CreatedKey.key`), `ragHttpDeps`. Les échecs de B (`base_limit`, `key_limit`, `base_exists`, quota) se traduisent en `reason` ; le panneau n'affiche jamais un message du service. La valeur de la clé n'est rendue qu'à la création, en `no-store`, jamais journalisée.
+**Déjà branché** : `createRagPanelService` (`rag-service.ts`) lit `listBases` de `web/src/server/rag` (octets = `stats.bytes`) ; `services.ts` l'instancie. La **création** n'est pas dans l'interface : « Créer mon RAG » appelle `POST /api/account/rag { name }` du chantier B (`docs/rag.md` §1), qui crée la base et sa clé dédiée (valeur montrée une seule fois). Le panneau n'affiche jamais un message du serveur : un code connu (`quota_exceeded`, `insufficient_quota`, `base_exists`, `base_limit`, `key_limit`, `model_unavailable`, `rag_unavailable`, 429, 401, 403) choisit un message du dictionnaire (`rag-create-response.ts`). Les extraits à copier viennent de `server/rag/snippets.ts` (une seule source). **Tant que les modèles d'embedding du catalogue sont en « aperçu »**, créer une base répond `409 model_unavailable` : ne pas allumer `NEXORA_PRODUCT_RAG` avant leur mise en service.
 
 ### `CodeWorkspaceService` (`web/src/server/products/code-workspace.ts`) : chantier C
 
@@ -59,12 +56,12 @@ Un environnement **par personne** ; `usedBytes` = volume (à compter par `record
 
 ## Routes
 
-- `POST /api/account/rag { name }` : propriétaire seulement, origine contrôlée, 10 appels par minute ; 201 `{ base, key, connection }` ; 402 espace ou crédits, 409 nom pris ou limites, 404 interrupteur éteint, 503 service absent.
+- RAG : `/api/account/rag/*` est celui du chantier B (`server/rag/account.ts`), sans interrupteur côté route : c'est la page qui est cachée tant que `NEXORA_PRODUCT_RAG` est éteint.
 - `GET` / `POST /api/account/code/workspace` : toute personne de l'organisation, pour SON environnement ; POST démarre (202).
 
 ## Extraits « Se connecter » (page RAG)
 
-`web/src/server/products/rag-connect.ts` : (a) configuration MCP distante de Nexora Code (clé `mcp`, `type: "remote"`, format d'OpenCode dont Nexora Code est le fork : **à confirmer par le chantier C**), (b) `mcpServers` générique à transport HTTP, (c) `curl -X POST …/bases/{id}/query`. Sans clé, l'espace réservé `VOTRE_CLE_API` ; après « Créer mon RAG », les extraits portent la clé fraîche, qui disparaît quand on ferme la confirmation.
+`connectionSnippets` du chantier B (`web/src/server/rag/snippets.ts`) : configuration MCP distante de Nexora Code (format d'OpenCode : **à confirmer par le chantier C**), `mcpServers` générique, `curl …/bases/{id}/query`, variables d'environnement. Sans clé, l'exemple `nxk_votre_cle` ; après « Créer mon RAG », les extraits portent la clé fraîche, qui disparaît quand on ferme la confirmation (elle n'est ni dans le journal, ni dans le stockage du navigateur).
 
 ## États de chaque page
 
@@ -83,4 +80,4 @@ Un environnement **par personne** ; `usedBytes` = volume (à compter par `record
 
 ## Tests
 
-`web/src/server/products/*.test.ts` (registre, vues, services avec faux, routes, extraits, composition sur base jetable), `web/src/components/account/tools-home.test.tsx`, `rag-code-panels.test.tsx`, `panel-render.test.tsx`, dictionnaires (`account-panel-dictionary.test.ts`, `apps.test.ts`), affirmations (`cms/content`). Base jetable : `set -a; . ~/Desktop/NexoraSite/.env; set +a` puis `npx vitest run` (Node 24).
+`web/src/server/products/*.test.ts` (registre, vues, services avec faux, adaptateur du RAG, route Nexora Code, composition sur base jetable), `components/account/rag-create-response.test.ts`, `web/src/components/account/tools-home.test.tsx`, `rag-code-panels.test.tsx`, `panel-render.test.tsx`, dictionnaires (`account-panel-dictionary.test.ts`, `apps.test.ts`), affirmations (`cms/content`). Base jetable : `set -a; . ~/Desktop/NexoraSite/.env; set +a` puis `npx vitest run` (Node 24).
