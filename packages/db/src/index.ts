@@ -16,6 +16,7 @@ export {
   ne,
   notInArray,
   or,
+  type SQL,
   sql,
 } from "drizzle-orm";
 export * from "./balance-alerts.ts";

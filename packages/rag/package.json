@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@nexora/db": "workspace:*",
+    "drizzle-orm": "^0.45.4",
     "node-html-parser": "^9.0.5",
     "unpdf": "1.8.1"
   }
