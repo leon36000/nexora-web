@@ -49,6 +49,7 @@ export function planRevalidation(body: RevalidateBody): RevalidatePlan {
       tags.add("nav");
       break;
     case "subscription_plans":
+    case "credit_packs":
       tags.add(PLANS_TAG);
       for (const lang of LANGS) paths.add(localizePath(lang, "/tarifs"));
       break;

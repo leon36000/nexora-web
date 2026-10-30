@@ -1,6 +1,7 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { PLANS_TAG } from "../cms/tags";
+import { type CreditPack, packsFromEnv } from "./credit-packs";
 import { planSourceFromEnv, type SubscriptionPlan } from "./plans";
 
 export interface PublicPlans {
@@ -25,5 +26,24 @@ export async function getPublicPlans(): Promise<PublicPlans> {
     // sur « cache miss » au préchauffage). Le rafraîchissement en arrière-plan toutes les 10 s reprend la lecture.
     cacheLife({ stale: 10, revalidate: 10, expire: 600 });
     return { status: "unavailable", plans: [] };
+  }
+}
+
+export interface PublicPacks {
+  status: "ready" | "empty" | "unavailable";
+  packs: CreditPack[];
+}
+
+/** Forfaits de recharge PUBLIÉS (même étiquette de cache que les offres : une modification rafraîchit la page Tarifs). */
+export async function getPublicPacks(): Promise<PublicPacks> {
+  "use cache";
+  cacheTag(PLANS_TAG);
+  try {
+    const packs = await packsFromEnv().listPublished();
+    cacheLife({ stale: 30, revalidate: 60, expire: 3_600 });
+    return { status: packs.length > 0 ? "ready" : "empty", packs };
+  } catch {
+    cacheLife({ stale: 10, revalidate: 10, expire: 600 });
+    return { status: "unavailable", packs: [] };
   }
 }

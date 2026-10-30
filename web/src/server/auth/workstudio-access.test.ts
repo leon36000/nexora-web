@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import {
   apiKeys,
+  credit,
   eq,
   members,
   oauthAccessTokens,
@@ -11,6 +12,7 @@ import {
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import type { Logger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { orgCanUseModels } from "../billing/entitlements";
 import { hashApiKey, revokeApiKey } from "../gateway/keys";
 import { loadKeyring } from "../vault/crypto";
 import { readSecret } from "../vault/store";
@@ -23,6 +25,7 @@ import {
 } from "./oidc-test-support";
 import {
   handleWorkstudioAccess,
+  requireCreditsFromEnv,
   type WorkstudioAccessDeps,
 } from "./workstudio-access";
 import {
@@ -114,8 +117,8 @@ function makeDeps(
     clientId: CLIENT_ID,
     gateway: () => ({ url: GATEWAY, model: MODEL }),
     allowLoopback: false,
-    requireSubscription: false,
-    entitled: async () => true,
+    requireCredits: false,
+    canUseModels: async () => true,
     log,
     now: allowedNow,
     ...over,
@@ -268,36 +271,45 @@ describe("accès modèle par utilisateur (côté tiré)", () => {
   });
 });
 
-describe("abonnement WorkStudio exigé (clients ordinaires)", () => {
-  it("sans abonnement : 403 subscription_required, et aucune clé n'est créée", async () => {
-    const user = await newVerifiedUser();
-    const tokens = await fullLogin(user.cookie);
+describe("crédits exigés (clients ordinaires) : un solde supérieur à zéro suffit, abonnement ou recharge", () => {
+  async function organizationOf(userId: string): Promise<string> {
     const [member] = await t.db
       .select()
       .from(members)
-      .where(eq(members.userId, user.userId));
-    const organizationId = member?.organizationId as string;
+      .where(eq(members.userId, userId));
+    return member?.organizationId as string;
+  }
+
+  it("sans crédit : 403 credits_required avec un message clair et les liens, et aucune clé n'est créée", async () => {
+    const user = await newVerifiedUser();
+    const tokens = await fullLogin(user.cookie);
     const deps = makeDeps({
-      requireSubscription: true,
-      entitled: async () => false,
+      requireCredits: true,
+      canUseModels: async () => false,
     });
     const res = await access(tokens.access_token, deps);
     expect(res.status).toBe(403);
-    expect(await res.json()).toEqual({ error: "subscription_required" });
+    const body = (await res.json()) as Record<string, string>;
+    expect(body.error).toBe("credits_required");
+    expect(body.message).toMatch(/^Il ne vous reste plus de crédits\./);
+    expect(body.recharge_url).toMatch(
+      /\/compte\/facturation#ajouter-des-fonds$/,
+    );
+    expect(body.plans_url).toMatch(/\/tarifs$/);
     const keys = await t.db
       .select()
       .from(apiKeys)
-      .where(eq(apiKeys.organizationId, organizationId));
+      .where(eq(apiKeys.organizationId, await organizationOf(user.userId)));
     expect(keys).toHaveLength(0);
   });
 
-  it("avec un abonnement (ou l'organisation maison) : 200 et la clé de l'organisation", async () => {
+  it("avec des crédits (ou l'organisation maison) : 200 et la clé de l'organisation", async () => {
     const user = await newVerifiedUser();
     const tokens = await fullLogin(user.cookie);
     const seen: string[] = [];
     const deps = makeDeps({
-      requireSubscription: true,
-      entitled: async (_db, organizationId) => {
+      requireCredits: true,
+      canUseModels: async (_db, organizationId) => {
         seen.push(organizationId);
         return true;
       },
@@ -308,16 +320,54 @@ describe("abonnement WorkStudio exigé (clients ordinaires)", () => {
     expect(((await res.json()) as Access).key).toMatch(/^nxk_/);
   });
 
-  it("l'exigence se coupe pour un essai (requireSubscription: false) : la décision d'abonnement n'est même pas lue", async () => {
+  it("règle de production : une recharge seule, sans abonnement, ouvre l'accès ; un solde à zéro le ferme", async () => {
+    const user = await newVerifiedUser();
+    const tokens = await fullLogin(user.cookie);
+    const organizationId = await organizationOf(user.userId);
+    const real = makeDeps({
+      requireCredits: true,
+      canUseModels: orgCanUseModels,
+    });
+    expect((await access(tokens.access_token, real)).status).toBe(403);
+    await credit(t.db, {
+      organizationId,
+      amountMicro: 1_000_000n,
+      idempotencyKey: `ws-access-refill-${organizationId}`,
+      configVersion: "cfg_test",
+      source: "purchase",
+    });
+    expect((await access(tokens.access_token, real)).status).toBe(200);
+  });
+
+  it("l'exigence se coupe pour un essai (requireCredits: false) : la décision n'est même pas lue", async () => {
     const user = await newVerifiedUser();
     const tokens = await fullLogin(user.cookie);
     const deps = makeDeps({
-      requireSubscription: false,
-      entitled: async () => {
+      requireCredits: false,
+      canUseModels: async () => {
         throw new Error("ne doit pas être appelée");
       },
     });
     expect((await access(tokens.access_token, deps)).status).toBe(200);
+  });
+});
+
+describe("réglage de l'exigence de crédits", () => {
+  it("exigée par défaut ; coupée par WORKSTUDIO_REQUIRE_CREDITS=false, ou par l'ancien nom encore réglé sur les démonstrations", () => {
+    expect(requireCreditsFromEnv({})).toBe(true);
+    expect(requireCreditsFromEnv({ WORKSTUDIO_REQUIRE_CREDITS: "true" })).toBe(
+      true,
+    );
+    expect(
+      requireCreditsFromEnv({ WORKSTUDIO_REQUIRE_CREDITS: " FALSE " }),
+    ).toBe(false);
+    expect(
+      requireCreditsFromEnv({ WORKSTUDIO_REQUIRE_SUBSCRIPTION: "false" }),
+    ).toBe(false);
+    // L'ancien nom à « true » ne change rien : l'abonnement n'est plus la règle.
+    expect(
+      requireCreditsFromEnv({ WORKSTUDIO_REQUIRE_SUBSCRIPTION: "true" }),
+    ).toBe(true);
   });
 });
 

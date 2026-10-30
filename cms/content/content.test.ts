@@ -373,6 +373,21 @@ describe("VÉRITÉ", () => {
       "utf8",
     );
     for (const m of appsRegistry.matchAll(/CL-[A-Z]*\d+/g)) used.add(m[0]);
+    // La page Tarifs (dictionnaire du code, pas une page Directus) cite aussi ses affirmations par leurs identifiants.
+    const pricingDictionary = readFileSync(
+      join(
+        import.meta.dir,
+        "..",
+        "..",
+        "web",
+        "src",
+        "i18n",
+        "dictionaries",
+        "pricing-fr-CA.ts",
+      ),
+      "utf8",
+    );
+    for (const m of pricingDictionary.matchAll(/CL-[A-Z]*\d+/g)) used.add(m[0]);
     for (const page of EVERY_PAGE)
       for (const l of LOCALES)
         for (const b of (everyPair[page] as Record<Locale, PageFile>)[l].blocks)

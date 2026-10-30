@@ -1,3 +1,10 @@
+import {
+  blockedMessage,
+  noCreditsMessage,
+  notEnoughCreditsMessage,
+} from "../billing/credit-messages";
+import { MICRO_PER_CREDIT } from "../ledger/money";
+
 /** Erreurs au format OpenAI : `{ error: { message, type, param, code } }`. */
 
 export type ErrorType =
@@ -68,11 +75,17 @@ export const E = {
       headers,
       "model",
     ),
-  insufficient: (headers?: Record<string, string>) =>
+  /**
+   * Crédits insuffisants. `availableMicro` (disponible du grand livre) distingue « plus de crédits » (moins d'un
+   * crédit, soit 10 000 micro-CAD) de « pas assez pour cette requête » ; absent, le message reste prudent.
+   */
+  insufficient: (headers?: Record<string, string>, availableMicro?: bigint) =>
     openAiError(
       402,
       "insufficient_quota",
-      "Solde de crédits insuffisant pour cette requête. Rechargez votre compte.",
+      availableMicro !== undefined && availableMicro < MICRO_PER_CREDIT
+        ? noCreditsMessage()
+        : notEnoughCreditsMessage(),
       "insufficient_quota",
       headers,
     ),
@@ -80,7 +93,7 @@ export const E = {
     openAiError(
       402,
       "account_blocked",
-      "Le compte est bloqué (solde négatif). Rechargez votre compte pour reprendre.",
+      blockedMessage(),
       "insufficient_quota",
       headers,
     ),

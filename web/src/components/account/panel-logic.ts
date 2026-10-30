@@ -90,10 +90,12 @@ export function onboardingProgress(steps: readonly OnboardingStep[]): {
   return { done: steps.filter((s) => s.done).length, total: steps.length };
 }
 
-const PRESET_AMOUNTS_CENTS = [2000, 5000, 10_000, 25_000, 50_000] as const;
+const PRESET_AMOUNTS_CENTS = [
+  1000, 2500, 5000, 10_000, 25_000, 50_000,
+] as const;
 
 /**
- * Montants proposés (cents) au bouton « Ajouter des fonds » : 20, 50, 100, 250 et 500 $ dans les bornes de la
+ * Montants proposés (cents) au bouton « Ajouter des fonds » : 10, 25, 50, 100, 250 et 500 $ (les forfaits de recharge de la conception du 30/10) dans les bornes de la
  * configuration ; le minimum de la configuration est toujours proposé en premier. Le champ libre reste disponible.
  */
 export function presetAmountsCents(
@@ -162,10 +164,13 @@ type OfferSubscription = { planCode: string | null; access: AccessLevel };
 export function hasWorkstudioAccess(
   subscriptions: readonly OfferSubscription[],
   free = false,
+  hasCredits = false,
 ): boolean {
-  // L'organisation « maison » (accès gratuit) n'a pas besoin d'abonnement ; aucun autre compte n'a ce droit.
+  // L'organisation « maison » (accès gratuit) n'a pas besoin d'abonnement ; tout autre compte a le droit tant qu'il
+  // lui reste des crédits (abonnement OU recharge : même règle que le serveur, `entitlements.ts`), ou un abonnement actif.
   return (
     free ||
+    hasCredits ||
     subscriptions.some(
       (s) =>
         s.planCode !== null && (s.access === "full" || s.access === "grace"),
@@ -178,9 +183,13 @@ export function workstudioView(input: {
   instanceOrigin: string | null;
   /** Organisation « maison » : accès gratuit, donc ouverture possible sans abonnement. */
   free?: boolean;
+  /** Il reste au moins un crédit (abonnement ou recharge). */
+  hasCredits?: boolean;
 }): WorkstudioView {
   const offers = input.subscriptions.filter((s) => s.planCode !== null);
-  if (hasWorkstudioAccess(offers, input.free ?? false)) {
+  if (
+    hasWorkstudioAccess(offers, input.free ?? false, input.hasCredits ?? false)
+  ) {
     const url = safeInstanceUrl(input.instanceOrigin);
     return url ? { state: "ready", url } : { state: "pending" };
   }

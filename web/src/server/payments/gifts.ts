@@ -23,8 +23,12 @@ import {
   createOrder,
   reconcileVpsSubscription,
 } from "@nexora/vps";
-import { type BillingConfig, configVersion } from "../ledger/config";
-import { addMonths, centsToMicro } from "../ledger/money";
+import {
+  type BillingConfig,
+  configVersion,
+  creditExpiresAt,
+} from "../ledger/config";
+import { centsToMicro } from "../ledger/money";
 import { auditPayment } from "./settings";
 
 export type GiftErrorCode =
@@ -387,7 +391,7 @@ export async function grantGiftCredits(
       idempotencyKey: `staff-gift:${grantId}`,
       configVersion: configVersion(input.config),
       source: "staff_gift",
-      expiresAt: addMonths(input.now, input.config.creditExpiryMonths),
+      expiresAt: creditExpiresAt(input.now, input.config),
       externalRef: grantId,
       metadata: { reason: input.reason ?? "", grantId, userId: input.userId },
     });

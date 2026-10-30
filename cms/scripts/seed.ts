@@ -18,7 +18,11 @@ import {
   flattenNavigation,
   planNavigation,
 } from "./lib/navigation";
-import { DRAFT_PLANS } from "./lib/plans-seed";
+import {
+  DRAFT_CREDIT_PACKS,
+  DRAFT_PLANS,
+  RETIRED_PLAN_CODES,
+} from "./lib/plans-seed";
 import { LANGS } from "./lib/schema";
 
 export const MESSAGE_DIRECTEUR = {
@@ -196,11 +200,26 @@ async function seedHome(d: Directus) {
 }
 
 /**
- * Offres WorkStudio en BROUILLON avec le prix suggéré (jamais publiées, jamais de prix décidé). Idempotent : une offre
- * déjà présente (même code) n'est jamais modifiée, même si le fondateur a changé son prix, ses textes ou son statut.
+ * Offres Nexora (crédits et espace) et forfaits de recharge en BROUILLON avec les prix suggérés (jamais publiés, jamais de
+ * prix décidé). Idempotent : une fiche déjà présente (même code) n'est jamais modifiée si elle n'est plus en brouillon,
+ * même si le fondateur a changé son prix, ses textes ou son statut. Les anciennes offres `workstudio-*` encore en brouillon
+ * sont archivées (jamais supprimées).
  */
 async function seedPlans(d: Directus) {
-  log("Offres d'abonnement (brouillons, prix suggérés)");
+  log("Offres d'abonnement Nexora (brouillons, prix suggérés)");
+  for (const code of RETIRED_PLAN_CODES) {
+    const cur = await d.get<{ id: string; status: string }[]>(
+      `/items/subscription_plans?filter[code][_eq]=${encodeURIComponent(code)}&fields=id,status&limit=1`,
+      [403, 404],
+    );
+    const row = Array.isArray(cur) ? cur[0] : null;
+    if (row?.status === "draft") {
+      await d.patch(`/items/subscription_plans/${row.id}`, {
+        status: "archived",
+      });
+      made(`${code} (ancienne offre WorkStudio archivée)`);
+    }
+  }
   for (const plan of DRAFT_PLANS) {
     const cur = await d.get<
       {
@@ -208,26 +227,29 @@ async function seedPlans(d: Directus) {
         status: string;
         trial_days: number;
         included_credits_cents: number;
+        included_storage_gb: number | null;
       }[]
     >(
-      `/items/subscription_plans?filter[code][_eq]=${encodeURIComponent(plan.code)}&fields=id,status,trial_days,included_credits_cents&limit=1`,
+      `/items/subscription_plans?filter[code][_eq]=${encodeURIComponent(plan.code)}&fields=id,status,trial_days,included_credits_cents,included_storage_gb&limit=1`,
       [403, 404],
     );
     const row = Array.isArray(cur) ? cur[0] : null;
     if (row) {
-      // Un brouillon suit la définition courante (aucun essai, forfait de 5 M de jetons) ; une offre approuvée
+      // Un brouillon suit la définition courante (aucun essai, crédits et espace du palier) ; une offre approuvée
       // ou publiée n'est jamais touchée par le chargement initial.
       if (
         row.status === "draft" &&
         (row.trial_days !== plan.trial_days ||
-          row.included_credits_cents !== plan.included_credits_cents)
+          row.included_credits_cents !== plan.included_credits_cents ||
+          row.included_storage_gb !== plan.included_storage_gb)
       ) {
         await d.patch(`/items/subscription_plans/${row.id}`, {
           trial_days: plan.trial_days,
           included_credits_cents: plan.included_credits_cents,
+          included_storage_gb: plan.included_storage_gb,
         });
         made(
-          `${plan.code} (brouillon mis à jour : aucun essai, forfait de jetons inclus)`,
+          `${plan.code} (brouillon mis à jour : crédits et espace du palier)`,
         );
       } else kept(plan.code);
       continue;
@@ -235,6 +257,25 @@ async function seedPlans(d: Directus) {
     await d.post("/items/subscription_plans", plan);
     made(
       `${plan.code} (brouillon, prix suggéré ${plan.suggested_price_cents / 100} $)`,
+    );
+  }
+}
+
+/** Forfaits de recharge de crédits en brouillon (1 $ = 100 crédits), prix suggérés non publiés. */
+async function seedCreditPacks(d: Directus) {
+  log("Forfaits de recharge (brouillons, prix suggérés)");
+  for (const pack of DRAFT_CREDIT_PACKS) {
+    const cur = await d.get<{ id: string }[]>(
+      `/items/credit_packs?filter[code][_eq]=${encodeURIComponent(pack.code)}&fields=id&limit=1`,
+      [403, 404],
+    );
+    if (Array.isArray(cur) && cur[0]) {
+      kept(pack.code);
+      continue;
+    }
+    await d.post("/items/credit_packs", pack);
+    made(
+      `${pack.code} (brouillon, ${pack.credits} crédits, prix suggéré ${pack.suggested_price_cents / 100} $)`,
     );
   }
 }
@@ -249,6 +290,7 @@ async function main() {
   await seedNavigation(d);
   await seedHome(d);
   await seedPlans(d);
+  await seedCreditPacks(d);
   log(`Terminé : ${stats.created} créé(s), ${stats.kept} déjà présent(s)`);
 }
 

@@ -178,9 +178,11 @@ export function BillingPanel({
                 </div>
               ) : null}
               <p className="mt-5 text-small text-fg-muted">
-                {fmt(d.balance.expiryNote, {
-                  months: config.creditExpiryMonths,
-                })}
+                {config.creditExpiryMonths > 0
+                  ? fmt(d.balance.expiryNote, {
+                      months: config.creditExpiryMonths,
+                    })
+                  : d.balance.noExpiryNote}
               </p>
             </Card>
 
@@ -432,7 +434,9 @@ export function BillingPanel({
                     {plan.includedCreditsCents > 0 ? (
                       <p className="mt-1 text-small text-fg-muted">
                         {fmt(d.subscriptions.available.included, {
-                          amount: formatCad(lang, plan.includedCreditsCents),
+                          credits: new Intl.NumberFormat(
+                            lang === "fr" ? "fr-CA" : "en-CA",
+                          ).format(plan.includedCreditsCents),
                         })}
                       </p>
                     ) : null}

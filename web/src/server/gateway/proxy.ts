@@ -1051,7 +1051,7 @@ async function handleInference(
       )
         return reserved.status === "blocked"
           ? E.blocked(rateHeaders)
-          : E.insufficient(rateHeaders);
+          : E.insufficient(rateHeaders, reserved.availableMicro);
       reservation = { id: reserved.reservation.id, amount };
     }
 

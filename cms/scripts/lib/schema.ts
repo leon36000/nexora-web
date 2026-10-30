@@ -1,5 +1,5 @@
 // Schéma Directus de Nexora AI (S1–S2) : collections, champs et relations, déclarés en TypeScript.
-// Appliqué par scripts/apply.ts (idempotent). 22 collections utilisateur au total (limite du palier Core : 25).
+// Appliqué par scripts/apply.ts (idempotent). 25 collections utilisateur au total (limite du palier Core : 25 ; aucune marge).
 
 export type FieldDef = {
   field: string;
@@ -808,7 +808,9 @@ export function buildSchema(): {
       select(
         "kind",
         [
-          ["workstudio", "WorkStudio"],
+          ["nexora", "Nexora (crédits et espace)"],
+          ["storage", "Espace supplémentaire (Go)"],
+          ["workstudio", "WorkStudio (ancienne famille)"],
           ["api", "API et modèles"],
           ["agents", "Agents hébergés"],
           ["other", "Autre"],
@@ -869,10 +871,16 @@ export function buildSchema(): {
         },
       ),
       int("included_credits_cents", {
-        label: "Crédits inclus par période (cents CAD)",
+        label: "Crédits inclus par période",
         def: 0,
         width: "half",
-        note: "Accordés à chaque facture payée, valables jusqu’à la fin de la période.",
+        note: "1 crédit = 1 ¢ CA (nom de champ hérité : « cents »). Accordés à chaque facture payée, valables jusqu’à la fin de la période ; une ligne annuelle porte les crédits de l’année, versés un douzième par mois.",
+      }),
+      int("included_storage_gb", {
+        label: "Espace disque inclus (Go)",
+        def: 0,
+        width: "half",
+        note: "1 Go = 1 000 000 000 octets. Compté par organisation, tous produits confondus ; copié dans l’abonnement à chaque facture payée. Pour l’offre « Go supplémentaire » : les Go ajoutés par unité.",
       }),
       str("stripe_product_id", {
         label: "Produit Stripe",
@@ -909,6 +917,62 @@ export function buildSchema(): {
       relations,
     ),
   );
+
+  // --- forfaits de recharge de crédits (conception du 30/10/2026) : 1 $ = 100 crédits, crédits sans expiration ---
+  add({
+    collection: "credit_packs",
+    meta: {
+      icon: "savings",
+      note: "Forfaits de recharge de crédits (10, 25, 50, 100 $…). 1 $ = 100 crédits (1 crédit = 1 ¢ CA), sans expiration. Prix hors taxes en cents CAD ; jamais affiché sans prix valide ni statut « Publié ».",
+      display_template: "{{code}}",
+      sort_field: "sort",
+      archive_field: "status",
+      archive_value: "archived",
+      unarchive_value: "draft",
+      translations: [
+        {
+          language: "fr-CA",
+          translation: "Forfaits de recharge",
+          singular: "Forfait de recharge",
+          plural: "Forfaits de recharge",
+        },
+      ],
+    },
+    fields: [
+      uuidPk(),
+      str("code", {
+        label: "Code",
+        required: true,
+        unique: true,
+        note: "Identifiant stable (ex. recharge-25), minuscules et tirets.",
+      }),
+      select("status", STATUS_PAGES, {
+        label: "Statut",
+        def: "draft",
+        required: true,
+        width: "half",
+      }),
+      int("credits", {
+        label: "Crédits accordés",
+        required: true,
+        width: "half",
+        note: "1 crédit = 1 ¢ CA : 10 $ donnent 1 000 crédits.",
+      }),
+      int("price_cents", {
+        label: "Prix (cents CAD, avant taxes)",
+        width: "half",
+        note: "Ex. 2500 pour 25,00 $. Vide tant que le prix n’est pas décidé : un forfait publié sans prix valide n’est jamais affiché ni vendu (jamais à 0 $).",
+      }),
+      int("suggested_price_cents", {
+        label: "Prix suggéré (cents CAD) — non publié",
+        width: "half",
+        note: "Suggestion visible ici seulement (ni le site ni le public ne la lisent). Rien n’est publié sans votre décision.",
+      }),
+      int("sort", { label: "Ordre", hidden: true }),
+      dateCreated(),
+      dateUpdated(),
+    ],
+  });
 
   // --- pages ---
   add({

@@ -157,7 +157,7 @@ describe("achat de crédits (paiement unique)", () => {
   it("refuse un montant hors bornes, non entier ou non numérique", async () => {
     const stripe = fakeStripe();
     const org = await newOrg();
-    for (const amountCents of [0, 1999, 500_001, 10.5, Number.NaN, -1000]) {
+    for (const amountCents of [0, 999, 500_001, 10.5, Number.NaN, -1000]) {
       await expect(
         createCreditCheckout(base(stripe), {
           organizationId: org,
