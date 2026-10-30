@@ -26,8 +26,10 @@ export interface SubscriptionPlan {
   interval: "month" | "year";
   /** Prix récurrent avant taxes, en cents CAD. Toujours > 0. */
   priceCents: number;
-  /** Crédits offerts à chaque période payée, en cents CAD (0 = aucun). */
+  /** Crédits offerts à chaque période payée (1 crédit = 1 ¢ CA ; 0 = aucun). Nom hérité : « cents CAD ». */
   includedCreditsCents: number;
+  /** Espace disque inclus, en octets (1 Go = 1 000 000 000 octets) ; absent ou 0 : aucun. */
+  includedStorageBytes?: number;
   stripeProductId: string | null;
   stripePriceId: string | null;
   /** Essai gratuit en jours (0 = aucun), appliqué au Checkout. */
@@ -37,6 +39,9 @@ export interface SubscriptionPlan {
   /** Par code de langue BCP 47 (fr-CA, en-CA). */
   translations: Record<string, PlanTranslation>;
 }
+
+/** 1 Go = 1 000 000 000 octets (gigaoctet décimal). */
+export const BYTES_PER_GB = 1_000_000_000;
 
 export interface PlanSource {
   listPublished(): Promise<SubscriptionPlan[]>;
@@ -58,6 +63,7 @@ const rowSchema = z.object({
   interval: z.enum(["month", "year"]),
   price_cents: z.number().int().positive(),
   included_credits_cents: z.number().int().min(0).nullish(),
+  included_storage_gb: z.number().int().min(0).nullish(),
   stripe_product_id: z.string().nullish(),
   stripe_price_id: z.string().nullish(),
   translations: z
@@ -106,6 +112,7 @@ const FIELDS = [
   "interval",
   "price_cents",
   "included_credits_cents",
+  "included_storage_gb",
   "stripe_product_id",
   "stripe_price_id",
   "sort",
@@ -154,6 +161,7 @@ export function createDirectusPlanSource(
         interval: r.interval,
         priceCents: r.price_cents,
         includedCreditsCents: r.included_credits_cents ?? 0,
+        includedStorageBytes: (r.included_storage_gb ?? 0) * BYTES_PER_GB,
         stripeProductId: r.stripe_product_id ?? null,
         stripePriceId: r.stripe_price_id ?? null,
         trialDays:

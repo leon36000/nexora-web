@@ -1,16 +1,17 @@
 import { describe, expect, it } from "vitest";
 import {
   configVersion,
+  creditExpiresAt,
   DEFAULT_BILLING_CONFIG,
   loadBillingConfig,
 } from "./config";
 
 describe("configuration de facturation", () => {
-  it("a des valeurs par défaut conformes à D7 : CAD, expiration à 12 mois", () => {
+  it("a des valeurs par défaut conformes à la conception du 30/10 : CAD, crédits de recharge sans expiration", () => {
     const c = loadBillingConfig({});
     expect(c).toMatchObject({
       currency: "cad",
-      creditExpiryMonths: 12,
+      creditExpiryMonths: 0,
     });
     expect(c.minPurchaseCents).toBeGreaterThan(0);
     expect(c.maxPurchaseCents).toBeGreaterThan(c.minPurchaseCents);
@@ -24,10 +25,28 @@ describe("configuration de facturation", () => {
     ).toBe(6);
   });
 
-  it("refuse une valeur invalide plutôt que de la corriger en silence", () => {
+  it("0 mois veut dire « sans expiration » ; une valeur négative est refusée", () => {
+    expect(
+      loadBillingConfig({ BILLING_CREDIT_EXPIRY_MONTHS: "0" })
+        .creditExpiryMonths,
+    ).toBe(0);
     expect(() =>
-      loadBillingConfig({ BILLING_CREDIT_EXPIRY_MONTHS: "0" }),
+      loadBillingConfig({ BILLING_CREDIT_EXPIRY_MONTHS: "-1" }),
     ).toThrow(/BILLING_CREDIT_EXPIRY_MONTHS/);
+  });
+
+  it("creditExpiresAt : null sans expiration, sinon le même jour N mois plus tard", () => {
+    const now = new Date("2026-10-30T12:00:00Z");
+    expect(creditExpiresAt(now, DEFAULT_BILLING_CONFIG)).toBeNull();
+    expect(
+      creditExpiresAt(now, {
+        ...DEFAULT_BILLING_CONFIG,
+        creditExpiryMonths: 6,
+      }),
+    ).toEqual(new Date("2027-04-30T12:00:00Z"));
+  });
+
+  it("refuse une valeur invalide plutôt que de la corriger en silence", () => {
     expect(() =>
       loadBillingConfig({ BILLING_MIN_PURCHASE_CENTS: "abc" }),
     ).toThrow(/BILLING_MIN_PURCHASE_CENTS/);

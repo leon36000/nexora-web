@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { addMonths } from "./money";
 
 /**
  * Paramètres de facturation versionnés (D3/D7). Chaque écriture du grand livre et chaque achat
@@ -7,7 +8,10 @@ import { createHash } from "node:crypto";
  */
 export interface BillingConfig {
   currency: "cad";
-  /** Durée de vie des crédits achetés (D7 : 12 mois, réglable). */
+  /**
+   * Durée de vie des crédits achetés ou offerts, en mois. 0 = sans expiration (conception du 30/10/2026 : les
+   * crédits de recharge n'expirent pas ; seuls les crédits d'abonnement expirent, à la fin de leur période).
+   */
   creditExpiryMonths: number;
   /** Bornes d'un achat de crédits, avant taxes, en cents. */
   minPurchaseCents: number;
@@ -18,7 +22,7 @@ export interface BillingConfig {
 
 export const DEFAULT_BILLING_CONFIG: BillingConfig = {
   currency: "cad",
-  creditExpiryMonths: 12,
+  creditExpiryMonths: 0,
   minPurchaseCents: 2_000,
   maxPurchaseCents: 500_000,
   graceDays: 7,
@@ -38,6 +42,16 @@ function intFromEnv(
   return n;
 }
 
+/** Échéance d'un lot de crédits achetés ou offerts à l'instant `now` ; `null` : le lot n'expire pas. */
+export function creditExpiresAt(
+  now: Date,
+  config: Pick<BillingConfig, "creditExpiryMonths">,
+): Date | null {
+  return config.creditExpiryMonths > 0
+    ? addMonths(now, config.creditExpiryMonths)
+    : null;
+}
+
 export function loadBillingConfig(
   env: Record<string, string | undefined> = process.env,
 ): BillingConfig {
@@ -48,7 +62,7 @@ export function loadBillingConfig(
       env,
       "BILLING_CREDIT_EXPIRY_MONTHS",
       d.creditExpiryMonths,
-      1,
+      0,
     ),
     minPurchaseCents: intFromEnv(
       env,

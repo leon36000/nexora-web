@@ -34,7 +34,11 @@ import {
 import type { Logger } from "@nexora/log";
 import { onVpsCheckoutCompleted, reconcileVpsSubscription } from "@nexora/vps";
 import type Stripe from "stripe";
-import { type BillingConfig, configVersion } from "../ledger/config";
+import {
+  type BillingConfig,
+  configVersion,
+  creditExpiresAt,
+} from "../ledger/config";
 import {
   addMonths,
   centsToMicro,
@@ -374,7 +378,8 @@ async function onCheckoutSession(
     idempotencyKey: `purchase:${session.id}`,
     configVersion: ctx.cfgVersion,
     source: "purchase",
-    expiresAt: addMonths(ctx.at, deps.config.creditExpiryMonths),
+    // Crédits de recharge : sans expiration (creditExpiryMonths = 0), sauf réglage contraire de l'opérateur.
+    expiresAt: creditExpiresAt(ctx.at, deps.config),
     externalRef: session.id,
     purchaseId: purchase.id,
   });
@@ -671,7 +676,9 @@ async function onDisputeClosed(
       ? new Date(
           Math.max(lot.expiresAt.getTime(), ctx.at.getTime() + 30 * 86_400_000),
         )
-      : lot?.expiresAt;
+      : lot
+        ? lot.expiresAt // un lot sans échéance (recharge) rend des crédits sans échéance
+        : creditExpiresAt(ctx.at, deps.config);
   await credit(tx, {
     organizationId: source.organizationId,
     amountMicro: -withdrawn.balanceDeltaMicro,
@@ -679,8 +686,7 @@ async function onDisputeClosed(
     configVersion: ctx.cfgVersion,
     source: "dispute_reversal",
     // Les crédits rendus gardent l'échéance du lot d'origine.
-    expiresAt:
-      restoredExpiry ?? addMonths(ctx.at, deps.config.creditExpiryMonths),
+    expiresAt: restoredExpiry,
     purchaseId: source.id,
     externalRef: dispute.id,
   });
@@ -709,6 +715,9 @@ interface SubUpdate {
   periodEnd?: Date | null;
   cancelAtPeriodEnd?: boolean;
   configVersion?: string | null;
+  /** Période de facturation et espace de l'offre (octets), copiés de l'offre trouvée ; absents : inchangés. */
+  billingInterval?: "month" | "year" | null;
+  storageQuotaBytes?: bigint | null;
   /** Commande VPS portée par la métadonnée de l'abonnement (S6). */
   vpsOrderId?: string | null;
 }
@@ -761,6 +770,8 @@ async function updateSubscription(ctx: Ctx, u: SubUpdate): Promise<SubState> {
             currentPeriodEnd: u.periodEnd ?? row.currentPeriodEnd,
             cancelAtPeriodEnd: u.cancelAtPeriodEnd ?? row.cancelAtPeriodEnd,
             configVersion: u.configVersion ?? row.configVersion,
+            billingInterval: u.billingInterval ?? row.billingInterval,
+            storageQuotaBytes: u.storageQuotaBytes ?? row.storageQuotaBytes,
           }),
       updatedAt: sql`now()`,
     })
@@ -822,6 +833,8 @@ async function onInvoice(
     periodStart: period ? new Date(period.start * 1000) : null,
     periodEnd: period ? new Date(period.end * 1000) : null,
     configVersion: plan ? planConfigVersion(plan) : null,
+    billingInterval: plan?.interval ?? null,
+    storageQuotaBytes: plan ? BigInt(plan.includedStorageBytes ?? 0) : null,
     vpsOrderId: isVps ? (meta.vps_order_id ?? null) : null,
   });
 
@@ -1017,11 +1030,15 @@ async function onSubscription(
   const isVps = sub.metadata.kind === "vps";
   let planCode: string | null = sub.metadata.plan_code ?? null;
   let cfg: string | null = null;
+  let interval: "month" | "year" | null = null;
+  let storageQuota: bigint | null = null;
   if (!isVps && !planCode && priceId) {
     try {
       const plan = await deps.plans.getByPriceId(priceId);
       planCode = plan?.code ?? null;
       cfg = plan ? planConfigVersion(plan) : null;
+      interval = plan?.interval ?? null;
+      storageQuota = plan ? BigInt(plan.includedStorageBytes ?? 0) : null;
     } catch {
       // Directus indisponible : le code du plan sera renseigné par un prochain événement.
     }
@@ -1044,6 +1061,8 @@ async function onSubscription(
       : null,
     cancelAtPeriodEnd: sub.cancel_at_period_end ?? false,
     configVersion: cfg,
+    billingInterval: interval,
+    storageQuotaBytes: storageQuota,
     vpsOrderId: isVps ? (sub.metadata.vps_order_id ?? null) : null,
   });
   if (
