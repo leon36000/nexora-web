@@ -369,6 +369,25 @@ async function failDocument(
     await deps.storage.record(doc.organizationId, -doc.storedBytes);
 }
 
+/** Abandonne un document encore à indexer (queued ou indexing), par exemple faute de clé à facturer. */
+export async function abandonDocument(
+  deps: RagDeps,
+  documentId: string,
+  code: string,
+): Promise<void> {
+  const [doc] = await deps
+    .db()
+    .select()
+    .from(ragDocuments)
+    .where(
+      and(
+        eq(ragDocuments.id, documentId),
+        inArray(ragDocuments.status, ["queued", "indexing"]),
+      ),
+    );
+  if (doc) await failDocument(deps, doc, code);
+}
+
 /**
  * Indexe une TRANCHE d'un document (reprenable) : plusieurs lots d'extraits embarqués par la passerelle, chacun inséré
  * avec l'avancement dans une seule transaction. Un arrêt entre deux lots ne perd rien et ne facture jamais deux fois
