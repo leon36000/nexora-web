@@ -102,12 +102,33 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
 
+  /* --- Rôles des rayons : une seule définition pour les cartes, les cadres de grille et les fenêtres de maquette --- */
+  --radius-card: var(--radius-md);
+  --radius-frame: var(--radius-md);
+  --radius-chip: var(--radius-xs);
+
   /* --- Ombres sobres --- */
   --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(10 10 14 / 0.22);
+  --shadow-lift: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 36px -18px rgb(10 10 14 / 0.32);
   --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -20px rgb(0 0 0 / 0.6);
 
   /* --- Point de rupture de la navigation complète --- */
   --breakpoint-nav: 72rem;
+}
+
+/* --------------------------------------------------------------------------
+   Mouvement et espacements partagés : une seule échelle de durées (150, 200, 250 ms) pour les survols, les
+   focus et les transitions ; les composants utilisent `duration-150`, `duration-200` ou `duration-250`
+   (un test interdit toute autre durée dans les composants). Espacements internes d'une carte : un seul jeu.
+   -------------------------------------------------------------------------- */
+:root {
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 250ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pad-card: 1.5rem; /* 24 px sur téléphone */
+  --pad-card-lg: 2rem; /* 32 px dès sm */
+  --gap-grid: 1rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -430,6 +451,11 @@
   opacity: var(--o, 1);
 }
 
+/* Pixel qui s'allume : invisible au repos (et sous prefers-reduced-motion), allumé un instant quand le mouvement est permis. */
+.mo-blink {
+  opacity: 0;
+}
+
 @keyframes rise-load {
   from {
     transform: translateY(14px);
@@ -480,6 +506,20 @@
   }
 }
 
+@keyframes mo-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  4%,
+  10% {
+    opacity: 0.95;
+  }
+  16% {
+    opacity: 0.2;
+  }
+}
+
 @keyframes scan-x {
   from {
     transform: translateX(-12%);
@@ -525,6 +565,11 @@
   .mo-animate .mo-layer {
     animation: mo-twinkle 7s ease-in-out infinite;
     animation-delay: calc(var(--i, 0) * -1.3s);
+  }
+
+  .mo-blink {
+    animation: mo-blink 9s ease-in-out infinite;
+    animation-delay: calc(var(--bd, 0s) * -1);
   }
 
   .scan {

@@ -18,6 +18,7 @@ export function MosaicBackdrop({
   palette = "braise",
   seed = 3,
   rows,
+  blink,
   className,
 }: {
   shape?: Shape;
@@ -26,6 +27,8 @@ export function MosaicBackdrop({
   seed?: number;
   /** Rangées de la mosaïque large : plus il y en a, plus les carrés sont petits (bandeaux bas : 14 ; héros : 26). */
   rows?: number;
+  /** Pixels qui s'allument un à un (mouvement discret ; 0 : aucun). Par défaut : 8 en large, 4 en compact. */
+  blink?: number;
   className?: string;
 }) {
   if (shape === "compact") {
@@ -42,6 +45,7 @@ export function MosaicBackdrop({
           toward="right"
           fade={0.85}
           animated={animated}
+          blink={animated ? (blink ?? 4) : 0}
           className="size-full"
         />
       </div>
@@ -62,6 +66,7 @@ export function MosaicBackdrop({
           toward="right"
           fade={1}
           animated={animated}
+          blink={animated ? (blink ?? 8) : 0}
           className="size-full"
         />
       </div>

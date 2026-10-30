@@ -4,6 +4,7 @@ import { Hero } from "@/components/home/hero";
 import { Method } from "@/components/home/method";
 import { Opsys } from "@/components/home/opsys";
 import { Problems } from "@/components/home/problems";
+import { ProductFamily } from "@/components/home/product-family";
 import { Products } from "@/components/home/products";
 import { Trust } from "@/components/home/trust";
 import type { Lang } from "@/i18n/config";
@@ -18,6 +19,7 @@ export function HomeSkeleton({ lang }: { lang: Lang }) {
   return (
     <>
       <Hero lang={lang} t={home.hero} />
+      <ProductFamily lang={lang} />
       <Problems lang={lang} t={home.problems} />
       <Deployment lang={lang} t={home.deployment} />
       <Products lang={lang} t={home.products} />

@@ -351,6 +351,33 @@ export const enCA: Dictionary = {
       secondary: "See solutions",
     },
 
+    family: {
+      label: "One account, all your tools",
+      title: "One account for the whole Nexora family.",
+      lead: "One sign-in, one “My tools” panel, shared credits. Each tool shows its real status: available, coming soon or later.",
+      account: "Your Nexora account",
+      accountHint: "One sign-in, shared credits",
+      seeApps: "See Nexora Apps",
+      seeTools: "Open My tools",
+      tools: "The tools in the family",
+      items: {
+        workstudio: {
+          name: "Nexora WorkStudio",
+          tag: "Agents and workflows",
+        },
+        code: { name: "Nexora Code", tag: "Hosted coding agent" },
+        rag: { name: "Nexora RAG", tag: "Your documents, searchable" },
+        bot: { name: "Nexora Bot", tag: "A bot tied to your account" },
+        creative: { name: "Nexora Creative", tag: "Image, sound and video" },
+        webpilot: { name: "Nexora WebPilot", tag: "Web search and browsing" },
+        "privacy-router": {
+          name: "Privacy Router",
+          tag: "Privacy included",
+        },
+        vps: { name: "VPS in Quebec", tag: "Virtual private servers" },
+      },
+    },
+
     problems: {
       label: "Where to start",
       title: "Start from a concrete problem.",

@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { ProductFamily } from "@/components/home/product-family";
 import type { Lang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getVisualsDictionary } from "@/i18n/visuals";
@@ -102,6 +103,9 @@ export function PageBlocks({
         return (
           <Fragment key={block.key}>
             {view}
+            {i === tocAfter && page.slug === "" ? (
+              <ProductFamily lang={lang} />
+            ) : null}
             {i === tocAfter ? byline : null}
             {i === tocAfter ? tocNode : null}
           </Fragment>

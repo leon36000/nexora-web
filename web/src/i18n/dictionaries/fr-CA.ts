@@ -357,6 +357,36 @@ export const frCA = {
       secondary: "Voir les solutions",
     },
 
+    family: {
+      label: "Un compte, tous vos outils",
+      title: "Un seul compte pour toute la famille Nexora.",
+      lead: "Une connexion, un panneau « Mes outils », des crédits partagés. Chaque outil affiche son état réel : livré, bientôt ou plus tard.",
+      account: "Votre compte Nexora",
+      accountHint: "Une connexion, des crédits communs",
+      seeApps: "Voir Nexora Apps",
+      seeTools: "Ouvrir Mes outils",
+      tools: "Les outils de la famille",
+      items: {
+        workstudio: {
+          name: "Nexora WorkStudio",
+          tag: "Agents et flux de travaux",
+        },
+        code: { name: "Nexora Code", tag: "Agent de code hébergé" },
+        rag: { name: "Nexora RAG", tag: "Vos documents, interrogeables" },
+        bot: { name: "Nexora Bot", tag: "Un bot relié à votre compte" },
+        creative: { name: "Nexora Creative", tag: "Image, son et vidéo" },
+        webpilot: {
+          name: "Nexora WebPilot",
+          tag: "Recherche et navigation Web",
+        },
+        "privacy-router": {
+          name: "Privacy Router",
+          tag: "Confidentialité incluse",
+        },
+        vps: { name: "VPS au Québec", tag: "Serveurs privés virtuels" },
+      },
+    },
+
     problems: {
       label: "Par où commencer",
       title: "Partez d’un problème concret.",
