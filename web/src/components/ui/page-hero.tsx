@@ -120,7 +120,7 @@ export function Breadcrumb({
               <Link
                 href={item.href}
                 prefetch={false}
-                className="inline-flex min-h-11 items-center rounded-xs underline underline-offset-4 transition-colors duration-150 hover:text-fg"
+                className="inline-flex min-h-11 min-w-11 items-center rounded-xs underline underline-offset-4 transition-colors duration-150 hover:text-fg"
               >
                 {item.label}
               </Link>

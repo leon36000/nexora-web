@@ -1,7 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
+import { lazy, Suspense } from "react";
 import { isLang } from "@/i18n/config";
 import { ERROR_PAGE } from "@/i18n/error-page";
 
@@ -33,12 +33,15 @@ function Plain({ retry }: { retry?: () => void }) {
   );
 }
 
-const ErrorView = dynamic(() => import("./error-view"), {
-  loading: () => <Plain />,
-});
+// `lazy` et non `next/dynamic` : ce dernier fait précharger le morceau sur chaque page, ce qu'on veut éviter.
+const ErrorView = lazy(() => import("./error-view"));
 
 export default function ErrorPage({ retry }: { retry: () => void }) {
   const raw = useParams<{ lang?: string }>().lang;
   const lang = raw && isLang(raw) ? raw : "fr";
-  return <ErrorView lang={lang} retry={retry} />;
+  return (
+    <Suspense fallback={<Plain retry={retry} />}>
+      <ErrorView lang={lang} retry={retry} />
+    </Suspense>
+  );
 }

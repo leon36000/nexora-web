@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { EmptyMark } from "@/components/brand/empty-mark";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ButtonLink } from "@/components/ui/button";
 import { Breadcrumb, PageHero } from "@/components/ui/page-hero";
@@ -175,6 +176,7 @@ export function ComparePage({
 
         {!enough ? (
           <div className="mt-10 rounded-card border border-line p-6 sm:p-8">
+            <EmptyMark seed={9} className="mb-5" />
             <h2 className="font-display text-h4 text-fg">{c.pickTitle}</h2>
             <p className="mt-2 max-w-xl text-body text-fg-muted">
               {c.pickText}

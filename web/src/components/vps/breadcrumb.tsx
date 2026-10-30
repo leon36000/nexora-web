@@ -17,7 +17,7 @@ export function Breadcrumb({
             {item.href ? (
               <Link
                 href={item.href}
-                className="inline-flex min-h-11 items-center rounded-xs text-accent-text underline underline-offset-4"
+                className="inline-flex min-h-11 min-w-11 items-center rounded-xs text-accent-text underline underline-offset-4"
               >
                 {item.name}
               </Link>
