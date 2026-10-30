@@ -116,7 +116,8 @@ export const appsFrCA = {
             "Dans votre environnement, sur les serveurs de Nexora AI. Ils comptent dans l’espace de votre offre. Quand l’espace est plein, les écritures sont refusées avec un message clair, mais vous pouvez toujours lire et supprimer vos fichiers.",
         },
         {
-          question: "Mes plugins de Claude Code ou de Codex fonctionneront-ils ?",
+          question:
+            "Mes plugins de Claude Code ou de Codex fonctionneront-ils ?",
           answer:
             "C’est prévu : Nexora Code lira les plugins de Claude Code et de Codex. Ce qui ne peut pas être traduit sera signalé, jamais ignoré en silence. Rien n’est livré à ce jour.",
         },

@@ -161,6 +161,50 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     ],
   },
   {
+    route: "api/account/rag",
+    kind: "session",
+    why: "Créer mon RAG : propriétaire de l'organisation de la session, origine contrôlée, corps strict ; produit éteint tant que NEXORA_PRODUCT_RAG l'est",
+    probes: [
+      {
+        label: "sans session ni origine",
+        method: "POST",
+        path: "/api/account/rag",
+        headers: JSON_H,
+        body: "{}",
+        expect: [401, 403],
+      },
+      {
+        label: "origine étrangère",
+        method: "POST",
+        path: "/api/account/rag",
+        headers: { ...JSON_H, origin: "https://evil.example" },
+        body: "{}",
+        expect: [401, 403],
+      },
+    ],
+  },
+  {
+    route: "api/account/code/workspace",
+    kind: "session",
+    why: "Environnement Nexora Code de la personne connectée (état, démarrage) : session obligatoire, origine contrôlée au démarrage ; produit éteint tant que NEXORA_PRODUCT_CODE l'est",
+    probes: [
+      {
+        label: "lecture sans session",
+        method: "GET",
+        path: "/api/account/code/workspace",
+        expect: [401],
+      },
+      {
+        label: "démarrage d'une autre origine",
+        method: "POST",
+        path: "/api/account/code/workspace",
+        headers: { ...JSON_H, origin: "https://evil.example" },
+        body: "{}",
+        expect: [401, 403],
+      },
+    ],
+  },
+  {
     route: "api/account/api-keys/[id]",
     kind: "session",
     why: "Révocation : clé de l'organisation de la session seulement (404 sinon)",
