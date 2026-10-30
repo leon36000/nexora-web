@@ -44,7 +44,7 @@ export function SectionBlockView({
       captions={block.captions}
     />
   ) : withMedia && block.media ? (
-    <div className="overflow-hidden rounded-md border border-line">
+    <div className="overflow-hidden rounded-frame border border-line">
       <CmsImage
         media={block.media}
         sizes={

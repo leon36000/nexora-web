@@ -111,7 +111,7 @@ export function HeroBlockView({
         </>
       ) : null}
       {block.media ? (
-        <div className="mt-12 max-w-3xl overflow-hidden rounded-md border border-line">
+        <div className="mt-12 max-w-3xl overflow-hidden rounded-frame border border-line">
           <CmsImage
             media={block.media}
             sizes="(min-width: 1280px) 768px, 100vw"

@@ -364,7 +364,7 @@ export function ModelDetail({
 
           <section
             aria-labelledby="cta-title"
-            className="rounded-md border border-line bg-surface p-6 sm:p-8"
+            className="rounded-card border border-line bg-surface p-6 sm:p-8"
           >
             <h2 id="cta-title" className="text-h3 text-fg">
               {d.cta.title}

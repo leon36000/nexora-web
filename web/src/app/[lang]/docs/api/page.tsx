@@ -138,7 +138,7 @@ export default async function ApiDocsPage() {
             aria-label={`${d.errors.title} (${d.errors.tableLabel})`}
             // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
             tabIndex={0}
-            className="mt-6 overflow-x-auto rounded-md border border-line"
+            className="mt-6 overflow-x-auto rounded-frame border border-line"
           >
             <table className="w-full min-w-[34rem] border-collapse text-left text-small">
               <caption className="sr-only">{d.errors.title}</caption>

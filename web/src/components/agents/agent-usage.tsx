@@ -38,7 +38,7 @@ export function AgentUsage({ lang, usage }: { lang: Lang; usage: UsageRow[] }) {
           aria-label={t.caption}
           // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
           tabIndex={0}
-          className="mt-6 overflow-x-auto rounded-md border border-line"
+          className="mt-6 overflow-x-auto rounded-frame border border-line"
         >
           <table className="w-full min-w-[40rem] border-collapse text-left text-small">
             <caption className="sr-only">{t.caption}</caption>

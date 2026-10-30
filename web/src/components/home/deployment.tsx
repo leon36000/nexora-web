@@ -31,7 +31,7 @@ export function Deployment({
         {modes.map(({ key, mode, copy }) => (
           <Card key={key} as="article" className="flex flex-col p-5 sm:p-7">
             <figure>
-              <div className="rounded-md border border-line bg-bg px-4 py-6">
+              <div className="rounded-card border border-line bg-bg px-4 py-6">
                 <PerimeterDiagram mode={mode} />
               </div>
               <figcaption className="sr-only">{copy.diagram}</figcaption>

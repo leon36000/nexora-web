@@ -51,7 +51,7 @@ export function RankingsPage({
         <BenchmarkWarning title={r.warningTitle} text={r.warning} />
 
         {rankings.length === 0 ? (
-          <div className="mt-10 rounded-md border border-line p-6 sm:p-8">
+          <div className="mt-10 rounded-card border border-line p-6 sm:p-8">
             <p className="max-w-xl text-body text-fg-muted">{r.empty}</p>
             <div className="mt-6">
               <ButtonLink

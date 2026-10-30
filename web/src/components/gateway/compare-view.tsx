@@ -174,7 +174,7 @@ export function ComparePage({
         ) : null}
 
         {!enough ? (
-          <div className="mt-10 rounded-md border border-line p-6 sm:p-8">
+          <div className="mt-10 rounded-card border border-line p-6 sm:p-8">
             <h2 className="font-display text-h4 text-fg">{c.pickTitle}</h2>
             <p className="mt-2 max-w-xl text-body text-fg-muted">
               {c.pickText}
@@ -201,7 +201,7 @@ export function ComparePage({
               aria-label={c.tableLabel}
               // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
               tabIndex={0}
-              className="mt-10 overflow-x-auto rounded-md border border-line"
+              className="mt-10 overflow-x-auto rounded-frame border border-line"
             >
               <table className="w-full min-w-[40rem] border-collapse text-left">
                 <caption className="sr-only">{c.tableLabel}</caption>

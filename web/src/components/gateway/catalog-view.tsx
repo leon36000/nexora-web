@@ -142,7 +142,7 @@ export function CatalogView({
             : ""}
         </p>
         <nav aria-label={l.viewLabel}>
-          <ul className="flex overflow-hidden rounded-md border border-line-strong">
+          <ul className="flex overflow-hidden rounded-frame border border-line-strong">
             {VIEWS.map((v) => (
               <li key={v}>
                 <Link

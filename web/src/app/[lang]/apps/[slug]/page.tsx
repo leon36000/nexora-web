@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
-import type { MosaicPalette } from "@/components/brand/mosaic";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ButtonLink } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
@@ -26,6 +25,7 @@ import {
   appSoftwareJsonLd,
 } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
+import { APP_PALETTE, appSeed } from "../_components/palette";
 import { StateBadge } from "../_components/state-badge";
 
 /** Les outils du registre se préparent au build ; tout autre identifiant répond 404. */
@@ -49,17 +49,6 @@ export async function generateMetadata(
     siteName: SITE_NAME,
   });
 }
-
-/** Teinte de la mosaïque d'une fiche : une rampe par famille d'outil (code et Web : ciel ; documents : menthe ; bot : or). */
-const APP_PALETTE: Record<string, MosaicPalette> = {
-  code: "ciel",
-  gitspace: "ciel",
-  cloud: "ciel",
-  rag: "menthe",
-  "privacy-router": "menthe",
-  bot: "or",
-  webpilot: "or",
-};
 
 /**
  * Fiche d'un outil de Nexora Apps : accroche, pour qui, comment on y accède, ce qui est prêt et ce qui vient (état
@@ -85,10 +74,7 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
       <PageHero
         titleId="app-title"
         palette={APP_PALETTE[app.slug] ?? "braise"}
-        seed={[...app.slug].reduce(
-          (a, c) => (a * 31 + c.charCodeAt(0)) % 997,
-          11,
-        )}
+        seed={appSeed(app.slug)}
         breadcrumb={
           <nav aria-label={d.back}>
             <Link

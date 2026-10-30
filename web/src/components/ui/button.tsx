@@ -14,8 +14,10 @@ const BASE =
 
 const VARIANTS: Record<Variant, string> = {
   // Bouton d'accent : fond orange signal #FF5A1F, texte encre (6,3:1) ; survol orange clair #FF7A45 (7,6:1).
-  primary: "rounded-md bg-accent text-on-accent hover:bg-ember-400",
-  secondary: "rounded-md border border-line-strong text-fg hover:bg-fg/10",
+  primary:
+    "rounded-md bg-accent text-on-accent hover:bg-ember-400 active:translate-y-px",
+  secondary:
+    "rounded-md border border-line-strong text-fg hover:bg-fg/10 active:translate-y-px",
   // Bouton discret « Découvrir › » : fond teinté à peine visible, flèche qui avance au survol.
   soft: "rounded-md bg-fg/[0.07] text-fg hover:bg-fg/[0.13]",
   link: "min-h-11 rounded-xs text-accent-text underline sm:min-h-8 decoration-1 underline-offset-[5px] hover:decoration-2",
