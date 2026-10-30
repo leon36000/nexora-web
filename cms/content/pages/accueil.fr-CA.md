@@ -7,13 +7,13 @@
 - Page : `accueil` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/` · slug : ``
 - Titre SEO (48 caractères) : Nexora AI : automatisation IA pour PME au Québec
-- Description SEO (160 caractères) : Nexora AI met la pointe de l'IA à la portée des PME du Québec : agents puissants, prise en main simple, données chez vous ou au Québec. Parlons de votre projet.
+- Description SEO (160 caractères) : Nexora AI : des agents d'IA que vous décrivez en français, un compte et des crédits pour tous vos outils. Pour les PME du Québec, vos données restent chez vous.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la vague 2 : la pointe de l'IA à la portée de tous ; le message directeur reste dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-E01, CL-E02*
+*Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-PL01, CL-E01, CL-E02*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,9 +21,9 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # La pointe de l'IA. À votre portée.
 
-L'IA qui travaille pour votre entreprise. Sous votre contrôle. Des agents puissants, une prise en main extrêmement simple — vous décrivez, l'outil construit — et des données qui restent chez vous ou au Québec.
+L'IA qui travaille pour votre entreprise. Sous votre contrôle. Des agents que vous décrivez en français, des réponses tirées de vos documents, un seul compte et des crédits pour tous vos outils — et des données qui restent chez vous ou au Québec.
 
-[Discuter de mon projet](/contact/) · [Voir les solutions](/solutions/)
+[Décrire mon besoin](/contact/) · [Voir les solutions](/solutions/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
@@ -33,7 +33,7 @@ Réglages : `columns=3`, `layout=bento`, `tone=clair`
 
 ## Partez de votre problème.
 
-Inutile de savoir ce qu'est un modèle de langage. Dites-nous où votre équipe perd du temps : nous construisons à partir de là.
+Inutile de connaître les modèles de langage. Dites-nous où votre équipe perd du temps : nous construisons à partir de là.
 
 #### Des demandes sans réponse.
 
@@ -125,7 +125,7 @@ Comparez plusieurs modèles d'IA sur la même question, avec le temps et les jet
 
 #### Mesuré, pas supposé.
 
-Des jeux de tests mesurent si un agent répond bien et comparent deux versions. Chaque appel laisse une trace consultable. Ces mots d'ambition sont des énoncés promotionnels : la preuve, c'est la liste de ce que l'outil fait.
+Des jeux de tests vérifient qu'un agent répond bien et comparent deux versions avant de changer. Chaque appel laisse une trace consultable : modèle, étapes, durée, jetons.
 
 ### Bloc 5 — Section (`block_section`)
 
@@ -179,22 +179,69 @@ Dans certains services d'IA grand public, le partage des conversations pour amé
 
 [Lire les cinq engagements](/vos-donnees/)
 
-### Bloc 9 — Cartes (`block_cards`)
+### Bloc 9 — Section (`block_section`)
 
-*Les produits présentés comme un ensemble, chacun avec son état réel en étiquette. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28, CL-110, CL-G01, CL-G02, CL-G03, CL-V01, CL-V03*
+*Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
+
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
+
+## Un compte, des crédits, tous vos outils.
+
+Un seul compte Nexora AI réunit vos outils dans le panneau « Mes outils » : vos crédits, votre espace disque et l'état réel de chaque produit.
+
+Un abonnement donne des crédits chaque mois et de l'espace disque ; sans abonnement, vous rechargez des crédits. Tout ce qui appelle un modèle d'IA consomme des crédits, et les outils qui n'en appellent aucun n'en consomment pas.
+
+La vente n'est pas encore ouverte : aucun prix n'est publié. Les prix s'afficheront sur la page [Tarifs](/tarifs/) dès leur publication.
+
+- **Un compte.** Vos crédits, votre espace et vos produits au même endroit : le panneau « Mes outils ».
+- **Des crédits.** Un crédit vaut un cent canadien de jetons, au prix du catalogue de modèles. Les crédits d'abonnement expirent à la fin de leur période et servent en premier ; ceux de recharge n'expirent pas. Quand il n'en reste plus, les appels aux modèles s'arrêtent avec un message qui renvoie vers la recharge.
+- **De l'espace.** Chaque abonnement inclut de l'espace disque, compté pour toute votre organisation. Quand il est plein, l'écriture est refusée avec un message clair ; lire et supprimer restent permis.
+- **Des outils.** WorkStudio s'ouvre tant qu'il reste un crédit. Nexora Code et Nexora RAG sont en préparation : leur état est affiché, sans date.
+
+### Bloc 10 — Cartes (`block_cards`)
+
+*Les produits présentés comme un ensemble ouvert depuis le même compte, chacun avec son état réel en étiquette. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28, CL-110, CL-G01, CL-G02, CL-G03, CL-V01, CL-V03, CL-P03, CL-PL01, CL-PL02, CL-AP01, CL-AP06, CL-AP07, CL-T04, CL-H01*
 
 Réglages : `columns=3`, `layout=liste`, `tone=clair`
 
 ## Une suite, pas une pile.
 
-Chaque produit sert la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. L'étiquette de chaque produit dit son état réel.
+Chaque produit sert la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. Tous s'ouvrent depuis le même compte, et l'étiquette de chacun dit son état réel.
 
 #### Nexora WorkStudio.
 
 Concevez, connectez et pilotez des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez) et des flux de travaux (des enchaînements automatisés de tâches), au même endroit et en français. Une étape peut attendre la validation d'une personne avant d'agir.
-État : disponible, c'est-à-dire livré et vérifié sur notre serveur de test ; aucun résultat chez un client n'est annoncé. Démonstration sur demande.
+État : disponible, c'est-à-dire livré et vérifié sur notre serveur de test ; aucun résultat chez un client n'est annoncé. Il s'ouvre depuis « Mes outils » tant qu'il reste un crédit. Démonstration sur demande.
 
 → [Découvrir WorkStudio](/workstudio/)
+
+#### Nexora Code.
+
+Un agent de code qui comprend, modifie et teste votre code, dans un environnement hébergé sur nos serveurs : rien à installer sur votre poste. Il est prévu compatible avec les plugins de Claude Code et de Codex.
+État : bientôt, sans date. L'outil est conçu pour être gratuit ; ce qu'il fait appeler à un modèle consomme des crédits.
+
+→ [Voir Nexora Code](/apps/code/)
+
+#### Nexora RAG.
+
+Vos documents deviennent une base que l'IA interroge, sources à l'appui. Vous la créez en un clic et la reliez à vos outils avec une clé d'API. Vous paierez l'espace occupé et les jetons qui servent à indexer vos documents et à classer les réponses (embedding et rerank), en crédits.
+État : bientôt, sans date.
+
+→ [Voir Nexora RAG](/apps/rag/)
+
+#### Modèles et API.
+
+Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès à plusieurs modèles d'IA, les moteurs qui produisent les réponses, au format OpenAI, un format d'appel courant que de nombreux outils comprennent. Chaque requête consomme des crédits, au coût réel.
+État : le catalogue se consulte, mais ses prix sont des prix de développement et la vente n'est pas ouverte.
+
+→ [Voir les modèles](/modeles/)
+
+#### Agents hébergés.
+
+Les agents que vous publiez dans WorkStudio, appelables par API avec votre propre clé, au coût réel de chaque exécution en crédits, et soumis aux mêmes limites que le reste.
+État : l'appel par API existe dans WorkStudio ; le catalogue en ligne est en préparation.
+
+→ [Voir les agents](/agents/)
 
 #### Nexora Croissance.
 
@@ -210,20 +257,6 @@ L'analyse vidéo par IA qui garde vos images sur votre site, sans reconnaissance
 
 → [Découvrir Nexora Vision](/vision/)
 
-#### Modèles et API.
-
-Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès à plusieurs modèles d'IA, les moteurs qui produisent les réponses, au format OpenAI, un format d'appel courant que de nombreux outils comprennent. Clés, quotas (des limites d'usage) et mesure de la consommation y sont gérés.
-État : démonstration sur demande ; le catalogue public, avec ses prix, est en préparation.
-
-→ [Voir les modèles](/modeles/)
-
-#### Agents hébergés.
-
-Les agents que vous publiez dans WorkStudio, appelables par API avec votre propre clé et soumis aux mêmes limites que le reste.
-État : l'appel par API existe dans WorkStudio ; le catalogue en ligne est en préparation.
-
-→ [Voir les agents](/agents/)
-
 #### VPS au Québec.
 
 Un serveur privé virtuel (VPS) est un serveur loué rien que pour vous. Nous préparons des offres hébergées au Québec, avec une application d'IA installée au choix.
@@ -233,12 +266,12 @@ Un serveur privé virtuel (VPS) est un serveur loué rien que pour vous. Nous pr
 
 #### La suite logicielle.
 
-Nexora Code pour le développement assisté par agents, Nexora Corpus pour préparer vos documents et vos données, et les modèles Quanta et Helix.
+Nexora Corpus pour préparer vos documents et vos données, et les modèles Quanta et Helix.
 État : aucune disponibilité ni date n'est annoncée à ce stade.
 
 → [Voir la suite](/suite/)
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31, CL-O01*
 
@@ -257,9 +290,9 @@ Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) reba
 - **Facturer.** Facture brouillon, comptes à recevoir et coûts réels.
 - **Piloter.** Marketing, analytique, stratégie et mémoire des décisions.
 
-### Bloc 11 — Section (`block_section`)
+### Bloc 12 — Section (`block_section`)
 
-*Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-14*
+*Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-12, CL-14, CL-T06*
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
@@ -273,7 +306,9 @@ Pour aller plus loin : [Par où commencer avec l'IA dans une PME du Québec](/g
 
 Les outils qui entourent vos modèles, vos serveurs et vos agents sont réunis dans [Nexora Apps](/apps/), chacun avec son état réel.
 
-### Bloc 12 — Cartes (`block_cards`)
+Vous préférez commencer par la plateforme ? Voyez comment fonctionnent les crédits sur la page [Tarifs](/tarifs/) : les prix s'y afficheront à leur publication.
+
+### Bloc 13 — Cartes (`block_cards`)
 
 *Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
 
@@ -299,7 +334,7 @@ Votre équipe apprend à superviser, à corriger et à décider, pas à programm
 
 Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.
 
-### Bloc 13 — Cartes (`block_cards`)
+### Bloc 14 — Cartes (`block_cards`)
 
 *Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31, CL-E03, CL-E04*
 
@@ -339,9 +374,9 @@ Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvon
 
 → [Voir le centre de confiance](/centre-de-confiance/)
 
-### Bloc 14 — FAQ (`block_faq`)
+### Bloc 15 — FAQ (`block_faq`)
 
-*FAQ : objections du rapport 06 §8.4 et questions de la vague 2 ; réponses vraies seulement. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02*
+*FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09*
 
 Réglages : `emit_jsonld=true`, `tone=clair`
 
@@ -349,7 +384,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`
 
 #### Mes données sortent-elles du Québec ?
 
-Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, vos données restent sur votre serveur. Chez nous, elles restent au Québec, sauvegardes comprises. Dans les deux cas, les seules sorties sont celles que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous l'activez, un modèle externe. Nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
+Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, vos données restent sur votre serveur. Chez nous, elles restent au Québec, sauvegardes comprises. Dans les deux cas, les seules sorties sont celles que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous l'activez, un modèle externe. Sur la plateforme à crédits, chaque modèle affiche son lieu d'hébergement ; la passerelle ne garde que des métadonnées d'usage, jamais le contenu de vos requêtes. Nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
 
 #### Entraînez-vous vos modèles avec nos données ?
 
@@ -373,7 +408,27 @@ Vous repartez avec vos documents, vos configurations et vos flux de travaux : l
 
 #### Combien cela coûte-t-il ?
 
-Il n'y a pas encore de prix public. Le coût dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel. Après un diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas. Les offres en libre-service afficheront leurs prix et leurs conditions de renouvellement à leur ouverture.
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Que se passe-t-il quand il n'y a plus de crédits ?
+
+Les appels aux modèles s'arrêtent : l'API répond par une erreur de paiement et le message vous renvoie vers la recharge et vers l'abonnement. Dès que votre solde dépasse zéro, vous reprenez là où vous étiez. Vos documents et vos réglages ne sont pas supprimés.
+
+#### Mes crédits expirent-ils ?
+
+Cela dépend de leur origine. Les crédits d'abonnement expirent à la fin de la période pour laquelle ils ont été versés, et ils servent en premier. Les crédits de recharge n'expirent pas. Dans une offre annuelle, les crédits sont versés un douzième par mois.
+
+#### Qu'est-ce qui est gratuit, qu'est-ce qui consomme des crédits ?
+
+Tout ce qui appelle un modèle d'IA consomme des crédits : une requête à l'API, un agent, une automatisation qui lit ou rédige. Les outils Nexora qui n'appellent aucun modèle n'en consomment pas, et le catalogue des modèles avec leurs fiches se consulte sans compte. Nexora Code est conçu pour être gratuit, mais il n'est pas encore livré. L'espace disque est compté à part : il vient avec l'abonnement.
+
+#### Où sont mes données sur la plateforme à crédits ?
+
+Les documents et les fichiers que vous gardez chez Nexora AI comptent dans l'espace disque de votre offre, par organisation. La passerelle de modèles ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes ni des réponses. La fiche de chaque modèle indique son lieu d'hébergement et la politique de données de son fournisseur. Vos données ne servent jamais à entraîner un modèle.
+
+#### Puis-je m'abonner ou recharger dès maintenant ?
+
+Pas encore. La vente n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié. Les offres s'afficheront sur la page Tarifs à leur publication. D'ici là, vous pouvez demander une démonstration de WorkStudio ou décrire votre besoin.
 
 #### L'IA va-t-elle remplacer mes employés ?
 
@@ -391,9 +446,9 @@ Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous d
 
 Un logiciel qui accomplit une tâche à votre place, avec les outils et les documents que vous lui autorisez, et qui demande votre validation avant une action importante.
 
-### Bloc 15 — Appel à l'action (`block_cta`)
+### Bloc 16 — Appel à l'action (`block_cta`)
 
-*CTA final. · Affirmations : CL-01, CL-P02*
+*CTA final. · Affirmations : CL-01, CL-P02, CL-PL03*
 
 Réglages : `tone=sombre`
 
@@ -401,4 +456,4 @@ Réglages : `tone=sombre`
 
 Décrivez-nous un problème concret. Nous vous disons ce qui est faisable, dans quel mode, et par où commencer.
 
-[Discuter de mon projet](/contact/) · [Découvrir WorkStudio](/workstudio/)
+[Décrire mon besoin](/contact/) · [Découvrir WorkStudio](/workstudio/)

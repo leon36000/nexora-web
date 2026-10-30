@@ -7,13 +7,13 @@
 - Page : `accueil` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/` · slug : ``
 - Titre SEO (42 caractères) : Nexora AI: AI for small business in Quebec
-- Description SEO (154 caractères) : Nexora AI brings cutting-edge AI within reach of Quebec small businesses: powerful agents, a simple start, data on your premises or in Quebec. Let's talk.
+- Description SEO (160 caractères) : Nexora AI: AI agents you describe in plain English, one account and credits for all your tools. For Quebec small businesses, data on your premises or in Quebec.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la vague 2 : la pointe de l'IA à la portée de tous ; le message directeur reste dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-E01, CL-E02*
+*Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-PL01, CL-E01, CL-E02*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,9 +21,9 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Cutting-edge AI. Within your reach.
 
-AI that works for your business. Under your control. Powerful agents, an extremely simple start — you describe, the tool builds — and data that stays on your premises or in Quebec.
+AI that works for your business. Under your control. Agents you describe in plain language, answers drawn from your documents, one account and credits for all your tools — and data that stays on your premises or in Quebec.
 
-[Discuss my project](/en/contact/) · [See the solutions](/en/solutions/)
+[Describe my need](/en/contact/) · [See the solutions](/en/solutions/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
@@ -33,7 +33,7 @@ Réglages : `columns=3`, `layout=bento`, `tone=clair`
 
 ## Start from your problem.
 
-No need to know what a language model is. Tell us where your team loses time: we build from there.
+No need to know about language models. Tell us where your team loses time: we build from there.
 
 #### Requests nobody answers.
 
@@ -73,7 +73,7 @@ Réglages : `columns=3`, `layout=grille`, `tone=sable`
 
 ## Before. After. Your decision.
 
-Three typical scenarios to understand the principle. They are constructed examples, not results measured at clients.
+Three typical scenarios to show the principle. They are constructed examples, not results measured at customers.
 
 #### A supplier invoice arrives.
 
@@ -125,7 +125,7 @@ Compare several AI models on the same question, with the time and the tokens (th
 
 #### Measured, not assumed.
 
-Test sets measure whether an agent answers well and compare two versions. Every call leaves a trace you can consult. These ambitious words are promotional statements: the proof is the list of what the tool does.
+Test sets check that an agent answers well and compare two versions before anything changes. Every call leaves a trace you can read: model, steps, duration, tokens.
 
 ### Bloc 5 — Section (`block_section`)
 
@@ -179,50 +179,83 @@ In some consumer AI services, sharing conversations to improve the models is a s
 
 [Read the five commitments](/en/your-data/)
 
-### Bloc 9 — Cartes (`block_cards`)
+### Bloc 9 — Section (`block_section`)
 
-*Les produits présentés comme un ensemble, chacun avec son état réel en étiquette. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28, CL-110, CL-G01, CL-G02, CL-G03, CL-V01, CL-V03*
+*Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
+
+Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
+
+## One account, your credits, all your tools.
+
+One Nexora AI account brings your tools together in the “My tools” panel: your credits, your storage and the real status of each product.
+
+A plan gives you credits every month and storage space; without a plan, you top up credits. Anything that calls an AI model uses credits, and tools that call no model use none.
+
+Sales are not open yet: no price is published. Prices will appear on the [Pricing](/en/pricing/) page once they are published.
+
+- **One account.** Your credits, your storage and your products in one place: the “My tools” panel.
+- **Credits.** One credit equals one Canadian cent of tokens, at the model catalogue price. Plan credits expire at the end of their period and are used first; top-up credits do not expire. When none are left, calls to models stop with a message that points to top-ups.
+- **Storage.** Every plan includes storage space, counted for your whole organization. When it is full, writing is refused with a clear message; reading and deleting stay allowed.
+- **Tools.** WorkStudio opens as long as you have a credit left. Nexora Code and Nexora RAG are in preparation: their status is shown, with no date.
+
+### Bloc 10 — Cartes (`block_cards`)
+
+*Les produits présentés comme un ensemble ouvert depuis le même compte, chacun avec son état réel en étiquette. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28, CL-110, CL-G01, CL-G02, CL-G03, CL-V01, CL-V03, CL-P03, CL-PL01, CL-PL02, CL-AP01, CL-AP06, CL-AP07, CL-T04, CL-H01*
 
 Réglages : `columns=3`, `layout=liste`, `tone=clair`
 
 ## A suite, not a pile.
 
-Every product serves the same idea: AI that works for you, with access, budgets and logs you control. Each product's label states its real status.
+Every product serves the same idea: AI that works for you, with access, budgets and logs you control. All of them open from the same account, and each label states the product's real status.
 
 #### Nexora WorkStudio.
 
 Design, connect and run agents (software that carries out a task with the tools you allow) and workflows (automated sequences of tasks), in one place and in plain language. A step can wait for a person's approval before acting.
-Status: available, meaning delivered and verified on our test server; no client result is announced. Demonstration on request.
+Status: available, meaning delivered and verified on our test server; no client result is claimed. It opens from “My tools” as long as you have a credit left. Demonstration on request.
 
 → [Discover WorkStudio](/en/workstudio/)
 
-#### Nexora Croissance.
+#### Nexora Code.
 
-A website built for your trade with free web hosting (conditions on the page), search visibility, your Google and Microsoft ads, your social networks and market analysis: marketing run by AI and validated by you.
-Status: early access, on request. No guaranteed result.
+A coding agent that understands, changes and tests your code, in an environment hosted on our servers: nothing to install on your computer. It is planned to work with Claude Code and Codex plugins.
+Status: coming soon, no date. The tool is designed to be free; whatever it asks a model to do uses credits.
 
-→ [Discover Nexora Croissance](/en/growth/)
+→ [See Nexora Code](/en/apps/code/)
 
-#### Nexora Vision.
+#### Nexora RAG.
 
-AI video analytics that keeps your footage on your premises, with no facial recognition.
-Status: pilot project by invitation. No installation exists yet.
+Your documents become a knowledge base that AI queries, with sources. You create it in one click and connect it to your tools with an API key. You will pay for the storage it uses and for the tokens that index your documents and rank the answers (embedding and rerank), in credits.
+Status: coming soon, no date.
 
-→ [Discover Nexora Vision](/en/vision/)
+→ [See Nexora RAG](/en/apps/rag/)
 
 #### Models and API.
 
-An API (the doorway through which other software calls a service) gives access to several AI models, the engines that produce answers, in OpenAI format, a common calling format many tools understand. Keys, quotas (usage limits) and consumption metering are managed there.
-Status: demonstration on request; the public catalogue, with its prices, is in preparation.
+An API (the door through which other software calls a service) gives access to several AI models, the engines that produce the answers, in the OpenAI format, a calling format many tools already understand. Every request uses credits, at actual cost.
+Status: the catalogue can be browsed, but its prices are development prices and sales are not open.
 
 → [See the models](/en/modeles/)
 
 #### Hosted agents.
 
-The agents you publish in WorkStudio, callable through the API with your own key and subject to the same limits as everything else.
-Status: calling through the API exists in WorkStudio; the online catalogue is in preparation.
+The agents you publish in WorkStudio, callable by API with your own key, at the actual cost of each run in credits, under the same limits as everything else.
+Status: calling by API exists in WorkStudio; the online catalogue is in preparation.
 
 → [See the agents](/en/agents/)
+
+#### Nexora Croissance.
+
+A website tailored to your trade with free web hosting (conditions on the page), search optimization, your Google and Microsoft ads, your social networks and market analysis: marketing run by AI and approved by you.
+Status: early access, on request. No guarantee of results.
+
+→ [Discover Nexora Croissance](/en/growth/)
+
+#### Nexora Vision.
+
+AI video analytics that keeps your footage on your site, with no facial recognition.
+Status: pilot project by invitation. No installation exists yet.
+
+→ [Discover Nexora Vision](/en/vision/)
 
 #### VPS in Quebec.
 
@@ -233,12 +266,12 @@ Status: in preparation; online ordering is not open.
 
 #### The software suite.
 
-Nexora Code for agent-assisted development, Nexora Corpus to prepare your documents and data, and the Quanta and Helix models.
+Nexora Corpus to prepare your documents and data, and the Quanta and Helix models.
 Status: no availability or date is announced at this stage.
 
 → [See the suite](/en/suite/)
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31, CL-O01*
 
@@ -257,9 +290,9 @@ It is not a chat robot, not a customer relationship management (CRM) system unde
 - **Invoice.** Draft invoice, accounts receivable and real costs.
 - **Steer.** Marketing, analytics, strategy and decision memory.
 
-### Bloc 11 — Section (`block_section`)
+### Bloc 12 — Section (`block_section`)
 
-*Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-14*
+*Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-12, CL-14, CL-T06*
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
 
@@ -273,7 +306,9 @@ To go further: [Where to start with AI in a Quebec small business](/en/guides/ai
 
 The tools around your models, servers and agents are gathered in [Nexora Apps](/en/apps/), each with its real state.
 
-### Bloc 12 — Cartes (`block_cards`)
+Prefer to start with the platform? See how credits work on the [Pricing](/en/pricing/) page: prices will appear there once they are published.
+
+### Bloc 13 — Cartes (`block_cards`)
 
 *Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
 
@@ -299,7 +334,7 @@ Your team learns to supervise, correct and decide, not to program.
 
 We run the system with you, follow what works and adjust the rest.
 
-### Bloc 13 — Cartes (`block_cards`)
+### Bloc 14 — Cartes (`block_cards`)
 
 *Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31, CL-E03, CL-E04*
 
@@ -339,9 +374,9 @@ We publish no testimonial, figure or certification that we cannot prove. When a 
 
 → [See the trust centre](/en/trust-center/)
 
-### Bloc 14 — FAQ (`block_faq`)
+### Bloc 15 — FAQ (`block_faq`)
 
-*FAQ : objections du rapport 06 §8.4 et questions de la vague 2 ; réponses vraies seulement. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02*
+*FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09*
 
 Réglages : `emit_jsonld=true`, `tone=clair`
 
@@ -349,7 +384,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`
 
 #### Does my data leave Quebec?
 
-It depends on the deployment mode and the models you choose, and we write it down before the start. At your site, your data stays on your server. At ours, it stays in Quebec, backups included. In both cases, the only exits are those we list with you before go-live: updates, licences and, if you enable one, an external model. We write "no data leaves" only if we have verified it on your configuration.
+It depends on the deployment mode and the models you choose, and we write it down before we start. On your premises, your data stays on your server. With us, it stays in Quebec, backups included. In both cases, the only exits are the ones we list with you before going live: updates, licences and, if you turn one on, an external model. On the credits platform, each model shows where it is hosted, and the gateway keeps only usage metadata, never the content of your requests. We only write “no data leaves” if we have verified it on your setup.
 
 #### Do you train your models with our data?
 
@@ -373,7 +408,27 @@ You leave with your documents, configurations and workflows: export is provided 
 
 #### How much does it cost?
 
-There is no public price yet. The cost depends on the number of cases handled, the volume of documents, the deployment mode, the integrations and, at your site, the hardware. After a diagnostic, we give you a written estimate stating what is included and what is not. Self-service offers will show their prices and renewal conditions when they open.
+There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What happens when I run out of credits?
+
+Calls to models stop: the API returns a payment error and the message points you to top-ups and plans. As soon as your balance is above zero, you pick up where you left off. Your documents and settings are not deleted.
+
+#### Do my credits expire?
+
+It depends on where they come from. Plan credits expire at the end of the period they were granted for, and they are used first. Top-up credits do not expire. On a yearly plan, credits are granted one twelfth per month.
+
+#### What is free, and what uses credits?
+
+Anything that calls an AI model uses credits: an API request, an agent, an automation that reads or writes. Nexora tools that call no model use none, and the model catalogue with its detail pages can be browsed without an account. Nexora Code is designed to be free, but it is not shipped yet. Storage is counted separately: it comes with the plan.
+
+#### Where is my data on the credits platform?
+
+The documents and files you keep with Nexora AI count toward your plan's storage, per organization. The model gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests or of the answers. Each model's page states where it is hosted and its provider's data policy. Your data is never used to train a model.
+
+#### Can I subscribe or top up right now?
+
+Not yet. Sales are not open: accounts and payments only work in test mode and no price is published. Plans will appear on the Pricing page once they are published. Until then, you can request a WorkStudio demonstration or describe your need.
 
 #### Will AI replace my employees?
 
@@ -391,9 +446,9 @@ It depends on the case. At our site, you buy no server. At yours, we size the ha
 
 Software that carries out a task for you, with the tools and documents you allow it, and that asks for your approval before an important action.
 
-### Bloc 15 — Appel à l'action (`block_cta`)
+### Bloc 16 — Appel à l'action (`block_cta`)
 
-*CTA final. · Affirmations : CL-01, CL-P02*
+*CTA final. · Affirmations : CL-01, CL-P02, CL-PL03*
 
 Réglages : `tone=sombre`
 
@@ -401,4 +456,4 @@ Réglages : `tone=sombre`
 
 Describe a concrete problem. We tell you what is feasible, in which mode, and where to begin.
 
-[Discuss my project](/en/contact/) · [Discover WorkStudio](/en/workstudio/)
+[Describe my need](/en/contact/) · [Discover WorkStudio](/en/workstudio/)
