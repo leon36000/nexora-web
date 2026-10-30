@@ -4,6 +4,7 @@ import {
   annualSavingPercent,
   buildPricingJsonLd,
   groupOffers,
+  splitOffers,
 } from "./pricing";
 
 const plan = (over: Partial<SubscriptionPlan> = {}): SubscriptionPlan => ({
@@ -193,5 +194,58 @@ describe("données structurées", () => {
         labels,
       }),
     ).toBeNull();
+  });
+});
+
+describe("espace disque et offre complémentaire (Go supplémentaire)", () => {
+  const tier = (code: string, gb: number, credits: number) =>
+    plan({
+      code,
+      family: code,
+      kind: "nexora",
+      includedStorageBytes: gb * 1_000_000_000,
+      includedCreditsCents: credits,
+      trialDays: 0,
+    });
+  const addon = plan({
+    code: "nexora-go-supplementaire",
+    family: "nexora-go-supplementaire",
+    kind: "storage",
+    priceCents: 100,
+    includedStorageBytes: 1_000_000_000,
+    includedCreditsCents: 0,
+    trialDays: 0,
+  });
+
+  it("garde le type de l'offre et l'espace inclus (en Go)", () => {
+    const [base] = groupOffers([tier("nexora-base", 1, 1000)], "fr");
+    expect(base).toMatchObject({
+      kind: "nexora",
+      includedStorageGb: 1,
+      includedCreditsCents: 1000,
+    });
+    const [none] = groupOffers(
+      [plan({ includedStorageBytes: undefined })],
+      "fr",
+    );
+    expect(none?.includedStorageGb).toBe(0);
+  });
+
+  it("sépare les paliers de l'offre complémentaire d'espace", () => {
+    const offers = groupOffers(
+      [tier("nexora-base", 1, 1000), addon, tier("nexora-pro", 10, 4000)],
+      "fr",
+    );
+    const { tiers, storageAddon } = splitOffers(offers);
+    expect(tiers.map((o) => o.family)).toEqual(["nexora-base", "nexora-pro"]);
+    expect(storageAddon?.family).toBe("nexora-go-supplementaire");
+  });
+
+  it("sans Go supplémentaire publié, aucune offre complémentaire", () => {
+    const { tiers, storageAddon } = splitOffers(
+      groupOffers([tier("nexora-base", 1, 1000)], "fr"),
+    );
+    expect(tiers).toHaveLength(1);
+    expect(storageAddon).toBeNull();
   });
 });

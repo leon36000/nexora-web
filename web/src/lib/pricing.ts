@@ -1,5 +1,5 @@
 import type { Lang } from "@/i18n/config";
-import type { SubscriptionPlan } from "@/server/billing/plans";
+import { BYTES_PER_GB, type SubscriptionPlan } from "@/server/billing/plans";
 
 /**
  * Page Tarifs : regroupement des offres d'abonnement PUBLIÉES et données structurées. Rien n'est inventé : tout
@@ -21,6 +21,10 @@ interface PriceOption {
 
 export interface PricingOffer {
   family: string;
+  /** Type de l'offre : `nexora` (palier), `storage` (Go supplémentaire)… */
+  kind: string;
+  /** Espace disque inclus, en Go (0 : aucun). */
+  includedStorageGb: number;
   name: string;
   description: string | null;
   features: string[];
@@ -31,6 +35,9 @@ export interface PricingOffer {
 
 const LOCALE: Record<Lang, string> = { fr: "fr-CA", en: "en-CA" };
 const OTHER: Record<Lang, string> = { fr: "en-CA", en: "fr-CA" };
+
+const storageGb = (plan: SubscriptionPlan) =>
+  Math.floor((plan.includedStorageBytes ?? 0) / BYTES_PER_GB);
 
 export function groupOffers(
   plans: readonly SubscriptionPlan[],
@@ -54,6 +61,8 @@ export function groupOffers(
     if (!existing) {
       byFamily.set(plan.family, {
         family: plan.family,
+        kind: plan.kind,
+        includedStorageGb: storageGb(plan),
         name: tr?.name || plan.code,
         description: tr?.description ?? null,
         features: tr?.features ?? [],
@@ -71,6 +80,17 @@ export function groupOffers(
     }
   }
   return [...byFamily.values()];
+}
+
+/** Paliers d'abonnement d'un côté, offre complémentaire « Go supplémentaire » (type `storage`) de l'autre. */
+export function splitOffers(offers: readonly PricingOffer[]): {
+  tiers: PricingOffer[];
+  storageAddon: PricingOffer | null;
+} {
+  return {
+    tiers: offers.filter((o) => o.kind !== "storage"),
+    storageAddon: offers.find((o) => o.kind === "storage") ?? null,
+  };
 }
 
 /** Économie annoncée de la facturation annuelle, en % entier ; `null` si elle n'existe pas réellement. */
