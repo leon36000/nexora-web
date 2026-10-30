@@ -22,7 +22,7 @@ export function execDockerClient(
         };
         if (options.dockerHost) env.DOCKER_HOST = options.dockerHost;
         execFile(
-          bin,
+          /* turbopackIgnore: true */ bin,
           args,
           {
             env,
