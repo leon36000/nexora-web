@@ -27,7 +27,7 @@ const spec: WorkspaceSpec = {
   containerName: "nexora-code-ab12cd34",
   volumeName: "nexora-code-vol-ab12cd34",
   hostPort: 20123,
-  image: "nexora/code-workspace@sha256:" + "a".repeat(64),
+  image: `nexora/code-workspace@sha256:${"a".repeat(64)}`,
   publicEnv: {
     NEXORA_API_URL: "https://site.example/v1",
     NEXORA_CODE_MODEL: "nexora/test-model",

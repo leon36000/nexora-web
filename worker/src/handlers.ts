@@ -6,6 +6,7 @@ import {
   productionRunnerDeps,
 } from "./agents/index.ts";
 import { registerBalanceAlertHandler } from "./balance-alerts.ts";
+import { type CodeSweepDeps, registerCodeHandlers } from "./code/handlers.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { registerLedgerHandlers } from "./ledger-handlers.ts";
 import { indexClientFromEnv, registerRagHandlers } from "./rag/handlers.ts";
@@ -20,7 +21,13 @@ import { registerWebpilotHandlers } from "./webpilot/handlers.ts";
  * seulement si le moteur est configuré (clé maîtresse du coffre).
  */
 export function defaultRegistry(
-  deps: { db?: Database; log?: Logger; vps?: EngineDeps | null } = {},
+  deps: {
+    db?: Database;
+    log?: Logger;
+    vps?: EngineDeps | null;
+    /** Nexora Code hébergé : pilote, client du site, image (voir code/handlers.ts) ; `null` : balayage désactivé. */
+    code?: Omit<CodeSweepDeps, "db" | "log"> | null;
+  } = {},
 ): HandlerRegistry {
   const registry = new HandlerRegistry().register(
     "system.ping",
@@ -58,6 +65,12 @@ export function defaultRegistry(
     });
   if (deps.db && deps.log)
     registerWebpilotHandlers(registry, { db: deps.db, log: deps.log });
+  if (deps.db && deps.log && deps.code)
+    registerCodeHandlers(registry, {
+      ...deps.code,
+      db: deps.db,
+      log: deps.log,
+    });
   if (deps.db && deps.log) {
     const index = indexClientFromEnv(process.env);
     if (!index)

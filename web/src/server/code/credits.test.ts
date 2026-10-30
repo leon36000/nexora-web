@@ -97,7 +97,7 @@ describe("GET /api/code/credits", () => {
     });
     await revokeApiKey(t.db, org, record.id);
     const answers = [];
-    for (const k of [null, "nxk_" + "a".repeat(43), key, "pas-une-cle"]) {
+    for (const k of [null, `nxk_${"a".repeat(43)}`, key, "pas-une-cle"]) {
       const res = await handleCodeCredits(get(k), deps());
       answers.push({ status: res.status, body: await res.json() });
     }
