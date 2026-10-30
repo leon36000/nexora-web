@@ -26,6 +26,7 @@ import { getDb } from "@/server/db";
 import { loadOverview } from "@/server/gateway/activity-overview";
 import { getWorkstudioOrigin } from "@/server/gateway/activity-workstudio";
 import { loadBillingConfig } from "@/server/ledger/config";
+import { MICRO_PER_CREDIT } from "@/server/ledger/money";
 import { first, flashFromSearch, type Search } from "./_lib/flash";
 import { requirePanelSession } from "./_lib/session";
 
@@ -88,6 +89,7 @@ async function OverviewContent({
     searchParams,
   ]);
   const free = isFreeAccess(overview.billingMode);
+  const hasCredits = dashboard.account.availableMicro >= MICRO_PER_CREDIT;
   const workstudio = workstudioView({
     subscriptions: dashboard.subscriptions,
     instanceOrigin: workstudioInstanceOrigin(
@@ -95,6 +97,7 @@ async function OverviewContent({
       declaredOrigin,
     ),
     free,
+    hasCredits,
   });
 
   // L'offre choisie sur la page Tarifs : les offres publiées ne sont lues dans Directus que dans ce cas ;
@@ -127,7 +130,11 @@ async function OverviewContent({
       role={session.role}
       dashboard={dashboard}
       overview={overview}
-      hasWorkstudio={hasWorkstudioAccess(dashboard.subscriptions, free)}
+      hasWorkstudio={hasWorkstudioAccess(
+        dashboard.subscriptions,
+        free,
+        hasCredits,
+      )}
       wallet={wallet}
       workstudio={workstudio.state}
       chosenOffer={chosenOffer}

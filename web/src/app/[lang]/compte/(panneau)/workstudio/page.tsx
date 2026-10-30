@@ -22,6 +22,7 @@ import {
 } from "@/server/gateway/activity-workstudio";
 import { billingModeOf } from "@/server/gateway/house";
 import { loadWorkstudioLink } from "@/server/gateway/workstudio-link";
+import { MICRO_PER_CREDIT } from "@/server/ledger/money";
 import { requirePanelSession } from "../_lib/session";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -79,6 +80,7 @@ async function WorkstudioContent({ lang }: { lang: Lang }) {
           origin,
         ),
         free,
+        hasCredits: dashboard.account.availableMicro >= MICRO_PER_CREDIT,
       })}
       agents={agents}
       connection={{

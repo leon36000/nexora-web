@@ -13,6 +13,7 @@ import {
 } from "@nexora/db";
 import { getDb } from "../db";
 import { billingModeOf } from "../gateway/house";
+import { MICRO_PER_CREDIT } from "../ledger/money";
 import { loadWallet } from "./wallet";
 
 export type { StorageProduct };
@@ -48,9 +49,6 @@ export type OrgEntitlements = {
   };
   canUseModels: boolean;
 };
-
-/** 1 crédit = 1 ¢ CA = 10 000 micro-CAD. */
-const MICRO_PER_CREDIT = 10_000n;
 
 const toCredits = (micro: bigint): number =>
   micro > 0n ? Number(micro / MICRO_PER_CREDIT) : 0;

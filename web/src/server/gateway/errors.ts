@@ -3,6 +3,7 @@ import {
   noCreditsMessage,
   notEnoughCreditsMessage,
 } from "../billing/credit-messages";
+import { MICRO_PER_CREDIT } from "../ledger/money";
 
 /** Erreurs au format OpenAI : `{ error: { message, type, param, code } }`. */
 
@@ -82,7 +83,7 @@ export const E = {
     openAiError(
       402,
       "insufficient_quota",
-      availableMicro !== undefined && availableMicro < 10_000n
+      availableMicro !== undefined && availableMicro < MICRO_PER_CREDIT
         ? noCreditsMessage()
         : notEnoughCreditsMessage(),
       "insufficient_quota",

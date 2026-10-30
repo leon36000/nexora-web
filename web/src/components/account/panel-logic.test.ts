@@ -281,6 +281,38 @@ describe("accès WorkStudio", () => {
   });
 });
 
+describe("WorkStudio s'ouvre dès qu'il reste des crédits (abonnement ou recharge)", () => {
+  const origin = "https://studio.nexora.example";
+  it("des crédits sans aucun abonnement : prêt", () => {
+    expect(hasWorkstudioAccess([], false, true)).toBe(true);
+    expect(
+      workstudioView({
+        subscriptions: [],
+        instanceOrigin: origin,
+        hasCredits: true,
+      }),
+    ).toEqual({ state: "ready", url: origin });
+  });
+  it("des crédits mais aucune adresse sûre : en préparation", () => {
+    expect(
+      workstudioView({
+        subscriptions: [],
+        instanceOrigin: null,
+        hasCredits: true,
+      }),
+    ).toEqual({ state: "pending" });
+  });
+  it("sans crédit, un abonnement impayé reste signalé comme suspendu", () => {
+    expect(
+      workstudioView({
+        subscriptions: [{ planCode: "nexora-base", access: "suspended" }],
+        instanceOrigin: origin,
+        hasCredits: false,
+      }),
+    ).toEqual({ state: "suspended" });
+  });
+});
+
 describe("montants proposés pour ajouter des fonds", () => {
   it("20, 50, 100, 250 et 500 $ quand les bornes le permettent", () => {
     expect(presetAmountsCents(2000, 500_000)).toEqual([
