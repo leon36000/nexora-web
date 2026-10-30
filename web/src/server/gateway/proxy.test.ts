@@ -374,10 +374,15 @@ describe("réservation, règlement et libération", () => {
     const c = await client(0n);
     const res = await handleChatCompletions(post(c.key, chat()), deps());
     expect(res.status).toBe(402);
-    expect((await res.json()).error).toMatchObject({
+    const { error } = await res.json();
+    expect(error).toMatchObject({
       code: "insufficient_quota",
       type: "insufficient_quota",
     });
+    // Aucun crédit : message clair en français avec le chemin vers la recharge et l'abonnement.
+    expect(error.message).toMatch(/^Il ne vous reste plus de crédits\./);
+    expect(error.message).toContain("/compte/facturation#ajouter-des-fonds");
+    expect(error.message).toContain("/tarifs");
     expect(calls).toHaveLength(0);
     expect(
       await t.db

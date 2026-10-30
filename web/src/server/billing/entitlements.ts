@@ -174,6 +174,18 @@ export async function loadOrgEntitlements(
   };
 }
 
+/**
+ * Droit d'appeler les modèles (passerelle, WorkStudio intégré, agents) : au moins 1 crédit, d'abonnement OU de
+ * recharge, ou organisation « maison ». Remplace l'ancienne règle « exige un abonnement ».
+ */
+export async function orgCanUseModels(
+  db: Database,
+  organizationId: string,
+  now: Date = new Date(),
+): Promise<boolean> {
+  return (await loadOrgEntitlements(db, organizationId, now)).canUseModels;
+}
+
 export type StorageUsageResult =
   | { ok: true }
   | { ok: false; reason: "quota_exceeded" };

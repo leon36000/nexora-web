@@ -1,11 +1,14 @@
 import "server-only";
 import { SITE_URL } from "@/lib/site";
-import { hasWorkstudioEntitlement } from "../billing/workstudio-entitlement";
+import { orgCanUseModels } from "../billing/entitlements";
 import { getDb } from "../db";
 import { log } from "../log";
 import { loadKeyring } from "../vault/crypto";
 import { getAuth } from "./instance";
-import type { WorkstudioAccessDeps } from "./workstudio-access";
+import {
+  requireCreditsFromEnv,
+  type WorkstudioAccessDeps,
+} from "./workstudio-access";
 import {
   createWorkstudioIntrospector,
   resolveWorkstudioOidc,
@@ -40,10 +43,8 @@ export function workstudioAccessDeps(): WorkstudioAccessDeps {
       };
     },
     allowLoopback,
-    requireSubscription:
-      process.env.WORKSTUDIO_REQUIRE_SUBSCRIPTION?.trim().toLowerCase() !==
-      "false",
-    entitled: hasWorkstudioEntitlement,
+    requireCredits: requireCreditsFromEnv(process.env),
+    canUseModels: orgCanUseModels,
     log,
     now: () => new Date(),
   };

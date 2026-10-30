@@ -1,6 +1,11 @@
 import { createHash } from "node:crypto";
 import { type Database, eq, users } from "@nexora/db";
 import type { Logger } from "@nexora/log";
+import {
+  noCreditsMessage,
+  plansUrl,
+  rechargeUrl,
+} from "../billing/credit-messages";
 import { consumeRateLimit } from "../billing/rate-limit";
 import { ensureModelAccess } from "../gateway/provision";
 import type { Keyring } from "../vault/crypto";
@@ -34,11 +39,12 @@ export interface WorkstudioAccessDeps {
   /** Développement seulement : admet une passerelle en http sur la boucle locale. */
   allowLoopback: boolean;
   /**
-   * WorkStudio est un produit par abonnement : sans abonnement (ni accès « maison »), aucune clé de modèle n'est
-   * rendue (403 `subscription_required`). `WORKSTUDIO_REQUIRE_SUBSCRIPTION=false` coupe l'exigence (essais).
+   * Tout ce qui appelle un modèle consomme des crédits : sans crédit (ni accès « maison »), aucune clé de modèle
+   * n'est rendue (403 `credits_required`). Un solde supérieur à zéro suffit, d'abonnement ou de recharge.
+   * `WORKSTUDIO_REQUIRE_CREDITS=false` coupe l'exigence (essais, démonstrations).
    */
-  requireSubscription: boolean;
-  entitled: (
+  requireCredits: boolean;
+  canUseModels: (
     db: Database,
     organizationId: string,
     now: Date,
@@ -82,6 +88,19 @@ function addressKey(request: Request): string {
   const forwarded =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "inconnue";
   return createHash("sha256").update(forwarded).digest("hex").slice(0, 16);
+}
+
+/**
+ * `WORKSTUDIO_REQUIRE_CREDITS` (défaut : oui). L'ancien nom `WORKSTUDIO_REQUIRE_SUBSCRIPTION=false` est encore lu pour
+ * ne pas casser les environnements de démonstration déjà réglés ; il n'a plus d'effet quand il vaut autre chose que `false`.
+ */
+export function requireCreditsFromEnv(
+  env: Record<string, string | undefined>,
+): boolean {
+  const off = (name: string) => env[name]?.trim().toLowerCase() === "false";
+  return !(
+    off("WORKSTUDIO_REQUIRE_CREDITS") || off("WORKSTUDIO_REQUIRE_SUBSCRIPTION")
+  );
 }
 
 export async function handleWorkstudioAccess(
@@ -180,14 +199,22 @@ export async function handleWorkstudioAccess(
   try {
     const organization = await ensureUserOrganization(db, userId);
     if (
-      deps.requireSubscription &&
-      !(await deps.entitled(db, organization.id, now))
+      deps.requireCredits &&
+      !(await deps.canUseModels(db, organization.id, now))
     ) {
-      deps.log.warn("workstudio-access : abonnement WorkStudio requis", {
+      deps.log.warn("workstudio-access : plus de crédits", {
         userId,
         organizationId: organization.id,
       });
-      return reply({ error: "subscription_required" }, 403);
+      return reply(
+        {
+          error: "credits_required",
+          message: noCreditsMessage(),
+          recharge_url: rechargeUrl(),
+          plans_url: plansUrl(),
+        },
+        403,
+      );
     }
     const access = await ensureModelAccess(db, deps.keyring(), {
       organizationId: organization.id,
