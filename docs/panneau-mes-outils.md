@@ -61,6 +61,7 @@ Un environnement **par personne** ; `usedBytes` = volume (à compter par `record
 
 - RAG : `/api/account/rag/*` est celui du chantier B (`server/rag/account.ts`), sans interrupteur côté route : c'est la page qui est cachée tant que `NEXORA_PRODUCT_RAG` est éteint.
 - `GET` / `POST` / `DELETE /api/account/code/workspace` : toute personne de l'organisation, pour SON environnement ; POST démarre (202), DELETE le supprime (204) pour libérer l'espace (501 si le service ne sait pas le faire).
+- `GET /api/account/code/open` : l'adresse que prend « Ouvrir Nexora Code » quand l'origine dédiée est configurée (`NEXORA_CODE_HOST_SUFFIX`) ; redirige la personne vers son hôte avec un billet de 60 s.
 - Chantier F : `/api/code/device/{start,poll,approve}`, `/api/code/credits`, `/code/ws/<id>/…` (mandataire), `/api/code/ws-auth`, `/api/admin/code/usage` (worker) : voir `docs/nexora-code.md`.
 
 ## Extraits « Se connecter » (page RAG)
