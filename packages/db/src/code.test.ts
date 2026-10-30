@@ -21,9 +21,7 @@ const hex = (n = 8) => randomBytes(n).toString("hex");
 async function person() {
   const org = `org_${hex(6)}`;
   const user = `usr_${hex(6)}`;
-  await t.db
-    .insert(organizations)
-    .values({ id: org, name: org, slug: org });
+  await t.db.insert(organizations).values({ id: org, name: org, slug: org });
   await t.db
     .insert(users)
     .values({ id: user, name: "Marie", email: `${user}@example.com` });

@@ -2,7 +2,10 @@ import { eq, organizations } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { loadOrgEntitlements, type OrgEntitlements } from "../billing/entitlements";
+import {
+  loadOrgEntitlements,
+  type OrgEntitlements,
+} from "../billing/entitlements";
 import { createApiKey, revokeApiKey } from "../gateway/keys";
 import { newOrganization } from "../gateway/test-support";
 import { type CreditsDeps, handleCodeCredits } from "./credits";
@@ -35,17 +38,35 @@ const get = (key: string | null, ip = `10.9.0.${++n}`, method = "GET") =>
 const ent = (total: number): OrgEntitlements => ({
   planCode: "nexora-base",
   interval: "month",
-  credits: { subscription: Math.floor(total * 0.8), refill: total - Math.floor(total * 0.8), total },
-  storage: { quotaBytes: 1e9, extraBytes: 0, usedBytes: 0, byProduct: { workstudio: 0, code: 0, rag: 0, creative: 0, bot: 0 } },
+  credits: {
+    subscription: Math.floor(total * 0.8),
+    refill: total - Math.floor(total * 0.8),
+    total,
+  },
+  storage: {
+    quotaBytes: 1e9,
+    extraBytes: 0,
+    usedBytes: 0,
+    byProduct: { workstudio: 0, code: 0, rag: 0, creative: 0, bot: 0 },
+  },
   canUseModels: total > 0,
 });
 
 describe("GET /api/code/credits", () => {
   it("rend le solde de l'organisation de la clé, au format du contrat", async () => {
     const org = await newOrganization(t.db);
-    await t.db.update(organizations).set({ name: "Atelier Test" }).where(eq(organizations.id, org));
-    const { key } = await createApiKey(t.db, { organizationId: org, name: "Nexora Code (x)" });
-    const res = await handleCodeCredits(get(key), deps({ entitlements: async () => ent(1000) }));
+    await t.db
+      .update(organizations)
+      .set({ name: "Atelier Test" })
+      .where(eq(organizations.id, org));
+    const { key } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "Nexora Code (x)",
+    });
+    const res = await handleCodeCredits(
+      get(key),
+      deps({ entitlements: async () => ent(1000) }),
+    );
     expect(res.status).toBe(200);
     expect(res.headers.get("cache-control")).toBe("no-store");
     expect(await res.json()).toEqual({
@@ -58,7 +79,10 @@ describe("GET /api/code/credits", () => {
 
   it("une organisation sans crédit : total 0 et can_use_models faux (vrai calcul sur la base)", async () => {
     const org = await newOrganization(t.db);
-    const { key } = await createApiKey(t.db, { organizationId: org, name: "k" });
+    const { key } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "k",
+    });
     const body = await (await handleCodeCredits(get(key), deps())).json();
     expect(body.credits.total).toBe(0);
     expect(body.can_use_models).toBe(false);
@@ -67,7 +91,10 @@ describe("GET /api/code/credits", () => {
 
   it("401 sans clé, avec une clé inconnue, révoquée ou mal formée (même réponse)", async () => {
     const org = await newOrganization(t.db);
-    const { key, record } = await createApiKey(t.db, { organizationId: org, name: "k" });
+    const { key, record } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "k",
+    });
     await revokeApiKey(t.db, org, record.id);
     const answers = [];
     for (const k of [null, "nxk_" + "a".repeat(43), key, "pas-une-cle"]) {
@@ -81,17 +108,26 @@ describe("GET /api/code/credits", () => {
 
   it("autre méthode : 405 ; trop d'appels : 429", async () => {
     const org = await newOrganization(t.db);
-    const { key } = await createApiKey(t.db, { organizationId: org, name: "k" });
-    expect((await handleCodeCredits(get(key, "10.8.0.1", "POST"), deps())).status).toBe(405);
+    const { key } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "k",
+    });
+    expect(
+      (await handleCodeCredits(get(key, "10.8.0.1", "POST"), deps())).status,
+    ).toBe(405);
     const d = deps({ limits: { perKey: { limit: 3, windowSeconds: 60 } } });
     const statuses = [];
-    for (let i = 0; i < 5; i++) statuses.push((await handleCodeCredits(get(key), d)).status);
+    for (let i = 0; i < 5; i++)
+      statuses.push((await handleCodeCredits(get(key), d)).status);
     expect(statuses).toEqual([200, 200, 200, 429, 429]);
   });
 
   it("une erreur de lecture des droits répond 503, sans détail", async () => {
     const org = await newOrganization(t.db);
-    const { key } = await createApiKey(t.db, { organizationId: org, name: "k" });
+    const { key } = await createApiKey(t.db, {
+      organizationId: org,
+      name: "k",
+    });
     const res = await handleCodeCredits(
       get(key),
       deps({

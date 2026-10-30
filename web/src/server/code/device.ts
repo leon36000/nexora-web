@@ -139,17 +139,23 @@ export function cleanDeviceName(raw: unknown): string {
           .replace(/\s+/g, " ")
           .trim()
       : "";
-  return Array.from(text).slice(0, DEVICE_NAME_MAX).join("").trim() ||
-    "Appareil sans nom";
+  return (
+    Array.from(text).slice(0, DEVICE_NAME_MAX).join("").trim() ||
+    "Appareil sans nom"
+  );
 }
 
-export const keyNameFor = (deviceName: string) =>
-  `Nexora Code (${deviceName})`;
+export const keyNameFor = (deviceName: string) => `Nexora Code (${deviceName})`;
 
 const tooMany = (retryAfter: number) =>
-  errorJson(429, "rate_limited", "Trop de demandes. Réessayez dans un instant.", {
-    "retry-after": String(retryAfter),
-  });
+  errorJson(
+    429,
+    "rate_limited",
+    "Trop de demandes. Réessayez dans un instant.",
+    {
+      "retry-after": String(retryAfter),
+    },
+  );
 
 /* ------------------------------------------------------------------ start */
 
@@ -269,10 +275,14 @@ export async function handleDevicePoll(
     const hash = deviceCodeHash(code);
 
     // Trop de sondages : `slow_down` (statut 200), jamais un 429, que le CLI traiterait comme un échec définitif.
-    const byDevice = await consumeRateLimit(db, `code-device-poll:${hash.slice(0, 32)}`, {
-      ...limits.pollPerDevice,
-      now,
-    });
+    const byDevice = await consumeRateLimit(
+      db,
+      `code-device-poll:${hash.slice(0, 32)}`,
+      {
+        ...limits.pollPerDevice,
+        now,
+      },
+    );
     const byAddress = await consumeRateLimit(
       db,
       `code-device-poll-ip:${addressKey(request)}`,
@@ -281,92 +291,93 @@ export async function handleDevicePoll(
     if (!byDevice.allowed || !byAddress.allowed)
       return json({ status: "slow_down" });
 
-    const outcome = await db.transaction(
-      async (tx): Promise<PollOutcome> => {
-        const d = tx as unknown as Database;
-        const [row] = await d
-          .select()
-          .from(codeDeviceCodes)
-          .where(eq(codeDeviceCodes.deviceCodeHash, hash))
-          .for("update");
-        if (!row) return { kind: "unknown" };
-        if (row.status === "delivered" || row.expiresAt <= now)
-          return { kind: "status", status: "expired" };
-        if (row.status === "denied")
-          return { kind: "status", status: "denied" };
-        if (row.status === "pending") {
-          const tooFast =
-            row.lastPolledAt !== null &&
-            now.getTime() - row.lastPolledAt.getTime() < MIN_POLL_GAP_MS;
-          await d
-            .update(codeDeviceCodes)
-            .set({ lastPolledAt: now })
-            .where(eq(codeDeviceCodes.id, row.id));
-          return { kind: "status", status: tooFast ? "slow_down" : "pending" };
-        }
-
-        // approved : la clé est créée ICI, une seule fois, et marquée remise dans la même transaction.
-        if (!row.approvedUserId || !row.approvedOrganizationId)
-          return { kind: "status", status: "expired" };
-        const name = keyNameFor(row.deviceName);
-        await d
-          .update(apiKeys)
-          .set({ revokedAt: now })
-          .where(
-            and(
-              eq(apiKeys.organizationId, row.approvedOrganizationId),
-              eq(apiKeys.name, name),
-              eq(apiKeys.createdBy, row.approvedUserId),
-              isNull(apiKeys.revokedAt),
-            ),
-          );
-        let created: Awaited<ReturnType<typeof createApiKey>>;
-        try {
-          created = await createApiKey(d, {
-            organizationId: row.approvedOrganizationId,
-            name,
-            createdBy: row.approvedUserId,
-            maxActiveKeys: MAX_ACTIVE_KEYS_PER_ORGANIZATION,
-          });
-        } catch (error) {
-          if (error instanceof ApiKeyLimitError) return { kind: "key_limit" };
-          throw error;
-        }
+    const outcome = await db.transaction(async (tx): Promise<PollOutcome> => {
+      const d = tx as unknown as Database;
+      const [row] = await d
+        .select()
+        .from(codeDeviceCodes)
+        .where(eq(codeDeviceCodes.deviceCodeHash, hash))
+        .for("update");
+      if (!row) return { kind: "unknown" };
+      if (row.status === "delivered" || row.expiresAt <= now)
+        return { kind: "status", status: "expired" };
+      if (row.status === "denied") return { kind: "status", status: "denied" };
+      if (row.status === "pending") {
+        const tooFast =
+          row.lastPolledAt !== null &&
+          now.getTime() - row.lastPolledAt.getTime() < MIN_POLL_GAP_MS;
         await d
           .update(codeDeviceCodes)
-          .set({
-            status: "delivered",
-            deliveredAt: now,
-            apiKeyId: created.record.id,
-            lastPolledAt: now,
-          })
+          .set({ lastPolledAt: now })
           .where(eq(codeDeviceCodes.id, row.id));
-        const [org] = await d
-          .select({ name: organizations.name })
-          .from(organizations)
-          .where(eq(organizations.id, row.approvedOrganizationId));
-        const [user] = await d
-          .select({ email: users.email })
-          .from(users)
-          .where(eq(users.id, row.approvedUserId));
-        deps.log.info("clé Nexora Code remise", {
-          apiKeyId: created.record.id,
+        return { kind: "status", status: tooFast ? "slow_down" : "pending" };
+      }
+
+      // approved : la clé est créée ICI, une seule fois, et marquée remise dans la même transaction.
+      if (!row.approvedUserId || !row.approvedOrganizationId)
+        return { kind: "status", status: "expired" };
+      const name = keyNameFor(row.deviceName);
+      await d
+        .update(apiKeys)
+        .set({ revokedAt: now })
+        .where(
+          and(
+            eq(apiKeys.organizationId, row.approvedOrganizationId),
+            eq(apiKeys.name, name),
+            eq(apiKeys.createdBy, row.approvedUserId),
+            isNull(apiKeys.revokedAt),
+          ),
+        );
+      let created: Awaited<ReturnType<typeof createApiKey>>;
+      try {
+        created = await createApiKey(d, {
           organizationId: row.approvedOrganizationId,
-          userId: row.approvedUserId,
+          name,
+          createdBy: row.approvedUserId,
+          maxActiveKeys: MAX_ACTIVE_KEYS_PER_ORGANIZATION,
         });
-        return {
-          kind: "approved",
-          apiKey: created.key,
-          keyPrefix: created.record.prefix,
-          organizationName: org?.name ?? null,
-          userEmail: user?.email ?? null,
-        };
-      },
-    );
+      } catch (error) {
+        if (error instanceof ApiKeyLimitError) return { kind: "key_limit" };
+        throw error;
+      }
+      await d
+        .update(codeDeviceCodes)
+        .set({
+          status: "delivered",
+          deliveredAt: now,
+          apiKeyId: created.record.id,
+          lastPolledAt: now,
+        })
+        .where(eq(codeDeviceCodes.id, row.id));
+      const [org] = await d
+        .select({ name: organizations.name })
+        .from(organizations)
+        .where(eq(organizations.id, row.approvedOrganizationId));
+      const [user] = await d
+        .select({ email: users.email })
+        .from(users)
+        .where(eq(users.id, row.approvedUserId));
+      deps.log.info("clé Nexora Code remise", {
+        apiKeyId: created.record.id,
+        organizationId: row.approvedOrganizationId,
+        userId: row.approvedUserId,
+      });
+      return {
+        kind: "approved",
+        apiKey: created.key,
+        keyPrefix: created.record.prefix,
+        organizationName: org?.name ?? null,
+        userEmail: user?.email ?? null,
+      };
+    });
 
     switch (outcome.kind) {
       case "unknown":
-        return errorJson(400, "invalid_device_code", "Code d'appareil invalide.");
+        return errorJson(
+          400,
+          "invalid_device_code",
+          "Code d'appareil invalide.",
+        );
       case "key_limit":
         return errorJson(
           409,
@@ -431,7 +442,8 @@ async function attemptAllowed(
     `code-device-attempt:${session.userId}`,
     { ...limits.attemptPerUser, now },
   );
-  if (!user.allowed) return { allowed: false, retryAfter: user.retryAfterSeconds };
+  if (!user.allowed)
+    return { allowed: false, retryAfter: user.retryAfterSeconds };
   const ip = await consumeRateLimit(
     deps.db(),
     `code-device-attempt-ip:${address}`,
@@ -451,7 +463,11 @@ export async function handleDeviceApprove(
       return errorJson(403, "invalid_origin", "Origine refusée.");
     const session = await deps.getContext(request.headers);
     if (!session)
-      return errorJson(401, "unauthenticated", "Connectez-vous pour continuer.");
+      return errorJson(
+        401,
+        "unauthenticated",
+        "Connectez-vous pour continuer.",
+      );
     const refusal = sessionRefusal(session);
     if (refusal) return refusal;
     const attempt = await attemptAllowed(deps, session, addressKey(request));
@@ -525,7 +541,10 @@ export async function handleDeviceApprove(
         : "appareil Nexora Code refusé",
       { userId: session.userId, organizationId: session.organizationId },
     );
-    return json({ ok: true, decision: outcome === "approved" ? "approve" : "deny" });
+    return json({
+      ok: true,
+      decision: outcome === "approved" ? "approve" : "deny",
+    });
   } catch (error) {
     deps.log.error("code d'appareil : erreur interne (approve)", {
       errorName: error instanceof Error ? error.name : typeof error,

@@ -29,11 +29,14 @@ export const methodNotAllowed = (allow: string) =>
   errorJson(405, "method_not_allowed", "Méthode non permise.", { allow });
 
 /** Empreinte courte de l'adresse du client : jamais l'adresse elle-même en base ni au journal. */
-export function addressKey(request: Request): string {
+export function addressKeyOf(headers: Headers): string {
   const forwarded =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "inconnue";
+    headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "inconnue";
   return createHash("sha256").update(forwarded).digest("hex").slice(0, 16);
 }
+
+export const addressKey = (request: Request): string =>
+  addressKeyOf(request.headers);
 
 export type BodyResult =
   | { ok: true; value: Record<string, unknown> }

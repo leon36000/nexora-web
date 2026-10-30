@@ -9,6 +9,7 @@ import type { SecurityDictionary } from "@/i18n/security";
 import { authClient } from "@/lib/auth-client";
 import { resumesOAuth } from "@/lib/oauth-resume";
 import { parseOffer, withOffer } from "@/lib/offer-param";
+import { safeNextPath } from "@/lib/safe-next";
 import { Field, Notice } from "./field";
 import { TwoFactorChallenge } from "./two-factor-challenge";
 
@@ -21,7 +22,10 @@ type Props = {
 
 export function LoginForm({ lang, t, common, security }: Props) {
   const router = useRouter();
-  const offer = parseOffer(useSearchParams().get("offre"));
+  const params = useSearchParams();
+  const offer = parseOffer(params.get("offre"));
+  // Retour vers la page d'autorisation d'un appareil Nexora Code (seule destination admise, voir lib/safe-next.ts).
+  const next = safeNextPath(params.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -30,7 +34,7 @@ export function LoginForm({ lang, t, common, security }: Props) {
   const [secondFactor, setSecondFactor] = useState(false);
 
   const enter = () => {
-    router.push(withOffer(localizePath(lang, "/compte"), offer));
+    router.push(next ?? withOffer(localizePath(lang, "/compte"), offer));
     router.refresh();
   };
 

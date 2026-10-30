@@ -141,9 +141,6 @@ export const codeWorkspaces = pgTable(
       sql`${t.desiredStatus} IN (${inList(CODE_DESIRED_STATUSES)})`,
     ),
     check("code_workspaces_bytes_check", sql`${t.accountedBytes} >= 0`),
-    check(
-      "code_workspaces_port_check",
-      sql`${t.port} BETWEEN 1024 AND 65535`,
-    ),
+    check("code_workspaces_port_check", sql`${t.port} BETWEEN 1024 AND 65535`),
   ],
 );

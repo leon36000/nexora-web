@@ -1,11 +1,5 @@
 import { createHash } from "node:crypto";
-import {
-  apiKeys,
-  codeDeviceCodes,
-  eq,
-  organizations,
-  users,
-} from "@nexora/db";
+import { apiKeys, codeDeviceCodes, eq, organizations, users } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { createLogger } from "@nexora/log";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -87,18 +81,27 @@ const deps = (
 });
 
 let ip = 0;
-const post = (path: string, body: unknown, headers: Record<string, string> = {}) =>
+const post = (
+  path: string,
+  body: unknown,
+  headers: Record<string, string> = {},
+) =>
   new Request(`${SITE}${path}`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-forwarded-for": headers["x-forwarded-for"] ?? `10.0.${Math.floor(++ip / 250)}.${ip % 250}`,
+      "x-forwarded-for":
+        headers["x-forwarded-for"] ??
+        `10.0.${Math.floor(++ip / 250)}.${ip % 250}`,
       ...headers,
     },
     body: typeof body === "string" ? body : JSON.stringify(body),
   });
-const approveReq = (body: unknown, origin = SITE, extra: Record<string, string> = {}) =>
-  post("/api/code/device/approve", body, { origin, ...extra });
+const approveReq = (
+  body: unknown,
+  origin = SITE,
+  extra: Record<string, string> = {},
+) => post("/api/code/device/approve", body, { origin, ...extra });
 
 async function start(name = "poste-de-marie", d = deps()) {
   const res = await handleDeviceStart(
@@ -119,9 +122,25 @@ async function start(name = "poste-de-marie", d = deps()) {
     interval: number;
   };
 }
+type PollBody = {
+  status: string;
+  api_key: string;
+  key_prefix: string;
+  organization_name: string;
+  user_email: string;
+  default_model: string;
+  error: { code: string };
+};
 const poll = async (device_code: string, d = deps(), headers = {}) => {
-  const res = await handleDevicePoll(post("/api/code/device/poll", { device_code }, headers), d);
-  return { status: res.status, body: (await res.json()) as Record<string, any>, res };
+  const res = await handleDevicePoll(
+    post("/api/code/device/poll", { device_code }, headers),
+    d,
+  );
+  return {
+    status: res.status,
+    body: (await res.json()) as PollBody,
+    res,
+  };
 };
 const dump = (v: unknown) =>
   JSON.stringify(v, (_k, x) => (typeof x === "bigint" ? x.toString() : x));
@@ -149,7 +168,9 @@ describe("code d'utilisateur", () => {
     const code = generateUserCode();
     const bare = code.replace(/^NXC-/, "").replace("-", "");
     expect(normalizeUserCode(code.toLowerCase())).toBe(bare);
-    expect(normalizeUserCode(` ${bare.slice(0, 4)} ${bare.slice(4)} `)).toBe(bare);
+    expect(normalizeUserCode(` ${bare.slice(0, 4)} ${bare.slice(4)} `)).toBe(
+      bare,
+    );
     expect(normalizeUserCode("NXC-4F7K")).toBeNull();
     expect(normalizeUserCode("")).toBeNull();
     expect(normalizeUserCode("NXC-0000-1111")).toBeNull();
@@ -184,8 +205,12 @@ describe("POST /api/code/device/start", () => {
     const [row] = await t.db
       .select()
       .from(codeDeviceCodes)
-      .where(eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)));
-    expect(row?.userCodeHash).toBe(sha(`nxc-user:${normalizeUserCode(b.user_code)}`));
+      .where(
+        eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)),
+      );
+    expect(row?.userCodeHash).toBe(
+      sha(`nxc-user:${normalizeUserCode(b.user_code)}`),
+    );
     expect(dump(row)).not.toContain(b.device_code);
     expect(dump(row)).not.toContain(normalizeUserCode(b.user_code) as string);
     expect(row?.status).toBe("pending");
@@ -198,10 +223,18 @@ describe("POST /api/code/device/start", () => {
     const [row] = await t.db
       .select()
       .from(codeDeviceCodes)
-      .where(eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)));
-    expect(row?.deviceName).not.toMatch(/[\u0000-\u001f<>]/);
+      .where(
+        eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)),
+      );
+    const name = row?.deviceName ?? "";
+    expect(
+      [...name].some((c) => c.charCodeAt(0) < 32 || c === "<" || c === ">"),
+    ).toBe(false);
     expect((row?.deviceName ?? "").length).toBeLessThanOrEqual(60);
-    const bad = await handleDeviceStart(post("/api/code/device/start", "{pas du json"), deps());
+    const bad = await handleDeviceStart(
+      post("/api/code/device/start", "{pas du json"),
+      deps(),
+    );
     expect(bad.status).toBe(400);
     expect((await bad.json()).error.code).toBe("invalid_request");
     const big = await handleDeviceStart(
@@ -212,7 +245,10 @@ describe("POST /api/code/device/start", () => {
   });
 
   it("accepte l'absence de nom d'appareil (valeur par défaut)", async () => {
-    const res = await handleDeviceStart(post("/api/code/device/start", {}), deps());
+    const res = await handleDeviceStart(
+      post("/api/code/device/start", {}),
+      deps(),
+    );
     expect(res.status).toBe(200);
   });
 
@@ -220,7 +256,10 @@ describe("POST /api/code/device/start", () => {
     const same = { "x-forwarded-for": "203.0.113.77" };
     let last = 200;
     for (let i = 0; i < 12; i++) {
-      const res = await handleDeviceStart(post("/api/code/device/start", {}, same), deps());
+      const res = await handleDeviceStart(
+        post("/api/code/device/start", {}, same),
+        deps(),
+      );
       last = res.status;
       if (res.status === 429) {
         expect((await res.json()).error.code).toBe("rate_limited");
@@ -258,14 +297,19 @@ describe("POST /api/code/device/poll", () => {
     const malformed = await poll("court");
     expect(malformed.status).toBe(400);
     expect(malformed.body.error.code).toBe("invalid_device_code");
-    const missing = await handleDevicePoll(post("/api/code/device/poll", {}), deps());
+    const missing = await handleDevicePoll(
+      post("/api/code/device/poll", {}),
+      deps(),
+    );
     expect(missing.status).toBe(400);
   });
 
   it("expired après la durée de vie", async () => {
     const b = await start();
     clock = new Date(clock.getTime() + 601_000);
-    expect((await poll(b.device_code)).body).toMatchObject({ status: "expired" });
+    expect((await poll(b.device_code)).body).toMatchObject({
+      status: "expired",
+    });
   });
 
   it("denied quand la personne refuse", async () => {
@@ -282,7 +326,9 @@ describe("POST /api/code/device/poll", () => {
 
   it("par débit excessif répond slow_down avec un statut 200 (le CLI échouerait sur un 429)", async () => {
     const b = await start();
-    const d = deps(null, { limits: { pollPerDevice: { limit: 3, windowSeconds: 60 } } });
+    const d = deps(null, {
+      limits: { pollPerDevice: { limit: 3, windowSeconds: 60 } },
+    });
     const answers: string[] = [];
     for (let i = 0; i < 5; i++) {
       clock = new Date(clock.getTime() + 6000); // l'intervalle est respecté : seule la limite de débit parle
@@ -290,7 +336,13 @@ describe("POST /api/code/device/poll", () => {
       expect(r.status).toBe(200);
       answers.push(r.body.status);
     }
-    expect(answers).toEqual(["pending", "pending", "pending", "slow_down", "slow_down"]);
+    expect(answers).toEqual([
+      "pending",
+      "pending",
+      "pending",
+      "slow_down",
+      "slow_down",
+    ]);
   });
 });
 
@@ -298,35 +350,65 @@ describe("POST /api/code/device/approve", () => {
   it("exige une session, une origine du site, un courriel vérifié, la 2FA du personnel", async () => {
     const b = await start();
     const p = await person();
-    expect((await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(null))).status).toBe(401);
     expect(
-      (await handleDeviceApprove(approveReq({ user_code: b.user_code }, "https://evil.example"), deps(p.session))).status,
+      (
+        await handleDeviceApprove(
+          approveReq({ user_code: b.user_code }),
+          deps(null),
+        )
+      ).status,
+    ).toBe(401);
+    expect(
+      (
+        await handleDeviceApprove(
+          approveReq({ user_code: b.user_code }, "https://evil.example"),
+          deps(p.session),
+        )
+      ).status,
     ).toBe(403);
     const noOrigin = new Request(`${SITE}/api/code/device/approve`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ user_code: b.user_code }),
     });
-    expect((await handleDeviceApprove(noOrigin, deps(p.session))).status).toBe(403);
+    expect((await handleDeviceApprove(noOrigin, deps(p.session))).status).toBe(
+      403,
+    );
     const unverified = await person({ emailVerified: false });
-    const r1 = await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(unverified.session));
+    const r1 = await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(unverified.session),
+    );
     expect(r1.status).toBe(403);
     expect((await r1.json()).error.code).toBe("email_not_verified");
     const staff = await person({ isStaff: true, twoFactorEnabled: false });
-    const r2 = await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(staff.session));
+    const r2 = await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(staff.session),
+    );
     expect(r2.status).toBe(403);
     expect((await r2.json()).error.code).toBe("two_factor_required");
     // rien n'a été approuvé par ces refus
     expect((await poll(b.device_code)).body.status).toBe("pending");
     const staff2fa = await person({ isStaff: true, twoFactorEnabled: true });
-    const ok = await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(staff2fa.session));
+    const ok = await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(staff2fa.session),
+    );
     expect(ok.status).toBe(200);
   });
 
   it("un code inconnu, expiré, déjà approuvé ou mal formé donne la MÊME réponse", async () => {
     const p = await person();
     const used = await start();
-    expect((await handleDeviceApprove(approveReq({ user_code: used.user_code }), deps(p.session))).status).toBe(200);
+    expect(
+      (
+        await handleDeviceApprove(
+          approveReq({ user_code: used.user_code }),
+          deps(p.session),
+        )
+      ).status,
+    ).toBe(200);
     const stale = await start();
     clock = new Date(clock.getTime() + 601_000);
     const answers = [];
@@ -336,7 +418,10 @@ describe("POST /api/code/device/approve", () => {
       generateUserCode(), // inconnu
       "n'importe quoi", // mal formé
     ]) {
-      const res = await handleDeviceApprove(approveReq({ user_code: code }), deps(p.session));
+      const res = await handleDeviceApprove(
+        approveReq({ user_code: code }),
+        deps(p.session),
+      );
       answers.push({ status: res.status, body: await res.json() });
     }
     for (const a of answers) expect(a).toEqual(answers[0]);
@@ -349,8 +434,14 @@ describe("POST /api/code/device/approve", () => {
     const p1 = await person();
     const p2 = await person();
     const [a, c] = await Promise.all([
-      handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p1.session)),
-      handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p2.session)),
+      handleDeviceApprove(
+        approveReq({ user_code: b.user_code }),
+        deps(p1.session),
+      ),
+      handleDeviceApprove(
+        approveReq({ user_code: b.user_code }),
+        deps(p2.session),
+      ),
     ]);
     expect([a.status, c.status].sort()).toEqual([200, 400]);
   });
@@ -360,14 +451,20 @@ describe("POST /api/code/device/approve", () => {
     const p = await person();
     const other = await person();
     const res = await handleDeviceApprove(
-      approveReq({ user_code: b.user_code, organization_id: other.orgId, user_id: other.userId }),
+      approveReq({
+        user_code: b.user_code,
+        organization_id: other.orgId,
+        user_id: other.userId,
+      }),
       deps(p.session),
     );
     expect(res.status).toBe(200);
     const [row] = await t.db
       .select()
       .from(codeDeviceCodes)
-      .where(eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)));
+      .where(
+        eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)),
+      );
     expect(row?.approvedUserId).toBe(p.userId);
     expect(row?.approvedOrganizationId).toBe(p.orgId);
   });
@@ -376,7 +473,10 @@ describe("POST /api/code/device/approve", () => {
     const p = await person();
     let limited = false;
     for (let i = 0; i < 40; i++) {
-      const res = await handleDeviceApprove(approveReq({ user_code: generateUserCode() }), deps(p.session));
+      const res = await handleDeviceApprove(
+        approveReq({ user_code: generateUserCode() }),
+        deps(p.session),
+      );
       if (res.status === 429) {
         limited = true;
         break;
@@ -388,8 +488,18 @@ describe("POST /api/code/device/approve", () => {
   it("accepte le code tel que la personne le tape (minuscules, sans tirets)", async () => {
     const b = await start();
     const p = await person();
-    const typed = b.user_code.replace(/^NXC-/, "").replace("-", "").toLowerCase();
-    expect((await handleDeviceApprove(approveReq({ user_code: typed }), deps(p.session))).status).toBe(200);
+    const typed = b.user_code
+      .replace(/^NXC-/, "")
+      .replace("-", "")
+      .toLowerCase();
+    expect(
+      (
+        await handleDeviceApprove(
+          approveReq({ user_code: typed }),
+          deps(p.session),
+        )
+      ).status,
+    ).toBe(200);
   });
 });
 
@@ -398,7 +508,10 @@ describe("remise de la clé nxk_", () => {
     logs.length = 0;
     const p = await person({}, { name: "Atelier Test" });
     const b = await start("portable de Marie");
-    await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+    await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(p.session),
+    );
     clock = new Date(clock.getTime() + 6000);
     const ok = await poll(b.device_code);
     expect(ok.status).toBe(200);
@@ -411,7 +524,10 @@ describe("remise de la clé nxk_", () => {
     expect(ok.body.user_email).toBe(`${p.userId}@example.com`);
     expect(ok.body.default_model).toBe("nexora/test-model");
 
-    const [stored] = await t.db.select().from(apiKeys).where(eq(apiKeys.organizationId, p.orgId));
+    const [stored] = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.organizationId, p.orgId));
     expect(stored?.name).toBe("Nexora Code (portable de Marie)");
     expect(stored?.keyHash).toBe(sha(key));
     expect(dump(stored)).not.toContain(key);
@@ -428,7 +544,9 @@ describe("remise de la clé nxk_", () => {
     const [row] = await t.db
       .select()
       .from(codeDeviceCodes)
-      .where(eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)));
+      .where(
+        eq(codeDeviceCodes.deviceCodeHash, sha(`nxc-device:${b.device_code}`)),
+      );
     expect(row?.status).toBe("delivered");
     expect(row?.apiKeyId).toBe(stored?.id);
     expect(dump(row)).not.toContain(key);
@@ -440,7 +558,10 @@ describe("remise de la clé nxk_", () => {
   it("la clé existe même sans crédit ni abonnement (c'est la passerelle qui refuse les appels)", async () => {
     const p = await person();
     const b = await start();
-    await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+    await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(p.session),
+    );
     clock = new Date(clock.getTime() + 6000);
     const res = await poll(b.device_code);
     expect(res.body.status).toBe("approved");
@@ -451,11 +572,16 @@ describe("remise de la clé nxk_", () => {
     const keys: string[] = [];
     for (let i = 0; i < 2; i++) {
       const b = await start("même-poste");
-      await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+      await handleDeviceApprove(
+        approveReq({ user_code: b.user_code }),
+        deps(p.session),
+      );
       clock = new Date(clock.getTime() + 6000);
       keys.push((await poll(b.device_code)).body.api_key);
     }
-    expect((await authenticateApiKey(t.db, `Bearer ${keys[0]}`)).ok).toBe(false);
+    expect((await authenticateApiKey(t.db, `Bearer ${keys[0]}`)).ok).toBe(
+      false,
+    );
     expect((await authenticateApiKey(t.db, `Bearer ${keys[1]}`)).ok).toBe(true);
   });
 
@@ -464,32 +590,54 @@ describe("remise de la clé nxk_", () => {
     const keys: string[] = [];
     for (const name of ["bureau", "portable"]) {
       const b = await start(name);
-      await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+      await handleDeviceApprove(
+        approveReq({ user_code: b.user_code }),
+        deps(p.session),
+      );
       clock = new Date(clock.getTime() + 6000);
       keys.push((await poll(b.device_code)).body.api_key);
     }
-    for (const k of keys) expect((await authenticateApiKey(t.db, `Bearer ${k}`)).ok).toBe(true);
+    for (const k of keys)
+      expect((await authenticateApiKey(t.db, `Bearer ${k}`)).ok).toBe(true);
   });
 
   it("une remise simultanée ne crée qu'une seule clé", async () => {
     const p = await person();
     const b = await start("course");
-    await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+    await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(p.session),
+    );
     clock = new Date(clock.getTime() + 6000);
-    const rs = await Promise.all([poll(b.device_code), poll(b.device_code), poll(b.device_code)]);
+    const rs = await Promise.all([
+      poll(b.device_code),
+      poll(b.device_code),
+      poll(b.device_code),
+    ]);
     const approved = rs.filter((r) => r.body.status === "approved");
     expect(approved).toHaveLength(1);
-    const rows = await t.db.select().from(apiKeys).where(eq(apiKeys.organizationId, p.orgId));
+    const rows = await t.db
+      .select()
+      .from(apiKeys)
+      .where(eq(apiKeys.organizationId, p.orgId));
     expect(rows).toHaveLength(1);
   });
 
   it("une approbation périmée avant la remise ne livre rien", async () => {
     const p = await person();
     const b = await start("trop-tard");
-    await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+    await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(p.session),
+    );
     clock = new Date(clock.getTime() + 601_000);
     expect((await poll(b.device_code)).body).toEqual({ status: "expired" });
-    expect(await t.db.select().from(apiKeys).where(eq(apiKeys.organizationId, p.orgId))).toHaveLength(0);
+    expect(
+      await t.db
+        .select()
+        .from(apiKeys)
+        .where(eq(apiKeys.organizationId, p.orgId)),
+    ).toHaveLength(0);
   });
 
   it("plafond de clés atteint : refus clair à l'approbation", async () => {
@@ -497,7 +645,10 @@ describe("remise de la clé nxk_", () => {
     for (let i = 0; i < 25; i++)
       await createApiKey(t.db, { organizationId: p.orgId, name: `k${i}` });
     const b = await start("de-trop");
-    const res = await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
+    const res = await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(p.session),
+    );
     expect(res.status).toBe(409);
     expect((await res.json()).error.code).toBe("key_limit");
   });
@@ -507,19 +658,40 @@ describe("lookupDeviceRequest (page d'approbation)", () => {
   it("montre le nom de l'appareil d'une demande valide, rien d'autre pour le reste", async () => {
     const p = await person();
     const b = await start("poste de test");
-    const found = await lookupDeviceRequest(deps(p.session), p.session, b.user_code);
-    expect(found).toMatchObject({ state: "found", deviceName: "poste de test", client: "nexora-code" });
-    expect(await lookupDeviceRequest(deps(p.session), p.session, generateUserCode())).toEqual({ state: "invalid" });
-    expect(await lookupDeviceRequest(deps(p.session), p.session, "???")).toEqual({ state: "invalid" });
-    await handleDeviceApprove(approveReq({ user_code: b.user_code }), deps(p.session));
-    expect(await lookupDeviceRequest(deps(p.session), p.session, b.user_code)).toEqual({ state: "invalid" });
+    const found = await lookupDeviceRequest(
+      deps(p.session),
+      p.session,
+      b.user_code,
+    );
+    expect(found).toMatchObject({
+      state: "found",
+      deviceName: "poste de test",
+      client: "nexora-code",
+    });
+    expect(
+      await lookupDeviceRequest(deps(p.session), p.session, generateUserCode()),
+    ).toEqual({ state: "invalid" });
+    expect(
+      await lookupDeviceRequest(deps(p.session), p.session, "???"),
+    ).toEqual({ state: "invalid" });
+    await handleDeviceApprove(
+      approveReq({ user_code: b.user_code }),
+      deps(p.session),
+    );
+    expect(
+      await lookupDeviceRequest(deps(p.session), p.session, b.user_code),
+    ).toEqual({ state: "invalid" });
   });
 
   it("est limité par personne", async () => {
     const p = await person();
     let limited = false;
     for (let i = 0; i < 40; i++) {
-      const r = await lookupDeviceRequest(deps(p.session), p.session, generateUserCode());
+      const r = await lookupDeviceRequest(
+        deps(p.session),
+        p.session,
+        generateUserCode(),
+      );
       if (r.state === "rate_limited") limited = true;
     }
     expect(limited).toBe(true);

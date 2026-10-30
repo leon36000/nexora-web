@@ -1,7 +1,7 @@
 import { type Database, eq, organizations } from "@nexora/db";
 import type { Logger } from "@nexora/log";
-import { consumeRateLimit } from "../billing/rate-limit";
 import type { OrgEntitlements } from "../billing/entitlements";
+import { consumeRateLimit } from "../billing/rate-limit";
 import { authenticateApiKey } from "../gateway/keys";
 import { addressKey, errorJson, json, methodNotAllowed } from "./http";
 
@@ -36,7 +36,10 @@ export async function handleCodeCredits(
     const byAddress = await consumeRateLimit(
       db,
       `code-credits-ip:${addressKey(request)}`,
-      { ...(deps.limits?.perAddress ?? { limit: 300, windowSeconds: 60 }), now },
+      {
+        ...(deps.limits?.perAddress ?? { limit: 300, windowSeconds: 60 }),
+        now,
+      },
     );
     if (!byAddress.allowed)
       return errorJson(429, "rate_limited", "Trop de demandes.", {
@@ -50,14 +53,23 @@ export async function handleCodeCredits(
     );
     // Clé absente, inconnue, révoquée ou expirée : une seule réponse (pas de renseignement sur l'état d'une clé).
     if (!auth.ok)
-      return errorJson(401, "invalid_api_key", "Clé API invalide ou révoquée.", {
-        "www-authenticate": 'Bearer realm="nexora"',
-      });
+      return errorJson(
+        401,
+        "invalid_api_key",
+        "Clé API invalide ou révoquée.",
+        {
+          "www-authenticate": 'Bearer realm="nexora"',
+        },
+      );
 
-    const byKey = await consumeRateLimit(db, `code-credits-key:${auth.key.id}`, {
-      ...(deps.limits?.perKey ?? { limit: 120, windowSeconds: 60 }),
-      now,
-    });
+    const byKey = await consumeRateLimit(
+      db,
+      `code-credits-key:${auth.key.id}`,
+      {
+        ...(deps.limits?.perKey ?? { limit: 120, windowSeconds: 60 }),
+        now,
+      },
+    );
     if (!byKey.allowed)
       return errorJson(429, "rate_limited", "Trop de demandes.", {
         "retry-after": String(byKey.retryAfterSeconds),
