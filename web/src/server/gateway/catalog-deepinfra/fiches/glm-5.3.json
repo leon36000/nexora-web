@@ -4,30 +4,114 @@
   "name": "GLM 5.3",
   "descriptionFr": "Modèle de raisonnement à grande échelle de Z.ai pour le génie logiciel complexe et les tâches d'agent à long horizon ; texte en entrée et en sortie, fenêtre de 1 M de jetons.",
   "descriptionEn": "Large-scale reasoning model from Z.ai for complex software engineering and long-horizon agent tasks; text input and output, with a 1M-token window.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
     "author": "Z.ai",
     "family": "GLM 5",
     "releasedAt": "2026-08-25",
-    "license": { "name": "GLM-5.3 License", "openWeights": true, "url": "https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE" },
+    "license": {
+      "name": "GLM-5.3 License",
+      "openWeights": true,
+      "url": "https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE"
+    },
     "parameters": { "totalB": 753 },
     "modalities": { "input": ["text"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "contexte-long", "poids-ouverts"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "contexte-long",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/zai-org/GLM-5.3",
     "benchmarks": [
-      { "name": "Terminal Bench 2.1", "score": 88.2, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Code" },
-      { "name": "DeepSWE (v1.1)", "score": 66.9, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Code" },
-      { "name": "NL2Repo", "score": 58.0, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Code" },
-      { "name": "CyberGym", "score": 84.5, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Cybersécurité" },
-      { "name": "Toolathlon Verified", "score": 73.0, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Agents" },
-      { "name": "AutomationBench (v1.0.6)", "score": 48.2, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Agents" },
-      { "name": "Agents' Last Exam (ALE-CLI)", "score": 28.5, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Agents" },
-      { "name": "HLE w/ Tools", "score": 62.5, "unit": "%", "publisher": "Z.ai", "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3", "category": "Connaissances" }
+      {
+        "name": "Terminal Bench 2.1",
+        "score": 88.2,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Code"
+      },
+      {
+        "name": "DeepSWE (v1.1)",
+        "score": 66.9,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Code"
+      },
+      {
+        "name": "NL2Repo",
+        "score": 58.0,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Code"
+      },
+      {
+        "name": "CyberGym",
+        "score": 84.5,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Cybersécurité"
+      },
+      {
+        "name": "Toolathlon Verified",
+        "score": 73.0,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Agents"
+      },
+      {
+        "name": "AutomationBench (v1.0.6)",
+        "score": 48.2,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Agents"
+      },
+      {
+        "name": "Agents' Last Exam (ALE-CLI)",
+        "score": 28.5,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Agents"
+      },
+      {
+        "name": "HLE w/ Tools",
+        "score": 62.5,
+        "unit": "%",
+        "publisher": "Z.ai",
+        "sourceUrl": "https://huggingface.co/zai-org/GLM-5.3",
+        "category": "Connaissances"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle", "url": "https://huggingface.co/zai-org/GLM-5.3", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt (licence, date de création, taille)", "url": "https://huggingface.co/api/models/zai-org/GLM-5.3", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/zai-org/GLM-5.3", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle",
+        "url": "https://huggingface.co/zai-org/GLM-5.3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt (licence, date de création, taille)",
+        "url": "https://huggingface.co/api/models/zai-org/GLM-5.3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/zai-org/GLM-5.3",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

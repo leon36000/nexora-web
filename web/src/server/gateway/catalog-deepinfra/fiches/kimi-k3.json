@@ -4,30 +4,115 @@
   "name": "Kimi K3",
   "descriptionFr": "Modèle ouvert multimodal de Moonshot AI (2,8 T de paramètres, 104 B actifs) à raisonnement, pour le code complexe, les workflows agentiques et la compréhension d'images et de vidéos, sur 1 M de jetons.",
   "descriptionEn": "Open-weight multimodal model from Moonshot AI (2.8T parameters, 104B active) with reasoning, for complex coding, agentic workflows and image and video understanding, over 1M tokens.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "Moonshot AI",
     "family": "Kimi K3",
     "releasedAt": "2026-06-13",
-    "license": { "name": "Kimi K3 License", "openWeights": true, "url": "https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE" },
+    "license": {
+      "name": "Kimi K3 License",
+      "openWeights": true,
+      "url": "https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE"
+    },
     "parameters": { "totalB": 2800, "activeB": 104 },
     "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "contexte-long",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/moonshotai/Kimi-K3",
     "benchmarks": [
-      { "name": "GPQA Diamond", "score": 93.5, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Raisonnement" },
-      { "name": "DeepSWE", "score": 67.5, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Code" },
-      { "name": "Terminal-Bench 2.1", "score": 88.3, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Code" },
-      { "name": "ProgramBench", "score": 77.8, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Code" },
-      { "name": "BrowseComp", "score": 91.2, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Agents" },
-      { "name": "OSWorld-Verified", "score": 84.8, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Agents" },
-      { "name": "HLE-Full (sans outils)", "score": 43.5, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Connaissances" },
-      { "name": "OmniDocBench", "score": 91.1, "unit": "%", "publisher": "Moonshot AI", "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3", "category": "Multimodal" }
+      {
+        "name": "GPQA Diamond",
+        "score": 93.5,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "DeepSWE",
+        "score": 67.5,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Code"
+      },
+      {
+        "name": "Terminal-Bench 2.1",
+        "score": 88.3,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Code"
+      },
+      {
+        "name": "ProgramBench",
+        "score": 77.8,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Code"
+      },
+      {
+        "name": "BrowseComp",
+        "score": 91.2,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Agents"
+      },
+      {
+        "name": "OSWorld-Verified",
+        "score": 84.8,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Agents"
+      },
+      {
+        "name": "HLE-Full (sans outils)",
+        "score": 43.5,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Connaissances"
+      },
+      {
+        "name": "OmniDocBench",
+        "score": 91.1,
+        "unit": "%",
+        "publisher": "Moonshot AI",
+        "sourceUrl": "https://huggingface.co/moonshotai/Kimi-K3",
+        "category": "Multimodal"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle", "url": "https://huggingface.co/moonshotai/Kimi-K3", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt (date de création, taille)", "url": "https://huggingface.co/api/models/moonshotai/Kimi-K3", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/moonshotai/Kimi-K3", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle",
+        "url": "https://huggingface.co/moonshotai/Kimi-K3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt (date de création, taille)",
+        "url": "https://huggingface.co/api/models/moonshotai/Kimi-K3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/moonshotai/Kimi-K3",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

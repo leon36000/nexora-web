@@ -4,27 +4,88 @@
   "name": "MiniMax M3",
   "descriptionFr": "Modèle multimodal natif de MiniMax (environ 428 B paramètres, 23 B actifs) : texte, image et vidéo en entrée, contexte de 1 M de jetons via une attention parcimonieuse, pour le code et les tâches agentiques.",
   "descriptionEn": "Native multimodal MiniMax model (about 428B parameters, 23B active): text, image and video input, 1M-token context via sparse attention, for coding and agentic tasks.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "MiniMax",
     "family": "MiniMax M3",
     "releasedAt": "2026-06-02",
-    "license": { "name": "MiniMax Community License", "openWeights": true, "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE" },
+    "license": {
+      "name": "MiniMax Community License",
+      "openWeights": true,
+      "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE"
+    },
     "parameters": { "totalB": 428, "activeB": 23 },
     "modalities": { "input": ["text", "image", "video"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "contexte-long",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
     "benchmarks": [
-      { "name": "SWE-bench Verified", "score": 80.5, "unit": "%", "publisher": "MiniMax", "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3", "category": "Code" },
-      { "name": "SWE-bench Pro", "score": 59, "unit": "%", "publisher": "MiniMax", "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3", "category": "Code" },
-      { "name": "Apex Agents", "score": 27.7, "unit": "%", "publisher": "MiniMax", "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3", "category": "Agents" },
-      { "name": "SkillsBench (v1.1)", "score": 53, "unit": "%", "publisher": "BenchFlow (classement SkillsBench)", "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3", "category": "Agents" }
+      {
+        "name": "SWE-bench Verified",
+        "score": 80.5,
+        "unit": "%",
+        "publisher": "MiniMax",
+        "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "category": "Code"
+      },
+      {
+        "name": "SWE-bench Pro",
+        "score": 59,
+        "unit": "%",
+        "publisher": "MiniMax",
+        "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "category": "Code"
+      },
+      {
+        "name": "Apex Agents",
+        "score": 27.7,
+        "unit": "%",
+        "publisher": "MiniMax",
+        "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "category": "Agents"
+      },
+      {
+        "name": "SkillsBench (v1.1)",
+        "score": 53,
+        "unit": "%",
+        "publisher": "BenchFlow (classement SkillsBench)",
+        "sourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "category": "Agents"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle (résultats d'évaluation)", "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt (date de création, taille)", "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M3", "readAt": "2026-10-29" },
-      { "label": "Licence MiniMax Community (fichier LICENSE du dépôt)", "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/MiniMaxAI/MiniMax-M3", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle (résultats d'évaluation)",
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt (date de création, taille)",
+        "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M3",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Licence MiniMax Community (fichier LICENSE du dépôt)",
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/MiniMaxAI/MiniMax-M3",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

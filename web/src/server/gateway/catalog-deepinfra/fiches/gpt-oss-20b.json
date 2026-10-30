@@ -4,31 +4,109 @@
   "name": "gpt-oss-20b",
   "descriptionFr": "Modèle ouvert d'OpenAI de 21 Md de paramètres (3,6 Md actifs), prévu pour une latence plus faible et les usages locaux ou spécialisés. Raisonnement et appels de fonctions natifs ; licence Apache 2.0.",
   "descriptionEn": "Open-weight OpenAI model with 21B parameters (3.6B active), intended for lower latency and local or specialized use. Native reasoning and function calling; Apache 2.0 license.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
     "author": "OpenAI",
     "family": "gpt-oss",
     "releasedAt": "2025-08-05",
     "knowledgeCutoff": "2024-06",
-    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://huggingface.co/openai/gpt-oss-20b/blob/main/LICENSE" },
+    "license": {
+      "name": "Apache-2.0",
+      "openWeights": true,
+      "url": "https://huggingface.co/openai/gpt-oss-20b/blob/main/LICENSE"
+    },
     "parameters": { "totalB": 21, "activeB": 3.6 },
     "modalities": { "input": ["text"], "output": ["text"] },
     "tags": ["raisonnement", "agents", "code", "rapide", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/openai/gpt-oss-20b",
     "benchmarks": [
-      { "name": "AIME 2025 (no tools)", "score": 91.7, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Mathématiques" },
-      { "name": "GPQA Diamond (no tools)", "score": 71.5, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Raisonnement" },
-      { "name": "HLE (no tools)", "score": 10.9, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Connaissances" },
-      { "name": "MMLU", "score": 85.3, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Connaissances" },
-      { "name": "HealthBench", "score": 42.5, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Connaissances" },
-      { "name": "SWE-Bench Verified", "score": 60.7, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Code" },
-      { "name": "Tau-Bench Retail", "score": 54.8, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Agents" },
-      { "name": "Tau-Bench Airline", "score": 38.0, "unit": "%", "publisher": "OpenAI", "sourceUrl": "https://arxiv.org/html/2508.10925", "category": "Agents" }
+      {
+        "name": "AIME 2025 (no tools)",
+        "score": 91.7,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "GPQA Diamond (no tools)",
+        "score": 71.5,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "HLE (no tools)",
+        "score": 10.9,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Connaissances"
+      },
+      {
+        "name": "MMLU",
+        "score": 85.3,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Connaissances"
+      },
+      {
+        "name": "HealthBench",
+        "score": 42.5,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Connaissances"
+      },
+      {
+        "name": "SWE-Bench Verified",
+        "score": 60.7,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Code"
+      },
+      {
+        "name": "Tau-Bench Retail",
+        "score": 54.8,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Agents"
+      },
+      {
+        "name": "Tau-Bench Airline",
+        "score": 38.0,
+        "unit": "%",
+        "publisher": "OpenAI",
+        "sourceUrl": "https://arxiv.org/html/2508.10925",
+        "category": "Agents"
+      }
     ],
     "sources": [
-      { "label": "Carte du modèle gpt-oss-120b & gpt-oss-20b, OpenAI (arXiv 2508.10925, tableau 3, réglage « high »)", "url": "https://arxiv.org/html/2508.10925", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, fiche du modèle openai/gpt-oss-20b", "url": "https://huggingface.co/openai/gpt-oss-20b", "readAt": "2026-10-29" },
-      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+      {
+        "label": "Carte du modèle gpt-oss-120b & gpt-oss-20b, OpenAI (arXiv 2508.10925, tableau 3, réglage « high »)",
+        "url": "https://arxiv.org/html/2508.10925",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, fiche du modèle openai/gpt-oss-20b",
+        "url": "https://huggingface.co/openai/gpt-oss-20b",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)",
+        "url": "https://api.deepinfra.com/models/list",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

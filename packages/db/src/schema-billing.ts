@@ -7,6 +7,7 @@ import {
   integer,
   jsonb,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uniqueIndex,
@@ -445,6 +446,15 @@ export const subscriptions = pgTable(
       .notNull()
       .default(0),
     configVersion: text("config_version"),
+    /** Période de facturation de l'offre au dernier événement appliqué (`month` ou `year`) ; NULL pour un VPS. */
+    billingInterval: text("billing_interval").$type<"month" | "year">(),
+    /**
+     * Espace disque de l'offre (octets), copié de l'offre Directus (`included_storage_gb`) à chaque facture
+     * appliquée, comme `configVersion` : le quota se lit donc dans la base `app` seule, sans appel à Directus.
+     */
+    storageQuotaBytes: bigint("storage_quota_bytes", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
     createdAt: ts("created_at").notNull().defaultNow(),
     updatedAt: ts("updated_at").notNull().defaultNow(),
   },
@@ -455,6 +465,68 @@ export const subscriptions = pgTable(
       "subscriptions_status_check",
       sql`${t.status} IN ('incomplete','incomplete_expired','trialing','active','past_due','unpaid','paused','canceled','gifted')`,
     ),
+    check(
+      "subscriptions_interval_check",
+      sql`${t.billingInterval} IS NULL OR ${t.billingInterval} IN ('month','year')`,
+    ),
+    check(
+      "subscriptions_storage_quota_check",
+      sql`${t.storageQuotaBytes} >= 0`,
+    ),
+  ],
+);
+
+/** Produits qui consomment de l'espace disque du client (quota commun à l'organisation, ventilé par produit). */
+export const STORAGE_PRODUCTS = [
+  "workstudio",
+  "code",
+  "rag",
+  "creative",
+  "bot",
+] as const;
+export type StorageProduct = (typeof STORAGE_PRODUCTS)[number];
+
+/**
+ * Espace utilisé par organisation et par produit (octets). Une ligne par (organisation, produit) ; écrite seulement
+ * par `recordStorageUsage` (`web/src/server/billing/entitlements.ts`), sous le verrou de `organization_storage`.
+ */
+export const storageUsage = pgTable(
+  "storage_usage",
+  {
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    product: text("product").$type<StorageProduct>().notNull(),
+    usedBytes: bigint("used_bytes", { mode: "bigint" }).notNull(),
+    updatedAt: ts("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.organizationId, t.product] }),
+    check("storage_usage_nonneg", sql`${t.usedBytes} >= 0`),
+    check(
+      "storage_usage_product_check",
+      sql`${t.product} IN ('workstudio','code','rag','creative','bot')`,
+    ),
+  ],
+);
+
+/**
+ * Go supplémentaires d'une organisation (octets, en plus de l'espace de son offre). La ligne sert aussi de verrou aux
+ * écritures d'usage de l'organisation (`SELECT … FOR UPDATE`), ce qui rend la vérification du quota atomique.
+ */
+export const organizationStorage = pgTable(
+  "organization_storage",
+  {
+    organizationId: text("organization_id")
+      .primaryKey()
+      .references(() => organizations.id, { onDelete: "restrict" }),
+    extraBytes: bigint("extra_bytes", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    updatedAt: ts("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    check("organization_storage_extra_nonneg", sql`${t.extraBytes} >= 0`),
   ],
 );
 

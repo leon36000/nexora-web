@@ -24,21 +24,10 @@
       "activeB": 22
     },
     "modalities": {
-      "input": [
-        "text",
-        "image",
-        "video"
-      ],
-      "output": [
-        "text"
-      ]
+      "input": ["text", "image", "video"],
+      "output": ["text"]
     },
-    "tags": [
-      "vision",
-      "code",
-      "agents",
-      "poids-ouverts"
-    ],
+    "tags": ["vision", "code", "agents", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct",
     "benchmarks": [
       {

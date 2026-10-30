@@ -86,27 +86,40 @@ const render = (
   );
 
 describe("portefeuille : client ordinaire", () => {
-  it("fr : solde, 2,5 M de 5 M de jetons inclus utilisés, échéance, lots, montants proposés", () => {
+  it("fr : solde, 220 de 440 crédits d’abonnement utilisés, échéance, lots, montants proposés", () => {
     const html = render("fr");
     expect(html).toContain("12,3457");
-    expect(html).toMatch(/2,5(\s| )M de 5(\s| )M de jetons inclus utilisés/);
+    expect(html).toMatch(/220 de 440 crédits d’abonnement utilisés/);
     expect(html).toContain('role="progressbar"');
     expect(html).toContain('aria-valuenow="50"');
     expect(html).toContain("Ajouter des fonds");
     // Montants proposés : 20, 50, 100, 250, 500 $.
     expect(html).toContain('aria-label="20,00');
     expect(html).toContain('name="amount"');
-    // Équivalence en valeur expliquée honnêtement.
-    expect(html).toContain("équivalence en valeur");
+    // Ordre d'usage expliqué : l'abonnement (qui expire) d'abord, la recharge (sans expiration) ensuite.
+    expect(html).toContain("servent en premier");
+    expect(html).not.toMatch(/jetons inclus|équivalence en valeur/);
     expect(html).toContain("Crédits inclus (abonnement)");
     expect(html).toContain("Achat de crédits");
   });
 
   it("en : mêmes éléments en anglais", () => {
     const html = render("en");
-    expect(html).toMatch(/2\.5(\s| )M of 5(\s| )M included tokens used/);
-    expect(html).toContain("value equivalent");
+    expect(html).toMatch(/220 of 440 subscription credits used/);
+    expect(html).not.toMatch(/included tokens|value equivalent/);
     expect(html).toContain("Add funds");
+  });
+
+  it("la note d'expiration dit que la recharge n'expire pas (0 mois), ou donne la durée réglée", () => {
+    const none = render("fr", {
+      config: { ...config, creditExpiryMonths: 0 },
+    });
+    expect(none).toContain("Les crédits de recharge n’expirent pas");
+    expect(none).not.toMatch(/expirent 0 mois/);
+    const dated = render("fr", {
+      config: { ...config, creditExpiryMonths: 12 },
+    });
+    expect(dated).toMatch(/expirent 12 mois après l’achat/);
   });
 
   it("recharge automatique : désactivée et expliquée, pas de formulaire", () => {
@@ -120,7 +133,7 @@ describe("portefeuille : client ordinaire", () => {
     const html = render("fr", {
       wallet: { lots: [], included: null },
     });
-    expect(html).toContain("Aucun crédit inclus pour l’instant");
+    expect(html).toContain("Aucun crédit d’abonnement pour l’instant");
     expect(html).not.toContain('role="progressbar"');
   });
 

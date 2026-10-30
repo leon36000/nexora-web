@@ -4,29 +4,107 @@
   "name": "Ling 3.1 Flash",
   "descriptionFr": "Modèle à raisonnement hybride de inclusionAI (560 B paramètres, 25 B actifs) pour les tâches réelles complexes : agents généralistes, recherche, bureautique et génie logiciel.",
   "descriptionEn": "Hybrid reasoning model from inclusionAI (560B parameters, 25B active) for complex real-world tasks: general agents, search, office work and software engineering.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
     "author": "inclusionAI",
     "family": "Ling 3.1",
     "releasedAt": "2026-10-13",
-    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/inclusionAI/Ling-3.1-flash" },
+    "license": {
+      "name": "MIT",
+      "openWeights": true,
+      "url": "https://huggingface.co/inclusionAI/Ling-3.1-flash"
+    },
     "parameters": { "totalB": 560, "activeB": 25 },
     "modalities": { "input": ["text"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "poids-ouverts", "rapide", "economique"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "poids-ouverts",
+      "rapide",
+      "economique"
+    ],
     "homepageUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
     "benchmarks": [
-      { "name": "Terminal-Bench 2.1", "score": 81.18, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
-      { "name": "SWE-bench Pro", "score": 68.74, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
-      { "name": "SWE-bench Multilingual (resolved)", "score": 88.5, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
-      { "name": "DeepSWE", "score": 59.7, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
-      { "name": "Terminal-Bench 4.0", "score": 46.03, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Code" },
-      { "name": "SkillsBench v1.1", "score": 68.7, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Agents" },
-      { "name": "HLE", "score": 37.44, "unit": "%", "publisher": "inclusionAI", "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "category": "Connaissances" }
+      {
+        "name": "Terminal-Bench 2.1",
+        "score": 81.18,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Code"
+      },
+      {
+        "name": "SWE-bench Pro",
+        "score": 68.74,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Code"
+      },
+      {
+        "name": "SWE-bench Multilingual (resolved)",
+        "score": 88.5,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Code"
+      },
+      {
+        "name": "DeepSWE",
+        "score": 59.7,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Code"
+      },
+      {
+        "name": "Terminal-Bench 4.0",
+        "score": 46.03,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Code"
+      },
+      {
+        "name": "SkillsBench v1.1",
+        "score": 68.7,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Agents"
+      },
+      {
+        "name": "HLE",
+        "score": 37.44,
+        "unit": "%",
+        "publisher": "inclusionAI",
+        "sourceUrl": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "category": "Connaissances"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle (présentation, résultats d'évaluation)", "url": "https://huggingface.co/inclusionAI/Ling-3.1-flash", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/inclusionAI/Ling-3.1-flash", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/inclusionAI/Ling-3.1-flash", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle (présentation, résultats d'évaluation)",
+        "url": "https://huggingface.co/inclusionAI/Ling-3.1-flash",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt (licence MIT, date de création, taille)",
+        "url": "https://huggingface.co/api/models/inclusionAI/Ling-3.1-flash",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/inclusionAI/Ling-3.1-flash",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

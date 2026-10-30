@@ -4,30 +4,118 @@
   "name": "MiMo V2.6 Pro",
   "descriptionFr": "Modèle phare de la série MiMo-V2.6 de Xiaomi : mélange d'experts de 1,02 T paramètres (42 B actifs), omnimodal (texte, image, vidéo, audio), fenêtre de 1 M de jetons, à raisonnement et appel d'outils.",
   "descriptionEn": "Flagship of Xiaomi's MiMo-V2.6 series: a 1.02T-parameter Mixture-of-Experts model (42B active), omnimodal (text, image, video, audio) with a 1M-token context, reasoning and tool use.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "Xiaomi",
     "family": "MiMo V2.6",
     "releasedAt": "2026-09-21",
-    "license": { "name": "MIT", "openWeights": true, "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL" },
+    "license": {
+      "name": "MIT",
+      "openWeights": true,
+      "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL"
+    },
     "parameters": { "totalB": 1020, "activeB": 42 },
-    "modalities": { "input": ["text", "image", "video", "audio"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "contexte-long", "poids-ouverts"],
+    "modalities": {
+      "input": ["text", "image", "video", "audio"],
+      "output": ["text"]
+    },
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "contexte-long",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
     "benchmarks": [
-      { "name": "Terminal Bench 2.1", "score": 89.9, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Code" },
-      { "name": "DeepSWE v1.1", "score": 71.9, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Code" },
-      { "name": "Terminal Bench 4.0", "score": 34.9, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Code" },
-      { "name": "OSWorld-Verified", "score": 82.0, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
-      { "name": "Toolathlon-Verified", "score": 76.9, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
-      { "name": "Agents’ Last Exam", "score": 31.6, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
-      { "name": "AutomationBench v1.0.6", "score": 53.1, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Agents" },
-      { "name": "CyberGym", "score": 94.0, "unit": "%", "publisher": "Xiaomi MiMo", "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "category": "Cybersécurité" }
+      {
+        "name": "Terminal Bench 2.1",
+        "score": 89.9,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Code"
+      },
+      {
+        "name": "DeepSWE v1.1",
+        "score": 71.9,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Code"
+      },
+      {
+        "name": "Terminal Bench 4.0",
+        "score": 34.9,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Code"
+      },
+      {
+        "name": "OSWorld-Verified",
+        "score": 82.0,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Agents"
+      },
+      {
+        "name": "Toolathlon-Verified",
+        "score": 76.9,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Agents"
+      },
+      {
+        "name": "Agents’ Last Exam",
+        "score": 31.6,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Agents"
+      },
+      {
+        "name": "AutomationBench v1.0.6",
+        "score": 53.1,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Agents"
+      },
+      {
+        "name": "CyberGym",
+        "score": 94.0,
+        "unit": "%",
+        "publisher": "Xiaomi MiMo",
+        "sourceUrl": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "category": "Cybersécurité"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle MiMo-V2.6-Pro-RL (README, tableau de résultats)", "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "readAt": "2026-10-29" },
-      { "label": "Hugging Face, API du dépôt MiMo-V2.6-Pro-RL (licence MIT, date de création, taille)", "url": "https://huggingface.co/api/models/XiaomiMiMo/MiMo-V2.6-Pro-RL", "readAt": "2026-10-29" },
-      { "label": "Données DeepInfra (contexte, quantification) : data/selection-deepinfra.json, source API DeepInfra", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle MiMo-V2.6-Pro-RL (README, tableau de résultats)",
+        "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Hugging Face, API du dépôt MiMo-V2.6-Pro-RL (licence MIT, date de création, taille)",
+        "url": "https://huggingface.co/api/models/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "Données DeepInfra (contexte, quantification) : data/selection-deepinfra.json, source API DeepInfra",
+        "url": "https://api.deepinfra.com/models/list",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

@@ -1,5 +1,5 @@
 import type { Lang } from "@/i18n/config";
-import type { SubscriptionPlan } from "@/server/billing/plans";
+import { BYTES_PER_GB, type SubscriptionPlan } from "@/server/billing/plans";
 
 /**
  * Page Tarifs : regroupement des offres d'abonnement PUBLIÉES et données structurées. Rien n'est inventé : tout
@@ -17,20 +17,31 @@ interface PriceOption {
   perMonthCents: number;
   /** Faux tant que le prix n'est pas poussé vers Stripe : l'offre ne se souscrit pas encore. */
   sellable: boolean;
+  /** Crédits versés pour la période de cette ligne (annuel : ceux de l'année, versés un douzième par mois). */
+  credits: number;
 }
 
 export interface PricingOffer {
   family: string;
+  /** Type de l'offre : `nexora` (palier), `storage` (Go supplémentaire)… */
+  kind: string;
+  /** Espace disque inclus, en Go (0 : aucun). */
+  includedStorageGb: number;
   name: string;
   description: string | null;
   features: string[];
   includedCreditsCents: number;
+  /** Crédits par mois (1 crédit = 1 ¢ CA) : ceux de la ligne mensuelle, sinon un douzième de ceux de l'annuelle. */
+  creditsPerMonth: number;
   trialDays: number;
   options: Partial<Record<Period, PriceOption>>;
 }
 
 const LOCALE: Record<Lang, string> = { fr: "fr-CA", en: "en-CA" };
 const OTHER: Record<Lang, string> = { fr: "en-CA", en: "fr-CA" };
+
+const storageGb = (plan: SubscriptionPlan) =>
+  Math.floor((plan.includedStorageBytes ?? 0) / BYTES_PER_GB);
 
 export function groupOffers(
   plans: readonly SubscriptionPlan[],
@@ -49,15 +60,19 @@ export function groupOffers(
           ? Math.round(plan.priceCents / 12)
           : plan.priceCents,
       sellable: Boolean(plan.stripePriceId),
+      credits: plan.includedCreditsCents,
     };
     const existing = byFamily.get(plan.family);
     if (!existing) {
       byFamily.set(plan.family, {
         family: plan.family,
+        kind: plan.kind,
+        includedStorageGb: storageGb(plan),
         name: tr?.name || plan.code,
         description: tr?.description ?? null,
         features: tr?.features ?? [],
         includedCreditsCents: plan.includedCreditsCents,
+        creditsPerMonth: 0,
         trialDays: plan.trialDays,
         options: { [plan.interval]: option },
       });
@@ -70,7 +85,22 @@ export function groupOffers(
       existing.trialDays = Math.max(existing.trialDays, plan.trialDays);
     }
   }
+  for (const offer of byFamily.values())
+    offer.creditsPerMonth =
+      offer.options.month?.credits ??
+      Math.round((offer.options.year?.credits ?? 0) / 12);
   return [...byFamily.values()];
+}
+
+/** Paliers d'abonnement d'un côté, offre complémentaire « Go supplémentaire » (type `storage`) de l'autre. */
+export function splitOffers(offers: readonly PricingOffer[]): {
+  tiers: PricingOffer[];
+  storageAddon: PricingOffer | null;
+} {
+  return {
+    tiers: offers.filter((o) => o.kind !== "storage"),
+    storageAddon: offers.find((o) => o.kind === "storage") ?? null,
+  };
 }
 
 /** Économie annoncée de la facturation annuelle, en % entier ; `null` si elle n'existe pas réellement. */

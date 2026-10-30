@@ -22,16 +22,10 @@
       "totalB": 8
     },
     "modalities": {
-      "input": [
-        "text"
-      ],
-      "output": [
-        "text"
-      ]
+      "input": ["text"],
+      "output": ["text"]
     },
-    "tags": [
-      "poids-ouverts"
-    ],
+    "tags": ["poids-ouverts"],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Reranker-8B",
     "sources": [
       {

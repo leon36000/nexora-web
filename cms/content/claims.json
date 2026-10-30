@@ -1,7 +1,7 @@
 {
-  "version": 7,
-  "date": "2026-10-29",
-  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56).",
+  "version": 8,
+  "date": "2026-10-30",
+  "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56). Version 8 (30/10/2026) : page Tarifs refaite pour le modèle à crédits (affirmations CL-T01 à CL-T10, citées par web/src/i18n/dictionaries/pricing-fr-CA.ts).",
   "claims": [
     {
       "id": "CL-01",
@@ -2305,6 +2305,126 @@
       "source_version": "Dépôt root/nexora-workstudio (GitLab privé de Nexora AI), branche main, commit 0888af53 (lu le 29/10/2026), workstudio/apps/sim/lib/nexora/document-ai/fields.ts, docs/gabarits-quebec.md",
       "approval_status": "en_revue",
       "valid_from": "2026-10-29",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T01",
+      "kind": "offre",
+      "statement": "Un abonnement Nexora comprend des crédits mensuels et de l'espace disque ; sans abonnement, on recharge des crédits.",
+      "scope": "Page Tarifs : principe du modèle économique.",
+      "evidence": "Décision du fondateur du 30/10/2026 (conception, section « But » et « Ce que le fondateur a décidé »). Mise en œuvre : web/src/server/billing/entitlements.ts.",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T02",
+      "kind": "fait",
+      "statement": "Un crédit vaut un cent canadien de jetons au prix du catalogue de modèles ; l'équivalent en jetons affiché est calculé depuis les prix publiés du catalogue, jamais saisi à la main.",
+      "scope": "Page Tarifs : définition du crédit et tableau d'équivalence.",
+      "evidence": "Conception, décision 1 ; calcul dans web/src/lib/credit-equivalence.ts à partir des prix de vente publiés (coût amont × taux approuvé + marge).",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T03",
+      "kind": "fait",
+      "statement": "Les crédits d'abonnement expirent à la fin de leur période et sont utilisés en premier ; les crédits de recharge n'expirent pas.",
+      "scope": "Page Tarifs : recharge et expiration.",
+      "evidence": "Conception, décision 3 ; grand livre packages/db/src/ledger.ts (consommation par ordre d'échéance), BILLING_CREDIT_EXPIRY_MONTHS = 0 par défaut, web/src/server/billing/entitlements.test.ts.",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T04",
+      "kind": "fait",
+      "statement": "Tout appel à un modèle d'IA consomme des crédits ; les outils Nexora qui n'appellent aucun modèle n'en consomment pas.",
+      "scope": "Page Tarifs : ce qui consomme des crédits.",
+      "evidence": "Conception, section « But » et décision 4 ; passerelle web/src/server/gateway/proxy.ts (réservation puis règlement au coût réel).",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T05",
+      "kind": "fait",
+      "statement": "L'espace disque est compté par organisation, tous produits confondus. Au-delà du quota, l'écriture est refusée avec un message clair, jusqu'à la libération d'espace ou l'ajout de gigaoctets ; libérer de l'espace reste permis.",
+      "scope": "Page Tarifs : espace disque.",
+      "evidence": "Conception, décision 5 ; web/src/server/billing/entitlements.ts (recordStorageUsage) et son test, migration 0027.",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T06",
+      "kind": "statut",
+      "statement": "Les prix des paliers et des forfaits de recharge ne sont pas encore publiés ; la page n'affiche que ce que Nexora a décidé de publier.",
+      "scope": "Page Tarifs : état « prix à venir ».",
+      "evidence": "Conception, section « Reste au fondateur » (valider les prix) ; offres et forfaits en brouillon dans Directus (cms/scripts/lib/plans-seed.ts), non lus par le public.",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T07",
+      "kind": "statut",
+      "statement": "Il n'y a pas d'essai gratuit des offres Nexora.",
+      "scope": "Page Tarifs : offres d'abonnement.",
+      "evidence": "Consigne du fondateur du 29/10/2026 (aucun essai gratuit) ; trial_days = 0 sur toutes les offres préparées (cms/scripts/lib/plans-seed.ts). Voir aussi CL-61 pour OPSYS-AI.",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T08",
+      "kind": "fait",
+      "statement": "Les crédits d'une offre annuelle sont versés un douzième par mois, et chaque douzième expire à la fin de son mois.",
+      "scope": "Page Tarifs : offres annuelles.",
+      "evidence": "Conception, décision 2 ; tâche ledger.grant-tranches du worker (packages/db/src/subscription-credits.ts).",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T09",
+      "kind": "fait",
+      "statement": "Quand il ne reste plus de crédits, l'appel aux modèles est refusé avec un message qui renvoie vers la recharge et vers l'abonnement.",
+      "scope": "Page Tarifs : questions fréquentes.",
+      "evidence": "Conception, décision 4 ; web/src/server/gateway/errors.ts et son test, web/src/server/auth/workstudio-access.ts (403 credits_required).",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-T10",
+      "kind": "fait",
+      "statement": "La résiliation d'un abonnement se fait depuis l'espace client et prend effet à la fin de la période payée.",
+      "scope": "Page Tarifs : questions fréquentes.",
+      "evidence": "docs/guide-operateur.md §6.3 : portail client Stripe restreint, résiliation en fin de période sans prorata.",
+      "evidence_url": null,
+      "source_version": "Conception du 30/10/2026 (demande du fondateur), docs/superpowers/specs/2026-10-30-credits-produits-design.md, dépôt nexora-web",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-30",
       "valid_until": null
     }
   ],

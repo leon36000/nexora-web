@@ -112,30 +112,6 @@ export function windowProblems(windows: readonly TimeWindow[]): string[] {
   return problems;
 }
 
-/**
- * Valeur, au prix de vente d'un modèle, de `tokens` jetons dont `outputShareBps` (points de base, 0 à 10 000) sont
- * de la sortie : sert à fixer les crédits inclus d'une offre (« 5 millions de jetons » = tant de dollars de crédits
- * mensuels du modèle par défaut). Un forfait en crédits plutôt qu'en jetons garde la marge : un modèle plus cher
- * consomme le forfait plus vite.
- */
-export function tokensValueMicro(
-  tokens: number,
-  price: PerMillion,
-  outputShareBps: number,
-): bigint {
-  assertTokens(tokens);
-  if (
-    !Number.isInteger(outputShareBps) ||
-    outputShareBps < 0 ||
-    outputShareBps > 10_000
-  )
-    throw new RangeError("part de sortie : entier de 0 à 10 000 attendu");
-  const out = BigInt(outputShareBps);
-  const total =
-    BigInt(tokens) * (price.input * (BPS - out) + price.output * out);
-  return ceilDiv(total, PER_MILLION * BPS);
-}
-
 /** Prix amont (micro-USD par million) converti en micro-CAD au taux approuvé, arrondi vers le haut. */
 export function upstreamCadMicro(
   usdMicro: bigint,

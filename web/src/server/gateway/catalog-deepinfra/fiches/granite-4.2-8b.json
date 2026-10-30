@@ -4,30 +4,108 @@
   "name": "Granite 4.2 8B",
   "descriptionFr": "Modèle de raisonnement de taille moyenne (8 milliards de paramètres) d'IBM, avec chaîne de pensée intégrée et trois modes de réflexion. Il sert au raisonnement, au code, à l'appel d'outils et aux flux agentiques.",
   "descriptionEn": "Mid-size reasoning model (8 billion parameters) from IBM, with built-in chain-of-thought and three thinking modes. It serves reasoning, code, tool calling and agent workflows.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
     "author": "IBM",
     "family": "Granite 4.2",
     "releasedAt": "2026-08-25",
-    "license": { "name": "Apache 2.0", "openWeights": true, "url": "https://www.apache.org/licenses/LICENSE-2.0" },
+    "license": {
+      "name": "Apache 2.0",
+      "openWeights": true,
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
     "parameters": { "totalB": 8 },
     "modalities": { "input": ["text"], "output": ["text"] },
     "tags": ["raisonnement", "code", "agents", "multilingue", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b",
     "benchmarks": [
-      { "name": "SWE Bench Verified", "score": 47.67, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Code" },
-      { "name": "LiveCodeBench v6", "score": 73.24, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Code" },
-      { "name": "AIME25", "score": 86.67, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Mathématiques" },
-      { "name": "HMMT Feb25", "score": 78.33, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Mathématiques" },
-      { "name": "GPQA", "score": 64.14, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Raisonnement" },
-      { "name": "MMLU-Pro", "score": 74.04, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Connaissances" },
-      { "name": "BFCL (v4)", "score": 52.39, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Agents" },
-      { "name": "IFBench (prompt)", "score": 79.33, "unit": "%", "publisher": "IBM", "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results", "category": "Instructions" }
+      {
+        "name": "SWE Bench Verified",
+        "score": 47.67,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Code"
+      },
+      {
+        "name": "LiveCodeBench v6",
+        "score": 73.24,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Code"
+      },
+      {
+        "name": "AIME25",
+        "score": 86.67,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "HMMT Feb25",
+        "score": 78.33,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "GPQA",
+        "score": 64.14,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "MMLU-Pro",
+        "score": 74.04,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Connaissances"
+      },
+      {
+        "name": "BFCL (v4)",
+        "score": 52.39,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Agents"
+      },
+      {
+        "name": "IFBench (prompt)",
+        "score": 79.33,
+        "unit": "%",
+        "publisher": "IBM",
+        "sourceUrl": "https://huggingface.co/ibm-granite/granite-4.2-8b#evaluation-results",
+        "category": "Instructions"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle ibm-granite/granite-4.2-8b", "url": "https://huggingface.co/ibm-granite/granite-4.2-8b", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, page du modèle", "url": "https://deepinfra.com/ibm-granite/granite-4.2-8b", "readAt": "2026-10-29" },
-      { "label": "DeepInfra, documentation de l'API compatible OpenAI (streaming)", "url": "https://deepinfra.com/docs/advanced/openai_api", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle ibm-granite/granite-4.2-8b",
+        "url": "https://huggingface.co/ibm-granite/granite-4.2-8b",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, page du modèle",
+        "url": "https://deepinfra.com/ibm-granite/granite-4.2-8b",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "DeepInfra, documentation de l'API compatible OpenAI (streaming)",
+        "url": "https://deepinfra.com/docs/advanced/openai_api",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

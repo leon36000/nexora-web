@@ -159,6 +159,8 @@ export const accountEnCA: AccountDictionary = {
         "Your balance is negative following a refund or a dispute. API access is suspended until the balance is positive again. Top up credits below or contact us.",
       expiryNote:
         "Purchased credits expire {months} months after purchase; those closest to expiry are used first.",
+      noExpiryNote:
+        "Top-up credits do not expire. Subscription credits expire at the end of their period and are used first.",
     },
     buy: {
       title: "Add funds",
@@ -229,7 +231,7 @@ export const accountEnCA: AccountDictionary = {
         perMonth: "{amount} per month, before tax",
         perYear: "{amount} per year, before tax",
         trial: "{days}-day free trial",
-        included: "{amount} of credits included each period",
+        included: "{credits} credits included each period",
         subscribe: "Subscribe",
         ownerOnly: "Only the owner can subscribe.",
         unavailable: "Plans cannot be displayed at the moment.",
@@ -707,13 +709,13 @@ export const accountEnCA: AccountDictionary = {
         text: "Your organization is part of the Nexora team: your requests debit no wallet. Credits, top-ups and balance alerts do not apply to it.",
       },
       included: {
-        title: "Included credits for this period",
-        meter: "{used} of {total} included tokens used",
-        meterLabel: "Share of included tokens used",
-        remaining: "{amount} of included credits left, valid until {date}.",
-        remainingNoDate: "{amount} of included credits left.",
-        note: "The {total} tokens are a value equivalent: they match the price of WorkStudio’s default model. A more expensive model uses up your included credits faster. They are used first because they expire first; after that, tokens are billed from your balance.",
-        none: "No included credits yet. A WorkStudio subscription adds some every period.",
+        title: "Subscription credits for this period",
+        meter: "{used} of {total} subscription credits used",
+        meterLabel: "Share of subscription credits used",
+        remaining: "{amount} subscription credits left, valid until {date}.",
+        remainingNoDate: "{amount} subscription credits left.",
+        note: "One credit is worth 1¢ of tokens at the catalogue price. Subscription credits expire at the end of their period: they are used first. Your top-up credits, which do not expire, come next.",
+        none: "No subscription credits yet. A subscription adds some every period.",
         seeOffers: "See plans",
       },
       lots: {

@@ -374,10 +374,15 @@ describe("réservation, règlement et libération", () => {
     const c = await client(0n);
     const res = await handleChatCompletions(post(c.key, chat()), deps());
     expect(res.status).toBe(402);
-    expect((await res.json()).error).toMatchObject({
+    const { error } = await res.json();
+    expect(error).toMatchObject({
       code: "insufficient_quota",
       type: "insufficient_quota",
     });
+    // Aucun crédit : message clair en français avec le chemin vers la recharge et l'abonnement.
+    expect(error.message).toMatch(/^Il ne vous reste plus de crédits\./);
+    expect(error.message).toContain("/compte/facturation#ajouter-des-fonds");
+    expect(error.message).toContain("/tarifs");
     expect(calls).toHaveLength(0);
     expect(
       await t.db
@@ -1547,8 +1552,8 @@ describe("passerelle non configurée", () => {
 });
 
 describe("plages horaires et écriture du cache", () => {
-  const SATURDAY = () => new Date("2026-10-31T10:00:00Z");
-  const WEDNESDAY = () => new Date("2026-10-28T09:00:00Z");
+  const saturday = () => new Date("2026-10-31T10:00:00Z");
+  const wednesday = () => new Date("2026-10-28T09:00:00Z");
   const run = async (
     model: string,
     usage: Record<string, unknown>,
@@ -1575,10 +1580,10 @@ describe("plages horaires et écriture du cache", () => {
 
   it("applique le prix de la plage en vigueur au moment de la requête et note laquelle", async () => {
     // 100 jetons à 1 CAD/M en entrée + 100 à 3 CAD/M en sortie = 400 micro ; en plage « creux » : 40 + 120 = 160
-    const base = await run("nexora/test-windows", usage, WEDNESDAY);
+    const base = await run("nexora/test-windows", usage, wednesday);
     expect(base.res.headers.get("x-nexora-cost-micro")).toBe("400");
     expect(base.ev?.priceWindow).toBeNull();
-    const creux = await run("nexora/test-windows", usage, SATURDAY);
+    const creux = await run("nexora/test-windows", usage, saturday);
     expect(creux.res.headers.get("x-nexora-cost-micro")).toBe("160");
     expect(creux.ev?.priceWindow).toBe("creux");
     expect(creux.ev?.priceInputMicro).toBe(400_000n);
@@ -1597,7 +1602,7 @@ describe("plages horaires et écriture du cache", () => {
         prompt_tokens_details: { cached_tokens: 200, cache_write_tokens: 300 },
         completion_tokens_details: { reasoning_tokens: 120 },
       },
-      WEDNESDAY,
+      wednesday,
     );
     // 500 × 1 + 200 × 0,2 + 300 × 2 + 500 × 3 = 500 + 40 + 600 + 1500 = 2 640 micro
     expect(res.headers.get("x-nexora-cost-micro")).toBe("2640");
@@ -1616,7 +1621,7 @@ describe("plages horaires et écriture du cache", () => {
         total_tokens: 1000,
         cache_creation_input_tokens: 250,
       },
-      WEDNESDAY,
+      wednesday,
     );
     expect(ev?.cacheWriteTokens).toBe(250);
   });

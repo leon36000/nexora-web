@@ -24,22 +24,10 @@
       "totalB": 27
     },
     "modalities": {
-      "input": [
-        "text",
-        "image",
-        "video"
-      ],
-      "output": [
-        "text"
-      ]
+      "input": ["text", "image", "video"],
+      "output": ["text"]
     },
-    "tags": [
-      "raisonnement",
-      "code",
-      "agents",
-      "vision",
-      "poids-ouverts"
-    ],
+    "tags": ["raisonnement", "code", "agents", "vision", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3.8-27B",
     "benchmarks": [
       {

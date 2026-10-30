@@ -23,18 +23,10 @@
       "totalB": 8
     },
     "modalities": {
-      "input": [
-        "text"
-      ],
-      "output": [
-        "embedding"
-      ]
+      "input": ["text"],
+      "output": ["embedding"]
     },
-    "tags": [
-      "embeddings",
-      "multilingue",
-      "poids-ouverts"
-    ],
+    "tags": ["embeddings", "multilingue", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Embedding-8B",
     "benchmarks": [
       {

@@ -4,30 +4,104 @@
   "name": "NVIDIA Nemotron 3.5 Lightning 30B-A3B",
   "descriptionFr": "Modèle ouvert de NVIDIA de 30 Md de paramètres (3 Md actifs), orienté vers les agents permanents et les tâches spécialisées à fort volume. Entrée et sortie en texte, mode de raisonnement activable.",
   "descriptionEn": "Open model from NVIDIA with 30B parameters (3B active), aimed at always-on agents and high-volume specialized tasks. Text input and output, with a switchable reasoning mode.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": false },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": false
+  },
   "sheet": {
     "author": "NVIDIA",
     "family": "Nemotron 3.5",
     "releasedAt": "2026-08-11",
     "knowledgeCutoff": "2026-05",
-    "license": { "name": "OpenMDW-1.1", "openWeights": true, "url": "https://openmdw.ai/license/1-1/" },
+    "license": {
+      "name": "OpenMDW-1.1",
+      "openWeights": true,
+      "url": "https://openmdw.ai/license/1-1/"
+    },
     "parameters": { "totalB": 30, "activeB": 3 },
     "modalities": { "input": ["text"], "output": ["text"] },
     "tags": ["raisonnement", "code", "agents", "multilingue", "poids-ouverts"],
     "homepageUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
     "benchmarks": [
-      { "name": "MMLU Pro", "score": 81.94, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Connaissances" },
-      { "name": "GPQA Diamond (no tools)", "score": 75.44, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Raisonnement" },
-      { "name": "HLE (text-only, no tools)", "score": 11.72, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Connaissances" },
-      { "name": "SWE-bench Verified", "score": 51.56, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Code" },
-      { "name": "Terminal-Bench 2.1", "score": 24.58, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Agents" },
-      { "name": "BrowseComp", "score": 36.97, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Agents" },
-      { "name": "AA-LCR", "score": 52.00, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Contexte long" },
-      { "name": "IFBench (loose)", "score": 71.88, "unit": "%", "publisher": "NVIDIA", "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "category": "Suivi d'instructions" }
+      {
+        "name": "MMLU Pro",
+        "score": 81.94,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Connaissances"
+      },
+      {
+        "name": "GPQA Diamond (no tools)",
+        "score": 75.44,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "HLE (text-only, no tools)",
+        "score": 11.72,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Connaissances"
+      },
+      {
+        "name": "SWE-bench Verified",
+        "score": 51.56,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Code"
+      },
+      {
+        "name": "Terminal-Bench 2.1",
+        "score": 24.58,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Agents"
+      },
+      {
+        "name": "BrowseComp",
+        "score": 36.97,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Agents"
+      },
+      {
+        "name": "AA-LCR",
+        "score": 52.0,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Contexte long"
+      },
+      {
+        "name": "IFBench (loose)",
+        "score": 71.88,
+        "unit": "%",
+        "publisher": "NVIDIA",
+        "sourceUrl": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "category": "Suivi d'instructions"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 (résumé, tableau des résultats)", "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16", "readAt": "2026-10-29" },
-      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 (résumé, tableau des résultats)",
+        "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)",
+        "url": "https://api.deepinfra.com/models/list",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {

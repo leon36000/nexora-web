@@ -1,6 +1,6 @@
 {
-  "id": "04dd489b-45e3-41d0-8143-6e22d059f408",
-  "prevId": "ea18371d-c5aa-41cf-8849-00571c9a5199",
+  "id": "0bd27476-1e7d-4426-8d69-567c4e280fdb",
+  "prevId": "3e5af5d8-9679-47d8-ade1-ce76e4130dd6",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -2602,6 +2602,58 @@
       },
       "isRLSEnabled": false
     },
+    "public.organization_storage": {
+      "name": "organization_storage",
+      "schema": "",
+      "columns": {
+        "organization_id": {
+          "name": "organization_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "extra_bytes": {
+          "name": "extra_bytes",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "0"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "organization_storage_organization_id_organizations_id_fk": {
+          "name": "organization_storage_organization_id_organizations_id_fk",
+          "tableFrom": "organization_storage",
+          "tableTo": "organizations",
+          "columnsFrom": [
+            "organization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "organization_storage_extra_nonneg": {
+          "name": "organization_storage_extra_nonneg",
+          "value": "\"organization_storage\".\"extra_bytes\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
     "public.payment_disputes": {
       "name": "payment_disputes",
       "schema": "",
@@ -2690,6 +2742,75 @@
         "payment_disputes_status_check": {
           "name": "payment_disputes_status_check",
           "value": "\"payment_disputes\".\"status\" IN ('open','won','lost')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.storage_usage": {
+      "name": "storage_usage",
+      "schema": "",
+      "columns": {
+        "organization_id": {
+          "name": "organization_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "product": {
+          "name": "product",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "used_bytes": {
+          "name": "used_bytes",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "storage_usage_organization_id_organizations_id_fk": {
+          "name": "storage_usage_organization_id_organizations_id_fk",
+          "tableFrom": "storage_usage",
+          "tableTo": "organizations",
+          "columnsFrom": [
+            "organization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "storage_usage_organization_id_product_pk": {
+          "name": "storage_usage_organization_id_product_pk",
+          "columns": [
+            "organization_id",
+            "product"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "storage_usage_nonneg": {
+          "name": "storage_usage_nonneg",
+          "value": "\"storage_usage\".\"used_bytes\" >= 0"
+        },
+        "storage_usage_product_check": {
+          "name": "storage_usage_product_check",
+          "value": "\"storage_usage\".\"product\" IN ('workstudio','code','rag','creative','bot')"
         }
       },
       "isRLSEnabled": false
@@ -3188,6 +3309,19 @@
           "primaryKey": false,
           "notNull": false
         },
+        "billing_interval": {
+          "name": "billing_interval",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "storage_quota_bytes": {
+          "name": "storage_quota_bytes",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "0"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -3257,6 +3391,14 @@
         "subscriptions_status_check": {
           "name": "subscriptions_status_check",
           "value": "\"subscriptions\".\"status\" IN ('incomplete','incomplete_expired','trialing','active','past_due','unpaid','paused','canceled','gifted')"
+        },
+        "subscriptions_interval_check": {
+          "name": "subscriptions_interval_check",
+          "value": "\"subscriptions\".\"billing_interval\" IS NULL OR \"subscriptions\".\"billing_interval\" IN ('month','year')"
+        },
+        "subscriptions_storage_quota_check": {
+          "name": "subscriptions_storage_quota_check",
+          "value": "\"subscriptions\".\"storage_quota_bytes\" >= 0"
         }
       },
       "isRLSEnabled": false

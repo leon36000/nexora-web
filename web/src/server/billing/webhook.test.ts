@@ -98,7 +98,7 @@ function creditSession(
 }
 
 describe("achat de crédits : checkout.session.completed", () => {
-  it("crédite le grand livre du montant avant taxes, avec échéance à 12 mois et version de config", async () => {
+  it("crédite le grand livre du montant avant taxes, SANS échéance (recharge) et avec la version de config", async () => {
     const org = await newOrg();
     const session = creditSession(org);
     const out = await processStripeEvent(
@@ -115,7 +115,7 @@ describe("achat de crédits : checkout.session.completed", () => {
       externalRef: session.id,
     });
     expect(entry?.configVersion).toMatch(/^cfg_/);
-    expect(entry?.expiresAt?.toISOString()).toBe("2027-03-15T12:00:00.000Z");
+    expect(entry?.expiresAt).toBeNull();
     const [purchase] = await t.db
       .select()
       .from(creditPurchases)
@@ -657,6 +657,52 @@ describe("abonnements : invoice.paid, invoice.payment_failed, customer.subscript
       configVersion: planConfigVersion(PLAN),
     });
     expect(entry?.expiresAt?.getTime()).toBe((EVT_TIME + 30 * 86_400) * 1000);
+  });
+
+  it("copie la période et l'espace de l'offre dans l'abonnement (le quota se lit dans la base du site)", async () => {
+    const org = await newOrg();
+    const plan: SubscriptionPlan = {
+      ...PLAN,
+      includedStorageBytes: 1_000_000_000,
+    };
+    await processStripeEvent(
+      deps({ plans: new FakePlanSource([plan]) }),
+      buildEvent("invoice.paid", invoice(org, "sub_q1"), { created: EVT_TIME }),
+    );
+    expect(await subRow(org.id)).toMatchObject({
+      billingInterval: "month",
+      storageQuotaBytes: 1_000_000_000n,
+    });
+  });
+
+  it("une offre sans espace prévu (ancienne offre) laisse un quota de 0, et un événement en retard ne l'écrase pas", async () => {
+    const org = await newOrg();
+    const withStorage: SubscriptionPlan = {
+      ...PLAN,
+      includedStorageBytes: 2_000_000_000,
+    };
+    await processStripeEvent(
+      deps({ plans: new FakePlanSource([withStorage]) }),
+      buildEvent("invoice.paid", invoice(org, "sub_q2"), {
+        created: EVT_TIME + 100,
+      }),
+    );
+    // Facture plus ancienne livrée en retard, d'une offre qui n'a pas d'espace : rien ne change.
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.payment_failed", invoice(org, "sub_q2"), {
+        created: EVT_TIME,
+      }),
+    );
+    expect((await subRow(org.id))?.storageQuotaBytes).toBe(2_000_000_000n);
+    const org2 = await newOrg();
+    await processStripeEvent(
+      deps(),
+      buildEvent("invoice.paid", invoice(org2, "sub_q3"), {
+        created: EVT_TIME,
+      }),
+    );
+    expect((await subRow(org2.id))?.storageQuotaBytes).toBe(0n);
   });
 
   it("rejouer invoice.paid ne double pas les crédits ; une nouvelle facture (renouvellement) en accorde de nouveaux", async () => {

@@ -3,6 +3,9 @@ import { minBigint } from "@nexora/db";
 /** Micro-unités par cent canadien : 1 CAD = 100 cents = 1 000 000 micro-unités. */
 const MICRO_PER_CENT = 10_000n;
 
+/** 1 crédit = 1 ¢ CA = 10 000 micro-CAD (conception du 30/10/2026). */
+export const MICRO_PER_CREDIT = MICRO_PER_CENT;
+
 function assertCents(cents: number): void {
   if (!Number.isSafeInteger(cents) || cents < 0)
     throw new RangeError("montant en cents : entier ≥ 0 attendu");

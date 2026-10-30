@@ -22,16 +22,10 @@
       "totalB": 0.6
     },
     "modalities": {
-      "input": [
-        "text"
-      ],
-      "output": [
-        "text"
-      ]
+      "input": ["text"],
+      "output": ["text"]
     },
-    "tags": [
-      "poids-ouverts"
-    ],
+    "tags": ["poids-ouverts"],
     "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B",
     "sources": [
       {

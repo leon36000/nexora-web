@@ -4,29 +4,110 @@
   "name": "Gemma 4 31B-it",
   "descriptionFr": "Modèle dense de 30,7 Md de paramètres de Google DeepMind. Il reçoit texte et image, répond en texte, avec une fenêtre de 256 K jetons. Conçu pour le raisonnement, les flux agentiques, le code et la compréhension multimodale.",
   "descriptionEn": "Dense 30.7B-parameter model from Google DeepMind. It takes text and image input and returns text, with a 256K-token window. Built for reasoning, agentic workflows, coding and multimodal understanding.",
-  "capabilities": { "streaming": true, "tools": true, "reasoning": true, "json_mode": true, "vision": true },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "reasoning": true,
+    "json_mode": true,
+    "vision": true
+  },
   "sheet": {
     "author": "Google DeepMind",
     "family": "Gemma 4",
     "knowledgeCutoff": "2025-01",
-    "license": { "name": "Apache-2.0", "openWeights": true, "url": "https://ai.google.dev/gemma/docs/gemma_4_license" },
+    "license": {
+      "name": "Apache-2.0",
+      "openWeights": true,
+      "url": "https://ai.google.dev/gemma/docs/gemma_4_license"
+    },
     "parameters": { "totalB": 30.7 },
     "modalities": { "input": ["text", "image"], "output": ["text"] },
-    "tags": ["raisonnement", "code", "agents", "vision", "multilingue", "poids-ouverts"],
+    "tags": [
+      "raisonnement",
+      "code",
+      "agents",
+      "vision",
+      "multilingue",
+      "poids-ouverts"
+    ],
     "homepageUrl": "https://huggingface.co/google/gemma-4-31B-it",
     "benchmarks": [
-      { "name": "MMLU Pro", "score": 85.2, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Connaissances" },
-      { "name": "AIME 2026 no tools", "score": 89.2, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Mathématiques" },
-      { "name": "LiveCodeBench v6", "score": 80.0, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Code" },
-      { "name": "Codeforces ELO", "score": 2150, "unit": "Elo", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Code" },
-      { "name": "GPQA Diamond", "score": 84.3, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Raisonnement" },
-      { "name": "Tau2 (average over 3)", "score": 76.9, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Agents" },
-      { "name": "HLE no tools", "score": 19.5, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Connaissances" },
-      { "name": "MMMU Pro", "score": 76.9, "unit": "%", "publisher": "Google DeepMind", "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it", "category": "Multimodal" }
+      {
+        "name": "MMLU Pro",
+        "score": 85.2,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Connaissances"
+      },
+      {
+        "name": "AIME 2026 no tools",
+        "score": 89.2,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Mathématiques"
+      },
+      {
+        "name": "LiveCodeBench v6",
+        "score": 80.0,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Code"
+      },
+      {
+        "name": "Codeforces ELO",
+        "score": 2150,
+        "unit": "Elo",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Code"
+      },
+      {
+        "name": "GPQA Diamond",
+        "score": 84.3,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Raisonnement"
+      },
+      {
+        "name": "Tau2 (average over 3)",
+        "score": 76.9,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Agents"
+      },
+      {
+        "name": "HLE no tools",
+        "score": 19.5,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Connaissances"
+      },
+      {
+        "name": "MMMU Pro",
+        "score": 76.9,
+        "unit": "%",
+        "publisher": "Google DeepMind",
+        "sourceUrl": "https://huggingface.co/google/gemma-4-31B-it",
+        "category": "Multimodal"
+      }
     ],
     "sources": [
-      { "label": "Hugging Face, fiche du modèle gemma-4-31B-it (tableau des résultats, colonne 31B)", "url": "https://huggingface.co/google/gemma-4-31B-it", "readAt": "2026-10-29" },
-      { "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)", "url": "https://api.deepinfra.com/models/list", "readAt": "2026-10-29" }
+      {
+        "label": "Hugging Face, fiche du modèle gemma-4-31B-it (tableau des résultats, colonne 31B)",
+        "url": "https://huggingface.co/google/gemma-4-31B-it",
+        "readAt": "2026-10-29"
+      },
+      {
+        "label": "API DeepInfra, liste des modèles (étiquettes et fenêtre de contexte)",
+        "url": "https://api.deepinfra.com/models/list",
+        "readAt": "2026-10-29"
+      }
     ]
   },
   "tagsWhy": {
