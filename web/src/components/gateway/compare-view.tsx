@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { JsonLd } from "@/components/seo/json-ld";
-import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
+import { Breadcrumb, PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
 import { fmt } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
@@ -147,199 +147,188 @@ export function ComparePage({
   );
 
   return (
-    <Section tone="light" aria-labelledby="compare-title">
-      <nav aria-label={t.detail.breadcrumb}>
-        <ol className="flex flex-wrap items-center gap-x-2 text-small text-fg-muted">
-          <li>
-            <Link
-              href={localizePath(lang, "/")}
-              className="inline-flex min-h-8 items-center rounded-xs underline underline-offset-4"
-            >
-              {t.detail.home}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link
-              href={listPath}
-              className="inline-flex min-h-8 items-center rounded-xs underline underline-offset-4"
-            >
-              {t.detail.models}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-fg">
-            {c.breadcrumb}
-          </li>
-        </ol>
-      </nav>
-      <header className="mt-6 max-w-3xl">
-        <Badge tone="accent">{c.label}</Badge>
-        <h1 id="compare-title" className="mt-4 text-h1 text-fg">
-          {c.title}
-        </h1>
-        <p className="mt-5 max-w-2xl text-lead text-fg-muted">{c.lead}</p>
-      </header>
+    <>
+      <PageHero
+        titleId="compare-title"
+        palette="ciel"
+        seed={33}
+        breadcrumb={
+          <Breadcrumb
+            label={t.detail.breadcrumb}
+            items={[
+              { label: t.detail.home, href: localizePath(lang, "/") },
+              { label: t.detail.models, href: listPath },
+              { label: c.breadcrumb },
+            ]}
+          />
+        }
+        eyebrow={c.label}
+        title={c.title}
+        lead={c.lead}
+      />
+      <Section tone="light" joined="after" className="pt-8 md:pt-12">
+        {unknown ? (
+          <p className="mt-6 max-w-2xl text-small text-fg-muted" role="status">
+            {c.unknownIds}
+          </p>
+        ) : null}
 
-      {unknown ? (
-        <p className="mt-6 max-w-2xl text-small text-fg-muted" role="status">
-          {c.unknownIds}
-        </p>
-      ) : null}
-
-      {!enough ? (
-        <div className="mt-10 rounded-md border border-line p-6 sm:p-8">
-          <h2 className="font-display text-h4 text-fg">{c.pickTitle}</h2>
-          <p className="mt-2 max-w-xl text-body text-fg-muted">{c.pickText}</p>
-          {models.length === 1 ? (
-            <p className="mt-4 text-body text-fg">{models[0]?.name}</p>
-          ) : null}
-          <div className="mt-6">
-            <ButtonLink
-              href={
-                models.length
-                  ? `${listPath}?${models.map((m) => `m=${encodeURIComponent(m.id)}`).join("&")}`
-                  : listPath
-              }
-              arrow
-            >
-              {c.pickCta}
-            </ButtonLink>
+        {!enough ? (
+          <div className="mt-10 rounded-md border border-line p-6 sm:p-8">
+            <h2 className="font-display text-h4 text-fg">{c.pickTitle}</h2>
+            <p className="mt-2 max-w-xl text-body text-fg-muted">
+              {c.pickText}
+            </p>
+            {models.length === 1 ? (
+              <p className="mt-4 text-body text-fg">{models[0]?.name}</p>
+            ) : null}
+            <div className="mt-6">
+              <ButtonLink
+                href={
+                  models.length
+                    ? `${listPath}?${models.map((m) => `m=${encodeURIComponent(m.id)}`).join("&")}`
+                    : listPath
+                }
+                arrow
+              >
+                {c.pickCta}
+              </ButtonLink>
+            </div>
           </div>
-        </div>
-      ) : (
-        <>
-          <section
-            aria-label={c.tableLabel}
-            // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
-            tabIndex={0}
-            className="mt-10 overflow-x-auto rounded-md border border-line"
-          >
-            <table className="w-full min-w-[40rem] border-collapse text-left">
-              <caption className="sr-only">{c.tableLabel}</caption>
-              <thead>
-                <tr className="bg-bg">
-                  <th
-                    scope="col"
-                    className={`${STICKY} ${HEAD_CELL} text-small text-fg-muted`}
-                  >
-                    {c.property}
-                  </th>
-                  {models.map((m) => (
+        ) : (
+          <>
+            <section
+              aria-label={c.tableLabel}
+              // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
+              tabIndex={0}
+              className="mt-10 overflow-x-auto rounded-md border border-line"
+            >
+              <table className="w-full min-w-[40rem] border-collapse text-left">
+                <caption className="sr-only">{c.tableLabel}</caption>
+                <thead>
+                  <tr className="bg-bg">
                     <th
-                      key={m.id}
                       scope="col"
-                      className={`${HEAD_CELL} min-w-44`}
+                      className={`${STICKY} ${HEAD_CELL} text-small text-fg-muted`}
                     >
-                      <Link
-                        href={modelHref(lang, m.id)}
-                        prefetch={false}
-                        className="rounded-xs font-display text-h4 text-fg underline-offset-4 hover:underline"
-                      >
-                        {m.name}
-                      </Link>
-                      <span className="mt-0.5 block text-small text-fg-muted">
-                        {m.sheet.author ?? ""}
-                      </span>
-                      {models.length > 2 ? (
-                        <Link
-                          href={compareHref(
-                            comparePath,
-                            ids.filter((id) => id !== m.id),
-                          )}
-                          prefetch={false}
-                          aria-label={fmt(c.remove, { name: m.name })}
-                          className="mt-1 inline-flex min-h-8 items-center rounded-xs text-small text-accent-text underline underline-offset-4"
-                        >
-                          {t.list.compare.remove}
-                        </Link>
-                      ) : null}
+                      {c.property}
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {section(c.sections.pricing)}
-                {rows.pricing.map((r) => line(r.label, r.cells))}
-              </tbody>
-              <tbody>
-                {section(c.sections.specs)}
-                {rows.specs.map((r) => line(r.label, r.cells))}
-              </tbody>
-              {bench.length > 0 ? (
-                <tbody>
-                  {section(c.sections.benchmarks)}
-                  {bench.map((row) =>
-                    line(
-                      row.name,
-                      row.cells.map((b, i) =>
-                        b ? (
-                          <span key={b.sourceUrl}>
-                            <span className="text-body">
-                              {formatScore(lang, b.score)} {b.unit}
-                            </span>
-                            {row.best === i ? (
-                              <span className="ml-2 rounded-xs border border-line-strong px-1.5 py-0.5 text-label text-fg">
-                                {c.best}
-                              </span>
-                            ) : null}
-                            <span className="mt-1 block text-fg-muted">
-                              {fmt(t.detail.benchmarks.publishedBy, {
-                                publisher: b.publisher,
-                              })}
-                              {" · "}
-                              <a
-                                href={b.sourceUrl}
-                                rel="noopener noreferrer"
-                                className={LINK}
-                              >
-                                {t.detail.benchmarks.source}
-                              </a>
-                            </span>
-                          </span>
-                        ) : (
-                          <span
-                            key={`${row.key}-${models[i]?.id}`}
-                            className="text-fg-muted"
+                    {models.map((m) => (
+                      <th
+                        key={m.id}
+                        scope="col"
+                        className={`${HEAD_CELL} min-w-44`}
+                      >
+                        <Link
+                          href={modelHref(lang, m.id)}
+                          prefetch={false}
+                          className="rounded-xs font-display text-h4 text-fg underline-offset-4 hover:underline"
+                        >
+                          {m.name}
+                        </Link>
+                        <span className="mt-0.5 block text-small text-fg-muted">
+                          {m.sheet.author ?? ""}
+                        </span>
+                        {models.length > 2 ? (
+                          <Link
+                            href={compareHref(
+                              comparePath,
+                              ids.filter((id) => id !== m.id),
+                            )}
+                            prefetch={false}
+                            aria-label={fmt(c.remove, { name: m.name })}
+                            className="mt-1 inline-flex min-h-8 items-center rounded-xs text-small text-accent-text underline underline-offset-4"
                           >
-                            {c.missing}
-                          </span>
+                            {t.list.compare.remove}
+                          </Link>
+                        ) : null}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {section(c.sections.pricing)}
+                  {rows.pricing.map((r) => line(r.label, r.cells))}
+                </tbody>
+                <tbody>
+                  {section(c.sections.specs)}
+                  {rows.specs.map((r) => line(r.label, r.cells))}
+                </tbody>
+                {bench.length > 0 ? (
+                  <tbody>
+                    {section(c.sections.benchmarks)}
+                    {bench.map((row) =>
+                      line(
+                        row.name,
+                        row.cells.map((b, i) =>
+                          b ? (
+                            <span key={b.sourceUrl}>
+                              <span className="text-body">
+                                {formatScore(lang, b.score)} {b.unit}
+                              </span>
+                              {row.best === i ? (
+                                <span className="ml-2 rounded-xs border border-line-strong px-1.5 py-0.5 text-label text-fg">
+                                  {c.best}
+                                </span>
+                              ) : null}
+                              <span className="mt-1 block text-fg-muted">
+                                {fmt(t.detail.benchmarks.publishedBy, {
+                                  publisher: b.publisher,
+                                })}
+                                {" · "}
+                                <a
+                                  href={b.sourceUrl}
+                                  rel="noopener noreferrer"
+                                  className={LINK}
+                                >
+                                  {t.detail.benchmarks.source}
+                                </a>
+                              </span>
+                            </span>
+                          ) : (
+                            <span
+                              key={`${row.key}-${models[i]?.id}`}
+                              className="text-fg-muted"
+                            >
+                              {c.missing}
+                            </span>
+                          ),
                         ),
                       ),
-                    ),
-                  )}
-                </tbody>
-              ) : null}
-            </table>
-          </section>
-          <div className="mt-6">
-            {bench.length > 0 ? (
-              <BenchmarkWarning
-                title={t.detail.benchmarks.warningTitle}
-                text={c.benchmarkWarning}
-              />
-            ) : (
-              <p className="max-w-2xl text-small text-fg-muted">
-                {c.noBenchmarks}
-              </p>
-            )}
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink
-              href={`${listPath}?${ids.map((id) => `m=${encodeURIComponent(id)}`).join("&")}`}
-              variant="secondary"
-            >
-              {c.add}
-            </ButtonLink>
-          </div>
-        </>
-      )}
-      <JsonLd
-        data={appBreadcrumb(lang, [
-          { name: listName, path: "/modeles" },
-          { name: c.breadcrumb, path: "/modeles/comparer" },
-        ])}
-      />
-    </Section>
+                    )}
+                  </tbody>
+                ) : null}
+              </table>
+            </section>
+            <div className="mt-6">
+              {bench.length > 0 ? (
+                <BenchmarkWarning
+                  title={t.detail.benchmarks.warningTitle}
+                  text={c.benchmarkWarning}
+                />
+              ) : (
+                <p className="max-w-2xl text-small text-fg-muted">
+                  {c.noBenchmarks}
+                </p>
+              )}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink
+                href={`${listPath}?${ids.map((id) => `m=${encodeURIComponent(id)}`).join("&")}`}
+                variant="secondary"
+              >
+                {c.add}
+              </ButtonLink>
+            </div>
+          </>
+        )}
+        <JsonLd
+          data={appBreadcrumb(lang, [
+            { name: listName, path: "/modeles" },
+            { name: c.breadcrumb, path: "/modeles/comparer" },
+          ])}
+        />
+      </Section>
+    </>
   );
 }

@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
+import type { MosaicPalette } from "@/components/brand/mosaic";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ButtonLink } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
+import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
+import { StatStrip } from "@/components/ui/stat-strip";
 import {
   APPS,
   appContactHref,
@@ -47,6 +50,17 @@ export async function generateMetadata(
   });
 }
 
+/** Teinte de la mosaïque d'une fiche : une rampe par famille d'outil (code et Web : ciel ; documents : menthe ; bot : or). */
+const APP_PALETTE: Record<string, MosaicPalette> = {
+  code: "ciel",
+  gitspace: "ciel",
+  cloud: "ciel",
+  rag: "menthe",
+  "privacy-router": "menthe",
+  bot: "or",
+  webpilot: "or",
+};
+
 /**
  * Fiche d'un outil de Nexora Apps : accroche, pour qui, comment on y accède, ce qui est prêt et ce qui vient (état
  * honnête), questions fréquentes, puis la liste d'attente ou le contact. Aucun prix, aucune date, aucune performance.
@@ -68,25 +82,43 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
   });
   return (
     <>
-      <Section tone="light" aria-labelledby="app-title">
-        <nav aria-label={d.back}>
-          <Link
-            href={localizePath(lang, "/apps")}
-            className="inline-flex min-h-11 items-center rounded-xs text-small text-accent-text underline underline-offset-4"
-          >
-            {d.back}
-          </Link>
-        </nav>
-        <header className="mt-4 max-w-3xl">
-          <StateBadge state={app.state} t={t} />
-          <h1 id="app-title" className="mt-4 text-h1 text-fg">
-            {content.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
-            {content.hook}
-          </p>
-        </header>
-        <section aria-labelledby="answer-title" className="mt-10 max-w-3xl">
+      <PageHero
+        titleId="app-title"
+        palette={APP_PALETTE[app.slug] ?? "braise"}
+        seed={[...app.slug].reduce(
+          (a, c) => (a * 31 + c.charCodeAt(0)) % 997,
+          11,
+        )}
+        breadcrumb={
+          <nav aria-label={d.back}>
+            <Link
+              href={localizePath(lang, "/apps")}
+              prefetch={false}
+              className="inline-flex min-h-11 items-center rounded-xs text-small text-accent-text underline underline-offset-4 transition-colors duration-150 hover:text-fg"
+            >
+              {d.back}
+            </Link>
+          </nav>
+        }
+        meta={<StateBadge state={app.state} t={t} />}
+        title={content.name}
+        lead={content.hook}
+        aside={
+          <StatStrip
+            items={[
+              {
+                label: d.stateLabel,
+                value: t.states[app.state].label,
+                hint: t.states[app.state].description,
+              },
+              { label: d.accessTitle, value: content.accessLabel },
+            ]}
+          />
+        }
+      />
+
+      <Section tone="light">
+        <section aria-labelledby="answer-title" className="max-w-3xl">
           <h2 id="answer-title" className="text-h4 text-fg">
             {d.answerTitle}
           </h2>

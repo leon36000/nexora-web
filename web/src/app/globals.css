@@ -446,6 +446,16 @@
   background-repeat: repeat-x;
 }
 
+/* Graduations d'une barre de score : un trait de la couleur du fond à la fin de chaque quart. */
+.score-ticks {
+  background-image: linear-gradient(
+    to right,
+    transparent calc(100% - 2px),
+    var(--bg) calc(100% - 2px)
+  );
+  background-size: 25% 100%;
+}
+
 /* Mosaïque : une couche par teinte ; chaque couche respire à son rythme (opacité, jamais sur du texte). */
 .mo-layer {
   opacity: var(--o, 1);
@@ -503,6 +513,15 @@
   }
   50% {
     opacity: calc(var(--o, 1) * 0.5);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0.04);
+  }
+  to {
+    transform: none;
   }
 }
 
@@ -583,6 +602,13 @@
   /* Apparition au défilement : pur CSS (scroll-driven animations), sans JavaScript ; ignorée par les
      navigateurs qui ne la connaissent pas (le contenu reste alors simplement visible). */
   @supports (animation-timeline: view()) {
+    .score-fill {
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+
     .reveal {
       animation: rise-load linear both;
       animation-timeline: view();

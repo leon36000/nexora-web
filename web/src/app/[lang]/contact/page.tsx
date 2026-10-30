@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { ContactForm } from "@/components/contact/contact-form";
 import { JsonLd } from "@/components/seo/json-ld";
-import { Badge } from "@/components/ui/badge";
+import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
 import { isLang, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -41,50 +41,54 @@ export default async function ContactPage() {
     "/confidentialite",
   );
   return (
-    <Section tone="light" aria-labelledby="contact-title">
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
-        <div>
-          <Badge tone="accent">{t.label}</Badge>
-          <h1 id="contact-title" className="mt-4 text-h1 text-fg">
-            {t.title}
-          </h1>
-          <p className="mt-5 max-w-xl text-lead text-fg-muted">{t.lead}</p>
-          <div className="mt-10 max-w-md">
-            <h2 className="font-mono text-label uppercase text-fg-muted">
-              {t.next.title}
-            </h2>
-            <ol className="mt-4 space-y-3 border-l border-line-strong pl-5">
-              {t.next.items.map((item) => (
-                <li key={item} className="text-fg">
-                  {item}
-                </li>
-              ))}
-            </ol>
-            <p className="mt-5 text-small text-fg-muted">{t.next.note}</p>
+    <>
+      <PageHero
+        titleId="contact-title"
+        eyebrow={t.label}
+        title={t.title}
+        lead={t.lead}
+        seed={14}
+      />
+      <Section tone="light" joined="after" className="pt-8 md:pt-12">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
+          <div>
+            <div className="max-w-md">
+              <h2 className="font-mono text-label uppercase text-fg-muted">
+                {t.next.title}
+              </h2>
+              <ol className="mt-4 space-y-3 border-l border-line-strong pl-5">
+                {t.next.items.map((item) => (
+                  <li key={item} className="text-fg">
+                    {item}
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-5 text-small text-fg-muted">{t.next.note}</p>
+            </div>
+          </div>
+          <div>
+            <noscript>
+              <p className="rounded-md border border-line-strong px-4 py-3 text-small text-fg">
+                {t.noscript}
+              </p>
+            </noscript>
+            <ContactForm
+              lang={lang}
+              t={t}
+              privacyHref={privacyHref}
+              homeHref={localizePath(lang, "/")}
+            />
           </div>
         </div>
-        <div>
-          <noscript>
-            <p className="rounded-md border border-line-strong px-4 py-3 text-small text-fg">
-              {t.noscript}
-            </p>
-          </noscript>
-          <ContactForm
-            lang={lang}
-            t={t}
-            privacyHref={privacyHref}
-            homeHref={localizePath(lang, "/")}
-          />
-        </div>
-      </div>
-      <JsonLd
-        data={appBreadcrumb(lang, [
-          {
-            name: t.meta.title.replace(` | ${SITE_NAME}`, ""),
-            path: "/contact",
-          },
-        ])}
-      />
-    </Section>
+        <JsonLd
+          data={appBreadcrumb(lang, [
+            {
+              name: t.meta.title.replace(` | ${SITE_NAME}`, ""),
+              path: "/contact",
+            },
+          ])}
+        />
+      </Section>
+    </>
   );
 }
