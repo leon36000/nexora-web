@@ -140,6 +140,7 @@ export function CreateRagForm({
             keyValue={created.keyValue}
             baseId={created.baseId}
             idPrefix="rag-created"
+            headingLevel={4}
           />
         </div>
       </Card>

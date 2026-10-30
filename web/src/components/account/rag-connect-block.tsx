@@ -10,18 +10,20 @@ function Snippet({
   label,
   text,
   value,
+  Heading,
 }: {
   id: string;
   label: string;
   text: ConnectText;
   value: string;
+  Heading: "h3" | "h4";
 }) {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h4 id={id} className="text-small font-medium text-fg">
+        <Heading id={id} className="text-small font-medium text-fg">
           {label}
-        </h4>
+        </Heading>
         <CopyButton
           value={value}
           label={text.copy}
@@ -54,6 +56,7 @@ export function RagConnectBlock({
   keyValue,
   baseId,
   idPrefix = "rag-connect",
+  headingLevel = 3,
 }: {
   text: ConnectText;
   apiUrl: string;
@@ -61,7 +64,10 @@ export function RagConnectBlock({
   keyValue: string | null;
   baseId: string | null;
   idPrefix?: string;
+  /** Niveau des titres d'extraits : 3 sous le titre de section de la page, 4 sous la carte de confirmation. */
+  headingLevel?: 3 | 4;
 }) {
+  const Heading = headingLevel === 3 ? "h3" : "h4";
   const snippets = buildRagSnippets({
     apiUrl,
     mcpUrl,
@@ -95,18 +101,21 @@ export function RagConnectBlock({
         label={text.snippets.code}
         text={text}
         value={snippets.code}
+        Heading={Heading}
       />
       <Snippet
         id={`${idPrefix}-mcp`}
         label={text.snippets.mcp}
         text={text}
         value={snippets.mcp}
+        Heading={Heading}
       />
       <Snippet
         id={`${idPrefix}-http`}
         label={text.snippets.http}
         text={text}
         value={snippets.http}
+        Heading={Heading}
       />
     </div>
   );
