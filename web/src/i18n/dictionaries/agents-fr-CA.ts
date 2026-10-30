@@ -55,7 +55,7 @@ export const agentsFrCA = {
     updated: "Catalogue au {date}",
     howTitle: "Comment ça marche",
     howSteps: [
-      "Créez une clé API dans votre espace client et rechargez vos crédits.",
+      "Créez une clé API dans votre espace client et ajoutez des crédits (recharge ou abonnement).",
       "Appelez l’API de Nexora AI avec le modèle « agent/<identifiant> », exactement comme pour un modèle.",
       "Suivez la consommation de chaque agent dans votre espace client.",
     ],

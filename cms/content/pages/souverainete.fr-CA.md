@@ -7,7 +7,7 @@
 - Page : `souverainete` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/souverainete/` · slug : `souverainete`
 - Titre SEO (44 caractères) : IA souveraine au Québec : les quatre couches
-- Description SEO (159 caractères) : Une IA est souveraine quand vous savez où elle tourne et où vont vos données. Chez vous ou au Québec : jamais d'entraînement, jamais vendues. Cinq engagements.
+- Description SEO (159 caractères) : Sachez où tourne votre IA et où vont vos données. Chez vous ou au Québec : jamais d'entraînement, jamais vendues. Quatre couches de contrôle, cinq engagements.
 
 ## Contenu
 
@@ -23,7 +23,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Chez vous ou chez nous, au Québec : jamais d'entraînement, jamais vendues, aucun modèle externe sans votre activation.
 
-[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Lire les cinq engagements](/vos-donnees/)
+[Décrire mon projet](/contact/?sujet=etude-deploiement) · [Lire les cinq engagements](/vos-donnees/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
@@ -33,7 +33,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=engagements`
 
 ## L'IA souveraine, en cinq engagements.
 
-Cinq engagements en langage clair. Ils s'appuient sur un contrat de traitement signé avec chaque client ; le contrat type et le registre des sous-traitants sont en préparation.
+Cinq engagements en langage clair, portés par un contrat de traitement signé avec chaque client. Le contrat type et le registre des sous-traitants sont en préparation.
 
 #### Sur place, tout reste chez vous.
 
@@ -63,9 +63,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=definition`
 
 ## Souverain, ça se vérifie.
 
-« Souverain » désigne ici un contrôle, pas une étiquette. Chez Nexora AI, une IA est souveraine quand quatre questions ont une réponse écrite, précise, que votre équipe peut vérifier.
+« Souverain » désigne ici un contrôle, pas une étiquette. Une IA est souveraine quand quatre questions ont une réponse écrite et précise, que votre équipe peut vérifier.
 
-Nous ne parlons pas d'immunité. La souveraineté réduit les dépendances que vous n'avez pas choisies ; elle ne supprime ni les lois qui s'appliquent à votre entreprise, ni vos obligations.
+La souveraineté ne vous met pas à l'abri des lois : elle réduit les dépendances que vous n'avez pas choisies. Les lois qui s'appliquent à votre entreprise, et vos obligations, restent les mêmes.
 
 - **Où elle tourne.** Sur un serveur qui vous appartient, ou dans l'infrastructure de Nexora AI, au Québec. Le lieu est écrit, pas supposé.
 - **Qui y accède.** Des comptes nommés, des rôles, un journal des actions. Les accès de Nexora AI à votre système sont convenus à l'avance.
@@ -74,13 +74,13 @@ Nous ne parlons pas d'immunité. La souveraineté réduit les dépendances que v
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
+*Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77, CL-S01*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=couches`
 
 ## Quatre couches de contrôle.
 
-Un serveur au Québec ne dit rien des modèles qu'il appelle. Nous examinons donc chaque couche séparément, et nous écrivons ce que nous documentons pour chacune.
+Un serveur au Québec ne dit rien des modèles qu'il appelle. Nous examinons donc chaque couche séparément et nous écrivons ce que nous documentons.
 
 #### 1. Les données.
 
@@ -90,7 +90,7 @@ Vos documents, vos conversations, vos images et vos bases. Nous documentons où 
 
 #### 2. Les modèles.
 
-Le moteur qui produit les réponses peut tourner sur votre serveur, dans notre infrastructure ou chez un tiers. Dans WorkStudio, chaque modèle indique où il tourne. Aucun modèle externe n'est appelé sans votre activation explicite, consignée par écrit, et jamais de bascule silencieuse en cas de panne.
+Le moteur qui produit les réponses peut tourner sur votre serveur, dans notre infrastructure ou chez un tiers. Dans WorkStudio et dans le catalogue de modèles, chaque modèle indique où il est hébergé et ce que son fournisseur fait des données. Aucun modèle externe n'est appelé sans votre activation explicite, consignée par écrit, et le système ne bascule jamais en silence vers un autre modèle en cas de panne.
 
 → [Voir WorkStudio](/workstudio/)
 
@@ -130,11 +130,11 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=pratiques`
 
 ## Trois questions à poser à tout fournisseur.
 
-Nous ne nommons personne et ne jugeons personne. Ce sont des constats généraux sur les pratiques du secteur, et des questions à poser, par écrit, à tout fournisseur d'IA, nous compris.
+Nous ne nommons personne et ne jugeons personne. Voici des constats généraux sur les pratiques du secteur, et trois questions à poser, par écrit, à tout fournisseur d'IA, nous compris.
 
 Posez-nous ces trois questions : [étudier mon projet](/contact/?sujet=etude-deploiement).
 
-Pour aller plus loin, voir [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/) et la [liste de contrôle d'une DSI](/guides/ia-souveraine-liste-de-controle/).
+Pour aller plus loin, lisez [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/) et la [liste de contrôle d'une DSI](/guides/ia-souveraine-liste-de-controle/).
 
 - **Mes conversations améliorent-elles le modèle ?** Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même. Chez Nexora AI, la réponse est écrite : jamais.
 - **Stockées au Canada, traitées où ?** Certains fournisseurs d'IA annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser. Dans notre mode hébergé, les données sont stockées et traitées au Québec, sauvegardes comprises.
@@ -226,7 +226,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 ## Ce que Nexora AI ne promet pas.
 
-Une page de souveraineté qui n'écrit pas ses limites ne vaut rien. Voici les nôtres.
+Voici ce que nous ne promettons pas, et pourquoi.
 
 #### Un risque nul.
 
@@ -250,7 +250,7 @@ Le mot n'a pas de définition légale, et certaines dépendances (modèles de ba
 
 ### Bloc 11 — FAQ (`block_faq`)
 
-*Questions sur la souveraineté. · Affirmations : CL-02, CL-06, CL-08, CL-71, CL-77, CL-E03, CL-E04*
+*Questions sur la souveraineté. · Affirmations : CL-02, CL-06, CL-08, CL-71, CL-77, CL-E03, CL-E04, CL-S01, CL-S02, CL-M06*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -258,11 +258,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Souverain veut-il dire hors ligne ?
 
-Non, pas automatiquement. Un système peut fonctionner sur votre serveur et pourtant recevoir des mises à jour, vérifier une licence ou appeler un modèle externe si vous l'avez choisi. Nous listons chaque flux sortant avant la mise en service ; un fonctionnement sans aucun flux sortant se décide et se vérifie au cas par cas.
+Non, pas automatiquement. Un système installé sur votre serveur peut quand même recevoir des mises à jour, vérifier une licence ou appeler un modèle externe si vous l'avez choisi. Nous listons chaque flux sortant avant la mise en service ; un fonctionnement sans aucun flux sortant se décide et se vérifie au cas par cas.
 
 #### Un serveur au Québec suffit-il ?
 
-Non. La localisation des machines ne dit rien des modèles appelés, des sauvegardes, des journaux ni des sous-traitants. C'est pourquoi nous examinons quatre couches, et pas une seule.
+Non. Un serveur au Québec ne suffit pas à rendre une IA souveraine : sa localisation ne dit rien des modèles appelés, des sauvegardes, des journaux ni des sous-traitants. C'est pourquoi nous examinons quatre couches, et pas une seule.
 
 #### Mes données servent-elles à entraîner un modèle ?
 
@@ -274,7 +274,7 @@ Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitai
 
 #### Pouvez-vous prouver où sont mes données ?
 
-Nous remettons par écrit le schéma des flux de votre installation et, dans le mode hébergé, le lieu de l'hébergement, des sauvegardes et des journaux ainsi que la liste des sous-traitants. Ce sont des documents que vous pouvez faire vérifier.
+Oui, par écrit. Nous remettons le schéma des flux de votre installation et, dans le mode hébergé, le lieu de l'hébergement, des sauvegardes et des journaux ainsi que la liste des sous-traitants. Vous pouvez faire vérifier ces documents par une personne de votre choix.
 
 #### Et si je veux utiliser un modèle externe ?
 
@@ -282,7 +282,11 @@ C'est possible, à deux conditions : vous l'activez par écrit, et il apparaît
 
 #### Que deviennent mes données à la fin du contrat ?
 
-Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit. La conservation et l'effacement applicables sont décrits dans l'étude de déploiement.
+Vos documents, vos configurations et vos flux de travaux restent exportables, et le contrat le prévoit. L'étude de déploiement décrit la conservation et l'effacement applicables à votre cas.
+
+#### Et sur la plateforme à crédits, que voit la passerelle ?
+
+La passerelle de modèles ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes ni des réponses. Chaque modèle du catalogue affiche son lieu d'hébergement et la politique de données de son fournisseur, et Nexora Privacy Router évalue chaque requête avant l'appel. Le lieu affiché informe, il ne garantit pas la résidence des données.
 
 ### Bloc 12 — Appel à l'action (`block_cta`)
 

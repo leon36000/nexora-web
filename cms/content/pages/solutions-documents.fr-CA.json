@@ -7,13 +7,13 @@
     "slug": "solutions/documents",
     "title": "Documents",
     "seo_title": "Recherche dans vos documents par IA",
-    "seo_description": "Posez une question en français\u00a0: la réponse part de vos propres documents, avec ses sources. Contrats, devis, procédures\u00a0: retrouvez, résumez, extrayez.",
+    "seo_description": "Posez une question en français : la réponse part de vos propres documents, avec ses sources. Contrats, devis, procédures : retrouvez, résumez, extrayez.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution documents\u00a0: retrouver la bonne clause, avec sources.",
+      "role": "Promesse de la solution documents : retrouver la bonne clause, avec sources.",
       "claims": ["CL-127", "CL-25", "CL-90"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Documents",
         "headline": "La bonne clause. La bonne version. Retrouvées.",
-        "subheadline": "Posez votre question en français\u00a0: la réponse part de vos propres documents, cite ses sources et vous renvoie au passage d'origine. Comme un collègue qui aurait tout lu, et qui montre où.",
+        "subheadline": "Posez votre question en français : la réponse part de vos propres documents, cite ses sources et vous renvoie au passage d'origine. C'est un collègue qui aurait tout lu, et qui montre où.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème\u00a0: exemple construit d'un cabinet de services professionnels.",
+      "role": "Problème : exemple construit d'un cabinet de services professionnels.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -40,11 +40,11 @@
       },
       "translation": {
         "title": "Des documents qui se cachent.",
-        "body": "<p>Un cabinet de services professionnels accumule des contrats, des devis, des procédures et des notes de dossier, répartis dans plusieurs dossiers et plusieurs versions. Retrouver la clause d'un ancien contrat, c'est fouiller plusieurs dossiers et appeler un collègue.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Un cabinet de services professionnels accumule des contrats, des devis, des procédures et des notes de dossier, répartis dans plusieurs dossiers et plusieurs versions. Une associée cherche la clause de résiliation d'un contrat signé il y a des années : elle fouille plusieurs dossiers, trouve trois versions et appelle un collègue pour savoir laquelle a été signée.</p><p>Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Plusieurs versions.",
-            "text": "Laquelle est la bonne\u00a0? Celle signée, ou la dernière modifiée\u00a0?"
+            "text": "Laquelle est la bonne ? Celle signée, ou la dernière modifiée ?"
           },
           {
             "title": "Une mémoire dans les têtes.",
@@ -59,7 +59,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système\u00a0: constituer la base, répondre avec sources, résumer, extraire.",
+      "role": "Ce que fait le système : constituer la base, répondre avec sources, résumer, extraire.",
       "claims": [
         "CL-127",
         "CL-25",
@@ -81,7 +81,7 @@
         "cards": [
           {
             "title": "Une base de connaissances.",
-            "text": "Vous y déposez des documents (PDF, Word, texte, pages web) ou vous branchez une source synchronisée. Ils sont découpés et indexés (rangés pour être retrouvés vite)\u00a0; le calcul se fait par défaut sur le serveur de l'instance."
+            "text": "Vous y déposez des documents (PDF, Word, texte, pages web) ou vous branchez une source synchronisée. Ils sont découpés et indexés (rangés pour être retrouvés vite) ; le calcul se fait par défaut sur le serveur de l'instance."
           },
           {
             "title": "Des réponses avec leurs sources.",
@@ -100,7 +100,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que reçoit l'équipe\u00a0: mosaïque de bénéfices (bento).",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento).",
       "claims": ["CL-127", "CL-100", "CL-96"],
       "fields": {
         "columns": "2",
@@ -133,7 +133,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic.",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic.",
       "claims": ["CL-14", "CL-09", "CL-127"],
       "fields": {
         "media_position": "none",
@@ -142,12 +142,12 @@
       },
       "translation": {
         "title": "Moins de recherche, plus de réponses.",
-        "body": "<p>Le bénéfice attendu\u00a0: moins de temps de recherche, moins de dépendance à la mémoire d'une personne. Aucun temps gagné n'est annoncé\u00a0; l'effet se mesure pendant un pilote, sur vos questions réelles.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour choisir les documents à interroger en premier.</p>"
+        "body": "<p>Le bénéfice attendu : moins de temps de recherche, moins de dépendance à la mémoire d'une personne. Aucun temps gagné n'est annoncé ; l'effet se mesure pendant un pilote, sur vos questions réelles.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour choisir les documents à interroger en premier.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, avec limites\u00a0; carte données avec lien Vos données.",
+      "role": "Ce qui reste sous contrôle, avec limites ; carte données avec lien Vos données.",
       "claims": [
         "CL-127",
         "CL-25",
@@ -175,7 +175,7 @@
           },
           {
             "title": "Où vos documents sont indexés.",
-            "text": "Par défaut, l'indexation se calcule sur le serveur de l'instance\u00a0: chez vous, sur votre serveur\u00a0; en mode hébergé, dans l'infrastructure de Nexora AI au Québec. Un service externe est un choix écrit."
+            "text": "Par défaut, l'indexation se calcule sur le serveur de l'instance : chez vous, sur votre serveur ; en mode hébergé, dans l'infrastructure de Nexora AI au Québec. Un service externe est un choix écrit."
           },
           {
             "title": "Aucun avis juridique.",
@@ -187,7 +187,7 @@
           },
           {
             "title": "La recherche web reste un choix.",
-            "text": "Si elle est activée pour un agent, ses requêtes quittent l'instance\u00a0: nous ne l'activons pas pour des agents qui manipulent des données confidentielles."
+            "text": "Si elle est activée pour un agent, ses requêtes quittent l'instance : nous ne l'activons pas pour des agents qui manipulent des données confidentielles."
           },
           {
             "title": "Vos données restent à vous.",
@@ -201,37 +201,58 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la solution documents.",
-      "claims": ["CL-127", "CL-25", "CL-101", "CL-132"],
+      "claims": [
+        "CL-127",
+        "CL-25",
+        "CL-101",
+        "CL-132",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04",
+        "CL-T09",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Documents\u00a0: vos questions.",
+        "title": "Documents : vos questions.",
         "items": [
           {
-            "question": "Quels types de fichiers\u00a0?",
+            "question": "Quels types de fichiers le système peut-il lire ?",
             "answer": "Des PDF, des documents Word, du texte et des pages web. Les documents scannés se lisent avec un modèle de lecture, plus lentement."
           },
           {
-            "question": "Mes documents sont-ils envoyés ailleurs\u00a0?",
-            "answer": "Par défaut, non\u00a0: l'indexation se calcule sur le serveur de l'instance. Si vous choisissez un modèle externe pour répondre, les extraits utilisés lui sont transmis\u00a0; nous l'indiquons avant, par écrit."
+            "question": "Mes documents sont-ils envoyés ailleurs ?",
+            "answer": "Par défaut, non : l'indexation se calcule sur le serveur de l'instance. Si vous choisissez un modèle externe pour répondre, les extraits utilisés lui sont transmis ; nous l'indiquons avant, par écrit."
           },
           {
-            "question": "L'agent dit-il quand il ne trouve rien\u00a0?",
-            "answer": "C'est l'objectif de la configuration, et nous le vérifions pendant le pilote sur vos documents. Un garde-fou de fidélité réduit les réponses non étayées\u00a0; il ne les supprime pas."
+            "question": "L'agent dit-il quand il ne trouve rien ?",
+            "answer": "C'est l'objectif de la configuration, et nous le vérifions pendant le pilote sur vos documents. Un garde-fou de fidélité réduit les réponses non étayées ; il ne les supprime pas."
           },
           {
-            "question": "Peut-on limiter ce que chaque personne voit\u00a0?",
+            "question": "Peut-on limiter ce que chaque personne voit ?",
             "answer": "On limite ce que chaque agent consulte, base par base. Un droit d'accès document par document n'est pas annoncé à ce jour."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Pour la recherche dans vos documents, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Qu'est-ce qui consomme des crédits ici ?",
+            "answer": "Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour répondre à une question sur vos documents, résumer un contrat ou lire une pièce scannée, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: démonstration\u00a0; partenaire d'ici.",
+      "role": "CTA : démonstration ; partenaire d'ici.",
       "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"

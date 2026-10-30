@@ -19,7 +19,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Guide · Agents IA**
 
-# Qu'est-ce qu'un agent IA ? Réponse claire.
+# Qu'est-ce qu'un agent IA ? Définition simple.
 
 Un agent est un assistant logiciel : il suit vos consignes, utilise les outils et les documents que vous lui autorisez, cite ses sources et peut agir. Une personne valide avant que quoi que ce soit ne parte.
 
@@ -81,7 +81,7 @@ Ces exemples sont construits à partir de ce que WorkStudio permet ; ce ne sont
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Les garde-fous un par un : validation, traces, masquage, outils désactivés par défaut, plafonds. · Affirmations : CL-93, CL-21, CL-96, CL-24, CL-105, CL-109, CL-22, CL-106*
+*Les garde-fous un par un : validation, traces, masquage, outils désactivés par défaut, plafonds. · Affirmations : CL-93, CL-21, CL-96, CL-24, CL-105, CL-109, CL-22, CL-106, CL-PL01, CL-T04, CL-T09*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=garde-fous`
 
@@ -106,6 +106,10 @@ La recherche web d'un agent n'est disponible que si un administrateur l'active 
 #### Plafonds et journal.
 
 Organisations, rôles, journal d'audit et plafonds mensuels de consommation.
+
+#### Crédits comptés.
+
+Tout appel à un modèle d'IA consomme des crédits, dont le solde est visible dans « Mes outils » ; sans crédits, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement.
 
 ### Bloc 6 — Section (`block_section`)
 
@@ -145,7 +149,7 @@ Un modèle de départ résume un contrat ; il ne remplace pas un juriste.
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : agent et agent conversationnel, envoi autonome, lieu d'exécution, mesure, coût. · Affirmations : CL-90, CL-122, CL-93, CL-26, CL-02, CL-97, CL-80, CL-106*
+*Questions du guide : agent et agent conversationnel, envoi autonome, lieu d'exécution, mesure, coût. · Affirmations : CL-90, CL-122, CL-93, CL-26, CL-02, CL-97, CL-80, CL-106, CL-10, CL-PL03, CL-T01, CL-T02, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -155,11 +159,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 Pas exactement. Un agent conversationnel dialogue. Un agent peut aussi utiliser des outils et des documents pour accomplir une tâche, avec les droits que vous lui donnez.
 
-#### Un agent peut-il envoyer un courriel seul ?
+#### Un agent IA peut-il envoyer un courriel seul ?
 
 Pas par défaut. Chaque outil d'action demande l'accord d'une personne avant d'écrire ou de supprimer ; sans réponse, l'action n'a pas lieu. Dans les flux que Nexora AI configure, toute action qui engage l'entreprise passe par une validation, sauf décision écrite contraire du client.
 
-#### Où tournent les agents ?
+#### Où tournent les agents IA ?
 
 WorkStudio s'installe en une commande sur un serveur Docker, un outil qui empaquette les logiciels pour qu'ils s'installent de la même façon partout. Le système est installé chez vous ou hébergé dans l'infrastructure de Nexora AI, située au Québec.
 
@@ -167,9 +171,9 @@ WorkStudio s'installe en une commande sur un serveur Docker, un outil qui empaqu
 
 Des jeux de tests et des juges mesurent si un agent, une consigne ou un modèle répond bien, et comparent deux versions.
 
-#### Combien coûte un agent ?
+#### Combien coûte un agent IA ?
 
-Le coût dépend du cas ; une estimation écrite suit un diagnostic. La consommation se mesure en jetons, l'unité de texte que traite un modèle, avec des plafonds mensuels.
+Le coût d'un agent dépend du cas. Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. La consommation se mesure en jetons, l'unité de texte que traite un modèle : un crédit vaut un cent canadien de jetons, avec des plafonds mensuels. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

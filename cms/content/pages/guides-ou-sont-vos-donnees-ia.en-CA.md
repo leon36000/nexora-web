@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Where your data really is.
 
-Storage, processing, jurisdiction: three separate questions, and the questions to ask an AI provider. No promise of compliance or residency that we cannot prove.
+Storage, processing, jurisdiction: three separate questions, and the questions to put to an AI provider. We promise no compliance and no residency that we cannot prove.
 
 [See our data commitments](/en/your-data/) · [Deployment study](/en/contact/?sujet=etude-deploiement)
 
@@ -71,17 +71,17 @@ These findings come from each provider's documentation. They say nothing about w
 
 ### Bloc 5 — Section (`block_section`)
 
-*Tableau des trois modes (chez vous, hébergé au Québec, via une API) : où sont les données, où est le traitement, quoi demander. · Affirmations : CL-72, CL-E01, CL-E02, CL-73, CL-S01, CL-77, CL-05, CL-87*
+*Tableau des trois modes (chez vous, hébergé au Québec, via une API) : où sont les données, où est le traitement, quoi demander. · Affirmations : CL-72, CL-E01, CL-E02, CL-73, CL-S01, CL-77, CL-05, CL-87, CL-S02*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=trois-modes`
 
 ## Three modes, three answers.
 
-<table><caption>Where your data is, by mode</caption><thead><tr><th>Mode</th><th>Where the data is</th><th>Where processing happens</th><th>What to ask</th></tr></thead><tbody><tr><th>On your premises</th><td>On your server; Nexora AI accesses it only if you authorize it in writing, for a specific task.</td><td>On your server, except an external model you turn on.</td><td>The list of outbound flows (updates, licences, external model) before go-live.</td></tr><tr><th>Hosted in Quebec</th><td>In Nexora AI's infrastructure, in Quebec, backups included: this is our written commitment.</td><td>In the same infrastructure, except a service you turn on.</td><td>The address and contract of the site, the location of backups, logs and subprocessors. This evidence is in preparation.</td></tr><tr><th>Through a model API</th><td>Depends on the provider; the Nexora AI gateway keeps only usage metadata.</td><td>At the chosen model's provider.</td><td>The processing location, not only the storage location, and the provider's data policy.</td></tr></tbody></table>See also [deployment](/en/deployment/) on your premises or hosted in Quebec.
+<table><caption>Where your data is, by mode</caption><thead><tr><th>Mode</th><th>Where the data is</th><th>Where processing happens</th><th>What to ask</th></tr></thead><tbody><tr><th>On your premises</th><td>On your server; Nexora AI accesses it only if you authorize it in writing, for a specific task.</td><td>On your server, except an external model you turn on.</td><td>The list of outbound flows (updates, licences, external model) before go-live.</td></tr><tr><th>Hosted in Quebec</th><td>In Nexora AI's infrastructure, in Quebec, backups included: this is our written commitment.</td><td>In the same infrastructure, except a service you turn on.</td><td>The address and contract of the site, the location of backups, logs and subprocessors. This evidence is in preparation.</td></tr><tr><th>Through a model API</th><td>Depends on the provider; the Nexora AI gateway keeps only usage metadata (model, tokens, cost, duration), never the content of requests or answers.</td><td>At the chosen model's provider.</td><td>The processing location, not only the storage location, and the provider's data policy.</td></tr></tbody></table>See also [deployment](/en/deployment/) on your premises or hosted in Quebec.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Ce que la fiche d'un modèle dit et ne dit pas. · Affirmations : CL-S01, CL-75, CL-E08*
+*Ce que la fiche d'un modèle dit et ne dit pas. · Affirmations : CL-S01, CL-75, CL-E08, CL-S02, CL-M06*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=fiche-modele`
 
@@ -92,6 +92,8 @@ In the Nexora AI catalogue, each model's sheet states its provider, its hosting 
 - **What it says.** The information declared in the catalogue.
 - **What it does not say.** That no foreign law applies, or that processing happens in the same place as hosting.
 It is information, not a residency guarantee. See the [model gateway API](/en/model-gateway-api/) and the [list of models](/en/modeles/).
+
+Before each call to a provider, Nexora Privacy Router evaluates the request: it masks obvious personal details (email, phone, credit card, SIN, IBAN, keys and secrets) or refuses the request, according to the organization's policy. Its detection is heuristic, it finds neither names nor postal addresses, and it does not prove where the provider then processes the data.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -139,7 +141,7 @@ These commitments rest on a processing agreement, a subprocessor register and an
 
 ### Bloc 9 — FAQ (`block_faq`)
 
-*Questions du guide : stockage au Canada, vérification, entraînement, mode API, preuve. · Affirmations : CL-E08, CL-E09, CL-E03, CL-S01, CL-02, CL-87*
+*Questions du guide : stockage au Canada, vérification, entraînement, mode API, preuve. · Affirmations : CL-E08, CL-E09, CL-E03, CL-S01, CL-02, CL-87, CL-S02, CL-M06, CL-T05, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -164,6 +166,10 @@ No. Nexora AI commits never to use a client's data, documents, prompts or result
 #### Does Nexora AI prove its servers are in Quebec?
 
 The hosted mode commits to keeping data in Quebec, but the technical evidence (address, contract, location of backups and subprocessors) is in preparation. It will be provided in writing before go-live.
+
+#### Where is my data on the Nexora AI credit platform?
+
+The documents and files you keep with Nexora AI count toward your plan's storage. The model gateway keeps only usage metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. The location shown is information, not a residency guarantee: processing takes place at the chosen model's provider.
 
 ### Bloc 10 — Appel à l'action (`block_cta`)
 

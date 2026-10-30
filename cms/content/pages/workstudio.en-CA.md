@@ -7,13 +7,13 @@
 - Page : `workstudio` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/workstudio/` · slug : `workstudio`
 - Titre SEO (39 caractères) : WorkStudio: AI agents platform, no code
-- Description SEO (154 caractères) : An AI agents platform for small business: a Copilot that builds workflows, documents read, voice, model comparison. No code, human approval, traces. Demo.
+- Description SEO (156 caractères) : Design AI agents in plain language, no code: a Copilot builds your workflows, your documents answer, a person approves. Opens from your account, in credits.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de WorkStudio : la pointe de l'IA, extrêmement puissante et extrêmement simple, avec validation humaine. · Affirmations : CL-20, CL-21, CL-110, CL-P01, CL-P02*
+*Promesse de WorkStudio : la pointe de l'IA, extrêmement puissante et extrêmement simple, avec validation humaine. · Affirmations : CL-20, CL-21, CL-110, CL-P01, CL-P02, CL-PL02*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -27,13 +27,13 @@ Agents (software that completes a task using the tools you authorize), a Copilot
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Le rêve en six gestes : la pointe de l'IA, en clair. Les mots d'ambition sont des énoncés promotionnels (CL-P03) ; la preuve est la liste. · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-92, CL-25, CL-101, CL-102, CL-94, CL-97, CL-21*
+*Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03). · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-92, CL-25, CL-101, CL-102, CL-94, CL-97, CL-21*
 
 Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=pointe`
 
 ## Leading-edge AI, in plain terms.
 
-One tool, in plain language, for the most recent things AI can do. Big words prove nothing; the list below does.
+One tool, in plain language, for the most recent things AI can do. Here are six concrete steps.
 
 #### Describe it. The Copilot builds it.
 
@@ -253,6 +253,21 @@ One command on a Docker server (a tool that packages software), on Linux or macO
 
 ### Bloc 9 — Section (`block_section`)
 
+*Comment WorkStudio s'ouvre et ce qu'il consomme : un compte, des crédits (modèles), de l'espace ; la vente n'est pas ouverte. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T09, CL-22, CL-12*
+
+Réglages : `media_position=none`, `tone=sombre`, `anchor_id=compte`
+
+## Opens from your account.
+
+WorkStudio opens from the “My tools” panel of your Nexora AI account, as long as you have at least one credit left. A plan gives you credits every month and storage space; without a plan, you top up credits. Prices are not published yet: they will appear on the [Pricing](/en/pricing/) page once they are published.
+
+- **Models use credits.** Every model an agent or a workflow calls uses credits: one credit equals one Canadian cent of tokens, at the catalogue price. The tokens of each run appear in its traces, and monthly caps limit spending.
+- **Storage is counted for the organization.** The storage space of your plan is shared between your products. When it is full, writing is refused with a clear message; reading and deleting stay allowed.
+- **No credits, nothing erased.** Calls to models stop with a message that points to top-ups and plans. Your agents, workflows and documents stay where they are; you top up, and everything resumes.
+- **Not on sale yet.** Accounts and payments only work in test mode. In the meantime, a demonstration on fictitious data shows the tool.
+
+### Bloc 10 — Section (`block_section`)
+
 *Hosted agents: agents published in Nexora AI's catalogue are called through the API. The /agents page is no longer in the menus, WorkStudio links to it. · Affirmations : CL-27, CL-H01, CL-12*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=agents-heberges`
@@ -263,9 +278,9 @@ An agent built in WorkStudio and published in Nexora AI's catalogue can also be 
 
 - **One key, one balance.** The agent is called with your Nexora AI API key and credit balance, at the real cost of each run.
 - **Hosting is shown.** Each agent's page says where its instance runs, what its limits are and how to call it.
-- **Not on sale yet.** Self-service is not yet open for sale: accounts and payments only work in test mode.
+- **Not on sale yet.** Sales are not open: accounts and payments only work in test mode, and no price is published.
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Limites dites franchement. · Affirmations : CL-83, CL-109, CL-111, CL-110, CL-103*
 
@@ -275,7 +290,7 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=limites`
 
 A product is also judged by what it writes about its limits. Here are ours, as of this page's date.
 
-On your premises or [with us, in Quebec](/en/deployment/), we start by understanding your case: [book a diagnosis](/en/contact/?sujet=diagnostic).
+On your premises or [with us, in Quebec](/en/deployment/), we start by understanding your case: [book an assessment](/en/contact/?sujet=diagnostic).
 
 The starter models for small businesses are described one by one in the [workflow templates](/en/workflow-templates/). To call a model or an agent with the OpenAI format, see the guide [OpenAI-compatible API](/en/guides/openai-compatible-api/).
 
@@ -287,9 +302,9 @@ Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in [Nexora Apps
 - **Starter templates are adapted to Quebec, to be validated.** They are written for Quebec (Canadian dollars, GST and QST), but do not guarantee any tax or legal compliance: your accountant or adviser validates the result.
 - **Connections are qualified.** Some services require an administrator to first register an application with the provider, and a public HTTPS address for the instance.
 
-### Bloc 11 — FAQ (`block_faq`)
+### Bloc 12 — FAQ (`block_faq`)
 
-*FAQ propre à WorkStudio. · Affirmations : CL-12, CL-20, CL-26, CL-06, CL-27, CL-E03, CL-E04, CL-E05, CL-P02*
+*FAQ propre à WorkStudio. · Affirmations : CL-06, CL-10, CL-12, CL-20, CL-26, CL-27, CL-E03, CL-E04, CL-E05, CL-P02, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T04, CL-T06, CL-T09*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -298,6 +313,14 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 #### Can I see it at work before committing?
 
 Yes: we offer a demonstration, on fictional data, then we talk about your case. Self-service is not open for sale yet: accounts and payments only work in test mode.
+
+#### How much does WorkStudio cost?
+
+There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment. Use of the platform: in credits, because the models your agents call use them; a plan gives you credits and storage every month, otherwise you top up. Prices will appear on the Pricing page once they are published.
+
+#### What uses credits in WorkStudio?
+
+Calls to AI models: an agent's answer, reading a document, transcribing a recording. One credit equals one Canadian cent of tokens, at the model catalogue price, and the tokens of each run appear in its traces. When no credits are left, calls are refused and nothing is deleted: you top up, and everything resumes.
 
 #### Do I need to know how to code?
 
@@ -319,14 +342,14 @@ Yes, through connectors, an OpenAI-format API, or by displaying an agent on your
 
 Installation is one command on a Docker server; putting a case into service depends on your situation, with no universal timeline.
 
-### Bloc 12 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
-*CTA : démonstration. · Affirmations : CL-12*
+*CTA : démonstration. · Affirmations : CL-12, CL-PL03*
 
 Réglages : `tone=sombre`
 
 ## See WorkStudio at work.
 
-We prepare a demonstration on fictional data, then we talk about your first case. You leave knowing what the tool does, and what it does not do.
+We prepare a demonstration on fictitious data, then we talk about your first case. You leave knowing what the tool does, what it does not do, and how credits are counted.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [Read the method](/en/method/)

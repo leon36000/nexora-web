@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Chez vous, ou chez nous au Québec.
 
-Dans les deux modes, vos données restent à vous, ne servent jamais à entraîner un modèle et ne sont jamais vendues. Voici, en une lecture, qui contrôle quoi, et comment choisir.
+Choisissez où vit votre IA : sur un serveur qui vous appartient, ou dans notre infrastructure au Québec. Dans les deux modes, vos données restent à vous, n'entraînent jamais un modèle et ne sont jamais vendues. Cette page dit qui contrôle quoi.
 
 [Étudier mon projet](/contact/?sujet=etude-deploiement) · [Voir les engagements sur vos données](/vos-donnees/)
 
@@ -55,7 +55,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=qui-controle`
 
 ## Qui contrôle quoi, en une lecture.
 
-Huit points, du matériel à la sortie du contrat. Dans chaque cas, la réponse est écrite avant la mise en service. Dans les deux modes, vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
+Huit points, du matériel à la sortie du contrat. Pour chacun, la réponse est écrite avant la mise en service. Dans les deux modes, vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
 
 - **Le matériel.** Chez vous : il vous appartient. Chez nous : il appartient à notre infrastructure ; vous n'achetez rien.
 - **Les données.** Chez vous : sur votre serveur. Chez nous : dans notre infrastructure au Québec, selon les lieux précisés par écrit.
@@ -104,13 +104,13 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=mixte`
 
 ## Le cas du mode mixte.
 
-Certaines entreprises voudront garder des données sensibles chez elles et confier le reste à notre infrastructure. Une combinaison des deux modes peut être étudiée au cas par cas. Aucune offre mixte n'est définie à ce jour : nous ne vous en présentons donc ni le périmètre ni les conditions avant de l'avoir étudiée avec vous.
+Certaines entreprises voudront garder des données sensibles chez elles et confier le reste à notre infrastructure. Nous pouvons étudier une combinaison des deux modes au cas par cas. Aucune offre mixte n'est définie à ce jour : nous ne présentons donc ni périmètre ni conditions avant d'avoir étudié votre cas avec vous.
 
-Pour en parler, [étudier mon projet](/contact/?sujet=etude-deploiement) avec nous, ou lire d'abord notre approche de [la souveraineté](/souverainete/).
+Pour en parler, [étudier mon projet](/contact/?sujet=etude-deploiement) avec nous, ou lisez d'abord notre approche de [la souveraineté](/souverainete/).
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ du hub déploiement. · Affirmations : CL-02, CL-06, CL-08, CL-E03, CL-E04*
+*FAQ du hub déploiement. · Affirmations : CL-02, CL-06, CL-08, CL-E03, CL-E04, CL-10, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -118,27 +118,35 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Quel mode choisir pour commencer ?
 
-Celui qui correspond à la sensibilité de vos données et à vos compétences internes. L'étude de déploiement compare les deux options pour votre cas.
+Choisissez le mode qui correspond à la sensibilité de vos données et à vos compétences internes : sur place si vous voulez la maîtrise physique du serveur, hébergé si vous voulez nous confier la surveillance et les mises à jour. L'étude de déploiement compare les deux options pour votre cas.
 
 #### Peut-on changer de mode plus tard ?
 
-L'exportation de vos documents, de vos configurations et de vos flux de travaux est prévue au contrat. Un changement de mode se planifie alors comme un projet.
+Oui, mais comme un projet à planifier. Le contrat prévoit l'exportation de vos documents, de vos configurations et de vos flux de travaux, ce qui rend le changement possible.
 
 #### Mes données sortent-elles du Québec ?
 
-Cela dépend du mode et des modèles choisis ; nous l'écrivons avant le démarrage. Un modèle externe n'est jamais configuré sans votre activation explicite, consignée par écrit.
+Cela dépend du mode et des modèles choisis, et nous l'écrivons avant le démarrage. Un modèle externe n'est jamais configuré sans votre activation explicite, consignée par écrit.
 
 #### Mes données servent-elles à entraîner un modèle ?
 
-Non, jamais, dans aucun des deux modes. Elles ne sont pas non plus vendues.
+Non, jamais, dans aucun des deux modes. Vos données ne sont pas non plus vendues.
 
 #### Y a-t-il un mode hors ligne ?
 
-Nous ne promettons pas un fonctionnement sans aucun flux sortant : mises à jour et licences sont listées. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas.
+Nous ne promettons pas un fonctionnement sans aucun flux sortant : les mises à jour et les licences sont listées avant la mise en service. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas.
+
+#### Combien coûte un déploiement ?
+
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Où se place la plateforme à crédits ?
+
+Les deux modes de cette page relèvent de l'accompagnement sur mesure. La plateforme à crédits (un compte, des crédits, vos outils réunis dans « Mes outils ») est une seconde voie, pas encore ouverte à la vente : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 
-*CTA : étude de déploiement. · Affirmations : CL-80*
+*CTA : étude de déploiement. · Affirmations : CL-80, CL-T06*
 
 Réglages : `tone=sombre`
 
@@ -146,4 +154,4 @@ Réglages : `tone=sombre`
 
 Une étude de déploiement compare les deux options pour votre cas : données, compétences, matériel, exigences de vos clients.
 
-[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Voir le centre de confiance](/centre-de-confiance/)
+[Étudier mon projet](/contact/?sujet=etude-deploiement) · [Voir les tarifs à venir](/tarifs/)

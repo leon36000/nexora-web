@@ -6,7 +6,7 @@
 
 - Page : `solutions-comptabilite` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/comptabilite/` · slug : `solutions/comptabilite`
-- Titre SEO (40 caractères) : Comptabilité automatisée par IA pour PME
+- Titre SEO (36 caractères) : Pré-saisie comptable par IA pour PME
 - Description SEO (152 caractères) : L'IA lit vos pièces, prépare la pré-saisie et signale les écarts : votre comptable relit et décide. Le rapprochement bancaire n'est pas livré à ce jour.
 
 ## Contenu
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## La fin de mois, c'est la saisie.
 
-Un petit cabinet comptable reçoit de ses clients des factures, des notes de frais et des relevés, dans toutes les formes possibles. Une grande part du temps de fin de mois passe à relire des montants et à retaper des lignes, plutôt qu'à conseiller.
+Un petit cabinet comptable reçoit de ses clients des factures, des notes de frais et des relevés, dans toutes les formes possibles : photos de reçus, PDF, courriels transférés. À la fin du mois, l'adjointe relit des montants et retape des lignes, pendant que le comptable aurait des clients à conseiller.
 
-L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
+Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
 
 - **Des pièces dans tous les formats.** Courriels, photos, scans, PDF.
 - **Des contrôles à répéter.** Les montants hors taxes, les taxes et le total doivent concorder.
@@ -143,7 +143,7 @@ Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner 
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution comptabilité. · Affirmations : CL-125, CL-126, CL-132*
+*FAQ propre à la solution comptabilité. · Affirmations : CL-125, CL-126, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -164,6 +164,14 @@ Non, en principe : la pré-saisie se range dans une table, et la suite dépend 
 #### Mes pièces quittent-elles mon serveur ?
 
 Pas si la lecture se fait avec un modèle sur votre serveur. Un service externe de lecture est possible, seulement avec votre accord écrit, et il est indiqué.
+
+#### Combien cela coûte-t-il ?
+
+Pour la pré-saisie comptable, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ici ?
+
+Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour lire une pièce, en extraire les champs ou contrôler un total, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

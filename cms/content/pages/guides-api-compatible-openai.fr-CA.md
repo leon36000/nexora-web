@@ -124,21 +124,21 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=erreurs`
 ## Erreurs et limites.
 
 Les erreurs suivent le format d'OpenAI : un objet <code>error</code> avec un message, un type et un code. Les messages sont en français ; c'est le champ <code>code</code> qu'il faut tester. Voici la réponse réellement observée le 29 octobre 2026, sur un serveur de développement, pour une clé invalide :<pre><code>HTTP 401
-{"error":{"message":"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».","type":"authentication_error","param":null,"code":"invalid_api_key"}}</code></pre><table><caption>Erreurs de l'API</caption><thead><tr><th>Statut</th><th>Code</th><th>Signification</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Clé absente ou inconnue, révoquée ou expirée.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Solde insuffisant, compte bloqué ou plafond de dépense de la clé atteint.</td></tr><tr><th>404</th><td>model_not_found</td><td>Modèle inexistant ou non autorisé pour cette clé.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Requête invalide ; le champ param nomme le paramètre fautif.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Limite de requêtes ou de jetons par minute atteinte ; voir l'en-tête Retry-After.</td></tr><tr><th>502 ou 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>Le fournisseur du modèle est indisponible ou surchargé : réessayez. Rien n'est débité.</td></tr></tbody></table>
+{"error":{"message":"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».","type":"authentication_error","param":null,"code":"invalid_api_key"}}</code></pre><table><caption>Erreurs de l'API</caption><thead><tr><th>Statut</th><th>Code</th><th>Signification</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Clé absente ou inconnue, révoquée ou expirée.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Crédits insuffisants (le message renvoie vers la recharge et l'abonnement), compte bloqué ou plafond de dépense de la clé atteint.</td></tr><tr><th>404</th><td>model_not_found</td><td>Modèle inexistant ou non autorisé pour cette clé.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Requête invalide ; le champ param nomme le paramètre fautif.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Limite de requêtes ou de jetons par minute atteinte ; voir l'en-tête Retry-After.</td></tr><tr><th>502 ou 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>Le fournisseur du modèle est indisponible ou surchargé : réessayez. Rien n'est débité.</td></tr></tbody></table>
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Facturation en trois temps : réserver, régler, lire le coût ; état de la vente. · Affirmations : CL-S03, CL-S05, CL-12*
+*Facturation en trois temps : réserver, régler, lire le coût ; état de la vente. · Affirmations : CL-S03, CL-S05, CL-12, CL-T01, CL-T02, CL-T03, CL-T09, CL-T06*
 
 Réglages : `columns=3`, `tone=sable`, `layout=etapes`, `anchor_id=facturation`
 
 ## La facturation en trois temps.
 
-Les comptes et les paiements ne fonctionnent qu'en mode test pour l'instant : ce qui suit décrit le fonctionnement, pas une offre ouverte à la vente.
+L'API consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue. Un abonnement en donne chaque mois, sinon on recharge. Les comptes et les paiements ne fonctionnent qu'en mode test pour l'instant : ce qui suit décrit le fonctionnement, pas une offre ouverte à la vente.
 
 #### Réserver.
 
-Chaque requête réserve d'abord son coût maximal. Sans solde suffisant, l'API répond 402 avant tout appel au modèle.
+Chaque requête réserve d'abord son coût maximal. Sans crédits suffisants, l'API répond 402 insufficient_quota avant tout appel au modèle, avec un message qui renvoie vers la recharge et l'abonnement.
 
 #### Régler.
 
@@ -150,7 +150,7 @@ Chaque réponse complète porte l'en-tête x-nexora-cost-micro, en millionièmes
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du tutoriel : modifications du code, identifiant de modèle, flux, coût, achat. · Affirmations : CL-S04, CL-S03, CL-M07, CL-12*
+*Questions du tutoriel : modifications du code, identifiant de modèle, flux, coût, achat. · Affirmations : CL-S04, CL-S03, CL-M07, CL-12, CL-T01, CL-T02, CL-T03, CL-T09, CL-T06*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -174,16 +174,20 @@ Chaque réponse complète porte l'en-tête x-nexora-cost-micro, en millionièmes
 
 #### Puis-je utiliser l'API en production aujourd'hui ?
 
-Pas en libre-service : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté. Pour un projet, écrivez-nous.
+Pas en libre-service : la vente n'est pas ouverte. Les comptes et les paiements ne fonctionnent qu'en mode test, aucun paiement réel n'est accepté et aucun prix n'est publié ; les prix s'afficheront sur la page Tarifs. Pour un projet, écrivez-nous.
+
+#### Comment les crédits sont-ils consommés ?
+
+Chaque requête consomme des crédits au prix du catalogue : un crédit vaut un cent canadien de jetons. Les crédits d'abonnement servent en premier et expirent à la fin de leur période ; les crédits de recharge n'expirent pas. Quand il n'en reste plus, l'API refuse l'appel avec l'erreur 402 insufficient_quota.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
-*Appel à l'action : documentation, puis diagnostic. · Affirmations : CL-80, CL-12*
+*Appel à l'action : documentation, puis diagnostic. · Affirmations : CL-80, CL-12, CL-T06*
 
 Réglages : `tone=sombre`
 
 ## Voyez la documentation.
 
-La documentation de l'API donne l'adresse de base exacte, les erreurs et les exemples. Pour un projet, nous commençons par un diagnostic.
+La documentation de l'API donne l'adresse de base exacte, les erreurs et les exemples. Pour un projet, nous commençons par un diagnostic ; les prix s'afficheront sur la page Tarifs.
 
-[Lire la documentation](/docs/api/) · [Planifier un diagnostic](/contact/?sujet=diagnostic)
+[Lire la documentation](/docs/api/) · [Voir les tarifs à venir](/tarifs/)

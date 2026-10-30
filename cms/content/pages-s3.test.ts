@@ -502,6 +502,14 @@ describe("S3 : SEO", () => {
         // Nexora Apps (registre web/src/i18n/apps.ts) : la liste et la fiche de Privacy Router
         route(l, "apps"),
         route(l, "apps/privacy-router"),
+        // Plateforme à crédits (30/10/2026) : page Tarifs (`/tarifs` en français, `/en/pricing` en anglais, voir
+        // LOCALIZED_ROUTES), panneau « Mes outils » et fiches des outils annoncés.
+        l === "fr-CA" ? "/tarifs/" : "/en/pricing/",
+        route(l, "compte"),
+        route(l, "apps/code"),
+        route(l, "apps/rag"),
+        route(l, "apps/bot"),
+        route(l, "apps/creative"),
       ]);
     for (const k of KEYS)
       for (const l of LOCALES) {
@@ -685,7 +693,9 @@ describe("S3 : VÉRITÉ", () => {
   };
   // Mots permis seulement sur certaines pages, avec leurs conditions (contrôlées dans pages-vague2.test.ts).
   const ONLY_ON: Record<string, string[]> = {
-    gratuité: ["croissance", "faq", "confidentialite", "conditions"],
+    // « suite » : Nexora Code est « conçu pour être gratuit » (CL-AP01), annoncé « Bientôt » et jamais livré ; la phrase
+    // dit aussitôt que les modèles consomment des crédits (30/10/2026).
+    gratuité: ["croissance", "faq", "confidentialite", "conditions", "suite"],
     // Le comparatif cite son concurrent (faits datés et sourcés) ; le gabarit de publication nomme les réseaux visés.
     "marque ou prestataire non qualifié": [
       "croissance",

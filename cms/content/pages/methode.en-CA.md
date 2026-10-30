@@ -21,9 +21,9 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Five stages to put AI to work.
 
-Guidance on bringing AI into your business, designed for an executive, not an IT specialist: we start with one concrete problem, put into service and verified, before expanding. Here is what happens at each stage, and what you receive.
+AI support designed for an executive, not an IT specialist: we start with one concrete problem, put into service and verified, before expanding. Here is what happens at each stage, and what you receive.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [See the services](/en/services/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [See the services](/en/services/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
@@ -74,7 +74,7 @@ The method is designed so that a small-business leadership team stays in charge 
 
 ### Bloc 4 — Section (`block_section`)
 
-*Pourquoi un cas d'abord, et ce que mesure le pilote. · Affirmations : CL-14, CL-09, CL-10*
+*Pourquoi un cas d'abord, et ce que mesure le pilote. · Affirmations : CL-14, CL-09, CL-10, CL-PL03, CL-T01, CL-T04, CL-T06*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=un-cas`
 
@@ -82,13 +82,13 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=un-cas`
 
 A well-chosen case goes into service, gets verified and is corrected quickly. It also reveals what your company really expects from the system, which no diagram tells you. We then expand, without multiplying disconnected tools.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) to choose yours.
+[Book an assessment](/en/contact/?sujet=assessment) to choose yours. Platform prices will appear on the [Pricing](/en/pricing/) page.
 
 To choose your first case, read the [guide to AI for a Quebec small business](/en/guides/ai-small-business-quebec/).
 
 - **No universal timeline.** It depends on your situation: software to connect, quality of documents, rules to write. It is measured on a first case.
 - **A measured goal, not a promise.** We set with you what we want to observe during the pilot. We announce no percentage and no time saved before measuring it at your site.
-- **A written estimate.** After the diagnosis, it states what is included and what is not. There is no public price yet.
+- **A written estimate.** After the assessment, it states what is included and what is not. There is no public price yet. Support is paid for on a written estimate; use of the platform is paid for in credits, because anything that calls an AI model uses them.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -133,7 +133,7 @@ We use the tools in [WorkStudio](/en/workstudio/) to measure, on your own cases,
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la méthode. · Affirmations : CL-14, CL-04, CL-03*
+*FAQ propre à la méthode. · Affirmations : CL-14, CL-04, CL-03, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -141,23 +141,27 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### How long does it take to get started?
 
-We announce no universal timeline: it depends on your software, your documents and your rules. It is measured on a first case.
+We announce no universal timeline: it depends on your software, your documents and your rules, and it is measured on a first case.
 
 #### What if the first case does not work?
 
-We see it during the pilot, before investing more. We tell you what is blocking, and whether another case, another approach or nothing at all fits better.
+We see it during the pilot, before investing more. We tell you what is blocking, and whether another case, another approach or nothing at all would suit you better.
 
 #### Will my team have to learn to program?
 
-No. Training covers usage and supervision: reviewing, correcting, approving, refusing.
+No. Training covers use and supervision: reading, correcting, approving, refusing.
 
 #### Can we go faster by handling several cases?
 
-It is possible, but we advise against it at the start: one verified case teaches more than a broad, poorly bounded project.
+It is possible, but we advise against it at the start: one verified case teaches more than a broad project with unclear limits.
+
+#### How much does the support cost?
+
+There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : discuter du premier cas. · Affirmations : CL-80*
+*CTA : discuter du premier cas. · Affirmations : CL-80, CL-T06*
 
 Réglages : `tone=sombre`
 
@@ -165,4 +169,4 @@ Réglages : `tone=sombre`
 
 Describe what costs you time. We will help you pick the case that will teach the most.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Learn more about Nexora AI](/en/company/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [Learn more about Nexora AI](/en/company/)

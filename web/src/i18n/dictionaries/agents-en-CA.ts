@@ -52,7 +52,7 @@ export const agentsEnCA: AgentsDictionary = {
     updated: "Catalogue as of {date}",
     howTitle: "How it works",
     howSteps: [
-      "Create an API key in your customer area and top up your credits.",
+      "Create an API key in your customer area and add credits (top-up or plan).",
       "Call the Nexora AI API with the model “agent/<identifier>”, exactly as you would for a model.",
       "Follow each agent’s consumption in your customer area.",
     ],

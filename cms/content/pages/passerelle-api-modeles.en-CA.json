@@ -7,14 +7,22 @@
     "slug": "model-gateway-api",
     "title": "Model gateway API",
     "seo_title": "AI model gateway API, OpenAI-compatible format",
-    "seo_description": "One OpenAI-format API for several AI models: prices in Canadian dollars per token, the hosting location shown for each model, keys and spending caps.",
+    "seo_description": "One OpenAI-format API for several AI models: consumption in credits, prices in Canadian dollars per token, and the hosting location shown for each model.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la passerelle : une API au format OpenAI, des prix en dollars canadiens et le lieu d'hébergement de chaque modèle, avec l'état réel de la vente.",
-      "claims": ["CL-27", "CL-S01", "CL-S04", "CL-12"],
+      "claims": [
+        "CL-27",
+        "CL-S01",
+        "CL-S04",
+        "CL-12",
+        "CL-T01",
+        "CL-T02",
+        "CL-T06"
+      ],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +30,7 @@
       "translation": {
         "eyebrow": "Product · Models and API",
         "headline": "One API. Several models. Readable prices.",
-        "subheadline": "The Nexora AI API is a model gateway in the OpenAI format: you change the base address and the key, and the rest of your code stays the same. Each model shows its price in Canadian dollars and where it is hosted. Self-service offers are not yet open for sale: payments only work in test mode.",
+        "subheadline": "The Nexora AI API is a model gateway in the OpenAI format: change the base address and the key, and the rest of your code stays the same. Each model shows its price in Canadian dollars and where it is hosted. The API uses credits; sales are not yet open and payments only work in test mode.",
         "primary_label": "See the models",
         "primary_href": "/en/modeles/",
         "secondary_label": "Read the documentation",
@@ -60,7 +68,17 @@
     {
       "collection": "block_cards",
       "role": "Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API.",
-      "claims": ["CL-S04", "CL-S05", "CL-S01", "CL-S03", "CL-S06", "CL-S02"],
+      "claims": [
+        "CL-S04",
+        "CL-S05",
+        "CL-S01",
+        "CL-S03",
+        "CL-S06",
+        "CL-S02",
+        "CL-T02",
+        "CL-T04",
+        "CL-T09"
+      ],
       "fields": {
         "columns": "3",
         "tone": "sable",
@@ -84,16 +102,16 @@
             "text": "Each model says where it is hosted, with the data policy declared by its provider."
           },
           {
-            "title": "Billed per token.",
-            "text": "Prices in Canadian dollars per million tokens, input and output separate. Each request is settled at its actual cost."
+            "title": "Credits, per token.",
+            "text": "The API uses credits: one credit is worth one Canadian cent of tokens at the catalogue price. Prices are shown in Canadian dollars per million tokens, input and output separate, and each request is settled at its actual cost."
           },
           {
             "title": "Readable errors.",
-            "text": "Errors follow the OpenAI format. If the model's provider is unavailable, nothing is charged."
+            "text": "Errors follow the OpenAI format. If the model's provider is unavailable, nothing is charged. If no credits are left, the API refuses the call with a 402 insufficient_quota error and a message pointing to top-ups and plans."
           },
           {
             "title": "No content kept.",
-            "text": "Usage events contain only metadata: the model, the tokens, the cost and the duration."
+            "text": "Usage events contain only metadata: the model, the tokens, the cost and the duration. The content of requests and answers never appears in them."
           }
         ]
       }
@@ -101,7 +119,15 @@
     {
       "collection": "block_cards",
       "role": "Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test.",
-      "claims": ["CL-27", "CL-S01", "CL-S05", "CL-S04", "CL-S03", "CL-12"],
+      "claims": [
+        "CL-27",
+        "CL-S01",
+        "CL-S05",
+        "CL-S04",
+        "CL-S03",
+        "CL-12",
+        "CL-PL01"
+      ],
       "fields": {
         "columns": "4",
         "tone": "clair",
@@ -130,7 +156,7 @@
           },
           {
             "title": "Follow the usage.",
-            "text": "Requests, tokens and cost, by day and by model, in the customer area."
+            "text": "Requests, tokens and cost, by day and by model, in the customer area. Your credit balance appears in “My tools”."
           }
         ]
       }
@@ -138,7 +164,15 @@
     {
       "collection": "block_section",
       "role": "Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données.",
-      "claims": ["CL-S01", "CL-E08", "CL-E09", "CL-75", "CL-02"],
+      "claims": [
+        "CL-S01",
+        "CL-E08",
+        "CL-E09",
+        "CL-75",
+        "CL-02",
+        "CL-M06",
+        "CL-AP03"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -146,7 +180,7 @@
       },
       "translation": {
         "title": "The location, stated plainly.",
-        "body": "<p>The hosting location shown on each model sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers announce data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction can also be required to hand over data it holds, even if stored in Canada.</p><p>When data residency is a requirement, the right choice may be a system installed on your premises or hosted in Quebec: see <a href=\"/en/deployment/\">deployment</a> and the <a href=\"/en/your-data/\">commitments on your data</a>.</p><p>The guide <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a> explains the difference between storage, processing and jurisdiction.</p><p>Each gateway request first goes through <a href=\"/en/apps/privacy-router/\">Nexora Privacy Router</a>, included at no extra cost.</p>",
+        "body": "<p>The hosting location shown on each sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers advertise data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction may also be required to hand over data it holds, even data stored in Canada.</p><p>When data residency is a requirement, the right choice may be a system installed on your premises or hosted in Quebec: see <a href=\"/en/deployment/\">deployment</a> and the <a href=\"/en/your-data/\">commitments on your data</a>.</p><p>The guide <a href=\"/en/guides/where-is-your-ai-data/\">Where your data really is</a> explains the difference between storage, processing and jurisdiction.</p><p>Before each call to a provider, <a href=\"/en/apps/privacy-router/\">Nexora Privacy Router</a> evaluates the request. It is included at no extra charge. Its detection is heuristic and it does not prove where the provider then processes the data.</p>",
         "items": [
           {
             "title": "What the sheet says.",
@@ -162,7 +196,7 @@
     {
       "collection": "block_cards",
       "role": "Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé.",
-      "claims": ["CL-12", "CL-S04", "CL-86"],
+      "claims": ["CL-12", "CL-S04", "CL-86", "CL-T01", "CL-T03", "CL-T06"],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -174,11 +208,13 @@
         "cards": [
           {
             "title": "Not yet on sale.",
-            "text": "Self-service offers (servers, the credit-based model catalogue, hosted agents) are not open for sale: accounts and payments only work in test mode and no real payment is accepted."
+            "text": "The API uses credits that a plan gives you each month or that you top up, but self-service offers (servers, the credit-based model catalogue, hosted agents) are not open for sale. Accounts and payments only work in test mode and no real payment is accepted."
           },
           {
             "title": "No published price.",
-            "text": "The prices in the current catalogue are development prices: no price is published yet."
+            "text": "The prices in the current catalogue are development prices, and the prices of plans and top-up packs are not published. They will appear on the Pricing page once they are published.",
+            "href": "/en/pricing/",
+            "link_label": "See upcoming pricing"
           },
           {
             "title": "One choice per request.",
@@ -201,7 +237,13 @@
         "CL-S01",
         "CL-S02",
         "CL-12",
-        "CL-80"
+        "CL-80",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T06",
+        "CL-T09",
+        "CL-M06"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -221,7 +263,7 @@
           },
           {
             "question": "How is consumption billed?",
-            "answer": "Per token, in Canadian dollars. Each request first reserves its maximum cost, then is settled at its actual cost from the input and output tokens; the rest is released. Without enough balance, the API answers with a payment error before any call to the model."
+            "answer": "In credits. One credit is worth one Canadian cent of tokens at the catalogue price, and the catalogue shows its prices in Canadian dollars per million tokens. Each request first reserves its maximum cost, then is settled at its actual cost from the input and output tokens; the rest is released. Without enough balance, the API answers with a payment error before any call to the model."
           },
           {
             "question": "Where are the models hosted?",
@@ -229,11 +271,11 @@
           },
           {
             "question": "Does Nexora AI keep the content of my requests?",
-            "answer": "No. The gateway's usage events contain only metadata: the model, the tokens, the cost and the duration. The model provider's data policy is shown on its sheet."
+            "answer": "No, the gateway does not keep that content. Its usage events contain only metadata: the model, the tokens, the cost and the duration. What the model's provider keeps on its side is governed by its data policy, shown on the model's sheet."
           },
           {
             "question": "Can I buy access today?",
-            "answer": "Not as self-service: accounts and payments only work in test mode and no real payment is accepted. For a project, write to us: we start with a diagnosis of the case."
+            "answer": "Not as self-service: sales are not open. Accounts and payments only work in test mode, no real payment is accepted and no price is published; prices will appear on the Pricing page once they are published. For a project, write to us: we start with an assessment of the case."
           },
           {
             "question": "Do I need a gateway if I use a single model?",
@@ -242,6 +284,14 @@
           {
             "question": "Can I switch models without rewriting my code?",
             "answer": "Yes: the model is chosen by an identifier in the request. Change the identifier, keep the rest."
+          },
+          {
+            "question": "How do I get credits?",
+            "answer": "A plan gives you credits and storage every month; without a plan, you top up credits. Plan credits expire at the end of their period and are used first; top-up credits do not expire. The prices of plans and top-ups are not yet published."
+          },
+          {
+            "question": "What happens when there are no credits left?",
+            "answer": "The API refuses the call before any call to the model, with a 402 insufficient_quota error and a message pointing to top-ups and plans."
           }
         ]
       }
@@ -255,8 +305,8 @@
       },
       "translation": {
         "title": "Let's talk about your use.",
-        "text": "Tell us which models you want to compare and where your data must stay. We start with a diagnosis.",
-        "primary_label": "Book a diagnosis",
+        "text": "Tell us which models you want to compare and where your data must stay. We start with an assessment.",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/",
         "secondary_label": "See the models",
         "secondary_href": "/en/modeles/"

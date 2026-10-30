@@ -7,14 +7,22 @@
     "slug": "",
     "title": "Accueil",
     "seo_title": "Nexora AI : automatisation IA pour PME au Québec",
-    "seo_description": "Nexora AI met la pointe de l'IA à la portée des PME du Québec : agents puissants, prise en main simple, données chez vous ou au Québec. Parlons de votre projet.",
+    "seo_description": "Nexora AI : des agents d'IA que vous décrivez en français, un compte et des crédits pour tous vos outils. Pour les PME du Québec, vos données restent chez vous.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la vague 2 : la pointe de l'IA à la portée de tous ; le message directeur reste dans le sous-titre ; deux CTA.",
-      "claims": ["CL-01", "CL-02", "CL-P01", "CL-P02", "CL-E01", "CL-E02"],
+      "role": "Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA.",
+      "claims": [
+        "CL-01",
+        "CL-02",
+        "CL-P01",
+        "CL-P02",
+        "CL-PL01",
+        "CL-E01",
+        "CL-E02"
+      ],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,8 +30,8 @@
       "translation": {
         "eyebrow": "Nexora AI · IA pour les PME du Québec",
         "headline": "La pointe de l'IA. À votre portée.",
-        "subheadline": "L'IA qui travaille pour votre entreprise. Sous votre contrôle. Des agents puissants, une prise en main extrêmement simple — vous décrivez, l'outil construit — et des données qui restent chez vous ou au Québec.",
-        "primary_label": "Discuter de mon projet",
+        "subheadline": "L'IA qui travaille pour votre entreprise. Sous votre contrôle. Des agents que vous décrivez en français, des réponses tirées de vos documents, un seul compte et des crédits pour tous vos outils — et des données qui restent chez vous ou au Québec.",
+        "primary_label": "Décrire mon besoin",
         "primary_href": "/contact/",
         "secondary_label": "Voir les solutions",
         "secondary_href": "/solutions/"
@@ -40,7 +48,7 @@
       },
       "translation": {
         "title": "Partez de votre problème.",
-        "intro": "Inutile de savoir ce qu'est un modèle de langage. Dites-nous où votre équipe perd du temps : nous construisons à partir de là.",
+        "intro": "Inutile de connaître les modèles de langage. Dites-nous où votre équipe perd du temps : nous construisons à partir de là.",
         "cards": [
           {
             "title": "Des demandes sans réponse.",
@@ -153,7 +161,7 @@
           },
           {
             "title": "Mesuré, pas supposé.",
-            "text": "Des jeux de tests mesurent si un agent répond bien et comparent deux versions. Chaque appel laisse une trace consultable. Ces mots d'ambition sont des énoncés promotionnels : la preuve, c'est la liste de ce que l'outil fait."
+            "text": "Des jeux de tests vérifient qu'un agent répond bien et comparent deux versions avant de changer. Chaque appel laisse une trace consultable : modèle, étapes, durée, jetons."
           }
         ]
       }
@@ -215,8 +223,51 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente.",
+      "claims": [
+        "CL-PL01",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T04",
+        "CL-T05",
+        "CL-T06",
+        "CL-12"
+      ],
+      "fields": {
+        "media_position": "right",
+        "visual": "tableau-de-bord",
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Un compte, des crédits, tous vos outils.",
+        "body": "<p>Un seul compte Nexora AI réunit vos outils dans le panneau « Mes outils » : vos crédits, votre espace disque et l'état réel de chaque produit.</p><p>Un abonnement donne des crédits chaque mois et de l'espace disque ; sans abonnement, vous rechargez des crédits. Tout ce qui appelle un modèle d'IA consomme des crédits, et les outils qui n'en appellent aucun n'en consomment pas.</p><p>La vente n'est pas encore ouverte : aucun prix n'est publié. Les prix s'afficheront sur la page <a href=\"/tarifs/\">Tarifs</a> dès leur publication.</p>",
+        "items": [
+          {
+            "title": "Un compte.",
+            "text": "Vos crédits, votre espace et vos produits au même endroit : le panneau « Mes outils »."
+          },
+          {
+            "title": "Des crédits.",
+            "text": "Un crédit vaut un cent canadien de jetons, au prix du catalogue de modèles. Les crédits d'abonnement expirent à la fin de leur période et servent en premier ; ceux de recharge n'expirent pas. Quand il n'en reste plus, les appels aux modèles s'arrêtent avec un message qui renvoie vers la recharge."
+          },
+          {
+            "title": "De l'espace.",
+            "text": "Chaque abonnement inclut de l'espace disque, compté pour toute votre organisation. Quand il est plein, l'écriture est refusée avec un message clair ; lire et supprimer restent permis."
+          },
+          {
+            "title": "Des outils.",
+            "text": "WorkStudio s'ouvre tant qu'il reste un crédit. Nexora Code et Nexora RAG sont en préparation : leur état est affiché, sans date."
+          }
+        ]
+      }
+    },
+    {
       "collection": "block_cards",
-      "role": "Les produits présentés comme un ensemble, chacun avec son état réel en étiquette.",
+      "role": "Les produits présentés comme un ensemble ouvert depuis le même compte, chacun avec son état réel en étiquette.",
       "claims": [
         "CL-12",
         "CL-13",
@@ -230,7 +281,15 @@
         "CL-G02",
         "CL-G03",
         "CL-V01",
-        "CL-V03"
+        "CL-V03",
+        "CL-P03",
+        "CL-PL01",
+        "CL-PL02",
+        "CL-AP01",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-T04",
+        "CL-H01"
       ],
       "fields": {
         "columns": "3",
@@ -239,14 +298,42 @@
       },
       "translation": {
         "title": "Une suite, pas une pile.",
-        "intro": "Chaque produit sert la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. L'étiquette de chaque produit dit son état réel.",
+        "intro": "Chaque produit sert la même idée : une IA qui travaille pour vous, avec des accès, des budgets et des journaux que vous maîtrisez. Tous s'ouvrent depuis le même compte, et l'étiquette de chacun dit son état réel.",
         "cards": [
           {
             "title": "Nexora WorkStudio.",
             "label": "Disponible",
-            "text": "Concevez, connectez et pilotez des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez) et des flux de travaux (des enchaînements automatisés de tâches), au même endroit et en français. Une étape peut attendre la validation d'une personne avant d'agir.\nÉtat : disponible, c'est-à-dire livré et vérifié sur notre serveur de test ; aucun résultat chez un client n'est annoncé. Démonstration sur demande.",
+            "text": "Concevez, connectez et pilotez des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez) et des flux de travaux (des enchaînements automatisés de tâches), au même endroit et en français. Une étape peut attendre la validation d'une personne avant d'agir.\nÉtat : disponible, c'est-à-dire livré et vérifié sur notre serveur de test ; aucun résultat chez un client n'est annoncé. Il s'ouvre depuis « Mes outils » tant qu'il reste un crédit. Démonstration sur demande.",
             "href": "/workstudio/",
             "link_label": "Découvrir WorkStudio"
+          },
+          {
+            "title": "Nexora Code.",
+            "label": "Bientôt",
+            "text": "Un agent de code qui comprend, modifie et teste votre code, dans un environnement hébergé sur nos serveurs : rien à installer sur votre poste. Il est prévu compatible avec les plugins de Claude Code et de Codex.\nÉtat : bientôt, sans date. L'outil est conçu pour être gratuit ; ce qu'il fait appeler à un modèle consomme des crédits.",
+            "href": "/apps/code/",
+            "link_label": "Voir Nexora Code"
+          },
+          {
+            "title": "Nexora RAG.",
+            "label": "Bientôt",
+            "text": "Vos documents deviennent une base que l'IA interroge, sources à l'appui. Vous la créez en un clic et la reliez à vos outils avec une clé d'API. Vous paierez l'espace occupé et les jetons qui servent à indexer vos documents et à classer les réponses (embedding et rerank), en crédits.\nÉtat : bientôt, sans date.",
+            "href": "/apps/rag/",
+            "link_label": "Voir Nexora RAG"
+          },
+          {
+            "title": "Modèles et API.",
+            "label": "Prix à venir",
+            "text": "Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès à plusieurs modèles d'IA, les moteurs qui produisent les réponses, au format OpenAI, un format d'appel courant que de nombreux outils comprennent. Chaque requête consomme des crédits, au coût réel.\nÉtat : le catalogue se consulte, mais ses prix sont des prix de développement et la vente n'est pas ouverte.",
+            "href": "/modeles/",
+            "link_label": "Voir les modèles"
+          },
+          {
+            "title": "Agents hébergés.",
+            "label": "Prix à venir",
+            "text": "Les agents que vous publiez dans WorkStudio, appelables par API avec votre propre clé, au coût réel de chaque exécution en crédits, et soumis aux mêmes limites que le reste.\nÉtat : l'appel par API existe dans WorkStudio ; le catalogue en ligne est en préparation.",
+            "href": "/agents/",
+            "link_label": "Voir les agents"
           },
           {
             "title": "Nexora Croissance.",
@@ -263,20 +350,6 @@
             "link_label": "Découvrir Nexora Vision"
           },
           {
-            "title": "Modèles et API.",
-            "label": "Sur demande",
-            "text": "Une API (la porte par laquelle d'autres logiciels appellent un service) donne accès à plusieurs modèles d'IA, les moteurs qui produisent les réponses, au format OpenAI, un format d'appel courant que de nombreux outils comprennent. Clés, quotas (des limites d'usage) et mesure de la consommation y sont gérés.\nÉtat : démonstration sur demande ; le catalogue public, avec ses prix, est en préparation.",
-            "href": "/modeles/",
-            "link_label": "Voir les modèles"
-          },
-          {
-            "title": "Agents hébergés.",
-            "label": "Sur demande",
-            "text": "Les agents que vous publiez dans WorkStudio, appelables par API avec votre propre clé et soumis aux mêmes limites que le reste.\nÉtat : l'appel par API existe dans WorkStudio ; le catalogue en ligne est en préparation.",
-            "href": "/agents/",
-            "link_label": "Voir les agents"
-          },
-          {
             "title": "VPS au Québec.",
             "label": "En préparation",
             "text": "Un serveur privé virtuel (VPS) est un serveur loué rien que pour vous. Nous préparons des offres hébergées au Québec, avec une application d'IA installée au choix.\nÉtat : en préparation ; la commande en ligne n'est pas ouverte.",
@@ -286,7 +359,7 @@
           {
             "title": "La suite logicielle.",
             "label": "Aucune date",
-            "text": "Nexora Code pour le développement assisté par agents, Nexora Corpus pour préparer vos documents et vos données, et les modèles Quanta et Helix.\nÉtat : aucune disponibilité ni date n'est annoncée à ce stade.",
+            "text": "Nexora Corpus pour préparer vos documents et vos données, et les modèles Quanta et Helix.\nÉtat : aucune disponibilité ni date n'est annoncée à ce stade.",
             "href": "/suite/",
             "link_label": "Voir la suite"
           }
@@ -328,7 +401,7 @@
     {
       "collection": "block_section",
       "role": "Méthode en cinq temps.",
-      "claims": ["CL-03", "CL-04", "CL-14"],
+      "claims": ["CL-03", "CL-04", "CL-12", "CL-14", "CL-T06"],
       "fields": {
         "media_position": "none",
         "visual": "aucun",
@@ -336,7 +409,7 @@
       },
       "translation": {
         "title": "Cinq temps. Un cas à la fois.",
-        "body": "<p>Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel : il dépend de votre situation et se mesure sur un premier cas. Vous n'avez pas à devenir informaticien : nous installons, nous exploitons avec vous et nous formons votre équipe.</p><p><a href=\"/methode/\">Lire la méthode</a></p><p>Pour aller plus loin : <a href=\"/guides/ia-pme-quebec/\">Par où commencer avec l'IA dans une PME du Québec</a>, <a href=\"/guides/agents-ia-pour-pme/\">Qu'est-ce qu'un agent IA</a> et <a href=\"/guides/passerelle-ou-acces-direct/\">Passerelle ou accès direct</a>.</p><p>Les outils qui entourent vos modèles, vos serveurs et vos agents sont réunis dans <a href=\"/apps/\">Nexora Apps</a>, chacun avec son état réel.</p>"
+        "body": "<p>Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel : il dépend de votre situation et se mesure sur un premier cas. Vous n'avez pas à devenir informaticien : nous installons, nous exploitons avec vous et nous formons votre équipe.</p><p><a href=\"/methode/\">Lire la méthode</a></p><p>Pour aller plus loin : <a href=\"/guides/ia-pme-quebec/\">Par où commencer avec l'IA dans une PME du Québec</a>, <a href=\"/guides/agents-ia-pour-pme/\">Qu'est-ce qu'un agent IA</a> et <a href=\"/guides/passerelle-ou-acces-direct/\">Passerelle ou accès direct</a>.</p><p>Les outils qui entourent vos modèles, vos serveurs et vos agents sont réunis dans <a href=\"/apps/\">Nexora Apps</a>, chacun avec son état réel.</p><p>Vous préférez commencer par la plateforme ? Voyez comment fonctionnent les crédits sur la page <a href=\"/tarifs/\">Tarifs</a> : les prix s'y afficheront à leur publication.</p>"
       }
     },
     {
@@ -433,7 +506,7 @@
     },
     {
       "collection": "block_faq",
-      "role": "FAQ : objections du rapport 06 §8.4 et questions de la vague 2 ; réponses vraies seulement.",
+      "role": "FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables.",
       "claims": [
         "CL-02",
         "CL-04",
@@ -448,11 +521,28 @@
         "CL-22",
         "CL-23",
         "CL-25",
+        "CL-AP01",
+        "CL-AP06",
+        "CL-AP07",
         "CL-E01",
         "CL-E02",
         "CL-E03",
         "CL-E04",
-        "CL-P02"
+        "CL-P02",
+        "CL-PL01",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-S01",
+        "CL-S02",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T04",
+        "CL-T05",
+        "CL-T06",
+        "CL-T07",
+        "CL-T09",
+        "CL-PL04"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -463,7 +553,7 @@
         "items": [
           {
             "question": "Mes données sortent-elles du Québec ?",
-            "answer": "Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, vos données restent sur votre serveur. Chez nous, elles restent au Québec, sauvegardes comprises. Dans les deux cas, les seules sorties sont celles que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous l'activez, un modèle externe. Nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration."
+            "answer": "Cela dépend du mode de déploiement et des modèles que vous choisissez, et nous l'écrivons avant le démarrage. Chez vous, vos données restent sur votre serveur. Chez nous, elles restent au Québec, sauvegardes comprises. Dans les deux cas, les seules sorties sont celles que nous listons avec vous avant la mise en service : mises à jour, licences et, si vous l'activez, un modèle externe. Sur la plateforme à crédits, chaque modèle affiche son lieu d'hébergement ; la passerelle ne garde que des métadonnées d'usage, jamais le contenu de vos requêtes. Nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration."
           },
           {
             "question": "Entraînez-vous vos modèles avec nos données ?",
@@ -487,7 +577,27 @@
           },
           {
             "question": "Combien cela coûte-t-il ?",
-            "answer": "Il n'y a pas encore de prix public. Le coût dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel. Après un diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas. Les offres en libre-service afficheront leurs prix et leurs conditions de renouvellement à leur ouverture."
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Que se passe-t-il quand il n'y a plus de crédits ?",
+            "answer": "Les appels aux modèles s'arrêtent : l'API répond par une erreur de paiement et le message vous renvoie vers la recharge et vers l'abonnement. Dès que votre solde dépasse zéro, vous reprenez là où vous étiez. Un solde à zéro n'efface ni vos documents ni vos réglages ; la durée de conservation après une résiliation n'est pas encore décidée."
+          },
+          {
+            "question": "Mes crédits expirent-ils ?",
+            "answer": "Cela dépend de leur origine. Les crédits d'abonnement expirent à la fin de la période pour laquelle ils ont été versés, et ils servent en premier. Les crédits de recharge n'expirent pas. Dans une offre annuelle, les crédits sont versés un douzième par mois."
+          },
+          {
+            "question": "Qu'est-ce qui est gratuit, qu'est-ce qui consomme des crédits ?",
+            "answer": "Tout ce qui appelle un modèle d'IA consomme des crédits : une requête à l'API, un agent, une automatisation qui lit ou rédige. Les outils Nexora qui n'appellent aucun modèle n'en consomment pas, et le catalogue des modèles avec leurs fiches se consulte sans compte. Nexora Code est conçu pour être gratuit, mais il n'est pas encore livré. L'espace disque est compté à part : il vient avec l'abonnement."
+          },
+          {
+            "question": "Où sont mes données sur la plateforme à crédits ?",
+            "answer": "Les documents et les fichiers que vous gardez chez Nexora AI comptent dans l'espace disque de votre offre, par organisation. La passerelle de modèles ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu de vos requêtes ni des réponses. La fiche de chaque modèle indique son lieu d'hébergement et la politique de données de son fournisseur. Vos données ne servent jamais à entraîner un modèle."
+          },
+          {
+            "question": "Puis-je m'abonner ou recharger dès maintenant ?",
+            "answer": "Pas encore. La vente n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié. Les offres s'afficheront sur la page Tarifs à leur publication. D'ici là, vous pouvez demander une démonstration de WorkStudio ou décrire votre besoin."
           },
           {
             "question": "L'IA va-t-elle remplacer mes employés ?",
@@ -511,14 +621,14 @@
     {
       "collection": "block_cta",
       "role": "CTA final.",
-      "claims": ["CL-01", "CL-P02"],
+      "claims": ["CL-01", "CL-P02", "CL-PL03"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Votre premier cas commence ici.",
         "text": "Décrivez-nous un problème concret. Nous vous disons ce qui est faisable, dans quel mode, et par où commencer.",
-        "primary_label": "Discuter de mon projet",
+        "primary_label": "Décrire mon besoin",
         "primary_href": "/contact/",
         "secondary_label": "Découvrir WorkStudio",
         "secondary_href": "/workstudio/"

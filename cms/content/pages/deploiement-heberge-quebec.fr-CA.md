@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Hébergée au Québec. Sous votre contrôle.
 
-Nous hébergeons et exploitons votre système d'IA dans notre infrastructure, située au Québec : vous n'achetez ni serveur ni matériel, et nous nous engageons à garder vos données au Québec, sauvegardes comprises. Les pièces qui le prouvent sont en préparation ; vous les recevrez par écrit avant la mise en service.
+Nous hébergeons et exploitons votre IA dans notre infrastructure, au Québec. Vous n'achetez ni serveur ni matériel, et nous nous engageons à garder vos données au Québec, sauvegardes comprises. Les pièces qui le prouvent sont en préparation ; vous les recevrez par écrit avant la mise en service.
 
 [Étudier mon projet](/contact/?sujet=etude-deploiement) · [Comparer les deux modes](/deploiement/)
 
@@ -47,7 +47,7 @@ Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=documents`
 
 ## Ce que nous vous remettons.
 
-Un engagement d'hébergement n'a de sens que s'il est prouvable. Il s'appuie sur un contrat de traitement signé avec vous, un registre des sous-traitants et un journal d'accès. Les documents ci-dessous sont ceux que nous vous remettrons avant la mise en service ; ils sont en préparation.
+Notre engagement d'hébergement s'appuie sur un contrat de traitement signé avec vous, un registre des sous-traitants et un journal d'accès. Nous vous remettrons les documents ci-dessous avant la mise en service ; ils sont en préparation.
 
 #### Le lieu de l'hébergement.
 
@@ -105,7 +105,7 @@ La loi québécoise sur la protection des renseignements personnels (souvent app
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Limites du mode hébergé. · Affirmations : CL-75, CL-77, CL-86, CL-06, CL-76*
+*Limites du mode hébergé. · Affirmations : CL-75, CL-77, CL-86, CL-06, CL-76, CL-S01*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
@@ -117,7 +117,7 @@ Un hébergement au Québec n'écarte pas, à lui seul, les lois qui s'appliquent
 
 #### Les modèles comptent autant que le lieu.
 
-Un modèle externe appelé depuis notre infrastructure est un flux sortant. Il n'est configuré qu'avec votre activation explicite, consignée par écrit.
+Un modèle externe appelé depuis notre infrastructure est un flux sortant. Nous ne le configurons qu'avec votre activation explicite, consignée par écrit. Sur la plateforme à crédits, chaque modèle du catalogue affiche son lieu d'hébergement : un modèle peut tourner hors du Québec.
 
 #### Pas de niveau de service annoncé.
 
@@ -129,7 +129,7 @@ Si un modèle local est indisponible, le système ne se tourne jamais vers un se
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre au mode hébergé. · Affirmations : CL-02, CL-73, CL-07, CL-08, CL-E02, CL-E03, CL-E04*
+*FAQ propre au mode hébergé. · Affirmations : CL-02, CL-73, CL-07, CL-08, CL-E02, CL-E03, CL-E04, CL-10, CL-80*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -147,9 +147,13 @@ Nous décrivons la séparation entre clients dans l'étude de déploiement, pour
 
 Non, jamais. Nous n'utilisons ni vos données, ni vos documents, ni vos invites, ni vos résultats pour entraîner ou ajuster un modèle, le nôtre ou celui d'un tiers, et nous ne les vendons pas. Nous l'inscrivons au contrat.
 
-#### Et si je veux partir ?
+#### Que puis-je emporter si je veux partir ?
 
-Vous repartez avec vos documents, vos configurations et vos flux de travaux : l'exportation est prévue au contrat.
+Vous repartez avec vos documents, vos configurations et vos flux de travaux : le contrat prévoit leur exportation.
+
+#### Combien coûte l'hébergement au Québec ?
+
+Il n'y a pas encore de prix public. Une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. Le diagnostic précède toute estimation : il porte sur vos logiciels existants, vos volumes et vos intégrations.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

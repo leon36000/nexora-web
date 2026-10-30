@@ -133,7 +133,7 @@
           },
           {
             "question": "Does the template read my mailbox?",
-            "answer": "No. It receives the email you give it in the starting field. Connecting a mailbox is a connector matter, qualified at the diagnostic."
+            "answer": "No. It receives the email you give it in the starting field. Connecting a mailbox is a connector matter, qualified at the assessment."
           },
           {
             "question": "Is it suited to a Quebec business?",

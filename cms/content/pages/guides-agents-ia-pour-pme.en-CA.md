@@ -19,7 +19,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 **Guide · AI agents**
 
-# What is an AI agent? A clear answer.
+# What is an AI agent? A simple definition.
 
 An agent is a software assistant: it follows your instructions, uses the tools and documents you allow, cites its sources and can act. A person approves before anything goes out.
 
@@ -81,7 +81,7 @@ These examples are built from what WorkStudio allows; they are not results measu
 
 ### Bloc 5 — Cartes (`block_cards`)
 
-*Les garde-fous un par un : validation, traces, masquage, outils désactivés par défaut, plafonds. · Affirmations : CL-93, CL-21, CL-96, CL-24, CL-105, CL-109, CL-22, CL-106*
+*Les garde-fous un par un : validation, traces, masquage, outils désactivés par défaut, plafonds. · Affirmations : CL-93, CL-21, CL-96, CL-24, CL-105, CL-109, CL-22, CL-106, CL-PL01, CL-T04, CL-T09*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=garde-fous`
 
@@ -106,6 +106,10 @@ An agent's web search is only available if an administrator turns it on; the cod
 #### Caps and log.
 
 Organizations, roles, an audit log and monthly consumption caps.
+
+#### Credits counted.
+
+Any call to an AI model uses credits, and the balance is visible in "My tools"; with no credits, the call is refused with a message pointing to top-ups and plans.
 
 ### Bloc 6 — Section (`block_section`)
 
@@ -145,7 +149,7 @@ A starter template summarizes a contract; it does not replace a lawyer.
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : agent et agent conversationnel, envoi autonome, lieu d'exécution, mesure, coût. · Affirmations : CL-90, CL-122, CL-93, CL-26, CL-02, CL-97, CL-80, CL-106*
+*Questions du guide : agent et agent conversationnel, envoi autonome, lieu d'exécution, mesure, coût. · Affirmations : CL-90, CL-122, CL-93, CL-26, CL-02, CL-97, CL-80, CL-106, CL-10, CL-PL03, CL-T01, CL-T02, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -155,11 +159,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 Not exactly. A chatbot converses. An agent can also use tools and documents to carry out a task, with the rights you give it.
 
-#### Can an agent send an email on its own?
+#### Can an AI agent send an email on its own?
 
 Not by default. Each action tool asks for a person's approval before writing or deleting; with no answer, the action does not happen. In the workflows Nexora AI configures, any action that commits the business goes through an approval, unless the client decides otherwise in writing.
 
-#### Where do agents run?
+#### Where do AI agents run?
 
 WorkStudio installs with one command on a Docker server, a tool that packages software so it installs the same way everywhere. The system is installed on your premises or hosted in Nexora AI's infrastructure, located in Quebec.
 
@@ -167,9 +171,9 @@ WorkStudio installs with one command on a Docker server, a tool that packages so
 
 Test sets and judges measure whether an agent, an instruction or a model answers well, and compare two versions.
 
-#### How much does an agent cost?
+#### How much does an AI agent cost?
 
-The cost depends on the case; a written estimate follows a diagnosis. Consumption is measured in tokens, the unit of text a model processes, with monthly caps.
+The cost of an agent depends on the case. There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Consumption is measured in tokens, the unit of text a model processes: one credit equals one Canadian cent of tokens, with monthly caps. Platform prices will appear on the Pricing page once they are published.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

@@ -200,8 +200,8 @@
       },
       "translation": {
         "title": "Let's talk about your case.",
-        "text": "Tell us which models you want to compare, where your data must stay and what matters most. We answer with a diagnostic.",
-        "primary_label": "Book a diagnostic",
+        "text": "Tell us which models you want to compare, where your data must stay and what matters most. We answer with an assessment.",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Gateway or direct access",
         "secondary_href": "/en/guides/gateway-or-direct-access/"

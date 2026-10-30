@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Vos données · Cinq engagements",
         "headline": "Vos données sont à vous. Toujours.",
-        "subheadline": "Chez vous ou au Québec. Jamais utilisées pour entraîner une IA. Jamais vendues. Jamais envoyées à un modèle externe sans votre feu vert. Cinq engagements, expliqués simplement, avec ce qui les rend vérifiables et leurs limites.",
+        "subheadline": "Chez vous ou au Québec. Jamais utilisées pour entraîner une IA. Jamais vendues. Jamais envoyées à un modèle externe sans votre feu vert. Cinq engagements, leurs preuves et leurs limites, expliqués simplement.",
         "primary_label": "Poser une question sur vos données",
         "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Voir la souveraineté de l'IA",
@@ -81,7 +81,7 @@
           {
             "title": "Aucun modèle externe sans votre activation.",
             "label": "Engagement 5",
-            "text": "Vos données ne sont envoyées à un fournisseur de modèle externe que si vous l'avez activé pour un agent ou un projet précis. La liste des fournisseurs est publique, et chacun est lié par un contrat qui précise la conservation et l'entraînement."
+            "text": "Vos données ne sont envoyées à un fournisseur de modèle externe que si vous l'avez activé pour un agent ou un projet précis. La liste publique des fournisseurs et les contrats qui précisent la conservation et l'entraînement sont en préparation."
           }
         ]
       }
@@ -148,7 +148,7 @@
       },
       "translation": {
         "title": "Comment nous le prouvons.",
-        "intro": "Un engagement vaut ce que valent les mécanismes qui le font respecter. Voici ceux qui existent déjà dans le logiciel (disponible : livré et vérifié sur notre serveur de test) et ceux qui sont en préparation.",
+        "intro": "Un engagement vaut ses mécanismes de contrôle. Les cartes « disponible » décrivent ce qui existe dans le logiciel, livré et vérifié sur notre serveur de test. Les autres décrivent ce qui est en préparation.",
         "cards": [
           {
             "title": "Un journal d'accès.",
@@ -186,7 +186,15 @@
     {
       "collection": "block_section",
       "role": "Limites : ce que les engagements ne veulent pas dire.",
-      "claims": ["CL-77", "CL-71", "CL-75", "CL-L05", "CL-87"],
+      "claims": [
+        "CL-77",
+        "CL-71",
+        "CL-75",
+        "CL-L05",
+        "CL-87",
+        "CL-S01",
+        "CL-M06"
+      ],
       "fields": {
         "media_position": "none",
         "visual": "aucun",
@@ -195,7 +203,7 @@
       },
       "translation": {
         "title": "Nos limites, écrites noir sur blanc.",
-        "body": "<p>Un engagement crédible dit ce qu'il ne couvre pas. Voici les nôtres.</p>",
+        "body": "<p>Voici ce que nos engagements ne couvrent pas.</p>",
         "items": [
           {
             "title": "« Sur place » ne veut pas dire « rien ne sort ».",
@@ -212,6 +220,10 @@
           {
             "title": "Des documents encore en préparation.",
             "text": "Le contrat type, l'entente de traitement, le registre public des sous-traitants et la preuve du lieu d'hébergement sont en préparation. Nous les remettrons avant toute mise en service."
+          },
+          {
+            "title": "Sur la plateforme à crédits, le lieu dépend du modèle.",
+            "text": "Un modèle du catalogue peut tourner hors du Québec. Chaque modèle affiche son lieu d'hébergement et la politique de données de son fournisseur, et Nexora Privacy Router évalue chaque requête avant l'appel. Cette évaluation ne prouve pas où le fournisseur traite ensuite les données, et sa détection ne repère ni les noms ni les adresses postales."
           }
         ]
       }
@@ -258,7 +270,12 @@
         "CL-73",
         "CL-L03",
         "CL-L05",
-        "CL-87"
+        "CL-87",
+        "CL-S01",
+        "CL-S02",
+        "CL-M06",
+        "CL-T05",
+        "CL-PL01"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -270,19 +287,19 @@
         "items": [
           {
             "question": "Mes données servent-elles à entraîner une IA ?",
-            "answer": "Jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers : seule exception, un modèle qui vous appartient, ajusté avec Corpus sur votre demande écrite."
+            "answer": "Non, jamais. Nous n'utilisons pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, qu'il soit à Nexora AI ou à un tiers : seule exception, un modèle qui vous appartient, ajusté avec Corpus sur votre demande écrite."
           },
           {
             "question": "Vendez-vous mes données ?",
-            "answer": "Jamais. Nous ne vendons, ne louons, n'échangeons et ne partageons à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui nous est confiée."
+            "answer": "Non, jamais. Nous ne vendons, ne louons, n'échangeons et ne partageons à des fins publicitaires aucun renseignement personnel ni aucune donnée d'entreprise qui nous est confiée."
           },
           {
             "question": "Où sont mes données ?",
-            "answer": "Cela dépend du mode choisi. Sur place, elles restent sur votre serveur. Hébergées, elles restent dans notre infrastructure, au Québec, sauvegardes comprises. Dans les deux cas, nous écrivons le lieu des données, des sauvegardes et des journaux avant la mise en service."
+            "answer": "Cela dépend du mode choisi. Sur place, vos données restent sur votre serveur. Hébergées, elles restent dans notre infrastructure, au Québec, sauvegardes comprises. Dans les deux cas, nous écrivons le lieu des données, des sauvegardes et des journaux avant la mise en service. Sur la plateforme à crédits, les documents et fichiers que vous gardez chez Nexora AI comptent dans l'espace disque de votre offre, et la passerelle de modèles ne garde que des métadonnées d'usage."
           },
           {
             "question": "Quelqu'un chez Nexora AI peut-il voir mes données ?",
-            "answer": "Sur place, seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé. Pour le mode hébergé, les règles d'accès sont précisées par écrit avant la mise en service."
+            "answer": "Sur place, seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, et chaque accès est journalisé. Dans le mode hébergé, les règles d'accès sont précisées par écrit avant la mise en service."
           },
           {
             "question": "Un modèle externe peut-il voir mes données ?",
@@ -299,6 +316,10 @@
           {
             "question": "Que se passe-t-il en cas d'incident de sécurité ?",
             "answer": "La loi exige de déclarer à la Commission d'accès à l'information et aux personnes concernées tout incident qui présente un risque de préjudice sérieux, et de tenir un registre. Notre procédure d'incident est en préparation ; nous la remettrons avec le contrat."
+          },
+          {
+            "question": "Que garde la passerelle de modèles de mes requêtes ?",
+            "answer": "Les événements d'usage de la passerelle ne contiennent que des métadonnées (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses. Chaque modèle affiche la politique de données de son fournisseur, qui décide de ce que celui-ci conserve de son côté, et Nexora Privacy Router évalue chaque requête avant l'appel."
           }
         ]
       }

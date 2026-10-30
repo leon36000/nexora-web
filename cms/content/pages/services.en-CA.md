@@ -7,13 +7,13 @@
 - Page : `services` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/services/` · slug : `services`
 - Titre SEO (42 caractères) : AI services for small businesses in Quebec
-- Description SEO (157 caractères) : AI services for Quebec small businesses: diagnosis, installation on your premises or in Quebec, custom work, operation. Cutting-edge AI, no IT degree needed.
+- Description SEO (148 caractères) : Assessment, installation on your premises or in Quebec, custom automation, operations: AI services for Quebec small businesses, no IT degree needed.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action. · Affirmations : CL-01, CL-80, CL-04, CL-P01, CL-P03*
+*Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action. · Affirmations : CL-01, CL-80, CL-04, CL-P01, CL-P03, CL-PL03*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,9 +21,9 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # AI installed, run and improved. With you.
 
-AI services for Quebec small businesses: we install, run and evolve with you a system at the leading edge of AI, without you becoming an IT specialist. A diagnosis first, then a written estimate, then a first case in service.
+We install, run and evolve with you an AI system for your Quebec small business, without you becoming an IT specialist. An assessment first, then a written estimate, then a first case in service.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
+[Plan an assessment](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -35,7 +35,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=reve`
 
 Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic)
+[Plan an assessment](/en/contact/?sujet=diagnostic)
 
 - **The leading edge of AI, without the complexity.** Agents (software that carries out a task with the tools you authorize), a Copilot that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice: all in one tool, without writing a line of code.
 - **A person decides.** Any action that commits the business (sending, paying, writing) waits for a person's approval, unless you decide otherwise in writing.
@@ -51,7 +51,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=services`
 
 From the first conversation to daily operation, the same people follow you, in French or English, and the same control rules apply.
 
-#### The diagnosis.
+#### The assessment.
 
 We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. You leave with a written estimate.
 
@@ -75,15 +75,17 @@ We run the system with you, track what works and adjust the rest; training for y
 
 ### Bloc 4 — Section (`block_section`)
 
-*Ce qui fait varier l'estimation (aucun prix ni délai) et appel à planifier un diagnostic. · Affirmations : CL-10, CL-82, CL-85, CL-14*
+*Les deux voies de Nexora AI (accompagnement sur estimation écrite, plateforme à crédits), aucun prix ni délai ; ce qui fait varier l'estimation ; lien vers les tarifs à venir et appel à planifier un diagnostic. · Affirmations : CL-10, CL-82, CL-85, CL-14, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=estimation`
 
-## What makes the estimate vary.
+## What is paid, what varies.
 
-There is no public price yet, and we announce no universal timeline. After the diagnosis, we provide a written estimate that states what is included and what is not. Here is what makes it vary.
+Nexora AI offers two paths. **Support** (assessment, installation on your premises or hosted in Quebec, operations) is paid for on a written estimate, handed over after the assessment, that states what is included and what is not. The **credit platform** (account, credits, tools) is paid for by use: anything that calls an AI model uses credits, which a plan provides every month or which you top up.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) to get yours.
+There is no public price yet, the platform is not open for sale and we announce no universal timeline. [See the upcoming pricing](/en/pricing/). Here is what makes the support estimate vary.
+
+[Plan an assessment](/en/contact/?sujet=diagnostic) to get yours.
 
 - **The number of cases handled.** One well-chosen case first; others afterward.
 - **The volume of documents.** It weighs on indexing and on storage.
@@ -115,7 +117,7 @@ No availability level or response time is announced today; they are set out in t
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit). · Affirmations : CL-04, CL-08, CL-10, CL-02, CL-E03, CL-E04*
+*Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit). · Affirmations : CL-04, CL-08, CL-10, CL-02, CL-E03, CL-E04, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -123,7 +125,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Do we need technical staff?
 
-No. We install, run with you and evolve the system. Your team's training covers usage and supervision, not the technical side.
+No. Nexora AI installs the system, runs it with you and evolves it. Your team's training covers usage and supervision, not the technical side.
 
 #### Where is my data?
 
@@ -131,7 +133,7 @@ On your premises, on your server, or with us, in our infrastructure in Quebec, d
 
 #### Who handles updates?
 
-We do, as agreed in the contract. Updates are listed among the outbound flows in the diagram we hand over.
+Nexora AI does, as agreed in the contract. Updates are listed among the outbound flows in the diagram we hand over.
 
 #### What if we want to stop?
 
@@ -139,7 +141,15 @@ You leave with your documents, configurations and workflows: export is provided 
 
 #### Can we start small?
 
-That is the method: one concrete case, put into service and verified, before expanding.
+Yes, that is the method: one concrete case, put into service and verified, before expanding.
+
+#### How much does it cost?
+
+There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What is the difference between support and the platform?
+
+Nexora AI offers two paths: custom support (assessment, installation, operations, written estimate) and a credit platform (account, credits, tools). The platform is not yet open for sale. The assessment, however, can be booked now.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 
@@ -147,8 +157,8 @@ That is the method: one concrete case, put into service and verified, before exp
 
 Réglages : `tone=sombre`
 
-## Let's start with a diagnosis.
+## Let's start with an assessment.
 
 Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Request a deployment study](/en/contact/?sujet=etude-deploiement)
+[Plan an assessment](/en/contact/?sujet=diagnostic) · [Request a deployment study](/en/contact/?sujet=etude-deploiement)

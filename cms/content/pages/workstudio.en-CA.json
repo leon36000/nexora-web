@@ -7,14 +7,14 @@
     "slug": "workstudio",
     "title": "WorkStudio",
     "seo_title": "WorkStudio: AI agents platform, no code",
-    "seo_description": "An AI agents platform for small business: a Copilot that builds workflows, documents read, voice, model comparison. No code, human approval, traces. Demo.",
+    "seo_description": "Design AI agents in plain language, no code: a Copilot builds your workflows, your documents answer, a person approves. Opens from your account, in credits.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de WorkStudio : la pointe de l'IA, extrêmement puissante et extrêmement simple, avec validation humaine.",
-      "claims": ["CL-20", "CL-21", "CL-110", "CL-P01", "CL-P02"],
+      "claims": ["CL-20", "CL-21", "CL-110", "CL-P01", "CL-P02", "CL-PL02"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Le rêve en six gestes : la pointe de l'IA, en clair. Les mots d'ambition sont des énoncés promotionnels (CL-P03) ; la preuve est la liste.",
+      "role": "Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03).",
       "claims": [
         "CL-P01",
         "CL-P02",
@@ -53,7 +53,7 @@
       },
       "translation": {
         "title": "Leading-edge AI, in plain terms.",
-        "intro": "One tool, in plain language, for the most recent things AI can do. Big words prove nothing; the list below does.",
+        "intro": "One tool, in plain language, for the most recent things AI can do. Here are six concrete steps.",
         "cards": [
           {
             "title": "Describe it. The Copilot builds it.",
@@ -377,6 +377,52 @@
     },
     {
       "collection": "block_section",
+      "role": "Comment WorkStudio s'ouvre et ce qu'il consomme : un compte, des crédits (modèles), de l'espace ; la vente n'est pas ouverte.",
+      "claims": [
+        "CL-PL01",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-PL04",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T04",
+        "CL-T05",
+        "CL-T06",
+        "CL-T09",
+        "CL-22",
+        "CL-12"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "compte"
+      },
+      "translation": {
+        "title": "Opens from your account.",
+        "body": "<p>WorkStudio opens from the “My tools” panel of your Nexora AI account, as long as you have at least one credit left. A plan gives you credits every month and storage space; without a plan, you top up credits. Prices are not published yet: they will appear on the <a href=\"/en/pricing/\">Pricing</a> page once they are published.</p>",
+        "items": [
+          {
+            "title": "Models use credits.",
+            "text": "Every model an agent or a workflow calls uses credits: one credit equals one Canadian cent of tokens, at the catalogue price. The tokens of each run appear in its traces, and monthly caps limit spending."
+          },
+          {
+            "title": "Storage is counted for the organization.",
+            "text": "The storage space of your plan is shared between your products. When it is full, writing is refused with a clear message; reading and deleting stay allowed."
+          },
+          {
+            "title": "No credits, nothing erased.",
+            "text": "Calls to models stop with a message that points to top-ups and plans. Your agents, workflows and documents stay where they are; you top up, and everything resumes."
+          },
+          {
+            "title": "Not on sale yet.",
+            "text": "Accounts and payments only work in test mode. In the meantime, a demonstration on fictitious data shows the tool."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
       "role": "Hosted agents: agents published in Nexora AI's catalogue are called through the API. The /agents page is no longer in the menus, WorkStudio links to it.",
       "claims": ["CL-27", "CL-H01", "CL-12"],
       "fields": {
@@ -398,7 +444,7 @@
           },
           {
             "title": "Not on sale yet.",
-            "text": "Self-service is not yet open for sale: accounts and payments only work in test mode."
+            "text": "Sales are not open: accounts and payments only work in test mode, and no price is published."
           }
         ]
       }
@@ -414,7 +460,7 @@
       },
       "translation": {
         "title": "The limits, stated plainly.",
-        "body": "<p>A product is also judged by what it writes about its limits. Here are ours, as of this page's date.</p><p>On your premises or <a href=\"/en/deployment/\">with us, in Quebec</a>, we start by understanding your case: <a href=\"/en/contact/?sujet=diagnostic\">book a diagnosis</a>.</p><p>The starter models for small businesses are described one by one in the <a href=\"/en/workflow-templates/\">workflow templates</a>. To call a model or an agent with the OpenAI format, see the guide <a href=\"/en/guides/openai-compatible-api/\">OpenAI-compatible API</a>.</p><p>Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in <a href=\"/en/apps/\">Nexora Apps</a>, with their real state.</p>",
+        "body": "<p>A product is also judged by what it writes about its limits. Here are ours, as of this page's date.</p><p>On your premises or <a href=\"/en/deployment/\">with us, in Quebec</a>, we start by understanding your case: <a href=\"/en/contact/?sujet=diagnostic\">book an assessment</a>.</p><p>The starter models for small businesses are described one by one in the <a href=\"/en/workflow-templates/\">workflow templates</a>. To call a model or an agent with the OpenAI format, see the guide <a href=\"/en/guides/openai-compatible-api/\">OpenAI-compatible API</a>.</p><p>Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in <a href=\"/en/apps/\">Nexora Apps</a>, with their real state.</p>",
         "items": [
           {
             "title": "Verified here, not yet at a customer.",
@@ -443,15 +489,23 @@
       "collection": "block_faq",
       "role": "FAQ propre à WorkStudio.",
       "claims": [
+        "CL-06",
+        "CL-10",
         "CL-12",
         "CL-20",
         "CL-26",
-        "CL-06",
         "CL-27",
         "CL-E03",
         "CL-E04",
         "CL-E05",
-        "CL-P02"
+        "CL-P02",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-PL04",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-T09"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -464,6 +518,14 @@
           {
             "question": "Can I see it at work before committing?",
             "answer": "Yes: we offer a demonstration, on fictional data, then we talk about your case. Self-service is not open for sale yet: accounts and payments only work in test mode."
+          },
+          {
+            "question": "How much does WorkStudio cost?",
+            "answer": "There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment. Use of the platform: in credits, because the models your agents call use them; a plan gives you credits and storage every month, otherwise you top up. Prices will appear on the Pricing page once they are published."
+          },
+          {
+            "question": "What uses credits in WorkStudio?",
+            "answer": "Calls to AI models: an agent's answer, reading a document, transcribing a recording. One credit equals one Canadian cent of tokens, at the model catalogue price, and the tokens of each run appear in its traces. When no credits are left, calls are refused and nothing is deleted: you top up, and everything resumes."
           },
           {
             "question": "Do I need to know how to code?",
@@ -491,13 +553,13 @@
     {
       "collection": "block_cta",
       "role": "CTA : démonstration.",
-      "claims": ["CL-12"],
+      "claims": ["CL-12", "CL-PL03"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "See WorkStudio at work.",
-        "text": "We prepare a demonstration on fictional data, then we talk about your first case. You leave knowing what the tool does, and what it does not do.",
+        "text": "We prepare a demonstration on fictitious data, then we talk about your first case. You leave knowing what the tool does, what it does not do, and how credits are counted.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "Read the method",

@@ -12,7 +12,7 @@ export const enCA: Dictionary = {
     home: {
       title: "Nexora AI | Sovereign AI for your business, in Quebec",
       description:
-        "Nexora AI designs AI systems for your business, installed on your premises or hosted in Quebec. You keep control of your data and your access.",
+        "Nexora AI: one account, your credits, all your AI tools, and systems designed for your business, on your premises or in Quebec. You keep control of your data.",
     },
     notFound: {
       title: "Page not found | Nexora AI",
@@ -70,7 +70,8 @@ export const enCA: Dictionary = {
         },
         {
           label: "Software suite",
-          description: "Code, Corpus, and the Quanta and Helix models.",
+          description:
+            "Nexora Code and RAG in preparation, Corpus, Quanta and Helix: the status of each is shown.",
           href: "/suite",
         },
         {
@@ -85,7 +86,7 @@ export const enCA: Dictionary = {
     resources: { label: "Resources", href: "/ressources" },
     login: { label: "Sign in", href: "/compte" },
     accountLabel: "My account",
-    cta: { label: "Book a diagnostic", href: "/contact" },
+    cta: { label: "Book an assessment", href: "/contact" },
   },
 
   footer: {
@@ -215,11 +216,11 @@ export const enCA: Dictionary = {
 
   contact: {
     meta: {
-      title: "Book a diagnostic | Nexora AI",
+      title: "Contact us | Nexora AI",
       description:
         "Describe your need in a few questions: Nexora AI records your request and the team writes back. Installed on your premises or hosted in Quebec.",
     },
-    label: "Diagnostic",
+    label: "Contact",
     title: "Let’s talk about your need.",
     lead: "A few questions to understand your situation, then your contact details. The message is optional.",
     next: {
@@ -234,7 +235,7 @@ export const enCA: Dictionary = {
     noscript:
       "This form requires JavaScript: the anti-abuse check is computed in your browser, with no third-party service.",
     form: {
-      label: "Diagnostic request",
+      label: "Contact request",
       step: "Step {n} of {total}",
       steps: ["Your need", "Your details"],
       required: "required",
@@ -247,7 +248,7 @@ export const enCA: Dictionary = {
       need: {
         label: "What do you need?",
         options: {
-          diagnostic: "A diagnostic to pin down my need",
+          diagnostic: "An assessment to pin down my need",
           installation: "Installation of an AI server",
           automatisation: "Custom automation",
           "opsys-ai": "OPSYS-AI (construction and field services)",
@@ -346,8 +347,8 @@ export const enCA: Dictionary = {
       label: "Sovereign AI in Quebec",
       title: "AI that works for your business. Under your control.",
       subtitle:
-        "From managing your requests to automating your operations, Nexora AI designs AI systems tailored to your trade.",
-      primary: "Book a diagnostic",
+        "From managing your requests to automating your operations, Nexora AI designs AI systems tailored to your trade. One account, your credits, all your tools.",
+      primary: "Book an assessment",
       secondary: "See solutions",
     },
 
@@ -426,8 +427,8 @@ export const enCA: Dictionary = {
         },
         {
           label: "Suite",
-          title: "Code, Corpus, Quanta and Helix",
-          text: "The other components of the suite, shown with their actual availability.",
+          title: "Code, RAG, Corpus, Quanta and Helix",
+          text: "Nexora Code and RAG are in preparation; Corpus, Quanta and Helix have no date. The real status of each is shown.",
           href: "/suite",
         },
       ],
@@ -512,8 +513,8 @@ export const enCA: Dictionary = {
 
     finalCta: {
       title: "Let’s start with one concrete case.",
-      text: "A diagnostic to pin down the task to automate and the deployment mode that suits you.",
-      primary: "Book a diagnostic",
+      text: "An assessment to pin down the task to automate and the deployment mode that suits you.",
+      primary: "Book an assessment",
       secondary: "See solutions",
     },
   },

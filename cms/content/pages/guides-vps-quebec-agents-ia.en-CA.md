@@ -39,7 +39,7 @@ A virtual private server (VPS) is a server rented just for you, which you reach 
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Les applications d'IA prévues sur un VPS : cinq installées par Nexora AI, trois en guide seulement. · Affirmations : CL-M10, CL-13*
+*Les applications d'IA prévues sur un VPS : cinq installées par Nexora AI, trois en guide seulement. · Affirmations : CL-M10, CL-13, CL-T04*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=applications`
 
@@ -61,7 +61,7 @@ Your local models and their chat interface, with nothing sent out. Without a gra
 
 #### AnythingLLM.
 
-Chat with your documents, using the models you choose, including the Nexora AI gateway.
+Chat with your documents, using the models you choose, including those of the Nexora AI gateway, which use credits.
 
 #### LibreChat.
 
@@ -75,7 +75,7 @@ Their licence prevents Nexora AI from installing or reselling them: you order a 
 
 ### Bloc 4 — Section (`block_section`)
 
-*Quel plan pour quelle application : la mémoire minimale vient du catalogue ; aucun prix tant qu'aucun plan n'est publié. · Affirmations : CL-13, CL-12, CL-10*
+*Quel plan pour quelle application : la mémoire minimale vient du catalogue ; aucun prix tant qu'aucun plan n'est publié. · Affirmations : CL-13, CL-12, CL-10, CL-T01, CL-T02, CL-T04, CL-T06*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
@@ -83,9 +83,9 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
 Each application states the minimum memory it needs, and the VPS page greys out plans too small for the chosen application. These values come from the published catalogue, not from this guide: they may change with a new version.
 
-Applications can call models through the [Nexora AI API gateway](/en/model-gateway-api/); the processing location is then the chosen model's (see [Where your data really is](/en/guides/where-is-your-ai-data/)).
+Applications can call models through the [Nexora AI API gateway](/en/model-gateway-api/). Each call then uses credits: one credit is worth one Canadian cent of tokens at the catalogue price, and a plan gives you credits every month, otherwise you top up. The processing location is the chosen model's (see [Where your data really is](/en/guides/where-is-your-ai-data/)).
 
-No plan is published at the moment, which is why no price is shown here. The development plans you can see there in test are not for sale.
+No plan is published at the moment, which is why no price is shown here. The development plans you can see there in test are not for sale. Platform prices will appear on the [Pricing](/en/pricing/) page once they are published.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -105,7 +105,7 @@ No service level is announced. Your model keys, your data and the compliance of 
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*Questions du guide : commande, applications, lieu, prix, clé. · Affirmations : CL-13, CL-12, CL-M10, CL-M11, CL-02, CL-10*
+*Questions du guide : commande, applications, lieu, prix, clé. · Affirmations : CL-13, CL-12, CL-M10, CL-M11, CL-02, CL-10, CL-T01, CL-T03, CL-T04, CL-T06, CL-T09*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -125,11 +125,15 @@ Nexora AI is preparing servers hosted in Quebec. The technical evidence of the l
 
 #### How much will a VPS cost?
 
-No price is published. When plans are, the VPS page will show them in Canadian dollars, before tax.
+No price is published. When plans are, the VPS page will show them in Canadian dollars, before tax. Models called through the Nexora AI gateway use credits, like any call to an AI model; platform prices will appear on the Pricing page.
 
 #### How do you access the server?
 
 By an SSH key: you paste your public key when ordering. Nexora AI never asks for your private key.
+
+#### How does an agent pay for its model calls?
+
+Either with your own model keys, or through the Nexora AI gateway, where each call uses credits. A plan gives you credits every month, otherwise you top up. When no credits are left, the call is refused with a message pointing to top-ups and plans. Sales are not open: payments work in test mode only.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

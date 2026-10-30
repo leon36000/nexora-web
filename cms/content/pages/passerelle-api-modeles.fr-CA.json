@@ -7,14 +7,22 @@
     "slug": "passerelle-api-modeles",
     "title": "Passerelle d'API de modèles",
     "seo_title": "Passerelle d'API de modèles d'IA, format OpenAI",
-    "seo_description": "Une seule API au format OpenAI pour plusieurs modèles d'IA : prix en dollars canadiens par jeton, lieu d'hébergement de chaque modèle, clés et plafonds.",
+    "seo_description": "Une seule API au format OpenAI pour plusieurs modèles d'IA : consommation en crédits, prix en dollars canadiens par jeton, lieu d'hébergement de chaque modèle.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la passerelle : une API au format OpenAI, des prix en dollars canadiens et le lieu d'hébergement de chaque modèle, avec l'état réel de la vente.",
-      "claims": ["CL-27", "CL-S01", "CL-S04", "CL-12"],
+      "claims": [
+        "CL-27",
+        "CL-S01",
+        "CL-S04",
+        "CL-12",
+        "CL-T01",
+        "CL-T02",
+        "CL-T06"
+      ],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +30,7 @@
       "translation": {
         "eyebrow": "Produit · Modèles et API",
         "headline": "Une API. Plusieurs modèles. Des prix lisibles.",
-        "subheadline": "Nexora AI API est une passerelle de modèles au format OpenAI : vous changez l'adresse de base et la clé, le reste de votre code ne bouge pas. Chaque modèle affiche son prix en dollars canadiens et son lieu d'hébergement. Les offres en libre-service ne sont pas encore ouvertes à la vente : les paiements ne fonctionnent qu'en mode test.",
+        "subheadline": "Nexora AI API est une passerelle de modèles au format OpenAI : changez l'adresse de base et la clé, le reste de votre code ne bouge pas. Chaque modèle affiche son prix en dollars canadiens et son lieu d'hébergement. L'API consomme des crédits ; la vente n'est pas encore ouverte et les paiements ne fonctionnent qu'en mode test.",
         "primary_label": "Voir les modèles",
         "primary_href": "/modeles/",
         "secondary_label": "Lire la documentation",
@@ -60,7 +68,17 @@
     {
       "collection": "block_cards",
       "role": "Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API.",
-      "claims": ["CL-S04", "CL-S05", "CL-S01", "CL-S03", "CL-S06", "CL-S02"],
+      "claims": [
+        "CL-S04",
+        "CL-S05",
+        "CL-S01",
+        "CL-S03",
+        "CL-S06",
+        "CL-S02",
+        "CL-T02",
+        "CL-T04",
+        "CL-T09"
+      ],
       "fields": {
         "columns": "3",
         "tone": "sable",
@@ -84,16 +102,16 @@
             "text": "Chaque modèle indique où il est hébergé, avec la politique de données déclarée par son fournisseur."
           },
           {
-            "title": "Facturé au jeton.",
-            "text": "Prix en dollars canadiens par million de jetons, entrée et sortie séparées. Chaque requête est réglée au coût réel."
+            "title": "Des crédits, au jeton.",
+            "text": "L'API consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue. Les prix s'affichent en dollars canadiens par million de jetons, entrée et sortie séparées, et chaque requête est réglée au coût réel."
           },
           {
             "title": "Des erreurs lisibles.",
-            "text": "Les erreurs suivent le format d'OpenAI. Si le fournisseur du modèle est indisponible, rien n'est débité."
+            "text": "Les erreurs suivent le format d'OpenAI. Si le fournisseur du modèle est indisponible, rien n'est débité. S'il ne reste plus de crédits, l'API refuse l'appel avec l'erreur 402 insufficient_quota et un message qui renvoie vers la recharge et l'abonnement."
           },
           {
             "title": "Aucun contenu conservé.",
-            "text": "Les événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée."
+            "text": "Les événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. Le contenu des requêtes et des réponses n'y figure jamais."
           }
         ]
       }
@@ -101,7 +119,15 @@
     {
       "collection": "block_cards",
       "role": "Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test.",
-      "claims": ["CL-27", "CL-S01", "CL-S05", "CL-S04", "CL-S03", "CL-12"],
+      "claims": [
+        "CL-27",
+        "CL-S01",
+        "CL-S05",
+        "CL-S04",
+        "CL-S03",
+        "CL-12",
+        "CL-PL01"
+      ],
       "fields": {
         "columns": "4",
         "tone": "clair",
@@ -130,7 +156,7 @@
           },
           {
             "title": "Suivez l'usage.",
-            "text": "Requêtes, jetons et coût, par jour et par modèle, dans l'espace client."
+            "text": "Requêtes, jetons et coût, par jour et par modèle, dans l'espace client. Votre solde de crédits se lit dans « Mes outils »."
           }
         ]
       }
@@ -138,7 +164,15 @@
     {
       "collection": "block_section",
       "role": "Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données.",
-      "claims": ["CL-S01", "CL-E08", "CL-E09", "CL-75", "CL-02"],
+      "claims": [
+        "CL-S01",
+        "CL-E08",
+        "CL-E09",
+        "CL-75",
+        "CL-02",
+        "CL-M06",
+        "CL-AP03"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -146,7 +180,7 @@
       },
       "translation": {
         "title": "Le lieu, dit sans détour.",
-        "body": "<p>Le lieu d'hébergement affiché sur chaque fiche vient du catalogue publié : c'est une information, pas une garantie de résidence. Un modèle hébergé hors du Québec traite vos requêtes hors du Québec. Certains fournisseurs annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser. Un fournisseur soumis à la juridiction d'un autre pays peut aussi être tenu de lui remettre des données qu'il détient, même stockées au Canada.</p><p>Quand la résidence des données est une exigence, le bon choix peut être un système installé chez vous ou hébergé au Québec : voir le <a href=\"/deploiement/\">déploiement</a> et les <a href=\"/vos-donnees/\">engagements sur vos données</a>.</p><p>Le guide <a href=\"/guides/ou-sont-vos-donnees-ia/\">Où sont vraiment vos données</a> explique la différence entre stockage, traitement et juridiction.</p><p>Chaque requête de la passerelle passe d'abord par <a href=\"/apps/privacy-router/\">Nexora Privacy Router</a>, incluse sans supplément.</p>",
+        "body": "<p>Le lieu d'hébergement affiché sur chaque fiche vient du catalogue publié : c'est une information, pas une garantie de résidence. Un modèle hébergé hors du Québec traite vos requêtes hors du Québec. Certains fournisseurs annoncent un stockage des données au Canada alors que le traitement des demandes s'effectue ailleurs : la différence entre stockage et traitement est une question à poser. Un fournisseur soumis à la juridiction d'un autre pays peut aussi être tenu de lui remettre des données qu'il détient, même stockées au Canada.</p><p>Quand la résidence des données est une exigence, le bon choix peut être un système installé chez vous ou hébergé au Québec : voir le <a href=\"/deploiement/\">déploiement</a> et les <a href=\"/vos-donnees/\">engagements sur vos données</a>.</p><p>Le guide <a href=\"/guides/ou-sont-vos-donnees-ia/\">Où sont vraiment vos données</a> explique la différence entre stockage, traitement et juridiction.</p><p>Avant chaque appel à un fournisseur, <a href=\"/apps/privacy-router/\">Nexora Privacy Router</a> évalue la requête. Elle est incluse sans supplément. Sa détection est heuristique et elle ne prouve pas où le fournisseur traite ensuite les données.</p>",
         "items": [
           {
             "title": "Ce que la fiche dit.",
@@ -162,7 +196,7 @@
     {
       "collection": "block_cards",
       "role": "Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé.",
-      "claims": ["CL-12", "CL-S04", "CL-86"],
+      "claims": ["CL-12", "CL-S04", "CL-86", "CL-T01", "CL-T03", "CL-T06"],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -174,11 +208,13 @@
         "cards": [
           {
             "title": "Pas encore en vente.",
-            "text": "Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas ouvertes à la vente : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté."
+            "text": "L'API consomme des crédits qu'un abonnement donne chaque mois ou que l'on recharge, mais les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas ouvertes à la vente. Les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté."
           },
           {
             "title": "Pas de prix publié.",
-            "text": "Les prix du catalogue actuel sont des prix de développement : aucun prix n'est encore publié."
+            "text": "Les prix du catalogue actuel sont des prix de développement, et les prix des abonnements et des forfaits de recharge ne sont pas publiés. Ils s'afficheront sur la page Tarifs dès leur publication.",
+            "href": "/tarifs/",
+            "link_label": "Voir les tarifs à venir"
           },
           {
             "title": "Un seul choix par requête.",
@@ -201,7 +237,13 @@
         "CL-S01",
         "CL-S02",
         "CL-12",
-        "CL-80"
+        "CL-80",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T06",
+        "CL-T09",
+        "CL-M06"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -221,7 +263,7 @@
           },
           {
             "question": "Comment la consommation est-elle facturée ?",
-            "answer": "Au jeton, en dollars canadiens. Chaque requête réserve d'abord son coût maximal, puis est réglée au coût réel d'après les jetons d'entrée et de sortie ; le reste est libéré. Sans solde suffisant, l'API répond par une erreur de paiement avant tout appel au modèle."
+            "answer": "En crédits. Un crédit vaut un cent canadien de jetons au prix du catalogue, et le catalogue affiche ses prix en dollars canadiens par million de jetons. Chaque requête réserve d'abord son coût maximal, puis est réglée au coût réel d'après les jetons d'entrée et de sortie ; le reste est libéré. Sans solde suffisant, l'API répond par une erreur de paiement avant tout appel au modèle."
           },
           {
             "question": "Où sont hébergés les modèles ?",
@@ -229,11 +271,11 @@
           },
           {
             "question": "Nexora AI conserve-t-elle le contenu de mes requêtes ?",
-            "answer": "Non. Les événements d'usage de la passerelle ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. La politique de données du fournisseur du modèle est affichée sur sa fiche."
+            "answer": "Non, la passerelle ne conserve pas ce contenu. Ses événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. Ce que le fournisseur du modèle conserve de son côté relève de sa politique de données, affichée sur la fiche du modèle."
           },
           {
             "question": "Puis-je acheter l'accès aujourd'hui ?",
-            "answer": "Pas en libre-service : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté. Pour un projet, écrivez-nous : nous commençons par un diagnostic du cas visé."
+            "answer": "Pas en libre-service : la vente n'est pas ouverte. Les comptes et les paiements ne fonctionnent qu'en mode test, aucun paiement réel n'est accepté et aucun prix n'est publié ; les prix s'afficheront sur la page Tarifs dès leur publication. Pour un projet, écrivez-nous : nous commençons par un diagnostic du cas visé."
           },
           {
             "question": "Faut-il une passerelle si j'utilise un seul modèle ?",
@@ -242,6 +284,14 @@
           {
             "question": "Puis-je changer de modèle sans réécrire mon code ?",
             "answer": "Oui : le modèle se choisit par un identifiant dans la requête. Changez l'identifiant, gardez le reste."
+          },
+          {
+            "question": "Comment obtient-on des crédits ?",
+            "answer": "Un abonnement donne des crédits et de l'espace disque chaque mois ; sans abonnement, on recharge des crédits. Les crédits d'abonnement expirent à la fin de leur période et servent en premier ; les crédits de recharge n'expirent pas. Les prix des abonnements et des recharges ne sont pas encore publiés."
+          },
+          {
+            "question": "Que se passe-t-il quand il n'y a plus de crédits ?",
+            "answer": "L'API refuse l'appel avant tout appel au modèle, avec l'erreur 402 insufficient_quota et un message qui renvoie vers la recharge et vers l'abonnement."
           }
         ]
       }

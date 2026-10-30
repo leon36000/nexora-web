@@ -148,6 +148,6 @@ Réglages : `tone=sombre`
 
 ## Let's talk about your case.
 
-Tell us which models you want to compare, where your data must stay and what matters most. We answer with a diagnostic.
+Tell us which models you want to compare, where your data must stay and what matters most. We answer with an assessment.
 
-[Book a diagnostic](/en/contact/?sujet=diagnostic) · [Gateway or direct access](/en/guides/gateway-or-direct-access/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [Gateway or direct access](/en/guides/gateway-or-direct-access/)

@@ -6,14 +6,14 @@
   "seo": {
     "slug": "solutions/service-client",
     "title": "Service client",
-    "seo_title": "Service client par IA pour PME",
+    "seo_title": "Agent de service client sur vos documents",
     "seo_description": "Un agent répond à vos clients à partir de vos documents, cite ses sources et passe le relais à une personne, avec un résumé. Votre équipe garde la main.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution service client\u00a0: le site répond, l'équipe se concentre.",
+      "role": "Promesse de la solution service client : le site répond, l'équipe se concentre.",
       "claims": ["CL-122", "CL-90", "CL-107"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Service client",
         "headline": "Votre site répond. Votre équipe se concentre.",
-        "subheadline": "Un agent (un logiciel qui accomplit une tâche avec les outils que vous autorisez) répond aux questions de vos clients à partir de vos propres documents, cite ses sources et passe le relais à votre équipe quand il ne sait pas.",
+        "subheadline": "Un agent (un logiciel qui accomplit une tâche avec les outils que vous autorisez) répond aux questions de vos clients à partir de vos documents, cite ses sources et passe le relais à votre équipe quand il ne sait pas.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème\u00a0: exemple construit d'un distributeur de produits de plomberie.",
+      "role": "Problème : exemple construit d'un distributeur de produits de plomberie.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "Les mêmes questions, jour après jour.",
-        "body": "<p>Prenons un distributeur de produits de plomberie qui sert des entrepreneurs. Chaque jour, on lui demande les heures d'ouverture, la politique de retour, les documents à fournir pour ouvrir un compte, les zones desservies. Les réponses existent, dans des fiches et des guides, mais il faut quelqu'un pour les retrouver et les redire.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Prenons un distributeur de produits de plomberie qui sert des entrepreneurs. Tout au long de la journée, on lui demande les heures d'ouverture, la politique de retour, les documents à fournir pour ouvrir un compte, les zones desservies. Les réponses existent, dans des fiches et des guides, mais il faut quelqu'un pour les retrouver et les redire, pendant qu'un autre client attend au comptoir.</p><p>Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Une équipe interrompue.",
@@ -59,7 +59,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système\u00a0: trois étapes, avec relais humain.",
+      "role": "Ce que fait le système : trois étapes, avec relais humain.",
       "claims": ["CL-122", "CL-25", "CL-90", "CL-107", "CL-112", "CL-P01"],
       "fields": {
         "columns": "3",
@@ -73,7 +73,7 @@
         "cards": [
           {
             "title": "Il cherche.",
-            "text": "À chaque question, il consulte les bases de documents que vous lui avez ouvertes\u00a0: fiches, guides, politiques. L'indexation (le rangement des documents pour les retrouver vite) se calcule par défaut sur le serveur de l'instance."
+            "text": "À chaque question, il consulte les bases de documents que vous lui avez ouvertes : fiches, guides, politiques. L'indexation (le rangement des documents pour les retrouver vite) se calcule par défaut sur le serveur de l'instance."
           },
           {
             "title": "Il répond et cite.",
@@ -88,7 +88,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que reçoit l'équipe\u00a0: mosaïque de bénéfices (bento).",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento).",
       "claims": ["CL-96", "CL-122"],
       "fields": {
         "columns": "2",
@@ -102,11 +102,11 @@
         "cards": [
           {
             "title": "Des demandes transmises avec leur contexte.",
-            "text": "La question, ce que l'agent a déjà répondu, un résumé de l'échange\u00a0: personne ne repose la question."
+            "text": "La question, ce que l'agent a déjà répondu, un résumé de l'échange : personne ne repose la question."
           },
           {
             "title": "Un journal des conversations.",
-            "text": "Les échanges de l'agent sont tracés\u00a0: on peut voir ce qui a été répondu, avec quelles sources."
+            "text": "Les échanges de l'agent sont tracés : on peut voir ce qui a été répondu, avec quelles sources."
           },
           {
             "title": "Des traces qui révèlent les trous.",
@@ -121,7 +121,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic\u00a0; lien vers Croissance (visibilité, accès anticipé).",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic ; lien vers Croissance (visibilité, accès anticipé).",
       "claims": ["CL-14", "CL-122", "CL-09", "CL-G01"],
       "fields": {
         "media_position": "none",
@@ -130,12 +130,12 @@
       },
       "translation": {
         "title": "Moins d'interruptions, plus de constance.",
-        "body": "<p>Le bénéfice attendu\u00a0: moins d'interruptions, des réponses plus constantes, des clients qui obtiennent quelque chose plus vite. Aucun pourcentage n'est annoncé\u00a0; l'effet se mesure pendant un pilote, sur vos vraies questions.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour évaluer vos questions fréquentes.</p><p>Vous voulez aussi que davantage de clients vous trouvent\u00a0? <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé, est en accès anticipé\u00a0: l'accès se fait sur demande.</p>"
+        "body": "<p>Le bénéfice attendu : moins d'interruptions, des réponses plus constantes, des clients qui obtiennent plus vite ce qu'ils cherchent. Aucun pourcentage n'est annoncé ; l'effet se mesure pendant un pilote, sur vos vraies questions.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour évaluer vos questions fréquentes.</p><p>Vous voulez aussi que davantage de clients vous trouvent ? <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé, est en accès anticipé : l'accès se fait sur demande.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, avec limites\u00a0: pas de téléphone, pas de promesse de disponibilité\u00a0; carte données avec lien Vos données.",
+      "role": "Ce qui reste sous contrôle, avec limites : pas de téléphone, pas de promesse de disponibilité ; carte données avec lien Vos données.",
       "claims": [
         "CL-124",
         "CL-86",
@@ -160,7 +160,7 @@
         "cards": [
           {
             "title": "Vous choisissez les documents.",
-            "text": "L'agent ne consulte que les bases que vous lui ouvrez. Un agent accessible au public ne devrait jamais avoir accès à des documents confidentiels\u00a0: nous séparons les deux."
+            "text": "L'agent ne consulte que les bases que vous lui ouvrez. Un agent accessible au public ne devrait jamais avoir accès à des documents confidentiels : nous séparons les deux."
           },
           {
             "title": "Rien d'irréversible sans accord.",
@@ -172,15 +172,15 @@
           },
           {
             "title": "Pas de promesse de disponibilité.",
-            "text": "L'agent répond quand le système est en ligne. Aucun niveau de disponibilité n'est annoncé à ce jour\u00a0; il se précise au contrat."
+            "text": "L'agent répond quand le système est en ligne. Aucun niveau de disponibilité n'est annoncé à ce jour ; il se précise au contrat."
           },
           {
             "title": "La recherche web reste fermée.",
-            "text": "Si elle était activée pour l'agent, ses requêtes quitteraient le système\u00a0: nous ne l'activons pas pour un agent public."
+            "text": "Si elle était activée pour l'agent, ses requêtes quitteraient le système : nous ne l'activons pas pour un agent public."
           },
           {
             "title": "Vos données restent à vous.",
-            "text": "Sur votre serveur ou chez nous, au Québec\u00a0: jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe n'entre qu'avec votre activation explicite, consignée par écrit.",
+            "text": "Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe n'entre qu'avec votre activation explicite, consignée par écrit.",
             "href": "/vos-donnees/",
             "link_label": "Lire nos engagements"
           }
@@ -190,37 +190,58 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la solution service client.",
-      "claims": ["CL-107", "CL-122", "CL-132", "CL-112"],
+      "claims": [
+        "CL-107",
+        "CL-122",
+        "CL-132",
+        "CL-112",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04",
+        "CL-T09",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Service client\u00a0: vos questions.",
+        "title": "Service client : vos questions.",
         "items": [
           {
-            "question": "Comment l'agent apparaît-il sur mon site\u00a0?",
+            "question": "Comment l'agent apparaît-il sur mon site ?",
             "answer": "Une ligne de code ajoute une bulle de chat, ou vous insérez un cadre dans une page. Vous limitez la liste des sites autorisés à l'afficher. Il faut pour cela une adresse HTTPS publique (une adresse web sécurisée, accessible à tous) pour votre instance."
           },
           {
-            "question": "Peut-il inventer une réponse\u00a0?",
+            "question": "L'agent peut-il inventer une réponse ?",
             "answer": "Un modèle peut se tromper. Nous réduisons le risque en le faisant répondre à partir de vos documents, en citant ses sources et, au besoin, en ajoutant un garde-fou de fidélité. Nous vérifions pendant le pilote qu'il dit quand il ne trouve rien."
           },
           {
-            "question": "Et si le client veut parler à quelqu'un\u00a0?",
+            "question": "Que se passe-t-il si le client veut parler à quelqu'un ?",
             "answer": "L'agent propose un rappel par une personne et transmet la demande avec un résumé. Le chat en direct avec un humain n'est pas une fonction annoncée."
           },
           {
-            "question": "Parle-t-il en français et en anglais\u00a0?",
+            "question": "L'agent parle-t-il en français et en anglais ?",
             "answer": "Il répond dans la langue de la question dans la mesure où le modèle choisi le permet. Nous vérifions les deux langues sur vos documents pendant le pilote."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Pour l'agent de service client, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Qu'est-ce qui consomme des crédits ici ?",
+            "answer": "Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour répondre à la question d'un client ou vérifier que la réponse reste fidèle à vos documents, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: démonstration.",
+      "role": "CTA : démonstration.",
       "claims": ["CL-01"],
       "fields": {
         "tone": "sombre"

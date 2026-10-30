@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Your data · Five commitments",
         "headline": "Your data is yours. Always.",
-        "subheadline": "On your premises or in Quebec. Never used to train an AI. Never sold. Never sent to an external model without your green light. Five commitments, explained simply, with what makes them verifiable and where they stop.",
+        "subheadline": "On your premises or in Quebec. Never used to train an AI. Never sold. Never sent to an external model without your green light. Five commitments, their proof and their limits, explained simply.",
         "primary_label": "Ask a question about your data",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "See sovereign AI",
@@ -81,7 +81,7 @@
           {
             "title": "No external model without your activation.",
             "label": "Commitment 5",
-            "text": "Your data is sent to an external model provider only if you have enabled that provider for a specific agent or project. The list of providers is public, and each is bound by a contract setting out retention and training terms."
+            "text": "Your data is sent to an external model provider only if you have enabled that provider for a specific agent or project. The public list of providers and the contracts that set out retention and training terms are in preparation."
           }
         ]
       }
@@ -148,7 +148,7 @@
       },
       "translation": {
         "title": "How we prove it.",
-        "intro": "A commitment is worth the mechanisms that enforce it. Here are those that already exist in the software (available: delivered and verified on our test server) and those in preparation.",
+        "intro": "A commitment is only as good as the controls behind it. Cards marked “available” describe what already exists in the software, delivered and verified on our test server. The others describe what is in preparation.",
         "cards": [
           {
             "title": "An access log.",
@@ -186,7 +186,15 @@
     {
       "collection": "block_section",
       "role": "Limites : ce que les engagements ne veulent pas dire.",
-      "claims": ["CL-77", "CL-71", "CL-75", "CL-L05", "CL-87"],
+      "claims": [
+        "CL-77",
+        "CL-71",
+        "CL-75",
+        "CL-L05",
+        "CL-87",
+        "CL-S01",
+        "CL-M06"
+      ],
       "fields": {
         "media_position": "none",
         "visual": "aucun",
@@ -195,7 +203,7 @@
       },
       "translation": {
         "title": "Our limits, in black and white.",
-        "body": "<p>A credible commitment says what it does not cover. Here are ours.</p>",
+        "body": "<p>Here is what our commitments do not cover.</p>",
         "items": [
           {
             "title": "\"On-premises\" does not mean \"nothing leaves\".",
@@ -211,7 +219,11 @@
           },
           {
             "title": "Documents still in preparation.",
-            "text": "The model contract, the data processing agreement, the public register of sub-processors and the proof of hosting location are in preparation. We will deliver them before any go-live."
+            "text": "The standard contract, the data processing agreement, the public register of sub-processors and the proof of hosting location are in preparation. We will deliver them before any go-live."
+          },
+          {
+            "title": "On the credit platform, location depends on the model.",
+            "text": "A model in the catalogue may run outside Quebec. Each model shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. That evaluation does not prove where the provider then processes the data, and its detection finds neither names nor postal addresses."
           }
         ]
       }
@@ -258,7 +270,12 @@
         "CL-73",
         "CL-L03",
         "CL-L05",
-        "CL-87"
+        "CL-87",
+        "CL-S01",
+        "CL-S02",
+        "CL-M06",
+        "CL-T05",
+        "CL-PL01"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -270,19 +287,19 @@
         "items": [
           {
             "question": "Is my data used to train an AI?",
-            "answer": "Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request."
+            "answer": "No, never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request."
           },
           {
             "question": "Do you sell my data?",
-            "answer": "Never. We do not sell, rent, exchange or share for advertising purposes any personal information or business data entrusted to us."
+            "answer": "No, never. We do not sell, rent, exchange or share for advertising purposes any personal information or business data entrusted to us."
           },
           {
             "question": "Where is my data?",
-            "answer": "It depends on the mode you choose. On-premises, it stays on your server. Hosted, it stays in our infrastructure, in Quebec, backups included. In both cases, we write down the location of the data, the backups and the logs before go-live."
+            "answer": "It depends on the mode you choose. On-premises, your data stays on your server. Hosted, it stays in our infrastructure, in Quebec, backups included. In both cases, we write down the location of the data, the backups and the logs before go-live. On the credit platform, the documents and files you keep with Nexora AI count toward your plan's storage, and the model gateway keeps only usage metadata."
           },
           {
             "question": "Can anyone at Nexora AI see my data?",
-            "answer": "On-premises, only if you authorize it in writing, for a specific task and a limited time, and every access is logged. For the hosted mode, the access rules are set out in writing before go-live."
+            "answer": "On-premises, only if you authorize it in writing, for a specific task and a limited time, and every access is logged. In the hosted mode, the access rules are set out in writing before go-live."
           },
           {
             "question": "Can an external model see my data?",
@@ -299,6 +316,10 @@
           {
             "question": "What happens in a security incident?",
             "answer": "The law requires reporting to the Commission d'accès à l'information and to the people concerned any incident that presents a risk of serious harm, and keeping a register. Our incident procedure is in preparation; we will deliver it with the contract."
+          },
+          {
+            "question": "What does the model gateway keep of my requests?",
+            "answer": "The gateway's usage events hold only metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its provider's data policy, which governs what that provider keeps on its side, and Nexora Privacy Router evaluates every request before the call."
           }
         ]
       }
@@ -313,7 +334,7 @@
       "translation": {
         "title": "Your data, your rules.",
         "text": "A question about where your data will live, about a contract or about a model provider? Ask it before you commit: the answer will be in writing.",
-        "primary_label": "Book a diagnostic",
+        "primary_label": "Book an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "See the trust centre",
         "secondary_href": "/en/trust-center/"

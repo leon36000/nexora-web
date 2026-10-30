@@ -7,14 +7,14 @@
     "slug": "faq",
     "title": "Questions fréquentes",
     "seo_title": "Questions IA PME : des réponses franches",
-    "seo_description": "Données, entraînement, prix, Loi 25, erreurs de l'IA, vidéosurveillance, marketing : les réponses franches de Nexora AI aux questions des dirigeants de PME.",
+    "seo_description": "Données, prix, crédits, Loi 25, erreurs de l'IA, vidéosurveillance, marketing : les réponses franches de Nexora AI aux questions des dirigeants de PME.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Entrée de la FAQ : réponses franches en langage de dirigeant.",
-      "claims": ["CL-09"],
+      "claims": ["CL-09", "CL-PL01"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Questions fréquentes",
         "headline": "Vos questions. Des réponses franches.",
-        "subheadline": "Données, coûts, mise en service, erreurs de l'IA : les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.",
+        "subheadline": "Données, coûts, crédits, mise en service, erreurs de l'IA : les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.",
         "primary_label": "Poser une question",
         "primary_href": "/contact/",
         "secondary_label": "Lire nos engagements sur vos données",
@@ -40,7 +40,7 @@
         "CL-08",
         "CL-71",
         "CL-77",
-        "CL-L05",
+        "CL-87",
         "CL-E01",
         "CL-E02",
         "CL-E03",
@@ -48,7 +48,10 @@
         "CL-E05",
         "CL-L01",
         "CL-L02",
-        "CL-87"
+        "CL-L05",
+        "CL-PL01",
+        "CL-S01",
+        "CL-S02"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -60,7 +63,7 @@
         "items": [
           {
             "question": "Mes données sortent-elles du Québec ?",
-            "answer": "Elles restent là où vous le décidez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous : ne sortent que les flux que nous listons ensemble avant la mise en service (mises à jour, licences et, si vous l'activez, un modèle externe). Chez nous, vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises ; les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants, en préparation.\n\nDans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration."
+            "answer": "Elles restent là où vous le décidez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous : ne sortent que les flux que nous listons ensemble avant la mise en service (mises à jour, licences et, si vous l'activez, un modèle externe). Chez nous, vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises ; les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants, en préparation.\n\nSur la plateforme à crédits, chaque modèle affiche son lieu d'hébergement et la passerelle ne garde que des métadonnées d'usage, jamais le contenu de vos requêtes. Dans tous les cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration."
           },
           {
             "question": "Mes données servent-elles à entraîner une IA ?",
@@ -99,15 +102,22 @@
       "claims": [
         "CL-04",
         "CL-10",
-        "CL-82",
-        "CL-14",
-        "CL-85",
         "CL-12",
+        "CL-14",
+        "CL-82",
         "CL-83",
+        "CL-85",
+        "CL-AP06",
+        "CL-AP07",
         "CL-G01",
         "CL-G02",
         "CL-G03",
-        "CL-G04"
+        "CL-G04",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06"
       ],
       "fields": {
         "emit_jsonld": false,
@@ -123,7 +133,7 @@
           },
           {
             "question": "Combien cela coûte-t-il ?",
-            "answer": "Il n'y a pas encore de prix public. Le coût dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel. Après un diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication. Le coût de l'accompagnement dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel."
           },
           {
             "question": "Faut-il un serveur puissant ?",
@@ -143,7 +153,7 @@
           },
           {
             "question": "Peut-on voir le produit avant de s'engager ?",
-            "answer": "Oui : nous proposons une démonstration sur des données fictives. Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes."
+            "answer": "Oui : nous proposons une démonstration de WorkStudio sur des données fictives. La vente de la plateforme n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié."
           },
           {
             "question": "Et le marketing automatisé ?",
@@ -158,26 +168,98 @@
     },
     {
       "collection": "block_faq",
-      "role": "L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01).",
+      "role": "Crédits, abonnement, recharge, espace : le modèle du 30/10/2026 en neuf questions, sans prix.",
       "claims": [
-        "CL-21",
-        "CL-128",
-        "CL-96",
-        "CL-112",
-        "CL-124",
-        "CL-28",
-        "CL-30",
-        "CL-90",
-        "CL-V01",
-        "CL-V02",
-        "CL-V03",
-        "CL-V06",
-        "CL-V07",
-        "CL-L04"
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T04",
+        "CL-T05",
+        "CL-T06",
+        "CL-T07",
+        "CL-T08",
+        "CL-T09",
+        "CL-T10",
+        "CL-PL01",
+        "CL-PL02",
+        "CL-PL04",
+        "CL-AP01",
+        "CL-S01",
+        "CL-S02",
+        "CL-12"
       ],
       "fields": {
         "emit_jsonld": false,
         "tone": "clair",
+        "anchor_id": "credits"
+      },
+      "translation": {
+        "title": "Crédits, abonnement et espace.",
+        "items": [
+          {
+            "question": "Qu'est-ce qu'un crédit ?",
+            "answer": "Un crédit vaut un cent canadien de jetons, au prix du catalogue de modèles. Un jeton est l'unité de texte que traite un modèle. Un modèle économe donne plus de jetons pour un crédit ; un modèle puissant en donne moins. La fiche de chaque modèle affiche son prix, et l'équivalent en jetons se calcule depuis ces prix publiés."
+          },
+          {
+            "question": "Comment fonctionne l'abonnement ?",
+            "answer": "Un abonnement donne des crédits chaque mois et de l'espace disque, pour toute votre organisation ; plus l'offre est élevée, plus elle donne des deux. Dans une offre annuelle, les crédits sont versés un douzième par mois. Les offres ne sont pas encore ouvertes : aucun prix n'est publié, et la page Tarifs les affichera à leur publication."
+          },
+          {
+            "question": "Puis-je recharger sans m'abonner ?",
+            "answer": "Oui, c'est le principe : sans abonnement, vous rechargez des crédits, et un solde supérieur à zéro suffit pour appeler les modèles. Les crédits de recharge n'expirent pas. La recharge n'est pas encore ouverte et aucun forfait n'a de prix publié."
+          },
+          {
+            "question": "Que se passe-t-il quand il n'y a plus de crédits ?",
+            "answer": "Les appels aux modèles sont refusés, avec un message qui renvoie vers la recharge et vers l'abonnement. Un solde à zéro n'efface rien : vos documents et vos réglages restent là. Dès que votre solde dépasse zéro, vous reprenez. La durée de conservation après une résiliation n'est pas encore décidée."
+          },
+          {
+            "question": "Mes crédits expirent-ils ?",
+            "answer": "Cela dépend de leur origine. Les crédits d'abonnement expirent à la fin de la période pour laquelle ils ont été versés, et ils servent en premier. Les crédits de recharge n'expirent pas."
+          },
+          {
+            "question": "Qu'est-ce qui est gratuit ?",
+            "answer": "Le catalogue des modèles, avec leurs fiches et leurs prix, se consulte sans compte. Les outils Nexora qui n'appellent aucun modèle d'IA ne consomment pas de crédits, et Nexora Code est conçu pour être gratuit, mais il n'est pas encore livré. Tout ce qui appelle un modèle consomme des crédits ; l'espace disque vient avec l'abonnement."
+          },
+          {
+            "question": "Que se passe-t-il si mon espace est plein ?",
+            "answer": "L'écriture est refusée avec un message clair, jusqu'à ce que vous libériez de l'espace ou ajoutiez des gigaoctets à votre offre. Lire et supprimer restent toujours permis, et ce que vous avez déjà enregistré n'est pas effacé par ce refus."
+          },
+          {
+            "question": "Puis-je tester avant de payer ?",
+            "answer": "Il n'y a pas de période gratuite des offres. Le catalogue des modèles et leurs prix sont publics, une recharge vous permet de n'acheter que ce que vous consommez, et nous montrons WorkStudio en démonstration sur des données fictives."
+          },
+          {
+            "question": "Puis-je résilier un abonnement ?",
+            "answer": "Oui, depuis votre espace client. La résiliation prend effet à la fin de la période payée."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01).",
+      "claims": [
+        "CL-112",
+        "CL-124",
+        "CL-128",
+        "CL-21",
+        "CL-28",
+        "CL-30",
+        "CL-90",
+        "CL-96",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-L04",
+        "CL-PL02",
+        "CL-V01",
+        "CL-V02",
+        "CL-V03",
+        "CL-V06",
+        "CL-V07"
+      ],
+      "fields": {
+        "emit_jsonld": false,
+        "tone": "sable",
         "anchor_id": "limites"
       },
       "translation": {
@@ -208,8 +290,8 @@
             "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément."
           },
           {
-            "question": "Nexora Code, Corpus, Quanta et Helix sont-ils disponibles ?",
-            "answer": "Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte."
+            "question": "Nexora Code, RAG, Corpus, Quanta et Helix sont-ils disponibles ?",
+            "answer": "Pas encore. Nexora Code, un agent de code hébergé sur nos serveurs, et Nexora RAG sont en préparation, sans date. Nexora Corpus, Quanta et Helix n'ont aucune disponibilité ni date annoncée. Nexora WorkStudio est disponible : il s'ouvre depuis votre compte tant qu'il reste un crédit et se présente en démonstration sur demande."
           },
           {
             "question": "Existe-t-il une solution pour la construction ?",
@@ -225,16 +307,36 @@
     {
       "collection": "block_cards",
       "role": "Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance.",
-      "claims": ["CL-V01", "CL-G01", "CL-87"],
+      "claims": [
+        "CL-87",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-G01",
+        "CL-PL01",
+        "CL-T06",
+        "CL-V01"
+      ],
       "fields": {
         "columns": "2",
-        "tone": "sable",
+        "tone": "clair",
         "layout": "liste",
         "anchor_id": "plus-loin"
       },
       "translation": {
         "title": "Aller plus loin.",
         "cards": [
+          {
+            "title": "Tarifs et crédits.",
+            "text": "Comment fonctionnent les crédits, la recharge et l'espace disque. Les prix s'y afficheront à leur publication.",
+            "href": "/tarifs/",
+            "link_label": "Voir les tarifs à venir"
+          },
+          {
+            "title": "Nexora Apps.",
+            "text": "Agent de code, RAG, bot, WebPilot, Privacy Router : chaque outil avec son état réel, sans date inventée.",
+            "href": "/apps/",
+            "link_label": "Voir les outils"
+          },
           {
             "title": "Vos données.",
             "text": "Les cinq engagements, par écrit : sur place ou au Québec, jamais d'entraînement, jamais vendues.",

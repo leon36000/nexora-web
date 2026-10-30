@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Deployment · Hosted",
         "headline": "Hosted in Quebec. Under your control.",
-        "subheadline": "We host and run your AI system in our infrastructure, located in Quebec: you buy no server and no hardware, and we commit to keeping your data in Quebec, backups included. The documents that prove it are in preparation; you will receive them in writing before go-live.",
+        "subheadline": "We host and run your AI in our infrastructure, in Quebec. You buy no server and no hardware, and we commit to keeping your data in Quebec, backups included. The documents that prove it are in preparation; you will receive them in writing before go-live.",
         "primary_label": "Study my project",
         "primary_href": "/en/contact/?sujet=etude-deploiement",
         "secondary_label": "Compare the two modes",
@@ -79,7 +79,7 @@
       },
       "translation": {
         "title": "What we hand over to you.",
-        "intro": "A hosting commitment only makes sense if it can be proven. It rests on a processing contract signed with you, a register of subcontractors and an access log. The documents below are the ones we will hand over before go-live; they are in preparation.",
+        "intro": "Our hosting commitment rests on a processing contract signed with you, a register of subcontractors and an access log. We will hand you the documents below before go-live; they are in preparation.",
         "cards": [
           {
             "title": "The hosting location.",
@@ -161,7 +161,7 @@
     {
       "collection": "block_cards",
       "role": "Limites du mode hébergé.",
-      "claims": ["CL-75", "CL-77", "CL-86", "CL-06", "CL-76"],
+      "claims": ["CL-75", "CL-77", "CL-86", "CL-06", "CL-76", "CL-S01"],
       "fields": {
         "columns": "2",
         "tone": "clair",
@@ -177,7 +177,7 @@
           },
           {
             "title": "Models matter as much as location.",
-            "text": "An external model called from our infrastructure is an outbound flow. It is configured only with your explicit activation, recorded in writing."
+            "text": "An external model called from our infrastructure is an outbound flow. We configure it only with your explicit activation, recorded in writing. On the credit platform, each model in the catalogue shows its hosting location: a model may run outside Quebec."
           },
           {
             "title": "No announced service level.",
@@ -200,7 +200,9 @@
         "CL-08",
         "CL-E02",
         "CL-E03",
-        "CL-E04"
+        "CL-E04",
+        "CL-10",
+        "CL-80"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -223,8 +225,12 @@
             "answer": "No, never. We use neither your data, nor your documents, nor your prompts, nor your results to train or fine-tune a model, ours or a third party's, and we do not sell them. We put it in the contract."
           },
           {
-            "question": "And if I want to leave?",
-            "answer": "You leave with your documents, configurations and workflows: export is provided for in the contract."
+            "question": "What can I take with me if I leave?",
+            "answer": "You leave with your documents, your configurations and your workflows: the contract provides for their export."
+          },
+          {
+            "question": "How much does hosting in Quebec cost?",
+            "answer": "There is no public price yet. A written estimate follows the assessment and says what is included and what is not. The assessment comes before any estimate: it covers your existing software, volumes and integrations."
           }
         ]
       }

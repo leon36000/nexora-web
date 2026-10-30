@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Deployment",
         "headline": "On your premises, or with us in Quebec.",
-        "subheadline": "In both modes, your data stays yours, is never used to train a model and is never sold. Here, in a single read, is who controls what, and how to choose.",
+        "subheadline": "Choose where your AI lives: on a server that belongs to you, or in our infrastructure in Quebec. In both modes, your data stays yours, never trains a model and is never sold. This page says who controls what.",
         "primary_label": "Study my project",
         "primary_href": "/en/contact/?sujet=etude-deploiement",
         "secondary_label": "See the commitments on your data",
@@ -81,7 +81,7 @@
       },
       "translation": {
         "title": "Who controls what, in one read.",
-        "body": "<p>Eight points, from hardware to contract exit. In each case, the answer is written before go-live. In both modes, your data is never used to train a model and never sold: <a href=\"/en/your-data/\">see the commitments on your data</a>.</p>",
+        "body": "<p>Eight points, from hardware to contract exit. For each, the answer is written before go-live. In both modes, your data is never used to train a model and never sold: <a href=\"/en/your-data/\">see the commitments on your data</a>.</p>",
         "items": [
           {
             "title": "The hardware.",
@@ -146,7 +146,7 @@
           },
           {
             "title": "The investment.",
-            "text": "Buying hardware is an investment; hosting is a service. The cost of each option is estimated in writing after the diagnosis."
+            "text": "Buying hardware is an investment; hosting is a service. The cost of each option is estimated in writing after the assessment."
           },
           {
             "title": "Your customers' requirements.",
@@ -166,13 +166,26 @@
       },
       "translation": {
         "title": "The case of a mixed mode.",
-        "body": "<p>Some companies will want to keep sensitive data in-house and entrust the rest to our infrastructure. A combination of the two modes can be studied case by case. No mixed offer is defined today: so we do not present its scope or terms before studying it with you.</p><p>To talk it through, <a href=\"/en/contact/?sujet=etude-deploiement\">study my project</a> with us, or first read our approach to <a href=\"/en/sovereignty/\">sovereignty</a>.</p>"
+        "body": "<p>Some companies will want to keep sensitive data in-house and entrust the rest to our infrastructure. We can study a combination of the two modes case by case. No mixed offer is defined today, so we present neither scope nor terms before studying your case with you.</p><p>To talk it through, <a href=\"/en/contact/?sujet=etude-deploiement\">study my project</a> with us, or first read our approach to <a href=\"/en/sovereignty/\">sovereignty</a>.</p>"
       }
     },
     {
       "collection": "block_faq",
       "role": "FAQ du hub déploiement.",
-      "claims": ["CL-02", "CL-06", "CL-08", "CL-E03", "CL-E04"],
+      "claims": [
+        "CL-02",
+        "CL-06",
+        "CL-08",
+        "CL-E03",
+        "CL-E04",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12",
+        "CL-PL01"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -183,23 +196,31 @@
         "items": [
           {
             "question": "Which mode should I start with?",
-            "answer": "The one that matches how sensitive your data is and your in-house skills. The deployment study compares the two options for your case."
+            "answer": "Choose the mode that fits how sensitive your data is and the skills you have in-house: on-premises if you want physical control of the server, hosted if you want to hand us the monitoring and updates. The deployment study compares the two options for your case."
           },
           {
             "question": "Can we change mode later?",
-            "answer": "Export of your documents, configurations and workflows is provided for in the contract. A change of mode is then planned as a project."
+            "answer": "Yes, but as a project to plan. The contract provides for the export of your documents, configurations and workflows, which makes the change possible."
           },
           {
             "question": "Does my data leave Quebec?",
-            "answer": "It depends on the mode and the models chosen; we write it down before kickoff. An external model is never configured without your explicit activation, recorded in writing."
+            "answer": "It depends on the mode and the models chosen, and we write it down before start-up. An external model is never configured without your explicit activation, recorded in writing."
           },
           {
             "question": "Is my data used to train a model?",
-            "answer": "No, never, in either mode. It is not sold either."
+            "answer": "No, never, in either mode. Your data is not sold either."
           },
           {
             "question": "Is there an offline mode?",
-            "answer": "We do not promise operation with no outbound flow at all: updates and licences are listed. Running with no outbound flow is decided and verified case by case."
+            "answer": "We do not promise operation with no outbound flow at all: updates and licences are listed before go-live. Running with no outbound flow is decided and verified case by case."
+          },
+          {
+            "question": "How much does a deployment cost?",
+            "answer": "There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published."
+          },
+          {
+            "question": "Where does the credit platform fit?",
+            "answer": "The two modes on this page belong to tailored support. The credit platform (one account, credits, your tools gathered in “My tools”) is a second route that is not yet open for sale: accounts and payments work in test mode only and no price is published."
           }
         ]
       }
@@ -207,7 +228,7 @@
     {
       "collection": "block_cta",
       "role": "CTA : étude de déploiement.",
-      "claims": ["CL-80"],
+      "claims": ["CL-80", "CL-T06"],
       "fields": {
         "tone": "sombre"
       },
@@ -216,8 +237,8 @@
         "text": "A deployment study compares the two options for your case: data, skills, hardware, your customers' requirements.",
         "primary_label": "Study my project",
         "primary_href": "/en/contact/?sujet=etude-deploiement",
-        "secondary_label": "See the trust center",
-        "secondary_href": "/en/trust-center/"
+        "secondary_label": "See upcoming pricing",
+        "secondary_href": "/en/pricing/"
       }
     }
   ]

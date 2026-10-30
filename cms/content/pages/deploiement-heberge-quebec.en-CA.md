@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Hosted in Quebec. Under your control.
 
-We host and run your AI system in our infrastructure, located in Quebec: you buy no server and no hardware, and we commit to keeping your data in Quebec, backups included. The documents that prove it are in preparation; you will receive them in writing before go-live.
+We host and run your AI in our infrastructure, in Quebec. You buy no server and no hardware, and we commit to keeping your data in Quebec, backups included. The documents that prove it are in preparation; you will receive them in writing before go-live.
 
 [Study my project](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
 
@@ -47,7 +47,7 @@ Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=documents`
 
 ## What we hand over to you.
 
-A hosting commitment only makes sense if it can be proven. It rests on a processing contract signed with you, a register of subcontractors and an access log. The documents below are the ones we will hand over before go-live; they are in preparation.
+Our hosting commitment rests on a processing contract signed with you, a register of subcontractors and an access log. We will hand you the documents below before go-live; they are in preparation.
 
 #### The hosting location.
 
@@ -105,7 +105,7 @@ Quebec's law on the protection of personal information (often called Law 25) pla
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Limites du mode hébergé. · Affirmations : CL-75, CL-77, CL-86, CL-06, CL-76*
+*Limites du mode hébergé. · Affirmations : CL-75, CL-77, CL-86, CL-06, CL-76, CL-S01*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
@@ -117,7 +117,7 @@ Hosting in Quebec does not, on its own, set aside the laws that apply to you and
 
 #### Models matter as much as location.
 
-An external model called from our infrastructure is an outbound flow. It is configured only with your explicit activation, recorded in writing.
+An external model called from our infrastructure is an outbound flow. We configure it only with your explicit activation, recorded in writing. On the credit platform, each model in the catalogue shows its hosting location: a model may run outside Quebec.
 
 #### No announced service level.
 
@@ -129,7 +129,7 @@ If a local model is unavailable, the system never turns to an external service w
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre au mode hébergé. · Affirmations : CL-02, CL-73, CL-07, CL-08, CL-E02, CL-E03, CL-E04*
+*FAQ propre au mode hébergé. · Affirmations : CL-02, CL-73, CL-07, CL-08, CL-E02, CL-E03, CL-E04, CL-10, CL-80*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -147,9 +147,13 @@ We describe the separation between customers in the deployment study, so that yo
 
 No, never. We use neither your data, nor your documents, nor your prompts, nor your results to train or fine-tune a model, ours or a third party's, and we do not sell them. We put it in the contract.
 
-#### And if I want to leave?
+#### What can I take with me if I leave?
 
-You leave with your documents, configurations and workflows: export is provided for in the contract.
+You leave with your documents, your configurations and your workflows: the contract provides for their export.
+
+#### How much does hosting in Quebec cost?
+
+There is no public price yet. A written estimate follows the assessment and says what is included and what is not. The assessment comes before any estimate: it covers your existing software, volumes and integrations.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

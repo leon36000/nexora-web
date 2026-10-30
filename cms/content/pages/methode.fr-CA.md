@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Cinq temps pour mettre l'IA au travail.
 
-Un accompagnement en IA pensé pour un dirigeant, pas pour un informaticien : nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Voici ce qui se passe à chaque temps, et ce que vous recevez.
+Un accompagnement en IA conçu pour un dirigeant, pas pour un informaticien : nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Voici ce qui se passe à chaque temps, et ce que vous recevez.
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) · [Voir les services](/services/)
 
@@ -74,7 +74,7 @@ La méthode est pensée pour qu'une direction de PME garde la main sans jamais d
 
 ### Bloc 4 — Section (`block_section`)
 
-*Pourquoi un cas d'abord, et ce que mesure le pilote. · Affirmations : CL-14, CL-09, CL-10*
+*Pourquoi un cas d'abord, et ce que mesure le pilote. · Affirmations : CL-14, CL-09, CL-10, CL-PL03, CL-T01, CL-T04, CL-T06*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=un-cas`
 
@@ -82,13 +82,13 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=un-cas`
 
 Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèle aussi ce que votre entreprise attend vraiment du système, ce qu'aucun schéma ne dit. Nous élargissons ensuite, sans multiplier les outils déconnectés.
 
-[Planifier un diagnostic](/contact/?sujet=diagnostic) pour choisir le vôtre.
+[Planifier un diagnostic](/contact/?sujet=diagnostic) pour choisir le vôtre. Les prix de la plateforme s'afficheront sur la page [Tarifs](/tarifs/).
 
 Pour choisir votre premier cas, lisez le [guide de l'IA pour une PME du Québec](/guides/ia-pme-quebec/).
 
 - **Aucun délai universel.** Il dépend de votre situation : logiciels à relier, qualité des documents, règles à écrire. Il se mesure sur un premier cas.
 - **Un objectif mesuré, pas promis.** Nous fixons avec vous ce que nous voulons observer pendant le pilote. Nous n'annonçons ni pourcentage, ni gain de temps avant de l'avoir mesuré chez vous.
-- **Une estimation écrite.** Après le diagnostic, elle indique ce qui est inclus et ce qui ne l'est pas. Il n'y a pas encore de prix public.
+- **Une estimation écrite.** Après le diagnostic, elle indique ce qui est inclus et ce qui ne l'est pas. Il n'y a pas encore de prix public. L'accompagnement se paie sur estimation écrite ; l'usage de la plateforme se paie en crédits, car tout ce qui appelle un modèle d'IA en consomme.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -133,7 +133,7 @@ Nous utilisons les outils de [WorkStudio](/workstudio/) pour mesurer, sur vos pr
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la méthode. · Affirmations : CL-14, CL-04, CL-03*
+*FAQ propre à la méthode. · Affirmations : CL-14, CL-04, CL-03, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -141,11 +141,11 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Combien de temps faut-il pour démarrer ?
 
-Nous n'annonçons aucun délai universel : il dépend de vos logiciels, de vos documents et de vos règles. Il se mesure sur un premier cas.
+Nous n'annonçons aucun délai universel : il dépend de vos logiciels, de vos documents et de vos règles, et il se mesure sur un premier cas.
 
 #### Que se passe-t-il si le premier cas ne fonctionne pas ?
 
-Nous le voyons pendant le pilote, avant d'investir plus. Nous vous disons ce qui bloque, et si un autre cas, une autre approche ou rien du tout convient mieux.
+Nous le voyons pendant le pilote, avant d'investir davantage. Nous vous disons ce qui bloque, et si un autre cas, une autre approche ou rien du tout convient mieux.
 
 #### Mon équipe devra-t-elle apprendre à programmer ?
 
@@ -155,9 +155,13 @@ Non. La formation porte sur l'usage et la supervision : relire, corriger, appro
 
 C'est possible, mais nous le déconseillons au départ : un cas vérifié apprend plus qu'un projet large mal borné.
 
+#### Combien coûte l'accompagnement ?
+
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
-*CTA : discuter du premier cas. · Affirmations : CL-80*
+*CTA : discuter du premier cas. · Affirmations : CL-80, CL-T06*
 
 Réglages : `tone=sombre`
 

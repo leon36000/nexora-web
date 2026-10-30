@@ -7,7 +7,7 @@
     "slug": "methode",
     "title": "Méthode",
     "seo_title": "Méthode d'accompagnement en IA pour PME",
-    "seo_description": "Accompagnement IA pour PME en cinq temps\u00a0: comprendre, intégrer, vérifier, former, exploiter, un cas à la fois. Sans programmer, sans délai ni gain promis.",
+    "seo_description": "Accompagnement IA pour PME en cinq temps : comprendre, intégrer, vérifier, former, exploiter, un cas à la fois. Sans programmer, sans délai ni gain promis.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Méthode",
         "headline": "Cinq temps pour mettre l'IA au travail.",
-        "subheadline": "Un accompagnement en IA pensé pour un dirigeant, pas pour un informaticien\u00a0: nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Voici ce qui se passe à chaque temps, et ce que vous recevez.",
+        "subheadline": "Un accompagnement en IA conçu pour un dirigeant, pas pour un informaticien : nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Voici ce qui se passe à chaque temps, et ce que vous recevez.",
         "primary_label": "Planifier un diagnostic",
         "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Voir les services",
@@ -44,23 +44,23 @@
         "cards": [
           {
             "title": "1. Comprendre.",
-            "text": "Nous écoutons et nous observons comment le travail se fait aujourd'hui\u00a0: où le temps se perd, quelles informations entrent, qui décide.\nVous recevez\u00a0: une description écrite du cas, de ses données et de ses contraintes."
+            "text": "Nous écoutons et nous observons comment le travail se fait aujourd'hui : où le temps se perd, quelles informations entrent, qui décide.\nVous recevez : une description écrite du cas, de ses données et de ses contraintes."
           },
           {
             "title": "2. Intégrer.",
-            "text": "Nous relions les logiciels que vous utilisez déjà, pour que l'information circule sans être retapée.\nVous recevez\u00a0: la liste des connexions retenues, après qualification de chacune."
+            "text": "Nous relions les logiciels que vous utilisez déjà, pour que l'information circule sans être retapée.\nVous recevez : la liste des connexions retenues, après qualification de chacune."
           },
           {
             "title": "3. Vérifier.",
-            "text": "Nous testons sur vos cas réels, avec vos validations, avant toute mise en service.\nVous recevez\u00a0: le schéma des flux, et des tests refaits à chaque changement."
+            "text": "Nous testons sur vos cas réels, avec vos validations, avant toute mise en service.\nVous recevez : le schéma des flux, et des tests refaits à chaque changement."
           },
           {
             "title": "4. Former.",
-            "text": "Votre équipe apprend à superviser, à corriger et à décider, pas à programmer.\nVous recevez\u00a0: une équipe qui sait relire, approuver et refuser."
+            "text": "Votre équipe apprend à superviser, à corriger et à décider, pas à programmer.\nVous recevez : une équipe qui sait relire, approuver et refuser."
           },
           {
             "title": "5. Exploiter et améliorer.",
-            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.\nVous recevez\u00a0: des traces, une consommation mesurée, des ajustements décidés ensemble."
+            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.\nVous recevez : des traces, une consommation mesurée, des ajustements décidés ensemble."
           }
         ]
       }
@@ -104,7 +104,15 @@
     {
       "collection": "block_section",
       "role": "Pourquoi un cas d'abord, et ce que mesure le pilote.",
-      "claims": ["CL-14", "CL-09", "CL-10"],
+      "claims": [
+        "CL-14",
+        "CL-09",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -112,11 +120,11 @@
       },
       "translation": {
         "title": "Pourquoi un seul cas d'abord.",
-        "body": "<p>Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèle aussi ce que votre entreprise attend vraiment du système, ce qu'aucun schéma ne dit. Nous élargissons ensuite, sans multiplier les outils déconnectés.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour choisir le vôtre.</p><p>Pour choisir votre premier cas, lisez le <a href=\"/guides/ia-pme-quebec/\">guide de l'IA pour une PME du Québec</a>.</p>",
+        "body": "<p>Un cas bien choisi se met en service, se vérifie et se corrige vite. Il révèle aussi ce que votre entreprise attend vraiment du système, ce qu'aucun schéma ne dit. Nous élargissons ensuite, sans multiplier les outils déconnectés.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour choisir le vôtre. Les prix de la plateforme s'afficheront sur la page <a href=\"/tarifs/\">Tarifs</a>.</p><p>Pour choisir votre premier cas, lisez le <a href=\"/guides/ia-pme-quebec/\">guide de l'IA pour une PME du Québec</a>.</p>",
         "items": [
           {
             "title": "Aucun délai universel.",
-            "text": "Il dépend de votre situation\u00a0: logiciels à relier, qualité des documents, règles à écrire. Il se mesure sur un premier cas."
+            "text": "Il dépend de votre situation : logiciels à relier, qualité des documents, règles à écrire. Il se mesure sur un premier cas."
           },
           {
             "title": "Un objectif mesuré, pas promis.",
@@ -124,7 +132,7 @@
           },
           {
             "title": "Une estimation écrite.",
-            "text": "Après le diagnostic, elle indique ce qui est inclus et ce qui ne l'est pas. Il n'y a pas encore de prix public."
+            "text": "Après le diagnostic, elle indique ce qui est inclus et ce qui ne l'est pas. Il n'y a pas encore de prix public. L'accompagnement se paie sur estimation écrite ; l'usage de la plateforme se paie en crédits, car tout ce qui appelle un modèle d'IA en consomme."
           }
         ]
       }
@@ -144,7 +152,7 @@
         "cards": [
           {
             "title": "Avant de commencer.",
-            "text": "Le schéma des flux\u00a0: où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent. Vos données ne servent jamais à entraîner un modèle.",
+            "text": "Le schéma des flux : où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent. Vos données ne servent jamais à entraîner un modèle.",
             "href": "/vos-donnees/",
             "link_label": "Voir les engagements sur vos données"
           },
@@ -154,7 +162,7 @@
           },
           {
             "title": "Pendant l'exploitation.",
-            "text": "Chaque appel de modèle laisse une trace\u00a0; la consommation est mesurée\u00a0; vous voyez ce que fait le système."
+            "text": "Chaque appel de modèle laisse une trace ; la consommation est mesurée ; vous voyez ce que fait le système."
           },
           {
             "title": "À la fin du contrat.",
@@ -174,7 +182,7 @@
       },
       "translation": {
         "title": "Mesurer sans inventer de chiffres.",
-        "body": "<p>Nous utilisons les outils de <a href=\"/workstudio/\">WorkStudio</a> pour mesurer, sur vos propres cas, ce qui fonctionne. Les résultats vous appartiennent et servent à décider\u00a0: ils ne sont jamais présentés ici comme des résultats de clients.</p>",
+        "body": "<p>Nous utilisons les outils de <a href=\"/workstudio/\">WorkStudio</a> pour mesurer, sur vos propres cas, ce qui fonctionne. Les résultats vous appartiennent et servent à décider : ils ne sont jamais présentés ici comme des résultats de clients.</p>",
         "items": [
           {
             "title": "Des jeux de tests.",
@@ -198,30 +206,43 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la méthode.",
-      "claims": ["CL-14", "CL-04", "CL-03"],
+      "claims": [
+        "CL-14",
+        "CL-04",
+        "CL-03",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Méthode\u00a0: vos questions.",
+        "title": "Méthode : vos questions.",
         "items": [
           {
-            "question": "Combien de temps faut-il pour démarrer\u00a0?",
-            "answer": "Nous n'annonçons aucun délai universel\u00a0: il dépend de vos logiciels, de vos documents et de vos règles. Il se mesure sur un premier cas."
+            "question": "Combien de temps faut-il pour démarrer ?",
+            "answer": "Nous n'annonçons aucun délai universel : il dépend de vos logiciels, de vos documents et de vos règles, et il se mesure sur un premier cas."
           },
           {
-            "question": "Que se passe-t-il si le premier cas ne fonctionne pas\u00a0?",
-            "answer": "Nous le voyons pendant le pilote, avant d'investir plus. Nous vous disons ce qui bloque, et si un autre cas, une autre approche ou rien du tout convient mieux."
+            "question": "Que se passe-t-il si le premier cas ne fonctionne pas ?",
+            "answer": "Nous le voyons pendant le pilote, avant d'investir davantage. Nous vous disons ce qui bloque, et si un autre cas, une autre approche ou rien du tout convient mieux."
           },
           {
-            "question": "Mon équipe devra-t-elle apprendre à programmer\u00a0?",
-            "answer": "Non. La formation porte sur l'usage et la supervision\u00a0: relire, corriger, approuver, refuser."
+            "question": "Mon équipe devra-t-elle apprendre à programmer ?",
+            "answer": "Non. La formation porte sur l'usage et la supervision : relire, corriger, approuver, refuser."
           },
           {
-            "question": "Peut-on aller plus vite en traitant plusieurs cas\u00a0?",
-            "answer": "C'est possible, mais nous le déconseillons au départ\u00a0: un cas vérifié apprend plus qu'un projet large mal borné."
+            "question": "Peut-on aller plus vite en traitant plusieurs cas ?",
+            "answer": "C'est possible, mais nous le déconseillons au départ : un cas vérifié apprend plus qu'un projet large mal borné."
+          },
+          {
+            "question": "Combien coûte l'accompagnement ?",
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
           }
         ]
       }
@@ -229,7 +250,7 @@
     {
       "collection": "block_cta",
       "role": "CTA : discuter du premier cas.",
-      "claims": ["CL-80"],
+      "claims": ["CL-80", "CL-T06"],
       "fields": {
         "tone": "sombre"
       },

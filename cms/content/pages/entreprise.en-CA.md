@@ -7,13 +7,13 @@
 - Page : `entreprise` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/company/` · slug : `company`
 - Titre SEO (41 caractères) : Nexora AI: AI for Quebec small businesses
-- Description SEO (156 caractères) : Nexora AI, a Quebec company: the leading edge of AI, simple and under your control. Services, new products with their real status, commitments on your data.
+- Description SEO (149 caractères) : Nexora AI, a Quebec company: the leading edge of AI, simple and under your control. Support, a credits platform, new products with their real status.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Mission de Nexora AI (la pointe de l'IA, simple, sous votre contrôle, d'ici), limitée à ce qui est connu. · Affirmations : CL-01, CL-130, CL-P01, CL-P03*
+*Mission de Nexora AI (la pointe de l'IA, simple, sous votre contrôle, d'ici), limitée à ce qui est connu. · Affirmations : CL-01, CL-130, CL-P01, CL-P03, CL-PL03*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -23,7 +23,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 Nexora AI is a Quebec company. Our mission: to put the leading edge of AI within reach of local small businesses, simply and under their control, so that their data stays theirs.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [Read the method](/en/method/)
+[Describe my need](/en/contact/) · [Read the method](/en/method/)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -35,7 +35,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=mission`
 
 Cutting-edge AI should not require a team of specialists, or giving up your data. That is what we are building.
 
-- **The leading edge of AI.** Agents that use your tools, an assistant that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice, model comparison. These are words of ambition: the proof is the list of what the tool does.
+- **The leading edge of AI.** Agents that use your tools, an assistant that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice, model comparison. The list of what the tool does is on the WorkStudio page, with the real status of each capability.
 - **Simple for everyone.** No code to write: you describe the need, review, approve. We install, we run it, and we train your team in usage and supervision.
 - **Under your control.** A person decides on anything that commits the business. Your data stays on your premises or in Quebec, is never used to train a model and is never sold. <a href="/en/your-data/">See the commitments on your data</a>.
 - **Local.** A Quebec company, working in French, that stays at your side after the installation.
@@ -68,15 +68,36 @@ By running the system with you and training your team in usage and supervision.
 
 → [See the services](/en/services/)
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 4 — Section (`block_section`)
 
-*Les trois nouveautés, chacune en une phrase avec son statut honnête. · Affirmations : CL-G01, CL-G02, CL-V01, CL-V02, CL-E03, CL-E04, CL-E05, CL-E06*
+*Deux voies qui se combinent : l'accompagnement sur mesure et la plateforme à crédits ; la vente n'est pas ouverte. · Affirmations : CL-PL01, CL-PL03, CL-01, CL-T01, CL-T04, CL-T06, CL-12*
 
-Réglages : `columns=3`, `tone=clair`, `layout=grille`, `anchor_id=nouveautes`
+Réglages : `media_position=none`, `tone=sombre`, `anchor_id=deux-voies`
 
-## Three novelties, each with its status.
+## Two paths, one account.
 
-Words of ambition never replace the real state of things: here is where each one stands.
+Nexora AI offers two paths, and they combine. You can be supported, or take the platform in hand yourself, or both.
+
+The platform fits in one sentence: one account, your credits, all your tools. A plan gives you credits and storage space every month; without a plan, you top up. Anything that calls an AI model uses credits. It is not open for sale yet: prices will appear on the [Pricing](/en/pricing/) page once they are published.
+
+- **Support.** We design, install and run the system with you, on your premises or in Quebec. A written estimate follows the assessment.
+- **The platform.** One account brings your credits, your storage and your tools together in the “My tools” panel, with the real status of each product.
+
+### Bloc 5 — Cartes (`block_cards`)
+
+*Les trois nouveautés, chacune en une phrase avec son statut honnête. · Affirmations : CL-AP06, CL-AP07, CL-E03, CL-E04, CL-E05, CL-E06, CL-G01, CL-G02, CL-V01, CL-V02*
+
+Réglages : `columns=2`, `tone=clair`, `layout=grille`, `anchor_id=nouveautes`
+
+## Four novelties, each with its status.
+
+Each novelty carries its real status: here is where each one stands.
+
+#### Nexora Code and Nexora RAG.
+
+A coding agent hosted on our servers and a document base that AI queries, tied to your account and paid in credits. Status: coming soon, no date; nothing is delivered.
+
+→ [See the software suite](/en/suite/)
 
 #### Nexora Croissance.
 
@@ -96,7 +117,7 @@ Our commitments: your data stays on your premises or in Quebec, is never used to
 
 → [See the commitments](/en/your-data/)
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Cartes (`block_cards`)
 
 *Quatre principes de travail, vérifiables. · Affirmations : CL-09, CL-21, CL-128, CL-08, CL-03*
 
@@ -120,9 +141,9 @@ Your documents, configurations and workflows stay exportable, and the contract p
 
 One concrete problem, put into service and verified, before expanding. No universal timeline is announced.
 
-### Bloc 6 — Section (`block_section`)
+### Bloc 7 — Section (`block_section`)
 
-*Ce que le lecteur peut vérifier. · Affirmations : CL-09, CL-87, CL-E06, CL-V01, CL-G01*
+*Ce que le lecteur peut vérifier. · Affirmations : CL-09, CL-87, CL-AP06, CL-AP07, CL-E06, CL-G01, CL-V01*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=verifier`
 
@@ -135,7 +156,7 @@ A company is judged by what it lets you check. Here is where to look.
 - **Commitments on your data.** They are set out, with their limits, on the <a href="/en/your-data/">Your data</a> page.
 - **Documents on request.** The <a href="/en/trust-center/">trust center</a> lists the documents we are preparing and their status.
 
-### Bloc 7 — Section (`block_section`)
+### Bloc 8 — Section (`block_section`)
 
 *Joindre Nexora AI : le formulaire, rien d'autre d'inventé. · Affirmations : CL-01*
 
@@ -143,9 +164,9 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=contact`
 
 ## Get in touch.
 
-The simplest way is the [contact form](/en/contact/): describe one concrete problem, and we will reply with what is feasible and where to start. Would you rather begin with a structured conversation? [Plan a diagnosis](/en/contact/?sujet=diagnostic).
+The simplest way is the [contact form](/en/contact/): describe one concrete problem, and we will reply with what is feasible and where to start. Would you rather begin with a structured conversation? [Plan an assessment](/en/contact/?sujet=diagnostic).
 
-### Bloc 8 — Appel à l'action (`block_cta`)
+### Bloc 9 — Appel à l'action (`block_cta`)
 
 *CTA final. · Affirmations : CL-01*
 
@@ -155,4 +176,4 @@ Réglages : `tone=sombre`
 
 Describe a concrete problem. We will tell you what is feasible, in which mode, and where to start.
 
-[Plan a diagnosis](/en/contact/?sujet=diagnostic) · [See the services](/en/services/)
+[Describe my need](/en/contact/) · [See the services](/en/services/)

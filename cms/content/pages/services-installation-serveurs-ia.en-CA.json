@@ -77,7 +77,7 @@
         "cards": [
           {
             "title": "1. Size.",
-            "text": "Number of users, volume of documents, chosen model: the diagnosis sets what is needed, before any purchase."
+            "text": "Number of users, volume of documents, chosen model: the assessment sets what is needed, before any purchase."
           },
           {
             "title": "2. Install.",
@@ -114,7 +114,7 @@
       },
       "translation": {
         "title": "What makes the hardware vary.",
-        "intro": "We give no standard configuration: it depends on these four factors, which the diagnosis measures before any purchase.",
+        "intro": "We give no standard configuration: it depends on these four factors, which the assessment measures before any purchase.",
         "cards": [
           {
             "title": "The number of users.",
@@ -126,7 +126,7 @@
           },
           {
             "title": "The chosen model.",
-            "text": "A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the diagnosis."
+            "text": "A model on your server needs more powerful hardware than an external model. A small local model is not always enough for agents that call tools: the choice is made during the assessment."
           },
           {
             "title": "The uses.",
@@ -174,7 +174,16 @@
     {
       "collection": "block_cards",
       "role": "Ce que nous ne promettons pas, pour ce service.",
-      "claims": ["CL-10", "CL-14", "CL-86", "CL-77"],
+      "claims": [
+        "CL-10",
+        "CL-14",
+        "CL-86",
+        "CL-77",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-12"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sable",
@@ -186,7 +195,7 @@
         "cards": [
           {
             "title": "No public price.",
-            "text": "A written estimate follows the diagnosis."
+            "text": "For support, a written estimate follows the assessment. Use of the platform is paid for in credits, and their prices will appear on the Pricing page."
           },
           {
             "title": "No universal timeline.",
@@ -214,7 +223,13 @@
         "CL-77",
         "CL-06",
         "CL-E01",
-        "CL-E05"
+        "CL-E05",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -226,23 +241,27 @@
         "items": [
           {
             "question": "Do I need to buy a powerful server?",
-            "answer": "It depends on the case. The diagnosis answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model."
+            "answer": "It depends on the case. The assessment answers that before any purchase: it takes into account the number of users, the volume of documents and the chosen model."
           },
           {
             "question": "Can it go on an existing server?",
-            "answer": "A Linux or macOS server running Docker is required. We check during the diagnosis that it suits the intended uses."
+            "answer": "Yes, if it is a Linux or macOS server running Docker. We check during the assessment that it suits the intended uses."
           },
           {
             "question": "Does my data leave the server?",
             "answer": "In the on-premises mode, documents, the search index and conversations stay on your server. What can leave is listed with you before go-live: updates, licence checks and, only if you activated it in writing, an external model."
           },
           {
-            "question": "Who runs it afterwards?",
-            "answer": "We do, with you, as the contract provides. In the on-premises mode, we access your server only if you authorize it in writing, for a specific task and a limited time."
+            "question": "Who runs the server afterwards?",
+            "answer": "Nexora AI does, with you, as the contract provides. In the on-premises mode, we access your server only if you authorize it in writing, for a specific task and a limited time."
           },
           {
             "question": "Can we change mode later?",
-            "answer": "Export of your documents, configurations and workflows is provided for in the contract. A change of mode is then planned as a project."
+            "answer": "Yes. Export of your documents, configurations and workflows is provided for in the contract; a change of mode is then planned as a project."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet for AI server installation. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published."
           }
         ]
       }

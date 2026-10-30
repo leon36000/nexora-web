@@ -7,14 +7,14 @@
     "slug": "company",
     "title": "Company",
     "seo_title": "Nexora AI: AI for Quebec small businesses",
-    "seo_description": "Nexora AI, a Quebec company: the leading edge of AI, simple and under your control. Services, new products with their real status, commitments on your data.",
+    "seo_description": "Nexora AI, a Quebec company: the leading edge of AI, simple and under your control. Support, a credits platform, new products with their real status.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Mission de Nexora AI (la pointe de l'IA, simple, sous votre contrôle, d'ici), limitée à ce qui est connu.",
-      "claims": ["CL-01", "CL-130", "CL-P01", "CL-P03"],
+      "claims": ["CL-01", "CL-130", "CL-P01", "CL-P03", "CL-PL03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -23,8 +23,8 @@
         "eyebrow": "Company",
         "headline": "The leading edge of AI, simple and local.",
         "subheadline": "Nexora AI is a Quebec company. Our mission: to put the leading edge of AI within reach of local small businesses, simply and under their control, so that their data stays theirs.",
-        "primary_label": "Plan a diagnosis",
-        "primary_href": "/en/contact/?sujet=diagnostic",
+        "primary_label": "Describe my need",
+        "primary_href": "/en/contact/",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"
       }
@@ -53,7 +53,7 @@
         "items": [
           {
             "title": "The leading edge of AI.",
-            "text": "Agents that use your tools, an assistant that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice, model comparison. These are words of ambition: the proof is the list of what the tool does."
+            "text": "Agents that use your tools, an assistant that builds a workflow (an automated sequence of tasks) from a description in plain French, answers grounded in your documents, reading of scanned documents, voice, model comparison. The list of what the tool does is on the WorkStudio page, with the real status of each capability."
           },
           {
             "title": "Simple for everyone.",
@@ -107,28 +107,68 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Deux voies qui se combinent : l'accompagnement sur mesure et la plateforme à crédits ; la vente n'est pas ouverte.",
+      "claims": [
+        "CL-PL01",
+        "CL-PL03",
+        "CL-01",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "deux-voies"
+      },
+      "translation": {
+        "title": "Two paths, one account.",
+        "body": "<p>Nexora AI offers two paths, and they combine. You can be supported, or take the platform in hand yourself, or both.</p><p>The platform fits in one sentence: one account, your credits, all your tools. A plan gives you credits and storage space every month; without a plan, you top up. Anything that calls an AI model uses credits. It is not open for sale yet: prices will appear on the <a href=\"/en/pricing/\">Pricing</a> page once they are published.</p>",
+        "items": [
+          {
+            "title": "Support.",
+            "text": "We design, install and run the system with you, on your premises or in Quebec. A written estimate follows the assessment."
+          },
+          {
+            "title": "The platform.",
+            "text": "One account brings your credits, your storage and your tools together in the “My tools” panel, with the real status of each product."
+          }
+        ]
+      }
+    },
+    {
       "collection": "block_cards",
       "role": "Les trois nouveautés, chacune en une phrase avec son statut honnête.",
       "claims": [
-        "CL-G01",
-        "CL-G02",
-        "CL-V01",
-        "CL-V02",
+        "CL-AP06",
+        "CL-AP07",
         "CL-E03",
         "CL-E04",
         "CL-E05",
-        "CL-E06"
+        "CL-E06",
+        "CL-G01",
+        "CL-G02",
+        "CL-V01",
+        "CL-V02"
       ],
       "fields": {
-        "columns": "3",
+        "columns": "2",
         "tone": "clair",
         "layout": "grille",
         "anchor_id": "nouveautes"
       },
       "translation": {
-        "title": "Three novelties, each with its status.",
-        "intro": "Words of ambition never replace the real state of things: here is where each one stands.",
+        "title": "Four novelties, each with its status.",
+        "intro": "Each novelty carries its real status: here is where each one stands.",
         "cards": [
+          {
+            "title": "Nexora Code and Nexora RAG.",
+            "text": "A coding agent hosted on our servers and a document base that AI queries, tied to your account and paid in credits. Status: coming soon, no date; nothing is delivered.",
+            "href": "/en/suite/",
+            "link_label": "See the software suite"
+          },
           {
             "title": "Nexora Croissance.",
             "text": "Nexora Croissance, our automated marketing service: a website with hosting included, search visibility, online advertising, social media and reputation tracking. Status: early access, on request.",
@@ -185,7 +225,15 @@
     {
       "collection": "block_section",
       "role": "Ce que le lecteur peut vérifier.",
-      "claims": ["CL-09", "CL-87", "CL-E06", "CL-V01", "CL-G01"],
+      "claims": [
+        "CL-09",
+        "CL-87",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-E06",
+        "CL-G01",
+        "CL-V01"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -225,7 +273,7 @@
       },
       "translation": {
         "title": "Get in touch.",
-        "body": "<p>The simplest way is the <a href=\"/en/contact/\">contact form</a>: describe one concrete problem, and we will reply with what is feasible and where to start. Would you rather begin with a structured conversation? <a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a>.</p>"
+        "body": "<p>The simplest way is the <a href=\"/en/contact/\">contact form</a>: describe one concrete problem, and we will reply with what is feasible and where to start. Would you rather begin with a structured conversation? <a href=\"/en/contact/?sujet=diagnostic\">Plan an assessment</a>.</p>"
       }
     },
     {
@@ -238,8 +286,8 @@
       "translation": {
         "title": "Let's talk about your first case.",
         "text": "Describe a concrete problem. We will tell you what is feasible, in which mode, and where to start.",
-        "primary_label": "Plan a diagnosis",
-        "primary_href": "/en/contact/?sujet=diagnostic",
+        "primary_label": "Describe my need",
+        "primary_href": "/en/contact/",
         "secondary_label": "See the services",
         "secondary_href": "/en/services/"
       }

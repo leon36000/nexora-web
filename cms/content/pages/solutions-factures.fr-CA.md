@@ -6,8 +6,8 @@
 
 - Page : `solutions-factures` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/factures/` · slug : `solutions/factures`
-- Titre SEO (32 caractères) : Facturation automatisée pour PME
-- Description SEO (157 caractères) : Le système lit les factures de vos fournisseurs (PDF, scans, photos), extrait les montants, signale les écarts et range tout en table. Une personne approuve.
+- Titre SEO (39 caractères) : Lecture de factures fournisseurs par IA
+- Description SEO (155 caractères) : Le système lit les factures de vos fournisseurs (PDF, scans, photos), extrait les champs, signale les écarts et range tout en table. Une personne approuve.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Fini de retaper vos factures.
 
-Le système lit chaque facture, PDF, scan ou photo, extrait les champs que vous avez définis et vous montre d'abord ce qui est douteux. Le paiement et la comptabilité restent entre les mains d'une personne.
+Le système lit chaque facture, PDF, scan ou photo, extrait les champs que vous avez définis et met d'abord en avant ce qui est douteux. L'approbation et le paiement restent entre les mains d'une personne.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=probleme`
 
 ## Quand chaque facture arrive autrement.
 
-Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée en travers. Quelqu'un retape les numéros, les dates et les montants, puis cherche qui doit approuver.
+Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée de travers. L'adjointe à l'administration retape les numéros, les dates et les montants, puis cherche qui doit approuver.
 
-L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
+Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
 
 - **Des formats variés.** PDF numérique, scan, photo : chacun se lit différemment.
 - **Des erreurs de frappe.** Un montant inversé passe jusqu'à l'approbation, voire au paiement.
@@ -101,7 +101,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 ## Des erreurs vues avant le paiement.
 
-Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Nous n'annonçons aucun pourcentage de précision ni aucun temps gagné : la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.
+Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Aucun pourcentage de précision ni temps gagné n'est annoncé : la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) pour essayer la lecture sur vos pièces.
 
@@ -137,27 +137,35 @@ Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner 
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution factures. · Affirmations : CL-101, CL-125, CL-132*
+*FAQ propre à la solution factures. · Affirmations : CL-101, CL-125, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Facturation automatisée : vos questions.
 
-#### Lit-il les factures scannées de travers ?
+#### Le système lit-il les factures scannées de travers ?
 
-Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan ; ce qui est douteux est marqué « à vérifier ».
+Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan ; ce qui est douteux est marqué « à vérifier » et passe sous les yeux d'une personne.
 
 #### Se relie-t-il à mon logiciel comptable ?
 
-Peut-être : cela dépend du logiciel. Nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable.
+Peut-être : cela dépend du logiciel, et nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable.
 
-#### Et les taxes du Québec ?
+#### Les taxes du Québec sont-elles prises en compte ?
 
-Elles ne sont pas gérées par défaut. Nous définissons avec vous les champs de taxes à extraire et les vérifications à faire, puis nous les mettons à l'épreuve sur vos pièces.
+Pas par défaut. Nous définissons avec vous les champs de taxes à extraire (TPS, TVQ) et les vérifications à faire, puis nous les mettons à l'épreuve sur vos pièces avant la mise en service.
 
 #### Peut-on aussi traiter devis et notes de frais ?
 
-Des modèles de départ existent pour les devis, les bons de commande et les notes de frais. Ils se personnalisent comme celui des factures.
+Oui. Des modèles de départ existent pour les devis, les bons de commande et les notes de frais. Ils se personnalisent comme celui des factures.
+
+#### Combien cela coûte-t-il ?
+
+Pour la lecture de factures, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ici ?
+
+Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour lire une facture scannée, une photo ou un PDF, ou en extraire les champs, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # A calendar that fills itself.
 
-The system receives appointment requests, proposes slots from your calendar and reminds your customers, even when the office is closed. It never confirms an availability it has not checked.
+The system receives appointment requests, proposes slots checked against your calendar and reminds your customers, even when the office is closed. It never confirms an availability it has not checked.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## Slots that slip away.
 
-A small practice receives appointment requests by email and by form, often outside opening hours. Confirmations are done by hand, reminders too, and a last-minute cancellation leaves a hole in the day.
+A small practice receives appointment requests by email and by form, often in the evening, after closing. The receptionist confirms by hand the next day, sends reminders by hand, and a last-minute cancellation leaves a hole in the practitioner's day.
 
-The example is constructed to illustrate the principle; it is not a customer's result.
+This example is constructed to illustrate the principle; it is not a customer's result.
 
 - **Requests that wait.** They arrive in the evening; the reply goes out the next day, sometimes too late.
 - **Forgotten reminders.** Every oversight is a risk of a no-show.
@@ -101,9 +101,9 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 ## Fewer lost slots.
 
-The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot.
+The expected benefit: fewer lost slots and less time spent confirming by hand. No no-show rate or gain is announced: it is measured during a pilot, on your calendar.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to connect your calendar.
+[Book an assessment](/en/contact/?sujet=diagnostic) to connect your calendar.
 
 A full calendar starts with customers who find you: [Nexora Croissance](/en/growth/), our automated marketing service, is in early access, on request.
 
@@ -139,27 +139,35 @@ The calendar and the requests stay within the agreed perimeter: on your server o
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution rendez-vous. · Affirmations : CL-123, CL-124, CL-85, CL-132*
+*FAQ propre à la solution rendez-vous. · Affirmations : CL-123, CL-124, CL-85, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Appointments: your questions.
 
-#### Which calendar does it work with?
+#### Which calendars does the solution work with?
 
-With calendars that connect to WorkStudio through a connector. Each calendar is qualified during the diagnosis, and some connections require prior registration with the provider.
+Calendars that connect to WorkStudio through a connector. Each calendar is qualified during the assessment, and some connections require prior registration with the provider.
 
-#### Can it answer the phone?
+#### Can the system answer the phone?
 
-No. No call-answering service is delivered today. The solution handles written requests (email, form).
+No. No call-answering service is delivered today. The solution handles written requests (email, form); a voice message dropped in as a recording can be transcribed.
 
 #### What happens when two people want the same slot?
 
-It checks the calendar at the moment of confirming. If the slot is taken, it proposes another option rather than confirming a double booking.
+It checks the calendar at the moment of confirming. If the slot is taken, it offers another option rather than confirming a double booking.
 
-#### Can it be used for care?
+#### Can it be used for health care?
 
 For administration only: request, slot, reminder. We do not qualify any clinical use and we recommend not routing health information through it.
+
+#### How much does it cost?
+
+There is no public price yet for appointment booking. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What uses credits here?
+
+Each time the system calls an AI model hosted by Nexora AI to understand an appointment request or draft a reply with slots, it uses credits: one credit equals one Canadian cent of tokens at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

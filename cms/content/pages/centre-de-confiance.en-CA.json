@@ -7,7 +7,7 @@
     "slug": "trust-center",
     "title": "Trust center",
     "seo_title": "Trust center: AI data security commitments",
-    "seo_description": "Five commitments on your data, what the software already allows and the documents we are preparing, with their status: everything you can ask us for.",
+    "seo_description": "Five commitments on your data, the security features already verified and the documents in preparation, with their status. Ask us for proof of what we say.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Trust center",
         "headline": "Five commitments. Proof you can ask for.",
-        "subheadline": "Your data stays yours: never used to train a model, never sold, no external model without your activation. Here is what we commit to doing, what the software already allows, and the documents we are preparing so you can check it.",
+        "subheadline": "Your data stays yours: never used to train a model, never sold, no external model without your activation. This page says what we promise, what the software already does and which documents we are preparing so that you can check.",
         "primary_label": "Ask for a document",
         "primary_href": "/en/contact/",
         "secondary_label": "Read the five commitments",
@@ -51,7 +51,7 @@
       },
       "translation": {
         "title": "Five commitments on your data.",
-        "intro": "Each one can be checked before and after go-live. Outbound flows (updates, licences, a possible external model) are listed before go-live: installing on your own server does not, by itself, mean there is no outbound traffic.",
+        "intro": "You can check each one before and after go-live. Installing on your own server does not mean there is no outbound traffic: we list updates, licences and any external model before go-live.",
         "cards": [
           {
             "title": "On premises, everything stays with you.",
@@ -98,7 +98,7 @@
       },
       "translation": {
         "title": "What makes them checkable.",
-        "intro": "A commitment is worth its proof. Here are the pieces that back it.",
+        "intro": "A commitment is only as good as its proof. Here are the pieces that back it.",
         "cards": [
           {
             "title": "A processing contract.",
@@ -146,7 +146,8 @@
         "CL-96",
         "CL-104",
         "CL-113",
-        "CL-110"
+        "CL-110",
+        "CL-S01"
       ],
       "fields": {
         "columns": "3",
@@ -156,7 +157,7 @@
       },
       "translation": {
         "title": "What the software already allows.",
-        "intro": "WorkStudio functions, verified on Nexora AI's test server. They support your process; they do not replace it.",
+        "intro": "WorkStudio functions, verified on Nexora AI's test server. They support your process without replacing it.",
         "cards": [
           {
             "title": "Roles and organizations.",
@@ -185,7 +186,7 @@
           },
           {
             "title": "Each model's location and encrypted secrets.",
-            "text": "Each model shows where it runs; connector credentials are encrypted and kept on your instance.",
+            "text": "Each model shows where it runs, and the platform catalogue shows its hosting location and its provider's data policy. Connector credentials are encrypted and kept on your instance.",
             "status": "disponible"
           }
         ]
@@ -203,7 +204,7 @@
       },
       "translation": {
         "title": "Documents on request.",
-        "intro": "These are the documents we commit to providing. They are in preparation: none is available yet, and we will say so here as soon as one exists.",
+        "intro": "We commit to providing these documents. They are in preparation: none is available yet, and this page will say so as soon as one exists.",
         "cards": [
           {
             "title": "The data-flow diagram for your installation.",
@@ -241,7 +242,7 @@
     {
       "collection": "block_section",
       "role": "Trois plans de données distincts.",
-      "claims": ["CL-78", "CL-71"],
+      "claims": ["CL-78", "CL-71", "CL-T05", "CL-S02"],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -261,7 +262,7 @@
           },
           {
             "title": "Your system's data.",
-            "text": "Your documents, conversations and databases: they stay inside the agreed perimeter, described by the data-flow diagram."
+            "text": "Your documents, conversations and databases: they stay inside the agreed perimeter, described by the data-flow diagram. On the credit platform, your files count toward your plan's storage, and the model gateway keeps only usage metadata."
           }
         ]
       }
@@ -336,7 +337,12 @@
         "CL-E01",
         "CL-E03",
         "CL-E04",
-        "CL-E05"
+        "CL-E05",
+        "CL-S01",
+        "CL-S02",
+        "CL-M06",
+        "CL-T05",
+        "CL-PL01"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -360,7 +366,7 @@
           },
           {
             "question": "Do you have a security attestation?",
-            "answer": "We claim none today. We describe what the software allows and what we document."
+            "answer": "We claim no security attestation and no certification today. We describe what the software allows and what we document."
           },
           {
             "question": "Who at Nexora AI can access my system?",
@@ -368,7 +374,11 @@
           },
           {
             "question": "Do you use an external model?",
-            "answer": "Only if you turned it on in writing, for a specific agent or project. It then appears on the data-flow diagram as an outbound flow."
+            "answer": "Yes, but only if you turned it on in writing, for a specific agent or project. The external model then appears on the data-flow diagram as an outbound flow."
+          },
+          {
+            "question": "Where is my data on the credit platform?",
+            "answer": "The documents and files you keep with Nexora AI use your plan's storage, counted per organization across all products. The model gateway keeps only usage metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. That location is information, not a guarantee of data residency."
           }
         ]
       }

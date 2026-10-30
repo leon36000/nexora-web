@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # On your premises, or with us in Quebec.
 
-In both modes, your data stays yours, is never used to train a model and is never sold. Here, in a single read, is who controls what, and how to choose.
+Choose where your AI lives: on a server that belongs to you, or in our infrastructure in Quebec. In both modes, your data stays yours, never trains a model and is never sold. This page says who controls what.
 
 [Study my project](/en/contact/?sujet=etude-deploiement) · [See the commitments on your data](/en/your-data/)
 
@@ -55,7 +55,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=qui-controle`
 
 ## Who controls what, in one read.
 
-Eight points, from hardware to contract exit. In each case, the answer is written before go-live. In both modes, your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
+Eight points, from hardware to contract exit. For each, the answer is written before go-live. In both modes, your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
 
 - **The hardware.** On your premises: it belongs to you. With us: it belongs to our infrastructure; you buy nothing.
 - **The data.** On your premises: on your server. With us: in our infrastructure in Quebec, at the locations specified in writing.
@@ -90,7 +90,7 @@ On your premises, you need a server, a suitable room and network. With us, none 
 
 #### The investment.
 
-Buying hardware is an investment; hosting is a service. The cost of each option is estimated in writing after the diagnosis.
+Buying hardware is an investment; hosting is a service. The cost of each option is estimated in writing after the assessment.
 
 #### Your customers' requirements.
 
@@ -104,13 +104,13 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=mixte`
 
 ## The case of a mixed mode.
 
-Some companies will want to keep sensitive data in-house and entrust the rest to our infrastructure. A combination of the two modes can be studied case by case. No mixed offer is defined today: so we do not present its scope or terms before studying it with you.
+Some companies will want to keep sensitive data in-house and entrust the rest to our infrastructure. We can study a combination of the two modes case by case. No mixed offer is defined today, so we present neither scope nor terms before studying your case with you.
 
 To talk it through, [study my project](/en/contact/?sujet=etude-deploiement) with us, or first read our approach to [sovereignty](/en/sovereignty/).
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ du hub déploiement. · Affirmations : CL-02, CL-06, CL-08, CL-E03, CL-E04*
+*FAQ du hub déploiement. · Affirmations : CL-02, CL-06, CL-08, CL-E03, CL-E04, CL-10, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -118,27 +118,35 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Which mode should I start with?
 
-The one that matches how sensitive your data is and your in-house skills. The deployment study compares the two options for your case.
+Choose the mode that fits how sensitive your data is and the skills you have in-house: on-premises if you want physical control of the server, hosted if you want to hand us the monitoring and updates. The deployment study compares the two options for your case.
 
 #### Can we change mode later?
 
-Export of your documents, configurations and workflows is provided for in the contract. A change of mode is then planned as a project.
+Yes, but as a project to plan. The contract provides for the export of your documents, configurations and workflows, which makes the change possible.
 
 #### Does my data leave Quebec?
 
-It depends on the mode and the models chosen; we write it down before kickoff. An external model is never configured without your explicit activation, recorded in writing.
+It depends on the mode and the models chosen, and we write it down before start-up. An external model is never configured without your explicit activation, recorded in writing.
 
 #### Is my data used to train a model?
 
-No, never, in either mode. It is not sold either.
+No, never, in either mode. Your data is not sold either.
 
 #### Is there an offline mode?
 
-We do not promise operation with no outbound flow at all: updates and licences are listed. Running with no outbound flow is decided and verified case by case.
+We do not promise operation with no outbound flow at all: updates and licences are listed before go-live. Running with no outbound flow is decided and verified case by case.
+
+#### How much does a deployment cost?
+
+There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### Where does the credit platform fit?
+
+The two modes on this page belong to tailored support. The credit platform (one account, credits, your tools gathered in “My tools”) is a second route that is not yet open for sale: accounts and payments work in test mode only and no price is published.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 
-*CTA : étude de déploiement. · Affirmations : CL-80*
+*CTA : étude de déploiement. · Affirmations : CL-80, CL-T06*
 
 Réglages : `tone=sombre`
 
@@ -146,4 +154,4 @@ Réglages : `tone=sombre`
 
 A deployment study compares the two options for your case: data, skills, hardware, your customers' requirements.
 
-[Study my project](/en/contact/?sujet=etude-deploiement) · [See the trust center](/en/trust-center/)
+[Study my project](/en/contact/?sujet=etude-deploiement) · [See upcoming pricing](/en/pricing/)

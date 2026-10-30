@@ -7,14 +7,14 @@
     "slug": "entreprise",
     "title": "Entreprise",
     "seo_title": "Nexora AI : IA pour les PME du Québec",
-    "seo_description": "Nexora AI, entreprise du Québec : la pointe de l'IA, simple et sous votre contrôle. Services, nouveautés avec leur statut réel, engagements sur vos données.",
+    "seo_description": "Nexora AI, entreprise du Québec : la pointe de l'IA, simple et sous votre contrôle. Accompagnement, plateforme à crédits, nouveautés avec leur statut réel.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Mission de Nexora AI (la pointe de l'IA, simple, sous votre contrôle, d'ici), limitée à ce qui est connu.",
-      "claims": ["CL-01", "CL-130", "CL-P01", "CL-P03"],
+      "claims": ["CL-01", "CL-130", "CL-P01", "CL-P03", "CL-PL03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -23,15 +23,15 @@
         "eyebrow": "Entreprise",
         "headline": "La pointe de l'IA, simple et d'ici.",
         "subheadline": "Nexora AI est une entreprise du Québec. Notre mission : mettre la pointe de l'IA à la portée des PME d'ici, simplement et sous leur contrôle, pour que leurs données restent à elles.",
-        "primary_label": "Planifier un diagnostic",
-        "primary_href": "/contact/?sujet=diagnostic",
+        "primary_label": "Décrire mon besoin",
+        "primary_href": "/contact/",
         "secondary_label": "Lire la méthode",
         "secondary_href": "/methode/"
       }
     },
     {
       "collection": "block_section",
-      "role": "La mission en quatre idées : pointe, simplicité, contrôle, d'ici.",
+      "role": "La mission en quatre idées : pointe, simplicité, contrôle, d'ici.",
       "claims": [
         "CL-P01",
         "CL-P02",
@@ -53,7 +53,7 @@
         "items": [
           {
             "title": "La pointe de l'IA.",
-            "text": "Des agents qui utilisent vos outils, un assistant qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses tirées de vos documents, la lecture de documents scannés, la voix, la comparaison de modèles. Ces mots sont des mots d'ambition : la preuve, c'est la liste de ce que l'outil fait."
+            "text": "Des agents qui utilisent vos outils, un assistant qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses tirées de vos documents, la lecture de documents scannés, la voix, la comparaison de modèles. La liste de ce que l'outil fait est sur la page WorkStudio, avec l'état réel de chaque capacité."
           },
           {
             "title": "Simple pour tous.",
@@ -72,7 +72,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait Nexora AI : quatre verbes, en mosaïque.",
+      "role": "Ce que fait Nexora AI : quatre verbes, en mosaïque.",
       "claims": ["CL-01", "CL-04", "CL-02"],
       "fields": {
         "columns": "2",
@@ -107,28 +107,68 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Deux voies qui se combinent : l'accompagnement sur mesure et la plateforme à crédits ; la vente n'est pas ouverte.",
+      "claims": [
+        "CL-PL01",
+        "CL-PL03",
+        "CL-01",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "sombre",
+        "anchor_id": "deux-voies"
+      },
+      "translation": {
+        "title": "Deux voies, un seul compte.",
+        "body": "<p>Nexora AI propose deux voies, qui se combinent. Vous pouvez être accompagné, ou prendre la plateforme en main, ou les deux.</p><p>La plateforme tient en une phrase : un compte, des crédits, tous vos outils. Un abonnement donne des crédits et de l'espace disque chaque mois ; sans abonnement, on recharge. Tout ce qui appelle un modèle d'IA consomme des crédits. Elle n'est pas encore ouverte à la vente : les prix s'afficheront sur la page <a href=\"/tarifs/\">Tarifs</a> dès leur publication.</p>",
+        "items": [
+          {
+            "title": "L'accompagnement.",
+            "text": "Nous concevons, installons et exploitons le système avec vous, chez vous ou au Québec. Une estimation écrite suit le diagnostic."
+          },
+          {
+            "title": "La plateforme.",
+            "text": "Un compte réunit vos crédits, votre espace et vos outils dans le panneau « Mes outils », avec l'état réel de chaque produit."
+          }
+        ]
+      }
+    },
+    {
       "collection": "block_cards",
       "role": "Les trois nouveautés, chacune en une phrase avec son statut honnête.",
       "claims": [
-        "CL-G01",
-        "CL-G02",
-        "CL-V01",
-        "CL-V02",
+        "CL-AP06",
+        "CL-AP07",
         "CL-E03",
         "CL-E04",
         "CL-E05",
-        "CL-E06"
+        "CL-E06",
+        "CL-G01",
+        "CL-G02",
+        "CL-V01",
+        "CL-V02"
       ],
       "fields": {
-        "columns": "3",
+        "columns": "2",
         "tone": "clair",
         "layout": "grille",
         "anchor_id": "nouveautes"
       },
       "translation": {
-        "title": "Trois nouveautés, chacune avec son statut.",
-        "intro": "Les mots d'ambition ne remplacent jamais l'état réel : voici où en est chacune.",
+        "title": "Quatre nouveautés, chacune avec son statut.",
+        "intro": "Chaque nouveauté porte son état réel : voici où en est chacune.",
         "cards": [
+          {
+            "title": "Nexora Code et Nexora RAG.",
+            "text": "Un agent de code hébergé sur nos serveurs et une base de documents que l'IA interroge, reliés à votre compte et payés en crédits. Statut : bientôt, sans date ; rien n'est livré.",
+            "href": "/suite/",
+            "link_label": "Voir la suite logicielle"
+          },
           {
             "title": "Nexora Croissance.",
             "text": "Notre service de marketing automatisé : un site avec hébergement inclus, le référencement, la publicité en ligne, les réseaux sociaux et le suivi de la notoriété. Statut : accès anticipé, sur demande.",
@@ -185,7 +225,15 @@
     {
       "collection": "block_section",
       "role": "Ce que le lecteur peut vérifier.",
-      "claims": ["CL-09", "CL-87", "CL-E06", "CL-V01", "CL-G01"],
+      "claims": [
+        "CL-09",
+        "CL-87",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-E06",
+        "CL-G01",
+        "CL-V01"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -216,7 +264,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Joindre Nexora AI : le formulaire, rien d'autre d'inventé.",
+      "role": "Joindre Nexora AI : le formulaire, rien d'autre d'inventé.",
       "claims": ["CL-01"],
       "fields": {
         "media_position": "none",
@@ -238,8 +286,8 @@
       "translation": {
         "title": "Parlons de votre premier cas.",
         "text": "Décrivez-nous un problème concret. Nous vous disons ce qui est faisable, dans quel mode, et par où commencer.",
-        "primary_label": "Planifier un diagnostic",
-        "primary_href": "/contact/?sujet=diagnostic",
+        "primary_label": "Décrire mon besoin",
+        "primary_href": "/contact/",
         "secondary_label": "Voir les services",
         "secondary_href": "/services/"
       }

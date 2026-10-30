@@ -53,7 +53,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=services`
 
 ## Services and offers.
 
-Description of the services (diagnosis, installation, automation, operations) and of self-service offers once they open. No self-service offer is open today. Status of each offer [TO BE COMPLETED BY THE FOUNDER].
+Description of the services (assessment, installation, automation, operations) and of self-service offers once they open. No self-service offer is open today. Status of each offer [TO BE COMPLETED BY THE FOUNDER].
 
 ### Bloc 5 — Section (`block_section`)
 

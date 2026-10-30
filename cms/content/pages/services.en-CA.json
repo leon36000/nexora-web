@@ -7,14 +7,14 @@
     "slug": "services",
     "title": "Services",
     "seo_title": "AI services for small businesses in Quebec",
-    "seo_description": "AI services for Quebec small businesses: diagnosis, installation on your premises or in Quebec, custom work, operation. Cutting-edge AI, no IT degree needed.",
+    "seo_description": "Assessment, installation on your premises or in Quebec, custom automation, operations: AI services for Quebec small businesses, no IT degree needed.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action.",
-      "claims": ["CL-01", "CL-80", "CL-04", "CL-P01", "CL-P03"],
+      "claims": ["CL-01", "CL-80", "CL-04", "CL-P01", "CL-P03", "CL-PL03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,8 +22,8 @@
       "translation": {
         "eyebrow": "AI services for small business",
         "headline": "AI installed, run and improved. With you.",
-        "subheadline": "AI services for Quebec small businesses: we install, run and evolve with you a system at the leading edge of AI, without you becoming an IT specialist. A diagnosis first, then a written estimate, then a first case in service.",
-        "primary_label": "Plan a diagnosis",
+        "subheadline": "We install, run and evolve with you an AI system for your Quebec small business, without you becoming an IT specialist. An assessment first, then a written estimate, then a first case in service.",
+        "primary_label": "Plan an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Read the method",
         "secondary_href": "/en/method/"
@@ -51,7 +51,7 @@
       },
       "translation": {
         "title": "What changes for you.",
-        "body": "<p>Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a></p>",
+        "body": "<p>Picture an AI that works inside your business: it reads your documents, drafts your replies, connects your software and stops to ask for your approval before anything that commits you. We install it, run it and improve it with you. You keep your mind on your trade; we take care of the technology.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan an assessment</a></p>",
         "items": [
           {
             "title": "The leading edge of AI, without the complexity.",
@@ -83,7 +83,7 @@
         "intro": "From the first conversation to daily operation, the same people follow you, in French or English, and the same control rules apply.",
         "cards": [
           {
-            "title": "The diagnosis.",
+            "title": "The assessment.",
             "text": "We describe with you the case at hand, your software, your volumes, the deployment mode under consideration and the integrations needed. You leave with a written estimate."
           },
           {
@@ -109,16 +109,26 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce qui fait varier l'estimation (aucun prix ni délai) et appel à planifier un diagnostic.",
-      "claims": ["CL-10", "CL-82", "CL-85", "CL-14"],
+      "role": "Les deux voies de Nexora AI (accompagnement sur estimation écrite, plateforme à crédits), aucun prix ni délai ; ce qui fait varier l'estimation ; lien vers les tarifs à venir et appel à planifier un diagnostic.",
+      "claims": [
+        "CL-10",
+        "CL-82",
+        "CL-85",
+        "CL-14",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
         "anchor_id": "estimation"
       },
       "translation": {
-        "title": "What makes the estimate vary.",
-        "body": "<p>There is no public price yet, and we announce no universal timeline. After the diagnosis, we provide a written estimate that states what is included and what is not. Here is what makes it vary.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan a diagnosis</a> to get yours.</p>",
+        "title": "What is paid, what varies.",
+        "body": "<p>Nexora AI offers two paths. <strong>Support</strong> (assessment, installation on your premises or hosted in Quebec, operations) is paid for on a written estimate, handed over after the assessment, that states what is included and what is not. The <strong>credit platform</strong> (account, credits, tools) is paid for by use: anything that calls an AI model uses credits, which a plan provides every month or which you top up.</p><p>There is no public price yet, the platform is not open for sale and we announce no universal timeline. <a href=\"/en/pricing/\">See the upcoming pricing</a>. Here is what makes the support estimate vary.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Plan an assessment</a> to get yours.</p>",
         "items": [
           {
             "title": "The number of cases handled.",
@@ -176,7 +186,19 @@
     {
       "collection": "block_faq",
       "role": "Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit).",
-      "claims": ["CL-04", "CL-08", "CL-10", "CL-02", "CL-E03", "CL-E04"],
+      "claims": [
+        "CL-04",
+        "CL-08",
+        "CL-10",
+        "CL-02",
+        "CL-E03",
+        "CL-E04",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -187,7 +209,7 @@
         "items": [
           {
             "question": "Do we need technical staff?",
-            "answer": "No. We install, run with you and evolve the system. Your team's training covers usage and supervision, not the technical side."
+            "answer": "No. Nexora AI installs the system, runs it with you and evolves it. Your team's training covers usage and supervision, not the technical side."
           },
           {
             "question": "Where is my data?",
@@ -195,7 +217,7 @@
           },
           {
             "question": "Who handles updates?",
-            "answer": "We do, as agreed in the contract. Updates are listed among the outbound flows in the diagram we hand over."
+            "answer": "Nexora AI does, as agreed in the contract. Updates are listed among the outbound flows in the diagram we hand over."
           },
           {
             "question": "What if we want to stop?",
@@ -203,7 +225,15 @@
           },
           {
             "question": "Can we start small?",
-            "answer": "That is the method: one concrete case, put into service and verified, before expanding."
+            "answer": "Yes, that is the method: one concrete case, put into service and verified, before expanding."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published."
+          },
+          {
+            "question": "What is the difference between support and the platform?",
+            "answer": "Nexora AI offers two paths: custom support (assessment, installation, operations, written estimate) and a credit platform (account, credits, tools). The platform is not yet open for sale. The assessment, however, can be booked now."
           }
         ]
       }
@@ -216,9 +246,9 @@
         "tone": "sombre"
       },
       "translation": {
-        "title": "Let's start with a diagnosis.",
+        "title": "Let's start with an assessment.",
         "text": "Describe your first case. We will tell you what is feasible, in which mode, and what it would take to set it up.",
-        "primary_label": "Plan a diagnosis",
+        "primary_label": "Plan an assessment",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a deployment study",
         "secondary_href": "/en/contact/?sujet=etude-deploiement"

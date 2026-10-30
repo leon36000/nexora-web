@@ -21,21 +21,21 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # AI for a Quebec small business. Where to start.
 
-Three decisions before any tool: a precise case to handle, a place where your data lives, a person who approves. The rest follows, one case at a time.
+Three decisions before any tool: a precise case to handle, a place where your data lives, a person who approves. Then a pilot to measure, one case at a time.
 
-[Book a diagnosis](/en/contact/) · [See the method](/en/method/)
+[Book an assessment](/en/contact/) · [See the method](/en/method/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : par où commencer, en un paragraphe, avec les quatre gestes. · Affirmations : CL-03, CL-80, CL-02, CL-128, CL-14*
+*Réponse d'abord : par où commencer, en un paragraphe, avec les quatre gestes. · Affirmations : CL-03, CL-80, CL-02, CL-128, CL-14, CL-PL03, CL-T01, CL-T04*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 ## The short answer.
 
-For a small business, starting with AI means choosing a repetitive, precise case (sorting email, reading invoices, booking appointments, searching your documents), deciding whether the system lives on your premises or is hosted in Quebec, naming the person who approves what the AI prepares, then measuring on a pilot before expanding.
+For a Quebec small business, starting with AI means choosing a repetitive, precise case (sorting email, reading invoices, booking appointments or searching your documents), deciding whether the system lives on your premises or is hosted in Quebec, naming the person who approves what the AI prepares, then measuring on a pilot before expanding.
 
-No timeline and no gain is universal: they depend on the case and are measured on the pilot. A diagnosis comes before any written estimate.
+No timeline and no gain is universal: they depend on the case and are measured on the pilot. An assessment comes before any written estimate. Two things are paid for: support, on a written estimate, and use of the platform, in credits.
 
 - **One case.** A repetitive job whose steps you can describe.
 - **One place.** On your premises, or hosted in Quebec.
@@ -102,13 +102,13 @@ In both cases, a server in Quebec or on your premises does not, by itself, rule 
 
 ### Bloc 6 — Section (`block_section`)
 
-*Les six solutions les plus courantes, en liste de liens, avec la précision qu'elles sont des configurations et non des produits prêts à l'emploi. · Affirmations : CL-132, CL-84*
+*Les six solutions les plus courantes, en liste de liens, avec la précision qu'elles sont des configurations et non des produits prêts à l'emploi. · Affirmations : CL-132, CL-84, CL-PL01, CL-PL03, CL-T01, CL-T06, CL-12*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=solutions`
 
 ## The most common solutions.
 
-These are configurations built on WorkStudio's components and adapted to each business after a diagnosis, not ready-to-use products.
+These are configurations built on WorkStudio's components and adapted to each business after an assessment, not ready-to-use products.
 
 - [Email](/en/solutions/email/): sort, summarize, draft a reply.
 - [Invoices](/en/solutions/invoices/): read, extract, flag discrepancies.
@@ -116,6 +116,7 @@ These are configurations built on WorkStudio's components and adapted to each bu
 - [Appointments](/en/solutions/appointments/): propose slots, send reminders.
 - [Accounting](/en/solutions/accounting/): prepare the pre-entry.
 - [Documents](/en/solutions/documents/): find, summarize, extract.
+The Nexora AI account brings credits, storage and tools together in the "My tools" panel. The platform is not yet open for sale; prices will appear on the [Pricing](/en/pricing/) page.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -143,23 +144,23 @@ No phone-answering service is delivered to date.
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : par où commencer, délai, matériel, lieu des données, employés, savoir programmer. · Affirmations : CL-80, CL-14, CL-82, CL-E01, CL-E02, CL-77, CL-E05, CL-128, CL-P02, CL-92, CL-04*
+*Questions du guide : par où commencer, délai, matériel, lieu des données, employés, savoir programmer. · Affirmations : CL-80, CL-14, CL-82, CL-E01, CL-E02, CL-77, CL-E05, CL-128, CL-P02, CL-92, CL-04, CL-10, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 ## AI for small business: your questions.
 
-#### Where do I start, concretely?
+#### Where do I start, concretely, with AI?
 
-With a diagnosis of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate.
+With an assessment of the case: existing software, volumes, deployment mode, integrations. It comes before any written estimate.
 
-#### How long does it take?
+#### How long does it take to put AI into service?
 
 No universal timeline is announced: it depends on the case and is measured on a pilot.
 
 #### Do I need a powerful server?
 
-It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the diagnosis, before any purchase.
+It depends on the number of users, the volume of documents, the chosen model and the uses. The hardware is set at the assessment, before any purchase.
 
 #### Does my data leave Quebec?
 
@@ -173,6 +174,14 @@ It takes over repetitive tasks; the decision stays human. Any action that commit
 
 No. You describe the need in French, the Copilot prepares a workflow that you review, and Nexora AI installs the system, runs it with you and trains your team.
 
+#### How much does it cost?
+
+There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What is a Nexora AI credit?
+
+One credit equals one Canadian cent of tokens at the model catalogue price. Any call to an AI model uses them; a plan gives you credits every month, which expire at the end of their period and are used first, and top-up credits do not expire. The platform is not yet open for sale.
+
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
 *Appel à l'action : choisir le premier cas, par un diagnostic. · Affirmations : CL-80*
@@ -183,4 +192,4 @@ Réglages : `tone=sombre`
 
 Describe your most repetitive job. We tell you what is realistic, and what is not.
 
-[Book a diagnosis](/en/contact/) · [See the solutions](/en/solutions/)
+[Book an assessment](/en/contact/) · [See the solutions](/en/solutions/)

@@ -6,15 +6,15 @@
   "seo": {
     "slug": "suite",
     "title": "Suite logicielle",
-    "seo_title": "Suite logicielle IA : cinq noms, cinq états",
-    "seo_description": "WorkStudio est livré, en démonstration sur demande ; Nexora Code, Corpus, Quanta et Helix n'ont aucune date annoncée. Une suite d'IA aux états honnêtes.",
+    "seo_title": "Suite logicielle IA : un compte, des états réels",
+    "seo_description": "WorkStudio est disponible ; Nexora Code et RAG arrivent, sans date ; Corpus, Quanta et Helix n'en ont aucune. Un compte, des crédits, l'état de chaque outil.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la suite : une idée commune, l'état réel de chaque nom.",
-      "claims": ["CL-20", "CL-28", "CL-P03"],
+      "role": "Promesse de la suite : une idée commune, un compte, l'état réel de chaque nom.",
+      "claims": ["CL-20", "CL-28", "CL-P03", "CL-PL01"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,17 +22,26 @@
       "translation": {
         "eyebrow": "Suite logicielle",
         "headline": "Une suite, pas une pile.",
-        "subheadline": "Une seule idée relie les produits de Nexora AI : une IA qui travaille pour vous, sous votre contrôle, avec des accès, des budgets et des journaux que vous maîtrisez. Un nom est déjà livré, à la pointe de l'IA ; pour les autres, voici l'état réel de chacun.",
+        "subheadline": "Une seule idée relie les produits de Nexora AI : une IA qui travaille pour vous, sous votre contrôle. Un compte, des crédits, tous vos outils. WorkStudio est livré ; pour chaque autre nom, voici l'état réel.",
         "primary_label": "Voir WorkStudio",
         "primary_href": "/workstudio/",
-        "secondary_label": "Discuter de mon projet",
-        "secondary_href": "/contact/"
+        "secondary_label": "Voir les tarifs à venir",
+        "secondary_href": "/tarifs/"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Cinq noms, cinq états honnêtes.",
-      "claims": ["CL-20", "CL-28", "CL-12", "CL-110", "CL-P01"],
+      "role": "Six noms, six états honnêtes : un livré, deux en préparation, trois sans date.",
+      "claims": [
+        "CL-20",
+        "CL-28",
+        "CL-12",
+        "CL-110",
+        "CL-P01",
+        "CL-PL02",
+        "CL-AP06",
+        "CL-AP07"
+      ],
       "fields": {
         "columns": "3",
         "tone": "clair",
@@ -40,19 +49,29 @@
         "anchor_id": "etats"
       },
       "translation": {
-        "title": "Cinq noms, cinq états.",
-        "intro": "Un seul de ces cinq noms est un produit livré. Pour les quatre autres, nous écrivons ce que nous savons et rien de plus.",
+        "title": "Six noms, six états.",
+        "intro": "Un seul de ces noms est un produit livré. Nexora Code et Nexora RAG sont en préparation, sans date. Pour les trois autres, nous écrivons ce que nous savons et rien de plus.",
         "cards": [
           {
             "title": "Nexora WorkStudio.",
-            "text": "Le studio où l'on conçoit, connecte et pilote des agents et des flux de travaux, en français et sans écrire de code. Démonstration sur demande.",
+            "text": "Le studio où l'on conçoit, connecte et pilote des agents et des flux de travaux, en français et sans écrire de code. Il s'ouvre depuis « Mes outils » tant qu'il reste un crédit. Démonstration sur demande.",
             "href": "/workstudio/",
             "link_label": "Découvrir WorkStudio",
             "status": "disponible"
           },
           {
             "title": "Nexora Code.",
-            "text": "Pour le développement, la compréhension du code, les tests et la maintenance assistés par des agents. Aucune disponibilité ni date n'est annoncée à ce stade."
+            "text": "Un agent de code dans un environnement hébergé sur nos serveurs : rien à installer sur votre poste. En préparation, sans date.",
+            "href": "/apps/code/",
+            "link_label": "Voir Nexora Code",
+            "status": "prevu"
+          },
+          {
+            "title": "Nexora RAG.",
+            "text": "Vos documents deviennent une base que l'IA interroge, avec une clé d'API pour la relier à vos outils. En préparation, sans date.",
+            "href": "/apps/rag/",
+            "link_label": "Voir Nexora RAG",
+            "status": "prevu"
           },
           {
             "title": "Nexora Corpus.",
@@ -72,7 +91,18 @@
     {
       "collection": "block_section",
       "role": "Ce qui fait la cohérence d'une suite : mêmes règles d'accès, de budget, de validation et de données (déjà appliquées dans WorkStudio).",
-      "claims": ["CL-22", "CL-106", "CL-21", "CL-E03", "CL-E04", "CL-20"],
+      "claims": [
+        "CL-22",
+        "CL-106",
+        "CL-21",
+        "CL-E03",
+        "CL-E04",
+        "CL-20",
+        "CL-PL01",
+        "CL-T01",
+        "CL-T04",
+        "CL-T05"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -80,8 +110,16 @@
       },
       "translation": {
         "title": "Ce qui relie la suite.",
-        "body": "<p>Ce qui fait une suite, ce n'est pas le nombre de noms : c'est la même façon de travailler partout. WorkStudio l'applique déjà ; elle sert de règle à la suite.</p><p><a href=\"/vos-donnees/\">Lire les cinq engagements sur vos données</a>.</p><p><a href=\"/contact/?sujet=demonstration\">Demander une démonstration de WorkStudio</a>.</p>",
+        "body": "<p>Ce qui fait une suite, ce n'est pas le nombre de noms : c'est la même façon de travailler partout. Un seul compte, les mêmes crédits, les mêmes règles. WorkStudio les applique déjà ; elles servent de règle au reste.</p><p><a href=\"/vos-donnees/\">Lire les cinq engagements sur vos données</a>. <a href=\"/contact/?sujet=demonstration\">Demander une démonstration de WorkStudio</a>.</p>",
         "items": [
+          {
+            "title": "Un seul compte.",
+            "text": "Vos crédits, votre espace disque et vos produits dans le panneau « Mes outils », avec l'état réel de chacun."
+          },
+          {
+            "title": "Des crédits pour les modèles.",
+            "text": "Tout ce qui appelle un modèle d'IA consomme des crédits ; un outil qui n'en appelle aucun n'en consomme pas."
+          },
           {
             "title": "Des accès que vous maîtrisez.",
             "text": "Des organisations, des rôles et un journal d'audit : vous savez qui fait quoi."
@@ -103,11 +141,39 @@
     },
     {
       "collection": "block_section",
-      "role": "Nexora Corpus : la vocation, deux destinations distinctes.",
-      "claims": ["CL-120", "CL-28", "CL-07", "CL-E03"],
+      "role": "Nexora Code : bientôt, hébergé, plugins compatibles prévus ; ce qui est gratuit et ce qui consomme.",
+      "claims": ["CL-AP06", "CL-AP01", "CL-T04", "CL-T05", "CL-28"],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
+        "anchor_id": "code"
+      },
+      "translation": {
+        "title": "Nexora Code : bientôt, sans date.",
+        "body": "<p>Nexora Code est un agent de code qui comprend, modifie et teste votre code, dans un environnement de travail hébergé sur les serveurs de Nexora AI : rien à installer sur votre poste. Il s'ouvrira depuis votre panneau « Mes outils ».</p><p>Il est prévu compatible avec les plugins de Claude Code et de Codex ; ce qui ne peut pas être traduit sera signalé, jamais ignoré en silence. L'outil est conçu pour être gratuit : ce qu'il fait appeler à un modèle consomme des crédits, et l'espace de l'environnement compte dans celui de votre offre.</p><p>Rien de cela n'est livré et aucune date n'est annoncée. Nous n'annonçons ni autonomie universelle, ni nombre d'agents travaillant ensemble. <a href=\"/apps/code/\">Voir la fiche de Nexora Code</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Nexora RAG : bientôt, création en un clic, clé d'API, espace et jetons en crédits.",
+      "claims": ["CL-AP07", "CL-T05", "CL-T04"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "rag"
+      },
+      "translation": {
+        "title": "Nexora RAG : vos documents, interrogeables.",
+        "body": "<p>Nexora RAG transforme vos documents en une base que l'IA interroge en montrant ses sources. Vous la créez en un clic depuis votre panneau, puis vous la reliez à Nexora Code, à un bot ou à un autre outil avec une clé d'API.</p><p>Vous paierez l'espace qu'elle occupe, compté dans celui de votre offre, et les jetons qui servent à indexer vos documents et à classer les réponses (embedding et rerank), en crédits. Rien de cela n'est livré, aucun prix n'est publié et aucune date n'est annoncée. <a href=\"/apps/rag/\">Voir la fiche de Nexora RAG</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Nexora Corpus : la vocation, deux destinations distinctes.",
+      "claims": ["CL-SU01", "CL-28", "CL-07", "CL-E03"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
         "anchor_id": "corpus"
       },
       "translation": {
@@ -130,26 +196,12 @@
       }
     },
     {
-      "collection": "block_section",
-      "role": "Nexora Code : la vocation, sans autonomie annoncée.",
-      "claims": ["CL-121", "CL-28"],
-      "fields": {
-        "media_position": "none",
-        "tone": "clair",
-        "anchor_id": "code"
-      },
-      "translation": {
-        "title": "Code : la vocation, rien de plus.",
-        "body": "<p>Nexora Code est destiné au développement assisté par agents : comprendre un code existant, écrire et lancer des tests, faciliter la maintenance, en s'appuyant sur les projets et les connaissances de l'organisation.</p><p>Nous n'annonçons ni autonomie universelle, ni nombre d'agents travaillant ensemble, ni calendrier : rien de cela n'est démontré à ce jour.</p>"
-      }
-    },
-    {
       "collection": "block_cards",
       "role": "Quanta et Helix : ce que nous ne publions pas.",
-      "claims": ["CL-122", "CL-28"],
+      "claims": ["CL-28"],
       "fields": {
         "columns": "2",
-        "tone": "sable",
+        "tone": "sombre",
         "layout": "liste",
         "anchor_id": "modeles"
       },
@@ -179,7 +231,18 @@
     {
       "collection": "block_faq",
       "role": "FAQ de la suite.",
-      "claims": ["CL-28", "CL-12", "CL-07", "CL-E03"],
+      "claims": [
+        "CL-28",
+        "CL-12",
+        "CL-07",
+        "CL-E03",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-T01",
+        "CL-T06",
+        "CL-PL01",
+        "CL-PL02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -189,8 +252,16 @@
         "title": "Suite : vos questions.",
         "items": [
           {
-            "question": "Puis-je acheter Nexora Code ou Nexora Corpus ?",
+            "question": "Puis-je acheter Nexora Code ou Nexora RAG ?",
+            "answer": "Pas encore. Les deux sont en préparation, sans date, et la vente n'est pas ouverte. Leur fiche dit ce qui est prêt et ce qui vient, et sa liste d'attente vous prévient à la sortie."
+          },
+          {
+            "question": "Puis-je acheter Nexora Corpus ?",
             "answer": "Pas à ce jour : aucune disponibilité ni date n'est annoncée. Dès qu'un produit existera, cette page le dira."
+          },
+          {
+            "question": "Comment les crédits fonctionnent-ils dans la suite ?",
+            "answer": "Un abonnement donne des crédits chaque mois et de l'espace disque ; sans abonnement, on recharge des crédits. Tout ce qui appelle un modèle d'IA en consomme, dans tous les produits de la suite. Les prix ne sont pas publiés : ils s'afficheront sur la page Tarifs."
           },
           {
             "question": "Quanta ou Helix sont-ils meilleurs que d'autres modèles ?",
@@ -202,7 +273,7 @@
           },
           {
             "question": "Que puis-je utiliser dès maintenant ?",
-            "answer": "Nexora WorkStudio, sur demande. Pour la construction et les services terrain, OPSYS-AI, un produit en développement, avec le niveau de disponibilité de chacun de ses départements."
+            "answer": "Nexora WorkStudio, en démonstration sur demande. Pour la construction et les services terrain, OPSYS-AI, un produit en développement, avec le niveau de disponibilité de chacun de ses départements. Les autres outils (agent de code, RAG, bot, WebPilot, Privacy Router) sont réunis dans Nexora Apps, chacun avec son état réel."
           }
         ]
       }
@@ -210,17 +281,17 @@
     {
       "collection": "block_cta",
       "role": "CTA : discuter, voir OPSYS-AI.",
-      "claims": ["CL-12"],
+      "claims": ["CL-12", "CL-AP06", "CL-AP07", "CL-T06"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Commençons par ce qui existe.",
-        "text": "Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte. OPSYS-AI couvre la construction en produit en développement, avec un niveau honnête par département.",
-        "primary_label": "Discuter de mon projet",
-        "primary_href": "/contact/",
-        "secondary_label": "Découvrir OPSYS-AI",
-        "secondary_href": "/opsys-ai/"
+        "text": "WorkStudio est livré : demandez une démonstration. Nexora Code et Nexora RAG arrivent : rejoignez leur liste d'attente. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.",
+        "primary_label": "Demander une démonstration",
+        "primary_href": "/contact/?sujet=demonstration",
+        "secondary_label": "Voir Nexora Apps",
+        "secondary_href": "/apps/"
       }
     }
   ]

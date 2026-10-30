@@ -7,7 +7,7 @@
 - Page : `centre-de-confiance` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/centre-de-confiance/` · slug : `centre-de-confiance`
 - Titre SEO (45 caractères) : Sécurité des données IA : centre de confiance
-- Description SEO (159 caractères) : Cinq engagements sur vos données, ce que le logiciel permet déjà et les documents que nous préparons, avec leur statut : tout ce que vous pouvez nous demander.
+- Description SEO (156 caractères) : Cinq engagements sur vos données, les fonctions de sécurité déjà vérifiées et les documents en préparation, avec leur état. Demandez la preuve de nos dires.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Cinq engagements. Des preuves à demander.
 
-Vos données restent à vous : jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Voici ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.
+Vos données restent à vous : jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Cette page dit ce que nous promettons, ce que le logiciel fait déjà et quels documents nous préparons pour que vous puissiez vérifier.
 
 [Demander un document](/contact/) · [Lire les cinq engagements](/vos-donnees/)
 
@@ -33,7 +33,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=engagements`
 
 ## Cinq engagements sur vos données.
 
-Chacun peut être contrôlé avant et après la mise en service. Les flux sortants (mises à jour, licences, modèle externe éventuel) sont listés avant la mise en service : installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.
+Vous pouvez contrôler chacun avant et après la mise en service. Installer sur votre serveur n'équivaut pas à n'avoir aucun flux sortant : nous listons les mises à jour, les licences et tout modèle externe avant la mise en service.
 
 #### Sur place, tout reste chez vous.
 
@@ -63,7 +63,7 @@ Réglages : `columns=4`, `tone=sable`, `layout=grille`, `anchor_id=mecanismes`
 
 ## Ce qui les rend vérifiables.
 
-Un engagement vaut ce que vaut sa preuve. Voici les pièces qui le soutiennent.
+Un engagement vaut sa preuve. Voici les pièces qui le soutiennent.
 
 #### Un contrat de traitement.
 
@@ -99,13 +99,13 @@ Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvon
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que le logiciel permet déjà, statuts disponibles. · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-104, CL-113, CL-110*
+*Ce que le logiciel permet déjà, statuts disponibles. · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-104, CL-113, CL-110, CL-S01*
 
 Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=logiciel`
 
 ## Ce que le logiciel permet déjà.
 
-Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche ; elles ne la remplacent pas.
+Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche sans la remplacer.
 
 #### Rôles et organisations.
 
@@ -129,7 +129,7 @@ Chaque appel de modèle est tracé ; les noms, courriels et numéros de télép
 
 #### Lieu de chaque modèle et secrets chiffrés.
 
-Chaque modèle indique où il tourne ; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.
+Chaque modèle indique où il tourne, et le catalogue de la plateforme affiche son lieu d'hébergement et la politique de données de son fournisseur. Les identifiants des connecteurs sont chiffrés et conservés sur votre instance.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -139,7 +139,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=documents`
 
 ## Documents sur demande.
 
-Voici les documents que nous nous engageons à fournir. Ils sont en préparation : aucun n'est encore disponible, et nous vous le dirons ici dès qu'un document existe.
+Nous nous engageons à fournir ces documents. Ils sont en préparation : aucun n'est encore disponible, et cette page l'indiquera dès qu'un document existera.
 
 #### Le schéma des flux de votre installation.
 
@@ -167,7 +167,7 @@ Qui évalue, qui avise, où l'incident est consigné.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Trois plans de données distincts. · Affirmations : CL-78, CL-71*
+*Trois plans de données distincts. · Affirmations : CL-78, CL-71, CL-T05, CL-S02*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
@@ -181,7 +181,7 @@ Pour juger un fournisseur, voir la [liste de contrôle d'une DSI](/guides/ia-sou
 
 - **Le contenu public du site.** Ce que vous lisez ici : fait pour être publié et indexé.
 - **Vos échanges avec Nexora AI.** Formulaires, courriels, facturation : ils ne servent qu'à vous répondre et à vous servir. La politique de confidentialité du site, en préparation, les décrira.
-- **Les données de votre système.** Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux.
+- **Les données de votre système.** Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux. Sur la plateforme à crédits, vos fichiers comptent dans l'espace disque de votre offre, et la passerelle de modèles ne garde que des métadonnées d'usage.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -223,7 +223,7 @@ La sécurité physique de vos locaux ne relève pas de ce centre de confiance. [
 
 ### Bloc 9 — FAQ (`block_faq`)
 
-*FAQ du centre de confiance. · Affirmations : CL-87, CL-09, CL-06, CL-E01, CL-E03, CL-E04, CL-E05*
+*FAQ du centre de confiance. · Affirmations : CL-87, CL-09, CL-06, CL-E01, CL-E03, CL-E04, CL-E05, CL-S01, CL-S02, CL-M06, CL-T05, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -231,7 +231,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Comment demander un document ?
 
-Écrivez-nous par le formulaire de contact en nommant le document. Tant qu'il est en préparation, nous vous le disons au lieu de vous en promettre une date.
+Écrivez-nous par le formulaire de contact en nommant le document. Tant que le document est en préparation, nous vous le disons au lieu de vous promettre une date.
 
 #### Mes données servent-elles à entraîner une IA ?
 
@@ -243,7 +243,7 @@ Non. Nexora AI ne vend, ne loue, n'échange et ne partage à des fins publicitai
 
 #### Avez-vous une attestation de sécurité ?
 
-Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons.
+Nous ne revendiquons aucune attestation ni aucune certification de sécurité à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons.
 
 #### Qui, chez Nexora AI, peut accéder à mon système ?
 
@@ -251,7 +251,11 @@ Seulement les accès convenus à l'avance, décrits dans l'étude de déploiemen
 
 #### Utilisez-vous un modèle externe ?
 
-Seulement si vous l'avez activé par écrit, pour un agent ou un projet précis. Il apparaît alors au schéma des flux comme un flux sortant.
+Oui, mais seulement si vous l'avez activé par écrit, pour un agent ou un projet précis. Le modèle externe apparaît alors au schéma des flux comme un flux sortant.
+
+#### Où sont mes données sur la plateforme à crédits ?
+
+Les documents et fichiers que vous gardez chez Nexora AI occupent l'espace disque de votre offre, compté par organisation, tous produits confondus. La passerelle de modèles ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses. Chaque modèle affiche son lieu d'hébergement et la politique de données de son fournisseur, et Nexora Privacy Router évalue chaque requête avant l'appel. Ce lieu informe, il ne garantit pas la résidence des données.
 
 ### Bloc 10 — Appel à l'action (`block_cta`)
 

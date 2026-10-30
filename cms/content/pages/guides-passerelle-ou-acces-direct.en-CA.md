@@ -21,9 +21,9 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Gateway or direct access: how to choose.
 
-A gateway adds a middleman, and in return a single key, a single format and a single meter. Here are the criteria side by side, and the cases where a gateway is no use.
+A gateway adds a middleman and gives you back a single key, a single format and a single meter. Here are the criteria side by side, and the cases where a gateway is no use.
 
-[See the Nexora AI gateway](/en/model-gateway-api/) · [Book a diagnostic](/en/contact/?sujet=diagnostic)
+[See the Nexora AI gateway](/en/model-gateway-api/) · [Book an assessment](/en/contact/?sujet=diagnostic)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -43,13 +43,13 @@ A model gateway is a single access point to several AI models. Direct access is 
 
 ### Bloc 3 — Section (`block_section`)
 
-*Tableau des critères, sans marque : huit critères, deux colonnes. La latence n'est pas chiffrée (aucune mesure). · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-M08*
+*Tableau des critères, sans marque : huit critères, deux colonnes. La latence n'est pas chiffrée (aucune mesure). · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-M08, CL-T02*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=criteres`
 
 ## The criteria, side by side.
 
-<table><caption>Direct access and gateway, criterion by criterion</caption><thead><tr><th>Criterion</th><th>Direct access</th><th>Gateway</th></tr></thead><tbody><tr><th>Number of providers</th><td>One: the simplest setup.</td><td>Several, behind a single address.</td></tr><tr><th>Key and caps</th><td>One key per provider, with each provider's settings.</td><td>One key, with spending cap, expiry and rate limit set in one place (Nexora AI API offers them).</td></tr><tr><th>Switching models</th><td>Rewrite the call if the provider's format differs.</td><td>Change the model identifier in the request, if the gateway follows the format your code speaks.</td></tr><tr><th>Metering consumption</th><td>One statement per provider.</td><td>A single statement, by day and by model.</td></tr><tr><th>Added latency</th><td>None: a single hop.</td><td>One more hop. Nexora AI has published no measurement of this latency.</td></tr><tr><th>Where it is processed</th><td>Where the provider processes it; read its contract.</td><td>Wherever each provider behind the gateway processes it; the Nexora AI model sheet shows it.</td></tr><tr><th>Contract</th><td>Directly with the provider.</td><td>With the gateway operator, who has its own contracts.</td></tr><tr><th>Fees</th><td>The provider's price.</td><td>The gateway's price: how it is calculated varies, read it before choosing.</td></tr></tbody></table>
+<table><caption>Direct access and gateway, criterion by criterion</caption><thead><tr><th>Criterion</th><th>Direct access</th><th>Gateway</th></tr></thead><tbody><tr><th>Number of providers</th><td>One: the simplest setup.</td><td>Several, behind a single address.</td></tr><tr><th>Key and caps</th><td>One key per provider, with each provider's settings.</td><td>One key, with spending cap, expiry and rate limit set in one place (Nexora AI API offers them).</td></tr><tr><th>Switching models</th><td>Rewrite the call if the provider's format differs.</td><td>Change the model identifier in the request, if the gateway follows the format your code speaks.</td></tr><tr><th>Metering consumption</th><td>One statement per provider.</td><td>A single statement, by day and by model.</td></tr><tr><th>Added latency</th><td>None: a single hop.</td><td>One more hop. Nexora AI has published no measurement of this latency.</td></tr><tr><th>Where it is processed</th><td>Where the provider processes it; read its contract.</td><td>Wherever each provider behind the gateway processes it; the Nexora AI model sheet shows it.</td></tr><tr><th>Contract</th><td>Directly with the provider.</td><td>With the gateway operator, who has its own contracts.</td></tr><tr><th>Fees</th><td>The provider's price.</td><td>The gateway's price. At Nexora AI, the API uses credits (one credit is worth one Canadian cent of tokens at the catalogue price); elsewhere, how it is calculated varies: read it before choosing.</td></tr></tbody></table>
 
 ### Bloc 4 — Cartes (`block_cards`)
 
@@ -77,7 +77,7 @@ Each model sheet says where it is hosted and which data policy its provider decl
 
 #### A readable cost.
 
-The price in Canadian dollars per million tokens, and the cost of each complete response.
+Prices in Canadian dollars per million tokens, consumption in credits settled at actual cost, and the cost of each complete response.
 
 → [See the models](/en/modeles/)
 
@@ -109,7 +109,7 @@ The guide [Where your data really is](/en/guides/where-is-your-ai-data/) covers 
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Quand Nexora AI n'est pas le bon choix : quatre cas, dits sans détour. · Affirmations : CL-12, CL-86, CL-S01, CL-02*
+*Quand Nexora AI n'est pas le bon choix : quatre cas, dits sans détour. · Affirmations : CL-12, CL-86, CL-S01, CL-02, CL-T01, CL-T06*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
@@ -125,7 +125,9 @@ The gateway serves only the models published in its catalogue.
 
 #### You want to buy today.
 
-Self-service is not open for sale: accounts and payments work in test mode only.
+Sales are not open: accounts and payments work in test mode only and no price is published. The API uses credits that a plan gives you each month or that you top up.
+
+→ [See upcoming pricing](/en/pricing/)
 
 #### A service level is required.
 
@@ -133,7 +135,7 @@ No service level is announced today; availability and response times are set out
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : une passerelle en vaut-elle la peine, latence, clés, lieu, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S05, CL-M08, CL-E08, CL-12*
+*Questions du guide : une passerelle en vaut-elle la peine, latence, clés, lieu, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S05, CL-M08, CL-E08, CL-12, CL-T01, CL-T02, CL-T03, CL-T06, CL-T09, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -157,7 +159,11 @@ At the chosen model's provider. Each Nexora AI model sheet states its hosting lo
 
 #### Can I buy access to Nexora AI API today?
 
-Not in self-service: accounts and payments work in test mode only and no real payment is accepted. For a project, write to us: we start with a diagnostic.
+Not in self-service: sales are not open. Accounts and payments work in test mode only, no real payment is accepted and no price is published; prices will appear on the Pricing page. For a project, write to us: we start with an assessment.
+
+#### How does Nexora AI API count consumption?
+
+In credits: one credit is worth one Canadian cent of tokens at the catalogue price. A plan gives you credits and storage every month, otherwise you top up. Plan credits expire at the end of their period; top-up credits do not expire. When none are left, the API refuses the call with a 402 insufficient_quota error and a message pointing to top-ups and plans.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
@@ -167,6 +173,6 @@ Réglages : `tone=sombre`
 
 ## Let's talk about your use.
 
-Tell us which models you want to compare and where your data must stay. We start with a diagnostic.
+Tell us which models you want to compare and where your data must stay. We start with an assessment.
 
-[Book a diagnostic](/en/contact/?sujet=diagnostic) · [See the gateway](/en/model-gateway-api/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [See the gateway](/en/model-gateway-api/)

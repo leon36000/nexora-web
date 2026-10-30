@@ -265,7 +265,7 @@ No. We neither write nor publish reviews in place of your customers, and we hide
 
 #### How much does it cost?
 
-There is no public price yet. The plans are in preparation; a written estimate follows the diagnostic, with what is included and what is at your expense.
+There is no public price yet. The plans are in preparation; a written estimate follows the assessment, with what is included and what is at your expense.
 
 #### Who can join the early access?
 

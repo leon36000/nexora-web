@@ -6,8 +6,8 @@
 
 - Page : `solutions` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/` · slug : `solutions`
-- Titre SEO (31 caractères) : Solutions IA pour PME au Québec
-- Description SEO (156 caractères) : Six solutions d'IA pour PME du Québec : courriels, factures, service client, rendez-vous, comptabilité, documents. Très simples, vos données restent à vous.
+- Titre SEO (37 caractères) : Six solutions d'IA pour PME du Québec
+- Description SEO (158 caractères) : Courriels, factures, service client, rendez-vous, comptabilité, documents : six solutions pour PME du Québec. Une personne valide, vos données restent à vous.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Les tâches répétitives, enfin derrière vous.
 
-La pointe de l'IA, rendue extrêmement simple : six situations de PME où le travail répétitif s'efface et où votre équipe garde la décision, sans écrire une ligne de code.
+Courriels triés, factures lues, clients servis, agenda rempli : six situations de PME du Québec où le travail répétitif s'efface. Votre équipe garde la décision, sans écrire une ligne de code.
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) · [Demander une démonstration](/contact/?sujet=demonstration)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=reve`
 
 ## Imaginez le travail sans les corvées.
 
-Le lundi arrive, et les courriels sont déjà triés, les factures déjà lues, les questions des clients déjà répondues. Votre équipe commence la journée par ce qui demande du jugement, du métier, du conseil, et non par de la ressaisie.
+Lundi matin, les courriels sont déjà triés, les factures déjà lues, les questions courantes de vos clients déjà répondues. Votre équipe commence la journée par ce qui demande du jugement, du métier et du conseil, pas par de la ressaisie.
 
-Voilà l'image que vise chaque solution de cette page. Nous ne promettons ni gain chiffré ni résultat garanti : le bénéfice réel se mesure sur votre premier cas.
+C'est l'image que vise chaque solution de cette page. Aucun gain chiffré n'est annoncé : le bénéfice réel se mesure sur votre premier cas, avec vos données.
 
 - **Du temps pour le métier.** Moins de ressaisie, plus de place pour le conseil, le terrain et vos clients.
 - **Moins d'oublis.** Des pièces vérifiées, des rappels préparés, des urgences repérées plus tôt.
@@ -89,26 +89,26 @@ Posez la question en français : la réponse part de vos propres documents, ave
 
 ### Bloc 4 — Section (`block_section`)
 
-*WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; schéma de l'éditeur de flux. · Affirmations : CL-132, CL-85, CL-14, CL-90, CL-91, CL-P01, CL-P02, CL-P03, CL-25, CL-101, CL-102, CL-21*
+*WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; fil « un compte, des crédits, tous vos outils » avec lien vers les tarifs à venir ; schéma de l'éditeur de flux. · Affirmations : CL-132, CL-85, CL-14, CL-90, CL-91, CL-P01, CL-P02, CL-P03, CL-25, CL-101, CL-102, CL-21, CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12*
 
 Réglages : `media_position=right`, `tone=sable`, `visual=flux-workstudio`, `anchor_id=fonctionnement`
 
 ## Puissant en dessous, simple dessus.
 
-Ces solutions s'assemblent dans [Nexora WorkStudio](/workstudio/), un seul outil, en français, qui met à votre portée ce que l'IA sait faire de plus récent : des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), des réponses fondées sur vos propres documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte. « À la pointe » est notre façon de le dire ; la preuve, c'est cette liste.
+Ces solutions s'assemblent dans [Nexora WorkStudio](/workstudio/), un seul outil, en français, qui met à votre portée ce que l'IA sait faire de plus récent : des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), des réponses fondées sur vos propres documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte.
 
-Et c'est extrêmement simple à manier : vous décrivez le besoin en français, un assistant de création (le Copilote) prépare un flux de travaux (des enchaînements automatisés de tâches) que vous relisez, puis vous le construisez en cartes ou sur un canevas, comme on dessine un schéma, sans écrire de code. Le flux illustré ici reçoit une facture par courriel, prépare l'écriture et s'arrête sur l'approbation d'une personne avant d'écrire.
+Et c'est simple à manier : vous décrivez le besoin en français, un assistant de création (le Copilote) prépare un flux de travaux (des enchaînements automatisés de tâches) que vous relisez, puis vous le construisez en cartes ou sur un canevas, sans écrire de code. Le flux illustré ici reçoit une facture par courriel, prépare l'écriture et s'arrête sur l'approbation d'une personne avant d'écrire.
 
-Chaque mise en service commence par un diagnostic de votre cas : nous vérifions que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel. Ce ne sont pas des boîtes prêtes à l'emploi, mais des configurations sur mesure.
+**Un compte, des crédits, tous vos outils.** Votre compte Nexora AI réunit, dans le panneau « Mes outils », vos crédits, votre espace et vos produits, avec l'état réel de chacun. WorkStudio s'y ouvre tant qu'il reste au moins un crédit. Tout ce qui appelle un modèle d'IA consomme des crédits : un abonnement en donne chaque mois, sinon on recharge. La plateforme n'est pas encore ouverte à la vente et aucun prix n'est publié. [Voir les tarifs à venir](/tarifs/)
 
-[Planifier un diagnostic](/contact/?sujet=diagnostic)
+Côté accompagnement, chaque mise en service commence par un diagnostic de votre cas : nous vérifions que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel. Ce sont des configurations sur mesure, pas des boîtes prêtes à l'emploi. [Planifier un diagnostic](/contact/?sujet=diagnostic)
 
 Pour choisir votre premier cas, lisez le [guide de l'IA pour une PME du Québec](/guides/ia-pme-quebec/).
 
 - **1. Le problème, nommé.** Ce qui vous coûte du temps, décrit avec vos mots.
 - **2. Le système au travail.** Les étapes, dans l'ordre, et celles qui attendent une personne.
 - **3. Le résultat livré à l'équipe.** Brouillons, tables, réponses sourcées : du concret à relire.
-- **4. Le bénéfice, sans chiffre inventé.** Décrit honnêtement ; il se mesure sur un premier cas.
+- **4. Le bénéfice attendu.** Décrit sans chiffre inventé ; il se mesure sur un premier cas.
 - **5. Votre contrôle, intact.** Les validations, les accès, le lieu des données.
 
 ### Bloc 5 — Cartes (`block_cards`)
@@ -123,25 +123,25 @@ Quatre situations types. Ce sont des exemples construits, pas des résultats mes
 
 #### Un entrepreneur en rénovation.
 
-Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son niveau de disponibilité (produit en développement).
+Il veut retrouver une ancienne soumission comparable, organiser ses équipes et suivre ses coûts réels. Le système retrouve les dossiers ; l'estimateur garde le prix final. Pour la construction, OPSYS-AI réunit ces besoins en dix départements, chacun avec son niveau de disponibilité (produit en développement).
 
 → [Découvrir OPSYS-AI](/opsys-ai/)
 
-#### Un distributeur.
+#### Un distributeur de plomberie.
 
-Il reçoit des demandes de prix par courriel et des factures de fournisseurs en formats variés. Le tri des courriels et la lecture des factures sont ses deux portes d'entrée.
+Au quotidien, des demandes de prix arrivent par courriel et des factures de fournisseurs dans des formats variés. Le système classe les courriels et lit les factures ; le responsable approuve les réponses et les paiements.
 
 → [Voir les courriels](/solutions/courriels/)
 
 #### Un cabinet de services professionnels.
 
-Il cherche la bonne clause dans d'anciens dossiers et prépare des documents à partir de modèles. La recherche dans ses propres documents est sa première solution.
+Il cherche la bonne clause dans d'anciens dossiers et prépare des documents à partir de modèles. Il interroge ses propres documents en français et vérifie chaque réponse dans la source citée.
 
 → [Voir les documents](/solutions/documents/)
 
 #### Un petit cabinet qui prend des rendez-vous.
 
-Il perd des créneaux par oubli et par annulation tardive. Les demandes, les rappels et la gestion de l'agenda en sont le cœur.
+Des demandes arrivent le soir et des annulations tombent à la dernière minute. Le système propose des créneaux vérifiés dans l'agenda et prépare les rappels ; la réceptionniste garde les confirmations délicates.
 
 → [Voir les rendez-vous](/solutions/rendez-vous/)
 
@@ -174,35 +174,43 @@ Vous voulez surveiller vos sites ? [Nexora Vision](/vision/), la vidéosurveill
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions de départ sur les solutions, y compris la question des données. · Affirmations : CL-132, CL-85, CL-124, CL-10, CL-E03, CL-E04, CL-E01, CL-E02*
+*Questions de départ sur les solutions, y compris la question des données. · Affirmations : CL-132, CL-85, CL-124, CL-10, CL-E03, CL-E04, CL-E01, CL-E02, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Avant de choisir : vos questions.
 
-#### Par où commencer ?
+#### Par où commencer avec l'IA dans ma PME ?
 
-Par le problème qui vous coûte le plus de temps. Nous le décrivons avec vous, nous vérifions les logiciels à relier, puis nous mettons un premier cas en service avant d'élargir.
+Par le problème qui vous coûte le plus de temps. Nous le décrivons avec vous, nous vérifions les logiciels à relier, puis nous mettons un premier cas en service avant d'élargir. Un diagnostic ouvre la démarche.
 
 #### Faut-il changer mes logiciels ?
 
 En général non : le système se relie à ce que vous utilisez déjà. La possibilité de relier un logiciel dépend du service concerné ; nous la vérifions au diagnostic.
 
-#### Est-ce prêt à l'emploi ?
+#### Les solutions sont-elles prêtes à l'emploi ?
 
-Non, et c'est volontaire : chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées.
+Non, et c'est voulu : chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées ; leur assemblage pour votre cas se fait avec vous.
 
 #### Mes données servent-elles à entraîner un modèle ?
 
-Jamais. Elles restent sur votre serveur ou chez nous, au Québec, ne servent pas à entraîner ni à ajuster un modèle, et ne sont jamais vendues. La page Vos données détaille chaque engagement.
+Jamais. Vos données restent sur votre serveur ou chez nous, au Québec, ne servent pas à entraîner ni à ajuster un modèle et ne sont jamais vendues. La page Vos données détaille chaque engagement.
 
-#### Et le téléphone ?
+#### Les solutions répondent-elles au téléphone ?
 
-Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément, au cas par cas.
+Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément, au cas par cas.
 
 #### Combien cela coûte-t-il ?
 
-Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas.
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ?
+
+Tout appel à un modèle d'IA : lire un document, rédiger une réponse, classer un message. Un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les outils qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement.
+
+#### Puis-je ouvrir un compte et acheter des crédits dès maintenant ?
+
+Pas encore. La plateforme à crédits n'est pas ouverte à la vente : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié. Vous pouvez en revanche planifier un diagnostic dès maintenant ; les prix s'afficheront sur la page Tarifs à leur publication.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

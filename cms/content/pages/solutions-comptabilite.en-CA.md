@@ -6,7 +6,7 @@
 
 - Page : `solutions-comptabilite` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/accounting/` · slug : `solutions/accounting`
-- Titre SEO (38 caractères) : Accounting automation with AI for SMEs
+- Titre SEO (32 caractères) : AI accounting pre-entry for SMEs
 - Description SEO (153 caractères) : AI reads your documents, prepares the pre-entry and flags discrepancies: your accountant reviews and decides. Bank reconciliation is not delivered today.
 
 ## Contenu
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## Month-end means data entry.
 
-A small accounting firm receives invoices, expense reports and statements from its clients, in every shape imaginable. A large share of month-end time goes to rereading amounts and retyping lines, rather than advising.
+A small accounting firm receives invoices, expense reports and statements from its clients, in every shape imaginable: photos of receipts, PDFs, forwarded emails. At month-end, the assistant rereads amounts and retypes lines, while the accountant could be advising clients.
 
-The example is constructed to illustrate the principle; it is not a customer's result.
+This example is constructed to illustrate the principle; it is not a customer's result.
 
 - **Documents in every format.** Email, photos, scans, PDFs.
 - **Checks to repeat.** The pre-tax amounts, the taxes and the total must agree.
@@ -105,7 +105,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 The expected benefit: less retyping and errors caught sooner, hence more time for what the client really pays for, their accountant's judgment. No quantified gain is announced; it is measured during a pilot, on your own files.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) to define your fields and your control rules.
+[Book an assessment](/en/contact/?sujet=diagnostic) to define your fields and your control rules.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
@@ -125,7 +125,7 @@ Bank reconciliation is not delivered in WorkStudio. It can be studied as custom 
 
 #### Your software, to be qualified.
 
-Writing to your accounting software goes through a connector that is qualified during the diagnosis, software by software.
+Writing to your accounting software goes through a connector that is qualified during the assessment, software by software.
 
 #### Your tax rules.
 
@@ -143,27 +143,35 @@ On your server or with us, in Quebec: never used to train a model, never sold. A
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution comptabilité. · Affirmations : CL-125, CL-126, CL-132*
+*FAQ propre à la solution comptabilité. · Affirmations : CL-125, CL-126, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Accounting: your questions.
 
-#### Does the AI do the bookkeeping?
+#### Does the AI do the accounting?
 
 No. It prepares the pre-entry and flags discrepancies. The entries and the decisions stay with your accountant.
 
 #### Can bank reconciliation be automated?
 
-Not with a product delivered today. A custom study is possible, from exported statements, with no bank connection.
+Not with a product delivered today. A custom study is possible, based on exported statements, with no bank connection.
 
 #### Does my accountant have to change tools?
 
-Not in principle: the pre-entry is filed in a table, and what follows depends on the software they use, which we qualify with them.
+No, in principle: the pre-entry is filed in a table, and what follows depends on the software they use, which we qualify with them.
 
 #### Do my documents leave my server?
 
-Not if reading is done with a model on your server. An external reading service is possible, only with your written agreement, and it is disclosed.
+Not if the reading is done with a model on your server. An external reading service is possible, only with your written agreement, and it is flagged.
+
+#### How much does it cost?
+
+There is no public price yet for accounting pre-entry. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What uses credits here?
+
+Each time the system calls an AI model hosted by Nexora AI to read a document, extract its fields or check a total, it uses credits: one credit equals one Canadian cent of tokens at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
@@ -175,4 +183,4 @@ Réglages : `tone=sombre`
 
 Describe your documents and your software. We will tell you what can be prepared, what can be connected and what stays with your accountant. A partner from here installs, runs and trains with you.
 
-[Book a diagnosis](/en/contact/?sujet=diagnostic) · [See invoices](/en/solutions/invoices/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [See invoices](/en/solutions/invoices/)
