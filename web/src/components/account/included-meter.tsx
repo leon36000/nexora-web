@@ -1,18 +1,14 @@
 import { Card } from "@/components/ui/card";
 import { type AccountDictionary, fmt, formatDate } from "@/i18n/account";
 import type { Lang } from "@/i18n/config";
-import {
-  INCLUDED_TOKENS,
-  includedTokensUsed,
-} from "@/server/billing/included-tokens";
 import type { IncludedCredits } from "@/server/billing/wallet";
-import { formatMicroCadExact, formatTokensCompact } from "./panel-format";
+import { MICRO_PER_CREDIT } from "@/server/ledger/money";
 import { SectionTitle } from "./panel-ui";
 
 /**
- * Compteur des jetons inclus : « X de 5 M de jetons inclus utilisés ». C'est une équivalence EN VALEUR (la part
- * consommée du crédit inclus, ramenée à 5 M de jetons du modèle par défaut) : la note l'explique, un modèle plus cher
- * consomme le forfait plus vite. La barre est décorative pour les lecteurs d'écran, qui lisent le texte.
+ * Compteur des crédits d'abonnement : « X de Y crédits d'abonnement utilisés » (1 crédit = 1 ¢ CA ; les micro-CAD du grand
+ * livre sont ramenés en crédits, arrondis vers le bas). Ils expirent à la fin de la période, donc ils servent avant les
+ * crédits de recharge. La barre est décorative pour les lecteurs d'écran, qui lisent le texte.
  */
 export function IncludedMeter({
   lang,
@@ -26,7 +22,10 @@ export function IncludedMeter({
   headingId?: string;
 }) {
   const i = t.panel.billing.included;
-  const total = formatTokensCompact(lang, INCLUDED_TOKENS);
+  const credits = (micro: bigint) =>
+    new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA").format(
+      micro > 0n ? micro / MICRO_PER_CREDIT : 0n,
+    );
   if (!included)
     return (
       <Card as="section" aria-labelledby={headingId}>
@@ -34,8 +33,15 @@ export function IncludedMeter({
         <p className="mt-3 text-body text-fg-muted">{i.none}</p>
       </Card>
     );
-  const used = includedTokensUsed(included.usedMicro, included.amountMicro);
-  const percent = Math.round((used / INCLUDED_TOKENS) * 100);
+  const percent =
+    included.amountMicro > 0n
+      ? Math.min(
+          100,
+          Math.round(
+            (Number(included.usedMicro) / Number(included.amountMicro)) * 100,
+          ),
+        )
+      : 0;
   return (
     <Card as="section" aria-labelledby={headingId}>
       <SectionTitle id={headingId}>{i.title}</SectionTitle>
@@ -43,7 +49,10 @@ export function IncludedMeter({
         className="mt-3 text-body font-medium text-fg"
         data-testid="included-meter"
       >
-        {fmt(i.meter, { used: formatTokensCompact(lang, used), total })}
+        {fmt(i.meter, {
+          used: credits(included.usedMicro),
+          total: credits(included.amountMicro),
+        })}
       </p>
       <div
         role="progressbar"
@@ -62,14 +71,14 @@ export function IncludedMeter({
       <p className="mt-3 text-small text-fg">
         {included.expiresAt
           ? fmt(i.remaining, {
-              amount: formatMicroCadExact(lang, included.remainingMicro),
+              amount: credits(included.remainingMicro),
               date: formatDate(lang, included.expiresAt),
             })
           : fmt(i.remainingNoDate, {
-              amount: formatMicroCadExact(lang, included.remainingMicro),
+              amount: credits(included.remainingMicro),
             })}
       </p>
-      <p className="mt-3 text-small text-fg-muted">{fmt(i.note, { total })}</p>
+      <p className="mt-3 text-small text-fg-muted">{i.note}</p>
     </Card>
   );
 }

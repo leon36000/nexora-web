@@ -8,7 +8,7 @@ import { withOffer } from "@/lib/offer-param";
 import { annualSavingPercent, type PricingOffer } from "@/lib/pricing";
 
 /**
- * Une offre : prix mensuel et/ou annuel (avant taxes), essai, crédits inclus et un bouton par période vendable
+ * Une offre : prix mensuel et/ou annuel (avant taxes), essai, crédits par mois, espace disque et un bouton par période vendable
  * qui mène à l'inscription (l'offre choisie suit jusqu'au paiement). Une période qui n'est pas encore vendable
  * (prix pas encore poussé vers Stripe) ne propose qu'un contact : jamais un bouton qui échouerait.
  */
@@ -80,12 +80,22 @@ export function OfferCard({
         {offer.trialDays > 0 ? (
           <li>{fmt(t.card.trial, { days: offer.trialDays })}</li>
         ) : null}
-        {offer.includedCreditsCents > 0 ? (
+        {offer.creditsPerMonth > 0 ? (
           <li>
             {fmt(t.card.credits, {
-              amount: formatCad(lang, offer.includedCreditsCents),
+              credits: new Intl.NumberFormat(
+                lang === "fr" ? "fr-CA" : "en-CA",
+              ).format(offer.creditsPerMonth),
             })}
+            {year && offer.creditsPerMonth > 0 ? (
+              <span className="block text-fg-muted">
+                {t.card.creditsYearly}
+              </span>
+            ) : null}
           </li>
+        ) : null}
+        {offer.includedStorageGb > 0 ? (
+          <li>{fmt(t.card.storage, { gb: offer.includedStorageGb })}</li>
         ) : null}
       </ul>
 

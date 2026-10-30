@@ -183,6 +183,9 @@ describe("données structurées", () => {
         offers: [
           {
             family: "f",
+            kind: "nexora",
+            includedStorageGb: 0,
+            creditsPerMonth: 0,
             name: "F",
             description: null,
             features: [],
@@ -247,5 +250,30 @@ describe("espace disque et offre complémentaire (Go supplémentaire)", () => {
     );
     expect(tiers).toHaveLength(1);
     expect(storageAddon).toBeNull();
+  });
+});
+
+describe("crédits par mois d'une offre (la ligne annuelle porte les crédits de l'année)", () => {
+  it("mensuel : ses crédits ; annuel seul : un douzième ; les deux : ceux du mensuel", () => {
+    const [monthly] = groupOffers([plan({ includedCreditsCents: 1000 })], "fr");
+    expect(monthly?.creditsPerMonth).toBe(1000);
+    const [yearly] = groupOffers(
+      [plan({ code: "a", interval: "year", includedCreditsCents: 12000 })],
+      "fr",
+    );
+    expect(yearly?.creditsPerMonth).toBe(1000);
+    const [both] = groupOffers(
+      [
+        plan({ includedCreditsCents: 1000 }),
+        plan({ code: "a", interval: "year", includedCreditsCents: 12000 }),
+      ],
+      "fr",
+    );
+    expect(both?.creditsPerMonth).toBe(1000);
+    expect(both?.options.year?.credits).toBe(12000);
+  });
+  it("aucune offre sans crédit n'en invente", () => {
+    const [none] = groupOffers([plan({ includedCreditsCents: 0 })], "fr");
+    expect(none?.creditsPerMonth).toBe(0);
   });
 });

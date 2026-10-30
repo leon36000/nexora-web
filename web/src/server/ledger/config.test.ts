@@ -13,7 +13,8 @@ describe("configuration de facturation", () => {
       currency: "cad",
       creditExpiryMonths: 0,
     });
-    expect(c.minPurchaseCents).toBeGreaterThan(0);
+    // 10 $ : le plus petit forfait de recharge (1 $ = 100 crédits).
+    expect(c.minPurchaseCents).toBe(1_000);
     expect(c.maxPurchaseCents).toBeGreaterThan(c.minPurchaseCents);
     expect(c.graceDays).toBeGreaterThan(0);
   });

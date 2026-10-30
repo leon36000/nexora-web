@@ -23,7 +23,7 @@ export interface BillingConfig {
 export const DEFAULT_BILLING_CONFIG: BillingConfig = {
   currency: "cad",
   creditExpiryMonths: 0,
-  minPurchaseCents: 2_000,
+  minPurchaseCents: 1_000,
   maxPurchaseCents: 500_000,
   graceDays: 7,
 };

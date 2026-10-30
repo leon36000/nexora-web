@@ -166,6 +166,8 @@ export const accountFrCA = {
         "Votre solde est négatif à la suite d’un remboursement ou d’un litige. L’accès à l’API est suspendu jusqu’à ce que le solde redevienne positif. Rechargez des crédits ci-dessous ou contactez-nous.",
       expiryNote:
         "Les crédits achetés expirent {months} mois après l’achat ; les plus proches de leur échéance sont utilisés en premier.",
+      noExpiryNote:
+        "Les crédits de recharge n’expirent pas. Les crédits d’abonnement expirent à la fin de leur période et servent en premier.",
     },
     buy: {
       title: "Ajouter des fonds",
@@ -238,7 +240,7 @@ export const accountFrCA = {
         perMonth: "{amount} par mois, avant taxes",
         perYear: "{amount} par an, avant taxes",
         trial: "Essai gratuit de {days} jours",
-        included: "{amount} de crédits inclus à chaque période",
+        included: "{credits} crédits inclus à chaque période",
         subscribe: "Souscrire",
         ownerOnly: "Seul le propriétaire peut souscrire.",
         unavailable: "Les offres ne peuvent pas être affichées pour le moment.",
@@ -725,14 +727,14 @@ export const accountFrCA = {
         text: "Votre organisation fait partie de l’équipe de Nexora : vos requêtes ne débitent aucun portefeuille. Les crédits, les recharges et les alertes de solde ne s’appliquent pas à elle.",
       },
       included: {
-        title: "Crédits inclus de la période",
-        meter: "{used} de {total} de jetons inclus utilisés",
-        meterLabel: "Part des jetons inclus utilisés",
+        title: "Crédits d’abonnement de la période",
+        meter: "{used} de {total} crédits d’abonnement utilisés",
+        meterLabel: "Part des crédits d’abonnement utilisés",
         remaining:
-          "Il reste {amount} de crédits inclus, valables jusqu’au {date}.",
-        remainingNoDate: "Il reste {amount} de crédits inclus.",
-        note: "Les {total} de jetons sont une équivalence en valeur : ils correspondent au prix du modèle par défaut de WorkStudio. Un modèle plus cher consomme vos crédits inclus plus vite. Ils servent en premier, puisqu’ils expirent d’abord ; ensuite, les jetons sont facturés à même votre solde.",
-        none: "Aucun crédit inclus pour l’instant. Un abonnement WorkStudio en verse à chaque période.",
+          "Il reste {amount} crédits d’abonnement, valables jusqu’au {date}.",
+        remainingNoDate: "Il reste {amount} crédits d’abonnement.",
+        note: "Un crédit vaut 1 ¢ de jetons au prix du catalogue. Les crédits d’abonnement expirent à la fin de leur période : ils servent en premier. Ensuite viennent vos crédits de recharge, qui n’expirent pas.",
+        none: "Aucun crédit d’abonnement pour l’instant. Un abonnement en verse à chaque période.",
         seeOffers: "Voir les offres",
       },
       lots: {

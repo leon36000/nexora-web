@@ -90,10 +90,12 @@ export function onboardingProgress(steps: readonly OnboardingStep[]): {
   return { done: steps.filter((s) => s.done).length, total: steps.length };
 }
 
-const PRESET_AMOUNTS_CENTS = [2000, 5000, 10_000, 25_000, 50_000] as const;
+const PRESET_AMOUNTS_CENTS = [
+  1000, 2500, 5000, 10_000, 25_000, 50_000,
+] as const;
 
 /**
- * Montants proposés (cents) au bouton « Ajouter des fonds » : 20, 50, 100, 250 et 500 $ dans les bornes de la
+ * Montants proposés (cents) au bouton « Ajouter des fonds » : 10, 25, 50, 100, 250 et 500 $ (les forfaits de recharge de la conception du 30/10) dans les bornes de la
  * configuration ; le minimum de la configuration est toujours proposé en premier. Le champ libre reste disponible.
  */
 export function presetAmountsCents(
