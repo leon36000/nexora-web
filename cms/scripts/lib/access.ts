@@ -184,6 +184,7 @@ function publishedReadPerms(): Perm[] {
         "family",
         "price_cents",
         "included_credits_cents",
+        "included_storage_gb",
         "trial_days",
         "trial_card",
         "stripe_product_id",
@@ -194,6 +195,11 @@ function publishedReadPerms(): Perm[] {
     }),
     read("subscription_plans_translations", {
       permissions: { subscription_plans_id: PUBLISHED },
+    }),
+    // Forfaits de recharge : le prix suggéré reste réservé aux éditeurs.
+    read("credit_packs", {
+      permissions: PUBLISHED,
+      fields: ["id", "code", "status", "price_cents", "credits", "sort"],
     }),
     read("navigation", { permissions: PUBLISHED }),
     read("navigation_translations", {
@@ -213,6 +219,7 @@ function contentReadPerms(): Perm[] {
     ...SITE_COLLECTIONS,
     "subscription_plans",
     "subscription_plans_translations",
+    "credit_packs",
   ].map((c) => read(c));
 }
 

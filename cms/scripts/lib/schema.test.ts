@@ -209,8 +209,28 @@ describe("vidéo : sous-titres et média vidéo d'une section (S10)", () => {
     );
   });
 
-  test("aucune collection ajoutée : Directus sans licence est plafonné à 25 (24 utilisées)", () => {
-    expect(collections.map((c) => c.collection)).toHaveLength(24);
+  test("Directus sans licence est plafonné à 25 collections : jamais plus (25 utilisées avec les forfaits de recharge)", () => {
+    expect(collections.map((c) => c.collection).length).toBeLessThanOrEqual(25);
+  });
+});
+
+describe("crédits et offres Nexora (conception du 30/10/2026)", () => {
+  test("une offre porte l'espace disque inclus (Go) et la famille « Nexora » ou « espace supplémentaire »", () => {
+    const gb = field("subscription_plans", "included_storage_gb");
+    expect(gb.type).toBe("integer");
+    expect(gb.schema?.default_value).toBe(0);
+    expect(choices(field("subscription_plans", "kind"))).toEqual(
+      expect.arrayContaining(["nexora", "storage"]),
+    );
+  });
+
+  test("forfaits de recharge : une collection lisible depuis Directus, prix vide tant qu'il n'est pas décidé", () => {
+    expect(collections.map((c) => c.collection)).toContain("credit_packs");
+    expect(field("credit_packs", "code").meta?.required).toBe(true);
+    expect(field("credit_packs", "credits").type).toBe("integer");
+    expect(field("credit_packs", "price_cents").meta?.required).toBeFalsy();
+    expect(field("credit_packs", "suggested_price_cents").type).toBe("integer");
+    expect(choices(field("credit_packs", "status"))).toContain("published");
   });
 });
 

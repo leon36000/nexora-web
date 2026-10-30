@@ -288,6 +288,32 @@ describe("offres d'abonnement : ce que le public et le site lisent", () => {
   });
 });
 
+describe("forfaits de recharge : ce que le public et le site lisent", () => {
+  test("le public et le lecteur du site lisent crédits et prix publié, jamais le prix suggéré", () => {
+    for (const name of [PUBLIC_POLICY_NAME, "Lecteur site"]) {
+      const r = byName(name).permissions.find(
+        (p) => p.collection === "credit_packs" && p.action === "read",
+      );
+      expect(r, name).toBeDefined();
+      const fields = r?.fields as string[];
+      expect(fields, name).toEqual(
+        expect.arrayContaining(["code", "price_cents", "credits", "status"]),
+      );
+      expect(fields, name).not.toContain("suggested_price_cents");
+      expect(fields, name).not.toContain("*");
+    }
+  });
+
+  test("les offres exposent l'espace inclus au public et au site", () => {
+    for (const name of [PUBLIC_POLICY_NAME, "Lecteur site"]) {
+      const fields = byName(name).permissions.find(
+        (p) => p.collection === "subscription_plans" && p.action === "read",
+      )?.fields as string[];
+      expect(fields, name).toContain("included_storage_gb");
+    }
+  });
+});
+
 describe("fichiers : lecture des métadonnées vidéo par le site", () => {
   test("le public et le lecteur du site lisent la durée d'un fichier (affichage de la vidéo)", () => {
     for (const name of [PUBLIC_POLICY_NAME, "Lecteur site"]) {
