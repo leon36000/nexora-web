@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatBytes,
   formatDateTime,
   formatLatency,
   formatMicroCadExact,
@@ -92,5 +93,33 @@ describe("jetons en millions", () => {
   it("anglais : point décimal", () => {
     expect(plain(formatTokensCompact("en", 1_234_000))).toBe("1.2 M");
     expect(plain(formatTokensCompact("en", 5_000_000))).toBe("5 M");
+  });
+});
+
+describe("octets (1 Go = 1 000 000 000 octets, comme le quota)", () => {
+  it("français : o, Ko, Mo, Go, To, virgule décimale", () => {
+    expect(plain(formatBytes("fr", 0))).toBe("0 o");
+    expect(plain(formatBytes("fr", 999))).toBe("999 o");
+    expect(plain(formatBytes("fr", 1_000))).toBe("1 Ko");
+    expect(plain(formatBytes("fr", 250_000_000))).toBe("250 Mo");
+    expect(plain(formatBytes("fr", 1_000_000_000))).toBe("1 Go");
+    expect(plain(formatBytes("fr", 1_500_000_000))).toBe("1,5 Go");
+    expect(plain(formatBytes("fr", 12_345_678))).toBe("12,3 Mo");
+    expect(plain(formatBytes("fr", 50_000_000_000))).toBe("50 Go");
+    expect(plain(formatBytes("fr", 2_000_000_000_000))).toBe("2 To");
+  });
+
+  it("anglais : B, KB, MB, GB, TB, point décimal", () => {
+    expect(plain(formatBytes("en", 1_500_000_000))).toBe("1.5 GB");
+    expect(plain(formatBytes("en", 640))).toBe("640 B");
+  });
+
+  it("un nombre négatif ou invalide donne zéro, jamais un texte étrange", () => {
+    expect(plain(formatBytes("fr", -5))).toBe("0 o");
+    expect(plain(formatBytes("fr", Number.NaN))).toBe("0 o");
+  });
+
+  it("l'espace insécable sépare le nombre de l'unité (jamais de retour à la ligne entre les deux)", () => {
+    expect(formatBytes("fr", 1_000_000_000)).toContain(" Go");
   });
 });
