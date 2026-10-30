@@ -207,8 +207,9 @@ function stateOf(
       return productSwitchOn(env[source.variable]) ? "disponible" : "bientot";
     case "apps":
       // Par prudence, une fiche absente ou inconnue ne vaut jamais « disponible ».
-      return (def.appSlug ? findApp(def.appSlug)?.state : undefined) ??
-        "bientot";
+      return (
+        (def.appSlug ? findApp(def.appSlug)?.state : undefined) ?? "bientot"
+      );
     case "panel":
       return "disponible";
   }

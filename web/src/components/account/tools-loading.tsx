@@ -10,7 +10,8 @@ export function ToolsLoading({
   title: string;
   working: string;
 }) {
-  const block = "rounded-md border border-line bg-surface motion-safe:animate-pulse";
+  const block =
+    "rounded-md border border-line bg-surface motion-safe:animate-pulse";
   return (
     <div aria-busy="true" className="space-y-8">
       <p className="font-display text-h3 text-fg">{title}</p>

@@ -48,7 +48,12 @@ const renderCredits = (
   lang: "fr" | "en" = "fr",
 ) =>
   renderToStaticMarkup(
-    <CreditsCard lang={lang} t={getAccountDictionary(lang)} role={role} view={v} />,
+    <CreditsCard
+      lang={lang}
+      t={getAccountDictionary(lang)}
+      role={role}
+      view={v}
+    />,
   );
 const renderStorage = (v: StorageView, lang: "fr" | "en" = "fr") =>
   renderToStaticMarkup(
@@ -60,7 +65,12 @@ const renderPlan = (
   lang: "fr" | "en" = "fr",
 ) =>
   renderToStaticMarkup(
-    <PlanStrip lang={lang} t={getAccountDictionary(lang)} role={role} view={v} />,
+    <PlanStrip
+      lang={lang}
+      t={getAccountDictionary(lang)}
+      role={role}
+      view={v}
+    />,
   );
 
 describe("carte Crédits", () => {
@@ -77,7 +87,16 @@ describe("carte Crédits", () => {
 
   it("un seul crédit s'écrit au singulier", () => {
     expect(
-      plain(renderCredits(credits({ total: 1, subscription: 0, refill: 1, subscriptionExpiresAt: null }))),
+      plain(
+        renderCredits(
+          credits({
+            total: 1,
+            subscription: 0,
+            refill: 1,
+            subscriptionExpiresAt: null,
+          }),
+        ),
+      ),
     ).toContain(">1 crédit<");
   });
 
@@ -89,7 +108,15 @@ describe("carte Crédits", () => {
   });
 
   it("zéro crédit : le dit en clair et propose de recharger", () => {
-    const html = renderCredits(credits({ level: "empty", total: 0, subscription: 0, refill: 0, subscriptionExpiresAt: null }));
+    const html = renderCredits(
+      credits({
+        level: "empty",
+        total: 0,
+        subscription: 0,
+        refill: 0,
+        subscriptionExpiresAt: null,
+      }),
+    );
     expect(html).toContain("Il ne vous reste plus de crédits");
     expect(html).toContain('href="/compte/facturation#ajouter-des-fonds"');
   });
@@ -134,7 +161,9 @@ describe("carte Espace disque", () => {
     expect(html).toContain('role="progressbar"');
     expect(html).toContain('aria-valuenow="25"');
     expect(html).toContain('aria-valuetext="25 % de l’espace utilisé"');
-    expect(html).toContain('data-testid="storage-usage">250 Mo utilisés sur 1 Go');
+    expect(html).toContain(
+      'data-testid="storage-usage">250 Mo utilisés sur 1 Go',
+    );
   });
 
   it("ventilation par produit, dans l'ordre donné, avec la taille de chacun", () => {
@@ -162,7 +191,12 @@ describe("carte Espace disque", () => {
 
   it("à 100 % : message clair (écritures refusées, lecture et suppression permises), en alerte", () => {
     const html = renderStorage(
-      storage({ level: "full", percent: 100, usedBytes: GO, remainingBytes: 0 }),
+      storage({
+        level: "full",
+        percent: 100,
+        usedBytes: GO,
+        remainingBytes: 0,
+      }),
     );
     expect(html).toContain("Votre espace est plein");
     expect(html).toContain("écritures sont refusées");
@@ -172,7 +206,13 @@ describe("carte Espace disque", () => {
 
   it("sans espace : le dit et renvoie aux offres, sans barre", () => {
     const html = renderStorage(
-      storage({ level: "none", totalBytes: 0, usedBytes: 0, percent: 0, products: [] }),
+      storage({
+        level: "none",
+        totalBytes: 0,
+        usedBytes: 0,
+        percent: 0,
+        products: [],
+      }),
     );
     expect(html).toContain("Aucun espace pour l’instant");
     expect(html).not.toContain('role="progressbar"');
@@ -180,7 +220,9 @@ describe("carte Espace disque", () => {
   });
 
   it("rien d'écrit : « Rien n'est encore enregistré chez Nexora »", () => {
-    const html = renderStorage(storage({ usedBytes: 0, percent: 0, products: [] }));
+    const html = renderStorage(
+      storage({ usedBytes: 0, percent: 0, products: [] }),
+    );
     expect(html).toContain("Rien n’est encore enregistré chez Nexora.");
   });
 
@@ -210,7 +252,9 @@ describe("bande Mon offre", () => {
 
   it("sans abonnement : « Aucun abonnement : rechargez ou choisissez une offre » et lien vers les offres", () => {
     const html = renderPlan({ kind: "none" });
-    expect(html).toContain("Aucun abonnement : rechargez ou choisissez une offre.");
+    expect(html).toContain(
+      "Aucun abonnement : rechargez ou choisissez une offre.",
+    );
     expect(html).toContain('href="/tarifs"');
   });
 
@@ -229,7 +273,9 @@ describe("bande Mon offre", () => {
 
   it("résiliation demandée : la fin remplace le renouvellement", () => {
     const html = renderPlan({ ...active, ending: true });
-    expect(html).toContain("Se termine le 30 novembre 2026 (résiliation demandée)");
+    expect(html).toContain(
+      "Se termine le 30 novembre 2026 (résiliation demandée)",
+    );
     expect(html).not.toContain("Renouvellement le");
   });
 
@@ -239,7 +285,9 @@ describe("bande Mon offre", () => {
       pastDue: true,
       graceEndsAt: new Date("2026-11-05T17:00:00Z"),
     });
-    expect(html).toContain("Paiement en retard : votre accès est conservé jusqu’au 5 novembre 2026");
+    expect(html).toContain(
+      "Paiement en retard : votre accès est conservé jusqu’au 5 novembre 2026",
+    );
   });
 
   it("offre annuelle en anglais", () => {
@@ -282,7 +330,8 @@ describe("cartes des produits", () => {
 
   it("une carte par produit du registre, chacune avec son état", () => {
     const html = render();
-    for (const id of PRODUCT_IDS) expect(html).toContain(`data-product="${id}"`);
+    for (const id of PRODUCT_IDS)
+      expect(html).toContain(`data-product="${id}"`);
     expect((html.match(/<article /g) ?? []).length).toBe(PRODUCT_IDS.length);
     expect(html).toContain('id="tools-work-title"');
     expect(html).toContain('id="tools-around-title"');
@@ -333,10 +382,12 @@ describe("cartes des produits", () => {
 
   it("le rappel d'espace n'apparaît que sur un produit livré", () => {
     const hints = { code: { needsCredits: false, needsStorage: true } };
-    expect(card(render({}, null, hints), "code")).not.toContain("Il vous faut de l’espace");
-    expect(card(render({ NEXORA_PRODUCT_CODE: "1" }, null, hints), "code")).toContain(
+    expect(card(render({}, null, hints), "code")).not.toContain(
       "Il vous faut de l’espace",
     );
+    expect(
+      card(render({ NEXORA_PRODUCT_CODE: "1" }, null, hints), "code"),
+    ).toContain("Il vous faut de l’espace");
   });
 
   it("Nexora Creative est « Plus tard », Nexora Bot « Bientôt » : fiche et liste d'attente, rien de livré", () => {
@@ -360,7 +411,9 @@ describe("cartes des produits", () => {
 
   it("Privacy Router et VPS mènent à leur page du panneau", () => {
     const html = render();
-    expect(card(html, "privacy-router")).toContain('href="/compte/confidentialite"');
+    expect(card(html, "privacy-router")).toContain(
+      'href="/compte/confidentialite"',
+    );
     expect(card(html, "vps")).toContain('href="/compte/vps"');
     expect(card(html, "vps")).toContain('data-state="disponible"');
   });

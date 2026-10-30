@@ -2,11 +2,11 @@ import type { Database } from "@nexora/db";
 import { loadOrgEntitlements } from "../billing/entitlements";
 import { loadWallet } from "../billing/wallet";
 import {
-  creditsView,
   type CreditsView,
-  planView,
+  creditsView,
   type PlanView,
   type ProductHint,
+  planView,
   productHints,
   type StorageView,
   storageView,

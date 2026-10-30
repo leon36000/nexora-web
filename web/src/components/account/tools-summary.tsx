@@ -218,9 +218,7 @@ export function StorageCard({
       )}
       {view.level !== "none" ? (
         <div className="mt-5 border-t border-line pt-4">
-          <h3 className="text-small font-medium text-fg">
-            {s.breakdownTitle}
-          </h3>
+          <h3 className="text-small font-medium text-fg">{s.breakdownTitle}</h3>
           {view.products.length === 0 ? (
             <p className="mt-2 text-small text-fg-muted">{s.nothingStored}</p>
           ) : (

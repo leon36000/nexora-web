@@ -28,9 +28,15 @@ export interface CodeCliInfo {
 
 export interface CodeWorkspaceService {
   /** État de l'environnement de CETTE personne dans CETTE organisation. */
-  getState(input: { orgId: string; userId: string }): Promise<CodeWorkspaceState>;
+  getState(input: {
+    orgId: string;
+    userId: string;
+  }): Promise<CodeWorkspaceState>;
   /** Démarre l'environnement (le crée au premier appel). Refuse si l'espace de l'offre manque. */
-  start(input: { orgId: string; userId: string }): Promise<
+  start(input: {
+    orgId: string;
+    userId: string;
+  }): Promise<
     | { ok: true; state: CodeWorkspaceState }
     | { ok: false; reason: CodeStartFailure }
   >;
@@ -57,7 +63,9 @@ export function safeOpenUrl(raw: string | null | undefined): string | null {
  * Normalise l'état rendu par le service avant de l'afficher : « prêt » exige une adresse d'ouverture sûre, sinon
  * l'environnement est encore « en démarrage » (on ne montre jamais un bouton qui ne mène nulle part).
  */
-export function normalizeWorkspace(state: CodeWorkspaceState): CodeWorkspaceState {
+export function normalizeWorkspace(
+  state: CodeWorkspaceState,
+): CodeWorkspaceState {
   const openUrl = safeOpenUrl(state.openUrl);
   const usedBytes =
     Number.isFinite(state.usedBytes) && state.usedBytes > 0

@@ -1,4 +1,7 @@
-import type { CodeWorkspaceService, CodeWorkspaceState } from "./code-workspace";
+import type {
+  CodeWorkspaceService,
+  CodeWorkspaceState,
+} from "./code-workspace";
 import type {
   RagBaseSummary,
   RagCreateResult,
@@ -40,7 +43,10 @@ export class FakeRagPanel implements RagPanelService {
     this.created.push(input);
     if (this.nextCreate instanceof Error) throw this.nextCreate;
     if (this.nextCreate) return this.nextCreate;
-    const base = baseSummary({ id: `b${this.created.length}`, name: input.name });
+    const base = baseSummary({
+      id: `b${this.created.length}`,
+      name: input.name,
+    });
     this.bases.unshift(base);
     return {
       ok: true,

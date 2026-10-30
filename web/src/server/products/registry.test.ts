@@ -101,7 +101,13 @@ describe("registre des produits du panneau", () => {
 
   it("l'accès suit le modèle à crédits : ce qui appelle un modèle consomme des crédits, Privacy Router est inclus", () => {
     const list = resolve();
-    for (const id of ["workstudio", "code", "rag", "bot", "webpilot"] as const) {
+    for (const id of [
+      "workstudio",
+      "code",
+      "rag",
+      "bot",
+      "webpilot",
+    ] as const) {
       expect(byId(list, id).access, id).toBe("credits");
       expect(byId(list, id).consumesCredits, id).toBe(true);
     }
@@ -131,7 +137,16 @@ describe("registre des produits du panneau", () => {
   it("les affirmations citées existent au registre et ne sont pas retirées", () => {
     const registry = JSON.parse(
       readFileSync(
-        join(__dirname, "..", "..", "..", "..", "cms", "content", "claims.json"),
+        join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "cms",
+          "content",
+          "claims.json",
+        ),
         "utf8",
       ),
     ) as { claims: { id: string; approval_status: string }[] };

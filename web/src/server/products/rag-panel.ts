@@ -70,7 +70,10 @@ export interface RagPanelService {
 const norm = (name: string) => name.trim().replace(/\s+/g, " ").toLowerCase();
 
 /** Premier nom libre : « Mon RAG », « Mon RAG 2 », « Mon RAG 3 »… (comparaison sans casse). */
-export function defaultBaseName(base: string, taken: readonly string[]): string {
+export function defaultBaseName(
+  base: string,
+  taken: readonly string[],
+): string {
   const used = new Set(taken.map(norm));
   if (!used.has(norm(base))) return base;
   for (let n = 2; ; n += 1) {

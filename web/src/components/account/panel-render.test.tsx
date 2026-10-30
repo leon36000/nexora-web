@@ -110,10 +110,16 @@ describe("Mes outils : crédits et ajout de fonds", () => {
   });
 
   it("organisation « maison » : « Accès administrateur gratuit » à la place du bouton de recharge", () => {
-    const html = renderOverview("fr", overview({ billingMode: "house" }), "owner", false, {
-      ...emptySummary,
-      credits: { ...emptySummary.credits, level: "free" },
-    });
+    const html = renderOverview(
+      "fr",
+      overview({ billingMode: "house" }),
+      "owner",
+      false,
+      {
+        ...emptySummary,
+        credits: { ...emptySummary.credits, level: "free" },
+      },
+    );
     expect(html).toContain("Accès administrateur gratuit");
     expect(html).not.toContain("Ajouter des fonds");
     expect(html).not.toContain("compte/facturation#ajouter-des-fonds");

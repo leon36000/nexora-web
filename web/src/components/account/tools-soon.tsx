@@ -67,7 +67,11 @@ export function ProductProblem({
   retryHref?: string;
 }) {
   return (
-    <Card as="section" aria-labelledby={`${id}-problem-title`} variant="outline">
+    <Card
+      as="section"
+      aria-labelledby={`${id}-problem-title`}
+      variant="outline"
+    >
       <h2 id={`${id}-problem-title`} className="text-h4 text-fg">
         {title}
       </h2>

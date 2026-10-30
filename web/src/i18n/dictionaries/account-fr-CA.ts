@@ -512,7 +512,8 @@ export const accountFrCA = {
           name: "Nexora RAG",
           text: "Vos documents deviennent une base que l’IA interroge, sources à l’appui. Créez-la en un clic, puis branchez-la à vos outils avec une clé d’API.",
           soon: "Vos documents deviendront une base que l’IA interroge, sources à l’appui, créée en un clic et accessible avec une clé d’API. Elle n’est pas encore livrée.",
-          credits: "Vous payez les jetons d’embedding et de rerank, en crédits.",
+          credits:
+            "Vous payez les jetons d’embedding et de rerank, en crédits.",
           space: "Vos documents et leurs vecteurs comptent dans votre espace.",
           pageAction: "Voir mon RAG",
         },
@@ -632,7 +633,8 @@ export const accountFrCA = {
             "Vous avez atteint le nombre maximal de clés actives. Révoquez une clé inutilisée dans Modèles et clés.",
           unavailable:
             "Le service n’est pas disponible pour le moment. Réessayez dans un instant.",
-          rate_limited: "Trop de tentatives. Patientez une minute, puis réessayez.",
+          rate_limited:
+            "Trop de tentatives. Patientez une minute, puis réessayez.",
           forbidden:
             "Seul le propriétaire de l’organisation peut créer un RAG.",
           unauthenticated: "Votre session a expiré. Reconnectez-vous.",
@@ -725,7 +727,8 @@ export const accountFrCA = {
             "Votre espace est épuisé ou absent. Choisissez une offre ou libérez de l’espace, puis réessayez.",
           unavailable:
             "Le service n’est pas disponible pour le moment. Réessayez dans un instant.",
-          rate_limited: "Trop de tentatives. Patientez une minute, puis réessayez.",
+          rate_limited:
+            "Trop de tentatives. Patientez une minute, puis réessayez.",
           unauthenticated: "Votre session a expiré. Reconnectez-vous.",
           generic: "Le démarrage a échoué. Réessayez dans un instant.",
         },

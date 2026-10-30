@@ -35,7 +35,9 @@ const rag = (
       />,
     ),
   );
-const ready = (bases = [] as ReturnType<typeof baseSummary>[]): RagPanelModel => ({
+const ready = (
+  bases = [] as ReturnType<typeof baseSummary>[],
+): RagPanelModel => ({
   kind: "ready",
   bases,
   totalBytes: bases.reduce((s, b) => s + b.usedBytes, 0),
@@ -47,7 +49,9 @@ describe("page RAG du panneau", () => {
   it("interrupteur éteint : « Bientôt », ce qui est prévu, liste d'attente ; aucun bouton de création ni clé", () => {
     const html = rag({ kind: "soon" });
     expect(html).toContain("Bientôt.");
-    expect(html).toContain("Nexora RAG n’est pas encore livré. Aucune date n’est annoncée.");
+    expect(html).toContain(
+      "Nexora RAG n’est pas encore livré. Aucune date n’est annoncée.",
+    );
     expect(html).toContain('href="/contact?sujet=apps-rag"');
     expect(html).toContain('href="/apps/rag"');
     expect(html).not.toContain("<form");
@@ -94,7 +98,12 @@ describe("page RAG du panneau", () => {
           failed: 1,
           usedBytes: 250_000_000,
         }),
-        baseSummary({ id: "b2", name: "Manuels", documents: 1, usedBytes: 5_000_000 }),
+        baseSummary({
+          id: "b2",
+          name: "Manuels",
+          documents: 1,
+          usedBytes: 5_000_000,
+        }),
       ]),
     );
     expect(html).toContain("Contrats");
@@ -110,14 +119,16 @@ describe("page RAG du panneau", () => {
 
   it("membre simple : pas de formulaire, le propriétaire seul crée un RAG (cela crée une clé)", () => {
     const html = rag(ready(), "member");
-    expect(html).toContain("Seul le propriétaire de l’organisation peut créer un RAG");
+    expect(html).toContain(
+      "Seul le propriétaire de l’organisation peut créer un RAG",
+    );
     expect(html).not.toContain("<form");
   });
 
   it("rappel d'espace : 80 % en information, 100 % en alerte avec le message clair", () => {
-    expect(rag(ready(), "owner", "fr", { level: "warning", percent: 83 })).toContain(
-      "presque plein : 83 % utilisés",
-    );
+    expect(
+      rag(ready(), "owner", "fr", { level: "warning", percent: 83 }),
+    ).toContain("presque plein : 83 % utilisés");
     const full = rag(ready(), "owner", "fr", { level: "full", percent: 100 });
     expect(full).toContain("Votre espace est plein");
     expect(full).toContain('role="alert"');
@@ -163,7 +174,9 @@ describe("page Nexora Code du panneau", () => {
   it("interrupteur éteint : « Bientôt », liste d'attente, plugins en texte ; aucun bouton d'ouverture", () => {
     const html = code({ kind: "soon" });
     expect(html).toContain("Bientôt.");
-    expect(html).toContain("Nexora Code n’est pas encore livré. Aucune date n’est annoncée.");
+    expect(html).toContain(
+      "Nexora Code n’est pas encore livré. Aucune date n’est annoncée.",
+    );
     expect(html).toContain('href="/contact?sujet=apps-code"');
     expect(html).toContain("Plugins de Claude Code");
     expect(html).toContain("Plugins Codex (Agent Plugins)");
@@ -173,7 +186,9 @@ describe("page Nexora Code du panneau", () => {
   });
 
   it("environnement arrêté : état « Arrêté » et bouton pour le démarrer", () => {
-    const html = code(codeReady({ status: "stopped", usedBytes: 0, openUrl: null }));
+    const html = code(
+      codeReady({ status: "stopped", usedBytes: 0, openUrl: null }),
+    );
     expect(html).toContain('data-status="stopped"');
     expect(html).toContain(">Arrêté<");
     expect(html).toContain("Démarrer mon environnement");
@@ -181,7 +196,9 @@ describe("page Nexora Code du panneau", () => {
   });
 
   it("en démarrage : bouton désactivé, état annoncé", () => {
-    const html = code(codeReady({ status: "starting", usedBytes: 0, openUrl: null }));
+    const html = code(
+      codeReady({ status: "starting", usedBytes: 0, openUrl: null }),
+    );
     expect(html).toContain(">En démarrage<");
     expect(html).toContain("cette page se met à jour toute seule");
     expect(html).toMatch(/<button[^>]*disabled[^>]*>Démarrage…/);
@@ -189,7 +206,11 @@ describe("page Nexora Code du panneau", () => {
 
   it("prêt : « Ouvrir Nexora Code » mène à l'adresse de l'environnement de la personne", () => {
     const html = code(
-      codeReady({ status: "ready", usedBytes: 120_000_000, openUrl: "https://code.example/u1" }),
+      codeReady({
+        status: "ready",
+        usedBytes: 120_000_000,
+        openUrl: "https://code.example/u1",
+      }),
     );
     expect(html).toContain(">Prêt<");
     expect(html).toContain('href="https://code.example/u1"');
@@ -198,7 +219,11 @@ describe("page Nexora Code du panneau", () => {
 
   it("espace du volume : lu en octets décimaux, avec le lien vers l'espace du compte", () => {
     const html = code(
-      codeReady({ status: "ready", usedBytes: 120_000_000, openUrl: "https://code.example/u1" }),
+      codeReady({
+        status: "ready",
+        usedBytes: 120_000_000,
+        openUrl: "https://code.example/u1",
+      }),
     );
     expect(html).toContain("120 Mo utilisés dans votre environnement");
     expect(html).toContain("compte dans votre espace disque");
@@ -206,15 +231,21 @@ describe("page Nexora Code du panneau", () => {
   });
 
   it("erreur d'environnement : le dit et permet de réessayer", () => {
-    const html = code(codeReady({ status: "error", usedBytes: 0, openUrl: null }));
+    const html = code(
+      codeReady({ status: "error", usedBytes: 0, openUrl: null }),
+    );
     expect(html).toContain(">En erreur<");
     expect(html).toContain("Démarrer mon environnement");
   });
 
   it("CLI : la commande de connexion est toujours là ; l'installation seulement si elle est publiée", () => {
-    const without = code(codeReady({ status: "stopped", usedBytes: 0, openUrl: null }));
+    const without = code(
+      codeReady({ status: "stopped", usedBytes: 0, openUrl: null }),
+    );
     expect(without).toContain("nexora-code login");
-    expect(without).toContain("La commande d’installation sera publiée ici à la sortie.");
+    expect(without).toContain(
+      "La commande d’installation sera publiée ici à la sortie.",
+    );
     const withInstall = code(
       codeReady(
         { status: "stopped", usedBytes: 0, openUrl: null },
@@ -226,7 +257,9 @@ describe("page Nexora Code du panneau", () => {
   });
 
   it("indisponible et erreur de lecture : messages honnêtes", () => {
-    expect(code({ kind: "unavailable" })).toContain("Le service n’est pas disponible pour le moment.");
+    expect(code({ kind: "unavailable" })).toContain(
+      "Le service n’est pas disponible pour le moment.",
+    );
     const err = code({ kind: "error" });
     expect(err).toContain("Impossible de lire l’état de votre environnement.");
     expect(err).toContain('href="/compte/code"');
@@ -243,7 +276,11 @@ describe("page Nexora Code du panneau", () => {
 
   it("anglais", () => {
     const html = code(
-      codeReady({ status: "ready", usedBytes: 0, openUrl: "https://code.example/u1" }),
+      codeReady({
+        status: "ready",
+        usedBytes: 0,
+        openUrl: "https://code.example/u1",
+      }),
       "en",
     );
     expect(html).toContain("Open Nexora Code");

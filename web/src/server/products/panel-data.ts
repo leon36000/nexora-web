@@ -1,6 +1,6 @@
 import { STORAGE_PRODUCTS, type StorageProduct } from "@nexora/db";
-import type { AccessLevel } from "../billing/subscription-state";
 import type { OrgEntitlements } from "../billing/entitlements";
+import type { AccessLevel } from "../billing/subscription-state";
 import type { ProductId, ResolvedProduct } from "./registry";
 
 /**
@@ -23,7 +23,11 @@ export type StorageView = {
   percent: number;
   remainingBytes: number;
   /** Produits qui occupent de l'espace, du plus gros au plus petit ; part du quota total (0 à 100). */
-  products: { product: StorageProduct; bytes: number; percentOfTotal: number }[];
+  products: {
+    product: StorageProduct;
+    bytes: number;
+    percentOfTotal: number;
+  }[];
 };
 
 const clampPercent = (part: number, total: number): number =>
@@ -114,7 +118,8 @@ export function creditsView(
     subscription,
     refill,
     total,
-    subscriptionExpiresAt: subscription > 0 ? options.subscriptionExpiresAt : null,
+    subscriptionExpiresAt:
+      subscription > 0 ? options.subscriptionExpiresAt : null,
     canUseModels: ent.canUseModels,
   };
 }

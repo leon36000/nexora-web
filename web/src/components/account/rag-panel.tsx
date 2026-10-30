@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { type AccountDictionary, fmt, formatDate } from "@/i18n/account";
 import { appContactHref, appPath } from "@/i18n/apps";
 import { type Lang, localizePath } from "@/i18n/config";
@@ -188,7 +188,9 @@ export function RagPanel({
           </section>
 
           <section aria-labelledby="rag-connect-title">
-            <SectionTitle id="rag-connect-title">{r.connect.title}</SectionTitle>
+            <SectionTitle id="rag-connect-title">
+              {r.connect.title}
+            </SectionTitle>
             <p className="mt-2 max-w-2xl text-small text-fg-muted">
               {r.connect.lead}
             </p>

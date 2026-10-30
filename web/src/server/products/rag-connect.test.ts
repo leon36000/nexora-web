@@ -65,7 +65,11 @@ describe("extraits de connexion au RAG", () => {
       `Bearer ${evil}`,
     );
     // Une apostrophe dans la clé est échappée : elle ne ferme pas le mot entre apostrophes.
-    const quote = buildRagSnippets({ ...input, key: "k'; rm -rf ~; '", baseId: null });
+    const quote = buildRagSnippets({
+      ...input,
+      key: "k'; rm -rf ~; '",
+      baseId: null,
+    });
     expect(quote.http).toContain("k'\\''; rm -rf ~; '\\''");
     expect(quote.http).not.toContain("k'; rm");
   });

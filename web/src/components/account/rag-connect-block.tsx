@@ -29,14 +29,16 @@ function Snippet({
           ariaLabel={fmt(text.copyLabel, { label })}
         />
       </div>
-      <pre
+      <section
         aria-labelledby={id}
         // biome-ignore lint/a11y/noNoninteractiveTabindex: zone de code défilable atteignable au clavier
         tabIndex={0}
-        className="mt-2 overflow-x-auto rounded-md border border-line bg-bg p-4 font-mono text-small text-fg"
+        className="mt-2 overflow-x-auto rounded-md border border-line bg-bg p-4"
       >
-        <code>{value}</code>
-      </pre>
+        <pre className="font-mono text-small text-fg">
+          <code>{value}</code>
+        </pre>
+      </section>
     </div>
   );
 }

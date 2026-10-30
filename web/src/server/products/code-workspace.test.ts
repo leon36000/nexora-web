@@ -46,7 +46,10 @@ describe("panneau Nexora Code : états", () => {
 
   it("le service est interrogé pour CETTE personne et CETTE organisation, jamais pour une autre", async () => {
     const service = new FakeCodeWorkspace();
-    service.state = workspaceState({ status: "ready", openUrl: "https://code.example/u1" });
+    service.state = workspaceState({
+      status: "ready",
+      openUrl: "https://code.example/u1",
+    });
     await loadCodeWorkspacePanel({ ...input, enabled: true, service });
     expect(service.calls).toEqual([
       { method: "getState", orgId: "org1", userId: "u1" },
@@ -61,11 +64,18 @@ describe("panneau Nexora Code : états", () => {
       enabled: true,
       service,
     });
-    expect(model).toMatchObject({ kind: "ready", workspace: { status: "starting" } });
+    expect(model).toMatchObject({
+      kind: "ready",
+      workspace: { status: "starting" },
+    });
   });
 
   it("une adresse d'ouverture dangereuse (javascript:, http hors machine locale) est écartée", async () => {
-    for (const url of ["javascript:alert(1)", "http://evil.example/x", "data:text/html,x"]) {
+    for (const url of [
+      "javascript:alert(1)",
+      "http://evil.example/x",
+      "data:text/html,x",
+    ]) {
       const service = new FakeCodeWorkspace();
       service.state = workspaceState({ status: "ready", openUrl: url });
       const model = await loadCodeWorkspacePanel({
@@ -73,7 +83,10 @@ describe("panneau Nexora Code : états", () => {
         enabled: true,
         service,
       });
-      expect(model, url).toMatchObject({ kind: "ready", workspace: { openUrl: null } });
+      expect(model, url).toMatchObject({
+        kind: "ready",
+        workspace: { openUrl: null },
+      });
       if (model.kind === "ready")
         expect(model.workspace.status, url).not.toBe("ready");
     }

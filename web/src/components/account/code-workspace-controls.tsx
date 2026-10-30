@@ -81,7 +81,9 @@ export function CodeWorkspaceControls({
         headers: { "content-type": "application/json" },
         body: "{}",
       });
-      const json = (await res.json().catch(() => ({}))) as Partial<Workspace> & {
+      const json = (await res
+        .json()
+        .catch(() => ({}))) as Partial<Workspace> & {
         error?: string;
       };
       if (!res.ok || !json.status) {

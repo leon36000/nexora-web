@@ -1,7 +1,10 @@
 import { credit, subscriptions } from "@nexora/db";
 import { createTestDatabase, type TestDatabase } from "@nexora/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { loadOrgEntitlements, recordStorageUsageIn } from "../billing/entitlements";
+import {
+  loadOrgEntitlements,
+  recordStorageUsageIn,
+} from "../billing/entitlements";
 import { newOrganization } from "../gateway/test-support";
 import { loadToolsHome } from "./home";
 
@@ -24,7 +27,12 @@ const base = {
   now: NOW,
 };
 
-async function grant(org: string, source: "subscription" | "purchase", credits: number, expiresAt: Date | null) {
+async function grant(
+  org: string,
+  source: "subscription" | "purchase",
+  credits: number,
+  expiresAt: Date | null,
+) {
   n += 1;
   await credit(t.db, {
     organizationId: org,
@@ -65,8 +73,12 @@ describe("Mes outils : composition sur de vraies données", () => {
     });
     await grant(org, "subscription", 1000, periodEnd);
     await grant(org, "purchase", 500, null);
-    expect(await recordStorageUsageIn(t.db, org, "rag", 600_000_000, NOW)).toEqual({ ok: true });
-    expect(await recordStorageUsageIn(t.db, org, "code", 250_000_000, NOW)).toEqual({ ok: true });
+    expect(
+      await recordStorageUsageIn(t.db, org, "rag", 600_000_000, NOW),
+    ).toEqual({ ok: true });
+    expect(
+      await recordStorageUsageIn(t.db, org, "code", 250_000_000, NOW),
+    ).toEqual({ ok: true });
     const ent = await loadOrgEntitlements(t.db, org, NOW);
     const home = await loadToolsHome(t.db, org, {
       ...base,
@@ -94,8 +106,15 @@ describe("Mes outils : composition sur de vraies données", () => {
       percent: 85,
       totalBytes: GO,
     });
-    expect(home.summary?.storage.products.map((p) => p.product)).toEqual(["rag", "code"]);
-    expect(home.summary?.plan).toMatchObject({ kind: "active", code: "nexora-base", interval: "month" });
+    expect(home.summary?.storage.products.map((p) => p.product)).toEqual([
+      "rag",
+      "code",
+    ]);
+    expect(home.summary?.plan).toMatchObject({
+      kind: "active",
+      code: "nexora-base",
+      interval: "month",
+    });
     expect(home.hints.rag?.needsCredits).toBe(false);
   });
 
@@ -105,7 +124,11 @@ describe("Mes outils : composition sur de vraies données", () => {
       t.db,
       org,
       { ...base, subscriptions: [] },
-      { loadEntitlements: async () => { throw new Error("base muette"); } },
+      {
+        loadEntitlements: async () => {
+          throw new Error("base muette");
+        },
+      },
     );
     expect(home.summary).toBeNull();
     expect(home.hints).toEqual({});
@@ -114,7 +137,11 @@ describe("Mes outils : composition sur de vraies données", () => {
 
   it("organisation « maison » : accès gratuit, espace sans limite, rien ne lui manque", async () => {
     const org = await newOrganization(t.db);
-    const home = await loadToolsHome(t.db, org, { ...base, house: true, subscriptions: [] });
+    const home = await loadToolsHome(t.db, org, {
+      ...base,
+      house: true,
+      subscriptions: [],
+    });
     expect(home.summary?.credits.level).toBe("free");
     expect(home.summary?.storage.level).toBe("house");
     for (const h of Object.values(home.hints)) {
@@ -125,7 +152,11 @@ describe("Mes outils : composition sur de vraies données", () => {
 
   it("l'interrupteur éteint garde Nexora Code et RAG « Bientôt » dans la composition", async () => {
     const org = await newOrganization(t.db);
-    const home = await loadToolsHome(t.db, org, { ...base, env: {}, subscriptions: [] });
+    const home = await loadToolsHome(t.db, org, {
+      ...base,
+      env: {},
+      subscriptions: [],
+    });
     expect(home.products.find((p) => p.id === "code")?.state).toBe("bientot");
     expect(home.products.find((p) => p.id === "rag")?.state).toBe("bientot");
   });

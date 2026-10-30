@@ -45,9 +45,9 @@ describe("espace : barre globale, ventilation et avertissements", () => {
     expect(storageView(storage({ usedBytes: 799_999_999 }), false).level).toBe(
       "ok",
     );
-    expect(storageView(storage({ usedBytes: 999_999_999 }), false).percent).toBe(
-      99,
-    );
+    expect(
+      storageView(storage({ usedBytes: 999_999_999 }), false).percent,
+    ).toBe(99);
   });
 
   it("à 100 % ou plus : plein, message clair ; le pourcentage ne dépasse pas 100", () => {
@@ -99,7 +99,11 @@ describe("espace : barre globale, ventilation et avertissements", () => {
       }),
       false,
     );
-    expect(v.products.map((p) => p.product)).toEqual(["rag", "workstudio", "bot"]);
+    expect(v.products.map((p) => p.product)).toEqual([
+      "rag",
+      "workstudio",
+      "bot",
+    ]);
     expect(v.products[0]).toMatchObject({ product: "rag", bytes: 400_000_000 });
     expect(v.products[0]?.percentOfTotal).toBe(40);
     // l'égalité garde l'ordre du contrat, pour un affichage stable
@@ -132,7 +136,9 @@ describe("crédits : abonnement et recharge séparés", () => {
     expect(v.subscription).toBe(700);
     expect(v.refill).toBe(300);
     expect(v.total).toBe(1000);
-    expect(v.subscriptionExpiresAt?.toISOString()).toBe("2026-11-30T05:00:00.000Z");
+    expect(v.subscriptionExpiresAt?.toISOString()).toBe(
+      "2026-11-30T05:00:00.000Z",
+    );
   });
 
   it("l'échéance n'est montrée que s'il reste des crédits d'abonnement", () => {
@@ -145,7 +151,10 @@ describe("crédits : abonnement et recharge séparés", () => {
 
   it("zéro crédit : niveau « vide » (recharger ou choisir une offre)", () => {
     const v = creditsView(
-      ent({ credits: { subscription: 0, refill: 0, total: 0 }, canUseModels: false }),
+      ent({
+        credits: { subscription: 0, refill: 0, total: 0 },
+        canUseModels: false,
+      }),
       base,
     );
     expect(v.level).toBe("empty");
@@ -154,7 +163,10 @@ describe("crédits : abonnement et recharge séparés", () => {
 
   it("compte bloqué (solde négatif) : niveau « bloqué », prioritaire sur « vide »", () => {
     const v = creditsView(
-      ent({ credits: { subscription: 0, refill: 0, total: 0 }, canUseModels: false }),
+      ent({
+        credits: { subscription: 0, refill: 0, total: 0 },
+        canUseModels: false,
+      }),
       { ...base, blocked: true },
     );
     expect(v.level).toBe("blocked");
@@ -162,7 +174,10 @@ describe("crédits : abonnement et recharge séparés", () => {
 
   it("organisation « maison » : accès gratuit, jamais « vide » même à zéro", () => {
     const v = creditsView(
-      ent({ credits: { subscription: 0, refill: 0, total: 0 }, canUseModels: true }),
+      ent({
+        credits: { subscription: 0, refill: 0, total: 0 },
+        canUseModels: true,
+      }),
       { ...base, house: true },
     );
     expect(v.level).toBe("free");
@@ -188,9 +203,10 @@ describe("offre en cours", () => {
   });
 
   it("retrouve l'abonnement de l'offre en vigueur, son rythme et son renouvellement", () => {
-    const v = planView(ent({ interval: "year", planCode: "nexora-base-annuel" }), [
-      sub({ planCode: "nexora-base-annuel" }),
-    ]);
+    const v = planView(
+      ent({ interval: "year", planCode: "nexora-base-annuel" }),
+      [sub({ planCode: "nexora-base-annuel" })],
+    );
     expect(v).toMatchObject({
       kind: "active",
       code: "nexora-base",
@@ -202,9 +218,10 @@ describe("offre en cours", () => {
   });
 
   it("le suffixe « -annuel » est retiré du code d'affichage ; le code inconnu reste tel quel", () => {
-    const v = planView(ent({ planCode: "mon-offre-annuel", interval: "year" }), [
-      sub({ planCode: "mon-offre-annuel" }),
-    ]);
+    const v = planView(
+      ent({ planCode: "mon-offre-annuel", interval: "year" }),
+      [sub({ planCode: "mon-offre-annuel" })],
+    );
     expect(v.kind === "active" && v.code).toBe("mon-offre");
   });
 
@@ -243,7 +260,10 @@ describe("pense-bête des cartes (ce que chaque produit consomme et ce qui manqu
 
   it("sans crédit, les produits qui appellent un modèle le disent ; ceux qui n'en appellent pas, non", () => {
     const h = hints(
-      ent({ credits: { subscription: 0, refill: 0, total: 0 }, canUseModels: false }),
+      ent({
+        credits: { subscription: 0, refill: 0, total: 0 },
+        canUseModels: false,
+      }),
     );
     expect(h.workstudio?.needsCredits).toBe(true);
     expect(h.rag?.needsCredits).toBe(true);

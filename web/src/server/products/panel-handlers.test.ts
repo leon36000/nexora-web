@@ -5,16 +5,23 @@ import {
   handleCreateRag,
   type PanelServicesDeps,
 } from "./panel-handlers";
-import { FakeCodeWorkspace, FakeRagPanel, workspaceState } from "./test-support";
+import {
+  FakeCodeWorkspace,
+  FakeRagPanel,
+  workspaceState,
+} from "./test-support";
 
 const SITE = "https://site.example";
 type Ctx = { userId: string; organizationId: string; role: "owner" | "member" };
 const owner: Ctx = { userId: "u1", organizationId: "org1", role: "owner" };
 const member: Ctx = { userId: "u2", organizationId: "org1", role: "member" };
 
-function setup(
-  over: Partial<PanelServicesDeps> & { ctx?: Ctx | null } = {},
-): { deps: PanelServicesDeps; rag: FakeRagPanel; code: FakeCodeWorkspace; logs: string[] } {
+function setup(over: Partial<PanelServicesDeps> & { ctx?: Ctx | null } = {}): {
+  deps: PanelServicesDeps;
+  rag: FakeRagPanel;
+  code: FakeCodeWorkspace;
+  logs: string[];
+} {
   const rag = new FakeRagPanel();
   const code = new FakeCodeWorkspace();
   const logs: string[] = [];
@@ -77,18 +84,32 @@ describe("POST /api/account/rag : créer mon RAG en un clic", () => {
   it("origine étrangère ou absente : refusé avant tout", async () => {
     const { deps, rag } = setup();
     expect(
-      (await handleCreateRag(post(url, { name: "x" }, "https://evil.example"), deps)).status,
+      (
+        await handleCreateRag(
+          post(url, { name: "x" }, "https://evil.example"),
+          deps,
+        )
+      ).status,
     ).toBe(403);
-    expect((await handleCreateRag(post(url, { name: "x" }, null), deps)).status).toBe(403);
+    expect(
+      (await handleCreateRag(post(url, { name: "x" }, null), deps)).status,
+    ).toBe(403);
     expect(rag.created).toEqual([]);
   });
 
   it("sans session : 401 ; membre simple : 403 (seul le propriétaire crée des clés)", async () => {
     expect(
-      (await handleCreateRag(post(url, { name: "x" }), setup({ ctx: null }).deps)).status,
+      (
+        await handleCreateRag(
+          post(url, { name: "x" }),
+          setup({ ctx: null }).deps,
+        )
+      ).status,
     ).toBe(401);
     const m = setup({ ctx: member });
-    expect((await handleCreateRag(post(url, { name: "x" }), m.deps)).status).toBe(403);
+    expect(
+      (await handleCreateRag(post(url, { name: "x" }), m.deps)).status,
+    ).toBe(403);
     expect(m.rag.created).toEqual([]);
   });
 
@@ -108,7 +129,9 @@ describe("POST /api/account/rag : créer mon RAG en un clic", () => {
     expect((await res.json()).error).toBe("not_available");
     expect(off.rag.created).toEqual([]);
     const none = setup({ rag: () => null });
-    expect((await handleCreateRag(post(url, { name: "x" }), none.deps)).status).toBe(503);
+    expect(
+      (await handleCreateRag(post(url, { name: "x" }), none.deps)).status,
+    ).toBe(503);
   });
 
   it("corps invalide : nom vide, trop long, champ inconnu, JSON cassé → 422", async () => {
@@ -120,7 +143,10 @@ describe("POST /api/account/rag : créer mon RAG en un clic", () => {
       { name: "ok", orgId: "autre" },
       "pas du json",
     ])
-      expect((await handleCreateRag(post(url, body), deps)).status, JSON.stringify(body)).toBe(422);
+      expect(
+        (await handleCreateRag(post(url, body), deps)).status,
+        JSON.stringify(body),
+      ).toBe(422);
     expect(rag.created).toEqual([]);
   });
 
@@ -178,12 +204,20 @@ describe("/api/account/code/workspace : l'environnement de la personne", () => {
   });
 
   it("GET sans session : 401 ; interrupteur éteint : 404 ; sans service : 503", async () => {
-    expect((await handleCodeWorkspace(get(url), setup({ ctx: null }).deps)).status).toBe(401);
     expect(
-      (await handleCodeWorkspace(get(url), setup({ codeEnabled: () => false }).deps)).status,
+      (await handleCodeWorkspace(get(url), setup({ ctx: null }).deps)).status,
+    ).toBe(401);
+    expect(
+      (
+        await handleCodeWorkspace(
+          get(url),
+          setup({ codeEnabled: () => false }).deps,
+        )
+      ).status,
     ).toBe(404);
     expect(
-      (await handleCodeWorkspace(get(url), setup({ code: () => null }).deps)).status,
+      (await handleCodeWorkspace(get(url), setup({ code: () => null }).deps))
+        .status,
     ).toBe(503);
   });
 
@@ -192,12 +226,17 @@ describe("/api/account/code/workspace : l'environnement de la personne", () => {
     const res = await handleCodeWorkspace(post(url, {}), deps);
     expect(res.status).toBe(202);
     expect((await res.json()).status).toBe("starting");
-    expect(code.calls).toEqual([{ method: "start", orgId: "org1", userId: "u2" }]);
+    expect(code.calls).toEqual([
+      { method: "start", orgId: "org1", userId: "u2" },
+    ]);
   });
 
   it("POST d'une autre origine : 403, rien n'est démarré", async () => {
     const { deps, code } = setup();
-    const res = await handleCodeWorkspace(post(url, {}, "https://evil.example"), deps);
+    const res = await handleCodeWorkspace(
+      post(url, {}, "https://evil.example"),
+      deps,
+    );
     expect(res.status).toBe(403);
     expect(code.calls).toEqual([]);
   });
@@ -220,7 +259,10 @@ describe("/api/account/code/workspace : l'environnement de la personne", () => {
 
   it("une adresse d'ouverture dangereuse n'est jamais rendue au navigateur", async () => {
     const { deps, code } = setup();
-    code.state = workspaceState({ status: "ready", openUrl: "javascript:alert(1)" });
+    code.state = workspaceState({
+      status: "ready",
+      openUrl: "javascript:alert(1)",
+    });
     const body = await (await handleCodeWorkspace(get(url), deps)).json();
     expect(body.openUrl).toBeNull();
     expect(body.status).toBe("starting");

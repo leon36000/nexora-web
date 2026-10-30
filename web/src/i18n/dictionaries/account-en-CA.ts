@@ -488,7 +488,8 @@ export const accountEnCA: AccountDictionary = {
           text: "A coding agent in a work environment hosted on our servers: nothing to install on your computer.",
           soon: "A coding agent that will open in a work environment hosted on our servers, with nothing to install on your computer. It is not shipped yet.",
           credits: "Anything the agent has a model do uses credits.",
-          space: "Whatever is stored in your environment counts toward your storage.",
+          space:
+            "Whatever is stored in your environment counts toward your storage.",
           pageAction: "See Nexora Code",
         },
         rag: {
@@ -519,7 +520,8 @@ export const accountEnCA: AccountDictionary = {
           name: "Nexora WebPilot",
           text: "An API to search, read and explore the Web.",
           soon: "An API to search, read and explore the Web, planned as pay-per-use from your credit balance. It is not shipped yet.",
-          credits: "Billed per use, from the same credit balance as the models.",
+          credits:
+            "Billed per use, from the same credit balance as the models.",
           space: "Stores nothing in your storage.",
           pageAction: "See the page",
         },
@@ -535,7 +537,8 @@ export const accountEnCA: AccountDictionary = {
           name: "VPS",
           text: "Virtual private servers in Quebec: status, SSH access and everyday operations.",
           soon: "Virtual private servers in Quebec: status, SSH access and everyday operations.",
-          credits: "A subscription of its own for each server, apart from your credits.",
+          credits:
+            "A subscription of its own for each server, apart from your credits.",
           space: "A server’s disk is outside your plan’s storage quota.",
           pageAction: "See my VPS",
         },
@@ -685,8 +688,7 @@ export const accountEnCA: AccountDictionary = {
           ready: "Ready",
           error: "Failed",
         },
-        stoppedText:
-          "Your environment is stopped. Start it to begin working.",
+        stoppedText: "Your environment is stopped. Start it to begin working.",
         startingText:
           "Your environment is starting. This may take a moment; this page updates by itself.",
         readyText: "Your environment is ready.",

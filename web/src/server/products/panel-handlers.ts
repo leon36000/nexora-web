@@ -1,8 +1,8 @@
 import type { Logger } from "@nexora/log";
 import { z } from "zod";
 import { isSameOriginRequest } from "../auth/origin";
-import { normalizeWorkspace } from "./code-workspace";
 import type { CodeWorkspaceService } from "./code-workspace";
+import { normalizeWorkspace } from "./code-workspace";
 import type {
   RagBaseSummary,
   RagCreateFailure,
@@ -23,9 +23,7 @@ import type {
 
 export interface PanelServicesDeps {
   siteUrl: string;
-  getContext: (
-    headers: Headers,
-  ) => Promise<{
+  getContext: (headers: Headers) => Promise<{
     userId: string;
     organizationId: string;
     role: "owner" | "member";
@@ -159,8 +157,7 @@ export async function handleCodeWorkspace(
     if (!service) return json({ error: "unavailable" }, 503);
 
     const who = { orgId: ctx.organizationId, userId: ctx.userId };
-    if (!starting)
-      return json(normalizeWorkspace(await service.getState(who)));
+    if (!starting) return json(normalizeWorkspace(await service.getState(who)));
 
     const result = await service.start(who);
     if (!result.ok)
