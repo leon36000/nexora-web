@@ -7,13 +7,13 @@
 - Page : `faq` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/faq/` · slug : `faq`
 - Titre SEO (40 caractères) : Questions IA PME : des réponses franches
-- Description SEO (156 caractères) : Données, entraînement, prix, Loi 25, erreurs de l'IA, vidéosurveillance, marketing : les réponses franches de Nexora AI aux questions des dirigeants de PME.
+- Description SEO (151 caractères) : Données, prix, crédits, Loi 25, erreurs de l'IA, vidéosurveillance, marketing : les réponses franches de Nexora AI aux questions des dirigeants de PME.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Entrée de la FAQ : réponses franches en langage de dirigeant. · Affirmations : CL-09*
+*Entrée de la FAQ : réponses franches en langage de dirigeant. · Affirmations : CL-09, CL-PL01*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,13 +21,13 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Vos questions. Des réponses franches.
 
-Données, coûts, mise en service, erreurs de l'IA : les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.
+Données, coûts, crédits, mise en service, erreurs de l'IA : les questions que les dirigeants nous posent le plus souvent, avec des réponses vraies seulement. Quand ce n'est pas encore livré, nous l'écrivons.
 
 [Poser une question](/contact/) · [Lire nos engagements sur vos données](/vos-donnees/)
 
 ### Bloc 2 — FAQ (`block_faq`)
 
-*Données et souveraineté : huit questions, dont l'entraînement et la vente des données (E03, E04). · Affirmations : CL-02, CL-05, CL-06, CL-07, CL-08, CL-71, CL-77, CL-L05, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-L01, CL-L02, CL-87*
+*Données et souveraineté : huit questions, dont l'entraînement et la vente des données (E03, E04). · Affirmations : CL-02, CL-05, CL-06, CL-07, CL-08, CL-71, CL-77, CL-87, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-L01, CL-L02, CL-L05, CL-PL01, CL-S01, CL-S02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=donnees`
 
@@ -37,7 +37,7 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=donnees`
 
 Elles restent là où vous le décidez, et nous l'écrivons avant le démarrage. Chez vous, le matériel et les accès sont à vous : ne sortent que les flux que nous listons ensemble avant la mise en service (mises à jour, licences et, si vous l'activez, un modèle externe). Chez nous, vos données sont stockées et traitées dans notre infrastructure, au Québec, sauvegardes comprises ; les seules exceptions sont les services que vous activez explicitement, tous listés dans un registre des sous-traitants, en préparation.
 
-Dans les deux cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
+Sur la plateforme à crédits, chaque modèle affiche son lieu d'hébergement et la passerelle ne garde que des métadonnées d'usage, jamais le contenu de vos requêtes. Dans tous les cas, nous n'écrivons « aucune donnée ne sort » que si nous l'avons vérifié sur votre configuration.
 
 #### Mes données servent-elles à entraîner une IA ?
 
@@ -69,7 +69,7 @@ Vous repartez avec vos documents, vos configurations et vos flux de travaux : l
 
 ### Bloc 3 — FAQ (`block_faq`)
 
-*Mise en œuvre et coûts : neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03). · Affirmations : CL-04, CL-10, CL-82, CL-14, CL-85, CL-12, CL-83, CL-G01, CL-G02, CL-G03, CL-G04*
+*Mise en œuvre et coûts : neuf questions, dont le marketing automatisé et l'hébergement inclus (CL-G03). · Affirmations : CL-04, CL-10, CL-12, CL-14, CL-82, CL-83, CL-85, CL-AP06, CL-AP07, CL-G01, CL-G02, CL-G03, CL-G04, CL-PL02, CL-PL03, CL-T01, CL-T04, CL-T06*
 
 Réglages : `emit_jsonld=false`, `tone=sable`, `anchor_id=mise-en-oeuvre`
 
@@ -81,7 +81,7 @@ Ce n'est pas un obstacle. Nous installons le système, l'exploitons avec vous et
 
 #### Combien cela coûte-t-il ?
 
-Il n'y a pas encore de prix public. Le coût dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel. Après un diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas.
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication. Le coût de l'accompagnement dépend du nombre de cas traités, du volume de documents, du mode de déploiement, des intégrations et, chez vous, du matériel.
 
 #### Faut-il un serveur puissant ?
 
@@ -101,7 +101,7 @@ Un large catalogue de services se connecte à WorkStudio, mais la possibilité d
 
 #### Peut-on voir le produit avant de s'engager ?
 
-Oui : nous proposons une démonstration sur des données fictives. Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas encore ouvertes.
+Oui : nous proposons une démonstration de WorkStudio sur des données fictives. La vente de la plateforme n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié.
 
 #### Et le marketing automatisé ?
 
@@ -113,9 +113,53 @@ Il est inclus : aucuns frais d'hébergement distincts tant que vous êtes clien
 
 ### Bloc 4 — FAQ (`block_faq`)
 
-*L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01). · Affirmations : CL-21, CL-128, CL-96, CL-112, CL-124, CL-28, CL-30, CL-90, CL-V01, CL-V02, CL-V03, CL-V06, CL-V07, CL-L04*
+*Crédits, abonnement, recharge, espace : le modèle du 30/10/2026 en neuf questions, sans prix. · Affirmations : CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T08, CL-T09, CL-T10, CL-PL01, CL-PL02, CL-PL04, CL-AP01, CL-S01, CL-S02, CL-12*
 
-Réglages : `emit_jsonld=false`, `tone=clair`, `anchor_id=limites`
+Réglages : `emit_jsonld=false`, `tone=clair`, `anchor_id=credits`
+
+## Crédits, abonnement et espace.
+
+#### Qu'est-ce qu'un crédit ?
+
+Un crédit vaut un cent canadien de jetons, au prix du catalogue de modèles. Un jeton est l'unité de texte que traite un modèle. Un modèle économe donne plus de jetons pour un crédit ; un modèle puissant en donne moins. La fiche de chaque modèle affiche son prix, et l'équivalent en jetons se calcule depuis ces prix publiés.
+
+#### Comment fonctionne l'abonnement ?
+
+Un abonnement donne des crédits chaque mois et de l'espace disque, pour toute votre organisation ; plus l'offre est élevée, plus elle donne des deux. Dans une offre annuelle, les crédits sont versés un douzième par mois. Les offres ne sont pas encore ouvertes : aucun prix n'est publié, et la page Tarifs les affichera à leur publication.
+
+#### Puis-je recharger sans m'abonner ?
+
+Oui, c'est le principe : sans abonnement, vous rechargez des crédits, et un solde supérieur à zéro suffit pour appeler les modèles. Les crédits de recharge n'expirent pas. La recharge n'est pas encore ouverte et aucun forfait n'a de prix publié.
+
+#### Que se passe-t-il quand il n'y a plus de crédits ?
+
+Les appels aux modèles sont refusés, avec un message qui renvoie vers la recharge et vers l'abonnement. Un solde à zéro n'efface rien : vos documents et vos réglages restent là. Dès que votre solde dépasse zéro, vous reprenez. La durée de conservation après une résiliation n'est pas encore décidée.
+
+#### Mes crédits expirent-ils ?
+
+Cela dépend de leur origine. Les crédits d'abonnement expirent à la fin de la période pour laquelle ils ont été versés, et ils servent en premier. Les crédits de recharge n'expirent pas.
+
+#### Qu'est-ce qui est gratuit ?
+
+Le catalogue des modèles, avec leurs fiches et leurs prix, se consulte sans compte. Les outils Nexora qui n'appellent aucun modèle d'IA ne consomment pas de crédits, et Nexora Code est conçu pour être gratuit, mais il n'est pas encore livré. Tout ce qui appelle un modèle consomme des crédits ; l'espace disque vient avec l'abonnement.
+
+#### Que se passe-t-il si mon espace est plein ?
+
+L'écriture est refusée avec un message clair, jusqu'à ce que vous libériez de l'espace ou ajoutiez des gigaoctets à votre offre. Lire et supprimer restent toujours permis, et ce que vous avez déjà enregistré n'est pas effacé par ce refus.
+
+#### Puis-je tester avant de payer ?
+
+Il n'y a pas de période gratuite des offres. Le catalogue des modèles et leurs prix sont publics, une recharge vous permet de n'acheter que ce que vous consommez, et nous montrons WorkStudio en démonstration sur des données fictives.
+
+#### Puis-je résilier un abonnement ?
+
+Oui, depuis votre espace client. La résiliation prend effet à la fin de la période payée.
+
+### Bloc 5 — FAQ (`block_faq`)
+
+*L'IA, ses erreurs et ses limites : neuf questions, dont la surveillance vidéo (CL-V01). · Affirmations : CL-112, CL-124, CL-128, CL-21, CL-28, CL-30, CL-90, CL-96, CL-AP06, CL-AP07, CL-L04, CL-PL02, CL-V01, CL-V02, CL-V03, CL-V06, CL-V07*
+
+Réglages : `emit_jsonld=false`, `tone=sable`, `anchor_id=limites`
 
 ## Une IA honnête sur ses limites.
 
@@ -143,9 +187,9 @@ Un logiciel qui accomplit une tâche à votre place, avec les outils et les docu
 
 Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément.
 
-#### Nexora Code, Corpus, Quanta et Helix sont-ils disponibles ?
+#### Nexora Code, RAG, Corpus, Quanta et Helix sont-ils disponibles ?
 
-Aucune disponibilité ni date n'est annoncée à ce stade. Nexora WorkStudio est présenté en démonstration sur demande ; aucune offre en libre-service n'est ouverte.
+Pas encore. Nexora Code, un agent de code hébergé sur nos serveurs, et Nexora RAG sont en préparation, sans date. Nexora Corpus, Quanta et Helix n'ont aucune disponibilité ni date annoncée. Nexora WorkStudio est disponible : il s'ouvre depuis votre compte tant qu'il reste un crédit et se présente en démonstration sur demande.
 
 #### Existe-t-il une solution pour la construction ?
 
@@ -155,13 +199,25 @@ Oui : OPSYS-AI coordonne dix départements pour les entreprises de construction
 
 Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation : ce n'est pas un produit disponible, et aucune installation n'existe encore. Sa conception vise une analyse des images sur un serveur chez le client. Nexora Vision n'offre pas de reconnaissance faciale, et chaque alerte demande la vérification d'une personne. La Loi 25 exige notamment d'informer les personnes avant la collecte ; le détail est sur la page Nexora Vision.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Cartes (`block_cards`)
 
-*Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance. · Affirmations : CL-V01, CL-G01, CL-87*
+*Renvois vers les pages qui détaillent : données, Vision, Croissance, confiance. · Affirmations : CL-87, CL-AP06, CL-AP07, CL-G01, CL-PL01, CL-T06, CL-V01*
 
-Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=plus-loin`
+Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=plus-loin`
 
 ## Aller plus loin.
+
+#### Tarifs et crédits.
+
+Comment fonctionnent les crédits, la recharge et l'espace disque. Les prix s'y afficheront à leur publication.
+
+→ [Voir les tarifs à venir](/tarifs/)
+
+#### Nexora Apps.
+
+Agent de code, RAG, bot, WebPilot, Privacy Router : chaque outil avec son état réel, sans date inventée.
+
+→ [Voir les outils](/apps/)
 
 #### Vos données.
 
@@ -187,7 +243,7 @@ Ce que le logiciel permet déjà et les documents que nous préparons.
 
 → [Voir les preuves](/centre-de-confiance/)
 
-### Bloc 6 — Appel à l'action (`block_cta`)
+### Bloc 7 — Appel à l'action (`block_cta`)
 
 *CTA final de la FAQ. · Affirmations : CL-01*
 
