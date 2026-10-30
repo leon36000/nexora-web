@@ -52,16 +52,17 @@ Ce qui n'est **pas** affecté : la garde de publication et les contrôles d'appr
 
 > **Action du fondateur (§16 de la conception, point 1)** : demander la clé sur https://directus.com/oig (moins de 5 M$ de revenus et moins de 50 employés), puis la placer dans `LICENSE_KEY` de `deploy/compose.yml` (et `PUBLIC_URL` doit être l'adresse définitive). Ensuite, **relancer `apply.ts`** : il détecte les règles et applique les filtres du tableau. *Le mode « avec règles » n'a pas pu être essayé sur une instance réelle faute de clé ; les règles sont déclarées dans `access.ts` et couvertes par des tests de structure.*
 >
-> Le palier Core limite aussi à 3 sièges (administrateur + Éditeur + Relecteur ; les comptes API ne comptent pas) et à 25 collections. Le schéma en utilise **22** (3 de marge). Je n'ai pas contourné ces limites.
+> Le palier Core limite aussi à 3 sièges (administrateur + Éditeur + Relecteur ; les comptes API ne comptent pas) et à 25 collections. Le schéma en utilise **25** (aucune marge : toute nouvelle collection exige la licence ou la fusion de deux collections ; `credit_packs`, les forfaits de recharge, a pris la dernière place le 30/10/2026). Je n'ai pas contourné ces limites.
 
 ## 3. Schéma
 
-Dossiers du panneau : `nexora_site`, `nexora_pages`, `nexora_validation`. **22 collections** :
+Dossiers du panneau : `nexora_site`, `nexora_pages`, `nexora_validation`. **25 collections** (dont `credit_packs`, forfaits de recharge) :
 
 | Groupe | Collections |
 |---|---|
 | Site | `languages` (code BCP 47 en clé : `fr-CA` par défaut, `en-CA`), `site_settings` (singleton) + `site_settings_translations`, `navigation` + `navigation_translations` |
 | Pages | `pages` (versions de contenu activées) + `pages_translations`, `pages_blocks` (jonction M2A) |
+| Offres et recharge | `subscription_plans` + `subscription_plans_translations` (champs `included_credits_cents`, `included_storage_gb`), `credit_packs` (forfaits de recharge, sans traduction) |
 | Six blocs (D5) | `block_hero`, `block_section`, `block_cards`, `block_pricing`, `block_faq`, `block_cta`, chacun avec sa table `*_translations` |
 | Validation | `claims` (registre privé), `approvals` |
 

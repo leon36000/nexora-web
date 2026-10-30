@@ -28,7 +28,7 @@ bash deploy/init-env.sh                                   # génère deploy/.env
 bash scripts/init-dev-env.sh                              # génère .env et web/.env.local
 docker compose -p nexorasite -f deploy/compose.yml --env-file deploy/.env up -d db   # base prête en ~6 s
 bun install --frozen-lockfile
-bun packages/db/src/migrate-cli.ts                        # applique les 27 migrations (0000 à 0026)
+bun packages/db/src/migrate-cli.ts                        # applique les 28 migrations (0000 à 0027)
 (cd web && npx vitest run)                                # environ 1 970 tests ; les paquets (db, privacy, webpilot, net) et le worker ont leurs propres suites : `npx vitest run` dans chaque dossier ; le CMS : `bun test` dans cms/
 ```
 
@@ -61,5 +61,5 @@ Prérequis du chargement : un taux de change USD→CAD approuvé (module « Mod�
 La base `app_demo` (démo sur gx10) contient des éléments d'essai posés le 29/10/2026 pour prouver WorkStudio intégré de bout en bout. Ils ne sont pas dans Git. À retirer avant d'ouvrir à de vrais clients :
 
 - le modèle `nexora/essai-dev` (non listé, **prix fictifs**), le fournisseur `dev-litellm`, sa référence du Coffre `litellm.dev-upstream` et le taux de change de développement (1,40) : les remplacer par les vraies clés de fournisseurs et un taux approuvé (panneau Directus, module « Modèles ») ;
-- la variable `WORKSTUDIO_DEFAULT_MODEL=nexora/essai-dev` et `WORKSTUDIO_REQUIRE_SUBSCRIPTION=false` du drop-in `~/.config/systemd/user/nexorasite-demo.service.d/workstudio.conf` (en production : modèle réel, abonnement exigé) ;
+- la variable `WORKSTUDIO_DEFAULT_MODEL=nexora/essai-dev` et `WORKSTUDIO_REQUIRE_SUBSCRIPTION=false` (ancien nom de `WORKSTUDIO_REQUIRE_CREDITS=false`) du drop-in `~/.config/systemd/user/nexorasite-demo.service.d/workstudio.conf` (en production : modèle réel, crédits exigés : solde supérieur à zéro) ;
 - le compte `essai-sso@nexora.test`, son organisation et son crédit de test de 5 $ (écriture `dev_test_credit`), et les usages de test.
