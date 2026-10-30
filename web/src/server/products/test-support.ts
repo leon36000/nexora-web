@@ -69,6 +69,10 @@ export class FakeCodeWorkspace implements CodeWorkspaceService {
     this.state = workspaceState({ status: "starting" });
     return { ok: true as const, state: this.state };
   }
+  async remove(input: { orgId: string; userId: string }) {
+    this.calls.push({ method: "remove", ...input });
+    this.state = workspaceState();
+  }
   cli() {
     return {
       installCommand: "curl -fsSL https://example.test/install | sh",

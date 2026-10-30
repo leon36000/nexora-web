@@ -133,4 +133,42 @@ describe("/api/account/code/workspace : l'environnement de la personne", () => {
     });
     expect((await handleCodeWorkspace(post(url, {}), deps)).status).toBe(429);
   });
+
+  it("DELETE supprime l'environnement de CETTE personne (origine contrôlée), 204", async () => {
+    const { deps, code } = setup({ ctx: member });
+    const res = await handleCodeWorkspace(
+      new Request(`${SITE}${url}`, {
+        method: "DELETE",
+        headers: { origin: SITE },
+      }),
+      deps,
+    );
+    expect(res.status).toBe(204);
+    expect(code.calls).toEqual([
+      { method: "remove", orgId: "org1", userId: "u2" },
+    ]);
+  });
+
+  it("DELETE d'une autre origine : 403 ; service sans suppression : 501", async () => {
+    const a = setup();
+    const evil = await handleCodeWorkspace(
+      new Request(`${SITE}${url}`, {
+        method: "DELETE",
+        headers: { origin: "https://evil.example" },
+      }),
+      a.deps,
+    );
+    expect(evil.status).toBe(403);
+    expect(a.code.calls).toEqual([]);
+    const b = setup();
+    (b.code as { remove?: unknown }).remove = undefined;
+    const none = await handleCodeWorkspace(
+      new Request(`${SITE}${url}`, {
+        method: "DELETE",
+        headers: { origin: SITE },
+      }),
+      b.deps,
+    );
+    expect(none.status).toBe(501);
+  });
 });
