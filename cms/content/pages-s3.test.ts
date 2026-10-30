@@ -693,7 +693,9 @@ describe("S3 : VÉRITÉ", () => {
   };
   // Mots permis seulement sur certaines pages, avec leurs conditions (contrôlées dans pages-vague2.test.ts).
   const ONLY_ON: Record<string, string[]> = {
-    gratuité: ["croissance", "faq", "confidentialite", "conditions"],
+    // « suite » : Nexora Code est « conçu pour être gratuit » (CL-AP01), annoncé « Bientôt » et jamais livré ; la phrase
+    // dit aussitôt que les modèles consomment des crédits (30/10/2026).
+    gratuité: ["croissance", "faq", "confidentialite", "conditions", "suite"],
     // Le comparatif cite son concurrent (faits datés et sourcés) ; le gabarit de publication nomme les réseaux visés.
     "marque ou prestataire non qualifié": [
       "croissance",

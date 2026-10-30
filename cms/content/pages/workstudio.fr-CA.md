@@ -7,13 +7,13 @@
 - Page : `workstudio` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/workstudio/` · slug : `workstudio`
 - Titre SEO (44 caractères) : WorkStudio : plateforme d'agents IA pour PME
-- Description SEO (155 caractères) : Plateforme d'agents IA pour PME : un Copilote qui bâtit vos flux, documents lus, voix, comparaison de modèles. Sans code, validation humaine, traces. Démo.
+- Description SEO (152 caractères) : Concevez des agents d'IA en français, sans code : un Copilote bâtit vos flux, vos documents répondent, une personne valide. S'ouvre depuis votre compte.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de WorkStudio : la pointe de l'IA, extrêmement puissante et extrêmement simple, avec validation humaine. · Affirmations : CL-20, CL-21, CL-110, CL-P01, CL-P02*
+*Promesse de WorkStudio : la pointe de l'IA, extrêmement puissante et extrêmement simple, avec validation humaine. · Affirmations : CL-20, CL-21, CL-110, CL-P01, CL-P02, CL-PL02*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -27,13 +27,13 @@ Des agents (des logiciels qui accomplissent une tâche avec les outils que vous 
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Le rêve en six gestes : la pointe de l'IA, en clair. Les mots d'ambition sont des énoncés promotionnels (CL-P03) ; la preuve est la liste. · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-92, CL-25, CL-101, CL-102, CL-94, CL-97, CL-21*
+*Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03). · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-92, CL-25, CL-101, CL-102, CL-94, CL-97, CL-21*
 
 Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=pointe`
 
 ## La pointe de l'IA, en clair.
 
-Un seul outil, en français, pour ce que l'IA fait de plus récent. Les grands mots ne prouvent rien ; la liste ci-dessous, oui.
+Un seul outil, en français, pour ce que l'IA sait faire de plus récent. Voici six gestes concrets.
 
 #### Décrivez. Le Copilote construit.
 
@@ -253,6 +253,21 @@ Une commande sur un serveur Docker (un outil qui empaquette les logiciels), sous
 
 ### Bloc 9 — Section (`block_section`)
 
+*Comment WorkStudio s'ouvre et ce qu'il consomme : un compte, des crédits (modèles), de l'espace ; la vente n'est pas ouverte. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T09, CL-22, CL-12*
+
+Réglages : `media_position=none`, `tone=sombre`, `anchor_id=compte`
+
+## Ouvert depuis votre compte.
+
+WorkStudio s'ouvre depuis le panneau « Mes outils » de votre compte Nexora AI, tant qu'il vous reste au moins un crédit. Un abonnement donne des crédits chaque mois et de l'espace disque ; sans abonnement, vous rechargez des crédits. Les prix ne sont pas encore publiés : ils s'afficheront sur la page [Tarifs](/tarifs/) dès leur publication.
+
+- **Les modèles consomment des crédits.** Chaque modèle qu'un agent ou un flux appelle consomme des crédits : un crédit vaut un cent canadien de jetons, au prix du catalogue. Les jetons de chaque exécution figurent dans ses traces, et des plafonds mensuels bornent la dépense.
+- **L'espace est compté pour l'organisation.** L'espace disque de votre offre est partagé entre vos produits. Quand il est plein, l'écriture est refusée avec un message clair ; lire et supprimer restent permis.
+- **Sans crédits, rien ne s'efface.** Les appels aux modèles s'arrêtent avec un message qui renvoie vers la recharge et l'abonnement. Vos agents, vos flux et vos documents restent là ; vous rechargez, et tout reprend.
+- **Pas encore en vente.** Les comptes et les paiements ne fonctionnent qu'en mode test. Une démonstration, sur des données fictives, montre l'outil en attendant.
+
+### Bloc 10 — Section (`block_section`)
+
 *Agents hébergés : les agents publiés au catalogue de Nexora AI s'appellent par l'API. La page /agents n'est plus dans les menus, WorkStudio y renvoie. · Affirmations : CL-27, CL-H01, CL-12*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=agents-heberges`
@@ -263,9 +278,9 @@ Un agent conçu dans WorkStudio et publié au catalogue de Nexora AI s'appelle a
 
 - **Une clé, un solde.** L'agent s'appelle avec la clé API et le solde de crédits de Nexora AI, au coût réel de chaque exécution.
 - **L'hébergement est indiqué.** La fiche de chaque agent dit où tourne son instance, quelles sont ses limites et comment l'appeler.
-- **Pas encore en vente.** Le libre-service n'est pas encore ouvert à la vente : les comptes et les paiements ne fonctionnent qu'en mode test.
+- **Pas encore en vente.** La vente n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test, et aucun prix n'est publié.
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Limites dites franchement. · Affirmations : CL-83, CL-109, CL-111, CL-110, CL-103*
 
@@ -287,9 +302,9 @@ Les autres outils de Nexora AI (agent de code, RAG, WebPilot) sont réunis dans 
 - **Les modèles de départ sont adaptés au Québec, à valider.** Ils sont rédigés pour le Québec (dollars canadiens, TPS et TVQ), mais ne garantissent aucune conformité fiscale ou légale : votre comptable ou votre conseiller valide le résultat.
 - **Les connexions se qualifient.** Certains services demandent qu'un administrateur enregistre d'abord une application chez le fournisseur, et une adresse HTTPS publique pour l'instance.
 
-### Bloc 11 — FAQ (`block_faq`)
+### Bloc 12 — FAQ (`block_faq`)
 
-*FAQ propre à WorkStudio. · Affirmations : CL-12, CL-20, CL-26, CL-06, CL-27, CL-E03, CL-E04, CL-E05, CL-P02*
+*FAQ propre à WorkStudio. · Affirmations : CL-06, CL-10, CL-12, CL-20, CL-26, CL-27, CL-E03, CL-E04, CL-E05, CL-P02, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T04, CL-T06, CL-T09*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -298,6 +313,14 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 #### Puis-je le voir à l'œuvre avant de m'engager ?
 
 Oui : nous proposons une démonstration, sur des données fictives, puis nous parlons de votre cas. Le libre-service n'est pas encore ouvert à la vente : les comptes et les paiements ne fonctionnent qu'en mode test.
+
+#### Combien coûte WorkStudio ?
+
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic. L'usage de la plateforme : en crédits, car les modèles que vos agents appellent en consomment ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits dans WorkStudio ?
+
+Les appels aux modèles d'IA : la réponse d'un agent, la lecture d'un document, la transcription d'un enregistrement. Un crédit vaut un cent canadien de jetons, au prix du catalogue de modèles, et les jetons de chaque exécution figurent dans ses traces. Quand il ne reste plus de crédits, les appels sont refusés et rien n'est supprimé : vous rechargez, et tout reprend.
 
 #### Faut-il savoir programmer ?
 
@@ -319,14 +342,14 @@ Oui, par des connecteurs, par une API au format OpenAI, ou en affichant un agent
 
 L'installation tient en une commande sur un serveur Docker ; la mise en service d'un cas dépend de votre situation, sans délai universel.
 
-### Bloc 12 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
-*CTA : démonstration. · Affirmations : CL-12*
+*CTA : démonstration. · Affirmations : CL-12, CL-PL03*
 
 Réglages : `tone=sombre`
 
 ## Voyez WorkStudio à l'œuvre.
 
-Nous préparons une démonstration sur des données fictives, puis nous parlons de votre premier cas. Vous repartez en sachant ce que l'outil fait, et ce qu'il ne fait pas.
+Nous préparons une démonstration sur des données fictives, puis nous parlons de votre premier cas. Vous repartez en sachant ce que l'outil fait, ce qu'il ne fait pas, et comment les crédits se comptent.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Lire la méthode](/methode/)
