@@ -40,6 +40,11 @@ export interface CodeWorkspaceService {
     | { ok: true; state: CodeWorkspaceState }
     | { ok: false; reason: CodeStartFailure }
   >;
+  /**
+   * Supprime l'environnement de la personne (conteneur, volume, clé dédiée) et libère l'espace compté : c'est le geste
+   * qui lui permet de « libérer de l'espace » quand `start` répond `quota_exceeded`. Absent : la route répond 501.
+   */
+  remove?(input: { orgId: string; userId: string }): Promise<void>;
   cli(): CodeCliInfo;
 }
 

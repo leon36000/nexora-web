@@ -47,13 +47,25 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
-    // Fichier de clé IndexNow à la racine (`/<clé de 32 hex>.txt`), servi seulement si la clé correspond.
-    return [
-      {
-        source: "/:key([a-f0-9]{32}).txt",
-        destination: "/api/seo/indexnow-key/:key",
-      },
-    ];
+    return {
+      // Interface web de Nexora Code sur son origine dédiée : `<id de 32 hex>.<suffixe>/…` → `/code/ws/<id>/…`, TOUS les
+      // chemins (fichiers statiques compris). Le suffixe est vérifié à l'exécution par la route (NEXORA_CODE_HOST_SUFFIX).
+      beforeFiles: [
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "(?<wsid>[0-9a-f]{32})\\..+" }],
+          destination: "/code/ws/:wsid/:path*",
+        },
+      ],
+      // Fichier de clé IndexNow à la racine (`/<clé de 32 hex>.txt`), servi seulement si la clé correspond.
+      afterFiles: [
+        {
+          source: "/:key([a-f0-9]{32}).txt",
+          destination: "/api/seo/indexnow-key/:key",
+        },
+      ],
+      fallback: [],
+    };
   },
   turbopack: {
     rules: {

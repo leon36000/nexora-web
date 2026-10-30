@@ -29,7 +29,8 @@ import {
  * CSP : politique de base sur toutes les pages (voir lib/security-headers.ts) ; sur les pages de la bulle WorkStudio,
  * l'origine configurée s'y ajoute (voir lib/embed-policy.ts) ; sur le tableau de bord et la carte VPS de l'espace client,
  * les pages hébergées de Stripe s'ajoutent à `form-action` seulement (voir `billingFormCsp`). Les fichiers statiques (avec extension) et `/_next` ne passent pas ici (matcher) ;
- * `/api`, `/v1` et `/og` n'y passent que pour le contrôle des adresses mal formées (400).
+ * `/api`, `/v1`, `/og` et `/code/ws` (mandataire de l'environnement Nexora Code : toutes les méthodes y passent) n'y passent que
+ * pour le contrôle des adresses mal formées (400).
  */
 
 /** Pourcentage invalide (`%E0%A4%A`, `%ff`) ou octet nul : Next répond 500 « Internal Server Error » à ces adresses. */
@@ -41,7 +42,8 @@ function isMalformedPath(pathname: string): boolean {
   }
 }
 
-const API_PREFIX = /^\/(?:api|v1|og)(?:\/|$)/;
+const DEDICATED_HOST = /^[0-9a-f]{32}\./i;
+const API_PREFIX = /^\/(?:api|v1|og|code\/ws)(?:\/|$)/;
 const PAGE_REFUSED_METHODS = new Set(["PUT", "PATCH", "DELETE"]);
 
 export async function proxy(request: NextRequest) {
@@ -56,6 +58,10 @@ export async function proxy(request: NextRequest) {
         "content-security-policy": API_CSP,
       },
     });
+  // Origine dédiée de l'interface de Nexora Code (`<32 hex>.<suffixe>`) : ni langue, ni CSP de page (c'est l'application de
+  // l'environnement) ; `next.config.ts` réécrit vers `/code/ws/<id>/…`, la route vérifie le suffixe et le cookie.
+  if (DEDICATED_HOST.test(request.headers.get("host") ?? ""))
+    return NextResponse.next();
   // API d'administration : trop de jetons faux depuis une même adresse -> 429 (un jeton valide passe toujours).
   if (ADMIN_PATH.test(pathname)) {
     const limited = throttleAdminFailures(
@@ -76,7 +82,7 @@ export async function proxy(request: NextRequest) {
         "content-security-policy": API_CSP,
       },
     });
-  // /api, /v1 et /og ne passent ici que pour le contrôle ci-dessus : ni langue, ni CSP de page (la leur vient de next.config).
+  // /api, /v1, /og et /code/ws ne passent ici que pour le contrôle ci-dessus : ni langue, ni CSP de page (la leur vient de next.config).
   if (API_PREFIX.test(pathname)) return NextResponse.next();
   // Aperçu (Draft Mode) : le cookie `__prerender_bypass` est constant et sans expiration ; il n'est honoré que
   // accompagné de la session signée de 30 minutes posée par /api/preview. Sinon on l'efface (navigation : par une redirection

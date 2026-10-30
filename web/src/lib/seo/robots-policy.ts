@@ -256,7 +256,7 @@ export const TRAINING_BOTS = namesOf("training");
 export const USER_ACTION_BOTS = namesOf("user-action");
 
 /**
- * Chemins jamais utiles aux moteurs : API, passerelle, espace client (fr et en).
+ * Chemins jamais utiles aux moteurs : API, passerelle, espace client, Nexora Code (fr et en).
  * `/og/` reste ouvert : les aperçus sociaux lisent l'image. `/<clé IndexNow>.txt` reste ouvert aussi.
  */
 export const PRIVATE_PATHS = [
@@ -264,6 +264,9 @@ export const PRIVATE_PATHS = [
   "/v1/",
   "/compte",
   "/en/compte",
+  // Nexora Code : autorisation d'un appareil (/code/device) et mandataire de l'environnement hébergé (/code/ws).
+  "/code/",
+  "/en/code/",
 ] as const;
 
 export type TrainingPolicy = "allow" | "disallow";

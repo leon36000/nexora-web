@@ -1,6 +1,8 @@
+import { createWorkspaceDriver, resolveCodeHosting } from "@nexora/code";
 import { createDb, enqueue } from "@nexora/db";
 import { loadRootEnv } from "@nexora/db/env";
 import { createLogger } from "@nexora/log";
+import { usageClientFromEnv } from "./code/handlers.ts";
 import { defaultRegistry } from "./handlers.ts";
 import { startScheduler } from "./scheduler.ts";
 import { SWEEP_EVERY_MS, vpsDepsFromEnv } from "./vps-handlers.ts";
@@ -24,9 +26,29 @@ else
     type: "vps.sweep",
     idempotencyKey: `vps-sweep:${Math.floor(Date.now() / SWEEP_EVERY_MS)}`,
   });
+// Nexora Code hébergé : arrêt après inactivité et mesure de l'espace. Désactivé sans pilote Docker réel, sans client du
+// site (NEXORA_APP_INTERNAL_URL, NEXORA_APP_ADMIN_TOKEN) ; l'essai à blanc vit dans le processus du site seulement.
+const hosting = resolveCodeHosting(
+  process.env,
+  process.env.SITE_URL?.trim() || "http://localhost:3500",
+);
+const usage = usageClientFromEnv(process.env);
+const code =
+  hosting.ok && hosting.config.mode === "docker" && usage
+    ? {
+        driver: createWorkspaceDriver(hosting.config, (line) => log.info(line)),
+        usage,
+        image: hosting.config.image,
+        idleMinutes: hosting.config.idleMinutes,
+      }
+    : null;
+if (hosting.ok && !code)
+  log.warn(
+    "Nexora Code hébergé : balayage désactivé (pilote « docker » et NEXORA_APP_INTERNAL_URL / NEXORA_APP_ADMIN_TOKEN requis)",
+  );
 const worker = new Worker({
   db: handle.db,
-  registry: defaultRegistry({ db: handle.db, log, vps }),
+  registry: defaultRegistry({ db: handle.db, log, vps, code }),
   logger: log,
   concurrency: Number(process.env.WORKER_CONCURRENCY ?? 4),
   pollIntervalMs: Number(process.env.WORKER_POLL_MS ?? 1000),
@@ -36,7 +58,7 @@ const worker = new Worker({
 const scheduler =
   process.env.WORKER_SCHEDULER === "off"
     ? null
-    : startScheduler({ db: handle.db, log });
+    : startScheduler({ db: handle.db, log, codeSweep: code !== null });
 
 let stopping = false;
 async function shutdown(signal: string) {

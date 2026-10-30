@@ -403,7 +403,14 @@ describe("robots", () => {
     }
   });
 
-  const PRIVATE = ["/api/", "/v1/", "/compte", "/en/compte"];
+  const PRIVATE = [
+    "/api/",
+    "/v1/",
+    "/compte",
+    "/en/compte",
+    "/code/",
+    "/en/code/",
+  ];
   const byAgentOf = (r: ReturnType<typeof buildRobots>) =>
     new Map(rules(r).map((x) => [x.userAgent as string, x]));
 

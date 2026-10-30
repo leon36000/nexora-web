@@ -169,7 +169,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
   {
     route: "api/account/code/workspace",
     kind: "session",
-    why: "Environnement Nexora Code de la personne connectée (état, démarrage) : session obligatoire, origine contrôlée au démarrage ; produit éteint tant que NEXORA_PRODUCT_CODE l'est",
+    why: "Environnement Nexora Code de la personne connectée (état, démarrage, suppression) : session obligatoire, origine contrôlée au démarrage et à la suppression ; produit éteint tant que NEXORA_PRODUCT_CODE l'est",
     probes: [
       {
         label: "lecture sans session",
@@ -184,6 +184,106 @@ export const ROUTE_GUARDS: RouteGuard[] = [
         headers: { ...JSON_H, origin: "https://evil.example" },
         body: "{}",
         expect: [401, 403],
+      },
+    ],
+  },
+  {
+    route: "api/admin/code/usage",
+    kind: "admin-token",
+    why: "Comptage de l'espace des environnements Nexora Code par le worker (tâche code.sweep) : jeton d'administration seulement",
+    probes: adminProbes("POST", "/api/admin/code/usage"),
+  },
+  {
+    route: "api/code/credits",
+    kind: "api-key",
+    why: "Solde de crédits lu par le CLI de Nexora Code : clé cliente nxk_ (organisation = celle de la clé), même réponse pour une clé absente, inconnue ou révoquée",
+    probes: [
+      {
+        label: "sans clé",
+        method: "GET",
+        path: "/api/code/credits",
+        expect: [401, 429],
+      },
+      {
+        label: "clé inventée",
+        method: "GET",
+        path: "/api/code/credits",
+        headers: { authorization: `Bearer nxk_${"a".repeat(43)}` },
+        expect: [401, 429],
+      },
+    ],
+  },
+  {
+    route: "api/code/device/start",
+    kind: "public",
+    why: "Connexion par code d'appareil : demande d'un code, sans authentification par construction, limitée par adresse (10/min, 60/h) ; ne rend que des secrets neufs",
+    probes: [],
+  },
+  {
+    route: "api/code/device/poll",
+    kind: "public",
+    why: "Connexion par code d'appareil : sondage du CLI, protégé par le code d'appareil (256 bits, conservé par empreinte) ; la clé nxk_ n'est remise qu'une fois ; limité par code et par adresse",
+    probes: [],
+  },
+  {
+    route: "api/code/device/approve",
+    kind: "session",
+    why: "Approbation d'un appareil Nexora Code : session, courriel vérifié, 2FA du personnel, origine contrôlée, essais de code limités ; réponse identique pour tout code invalide",
+    probes: [
+      {
+        label: "sans session",
+        method: "POST",
+        path: "/api/code/device/approve",
+        headers: { ...JSON_H, origin: "https://evil.example" },
+        body: '{"user_code":"NXC-BCDF-2345"}',
+        expect: [401, 403],
+      },
+    ],
+  },
+  {
+    route: "api/code/ws-auth",
+    kind: "session",
+    why: "Décision d'accès d'un mandataire de bordure aux environnements Nexora Code (WebSocket) : session de la personne propriétaire ; réseau interne seulement ; 404 tant que le produit est éteint",
+    probes: [
+      {
+        label: "sans session",
+        method: "GET",
+        path: "/api/code/ws-auth?id=00000000000000000000000000000000",
+        expect: [401, 404],
+      },
+    ],
+  },
+  {
+    route: "code/ws/[id]/[[...path]]",
+    kind: "session",
+    why: "Mandataire de l'environnement Nexora Code : session de la personne propriétaire (404 identique pour tout autre), origine contrôlée pour les méthodes qui modifient, jamais de page HTML de l'environnement ; 404 tant que le produit est éteint",
+    probes: [
+      {
+        label: "lecture sans session",
+        method: "GET",
+        path: "/code/ws/00000000000000000000000000000000/global/health",
+        expect: [401, 404],
+      },
+      {
+        label: "écriture d'une autre origine",
+        method: "POST",
+        path: "/code/ws/00000000000000000000000000000000/session",
+        headers: { ...JSON_H, origin: "https://evil.example" },
+        body: "{}",
+        expect: [401, 403, 404],
+      },
+    ],
+  },
+  {
+    route: "api/account/code/open",
+    kind: "session",
+    why: "Ouverture de l'interface web de Nexora Code : session de la personne propriétaire, envoyée sur son hôte dédié avec un billet d'entrée de 60 s ; aucune écriture",
+    probes: [
+      {
+        label: "sans session",
+        method: "GET",
+        path: "/api/account/code/open",
+        expect: [401, 404],
       },
     ],
   },
