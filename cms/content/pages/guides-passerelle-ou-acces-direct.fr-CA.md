@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Passerelle ou accès direct : comment choisir.
 
-Une passerelle ajoute un intermédiaire et en retour une clé, un format et une mesure uniques. Voici les critères, côte à côte, et les cas où elle ne sert à rien.
+Une passerelle ajoute un intermédiaire et vous rend en échange une clé, un format et une mesure uniques. Voici les critères, côte à côte, et les cas où elle ne sert à rien.
 
 [Voir la passerelle de Nexora AI](/passerelle-api-modeles/) · [Planifier un diagnostic](/contact/?sujet=diagnostic)
 
@@ -43,13 +43,13 @@ Une passerelle de modèles est un point d'accès unique à plusieurs modèles d'
 
 ### Bloc 3 — Section (`block_section`)
 
-*Tableau des critères, sans marque : huit critères, deux colonnes. La latence n'est pas chiffrée (aucune mesure). · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-M08*
+*Tableau des critères, sans marque : huit critères, deux colonnes. La latence n'est pas chiffrée (aucune mesure). · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-M08, CL-T02*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=criteres`
 
 ## Les critères, côte à côte.
 
-<table><caption>Accès direct et passerelle, critère par critère</caption><thead><tr><th>Critère</th><th>Accès direct</th><th>Passerelle</th></tr></thead><tbody><tr><th>Nombre de fournisseurs</th><td>Un seul : le montage le plus simple.</td><td>Plusieurs, derrière une seule adresse.</td></tr><tr><th>Clé et plafonds</th><td>Une clé par fournisseur, avec les réglages de chacun.</td><td>Une clé, avec plafond de dépense, expiration et limite de débit réglés au même endroit (Nexora AI API les offre).</td></tr><tr><th>Changer de modèle</th><td>Réécrire l'appel si le format du fournisseur diffère.</td><td>Changer l'identifiant du modèle dans la requête, si la passerelle suit le format que votre code parle.</td></tr><tr><th>Mesure de la consommation</th><td>Un relevé par fournisseur.</td><td>Un relevé unique, par jour et par modèle.</td></tr><tr><th>Latence ajoutée</th><td>Aucune : un seul saut.</td><td>Un saut de plus. Nexora AI n'a publié aucune mesure de cette latence.</td></tr><tr><th>Lieu de traitement</th><td>Celui du fournisseur, à lire dans son contrat.</td><td>Celui de chaque fournisseur derrière la passerelle ; la fiche de chaque modèle de Nexora AI l'affiche.</td></tr><tr><th>Contrat</th><td>Directement avec le fournisseur.</td><td>Avec l'exploitant de la passerelle, qui a ses propres contrats.</td></tr><tr><th>Frais</th><td>Le prix du fournisseur.</td><td>Le prix de la passerelle : le mode de calcul varie, à lire avant de choisir.</td></tr></tbody></table>
+<table><caption>Accès direct et passerelle, critère par critère</caption><thead><tr><th>Critère</th><th>Accès direct</th><th>Passerelle</th></tr></thead><tbody><tr><th>Nombre de fournisseurs</th><td>Un seul : le montage le plus simple.</td><td>Plusieurs, derrière une seule adresse.</td></tr><tr><th>Clé et plafonds</th><td>Une clé par fournisseur, avec les réglages de chacun.</td><td>Une clé, avec plafond de dépense, expiration et limite de débit réglés au même endroit (Nexora AI API les offre).</td></tr><tr><th>Changer de modèle</th><td>Réécrire l'appel si le format du fournisseur diffère.</td><td>Changer l'identifiant du modèle dans la requête, si la passerelle suit le format que votre code parle.</td></tr><tr><th>Mesure de la consommation</th><td>Un relevé par fournisseur.</td><td>Un relevé unique, par jour et par modèle.</td></tr><tr><th>Latence ajoutée</th><td>Aucune : un seul saut.</td><td>Un saut de plus. Nexora AI n'a publié aucune mesure de cette latence.</td></tr><tr><th>Lieu de traitement</th><td>Celui du fournisseur, à lire dans son contrat.</td><td>Celui de chaque fournisseur derrière la passerelle ; la fiche de chaque modèle de Nexora AI l'affiche.</td></tr><tr><th>Contrat</th><td>Directement avec le fournisseur.</td><td>Avec l'exploitant de la passerelle, qui a ses propres contrats.</td></tr><tr><th>Frais</th><td>Le prix du fournisseur.</td><td>Le prix de la passerelle. Chez Nexora AI, l'API consomme des crédits (un crédit vaut un cent canadien de jetons au prix du catalogue) ; ailleurs, le mode de calcul varie : à lire avant de choisir.</td></tr></tbody></table>
 
 ### Bloc 4 — Cartes (`block_cards`)
 
@@ -77,7 +77,7 @@ Chaque fiche de modèle dit où il est hébergé et quelle politique de données
 
 #### Un coût lisible.
 
-Le prix en dollars canadiens par million de jetons, et le coût de chaque réponse complète.
+Les prix en dollars canadiens par million de jetons, la consommation en crédits réglée au coût réel, et le coût de chaque réponse complète.
 
 → [Voir les modèles](/modeles/)
 
@@ -109,7 +109,7 @@ Le guide [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/) déta
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Quand Nexora AI n'est pas le bon choix : quatre cas, dits sans détour. · Affirmations : CL-12, CL-86, CL-S01, CL-02*
+*Quand Nexora AI n'est pas le bon choix : quatre cas, dits sans détour. · Affirmations : CL-12, CL-86, CL-S01, CL-02, CL-T01, CL-T06*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
@@ -125,7 +125,9 @@ La passerelle ne sert que les modèles publiés dans son catalogue.
 
 #### Vous voulez acheter aujourd'hui.
 
-Le libre-service n'est pas ouvert à la vente : les comptes et les paiements ne fonctionnent qu'en mode test.
+La vente n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié. L'API consomme des crédits qu'un abonnement donne chaque mois ou que l'on recharge.
+
+→ [Voir les tarifs à venir](/tarifs/)
 
 #### Un niveau de service est requis.
 
@@ -133,7 +135,7 @@ Aucun niveau de service n'est annoncé à ce jour ; la disponibilité et les d�
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : une passerelle en vaut-elle la peine, latence, clés, lieu, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S05, CL-M08, CL-E08, CL-12*
+*Questions du guide : une passerelle en vaut-elle la peine, latence, clés, lieu, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S05, CL-M08, CL-E08, CL-12, CL-T01, CL-T02, CL-T03, CL-T06, CL-T09, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -157,7 +159,11 @@ Chez le fournisseur du modèle choisi. La fiche de chaque modèle de Nexora AI i
 
 #### Puis-je acheter l'accès à Nexora AI API aujourd'hui ?
 
-Pas en libre-service : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté. Pour un projet, écrivez-nous : nous commençons par un diagnostic.
+Pas en libre-service : la vente n'est pas ouverte. Les comptes et les paiements ne fonctionnent qu'en mode test, aucun paiement réel n'est accepté et aucun prix n'est publié ; les prix s'afficheront sur la page Tarifs. Pour un projet, écrivez-nous : nous commençons par un diagnostic.
+
+#### Comment Nexora AI API compte-t-elle la consommation ?
+
+En crédits : un crédit vaut un cent canadien de jetons au prix du catalogue. Un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les crédits d'abonnement expirent à la fin de leur période ; ceux de recharge n'expirent pas. Quand il n'en reste plus, l'API refuse l'appel avec l'erreur 402 insufficient_quota et un message qui renvoie vers la recharge et l'abonnement.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

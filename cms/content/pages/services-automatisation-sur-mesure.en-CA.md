@@ -37,9 +37,9 @@ Custom work begins where standard solutions stop. Three built examples that do n
 
 Does yours look like one of them, or none? [Plan a diagnosis](/en/contact/?sujet=diagnostic).
 
-- **A contractor finds their quotes again.** They want to start from older, comparable quotes to prepare a new one, and track real costs afterward. We would connect the quote database, an estimating agent and an approval before anything is sent. For construction, <a href="/en/opsys-ai/">OPSYS-AI</a> aims at this path, as a product in development that shows every availability level.
-- **A distributor processes its suppliers' documents.** Delivery slips, order confirmations and invoices arrive in different formats. The workflow reads them, compares them with each other and flags what does not match, before any action.
-- **A firm prepares case files.** It gathers authorized documents, draws a summary and a list of points to check from them, then hands over to the responsible person. Access rights are defined before the build.
+- **A contractor finds their quotes again.** They want to start from older, comparable quotes to prepare a new one, then track real costs afterward. We would connect the quote database, an estimating agent and an approval step: the estimator approves the price before anything is sent. For construction, <a href="/en/opsys-ai/">OPSYS-AI</a> aims at this path, as a product in development that shows every availability level.
+- **A distributor processes its suppliers' documents.** Delivery slips, order confirmations and invoices arrive in different formats. The workflow reads them, compares them with each other and flags what does not match; the purchasing person decides before any action.
+- **A firm prepares case files.** It gathers authorized documents, draws a summary and a list of points to check from them, then hands over to the responsible partner, who decides. Access rights are defined before the build.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
@@ -116,7 +116,7 @@ No universal timeline and no quantified gain: everything is measured on a first 
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ propre au sur-mesure (différence, propriété, coût, maintenance, données). · Affirmations : CL-84, CL-08, CL-10, CL-E03, CL-E04*
+*FAQ propre au sur-mesure (différence, propriété, coût, maintenance, données). · Affirmations : CL-84, CL-08, CL-10, CL-E03, CL-E04, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -136,11 +136,15 @@ No, never. Your documents, prompts and results are not used to train or fine-tun
 
 #### How much does it cost?
 
-There is no public price yet. After the diagnosis, we provide a written estimate that states what is included and what is not.
+There is no public price yet for custom automation. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What uses credits in an automation?
+
+Each time an agent or a workflow calls an AI model hosted by Nexora AI to read, sort or write, it uses credits at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale.
 
 #### Who maintains the system after go-live?
 
-We run it with you and evolve it. The exact split is written in the contract.
+Nexora AI runs it with you and evolves it. The exact split is written in the contract.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

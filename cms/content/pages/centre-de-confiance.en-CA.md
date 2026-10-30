@@ -7,7 +7,7 @@
 - Page : `centre-de-confiance` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/trust-center/` · slug : `trust-center`
 - Titre SEO (42 caractères) : Trust center: AI data security commitments
-- Description SEO (149 caractères) : Five commitments on your data, what the software already allows and the documents we are preparing, with their status: everything you can ask us for.
+- Description SEO (155 caractères) : Five commitments on your data, the security features already verified and the documents in preparation, with their status. Ask us for proof of what we say.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Five commitments. Proof you can ask for.
 
-Your data stays yours: never used to train a model, never sold, no external model without your activation. Here is what we commit to doing, what the software already allows, and the documents we are preparing so you can check it.
+Your data stays yours: never used to train a model, never sold, no external model without your activation. This page says what we promise, what the software already does and which documents we are preparing so that you can check.
 
 [Ask for a document](/en/contact/) · [Read the five commitments](/en/your-data/)
 
@@ -33,7 +33,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=engagements`
 
 ## Five commitments on your data.
 
-Each one can be checked before and after go-live. Outbound flows (updates, licences, a possible external model) are listed before go-live: installing on your own server does not, by itself, mean there is no outbound traffic.
+You can check each one before and after go-live. Installing on your own server does not mean there is no outbound traffic: we list updates, licences and any external model before go-live.
 
 #### On premises, everything stays with you.
 
@@ -63,7 +63,7 @@ Réglages : `columns=4`, `tone=sable`, `layout=grille`, `anchor_id=mecanismes`
 
 ## What makes them checkable.
 
-A commitment is worth its proof. Here are the pieces that back it.
+A commitment is only as good as its proof. Here are the pieces that back it.
 
 #### A processing contract.
 
@@ -99,13 +99,13 @@ We publish no testimonial, no figure and no certification that we cannot prove. 
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Ce que le logiciel permet déjà, statuts disponibles. · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-104, CL-113, CL-110*
+*Ce que le logiciel permet déjà, statuts disponibles. · Affirmations : CL-22, CL-23, CL-24, CL-105, CL-96, CL-104, CL-113, CL-110, CL-S01*
 
 Réglages : `columns=3`, `tone=clair`, `layout=modules`, `anchor_id=logiciel`
 
 ## What the software already allows.
 
-WorkStudio functions, verified on Nexora AI's test server. They support your process; they do not replace it.
+WorkStudio functions, verified on Nexora AI's test server. They support your process without replacing it.
 
 #### Roles and organizations.
 
@@ -129,7 +129,7 @@ Every model call is traced; names, emails and phone numbers can be masked in the
 
 #### Each model's location and encrypted secrets.
 
-Each model shows where it runs; connector credentials are encrypted and kept on your instance.
+Each model shows where it runs, and the platform catalogue shows its hosting location and its provider's data policy. Connector credentials are encrypted and kept on your instance.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -139,7 +139,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=modules`, `anchor_id=documents`
 
 ## Documents on request.
 
-These are the documents we commit to providing. They are in preparation: none is available yet, and we will say so here as soon as one exists.
+We commit to providing these documents. They are in preparation: none is available yet, and this page will say so as soon as one exists.
 
 #### The data-flow diagram for your installation.
 
@@ -167,7 +167,7 @@ Who assesses, who notifies, where the incident is recorded.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Trois plans de données distincts. · Affirmations : CL-78, CL-71*
+*Trois plans de données distincts. · Affirmations : CL-78, CL-71, CL-T05, CL-S02*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
@@ -181,7 +181,7 @@ To judge a provider, see the [IT director's checklist](/en/guides/sovereign-ai-c
 
 - **The site's public content.** What you read here: made to be published and indexed.
 - **Your exchanges with Nexora AI.** Forms, emails, billing: they serve only to answer you and to serve you. The site's privacy policy, in preparation, will describe them.
-- **Your system's data.** Your documents, conversations and databases: they stay inside the agreed perimeter, described by the data-flow diagram.
+- **Your system's data.** Your documents, conversations and databases: they stay inside the agreed perimeter, described by the data-flow diagram. On the credit platform, your files count toward your plan's storage, and the model gateway keeps only usage metadata.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -223,7 +223,7 @@ The physical security of your premises is outside this trust center. [Nexora Vis
 
 ### Bloc 9 — FAQ (`block_faq`)
 
-*FAQ du centre de confiance. · Affirmations : CL-87, CL-09, CL-06, CL-E01, CL-E03, CL-E04, CL-E05*
+*FAQ du centre de confiance. · Affirmations : CL-87, CL-09, CL-06, CL-E01, CL-E03, CL-E04, CL-E05, CL-S01, CL-S02, CL-M06, CL-T05, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -243,7 +243,7 @@ No. Nexora AI does not sell, rent, trade or share for advertising any personal i
 
 #### Do you have a security attestation?
 
-We claim none today. We describe what the software allows and what we document.
+We claim no security attestation and no certification today. We describe what the software allows and what we document.
 
 #### Who at Nexora AI can access my system?
 
@@ -251,7 +251,11 @@ Only the access agreed in advance, described in the deployment study. On premise
 
 #### Do you use an external model?
 
-Only if you turned it on in writing, for a specific agent or project. It then appears on the data-flow diagram as an outbound flow.
+Yes, but only if you turned it on in writing, for a specific agent or project. The external model then appears on the data-flow diagram as an outbound flow.
+
+#### Where is my data on the credit platform?
+
+The documents and files you keep with Nexora AI use your plan's storage, counted per organization across all products. The model gateway keeps only usage metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. That location is information, not a guarantee of data residency.
 
 ### Bloc 10 — Appel à l'action (`block_cta`)
 

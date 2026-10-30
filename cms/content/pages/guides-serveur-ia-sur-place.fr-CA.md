@@ -133,7 +133,7 @@ Le fonctionnement sans réseau n'est pas garanti : mises à jour et licences on
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : serveur puissant, sans internet, matériel, prix, responsabilité. · Affirmations : CL-82, CL-83, CL-77, CL-10, CL-72, CL-86*
+*Questions du guide : serveur puissant, sans internet, matériel, prix, responsabilité. · Affirmations : CL-82, CL-83, CL-77, CL-10, CL-72, CL-86, CL-E01, CL-80*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -141,23 +141,23 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Faut-il un serveur puissant pour faire tourner une IA dans une PME ?
 
-Cela dépend du cas : nombre d'utilisateurs, volume de documents, modèle choisi et usages. Le diagnostic répond, avant tout achat.
+Cela dépend du cas : nombre d'utilisateurs, volume de documents, modèle choisi et usages. Le diagnostic établit le matériel nécessaire avant tout achat.
 
 #### Peut-on faire tourner une IA sans internet ?
 
-En partie. Installer le système sur votre serveur n'équivaut pas à un fonctionnement hors ligne garanti : mises à jour, licences et modèle externe éventuel sont des flux sortants, listés avant la mise en service.
+En partie. Installer le système sur votre serveur n'équivaut pas à un fonctionnement hors ligne garanti : les mises à jour, les licences et un modèle externe éventuel sont des flux sortants, listés avant la mise en service.
 
 #### Un petit modèle local suffit-il ?
 
-Pas toujours. Il suffit pour certaines tâches, mais pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas.
+Pas toujours. Un petit modèle local suffit pour certaines tâches, mais pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas.
 
 #### Combien coûte un serveur d'IA sur place ?
 
-Il n'y a pas de prix public : une estimation écrite suit le diagnostic. Aucune grille de matériel n'est publiée.
+Il n'y a pas encore de prix public. Une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. Aucune grille de matériel n'est publiée, car le matériel dépend de votre cas.
 
 #### À qui appartiennent le matériel et les données ?
 
-À vous : le matériel, les accès et les sauvegardes vous appartiennent. Nexora AI installe, configure et exploite avec vous.
+À vous : le matériel, les accès et les sauvegardes vous appartiennent, et vos données restent sur votre serveur. Nexora AI installe, configure et exploite avec vous.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Guide · Data and jurisdiction",
         "headline": "Where your data really is.",
-        "subheadline": "Storage, processing, jurisdiction: three separate questions, and the questions to ask an AI provider. No promise of compliance or residency that we cannot prove.",
+        "subheadline": "Storage, processing, jurisdiction: three separate questions, and the questions to put to an AI provider. We promise no compliance and no residency that we cannot prove.",
         "primary_label": "See our data commitments",
         "primary_href": "/en/your-data/",
         "secondary_label": "Deployment study",
@@ -98,7 +98,8 @@
         "CL-S01",
         "CL-77",
         "CL-05",
-        "CL-87"
+        "CL-87",
+        "CL-S02"
       ],
       "fields": {
         "media_position": "none",
@@ -107,14 +108,14 @@
       },
       "translation": {
         "title": "Three modes, three answers.",
-        "body": "<table><caption>Where your data is, by mode</caption><thead><tr><th>Mode</th><th>Where the data is</th><th>Where processing happens</th><th>What to ask</th></tr></thead><tbody><tr><th>On your premises</th><td>On your server; Nexora AI accesses it only if you authorize it in writing, for a specific task.</td><td>On your server, except an external model you turn on.</td><td>The list of outbound flows (updates, licences, external model) before go-live.</td></tr><tr><th>Hosted in Quebec</th><td>In Nexora AI's infrastructure, in Quebec, backups included: this is our written commitment.</td><td>In the same infrastructure, except a service you turn on.</td><td>The address and contract of the site, the location of backups, logs and subprocessors. This evidence is in preparation.</td></tr><tr><th>Through a model API</th><td>Depends on the provider; the Nexora AI gateway keeps only usage metadata.</td><td>At the chosen model's provider.</td><td>The processing location, not only the storage location, and the provider's data policy.</td></tr></tbody></table><p>See also <a href=\"/en/deployment/\">deployment</a> on your premises or hosted in Quebec.</p>",
+        "body": "<table><caption>Where your data is, by mode</caption><thead><tr><th>Mode</th><th>Where the data is</th><th>Where processing happens</th><th>What to ask</th></tr></thead><tbody><tr><th>On your premises</th><td>On your server; Nexora AI accesses it only if you authorize it in writing, for a specific task.</td><td>On your server, except an external model you turn on.</td><td>The list of outbound flows (updates, licences, external model) before go-live.</td></tr><tr><th>Hosted in Quebec</th><td>In Nexora AI's infrastructure, in Quebec, backups included: this is our written commitment.</td><td>In the same infrastructure, except a service you turn on.</td><td>The address and contract of the site, the location of backups, logs and subprocessors. This evidence is in preparation.</td></tr><tr><th>Through a model API</th><td>Depends on the provider; the Nexora AI gateway keeps only usage metadata (model, tokens, cost, duration), never the content of requests or answers.</td><td>At the chosen model's provider.</td><td>The processing location, not only the storage location, and the provider's data policy.</td></tr></tbody></table><p>See also <a href=\"/en/deployment/\">deployment</a> on your premises or hosted in Quebec.</p>",
         "items": []
       }
     },
     {
       "collection": "block_section",
       "role": "Ce que la fiche d'un modèle dit et ne dit pas.",
-      "claims": ["CL-S01", "CL-75", "CL-E08"],
+      "claims": ["CL-S01", "CL-75", "CL-E08", "CL-S02", "CL-M06"],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -122,7 +123,7 @@
       },
       "translation": {
         "title": "What a model sheet says.",
-        "body": "<p>In the Nexora AI catalogue, each model's sheet states its provider, its hosting location (Quebec, Canada, United States, Europe or other) and the data policy that provider declares.</p><ul><li><strong>What it says.</strong> The information declared in the catalogue.</li><li><strong>What it does not say.</strong> That no foreign law applies, or that processing happens in the same place as hosting.</li></ul><p>It is information, not a residency guarantee. See the <a href=\"/en/model-gateway-api/\">model gateway API</a> and the <a href=\"/en/modeles/\">list of models</a>.</p>",
+        "body": "<p>In the Nexora AI catalogue, each model's sheet states its provider, its hosting location (Quebec, Canada, United States, Europe or other) and the data policy that provider declares.</p><ul><li><strong>What it says.</strong> The information declared in the catalogue.</li><li><strong>What it does not say.</strong> That no foreign law applies, or that processing happens in the same place as hosting.</li></ul><p>It is information, not a residency guarantee. See the <a href=\"/en/model-gateway-api/\">model gateway API</a> and the <a href=\"/en/modeles/\">list of models</a>.</p><p>Before each call to a provider, Nexora Privacy Router evaluates the request: it masks obvious personal details (email, phone, credit card, SIN, IBAN, keys and secrets) or refuses the request, according to the organization's policy. Its detection is heuristic, it finds neither names nor postal addresses, and it does not prove where the provider then processes the data.</p>",
         "items": []
       }
     },
@@ -184,7 +185,18 @@
     {
       "collection": "block_faq",
       "role": "Questions du guide : stockage au Canada, vérification, entraînement, mode API, preuve.",
-      "claims": ["CL-E08", "CL-E09", "CL-E03", "CL-S01", "CL-02", "CL-87"],
+      "claims": [
+        "CL-E08",
+        "CL-E09",
+        "CL-E03",
+        "CL-S01",
+        "CL-02",
+        "CL-87",
+        "CL-S02",
+        "CL-M06",
+        "CL-T05",
+        "CL-PL01"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -212,6 +224,10 @@
           {
             "question": "Does Nexora AI prove its servers are in Quebec?",
             "answer": "The hosted mode commits to keeping data in Quebec, but the technical evidence (address, contract, location of backups and subprocessors) is in preparation. It will be provided in writing before go-live."
+          },
+          {
+            "question": "Where is my data on the Nexora AI credit platform?",
+            "answer": "The documents and files you keep with Nexora AI count toward your plan's storage. The model gateway keeps only usage metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. The location shown is information, not a residency guarantee: processing takes place at the chosen model's provider."
           }
         ]
       }

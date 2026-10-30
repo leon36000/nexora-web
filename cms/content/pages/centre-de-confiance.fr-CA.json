@@ -7,7 +7,7 @@
     "slug": "centre-de-confiance",
     "title": "Centre de confiance",
     "seo_title": "Sécurité des données IA : centre de confiance",
-    "seo_description": "Cinq engagements sur vos données, ce que le logiciel permet déjà et les documents que nous préparons, avec leur statut : tout ce que vous pouvez nous demander.",
+    "seo_description": "Cinq engagements sur vos données, les fonctions de sécurité déjà vérifiées et les documents en préparation, avec leur état. Demandez la preuve de nos dires.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Centre de confiance",
         "headline": "Cinq engagements. Des preuves à demander.",
-        "subheadline": "Vos données restent à vous : jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Voici ce que nous nous engageons à faire, ce que le logiciel permet déjà, et les documents que nous préparons pour que vous puissiez le vérifier.",
+        "subheadline": "Vos données restent à vous : jamais utilisées pour entraîner un modèle, jamais vendues, aucun modèle externe sans votre activation. Cette page dit ce que nous promettons, ce que le logiciel fait déjà et quels documents nous préparons pour que vous puissiez vérifier.",
         "primary_label": "Demander un document",
         "primary_href": "/contact/",
         "secondary_label": "Lire les cinq engagements",
@@ -51,7 +51,7 @@
       },
       "translation": {
         "title": "Cinq engagements sur vos données.",
-        "intro": "Chacun peut être contrôlé avant et après la mise en service. Les flux sortants (mises à jour, licences, modèle externe éventuel) sont listés avant la mise en service : installer sur votre serveur n'équivaut pas, en soi, à n'avoir aucun flux sortant.",
+        "intro": "Vous pouvez contrôler chacun avant et après la mise en service. Installer sur votre serveur n'équivaut pas à n'avoir aucun flux sortant : nous listons les mises à jour, les licences et tout modèle externe avant la mise en service.",
         "cards": [
           {
             "title": "Sur place, tout reste chez vous.",
@@ -98,7 +98,7 @@
       },
       "translation": {
         "title": "Ce qui les rend vérifiables.",
-        "intro": "Un engagement vaut ce que vaut sa preuve. Voici les pièces qui le soutiennent.",
+        "intro": "Un engagement vaut sa preuve. Voici les pièces qui le soutiennent.",
         "cards": [
           {
             "title": "Un contrat de traitement.",
@@ -146,7 +146,8 @@
         "CL-96",
         "CL-104",
         "CL-113",
-        "CL-110"
+        "CL-110",
+        "CL-S01"
       ],
       "fields": {
         "columns": "3",
@@ -156,7 +157,7 @@
       },
       "translation": {
         "title": "Ce que le logiciel permet déjà.",
-        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche ; elles ne la remplacent pas.",
+        "intro": "Fonctions de WorkStudio, vérifiées sur le serveur de test de Nexora AI. Elles soutiennent votre démarche sans la remplacer.",
         "cards": [
           {
             "title": "Rôles et organisations.",
@@ -185,7 +186,7 @@
           },
           {
             "title": "Lieu de chaque modèle et secrets chiffrés.",
-            "text": "Chaque modèle indique où il tourne ; les identifiants des connecteurs sont chiffrés et conservés sur votre instance.",
+            "text": "Chaque modèle indique où il tourne, et le catalogue de la plateforme affiche son lieu d'hébergement et la politique de données de son fournisseur. Les identifiants des connecteurs sont chiffrés et conservés sur votre instance.",
             "status": "disponible"
           }
         ]
@@ -203,7 +204,7 @@
       },
       "translation": {
         "title": "Documents sur demande.",
-        "intro": "Voici les documents que nous nous engageons à fournir. Ils sont en préparation : aucun n'est encore disponible, et nous vous le dirons ici dès qu'un document existe.",
+        "intro": "Nous nous engageons à fournir ces documents. Ils sont en préparation : aucun n'est encore disponible, et cette page l'indiquera dès qu'un document existera.",
         "cards": [
           {
             "title": "Le schéma des flux de votre installation.",
@@ -241,7 +242,7 @@
     {
       "collection": "block_section",
       "role": "Trois plans de données distincts.",
-      "claims": ["CL-78", "CL-71"],
+      "claims": ["CL-78", "CL-71", "CL-T05", "CL-S02"],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -261,7 +262,7 @@
           },
           {
             "title": "Les données de votre système.",
-            "text": "Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux."
+            "text": "Vos documents, vos conversations, vos bases : elles restent dans le périmètre convenu, décrit par le schéma des flux. Sur la plateforme à crédits, vos fichiers comptent dans l'espace disque de votre offre, et la passerelle de modèles ne garde que des métadonnées d'usage."
           }
         ]
       }
@@ -336,7 +337,12 @@
         "CL-E01",
         "CL-E03",
         "CL-E04",
-        "CL-E05"
+        "CL-E05",
+        "CL-S01",
+        "CL-S02",
+        "CL-M06",
+        "CL-T05",
+        "CL-PL01"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -348,7 +354,7 @@
         "items": [
           {
             "question": "Comment demander un document ?",
-            "answer": "Écrivez-nous par le formulaire de contact en nommant le document. Tant qu'il est en préparation, nous vous le disons au lieu de vous en promettre une date."
+            "answer": "Écrivez-nous par le formulaire de contact en nommant le document. Tant que le document est en préparation, nous vous le disons au lieu de vous promettre une date."
           },
           {
             "question": "Mes données servent-elles à entraîner une IA ?",
@@ -360,7 +366,7 @@
           },
           {
             "question": "Avez-vous une attestation de sécurité ?",
-            "answer": "Nous n'en revendiquons aucune à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons."
+            "answer": "Nous ne revendiquons aucune attestation ni aucune certification de sécurité à ce jour. Nous décrivons ce que le logiciel permet et ce que nous documentons."
           },
           {
             "question": "Qui, chez Nexora AI, peut accéder à mon système ?",
@@ -368,7 +374,11 @@
           },
           {
             "question": "Utilisez-vous un modèle externe ?",
-            "answer": "Seulement si vous l'avez activé par écrit, pour un agent ou un projet précis. Il apparaît alors au schéma des flux comme un flux sortant."
+            "answer": "Oui, mais seulement si vous l'avez activé par écrit, pour un agent ou un projet précis. Le modèle externe apparaît alors au schéma des flux comme un flux sortant."
+          },
+          {
+            "question": "Où sont mes données sur la plateforme à crédits ?",
+            "answer": "Les documents et fichiers que vous gardez chez Nexora AI occupent l'espace disque de votre offre, compté par organisation, tous produits confondus. La passerelle de modèles ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses. Chaque modèle affiche son lieu d'hébergement et la politique de données de son fournisseur, et Nexora Privacy Router évalue chaque requête avant l'appel. Ce lieu informe, il ne garantit pas la résidence des données."
           }
         ]
       }

@@ -7,13 +7,13 @@
 - Page : `passerelle-api-modeles` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/model-gateway-api/` · slug : `model-gateway-api`
 - Titre SEO (46 caractères) : AI model gateway API, OpenAI-compatible format
-- Description SEO (149 caractères) : One OpenAI-format API for several AI models: prices in Canadian dollars per token, the hosting location shown for each model, keys and spending caps.
+- Description SEO (153 caractères) : One OpenAI-format API for several AI models: consumption in credits, prices in Canadian dollars per token, and the hosting location shown for each model.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la passerelle : une API au format OpenAI, des prix en dollars canadiens et le lieu d'hébergement de chaque modèle, avec l'état réel de la vente. · Affirmations : CL-27, CL-S01, CL-S04, CL-12*
+*Promesse de la passerelle : une API au format OpenAI, des prix en dollars canadiens et le lieu d'hébergement de chaque modèle, avec l'état réel de la vente. · Affirmations : CL-27, CL-S01, CL-S04, CL-12, CL-T01, CL-T02, CL-T06*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # One API. Several models. Readable prices.
 
-The Nexora AI API is a model gateway in the OpenAI format: you change the base address and the key, and the rest of your code stays the same. Each model shows its price in Canadian dollars and where it is hosted. Self-service offers are not yet open for sale: payments only work in test mode.
+The Nexora AI API is a model gateway in the OpenAI format: change the base address and the key, and the rest of your code stays the same. Each model shows its price in Canadian dollars and where it is hosted. The API uses credits; sales are not yet open and payments only work in test mode.
 
 [See the models](/en/modeles/) · [Read the documentation](/en/docs/api/)
 
@@ -45,7 +45,7 @@ To choose between a gateway and direct access, see the guide [Gateway or direct 
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API. · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-S06, CL-S02*
+*Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API. · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-S06, CL-S02, CL-T02, CL-T04, CL-T09*
 
 Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=fonctions`
 
@@ -65,21 +65,21 @@ Each key can have a spending cap, an expiry and a rate limit. Its value is shown
 
 Each model says where it is hosted, with the data policy declared by its provider.
 
-#### Billed per token.
+#### Credits, per token.
 
-Prices in Canadian dollars per million tokens, input and output separate. Each request is settled at its actual cost.
+The API uses credits: one credit is worth one Canadian cent of tokens at the catalogue price. Prices are shown in Canadian dollars per million tokens, input and output separate, and each request is settled at its actual cost.
 
 #### Readable errors.
 
-Errors follow the OpenAI format. If the model's provider is unavailable, nothing is charged.
+Errors follow the OpenAI format. If the model's provider is unavailable, nothing is charged. If no credits are left, the API refuses the call with a 402 insufficient_quota error and a message pointing to top-ups and plans.
 
 #### No content kept.
 
-Usage events contain only metadata: the model, the tokens, the cost and the duration.
+Usage events contain only metadata: the model, the tokens, the cost and the duration. The content of requests and answers never appears in them.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test. · Affirmations : CL-27, CL-S01, CL-S05, CL-S04, CL-S03, CL-12*
+*Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test. · Affirmations : CL-27, CL-S01, CL-S05, CL-S04, CL-S03, CL-12, CL-PL01*
 
 Réglages : `columns=4`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
@@ -105,30 +105,30 @@ Same format as OpenAI: change the base address and the key.
 
 #### Follow the usage.
 
-Requests, tokens and cost, by day and by model, in the customer area.
+Requests, tokens and cost, by day and by model, in the customer area. Your credit balance appears in “My tools”.
 
 ### Bloc 5 — Section (`block_section`)
 
-*Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données. · Affirmations : CL-S01, CL-E08, CL-E09, CL-75, CL-02*
+*Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données. · Affirmations : CL-S01, CL-E08, CL-E09, CL-75, CL-02, CL-M06, CL-AP03*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=lieu`
 
 ## The location, stated plainly.
 
-The hosting location shown on each model sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers announce data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction can also be required to hand over data it holds, even if stored in Canada.
+The hosting location shown on each sheet comes from the published catalogue: it is information, not a guarantee of data residency. A model hosted outside Quebec processes your requests outside Quebec. Some providers advertise data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. A provider subject to another country's jurisdiction may also be required to hand over data it holds, even data stored in Canada.
 
 When data residency is a requirement, the right choice may be a system installed on your premises or hosted in Quebec: see [deployment](/en/deployment/) and the [commitments on your data](/en/your-data/).
 
 The guide [Where your data really is](/en/guides/where-is-your-ai-data/) explains the difference between storage, processing and jurisdiction.
 
-Each gateway request first goes through [Nexora Privacy Router](/en/apps/privacy-router/), included at no extra cost.
+Before each call to a provider, [Nexora Privacy Router](/en/apps/privacy-router/) evaluates the request. It is included at no extra charge. Its detection is heuristic and it does not prove where the provider then processes the data.
 
 - **What the sheet says.** The provider, the hosting location and the data policy it declares.
 - **What it does not say.** That no foreign law applies: hosting in Quebec does not, by itself, rule out the laws that apply.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé. · Affirmations : CL-12, CL-S04, CL-86*
+*Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé. · Affirmations : CL-12, CL-S04, CL-86, CL-T01, CL-T03, CL-T06*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
@@ -136,11 +136,13 @@ Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
 #### Not yet on sale.
 
-Self-service offers (servers, the credit-based model catalogue, hosted agents) are not open for sale: accounts and payments only work in test mode and no real payment is accepted.
+The API uses credits that a plan gives you each month or that you top up, but self-service offers (servers, the credit-based model catalogue, hosted agents) are not open for sale. Accounts and payments only work in test mode and no real payment is accepted.
 
 #### No published price.
 
-The prices in the current catalogue are development prices: no price is published yet.
+The prices in the current catalogue are development prices, and the prices of plans and top-up packs are not published. They will appear on the Pricing page once they are published.
+
+→ [See upcoming pricing](/en/pricing/)
 
 #### One choice per request.
 
@@ -152,7 +154,7 @@ Availability and response times are specified in the contract.
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*Questions de la passerelle, réponse d'abord : définition, compatibilité, facturation, lieu, données, état de la vente, utilité d'une passerelle, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S03, CL-S01, CL-S02, CL-12, CL-80*
+*Questions de la passerelle, réponse d'abord : définition, compatibilité, facturation, lieu, données, état de la vente, utilité d'une passerelle, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S03, CL-S01, CL-S02, CL-12, CL-80, CL-T01, CL-T02, CL-T03, CL-T06, CL-T09, CL-M06*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -168,7 +170,7 @@ Yes, for chat (with streaming, tools and response formats), embeddings and the m
 
 #### How is consumption billed?
 
-Per token, in Canadian dollars. Each request first reserves its maximum cost, then is settled at its actual cost from the input and output tokens; the rest is released. Without enough balance, the API answers with a payment error before any call to the model.
+In credits. One credit is worth one Canadian cent of tokens at the catalogue price, and the catalogue shows its prices in Canadian dollars per million tokens. Each request first reserves its maximum cost, then is settled at its actual cost from the input and output tokens; the rest is released. Without enough balance, the API answers with a payment error before any call to the model.
 
 #### Where are the models hosted?
 
@@ -176,11 +178,11 @@ Each catalogue sheet shows the model's hosting location (Quebec, Canada, United 
 
 #### Does Nexora AI keep the content of my requests?
 
-No. The gateway's usage events contain only metadata: the model, the tokens, the cost and the duration. The model provider's data policy is shown on its sheet.
+No, the gateway does not keep that content. Its usage events contain only metadata: the model, the tokens, the cost and the duration. What the model's provider keeps on its side is governed by its data policy, shown on the model's sheet.
 
 #### Can I buy access today?
 
-Not as self-service: accounts and payments only work in test mode and no real payment is accepted. For a project, write to us: we start with a diagnosis of the case.
+Not as self-service: sales are not open. Accounts and payments only work in test mode, no real payment is accepted and no price is published; prices will appear on the Pricing page once they are published. For a project, write to us: we start with an assessment of the case.
 
 #### Do I need a gateway if I use a single model?
 
@@ -190,6 +192,14 @@ Not necessarily. A gateway adds an intermediary; it becomes useful when you comp
 
 Yes: the model is chosen by an identifier in the request. Change the identifier, keep the rest.
 
+#### How do I get credits?
+
+A plan gives you credits and storage every month; without a plan, you top up credits. Plan credits expire at the end of their period and are used first; top-up credits do not expire. The prices of plans and top-ups are not yet published.
+
+#### What happens when there are no credits left?
+
+The API refuses the call before any call to the model, with a 402 insufficient_quota error and a message pointing to top-ups and plans.
+
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
 *Appel à l'action : diagnostic, puis catalogue. · Affirmations : CL-80*
@@ -198,6 +208,6 @@ Réglages : `tone=sombre`
 
 ## Let's talk about your use.
 
-Tell us which models you want to compare and where your data must stay. We start with a diagnosis.
+Tell us which models you want to compare and where your data must stay. We start with an assessment.
 
-[Book a diagnosis](/en/contact/) · [See the models](/en/modeles/)
+[Book an assessment](/en/contact/) · [See the models](/en/modeles/)

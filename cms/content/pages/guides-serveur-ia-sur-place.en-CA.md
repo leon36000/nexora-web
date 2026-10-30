@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # An on-premises AI server: decide before you buy.
 
-Five decisions, what stays with you, what leaves, and who does what. Hardware is set at the diagnostic, before any purchase: no price or sizing is published here.
+Five decisions, what stays with you, what leaves, and who does what. Hardware is set at the assessment, before any purchase: no price or sizing is published here.
 
 [See on-premises deployment](/en/deployment/on-premises/) · [Request a study](/en/contact/?sujet=etude-deploiement)
 
@@ -33,7 +33,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 ## The short answer.
 
-The hardware needed depends on the number of users, the volume of documents, the chosen model and the uses; it is set at the diagnostic, before any purchase. A small local model is not always enough for agents that call tools. No price or sizing is published: they depend on your case.
+The hardware needed depends on the number of users, the volume of documents, the chosen model and the uses; it is set at the assessment, before any purchase. A small local model is not always enough for agents that call tools. No price or sizing is published: they depend on your case.
 
 An on-premises AI server is a server installed at your site, which runs the AI system and keeps your documents there.
 
@@ -45,7 +45,7 @@ Réglages : `columns=4`, `tone=sable`, `layout=etapes`, `anchor_id=decisions`
 
 ## The five decisions.
 
-Each one changes the hardware. The diagnostic settles them with you.
+Each one changes the hardware. The assessment settles them with you.
 
 #### Users.
 
@@ -133,7 +133,7 @@ Operation without a network is not guaranteed: updates and licences have outboun
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : serveur puissant, sans internet, matériel, prix, responsabilité. · Affirmations : CL-82, CL-83, CL-77, CL-10, CL-72, CL-86*
+*Questions du guide : serveur puissant, sans internet, matériel, prix, responsabilité. · Affirmations : CL-82, CL-83, CL-77, CL-10, CL-72, CL-86, CL-E01, CL-80*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -141,7 +141,7 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Do I need a powerful server to run AI in a small business?
 
-It depends on the case: number of users, volume of documents, chosen model and uses. The diagnostic answers, before any purchase.
+It depends on the case: number of users, volume of documents, chosen model and uses. The assessment sets the hardware you need before any purchase.
 
 #### Can AI run without the internet?
 
@@ -149,15 +149,15 @@ Partly. Installing the system on your server is not the same as guaranteed offli
 
 #### Is a small local model enough?
 
-Not always. It is enough for some tasks, but not always for agents that call tools. The model is chosen with the case.
+Not always. A small local model is enough for some tasks, but not always for agents that call tools. The model is chosen with the case.
 
 #### How much does an on-premises AI server cost?
 
-There is no public price: a written estimate follows the diagnostic. No hardware price list is published.
+There is no public price yet. A written estimate follows the assessment and says what is included and what is not. No hardware price list is published, because the hardware depends on your case.
 
 #### Who owns the hardware and the data?
 
-You do: the hardware, access and backups belong to you. Nexora AI installs, configures and runs it with you.
+You do: the hardware, access and backups belong to you, and your data stays on your server. Nexora AI installs, configures and runs it with you.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
@@ -165,7 +165,7 @@ You do: the hardware, access and backups belong to you. Nexora AI installs, conf
 
 Réglages : `tone=sombre`
 
-## Let's start with the diagnostic.
+## Let's start with the assessment.
 
 Tell us your users, your documents and your uses. We set the hardware with you before any purchase.
 

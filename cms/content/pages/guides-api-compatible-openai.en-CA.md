@@ -124,21 +124,21 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=erreurs`
 ## Errors and limits.
 
 Errors follow the OpenAI format: an <code>error</code> object with a message, a type and a code. Messages are written in French; test the <code>code</code> field. Here is the response actually observed on October 29, 2026, on a development server, for an invalid key:<pre><code>HTTP 401
-{"error":{"message":"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».","type":"authentication_error","param":null,"code":"invalid_api_key"}}</code></pre><table><caption>API errors</caption><thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Missing or unknown key, revoked or expired key.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Insufficient balance, blocked account or key spending cap reached.</td></tr><tr><th>404</th><td>model_not_found</td><td>Model does not exist or is not allowed for this key.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Invalid request; the param field names the faulty parameter.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Per-minute request or token limit reached; see the Retry-After header.</td></tr><tr><th>502 or 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>The model's provider is unavailable or overloaded: try again. Nothing is charged.</td></tr></tbody></table>
+{"error":{"message":"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».","type":"authentication_error","param":null,"code":"invalid_api_key"}}</code></pre><table><caption>API errors</caption><thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Missing or unknown key, revoked or expired key.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Insufficient credits (the message points to top-ups and plans), blocked account or key spending cap reached.</td></tr><tr><th>404</th><td>model_not_found</td><td>Model does not exist or is not allowed for this key.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Invalid request; the param field names the faulty parameter.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Per-minute request or token limit reached; see the Retry-After header.</td></tr><tr><th>502 or 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>The model's provider is unavailable or overloaded: try again. Nothing is charged.</td></tr></tbody></table>
 
 ### Bloc 7 — Cartes (`block_cards`)
 
-*Facturation en trois temps : réserver, régler, lire le coût ; état de la vente. · Affirmations : CL-S03, CL-S05, CL-12*
+*Facturation en trois temps : réserver, régler, lire le coût ; état de la vente. · Affirmations : CL-S03, CL-S05, CL-12, CL-T01, CL-T02, CL-T03, CL-T09, CL-T06*
 
 Réglages : `columns=3`, `tone=sable`, `layout=etapes`, `anchor_id=facturation`
 
 ## Billing in three steps.
 
-Accounts and payments work in test mode only for now: what follows describes how it works, not an offer open for sale.
+The API uses credits: one credit is worth one Canadian cent of tokens at the catalogue price. A plan gives you credits every month, otherwise you top up. Accounts and payments work in test mode only for now: what follows describes how it works, not an offer open for sale.
 
 #### Reserve.
 
-Each request first reserves its maximum cost. Without enough balance, the API returns 402 before any call to the model.
+Each request first reserves its maximum cost. Without enough credits, the API returns 402 insufficient_quota before any call to the model, with a message pointing to top-ups and plans.
 
 #### Settle.
 
@@ -150,7 +150,7 @@ Each complete response carries the x-nexora-cost-micro header, in millionths of 
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du tutoriel : modifications du code, identifiant de modèle, flux, coût, achat. · Affirmations : CL-S04, CL-S03, CL-M07, CL-12*
+*Questions du tutoriel : modifications du code, identifiant de modèle, flux, coût, achat. · Affirmations : CL-S04, CL-S03, CL-M07, CL-12, CL-T01, CL-T02, CL-T03, CL-T09, CL-T06*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -174,16 +174,20 @@ Each complete response carries the x-nexora-cost-micro header, in millionths of 
 
 #### Can I use the API in production today?
 
-Not in self-service: accounts and payments work in test mode only and no real payment is accepted. For a project, write to us.
+Not in self-service: sales are not open. Accounts and payments work in test mode only, no real payment is accepted and no price is published; prices will appear on the Pricing page. For a project, write to us.
+
+#### How are credits used?
+
+Each request uses credits at the catalogue price: one credit is worth one Canadian cent of tokens. Plan credits are used first and expire at the end of their period; top-up credits do not expire. When none are left, the API refuses the call with a 402 insufficient_quota error.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
-*Appel à l'action : documentation, puis diagnostic. · Affirmations : CL-80, CL-12*
+*Appel à l'action : documentation, puis diagnostic. · Affirmations : CL-80, CL-12, CL-T06*
 
 Réglages : `tone=sombre`
 
 ## See the documentation.
 
-The API documentation gives the exact base address, the errors and the examples. For a project, we start with a diagnostic.
+The API documentation gives the exact base address, the errors and the examples. For a project, we start with an assessment; prices will appear on the Pricing page.
 
-[Read the documentation](/en/docs/api/) · [Book a diagnostic](/en/contact/?sujet=diagnostic)
+[Read the documentation](/en/docs/api/) · [See upcoming pricing](/en/pricing/)

@@ -6,8 +6,8 @@
   "seo": {
     "slug": "solutions/customer-service",
     "title": "Customer service",
-    "seo_title": "AI customer service for small businesses",
-    "seo_description": "An agent answers your customers from your own documents, cites its sources and hands the request to a person with a summary. Your team stays in charge.",
+    "seo_title": "Customer service agent on your documents",
+    "seo_description": "An agent answers your customers from your documents, cites its sources and hands off to a person with a summary. Your team stays in control.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Customer service",
         "headline": "Your site answers. Your team focuses.",
-        "subheadline": "An agent (software that completes a task using the tools you authorize) answers your customers' questions from your own documents, cites its sources and hands off to your team when it does not know.",
+        "subheadline": "An agent (software that completes a task using the tools you authorize) answers your customers' questions from your documents, cites its sources and hands off to your team when it does not know.",
         "primary_label": "Request a demonstration",
         "primary_href": "/en/contact/?sujet=demonstration",
         "secondary_label": "See all solutions",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "The same questions, day after day.",
-        "body": "<p>Take a plumbing-supplies distributor that serves contractors. Every day, people ask about opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find them and say them again.</p><p>The example is constructed to illustrate the principle; it is not a customer's result.</p>",
+        "body": "<p>Take a plumbing-supplies distributor that serves contractors. All day long, people ask about opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find them and say them again, while another customer waits at the counter.</p><p>This example is constructed to illustrate the principle; it is not a customer's result.</p>",
         "items": [
           {
             "title": "An interrupted team.",
@@ -130,7 +130,7 @@
       },
       "translation": {
         "title": "Fewer interruptions, more consistency.",
-        "body": "<p>The expected benefit: fewer interruptions, more consistent answers, customers who get something faster. No percentage is announced; the effect is measured during a pilot, on your real questions.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to assess your frequent questions.</p><p>Want more customers to find you, too? <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service, is in early access: access is on request.</p>"
+        "body": "<p>The expected benefit: fewer interruptions, more consistent answers, customers who get what they are looking for faster. No percentage is announced; the effect is measured during a pilot, on your real questions.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a> to assess your frequent questions.</p><p>Want more customers to find you, too? <a href=\"/en/growth/\">Nexora Croissance</a>, our automated marketing service, is in early access: access is on request.</p>"
       }
     },
     {
@@ -190,7 +190,20 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la solution service client.",
-      "claims": ["CL-107", "CL-122", "CL-132", "CL-112"],
+      "claims": [
+        "CL-107",
+        "CL-122",
+        "CL-132",
+        "CL-112",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04",
+        "CL-T09",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -204,16 +217,24 @@
             "answer": "One line of code adds a chat bubble, or you embed a frame in a page. You limit the list of sites allowed to display it. This requires a public HTTPS address (a secure web address anyone can reach) for your instance."
           },
           {
-            "question": "Can it make up an answer?",
-            "answer": "A model can get things wrong. We reduce the risk by having it answer from your documents, cite its sources and, where needed, add a faithfulness safeguard. During the pilot we check that it says so when it finds nothing."
+            "question": "Can the agent make up an answer?",
+            "answer": "A model can be wrong. We reduce the risk by having it answer from your documents, cite its sources and, where needed, add a faithfulness guardrail. During the pilot we check that it says so when it finds nothing."
           },
           {
-            "question": "What if the customer wants to talk to someone?",
-            "answer": "The agent offers a callback by a person and passes the request on with a summary. Live chat with a human is not an announced feature."
+            "question": "What happens if the customer wants to talk to someone?",
+            "answer": "The agent offers a callback by a person and passes the request along with a summary. Live chat with a human is not an announced feature."
           },
           {
-            "question": "Does it speak French and English?",
-            "answer": "It answers in the language of the question to the extent the chosen model allows. We check both languages on your documents during the pilot."
+            "question": "Does the agent speak French and English?",
+            "answer": "It answers in the language of the question, to the extent the chosen model allows. We check both languages on your documents during the pilot."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet for the customer service agent. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published."
+          },
+          {
+            "question": "What uses credits here?",
+            "answer": "Each time the system calls an AI model hosted by Nexora AI to answer a customer's question or check that the answer stays faithful to your documents, it uses credits: one credit equals one Canadian cent of tokens at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale."
           }
         ]
       }

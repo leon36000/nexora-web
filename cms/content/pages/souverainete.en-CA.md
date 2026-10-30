@@ -7,7 +7,7 @@
 - Page : `souverainete` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/sovereignty/` · slug : `sovereignty`
 - Titre SEO (46 caractères) : Sovereign AI in Quebec: four layers of control
-- Description SEO (155 caractères) : AI is sovereign when you know where it runs and where your data goes. On your premises or in Quebec: never used for training, never sold. Five commitments.
+- Description SEO (159 caractères) : Know where your AI runs and where your data goes. On your premises or in Quebec: never used for training, never sold. Four layers of control, five commitments.
 
 ## Contenu
 
@@ -23,7 +23,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 AI is sovereign when you know where it runs, who can reach it and where your data goes, and when you can walk away from it. On your own server or with us in Quebec: never used for training, never sold, no external model without your activation.
 
-[Study my project](/en/contact/?sujet=etude-deploiement) · [Read the five commitments](/en/your-data/)
+[Describe my project](/en/contact/?sujet=etude-deploiement) · [Read the five commitments](/en/your-data/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
@@ -33,7 +33,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=bento`, `anchor_id=engagements`
 
 ## Sovereign AI, in five commitments.
 
-Five commitments in plain language. They rest on a data processing contract signed with each customer; the standard contract and the subcontractor register are in preparation.
+Five commitments in plain language, backed by a data processing agreement signed with each client. The standard agreement and the subcontractor register are in preparation.
 
 #### On premises, everything stays with you.
 
@@ -63,9 +63,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=definition`
 
 ## Sovereignty you can check.
 
-Here, “sovereign” describes control, not a label. At Nexora AI, AI is sovereign when four questions each have a written, precise answer that your team can verify.
+“Sovereign” here means control, not a label. AI is sovereign when four questions have a precise written answer that your team can check.
 
-We do not talk about immunity. Sovereignty reduces the dependencies you did not choose; it removes neither the laws that apply to your business nor your own obligations.
+Sovereignty does not shield you from the law: it reduces the dependencies you did not choose. The laws that apply to your business, and your obligations, stay the same.
 
 - **Where it runs.** On a server you own, or in Nexora AI's infrastructure in Quebec. The location is written down, not assumed.
 - **Who can reach it.** Named accounts, roles and a log of actions. Nexora AI's own access to your system is agreed in advance.
@@ -74,13 +74,13 @@ We do not talk about immunity. Sovereignty reduces the dependencies you did not 
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77*
+*Les quatre couches, chacune avec ce que Nexora AI documente. · Affirmations : CL-70, CL-71, CL-06, CL-76, CL-23, CL-73, CL-77, CL-S01*
 
 Réglages : `columns=2`, `tone=clair`, `layout=modules`, `anchor_id=couches`
 
 ## Four layers of control.
 
-A server in Quebec says nothing about the models it calls. So we look at each layer separately, and we write down what we document for each one.
+A server in Quebec says nothing about the models it calls. So we look at each layer separately and write down what we document.
 
 #### 1. The data.
 
@@ -90,7 +90,7 @@ Your documents, conversations, images and databases. We document where they are 
 
 #### 2. The models.
 
-The engine that produces the answers can run on your server, in our infrastructure or at a third party. In WorkStudio, every model shows where it runs. No external model is called without your explicit activation, recorded in writing, and there is never a silent fallback when something fails.
+The engine that produces the answers can run on your server, in our infrastructure or with a third party. In WorkStudio and in the model catalogue, each model shows where it is hosted and what its provider does with data. No external model is called without your explicit activation, recorded in writing, and the system never switches silently to another model when one fails.
 
 → [See WorkStudio](/en/workstudio/)
 
@@ -130,11 +130,11 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=pratiques`
 
 ## Three questions for any provider.
 
-We name no one and judge no one. These are general observations about industry practice, and questions to put in writing to any AI provider, ourselves included.
+We name no one and judge no one. These are general observations about industry practice, and three questions to ask any AI provider in writing, ourselves included.
 
-Put these three questions to us: [study my project](/en/contact/?sujet=etude-deploiement).
+Ask us these three questions: [review my project](/en/contact/?sujet=etude-deploiement).
 
-To go further, see [Where your data really is](/en/guides/where-is-your-ai-data/) and the [IT director's checklist](/en/guides/sovereign-ai-checklist/).
+To go further, read [Where your data really is](/en/guides/where-is-your-ai-data/) and the [IT director's checklist](/en/guides/sovereign-ai-checklist/).
 
 - **Do my conversations improve the model?** In some consumer AI services, sharing conversations to improve the models is a setting the user has to switch off personally. At Nexora AI, the answer is written down: never.
 - **Stored in Canada, processed where?** Some AI providers advertise data storage in Canada while requests are processed elsewhere: the difference between storage and processing is a question to ask. In our hosted mode, data is stored and processed in Quebec, backups included.
@@ -226,7 +226,7 @@ Réglages : `columns=3`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 ## What Nexora AI does not promise.
 
-A sovereignty page that does not write down its limits is worth nothing. Here are ours.
+Here is what we do not promise, and why.
 
 #### Zero risk.
 
@@ -250,7 +250,7 @@ The word has no legal definition, and some dependencies (base models, components
 
 ### Bloc 11 — FAQ (`block_faq`)
 
-*Questions sur la souveraineté. · Affirmations : CL-02, CL-06, CL-08, CL-71, CL-77, CL-E03, CL-E04*
+*Questions sur la souveraineté. · Affirmations : CL-02, CL-06, CL-08, CL-71, CL-77, CL-E03, CL-E04, CL-S01, CL-S02, CL-M06*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -258,11 +258,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 #### Does sovereign mean offline?
 
-No, not automatically. A system can run on your server and still receive updates, check a licence or call an external model if you chose one. We list every outbound flow before go-live; running with no outbound flow at all is decided and verified case by case.
+Not automatically. A system installed on your server can still receive updates, check a licence or call an external model if you chose that. We list every outbound flow before go-live; running with no outbound flow at all is decided and verified case by case.
 
 #### Is a server in Quebec enough?
 
-No. Where the machines sit says nothing about the models called, the backups, the logs or the subcontractors. That is why we look at four layers, not one.
+No. A server in Quebec is not enough to make AI sovereign: where the machines sit says nothing about the models called, the backups, the logs or the subcontractors. That is why we look at four layers, not one.
 
 #### Is my data used to train a model?
 
@@ -274,15 +274,19 @@ No. Nexora AI does not sell, rent, trade or share for advertising any personal i
 
 #### Can you prove where my data is?
 
-We hand over the data-flow diagram of your installation in writing and, in the hosted mode, the location of hosting, backups and logs along with the list of subcontractors. These are documents you can have checked.
+Yes, in writing. We hand over the data flow diagram of your installation and, in hosted mode, the location of hosting, backups and logs and the list of subcontractors. You can have anyone you choose check these documents.
 
 #### What if I want to use an external model?
 
-It is possible, on two conditions: you turn it on in writing, and it appears on the data-flow diagram as an outbound flow. In WorkStudio, every model shows whether it runs on your server, in Europe or at a third party.
+It is possible, on two conditions: you activate it in writing, and it appears on the data flow diagram as an outbound flow. In WorkStudio, each model shows whether it runs on your server, in Europe or with a third party.
 
 #### What happens to my data when the contract ends?
 
-Your documents, configurations and workflows stay exportable, and the contract provides for it. The retention and erasure that apply are described in the deployment study.
+Your documents, configurations and workflows stay exportable, and the contract provides for it. The deployment study describes the retention and deletion that apply to your case.
+
+#### On the credit platform, what does the gateway see?
+
+The model gateway keeps only usage metadata (model, tokens, cost, duration), never the content of your requests or of the answers. Each model in the catalogue shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. The location shown is information, not a guarantee of data residency.
 
 ### Bloc 12 — Appel à l'action (`block_cta`)
 

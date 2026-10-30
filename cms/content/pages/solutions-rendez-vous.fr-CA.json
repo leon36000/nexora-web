@@ -13,7 +13,7 @@
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution rendez-vous\u00a0: un agenda qui se remplit, sans disponibilité inventée.",
+      "role": "Promesse de la solution rendez-vous : un agenda qui se remplit, sans disponibilité inventée.",
       "claims": ["CL-123", "CL-124"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Rendez-vous",
         "headline": "Un agenda qui se remplit.",
-        "subheadline": "Le système reçoit les demandes de rendez-vous, propose des créneaux à partir de votre agenda et rappelle vos clients, même quand le cabinet est fermé. Il ne confirme jamais une disponibilité qu'il n'a pas vérifiée.",
+        "subheadline": "Le système reçoit les demandes de rendez-vous, propose des créneaux vérifiés dans votre agenda et rappelle vos clients, même quand le cabinet est fermé. Il ne confirme jamais une disponibilité qu'il n'a pas vérifiée.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -31,7 +31,7 @@
     },
     {
       "collection": "block_section",
-      "role": "Problème\u00a0: exemple construit d'un petit cabinet qui perd des créneaux.",
+      "role": "Problème : exemple construit d'un petit cabinet qui perd des créneaux.",
       "claims": ["CL-11"],
       "fields": {
         "media_position": "none",
@@ -40,11 +40,11 @@
       },
       "translation": {
         "title": "Des créneaux qui filent.",
-        "body": "<p>Un petit cabinet reçoit des demandes de rendez-vous par courriel et par formulaire, souvent en dehors des heures d'ouverture. Les confirmations se font à la main, les rappels aussi, et une annulation de dernière minute laisse un trou dans la journée.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Un petit cabinet reçoit des demandes de rendez-vous par courriel et par formulaire, souvent le soir, après la fermeture. La réceptionniste confirme à la main le lendemain, envoie les rappels à la main, et une annulation de dernière minute laisse un trou dans la journée de la professionnelle.</p><p>Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Des demandes qui attendent.",
-            "text": "Elles arrivent le soir\u00a0; la réponse part le lendemain, parfois trop tard."
+            "text": "Elles arrivent le soir ; la réponse part le lendemain, parfois trop tard."
           },
           {
             "title": "Des rappels oubliés.",
@@ -59,7 +59,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système, selon l'agenda connecté\u00a0: de la demande au rappel.",
+      "role": "Ce que fait le système, selon l'agenda connecté : de la demande au rappel.",
       "claims": ["CL-123", "CL-103", "CL-91", "CL-21", "CL-85", "CL-P02"],
       "fields": {
         "columns": "4",
@@ -92,7 +92,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que reçoit l'équipe\u00a0: mosaïque de bénéfices (bento), dont la transcription d'un message vocal et l'absence de téléphonie.",
+      "role": "Ce que reçoit l'équipe : mosaïque de bénéfices (bento), dont la transcription d'un message vocal et l'absence de téléphonie.",
       "claims": ["CL-123", "CL-124", "CL-102"],
       "fields": {
         "columns": "2",
@@ -106,7 +106,7 @@
         "cards": [
           {
             "title": "Les demandes reçues.",
-            "text": "Une file claire\u00a0: à traiter, proposées, confirmées."
+            "text": "Une file claire : à traiter, proposées, confirmées."
           },
           {
             "title": "Des rappels préparés.",
@@ -118,14 +118,14 @@
           },
           {
             "title": "Les messages vocaux, transcrits.",
-            "text": "Un message vocal déposé comme enregistrement peut être transcrit. Le téléphone, lui, n'est pas inclus\u00a0: aucun service de réception d'appels n'est livré à ce jour, et la téléphonie en direct se vérifie séparément."
+            "text": "Un message vocal déposé comme enregistrement peut être transcrit. Le téléphone, lui, n'est pas inclus : aucun service de réception d'appels n'est livré à ce jour, et la téléphonie en direct se vérifie séparément."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic\u00a0; lien vers Croissance (être trouvé, accès anticipé).",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic ; lien vers Croissance (être trouvé, accès anticipé).",
       "claims": ["CL-14", "CL-09", "CL-123", "CL-G01"],
       "fields": {
         "media_position": "none",
@@ -134,12 +134,12 @@
       },
       "translation": {
         "title": "Moins de créneaux perdus.",
-        "body": "<p>Le bénéfice attendu\u00a0: moins de créneaux perdus et moins de temps passé à confirmer à la main. Aucun taux d'absence ni gain n'est annoncé\u00a0: cela se mesure pendant un pilote.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour relier votre agenda.</p><p>Un agenda plein commence par des clients qui vous trouvent\u00a0: <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé, est en accès anticipé, sur demande.</p>"
+        "body": "<p>Le bénéfice attendu : moins de créneaux perdus et moins de temps passé à confirmer à la main. Aucun taux d'absence ni gain n'est annoncé : cela se mesure pendant un pilote, sur votre agenda.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour relier votre agenda.</p><p>Un agenda plein commence par des clients qui vous trouvent : <a href=\"/croissance/\">Nexora Croissance</a>, notre service de marketing automatisé, est en accès anticipé, sur demande.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé\u00a0; carte données avec lien Vos données.",
+      "role": "Ce qui reste sous contrôle, y compris la prudence sur les renseignements de santé ; carte données avec lien Vos données.",
       "claims": [
         "CL-123",
         "CL-131",
@@ -174,11 +174,11 @@
           },
           {
             "title": "Les rappels sont les vôtres.",
-            "text": "Le texte, le moment et le canal sont validés par vous. Les rappels répondent à un rendez-vous existant\u00a0; ils ne servent pas à de la prospection."
+            "text": "Le texte, le moment et le canal sont validés par vous. Les rappels répondent à un rendez-vous existant ; ils ne servent pas à de la prospection."
           },
           {
             "title": "Vos données restent à vous.",
-            "text": "L'agenda et les demandes restent dans le périmètre convenu\u00a0: sur votre serveur ou chez nous, au Québec. Jamais utilisés pour entraîner un modèle, jamais vendus\u00a0; un service externe n'entre qu'avec votre activation explicite, consignée par écrit.",
+            "text": "L'agenda et les demandes restent dans le périmètre convenu : sur votre serveur ou chez nous, au Québec. Jamais utilisés pour entraîner un modèle, jamais vendus ; un service externe n'entre qu'avec votre activation explicite, consignée par écrit.",
             "href": "/vos-donnees/",
             "link_label": "Lire nos engagements"
           }
@@ -188,37 +188,58 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la solution rendez-vous.",
-      "claims": ["CL-123", "CL-124", "CL-85", "CL-132"],
+      "claims": [
+        "CL-123",
+        "CL-124",
+        "CL-85",
+        "CL-132",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04",
+        "CL-T09",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Rendez-vous\u00a0: vos questions.",
+        "title": "Rendez-vous : vos questions.",
         "items": [
           {
-            "question": "Avec quel agenda ça fonctionne\u00a0?",
+            "question": "Avec quel agenda la solution fonctionne-t-elle ?",
             "answer": "Avec les agendas qui se relient à WorkStudio par un connecteur. Chaque agenda se qualifie au diagnostic, et certaines connexions demandent un enregistrement préalable chez le fournisseur."
           },
           {
-            "question": "Peut-il répondre au téléphone\u00a0?",
-            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. La solution traite les demandes écrites (courriel, formulaire)."
+            "question": "Le système peut-il répondre au téléphone ?",
+            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. La solution traite les demandes écrites (courriel, formulaire) ; un message vocal déposé comme enregistrement peut être transcrit."
           },
           {
-            "question": "Que fait-il quand deux personnes veulent le même créneau\u00a0?",
+            "question": "Que fait-il quand deux personnes veulent le même créneau ?",
             "answer": "Il vérifie l'agenda au moment de confirmer. Si le créneau est pris, il propose une autre option plutôt que de confirmer un doublon."
           },
           {
-            "question": "Peut-on l'utiliser pour des soins\u00a0?",
-            "answer": "Pour l'administratif seulement\u00a0: demande, créneau, rappel. Nous ne qualifions pas d'usage clinique et nous recommandons de ne pas y faire transiter de renseignements de santé."
+            "question": "Peut-on l'utiliser pour des soins ?",
+            "answer": "Pour l'administratif seulement : demande, créneau, rappel. Nous ne qualifions pas d'usage clinique et nous recommandons de ne pas y faire transiter de renseignements de santé."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Pour la prise de rendez-vous, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Qu'est-ce qui consomme des crédits ici ?",
+            "answer": "Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour comprendre une demande de rendez-vous ou rédiger une réponse avec des créneaux, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: démonstration\u00a0; partenaire d'ici.",
+      "role": "CTA : démonstration ; partenaire d'ici.",
       "claims": ["CL-01", "CL-04"],
       "fields": {
         "tone": "sombre"

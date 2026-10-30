@@ -6,8 +6,8 @@
   "seo": {
     "slug": "solutions",
     "title": "Solutions",
-    "seo_title": "Solutions IA pour PME au Québec",
-    "seo_description": "Six solutions d'IA pour PME du Québec : courriels, factures, service client, rendez-vous, comptabilité, documents. Très simples, vos données restent à vous.",
+    "seo_title": "Six solutions d'IA pour PME du Québec",
+    "seo_description": "Courriels, factures, service client, rendez-vous, comptabilité, documents : six solutions pour PME du Québec. Une personne valide, vos données restent à vous.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solutions",
         "headline": "Les tâches répétitives, enfin derrière vous.",
-        "subheadline": "La pointe de l'IA, rendue extrêmement simple : six situations de PME où le travail répétitif s'efface et où votre équipe garde la décision, sans écrire une ligne de code.",
+        "subheadline": "Courriels triés, factures lues, clients servis, agenda rempli : six situations de PME du Québec où le travail répétitif s'efface. Votre équipe garde la décision, sans écrire une ligne de code.",
         "primary_label": "Planifier un diagnostic",
         "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Demander une démonstration",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "Imaginez le travail sans les corvées.",
-        "body": "<p>Le lundi arrive, et les courriels sont déjà triés, les factures déjà lues, les questions des clients déjà répondues. Votre équipe commence la journée par ce qui demande du jugement, du métier, du conseil, et non par de la ressaisie.</p><p>Voilà l'image que vise chaque solution de cette page. Nous ne promettons ni gain chiffré ni résultat garanti : le bénéfice réel se mesure sur votre premier cas.</p>",
+        "body": "<p>Lundi matin, les courriels sont déjà triés, les factures déjà lues, les questions courantes de vos clients déjà répondues. Votre équipe commence la journée par ce qui demande du jugement, du métier et du conseil, pas par de la ressaisie.</p><p>C'est l'image que vise chaque solution de cette page. Aucun gain chiffré n'est annoncé : le bénéfice réel se mesure sur votre premier cas, avec vos données.</p>",
         "items": [
           {
             "title": "Du temps pour le métier.",
@@ -112,7 +112,7 @@
     },
     {
       "collection": "block_section",
-      "role": "WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; schéma de l'éditeur de flux.",
+      "role": "WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; fil « un compte, des crédits, tous vos outils » avec lien vers les tarifs à venir ; schéma de l'éditeur de flux.",
       "claims": [
         "CL-132",
         "CL-85",
@@ -125,7 +125,14 @@
         "CL-25",
         "CL-101",
         "CL-102",
-        "CL-21"
+        "CL-21",
+        "CL-PL01",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
       ],
       "fields": {
         "media_position": "right",
@@ -135,7 +142,7 @@
       },
       "translation": {
         "title": "Puissant en dessous, simple dessus.",
-        "body": "<p>Ces solutions s'assemblent dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, un seul outil, en français, qui met à votre portée ce que l'IA sait faire de plus récent : des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), des réponses fondées sur vos propres documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte. « À la pointe » est notre façon de le dire ; la preuve, c'est cette liste.</p><p>Et c'est extrêmement simple à manier : vous décrivez le besoin en français, un assistant de création (le Copilote) prépare un flux de travaux (des enchaînements automatisés de tâches) que vous relisez, puis vous le construisez en cartes ou sur un canevas, comme on dessine un schéma, sans écrire de code. Le flux illustré ici reçoit une facture par courriel, prépare l'écriture et s'arrête sur l'approbation d'une personne avant d'écrire.</p><p>Chaque mise en service commence par un diagnostic de votre cas : nous vérifions que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel. Ce ne sont pas des boîtes prêtes à l'emploi, mais des configurations sur mesure.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p><p>Pour choisir votre premier cas, lisez le <a href=\"/guides/ia-pme-quebec/\">guide de l'IA pour une PME du Québec</a>.</p>",
+        "body": "<p>Ces solutions s'assemblent dans <a href=\"/workstudio/\">Nexora WorkStudio</a>, un seul outil, en français, qui met à votre portée ce que l'IA sait faire de plus récent : des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), des réponses fondées sur vos propres documents, la lecture de documents scannés, la transcription et la lecture à voix haute, la comparaison de plusieurs modèles côte à côte.</p><p>Et c'est simple à manier : vous décrivez le besoin en français, un assistant de création (le Copilote) prépare un flux de travaux (des enchaînements automatisés de tâches) que vous relisez, puis vous le construisez en cartes ou sur un canevas, sans écrire de code. Le flux illustré ici reçoit une facture par courriel, prépare l'écriture et s'arrête sur l'approbation d'une personne avant d'écrire.</p><p><strong>Un compte, des crédits, tous vos outils.</strong> Votre compte Nexora AI réunit, dans le panneau « Mes outils », vos crédits, votre espace et vos produits, avec l'état réel de chacun. WorkStudio s'y ouvre tant qu'il reste au moins un crédit. Tout ce qui appelle un modèle d'IA consomme des crédits : un abonnement en donne chaque mois, sinon on recharge. La plateforme n'est pas encore ouverte à la vente et aucun prix n'est publié. <a href=\"/tarifs/\">Voir les tarifs à venir</a></p><p>Côté accompagnement, chaque mise en service commence par un diagnostic de votre cas : nous vérifions que vos logiciels peuvent être reliés, et nous n'annonçons aucun délai universel. Ce sont des configurations sur mesure, pas des boîtes prêtes à l'emploi. <a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p><p>Pour choisir votre premier cas, lisez le <a href=\"/guides/ia-pme-quebec/\">guide de l'IA pour une PME du Québec</a>.</p>",
         "items": [
           {
             "title": "1. Le problème, nommé.",
@@ -150,8 +157,8 @@
             "text": "Brouillons, tables, réponses sourcées : du concret à relire."
           },
           {
-            "title": "4. Le bénéfice, sans chiffre inventé.",
-            "text": "Décrit honnêtement ; il se mesure sur un premier cas."
+            "title": "4. Le bénéfice attendu.",
+            "text": "Décrit sans chiffre inventé ; il se mesure sur un premier cas."
           },
           {
             "title": "5. Votre contrôle, intact.",
@@ -176,25 +183,25 @@
         "cards": [
           {
             "title": "Un entrepreneur en rénovation.",
-            "text": "Il veut retrouver ses anciennes soumissions, organiser ses équipes et suivre ses coûts réels. Pour la construction et les services terrain, OPSYS-AI réunit ces besoins en dix départements, chacun avec son niveau de disponibilité (produit en développement).",
+            "text": "Il veut retrouver une ancienne soumission comparable, organiser ses équipes et suivre ses coûts réels. Le système retrouve les dossiers ; l'estimateur garde le prix final. Pour la construction, OPSYS-AI réunit ces besoins en dix départements, chacun avec son niveau de disponibilité (produit en développement).",
             "href": "/opsys-ai/",
             "link_label": "Découvrir OPSYS-AI"
           },
           {
-            "title": "Un distributeur.",
-            "text": "Il reçoit des demandes de prix par courriel et des factures de fournisseurs en formats variés. Le tri des courriels et la lecture des factures sont ses deux portes d'entrée.",
+            "title": "Un distributeur de plomberie.",
+            "text": "Au quotidien, des demandes de prix arrivent par courriel et des factures de fournisseurs dans des formats variés. Le système classe les courriels et lit les factures ; le responsable approuve les réponses et les paiements.",
             "href": "/solutions/courriels/",
             "link_label": "Voir les courriels"
           },
           {
             "title": "Un cabinet de services professionnels.",
-            "text": "Il cherche la bonne clause dans d'anciens dossiers et prépare des documents à partir de modèles. La recherche dans ses propres documents est sa première solution.",
+            "text": "Il cherche la bonne clause dans d'anciens dossiers et prépare des documents à partir de modèles. Il interroge ses propres documents en français et vérifie chaque réponse dans la source citée.",
             "href": "/solutions/documents/",
             "link_label": "Voir les documents"
           },
           {
             "title": "Un petit cabinet qui prend des rendez-vous.",
-            "text": "Il perd des créneaux par oubli et par annulation tardive. Les demandes, les rappels et la gestion de l'agenda en sont le cœur.",
+            "text": "Des demandes arrivent le soir et des annulations tombent à la dernière minute. Le système propose des créneaux vérifiés dans l'agenda et prépare les rappels ; la réceptionniste garde les confirmations délicates.",
             "href": "/solutions/rendez-vous/",
             "link_label": "Voir les rendez-vous"
           }
@@ -270,7 +277,12 @@
         "CL-E03",
         "CL-E04",
         "CL-E01",
-        "CL-E02"
+        "CL-E02",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -281,28 +293,36 @@
         "title": "Avant de choisir : vos questions.",
         "items": [
           {
-            "question": "Par où commencer ?",
-            "answer": "Par le problème qui vous coûte le plus de temps. Nous le décrivons avec vous, nous vérifions les logiciels à relier, puis nous mettons un premier cas en service avant d'élargir."
+            "question": "Par où commencer avec l'IA dans ma PME ?",
+            "answer": "Par le problème qui vous coûte le plus de temps. Nous le décrivons avec vous, nous vérifions les logiciels à relier, puis nous mettons un premier cas en service avant d'élargir. Un diagnostic ouvre la démarche."
           },
           {
             "question": "Faut-il changer mes logiciels ?",
             "answer": "En général non : le système se relie à ce que vous utilisez déjà. La possibilité de relier un logiciel dépend du service concerné ; nous la vérifions au diagnostic."
           },
           {
-            "question": "Est-ce prêt à l'emploi ?",
-            "answer": "Non, et c'est volontaire : chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées."
+            "question": "Les solutions sont-elles prêtes à l'emploi ?",
+            "answer": "Non, et c'est voulu : chaque solution est configurée pour votre entreprise, avec vos règles et vos documents. Ce sont les composantes de WorkStudio qui sont livrées ; leur assemblage pour votre cas se fait avec vous."
           },
           {
             "question": "Mes données servent-elles à entraîner un modèle ?",
-            "answer": "Jamais. Elles restent sur votre serveur ou chez nous, au Québec, ne servent pas à entraîner ni à ajuster un modèle, et ne sont jamais vendues. La page Vos données détaille chaque engagement."
+            "answer": "Jamais. Vos données restent sur votre serveur ou chez nous, au Québec, ne servent pas à entraîner ni à ajuster un modèle et ne sont jamais vendues. La page Vos données détaille chaque engagement."
           },
           {
-            "question": "Et le téléphone ?",
-            "answer": "Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément, au cas par cas."
+            "question": "Les solutions répondent-elles au téléphone ?",
+            "answer": "Non. Aucun service de réception d'appels n'est livré à ce jour. Un message vocal déposé comme enregistrement peut être transcrit ; la téléphonie en direct se vérifie séparément, au cas par cas."
           },
           {
             "question": "Combien cela coûte-t-il ?",
-            "answer": "Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas."
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Qu'est-ce qui consomme des crédits ?",
+            "answer": "Tout appel à un modèle d'IA : lire un document, rédiger une réponse, classer un message. Un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les outils qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement."
+          },
+          {
+            "question": "Puis-je ouvrir un compte et acheter des crédits dès maintenant ?",
+            "answer": "Pas encore. La plateforme à crédits n'est pas ouverte à la vente : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié. Vous pouvez en revanche planifier un diagnostic dès maintenant ; les prix s'afficheront sur la page Tarifs à leur publication."
           }
         ]
       }

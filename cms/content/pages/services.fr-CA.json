@@ -7,14 +7,14 @@
     "slug": "services",
     "title": "Services",
     "seo_title": "Services d'IA pour PME au Québec",
-    "seo_description": "Services d'IA pour PME du Québec\u00a0: diagnostic, installation chez vous ou au Québec, sur mesure, exploitation. La pointe de l'IA, sans devenir informaticien.",
+    "seo_description": "Diagnostic, installation chez vous ou au Québec, automatisation sur mesure, exploitation : des services d'IA pour PME du Québec, sans devenir informaticien.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Hub des services : le rêve (une IA installée, exploitée, améliorée sans devenir informaticien) et le diagnostic en appel à l'action.",
-      "claims": ["CL-01", "CL-80", "CL-04", "CL-P01", "CL-P03"],
+      "claims": ["CL-01", "CL-80", "CL-04", "CL-P01", "CL-P03", "CL-PL03"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Services d'IA pour PME",
         "headline": "L'IA installée, exploitée, améliorée. Avec vous.",
-        "subheadline": "Des services d'IA pour PME du Québec\u00a0: nous installons, exploitons et faisons évoluer avec vous un système à la pointe de l'IA, sans que vous deveniez informaticien. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas en service.",
+        "subheadline": "Nous installons, exploitons et faisons évoluer avec vous un système d'IA pour votre PME du Québec, sans que vous deveniez informaticien. Un diagnostic d'abord, puis une estimation écrite, puis un premier cas en service.",
         "primary_label": "Planifier un diagnostic",
         "primary_href": "/contact/?sujet=diagnostic",
         "secondary_label": "Lire la méthode",
@@ -51,11 +51,11 @@
       },
       "translation": {
         "title": "Ce que ça change pour vous.",
-        "body": "<p>Imaginez une IA qui travaille dans votre entreprise\u00a0: elle lit vos documents, prépare vos réponses, relie vos logiciels et s'arrête pour demander votre accord avant tout geste qui vous engage. Nous l'installons, nous l'exploitons et nous l'améliorons avec vous. Vous gardez l'esprit sur votre métier\u00a0; nous prenons la technique en charge.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p>",
+        "body": "<p>Imaginez une IA qui travaille dans votre entreprise : elle lit vos documents, prépare vos réponses, relie vos logiciels et s'arrête pour demander votre accord avant tout geste qui vous engage. Nous l'installons, nous l'exploitons et nous l'améliorons avec vous. Vous gardez l'esprit sur votre métier ; nous prenons la technique en charge.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a></p>",
         "items": [
           {
             "title": "La pointe de l'IA, sans la complexité.",
-            "text": "Des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), un Copilote qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses fondées sur vos documents, la lecture de documents scannés, la voix\u00a0: tout dans un seul outil, sans écrire de code."
+            "text": "Des agents (des logiciels qui accomplissent une tâche avec les outils que vous autorisez), un Copilote qui bâtit un flux de travaux (un enchaînement automatisé de tâches) à partir d'une description en français, des réponses fondées sur vos documents, la lecture de documents scannés, la voix : tout dans un seul outil, sans écrire de code."
           },
           {
             "title": "Une personne décide.",
@@ -88,7 +88,7 @@
           },
           {
             "title": "L'installation de serveurs d'IA.",
-            "text": "Chez vous ou dans notre infrastructure au Québec\u00a0: dimensionnement, installation en une commande, configuration, vérification des flux. Votre IA, prête à travailler.",
+            "text": "Chez vous ou dans notre infrastructure au Québec : dimensionnement, installation en une commande, configuration, vérification des flux. Votre IA, prête à travailler.",
             "href": "/services/installation-serveurs-ia/",
             "link_label": "Voir l'installation"
           },
@@ -100,7 +100,7 @@
           },
           {
             "title": "L'exploitation.",
-            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste\u00a0; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique.",
+            "text": "Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste ; la formation de votre équipe porte sur l'usage et la supervision, pas sur la technique.",
             "href": "/methode/",
             "link_label": "Voir la méthode"
           }
@@ -109,20 +109,30 @@
     },
     {
       "collection": "block_section",
-      "role": "Ce qui fait varier l'estimation (aucun prix ni délai) et appel à planifier un diagnostic.",
-      "claims": ["CL-10", "CL-82", "CL-85", "CL-14"],
+      "role": "Les deux voies de Nexora AI (accompagnement sur estimation écrite, plateforme à crédits), aucun prix ni délai ; ce qui fait varier l'estimation ; lien vers les tarifs à venir et appel à planifier un diagnostic.",
+      "claims": [
+        "CL-10",
+        "CL-82",
+        "CL-85",
+        "CL-14",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
         "anchor_id": "estimation"
       },
       "translation": {
-        "title": "Ce qui fait varier l'estimation.",
-        "body": "<p>Il n'y a pas encore de prix public, et nous n'annonçons aucun délai universel. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas. Voici ce qui la fait varier.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour obtenir la vôtre.</p>",
+        "title": "Ce qui se paie, ce qui varie.",
+        "body": "<p>Nexora AI propose deux voies. L'<strong>accompagnement</strong> (diagnostic, installation chez vous ou hébergée au Québec, exploitation) se paie sur une estimation écrite, remise après le diagnostic, qui indique ce qui est inclus et ce qui ne l'est pas. La <strong>plateforme à crédits</strong> (compte, crédits, outils) se paie à l'usage : tout ce qui appelle un modèle d'IA consomme des crédits, qu'un abonnement fournit chaque mois ou qu'on recharge.</p><p>Il n'y a pas encore de prix public, la plateforme n'est pas ouverte à la vente et nous n'annonçons aucun délai universel. <a href=\"/tarifs/\">Voir les tarifs à venir</a>. Voici ce qui fait varier l'estimation d'accompagnement.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour obtenir la vôtre.</p>",
         "items": [
           {
             "title": "Le nombre de cas traités.",
-            "text": "Un cas bien choisi d'abord\u00a0; d'autres ensuite."
+            "text": "Un cas bien choisi d'abord ; d'autres ensuite."
           },
           {
             "title": "Le volume de documents.",
@@ -130,11 +140,11 @@
           },
           {
             "title": "Le mode de déploiement.",
-            "text": "Chez vous ou chez nous\u00a0: les postes de coût ne sont pas les mêmes."
+            "text": "Chez vous ou chez nous : les postes de coût ne sont pas les mêmes."
           },
           {
             "title": "Les intégrations.",
-            "text": "Chaque logiciel à relier se qualifie\u00a0; certains demandent plus de travail que d'autres."
+            "text": "Chaque logiciel à relier se qualifie ; certains demandent plus de travail que d'autres."
           },
           {
             "title": "Le matériel, chez vous.",
@@ -162,13 +172,13 @@
           },
           {
             "title": "Des produits pas encore livrés.",
-            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés\u00a0; ils peuvent faire l'objet d'une étude de faisabilité. Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation.",
+            "text": "La téléphonie, la vision par caméra et les modèles spécialisés ne sont pas des produits livrés ; ils peuvent faire l'objet d'une étude de faisabilité. Nexora Vision, notre projet de vidéosurveillance par IA, est un projet pilote sur invitation.",
             "href": "/vision/",
             "link_label": "Voir Nexora Vision"
           },
           {
             "title": "Un niveau de service annoncé.",
-            "text": "Aucun niveau de disponibilité ni délai de réponse n'est annoncé à ce jour\u00a0; ils se précisent au contrat."
+            "text": "Aucun niveau de disponibilité ni délai de réponse n'est annoncé à ce jour ; ils se précisent au contrat."
           }
         ]
       }
@@ -176,34 +186,54 @@
     {
       "collection": "block_faq",
       "role": "Questions sur les services (personnel technique, données, mises à jour, sortie, commencer petit).",
-      "claims": ["CL-04", "CL-08", "CL-10", "CL-02", "CL-E03", "CL-E04"],
+      "claims": [
+        "CL-04",
+        "CL-08",
+        "CL-10",
+        "CL-02",
+        "CL-E03",
+        "CL-E04",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Services\u00a0: vos questions.",
+        "title": "Services : vos questions.",
         "items": [
           {
-            "question": "Faut-il du personnel technique chez nous\u00a0?",
-            "answer": "Non. Nous installons, exploitons avec vous et faisons évoluer le système. La formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
+            "question": "Faut-il du personnel technique chez nous ?",
+            "answer": "Non. Nexora AI installe le système, l'exploite avec vous et le fait évoluer. La formation de votre équipe porte sur l'usage et la supervision, pas sur la technique."
           },
           {
-            "question": "Où sont mes données\u00a0?",
+            "question": "Où sont mes données ?",
             "answer": "Chez vous, sur votre serveur, ou chez nous, dans notre infrastructure au Québec, selon le mode choisi. Dans les deux cas, elles ne servent jamais à entraîner un modèle et ne sont jamais vendues."
           },
           {
-            "question": "Qui s'occupe des mises à jour\u00a0?",
-            "answer": "Nous, selon ce qui est convenu au contrat. Les mises à jour sont listées parmi les flux sortants dans le schéma que nous vous remettons."
+            "question": "Qui s'occupe des mises à jour ?",
+            "answer": "Nexora AI, selon ce qui est convenu au contrat. Les mises à jour sont listées parmi les flux sortants dans le schéma que nous vous remettons."
           },
           {
-            "question": "Et si nous voulons arrêter\u00a0?",
-            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux\u00a0: l'exportation est prévue au contrat dès le départ."
+            "question": "Et si nous voulons arrêter ?",
+            "answer": "Vous repartez avec vos documents, vos configurations et vos flux de travaux : l'exportation est prévue au contrat dès le départ."
           },
           {
-            "question": "Peut-on commencer petit\u00a0?",
-            "answer": "C'est même la méthode\u00a0: un cas concret, mis en service et vérifié, avant d'élargir."
+            "question": "Peut-on commencer petit ?",
+            "answer": "Oui, c'est même la méthode : un cas concret, mis en service et vérifié, avant d'élargir."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Quelle différence entre l'accompagnement et la plateforme ?",
+            "answer": "Nexora AI propose deux voies : l'accompagnement sur mesure (diagnostic, installation, exploitation, estimation écrite) et une plateforme à crédits (compte, crédits, outils). La plateforme n'est pas encore ouverte à la vente. Le diagnostic, lui, peut être planifié dès maintenant."
           }
         ]
       }

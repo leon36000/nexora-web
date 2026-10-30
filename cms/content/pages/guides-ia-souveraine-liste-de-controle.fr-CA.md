@@ -143,11 +143,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=faq`
 
 #### Qu'est-ce qu'une IA souveraine ?
 
-Une IA dont on sait où elle tourne et où vont les données. Nexora AI la décrit par quatre couches de contrôle : les données, les modèles, le calcul et l'exploitation. C'est une définition de travail, sans valeur légale.
+C'est une IA dont on sait où elle tourne et où vont les données. Nexora AI la décrit par quatre couches de contrôle : les données, les modèles, le calcul et l'exploitation. C'est une définition de travail, sans valeur légale.
 
 #### Un hébergement au Canada suffit-il ?
 
-Pas à lui seul : un stockage au Canada n'implique pas un traitement au Canada, et un fournisseur soumis à une loi étrangère peut devoir remettre des données qu'il détient. Voir le guide sur le lieu des données.
+Pas à lui seul : un stockage au Canada n'implique pas un traitement au Canada, et un fournisseur soumis à une loi étrangère peut devoir remettre des données qu'il détient. Demandez où se fait le traitement ; le guide « Où sont vraiment vos données » détaille ces questions.
 
 #### Un serveur chez moi garantit-il l'absence de flux sortants ?
 

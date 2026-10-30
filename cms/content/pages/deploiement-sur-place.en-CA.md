@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Your AI. Your server. Your rules.
 
-We install and configure the system on a server that belongs to you, in your offices or at a host of your choice. Your data stays there: Nexora AI gets in only if you authorize it in writing, for a specific task and a limited time.
+We install and configure the system on a server that belongs to you, in your offices or at a host of your choice. Your data stays there. Nexora AI gets in only if you authorize it in writing, for a specific task and a limited time.
 
 [Study my project](/en/contact/?sujet=etude-deploiement) · [Compare the two modes](/en/deployment/)
 
@@ -33,7 +33,7 @@ Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-sur-place`, 
 
 ## The perimeter, on your premises.
 
-The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not the configuration of a real customer; the diagram of your installation is handed to you in writing. Your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
+The diagram shows a typical perimeter: your server, your workstations, your documents. It is an example, not the configuration of a real customer; we hand you the diagram of your installation in writing. Your data is never used to train a model and never sold: [see the commitments on your data](/en/your-data/).
 
 Before buying hardware, read [An on-premises AI server: decide before buying](/en/guides/on-premises-ai-server/) and [Where your data really is](/en/guides/where-is-your-ai-data/).
 
@@ -52,7 +52,7 @@ Réglages : `columns=3`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
 #### Size.
 
-The diagnosis measures your uses and sets the hardware needed, before any purchase.
+The assessment measures your uses and sets the hardware needed, before any purchase.
 
 #### Install.
 
@@ -122,7 +122,7 @@ No standard configuration: it depends on the number of users, the volume of docu
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08, CL-E01, CL-E03, CL-E04*
+*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08, CL-E01, CL-E03, CL-E04, CL-10, CL-80, CL-82*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -134,19 +134,23 @@ Yes. Documents, the index and conversations stay on your server. The outbound fl
 
 #### Does Nexora AI access my server?
 
-Only if you authorize it in writing, for a specific task and a limited time. Every access is logged, and you can withdraw the authorization.
+Only if you authorize it in writing, for a specific task and a limited time. Nexora AI logs every access, and you can withdraw the authorization.
 
 #### Is my data used to train a model?
 
-No, never. It is not sold either.
+No, never. Nexora AI does not use your data, documents, prompts or results to train or fine-tune a model, and it does not sell them.
 
 #### Can I install it with a host of my choice?
 
 Yes: "on your premises" means on a server that belongs to you, in your offices or with the host you choose. Its location then appears in the data-flow diagram.
 
-#### And if I want to leave?
+#### What can I take with me if I leave?
 
-You keep your server, your documents, your configurations and your workflows: export is provided for in the contract.
+You keep your server, your documents, your configurations and your workflows: the contract provides for their export.
+
+#### How much does an on-premises AI server cost?
+
+There is no public price yet. The hardware you need depends on the number of users, the volume of documents, the model chosen and the uses: the assessment sets it before any purchase. A written estimate follows the assessment and says what is included (installation, configuration) and what is not.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

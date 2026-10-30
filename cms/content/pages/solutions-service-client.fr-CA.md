@@ -6,7 +6,7 @@
 
 - Page : `solutions-service-client` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/service-client/` · slug : `solutions/service-client`
-- Titre SEO (30 caractères) : Service client par IA pour PME
+- Titre SEO (41 caractères) : Agent de service client sur vos documents
 - Description SEO (152 caractères) : Un agent répond à vos clients à partir de vos documents, cite ses sources et passe le relais à une personne, avec un résumé. Votre équipe garde la main.
 
 ## Contenu
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Votre site répond. Votre équipe se concentre.
 
-Un agent (un logiciel qui accomplit une tâche avec les outils que vous autorisez) répond aux questions de vos clients à partir de vos propres documents, cite ses sources et passe le relais à votre équipe quand il ne sait pas.
+Un agent (un logiciel qui accomplit une tâche avec les outils que vous autorisez) répond aux questions de vos clients à partir de vos documents, cite ses sources et passe le relais à votre équipe quand il ne sait pas.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## Les mêmes questions, jour après jour.
 
-Prenons un distributeur de produits de plomberie qui sert des entrepreneurs. Chaque jour, on lui demande les heures d'ouverture, la politique de retour, les documents à fournir pour ouvrir un compte, les zones desservies. Les réponses existent, dans des fiches et des guides, mais il faut quelqu'un pour les retrouver et les redire.
+Prenons un distributeur de produits de plomberie qui sert des entrepreneurs. Tout au long de la journée, on lui demande les heures d'ouverture, la politique de retour, les documents à fournir pour ouvrir un compte, les zones desservies. Les réponses existent, dans des fiches et des guides, mais il faut quelqu'un pour les retrouver et les redire, pendant qu'un autre client attend au comptoir.
 
-L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
+Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
 
 - **Une équipe interrompue.** Les questions simples coupent le travail des personnes qui devraient traiter les cas difficiles.
 - **Des réponses inégales.** Selon la personne et le jour, la réponse change.
@@ -97,7 +97,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=benefice`
 
 ## Moins d'interruptions, plus de constance.
 
-Le bénéfice attendu : moins d'interruptions, des réponses plus constantes, des clients qui obtiennent quelque chose plus vite. Aucun pourcentage n'est annoncé ; l'effet se mesure pendant un pilote, sur vos vraies questions.
+Le bénéfice attendu : moins d'interruptions, des réponses plus constantes, des clients qui obtiennent plus vite ce qu'ils cherchent. Aucun pourcentage n'est annoncé ; l'effet se mesure pendant un pilote, sur vos vraies questions.
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) pour évaluer vos questions fréquentes.
 
@@ -139,7 +139,7 @@ Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner 
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution service client. · Affirmations : CL-107, CL-122, CL-132, CL-112*
+*FAQ propre à la solution service client. · Affirmations : CL-107, CL-122, CL-132, CL-112, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -149,17 +149,25 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 Une ligne de code ajoute une bulle de chat, ou vous insérez un cadre dans une page. Vous limitez la liste des sites autorisés à l'afficher. Il faut pour cela une adresse HTTPS publique (une adresse web sécurisée, accessible à tous) pour votre instance.
 
-#### Peut-il inventer une réponse ?
+#### L'agent peut-il inventer une réponse ?
 
 Un modèle peut se tromper. Nous réduisons le risque en le faisant répondre à partir de vos documents, en citant ses sources et, au besoin, en ajoutant un garde-fou de fidélité. Nous vérifions pendant le pilote qu'il dit quand il ne trouve rien.
 
-#### Et si le client veut parler à quelqu'un ?
+#### Que se passe-t-il si le client veut parler à quelqu'un ?
 
 L'agent propose un rappel par une personne et transmet la demande avec un résumé. Le chat en direct avec un humain n'est pas une fonction annoncée.
 
-#### Parle-t-il en français et en anglais ?
+#### L'agent parle-t-il en français et en anglais ?
 
 Il répond dans la langue de la question dans la mesure où le modèle choisi le permet. Nous vérifions les deux langues sur vos documents pendant le pilote.
+
+#### Combien cela coûte-t-il ?
+
+Pour l'agent de service client, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ici ?
+
+Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour répondre à la question d'un client ou vérifier que la réponse reste fidèle à vos documents, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Où sont vraiment vos données.
 
-Stockage, traitement, juridiction : trois questions distinctes, et les questions à poser à un fournisseur d'IA. Sans promesse de conformité ni de résidence que nous ne pouvons pas prouver.
+Stockage, traitement, juridiction : trois questions distinctes, et les questions à poser à un fournisseur d'IA. Nous ne promettons ni conformité ni résidence que nous ne pouvons pas prouver.
 
 [Voir les engagements sur vos données](/vos-donnees/) · [Étude de déploiement](/contact/?sujet=etude-deploiement)
 
@@ -71,17 +71,17 @@ Ces constats viennent de la documentation de chaque fournisseur. Ils ne disent r
 
 ### Bloc 5 — Section (`block_section`)
 
-*Tableau des trois modes (chez vous, hébergé au Québec, via une API) : où sont les données, où est le traitement, quoi demander. · Affirmations : CL-72, CL-E01, CL-E02, CL-73, CL-S01, CL-77, CL-05, CL-87*
+*Tableau des trois modes (chez vous, hébergé au Québec, via une API) : où sont les données, où est le traitement, quoi demander. · Affirmations : CL-72, CL-E01, CL-E02, CL-73, CL-S01, CL-77, CL-05, CL-87, CL-S02*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=trois-modes`
 
 ## Trois modes, trois réponses.
 
-<table><caption>Où sont les données selon le mode</caption><thead><tr><th>Mode</th><th>Où sont les données</th><th>Où a lieu le traitement</th><th>Quoi demander</th></tr></thead><tbody><tr><th>Chez vous</th><td>Sur votre serveur ; Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise.</td><td>Sur votre serveur, sauf un modèle externe que vous activez.</td><td>La liste des flux sortants (mises à jour, licences, modèle externe) avant la mise en service.</td></tr><tr><th>Hébergé au Québec</th><td>Dans l'infrastructure de Nexora AI, au Québec, sauvegardes comprises : c'est notre engagement écrit.</td><td>Dans la même infrastructure, sauf un service que vous activez.</td><td>L'adresse et le contrat du lieu, la localisation des sauvegardes, des journaux et des sous-traitants. Cette preuve est en préparation.</td></tr><tr><th>Via une API de modèles</th><td>Selon le fournisseur ; la passerelle de Nexora AI ne garde que des métadonnées d'usage.</td><td>Chez le fournisseur du modèle choisi.</td><td>Le lieu de traitement, pas seulement de stockage, et la politique de données du fournisseur.</td></tr></tbody></table>Voir aussi le [déploiement](/deploiement/) chez vous ou hébergé au Québec.
+<table><caption>Où sont les données selon le mode</caption><thead><tr><th>Mode</th><th>Où sont les données</th><th>Où a lieu le traitement</th><th>Quoi demander</th></tr></thead><tbody><tr><th>Chez vous</th><td>Sur votre serveur ; Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise.</td><td>Sur votre serveur, sauf un modèle externe que vous activez.</td><td>La liste des flux sortants (mises à jour, licences, modèle externe) avant la mise en service.</td></tr><tr><th>Hébergé au Québec</th><td>Dans l'infrastructure de Nexora AI, au Québec, sauvegardes comprises : c'est notre engagement écrit.</td><td>Dans la même infrastructure, sauf un service que vous activez.</td><td>L'adresse et le contrat du lieu, la localisation des sauvegardes, des journaux et des sous-traitants. Cette preuve est en préparation.</td></tr><tr><th>Via une API de modèles</th><td>Selon le fournisseur ; la passerelle de Nexora AI ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses.</td><td>Chez le fournisseur du modèle choisi.</td><td>Le lieu de traitement, pas seulement de stockage, et la politique de données du fournisseur.</td></tr></tbody></table>Voir aussi le [déploiement](/deploiement/) chez vous ou hébergé au Québec.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Ce que la fiche d'un modèle dit et ne dit pas. · Affirmations : CL-S01, CL-75, CL-E08*
+*Ce que la fiche d'un modèle dit et ne dit pas. · Affirmations : CL-S01, CL-75, CL-E08, CL-S02, CL-M06*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=fiche-modele`
 
@@ -92,6 +92,8 @@ Dans le catalogue de Nexora AI, la fiche de chaque modèle indique son fournisse
 - **Ce qu'elle dit.** L'information déclarée au catalogue.
 - **Ce qu'elle ne dit pas.** Qu'aucune loi étrangère ne s'applique, ni que le traitement a lieu au même endroit que l'hébergement.
 C'est une information, pas une garantie de résidence. Voir la [passerelle d'API de modèles](/passerelle-api-modeles/) et la [liste des modèles](/modeles/).
+
+Avant chaque appel à un fournisseur, Nexora Privacy Router évalue la requête : elle masque des renseignements évidents (courriel, téléphone, carte de crédit, NAS, IBAN, clés et secrets) ou la refuse, selon la politique de l'organisation. Sa détection est heuristique, elle ne repère ni les noms ni les adresses postales, et elle ne prouve pas où le fournisseur traite ensuite les données.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -139,7 +141,7 @@ Ces engagements s'appuient sur un contrat de traitement, un registre des sous-tr
 
 ### Bloc 9 — FAQ (`block_faq`)
 
-*Questions du guide : stockage au Canada, vérification, entraînement, mode API, preuve. · Affirmations : CL-E08, CL-E09, CL-E03, CL-S01, CL-02, CL-87*
+*Questions du guide : stockage au Canada, vérification, entraînement, mode API, preuve. · Affirmations : CL-E08, CL-E09, CL-E03, CL-S01, CL-02, CL-87, CL-S02, CL-M06, CL-T05, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -164,6 +166,10 @@ Non. Nexora AI s'engage à n'utiliser jamais les données, documents, invites ni
 #### Nexora AI prouve-t-elle que ses serveurs sont au Québec ?
 
 Le mode hébergé s'engage à garder les données au Québec, mais la preuve technique (adresse, contrat, lieu des sauvegardes et des sous-traitants) est en préparation. Elle sera remise par écrit avant la mise en service.
+
+#### Où sont mes données sur la plateforme à crédits de Nexora AI ?
+
+Les documents et fichiers que vous gardez chez Nexora AI comptent dans l'espace disque de votre offre. La passerelle de modèles ne garde que des métadonnées d'usage (modèle, jetons, coût, durée), jamais le contenu des requêtes ni des réponses. Chaque modèle affiche son lieu d'hébergement et la politique de données de son fournisseur, et Nexora Privacy Router évalue chaque requête avant l'appel. Le lieu affiché informe, il ne garantit pas la résidence : le traitement a lieu chez le fournisseur du modèle choisi.
 
 ### Bloc 10 — Appel à l'action (`block_cta`)
 

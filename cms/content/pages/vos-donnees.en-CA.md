@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Your data is yours. Always.
 
-On your premises or in Quebec. Never used to train an AI. Never sold. Never sent to an external model without your green light. Five commitments, explained simply, with what makes them verifiable and where they stop.
+On your premises or in Quebec. Never used to train an AI. Never sold. Never sent to an external model without your green light. Five commitments, their proof and their limits, explained simply.
 
 [Ask a question about your data](/en/contact/?sujet=diagnostic) · [See sovereign AI](/en/sovereignty/)
 
@@ -67,7 +67,7 @@ We do not sell, rent, exchange or share for advertising purposes any personal in
 
 #### No external model without your activation.
 
-Your data is sent to an external model provider only if you have enabled that provider for a specific agent or project. The list of providers is public, and each is bound by a contract setting out retention and training terms.
+Your data is sent to an external model provider only if you have enabled that provider for a specific agent or project. The public list of providers and the contracts that set out retention and training terms are in preparation.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
@@ -107,7 +107,7 @@ Réglages : `columns=3`, `layout=modules`, `tone=sombre`, `anchor_id=preuves`
 
 ## How we prove it.
 
-A commitment is worth the mechanisms that enforce it. Here are those that already exist in the software (available: delivered and verified on our test server) and those in preparation.
+A commitment is only as good as the controls behind it. Cards marked “available” describe what already exists in the software, delivered and verified on our test server. The others describe what is in preparation.
 
 #### An access log.
 
@@ -136,18 +136,19 @@ The country and role of each supplier, including the model providers you enable.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Limites : ce que les engagements ne veulent pas dire. · Affirmations : CL-77, CL-71, CL-75, CL-L05, CL-87*
+*Limites : ce que les engagements ne veulent pas dire. · Affirmations : CL-77, CL-71, CL-75, CL-L05, CL-87, CL-S01, CL-M06*
 
 Réglages : `media_position=none`, `visual=aucun`, `tone=sable`, `anchor_id=limites`
 
 ## Our limits, in black and white.
 
-A credible commitment says what it does not cover. Here are ours.
+Here is what our commitments do not cover.
 
 - **"On-premises" does not mean "nothing leaves".** Updates, licences and any external model are outbound flows. We list them with you before go-live.
 - **"In Quebec" does not settle everything.** A server in Quebec does not, by itself, rule out calls elsewhere. We state sovereignty only where it is demonstrated, mode by mode.
 - **No supplier puts you in compliance.** No software or supplier makes a business compliant with the privacy law: responsibility stays with the business that holds the information. We help you document; we do not replace legal advice.
-- **Documents still in preparation.** The model contract, the data processing agreement, the public register of sub-processors and the proof of hosting location are in preparation. We will deliver them before any go-live.
+- **Documents still in preparation.** The standard contract, the data processing agreement, the public register of sub-processors and the proof of hosting location are in preparation. We will deliver them before any go-live.
+- **On the credit platform, location depends on the model.** A model in the catalogue may run outside Quebec. Each model shows its hosting location and its provider's data policy, and Nexora Privacy Router evaluates every request before the call. That evaluation does not prove where the provider then processes the data, and its detection finds neither names nor postal addresses.
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -173,7 +174,7 @@ We host and run the system in our infrastructure, in Quebec. You buy no server o
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*FAQ : entraînement, vente, lieu, accès de Nexora AI, modèles externes, sortie, Loi 25, incident. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-08, CL-73, CL-L03, CL-L05, CL-87*
+*FAQ : entraînement, vente, lieu, accès de Nexora AI, modèles externes, sortie, Loi 25, incident. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-08, CL-73, CL-L03, CL-L05, CL-87, CL-S01, CL-S02, CL-M06, CL-T05, CL-PL01*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -181,19 +182,19 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 #### Is my data used to train an AI?
 
-Never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request.
+No, never. We do not use your data, documents, prompts or outputs to train or fine-tune any model, whether Nexora AI's or a third party's: the only exception is a model that belongs to you, tuned with Corpus at your written request.
 
 #### Do you sell my data?
 
-Never. We do not sell, rent, exchange or share for advertising purposes any personal information or business data entrusted to us.
+No, never. We do not sell, rent, exchange or share for advertising purposes any personal information or business data entrusted to us.
 
 #### Where is my data?
 
-It depends on the mode you choose. On-premises, it stays on your server. Hosted, it stays in our infrastructure, in Quebec, backups included. In both cases, we write down the location of the data, the backups and the logs before go-live.
+It depends on the mode you choose. On-premises, your data stays on your server. Hosted, it stays in our infrastructure, in Quebec, backups included. In both cases, we write down the location of the data, the backups and the logs before go-live. On the credit platform, the documents and files you keep with Nexora AI count toward your plan's storage, and the model gateway keeps only usage metadata.
 
 #### Can anyone at Nexora AI see my data?
 
-On-premises, only if you authorize it in writing, for a specific task and a limited time, and every access is logged. For the hosted mode, the access rules are set out in writing before go-live.
+On-premises, only if you authorize it in writing, for a specific task and a limited time, and every access is logged. In the hosted mode, the access rules are set out in writing before go-live.
 
 #### Can an external model see my data?
 
@@ -211,6 +212,10 @@ No software or supplier can, on its own, bring a business into line with this la
 
 The law requires reporting to the Commission d'accès à l'information and to the people concerned any incident that presents a risk of serious harm, and keeping a register. Our incident procedure is in preparation; we will deliver it with the contract.
 
+#### What does the model gateway keep of my requests?
+
+None of their content. The gateway's usage events hold only metadata (model, tokens, cost, duration), never the content of requests or answers. Each model shows its provider's data policy, which governs what that provider keeps on its side, and Nexora Privacy Router evaluates every request before the call.
+
 ### Bloc 9 — Appel à l'action (`block_cta`)
 
 *Appel à l'action : poser une question sur ses données. · Affirmations : CL-E03*
@@ -221,4 +226,4 @@ Réglages : `tone=sombre`
 
 A question about where your data will live, about a contract or about a model provider? Ask it before you commit: the answer will be in writing.
 
-[Book a diagnostic](/en/contact/?sujet=diagnostic) · [See the trust centre](/en/trust-center/)
+[Book an assessment](/en/contact/?sujet=diagnostic) · [See the trust centre](/en/trust-center/)

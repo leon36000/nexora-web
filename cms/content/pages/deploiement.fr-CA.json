@@ -6,8 +6,8 @@
   "seo": {
     "slug": "deploiement",
     "title": "Déploiement",
-    "seo_title": "Déploiement d'IA\u00a0: sur place ou au Québec",
-    "seo_description": "Déploiement d'IA pour PME au Québec\u00a0: sur votre serveur ou hébergé chez nous. Qui contrôle quoi, comment choisir. Vos données n'entraînent jamais un modèle.",
+    "seo_title": "Déploiement d'IA : sur place ou au Québec",
+    "seo_description": "Déploiement d'IA pour PME au Québec : sur votre serveur ou hébergé chez nous. Qui contrôle quoi, comment choisir. Vos données n'entraînent jamais un modèle.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Déploiement",
         "headline": "Chez vous, ou chez nous au Québec.",
-        "subheadline": "Dans les deux modes, vos données restent à vous, ne servent jamais à entraîner un modèle et ne sont jamais vendues. Voici, en une lecture, qui contrôle quoi, et comment choisir.",
+        "subheadline": "Choisissez où vit votre IA : sur un serveur qui vous appartient, ou dans notre infrastructure au Québec. Dans les deux modes, vos données restent à vous, n'entraînent jamais un modèle et ne sont jamais vendues. Cette page dit qui contrôle quoi.",
         "primary_label": "Étudier mon projet",
         "primary_href": "/contact/?sujet=etude-deploiement",
         "secondary_label": "Voir les engagements sur vos données",
@@ -41,7 +41,7 @@
       },
       "translation": {
         "title": "Deux modes. Un seul principe.",
-        "intro": "Le principe\u00a0: savoir où tout se trouve, et qui décide.",
+        "intro": "Le principe : savoir où tout se trouve, et qui décide.",
         "cards": [
           {
             "title": "Chez vous.",
@@ -81,39 +81,39 @@
       },
       "translation": {
         "title": "Qui contrôle quoi, en une lecture.",
-        "body": "<p>Huit points, du matériel à la sortie du contrat. Dans chaque cas, la réponse est écrite avant la mise en service. Dans les deux modes, vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues\u00a0: <a href=\"/vos-donnees/\">voir les engagements sur vos données</a>.</p>",
+        "body": "<p>Huit points, du matériel à la sortie du contrat. Pour chacun, la réponse est écrite avant la mise en service. Dans les deux modes, vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : <a href=\"/vos-donnees/\">voir les engagements sur vos données</a>.</p>",
         "items": [
           {
             "title": "Le matériel.",
-            "text": "Chez vous\u00a0: il vous appartient. Chez nous\u00a0: il appartient à notre infrastructure\u00a0; vous n'achetez rien."
+            "text": "Chez vous : il vous appartient. Chez nous : il appartient à notre infrastructure ; vous n'achetez rien."
           },
           {
             "title": "Les données.",
-            "text": "Chez vous\u00a0: sur votre serveur. Chez nous\u00a0: dans notre infrastructure au Québec, selon les lieux précisés par écrit."
+            "text": "Chez vous : sur votre serveur. Chez nous : dans notre infrastructure au Québec, selon les lieux précisés par écrit."
           },
           {
             "title": "Les modèles.",
-            "text": "Dans les deux cas\u00a0: sur le serveur concerné, ou externes seulement si vous les avez activés explicitement, par écrit. Chaque modèle indique où il tourne."
+            "text": "Dans les deux cas : sur le serveur concerné, ou externes seulement si vous les avez activés explicitement, par écrit. Chaque modèle indique où il tourne."
           },
           {
             "title": "Les sauvegardes.",
-            "text": "Chez vous\u00a0: où vous les placez. Chez nous\u00a0: au Québec, dans les lieux nommés au contrat, avec la liste des sous-traitants."
+            "text": "Chez vous : où vous les placez. Chez nous : au Québec, dans les lieux nommés au contrat, avec la liste des sous-traitants."
           },
           {
             "title": "Les mises à jour.",
-            "text": "Listées dans les deux modes comme flux sortants. Chez vous, leur déclenchement se convient\u00a0; chez nous, nous les appliquons."
+            "text": "Listées dans les deux modes comme flux sortants. Chez vous, leur déclenchement se convient ; chez nous, nous les appliquons."
           },
           {
             "title": "Les accès de Nexora AI.",
-            "text": "Chez vous\u00a0: seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, chaque accès étant journalisé. Chez nous\u00a0: ceux qu'exige l'exploitation, décrits dans l'étude."
+            "text": "Chez vous : seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps, chaque accès étant journalisé. Chez nous : ceux qu'exige l'exploitation, décrits dans l'étude."
           },
           {
             "title": "L'exploitation.",
-            "text": "Chez vous\u00a0: partagée selon le contrat. Chez nous\u00a0: assurée par Nexora AI avec vous."
+            "text": "Chez vous : partagée selon le contrat. Chez nous : assurée par Nexora AI avec vous."
           },
           {
             "title": "La sortie du contrat.",
-            "text": "Dans les deux modes\u00a0: vos documents, vos configurations et vos flux de travaux restent exportables."
+            "text": "Dans les deux modes : vos documents, vos configurations et vos flux de travaux restent exportables."
           }
         ]
       }
@@ -146,11 +146,11 @@
           },
           {
             "title": "L'investissement.",
-            "text": "L'achat de matériel est un investissement\u00a0; l'hébergement est un service. Le coût de chaque option est estimé par écrit après le diagnostic."
+            "text": "L'achat de matériel est un investissement ; l'hébergement est un service. Le coût de chaque option est estimé par écrit après le diagnostic."
           },
           {
             "title": "Les exigences de vos clients.",
-            "text": "Certains clients, notamment publics, peuvent exiger un hébergement au Québec\u00a0: à vérifier dans chaque contrat ou appel d'offres."
+            "text": "Certains clients, notamment publics, peuvent exiger un hébergement au Québec : à vérifier dans chaque contrat ou appel d'offres."
           }
         ]
       }
@@ -166,40 +166,61 @@
       },
       "translation": {
         "title": "Le cas du mode mixte.",
-        "body": "<p>Certaines entreprises voudront garder des données sensibles chez elles et confier le reste à notre infrastructure. Une combinaison des deux modes peut être étudiée au cas par cas. Aucune offre mixte n'est définie à ce jour\u00a0: nous ne vous en présentons donc ni le périmètre ni les conditions avant de l'avoir étudiée avec vous.</p><p>Pour en parler, <a href=\"/contact/?sujet=etude-deploiement\">étudier mon projet</a> avec nous, ou lire d'abord notre approche de <a href=\"/souverainete/\">la souveraineté</a>.</p>"
+        "body": "<p>Certaines entreprises voudront garder des données sensibles chez elles et confier le reste à notre infrastructure. Nous pouvons étudier une combinaison des deux modes au cas par cas. Aucune offre mixte n'est définie à ce jour : nous ne présentons donc ni périmètre ni conditions avant d'avoir étudié votre cas avec vous.</p><p>Pour en parler, <a href=\"/contact/?sujet=etude-deploiement\">étudier mon projet</a> avec nous, ou lisez d'abord notre approche de <a href=\"/souverainete/\">la souveraineté</a>.</p>"
       }
     },
     {
       "collection": "block_faq",
       "role": "FAQ du hub déploiement.",
-      "claims": ["CL-02", "CL-06", "CL-08", "CL-E03", "CL-E04"],
+      "claims": [
+        "CL-02",
+        "CL-06",
+        "CL-08",
+        "CL-E03",
+        "CL-E04",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12",
+        "CL-PL01"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
         "anchor_id": "questions"
       },
       "translation": {
-        "title": "Déploiement\u00a0: vos questions.",
+        "title": "Déploiement : vos questions.",
         "items": [
           {
-            "question": "Quel mode choisir pour commencer\u00a0?",
-            "answer": "Celui qui correspond à la sensibilité de vos données et à vos compétences internes. L'étude de déploiement compare les deux options pour votre cas."
+            "question": "Quel mode choisir pour commencer ?",
+            "answer": "Choisissez le mode qui correspond à la sensibilité de vos données et à vos compétences internes : sur place si vous voulez la maîtrise physique du serveur, hébergé si vous voulez nous confier la surveillance et les mises à jour. L'étude de déploiement compare les deux options pour votre cas."
           },
           {
-            "question": "Peut-on changer de mode plus tard\u00a0?",
-            "answer": "L'exportation de vos documents, de vos configurations et de vos flux de travaux est prévue au contrat. Un changement de mode se planifie alors comme un projet."
+            "question": "Peut-on changer de mode plus tard ?",
+            "answer": "Oui, mais comme un projet à planifier. Le contrat prévoit l'exportation de vos documents, de vos configurations et de vos flux de travaux, ce qui rend le changement possible."
           },
           {
-            "question": "Mes données sortent-elles du Québec\u00a0?",
-            "answer": "Cela dépend du mode et des modèles choisis\u00a0; nous l'écrivons avant le démarrage. Un modèle externe n'est jamais configuré sans votre activation explicite, consignée par écrit."
+            "question": "Mes données sortent-elles du Québec ?",
+            "answer": "Cela dépend du mode et des modèles choisis, et nous l'écrivons avant le démarrage. Un modèle externe n'est jamais configuré sans votre activation explicite, consignée par écrit."
           },
           {
-            "question": "Mes données servent-elles à entraîner un modèle\u00a0?",
-            "answer": "Non, jamais, dans aucun des deux modes. Elles ne sont pas non plus vendues."
+            "question": "Mes données servent-elles à entraîner un modèle ?",
+            "answer": "Non, jamais, dans aucun des deux modes. Vos données ne sont pas non plus vendues."
           },
           {
-            "question": "Y a-t-il un mode hors ligne\u00a0?",
-            "answer": "Nous ne promettons pas un fonctionnement sans aucun flux sortant\u00a0: mises à jour et licences sont listées. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas."
+            "question": "Y a-t-il un mode hors ligne ?",
+            "answer": "Nous ne promettons pas un fonctionnement sans aucun flux sortant : les mises à jour et les licences sont listées avant la mise en service. Un fonctionnement sans flux sortant se décide et se vérifie au cas par cas."
+          },
+          {
+            "question": "Combien coûte un déploiement ?",
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Où se place la plateforme à crédits ?",
+            "answer": "Les deux modes de cette page relèvent de l'accompagnement sur mesure. La plateforme à crédits (un compte, des crédits, vos outils réunis dans « Mes outils ») est une seconde voie, pas encore ouverte à la vente : les comptes et les paiements ne fonctionnent qu'en mode test et aucun prix n'est publié."
           }
         ]
       }
@@ -207,17 +228,17 @@
     {
       "collection": "block_cta",
       "role": "CTA : étude de déploiement.",
-      "claims": ["CL-80"],
+      "claims": ["CL-80", "CL-T06"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Choisissons votre mode ensemble.",
-        "text": "Une étude de déploiement compare les deux options pour votre cas\u00a0: données, compétences, matériel, exigences de vos clients.",
+        "text": "Une étude de déploiement compare les deux options pour votre cas : données, compétences, matériel, exigences de vos clients.",
         "primary_label": "Étudier mon projet",
         "primary_href": "/contact/?sujet=etude-deploiement",
-        "secondary_label": "Voir le centre de confiance",
-        "secondary_href": "/centre-de-confiance/"
+        "secondary_label": "Voir les tarifs à venir",
+        "secondary_href": "/tarifs/"
       }
     }
   ]

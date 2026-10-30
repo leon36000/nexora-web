@@ -6,14 +6,14 @@
   "seo": {
     "slug": "solutions/courriels",
     "title": "Courriels",
-    "seo_title": "Automatisation des courriels pour PME",
-    "seo_description": "Fini le tri à la main\u00a0: le système classe vos courriels, résume chaque demande et prépare un brouillon à partir de vos documents. Votre équipe approuve l'envoi.",
+    "seo_title": "Tri et brouillons de courriels par IA",
+    "seo_description": "Le système classe vos courriels, résume chaque demande et prépare un brouillon à partir de vos documents. Votre équipe relit et approuve avant tout envoi.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
-      "role": "Promesse de la solution courriels\u00a0: une boîte déjà rangée, une validation avant tout envoi.",
+      "role": "Promesse de la solution courriels : une boîte déjà rangée, une validation avant tout envoi.",
       "claims": ["CL-120", "CL-21"],
       "fields": {
         "variant": "sombre",
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Courriels",
         "headline": "Vos courriels arrivent déjà triés.",
-        "subheadline": "Un système lit chaque message, le classe, le résume et prépare un brouillon fondé sur vos documents. Il attend votre feu vert avant d'envoyer quoi que ce soit.",
+        "subheadline": "Le système lit chaque courriel, le classe selon son urgence, le résume en une phrase et prépare un brouillon fondé sur vos documents. Rien ne part sans le feu vert de votre équipe.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "La boîte déborde, l'urgent attend.",
-        "body": "<p>Prenons une entreprise de rénovation. Chaque jour arrivent des demandes de prix, des questions sur l'avancement d'un chantier, des factures de fournisseurs et des courriels sans rapport. Quelqu'un ouvre tout, trie, cherche l'historique, rédige. Le courriel urgent attend derrière trois autres.</p><p>L'exemple est construit pour illustrer le principe\u00a0; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Prenons une entreprise de rénovation. Au quotidien, des demandes de prix, des questions sur l'avancement d'un chantier, des factures de fournisseurs et des courriels sans rapport arrivent dans la même boîte. La coordonnatrice ouvre tout, trie, cherche l'historique du dossier, rédige. Le message d'un client dont la salle de bain est en suspens attend derrière trois autres.</p><p>Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Le tri.",
@@ -59,7 +59,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que fait le système\u00a0: quatre étapes, la dernière attend une personne.",
+      "role": "Ce que fait le système : quatre étapes, la dernière attend une personne.",
       "claims": ["CL-120", "CL-103", "CL-95", "CL-21", "CL-85", "CL-P02"],
       "fields": {
         "columns": "4",
@@ -69,7 +69,7 @@
       },
       "translation": {
         "title": "Du courriel reçu à la réponse approuvée.",
-        "intro": "Le flux de travaux (un enchaînement automatisé de tâches) réagit à l'arrivée d'un courriel dans la messagerie que nous avons reliée à WorkStudio. Il se construit sans écrire de code, et chaque étape est visible et modifiable.",
+        "intro": "Le flux de travaux (un enchaînement automatisé de tâches) réagit à l'arrivée d'un courriel dans la messagerie reliée à WorkStudio. Il se construit sans écrire de code, et chaque étape est visible et modifiable.",
         "cards": [
           {
             "title": "Il repère.",
@@ -92,7 +92,7 @@
     },
     {
       "collection": "block_cards",
-      "role": "Ce que reçoit l'équipe\u00a0: bénéfices concrets en mosaïque (bento).",
+      "role": "Ce que reçoit l'équipe : bénéfices concrets en mosaïque (bento).",
       "claims": ["CL-120", "CL-96", "CL-95"],
       "fields": {
         "columns": "2",
@@ -102,11 +102,11 @@
       },
       "translation": {
         "title": "Une équipe qui relit au lieu d'écrire.",
-        "intro": "L'équipe ne travaille plus dans le désordre d'une boîte de réception\u00a0: elle reçoit des éléments prêts à relire.",
+        "intro": "L'équipe ne travaille plus dans le désordre d'une boîte de réception : elle reçoit des éléments prêts à relire.",
         "cards": [
           {
             "title": "Une file triée.",
-            "text": "Les courriels arrivent classés par catégorie et par urgence\u00a0: l'urgent passe devant."
+            "text": "Les courriels arrivent classés par catégorie et par urgence : l'urgent passe devant."
           },
           {
             "title": "Un résumé par message.",
@@ -114,18 +114,18 @@
           },
           {
             "title": "Un brouillon par réponse.",
-            "text": "À corriger, pas à écrire. Le style vient de consignes que vous versionnez\u00a0: la consigne en production et celle en test restent distinctes."
+            "text": "À corriger, pas à écrire. Le style vient de consignes que vous versionnez : la consigne en production et celle en test restent distinctes."
           },
           {
             "title": "Une trace de chaque brouillon.",
-            "text": "Quel modèle, quelle demande, quelle réponse\u00a0: tout est consultable."
+            "text": "Quel modèle, quelle demande, quelle réponse : tout est consultable."
           }
         ]
       }
     },
     {
       "collection": "block_section",
-      "role": "Bénéfice attendu, sans chiffre\u00a0; lien diagnostic.",
+      "role": "Bénéfice attendu, sans chiffre ; lien diagnostic.",
       "claims": ["CL-14", "CL-09"],
       "fields": {
         "media_position": "none",
@@ -133,13 +133,13 @@
         "anchor_id": "benefice"
       },
       "translation": {
-        "title": "Ce que vous y gagnez, honnêtement.",
-        "body": "<p>Moins de tri à la main, des urgences vues plus tôt, des réponses plus homogènes d'une personne à l'autre. Nous n'annonçons ni pourcentage ni gain de temps\u00a0: ils dépendent de votre volume et de vos règles, et se mesurent pendant un pilote, sur vos propres courriels.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour voir ce que cela donnerait chez vous.</p>"
+        "title": "Ce que vous y gagnez.",
+        "body": "<p>Moins de tri à la main, des urgences vues plus tôt, des réponses plus homogènes d'une personne à l'autre. Aucun pourcentage ni gain de temps n'est annoncé : ils dépendent de votre volume et de vos règles, et se mesurent pendant un pilote, sur vos propres courriels.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour voir ce que cela donnerait chez vous.</p>"
       }
     },
     {
       "collection": "block_cards",
-      "role": "Ce qui reste sous contrôle\u00a0; carte données (CL-E01 à E05) avec lien Vos données.",
+      "role": "Ce qui reste sous contrôle ; carte données (CL-E01 à E05) avec lien Vos données.",
       "claims": [
         "CL-128",
         "CL-21",
@@ -175,7 +175,7 @@
           },
           {
             "title": "Vos données restent à vous.",
-            "text": "Sur votre serveur ou chez nous, au Québec\u00a0: jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe n'entre qu'avec votre activation explicite, consignée par écrit, et chaque modèle indique où il tourne.",
+            "text": "Sur votre serveur ou chez nous, au Québec : jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe n'entre qu'avec votre activation explicite, consignée par écrit, et chaque modèle indique où il tourne.",
             "href": "/vos-donnees/",
             "link_label": "Lire nos engagements"
           },
@@ -189,7 +189,20 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la solution courriels.",
-      "claims": ["CL-85", "CL-103", "CL-112", "CL-132"],
+      "claims": [
+        "CL-85",
+        "CL-103",
+        "CL-112",
+        "CL-132",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04",
+        "CL-T09",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -199,34 +212,42 @@
         "title": "Vos questions sur les courriels.",
         "items": [
           {
-            "question": "Ça fonctionne avec ma messagerie\u00a0?",
+            "question": "La solution fonctionne-t-elle avec ma messagerie ?",
             "answer": "Cela dépend du service. Un large catalogue de services se connecte à WorkStudio, mais chaque messagerie se qualifie au diagnostic, et certaines connexions demandent qu'un administrateur enregistre d'abord une application chez le fournisseur."
           },
           {
-            "question": "L'IA peut-elle se tromper de réponse\u00a0?",
-            "answer": "Oui, comme une personne pressée. C'est pourquoi un humain approuve chaque envoi, que chaque brouillon laisse une trace et qu'un garde-fou (un contrôle automatique) peut vérifier que la réponse reste fidèle à vos documents avant qu'elle vous soit présentée. Le garde-fou réduit l'erreur\u00a0; il ne la rend pas impossible."
+            "question": "L'IA peut-elle se tromper dans un brouillon ?",
+            "answer": "Oui, comme une personne pressée. C'est pourquoi un humain approuve chaque envoi, que chaque brouillon laisse une trace et qu'un garde-fou (un contrôle automatique) peut vérifier que la réponse reste fidèle à vos documents avant qu'elle vous soit présentée. Le garde-fou réduit l'erreur ; il ne la rend pas impossible."
           },
           {
-            "question": "Peut-elle répondre toute seule aux cas simples\u00a0?",
-            "answer": "Techniquement oui. Dans nos configurations, la validation humaine est la règle\u00a0; supprimer cette étape pour un type de message précis est une décision écrite de votre part, que nous consignons."
+            "question": "Le système peut-il répondre seul aux cas simples ?",
+            "answer": "Techniquement oui. Dans nos configurations, la validation humaine est la règle ; supprimer cette étape pour un type de message précis est une décision écrite de votre part, que nous consignons."
           },
           {
-            "question": "Combien de temps pour la mettre en service\u00a0?",
-            "answer": "Aucun délai universel\u00a0: il dépend de votre messagerie, de vos règles et de vos documents. Il se mesure sur un premier cas."
+            "question": "Combien de temps faut-il pour la mettre en service ?",
+            "answer": "Aucun délai universel n'est annoncé : il dépend de votre messagerie, de vos règles et de vos documents, et se mesure sur un premier cas."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Pour le tri des courriels, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Qu'est-ce qui consomme des crédits ici ?",
+            "answer": "Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour classer un courriel, le résumer ou rédiger un brouillon, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente."
           }
         ]
       }
     },
     {
       "collection": "block_cta",
-      "role": "CTA\u00a0: démonstration.",
+      "role": "CTA : démonstration.",
       "claims": ["CL-01"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "Voyez vos courriels se ranger.",
-        "text": "Nous préparons une démonstration sur des courriels fictifs, puis nous parlons de votre messagerie et de vos règles.",
+        "text": "Nous préparons une démonstration sur des courriels fictifs, puis nous parlons de votre messagerie et de vos règles de tri.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir les autres solutions",

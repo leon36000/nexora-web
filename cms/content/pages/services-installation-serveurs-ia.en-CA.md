@@ -116,7 +116,7 @@ The installation brings together the [Nexora WorkStudio](/en/workstudio/) platfo
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Ce que nous ne promettons pas, pour ce service. · Affirmations : CL-10, CL-14, CL-86, CL-77*
+*Ce que nous ne promettons pas, pour ce service. · Affirmations : CL-10, CL-14, CL-86, CL-77, CL-PL03, CL-T01, CL-T06, CL-12*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
@@ -124,7 +124,7 @@ Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=limites`
 
 #### No public price.
 
-A written estimate follows the diagnosis.
+For support, a written estimate follows the diagnosis. Use of the platform is paid for in credits, and their prices will appear on the Pricing page.
 
 #### No universal timeline.
 
@@ -140,7 +140,7 @@ Updates, licences, any external model: everything is listed before go-live.
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à l'installation (matériel, serveur existant, exploitation, changement de mode, sorties de données). · Affirmations : CL-26, CL-81, CL-82, CL-08, CL-77, CL-06, CL-E01, CL-E05*
+*FAQ propre à l'installation (matériel, serveur existant, exploitation, changement de mode, sorties de données). · Affirmations : CL-26, CL-81, CL-82, CL-08, CL-77, CL-06, CL-E01, CL-E05, CL-10, CL-PL03, CL-T01, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
@@ -152,19 +152,23 @@ It depends on the case. The diagnosis answers that before any purchase: it takes
 
 #### Can it go on an existing server?
 
-A Linux or macOS server running Docker is required. We check during the diagnosis that it suits the intended uses.
+Yes, if it is a Linux or macOS server running Docker. We check during the diagnosis that it suits the intended uses.
 
 #### Does my data leave the server?
 
 In the on-premises mode, documents, the search index and conversations stay on your server. What can leave is listed with you before go-live: updates, licence checks and, only if you activated it in writing, an external model.
 
-#### Who runs it afterwards?
+#### Who runs the server afterwards?
 
-We do, with you, as the contract provides. In the on-premises mode, we access your server only if you authorize it in writing, for a specific task and a limited time.
+Nexora AI does, with you, as the contract provides. In the on-premises mode, we access your server only if you authorize it in writing, for a specific task and a limited time.
 
 #### Can we change mode later?
 
-Export of your documents, configurations and workflows is provided for in the contract. A change of mode is then planned as a project.
+Yes. Export of your documents, configurations and workflows is provided for in the contract; a change of mode is then planned as a project.
+
+#### How much does it cost?
+
+There is no public price yet for AI server installation. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

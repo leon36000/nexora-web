@@ -6,8 +6,8 @@
 
 - Page : `solutions-courriels` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/solutions/courriels/` · slug : `solutions/courriels`
-- Titre SEO (37 caractères) : Automatisation des courriels pour PME
-- Description SEO (160 caractères) : Fini le tri à la main : le système classe vos courriels, résume chaque demande et prépare un brouillon à partir de vos documents. Votre équipe approuve l'envoi.
+- Titre SEO (37 caractères) : Tri et brouillons de courriels par IA
+- Description SEO (154 caractères) : Le système classe vos courriels, résume chaque demande et prépare un brouillon à partir de vos documents. Votre équipe relit et approuve avant tout envoi.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Vos courriels arrivent déjà triés.
 
-Un système lit chaque message, le classe, le résume et prépare un brouillon fondé sur vos documents. Il attend votre feu vert avant d'envoyer quoi que ce soit.
+Le système lit chaque courriel, le classe selon son urgence, le résume en une phrase et prépare un brouillon fondé sur vos documents. Rien ne part sans le feu vert de votre équipe.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=probleme`
 
 ## La boîte déborde, l'urgent attend.
 
-Prenons une entreprise de rénovation. Chaque jour arrivent des demandes de prix, des questions sur l'avancement d'un chantier, des factures de fournisseurs et des courriels sans rapport. Quelqu'un ouvre tout, trie, cherche l'historique, rédige. Le courriel urgent attend derrière trois autres.
+Prenons une entreprise de rénovation. Au quotidien, des demandes de prix, des questions sur l'avancement d'un chantier, des factures de fournisseurs et des courriels sans rapport arrivent dans la même boîte. La coordonnatrice ouvre tout, trie, cherche l'historique du dossier, rédige. Le message d'un client dont la salle de bain est en suspens attend derrière trois autres.
 
-L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
+Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
 
 - **Le tri.** Distinguer la demande de prix de la facture, et l'urgent du reportable.
 - **La recherche.** Retrouver la dernière soumission, la clause, le numéro de dossier.
@@ -49,7 +49,7 @@ Réglages : `columns=4`, `tone=sable`, `layout=etapes`, `anchor_id=systeme`
 
 ## Du courriel reçu à la réponse approuvée.
 
-Le flux de travaux (un enchaînement automatisé de tâches) réagit à l'arrivée d'un courriel dans la messagerie que nous avons reliée à WorkStudio. Il se construit sans écrire de code, et chaque étape est visible et modifiable.
+Le flux de travaux (un enchaînement automatisé de tâches) réagit à l'arrivée d'un courriel dans la messagerie reliée à WorkStudio. Il se construit sans écrire de code, et chaque étape est visible et modifiable.
 
 #### Il repère.
 
@@ -99,9 +99,9 @@ Quel modèle, quelle demande, quelle réponse : tout est consultable.
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
-## Ce que vous y gagnez, honnêtement.
+## Ce que vous y gagnez.
 
-Moins de tri à la main, des urgences vues plus tôt, des réponses plus homogènes d'une personne à l'autre. Nous n'annonçons ni pourcentage ni gain de temps : ils dépendent de votre volume et de vos règles, et se mesurent pendant un pilote, sur vos propres courriels.
+Moins de tri à la main, des urgences vues plus tôt, des réponses plus homogènes d'une personne à l'autre. Aucun pourcentage ni gain de temps n'est annoncé : ils dépendent de votre volume et de vos règles, et se mesurent pendant un pilote, sur vos propres courriels.
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) pour voir ce que cela donnerait chez vous.
 
@@ -137,27 +137,35 @@ Cette solution répond à des demandes reçues. Elle ne sert pas à envoyer des 
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution courriels. · Affirmations : CL-85, CL-103, CL-112, CL-132*
+*FAQ propre à la solution courriels. · Affirmations : CL-85, CL-103, CL-112, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Vos questions sur les courriels.
 
-#### Ça fonctionne avec ma messagerie ?
+#### La solution fonctionne-t-elle avec ma messagerie ?
 
 Cela dépend du service. Un large catalogue de services se connecte à WorkStudio, mais chaque messagerie se qualifie au diagnostic, et certaines connexions demandent qu'un administrateur enregistre d'abord une application chez le fournisseur.
 
-#### L'IA peut-elle se tromper de réponse ?
+#### L'IA peut-elle se tromper dans un brouillon ?
 
 Oui, comme une personne pressée. C'est pourquoi un humain approuve chaque envoi, que chaque brouillon laisse une trace et qu'un garde-fou (un contrôle automatique) peut vérifier que la réponse reste fidèle à vos documents avant qu'elle vous soit présentée. Le garde-fou réduit l'erreur ; il ne la rend pas impossible.
 
-#### Peut-elle répondre toute seule aux cas simples ?
+#### Le système peut-il répondre seul aux cas simples ?
 
 Techniquement oui. Dans nos configurations, la validation humaine est la règle ; supprimer cette étape pour un type de message précis est une décision écrite de votre part, que nous consignons.
 
-#### Combien de temps pour la mettre en service ?
+#### Combien de temps faut-il pour la mettre en service ?
 
-Aucun délai universel : il dépend de votre messagerie, de vos règles et de vos documents. Il se mesure sur un premier cas.
+Aucun délai universel n'est annoncé : il dépend de votre messagerie, de vos règles et de vos documents, et se mesure sur un premier cas.
+
+#### Combien cela coûte-t-il ?
+
+Pour le tri des courriels, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ici ?
+
+Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour classer un courriel, le résumer ou rédiger un brouillon, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
@@ -167,6 +175,6 @@ Réglages : `tone=sombre`
 
 ## Voyez vos courriels se ranger.
 
-Nous préparons une démonstration sur des courriels fictifs, puis nous parlons de votre messagerie et de vos règles.
+Nous préparons une démonstration sur des courriels fictifs, puis nous parlons de votre messagerie et de vos règles de tri.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir les autres solutions](/solutions/)

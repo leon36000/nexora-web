@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Votre IA. Votre serveur. Vos règles.
 
-Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Vos données y restent : Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps.
+Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Vos données y restent. Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps.
 
 [Étudier mon projet](/contact/?sujet=etude-deploiement) · [Comparer les deux modes](/deploiement/)
 
@@ -33,7 +33,7 @@ Réglages : `media_position=none`, `tone=sombre`, `visual=perimetre-sur-place`, 
 
 ## Le périmètre, chez vous.
 
-Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; le schéma de votre installation vous est remis par écrit. Vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
+Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; nous vous remettons le schéma de votre installation par écrit. Vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : [voir les engagements sur vos données](/vos-donnees/).
 
 Avant d'acheter du matériel, lisez [Un serveur d'IA sur place : décider avant d'acheter](/guides/serveur-ia-sur-place/) et [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/).
 
@@ -122,7 +122,7 @@ Pas de configuration type : elle dépend du nombre d'utilisateurs, du volume de
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08, CL-E01, CL-E03, CL-E04*
+*FAQ propre au mode sur place. · Affirmations : CL-72, CL-77, CL-08, CL-E01, CL-E03, CL-E04, CL-10, CL-80, CL-82*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -134,19 +134,23 @@ Oui. Les documents, l'index et les conversations restent sur votre serveur. Les 
 
 #### Nexora AI accède-t-elle à mon serveur ?
 
-Seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps. Chaque accès est journalisé, et vous pouvez retirer l'autorisation.
+Seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps. Nexora AI journalise chaque accès, et vous pouvez retirer l'autorisation.
 
 #### Mes données servent-elles à entraîner un modèle ?
 
-Non, jamais. Elles ne sont pas non plus vendues.
+Non, jamais. Nexora AI n'utilise pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, et elle ne les vend pas.
 
 #### Puis-je l'installer chez un hébergeur de mon choix ?
 
 Oui : « chez vous » signifie sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur que vous choisissez. Son lieu figure alors au schéma des flux.
 
-#### Et si je veux partir ?
+#### Que puis-je emporter si je veux partir ?
 
-Vous gardez votre serveur, vos documents, vos configurations et vos flux de travaux : l'exportation est prévue au contrat.
+Vous gardez votre serveur, vos documents, vos configurations et vos flux de travaux : le contrat prévoit leur exportation.
+
+#### Combien coûte un serveur d'IA sur place ?
+
+Il n'y a pas encore de prix public. Le matériel nécessaire dépend du nombre d'utilisateurs, du volume de documents, du modèle choisi et des usages : le diagnostic l'établit avant tout achat. Une estimation écrite suit le diagnostic et dit ce qui est inclus (installation, configuration) et ce qui ne l'est pas.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

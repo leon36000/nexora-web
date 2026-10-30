@@ -6,8 +6,8 @@
 
 - Page : `solutions-courriels` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/email/` · slug : `solutions/email`
-- Titre SEO (37 caractères) : Email automation for small businesses
-- Description SEO (157 caractères) : No more sorting by hand: the system classifies your email, summarizes each request and drafts a reply from your own documents. Your team approves every send.
+- Titre SEO (36 caractères) : AI email sorting and drafts for SMEs
+- Description SEO (148 caractères) : The system sorts your email, summarizes each request and drafts a reply from your documents. Your team reviews and approves before anything is sent.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Your email arrives already sorted.
 
-A system reads each message, classifies it, summarizes it and drafts a reply based on your documents. It waits for your go-ahead before sending anything.
+The system reads each message, ranks it by urgency, summarizes it in one sentence and drafts a reply based on your documents. Nothing goes out without your team's go-ahead.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=probleme`
 
 ## The inbox overflows, the urgent waits.
 
-Take a renovation company. Every day brings price requests, questions about a job's progress, supplier invoices and unrelated messages. Someone opens everything, sorts, digs for the history, writes. The urgent message waits behind three others.
+Take a renovation company. Day after day, price requests, questions about a job's progress, supplier invoices and unrelated messages land in the same inbox. The coordinator opens everything, sorts, digs for the file history, writes. The message from a customer whose bathroom job is on hold waits behind three others.
 
-The example is constructed to illustrate the principle; it is not a customer's result.
+This example is constructed to illustrate the principle; it is not a customer's result.
 
 - **Sorting.** Telling a price request from an invoice, and the urgent from what can wait.
 - **Searching.** Finding the latest quote, the clause, the file number.
@@ -49,7 +49,7 @@ Réglages : `columns=4`, `tone=sable`, `layout=etapes`, `anchor_id=systeme`
 
 ## From email received to reply approved.
 
-The workflow (an automated sequence of tasks) reacts when an email lands in the mailbox we have connected to WorkStudio. It is built without writing code, and every step is visible and editable.
+The workflow (an automated sequence of tasks) reacts when an email lands in the mailbox connected to WorkStudio. It is built without writing code, and every step is visible and editable.
 
 #### It spots.
 
@@ -99,9 +99,9 @@ Which model, which request, which answer: all of it can be consulted.
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
-## What you gain, honestly.
+## What you gain.
 
-Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. We announce no percentage and no time saved: they depend on your volume and your rules, and are measured during a pilot, on your own email.
+Less sorting by hand, urgent items seen sooner, replies that are more consistent from one person to the next. No percentage and no time saved is announced: they depend on your volume and your rules, and are measured during a pilot, on your own email.
 
 [Book a diagnosis](/en/contact/?sujet=diagnostic) to see what it would look like for you.
 
@@ -137,27 +137,35 @@ This solution replies to requests received. It is not for sending promotional em
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution courriels. · Affirmations : CL-85, CL-103, CL-112, CL-132*
+*FAQ propre à la solution courriels. · Affirmations : CL-85, CL-103, CL-112, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Your questions about email.
 
-#### Does it work with my mail service?
+#### Does the solution work with my mail service?
 
-It depends on the service. A broad catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first.
+It depends on the service. A wide catalogue of services connects to WorkStudio, but each mail service is qualified during the diagnosis, and some connections require an administrator to register an application with the provider first.
 
-#### Can the AI get a reply wrong?
+#### Can the AI get a draft wrong?
 
-Yes, like a person in a hurry. That is why a human approves every send, why every draft leaves a trace and why a safeguard (an automatic check) can verify that the reply stays faithful to your documents before it is shown to you. The safeguard reduces error; it does not make it impossible.
+Yes, like a person in a hurry. That is why a human approves every send, every draft leaves a trace, and a guardrail (an automatic check) can verify that the reply stays faithful to your documents before it is shown to you. The guardrail reduces errors; it does not make them impossible.
 
-#### Can it answer simple cases on its own?
+#### Can the system reply on its own to simple cases?
 
-Technically yes. In our configurations, human approval is the rule; removing that step for a specific type of message is a decision you make in writing, which we record.
+Technically yes. In our setups, human approval is the rule; removing that step for a specific type of message is a written decision on your part, which we record.
 
-#### How long does it take to put into service?
+#### How long does it take to go live?
 
-There is no universal timeline: it depends on your mail service, your rules and your documents. It is measured on a first case.
+No universal timeline is announced: it depends on your mail service, your rules and your documents, and is measured on a first case.
+
+#### How much does it cost?
+
+There is no public price yet for email sorting. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What uses credits here?
+
+Each time the system calls an AI model hosted by Nexora AI to sort an email, summarize it or draft a reply, it uses credits: one credit equals one Canadian cent of tokens at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 
@@ -167,6 +175,6 @@ Réglages : `tone=sombre`
 
 ## Watch your email sort itself.
 
-We prepare a demonstration on fictional email, then we talk about your mail service and your rules.
+We prepare a demonstration on fictitious emails, then we talk about your mail service and your sorting rules.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See the other solutions](/en/solutions/)

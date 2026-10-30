@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Déploiement · Sur place",
         "headline": "Votre IA. Votre serveur. Vos règles.",
-        "subheadline": "Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Vos données y restent : Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps.",
+        "subheadline": "Nous installons et configurons le système sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur de votre choix. Vos données y restent. Nexora AI n'y accède que si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps.",
         "primary_label": "Étudier mon projet",
         "primary_href": "/contact/?sujet=etude-deploiement",
         "secondary_label": "Comparer les deux modes",
@@ -50,7 +50,7 @@
       },
       "translation": {
         "title": "Le périmètre, chez vous.",
-        "body": "<p>Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; le schéma de votre installation vous est remis par écrit. Vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : <a href=\"/vos-donnees/\">voir les engagements sur vos données</a>.</p><p>Avant d'acheter du matériel, lisez <a href=\"/guides/serveur-ia-sur-place/\">Un serveur d'IA sur place : décider avant d'acheter</a> et <a href=\"/guides/ou-sont-vos-donnees-ia/\">Où sont vraiment vos données</a>.</p>",
+        "body": "<p>Le schéma montre un périmètre type : votre serveur, vos postes, vos documents. C'est un exemple, pas la configuration d'un client réel ; nous vous remettons le schéma de votre installation par écrit. Vos données ne servent jamais à entraîner un modèle et ne sont jamais vendues : <a href=\"/vos-donnees/\">voir les engagements sur vos données</a>.</p><p>Avant d'acheter du matériel, lisez <a href=\"/guides/serveur-ia-sur-place/\">Un serveur d'IA sur place : décider avant d'acheter</a> et <a href=\"/guides/ou-sont-vos-donnees-ia/\">Où sont vraiment vos données</a>.</p>",
         "items": [
           {
             "title": "Ce qui reste dans vos murs.",
@@ -170,7 +170,17 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre au mode sur place.",
-      "claims": ["CL-72", "CL-77", "CL-08", "CL-E01", "CL-E03", "CL-E04"],
+      "claims": [
+        "CL-72",
+        "CL-77",
+        "CL-08",
+        "CL-E01",
+        "CL-E03",
+        "CL-E04",
+        "CL-10",
+        "CL-80",
+        "CL-82"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -185,19 +195,23 @@
           },
           {
             "question": "Nexora AI accède-t-elle à mon serveur ?",
-            "answer": "Seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps. Chaque accès est journalisé, et vous pouvez retirer l'autorisation."
+            "answer": "Seulement si vous l'autorisez par écrit, pour une tâche précise et limitée dans le temps. Nexora AI journalise chaque accès, et vous pouvez retirer l'autorisation."
           },
           {
             "question": "Mes données servent-elles à entraîner un modèle ?",
-            "answer": "Non, jamais. Elles ne sont pas non plus vendues."
+            "answer": "Non, jamais. Nexora AI n'utilise pas vos données, vos documents, vos invites ni vos résultats pour entraîner ou ajuster un modèle, et elle ne les vend pas."
           },
           {
             "question": "Puis-je l'installer chez un hébergeur de mon choix ?",
             "answer": "Oui : « chez vous » signifie sur un serveur qui vous appartient, dans vos locaux ou chez l'hébergeur que vous choisissez. Son lieu figure alors au schéma des flux."
           },
           {
-            "question": "Et si je veux partir ?",
-            "answer": "Vous gardez votre serveur, vos documents, vos configurations et vos flux de travaux : l'exportation est prévue au contrat."
+            "question": "Que puis-je emporter si je veux partir ?",
+            "answer": "Vous gardez votre serveur, vos documents, vos configurations et vos flux de travaux : le contrat prévoit leur exportation."
+          },
+          {
+            "question": "Combien coûte un serveur d'IA sur place ?",
+            "answer": "Il n'y a pas encore de prix public. Le matériel nécessaire dépend du nombre d'utilisateurs, du volume de documents, du modèle choisi et des usages : le diagnostic l'établit avant tout achat. Une estimation écrite suit le diagnostic et dit ce qui est inclus (installation, configuration) et ce qui ne l'est pas."
           }
         ]
       }

@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # La bonne clause. La bonne version. Retrouvées.
 
-Posez votre question en français : la réponse part de vos propres documents, cite ses sources et vous renvoie au passage d'origine. Comme un collègue qui aurait tout lu, et qui montre où.
+Posez votre question en français : la réponse part de vos propres documents, cite ses sources et vous renvoie au passage d'origine. C'est un collègue qui aurait tout lu, et qui montre où.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## Des documents qui se cachent.
 
-Un cabinet de services professionnels accumule des contrats, des devis, des procédures et des notes de dossier, répartis dans plusieurs dossiers et plusieurs versions. Retrouver la clause d'un ancien contrat, c'est fouiller plusieurs dossiers et appeler un collègue.
+Un cabinet de services professionnels accumule des contrats, des devis, des procédures et des notes de dossier, répartis dans plusieurs dossiers et plusieurs versions. Une associée cherche la clause de résiliation d'un contrat signé il y a des années : elle fouille plusieurs dossiers, trouve trois versions et appelle un collègue pour savoir laquelle a été signée.
 
-L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
+Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
 
 - **Plusieurs versions.** Laquelle est la bonne ? Celle signée, ou la dernière modifiée ?
 - **Une mémoire dans les têtes.** Le départ d'une personne emporte des repères.
@@ -141,13 +141,13 @@ Jamais utilisées pour entraîner un modèle, jamais vendues. Un modèle externe
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution documents. · Affirmations : CL-127, CL-25, CL-101, CL-132*
+*FAQ propre à la solution documents. · Affirmations : CL-127, CL-25, CL-101, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Documents : vos questions.
 
-#### Quels types de fichiers ?
+#### Quels types de fichiers le système peut-il lire ?
 
 Des PDF, des documents Word, du texte et des pages web. Les documents scannés se lisent avec un modèle de lecture, plus lentement.
 
@@ -162,6 +162,14 @@ C'est l'objectif de la configuration, et nous le vérifions pendant le pilote su
 #### Peut-on limiter ce que chaque personne voit ?
 
 On limite ce que chaque agent consulte, base par base. Un droit d'accès document par document n'est pas annoncé à ce jour.
+
+#### Combien cela coûte-t-il ?
+
+Pour la recherche dans vos documents, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ici ?
+
+Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour répondre à une question sur vos documents, résumer un contrat ou lire une pièce scannée, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

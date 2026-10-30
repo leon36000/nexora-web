@@ -39,7 +39,7 @@ Un serveur privé virtuel (VPS), c'est un serveur loué rien que pour vous, auqu
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Les applications d'IA prévues sur un VPS : cinq installées par Nexora AI, trois en guide seulement. · Affirmations : CL-M10, CL-13*
+*Les applications d'IA prévues sur un VPS : cinq installées par Nexora AI, trois en guide seulement. · Affirmations : CL-M10, CL-13, CL-T04*
 
 Réglages : `columns=2`, `tone=sable`, `layout=liste`, `anchor_id=applications`
 
@@ -61,7 +61,7 @@ Vos modèles locaux et leur interface de chat, sans rien envoyer dehors. Sans ca
 
 #### AnythingLLM.
 
-Discutez avec vos documents, avec les modèles de votre choix, dont la passerelle de Nexora AI.
+Discutez avec vos documents, avec les modèles de votre choix, dont ceux de la passerelle de Nexora AI, qui consomment des crédits.
 
 #### LibreChat.
 
@@ -75,7 +75,7 @@ Leur licence empêche Nexora AI de les installer ou de les revendre : vous comm
 
 ### Bloc 4 — Section (`block_section`)
 
-*Quel plan pour quelle application : la mémoire minimale vient du catalogue ; aucun prix tant qu'aucun plan n'est publié. · Affirmations : CL-13, CL-12, CL-10*
+*Quel plan pour quelle application : la mémoire minimale vient du catalogue ; aucun prix tant qu'aucun plan n'est publié. · Affirmations : CL-13, CL-12, CL-10, CL-T01, CL-T02, CL-T04, CL-T06*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
@@ -83,9 +83,9 @@ Réglages : `media_position=none`, `tone=sombre`, `anchor_id=plans`
 
 Chaque application indique la mémoire minimale qu'elle demande, et la page VPS grise les plans trop petits pour l'application choisie. Ces valeurs viennent du catalogue publié, pas de ce guide : elles peuvent changer avec une nouvelle version.
 
-Les applications peuvent appeler des modèles par la [passerelle d'API de Nexora AI](/passerelle-api-modeles/) ; le lieu de traitement est alors celui du modèle choisi (voir [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/)).
+Les applications peuvent appeler des modèles par la [passerelle d'API de Nexora AI](/passerelle-api-modeles/). Chaque appel consomme alors des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue, et un abonnement en donne chaque mois, sinon on recharge. Le lieu de traitement est celui du modèle choisi (voir [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/)).
 
-Aucun plan n'est publié pour le moment, c'est pourquoi aucun prix n'est affiché ici. Les plans de développement qu'on peut y voir en test ne sont pas vendables.
+Aucun plan n'est publié pour le moment, c'est pourquoi aucun prix n'est affiché ici. Les plans de développement qu'on peut y voir en test ne sont pas vendables. Les prix de la plateforme s'afficheront sur la page [Tarifs](/tarifs/) dès leur publication.
 
 ### Bloc 5 — Cartes (`block_cards`)
 
@@ -105,7 +105,7 @@ Aucun niveau de service n'est annoncé. Vos clés de modèle, vos données et la
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*Questions du guide : commande, applications, lieu, prix, clé. · Affirmations : CL-13, CL-12, CL-M10, CL-M11, CL-02, CL-10*
+*Questions du guide : commande, applications, lieu, prix, clé. · Affirmations : CL-13, CL-12, CL-M10, CL-M11, CL-02, CL-10, CL-T01, CL-T03, CL-T04, CL-T06, CL-T09*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -125,11 +125,15 @@ Nexora AI prépare des serveurs hébergés au Québec. La preuve technique du li
 
 #### Combien coûtera un VPS ?
 
-Aucun prix n'est publié. Quand des plans le seront, la page VPS les affichera en dollars canadiens, avant taxes.
+Aucun prix n'est publié. Quand des plans le seront, la page VPS les affichera en dollars canadiens, avant taxes. Les modèles appelés par la passerelle de Nexora AI consomment des crédits, comme tout appel à un modèle d'IA ; les prix de la plateforme s'afficheront sur la page Tarifs.
 
 #### Comment accède-t-on au serveur ?
 
 Par une clé SSH : vous collez votre clé publique à la commande. Nexora AI ne demande jamais votre clé privée.
+
+#### Comment un agent paie-t-il ses appels de modèles ?
+
+Soit avec vos propres clés de modèle, soit par la passerelle de Nexora AI, où chaque appel consomme des crédits. Un abonnement donne des crédits chaque mois, sinon on recharge. Quand il n'y a plus de crédits, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La vente n'est pas ouverte : les paiements ne fonctionnent qu'en mode test.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

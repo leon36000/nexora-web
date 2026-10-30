@@ -6,8 +6,8 @@
 
 - Page : `solutions-factures` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/invoices/` · slug : `solutions/invoices`
-- Titre SEO (38 caractères) : Invoice processing automation for SMEs
-- Description SEO (153 caractères) : The system reads your supplier invoices (PDF, scan, photo), extracts the amounts, flags discrepancies and files everything in a table. A person approves.
+- Titre SEO (40 caractères) : AI reading of supplier invoices for SMEs
+- Description SEO (157 caractères) : The system reads your suppliers' invoices (PDFs, scans, photos), extracts the fields, flags discrepancies and files everything in a table. A person approves.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Stop retyping your invoices.
 
-The system reads each invoice, PDF, scan or photo, extracts the fields you have defined and shows you what looks doubtful first. Payment and accounting stay in a person's hands.
+The system reads each invoice, PDF, scan or photo, extracts the fields you have defined and puts what looks doubtful first. Approval and payment stay in a person's hands.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=probleme`
 
 ## When every invoice arrives differently.
 
-Imagine a machining shop. A metal supplier sends a PDF by email, a carrier a photo taken at the dock, another a crooked scan. Someone retypes the numbers, dates and amounts, then works out who has to approve.
+Imagine a machining shop. A metal supplier sends a PDF by email, a carrier a photo taken at the dock, another a crooked scan. The administrative assistant retypes the numbers, dates and amounts, then works out who has to approve.
 
-The example is constructed to illustrate the principle; it is not a customer's result.
+This example is constructed to illustrate the principle; it is not a customer's result.
 
 - **Assorted formats.** Digital PDF, scan, photo: each is read differently.
 - **Typing errors.** A transposed amount slips through to approval, even to payment.
@@ -101,7 +101,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 ## Errors caught before payment.
 
-Less retyping, errors caught before approval rather than after payment, a clear view of what is left to process. We announce no accuracy percentage and no time saved: reading quality depends on your documents and is measured during a pilot, on your own invoices.
+Less retyping, errors caught before approval rather than after payment, a clear view of what is left to process. No accuracy percentage and no time saved is announced: reading quality depends on your documents and is measured during a pilot, on your own invoices.
 
 [Book a diagnosis](/en/contact/?sujet=diagnostic) to put the reading to the test on your documents.
 
@@ -137,27 +137,35 @@ On your server or with us, in Quebec: never used to train a model, never sold. A
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution factures. · Affirmations : CL-101, CL-125, CL-132*
+*FAQ propre à la solution factures. · Affirmations : CL-101, CL-125, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Invoice automation: your questions.
 
-#### Can it read crooked scanned invoices?
+#### Does the system read crooked scanned invoices?
 
-It reads images and scanned PDFs with a document-reading model, more slowly than a digital PDF. Quality depends on how sharp the scan is; anything doubtful is marked "to review".
+It reads images and scanned PDFs with a document-reading model, more slowly than a digital PDF. Quality depends on how sharp the scan is; anything doubtful is marked "to check" and goes in front of a person.
 
 #### Does it connect to my accounting software?
 
-Maybe: it depends on the software. We check during the diagnosis. Without a connection, the table can serve as the basis for faster data entry, approved by your accountant.
+Possibly: it depends on the software, and we check it during the diagnosis. Without a connection, the table can serve as a basis for faster entry, approved by your accountant.
 
-#### What about Quebec taxes?
+#### Are Quebec taxes taken into account?
 
-They are not handled by default. We define with you the tax fields to extract and the checks to run, then put them to the test on your documents.
+Not by default. We define with you the tax fields to extract (GST, QST) and the checks to run, then we test them on your documents before go-live.
 
-#### Can it also handle quotes and expense reports?
+#### Can it also process quotes and expense reports?
 
-Starter templates exist for quotes, purchase orders and expense reports. They can be customized like the invoice one.
+Yes. Starter templates exist for quotes, purchase orders and expense reports. They are customized the same way as the invoice one.
+
+#### How much does it cost?
+
+There is no public price yet for invoice reading. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What uses credits here?
+
+Each time the system calls an AI model hosted by Nexora AI to read a scanned invoice, a photo or a PDF, or extract its fields, it uses credits: one credit equals one Canadian cent of tokens at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

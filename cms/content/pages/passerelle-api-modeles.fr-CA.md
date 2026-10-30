@@ -7,13 +7,13 @@
 - Page : `passerelle-api-modeles` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/passerelle-api-modeles/` · slug : `passerelle-api-modeles`
 - Titre SEO (47 caractères) : Passerelle d'API de modèles d'IA, format OpenAI
-- Description SEO (152 caractères) : Une seule API au format OpenAI pour plusieurs modèles d'IA : prix en dollars canadiens par jeton, lieu d'hébergement de chaque modèle, clés et plafonds.
+- Description SEO (159 caractères) : Une seule API au format OpenAI pour plusieurs modèles d'IA : consommation en crédits, prix en dollars canadiens par jeton, lieu d'hébergement de chaque modèle.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la passerelle : une API au format OpenAI, des prix en dollars canadiens et le lieu d'hébergement de chaque modèle, avec l'état réel de la vente. · Affirmations : CL-27, CL-S01, CL-S04, CL-12*
+*Promesse de la passerelle : une API au format OpenAI, des prix en dollars canadiens et le lieu d'hébergement de chaque modèle, avec l'état réel de la vente. · Affirmations : CL-27, CL-S01, CL-S04, CL-12, CL-T01, CL-T02, CL-T06*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Une API. Plusieurs modèles. Des prix lisibles.
 
-Nexora AI API est une passerelle de modèles au format OpenAI : vous changez l'adresse de base et la clé, le reste de votre code ne bouge pas. Chaque modèle affiche son prix en dollars canadiens et son lieu d'hébergement. Les offres en libre-service ne sont pas encore ouvertes à la vente : les paiements ne fonctionnent qu'en mode test.
+Nexora AI API est une passerelle de modèles au format OpenAI : changez l'adresse de base et la clé, le reste de votre code ne bouge pas. Chaque modèle affiche son prix en dollars canadiens et son lieu d'hébergement. L'API consomme des crédits ; la vente n'est pas encore ouverte et les paiements ne fonctionnent qu'en mode test.
 
 [Voir les modèles](/modeles/) · [Lire la documentation](/docs/api/)
 
@@ -45,7 +45,7 @@ Pour choisir entre une passerelle et un accès direct, voir le guide [Passerelle
 
 ### Bloc 3 — Cartes (`block_cards`)
 
-*Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API. · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-S06, CL-S02*
+*Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API. · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-S06, CL-S02, CL-T02, CL-T04, CL-T09*
 
 Réglages : `columns=3`, `tone=sable`, `layout=grille`, `anchor_id=fonctions`
 
@@ -65,21 +65,21 @@ Chaque clé peut recevoir un plafond de dépense, une expiration et une limite d
 
 Chaque modèle indique où il est hébergé, avec la politique de données déclarée par son fournisseur.
 
-#### Facturé au jeton.
+#### Des crédits, au jeton.
 
-Prix en dollars canadiens par million de jetons, entrée et sortie séparées. Chaque requête est réglée au coût réel.
+L'API consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue. Les prix s'affichent en dollars canadiens par million de jetons, entrée et sortie séparées, et chaque requête est réglée au coût réel.
 
 #### Des erreurs lisibles.
 
-Les erreurs suivent le format d'OpenAI. Si le fournisseur du modèle est indisponible, rien n'est débité.
+Les erreurs suivent le format d'OpenAI. Si le fournisseur du modèle est indisponible, rien n'est débité. S'il ne reste plus de crédits, l'API refuse l'appel avec l'erreur 402 insufficient_quota et un message qui renvoie vers la recharge et l'abonnement.
 
 #### Aucun contenu conservé.
 
-Les événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée.
+Les événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. Le contenu des requêtes et des réponses n'y figure jamais.
 
 ### Bloc 4 — Cartes (`block_cards`)
 
-*Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test. · Affirmations : CL-27, CL-S01, CL-S05, CL-S04, CL-S03, CL-12*
+*Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test. · Affirmations : CL-27, CL-S01, CL-S05, CL-S04, CL-S03, CL-12, CL-PL01*
 
 Réglages : `columns=4`, `tone=clair`, `layout=etapes`, `anchor_id=etapes`
 
@@ -105,11 +105,11 @@ Même format qu'OpenAI : changez l'adresse de base et la clé.
 
 #### Suivez l'usage.
 
-Requêtes, jetons et coût, par jour et par modèle, dans l'espace client.
+Requêtes, jetons et coût, par jour et par modèle, dans l'espace client. Votre solde de crédits se lit dans « Mes outils ».
 
 ### Bloc 5 — Section (`block_section`)
 
-*Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données. · Affirmations : CL-S01, CL-E08, CL-E09, CL-75, CL-02*
+*Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données. · Affirmations : CL-S01, CL-E08, CL-E09, CL-75, CL-02, CL-M06, CL-AP03*
 
 Réglages : `media_position=none`, `tone=sombre`, `anchor_id=lieu`
 
@@ -121,14 +121,14 @@ Quand la résidence des données est une exigence, le bon choix peut être un sy
 
 Le guide [Où sont vraiment vos données](/guides/ou-sont-vos-donnees-ia/) explique la différence entre stockage, traitement et juridiction.
 
-Chaque requête de la passerelle passe d'abord par [Nexora Privacy Router](/apps/privacy-router/), incluse sans supplément.
+Avant chaque appel à un fournisseur, [Nexora Privacy Router](/apps/privacy-router/) évalue la requête. Elle est incluse sans supplément. Sa détection est heuristique et elle ne prouve pas où le fournisseur traite ensuite les données.
 
 - **Ce que la fiche dit.** Le fournisseur, le lieu d'hébergement et la politique de données qu'il déclare.
 - **Ce qu'elle ne dit pas.** Qu'aucune loi étrangère ne s'applique : un hébergement au Québec n'écarte pas, à lui seul, les lois qui s'appliquent.
 
 ### Bloc 6 — Cartes (`block_cards`)
 
-*Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé. · Affirmations : CL-12, CL-S04, CL-86*
+*Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé. · Affirmations : CL-12, CL-S04, CL-86, CL-T01, CL-T03, CL-T06*
 
 Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
@@ -136,11 +136,13 @@ Réglages : `columns=2`, `tone=clair`, `layout=liste`, `anchor_id=limites`
 
 #### Pas encore en vente.
 
-Les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas ouvertes à la vente : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté.
+L'API consomme des crédits qu'un abonnement donne chaque mois ou que l'on recharge, mais les offres en libre-service (serveurs, catalogue de modèles à crédits, agents hébergés) ne sont pas ouvertes à la vente. Les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté.
 
 #### Pas de prix publié.
 
-Les prix du catalogue actuel sont des prix de développement : aucun prix n'est encore publié.
+Les prix du catalogue actuel sont des prix de développement, et les prix des abonnements et des forfaits de recharge ne sont pas publiés. Ils s'afficheront sur la page Tarifs dès leur publication.
+
+→ [Voir les tarifs à venir](/tarifs/)
 
 #### Un seul choix par requête.
 
@@ -152,7 +154,7 @@ La disponibilité et les délais de réponse se précisent au contrat.
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*Questions de la passerelle, réponse d'abord : définition, compatibilité, facturation, lieu, données, état de la vente, utilité d'une passerelle, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S03, CL-S01, CL-S02, CL-12, CL-80*
+*Questions de la passerelle, réponse d'abord : définition, compatibilité, facturation, lieu, données, état de la vente, utilité d'une passerelle, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S03, CL-S01, CL-S02, CL-12, CL-80, CL-T01, CL-T02, CL-T03, CL-T06, CL-T09, CL-M06*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -168,7 +170,7 @@ Oui, pour la conversation (avec diffusion en continu, outils et formats de répo
 
 #### Comment la consommation est-elle facturée ?
 
-Au jeton, en dollars canadiens. Chaque requête réserve d'abord son coût maximal, puis est réglée au coût réel d'après les jetons d'entrée et de sortie ; le reste est libéré. Sans solde suffisant, l'API répond par une erreur de paiement avant tout appel au modèle.
+En crédits. Un crédit vaut un cent canadien de jetons au prix du catalogue, et le catalogue affiche ses prix en dollars canadiens par million de jetons. Chaque requête réserve d'abord son coût maximal, puis est réglée au coût réel d'après les jetons d'entrée et de sortie ; le reste est libéré. Sans solde suffisant, l'API répond par une erreur de paiement avant tout appel au modèle.
 
 #### Où sont hébergés les modèles ?
 
@@ -176,11 +178,11 @@ Chaque fiche du catalogue indique le lieu d'hébergement du modèle (Québec, Ca
 
 #### Nexora AI conserve-t-elle le contenu de mes requêtes ?
 
-Non. Les événements d'usage de la passerelle ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. La politique de données du fournisseur du modèle est affichée sur sa fiche.
+Non, la passerelle ne conserve pas ce contenu. Ses événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. Ce que le fournisseur du modèle conserve de son côté relève de sa politique de données, affichée sur la fiche du modèle.
 
 #### Puis-je acheter l'accès aujourd'hui ?
 
-Pas en libre-service : les comptes et les paiements ne fonctionnent qu'en mode test et aucun paiement réel n'est accepté. Pour un projet, écrivez-nous : nous commençons par un diagnostic du cas visé.
+Pas en libre-service : la vente n'est pas ouverte. Les comptes et les paiements ne fonctionnent qu'en mode test, aucun paiement réel n'est accepté et aucun prix n'est publié ; les prix s'afficheront sur la page Tarifs dès leur publication. Pour un projet, écrivez-nous : nous commençons par un diagnostic du cas visé.
 
 #### Faut-il une passerelle si j'utilise un seul modèle ?
 
@@ -189,6 +191,14 @@ Pas forcément. Une passerelle ajoute un intermédiaire ; elle devient utile qu
 #### Puis-je changer de modèle sans réécrire mon code ?
 
 Oui : le modèle se choisit par un identifiant dans la requête. Changez l'identifiant, gardez le reste.
+
+#### Comment obtient-on des crédits ?
+
+Un abonnement donne des crédits et de l'espace disque chaque mois ; sans abonnement, on recharge des crédits. Les crédits d'abonnement expirent à la fin de leur période et servent en premier ; les crédits de recharge n'expirent pas. Les prix des abonnements et des recharges ne sont pas encore publiés.
+
+#### Que se passe-t-il quand il n'y a plus de crédits ?
+
+L'API refuse l'appel avant tout appel au modèle, avec l'erreur 402 insufficient_quota et un message qui renvoie vers la recharge et vers l'abonnement.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

@@ -6,8 +6,8 @@
   "seo": {
     "slug": "solutions/factures",
     "title": "Factures",
-    "seo_title": "Facturation automatisée pour PME",
-    "seo_description": "Le système lit les factures de vos fournisseurs (PDF, scans, photos), extrait les montants, signale les écarts et range tout en table. Une personne approuve.",
+    "seo_title": "Lecture de factures fournisseurs par IA",
+    "seo_description": "Le système lit les factures de vos fournisseurs (PDF, scans, photos), extrait les champs, signale les écarts et range tout en table. Une personne approuve.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solution · Factures",
         "headline": "Fini de retaper vos factures.",
-        "subheadline": "Le système lit chaque facture, PDF, scan ou photo, extrait les champs que vous avez définis et vous montre d'abord ce qui est douteux. Le paiement et la comptabilité restent entre les mains d'une personne.",
+        "subheadline": "Le système lit chaque facture, PDF, scan ou photo, extrait les champs que vous avez définis et met d'abord en avant ce qui est douteux. L'approbation et le paiement restent entre les mains d'une personne.",
         "primary_label": "Demander une démonstration",
         "primary_href": "/contact/?sujet=demonstration",
         "secondary_label": "Voir toutes les solutions",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "Quand chaque facture arrive autrement.",
-        "body": "<p>Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée en travers. Quelqu'un retape les numéros, les dates et les montants, puis cherche qui doit approuver.</p><p>L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
+        "body": "<p>Imaginons un atelier d'usinage. Un fournisseur de métal envoie un PDF par courriel, un transporteur une photo prise au quai, un autre une facture scannée de travers. L'adjointe à l'administration retape les numéros, les dates et les montants, puis cherche qui doit approuver.</p><p>Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.</p>",
         "items": [
           {
             "title": "Des formats variés.",
@@ -134,7 +134,7 @@
       },
       "translation": {
         "title": "Des erreurs vues avant le paiement.",
-        "body": "<p>Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Nous n'annonçons aucun pourcentage de précision ni aucun temps gagné : la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour essayer la lecture sur vos pièces.</p>"
+        "body": "<p>Moins de ressaisie, des erreurs repérées avant l'approbation plutôt qu'après le paiement, une vue claire de ce qui reste à traiter. Aucun pourcentage de précision ni temps gagné n'est annoncé : la qualité de lecture dépend de vos pièces et se mesure pendant un pilote, sur vos propres factures.</p><p><a href=\"/contact/?sujet=diagnostic\">Planifier un diagnostic</a> pour essayer la lecture sur vos pièces.</p>"
       }
     },
     {
@@ -189,7 +189,19 @@
     {
       "collection": "block_faq",
       "role": "FAQ propre à la solution factures.",
-      "claims": ["CL-101", "CL-125", "CL-132"],
+      "claims": [
+        "CL-101",
+        "CL-125",
+        "CL-132",
+        "CL-10",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T06",
+        "CL-T04",
+        "CL-T09",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -199,20 +211,28 @@
         "title": "Facturation automatisée : vos questions.",
         "items": [
           {
-            "question": "Lit-il les factures scannées de travers ?",
-            "answer": "Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan ; ce qui est douteux est marqué « à vérifier »."
+            "question": "Le système lit-il les factures scannées de travers ?",
+            "answer": "Il lit les images et les PDF scannés avec un modèle de lecture de documents, plus lentement qu'un PDF numérique. La qualité dépend de la netteté du scan ; ce qui est douteux est marqué « à vérifier » et passe sous les yeux d'une personne."
           },
           {
             "question": "Se relie-t-il à mon logiciel comptable ?",
-            "answer": "Peut-être : cela dépend du logiciel. Nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable."
+            "answer": "Peut-être : cela dépend du logiciel, et nous le vérifions au diagnostic. Sans connexion, la table peut servir de base à une saisie plus rapide, validée par votre comptable."
           },
           {
-            "question": "Et les taxes du Québec ?",
-            "answer": "Elles ne sont pas gérées par défaut. Nous définissons avec vous les champs de taxes à extraire et les vérifications à faire, puis nous les mettons à l'épreuve sur vos pièces."
+            "question": "Les taxes du Québec sont-elles prises en compte ?",
+            "answer": "Pas par défaut. Nous définissons avec vous les champs de taxes à extraire (TPS, TVQ) et les vérifications à faire, puis nous les mettons à l'épreuve sur vos pièces avant la mise en service."
           },
           {
             "question": "Peut-on aussi traiter devis et notes de frais ?",
-            "answer": "Des modèles de départ existent pour les devis, les bons de commande et les notes de frais. Ils se personnalisent comme celui des factures."
+            "answer": "Oui. Des modèles de départ existent pour les devis, les bons de commande et les notes de frais. Ils se personnalisent comme celui des factures."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Pour la lecture de factures, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication."
+          },
+          {
+            "question": "Qu'est-ce qui consomme des crédits ici ?",
+            "answer": "Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour lire une facture scannée, une photo ou un PDF, ou en extraire les champs, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente."
           }
         ]
       }

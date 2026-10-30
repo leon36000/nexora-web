@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Un agenda qui se remplit.
 
-Le système reçoit les demandes de rendez-vous, propose des créneaux à partir de votre agenda et rappelle vos clients, même quand le cabinet est fermé. Il ne confirme jamais une disponibilité qu'il n'a pas vérifiée.
+Le système reçoit les demandes de rendez-vous, propose des créneaux vérifiés dans votre agenda et rappelle vos clients, même quand le cabinet est fermé. Il ne confirme jamais une disponibilité qu'il n'a pas vérifiée.
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir toutes les solutions](/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## Des créneaux qui filent.
 
-Un petit cabinet reçoit des demandes de rendez-vous par courriel et par formulaire, souvent en dehors des heures d'ouverture. Les confirmations se font à la main, les rappels aussi, et une annulation de dernière minute laisse un trou dans la journée.
+Un petit cabinet reçoit des demandes de rendez-vous par courriel et par formulaire, souvent le soir, après la fermeture. La réceptionniste confirme à la main le lendemain, envoie les rappels à la main, et une annulation de dernière minute laisse un trou dans la journée de la professionnelle.
 
-L'exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
+Cet exemple est construit pour illustrer le principe ; ce n'est pas le résultat d'un client.
 
 - **Des demandes qui attendent.** Elles arrivent le soir ; la réponse part le lendemain, parfois trop tard.
 - **Des rappels oubliés.** Chaque oubli est un risque d'absence.
@@ -101,7 +101,7 @@ Réglages : `media_position=none`, `tone=clair`, `anchor_id=benefice`
 
 ## Moins de créneaux perdus.
 
-Le bénéfice attendu : moins de créneaux perdus et moins de temps passé à confirmer à la main. Aucun taux d'absence ni gain n'est annoncé : cela se mesure pendant un pilote.
+Le bénéfice attendu : moins de créneaux perdus et moins de temps passé à confirmer à la main. Aucun taux d'absence ni gain n'est annoncé : cela se mesure pendant un pilote, sur votre agenda.
 
 [Planifier un diagnostic](/contact/?sujet=diagnostic) pour relier votre agenda.
 
@@ -139,19 +139,19 @@ L'agenda et les demandes restent dans le périmètre convenu : sur votre serveu
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution rendez-vous. · Affirmations : CL-123, CL-124, CL-85, CL-132*
+*FAQ propre à la solution rendez-vous. · Affirmations : CL-123, CL-124, CL-85, CL-132, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Rendez-vous : vos questions.
 
-#### Avec quel agenda ça fonctionne ?
+#### Avec quel agenda la solution fonctionne-t-elle ?
 
 Avec les agendas qui se relient à WorkStudio par un connecteur. Chaque agenda se qualifie au diagnostic, et certaines connexions demandent un enregistrement préalable chez le fournisseur.
 
-#### Peut-il répondre au téléphone ?
+#### Le système peut-il répondre au téléphone ?
 
-Non. Aucun service de réception d'appels n'est livré à ce jour. La solution traite les demandes écrites (courriel, formulaire).
+Non. Aucun service de réception d'appels n'est livré à ce jour. La solution traite les demandes écrites (courriel, formulaire) ; un message vocal déposé comme enregistrement peut être transcrit.
 
 #### Que fait-il quand deux personnes veulent le même créneau ?
 
@@ -160,6 +160,14 @@ Il vérifie l'agenda au moment de confirmer. Si le créneau est pris, il propose
 #### Peut-on l'utiliser pour des soins ?
 
 Pour l'administratif seulement : demande, créneau, rappel. Nous ne qualifions pas d'usage clinique et nous recommandons de ne pas y faire transiter de renseignements de santé.
+
+#### Combien cela coûte-t-il ?
+
+Pour la prise de rendez-vous, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits ici ?
+
+Chaque fois que le système appelle un modèle d'IA hébergé par Nexora AI pour comprendre une demande de rendez-vous ou rédiger une réponse avec des créneaux, il consomme des crédits : un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

@@ -37,9 +37,9 @@ Le sur-mesure commence là où les solutions types s'arrêtent. Trois exemples c
 
 Le vôtre ressemble à l'un d'eux, ou à aucun ? [Planifier un diagnostic](/contact/?sujet=diagnostic).
 
-- **Un entrepreneur retrouve ses soumissions.** Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, et suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation avant tout envoi. Pour la construction, <a href="/opsys-ai/">OPSYS-AI</a> vise ce parcours, en produit en développement dont chaque niveau de disponibilité est affiché.
-- **Un distributeur traite les documents de ses fournisseurs.** Bons de livraison, confirmations de commande et factures arrivent dans des formats différents. Le flux les lit, les compare entre eux et signale ce qui ne concorde pas, avant toute action.
-- **Un cabinet prépare des dossiers.** Il rassemble des pièces autorisées, en tire un résumé et une liste de points à vérifier, puis passe la main à la personne responsable. Les droits d'accès sont définis avant la construction.
+- **Un entrepreneur retrouve ses soumissions.** Il veut partir d'anciennes soumissions comparables pour en préparer une nouvelle, puis suivre les coûts réels après coup. Nous relierions la base de soumissions, un agent d'estimation et une validation : l'estimateur approuve le prix avant tout envoi. Pour la construction, <a href="/opsys-ai/">OPSYS-AI</a> vise ce parcours, en produit en développement dont chaque niveau de disponibilité est affiché.
+- **Un distributeur traite les documents de ses fournisseurs.** Bons de livraison, confirmations de commande et factures arrivent dans des formats différents. Le flux les lit, les compare entre eux et signale ce qui ne concorde pas ; la personne aux achats tranche avant toute action.
+- **Un cabinet prépare des dossiers.** Il rassemble des pièces autorisées, en tire un résumé et une liste de points à vérifier, puis passe la main à l'associé responsable, qui décide. Les droits d'accès sont définis avant la construction.
 
 ### Bloc 3 — Cartes (`block_cards`)
 
@@ -116,7 +116,7 @@ Aucun délai universel et aucun gain chiffré : tout se mesure sur un premier c
 
 ### Bloc 6 — FAQ (`block_faq`)
 
-*FAQ propre au sur-mesure (différence, propriété, coût, maintenance, données). · Affirmations : CL-84, CL-08, CL-10, CL-E03, CL-E04*
+*FAQ propre au sur-mesure (différence, propriété, coût, maintenance, données). · Affirmations : CL-84, CL-08, CL-10, CL-E03, CL-E04, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -136,11 +136,15 @@ Non, jamais. Vos documents, vos invites et vos résultats ne servent pas à entr
 
 #### Combien cela coûte-t-il ?
 
-Il n'y a pas encore de prix public. Après le diagnostic, nous remettons une estimation écrite qui indique ce qui est inclus et ce qui ne l'est pas.
+Pour l'automatisation sur mesure, il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qui consomme des crédits dans une automatisation ?
+
+Chaque fois qu'un agent ou un flux appelle un modèle d'IA hébergé par Nexora AI pour lire, classer ou rédiger, il consomme des crédits au prix du catalogue de modèles. Les étapes qui n'appellent aucun modèle n'en consomment pas. Quand il n'en reste plus, l'appel est refusé avec un message qui renvoie vers la recharge et l'abonnement. La plateforme à crédits n'est pas encore ouverte à la vente.
 
 #### Qui maintient le système après la mise en service ?
 
-Nous l'exploitons avec vous et le faisons évoluer. La répartition exacte est écrite au contrat.
+Nexora AI l'exploite avec vous et le fait évoluer. La répartition exacte est écrite au contrat.
 
 ### Bloc 7 — Appel à l'action (`block_cta`)
 

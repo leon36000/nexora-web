@@ -117,14 +117,23 @@
       },
       "translation": {
         "title": "Errors and limits.",
-        "body": "<p>Errors follow the OpenAI format: an <code>error</code> object with a message, a type and a code. Messages are written in French; test the <code>code</code> field. Here is the response actually observed on October 29, 2026, on a development server, for an invalid key:</p><pre><code>HTTP 401\n{\"error\":{\"message\":\"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».\",\"type\":\"authentication_error\",\"param\":null,\"code\":\"invalid_api_key\"}}</code></pre><table><caption>API errors</caption><thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Missing or unknown key, revoked or expired key.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Insufficient balance, blocked account or key spending cap reached.</td></tr><tr><th>404</th><td>model_not_found</td><td>Model does not exist or is not allowed for this key.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Invalid request; the param field names the faulty parameter.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Per-minute request or token limit reached; see the Retry-After header.</td></tr><tr><th>502 or 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>The model's provider is unavailable or overloaded: try again. Nothing is charged.</td></tr></tbody></table>",
+        "body": "<p>Errors follow the OpenAI format: an <code>error</code> object with a message, a type and a code. Messages are written in French; test the <code>code</code> field. Here is the response actually observed on October 29, 2026, on a development server, for an invalid key:</p><pre><code>HTTP 401\n{\"error\":{\"message\":\"Clé API invalide ou absente. Utilisez l'en-tête « Authorization: Bearer nxk_… ».\",\"type\":\"authentication_error\",\"param\":null,\"code\":\"invalid_api_key\"}}</code></pre><table><caption>API errors</caption><thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><th>401</th><td>invalid_api_key, api_key_revoked, api_key_expired</td><td>Missing or unknown key, revoked or expired key.</td></tr><tr><th>402</th><td>insufficient_quota, account_blocked, api_key_spend_cap_reached</td><td>Insufficient credits (the message points to top-ups and plans), blocked account or key spending cap reached.</td></tr><tr><th>404</th><td>model_not_found</td><td>Model does not exist or is not allowed for this key.</td></tr><tr><th>400</th><td>invalid_json, missing_model, invalid_messages, invalid_max_tokens, context_length_exceeded, unsupported_parameter</td><td>Invalid request; the param field names the faulty parameter.</td></tr><tr><th>429</th><td>rate_limit_exceeded</td><td>Per-minute request or token limit reached; see the Retry-After header.</td></tr><tr><th>502 or 503</th><td>upstream_error, upstream_unavailable, upstream_overloaded, gateway_unavailable</td><td>The model's provider is unavailable or overloaded: try again. Nothing is charged.</td></tr></tbody></table>",
         "items": []
       }
     },
     {
       "collection": "block_cards",
       "role": "Facturation en trois temps : réserver, régler, lire le coût ; état de la vente.",
-      "claims": ["CL-S03", "CL-S05", "CL-12"],
+      "claims": [
+        "CL-S03",
+        "CL-S05",
+        "CL-12",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T09",
+        "CL-T06"
+      ],
       "fields": {
         "columns": "3",
         "tone": "sable",
@@ -133,11 +142,11 @@
       },
       "translation": {
         "title": "Billing in three steps.",
-        "intro": "Accounts and payments work in test mode only for now: what follows describes how it works, not an offer open for sale.",
+        "intro": "The API uses credits: one credit is worth one Canadian cent of tokens at the catalogue price. A plan gives you credits every month, otherwise you top up. Accounts and payments work in test mode only for now: what follows describes how it works, not an offer open for sale.",
         "cards": [
           {
             "title": "Reserve.",
-            "text": "Each request first reserves its maximum cost. Without enough balance, the API returns 402 before any call to the model."
+            "text": "Each request first reserves its maximum cost. Without enough credits, the API returns 402 insufficient_quota before any call to the model, with a message pointing to top-ups and plans."
           },
           {
             "title": "Settle.",
@@ -153,7 +162,17 @@
     {
       "collection": "block_faq",
       "role": "Questions du tutoriel : modifications du code, identifiant de modèle, flux, coût, achat.",
-      "claims": ["CL-S04", "CL-S03", "CL-M07", "CL-12"],
+      "claims": [
+        "CL-S04",
+        "CL-S03",
+        "CL-M07",
+        "CL-12",
+        "CL-T01",
+        "CL-T02",
+        "CL-T03",
+        "CL-T09",
+        "CL-T06"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "clair",
@@ -180,7 +199,11 @@
           },
           {
             "question": "Can I use the API in production today?",
-            "answer": "Not in self-service: accounts and payments work in test mode only and no real payment is accepted. For a project, write to us."
+            "answer": "Not in self-service: sales are not open. Accounts and payments work in test mode only, no real payment is accepted and no price is published; prices will appear on the Pricing page. For a project, write to us."
+          },
+          {
+            "question": "How are credits used?",
+            "answer": "Each request uses credits at the catalogue price: one credit is worth one Canadian cent of tokens. Plan credits are used first and expire at the end of their period; top-up credits do not expire. When none are left, the API refuses the call with a 402 insufficient_quota error."
           }
         ]
       }
@@ -188,17 +211,17 @@
     {
       "collection": "block_cta",
       "role": "Appel à l'action : documentation, puis diagnostic.",
-      "claims": ["CL-80", "CL-12"],
+      "claims": ["CL-80", "CL-12", "CL-T06"],
       "fields": {
         "tone": "sombre"
       },
       "translation": {
         "title": "See the documentation.",
-        "text": "The API documentation gives the exact base address, the errors and the examples. For a project, we start with a diagnostic.",
+        "text": "The API documentation gives the exact base address, the errors and the examples. For a project, we start with an assessment; prices will appear on the Pricing page.",
         "primary_label": "Read the documentation",
         "primary_href": "/en/docs/api/",
-        "secondary_label": "Book a diagnostic",
-        "secondary_href": "/en/contact/?sujet=diagnostic"
+        "secondary_label": "See upcoming pricing",
+        "secondary_href": "/en/pricing/"
       }
     }
   ]

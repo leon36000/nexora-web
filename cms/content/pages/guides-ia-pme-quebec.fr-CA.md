@@ -21,21 +21,21 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # L'IA pour une PME du Québec. Par où commencer.
 
-Trois décisions avant tout outil : un cas précis à traiter, un endroit où vivent vos données, une personne qui valide. Le reste suit, un cas à la fois.
+Trois décisions avant tout outil : un cas précis à traiter, un endroit où vivent vos données, une personne qui valide. Puis un pilote pour mesurer, un cas à la fois.
 
 [Planifier un diagnostic](/contact/) · [Voir la méthode](/methode/)
 
 ### Bloc 2 — Section (`block_section`)
 
-*Réponse d'abord : par où commencer, en un paragraphe, avec les quatre gestes. · Affirmations : CL-03, CL-80, CL-02, CL-128, CL-14*
+*Réponse d'abord : par où commencer, en un paragraphe, avec les quatre gestes. · Affirmations : CL-03, CL-80, CL-02, CL-128, CL-14, CL-PL03, CL-T01, CL-T04*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
 
 ## La réponse en bref.
 
-Pour une PME, commencer par l'IA, c'est choisir un cas répétitif et précis (le tri des courriels, la lecture des factures, la prise de rendez-vous, la recherche dans vos documents), décider si le système vit chez vous ou s'il est hébergé au Québec, nommer la personne qui valide ce que l'IA prépare, puis mesurer sur un pilote avant d'étendre.
+Pour une PME du Québec, commencer par l'IA, c'est choisir un cas répétitif et précis (le tri des courriels, la lecture des factures, la prise de rendez-vous ou la recherche dans vos documents), décider si le système vit chez vous ou s'il est hébergé au Québec, nommer la personne qui valide ce que l'IA prépare, puis mesurer sur un pilote avant d'étendre.
 
-Aucun délai ni aucun gain n'est universel : ils dépendent du cas et se mesurent sur le pilote. Un diagnostic précède toute estimation écrite.
+Aucun délai ni aucun gain n'est universel : ils dépendent du cas et se mesurent sur le pilote. Un diagnostic précède toute estimation écrite. Deux choses se paient : l'accompagnement, sur estimation écrite, et l'usage de la plateforme, en crédits.
 
 - **Un cas.** Un travail répétitif dont vous pouvez décrire les étapes.
 - **Un lieu.** Chez vous, ou hébergé au Québec.
@@ -102,7 +102,7 @@ Dans les deux cas, un serveur au Québec ou chez vous n'écarte pas, à lui seul
 
 ### Bloc 6 — Section (`block_section`)
 
-*Les six solutions les plus courantes, en liste de liens, avec la précision qu'elles sont des configurations et non des produits prêts à l'emploi. · Affirmations : CL-132, CL-84*
+*Les six solutions les plus courantes, en liste de liens, avec la précision qu'elles sont des configurations et non des produits prêts à l'emploi. · Affirmations : CL-132, CL-84, CL-PL01, CL-PL03, CL-T01, CL-T06, CL-12*
 
 Réglages : `media_position=none`, `tone=sable`, `anchor_id=solutions`
 
@@ -116,6 +116,7 @@ Ce sont des configurations bâties sur les composantes de WorkStudio et adaptée
 - [Rendez-vous](/solutions/rendez-vous/) : proposer des créneaux, rappeler.
 - [Comptabilité](/solutions/comptabilite/) : préparer la pré-saisie.
 - [Documents](/solutions/documents/) : retrouver, résumer, extraire.
+Le compte Nexora AI réunit crédits, espace et outils dans le panneau « Mes outils ». La plateforme n'est pas encore ouverte à la vente ; les prix s'afficheront sur la page [Tarifs](/tarifs/).
 
 ### Bloc 7 — Cartes (`block_cards`)
 
@@ -143,17 +144,17 @@ Aucun service de réception d'appels téléphoniques n'est livré à ce jour.
 
 ### Bloc 8 — FAQ (`block_faq`)
 
-*Questions du guide : par où commencer, délai, matériel, lieu des données, employés, savoir programmer. · Affirmations : CL-80, CL-14, CL-82, CL-E01, CL-E02, CL-77, CL-E05, CL-128, CL-P02, CL-92, CL-04*
+*Questions du guide : par où commencer, délai, matériel, lieu des données, employés, savoir programmer. · Affirmations : CL-80, CL-14, CL-82, CL-E01, CL-E02, CL-77, CL-E05, CL-128, CL-P02, CL-92, CL-04, CL-10, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T06, CL-12*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 ## IA pour PME : vos questions.
 
-#### Par où commencer concrètement ?
+#### Par où commencer concrètement avec l'IA ?
 
 Par un diagnostic du cas visé : logiciels existants, volumes, mode de déploiement, intégrations. Il précède toute estimation écrite.
 
-#### Combien de temps faut-il ?
+#### Combien de temps faut-il pour mettre l'IA en service ?
 
 Aucun délai universel n'est annoncé : il dépend du cas et se mesure sur un pilote.
 
@@ -172,6 +173,14 @@ Elle prend en charge des tâches répétitives ; la décision reste humaine. To
 #### Dois-je savoir programmer ?
 
 Non. On décrit le besoin en français, le Copilote prépare un flux que l'on relit, et Nexora AI installe le système, l'exploite avec vous et forme votre équipe.
+
+#### Combien cela coûte-t-il ?
+
+Il n'y a pas encore de prix public. Deux choses se paient. L'accompagnement (diagnostic, installation, configuration) : une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. L'usage de la plateforme : en crédits, car tout ce qui appelle un modèle d'IA en consomme ; un abonnement donne des crédits et de l'espace chaque mois, sinon on recharge. Les prix de la plateforme s'afficheront sur la page Tarifs dès leur publication.
+
+#### Qu'est-ce qu'un crédit Nexora AI ?
+
+Un crédit vaut un cent canadien de jetons au prix du catalogue de modèles. Tout appel à un modèle d'IA en consomme ; un abonnement donne des crédits chaque mois, qui expirent à la fin de leur période et servent en premier, et les crédits de recharge n'expirent pas. La plateforme n'est pas encore ouverte à la vente.
 
 ### Bloc 9 — Appel à l'action (`block_cta`)
 

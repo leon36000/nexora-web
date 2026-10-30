@@ -6,8 +6,8 @@
 
 - Page : `solutions-service-client` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/solutions/customer-service/` · slug : `solutions/customer-service`
-- Titre SEO (40 caractères) : AI customer service for small businesses
-- Description SEO (151 caractères) : An agent answers your customers from your own documents, cites its sources and hands the request to a person with a summary. Your team stays in charge.
+- Titre SEO (40 caractères) : Customer service agent on your documents
+- Description SEO (140 caractères) : An agent answers your customers from your documents, cites its sources and hands off to a person with a summary. Your team stays in control.
 
 ## Contenu
 
@@ -21,7 +21,7 @@ Réglages : `variant=sombre`, `perimeter_grid=true`
 
 # Your site answers. Your team focuses.
 
-An agent (software that completes a task using the tools you authorize) answers your customers' questions from your own documents, cites its sources and hands off to your team when it does not know.
+An agent (software that completes a task using the tools you authorize) answers your customers' questions from your documents, cites its sources and hands off to your team when it does not know.
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See all solutions](/en/solutions/)
 
@@ -33,9 +33,9 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=probleme`
 
 ## The same questions, day after day.
 
-Take a plumbing-supplies distributor that serves contractors. Every day, people ask about opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find them and say them again.
+Take a plumbing-supplies distributor that serves contractors. All day long, people ask about opening hours, the return policy, the documents needed to open an account, the areas served. The answers exist, in data sheets and guides, but someone has to find them and say them again, while another customer waits at the counter.
 
-The example is constructed to illustrate the principle; it is not a customer's result.
+This example is constructed to illustrate the principle; it is not a customer's result.
 
 - **An interrupted team.** Simple questions break the concentration of the people who should be handling the hard cases.
 - **Uneven answers.** Depending on the person and the day, the answer changes.
@@ -97,7 +97,7 @@ Réglages : `media_position=none`, `tone=sable`, `anchor_id=benefice`
 
 ## Fewer interruptions, more consistency.
 
-The expected benefit: fewer interruptions, more consistent answers, customers who get something faster. No percentage is announced; the effect is measured during a pilot, on your real questions.
+The expected benefit: fewer interruptions, more consistent answers, customers who get what they are looking for faster. No percentage is announced; the effect is measured during a pilot, on your real questions.
 
 [Book a diagnosis](/en/contact/?sujet=diagnostic) to assess your frequent questions.
 
@@ -139,7 +139,7 @@ On your server or with us, in Quebec: never used to train a model, never sold. A
 
 ### Bloc 7 — FAQ (`block_faq`)
 
-*FAQ propre à la solution service client. · Affirmations : CL-107, CL-122, CL-132, CL-112*
+*FAQ propre à la solution service client. · Affirmations : CL-107, CL-122, CL-132, CL-112, CL-10, CL-PL03, CL-T01, CL-T06, CL-T04, CL-T09, CL-12, CL-T02*
 
 Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
@@ -149,17 +149,25 @@ Réglages : `emit_jsonld=true`, `tone=sable`, `anchor_id=questions`
 
 One line of code adds a chat bubble, or you embed a frame in a page. You limit the list of sites allowed to display it. This requires a public HTTPS address (a secure web address anyone can reach) for your instance.
 
-#### Can it make up an answer?
+#### Can the agent make up an answer?
 
-A model can get things wrong. We reduce the risk by having it answer from your documents, cite its sources and, where needed, add a faithfulness safeguard. During the pilot we check that it says so when it finds nothing.
+A model can be wrong. We reduce the risk by having it answer from your documents, cite its sources and, where needed, add a faithfulness guardrail. During the pilot we check that it says so when it finds nothing.
 
-#### What if the customer wants to talk to someone?
+#### What happens if the customer wants to talk to someone?
 
-The agent offers a callback by a person and passes the request on with a summary. Live chat with a human is not an announced feature.
+The agent offers a callback by a person and passes the request along with a summary. Live chat with a human is not an announced feature.
 
-#### Does it speak French and English?
+#### Does the agent speak French and English?
 
-It answers in the language of the question to the extent the chosen model allows. We check both languages on your documents during the pilot.
+It answers in the language of the question, to the extent the chosen model allows. We check both languages on your documents during the pilot.
+
+#### How much does it cost?
+
+There is no public price yet for the customer service agent. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published.
+
+#### What uses credits here?
+
+Each time the system calls an AI model hosted by Nexora AI to answer a customer's question or check that the answer stays faithful to your documents, it uses credits: one credit equals one Canadian cent of tokens at the model catalogue price. Steps that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans. The credit platform is not yet open for sale.
 
 ### Bloc 8 — Appel à l'action (`block_cta`)
 

@@ -6,8 +6,8 @@
   "seo": {
     "slug": "solutions",
     "title": "Solutions",
-    "seo_title": "AI solutions for small businesses in Quebec",
-    "seo_description": "Six AI solutions for Quebec small businesses: email, invoices, customer service, appointments, accounting, documents. Very simple, and your data stays yours.",
+    "seo_title": "Six AI solutions for Quebec small businesses",
+    "seo_description": "Email, invoices, customer service, appointments, accounting, documents: six AI solutions for Quebec SMEs. A person approves, and your data stays yours.",
     "canonical": null
   },
   "blocks": [
@@ -22,7 +22,7 @@
       "translation": {
         "eyebrow": "Solutions",
         "headline": "Repetitive tasks, finally behind you.",
-        "subheadline": "The leading edge of AI, made remarkably simple: six small-business situations where repetitive work fades away and your team keeps the decision, without writing a line of code.",
+        "subheadline": "Sorted email, invoices read, customers served, a full calendar: six small-business situations in Quebec where repetitive work fades away. Your team keeps the decision, and nobody writes a line of code.",
         "primary_label": "Book a diagnosis",
         "primary_href": "/en/contact/?sujet=diagnostic",
         "secondary_label": "Request a demonstration",
@@ -40,7 +40,7 @@
       },
       "translation": {
         "title": "Picture work without the chores.",
-        "body": "<p>Monday arrives, and the email is already sorted, the invoices already read, the customers' questions already answered. Your team starts the day with what takes judgment, craft and advice, not retyping.</p><p>That is the picture each solution on this page aims for. We promise no figures and no guaranteed result: the real benefit is measured on your first case.</p>",
+        "body": "<p>On Monday morning the email is already sorted, the invoices already read, and the usual customer questions already answered. Your team starts the day with the work that takes judgment, craft and advice, not retyping.</p><p>That is the picture each solution on this page aims for. No numeric gain is announced: the real benefit is measured on your first case, with your data.</p>",
         "items": [
           {
             "title": "Time for the craft.",
@@ -112,7 +112,7 @@
     },
     {
       "collection": "block_section",
-      "role": "WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; schéma de l'éditeur de flux.",
+      "role": "WorkStudio : la pointe de l'IA (liste des capacités, CL-P01), extrêmement simple (CL-P02), configurée après diagnostic ; fil « un compte, des crédits, tous vos outils » avec lien vers les tarifs à venir ; schéma de l'éditeur de flux.",
       "claims": [
         "CL-132",
         "CL-85",
@@ -125,7 +125,14 @@
         "CL-25",
         "CL-101",
         "CL-102",
-        "CL-21"
+        "CL-21",
+        "CL-PL01",
+        "CL-PL02",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
       ],
       "fields": {
         "media_position": "right",
@@ -135,7 +142,7 @@
       },
       "translation": {
         "title": "Powerful underneath, simple on top.",
-        "body": "<p>These solutions are assembled in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, a single tool that brings what AI can do today within your reach: agents (software that completes a task using the tools you authorize), answers drawn from your own documents, reading of scanned documents, transcription and read-aloud, and side-by-side comparison of several models. \"Leading edge\" is our way of putting it; the proof is that list.</p><p>And it is remarkably simple to use: you describe the need in plain language, a building assistant (the Copilot) prepares a workflow (an automated sequence of tasks) for you to review, then you build it with cards or on a canvas, the way you sketch a diagram, without writing code. The workflow pictured here receives an invoice by email, prepares the entry and stops for a person's approval before writing anything.</p><p>Every go-live starts with a diagnosis of your case: we check that your software can be connected, and we announce no universal timeline. These are not off-the-shelf boxes but tailored configurations.</p><p><a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a></p><p>To choose your first case, read the <a href=\"/en/guides/ai-small-business-quebec/\">guide to AI for a Quebec small business</a>.</p>",
+        "body": "<p>These solutions come together in <a href=\"/en/workstudio/\">Nexora WorkStudio</a>, a single tool that puts the latest of what AI can do within your reach: agents (software that completes a task using the tools you authorize), answers drawn from your own documents, reading of scanned documents, transcription and read-aloud, and side-by-side comparison of several models.</p><p>It is simple to use: you describe the need in plain language, a building assistant (the Copilot) prepares a workflow (an automated sequence of tasks) for you to review, then you build it with cards or on a canvas, without writing code. The workflow pictured here receives an invoice by email, prepares the entry and stops for a person's approval before writing anything.</p><p><strong>One account, your credits, all your tools.</strong> Your Nexora AI account brings your credits, your storage and your products together in the \"My tools\" panel, with the real status of each. WorkStudio opens from there as long as at least one credit remains. Anything that calls an AI model uses credits: a plan gives you some every month, otherwise you top up. The platform is not yet open for sale and no price is published. <a href=\"/en/pricing/\">See the upcoming pricing</a></p><p>On the support side, every go-live starts with a diagnosis of your case: we check that your software can be connected, and we announce no universal timeline. These are tailored configurations, not off-the-shelf boxes. <a href=\"/en/contact/?sujet=diagnostic\">Book a diagnosis</a></p><p>To choose your first case, read the <a href=\"/en/guides/ai-small-business-quebec/\">guide to AI for a Quebec small business</a>.</p>",
         "items": [
           {
             "title": "1. The problem, named.",
@@ -150,8 +157,8 @@
             "text": "Drafts, tables, sourced answers: something concrete to review."
           },
           {
-            "title": "4. The benefit, no invented figures.",
-            "text": "Described honestly; measured on a first case."
+            "title": "4. The expected benefit.",
+            "text": "Described with no invented figures; measured on a first case."
           },
           {
             "title": "5. Your control, intact.",
@@ -176,25 +183,25 @@
         "cards": [
           {
             "title": "A renovation contractor.",
-            "text": "They want to find old quotes, organize crews and track real costs. For construction and field services, OPSYS-AI brings these needs together in ten departments, each with its own availability level (a product in development).",
+            "text": "They want to find an old comparable quote, organize crews and track real costs. The system finds the files; the estimator keeps the final price. For construction, OPSYS-AI brings these needs together in ten departments, each with its own availability level (a product in development).",
             "href": "/en/opsys-ai/",
             "link_label": "Discover OPSYS-AI"
           },
           {
-            "title": "A distributor.",
-            "text": "They receive price requests by email and supplier invoices in assorted formats. Email sorting and invoice reading are the two entry points.",
+            "title": "A plumbing distributor.",
+            "text": "Day after day, price requests arrive by email and supplier invoices arrive in assorted formats. The system sorts the email and reads the invoices; the manager approves the replies and the payments.",
             "href": "/en/solutions/email/",
             "link_label": "See email"
           },
           {
             "title": "A professional-services firm.",
-            "text": "It hunts for the right clause in old files and prepares documents from templates. Searching its own documents is the first solution.",
+            "text": "It hunts for the right clause in old files and prepares documents from templates. It asks its own documents questions in plain language and checks every answer against the cited source.",
             "href": "/en/solutions/documents/",
             "link_label": "See documents"
           },
           {
             "title": "A small practice that books appointments.",
-            "text": "It loses slots through forgetfulness and late cancellations. Requests, reminders and calendar handling are the core.",
+            "text": "Requests come in at night and cancellations land at the last minute. The system proposes slots checked against the calendar and prepares the reminders; the receptionist keeps the delicate confirmations.",
             "href": "/en/solutions/appointments/",
             "link_label": "See appointments"
           }
@@ -270,7 +277,12 @@
         "CL-E03",
         "CL-E04",
         "CL-E01",
-        "CL-E02"
+        "CL-E02",
+        "CL-PL03",
+        "CL-T01",
+        "CL-T04",
+        "CL-T06",
+        "CL-12"
       ],
       "fields": {
         "emit_jsonld": true,
@@ -281,28 +293,36 @@
         "title": "Before you choose: your questions.",
         "items": [
           {
-            "question": "Where do we start?",
-            "answer": "With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding."
+            "question": "Where do I start with AI in my small business?",
+            "answer": "With the problem that costs you the most time. We describe it with you, check which software must be connected, then put a first case into service before expanding. A diagnosis opens the process."
           },
           {
             "question": "Do I have to change my software?",
             "answer": "Generally not: the system connects to what you already use. Whether a given piece of software can be connected depends on the service concerned; we check it during the diagnosis."
           },
           {
-            "question": "Is it ready to use?",
-            "answer": "No, and deliberately so: each solution is configured for your business, with your rules and your documents. What is delivered are the building blocks of WorkStudio."
+            "question": "Are the solutions ready to use?",
+            "answer": "No, and deliberately so: each solution is configured for your business, with your rules and your documents. What is delivered are the building blocks of WorkStudio; assembling them for your case is done with you."
           },
           {
             "question": "Is my data used to train a model?",
-            "answer": "Never. It stays on your server or with us in Quebec, is not used to train or fine-tune a model, and is never sold. The Your data page details each commitment."
+            "answer": "Never. Your data stays on your server or with us in Quebec, is not used to train or fine-tune a model, and is never sold. The Your data page details each commitment."
           },
           {
-            "question": "What about the phone?",
-            "answer": "No call-answering service is delivered today. A voice message dropped in as a recording can be transcribed; live telephony is checked separately, case by case."
+            "question": "Do the solutions answer the phone?",
+            "answer": "No. No call-answering service is delivered today. A voice message dropped in as a recording can be transcribed; live telephony is checked separately, case by case."
           },
           {
             "question": "How much does it cost?",
-            "answer": "There is no public price yet. After the diagnosis, we provide a written estimate that states what is included and what is not."
+            "answer": "There is no public price yet. Two things are paid for. Support (assessment, installation, configuration): a written estimate follows the assessment and says what is included and what is not. Use of the platform: in credits, because anything that calls an AI model uses them; a plan gives you credits and storage every month, otherwise you top up. Platform prices will appear on the Pricing page once they are published."
+          },
+          {
+            "question": "What uses credits?",
+            "answer": "Any call to an AI model: reading a document, drafting a reply, sorting a message. One credit equals one Canadian cent of tokens at the model catalogue price. Tools that call no model use none. When none are left, the call is refused with a message pointing to top-ups and plans."
+          },
+          {
+            "question": "Can I open an account and buy credits now?",
+            "answer": "Not yet. The credit platform is not open for sale: accounts and payments only work in test mode and no price is published. You can book a diagnosis now, though; prices will appear on the Pricing page once they are published."
           }
         ]
       }

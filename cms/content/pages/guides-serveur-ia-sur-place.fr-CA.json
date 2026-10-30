@@ -170,7 +170,16 @@
     {
       "collection": "block_faq",
       "role": "Questions du guide : serveur puissant, sans internet, matériel, prix, responsabilité.",
-      "claims": ["CL-82", "CL-83", "CL-77", "CL-10", "CL-72", "CL-86"],
+      "claims": [
+        "CL-82",
+        "CL-83",
+        "CL-77",
+        "CL-10",
+        "CL-72",
+        "CL-86",
+        "CL-E01",
+        "CL-80"
+      ],
       "fields": {
         "emit_jsonld": true,
         "tone": "sable",
@@ -181,23 +190,23 @@
         "items": [
           {
             "question": "Faut-il un serveur puissant pour faire tourner une IA dans une PME ?",
-            "answer": "Cela dépend du cas : nombre d'utilisateurs, volume de documents, modèle choisi et usages. Le diagnostic répond, avant tout achat."
+            "answer": "Cela dépend du cas : nombre d'utilisateurs, volume de documents, modèle choisi et usages. Le diagnostic établit le matériel nécessaire avant tout achat."
           },
           {
             "question": "Peut-on faire tourner une IA sans internet ?",
-            "answer": "En partie. Installer le système sur votre serveur n'équivaut pas à un fonctionnement hors ligne garanti : mises à jour, licences et modèle externe éventuel sont des flux sortants, listés avant la mise en service."
+            "answer": "En partie. Installer le système sur votre serveur n'équivaut pas à un fonctionnement hors ligne garanti : les mises à jour, les licences et un modèle externe éventuel sont des flux sortants, listés avant la mise en service."
           },
           {
             "question": "Un petit modèle local suffit-il ?",
-            "answer": "Pas toujours. Il suffit pour certaines tâches, mais pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas."
+            "answer": "Pas toujours. Un petit modèle local suffit pour certaines tâches, mais pas toujours pour les agents qui appellent des outils. Le modèle se choisit avec le cas."
           },
           {
             "question": "Combien coûte un serveur d'IA sur place ?",
-            "answer": "Il n'y a pas de prix public : une estimation écrite suit le diagnostic. Aucune grille de matériel n'est publiée."
+            "answer": "Il n'y a pas encore de prix public. Une estimation écrite suit le diagnostic et dit ce qui est inclus et ce qui ne l'est pas. Aucune grille de matériel n'est publiée, car le matériel dépend de votre cas."
           },
           {
             "question": "À qui appartiennent le matériel et les données ?",
-            "answer": "À vous : le matériel, les accès et les sauvegardes vous appartiennent. Nexora AI installe, configure et exploite avec vous."
+            "answer": "À vous : le matériel, les accès et les sauvegardes vous appartiennent, et vos données restent sur votre serveur. Nexora AI installe, configure et exploite avec vous."
           }
         ]
       }

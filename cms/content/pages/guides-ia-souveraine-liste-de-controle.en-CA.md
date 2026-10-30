@@ -143,11 +143,11 @@ Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=faq`
 
 #### What is a sovereign AI?
 
-An AI whose location of operation and data destination you know. Nexora AI describes it through four layers of control: data, models, compute and operations. It is a working definition, with no legal weight.
+It is an AI whose location of operation and data destination you know. Nexora AI describes it through four layers of control: data, models, compute and operations. It is a working definition, with no legal weight.
 
 #### Is hosting in Canada enough?
 
-Not by itself: storage in Canada does not mean processing in Canada, and a provider subject to a foreign law may have to hand over data it holds. See the guide on where your data is.
+Not by itself: storage in Canada does not mean processing in Canada, and a provider subject to a foreign law may have to hand over data it holds. Ask where processing happens; the guide “Where your data really is” covers these questions.
 
 #### Does a server on my premises rule out outbound flows?
 
