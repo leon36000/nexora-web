@@ -8,9 +8,9 @@ import type { AppsDictionary } from "./apps-fr-CA";
 export const appsEnCA: AppsDictionary = {
   meta: {
     list: {
-      title: "Nexora Apps: code agent, WebPilot and more | Nexora AI",
+      title: "Nexora Apps: Nexora Code, RAG, WebPilot and more | Nexora AI",
       description:
-        "Code agent, Gitspace, RAG, WebPilot, Privacy Router and free tools: each page says what is ready and what is coming, with no invented dates.",
+        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router and free tools: each page says what is ready and what is coming, with no invented dates.",
     },
   },
 
@@ -82,32 +82,43 @@ export const appsEnCA: AppsDictionary = {
 
   apps: {
     code: {
-      name: "Nexora Code Agent",
+      name: "Nexora Code",
       answer:
-        "The Nexora code agent is an assistant that understands, edits and tests code with you. It is designed to be offered free of charge, to download or to use from your customer panel. It is not delivered yet: no date and no terms of use are announced.",
-      hook: "An agent that understands, edits and tests code with you. Planned as free, to download or to use from your client panel.",
+        "Nexora Code is a code agent that understands, edits and tests code with you, in a work environment hosted on Nexora AI’s servers: nothing to install on your computer. The tool is designed to be free; whatever it has a model do uses credits. It is not delivered yet: no date is announced.",
+      hook: "A code agent in an environment hosted on our servers, linked to your Nexora account. The tool is planned as free; the models use credits.",
       audience:
-        "For developers and technical teams who want a code assistant connected to Nexora AI models.",
-      accessLabel: "Planned as free",
+        "For developers and technical teams who want a code assistant connected to Nexora AI models, with nothing to install on their computer.",
+      accessLabel: "Tool planned as free, models in credits",
       accessText:
-        "The code agent is designed to be offered for free: to download, or to use from the client panel. The terms of use of the models will be published before it ships.",
+        "Nexora Code is designed to be free. Anything the agent has a model do uses credits, your subscription credits first, then your top-up credits. The space of your hosted environment counts toward your plan’s storage. No price is published to date.",
       ready: [],
       coming: [
-        "A version to download.",
-        "A version usable from the client panel, with no installation.",
-        "A connection to Nexora AI’s RAG, so the agent knows your documents.",
+        "A work environment for each person, hosted on Nexora AI’s servers and opened from your client panel: nothing to install on your computer.",
+        "An optional terminal command that signs in to your Nexora account.",
+        "Compatibility with Claude Code and Codex plugins, in addition to Nexora Code’s own plugins; whatever cannot be translated is flagged, never silently ignored.",
+        "A connection to Nexora RAG, so the agent knows your documents.",
         "A pass through Privacy Router for everything that leaves for a model.",
       ],
       faq: [
         {
           question: "Is it really free?",
           answer:
-            "That is the intention: the code agent is designed to be offered for free. It is not shipped yet and no terms of use are published. This page will be updated when it ships.",
+            "That is the intention: the tool is designed to be free. Whatever the agent has a model do uses credits, because models have a cost. Nothing is shipped yet and no terms of use are published.",
         },
         {
           question: "Can I use it without installing anything?",
           answer:
-            "That is planned: a version usable from the client panel, in addition to a downloadable version. Neither is shipped today.",
+            "That is the principle: your environment is hosted on our servers and opens from your client panel. An optional terminal command is also planned. None of this is shipped today.",
+        },
+        {
+          question: "Where are my files?",
+          answer:
+            "In your environment, on Nexora AI’s servers. They count toward your plan’s storage. When storage is full, writes are refused with a clear message, but you can still read and delete your files.",
+        },
+        {
+          question: "Will my Claude Code or Codex plugins work?",
+          answer:
+            "That is planned: Nexora Code will read Claude Code and Codex plugins. Whatever cannot be translated will be flagged, never silently ignored. Nothing is shipped today.",
         },
         {
           question: "Will my code be sent to an external model?",
@@ -176,7 +187,7 @@ export const appsEnCA: AppsDictionary = {
       coming: [
         "A cloud space managed from your Nexora AI customer area.",
         "A built-in code repository, of your choice: GitLab, Nexora Gitspace or Forgejo.",
-        "A connection to Nexora AI’s RAG, to the code agent and to OPSYS-AI.",
+        "A connection to Nexora AI’s RAG, to Nexora Code and to OPSYS-AI.",
       ],
       faq: [
         {
@@ -205,27 +216,37 @@ export const appsEnCA: AppsDictionary = {
     rag: {
       name: "Nexora RAG",
       answer:
-        "Nexora RAG turns your documents into a base the AI queries while showing its sources. It is planned as a subscription, connectable to the code agent, to OPSYS-AI or to your infrastructure. WorkStudio knowledge bases already exist; the separate service is not delivered yet.",
-      hook: "Your documents become a base that AI queries, with sources to back it up. By subscription, connectable to the code agent, OPSYS-AI or your infrastructure.",
+        "Nexora RAG turns your documents into a base the AI queries while showing its sources. You create it in one click, then connect it to Nexora Code, a bot or another tool with an API key. You pay for the space used and for embedding and rerank tokens, in credits. It is not delivered yet.",
+      hook: "Your documents become a base that AI queries, with sources to back it up. Created in one click, with an API key; space and tokens paid in credits.",
       audience:
         "For companies whose answers already sit in their documents: procedures, contracts, manuals, technical sheets.",
-      accessLabel: "By subscription (planned)",
+      accessLabel: "Pay per use: space and tokens (planned)",
       accessText:
-        "Nexora RAG will be offered by subscription. No price is published today; it will be shown here before any sale.",
+        "Nexora RAG is planned as pay-per-use: you pay for the space your documents and their vectors take, counted in your plan’s storage, and for embedding and rerank tokens, paid with your credits. No price is published to date.",
       ready: [
         "WorkStudio’s knowledge bases already exist: your documents are indexed there (filed so they can be found fast) and agents answer with their sources.",
       ],
       coming: [
-        "A separate RAG service, by subscription.",
-        "A connection to Nexora AI’s code agent.",
-        "A connection to OPSYS-AI.",
-        "A connection to your company’s infrastructure.",
+        "A base created in one click from your client panel, with its API key.",
+        "Indexing of your documents and querying them, with the sources of each answer.",
+        "An MCP server and an HTTP API to connect the base to Nexora Code, a bot or another tool.",
+        "A connection to OPSYS-AI and to your company’s infrastructure, at a later stage.",
       ],
       faq: [
         {
           question: "What is RAG?",
           answer:
             "RAG stands for retrieval-augmented generation: before answering, the AI finds the useful passages in your documents and relies on them. The answer shows its sources, so it can be checked.",
+        },
+        {
+          question: "What exactly do I pay for?",
+          answer:
+            "The space your documents and their vectors take, which counts toward your plan’s storage, and embedding and rerank tokens, paid with your credits. Nothing is shipped today and no price is published.",
+        },
+        {
+          question: "How do I use it with my bot or my code agent?",
+          answer:
+            "Once created, the base has its API key. An MCP server and an HTTP API are planned to connect it to Nexora Code, a bot or another tool, from your client panel.",
         },
         {
           question: "Are my documents used to train a model?",
@@ -235,12 +256,12 @@ export const appsEnCA: AppsDictionary = {
         {
           question: "Can I use it with my own server?",
           answer:
-            "That is the intention: Nexora RAG is planned to connect to your company’s infrastructure. Details will be specified when it ships.",
+            "That is the intention, at a later stage: Nexora RAG is planned to connect to your company’s infrastructure. Details will be specified when it ships.",
         },
         {
           question: "How is it different from WorkStudio’s knowledge base?",
           answer:
-            "WorkStudio’s is shipped and serves the agents built in WorkStudio. Nexora RAG is planned as a separate service, by subscription, that other tools will be able to query.",
+            "WorkStudio’s is shipped and serves the agents built in WorkStudio. Nexora RAG is planned as a separate service that other tools will be able to query.",
         },
       ],
     },
@@ -248,34 +269,40 @@ export const appsEnCA: AppsDictionary = {
     bot: {
       name: "Nexora Bot",
       answer:
-        "Nexora Bot is a bot plugged into Nexora AI models. It is designed to be offered free of charge, and its code is planned to be open so you can install it yourself. It is not delivered yet: no date is announced and no code is published to date.",
-      hook: "A free bot connected to Nexora AI's models, which you can also install yourself: the code will be open.",
+        "Nexora Bot is a bot that connects to your Nexora account and works with your subscription or your top-ups. It is designed to be free; the models it calls use credits. Its code is planned to be open so you can install it yourself. It is not delivered yet: no date is announced.",
+      hook: "A bot that connects to your Nexora account. Planned as free, with models paid in credits; its code will be open so you can install it yourself.",
       audience:
         "For anyone or any small team who wants an assistant with nothing to configure, and for developers who want a base to build on.",
-      accessLabel: "Free",
+      accessLabel: "Planned as free, models in credits",
       accessText:
-        "Nexora Bot is free. It uses Nexora AI's models; model usage is paid from your wallet.",
+        "Nexora Bot is designed to be free. It connects to your Nexora account and works with your subscription or your top-ups: anything it has a model do uses credits, at the catalogue price.",
       ready: [] as string[],
       coming: [
-        "The bot, connected to Nexora AI's models.",
+        "The bot, connected to your Nexora account: no model setup to do.",
+        "Operation with your subscription or your credit top-ups.",
         "The code published as free software, to study, change and improve with us.",
-        "A simple install, with no model setup.",
+        "A connection to Nexora RAG, so the bot knows your documents.",
       ],
       faq: [
         {
           question: "Is Nexora Bot available?",
           answer:
-            "Not yet for download or online on this site. We are not announcing a date. The waiting list is the best way to be told.",
+            "Not yet, neither for download nor online on this site. We do not announce a date. The waiting list is the best way to be notified.",
         },
         {
-          question: "Under which licence will it be released?",
+          question: "Under which licence will it be published?",
           answer:
-            "The code will be published as free software. The exact licence will be announced with the release, not before.",
+            "The code will be published as free software. The exact licence will be announced with the publication, not before.",
         },
         {
           question: "Is model usage free?",
           answer:
-            "The bot is free; the tokens used with the models are charged to your wallet, at the price shown in the catalogue.",
+            "No: the bot is designed to be free, but the models it calls use credits, your subscription credits first, then your top-up credits.",
+        },
+        {
+          question: "Do I need a subscription?",
+          answer:
+            "A subscription or a top-up is enough. As long as you have credits left, the bot can call the models. Nothing is shipped today.",
         },
       ],
     },
@@ -289,7 +316,7 @@ export const appsEnCA: AppsDictionary = {
         "For WordPress site owners, small businesses and agencies who want a site that stays up to date and gets found, without spending their evenings on it.",
       accessLabel: "Free plugin, automation on subscription (planned)",
       accessText:
-        "The plugin is planned to be free and open. Site automation (search ranking, articles) is planned on subscription. No price is published yet.",
+        "The plugin is planned to be free and open. Site automation (search ranking, articles) is planned on subscription; whatever it has a model do uses credits. No price is published yet.",
       ready: [] as string[],
       coming: [
         "A free WordPress plugin, with open code.",
@@ -307,7 +334,7 @@ export const appsEnCA: AppsDictionary = {
         {
           question: "What is free and what is paid?",
           answer:
-            "The plugin is planned to be free. Automation (search ranking, articles) is planned on subscription. Prices will be shown before any sale.",
+            "The plugin is planned to be free. Automation (search ranking, articles) is planned on subscription, and whatever it has a model do uses credits. Prices will be shown before any sale.",
         },
         {
           question: "What about commercial use?",
@@ -413,17 +440,17 @@ export const appsEnCA: AppsDictionary = {
     creative: {
       name: "Nexora Creative",
       answer:
-        "Nexora Creative is a family of image, sound and video tools for marketing, using AI. It is a later stage of Nexora Apps: nothing is delivered, and no date or access is announced.",
-      hook: "Image, sound and video tools for marketing, with AI. A later stage of Nexora Apps: nothing is shipped, and there is no date.",
+        "Nexora Creative is a family of image, sound and video tools for marketing, with AI. It is a later stage of Nexora Apps: nothing is delivered, and no date or access is announced. The principle is the same as every Nexora tool: whatever will call a model will use credits.",
+      hook: "Image, sound and video tools for marketing, with AI. A later stage of Nexora Apps: nothing is delivered, no date.",
       audience:
-        "For marketing teams and small businesses that produce visuals, sounds and videos for their campaigns.",
+        "For marketing teams and SMEs that produce visuals, sounds and videos for their campaigns.",
       accessLabel: "To be defined",
       accessText:
-        "How Nexora Creative will be offered is not settled. No price is published.",
-      ready: [],
+        "Nexora Creative’s access model has not been decided. The principle is the same as every Nexora tool: whatever will call a model will use credits, and the files created will count toward your plan’s storage. No price is published.",
+      ready: [] as string[],
       coming: [
-        "Creating and retouching images.",
-        "Voice, music and sound.",
+        "Image creation and retouching.",
+        "Voice, music and sounds.",
         "Video editing and generation.",
       ],
       faq: [
@@ -433,9 +460,14 @@ export const appsEnCA: AppsDictionary = {
             "Later. It is a later stage of Nexora Apps: we announce neither a date nor a final scope.",
         },
         {
+          question: "How will it be billed?",
+          answer:
+            "Nothing is decided. The principle is that whatever will call a model will use credits and that the files created will count toward your storage. No price is published.",
+        },
+        {
           question: "How is it different from Nexora Croissance?",
           answer:
-            "Nexora Croissance takes care of a small business’s online presence: website, search, advertising and social networks. Nexora Creative would be a set of tools for creating images, sounds and videos. The two could complement each other; nothing is decided.",
+            "Nexora Croissance takes care of an SME’s online presence: website, SEO, advertising and social media. Nexora Creative would be a set of tools for creating images, sounds and videos. The two could complement each other; nothing is decided.",
         },
         {
           question: "Can I say what interests me first?",
@@ -448,16 +480,16 @@ export const appsEnCA: AppsDictionary = {
     outils: {
       name: "Nexora Free Tools",
       answer:
-        "The Nexora free tools are small AI tools, offered free of charge, that use Nexora AI models and servers. None of them is delivered to date, and no release date is announced for any of them.",
-      hook: "Small AI tools offered for free, running on Nexora AI’s models and servers. None is shipped today.",
+        "The Nexora free tools are small AI tools, free to open, that use Nexora AI models and servers. Whatever they have a model do uses credits. None is delivered to date, and no release date is announced.",
+      hook: "Small AI tools that are free to open, running on Nexora AI’s models and servers; the models they call use credits. None is shipped.",
       audience:
         "For anyone who wants to try Nexora AI’s AI without installing or renting a server.",
       accessLabel: "Planned as free",
       accessText:
-        "The free tools are planned at no charge and run on Nexora AI’s models and servers. Terms of use, including any limits, will be published with each tool.",
+        "The free tools are designed to be free to open and run on Nexora AI’s models and servers. Those that call a model use credits, as everywhere in Nexora AI. Terms of use, including any limits, will be published with each tool.",
       ready: [],
       coming: [
-        "Simple AI tools, offered for free.",
+        "Simple AI tools, free to open.",
         "Running on Nexora AI’s models and servers, with nothing for you to install.",
         "One page per tool, with its state and its terms of use.",
       ],
