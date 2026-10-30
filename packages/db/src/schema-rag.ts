@@ -108,6 +108,8 @@ export const ragDocuments = pgTable(
       .notNull()
       .default(sql`'{}'::jsonb`),
     contentHash: text("content_hash").notNull(),
+    /** Réservation d'une tranche d'indexation (tâche en cours) : une autre tâche attend son échéance. */
+    claimedUntil: ts("claimed_until"),
     /** Octets comptés dans le quota d'espace pour ce document (texte des extraits + vecteurs). */
     storedBytes: bigint("stored_bytes", { mode: "number" })
       .notNull()

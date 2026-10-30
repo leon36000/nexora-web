@@ -1,5 +1,5 @@
 {
-  "id": "e2c512b4-936c-4290-abf5-cee96a9da854",
+  "id": "04dd489b-45e3-41d0-8143-6e22d059f408",
   "prevId": "ea18371d-c5aa-41cf-8849-00571c9a5199",
   "version": "7",
   "dialect": "postgresql",
@@ -7818,6 +7818,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "claimed_until": {
+          "name": "claimed_until",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         },
         "stored_bytes": {
           "name": "stored_bytes",

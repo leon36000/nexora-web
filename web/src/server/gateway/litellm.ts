@@ -198,9 +198,24 @@ export function routePositionOf(
 }
 
 /** Nom de modèle LiteLLM selon le type de fournisseur. */
-function litellmModelString(type: ProviderType, upstreamId: string): string {
+/**
+ * Chaîne `model` de LiteLLM. Un reclasseur ne passe pas par le protocole OpenAI : LiteLLM le sert avec son fournisseur
+ * `deepinfra/` (API d'inférence de DeepInfra) ou, pour un autre hébergeur, avec le protocole Cohere.
+ */
+export function litellmModelString(
+  type: ProviderType,
+  upstreamId: string,
+  kind: "chat" | "embedding" | "rerank" = "chat",
+  baseUrl = "",
+): string {
   if (type === "openrouter") return `openrouter/${upstreamId}`;
   if (type === "ollama") return `ollama_chat/${upstreamId}`;
+  if (kind === "rerank")
+    return /(^|\.)deepinfra\.com(\/|$|:)/.test(
+      baseUrl.replace(/^https?:\/\//, ""),
+    )
+      ? `deepinfra/${upstreamId}`
+      : `cohere/${upstreamId}`;
   return `openai/${upstreamId}`;
 }
 
@@ -376,7 +391,12 @@ export async function syncLitellm(
       const params: LitellmModelParams = {
         id,
         modelName: model.publicId,
-        model: litellmModelString(provider.type, upstreamId),
+        model: litellmModelString(
+          provider.type,
+          upstreamId,
+          model.kind,
+          provider.litellmBaseUrl ?? provider.baseUrl,
+        ),
         credentialName: credentialNameOf(provider),
         mode: model.kind,
         order,

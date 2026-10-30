@@ -46,6 +46,7 @@ CREATE TABLE "rag_documents" (
 	"pending_pages" jsonb,
 	"metadata" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"content_hash" text NOT NULL,
+	"claimed_until" timestamp with time zone,
 	"stored_bytes" bigint DEFAULT 0 NOT NULL,
 	"created_by_key" uuid,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,

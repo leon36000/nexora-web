@@ -293,6 +293,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     [
       ["v1/chat/completions", "POST", "/v1/chat/completions"],
       ["v1/embeddings", "POST", "/v1/embeddings"],
+      ["v1/rerank", "POST", "/v1/rerank"],
     ] as const
   ).map(
     ([route, method, path]): RouteGuard => ({
