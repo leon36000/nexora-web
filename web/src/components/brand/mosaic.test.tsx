@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { Mosaic, mosaicCells, PALETTES } from "./mosaic";
+import { Mosaic, mosaicBlinks, mosaicCells, PALETTES } from "./mosaic";
 
 const base = { cols: 24, rows: 12, seed: 7, tiers: 6 } as const;
 
@@ -76,5 +76,41 @@ describe("mosaïque (matière signature de Nexora AI)", () => {
     );
     expect(html).toContain("mo-animate");
     expect(html).not.toMatch(/<style|animation/);
+  });
+
+  describe("pixels qui s'allument (mouvement discret)", () => {
+    const cells = mosaicCells({ ...base, toward: "right", fade: 1 });
+
+    it("choisit un petit nombre de cellules déjà dessinées, toujours les mêmes pour une graine", () => {
+      const a = mosaicBlinks(cells, 6, 7);
+      expect(a).toHaveLength(6);
+      expect(a).toEqual(mosaicBlinks(cells, 6, 7));
+      expect(a).not.toEqual(mosaicBlinks(cells, 6, 8));
+      for (const b of a)
+        expect(cells.some((c) => c.col === b.col && c.row === b.row)).toBe(
+          true,
+        );
+      expect(new Set(a.map((b) => `${b.col}:${b.row}`)).size).toBe(6);
+    });
+
+    it("n'en promet pas plus qu'il n'y a de cellules, et décale les départs (aucun battement synchrone)", () => {
+      expect(mosaicBlinks(cells.slice(0, 3), 10, 1)).toHaveLength(3);
+      expect(mosaicBlinks(cells, 0, 1)).toEqual([]);
+      const delays = mosaicBlinks(cells, 8, 3).map((b) => b.delay);
+      expect(new Set(delays).size).toBeGreaterThan(4);
+      for (const d of delays) {
+        expect(d).toBeGreaterThanOrEqual(0);
+        expect(d).toBeLessThan(12);
+      }
+    });
+
+    it("n'ajoute rien au rendu tant que `blink` n'est pas demandé, et reste décoratif quand il l'est", () => {
+      const off = renderToStaticMarkup(<Mosaic {...base} fade={1} />);
+      expect(off).not.toContain("mo-blink");
+      const on = renderToStaticMarkup(<Mosaic {...base} fade={1} blink={5} />);
+      expect(on.match(/class="mo-blink"/g)).toHaveLength(5);
+      expect(on).toContain('aria-hidden="true"');
+      expect(on).not.toMatch(/<style|animation|https?:\/\//);
+    });
   });
 });

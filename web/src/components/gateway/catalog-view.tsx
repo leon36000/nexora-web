@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EmptyMark } from "@/components/brand/empty-mark";
 import { ButtonLink } from "@/components/ui/button";
 import { fmt, formatDate } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
@@ -141,7 +142,7 @@ export function CatalogView({
             : ""}
         </p>
         <nav aria-label={l.viewLabel}>
-          <ul className="flex overflow-hidden rounded-md border border-line-strong">
+          <ul className="flex overflow-hidden rounded-frame border border-line-strong">
             {VIEWS.map((v) => (
               <li key={v}>
                 <Link
@@ -164,7 +165,8 @@ export function CatalogView({
       </div>
 
       {models.length === 0 ? (
-        <div className="mt-8 rounded-md border border-line p-6 sm:p-8">
+        <div className="mt-8 rounded-card border border-dashed border-line-strong p-6 sm:p-8">
+          <EmptyMark seed={6} className="mb-5" />
           <h2 className="font-display text-h4 text-fg">{l.empty.title}</h2>
           <p className="mt-2 max-w-xl text-body text-fg-muted">
             {l.empty.text}

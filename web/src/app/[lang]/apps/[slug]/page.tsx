@@ -5,7 +5,9 @@ import { lang as getLang } from "next/root-params";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ButtonLink } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
+import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
+import { StatStrip } from "@/components/ui/stat-strip";
 import {
   APPS,
   appContactHref,
@@ -23,6 +25,7 @@ import {
   appSoftwareJsonLd,
 } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
+import { APP_PALETTE, appSeed } from "../_components/palette";
 import { StateBadge } from "../_components/state-badge";
 
 /** Les outils du registre se préparent au build ; tout autre identifiant répond 404. */
@@ -68,25 +71,40 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
   });
   return (
     <>
-      <Section tone="light" aria-labelledby="app-title">
-        <nav aria-label={d.back}>
-          <Link
-            href={localizePath(lang, "/apps")}
-            className="inline-flex min-h-11 items-center rounded-xs text-small text-accent-text underline underline-offset-4"
-          >
-            {d.back}
-          </Link>
-        </nav>
-        <header className="mt-4 max-w-3xl">
-          <StateBadge state={app.state} t={t} />
-          <h1 id="app-title" className="mt-4 text-h1 text-fg">
-            {content.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
-            {content.hook}
-          </p>
-        </header>
-        <section aria-labelledby="answer-title" className="mt-10 max-w-3xl">
+      <PageHero
+        titleId="app-title"
+        palette={APP_PALETTE[app.slug] ?? "braise"}
+        seed={appSeed(app.slug)}
+        breadcrumb={
+          <nav aria-label={d.back}>
+            <Link
+              href={localizePath(lang, "/apps")}
+              prefetch={false}
+              className="inline-flex min-h-11 items-center rounded-xs text-small text-accent-text underline underline-offset-4 transition-colors duration-150 hover:text-fg"
+            >
+              {d.back}
+            </Link>
+          </nav>
+        }
+        meta={<StateBadge state={app.state} t={t} />}
+        title={content.name}
+        lead={content.hook}
+        aside={
+          <StatStrip
+            items={[
+              {
+                label: d.stateLabel,
+                value: t.states[app.state].label,
+                hint: t.states[app.state].description,
+              },
+              { label: d.accessTitle, value: content.accessLabel },
+            ]}
+          />
+        }
+      />
+
+      <Section tone="light">
+        <section aria-labelledby="answer-title" className="max-w-3xl">
           <h2 id="answer-title" className="text-h4 text-fg">
             {d.answerTitle}
           </h2>

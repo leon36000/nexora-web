@@ -5,6 +5,7 @@ import { answerParagraphs } from "@/components/blocks/faq-block";
 import { CodeBlock } from "@/components/gateway/code-samples";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
+import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Breadcrumb } from "@/components/vps/breadcrumb";
@@ -152,93 +153,82 @@ export default async function VpsApplicationPage(
       <JsonLd data={breadcrumb} />
       <JsonLd data={software} />
 
-      <Section tone="light" aria-labelledby="app-title">
-        <Breadcrumb
-          label={t.nav.breadcrumb}
-          items={[
-            { name: t.nav.home, href: localizePath(lang, "/") },
-            { name: t.nav.vps, href: localizePath(lang, "/vps") },
-            { name: app.name },
-          ]}
-        />
-        <header className="mt-4 max-w-3xl">
-          <Badge tone={guide ? "outline" : "accent"}>
-            {guide ? a.kindGuide : a.kindApp}
-          </Badge>
-          <h1 id="app-title" className="mt-4 text-h1 text-fg">
-            {app.name}
-          </h1>
-          {tagline ? (
-            <p className="mt-5 max-w-2xl text-lead text-fg-muted">{tagline}</p>
-          ) : null}
-          {answerParagraphs(description).map((p) => (
-            <p key={p} className="mt-4 max-w-2xl text-body text-fg-muted">
-              {p}
-            </p>
-          ))}
-        </header>
-
-        <dl className="mt-10 grid gap-6 text-small sm:grid-cols-2 lg:grid-cols-4">
-          {guide ? null : (
+      <PageHero
+        titleId="app-title"
+        palette="or"
+        seed={[...app.code].reduce(
+          (x, c) => (x * 31 + c.charCodeAt(0)) % 997,
+          17,
+        )}
+        breadcrumb={
+          <Breadcrumb
+            label={t.nav.breadcrumb}
+            items={[
+              { name: t.nav.home, href: localizePath(lang, "/") },
+              { name: t.nav.vps, href: localizePath(lang, "/vps") },
+              { name: app.name },
+            ]}
+          />
+        }
+        eyebrow={guide ? a.kindGuide : a.kindApp}
+        title={app.name}
+        lead={tagline || undefined}
+        aside={
+          <dl className="grid gap-6 text-small sm:grid-cols-2 lg:grid-cols-4">
+            {guide ? null : (
+              <div>
+                <dt className="text-fg-muted">{a.version}</dt>
+                <dd className="mt-1 font-mono text-body text-fg">
+                  {app.version}
+                </dd>
+              </div>
+            )}
             <div>
-              <dt className="text-fg-muted">{a.version}</dt>
-              <dd className="mt-1 font-mono text-body text-fg">
-                {app.version}
-              </dd>
-            </div>
-          )}
-          <div>
-            <dt className="text-fg-muted">{a.license}</dt>
-            <dd className="mt-1 text-body text-fg">
-              <span className="font-mono">{app.license}</span>
-              {licenseHref ? (
-                <>
-                  <br />
-                  <a
-                    href={licenseHref}
-                    rel="noopener noreferrer"
-                    className={linkClass}
-                  >
-                    {a.licenseText}
-                  </a>
-                </>
-              ) : null}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-fg-muted">{a.minRam}</dt>
-            <dd className="mt-1 text-body tabular-nums text-fg">{ram}</dd>
-          </div>
-          {upstreamHref ? (
-            <div>
-              <dt className="text-fg-muted">{a.upstream}</dt>
+              <dt className="text-fg-muted">{a.license}</dt>
               <dd className="mt-1 text-body text-fg">
-                <a
-                  href={upstreamHref}
-                  rel="noopener noreferrer"
-                  className={`${linkClass} break-all`}
-                >
-                  {upstreamHref.replace(/^https?:\/\//, "")}
-                </a>
+                <span className="font-mono">{app.license}</span>
+                {licenseHref ? (
+                  <>
+                    <br />
+                    <a
+                      href={licenseHref}
+                      rel="noopener noreferrer"
+                      className={linkClass}
+                    >
+                      {a.licenseText}
+                    </a>
+                  </>
+                ) : null}
               </dd>
             </div>
-          ) : null}
-        </dl>
-
-        {warning ? (
-          <aside
-            aria-labelledby="license-warning-title"
-            className="mt-10 max-w-3xl rounded-md border border-accent-text p-5"
-          >
-            <h2 id="license-warning-title" className="text-h4 text-fg">
-              {a.licenseWarning}
-            </h2>
-            <p className="mt-2 text-body text-fg-muted">{warning}</p>
-          </aside>
-        ) : null}
-
+            <div>
+              <dt className="text-fg-muted">{a.minRam}</dt>
+              <dd className="mt-1 text-body tabular-nums text-fg">{ram}</dd>
+            </div>
+            {upstreamHref ? (
+              <div>
+                <dt className="text-fg-muted">{a.upstream}</dt>
+                <dd className="mt-1 text-body text-fg">
+                  <a
+                    href={upstreamHref}
+                    rel="noopener noreferrer"
+                    className={`${linkClass} break-all`}
+                  >
+                    {upstreamHref.replace(/^https?:\/\//, "")}
+                  </a>
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+        }
+      >
+        {answerParagraphs(description).map((p) => (
+          <p key={p} className="mt-4 max-w-2xl text-body text-fg-muted">
+            {p}
+          </p>
+        ))}
         {guide ? null : (
-          <div className="mt-10">
+          <div className="mt-8">
             <ButtonLink
               href={`${localizePath(lang, "/vps")}?app=${encodeURIComponent(app.code)}#configurateur`}
               size="lg"
@@ -248,7 +238,21 @@ export default async function VpsApplicationPage(
             </ButtonLink>
           </div>
         )}
-      </Section>
+      </PageHero>
+
+      {warning ? (
+        <Section tone="light" joined="after" className="pt-10">
+          <aside
+            aria-labelledby="license-warning-title"
+            className="max-w-3xl rounded-md border border-accent-text p-5"
+          >
+            <h2 id="license-warning-title" className="text-h4 text-fg">
+              {a.licenseWarning}
+            </h2>
+            <p className="mt-2 text-body text-fg-muted">{warning}</p>
+          </aside>
+        </Section>
+      ) : null}
 
       {guide ? (
         <Section tone="light" surface aria-labelledby="guide-title">

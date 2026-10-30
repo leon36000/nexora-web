@@ -33,7 +33,7 @@ describe("primitives de la direction « Instrument »", () => {
     expect(cell).toContain("rounded-none");
     expect(cell).not.toContain("border-line");
     const surface = renderToStaticMarkup(<Card>x</Card>);
-    expect(surface).toContain("rounded-md border border-line");
+    expect(surface).toContain("rounded-card border border-line");
   });
 
   it("l'étiquette d'accent s'ouvre par un pixel orange, les autres tons non", () => {

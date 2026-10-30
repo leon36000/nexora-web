@@ -101,6 +101,29 @@ export function mosaicCells({
 
 const n = (x: number) => Number(x.toFixed(2));
 
+export type MosaicBlink = { col: number; row: number; delay: number };
+
+/**
+ * Pixels qui « s'allument » un à un sur la mosaïque (mouvement discret du héros). Choisit `count` cellules déjà dessinées,
+ * de façon déterministe (même graine, mêmes cellules sur le serveur et le client), avec un départ décalé pour chacune
+ * (en secondes, de 0 à 12) : aucun battement synchrone. Fonction pure, testée sans rendu.
+ */
+export function mosaicBlinks(
+  cells: readonly MosaicCell[],
+  count: number,
+  seed: number,
+): MosaicBlink[] {
+  const ranked = cells
+    .map((c) => ({ c, k: hash(c.col, c.row, seed + 977) }))
+    .sort((a, b) => a.k - b.k)
+    .slice(0, Math.max(0, count));
+  return ranked.map(({ c }, i) => ({
+    col: c.col,
+    row: c.row,
+    delay: n(((i * 7 + hash(c.row, c.col, seed + 31) * 5) % 12) + 0),
+  }));
+}
+
 export type MosaicLayer = { tier: number; color: string; d: string };
 
 /**
@@ -166,6 +189,8 @@ type MosaicProps = {
   gap?: number;
   /** Les couches respirent (désactivé par prefers-reduced-motion). */
   animated?: boolean;
+  /** Nombre de pixels qui s'allument un à un (0 : aucun). Décoratif, sans effet si le mouvement est réduit. */
+  blink?: number;
   /** Cellules « étincelle » : le point de passage, dessiné dans la couleur du texte du thème. */
   spark?: ReadonlyArray<readonly [col: number, row: number]>;
   className?: string;
@@ -180,6 +205,7 @@ export function Mosaic({
   fade = 0.9,
   gap = 0.07,
   animated = false,
+  blink = 0,
   spark,
   className,
 }: MosaicProps) {
@@ -189,6 +215,14 @@ export function Mosaic({
   const side = n(1 - gap);
   const square = (col: number, row: number) =>
     `M${n(col + inset)} ${n(row + inset)}h${side}v${side}h${-side}z`;
+  const blinks =
+    blink > 0
+      ? mosaicBlinks(
+          mosaicCells({ cols, rows, seed, tiers, toward, fade }),
+          blink,
+          seed,
+        )
+      : [];
   return (
     <svg
       viewBox={`0 0 ${cols} ${rows}`}
@@ -210,6 +244,18 @@ export function Mosaic({
             } as CSSProperties
           }
           d={d}
+        />
+      ))}
+      {blinks.map((b) => (
+        <rect
+          key={`${b.col}:${b.row}`}
+          className="mo-blink"
+          x={n(b.col + inset)}
+          y={n(b.row + inset)}
+          width={side}
+          height={side}
+          fill={PALETTES[palette][0]}
+          style={{ "--bd": `${b.delay}s` } as CSSProperties}
         />
       ))}
       {spark && spark.length > 0 ? (

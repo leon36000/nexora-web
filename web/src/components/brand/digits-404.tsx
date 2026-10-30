@@ -4,12 +4,35 @@ import { PALETTES } from "./mosaic";
 /** Chiffres en carrés (cinq rangées de trois) : « 4 », « 0 », « 4 ». Les carrés prennent les teintes de la mosaïque braise ; au centre du zéro, le point de passage (couleur du texte). */
 const FOUR = ["x.x", "x.x", "xxx", "..x", "..x"] as const;
 const ZERO = ["xxx", "x.x", "x.o", "x.x", "xxx"] as const;
-const GLYPHS = [FOUR, ZERO, FOUR] as const;
+const FIVE = ["xxx", "x..", "xxx", "..x", "xxx"] as const;
+const THREE = ["xxx", "..x", "xxx", "..x", "xxx"] as const;
+const ZERO_PLAIN = ["xxx", "x.x", "x.x", "x.x", "xxx"] as const;
+
+export type ErrorCode = "404" | "500" | "503";
+
+/** Dessin de chaque chiffre ; le premier zéro porte le point de passage, les autres sont pleins. */
+function glyphsOf(code: ErrorCode): (readonly string[])[] {
+  let zeroSeen = false;
+  return [...code].map((d) => {
+    if (d === "4") return FOUR;
+    if (d === "5") return FIVE;
+    if (d === "3") return THREE;
+    if (zeroSeen) return ZERO_PLAIN;
+    zeroSeen = true;
+    return ZERO;
+  });
+}
 const CELL = 30;
 const SIZE = 27;
 
-/** « 404 » dessiné avec les carrés de la grille de périmètre : décoratif (le titre de la page porte le sens). */
-export function Digits404({ className }: { className?: string }) {
+/** Code d'erreur (« 404 » par défaut) dessiné avec les carrés de la mosaïque : décoratif (le titre de la page porte le sens). */
+export function Digits404({
+  className,
+  code = "404",
+}: {
+  className?: string;
+  code?: ErrorCode;
+}) {
   const w = 11 * CELL;
   const h = 5 * CELL;
   return (
@@ -19,7 +42,7 @@ export function Digits404({ className }: { className?: string }) {
       focusable="false"
       className={cn("h-auto w-full text-fg", className)}
     >
-      {GLYPHS.flatMap((rows, g) =>
+      {glyphsOf(code).flatMap((rows, g) =>
         rows.flatMap((row, r) =>
           [...row].map((c, k) => {
             if (c === ".") return null;

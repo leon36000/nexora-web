@@ -97,3 +97,14 @@ Libres, servies localement (aucune requête externe) : **Geist** 500 pour les ti
 ## 7. Composants disponibles pour les pages
 
 Champ `visual` d'un bloc « section » (Directus, versionné dans `cms/scripts/lib/schema.ts`) : `perimetre-sur-place`, `perimetre-heberge`, `flux-donnees`, `flux-workstudio`, `catalogue-modeles`, `console-vps`, `tableau-de-bord`, `vision-sur-place`, `croissance-canaux`, `engagements-donnees`. Une section sans titre ni texte mais avec un visuel devient une bande « vitrine » centrée. Dispositions de cartes : `grille`, `liste`, `etapes`, `modules`, `bento`. Tons : `sombre`, `clair`, `sable`. La galerie de développement (`/galerie-marque`, active seulement avec `NEXORA_GALERIE_MARQUE=1`) montre tous les visuels, tons et dispositions.
+
+## 8. Polissage visuel du 30 octobre 2026
+
+Détail, mesures et décisions : `docs/recette/polissage-visuel-2026-10-30.md`. Ce qui s'ajoute à la charte :
+
+- **En-tête de page** (`PageHero`, `web/src/components/ui/page-hero.tsx`) : bande sombre à mosaïque, une rampe par famille (ciel : modèles et API ; or : serveurs ; braise : le reste), fil d'Ariane, pastilles, h1, chapeau, actions et **bandeau de repères** (`StatStrip`). Utilisé par Nexora Apps, les fiches de modèles, le comparateur, les classements, les fiches VPS et le contact. Les pages du CMS gardent leur bloc « héros ».
+- **Famille de produits** (`ProductFamily`, accueil, sous le héros) : un compte, huit outils, l'état de chacun écrit en toutes lettres (lu au registre de Nexora Apps).
+- **Jetons** (`globals.css`) : rayons par rôle (`--radius-card`, `--radius-frame`, `--radius-chip`), durées de mouvement `--dur-fast/base/slow` (150, 200, 250 ms ; un test interdit les autres), espacement unique d'une carte (24 px, puis 32 px dès sm). L'anneau de focus d'une carte cliquable entoure toute la carte.
+- **Mouvement** : des pixels de la mosaïque s'allument un à un (`mo-blink`), les barres de score se déploient à l'entrée dans l'écran ; tout sous `prefers-reduced-motion: no-preference` (un test vérifie que **toute** animation CSS y est).
+- **Écrans de défaut** : `ErrorScreen` sert la 404, la 500 (`[lang]/error.tsx`) et « contenu indisponible » (503) ; les chiffres sont dessinés en carrés.
+

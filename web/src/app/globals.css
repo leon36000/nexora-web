@@ -102,12 +102,33 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
 
+  /* --- Rôles des rayons : une seule définition pour les cartes, les cadres de grille et les fenêtres de maquette --- */
+  --radius-card: var(--radius-md);
+  --radius-frame: var(--radius-md);
+  --radius-chip: var(--radius-xs);
+
   /* --- Ombres sobres --- */
   --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(10 10 14 / 0.22);
+  --shadow-lift: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 36px -18px rgb(10 10 14 / 0.32);
   --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -20px rgb(0 0 0 / 0.6);
 
   /* --- Point de rupture de la navigation complète --- */
   --breakpoint-nav: 72rem;
+}
+
+/* --------------------------------------------------------------------------
+   Mouvement et espacements partagés : une seule échelle de durées (150, 200, 250 ms) pour les survols, les
+   focus et les transitions ; les composants utilisent `duration-150`, `duration-200` ou `duration-250`
+   (un test interdit toute autre durée dans les composants). Espacements internes d'une carte : un seul jeu.
+   -------------------------------------------------------------------------- */
+:root {
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 250ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pad-card: 1.5rem; /* 24 px sur téléphone */
+  --pad-card-lg: 2rem; /* 32 px dès sm */
+  --gap-grid: 1rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -425,9 +446,24 @@
   background-repeat: repeat-x;
 }
 
+/* Graduations d'une barre de score : un trait de la couleur du fond à la fin de chaque quart. */
+.score-ticks {
+  background-image: linear-gradient(
+    to right,
+    transparent calc(100% - 2px),
+    var(--bg) calc(100% - 2px)
+  );
+  background-size: 25% 100%;
+}
+
 /* Mosaïque : une couche par teinte ; chaque couche respire à son rythme (opacité, jamais sur du texte). */
 .mo-layer {
   opacity: var(--o, 1);
+}
+
+/* Pixel qui s'allume : invisible au repos (et sous prefers-reduced-motion), allumé un instant quand le mouvement est permis. */
+.mo-blink {
+  opacity: 0;
 }
 
 @keyframes rise-load {
@@ -480,6 +516,39 @@
   }
 }
 
+@keyframes grow-x {
+  from {
+    transform: scaleX(0.04);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes mo-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  4%,
+  10% {
+    opacity: 0.95;
+  }
+  16% {
+    opacity: 0.2;
+  }
+}
+
 @keyframes scan-x {
   from {
     transform: translateX(-12%);
@@ -527,6 +596,15 @@
     animation-delay: calc(var(--i, 0) * -1.3s);
   }
 
+  .skeleton {
+    animation: skeleton-pulse 1.6s ease-in-out infinite;
+  }
+
+  .mo-blink {
+    animation: mo-blink 9s ease-in-out infinite;
+    animation-delay: calc(var(--bd, 0s) * -1);
+  }
+
   .scan {
     animation: scan-x 11s linear infinite;
   }
@@ -538,6 +616,13 @@
   /* Apparition au défilement : pur CSS (scroll-driven animations), sans JavaScript ; ignorée par les
      navigateurs qui ne la connaissent pas (le contenu reste alors simplement visible). */
   @supports (animation-timeline: view()) {
+    .score-fill {
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+
     .reveal {
       animation: rise-load linear both;
       animation-timeline: view();

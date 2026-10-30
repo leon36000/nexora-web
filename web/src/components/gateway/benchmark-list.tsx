@@ -6,17 +6,22 @@ import { groupBenchmarks, scorePercent } from "@/lib/models/benchmarks";
 
 const LINK = "rounded-xs text-accent-text underline underline-offset-4";
 
-/** Barre d'un pourcentage : décorative (le chiffre est dans le texte), piste et remplissage à 3:1 au moins. */
+/**
+ * Barre d'un pourcentage : décorative (le chiffre est dans le texte), piste et remplissage à 3:1 au moins. Quatre
+ * graduations (tous les quarts) la lisent comme un instrument ; le remplissage se déploie à l'entrée dans l'écran
+ * quand le mouvement est permis (CSS seulement).
+ */
 export function ScoreBar({ percent }: { percent: number }) {
   return (
     <div
       aria-hidden="true"
-      className="h-2 w-full overflow-hidden rounded-xs bg-line"
+      className="relative h-2.5 w-full overflow-hidden rounded-xs bg-line"
     >
       <div
-        className="h-full bg-accent-graphic"
+        className="score-fill h-full bg-accent-graphic"
         style={{ width: `${percent}%` }}
       />
+      <div className="score-ticks absolute inset-0" />
     </div>
   );
 }
@@ -30,7 +35,7 @@ export function BenchmarkWarning({
   text: string;
 }) {
   return (
-    <aside className="mt-5 max-w-3xl rounded-md border border-line-strong bg-surface p-4">
+    <aside className="mt-5 max-w-3xl rounded-card border border-l-2 border-line-strong border-l-accent-graphic bg-surface p-4">
       <p className="text-small font-medium text-fg">{title}</p>
       <p className="mt-1 text-small text-fg-muted">{text}</p>
     </aside>

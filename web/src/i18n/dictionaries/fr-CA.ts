@@ -88,13 +88,31 @@ export const frCA = {
     pricing: { label: "Tarifs", href: "/tarifs" },
     resources: { label: "Ressources", href: "/ressources" },
     login: { label: "Connexion", href: "/compte" },
-    accountLabel: "Mon compte",
+    accountLabel: "Mes outils",
     cta: { label: "Planifier un diagnostic", href: "/contact" },
   },
 
   footer: {
     tagline: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
     location: "Entreprise québécoise d’IA.",
+    quick: {
+      title: "Accès rapide",
+      myTools: {
+        label: "Mes outils",
+        text: "Vos outils, vos crédits et votre accès, au même endroit.",
+        href: "/compte",
+      },
+      pricing: {
+        label: "Tarifs",
+        text: "L’abonnement, les crédits et ce qu’ils couvrent.",
+        href: "/tarifs",
+      },
+      contact: {
+        label: "Planifier un diagnostic",
+        text: "Parlons de votre projet, sans engagement.",
+        href: "/contact",
+      },
+    },
     columns: [
       {
         title: "Produits",
@@ -356,6 +374,36 @@ export const frCA = {
         "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora AI conçoit des systèmes IA adaptés à votre métier. Un compte, des crédits, tous vos outils.",
       primary: "Planifier un diagnostic",
       secondary: "Voir les solutions",
+    },
+
+    family: {
+      label: "Un compte, tous vos outils",
+      title: "Un seul compte pour toute la famille Nexora.",
+      lead: "Une connexion, un panneau « Mes outils », des crédits partagés. Chaque outil affiche son état réel : livré, bientôt ou plus tard.",
+      account: "Votre compte Nexora",
+      accountHint: "Une connexion, des crédits communs",
+      seeApps: "Voir Nexora Apps",
+      seeTools: "Ouvrir Mes outils",
+      tools: "Les outils de la famille",
+      items: {
+        workstudio: {
+          name: "Nexora WorkStudio",
+          tag: "Agents et flux de travaux",
+        },
+        code: { name: "Nexora Code", tag: "Agent de code hébergé" },
+        rag: { name: "Nexora RAG", tag: "Vos documents, interrogeables" },
+        bot: { name: "Nexora Bot", tag: "Un bot relié à votre compte" },
+        creative: { name: "Nexora Creative", tag: "Image, son et vidéo" },
+        webpilot: {
+          name: "Nexora WebPilot",
+          tag: "Recherche et navigation Web",
+        },
+        "privacy-router": {
+          name: "Privacy Router",
+          tag: "Confidentialité incluse",
+        },
+        vps: { name: "VPS au Québec", tag: "Serveurs privés virtuels" },
+      },
     },
 
     problems: {

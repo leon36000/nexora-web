@@ -27,4 +27,4 @@ export function cellClasses(count: number, maxColumns: number): string[] {
  * travers l'interstice), dans un cadre à angles francs. Mêmes empans que `CARD_GRID`.
  */
 export const CELL_GRID =
-  "grid gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-2 lg:grid-cols-12";
+  "grid gap-px overflow-hidden rounded-frame border border-line bg-line sm:grid-cols-2 lg:grid-cols-12";

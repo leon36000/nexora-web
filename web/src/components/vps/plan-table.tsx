@@ -34,7 +34,7 @@ export function PlanTable({
       aria-label={t.table.region}
       // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
       tabIndex={0}
-      className="overflow-x-auto rounded-md border border-line bg-bg"
+      className="overflow-x-auto rounded-frame border border-line bg-bg"
     >
       <table className="w-full min-w-[56rem] border-collapse">
         <caption className="sr-only">{t.table.caption}</caption>

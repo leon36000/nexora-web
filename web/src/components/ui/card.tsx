@@ -24,16 +24,16 @@ export function Card<T extends ElementType = "div">({
   return (
     <Tag
       className={cn(
-        "relative p-6 sm:p-7",
+        "relative p-6 sm:p-8",
         variant === "cell"
-          ? "rounded-none bg-bg sm:p-8"
-          : "rounded-md border border-line",
+          ? "rounded-none bg-bg"
+          : "rounded-card border border-line",
         variant === "surface" && "bg-surface",
         variant === "outline" && "bg-transparent",
         interactive &&
           (variant === "cell"
             ? "transition-colors duration-200 hover:bg-surface has-[a:focus-visible]:bg-surface"
-            : "transition-[transform,border-color,background-color,box-shadow] duration-200 hover:border-line-strong hover:bg-surface-2 hover:shadow-card has-[a:focus-visible]:border-line-strong motion-safe:hover:-translate-y-0.5"),
+            : "transition-[transform,border-color,background-color,box-shadow] duration-200 hover:border-line-strong hover:bg-surface-2 hover:shadow-lift has-[a:focus-visible]:border-line-strong motion-safe:hover:-translate-y-0.5"),
         className,
       )}
       {...props}
@@ -43,4 +43,4 @@ export function Card<T extends ElementType = "div">({
 
 /** Classes d'un lien dont la zone cliquable s'étend à toute la carte parente (`relative`). */
 export const CARD_LINK =
-  "after:absolute after:inset-0 after:content-[''] focus-visible:outline-offset-4";
+  "after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-4 focus-visible:after:outline-focus";

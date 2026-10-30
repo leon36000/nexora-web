@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { JsonLd } from "@/components/seo/json-ld";
-import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
+import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
 import {
   APP_STATES,
@@ -53,36 +53,33 @@ export default async function AppsPage() {
   );
   return (
     <>
-      <Section tone="light" aria-labelledby="apps-title">
-        <header className="max-w-3xl">
-          <Badge tone="accent">{t.list.label}</Badge>
-          <h1 id="apps-title" className="mt-4 text-h1 text-fg">
-            {t.list.title}
-          </h1>
-          <p className="mt-5 max-w-2xl text-lead text-fg-muted">
-            {t.list.lead}
-          </p>
-        </header>
-        <section aria-labelledby="legend-title" className="mt-12">
-          <h2 id="legend-title" className="text-h4 text-fg">
-            {t.list.legendTitle}
-          </h2>
-          <p className="mt-2 max-w-2xl text-small text-fg-muted">
-            {t.list.legendLead}
-          </p>
-          <dl className="mt-5 grid gap-5 sm:grid-cols-3">
-            {APP_STATES.map((state) => (
-              <div key={state}>
-                <dt>
-                  <StateBadge state={state} t={t} />
-                </dt>
-                <dd className="mt-1 text-small text-fg-muted">
-                  {t.states[state].description}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+      <PageHero
+        titleId="apps-title"
+        eyebrow={t.list.label}
+        title={t.list.title}
+        lead={t.list.lead}
+        seed={9}
+      />
+
+      <Section tone="light" aria-labelledby="legend-title">
+        <h2 id="legend-title" className="text-h4 text-fg">
+          {t.list.legendTitle}
+        </h2>
+        <p className="mt-2 max-w-2xl text-small text-fg-muted">
+          {t.list.legendLead}
+        </p>
+        <dl className="mt-6 grid gap-px overflow-hidden rounded-frame border border-line bg-line sm:grid-cols-3">
+          {APP_STATES.map((state) => (
+            <div key={state} className="bg-bg p-5">
+              <dt>
+                <StateBadge state={state} t={t} />
+              </dt>
+              <dd className="mt-2 text-small text-fg-muted">
+                {t.states[state].description}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </Section>
 
       <Section tone="light" surface aria-labelledby="grid-title">

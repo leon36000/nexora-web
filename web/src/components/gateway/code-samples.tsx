@@ -25,7 +25,7 @@ export function CodeBlock({ code, label }: { code: string; label: string }) {
       aria-label={label}
       // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
       tabIndex={0}
-      className="mt-2 overflow-x-auto rounded-md border border-line bg-surface p-4"
+      className="mt-2 overflow-x-auto rounded-frame border border-line bg-surface p-4"
     >
       <pre className="font-mono text-[0.8125rem] leading-relaxed text-fg">
         <code>{code}</code>

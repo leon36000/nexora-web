@@ -77,7 +77,7 @@ export default async function AgentsPage() {
           </p>
         ) : null}
         {catalog.agents.length === 0 ? (
-          <div className="mt-6 flex flex-col items-start gap-5 rounded-md border border-line p-6 sm:flex-row sm:items-center">
+          <div className="mt-6 flex flex-col items-start gap-5 rounded-card border border-line p-6 sm:flex-row sm:items-center">
             <EmptyMark seed={4} />
             <p className="text-body text-fg-muted">
               {catalog.available ? t.catalog.empty : t.catalog.unavailable}

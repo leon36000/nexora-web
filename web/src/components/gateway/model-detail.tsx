@@ -2,7 +2,9 @@ import Link from "next/link";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
+import { Breadcrumb, PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
+import { StatStrip } from "@/components/ui/stat-strip";
 import { fmt, formatDate } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { formatInteger, formatPriceCad } from "@/i18n/gateway";
@@ -96,76 +98,73 @@ export function ModelDetail({
   const notifyHref = `${localizePath(lang, "/contact")}?sujet=modele-apercu&modele=${encodeURIComponent(model.id)}`;
 
   return (
-    <Section tone="light" aria-labelledby="model-title">
-      <nav aria-label={d.breadcrumb}>
-        <ol className="flex flex-wrap items-center gap-x-2 text-small text-fg-muted">
-          <li>
-            <Link
-              href={localizePath(lang, "/")}
-              className="inline-flex min-h-8 items-center rounded-xs underline underline-offset-4"
-            >
-              {d.home}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link
-              href={listPath}
-              className="inline-flex min-h-8 items-center rounded-xs underline underline-offset-4"
-            >
-              {d.models}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-fg">
-            {model.name}
-          </li>
-        </ol>
-      </nav>
-
-      <header className="mt-6 max-w-4xl">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {preview ? <PreviewBadge t={t} /> : null}
-          <LicenseBadge model={model} t={t} />
-          {sheet.author ? (
-            <span className="text-small text-fg-muted">
-              {fmt(d.by, { author: sheet.author })}
-              {sheet.family
-                ? ` · ${fmt(d.family, { family: sheet.family })}`
-                : ""}
-            </span>
-          ) : null}
-        </div>
-        <h1 id="model-title" className="mt-4 text-h1 text-fg">
-          {model.name}
-        </h1>
-        <p className="mt-2 break-all font-mono text-body text-fg-muted">
+    <>
+      <PageHero
+        titleId="model-title"
+        palette="ciel"
+        seed={[...model.id].reduce(
+          (acc, c) => (acc * 31 + c.charCodeAt(0)) % 997,
+          3,
+        )}
+        breadcrumb={
+          <Breadcrumb
+            label={d.breadcrumb}
+            items={[
+              { label: d.home, href: localizePath(lang, "/") },
+              { label: d.models, href: listPath },
+              { label: model.name },
+            ]}
+          />
+        }
+        meta={
+          <>
+            {preview ? <PreviewBadge t={t} /> : null}
+            <LicenseBadge model={model} t={t} />
+            {sheet.author ? (
+              <span className="text-small text-fg-muted">
+                {fmt(d.by, { author: sheet.author })}
+                {sheet.family
+                  ? ` · ${fmt(d.family, { family: sheet.family })}`
+                  : ""}
+              </span>
+            ) : null}
+          </>
+        }
+        title={model.name}
+        aside={
+          <StatStrip
+            items={[
+              {
+                label: d.specs.context,
+                value: formatInteger(lang, model.contextMax),
+                hint: d.specs.tokens,
+              },
+              {
+                label: d.pricing.input,
+                value: formatPriceCad(lang, model.inputPerMillion),
+                hint: d.perMillion,
+              },
+              ...(model.kind === "chat"
+                ? [
+                    {
+                      label: d.pricing.output,
+                      value: formatPriceCad(lang, model.outputPerMillion),
+                      hint: d.perMillion,
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        }
+      >
+        <p className="mt-3 break-all font-mono text-body text-fg-muted">
           {model.id}
         </p>
         {sheet.tags?.length ? (
           <TagChips tags={sheet.tags} t={t} className="mt-5" />
         ) : null}
-        <ul className="mt-6 flex flex-wrap gap-3">
-          <Chip>
-            {fmt(d.contextChip, { n: formatInteger(lang, model.contextMax) })}
-          </Chip>
-          <Chip>
-            {fmt(d.inputChip, {
-              price: formatPriceCad(lang, model.inputPerMillion),
-            })}{" "}
-            <span className="text-fg-muted">{d.perMillion}</span>
-          </Chip>
-          {model.kind === "chat" ? (
-            <Chip>
-              {fmt(d.outputChip, {
-                price: formatPriceCad(lang, model.outputPerMillion),
-              })}{" "}
-              <span className="text-fg-muted">{d.perMillion}</span>
-            </Chip>
-          ) : null}
-        </ul>
         {preview ? (
-          <p className="mt-5 max-w-2xl rounded-md border border-line-strong bg-surface p-4 text-small text-fg">
+          <p className="mt-6 max-w-2xl rounded-card border border-line-strong bg-surface p-4 text-small text-fg">
             {d.previewBanner}
           </p>
         ) : null}
@@ -193,214 +192,221 @@ export function ModelDetail({
             </ButtonLink>
           ) : null}
         </div>
-      </header>
+      </PageHero>
 
-      <nav
-        aria-label={d.sectionsLabel}
-        className="mt-10 border-y border-line py-1"
-      >
-        <ul className="-mx-1 flex gap-1 overflow-x-auto px-1">
-          {sections.map((s) => (
-            <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-xs px-3 text-small text-fg hover:bg-fg/10"
-              >
-                {s.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div className="mt-10 grid max-w-4xl gap-12">
-        <section
-          id="apercu"
-          aria-labelledby="apercu-title"
-          className="scroll-mt-24"
+      <Section tone="light" joined="after" className="pt-8 md:pt-12">
+        <nav
+          aria-label={d.sectionsLabel}
+          className="mt-10 border-y border-line py-1"
         >
-          <h2 id="apercu-title" className="text-h3 text-fg">
-            {d.overview.title}
-          </h2>
-          <p className="mt-4 max-w-2xl text-lead text-fg-muted">
-            {description || d.overview.noDescription}
-          </p>
-          <h3 className="mt-8 text-h4 text-fg">{d.overview.specs}</h3>
-          <div className="mt-4">
-            <ModelSpecs model={model} lang={lang} t={t} />
-          </div>
-          <h3 className="mt-8 text-h4 text-fg">{d.overview.capabilities}</h3>
-          <Capabilities model={model} t={t} />
-          <p className="mt-6 max-w-2xl text-small text-fg-muted">
-            {d.nexoraNote}
-          </p>
-        </section>
+          <ul className="-mx-1 flex gap-1 overflow-x-auto px-1">
+            {sections.map((s) => (
+              <li key={s.id}>
+                <a
+                  href={`#${s.id}`}
+                  className="inline-flex min-h-11 items-center whitespace-nowrap rounded-xs px-3 text-small text-fg hover:bg-fg/10"
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-        <section id="tarifs" aria-labelledby="tarifs-title" className={SECTION}>
-          <h2 id="tarifs-title" className="text-h3 text-fg">
-            {d.pricing.title}
-          </h2>
-          <ModelPricing model={model} lang={lang} t={t} />
-        </section>
-
-        <section
-          id="benchmarks"
-          aria-labelledby="benchmarks-title"
-          className={SECTION}
-        >
-          <h2 id="benchmarks-title" className="text-h3 text-fg">
-            {d.benchmarks.title}
-          </h2>
-          <p className="mt-3 max-w-2xl text-body text-fg-muted">
-            {d.benchmarks.lead}
-          </p>
-          <BenchmarkList benchmarks={benchmarks} lang={lang} t={t} />
-          {notes ? (
-            <p className="mt-6 max-w-2xl text-small text-fg-muted">{notes}</p>
-          ) : null}
-          {sources.length > 0 ? (
-            <div className="mt-8">
-              <h3 className="text-h4 text-fg">{d.benchmarks.sources}</h3>
-              <ul className="mt-2 grid gap-1 text-small">
-                {sources.map((s) => (
-                  <li key={s.url}>
-                    <a href={s.url} rel="noopener noreferrer" className={LINK}>
-                      {s.label}
-                    </a>{" "}
-                    <span className="text-fg-muted">
-                      ({fmt(d.benchmarks.readOn, { date: s.readAt })})
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-          <p className="mt-6">
-            <Link
-              href={localizePath(lang, "/modeles/benchmarks")}
-              className={`${LINK} inline-flex min-h-11 items-center text-small`}
-            >
-              {d.benchmarks.rankings}
-            </Link>
-          </p>
-        </section>
-
-        {similar.length > 0 ? (
+        <div className="mt-10 grid max-w-4xl gap-12">
           <section
-            id="similaires"
-            aria-labelledby="similaires-title"
+            id="apercu"
+            aria-labelledby="apercu-title"
+            className="scroll-mt-24"
+          >
+            <h2 id="apercu-title" className="text-h3 text-fg">
+              {d.overview.title}
+            </h2>
+            <p className="mt-4 max-w-2xl text-lead text-fg-muted">
+              {description || d.overview.noDescription}
+            </p>
+            <h3 className="mt-8 text-h4 text-fg">{d.overview.specs}</h3>
+            <div className="mt-4">
+              <ModelSpecs model={model} lang={lang} t={t} />
+            </div>
+            <h3 className="mt-8 text-h4 text-fg">{d.overview.capabilities}</h3>
+            <Capabilities model={model} t={t} />
+            <p className="mt-6 max-w-2xl text-small text-fg-muted">
+              {d.nexoraNote}
+            </p>
+          </section>
+
+          <section
+            id="tarifs"
+            aria-labelledby="tarifs-title"
             className={SECTION}
           >
-            <h2 id="similaires-title" className="text-h3 text-fg">
-              {d.similar.title}
+            <h2 id="tarifs-title" className="text-h3 text-fg">
+              {d.pricing.title}
+            </h2>
+            <ModelPricing model={model} lang={lang} t={t} />
+          </section>
+
+          <section
+            id="benchmarks"
+            aria-labelledby="benchmarks-title"
+            className={SECTION}
+          >
+            <h2 id="benchmarks-title" className="text-h3 text-fg">
+              {d.benchmarks.title}
             </h2>
             <p className="mt-3 max-w-2xl text-body text-fg-muted">
-              {d.similar.lead}
+              {d.benchmarks.lead}
             </p>
-            <SimilarModels models={similar} lang={lang} t={t} />
+            <BenchmarkList benchmarks={benchmarks} lang={lang} t={t} />
+            {notes ? (
+              <p className="mt-6 max-w-2xl text-small text-fg-muted">{notes}</p>
+            ) : null}
+            {sources.length > 0 ? (
+              <div className="mt-8">
+                <h3 className="text-h4 text-fg">{d.benchmarks.sources}</h3>
+                <ul className="mt-2 grid gap-1 text-small">
+                  {sources.map((s) => (
+                    <li key={s.url}>
+                      <a
+                        href={s.url}
+                        rel="noopener noreferrer"
+                        className={LINK}
+                      >
+                        {s.label}
+                      </a>{" "}
+                      <span className="text-fg-muted">
+                        ({fmt(d.benchmarks.readOn, { date: s.readAt })})
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            <p className="mt-6">
+              <Link
+                href={localizePath(lang, "/modeles/benchmarks")}
+                className={`${LINK} inline-flex min-h-11 items-center text-small`}
+              >
+                {d.benchmarks.rankings}
+              </Link>
+            </p>
           </section>
-        ) : null}
 
-        <section id="api" aria-labelledby="api-title" className={SECTION}>
-          {preview ? (
-            <>
-              <Badge tone="accent">{d.api.previewTitle}</Badge>
-              <h2 id="api-title" className="mt-3 text-h3 text-fg">
-                {d.api.title}
-              </h2>
-              <p className="mt-3 max-w-2xl text-body text-fg-muted">
-                {d.api.previewText}
-              </p>
-              <p className="mt-4 text-small text-fg-muted">{d.api.idLabel}</p>
-              <p className="mt-1 break-all font-mono text-body text-fg">
-                {model.id}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <ButtonLink href={notifyHref} arrow>
-                  {d.api.notify}
-                </ButtonLink>
-                <ButtonLink
-                  href={`${listPath}?disponibilite=disponible`}
-                  variant="secondary"
-                >
-                  {d.api.seeLive}
-                </ButtonLink>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2 id="api-title" className="text-h3 text-fg">
-                {d.api.title}
-              </h2>
-              <p className="mt-3 max-w-2xl text-body text-fg-muted">
-                {fmt(d.api.lead, { url: baseUrl })}
-                {model.kind === "embedding" ? ` ${d.api.embeddingLead}` : ""}
-                {model.kind === "rerank" ? ` ${d.api.rerankLead}` : ""}
-              </p>
-              <div className="mt-6">
-                <CodeSamples
-                  samples={apiSamples(baseUrl, model.id, model.kind, lang)}
-                />
-              </div>
-              <div className="mt-6">
-                <ButtonLink
-                  href={localizePath(lang, "/docs/api")}
-                  variant="secondary"
-                >
-                  {d.api.docs}
-                </ButtonLink>
-              </div>
-            </>
-          )}
-        </section>
-
-        <section
-          aria-labelledby="cta-title"
-          className="rounded-md border border-line bg-surface p-6 sm:p-8"
-        >
-          <h2 id="cta-title" className="text-h3 text-fg">
-            {d.cta.title}
-          </h2>
-          <p className="mt-3 max-w-2xl text-body text-fg-muted">{d.cta.text}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <ButtonLink href={localizePath(lang, "/compte/inscription")} arrow>
-              {d.cta.signup}
-            </ButtonLink>
-            <ButtonLink
-              href={localizePath(lang, "/compte/facturation")}
-              variant="secondary"
+          {similar.length > 0 ? (
+            <section
+              id="similaires"
+              aria-labelledby="similaires-title"
+              className={SECTION}
             >
-              {d.cta.wallet}
-            </ButtonLink>
-          </div>
-        </section>
-      </div>
+              <h2 id="similaires-title" className="text-h3 text-fg">
+                {d.similar.title}
+              </h2>
+              <p className="mt-3 max-w-2xl text-body text-fg-muted">
+                {d.similar.lead}
+              </p>
+              <SimilarModels models={similar} lang={lang} t={t} />
+            </section>
+          ) : null}
 
-      <JsonLd
-        data={productJsonLd({
-          name: model.name,
-          description: description || null,
-          url: pageUrl,
-          sku: model.id,
-          brand: sheet.author ?? null,
-          offers,
-        })}
-      />
-      <JsonLd
-        data={appBreadcrumb(lang, [
-          { name: listName, path: "/modeles" },
-          { name: model.name, path: `/modeles/${model.id}` },
-        ])}
-      />
-    </Section>
-  );
-}
+          <section id="api" aria-labelledby="api-title" className={SECTION}>
+            {preview ? (
+              <>
+                <Badge tone="accent">{d.api.previewTitle}</Badge>
+                <h2 id="api-title" className="mt-3 text-h3 text-fg">
+                  {d.api.title}
+                </h2>
+                <p className="mt-3 max-w-2xl text-body text-fg-muted">
+                  {d.api.previewText}
+                </p>
+                <p className="mt-4 text-small text-fg-muted">{d.api.idLabel}</p>
+                <p className="mt-1 break-all font-mono text-body text-fg">
+                  {model.id}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <ButtonLink href={notifyHref} arrow>
+                    {d.api.notify}
+                  </ButtonLink>
+                  <ButtonLink
+                    href={`${listPath}?disponibilite=disponible`}
+                    variant="secondary"
+                  >
+                    {d.api.seeLive}
+                  </ButtonLink>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 id="api-title" className="text-h3 text-fg">
+                  {d.api.title}
+                </h2>
+                <p className="mt-3 max-w-2xl text-body text-fg-muted">
+                  {fmt(d.api.lead, { url: baseUrl })}
+                  {model.kind === "embedding" ? ` ${d.api.embeddingLead}` : ""}
+                  {model.kind === "rerank" ? ` ${d.api.rerankLead}` : ""}
+                </p>
+                <div className="mt-6">
+                  <CodeSamples
+                    samples={apiSamples(baseUrl, model.id, model.kind, lang)}
+                  />
+                </div>
+                <div className="mt-6">
+                  <ButtonLink
+                    href={localizePath(lang, "/docs/api")}
+                    variant="secondary"
+                  >
+                    {d.api.docs}
+                  </ButtonLink>
+                </div>
+              </>
+            )}
+          </section>
 
-function Chip({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="rounded-md border border-line-strong px-3 py-1.5 text-small tabular-nums text-fg">
-      {children}
-    </li>
+          <section
+            aria-labelledby="cta-title"
+            className="rounded-card border border-line bg-surface p-6 sm:p-8"
+          >
+            <h2 id="cta-title" className="text-h3 text-fg">
+              {d.cta.title}
+            </h2>
+            <p className="mt-3 max-w-2xl text-body text-fg-muted">
+              {d.cta.text}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <ButtonLink
+                href={localizePath(lang, "/compte/inscription")}
+                arrow
+              >
+                {d.cta.signup}
+              </ButtonLink>
+              <ButtonLink
+                href={localizePath(lang, "/compte/facturation")}
+                variant="secondary"
+              >
+                {d.cta.wallet}
+              </ButtonLink>
+            </div>
+          </section>
+        </div>
+
+        <JsonLd
+          data={productJsonLd({
+            name: model.name,
+            description: description || null,
+            url: pageUrl,
+            sku: model.id,
+            brand: sheet.author ?? null,
+            offers,
+          })}
+        />
+        <JsonLd
+          data={appBreadcrumb(lang, [
+            { name: listName, path: "/modeles" },
+            { name: model.name, path: `/modeles/${model.id}` },
+          ])}
+        />
+      </Section>
+    </>
   );
 }
 

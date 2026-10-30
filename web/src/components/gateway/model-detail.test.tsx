@@ -35,9 +35,11 @@ describe("fiche d'un modèle disponible", () => {
     expect(html).toContain("Par Éditeur A");
     expect(html).toContain("Famille Alpha");
     expect(html).toContain("Poids ouverts");
-    expect(html).toContain("131 072 jetons de contexte");
-    expect(html).toContain("Entrée 0,30 $");
-    expect(html).toContain("Sortie 0,90 $");
+    expect(html).toContain("Contexte maximal");
+    expect(html).toContain("131 072");
+    expect(html).toContain("jetons");
+    expect(html).toMatch(/Entrée<\/dt><dd[^>]*>0,30 \$/);
+    expect(html).toMatch(/Sortie<\/dt><dd[^>]*>0,90 \$/);
     expect(html).not.toContain("Modèle en aperçu");
   });
 

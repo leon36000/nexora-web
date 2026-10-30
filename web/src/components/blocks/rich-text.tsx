@@ -101,7 +101,7 @@ function render(nodes: RichNode[], demote: boolean): ReactNode[] {
             aria-label={label}
             // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
             tabIndex={0}
-            className="mt-6 overflow-x-auto rounded-md border border-line first:mt-0"
+            className="mt-6 overflow-x-auto rounded-frame border border-line first:mt-0"
           >
             <table className="w-full min-w-[32rem] border-collapse text-left text-body">
               {kids}
@@ -156,7 +156,7 @@ function render(nodes: RichNode[], demote: boolean): ReactNode[] {
             key={key}
             // biome-ignore lint/a11y/noNoninteractiveTabindex: bloc de code défilable atteignable au clavier
             tabIndex={0}
-            className="mt-6 overflow-x-auto rounded-md border border-line bg-surface p-4 font-mono text-[0.8125rem] leading-relaxed text-fg first:mt-0"
+            className="mt-6 overflow-x-auto rounded-frame border border-line bg-surface p-4 font-mono text-[0.8125rem] leading-relaxed text-fg first:mt-0"
           >
             {kids}
           </pre>

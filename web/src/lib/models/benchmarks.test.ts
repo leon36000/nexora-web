@@ -164,4 +164,27 @@ describe("comparaison côte à côte", () => {
     expect(commonBenchmarks([VISION_8B_PREVIEW, fixtureModel()])).toEqual([]);
     expect(commonBenchmarks([CODE_70B])).toEqual([]);
   });
+
+  it("donne une ancre unique à chaque tableau, même quand deux épreuves ne diffèrent que par la ponctuation", () => {
+    const model = (id: string) =>
+      fixtureModel({
+        id: `nexora/${id}`,
+        name: id,
+        sheet: {
+          benchmarks: ["MMLU Pro", "MMLU-Pro"].map((name) => ({
+            name,
+            score: 10,
+            unit: "%",
+            publisher: "P",
+            sourceUrl: `https://example.org/${name}`,
+          })),
+        },
+      });
+    const rankings = buildRankings([model("x"), model("y"), model("z")]);
+    expect(rankings).toHaveLength(2);
+    const slugs = rankings.map((r) => r.slug);
+    expect(new Set(slugs).size).toBe(2);
+    expect(slugs[0]).toBe("mmlu-pro");
+    expect(slugs[1]).toBe("mmlu-pro-2");
+  });
 });

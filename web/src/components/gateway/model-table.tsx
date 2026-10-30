@@ -79,7 +79,7 @@ export function ModelTable({
       aria-label={h.label}
       // biome-ignore lint/a11y/noNoninteractiveTabindex: région défilable atteignable au clavier
       tabIndex={0}
-      className="overflow-x-auto rounded-md border border-line"
+      className="overflow-x-auto rounded-frame border border-line"
     >
       <table className="w-full min-w-[46rem] text-left text-small">
         <caption className="sr-only">
