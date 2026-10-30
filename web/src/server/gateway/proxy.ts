@@ -3,6 +3,7 @@ import type { Database } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { readLimitedBytes } from "@nexora/net";
+import { parseRerankResults } from "@nexora/rag";
 import { envSecretHostCheck, type SecretHostCheck } from "@nexora/vault/scope";
 import {
   AGENT_PUBLIC_PREFIX,
@@ -16,7 +17,7 @@ import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
 import { billingModeOf } from "./house";
-import { type ApiKeyRow, authenticateApiKey } from "./keys";
+import { type ApiKeyRow, type AuthResult, authenticateApiKey } from "./keys";
 import { routePositionOf } from "./litellm";
 import {
   activeWindow,
@@ -55,6 +56,13 @@ export interface GatewayDeps {
    * refus 403, ou 503 si la couche ne répond pas). Obligatoire : aucune requête ne part sans lui (échec fermé).
    */
   privacy: PrivacyRouter;
+  /**
+   * Authentification fournie par l'appelant, à la place de la lecture de l'en-tête `Authorization`. Réservée aux
+   * appels INTERNES du site (le RAG, qui a déjà authentifié la clé du client ou résolu celle de la base) : tout le
+   * reste du cycle (limites, Privacy Router, réservation, règlement, Activité) est identique. Jamais branchée sur
+   * une route publique.
+   */
+  authenticate?: (request: Request) => Promise<AuthResult>;
   log: Logger;
   now: () => Date;
   requestId: () => string;
@@ -93,7 +101,7 @@ const CHAT_PARAMS = [
 ] as const;
 const EMBEDDING_PARAMS = ["input", "encoding_format", "dimensions"] as const;
 
-type Endpoint = "chat.completions" | "embeddings";
+type Endpoint = "chat.completions" | "embeddings" | "rerank";
 type Json = Record<string, unknown>;
 const isObject = (v: unknown): v is Json =>
   typeof v === "object" && v !== null && !Array.isArray(v);
@@ -379,6 +387,8 @@ export const handleChatCompletions = (request: Request, deps: GatewayDeps) =>
   handleInference(request, deps, "chat.completions");
 export const handleEmbeddings = (request: Request, deps: GatewayDeps) =>
   handleInference(request, deps, "embeddings");
+export const handleRerank = (request: Request, deps: GatewayDeps) =>
+  handleInference(request, deps, "rerank");
 
 interface Usage {
   prompt: number;
@@ -470,6 +480,8 @@ interface Plan {
   maxOutput: number;
   stream: boolean;
   clientWantsUsage: boolean;
+  /** Reclassement : documents (pour valider les index de la réponse) et option de les renvoyer. */
+  rerank?: { documents: string[]; returnDocuments: boolean };
 }
 
 function planChat(
@@ -631,6 +643,103 @@ function planEmbedding(
     stream: false,
     clientWantsUsage: false,
   };
+}
+
+const RERANK_MAX_DOCUMENTS = 1000;
+const RERANK_MAX_QUERY_CHARS = 32_000;
+
+/** Reclassement (format Cohere) : une requête, des documents (textes ou `{ text }`), `top_n` facultatif. */
+function planRerank(
+  body: Json,
+  model: SnapshotModel,
+  rid: Record<string, string>,
+): Plan | Response {
+  if (model.kind !== "rerank")
+    return E.badRequest(
+      "Ce modèle n'accepte pas /v1/rerank.",
+      "model_not_supported",
+      "model",
+      rid,
+    );
+  const query = body.query;
+  if (
+    typeof query !== "string" ||
+    query.length === 0 ||
+    query.length > RERANK_MAX_QUERY_CHARS
+  )
+    return E.badRequest(
+      "« query » doit être un texte non vide.",
+      "invalid_query",
+      "query",
+      rid,
+    );
+  const raw = body.documents;
+  const documents: string[] = [];
+  if (
+    Array.isArray(raw) &&
+    raw.length > 0 &&
+    raw.length <= RERANK_MAX_DOCUMENTS
+  ) {
+    for (const d of raw) {
+      const text = typeof d === "string" ? d : isObject(d) ? d.text : null;
+      if (typeof text !== "string" || text.length === 0) break;
+      documents.push(text);
+    }
+  }
+  if (documents.length === 0 || documents.length !== (raw as unknown[]).length)
+    return E.badRequest(
+      `« documents » doit être une liste de 1 à ${RERANK_MAX_DOCUMENTS} textes non vides (ou d'objets { text }).`,
+      "invalid_documents",
+      "documents",
+      rid,
+    );
+  const topN = body.top_n;
+  if (topN !== undefined && !isPositiveInt(topN))
+    return E.badRequest(
+      "« top_n » doit être un entier positif.",
+      "invalid_top_n",
+      "top_n",
+      rid,
+    );
+  const queryTokens = estimateTokens(query);
+  let promptEstimate = 0;
+  for (const d of documents) {
+    const pair = queryTokens + estimateTokens(d);
+    if (pair > model.contextMax)
+      return E.badRequest(
+        "Un document dépasse le contexte du modèle avec la requête.",
+        "context_length_exceeded",
+        "documents",
+        rid,
+      );
+    promptEstimate += pair;
+  }
+  const upstreamBody: Json = { model: model.publicId, query, documents };
+  if (topN !== undefined)
+    upstreamBody.top_n = Math.min(topN as number, documents.length);
+  return {
+    upstreamBody,
+    promptEstimate,
+    maxOutput: 0,
+    stream: false,
+    clientWantsUsage: false,
+    rerank: { documents, returnDocuments: body.return_documents === true },
+  };
+}
+
+/** Jetons d'un reclassement : `meta.tokens.input_tokens` (Cohere/LiteLLM), sinon `usage`. */
+function readRerankTokens(json: Json): number | null {
+  const nn = (v: unknown) =>
+    typeof v === "number" && Number.isSafeInteger(v) && v >= 0 ? v : null;
+  const meta = isObject(json.meta) ? json.meta : {};
+  const tokens = isObject(meta.tokens) ? meta.tokens : {};
+  const usage = isObject(json.usage) ? json.usage : {};
+  return (
+    nn(tokens.input_tokens) ??
+    nn(usage.prompt_tokens) ??
+    nn(usage.total_tokens) ??
+    null
+  );
 }
 
 /** Ce qu'une requête appelle : un modèle (via LiteLLM) ou un agent hébergé (via une instance WorkStudio). */
@@ -850,11 +959,13 @@ async function handleInference(
 
   try {
     db = deps.db();
-    const auth = await authenticateApiKey(
-      db,
-      request.headers.get("authorization"),
-      deps.now(),
-    );
+    const auth = deps.authenticate
+      ? await deps.authenticate(request)
+      : await authenticateApiKey(
+          db,
+          request.headers.get("authorization"),
+          deps.now(),
+        );
     if (!auth.ok) return E.invalidKey(auth.code, rid);
     key = auth.key;
 
@@ -987,10 +1098,12 @@ async function handleInference(
       const planned =
         endpoint === "chat.completions"
           ? planChat(gate.body, model, deps, rateHeaders)
-          : planEmbedding(gate.body, model, rateHeaders);
+          : endpoint === "embeddings"
+            ? planEmbedding(gate.body, model, rateHeaders)
+            : planRerank(gate.body, model, rateHeaders);
       if (planned instanceof Response) return planned;
       plan = planned;
-      upstreamUrl = `${lit.baseUrl.replace(/\/+$/, "")}/v1/${endpoint === "chat.completions" ? "chat/completions" : "embeddings"}`;
+      upstreamUrl = `${lit.baseUrl.replace(/\/+$/, "")}/v1/${endpoint === "chat.completions" ? "chat/completions" : endpoint}`;
       upstreamAuthorization = `Bearer ${lit.masterKey}`;
       target = {
         kind: "model",
@@ -1179,6 +1292,67 @@ async function handleInference(
           ? "Réponse invalide de l'instance de l'agent."
           : "Réponse invalide du fournisseur du modèle.",
         headers,
+      );
+    }
+    if (endpoint === "rerank" && plan.rerank) {
+      const ranked = parseRerankResults(json, plan.rerank.documents.length);
+      if (!ranked) {
+        await finalize({
+          status: "error",
+          httpStatus: 502,
+          errorCode: "invalid_upstream_response",
+          tokens: { prompt: 0, completion: 0, cached: 0 },
+          stream: false,
+        });
+        return E.upstream(
+          502,
+          "invalid_upstream_response",
+          "Réponse invalide du fournisseur du modèle.",
+          headers,
+        );
+      }
+      const tokens = readRerankTokens(json) ?? plan.promptEstimate;
+      const usage: Usage = { prompt: tokens, completion: 0, cached: 0 };
+      const result = await finalize({
+        status: "ok",
+        httpStatus: 200,
+        tokens: usage,
+        stream: false,
+      });
+      logDone(deps, {
+        requestId,
+        key,
+        target: served,
+        endpoint,
+        status: "ok",
+        httpStatus: 200,
+        usage,
+        cost: result?.costMicro,
+        started,
+      });
+      const docs = plan.rerank.documents;
+      return new Response(
+        JSON.stringify({
+          id: `rerank-${requestId}`,
+          model: served.publicId,
+          results: ranked.map((r) => ({
+            index: r.index,
+            relevance_score: r.score,
+            ...(plan.rerank?.returnDocuments
+              ? { document: { text: docs[r.index] } }
+              : {}),
+          })),
+          usage: { prompt_tokens: tokens, total_tokens: tokens },
+        }),
+        {
+          status: 200,
+          headers: {
+            ...headers,
+            "content-type": "application/json",
+            "cache-control": "no-store",
+            "x-nexora-cost-micro": String(result?.costMicro ?? 0n),
+          },
+        },
       );
     }
     // Règle de repli (agents et modèles) : usage absent → entrée estimée + réponse livrée. Agents : un usage à

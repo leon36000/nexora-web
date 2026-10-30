@@ -23,7 +23,7 @@ export interface FinalizeInput {
   organizationId: string;
   apiKeyId: string;
   modelPublicId: string;
-  endpoint: "chat.completions" | "embeddings";
+  endpoint: "chat.completions" | "embeddings" | "rerank";
   configVersion: string;
   stream: boolean;
   status: UsageStatus;

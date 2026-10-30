@@ -1,0 +1,62 @@
+{
+  "deepinfraId": "Qwen/Qwen3-Reranker-0.6B",
+  "slug": "qwen3-reranker-0.6b",
+  "name": "Qwen3 Reranker 0.6B",
+  "descriptionFr": "Modèle de reclassement de Qwen (0,6 milliard de paramètres) : il note la pertinence de chaque document pour une requête, afin de réordonner les résultats d'une recherche vectorielle. Contexte de 32 000 jetons ; appelé par /v1/rerank.",
+  "descriptionEn": "Reranking model from Qwen (0.6 billion parameters): it scores how relevant each document is to a query, to reorder the results of a vector search. 32,000-token context; called through /v1/rerank.",
+  "capabilities": {
+    "streaming": false,
+    "tools": false,
+    "reasoning": false,
+    "json_mode": false,
+    "vision": false
+  },
+  "sheet": {
+    "author": "Qwen",
+    "family": "Qwen3 Reranker",
+    "license": {
+      "openWeights": true,
+      "url": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B"
+    },
+    "parameters": {
+      "totalB": 0.6
+    },
+    "modalities": {
+      "input": [
+        "text"
+      ],
+      "output": [
+        "text"
+      ]
+    },
+    "tags": [
+      "poids-ouverts"
+    ],
+    "homepageUrl": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B",
+    "sources": [
+      {
+        "label": "Hugging Face, dépôt Qwen/Qwen3-Reranker-0.6B (adresse seulement : la fiche n'a pas été relue)",
+        "url": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B",
+        "readAt": "2026-10-30"
+      },
+      {
+        "label": "DeepInfra, liste des modèles de reclassement (prix et contexte)",
+        "url": "https://deepinfra.com/models/reranker",
+        "readAt": "2026-10-30"
+      },
+      {
+        "label": "DeepInfra, documentation du reclassement (format de l'API)",
+        "url": "https://docs.deepinfra.com/apis/reranker",
+        "readAt": "2026-10-30"
+      }
+    ]
+  },
+  "tagsWhy": {
+    "poids-ouverts": "Poids publiés sur Hugging Face (dépôt de la série Qwen3-Reranker) ; la licence exacte n'a pas été relue pour cette fiche."
+  },
+  "gaps": [
+    "Aucun résultat de benchmark relevé dans cette fiche : à ajouter depuis la fiche du modèle.",
+    "Licence (nom) non relue sur la fiche Hugging Face de ce modèle : le champ est laissé vide.",
+    "Les scores du reclassement sont des probabilités entre 0 et 1 (documentation DeepInfra) ; ils ne se comparent pas d'un modèle de reclassement à un autre."
+  ]
+}

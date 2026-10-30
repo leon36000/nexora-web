@@ -733,6 +733,42 @@
     "input-video"
    ],
    "deepinfraDescription": "EmbeddingGemma 2 is a 740M parameter multimodal embedding model from Google DeepMind that maps text (incl. code), images, video and audio, alone or interleaved, into a single 768-dimensional vector space, with task prompts and Matryoshka truncation to 512, 256 or 128 dimensions for search, retrieval"
+  },
+  {
+   "rank": 34,
+   "deepinfraId": "Qwen/Qwen3-Reranker-0.6B",
+   "kind": "rerank",
+   "contextMax": 32768,
+   "quantization": null,
+   "upstreamInputUsdMicro": 10000,
+   "upstreamOutputUsdMicro": null,
+   "cacheReadRate": null,
+   "deepinfraTags": [],
+   "deepinfraDescription": "The Qwen3 Embedding model series is the latest proprietary model of the Qwen family, specifically designed for text embedding and ranking tasks. Building upon the dense foundational models of the Qwen3 series, it provides a comprehensive range of text embeddings and reranking models in various sizes"
+  },
+  {
+   "rank": 35,
+   "deepinfraId": "Qwen/Qwen3-Reranker-4B",
+   "kind": "rerank",
+   "contextMax": 32768,
+   "quantization": null,
+   "upstreamInputUsdMicro": 25000,
+   "upstreamOutputUsdMicro": null,
+   "cacheReadRate": null,
+   "deepinfraTags": [],
+   "deepinfraDescription": "The Qwen3 Embedding model series is the latest proprietary model of the Qwen family, specifically designed for text embedding and ranking tasks. Building upon the dense foundational models of the Qwen3 series, it provides a comprehensive range of text embeddings and reranking models in various sizes"
+  },
+  {
+   "rank": 36,
+   "deepinfraId": "Qwen/Qwen3-Reranker-8B",
+   "kind": "rerank",
+   "contextMax": 32768,
+   "quantization": null,
+   "upstreamInputUsdMicro": 50000,
+   "upstreamOutputUsdMicro": null,
+   "cacheReadRate": null,
+   "deepinfraTags": [],
+   "deepinfraDescription": "The Qwen3 Embedding model series is the latest proprietary model of the Qwen family, specifically designed for text embedding and ranking tasks. Building upon the dense foundational models of the Qwen3 series, it provides a comprehensive range of text embeddings and reranking models in various sizes"
   }
  ]
 }

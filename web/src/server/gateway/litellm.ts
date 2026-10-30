@@ -42,7 +42,7 @@ export type LitellmModelParams = {
   id: string;
   model: string;
   credentialName: string;
-  mode: "chat" | "embedding";
+  mode: "chat" | "embedding" | "rerank";
   /** Rang du déploiement parmi ceux du même modèle : LiteLLM essaie le plus petit d'abord. */
   order: number;
   /** Corps ajouté à chaque appel (consignes de routage d'OpenRouter). */

@@ -10,7 +10,8 @@ import {
 import { RAG_DIMS } from "./vector.ts";
 
 const dialect = new PgDialect();
-const render = (q: Parameters<PgDialect["sqlToQuery"]>[0]) => dialect.sqlToQuery(q);
+const render = (q: Parameters<PgDialect["sqlToQuery"]>[0]) =>
+  dialect.sqlToQuery(q);
 const vec = new Array(RAG_DIMS).fill(0).map((_, i) => (i === 0 ? 1 : 0));
 
 describe("requêtes SQL du RAG : tout ce qui vient de l'extérieur est un paramètre lié", () => {
@@ -18,7 +19,12 @@ describe("requêtes SQL du RAG : tout ce qui vient de l'extérieur est un param�
 
   it("recherche vectorielle : cosinus sur halfvec, filtre organisation ET base, documents prêts seulement", () => {
     const { sql, params } = render(
-      vectorSearchQuery({ organizationId: "org_a", baseId: "11111111-1111-1111-1111-111111111111", vector: vec, limit: 30 }),
+      vectorSearchQuery({
+        organizationId: "org_a",
+        baseId: "11111111-1111-1111-1111-111111111111",
+        vector: vec,
+        limit: 30,
+      }),
     );
     expect(sql).toMatch(/<=>/);
     expect(sql).toContain("halfvec");
@@ -31,8 +37,22 @@ describe("requêtes SQL du RAG : tout ce qui vient de l'extérieur est un param�
   });
 
   it("n'interpole jamais une valeur : une chaîne hostile ne se retrouve que dans les paramètres", () => {
-    const v = render(vectorSearchQuery({ organizationId: hostile, baseId: hostile, vector: vec, limit: 5 }));
-    const l = render(lexicalSearchQuery({ organizationId: hostile, baseId: hostile, tsQuery: hostile, limit: 5 }));
+    const v = render(
+      vectorSearchQuery({
+        organizationId: hostile,
+        baseId: hostile,
+        vector: vec,
+        limit: 5,
+      }),
+    );
+    const l = render(
+      lexicalSearchQuery({
+        organizationId: hostile,
+        baseId: hostile,
+        tsQuery: hostile,
+        limit: 5,
+      }),
+    );
     for (const q of [v, l]) {
       expect(q.sql).not.toContain("DROP TABLE");
       expect(q.sql).not.toContain(hostile);
@@ -41,7 +61,14 @@ describe("requêtes SQL du RAG : tout ce qui vient de l'extérieur est un param�
   });
 
   it("recherche plein texte : to_tsquery 'simple' sur le vecteur de texte, même filtre d'isolation", () => {
-    const { sql } = render(lexicalSearchQuery({ organizationId: "o", baseId: "b", tsQuery: "a | b", limit: 10 }));
+    const { sql } = render(
+      lexicalSearchQuery({
+        organizationId: "o",
+        baseId: "b",
+        tsQuery: "a | b",
+        limit: 10,
+      }),
+    );
     expect(sql).toMatch(/to_tsquery\('simple', \$\d+\)/);
     expect(sql).toMatch(/x\."organization_id" = \$\d+/);
     expect(sql).toMatch(/x\."base_id" = \$\d+/);
@@ -49,9 +76,30 @@ describe("requêtes SQL du RAG : tout ce qui vient de l'extérieur est un param�
   });
 
   it("refuse une limite ou un vecteur incohérents avant d'écrire le SQL", () => {
-    expect(() => vectorSearchQuery({ organizationId: "o", baseId: "b", vector: [1, 2], limit: 5 })).toThrow(/dimension/);
-    expect(() => vectorSearchQuery({ organizationId: "o", baseId: "b", vector: vec, limit: 0 })).toThrow(/limite/);
-    expect(() => lexicalSearchQuery({ organizationId: "o", baseId: "b", tsQuery: "a", limit: 100_000 })).toThrow(/limite/);
+    expect(() =>
+      vectorSearchQuery({
+        organizationId: "o",
+        baseId: "b",
+        vector: [1, 2],
+        limit: 5,
+      }),
+    ).toThrow(/dimension/);
+    expect(() =>
+      vectorSearchQuery({
+        organizationId: "o",
+        baseId: "b",
+        vector: vec,
+        limit: 0,
+      }),
+    ).toThrow(/limite/);
+    expect(() =>
+      lexicalSearchQuery({
+        organizationId: "o",
+        baseId: "b",
+        tsQuery: "a",
+        limit: 100_000,
+      }),
+    ).toThrow(/limite/);
   });
 
   it("insertion en lot : une ligne de paramètres par extrait, vecteur en demi-précision", () => {
@@ -79,7 +127,9 @@ describe("requêtes SQL du RAG : tout ce qui vient de l'extérieur est un param�
   });
 
   it("suppression des extraits d'un document : bornée par organisation", () => {
-    const { sql, params } = render(deleteDocumentChunksQuery({ organizationId: "o", documentId: "d" }));
+    const { sql, params } = render(
+      deleteDocumentChunksQuery({ organizationId: "o", documentId: "d" }),
+    );
     expect(sql).toMatch(/delete from "rag_chunks"/i);
     expect(sql).toMatch(/"organization_id" = \$\d+/);
     expect(params).toEqual(["d", "o"]);

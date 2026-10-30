@@ -178,12 +178,12 @@ export type PriceIssue =
 
 /**
  * Garde de publication des prix (D3) : jamais 0 $ ; jamais sous le plancher de marge sur le coût
- * amont converti. Un modèle d'embeddings n'a pas de prix de sortie.
+ * amont converti. Un modèle d'embeddings ou de reclassement n'a pas de prix de sortie.
  */
 export function checkPrice(
   price: PriceRow,
   usdToCadMicro: bigint,
-  kind: "chat" | "embedding",
+  kind: "chat" | "embedding" | "rerank",
 ): PriceIssue[] {
   const issues: PriceIssue[] = [];
   if (price.sellInputCadMicro <= 0n)

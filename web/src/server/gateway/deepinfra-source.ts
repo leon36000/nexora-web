@@ -41,7 +41,7 @@ const selectionRow = z
     deepinfraId: z
       .string()
       .regex(/^[A-Za-z0-9][A-Za-z0-9._-]*\/[A-Za-z0-9][A-Za-z0-9._-]*$/),
-    kind: z.enum(["chat", "embedding"]),
+    kind: z.enum(["chat", "embedding", "rerank"]),
     contextMax: z.number().int().min(1).max(10_000_000),
     quantization: z.string().min(1).nullable().optional(),
     upstreamInputUsdMicro: micro.refine((v) => v > 0, "prix d'entrée nul"),
