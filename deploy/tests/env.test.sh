@@ -40,7 +40,8 @@ if grep -qE '^SMTP_PASSWORD=' "$deploy/.env.example"; then ko "SMTP_PASSWORD (en
 echo
 echo "deploy/compose.yml"
 compose="$deploy/compose.yml"
-if grep -E '^\s+image:' "$compose" | grep -vq '@sha256:[0-9a-f]\{64\}'; then ko "une image n'est pas épinglée par empreinte"; else ok "toutes les images sont épinglées par empreinte"; fi
+# Une image construite ici (`build:` + étiquette `nexora/…:local`) n'a pas d'empreinte à épingler : c'est son Dockerfile qui épingle l'image de base.
+if grep -E '^\s+image:' "$compose" | grep -vE 'image:\s+nexora/[a-z0-9-]+:local\s*$' | grep -vq '@sha256:[0-9a-f]\{64\}'; then ko "une image n'est pas épinglée par empreinte"; else ok "toutes les images sont épinglées par empreinte"; fi
 grep -qE '^\s+MARKETPLACE_REGISTRY:\s*\S+' "$compose" && ok "Directus : MARKETPLACE_REGISTRY posé (la Marketplace n'appelle plus registry.directus.io)" || ko "Directus : MARKETPLACE_REGISTRY absent (E3)"
 grep -E 'MARKETPLACE_REGISTRY' "$compose" | grep -q 'directus\.io' && ko "MARKETPLACE_REGISTRY pointe vers directus.io" || ok "MARKETPLACE_REGISTRY ne vise pas directus.io"
 grep -E '^\s+PUBLIC_URL:' "$compose" | grep -q 'DIRECTUS_PUBLIC_URL' && ok "PUBLIC_URL de Directus réglable (DIRECTUS_PUBLIC_URL)" || ko "PUBLIC_URL de Directus codé en dur"
