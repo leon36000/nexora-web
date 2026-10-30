@@ -580,3 +580,21 @@ Les 29 gabarits de WorkStudio ont été adaptés au Québec (dépôt `root/nexor
 - *Valeur « spam »* : la consigne de tri des courriels demande toujours la catégorie `spam` (et non `pourriel`) dans le JSON ; la fiche dit « pourriel écrit spam ». À corriger dans WorkStudio si l'on veut `pourriel`.
 - *Le guide de prise en main* de WorkStudio annonçait vingt modèles dans la version lue le 26/10/2026 : non revérifié, marqué « à vérifier » dans CL-M01.
 - *Les références légales* (Loi sur les normes du travail, Charte des droits et libertés de la personne, TD1, TP-1015.3-V) sont seulement nommées, sans citer d'article ni d'autres lois.
+
+## 15. Polissage du contenu et modèle à crédits (30/10/2026)
+
+Chantier E2 de `docs/superpowers/specs/2026-10-30-credits-produits-design.md`. Inventaire complet, avec le correctif de chaque incohérence : `docs/marketing/audit-contenu-2026-10-30.md`.
+
+**Fil conducteur.** « Un compte, des crédits, tous vos outils. » (en : « One account, your credits, all your tools. »). Il est dit sur l'accueil (sous-titre du héros, bloc dédié avec la maquette du tableau de bord), sur WorkStudio (« Ouvert depuis votre compte. »), sur la suite, sur l'entreprise (« Deux voies, un seul compte. »), dans la FAQ (bloc « Crédits, abonnement et espace. ») et dans les réponses de coût de toutes les pages de services et de solutions. Il ne promet rien de non livré : la vente n'est pas ouverte (CL-12, CL-T06), Nexora Code et Nexora RAG sont « Bientôt, sans date » (CL-AP06, CL-AP07), Nexora Bot et Nexora Creative restent dans Nexora Apps.
+
+**Lexique constant.** crédit(s) · espace (disque) · recharge · abonnement · « Mes outils » · Nexora Code · Nexora RAG (fr) ; credit(s) · storage · top-up · plan · "My tools" (en). En anglais, la notion de « diagnostic » s'écrit toujours *assessment* (les liens `?sujet=diagnostic` ne changent pas).
+
+**Réponse standard à « Combien cela coûte-t-il ? »** (accueil, FAQ, solutions, services, méthode, déploiement, guides, WorkStudio) : il n'y a pas encore de prix public ; deux choses se paient : l'accompagnement (estimation écrite après le diagnostic) et l'usage de la plateforme (en crédits ; un abonnement donne des crédits et de l'espace, sinon on recharge ; prix sur la page Tarifs dès leur publication). Affirmations citées : CL-10, CL-PL03, CL-T01, CL-T06.
+
+**Registre (version 10).** Ajoutées, « en_revue » : CL-PL01 (un compte, « Mes outils »), CL-PL02 (WorkStudio s'ouvre tant qu'il reste un crédit), CL-PL03 (deux voies : accompagnement et plateforme), CL-PL04 (un solde à zéro n'efface rien ; conservation après résiliation non décidée), CL-SU01 (vocation de Nexora Corpus : l'ancienne section de la suite citait à tort CL-120 et CL-121, qui désignent des capacités de WorkStudio). Modifiée : CL-28 (Corpus, Quanta et Helix seulement : Nexora Code a sa propre affirmation, CL-AP06).
+
+**Tests ajustés, seulement là où le modèle l'exige.** `pages-s3.test.ts` : le maillage connaît `/tarifs/` (`/en/pricing/`), `/compte/` et les fiches `/apps/code/`, `/apps/rag/`, `/apps/bot/`, `/apps/creative/` ; le mot « gratuit » est permis sur la suite (Nexora Code « conçu pour être gratuit », jamais livré, avec la phrase qui dit que les modèles consomment des crédits). Aucune autre règle n'est assouplie : toujours aucun prix, date, client, chiffre de performance ni certification.
+
+**Hors Directus.** Les faits canoniques de `llms.txt` (`web/src/lib/seo/entity.ts`) suivent le registre : le fait « suite » est identique à CL-28 (test) et un fait « crédits » est ajouté. Les dictionnaires (`web/src/i18n/dictionaries/*.ts`) ont reçu des corrections de texte seulement.
+
+**Chargement.** Inchangé (section 6) : `bun run cms/scripts/load-content.ts --a-blanc`, puis sans option, puis `--approuver-et-publier`. Les pages touchées par ce chantier sont celles listées dans l'audit (3 : « Pages réécrites ou corrigées »).

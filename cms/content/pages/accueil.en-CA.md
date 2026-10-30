@@ -183,7 +183,7 @@ In some consumer AI services, sharing conversations to improve the models is a s
 
 *Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
+Réglages : `media_position=right`, `visual=tableau-de-bord`, `tone=sombre`
 
 ## One account, your credits, all your tools.
 

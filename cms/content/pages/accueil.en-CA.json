@@ -238,8 +238,8 @@
         "CL-12"
       ],
       "fields": {
-        "media_position": "none",
-        "visual": "aucun",
+        "media_position": "right",
+        "visual": "tableau-de-bord",
         "tone": "sombre"
       },
       "translation": {
