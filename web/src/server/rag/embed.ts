@@ -24,8 +24,14 @@ export async function embedTexts(
 ): Promise<Result<Embedded>> {
   const profile = embeddingProfile(model);
   if (!profile)
-    return bad({ ...F.invalid("Modèle d'embedding non pris en charge.", "model"), code: "unsupported_embedding_model", status: 422 });
-  const input = options.query ? texts.map((t) => profile.queryPrefix + t) : texts;
+    return bad({
+      ...F.invalid("Modèle d'embedding non pris en charge.", "model"),
+      code: "unsupported_embedding_model",
+      status: 422,
+    });
+  const input = options.query
+    ? texts.map((t) => profile.queryPrefix + t)
+    : texts;
   const request = new Request("http://rag.internal/v1/embeddings", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -35,10 +41,17 @@ export async function embedTexts(
   try {
     response = await deps.gateway.embeddings(request, key);
   } catch {
-    return bad(F.unavailable("Le service d'embedding ne répond pas. Réessayez dans un instant."));
+    return bad(
+      F.unavailable(
+        "Le service d'embedding ne répond pas. Réessayez dans un instant.",
+      ),
+    );
   }
   if (!response.ok) return bad(await gatewayFailure(response));
-  let json: { data?: { index?: number; embedding?: unknown }[]; usage?: { prompt_tokens?: number } };
+  let json: {
+    data?: { index?: number; embedding?: unknown }[];
+    usage?: { prompt_tokens?: number };
+  };
   try {
     json = await response.json();
   } catch {
@@ -51,11 +64,17 @@ export async function embedTexts(
   const vectors: number[][] = [];
   try {
     for (const item of ordered) {
-      if (!Array.isArray(item.embedding)) return bad(F.upstream("Réponse d'embedding incohérente."));
-      vectors.push(fitVector(item.embedding as number[], { matryoshka: profile.matryoshka }));
+      if (!Array.isArray(item.embedding))
+        return bad(F.upstream("Réponse d'embedding incohérente."));
+      vectors.push(
+        fitVector(item.embedding as number[], {
+          matryoshka: profile.matryoshka,
+        }),
+      );
     }
   } catch (error) {
-    if (error instanceof VectorError) return bad(F.upstream("Le modèle a renvoyé un vecteur inutilisable."));
+    if (error instanceof VectorError)
+      return bad(F.upstream("Le modèle a renvoyé un vecteur inutilisable."));
     throw error;
   }
   const cost = response.headers.get("x-nexora-cost-micro");

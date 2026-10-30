@@ -80,11 +80,16 @@ async function createBaseIn(
 ): Promise<Result<BaseRow>> {
   const name = input.name?.trim() ?? "";
   if (name.length < 1 || name.length > 80)
-    return bad(F.invalid("Le nom de la base doit compter de 1 à 80 caractères.", "name"));
+    return bad(
+      F.invalid("Le nom de la base doit compter de 1 à 80 caractères.", "name"),
+    );
   const description = input.description?.trim() || null;
   if (description && description.length > 500)
-    return bad(F.invalid("La description compte au plus 500 caractères.", "description"));
-  const embeddingModel = input.embeddingModel ?? deps.config.defaultEmbeddingModel;
+    return bad(
+      F.invalid("La description compte au plus 500 caractères.", "description"),
+    );
+  const embeddingModel =
+    input.embeddingModel ?? deps.config.defaultEmbeddingModel;
   if (!embeddingProfile(embeddingModel))
     return bad({
       ...F.invalid(
@@ -113,7 +118,11 @@ async function createBaseIn(
 
   const live = await liveModels(db);
   if (!live)
-    return bad(F.unavailable("Le catalogue de modèles n'est pas encore publié : le RAG n'est pas disponible."));
+    return bad(
+      F.unavailable(
+        "Le catalogue de modèles n'est pas encore publié : le RAG n'est pas disponible.",
+      ),
+    );
   if (live.get(embeddingModel) !== "embedding")
     return bad(
       F.modelUnavailable(
@@ -127,7 +136,11 @@ async function createBaseIn(
   } else if (input.rerankModel === null) rerankModel = null;
   else {
     if (live.get(input.rerankModel) !== "rerank")
-      return bad(F.modelUnavailable("Le modèle de reclassement demandé n'est pas disponible."));
+      return bad(
+        F.modelUnavailable(
+          "Le modèle de reclassement demandé n'est pas disponible.",
+        ),
+      );
     rerankModel = input.rerankModel;
   }
 
@@ -135,7 +148,9 @@ async function createBaseIn(
     return await db.transaction(async (tx) => {
       const d = tx as unknown as Database;
       // Un verrou par organisation : le décompte et l'insertion ne se chevauchent pas.
-      await d.execute(sql`SELECT pg_advisory_xact_lock(hashtext(${`rag-bases:${input.organizationId}`}))`);
+      await d.execute(
+        sql`SELECT pg_advisory_xact_lock(hashtext(${`rag-bases:${input.organizationId}`}))`,
+      );
       const [n] = await d
         .select({ n: sql<number>`count(*)::int` })
         .from(ragBases)
@@ -165,12 +180,20 @@ async function createBaseIn(
     });
   } catch (error) {
     if (isUniqueViolation(error))
-      return bad(F.conflict("base_exists", "Une base porte déjà ce nom dans votre organisation."));
+      return bad(
+        F.conflict(
+          "base_exists",
+          "Une base porte déjà ce nom dans votre organisation.",
+        ),
+      );
     throw error;
   }
 }
 
-export function createBase(deps: RagDeps, input: CreateBaseInput): Promise<Result<BaseRow>> {
+export function createBase(
+  deps: RagDeps,
+  input: CreateBaseInput,
+): Promise<Result<BaseRow>> {
   return createBaseIn(deps, deps.db(), input);
 }
 
@@ -195,7 +218,9 @@ async function createRagKeyIn(
 ): Promise<Result<CreatedKey>> {
   const ids = [...new Set(input.baseIds)];
   if (ids.length === 0 || ids.length > 20)
-    return bad(F.invalid("Choisissez de 1 à 20 bases pour cette clé.", "bases"));
+    return bad(
+      F.invalid("Choisissez de 1 à 20 bases pour cette clé.", "bases"),
+    );
   const rows = await db
     .select()
     .from(ragBases)
@@ -226,7 +251,11 @@ async function createRagKeyIn(
       createdBy: input.createdBy ?? null,
       maxActiveKeys: MAX_ACTIVE_KEYS_PER_ORGANIZATION,
     });
-    return good({ id: created.record.id, key: created.key, prefix: created.record.prefix });
+    return good({
+      id: created.record.id,
+      key: created.key,
+      prefix: created.record.prefix,
+    });
   } catch (error) {
     if (error instanceof ApiKeyLimitError)
       return bad(
@@ -268,7 +297,9 @@ class KeyRefused extends Error {
 export async function createBaseWithKey(
   deps: RagDeps,
   input: CreateBaseInput & { keyName?: string },
-): Promise<Result<{ base: BaseRow; key: string; keyId: string; keyPrefix: string }>> {
+): Promise<
+  Result<{ base: BaseRow; key: string; keyId: string; keyPrefix: string }>
+> {
   try {
     return await deps.db().transaction(async (tx) => {
       const d = tx as unknown as Database;
@@ -295,7 +326,11 @@ export async function createBaseWithKey(
   }
 }
 
-async function statsFor(db: Database, organizationId: string, baseIds?: string[]): Promise<Map<string, BaseStats>> {
+async function statsFor(
+  db: Database,
+  organizationId: string,
+  baseIds?: string[],
+): Promise<Map<string, BaseStats>> {
   const rows = await db.execute<{
     base_id: string;
     documents: number;
@@ -314,7 +349,14 @@ async function statsFor(db: Database, organizationId: string, baseIds?: string[]
       COALESCE(sum(stored_bytes), 0)::bigint AS bytes
     FROM rag_documents
     WHERE organization_id = ${organizationId}
-    ${baseIds ? sql`AND base_id IN (${sql.join(baseIds.map((b) => sql`${b}`), sql`, `)})` : sql``}
+    ${
+      baseIds
+        ? sql`AND base_id IN (${sql.join(
+            baseIds.map((b) => sql`${b}`),
+            sql`, `,
+          )})`
+        : sql``
+    }
     GROUP BY base_id`);
   return new Map(
     [...rows].map((r) => [
@@ -331,7 +373,10 @@ async function statsFor(db: Database, organizationId: string, baseIds?: string[]
   );
 }
 
-export async function listBases(deps: RagDeps, organizationId: string): Promise<BaseView[]> {
+export async function listBases(
+  deps: RagDeps,
+  organizationId: string,
+): Promise<BaseView[]> {
   const db = deps.db();
   const rows = await db
     .select()
@@ -344,16 +389,26 @@ export async function listBases(deps: RagDeps, organizationId: string): Promise<
 }
 
 /** Base de l'organisation, ou `base_not_found` — même réponse qu'elle n'existe pas ou qu'elle soit à quelqu'un d'autre. */
-export async function loadBase(db: Database, organizationId: string, baseId: string): Promise<BaseRow | null> {
+export async function loadBase(
+  db: Database,
+  organizationId: string,
+  baseId: string,
+): Promise<BaseRow | null> {
   if (!/^[0-9a-f-]{36}$/.test(baseId)) return null;
   const [row] = await db
     .select()
     .from(ragBases)
-    .where(and(eq(ragBases.id, baseId), eq(ragBases.organizationId, organizationId)));
+    .where(
+      and(eq(ragBases.id, baseId), eq(ragBases.organizationId, organizationId)),
+    );
   return row ?? null;
 }
 
-export async function getBase(deps: RagDeps, organizationId: string, baseId: string): Promise<Result<BaseView>> {
+export async function getBase(
+  deps: RagDeps,
+  organizationId: string,
+  baseId: string,
+): Promise<Result<BaseView>> {
   const db = deps.db();
   const base = await loadBase(db, organizationId, baseId);
   if (!base) return bad(F.baseNotFound());
@@ -372,17 +427,34 @@ export async function deleteBase(
     const base = await loadBase(d, organizationId, baseId);
     if (!base) return null;
     const [sum] = await d
-      .select({ bytes: sql<string>`COALESCE(sum(${ragDocuments.storedBytes}), 0)::bigint` })
+      .select({
+        bytes: sql<string>`COALESCE(sum(${ragDocuments.storedBytes}), 0)::bigint`,
+      })
       .from(ragDocuments)
-      .where(and(eq(ragDocuments.baseId, baseId), eq(ragDocuments.organizationId, organizationId)));
+      .where(
+        and(
+          eq(ragDocuments.baseId, baseId),
+          eq(ragDocuments.organizationId, organizationId),
+        ),
+      );
     await d
       .delete(ragBases)
-      .where(and(eq(ragBases.id, baseId), eq(ragBases.organizationId, organizationId)));
+      .where(
+        and(
+          eq(ragBases.id, baseId),
+          eq(ragBases.organizationId, organizationId),
+        ),
+      );
     // Les clés qui nommaient cette base ne la nomment plus ; sans base restante, elles sont révoquées.
     const keys = await d
       .select()
       .from(apiKeys)
-      .where(and(eq(apiKeys.organizationId, organizationId), isNull(apiKeys.revokedAt)));
+      .where(
+        and(
+          eq(apiKeys.organizationId, organizationId),
+          isNull(apiKeys.revokedAt),
+        ),
+      );
     for (const k of keys) {
       if (!k.ragAccess?.bases.includes(baseId)) continue;
       const left = k.ragAccess.bases.filter((b) => b !== baseId);
@@ -390,7 +462,10 @@ export async function deleteBase(
         .update(apiKeys)
         .set(
           left.length === 0
-            ? { revokedAt: deps.now(), ragAccess: { ...k.ragAccess, bases: [] } }
+            ? {
+                revokedAt: deps.now(),
+                ragAccess: { ...k.ragAccess, bases: [] },
+              }
             : { ragAccess: { ...k.ragAccess, bases: left } },
         )
         .where(eq(apiKeys.id, k.id));

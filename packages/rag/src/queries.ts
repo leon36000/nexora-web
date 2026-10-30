@@ -21,7 +21,7 @@ function checkLimit(limit: number) {
     throw new RangeError(`limite invalide (1 à ${MAX_QUERY_LIMIT})`);
 }
 
-export interface SearchRow {
+export type SearchRow = {
   id: number;
   document_id: string;
   ord: number;
@@ -36,7 +36,7 @@ export interface SearchRow {
   distance?: number;
   /** Score de pertinence plein texte, recherche lexicale seulement. */
   score?: number;
-}
+};
 
 const COLUMNS = sql`c."id", c."document_id", c."ord", c."content", c."heading", c."start_char", c."end_char", c."page", d."title", d."source"`;
 
