@@ -543,6 +543,7 @@ export const accountEnCA: AccountDictionary = {
     },
     rag: {
       title: "Nexora RAG.",
+      defaultName: "My RAG",
       lead: "Your documents become a knowledge base that AI queries, with sources. Create it in one click and connect it to Nexora Code, a bot or any tool with an API key.",
       soon: {
         title: "Coming soon.",
@@ -638,6 +639,8 @@ export const accountEnCA: AccountDictionary = {
         keyHint:
           "The key goes in the Authorization: Bearer header. It is never shown again: keep it in a secrets manager.",
         keyPlaceholder: "YOUR_API_KEY",
+        baseIdPlaceholder: "KNOWLEDGE_BASE_ID",
+        questionPlaceholder: "Your question",
         snippets: {
           code: "Nexora Code (MCP)",
           mcp: "Another MCP-compatible tool",

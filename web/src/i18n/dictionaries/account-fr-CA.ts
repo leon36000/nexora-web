@@ -563,6 +563,7 @@ export const accountFrCA = {
     },
     rag: {
       title: "Nexora RAG.",
+      defaultName: "Mon RAG",
       lead: "Vos documents deviennent une base que l’IA interroge, sources à l’appui. Créez-la en un clic et branchez-la à Nexora Code, à un bot ou à n’importe quel outil avec une clé d’API.",
       soon: {
         title: "Bientôt.",
@@ -658,6 +659,8 @@ export const accountFrCA = {
         keyHint:
           "La clé se passe dans l’en-tête Authorization: Bearer. Elle n’est jamais affichée de nouveau : gardez-la dans un gestionnaire de secrets.",
         keyPlaceholder: "VOTRE_CLE_API",
+        baseIdPlaceholder: "ID_DE_LA_BASE",
+        questionPlaceholder: "Votre question",
         snippets: {
           code: "Nexora Code (MCP)",
           mcp: "Autre outil compatible MCP",
