@@ -188,3 +188,24 @@ describe("hôtes autorisés pour une clé du coffre (R9 : la clé ne part que ve
     expect(secretHostProblem("proxmox", "192.168.0.5", env)).not.toBeNull();
   });
 });
+
+describe("hôtes autorisés pour la clé d'un moteur Nexora Creative", () => {
+  it("Comfy Cloud est connu (HTTPS seulement) ; tout autre hôte doit être déclaré par l'opérateur", () => {
+    const env = { NODE_ENV: "production" };
+    expect(
+      secretHostProblem("creative-engine", "https://cloud.comfy.org", env),
+    ).toBeNull();
+    expect(
+      secretHostProblem("creative-engine", "http://cloud.comfy.org", env),
+    ).toMatch(/HTTPS/);
+    expect(
+      secretHostProblem("creative-engine", "https://gpu.evil.example", env),
+    ).toMatch(/NEXORA_SECRET_HOSTS_CREATIVE/);
+    expect(
+      secretHostProblem("creative-engine", "https://gpu.interne.example", {
+        ...env,
+        NEXORA_SECRET_HOSTS_CREATIVE: "gpu.interne.example",
+      }),
+    ).toBeNull();
+  });
+});
