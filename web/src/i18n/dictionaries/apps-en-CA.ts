@@ -36,6 +36,7 @@ export const appsEnCA: AppsDictionary = {
     legendTitle: "The state of each tool",
     legendLead:
       "We show the real state. A tool that is not shipped is “Soon” or “Later”: no date and no performance figure that we cannot show.",
+    notify: "Notify me when it opens",
     gridTitle: "The tools",
     accessLabel: "Access",
     mainTitle: "The main products",

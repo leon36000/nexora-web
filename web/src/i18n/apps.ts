@@ -156,6 +156,28 @@ export function getAppsDictionary(lang: Lang): AppsDictionary {
   return dictionaries[lang];
 }
 
+/**
+ * Cartes de la liste : les outils « disponible » d'abord (ordre stable, état jamais modifié), les autres dans l'ordre
+ * du registre.
+ */
+export function orderApps<T extends Pick<AppDef, "state">>(
+  apps: readonly T[],
+): T[] {
+  return [
+    ...apps.filter((a) => a.state === "disponible"),
+    ...apps.filter((a) => a.state !== "disponible"),
+  ];
+}
+
+/** États expliqués par la légende : « disponible » n'y figure que si au moins une carte de la page l'est. */
+export function legendStates(
+  apps: readonly Pick<AppDef, "state">[],
+): AppState[] {
+  return APP_STATES.filter(
+    (state) => state !== "disponible" || apps.some((a) => a.state === state),
+  );
+}
+
 /** Entrée du registre pour un identifiant d'adresse ; `undefined` pour tout autre texte (aucune propriété héritée). */
 export function findApp(slug: string): (typeof APPS)[number] | undefined {
   return APPS.find((a) => a.slug === slug);

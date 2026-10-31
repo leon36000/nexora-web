@@ -322,7 +322,8 @@ export const frCA = {
           "apps-creative": "Liste d’attente : Nexora Creative.",
           "apps-outils": "Liste d’attente : outils gratuits Nexora.",
           "modele-apercu": "Prévenez-moi à l’ouverture du modèle : ",
-          "ouverture-plateforme": "Prévenez-moi à l’ouverture de la plateforme à crédits.",
+          "ouverture-plateforme":
+            "Prévenez-moi à l’ouverture de la plateforme à crédits.",
         } as Record<string, string>,
       },
       consentMarketing: {

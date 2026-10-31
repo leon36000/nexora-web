@@ -12,7 +12,9 @@ import {
   findApp,
   getAppContent,
   getAppsDictionary,
+  legendStates,
   listMeta,
+  orderApps,
 } from "./apps";
 import { LANGS, type Lang } from "./config";
 import { getDictionary } from "./get-dictionary";
@@ -195,6 +197,43 @@ describe("appel à l'action", () => {
       expect(r.message?.trim(), `${slug} ${lang}`).toBeTruthy();
       expect(CONTACT_SUBJECTS).toHaveProperty(subject);
     });
+  });
+});
+
+describe("liste Nexora Apps : ordre et légende", () => {
+  const app = (slug: string, state: AppDef["state"]) =>
+    ({ slug, state }) as Pick<AppDef, "slug" | "state">;
+
+  it("orderApps met les outils « disponible » en tête, sans changer l'état ni l'ordre relatif des autres", () => {
+    const list = [
+      app("a", "bientot"),
+      app("b", "plus_tard"),
+      app("workstudio", "disponible"),
+      app("c", "bientot"),
+    ];
+    const ordered = orderApps(list);
+    expect(ordered.map((x) => x.slug)).toEqual(["workstudio", "a", "b", "c"]);
+    expect(ordered[0]?.state).toBe("disponible");
+    // le tableau d'origine n'est pas modifié
+    expect(list.map((x) => x.slug)).toEqual(["a", "b", "workstudio", "c"]);
+  });
+
+  it("orderApps garde l'ordre du registre quand rien n'est « disponible »", () => {
+    expect(orderApps(APPS).map((x) => x.slug)).toEqual(APPS.map((x) => x.slug));
+  });
+
+  it("legendStates n'affiche « disponible » que si au moins une carte l'est", () => {
+    expect(legendStates([app("a", "bientot")])).toEqual([
+      "bientot",
+      "plus_tard",
+    ]);
+    expect(legendStates([app("a", "bientot"), app("w", "disponible")])).toEqual(
+      ["disponible", "bientot", "plus_tard"],
+    );
+    // état réel du registre aujourd'hui : aucune carte n'est « disponible »
+    expect(APPS.some((x) => x.state === "disponible")).toBe(
+      legendStates(APPS).includes("disponible"),
+    );
   });
 });
 

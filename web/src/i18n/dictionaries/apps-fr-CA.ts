@@ -36,6 +36,7 @@ export const appsFrCA = {
     legendTitle: "L’état de chaque outil",
     legendLead:
       "Nous affichons l’état réel. Un outil qui n’est pas livré est « Bientôt » ou « Plus tard » : aucune date et aucune performance que nous ne pouvons pas montrer.",
+    notify: "Me prévenir à l’ouverture",
     gridTitle: "Les outils",
     accessLabel: "Accès",
     mainTitle: "Les produits principaux",

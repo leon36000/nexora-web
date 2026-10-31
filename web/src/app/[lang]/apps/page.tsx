@@ -8,14 +8,16 @@ import { CARD_LINK, Card } from "@/components/ui/card";
 import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
 import {
-  APP_STATES,
   APPS,
   getAppContent,
   getAppsDictionary,
+  legendStates,
   listMeta,
+  orderApps,
 } from "@/i18n/apps";
 import { isLang, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { cn } from "@/lib/cn";
 import { buildPageMetadata } from "@/lib/metadata";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
@@ -51,6 +53,8 @@ export default async function AppsPage() {
   const main = getDictionary(lang).nav.products.items.filter((i) =>
     MAIN_PRODUCTS.has(i.href),
   );
+  const apps = orderApps(APPS);
+  const states = legendStates(apps);
   return (
     <>
       <PageHero
@@ -59,7 +63,16 @@ export default async function AppsPage() {
         title={t.list.title}
         lead={t.list.lead}
         seed={9}
-      />
+      >
+        <div className="mt-8">
+          <ButtonLink
+            href={`${localizePath(lang, "/contact")}?sujet=ouverture-plateforme`}
+            arrow
+          >
+            {t.list.notify}
+          </ButtonLink>
+        </div>
+      </PageHero>
 
       <Section tone="light" aria-labelledby="legend-title">
         <h2 id="legend-title" className="text-h4 text-fg">
@@ -68,8 +81,13 @@ export default async function AppsPage() {
         <p className="mt-2 max-w-2xl text-small text-fg-muted">
           {t.list.legendLead}
         </p>
-        <dl className="mt-6 grid gap-px overflow-hidden rounded-frame border border-line bg-line sm:grid-cols-3">
-          {APP_STATES.map((state) => (
+        <dl
+          className={cn(
+            "mt-6 grid gap-px overflow-hidden rounded-frame border border-line bg-line",
+            states.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2",
+          )}
+        >
+          {states.map((state) => (
             <div key={state} className="bg-bg p-5">
               <dt>
                 <StateBadge state={state} t={t} />
@@ -87,7 +105,7 @@ export default async function AppsPage() {
           {t.list.gridTitle}
         </h2>
         <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {APPS.map((app) => {
+          {apps.map((app) => {
             const content = getAppContent(lang, app.slug);
             return content ? (
               <li key={app.slug}>
