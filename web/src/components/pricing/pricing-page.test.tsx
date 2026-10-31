@@ -31,12 +31,14 @@ const rows: CreditEquivalent[] = [
     name: "Petit modèle",
     inputTokens: 50_000_000,
     outputTokens: 16_000_000,
+    preview: false,
   },
   {
     id: "c/gros",
     name: "Gros modèle",
     inputTokens: 2_000_000,
     outputTokens: 700_000,
+    preview: false,
   },
 ];
 
@@ -189,4 +191,97 @@ describe("page Tarifs : équivalent des crédits en jetons", () => {
     expect(html).toContain(t.credit.equivalents.unavailable);
     expect(html).not.toContain("<caption");
   });
+});
+
+describe("page Tarifs : modèles en aperçu dans l'équivalent des crédits", () => {
+  const previewRows: CreditEquivalent[] = rows.map((r) => ({
+    ...r,
+    preview: true,
+  }));
+  for (const lang of ["fr", "en"] as const) {
+    const t = getPricingDictionary(lang);
+    it(`${lang} : des lignes en aperçu affichent la note sous le tableau et marquent les lignes concernées`, () => {
+      const html = render(lang, { equivalents: previewRows });
+      expect(html).toContain(t.credit.equivalents.preview.note);
+      expect(html).toContain("<caption");
+      expect(html).toContain(t.credit.equivalents.preview.tag);
+      expect(html).not.toContain(t.credit.equivalents.unavailable);
+    });
+    it(`${lang} : seules les lignes en aperçu sont marquées`, () => {
+      const html = render(lang, {
+        equivalents: [
+          { ...rows[0], preview: true } as CreditEquivalent,
+          rows[1] as CreditEquivalent,
+        ],
+      });
+      const tag = t.credit.equivalents.preview.tag;
+      // une fois dans le tableau, une fois dans la liste mobile : une seule ligne marquée
+      expect(html.split(tag).length - 1).toBe(2);
+    });
+    it(`${lang} : aucune ligne en aperçu, ni note ni marque`, () => {
+      const html = render(lang);
+      expect(html).not.toContain(t.credit.equivalents.preview.note);
+      expect(html).not.toContain(t.credit.equivalents.preview.tag);
+    });
+    it(`${lang} : l'excuse « catalogue indisponible » ne sert que si rien n'est fourni`, () => {
+      expect(render(lang, { equivalents: null })).toContain(
+        t.credit.equivalents.unavailable,
+      );
+      expect(render(lang, { equivalents: previewRows })).not.toContain(
+        t.credit.equivalents.unavailable,
+      );
+    });
+  }
+});
+
+describe("page Tarifs : « Me prévenir à l'ouverture »", () => {
+  const cases = [
+    ["fr", "/contact?sujet=ouverture-plateforme"],
+    ["en", "/en/contact?sujet=ouverture-plateforme"],
+  ] as const;
+  for (const [lang, href] of cases) {
+    const t = getPricingDictionary(lang);
+    it(`${lang} : l'état « prix à venir » propose le bouton vers ${href}, avec la phrase voisine`, () => {
+      const html = render(lang, { data: { status: "empty", plans: [] } });
+      expect(html).toContain(`href="${href}"`);
+      expect(html).toContain(t.notify.cta);
+      expect(html).toContain(t.notify.text);
+      // le bouton « Nous écrire » existant reste
+      expect(html).toContain(
+        `href="${href.replace("ouverture-plateforme", "demonstration")}"`,
+      );
+    });
+    it(`${lang} : le bouton figure aussi près du haut de la page, avant les explications du crédit`, () => {
+      const html = render(lang, { data: { status: "empty", plans: [] } });
+      expect(html.indexOf(t.notify.cta)).toBeGreaterThan(-1);
+      expect(html.indexOf(t.notify.cta)).toBeLessThan(
+        html.indexOf(t.credit.title),
+      );
+      expect(html.indexOf(`href="${href}"`)).toBeLessThan(
+        html.indexOf(t.states.empty.title),
+      );
+    });
+    it(`${lang} : quand les paliers sont publiés, la page ne dit pas que la plateforme n'est pas ouverte`, () => {
+      const html = render(lang);
+      expect(html).not.toContain(t.notify.text);
+    });
+  }
+});
+
+describe("page Tarifs : cartes « D'autres façons de commencer »", () => {
+  for (const lang of ["fr", "en"] as const) {
+    const t = getPricingDictionary(lang);
+    const prefix = lang === "fr" ? "" : "/en";
+    it(`${lang} : la carte VPS ne promet plus de prix affiché sur sa page`, () => {
+      expect(t.more.vps.text).not.toMatch(/prix affiché|price shown/i);
+      expect(t.more.vps.text).toMatch(lang === "fr" ? /publiés/ : /published/);
+      expect(render(lang)).toContain(t.more.vps.text);
+    });
+    it(`${lang} : la carte Accompagnement mène au diagnostic`, () => {
+      const html = render(lang);
+      expect(html).toContain(t.more.support.title);
+      expect(html).toContain(`href="${prefix}/contact?sujet=diagnostic"`);
+      expect(html).toContain(t.more.support.cta);
+    });
+  }
 });
