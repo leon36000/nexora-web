@@ -89,7 +89,10 @@ describe("configuration de Nexora Creative", () => {
   });
 
   it("refuse un rôle inconnu et une recette inconnue (erreurs de forme)", () => {
-    const cfg = base() as unknown as { llm: { roles: Record<string, string> }; engines: { recipes: string[] }[] };
+    const cfg = base() as unknown as {
+      llm: { roles: Record<string, string> };
+      engines: { recipes: string[] }[];
+    };
     cfg.llm.roles.magie = "glm-5.3";
     cfg.engines[0].recipes = ["h3-fast", "sora"];
     const r = validateCreativeConfig(cfg, ctx);

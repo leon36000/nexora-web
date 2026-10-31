@@ -390,9 +390,9 @@ describe("cartes des produits", () => {
     ).toContain("Il vous faut de l’espace");
   });
 
-  it("Nexora Creative est « Plus tard », Nexora Bot « Bientôt » : fiche et liste d'attente, rien de livré", () => {
+  it("Nexora Creative et Nexora Bot sont « Bientôt » : fiche et liste d’attente, rien de livré", () => {
     const html = render();
-    expect(card(html, "creative")).toContain("Plus tard");
+    expect(card(html, "creative")).toContain("Bientôt");
     expect(card(html, "creative")).toContain("Me prévenir");
     expect(card(html, "bot")).toContain("Bientôt");
     expect(card(html, "bot")).toContain("pas encore livré");

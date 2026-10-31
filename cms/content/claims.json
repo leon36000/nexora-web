@@ -2238,9 +2238,9 @@
     {
       "id": "CL-AP05",
       "kind": "statut",
-      "statement": "Nexora WebPilot est prévu à l'usage, comme un modèle, et Nexora Creative (image, son, vidéo) est prévu à une étape ultérieure ; aucun des deux n'est livré et aucune date n'est annoncée.",
+      "statement": "Nexora WebPilot est prévu à l'usage, comme un modèle, et Nexora Creative (image, son, vidéo) est en préparation (état « Bientôt », voir CL-CR01) ; aucun des deux n'est livré et aucune date n'est annoncée.",
       "scope": "Nexora Apps.",
-      "evidence": "Fiches /apps/webpilot (état « Bientôt », accès « usage ») et /apps/creative (état « Plus tard »).",
+      "evidence": "Fiches /apps/webpilot (état « Bientôt », accès « usage ») et /apps/creative (état « Bientôt » depuis le 31/10/2026).",
       "evidence_url": null,
       "source_version": "Dépôt NexoraSite, branche feat/marketing issue de main, commit dc285df (29/10/2026), web/src/i18n/apps.ts",
       "approval_status": "en_revue",
@@ -2281,6 +2281,66 @@
       "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
       "approval_status": "en_revue",
       "valid_from": "2026-10-30",
+      "valid_until": null
+    },
+    {
+      "id": "CL-CR01",
+      "kind": "statut",
+      "statement": "Nexora Creative fonctionne en démonstration interne sur les serveurs de Nexora (vidéo avec son, musique, film de plusieurs plans) ; il n'est pas ouvert dans les comptes clients, la facturation en crédits n'est pas construite et aucune date n'est annoncée.",
+      "scope": "Fiche /apps/creative : état « Bientôt », liste « ce qui n'est pas encore là ».",
+      "evidence": "docs/ETAT.md et docs/JOURNAL.md du dépôt nexora-creative (99 tests automatisés, rendus réels) ; routes de crédits et d'accès au portail non construites côté site (docs/INTEGRATION-NEXORA.md).",
+      "evidence_url": null,
+      "source_version": "Dépôt nexora-creative (GitLab pc4, root/nexora-creative), branche developpement, commit 6446242 (31/10/2026) ; dépôt NexoraSite, branche feat/creative-admin-modeles",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-31",
+      "valid_until": null
+    },
+    {
+      "id": "CL-CR02",
+      "kind": "fait",
+      "statement": "Sur une carte RTX 5090 de Nexora, le 31/10/2026 : 5 s de vidéo avec son en 23 à 40 s en mode Rapide (FastH3) et en 290 à 318 s (environ 5 min) en qualité Cinéma 1344 × 768 ; les temps varient selon la charge.",
+      "scope": "Fiche /apps/creative : bandeau « Des temps mesurés ».",
+      "evidence": "recherche/10-qualite-h3.md et docs/JOURNAL.md du dépôt nexora-creative : FastH3 22,9 à 39,5 s mesurés, H3 cinéma 290 à 318 s mesurés.",
+      "evidence_url": null,
+      "source_version": "Dépôt nexora-creative (GitLab pc4, root/nexora-creative), branche developpement, commit 6446242 (31/10/2026) ; dépôt NexoraSite, branche feat/creative-admin-modeles",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-31",
+      "valid_until": null
+    },
+    {
+      "id": "CL-CR03",
+      "kind": "fait",
+      "statement": "MiniMax-Music3 a composé une minute de musique en 27 s sur une carte RTX 5090 de Nexora (mesure du 31/10/2026).",
+      "scope": "Fiche /apps/creative : bandeau « Des temps mesurés ».",
+      "evidence": "recherche/11-image-et-musique.md du dépôt nexora-creative : 60 s de musique en 27 s [MESURÉ].",
+      "evidence_url": null,
+      "source_version": "Dépôt nexora-creative (GitLab pc4, root/nexora-creative), branche developpement, commit 6446242 (31/10/2026) ; dépôt NexoraSite, branche feat/creative-admin-modeles",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-31",
+      "valid_until": null
+    },
+    {
+      "id": "CL-CR04",
+      "kind": "fait",
+      "statement": "La bande-annonce de la fiche est entièrement générée par IA : plans vidéo texte-vers-vidéo de MiniMax H3, musique de MiniMax-Music3 ; le montage final et les sons d'impact sont des outils internes de Nexora (synthèse, sans échantillon). Les plans ont été choisis un à un et les ressemblances avec des franchises connues écartées.",
+      "scope": "Fiche /apps/creative : bande-annonce et légende.",
+      "evidence": "docs/JOURNAL.md (bande-annonce V2) et marketing/creative/outils/ du dépôt nexora-creative ; version publique sans aucun plan issu de Qwen-Image-2.1 (licence de recherche). Aucun humain n'a encore écouté la bande sonore ; mesures seulement (−13,3 LUFS, synchro de l'impact vérifiée).",
+      "evidence_url": null,
+      "source_version": "Dépôt nexora-creative (GitLab pc4, root/nexora-creative), branche developpement, commit 6446242 (31/10/2026) ; dépôt NexoraSite, branche feat/creative-admin-modeles",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-31",
+      "valid_until": null
+    },
+    {
+      "id": "CL-CR05",
+      "kind": "fait",
+      "statement": "La licence de MiniMax H3 exclut les États-Unis, l'Union européenne, le Royaume-Uni et la Corée du Sud, y compris pour les sorties (clause V.4) et impose d'afficher « MiniMax H3 » ; celle de MiniMax-Music3 n'exclut aucun territoire et impose d'afficher « MiniMax-Music3 ». La disponibilité par territoire est en cours de validation.",
+      "scope": "Fiche /apps/creative : question « Où pourra-t-on l'utiliser ? » et liste « ce qui n'est pas encore là ».",
+      "evidence": "recherche/03-modeles-video-licences-h3.md et docs/LICENCES-PUBLICATION.md du dépôt nexora-creative (licences lues le 30-31/10/2026 ; avis juridique non obtenu).",
+      "evidence_url": null,
+      "source_version": "Dépôt nexora-creative (GitLab pc4, root/nexora-creative), branche developpement, commit 6446242 (31/10/2026) ; dépôt NexoraSite, branche feat/creative-admin-modeles",
+      "approval_status": "en_revue",
+      "valid_from": "2026-10-31",
       "valid_until": null
     },
     {
