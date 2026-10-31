@@ -50,6 +50,13 @@ export const accountEnCA: AccountDictionary = {
     company: "Company name",
     companyHint:
       "It will name your organization. Without a company, we will use your name.",
+    intro: {
+      text: "An account gives access to My tools: your credits, your space and your products, with the real state of each. Subscribing and topping up are not open yet: a new account has no credits.",
+      linksLabel: "To read before creating your account",
+      pricing: "Pricing",
+      terms: "Terms of use",
+      privacy: "Privacy",
+    },
     passwordHint: "At least 12 characters.",
     submit: "Create my account",
     haveAccount: "Already have an account?",

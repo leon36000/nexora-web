@@ -54,6 +54,13 @@ export const accountFrCA = {
     company: "Nom de l’entreprise",
     companyHint:
       "Il nommera votre organisation. Sans entreprise, nous utiliserons votre nom.",
+    intro: {
+      text: "Un compte donne accès à Mes outils : vos crédits, votre espace et vos produits, avec l’état réel de chacun. La souscription et la recharge ne sont pas encore ouvertes : un compte neuf n’a pas de crédits.",
+      linksLabel: "À lire avant de créer votre compte",
+      pricing: "Tarifs",
+      terms: "Conditions d’utilisation",
+      privacy: "Confidentialité",
+    },
     passwordHint: "12 caractères au moins.",
     submit: "Créer mon compte",
     haveAccount: "Déjà un compte ?",
