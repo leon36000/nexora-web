@@ -1,5 +1,6 @@
 import { LEAD_DEPLOYMENTS, LEAD_NEEDS, LEAD_SECTORS } from "@nexora/db";
 import { describe, expect, it } from "vitest";
+import { resolveContactSubject } from "../lib/contact-subject";
 import { getDictionary } from "./get-dictionary";
 
 describe("dictionnaires du formulaire de contact", () => {
@@ -25,6 +26,20 @@ describe("dictionnaires du formulaire de contact", () => {
         expect(errors).toHaveProperty(code);
     });
   }
+
+  it("« ouverture-plateforme » préremplit un message dans chaque langue", () => {
+    const expected = {
+      fr: "Prévenez-moi à l’ouverture de la plateforme à crédits.",
+      en: "Please let me know when the credit platform opens.",
+    } as const;
+    for (const lang of ["fr", "en"] as const) {
+      const prefills = getDictionary(lang).contact.form.message.prefill;
+      expect(resolveContactSubject("ouverture-plateforme", prefills)).toEqual({
+        need: "autre",
+        message: expected[lang],
+      });
+    }
+  });
 
   it("la confirmation est honnête : « enregistrée », jamais un délai de réponse chiffré", () => {
     for (const lang of ["fr", "en"] as const) {

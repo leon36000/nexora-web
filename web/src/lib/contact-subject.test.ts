@@ -4,6 +4,7 @@ import { CONTACT_SUBJECTS, resolveContactSubject } from "./contact-subject";
 const prefills = {
   "apps-webpilot": "Liste d’attente : Nexora WebPilot.",
   "modele-apercu": "Prévenez-moi à l’ouverture du modèle : ",
+  "ouverture-plateforme": "Prévenez-moi à l’ouverture de la plateforme à crédits.",
 };
 
 describe("sujet du formulaire de contact (?sujet=)", () => {
@@ -56,5 +57,17 @@ describe("sujet du formulaire de contact (?sujet=)", () => {
     expect(
       resolveContactSubject("apps-webpilot", prefills, "nexora/x-1").message,
     ).toBe("Liste d’attente : Nexora WebPilot.");
+  });
+
+  it("« ouverture-plateforme » est reconnu (besoin « autre ») et préremplit le message, sans identifiant de modèle", () => {
+    expect(CONTACT_SUBJECTS["ouverture-plateforme"]).toBe("autre");
+    expect(resolveContactSubject("ouverture-plateforme", prefills)).toEqual({
+      need: "autre",
+      message: "Prévenez-moi à l’ouverture de la plateforme à crédits.",
+    });
+    expect(
+      resolveContactSubject("ouverture-plateforme", prefills, "nexora/x-1")
+        .message,
+    ).toBe("Prévenez-moi à l’ouverture de la plateforme à crédits.");
   });
 });

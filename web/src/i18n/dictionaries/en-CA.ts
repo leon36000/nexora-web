@@ -318,6 +318,7 @@ export const enCA: Dictionary = {
           "apps-creative": "Waiting list: Nexora Creative.",
           "apps-outils": "Waiting list: Nexora free tools.",
           "modele-apercu": "Please let me know when this model opens: ",
+          "ouverture-plateforme": "Please let me know when the credit platform opens.",
         },
       },
       consentMarketing: {

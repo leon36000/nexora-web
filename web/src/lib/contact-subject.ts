@@ -24,6 +24,8 @@ export const CONTACT_SUBJECTS: Readonly<Record<string, string>> = {
   "apps-outils": "autre",
   // Fiche d'un modèle en aperçu (/modeles/<id>) : « Me prévenir à l'ouverture ».
   "modele-apercu": "vps-api",
+  // « Me prévenir à l'ouverture » de la plateforme à crédits (Tarifs, Modèles, Apps, inscription).
+  "ouverture-plateforme": "autre",
 };
 
 /** Identifiant public d'un modèle (même forme que `/modeles/<id>`). */
