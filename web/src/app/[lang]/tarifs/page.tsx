@@ -46,7 +46,11 @@ async function Offers({ lang }: { lang: "fr" | "en" }) {
   ]);
   // Équivalent en jetons : seulement depuis les prix publiés du catalogue ; indisponible = on le dit, on n'invente rien.
   const rows = catalog.available
-    ? creditEquivalents(catalog.models, { credits: EQUIVALENT_CREDITS, max: 4 })
+    ? creditEquivalents(catalog.models, {
+        credits: EQUIVALENT_CREDITS,
+        max: 4,
+        includePreview: true,
+      })
     : [];
   return (
     <PricingPage

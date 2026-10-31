@@ -96,6 +96,7 @@ describe("modèles choisis pour illustrer l'équivalence", () => {
       name: "b/moyen",
       inputTokens: 10_000_000,
       outputTokens: 3_333_333,
+      preview: false,
     });
   });
 
@@ -112,6 +113,66 @@ describe("modèles choisis pour illustrer l'équivalence", () => {
   it("un modèle gratuit en sortie (prix nul) n'a pas d'équivalent en sortie, donc n'est pas montré", () => {
     expect(
       creditEquivalents([model("x/y", "1", "0")], { credits: 1000, max: 4 }),
+    ).toEqual([]);
+  });
+});
+
+describe("modèles en aperçu (option includePreview)", () => {
+  const previewCatalog = [
+    model("a/petit", "0.1", "0.2", { availability: "preview" }),
+    model("b/moyen", "1", "3", { availability: "preview" }),
+    model("c/live", "5", "15"),
+    model("f/embed", "0.01", "0", {
+      kind: "embedding",
+      availability: "preview",
+    }),
+  ];
+
+  it("par défaut, un modèle en aperçu est exclu (comportement inchangé)", () => {
+    const rows = creditEquivalents(previewCatalog, { credits: 1000, max: 10 });
+    expect(rows.map((r) => r.id)).toEqual(["c/live"]);
+    expect(rows.every((r) => r.preview === false)).toBe(true);
+  });
+
+  it("avec includePreview, les aperçus de discussion sont inclus et marqués preview: true", () => {
+    const rows = creditEquivalents(previewCatalog, {
+      credits: 1000,
+      max: 10,
+      includePreview: true,
+    });
+    expect(rows.map((r) => [r.id, r.preview])).toEqual([
+      ["a/petit", true],
+      ["b/moyen", true],
+      ["c/live", false],
+    ]);
+  });
+
+  it("un catalogue entièrement en aperçu donne des lignes avec includePreview, aucune sans", () => {
+    const all = previewCatalog.slice(0, 2);
+    expect(creditEquivalents(all, { credits: 1000, max: 4 })).toEqual([]);
+    expect(
+      creditEquivalents(all, { credits: 1000, max: 4, includePreview: true }),
+    ).toHaveLength(2);
+  });
+
+  it("le calcul reste celui des prix publiés, aperçu ou non", () => {
+    const [row] = creditEquivalents(
+      [model("b/moyen", "1", "3", { availability: "preview" })],
+      { credits: 1000, max: 4, includePreview: true },
+    );
+    expect(row).toMatchObject({
+      inputTokens: 10_000_000,
+      outputTokens: 3_333_333,
+      preview: true,
+    });
+  });
+
+  it("les prix illisibles restent écartés même avec includePreview", () => {
+    expect(
+      creditEquivalents(
+        [model("x/y", "abc", "1", { availability: "preview" })],
+        { credits: 1000, max: 4, includePreview: true },
+      ),
     ).toEqual([]);
   });
 });

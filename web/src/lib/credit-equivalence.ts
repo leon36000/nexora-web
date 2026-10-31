@@ -35,19 +35,32 @@ export interface CreditEquivalent {
   inputTokens: number;
   /** Jetons de sortie (réponse) pour le même nombre de crédits. */
   outputTokens: number;
+  /** Vrai si le modèle est en aperçu : son prix est un prix de développement, non définitif. */
+  preview: boolean;
 }
 
 /**
  * Quelques modèles de discussion appelables du catalogue avec leur équivalent en jetons : le moins cher, le plus cher,
  * le modèle par défaut (s'il existe) puis des intermédiaires, au plus `max`, triés du moins cher au plus cher
- * (prix de sortie). Écarte les aperçus, les modèles d'une autre nature et les prix illisibles ou nuls.
+ * (prix de sortie). Écarte les modèles d'une autre nature et les prix illisibles ou nuls, ainsi que les aperçus sauf si
+ * `includePreview` est vrai (ils sont alors marqués `preview: true`).
  */
 export function creditEquivalents(
   models: readonly PublicModel[],
-  options: { credits: number; max: number; defaultId?: string },
+  options: {
+    credits: number;
+    max: number;
+    defaultId?: string;
+    includePreview?: boolean;
+  },
 ): CreditEquivalent[] {
   const priced = models.flatMap((m) => {
-    if (m.kind !== "chat" || m.availability !== "live") return [];
+    if (m.kind !== "chat") return [];
+    if (
+      m.availability !== "live" &&
+      !(options.includePreview && m.availability === "preview")
+    )
+      return [];
     const input = perMillionToMicro(m.inputPerMillion);
     const output = perMillionToMicro(m.outputPerMillion);
     if (input === null || output === null) return [];
@@ -91,6 +104,7 @@ export function creditEquivalents(
         name: p.m.name,
         inputTokens: tokensForCredits(options.credits, p.input),
         outputTokens: tokensForCredits(options.credits, p.output),
+        preview: p.m.availability === "preview",
       };
     });
 }
