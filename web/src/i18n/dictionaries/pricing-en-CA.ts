@@ -44,6 +44,10 @@ export const pricingEnCA: PricingDictionary = {
     "All prices are in Canadian dollars, before tax. GST and QST are calculated by our payment provider from your billing address and added to the price. Included credits are granted every paid period.",
   trialNote:
     "During a trial, nothing is charged until the trial ends; you can cancel before then at no cost.",
+  notify: {
+    text: "The platform is not open for sale yet. Leave your email: we will write to you when it opens, with no date announced.",
+    cta: "Notify me at launch",
+  },
   states: {
     empty: {
       label: "Prices coming",
@@ -77,6 +81,10 @@ export const pricingEnCA: PricingDictionary = {
       input: "Input tokens",
       output: "Output tokens",
       note: "Catalogue prices can change, and the equivalent changes with them.",
+      preview: {
+        tag: "Preview",
+        note: "These models are in preview: development prices, not final.",
+      },
       unavailable:
         "The model catalogue is not available right now: the token equivalent will appear as soon as it is back. Nothing is estimated in the meantime.",
       cta: "See all models and their prices",
@@ -179,8 +187,13 @@ export const pricingEnCA: PricingDictionary = {
     lead: "A plan is not the only path: get a server, or let us talk about your need.",
     vps: {
       title: "Private servers (VPS)",
-      text: "A virtual private server, at the price shown on its page, with the application of your choice already installed.",
+      text: "A virtual private server with the application of your choice already installed. The plans will be published on its page.",
       cta: "See VPS plans",
+    },
+    support: {
+      title: "Guided support",
+      text: "A diagnosis of your need first, then a written estimate.",
+      cta: "Request a diagnosis",
     },
     contact: {
       title: "A specific need?",

@@ -15,6 +15,10 @@ import type { CreditPack } from "@/server/billing/credit-packs";
 /** Nombre de crédits pour lequel on illustre l'équivalence en jetons (une unité ronde, sans lien avec un palier). */
 export const EQUIVALENT_CREDITS = 1000;
 
+/** Adresse du formulaire de contact pour la liste d'ouverture de la plateforme. */
+export const notifyHref = (lang: Lang) =>
+  `${localizePath(lang, "/contact")}?sujet=ouverture-plateforme`;
+
 const number = (lang: Lang, n: number) =>
   new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA").format(n);
 
@@ -89,6 +93,11 @@ export function CreditSection({
                     <tr key={row.id} className="border-b border-line">
                       <th scope="row" className="py-3 pr-4 font-medium text-fg">
                         {row.name}
+                        {row.preview ? (
+                          <Badge tone="outline" className="ml-2 align-middle">
+                            {e.preview.tag}
+                          </Badge>
+                        ) : null}
                       </th>
                       <td className="px-4 py-3 text-right tabular-nums text-fg">
                         {formatTokensCompact(lang, row.inputTokens)}
@@ -103,7 +112,14 @@ export function CreditSection({
               <ul className="mt-6 divide-y divide-line border-y border-line sm:hidden">
                 {equivalents.map((row) => (
                   <li key={row.id} className="py-4">
-                    <p className="font-medium text-fg">{row.name}</p>
+                    <p className="font-medium text-fg">
+                      {row.name}
+                      {row.preview ? (
+                        <Badge tone="outline" className="ml-2 align-middle">
+                          {e.preview.tag}
+                        </Badge>
+                      ) : null}
+                    </p>
                     <dl className="mt-2 grid grid-cols-2 gap-3 text-small">
                       <div>
                         <dt className="text-fg-muted">{e.input}</dt>
@@ -122,6 +138,11 @@ export function CreditSection({
                 ))}
               </ul>
               <p className="mt-4 text-small text-fg-muted">{e.note}</p>
+              {equivalents.some((row) => row.preview) ? (
+                <p className="mt-2 text-small text-fg-muted">
+                  {e.preview.note}
+                </p>
+              ) : null}
             </>
           ) : (
             <p className="mt-6 border-l-2 border-line-strong pl-4 text-fg-muted">
@@ -332,9 +353,15 @@ export function PricingState({
           {s.title}
         </h2>
         <p className="mt-5 text-lead text-fg-muted">{s.text}</p>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap gap-3">
+          {state === "empty" ? (
+            <ButtonLink href={notifyHref(lang)} arrow>
+              {t.notify.cta}
+            </ButtonLink>
+          ) : null}
           <ButtonLink
             href={`${localizePath(lang, "/contact")}?sujet=demonstration`}
+            variant={state === "empty" ? "secondary" : "primary"}
             arrow
           >
             {s.cta}

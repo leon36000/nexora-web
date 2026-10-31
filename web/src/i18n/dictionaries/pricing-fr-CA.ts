@@ -43,6 +43,10 @@ export const pricingFrCA = {
     "Tous les prix sont en dollars canadiens, avant taxes. La TPS et la TVQ sont calculées par notre prestataire de paiement selon votre adresse de facturation et s’ajoutent au prix. Les crédits inclus sont accordés à chaque période payée.",
   trialNote:
     "Pendant un essai, aucun montant n’est prélevé avant la fin de la période d’essai ; vous pouvez résilier avant sans frais.",
+  notify: {
+    text: "La plateforme n’est pas encore ouverte à la vente. Laissez votre courriel : nous vous écrivons à l’ouverture, sans date annoncée.",
+    cta: "Me prévenir à l’ouverture",
+  },
   states: {
     empty: {
       label: "Prix à venir",
@@ -76,6 +80,10 @@ export const pricingFrCA = {
       input: "Jetons d’entrée",
       output: "Jetons de sortie",
       note: "Les prix du catalogue peuvent changer, et l’équivalent change avec eux.",
+      preview: {
+        tag: "En aperçu",
+        note: "Ces modèles sont en aperçu : prix de développement, non définitifs.",
+      },
       unavailable:
         "Le catalogue de modèles n’est pas disponible pour le moment : l’équivalent en jetons s’affichera dès son retour. Rien n’est estimé en attendant.",
       cta: "Voir tous les modèles et leurs prix",
@@ -181,8 +189,13 @@ export const pricingFrCA = {
     lead: "Un abonnement n’est pas la seule voie : prenez un serveur, ou parlons de votre besoin.",
     vps: {
       title: "Serveurs privés (VPS)",
-      text: "Un serveur privé virtuel, au prix affiché sur sa page, avec l’application de votre choix déjà installée.",
+      text: "Un serveur privé virtuel avec l’application de votre choix déjà installée. Les plans seront publiés sur sa page.",
       cta: "Voir les VPS",
+    },
+    support: {
+      title: "Accompagnement",
+      text: "Un diagnostic de votre besoin, puis une estimation écrite.",
+      cta: "Demander un diagnostic",
     },
     contact: {
       title: "Un besoin précis ?",

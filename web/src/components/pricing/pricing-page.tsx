@@ -16,6 +16,7 @@ import type { PublicPacks, PublicPlans } from "@/server/billing/pricing-read";
 import { OfferCard } from "./offer-card";
 import {
   CreditSection,
+  notifyHref,
   PricingFaq,
   PricingState,
   RefillSection,
@@ -94,6 +95,16 @@ export function PricingPage({
           <p className="mt-5 max-w-2xl text-lead text-fg-muted">
             {t.hero.lead}
           </p>
+          {state === "empty" ? (
+            <div className="mt-8 max-w-2xl">
+              <p className="text-fg-muted">{t.notify.text}</p>
+              <div className="mt-4">
+                <ButtonLink href={notifyHref(lang)} arrow>
+                  {t.notify.cta}
+                </ButtonLink>
+              </div>
+            </div>
+          ) : null}
         </header>
       </Section>
 
@@ -132,7 +143,7 @@ export function PricingPage({
           title={t.more.title}
           lead={t.more.lead}
         />
-        <ul className="mt-12 grid gap-6 md:grid-cols-2">
+        <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <li>
             <Card className="flex h-full flex-col">
               <h3 className="text-h3 text-fg">{t.more.vps.title}</h3>
@@ -144,6 +155,21 @@ export function PricingPage({
                   arrow
                 >
                   {t.more.vps.cta}
+                </ButtonLink>
+              </div>
+            </Card>
+          </li>
+          <li>
+            <Card className="flex h-full flex-col">
+              <h3 className="text-h3 text-fg">{t.more.support.title}</h3>
+              <p className="mt-3 text-fg-muted">{t.more.support.text}</p>
+              <div className="mt-auto pt-8">
+                <ButtonLink
+                  href={`${localizePath(lang, "/contact")}?sujet=diagnostic`}
+                  variant="secondary"
+                  arrow
+                >
+                  {t.more.support.cta}
                 </ButtonLink>
               </div>
             </Card>
