@@ -231,9 +231,9 @@ describe("liste Nexora Apps : ordre et légende", () => {
       ["disponible", "bientot", "plus_tard"],
     );
     // état réel du registre aujourd'hui : aucune carte n'est « disponible »
-    expect(APPS.some((x) => x.state === "disponible")).toBe(
-      legendStates(APPS).includes("disponible"),
-    );
+    expect(
+      (APPS as readonly AppDef[]).some((x) => x.state === "disponible"),
+    ).toBe(legendStates(APPS).includes("disponible"));
   });
 });
 

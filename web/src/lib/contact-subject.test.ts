@@ -4,7 +4,8 @@ import { CONTACT_SUBJECTS, resolveContactSubject } from "./contact-subject";
 const prefills = {
   "apps-webpilot": "Liste d’attente : Nexora WebPilot.",
   "modele-apercu": "Prévenez-moi à l’ouverture du modèle : ",
-  "ouverture-plateforme": "Prévenez-moi à l’ouverture de la plateforme à crédits.",
+  "ouverture-plateforme":
+    "Prévenez-moi à l’ouverture de la plateforme à crédits.",
 };
 
 describe("sujet du formulaire de contact (?sujet=)", () => {
