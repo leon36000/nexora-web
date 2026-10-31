@@ -142,6 +142,23 @@ describe("fiche d'un modèle en aperçu", () => {
     );
   });
 
+  it("« Voir les modèles déjà disponibles » n'est proposé que si le catalogue en contient un", () => {
+    // FIXTURES contient un modèle disponible
+    expect(html).toContain("disponibilite=disponible");
+    expect(html).toContain("Voir les modèles déjà disponibles");
+    // catalogue sans modèle disponible : pas de lien vers une liste vide
+    const previewsOnly = FIXTURES.filter((m) => m.availability === "preview");
+    for (const lang of ["fr", "en"] as const) {
+      const bare = renderToStaticMarkup(
+        <ModelDetail model={MOE_PREVIEW} catalog={previewsOnly} lang={lang} />,
+      );
+      expect(bare, lang).not.toContain("disponibilite=disponible");
+      expect(bare, lang).not.toMatch(/déjà disponibles|already available/);
+      // le bouton principal reste
+      expect(bare, lang).toContain("sujet=modele-apercu");
+    }
+  });
+
   it("paramètres actifs affichés, aucune offre structurée (rien à acheter encore)", () => {
     expect(html).toContain("400 Md au total · 32 Md actifs");
     const [product] = jsonLd(html);

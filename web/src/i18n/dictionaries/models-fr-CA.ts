@@ -131,6 +131,11 @@ export const modelsFrCA = {
       text: "Retirez un filtre ci-dessous ou repartez du catalogue complet.",
       reset: "Voir tous les modèles",
     },
+    previewBanner: {
+      text: "Catalogue en aperçu : fiches et prix de développement publics ; l’appel par API n’est pas encore ouvert.",
+      pricing: "Voir les tarifs",
+      notify: "Me prévenir à l’ouverture",
+    },
     emptyCatalog:
       "Le catalogue est en cours de préparation : aucun modèle n’est publié pour le moment.",
     card: {

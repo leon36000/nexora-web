@@ -327,12 +327,14 @@ export function ModelDetail({
                   <ButtonLink href={notifyHref} arrow>
                     {d.api.notify}
                   </ButtonLink>
-                  <ButtonLink
-                    href={`${listPath}?disponibilite=disponible`}
-                    variant="secondary"
-                  >
-                    {d.api.seeLive}
-                  </ButtonLink>
+                  {catalog.some((m) => m.availability !== "preview") ? (
+                    <ButtonLink
+                      href={`${listPath}?disponibilite=disponible`}
+                      variant="secondary"
+                    >
+                      {d.api.seeLive}
+                    </ButtonLink>
+                  ) : null}
                 </div>
               </>
             ) : (

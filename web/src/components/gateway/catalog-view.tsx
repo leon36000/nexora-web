@@ -66,6 +66,11 @@ export function filterLabel(
  * Corps de la page /modeles : raccourcis, recherche et filtres, filtres actifs, compteur, cartes ou tableau, état
  * « aucun résultat », barre de comparaison. Pur rendu : tout vient du catalogue publié et de la requête d'adresse.
  */
+/** Vrai tant qu'aucun modèle du catalogue n'est appelable : le catalogue n'est alors qu'un aperçu. */
+export function isPreviewOnlyCatalog(models: PublicCatalog["models"]): boolean {
+  return models.length > 0 && models.every((m) => m.availability === "preview");
+}
+
 export function CatalogView({
   lang,
   catalog,
@@ -90,12 +95,34 @@ export function CatalogView({
 
   return (
     <>
+      {isPreviewOnlyCatalog(catalog.models) ? (
+        <div
+          role="note"
+          className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 rounded-card border border-line-strong p-5"
+        >
+          <p className="max-w-2xl text-body text-fg">{l.previewBanner.text}</p>
+          <div className="flex flex-wrap gap-3">
+            <ButtonLink
+              href={localizePath(lang, "/tarifs")}
+              variant="secondary"
+            >
+              {l.previewBanner.pricing}
+            </ButtonLink>
+            <ButtonLink
+              href={`${localizePath(lang, "/contact")}?sujet=ouverture-plateforme`}
+              arrow
+            >
+              {l.previewBanner.notify}
+            </ButtonLink>
+          </div>
+        </div>
+      ) : null}
       <CategoryShortcuts
         t={t}
         query={query}
         facets={facets}
         base={base}
-        className="mt-10"
+        className={isPreviewOnlyCatalog(catalog.models) ? "mt-6" : "mt-10"}
       />
       <CatalogFilters
         t={t}

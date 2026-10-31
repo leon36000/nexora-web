@@ -130,3 +130,51 @@ describe("liste des modèles : /modeles", () => {
     expect(html).not.toContain("<form");
   });
 });
+
+describe("bandeau « catalogue en aperçu » de /modeles", () => {
+  const previews = FIXTURES.filter((m) => m.availability === "preview");
+  const live = FIXTURES.filter((m) => m.availability !== "preview");
+
+  it("sans aucun modèle disponible : bandeau sobre avec « Voir les tarifs » et « Me prévenir à l'ouverture »", () => {
+    expect(previews.length).toBeGreaterThan(0);
+    const html = render({}, "fr", previews);
+    expect(html).toContain(
+      "Catalogue en aperçu : fiches et prix de développement publics ; l’appel par API n’est pas encore ouvert.",
+    );
+    expect(html).toMatch(/<a [^>]*href="\/tarifs"[^>]*>[^<]*Voir les tarifs/);
+    expect(html).toMatch(
+      /<a [^>]*href="\/contact\?sujet=ouverture-plateforme"[^>]*>[^<]*Me prévenir à l’ouverture/,
+    );
+    // le bandeau est avant les raccourcis et les filtres
+    expect(html.indexOf("Catalogue en aperçu")).toBeLessThan(
+      html.indexOf("<search"),
+    );
+    // jamais de lien vers une liste vide
+    expect(html).not.toContain("disponibilite=disponible");
+    expect(html).not.toContain("Voir les modèles déjà disponibles");
+  });
+
+  it("en-CA : même bandeau, liens localisés", () => {
+    const html = render({}, "en", previews);
+    expect(html).toContain(
+      "Preview catalogue: model sheets and development prices are public; API calls are not open yet.",
+    );
+    expect(html).toMatch(/<a [^>]*href="\/en\/pricing"[^>]*>[^<]*View pricing/);
+    expect(html).toMatch(
+      /<a [^>]*href="\/en\/contact\?sujet=ouverture-plateforme"[^>]*>[^<]*Notify me when it opens/,
+    );
+  });
+
+  it("dès qu'un modèle est disponible, le bandeau disparaît", () => {
+    expect(live.length).toBeGreaterThan(0);
+    for (const lang of ["fr", "en"] as const) {
+      const html = render({}, lang, FIXTURES);
+      expect(html, lang).not.toContain("ouverture-plateforme");
+      expect(html, lang).not.toMatch(/Catalogue en aperçu|Preview catalogue/);
+    }
+  });
+
+  it("le filtre « Disponibilité » reste proposé même sans modèle disponible", () => {
+    expect(render({}, "fr", previews)).toContain('name="disponibilite"');
+  });
+});

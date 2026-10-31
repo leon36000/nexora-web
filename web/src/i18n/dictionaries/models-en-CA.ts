@@ -134,6 +134,11 @@ export const modelsEnCA: ModelsDictionary = {
       text: "Remove a filter below or start again from the full catalogue.",
       reset: "See all models",
     },
+    previewBanner: {
+      text: "Preview catalogue: model sheets and development prices are public; API calls are not open yet.",
+      pricing: "View pricing",
+      notify: "Notify me when it opens",
+    },
     emptyCatalog:
       "The catalogue is being prepared: no model is published at the moment.",
     card: {
