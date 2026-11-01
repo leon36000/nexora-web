@@ -79,7 +79,7 @@ describe("registre des produits du panneau", () => {
       expect(app, id).toBeDefined();
       expect(byId(list, id).state, id).toBe(app?.state);
     }
-    expect(byId(list, "creative").state).toBe("plus_tard");
+    expect(byId(list, "creative").state).toBe("bientot");
     expect(byId(list, "bot").action).toBe("waitlist");
   });
 

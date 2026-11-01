@@ -6,12 +6,18 @@ import type { VaultKind } from "@nexora/db";
  * administrateur pourrait désigner « stripe.secret_key » comme clé d'un fournisseur et la faire parvenir à son
  * propre serveur par « Tester le fournisseur » (le coffre ne relit jamais une clé, mais il peut l'utiliser).
  */
-export type SecretScope = "model-provider" | "workstudio-instance" | "proxmox";
+export type SecretScope =
+  | "model-provider"
+  | "workstudio-instance"
+  | "proxmox"
+  | "creative-engine";
 
 const KINDS: Record<SecretScope, readonly VaultKind[]> = {
   "model-provider": ["llm_provider"],
   "workstudio-instance": ["llm_provider", "other"],
   proxmox: ["proxmox"],
+  /** Clé d'un moteur de génération cloud de Nexora Creative (ComfyUI cloud) : secret de type « other ». */
+  "creative-engine": ["other"],
 };
 
 /** Secrets de la plateforme (dont la clé SSH du worker, `vps.*`) : jamais envoyés vers une adresse saisie. */
@@ -52,12 +58,14 @@ const HOST_ENV: Record<SecretScope, string> = {
   "model-provider": "NEXORA_SECRET_HOSTS_MODEL_PROVIDER",
   "workstudio-instance": "NEXORA_SECRET_HOSTS_WORKSTUDIO",
   proxmox: "NEXORA_SECRET_HOSTS_PROXMOX",
+  "creative-engine": "NEXORA_SECRET_HOSTS_CREATIVE",
 };
 
 const SCOPE_LABEL: Record<SecretScope, string> = {
   "model-provider": "fournisseur de modèles",
   "workstudio-instance": "instance WorkStudio",
   proxmox: "serveur Proxmox",
+  "creative-engine": "moteur de génération Nexora Creative",
 };
 
 /** Fournisseurs de modèles connus : interfaces publiques des éditeurs, atteintes en HTTPS seulement. */
@@ -84,6 +92,8 @@ const DEFAULT_HOSTS: Record<SecretScope, readonly string[]> = {
   ],
   "workstudio-instance": [],
   proxmox: [],
+  // Comfy Cloud (HTTPS) ; tout autre moteur cloud est déclaré par l'opérateur.
+  "creative-engine": ["cloud.comfy.org"],
 };
 
 const HOST_ENTRY =

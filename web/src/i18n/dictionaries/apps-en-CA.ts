@@ -441,39 +441,46 @@ export const appsEnCA: AppsDictionary = {
     creative: {
       name: "Nexora Creative",
       answer:
-        "Nexora Creative is a family of image, sound and video tools for marketing, with AI. It is a later stage of Nexora Apps: nothing is delivered, and no date or access is announced. The principle is the same as every Nexora tool: whatever will call a model will use credits.",
-      hook: "Image, sound and video tools for marketing, with AI. A later stage of Nexora Apps: nothing is delivered, no date.",
+        "Nexora Creative is a video, image and music studio powered by AI: you describe a scene in plain language, and it writes the shooting plan, shoots the video with sound, composes the music and edits the film. It runs as a demonstration on Nexora’s servers; it is not yet open in your account and no date is announced.",
+      hook: "One sentence, a video with sound and music. In preparation: the trailer below was created with its engines. No date.",
       audience:
-        "For marketing teams and SMEs that produce visuals, sounds and videos for their campaigns.",
+        "For marketing teams, creators and SMEs that produce videos, visuals and sounds for their campaigns.",
       accessLabel: "To be defined",
       accessText:
-        "Nexora Creative’s access model has not been decided. The principle is the same as every Nexora tool: whatever will call a model will use credits, and the files created will count toward your plan’s storage. No price is published.",
+        "Nexora Creative’s access model has not been decided. The principle is the same as every Nexora tool: whatever calls a model uses credits, with the quote shown before each creation, and the files created count toward your plan’s storage. No price is published.",
       ready: [] as string[],
       coming: [
-        "Image creation and retouching.",
-        "Voice, music and sounds.",
-        "Video editing and generation.",
+        "Video creation with sound, from a sentence or a photo.",
+        "Multi-shot films, editable shot by shot.",
+        "Original music and publishing texts.",
+        "Opening in your Nexora account, with credit tracking.",
       ],
       faq: [
         {
-          question: "When will Nexora Creative ship?",
+          question: "When will it open?",
           answer:
-            "Later. It is a later stage of Nexora Apps: we announce neither a date nor a final scope.",
+            "We announce neither a date nor a final scope. The waiting list lets you be told among the first.",
         },
         {
           question: "How will it be billed?",
           answer:
-            "Nothing is decided. The principle is that whatever will call a model will use credits and that the files created will count toward your storage. No price is published.",
+            "Nothing is decided. The principle is that whatever calls a model uses credits, with a quote before each creation, and that the files created count toward your storage. No price is published.",
+        },
+        {
+          question:
+            "Is the video on this page really made with Nexora Creative?",
+          answer:
+            "The shots and the music were generated with Nexora Creative’s engines (MiniMax H3 and MiniMax-Music3) on Nexora hardware; the final edit and the impact sound effects were made with internal tools. Every image and every sound is AI-generated.",
+        },
+        {
+          question: "Where will it be usable?",
+          answer:
+            "The licence of the MiniMax H3 video model excludes some territories (United States, European Union, United Kingdom and South Korea). We will assign a territory to each account and show it clearly; this point is being validated.",
         },
         {
           question: "How is it different from Nexora Croissance?",
           answer:
-            "Nexora Croissance takes care of an SME’s online presence: website, SEO, advertising and social media. Nexora Creative would be a set of tools for creating images, sounds and videos. The two could complement each other; nothing is decided.",
-        },
-        {
-          question: "Can I say what interests me first?",
-          answer:
-            "Yes. The waiting list lets us know which tools matter most to you before we build them.",
+            "Nexora Croissance takes care of an SME’s online presence: website, SEO, advertising and social media. Nexora Creative is for creating videos, images and sounds. The two could complement each other; nothing is decided.",
         },
       ],
     },

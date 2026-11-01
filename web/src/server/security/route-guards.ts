@@ -9,6 +9,8 @@
  *  - api-key     : clé cliente `nxk_` (empreinte), organisation = celle de la clé ;
  *  - signature   : signature vérifiée (webhook Stripe, lien d'aperçu signé) ;
  *  - public      : volontairement ouvert (contenu public ou formulaire protégé autrement) ;
+ *  - service-token : jeton de service d'un produit (Nexora Creative lit sa configuration), distinct du jeton d'administration,
+ *                  échec fermé si absent ;
  *  - oidc-token  : jeton d'accès OpenID Connect délivré par le site à WorkStudio (introspection au nom du client,
  *                  client et portée revérifiés), sans témoin de session ;
  *  - better-auth : routes d'authentification de Better Auth (origine contrôlée, limitation de débit).
@@ -19,6 +21,7 @@ type GuardKind =
   | "api-key"
   | "signature"
   | "oidc-token"
+  | "service-token"
   | "public"
   | "better-auth";
 
@@ -63,6 +66,7 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       ["api/admin/seo/[[...path]]", "/api/admin/seo"],
       ["api/admin/vps/[[...path]]", "/api/admin/vps"],
       ["api/admin/payments/[[...path]]", "/api/admin/payments"],
+      ["api/admin/creative/[[...path]]", "/api/admin/creative/config"],
     ] as const
   ).map(
     ([route, path]): RouteGuard => ({
@@ -192,6 +196,26 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     kind: "admin-token",
     why: "Comptage de l'espace des environnements Nexora Code par le worker (tâche code.sweep) : jeton d'administration seulement",
     probes: adminProbes("POST", "/api/admin/code/usage"),
+  },
+  {
+    route: "api/creative/config",
+    kind: "service-token",
+    why: "Configuration des modèles de Nexora Creative lue par le service : jeton de service (NEXORA_CREATIVE_SERVICE_TOKEN), distinct du jeton d'administration ; la clé des moteurs cloud n'est rendue qu'à lui",
+    probes: [
+      {
+        label: "sans jeton",
+        method: "GET",
+        path: "/api/creative/config",
+        expect: [401, 403, 429, 503],
+      },
+      {
+        label: "mauvais jeton",
+        method: "GET",
+        path: "/api/creative/config",
+        headers: WRONG,
+        expect: [401, 403, 429, 503],
+      },
+    ],
   },
   {
     route: "api/code/credits",

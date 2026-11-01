@@ -443,39 +443,46 @@ export const appsFrCA = {
     creative: {
       name: "Nexora Creative",
       answer:
-        "Nexora Creative est une famille d’outils d’image, de son et de vidéo pour le marketing, avec l’IA. C’est une étape ultérieure de Nexora Apps : rien n’est livré, aucune date ni aucun accès n’est annoncé. Le principe est celui de tous les outils Nexora : ce qui appellera un modèle consommera des crédits.",
-      hook: "Des outils d’image, de son et de vidéo pour le marketing, avec l’IA. Une étape ultérieure de Nexora Apps : rien n’est livré, aucune date.",
+        "Nexora Creative est un studio de vidéo, d’image et de musique avec l’IA : vous décrivez une scène en français, il écrit le plan de tournage, tourne la vidéo avec son, compose la musique et monte le film. Il fonctionne en démonstration sur les serveurs de Nexora ; il n’est pas encore ouvert dans votre compte et aucune date n’est annoncée.",
+      hook: "Une phrase en français, une vidéo avec son et musique. En préparation : la bande-annonce ci-dessous a été créée avec ses moteurs. Aucune date.",
       audience:
-        "Pour les équipes marketing et les PME qui produisent des visuels, des sons et des vidéos pour leurs campagnes.",
+        "Pour les équipes marketing, les créateurs et les PME qui produisent des vidéos, des visuels et des sons pour leurs campagnes.",
       accessLabel: "À définir",
       accessText:
-        "Le mode d’accès de Nexora Creative n’est pas arrêté. Le principe est celui de tous les outils Nexora : ce qui appellera un modèle consommera des crédits, et les fichiers créés compteront dans l’espace de votre offre. Aucun prix n’est publié.",
+        "Le mode d’accès de Nexora Creative n’est pas arrêté. Le principe est celui de tous les outils Nexora : ce qui appelle un modèle consomme des crédits, avec le devis affiché avant chaque création, et les fichiers créés comptent dans l’espace de votre offre. Aucun prix n’est publié.",
       ready: [] as string[],
       coming: [
-        "La création et la retouche d’images.",
-        "La voix, la musique et les sons.",
-        "Le montage et la génération de vidéos.",
+        "La création de vidéos avec son, à partir d’une phrase ou d’une photo.",
+        "Les films de plusieurs plans, retouchables plan par plan.",
+        "La musique originale et les textes de publication.",
+        "L’ouverture dans votre compte Nexora, avec le suivi des crédits.",
       ],
       faq: [
         {
-          question: "Quand sortira Nexora Creative ?",
+          question: "Quand sera-t-il ouvert ?",
           answer:
-            "Plus tard. C’est une étape ultérieure de Nexora Apps : nous n’annonçons ni date ni périmètre définitif.",
+            "Nous n’annonçons ni date ni périmètre définitif. La liste d’attente permet d’être prévenu parmi les premiers.",
         },
         {
-          question: "Comment sera-t-il facturé ?",
+          question: "Comment sera-t-il facturé ?",
           answer:
-            "Rien n’est arrêté. Le principe est que ce qui appellera un modèle consommera des crédits et que les fichiers créés compteront dans votre espace. Aucun prix n’est publié.",
+            "Rien n’est arrêté. Le principe est que ce qui appelle un modèle consomme des crédits, avec un devis avant chaque création, et que les fichiers créés comptent dans votre espace. Aucun prix n’est publié.",
         },
         {
-          question: "Quelle différence avec Nexora Croissance ?",
+          question:
+            "La vidéo de cette page est-elle vraiment faite avec Nexora Creative ?",
           answer:
-            "Nexora Croissance s’occupe de la présence en ligne d’une PME : site, référencement, publicité et réseaux sociaux. Nexora Creative serait un ensemble d’outils de création d’images, de sons et de vidéos. Les deux pourraient se compléter ; rien n’est décidé.",
+            "Les plans et la musique ont été générés avec les moteurs de Nexora Creative (MiniMax H3 et MiniMax-Music3) sur du matériel de Nexora ; le montage final et les bruitages d’impact ont été faits avec des outils internes. Toutes les images et tous les sons sont générés par IA.",
         },
         {
-          question: "Puis-je dire ce qui m’intéresse en premier ?",
+          question: "Où pourra-t-on l’utiliser ?",
           answer:
-            "Oui. La liste d’attente nous permet de savoir quels outils comptent le plus pour vous avant de les construire.",
+            "La licence du modèle vidéo MiniMax H3 exclut certains territoires (États-Unis, Union européenne, Royaume-Uni et Corée du Sud). Nous associerons un territoire à chaque compte et l’afficherons clairement ; le point est en cours de validation.",
+        },
+        {
+          question: "Quelle différence avec Nexora Croissance ?",
+          answer:
+            "Nexora Croissance s’occupe de la présence en ligne d’une PME : site, référencement, publicité et réseaux sociaux. Nexora Creative sert à créer les vidéos, les images et les sons. Les deux pourraient se compléter ; rien n’est décidé.",
         },
       ],
     },

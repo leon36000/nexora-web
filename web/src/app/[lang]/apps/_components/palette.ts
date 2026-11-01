@@ -9,6 +9,7 @@ export const APP_PALETTE: Record<string, MosaicPalette> = {
   "privacy-router": "menthe",
   bot: "or",
   webpilot: "or",
+  creative: "or",
 };
 
 /** Graine déterministe d'une fiche : même mosaïque à chaque rendu, serveur et client. */

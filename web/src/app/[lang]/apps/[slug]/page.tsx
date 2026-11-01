@@ -25,6 +25,7 @@ import {
   appSoftwareJsonLd,
 } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
+import { CreativeShowcase } from "../_components/creative-showcase";
 import { APP_PALETTE, appSeed } from "../_components/palette";
 import { StateBadge } from "../_components/state-badge";
 
@@ -128,6 +129,8 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
           </div>
         </dl>
       </Section>
+
+      {app.slug === "creative" ? <CreativeShowcase lang={lang} /> : null}
 
       <Section tone="light" surface>
         <div className="grid gap-10 md:grid-cols-2">

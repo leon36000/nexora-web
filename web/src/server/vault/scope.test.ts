@@ -76,3 +76,22 @@ describe("portée d'un secret du coffre (aucun secret de la plateforme vers une 
     ).toMatch(/réservé|type/);
   });
 });
+
+describe("moteur de génération de Nexora Creative (portée « creative-engine »)", () => {
+  it("n'accepte que des clés de type other, jamais une clé de paiement, de fournisseur ou Proxmox", () => {
+    expect(
+      secretScopeProblem("creative-engine", "creative.comfy-cloud", "other"),
+    ).toBeNull();
+    for (const kind of ["payment", "llm_provider", "proxmox"] as const)
+      expect(
+        secretScopeProblem("creative-engine", "creative.comfy-cloud", kind),
+        kind,
+      ).not.toBeNull();
+  });
+
+  it("refuse les références réservées à la plateforme", () => {
+    expect(
+      secretScopeProblem("creative-engine", "stripe.secret_key", "other"),
+    ).not.toBeNull();
+  });
+});
