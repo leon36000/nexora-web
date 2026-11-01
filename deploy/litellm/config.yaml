@@ -1,11 +1,26 @@
-# Les modèles sont poussés par la synchronisation Directus -> LiteLLM (décision D3), stockés en base.
-# Seul le fournisseur amont de développement (D12) est déclaré ici.
+# LiteLLM de PRODUCTION (essai fermé sur la VM « pile »).
+#
+# Les modèles du catalogue public sont poussés par la synchronisation du site vers LiteLLM (décision D3 : « Synchroniser »
+# du module Modèles de Directus), stockés en base (STORE_MODEL_IN_DB=True) avec les clés du Coffre (`llm.deepinfra`).
+# Ce fichier ne déclare que des modèles INTERNES, hors catalogue (la synchronisation n'y touche jamais) :
+#
+#  - `nexora-sonde-deepinfra` : petit modèle de DeepInfra, fournisseur de production, pour vérifier la route de bout en
+#    bout (une sonde de quelques jetons) sans dépendre du catalogue ni d'un taux de change approuvé ;
+#  - `nexora-creative-assistant` : modèle GLM chez OpenRouter, second fournisseur, réservé à l'assistant de Nexora
+#    Creative (aucun client du catalogue ne l'appelle).
+#
+# Les clés ne sont JAMAIS ici : DEEPINFRA_API_KEY et OPENROUTER_API_KEY sont lues dans des secrets Docker par
+# l'entrypoint de LiteLLM (deploy/compose.prod.yml). Plus aucun modèle ni variable d'amont de développement.
 model_list:
-  - model_name: dev/cloud-glm-5-3
+  - model_name: nexora-sonde-deepinfra
     litellm_params:
-      model: openai/cloud-glm-5-3
-      api_base: os.environ/PC1_UPSTREAM_URL
-      api_key: os.environ/PC1_UPSTREAM_KEY
+      model: deepinfra/mistralai/Mistral-Small-3.2-24B-Instruct-2506
+      api_key: os.environ/DEEPINFRA_API_KEY
+  - model_name: nexora-creative-assistant
+    litellm_params:
+      # Identifiant relevé dans la liste des modèles d'OpenRouter (GET /api/v1/models) : z-ai/glm-5.3.
+      model: openrouter/z-ai/glm-5.3
+      api_key: os.environ/OPENROUTER_API_KEY
 general_settings:
   master_key: os.environ/LITELLM_MASTER_KEY
   disable_spend_logs: false

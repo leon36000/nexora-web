@@ -8,6 +8,9 @@
 #  - réseaux : « internal » (internal: true, sans route vers l'extérieur) pour PostgreSQL, Directus, LiteLLM et, hors de
 #    ce fichier, le site et le worker qui le rejoignent (réseau externe « nexora-internal ») ; « egress » seulement pour
 #    Directus (courriels) et LiteLLM (fournisseurs de modèles). PostgreSQL ne sort jamais ;
+#  - courriels de Directus : ÉCART n° 2 corrigé ici, plus aucun Mailpit en dur (DIRECTUS_EMAIL_FROM, DIRECTUS_SMTP_HOST…) ;
+#  - clés des fournisseurs de modèles (DeepInfra, OpenRouter) : fichiers Docker lus par l'entrypoint de LiteLLM, pour les
+#    modèles déclarés dans deploy/litellm/config.yaml (deploy/compose.site.yml ajoute le groupe qui lit les fichiers) ;
 #  - secrets : fichiers Docker (/run/secrets/…), plus de variable d'environnement visible par `docker inspect`.
 #    Directus lit nativement SECRET_FILE, DB_PASSWORD_FILE et ADMIN_PASSWORD_FILE ; PostgreSQL, POSTGRES_PASSWORD_FILE
 #    (et initdb, <BASE>_DB_PASSWORD_FILE) ; LiteLLM et le jeton d'administration de l'app passent par un petit
@@ -53,6 +56,12 @@ services:
       PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:?définir DIRECTUS_PUBLIC_URL (adresse https de Directus)}
       CORS_ORIGIN: ${DIRECTUS_CORS_ORIGIN:?définir DIRECTUS_CORS_ORIGIN (origine https de Directus)}
       PASSWORD_RESET_URL_ALLOW_LIST: ${DIRECTUS_PUBLIC_URL}/admin/reset-password
+      # Courriels (réinitialisation de mot de passe, invitations) : le serveur SMTP DE PRODUCTION, jamais Mailpit en dur.
+      # Mot de passe SMTP éventuel : EMAIL_SMTP_USER + EMAIL_SMTP_PASSWORD_FILE (secret Docker), à ajouter avec le vrai fournisseur.
+      EMAIL_FROM: ${DIRECTUS_EMAIL_FROM:?définir DIRECTUS_EMAIL_FROM (adresse d'expédition des courriels de Directus)}
+      EMAIL_SMTP_HOST: ${DIRECTUS_SMTP_HOST:?définir DIRECTUS_SMTP_HOST (serveur SMTP ; Mailpit seulement en essai fermé)}
+      EMAIL_SMTP_PORT: "${DIRECTUS_SMTP_PORT:-587}"
+      EMAIL_SMTP_SECURE: "${DIRECTUS_SMTP_SECURE:-false}"
       SESSION_COOKIE_SECURE: ${DIRECTUS_COOKIE_SECURE:-true}
       REFRESH_TOKEN_COOKIE_SECURE: ${DIRECTUS_COOKIE_SECURE:-true}
       # Le proxy HTTPS est sur l'hôte : vu depuis le réseau Docker, il vient d'une adresse privée.
@@ -78,9 +87,9 @@ services:
     entrypoint:
       - /bin/sh
       - -c
-      - 'DATABASE_URL="postgresql://litellm:$$(cat /run/secrets/litellm_db_password)@db:5432/litellm"; LITELLM_MASTER_KEY="$$(cat /run/secrets/litellm_master_key)"; LITELLM_SALT_KEY="$$(cat /run/secrets/litellm_salt_key)"; export DATABASE_URL LITELLM_MASTER_KEY LITELLM_SALT_KEY; exec docker/prod_entrypoint.sh "$$@"'
+      - 'DATABASE_URL="postgresql://litellm:$$(cat /run/secrets/litellm_db_password)@db:5432/litellm"; LITELLM_MASTER_KEY="$$(cat /run/secrets/litellm_master_key)"; LITELLM_SALT_KEY="$$(cat /run/secrets/litellm_salt_key)"; DEEPINFRA_API_KEY="$$(cat /run/secrets/deepinfra_api_key)"; OPENROUTER_API_KEY="$$(cat /run/secrets/openrouter_api_key)"; export DATABASE_URL LITELLM_MASTER_KEY LITELLM_SALT_KEY DEEPINFRA_API_KEY OPENROUTER_API_KEY; exec docker/prod_entrypoint.sh "$$@"'
       - --
-    secrets: [litellm_db_password, litellm_master_key, litellm_salt_key]
+    secrets: [litellm_db_password, litellm_master_key, litellm_salt_key, deepinfra_api_key, openrouter_api_key]
 
   searxng:
     # Aucun port publié : seuls le site et le worker (réseau « nexora-webpilot-search ») l'appellent.
@@ -121,3 +130,7 @@ secrets:
     file: ${LITELLM_MASTER_KEY_FILE:?chemin du fichier de la clé maîtresse de LiteLLM}
   litellm_salt_key:
     file: ${LITELLM_SALT_KEY_FILE:?chemin du fichier du sel de LiteLLM}
+  deepinfra_api_key:
+    file: ${DEEPINFRA_API_KEY_FILE:?chemin du fichier de la clé DeepInfra (fournisseur de production)}
+  openrouter_api_key:
+    file: ${OPENROUTER_API_KEY_FILE:?chemin du fichier de la clé OpenRouter (route de l'assistant de Nexora Creative)}

@@ -159,9 +159,6 @@ services:
       STORE_MODEL_IN_DB: "True"
       LITELLM_LOG: ERROR
       DISABLE_ADMIN_UI: "True"
-      # Fournisseur amont de développement (D12) : LiteLLM de pc1 via le tunnel de pc6.
-      PC1_UPSTREAM_URL: ${PC1_UPSTREAM_URL:-http://host.docker.internal:18090/v1}
-      PC1_UPSTREAM_KEY: ${PC1_UPSTREAM_KEY:-}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

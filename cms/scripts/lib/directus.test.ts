@@ -67,6 +67,22 @@ describe("withRateLimitRetry (limitation de débit de Directus : 429)", () => {
     expect(waits[1] as number).toBeGreaterThan(waits[0] as number);
   });
 
+  test("Retry-After: 0 (réponse réelle de Directus) : le délai ne descend pas sous un plancher croissant", async () => {
+    const waits: number[] = [];
+    const calls = [
+      limited("0"),
+      limited("0"),
+      new Response("{}", { status: 200 }),
+    ];
+    await withRateLimitRetry(
+      async () => calls.shift() as Response,
+      async (ms) => {
+        waits.push(ms);
+      },
+    );
+    expect(waits).toEqual([250, 500]);
+  });
+
   test("n'insiste pas indéfiniment : rend le dernier 429 après le nombre maximal d'essais", async () => {
     let n = 0;
     const res = await withRateLimitRetry(

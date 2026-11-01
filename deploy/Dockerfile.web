@@ -1,0 +1,107 @@
+# syntax=docker/dockerfile:1.7
+# Image du SITE Nexora AI (Next.js 16, Node 24, Bun 1.4.2) pour la production, architecture amd64.
+#
+#   docker build -f deploy/Dockerfile.web --build-arg SITE_URL=https://<domaine> -t nexora/site:<étiquette> .
+#   docker build -f deploy/Dockerfile.web --target tools -t nexora/site-tools:<étiquette> .    # migrations, scripts, tests
+#
+# À construire SUR la machine cible (ou toute machine amd64), jamais sur un poste arm64 : les modules natifs (sharp…)
+# sont compilés ou téléchargés pour l'architecture de construction. Contexte = racine du dépôt (voir .dockerignore).
+#
+# Reproductibilité : images de base épinglées par empreinte (index multi-architecture), `bun install --frozen-lockfile`
+# (bun.lock porte les sommes de contrôle). Aucun secret dans l'image ni dans ses arguments de construction : seul
+# SITE_URL (une adresse publique, figée à la compilation de Next) et SITE_ENV (vide = site non indexable) y entrent.
+# Les secrets arrivent à l'exécution par fichiers (deploy/docker/entrypoint.sh).
+ARG NODE_IMAGE=node:24-bookworm@sha256:e7add2a490bb17d97b485b8641bd88455fff7839ade0f5eba493c3508124d413
+ARG NODE_SLIM_IMAGE=node:24-bookworm-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+ARG BUN_IMAGE=oven/bun:1.4.2@sha256:9114c058aeae42162ee16dd5084b95fe9473970bb6bcb5b232ab1630f0546895
+
+FROM ${BUN_IMAGE} AS bun
+
+# --- Base de construction : Node 24 + chaîne de compilation (image non « slim ») + Bun ---
+FROM ${NODE_IMAGE} AS base
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    CI=1
+WORKDIR /app
+
+# --- Manifestes seuls (package.json de chaque espace de travail) : le cache des dépendances ne dépend que d'eux ---
+FROM base AS manifests
+COPY . /src
+RUN cd /src \
+ && find . -name package.json -not -path '*/node_modules/*' -print0 \
+  | tar --null -T - --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf /manifests.tar \
+ && cp bun.lock /bun.lock
+
+FROM base AS deps-all
+COPY --from=manifests /manifests.tar /bun.lock /tmp/
+RUN tar -xf /tmp/manifests.tar -C /app && cp /tmp/bun.lock /app/bun.lock
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile
+
+FROM base AS deps-prod
+COPY --from=manifests /manifests.tar /bun.lock /tmp/
+RUN tar -xf /tmp/manifests.tar -C /app && cp /tmp/bun.lock /app/bun.lock
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --production
+
+# --- Outils : tout l'espace de travail, dépendances de développement comprises (migrations, scripts cms, tests). Ne
+# dépend PAS de la compilation de Next : on s'en sert pour préparer Directus AVANT de compiler le site (voir plus bas).
+FROM deps-all AS tools
+COPY . .
+ENV NODE_ENV=production
+# Extension Directus « nexora-cms » (Coffre, Modèles, VPS, Agents…) : build copié ensuite dans cms/extensions de l'hôte
+# (cms/scripts/stage-extensions.sh en fait autant).
+RUN bun run --cwd cms/extensions-src/nexora-cms build
+ENTRYPOINT ["/app/deploy/docker/entrypoint.sh"]
+CMD ["bash"]
+
+# --- Compilation de Next (SITE_URL est figé ici) ---
+# Next prérend les pages avec le contenu de Directus ET de la base `app` : les deux doivent donc être démarrés, schéma
+# appliqué, jeton Lecteur en place, AVANT cette étape (docs/guide-operateur.md §2.2). Sur la machine de production la base
+# n'est pas publiée : deploy/build-images.sh construit avec un builder BuildKit rattaché au réseau interne de la pile
+# (--network host désigne alors l'espace réseau de ce builder, où `db` et `directus` se résolvent) et passe les deux
+# identifiants en SECRETS de construction : ils n'entrent dans aucune couche de l'image.
+FROM deps-all AS build
+COPY . .
+ARG SITE_URL
+# SITE_ENV : vide = site non indexable (noindex, Disallow: /). `production` seulement pour l'ouverture au public.
+ARG SITE_ENV=
+ARG BUILD_DIRECTUS_URL=
+ENV SITE_URL=${SITE_URL} \
+    SITE_ENV=${SITE_ENV} \
+    NODE_ENV=production
+RUN test -n "$SITE_URL" || (echo "SITE_URL est obligatoire (--build-arg SITE_URL=https://…)" >&2; exit 1)
+RUN --mount=type=secret,id=directus_reader_token \
+    --mount=type=secret,id=app_database_url \
+    if [ -n "$BUILD_DIRECTUS_URL" ]; then \
+      export DIRECTUS_URL="$BUILD_DIRECTUS_URL" DIRECTUS_READER_TOKEN="$(cat /run/secrets/directus_reader_token)" \
+             DATABASE_URL="$(cat /run/secrets/app_database_url)"; \
+    fi; \
+    bun run --cwd web build && rm -rf web/.next/cache
+
+# --- Image d'exécution du site ---
+FROM ${NODE_SLIM_IMAGE} AS site
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3500 \
+    HOSTNAME=0.0.0.0
+WORKDIR /app/web
+# Dépendances de production (modules natifs compilés pour amd64), puis sources, puis build.
+COPY --from=deps-prod --chown=node:node /app /app
+COPY --chown=node:node packages /app/packages
+COPY --chown=node:node web /app/web
+COPY --chown=node:node docs/vps /app/docs/vps
+COPY --chown=node:node tsconfig.base.json package.json /app/
+COPY --from=build --chown=node:node /app/web/.next /app/web/.next
+COPY --chmod=0755 deploy/docker/entrypoint.sh /usr/local/bin/nexora-entrypoint
+# Dossiers inscriptibles à l'exécution (le système de fichiers reste en lecture seule ailleurs) : cache de Next et
+# instantanés du CMS (volumes montés par deploy/compose.site.yml).
+RUN mkdir -p /app/web/.next/cache /var/lib/nexora/cms-snapshots \
+ && chown -R node:node /app/web/.next/cache /var/lib/nexora
+USER node
+EXPOSE 3500
+HEALTHCHECK --interval=15s --timeout=6s --retries=5 --start-period=40s \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:3500/api/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+ENTRYPOINT ["nexora-entrypoint"]
+# Jamais `-H 127.0.0.1` ni `::1` (boucle de redirections, docs/guide-operateur.md §2.2) : 0.0.0.0 dans un conteneur.
+CMD ["node", "node_modules/next/dist/bin/next", "start", "-H", "0.0.0.0", "-p", "3500"]

@@ -3,7 +3,9 @@
 # par Directus. Aucun code source ni node_modules n'est copié (Directus surveille tout ce dossier).
 # Usage : cms/scripts/stage-extensions.sh [dossier-cible]   (défaut : cms/extensions du dépôt, monté par deploy/compose.yml)
 set -euo pipefail
-ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
+# Racine du dépôt : Git si disponible, sinon deux dossiers au-dessus du script (copie sans .git, par exemple sur la VM de production).
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(git -C "$HERE" rev-parse --show-toplevel 2> /dev/null || (cd "$HERE/../.." && pwd))"
 TARGET="${1:-$ROOT/cms/extensions}"
 SRC="$ROOT/cms/extensions-src/nexora-cms"
 bun install --cwd "$SRC" --frozen-lockfile >/dev/null

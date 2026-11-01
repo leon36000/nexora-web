@@ -101,10 +101,13 @@ export async function withRateLimitRetry(
   let res = await attempt();
   for (let n = 0; res.status === 429 && n < maxRetries; n++) {
     const header = Number(res.headers.get("retry-after"));
+    // Directus répond « Retry-After: 0 » : sans délai plancher, les 8 essais partent d'un coup et échouent (constaté sur
+    // la pile de production). Le délai ne descend donc jamais sous 250 ms × le numéro de l'essai.
+    const floor = 250 * (n + 1);
     await sleep(
       Number.isFinite(header) && header >= 0 && res.headers.has("retry-after")
-        ? header * 1000
-        : 250 * (n + 1),
+        ? Math.max(header * 1000, floor)
+        : floor,
     );
     res = await attempt();
   }

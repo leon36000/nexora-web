@@ -1,0 +1,51 @@
+# syntax=docker/dockerfile:1.7
+# Image du WORKER Nexora AI (file de tâches PostgreSQL : courriels, grand livre, agents, RAG, WebPilot, VPS…), Node 24,
+# architecture amd64.
+#
+#   docker build -f deploy/Dockerfile.worker -t nexora/worker:<étiquette> .
+#
+# Le worker lance `node src/main.ts` (Node exécute le TypeScript directement : aucune étape de compilation). Même
+# règles que deploy/Dockerfile.web : construire sur la machine cible (amd64), images de base épinglées par empreinte,
+# `bun install --frozen-lockfile`, aucun secret dans l'image (fichiers lus à l'exécution par entrypoint.sh).
+#
+# Non inclus (écart documenté dans docs/deploiement-proxmox-pile.md) : Chromium et lychee, utilisés seulement par l'audit
+# nocturne de performance et de liens (worker/src/seo/audit-perf.ts, audit-links.ts) ; ces deux audits échouent tant
+# qu'ils ne sont pas ajoutés.
+ARG NODE_IMAGE=node:24-bookworm@sha256:e7add2a490bb17d97b485b8641bd88455fff7839ade0f5eba493c3508124d413
+ARG NODE_SLIM_IMAGE=node:24-bookworm-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+ARG BUN_IMAGE=oven/bun:1.4.2@sha256:9114c058aeae42162ee16dd5084b95fe9473970bb6bcb5b232ab1630f0546895
+
+FROM ${BUN_IMAGE} AS bun
+
+FROM ${NODE_IMAGE} AS base
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
+ENV CI=1
+WORKDIR /app
+
+FROM base AS manifests
+COPY . /src
+RUN cd /src \
+ && find . -name package.json -not -path '*/node_modules/*' -print0 \
+  | tar --null -T - --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf /manifests.tar \
+ && cp bun.lock /bun.lock
+
+FROM base AS deps-prod
+COPY --from=manifests /manifests.tar /bun.lock /tmp/
+RUN tar -xf /tmp/manifests.tar -C /app && cp /tmp/bun.lock /app/bun.lock
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --production
+
+FROM ${NODE_SLIM_IMAGE} AS worker
+ENV NODE_ENV=production
+WORKDIR /app/worker
+COPY --from=deps-prod --chown=node:node /app /app
+COPY --chown=node:node packages /app/packages
+COPY --chown=node:node worker /app/worker
+COPY --chown=node:node tsconfig.base.json package.json /app/
+COPY --chown=node:node deploy/docker/worker-health.ts /app/worker/healthcheck.ts
+COPY --chmod=0755 deploy/docker/entrypoint.sh /usr/local/bin/nexora-entrypoint
+USER node
+HEALTHCHECK --interval=30s --timeout=8s --retries=3 --start-period=30s \
+  CMD ["nexora-entrypoint", "node", "healthcheck.ts"]
+ENTRYPOINT ["nexora-entrypoint"]
+CMD ["node", "src/main.ts"]
