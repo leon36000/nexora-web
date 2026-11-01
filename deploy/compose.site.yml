@@ -1,0 +1,293 @@
+# Complément de PRODUCTION de deploy/compose.yml + deploy/compose.prod.yml : le SITE, le WORKER, le proxy frontal local,
+# le navigateur WebPilot durci et les outils d'exploitation (ÉCART n° 1 de docs/proxmox-mise-en-service.md).
+#
+#   docker compose -p nexorasite -f deploy/compose.yml -f deploy/compose.prod.yml -f deploy/compose.site.yml \
+#     --env-file /srv/nexora/deploy/prod.env up -d          (ou : bash deploy/pile.sh up -d)
+#
+# Ce que ce fichier ajoute :
+#  - site (Next.js) et worker : images construites SUR la machine cible (deploy/Dockerfile.web et Dockerfile.worker),
+#    utilisateur « node », système de fichiers en lecture seule, aucune capacité. Ils rejoignent le réseau
+#    « nexora-internal » (sans route vers l'extérieur) où vivent PostgreSQL, Directus et LiteLLM, ainsi que les réseaux
+#    de WebPilot (recherche et navigateur). Leurs SORTIES (HIBP, courriel, Stripe plus tard) passent par un réseau
+#    dédié « egress-site », distinct de celui de LiteLLM et de Directus ;
+#  - secrets : fichiers Docker (/run/secrets/…) lus par deploy/docker/entrypoint.sh pour le seul processus lancé ;
+#    aucune valeur secrète dans `docker inspect`. Les fichiers sont lisibles par le GROUPE NEXORA_SECRETS_GID (groupe
+#    ajouté à chaque conteneur concerné), pas par tout le monde : Compose (hors Swarm) ignore uid/gid/mode d'un secret ;
+#  - « front » (nginx, sans privilège) : seul point d'entrée du site sur l'hôte. Il refuse /api/admin/* et
+#    /api/revalidate, TRACE/TRACK/CONNECT, limite le débit et fixe l'adresse du client (docs/guide-operateur.md §9) ;
+#  - navigateur WebPilot : aucun port publié (ÉCART n° 11), secret par fichier ;
+#  - Mailpit PROVISOIRE (profil « mail-provisoire », réseau interne seulement, aucun port) tant qu'aucun SMTP n'existe ;
+#  - « tools » (profil « outils ») : migrations, scripts Directus, tests ; jamais démarré avec la pile.
+name: nexorasite
+
+x-durci: &durci
+  restart: unless-stopped
+  init: true
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: [ALL]
+  group_add: ["${NEXORA_SECRETS_GID:?définir NEXORA_SECRETS_GID (groupe qui lit les fichiers de secrets)}"]
+
+x-site-url: &site-url ${SITE_URL:?définir SITE_URL (https://…, figé à la compilation du site)}
+
+services:
+  site:
+    <<: *durci
+    image: nexora/site:${NEXORA_IMAGE_TAG:-local}
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.web
+      target: site
+      # La compilation de Next prérend les pages avec Directus et la base `app` : la construire par deploy/build-images.sh
+      # (builder rattaché au réseau interne, identifiants en secrets de construction), pas par `compose build`.
+      args:
+        SITE_URL: *site-url
+        SITE_ENV: ${SITE_ENV:-}
+        BUILD_DIRECTUS_URL: http://directus:8055
+    depends_on:
+      db: { condition: service_healthy }
+      directus: { condition: service_healthy }
+      litellm: { condition: service_healthy }
+    networks: [internal, webpilot-search, webpilot-browser, egress-site]
+    environment:
+      NODE_ENV: production
+      SITE_URL: *site-url
+      SITE_ENV: ${SITE_ENV:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      DIRECTUS_URL: http://directus:8055
+      NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL:?définir NEXORA_APP_INTERNAL_URL (http://site:3500)}
+      LITELLM_BASE_URL: http://litellm:4000
+      WEBPILOT_SEARCH_URL: http://searxng:8080
+      WEBPILOT_BROWSER_URL: http://webpilot-browser:8700
+      CMS_SNAPSHOT_DIR: /var/lib/nexora/cms-snapshots
+      # Courriel : Mailpit PROVISOIRE (essai fermé). Un vrai SMTP avec identifiants se met en secret (docs/guide-operateur.md §3).
+      SMTP_URL: ${SITE_SMTP_URL:?définir SITE_SMTP_URL (smtp://mailpit:1025 en essai fermé)}
+      MAIL_FROM: ${MAIL_FROM:?définir MAIL_FROM}
+      # Hôtes où une clé du Coffre peut partir vers le service Nexora Creative (la même valeur dans le site et le worker).
+      NEXORA_SECRET_HOSTS_CREATIVE: ${NEXORA_SECRET_HOSTS_CREATIVE:-}
+      NEXORA_FILE_ENV: >-
+        DATABASE_URL NEXORA_APP_ADMIN_TOKEN NEXORA_VAULT_MASTER_KEY BETTER_AUTH_SECRET DIRECTUS_READER_TOKEN
+        DIRECTUS_PUBLISHER_TOKEN NEXORA_PREVIEW_SECRET LITELLM_MASTER_KEY WEBPILOT_BROWSER_SECRET
+        NEXORA_CREATIVE_SERVICE_TOKEN
+      DATABASE_URL_FILE: /run/secrets/app_database_url
+      NEXORA_APP_ADMIN_TOKEN_FILE: /run/secrets/nexora_app_admin_token
+      NEXORA_VAULT_MASTER_KEY_FILE: /run/secrets/nexora_vault_master_key
+      BETTER_AUTH_SECRET_FILE: /run/secrets/better_auth_secret
+      DIRECTUS_READER_TOKEN_FILE: /run/secrets/directus_reader_token
+      DIRECTUS_PUBLISHER_TOKEN_FILE: /run/secrets/directus_publisher_token
+      NEXORA_PREVIEW_SECRET_FILE: /run/secrets/nexora_preview_secret
+      LITELLM_MASTER_KEY_FILE: /run/secrets/litellm_master_key
+      WEBPILOT_BROWSER_SECRET_FILE: /run/secrets/webpilot_browser_secret
+      NEXORA_CREATIVE_SERVICE_TOKEN_FILE: /run/secrets/nexora_creative_service_token
+    secrets:
+      - app_database_url
+      - nexora_app_admin_token
+      - nexora_vault_master_key
+      - better_auth_secret
+      - directus_reader_token
+      - directus_publisher_token
+      - nexora_preview_secret
+      - litellm_master_key
+      - webpilot_browser_secret
+      - nexora_creative_service_token
+    volumes:
+      - site-cache:/app/web/.next/cache
+      - cms-snapshots:/var/lib/nexora/cms-snapshots
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=128m,nosuid,nodev
+      # Next écrit son cache de pages au fil de l'eau ; sans ce dossier inscriptible, « mkdir … route-cache » échoue.
+      - /app/web/.next/server/route-cache:rw,size=256m,uid=1000,gid=1000,nosuid,nodev
+    mem_limit: ${NEXORA_SITE_MEM_LIMIT:-3g}
+    pids_limit: 1024
+
+  worker:
+    <<: *durci
+    image: nexora/worker:${NEXORA_IMAGE_TAG:-local}
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.worker
+      target: worker
+    depends_on:
+      db: { condition: service_healthy }
+      directus: { condition: service_healthy }
+    networks: [internal, webpilot-search, webpilot-browser, egress-site]
+    environment:
+      NODE_ENV: production
+      HOME: /tmp
+      SITE_URL: *site-url
+      SITE_ENV: ${SITE_ENV:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      DIRECTUS_URL: http://directus:8055
+      NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL}
+      LITELLM_BASE_URL: http://litellm:4000
+      WEBPILOT_SEARCH_URL: http://searxng:8080
+      WEBPILOT_BROWSER_URL: http://webpilot-browser:8700
+      SMTP_HOST: ${WORKER_SMTP_HOST:?définir WORKER_SMTP_HOST (mailpit en essai fermé)}
+      SMTP_PORT: "${WORKER_SMTP_PORT:-587}"
+      SMTP_SECURE: "${WORKER_SMTP_SECURE:-false}"
+      SMTP_REQUIRE_TLS: "${WORKER_SMTP_REQUIRE_TLS:-}"
+      SMTP_FROM: ${MAIL_FROM}
+      CONTACT_NOTIFY_TO: ${CONTACT_NOTIFY_TO:?définir CONTACT_NOTIFY_TO (adresse qui reçoit les demandes de contact)}
+      NEXORA_SECRET_HOSTS_CREATIVE: ${NEXORA_SECRET_HOSTS_CREATIVE:-}
+      NEXORA_FILE_ENV: DATABASE_URL NEXORA_VAULT_MASTER_KEY NEXORA_APP_ADMIN_TOKEN WEBPILOT_BROWSER_SECRET
+      DATABASE_URL_FILE: /run/secrets/app_database_url
+      NEXORA_VAULT_MASTER_KEY_FILE: /run/secrets/nexora_vault_master_key
+      NEXORA_APP_ADMIN_TOKEN_FILE: /run/secrets/nexora_app_admin_token
+      WEBPILOT_BROWSER_SECRET_FILE: /run/secrets/webpilot_browser_secret
+    secrets: [app_database_url, nexora_vault_master_key, nexora_app_admin_token, webpilot_browser_secret]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=256m,nosuid,nodev
+    mem_limit: ${NEXORA_WORKER_MEM_LIMIT:-2g}
+    pids_limit: 512
+
+  # Proxy frontal local : le seul à publier un port pour le site. `tailscale serve` (HTTPS) et les essais sur le réseau
+  # local passent par lui. Image sans privilège (utilisateur 101, port 8080), épinglée par empreinte.
+  front:
+    restart: unless-stopped
+    init: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    image: nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+    depends_on:
+      site: { condition: service_healthy }
+    networks: [internal, edge]
+    ports:
+      - "127.0.0.1:${SITE_HOST_PORT:-3500}:8080"
+      - "${FRONT_HTTP_PORT:-80}:8080"
+    volumes:
+      - ./front/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./front/proxy-site.inc:/etc/nginx/conf.d/proxy-site.inc:ro
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=32m,nosuid,nodev
+    mem_limit: 128m
+    pids_limit: 64
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 4s
+      retries: 5
+      start_period: 5s
+
+  # Directus et LiteLLM lisent leurs secrets par le groupe NEXORA_SECRETS_GID (voir en-tête).
+  directus:
+    group_add: ["${NEXORA_SECRETS_GID}"]
+  litellm:
+    group_add: ["${NEXORA_SECRETS_GID}"]
+  # PostgreSQL : le script d'initialisation s'exécute sous l'utilisateur « postgres » (gosu), qui perd les groupes
+  # ajoutés : les trois fichiers de mots de passe de rôles appartiennent donc à l'uid de postgres (prod-init.sh).
+
+  # SearXNG : sonde de santé (compose.yml n'en déclare pas).
+  searxng:
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # Navigateur WebPilot : aucun port sur l'hôte (compose.yml publiait 127.0.0.1:8700), secret par fichier.
+  webpilot-browser:
+    ports: !reset []
+    group_add: ["${NEXORA_SECRETS_GID}"]
+    environment:
+      WEBPILOT_BROWSER_SECRET: !reset null
+      WEBPILOT_BROWSER_SECRET_FILE: /run/secrets/webpilot_browser_secret
+    secrets: [webpilot_browser_secret]
+
+  # PROVISOIRE : boîte de courrier factice, tant qu'aucun SMTP réel n'existe. Réseau interne seulement (sans route vers
+  # l'extérieur), aucun port publié, aucune interface exposée : rien ne sort. Les messages se lisent depuis l'hôte
+  # (docs/deploiement-proxmox-pile.md). À retirer dès qu'un vrai SMTP est branché.
+  mailpit:
+    profiles: !override [mail-provisoire]
+    ports: !reset []
+    networks: [internal]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=128m,nosuid,nodev
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    mem_limit: 128m
+    pids_limit: 64
+    environment:
+      MP_MAX_MESSAGES: "500"
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 15s
+      timeout: 4s
+      retries: 5
+      start_period: 5s
+
+  # Outils d'exploitation : `docker compose … run --rm tools <commande>` (profil « outils », jamais démarré avec la pile).
+  tools:
+    <<: *durci
+    restart: "no"
+    profiles: [outils]
+    image: nexora/site-tools:${NEXORA_IMAGE_TAG:-local}
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.web
+      target: tools
+      args:
+        SITE_URL: *site-url
+    networks: [internal, egress-site]
+    working_dir: /app
+    environment:
+      NODE_ENV: production
+      HOME: /tmp
+      DIRECTUS_URL: http://directus:8055
+      NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL}
+      NEXORA_FILE_ENV: >-
+        DATABASE_URL NEXORA_APP_ADMIN_TOKEN NEXORA_VAULT_MASTER_KEY DIRECTUS_ADMIN_TOKEN DIRECTUS_READER_TOKEN
+        DIRECTUS_PUBLISHER_TOKEN
+      DATABASE_URL_FILE: /run/secrets/app_database_url
+      NEXORA_APP_ADMIN_TOKEN_FILE: /run/secrets/nexora_app_admin_token
+      NEXORA_VAULT_MASTER_KEY_FILE: /run/secrets/nexora_vault_master_key
+      DIRECTUS_ADMIN_TOKEN_FILE: /run/secrets/directus_admin_token
+      DIRECTUS_READER_TOKEN_FILE: /run/secrets/directus_reader_token
+      DIRECTUS_PUBLISHER_TOKEN_FILE: /run/secrets/directus_publisher_token
+      DIRECTUS_ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      DIRECTUS_ADMIN_PASSWORD_FILE: /run/secrets/directus_admin_password
+    secrets:
+      - app_database_url
+      - nexora_app_admin_token
+      - nexora_vault_master_key
+      - directus_admin_token
+      - directus_admin_password
+      - directus_reader_token
+      - directus_publisher_token
+      - deepinfra_api_key
+      - openrouter_api_key
+    tmpfs:
+      - /tmp:rw,size=512m,exec
+
+networks:
+  # Sorties du site et du worker (HIBP, courriel, Stripe…) : un réseau à eux, séparé de celui de LiteLLM et de Directus.
+  egress-site: {}
+  # Réseau du proxy frontal : sans lui, un port publié ne fonctionnerait pas (le réseau interne n'a pas de passerelle).
+  edge: {}
+
+volumes:
+  site-cache:
+  cms-snapshots:
+
+secrets:
+  app_database_url:
+    file: ${NEXORA_SECRETS_DIR:?définir NEXORA_SECRETS_DIR (dossier des fichiers de secrets)}/app_database_url
+  nexora_vault_master_key:
+    file: ${NEXORA_SECRETS_DIR}/nexora_vault_master_key
+  better_auth_secret:
+    file: ${NEXORA_SECRETS_DIR}/better_auth_secret
+  directus_reader_token:
+    file: ${NEXORA_SECRETS_DIR}/directus_reader_token
+  directus_publisher_token:
+    file: ${NEXORA_SECRETS_DIR}/directus_publisher_token
+  directus_admin_token:
+    file: ${NEXORA_SECRETS_DIR}/directus_admin_token
+  nexora_preview_secret:
+    file: ${NEXORA_SECRETS_DIR}/nexora_preview_secret
+  webpilot_browser_secret:
+    file: ${NEXORA_SECRETS_DIR}/webpilot_browser_secret
+  nexora_creative_service_token:
+    file: ${NEXORA_SECRETS_DIR}/nexora_creative_service_token

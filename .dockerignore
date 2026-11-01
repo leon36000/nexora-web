@@ -1,0 +1,38 @@
+# Contexte de construction des images du site et du worker (deploy/Dockerfile.web, deploy/Dockerfile.worker).
+# Racine du dépôt = contexte. On exclut tout ce qui est reconstruit dans l'image, tout ce qui peut porter un secret et
+# ce qui n'a aucune utilité à l'exécution.
+
+# Dépendances et sorties de build : reconstruites dans l'image (amd64), jamais copiées d'un poste arm64.
+**/node_modules
+**/.next
+**/dist
+**/.cache
+**/coverage
+**/*.tsbuildinfo
+
+# Historique et outils
+.git
+.gitignore
+.gitlab-ci.yml
+.gitleaksignore
+sonar-project.properties
+
+# Secrets et environnements : rien de tout cela n'entre dans une image
+.env
+.env.*
+**/.env
+**/.env.*
+!**/.env.example
+**/secrets
+**/*.pem
+**/*.key
+deploy/prod.env
+
+# Documentation : seul le guide PDF de branchement Proxmox est lu à l'exécution (web/next.config.ts, /api/admin/vps)
+docs/*
+!docs/vps
+docs/vps/*.md
+
+# Journaux et sauvegardes (services/ reste : le typage de web/ lit services/webpilot-browser/src)
+**/*.log
+backups

@@ -25,7 +25,7 @@ base="$deploy/compose.yml"
 prod="$deploy/compose.prod.yml"
 
 # environnement de production d'essai : des CHEMINS de secrets, jamais de secret
-for n in postgres_password directus_db_password litellm_db_password umami_db_password directus_secret directus_admin_password nexora_app_admin_token litellm_master_key litellm_salt_key; do
+for n in postgres_password directus_db_password litellm_db_password umami_db_password directus_secret directus_admin_password nexora_app_admin_token litellm_master_key litellm_salt_key deepinfra_api_key openrouter_api_key; do
   printf '%s' "valeur-secrete-$n" > "$work/secrets/$n"
 done
 cat > "$work/prod.env" << ENV
@@ -38,6 +38,10 @@ DIRECTUS_ADMIN_PASSWORD_FILE=$work/secrets/directus_admin_password
 NEXORA_APP_ADMIN_TOKEN_FILE=$work/secrets/nexora_app_admin_token
 LITELLM_MASTER_KEY_FILE=$work/secrets/litellm_master_key
 LITELLM_SALT_KEY_FILE=$work/secrets/litellm_salt_key
+DEEPINFRA_API_KEY_FILE=$work/secrets/deepinfra_api_key
+OPENROUTER_API_KEY_FILE=$work/secrets/openrouter_api_key
+DIRECTUS_EMAIL_FROM=no-reply@exemple.test
+DIRECTUS_SMTP_HOST=smtp.exemple.test
 DIRECTUS_ADMIN_EMAIL=admin@exemple.test
 DIRECTUS_PUBLIC_URL=https://cms.exemple.test
 DIRECTUS_CORS_ORIGIN=https://cms.exemple.test
@@ -153,7 +157,12 @@ for k in POSTGRES_PASSWORD DIRECTUS_DB_PASSWORD LITELLM_DB_PASSWORD UMAMI_DB_PAS
 done
 grep -q 'valeur-secrete' <<< "$cfg" && ko "la valeur d'un secret apparaît dans la configuration résolue" || ok "aucune valeur de secret dans la configuration résolue (seulement des chemins)"
 n=$(j '[.secrets[].file] | length')
-[ "$n" -eq 9 ] && ok "9 secrets Docker déclarés" || ko "$n secrets Docker (attendu 9)"
+[ "$n" -eq 11 ] && ok "11 secrets Docker déclarés" || ko "$n secrets Docker (attendu 11)"
+[ "$(j '.services.directus.environment.EMAIL_SMTP_HOST')" = "smtp.exemple.test" ] && [ "$(j '.services.directus.environment.EMAIL_FROM')" = "no-reply@exemple.test" ] && ok "Directus : courriels vers le SMTP de production (ÉCART n° 2 : plus de Mailpit en dur)" || ko "Directus : EMAIL_SMTP_HOST / EMAIL_FROM inattendus"
+for k in DEEPINFRA_API_KEY OPENROUTER_API_KEY PC1_UPSTREAM_KEY PC1_UPSTREAM_URL; do
+  [ "$(j ".services.litellm.environment.$k")" = "null" ] && ok "litellm : $k absent de l'environnement (clé lue dans un fichier, aucun amont de développement)" || ko "litellm : $k dans l'environnement"
+done
+grep -qE 'PC1_UPSTREAM|dev/cloud-glm' "$deploy/litellm/config.yaml" "$deploy/compose.yml" "$deploy/init-env.sh" "$deploy/.env.example" && ko "une référence au fournisseur de développement subsiste (PC1_UPSTREAM, dev/cloud-glm)" || ok "aucune référence à PC1_UPSTREAM ni à dev/cloud-glm dans la configuration de déploiement"
 [ "$(j '.services.directus.environment.SESSION_COOKIE_SECURE')" = true ] && [ "$(j '.services.directus.environment.REFRESH_TOKEN_COOKIE_SECURE')" = true ] && ok "témoins Directus « Secure » par défaut en production" || ko "témoins non Secure en production"
 [ "$(j '.services.directus.environment.IP_TRUST_PROXY')" = "uniquelocal" ] && ok "IP_TRUST_PROXY = uniquelocal (proxy HTTPS de l'hôte)" || ko "IP_TRUST_PROXY inattendu"
 [ "$(j '.services.directus.environment.PUBLIC_URL')" = "https://cms.exemple.test" ] && ok "PUBLIC_URL https posée" || ko "PUBLIC_URL inattendue"
@@ -163,7 +172,7 @@ for k in RATE_LIMITER_ENABLED GRAPHQL_INTROSPECTION FILES_MIME_TYPE_ALLOW_LIST I
   a=$(devcfg | jq -r ".services.directus.environment.$k")
   [ "$(j ".services.directus.environment.$k")" = "$a" ] && ok "production : $k identique au développement" || ko "production : $k diffère du développement"
 done
-for var in DIRECTUS_PUBLIC_URL POSTGRES_PASSWORD_FILE DIRECTUS_SECRET_FILE; do
+for var in DIRECTUS_PUBLIC_URL POSTGRES_PASSWORD_FILE DIRECTUS_SECRET_FILE DIRECTUS_SMTP_HOST DEEPINFRA_API_KEY_FILE; do
   grep -v "^$var=" "$work/prod.env" > "$work/prod-sans.env"
   docker compose -p essai -f "$base" -f "$prod" --env-file "$work/prod-sans.env" config > /dev/null 2>&1 && ko "la production accepte l'absence de $var" || ok "la production refuse l'absence de $var"
 done
