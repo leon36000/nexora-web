@@ -36,6 +36,16 @@ bash "$here/pile.sh" up -d site worker front directus
 echo "== Caddy ($mode)"
 install -d /etc/caddy /etc/caddy/sites-extra
 install -m 0644 "$here/caddy/Caddyfile" /etc/caddy/Caddyfile
+# WorkStudio (VM 203) : studio.<domaine> ; la VM garde son propre nginx (80, réseau local seulement).
+cat > /etc/caddy/sites-extra/studio.caddy <<'STUDIO'
+studio.{$DOMAINE} {
+	import tls_mode
+	header -Server
+	reverse_proxy 192.168.1.123:80 {
+		header_up X-Forwarded-Proto https
+	}
+}
+STUDIO
 printf 'DOMAINE=%s\nLAN_IP=%s\n' "$dom" "$lan_ip" > /etc/caddy/domaine.env
 if [ "$mode" = interne ]; then echo "tls internal" > /etc/caddy/tls-mode.caddy; else echo "# certificat public automatique" > /etc/caddy/tls-mode.caddy; fi
 install -d /etc/systemd/system/caddy.service.d
