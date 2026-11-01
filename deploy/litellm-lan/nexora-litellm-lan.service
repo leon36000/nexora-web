@@ -1,0 +1,12 @@
+[Unit]
+Description=Nexora : relais LiteLLM pour la VM WorkStudio (règle DOCKER-USER puis relais)
+After=docker.service nexora-docker-user.service
+Requires=docker.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/srv/nexora/litellm-lan/nexora-litellm-lan.sh
+ExecStartPost=/usr/bin/docker compose -f /srv/nexora/litellm-lan/compose.yml up -d
+ExecStop=/usr/bin/docker compose -f /srv/nexora/litellm-lan/compose.yml down
+[Install]
+WantedBy=multi-user.target

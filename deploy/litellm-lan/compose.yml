@@ -1,0 +1,31 @@
+# Relais LAN vers LiteLLM, pour la VM WorkStudio (192.168.1.123) UNIQUEMENT.
+#
+# Projet Compose séparé de la pile du site (aucun conteneur du site n'est modifié ni redémarré). Le relais rejoint le
+# réseau interne de la pile (pour atteindre `litellm:4000`) et un réseau à lui, non interne, qui permet à Docker de
+# publier un port. Le port n'est publié QUE sur l'adresse LAN de la VM pile ; le filtrage par adresse source est fait
+# par `nexora-litellm-lan.sh` (DOCKER-USER : un port publié par Docker contourne ufw). nginx.conf n'expose que les routes
+# `/v1/*` utiles à un client de modèle ; l'administration de LiteLLM (/key, /user, /config, /ui…) n'est pas joignable.
+name: nexora-litellm-lan
+services:
+  relais:
+    image: nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+    restart: unless-stopped
+    ports:
+      - "${LITELLM_LAN_BIND:-192.168.1.121}:4000:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks: [pile-internal, lan]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/relais-sante"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+networks:
+  pile-internal:
+    external: true
+    name: nexora-internal
+  lan: {}

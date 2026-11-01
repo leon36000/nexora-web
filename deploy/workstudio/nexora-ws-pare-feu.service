@@ -1,0 +1,10 @@
+[Unit]
+Description=Nexora WorkStudio : règles DOCKER-USER (port 80 réservé au réseau local)
+After=docker.service
+Requires=docker.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/nexora-ws-pare-feu.sh
+[Install]
+WantedBy=multi-user.target
