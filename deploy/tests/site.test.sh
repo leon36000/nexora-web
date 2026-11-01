@@ -38,6 +38,8 @@ for f in Dockerfile.web Dockerfile.worker; do
   grep -qE '^USER node' "$deploy/$f" && ok "$f : exécution sous l'utilisateur non privilégié « node »" || ko "$f : exécution en root"
   grep -qE '^ARG .*(KEY|SECRET|TOKEN|PASSWORD)' "$deploy/$f" && ko "$f : un secret passe en argument de construction" || ok "$f : aucun secret en argument de construction"
 done
+grep -qE '^ARG LYCHEE_VERSION=[0-9.]+$' "$deploy/Dockerfile.worker" && grep -qE '^ARG LYCHEE_SHA256=[0-9a-f]{64}$' "$deploy/Dockerfile.worker" && grep -q 'sha256sum -c' "$deploy/Dockerfile.worker" && ok "Dockerfile.worker : lychee épinglé (version) et vérifié par SHA-256" || ko "Dockerfile.worker : lychee non vérifié"
+grep -q 'CHROME_PATH=' "$deploy/Dockerfile.worker" && grep -q 'LYCHEE_BIN=' "$deploy/Dockerfile.worker" && grep -q 'playwright/cli.js install --with-deps chromium' "$deploy/Dockerfile.worker" && ok "Dockerfile.worker : Chromium (Playwright du bun.lock), CHROME_PATH et LYCHEE_BIN posés" || ko "Dockerfile.worker : audits SEO incomplets"
 
 if ! command -v docker > /dev/null 2>&1 || ! docker compose version > /dev/null 2>&1 || ! command -v jq > /dev/null 2>&1; then
   echo "  (Docker Compose ou jq absent : tests de configuration sautés)"

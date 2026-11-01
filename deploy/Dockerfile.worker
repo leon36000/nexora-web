@@ -8,12 +8,18 @@
 # règles que deploy/Dockerfile.web : construire sur la machine cible (amd64), images de base épinglées par empreinte,
 # `bun install --frozen-lockfile`, aucun secret dans l'image (fichiers lus à l'exécution par entrypoint.sh).
 #
-# Non inclus (écart documenté dans docs/deploiement-proxmox-pile.md) : Chromium et lychee, utilisés seulement par l'audit
-# nocturne de performance et de liens (worker/src/seo/audit-perf.ts, audit-links.ts) ; ces deux audits échouent tant
-# qu'ils ne sont pas ajoutés.
+# Audits SEO nocturnes (worker/src/seo/audit-a11y.ts, audit-perf.ts, audit-links.ts) : l'image embarque
+#  - Chromium de Playwright 1.64.1 (la version du bun.lock, installée avec le CLI du dépôt) sous /opt/ms-playwright :
+#    Playwright l'utilise pour l'accessibilité (axe) et CHROME_PATH le désigne à Lighthouse (--headless=new) ;
+#  - Lighthouse 13.5.0 : dépendance du dépôt, déjà installée par `bun install --frozen-lockfile` ;
+#  - lychee 0.24.2 (binaire musl officiel, SHA-256 vérifié) : LYCHEE_BIN.
+# Le worker lance Chromium avec --no-sandbox (audit-perf.ts) ou le comportement par défaut de Playwright (sans bac à
+# sable) : le conteneur est déjà l'enveloppe d'isolation (utilisateur node, cap_drop ALL, no-new-privileges, lecture seule).
 ARG NODE_IMAGE=node:24-bookworm@sha256:e7add2a490bb17d97b485b8641bd88455fff7839ade0f5eba493c3508124d413
 ARG NODE_SLIM_IMAGE=node:24-bookworm-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
 ARG BUN_IMAGE=oven/bun:1.4.2@sha256:9114c058aeae42162ee16dd5084b95fe9473970bb6bcb5b232ab1630f0546895
+ARG LYCHEE_VERSION=0.24.2
+ARG LYCHEE_SHA256=73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5
 
 FROM ${BUN_IMAGE} AS bun
 
@@ -35,8 +41,33 @@ RUN tar -xf /tmp/manifests.tar -C /app && cp /tmp/bun.lock /app/bun.lock
 RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun install --frozen-lockfile --production
 
+FROM ${NODE_IMAGE} AS lychee
+ARG LYCHEE_VERSION
+ARG LYCHEE_SHA256
+RUN curl -fsSL -o /tmp/lychee.tar.gz \
+      "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-musl.tar.gz" \
+ && echo "${LYCHEE_SHA256}  /tmp/lychee.tar.gz" | sha256sum -c - \
+ && tar -xzf /tmp/lychee.tar.gz -C /tmp --strip-components=1 lychee-x86_64-unknown-linux-musl/lychee \
+ && install -m 0755 /tmp/lychee /usr/local/bin/lychee \
+ && /usr/local/bin/lychee --version
+
 FROM ${NODE_SLIM_IMAGE} AS worker
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright \
+    LYCHEE_BIN=/usr/local/bin/lychee
+# Chromium + bibliothèques système, avec le CLI Playwright du bun.lock (même version que le paquet utilisé par le worker).
+# Couche placée avant le code du worker : elle ne se reconstruit que si les dépendances changent.
+RUN --mount=type=bind,from=deps-prod,source=/app,target=/deps \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates \
+ && node /deps/worker/node_modules/playwright/cli.js install --with-deps chromium \
+ && chmod -R a+rX /opt/ms-playwright \
+ && ln -s "$(find /opt/ms-playwright -type f -path '*/chromium-[0-9]*/chrome-linux*/chrome' | head -n1)" /usr/local/bin/nexora-chromium \
+ && /usr/local/bin/nexora-chromium --version
+ENV CHROME_PATH=/usr/local/bin/nexora-chromium
+COPY --from=lychee /usr/local/bin/lychee /usr/local/bin/lychee
 WORKDIR /app/worker
 COPY --from=deps-prod --chown=node:node /app /app
 COPY --chown=node:node packages /app/packages

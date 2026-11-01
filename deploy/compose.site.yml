@@ -138,7 +138,10 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,size=256m,nosuid,nodev
-    mem_limit: ${NEXORA_WORKER_MEM_LIMIT:-2g}
+    # Chromium (audits SEO) écrit ses fenêtres graphiques dans /dev/shm : les 64 Mo par défaut de Docker le font planter.
+    shm_size: 512m
+    # Pic mesuré le 01/11/2026 pendant un audit complet (36 pages, 4 volets) : 1,48 Go, cache de fichiers compris.
+    mem_limit: ${NEXORA_WORKER_MEM_LIMIT:-3g}
     pids_limit: 512
 
   # Proxy frontal local : le seul à publier un port pour le site. `tailscale serve` (HTTPS) et les essais sur le réseau
