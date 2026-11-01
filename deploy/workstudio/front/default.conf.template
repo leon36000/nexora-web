@@ -1,0 +1,59 @@
+# Proxy frontal de WorkStudio (nginx sans privilège, 8080 dans le conteneur, publié sur le port 80 de la VM).
+# Le domaine est le seul paramètre : NEXORA_DOMAINE (studio.<domaine>). Sans correspondance d'hôte (accès par adresse IP
+# pendant la mise au point), le même site répond : `default_server`.
+# HTTPS n'est PAS terminé ici : le certificat sera posé par le proxy public (étape domaine) ; X-Forwarded-Proto reçu de ce
+# proxy est conservé, sinon le schéma de la connexion est utilisé.
+server_tokens off;
+
+map $http_x_forwarded_proto $nx_proto { default $scheme; https https; }
+map $http_upgrade $nx_connection { default upgrade; '' close; }
+
+limit_req_zone $binary_remote_addr zone=nx_auth:10m rate=10r/s;
+limit_req_status 429;
+
+server {
+  listen 8080 default_server;
+  server_name studio.${NEXORA_DOMAINE} _;
+  client_max_body_size 100m;
+
+  if ($request_method ~* ^(TRACE|TRACK|CONNECT)$) { return 405; }
+
+  location = /front-sante { access_log off; default_type text/plain; return 200 "ok\n"; }
+
+  proxy_http_version 1.1;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $remote_addr;
+  proxy_set_header X-Forwarded-Proto $nx_proto;
+  proxy_set_header X-Forwarded-Host $host;
+  proxy_read_timeout 900s;
+
+  # Temps réel (socket.io) : WebSocket.
+  location /socket.io/ {
+    proxy_pass http://workstudio-realtime:3002;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $nx_connection;
+    proxy_buffering off;
+  }
+
+  # Connexion : limitation de débit par adresse.
+  location /api/auth/ {
+    limit_req zone=nx_auth burst=30 nodelay;
+    proxy_pass http://workstudio:3000;
+    proxy_set_header Connection "";
+  }
+
+  # API compatible OpenAI (/v1) et flux : ni compression ni tampon.
+  location /v1 {
+    proxy_pass http://workstudio:3000;
+    proxy_set_header Connection "";
+    proxy_buffering off;
+  }
+
+  location / {
+    proxy_pass http://workstudio:3000;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $nx_connection;
+    proxy_buffering off;
+  }
+}

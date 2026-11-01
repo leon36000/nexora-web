@@ -1,0 +1,38 @@
+# Surcouche Proxmox de la pile WorkStudio (VM nexora-workstudio, 192.168.1.123), à poser À CÔTÉ de deploy/compose.yml
+# du dépôt root/nexora-workstudio (non modifié) :
+#   docker compose -p nexora -f deploy/compose.yml -f deploy/compose.proxmox.yml --env-file <pile.env> up -d --no-build
+# (raccourci : ws.sh). Ajoute : `front` (nginx, seul port publié, 80, filtré par ufw au réseau local) et `mailpit`
+# (courriel PROVISOIRE, profil `mail-provisoire`). Le domaine vient d'UNE variable de pile.env : NEXORA_DOMAINE.
+services:
+  front:
+    image: nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+    restart: unless-stopped
+    environment:
+      NEXORA_DOMAINE: ${NEXORA_DOMAINE:?NEXORA_DOMAINE absent de pile.env}
+      NGINX_ENVSUBST_FILTER: ^NEXORA_
+    volumes:
+      - ./workstudio-front/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+    ports:
+      - '80:8080'
+    depends_on:
+      workstudio:
+        condition: service_healthy
+      workstudio-realtime:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:8080/front-sante']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
+
+  mailpit:
+    image: axllent/mailpit:v1.32.0
+    profiles: [mail-provisoire]
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', '/mailpit', 'readyz']
+      interval: 15s
+      timeout: 5s
+      retries: 5
