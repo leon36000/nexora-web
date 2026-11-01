@@ -1,0 +1,10 @@
+[Unit]
+Description=Nexora : règles DOCKER-USER (navigateur WebPilot et SearXNG sans accès aux réseaux privés)
+After=docker.service
+Requires=docker.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/nexora-docker-user.sh
+[Install]
+WantedBy=multi-user.target

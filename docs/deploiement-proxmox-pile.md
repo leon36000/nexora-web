@@ -252,3 +252,7 @@ Licence : la page `/apps/creative` sert la bande-annonce (`creative-bande-annonc
 8. **Compte administrateur Directus** : remplacer `admin@nexora-pile.example.com` par une vraie adresse, ouvrir une session (mot de passe dans `directus_admin_password`) et activer la 2FA ; le jeton statique n'est pas concerné.
 9. **Contenu** : approuver les affirmations et publier les pages (plan, étape 19) ; la décision sur la vidéo Creative (§8).
 10. **Accès public** : `SITE_ENV=production`, retrait des restrictions, proxy HTTPS public : après les points ci-dessus seulement.
+
+## Mise à jour du 01/11/2026 : règle DOCKER-USER posée et éprouvée
+Le navigateur WebPilot et SearXNG ne joignent plus les réseaux privés. Script `deploy/nexora-docker-user.sh` (relit les sous-réseaux des réseaux `nexorasite_webpilot-browser-egress` et `nexorasite_webpilot-egress`, rejette 10/8, 172.16/12, 192.168/16, 169.254/16, 100.64/10) et unité `deploy/nexora-docker-user.service` (installés dans `/usr/local/sbin/` et `/etc/systemd/system/` de la VM, activée au démarrage). **Éprouvé** depuis le conteneur du navigateur : 192.168.1.1:80 et 192.168.1.11:22 bloqués (`ENETUNREACH`), 1.1.1.1:443 et example.com:443 accessibles.
+Sauvegarde : les VM 201 et 202 sont sauvegardées chaque nuit à 03 h 30 par Proxmox (stockage `backup-nvme0`) ; essai réel de la VM 201 : 2 min 22. `tailscale serve` pour le site doit viser le proxy nginx (`http://127.0.0.1:80`) et non le site directement (3500), pour garder le blocage de `/api/admin/*` et `/api/revalidate`.
