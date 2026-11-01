@@ -1,0 +1,48 @@
+# Proxy HTTPS public de la VM « pile » (Caddy, hors Docker). Installé par deploy/domaine.sh ; DOMAINE et LAN_IP viennent de
+# /etc/caddy/domaine.env (unité systemd). Le certificat est obtenu tout seul (Let's Encrypt) dès que le DNS pointe ici ;
+# avant cela, /etc/caddy/tls-mode.caddy contient `tls internal` (autorité locale, pour essayer sur le réseau local).
+# Caddy écoute sur l'adresse du réseau local seulement : `tailscale serve` garde les ports de l'interface Tailscale.
+{
+	email info@{$DOMAINE}
+	default_bind {$LAN_IP}
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+(tls_mode) {
+	import /etc/caddy/tls-mode.caddy
+}
+
+(entetes) {
+	header {
+		-Server
+	}
+}
+
+www.{$DOMAINE} {
+	import tls_mode
+	redir https://{$DOMAINE}{uri} permanent
+}
+
+{$DOMAINE} {
+	import tls_mode
+	import entetes
+	encode zstd gzip
+	# Le site (derrière le proxy frontal local : /api/admin et /api/revalidate restent fermés).
+	reverse_proxy 127.0.0.1:3500 {
+		header_up X-Forwarded-Proto https
+	}
+}
+
+# Administration du contenu (Directus) : réseau local et Tailscale seulement, jamais Internet.
+cms.{$DOMAINE} {
+	import tls_mode
+	import entetes
+	@interdit not remote_ip 192.168.1.0/24 100.64.0.0/10 127.0.0.1
+	respond @interdit "Accès réservé" 403
+	reverse_proxy 127.0.0.1:8456
+}
+
+# WorkStudio (VM dédiée) : ajouté quand la VM `nexora-workstudio` est en service (voir docs/deploiement-proxmox-workstudio.md).
+import /etc/caddy/sites-extra/*.caddy
