@@ -277,7 +277,7 @@ function Showcase({ block }: { block: CardsBlock }) {
                   className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface/90 to-transparent"
                 />
                 {card.label ? (
-                  <span className="label-mono absolute left-4 top-4 rounded-xs border border-line bg-abyss-950/70 px-2 py-1 text-fg backdrop-blur">
+                  <span className="label-mono absolute left-4 top-4 rounded-xs border border-white/15 bg-abyss-950/70 px-2 py-1 text-frost backdrop-blur">
                     {card.label}
                   </span>
                 ) : null}
