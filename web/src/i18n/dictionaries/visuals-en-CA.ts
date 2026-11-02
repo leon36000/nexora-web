@@ -223,7 +223,7 @@ export const visualsEnCA: VisualsDictionary = {
         label: "At your site",
         title: "Installed on your premises",
         items: [
-          "DGX Spark or DGX Station",
+          "Compact machine or AI workstation",
           "Server rack",
           "Your data stays on site",
         ],

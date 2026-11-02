@@ -243,7 +243,7 @@ export const visualsFrCA = {
         label: "Chez vous",
         title: "Installée dans vos locaux",
         items: [
-          "DGX Spark ou DGX Station",
+          "Poste ou station d'IA",
           "Baie de serveurs",
           "Vos données restent sur place",
         ],

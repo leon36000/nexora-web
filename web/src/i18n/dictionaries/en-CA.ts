@@ -77,7 +77,7 @@ export const enCA: Dictionary = {
           {
             label: "AI infrastructure",
             description:
-              "DGX Spark, DGX Station and server racks, installed at your site.",
+              "Compact AI machines, AI workstations and server racks, installed at your site.",
             href: "/infrastructure",
           },
           {

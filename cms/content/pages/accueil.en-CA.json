@@ -85,7 +85,7 @@
           {
             "label": "02 · Equip",
             "title": "Your AI infrastructure.",
-            "text": "NVIDIA DGX Spark, DGX Station or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.",
+            "text": "Compact AI machines, AI workstations or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.",
             "href": "/en/infrastructure/",
             "link_label": "See infrastructure",
             "image": {
@@ -155,7 +155,7 @@
         "cards": [
           {
             "label": "Desk",
-            "title": "NVIDIA DGX Spark.",
+            "title": "Compact AI machine.",
             "text": "A compact AI computer that sits on a desk.",
             "href": "/en/infrastructure/",
             "link_label": "Learn more",
@@ -167,7 +167,7 @@
           },
           {
             "label": "Workstation",
-            "title": "NVIDIA DGX Station.",
+            "title": "AI workstation.",
             "text": "An AI workstation in a tower format.",
             "href": "/en/infrastructure/",
             "link_label": "Learn more",

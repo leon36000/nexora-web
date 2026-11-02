@@ -43,7 +43,7 @@ Une réception virtuelle qui répond aux appels, aux courriels et aux textos. De
 
 #### Votre infrastructure IA.
 
-NVIDIA DGX Spark, DGX Station ou baies de serveurs, installés chez vous avec les modèles, la sécurité et la supervision, ou hébergés sur nos serveurs.
+Postes d'IA compacts, stations d'IA ou baies de serveurs, installés chez vous avec les modèles, la sécurité et la supervision, ou hébergés sur nos serveurs.
 
 → [Voir l'infrastructure](/infrastructure/)
 
@@ -87,13 +87,13 @@ Réglages : `columns=3`, `layout=vitrine`, `tone=sombre`, `anchor_id=infrastruct
 
 Nous vendons, installons et exploitons le matériel. Chez vous, ou sur nos serveurs.
 
-#### NVIDIA DGX Spark.
+#### Poste d'IA compact.
 
 Un ordinateur d'IA compact, posé sur un bureau.
 
 → [En savoir plus](/infrastructure/)
 
-#### NVIDIA DGX Station.
+#### Station d'IA.
 
 Une station de travail d'IA en format tour.
 

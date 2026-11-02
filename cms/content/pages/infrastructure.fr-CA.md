@@ -6,8 +6,8 @@
 
 - Page : `infrastructure` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/infrastructure/` · slug : `infrastructure`
-- Titre SEO (45 caractères) : Infrastructure IA : DGX Spark, Station, baies
-- Description SEO (155 caractères) : Nous vendons et installons votre infrastructure IA : NVIDIA DGX Spark, DGX Station ou baies de serveurs, chez vous, ou hébergée sur nos serveurs au Québec.
+- Titre SEO (43 caractères) : Infrastructure IA : postes, stations, baies
+- Description SEO (158 caractères) : Nous vendons et installons votre infrastructure IA : poste d'IA compact, station d'IA ou baies de serveurs, chez vous, ou hébergée sur nos serveurs au Québec.
 
 ## Contenu
 
@@ -33,13 +33,13 @@ Réglages : `columns=3`, `layout=vitrine`, `tone=clair`, `anchor_id=materiel`
 
 ## Trois formats, un même service.
 
-#### NVIDIA DGX Spark.
+#### Poste d'IA compact.
 
 Un ordinateur d'IA compact, posé sur un bureau. Pour faire tourner vos modèles et vos agents sur place, sans salle de serveurs.
 
 → [Demander une proposition](/contact/?sujet=infrastructure)
 
-#### NVIDIA DGX Station.
+#### Station d'IA.
 
 Une station de travail d'IA en format tour, pour les équipes qui ajustent ou servent des modèles plus lourds.
 
