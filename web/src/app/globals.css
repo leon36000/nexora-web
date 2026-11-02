@@ -524,6 +524,20 @@
   background-size: 25% 100%;
 }
 
+/* Piste de la ligne de balayage : couvre le bloc ; ses unités de conteneur (cqh) donnent la course de la ligne, qui ne
+   bouge que par `transform` (aucun décalage de mise en page, CLS nul). */
+.scan-track,
+.scan-loop {
+  container-type: size;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scan-track {
+  position: absolute;
+  inset: 0;
+}
+
 /* Ligne de balayage : un filet de lumière horizontal, caché au repos, qui traverse le bloc quand il apparaît. */
 .scanline {
   position: absolute;
@@ -676,7 +690,7 @@
 @keyframes scan-sweep {
   0% {
     opacity: 0;
-    top: 0%;
+    transform: translateY(0);
   }
   10% {
     opacity: 1;
@@ -686,7 +700,7 @@
   }
   100% {
     opacity: 0;
-    top: 100%;
+    transform: translateY(100cqh);
   }
 }
 
@@ -795,7 +809,7 @@
       view-timeline: --scan block;
     }
 
-    .scan-reveal > .scanline {
+    .scan-reveal .scanline {
       animation: scan-sweep linear both;
       animation-timeline: --scan;
       animation-range: entry 15% cover 55%;

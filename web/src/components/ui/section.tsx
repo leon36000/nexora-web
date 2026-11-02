@@ -78,7 +78,11 @@ export function Section({
     >
       {background}
       {rails ? <div aria-hidden="true" className="rails" /> : null}
-      {scan ? <div aria-hidden="true" className="scanline" /> : null}
+      {scan ? (
+        <div aria-hidden="true" className="scan-track">
+          <div className="scanline" />
+        </div>
+      ) : null}
       <Container className={cn("relative", containerClassName)}>
         {children}
       </Container>

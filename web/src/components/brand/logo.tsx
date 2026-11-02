@@ -118,9 +118,11 @@ export function Logo({
       <LogoMark tone={tone} className="size-7" />
       <span className="whitespace-nowrap font-display text-[1.3125rem] font-semibold tracking-[-0.035em]">
         {BRAND.wordmark.base}
+        {/* une vraie espace : le nom lu (et comparé au nom accessible du lien) est « Nexora AI », pas « NexoraAI » */}
+        {BRAND.wordmark.suffix ? " " : null}
         {BRAND.wordmark.suffix ? (
           <span
-            className="ml-1.5 align-[0.12em] font-mono text-[0.8125rem] font-medium tracking-[0.04em]"
+            className="align-[0.12em] font-mono text-[0.8125rem] font-medium tracking-[0.04em]"
             style={{ color: c.ion }}
           >
             {BRAND.wordmark.suffix}
