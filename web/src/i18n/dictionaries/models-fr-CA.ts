@@ -318,7 +318,12 @@ export const modelsFrCA = {
       idLabel: "Identifiant à passer dans le champ model",
       previewTitle: "Bientôt disponible",
       previewText:
-        "Ce modèle est en aperçu : sa fiche et ses prix sont publiés, mais il n’est pas encore appelable. Un appel avec son identifiant échouera tant qu’il n’est pas ouvert, c’est pourquoi aucun exemple d’appel n’est proposé ici.",
+        "Ce modèle est en aperçu : sa fiche et ses prix sont publiés, mais il n’est pas encore appelable. Un appel avec son identifiant est refusé (erreur 404 model_not_available) tant qu’il n’est pas ouvert.",
+      previewExample:
+        "Voici l’appel tel qu’il s’écrira à l’ouverture, avec l’identifiant de ce modèle et une clé fictive : l’appel par API n’est pas encore ouvert, il ne fonctionne donc pas aujourd’hui.",
+      copy: "Copier",
+      copied: "Copié",
+      copyAria: "Copier l’exemple {label}",
       notify: "Me prévenir à l’ouverture",
       seeLive: "Voir les modèles déjà disponibles",
       docs: "Lire la documentation",

@@ -319,7 +319,12 @@ export const modelsEnCA: ModelsDictionary = {
       idLabel: "Identifier to pass in the model field",
       previewTitle: "Coming soon",
       previewText:
-        "This model is in preview: its page and prices are published, but it cannot be called yet. A call with its identifier will fail until it opens, which is why no call example is offered here.",
+        "This model is in preview: its page and prices are published, but it cannot be called yet. A call with its identifier is refused (404 model_not_available error) until it opens.",
+      previewExample:
+        "Here is the call as it will be written when the model opens, with this model’s identifier and a dummy key: API calls are not open yet, so it does not work today.",
+      copy: "Copy",
+      copied: "Copied",
+      copyAria: "Copy the {label} example",
       notify: "Notify me when it opens",
       seeLive: "See models that are already available",
       docs: "Read the documentation",

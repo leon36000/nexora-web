@@ -123,12 +123,18 @@ describe("fiche d'un modèle disponible", () => {
 describe("fiche d'un modèle en aperçu", () => {
   const html = render(MOE_PREVIEW);
 
-  it("dit clairement « bientôt disponible » et n'offre aucun faux exemple d'appel", () => {
+  it("dit clairement « bientôt disponible » ; l'exemple d'appel est annoncé comme non fonctionnel, avec clé fictive et bouton Copier", () => {
     expect(html).toContain("Bientôt disponible");
     expect(html).toContain("Modèle en aperçu");
-    expect(html).not.toContain(">curl<");
-    expect(html).not.toContain("Authorization");
-    expect(html).not.toContain("nxk_");
+    expect(html).toContain("model_not_available");
+    expect(html).toContain("l’appel par API n’est pas encore ouvert");
+    // exemple prérempli avec l'identifiant du modèle et une clé fictive (jamais une vraie clé)
+    expect(html).toContain(">curl<");
+    expect(html).toContain("&quot;model&quot;: &quot;nexora/exemple-moe&quot;");
+    expect(html).toContain("nxk_votre_cle_api");
+    expect(html).not.toMatch(/nxk_[a-f0-9]{16,}/);
+    expect(html).toContain(">Copier<");
+    expect(render(MOE_PREVIEW, "en")).toContain(">Copy<");
     // l'identifiant reste affiché
     expect(html).toContain("nexora/exemple-moe");
   });
