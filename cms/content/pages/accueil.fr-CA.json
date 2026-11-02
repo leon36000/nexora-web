@@ -233,13 +233,13 @@
         "anchor_id": "creative",
         "media": {
           "asset": [
-            "site-creative-promo.mp4"
+            "site-film-creative-fr.mp4"
           ],
           "optional": true
         },
         "poster": {
           "asset": [
-            "site-creative-affiche.jpg"
+            "site-film-creative-poster.jpg"
           ],
           "optional": true
         }
@@ -247,6 +247,12 @@
       "translation": {
         "title": "Nexora Creative. L'IA fait le gros œuvre.",
         "media_alt": "Bande-annonce de Nexora Creative : des plans générés par IA, avec leur musique.",
+        "media_lang": {
+          "asset": [
+            "site-film-creative-fr.mp4"
+          ],
+          "optional": true
+        },
         "body": "<p>Décrivez une scène en français : Creative produit l'image, la vidéo et le son. Un mode simple pour aller vite, un mode pro pour tout régler. Cette bande-annonce a été créée avec ses moteurs.</p><p>Creative est en préparation, sans date d'ouverture. <a href=\"/apps/creative/\">Voir Nexora Creative</a></p>"
       }
     },

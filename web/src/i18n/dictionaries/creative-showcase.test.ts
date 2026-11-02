@@ -39,10 +39,12 @@ describe("vitrine Nexora Creative", () => {
     );
   });
 
-  it("la vidéo et chaque image existent dans public (à la racine : le proxy n'accepte les fichiers statiques que sans sous-dossier)", () => {
-    expect(existsSync(join(WEB, "public", "creative-bande-annonce.mp4"))).toBe(
-      true,
-    );
+  it("chaque image existe dans public (à la racine : le proxy n'accepte les fichiers statiques que sans sous-dossier) et l'ancienne bande-annonce n'y est plus", () => {
+    for (const old of [
+      "creative-bande-annonce.mp4",
+      "creative-terre-flotte.jpg",
+    ])
+      expect(existsSync(join(WEB, "public", old)), old).toBe(false);
     for (const p of getCreativeShowcase("fr").plans)
       expect(
         existsSync(join(WEB, "public", `creative-${p.image}.jpg`)),

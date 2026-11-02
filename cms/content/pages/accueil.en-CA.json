@@ -233,13 +233,13 @@
         "anchor_id": "creative",
         "media": {
           "asset": [
-            "site-creative-promo.mp4"
+            "site-film-creative-fr.mp4"
           ],
           "optional": true
         },
         "poster": {
           "asset": [
-            "site-creative-affiche.jpg"
+            "site-film-creative-poster.jpg"
           ],
           "optional": true
         }
@@ -247,6 +247,12 @@
       "translation": {
         "title": "Nexora Creative. AI does the heavy lifting.",
         "media_alt": "Nexora Creative trailer: AI-generated shots, with their music.",
+        "media_lang": {
+          "asset": [
+            "site-film-creative-en.mp4"
+          ],
+          "optional": true
+        },
         "body": "<p>Describe a scene in plain words: Creative produces the image, the video and the sound. An easy mode to go fast, a pro mode to control everything. This trailer was made with its engines.</p><p>Creative is in preparation, with no opening date. <a href=\"/en/apps/creative/\">See Nexora Creative</a></p>"
       }
     },
