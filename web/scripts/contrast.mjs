@@ -48,7 +48,7 @@ const pairs = [
   ["Bordure de bouton secondaire (acier) sur abysse", T.steel, T["abyss-950"], 3, "1.4.11"],
   ["Bordure de bouton secondaire (acier) sur nuit", T.steel, T["abyss-850"], 3, "1.4.11"],
   ["Ion en graphisme sur abysse", T["ion-400"], T["abyss-950"], 3, "non textuel >= 3:1"],
-  // --- papier : espace client et pages claires ---
+  // --- papier : fond courant du site public clair, espace client et pages claires ---
   ["Texte sur papier", T["graphite-900"], T["paper-50"], 4.5, ""],
   ["Texte sur surface claire", T["graphite-900"], T["paper-100"], 4.5, ""],
   ["Texte secondaire sur papier", T["graphite-600"], T["paper-50"], 4.5, ""],
@@ -61,6 +61,22 @@ const pairs = [
   ["Ion en graphisme sur papier", T["ion-600"], T["paper-50"], 3, "non textuel >= 3:1"],
   ["Anneau de focus sur papier", T["ion-700"], T["paper-50"], 3, "2.4.11 / 1.4.11"],
   ["Bordure de bouton secondaire sur papier", mix(T["graphite-900"], 0.58, T["paper-50"]), T["paper-50"], 3, "1.4.11"],
+  // --- thème clair du site public (refonte « Signal clair ») : cartes blanches, bandes alternées, bouton ion foncé ---
+  ["Texte sur carte blanche", T["graphite-900"], T["paper-100"], 4.5, ""],
+  ["Texte sur bande relevée", T["graphite-900"], T["paper-200"], 4.5, ""],
+  ["Texte secondaire sur carte blanche", T["graphite-600"], T["paper-100"], 4.5, ""],
+  ["Texte secondaire sur bande relevée", T["graphite-600"], T["paper-200"], 4.5, ""],
+  ["Lien (ion foncé) sur carte blanche", T["ion-700"], T["paper-100"], 4.5, ""],
+  ["Lien (ion foncé) sur bande relevée", T["ion-700"], T["paper-200"], 4.5, ""],
+  ["Bouton principal sur papier : blanc sur ion foncé", T.white, T["ion-700"], 4.5, ""],
+  ["Bouton principal sur papier au survol", T.white, T["ion-800"], 4.5, ""],
+  ["Bouton flare sur papier : abysse sur flare", T["abyss-950"], T["flare-500"], 4.5, ""],
+  ["Succès sur carte blanche", T["ok-700"], T["paper-100"], 4.5, ""],
+  ["Alerte sur carte blanche", T["alert-700"], T["paper-100"], 4.5, ""],
+  ["Flare foncé sur carte blanche", T["flare-700"], T["paper-100"], 4.5, ""],
+  ["Anneau de focus sur carte blanche", T["ion-700"], T["paper-100"], 3, "2.4.11 / 1.4.11"],
+  ["Ion en graphisme sur carte blanche", T["ion-600"], T["paper-100"], 3, "non textuel >= 3:1"],
+  ["Bordure de bouton secondaire sur carte blanche", mix(T["graphite-900"], 0.58, T["paper-100"]), T["paper-100"], 3, "1.4.11"],
 ];
 
 const rows = pairs.map(([name, fg, bg, min, note]) => {

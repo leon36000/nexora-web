@@ -56,7 +56,7 @@ export function SiteHeader({
     "inline-flex h-full min-h-16 items-center px-3.5 text-[0.9375rem] font-medium text-fg-muted transition-colors duration-150 hover:text-fg aria-[current=page]:text-fg aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent-graphic)]";
 
   return (
-    <header className="theme-dark sticky top-0 z-40 border-b border-line bg-abyss-950/72 text-fg backdrop-blur-xl backdrop-saturate-150">
+    <header className="theme-light sticky top-0 z-40 border-b border-line bg-bg text-fg">
       <div className="mx-auto flex min-h-16 w-full max-w-[96rem] items-stretch pl-gutter">
         <Link
           href={localizePath(lang, "/")}
@@ -64,7 +64,7 @@ export function SiteHeader({
           aria-label={a11y.homeLink}
           className="mr-6 flex items-center rounded-sm"
         >
-          <Logo tone="dark" />
+          <Logo tone="light" />
         </Link>
 
         <nav aria-label={a11y.mainNav} className="hidden nav:block">
@@ -120,7 +120,7 @@ export function SiteHeader({
             login={login}
             accountLabel={dict.nav.accountLabel}
             cta={cta}
-            logo={<Logo tone="dark" />}
+            logo={<Logo tone="light" />}
             languageSwitcher={mobileSwitcher}
           />
         </div>

@@ -136,7 +136,7 @@ export default async function AgentPage(
           </section>
         </div>
       </Section>
-      <Section tone="dark" aria-labelledby="example-title">
+      <Section tone="light" surface aria-labelledby="example-title">
         <section>
           <Badge tone="accent">{d.example}</Badge>
           <h2 id="example-title" className="mt-3 text-h3 text-fg">

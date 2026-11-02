@@ -116,7 +116,7 @@ export default async function AppsPage() {
         </ul>
       </Section>
 
-      <Section tone="dark" aria-labelledby="infra-title">
+      <Section tone="light" aria-labelledby="infra-title">
         <InfraCard lang={lang} t={t} />
       </Section>
 

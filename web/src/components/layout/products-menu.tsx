@@ -82,7 +82,7 @@ export function ProductsMenu({ label, items, className }: ProductsMenuProps) {
       <div
         id={panelId}
         hidden={!open}
-        className="theme-dark absolute left-0 top-full z-50 mt-px w-[min(42rem,calc(100vw-3rem))] overflow-hidden rounded-b-lg border border-t-0 border-line bg-abyss-900/95 p-2 shadow-pop backdrop-blur-xl"
+        className="theme-light absolute left-0 top-full z-50 mt-px w-[min(42rem,calc(100vw-3rem))] overflow-hidden rounded-b-lg border border-t-0 border-line bg-bg/95 p-2 shadow-lift backdrop-blur-xl"
       >
         <div
           aria-hidden="true"

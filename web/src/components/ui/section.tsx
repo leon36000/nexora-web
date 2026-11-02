@@ -50,11 +50,7 @@ export function Section({
     <section
       className={cn(
         "relative isolate overflow-hidden border-t border-line text-fg first:border-t-0",
-        tone === "dark"
-          ? "theme-dark"
-          : tone === "paper"
-            ? "theme-light"
-            : "theme-night",
+        tone === "dark" ? "theme-dark" : "theme-light",
         scan && "scan-reveal",
         surface ? "bg-surface" : "bg-bg",
         // Lueur d'accent seulement en tête d'une bande : une section qui prolonge la précédente n'en répète pas.

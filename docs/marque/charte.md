@@ -1,6 +1,6 @@
 # Charte de marque — identité « Signal »
 
-Version du 2 novembre 2026. Remplace la direction « Instrument » du 27 octobre (mosaïque de pixels orange, logo « N » en pixels, rampe « braise »), retirée du site public parce qu'elle faisait trop penser à Mistral. Mandat : `marketing/nexora/REFONTE-2026-11.md` (dépôt Nexora Creative). Journal de la refonte : `docs/refonte-signal.md`.
+Version du 2 novembre 2026, thème clair d'abord (3 novembre). Remplace la direction « Instrument » du 27 octobre (mosaïque de pixels orange, logo « N » en pixels, rampe « braise »), retirée du site public parce qu'elle faisait trop penser à Mistral. Mandat : `marketing/nexora/REFONTE-2026-11.md` (dépôt Nexora Creative). Journal de la refonte : `docs/refonte-signal.md`.
 
 **Idée.** Une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA voit, entend et calcule, montré en fines lignes de lumière, nuages de points, formes d'onde et cadres de détection. Cinématographique, silencieux, à grande échelle.
 
@@ -32,7 +32,7 @@ Les anciens fichiers du logo « N » (`docs/marque/logos/`) sont des archives : 
 
 ## 3. Couleurs
 
-Sombre d'abord. Une lumière principale (ion), un contrepoint chaud rare (flare).
+**Clair d'abord, sombre en contrepoint (décision du fondateur, 3 novembre 2026).** Le site public est fait de bandes « papier » aérées ; quatre moments sombres donnent le rythme : le héros vidéo de l'accueil, les vitrines vidéo et cartes « vitrine », l'appel à l'action final et le pied de page. Une lumière principale (ion), un contrepoint chaud rare (flare). Le ton `sombre` du CMS ne rend une bande sombre que pour une vitrine (héros plein écran, section à vidéo, cartes `vitrine`, appel à l'action) ; ailleurs il devient une bande claire (`effectiveTone`, `web/src/components/blocks/tone.ts`). `clair` = papier ; `sable` = bande blanche relevée.
 
 | Rôle | Jeton | Valeur | Contraste |
 |---|---|---|---|
@@ -48,9 +48,9 @@ Sombre d'abord. Une lumière principale (ion), un contrepoint chaud rare (flare)
 | **Flare** : un seul point de chaleur par écran (CTA final, alerte, point « en direct ») | `flare-500` | `#FF6A2B` | 7,1:1 ; bouton : texte abysse 7,1:1 |
 | Alerte / succès | `alert-400` / `ok-400` | `#FF4D5E` / `#3FE0A5` | 6,2:1 / 11,9:1 |
 
-**Thème papier** (`.theme-light`, espace client et pages qui le demandent) : fond `#F5F7FA`, surface `#E9EEF4`, texte `#0B0F16`, secondaire `#4A5568` (7,0:1), accent texte ion foncé `#0B6E99` (5,3:1), graphisme `#0A8BC2` (3,6:1). Le panneau `/compte` garde ce thème (`<Section tone="paper">`).
+**Thème papier** (`.theme-light`, fond courant du site public, espace client) : fond `#F7F9FC`, cartes et bande relevée `#FFFFFF`, surface relevée `#EDF1F7`, filets `#E3E8F0`, texte `#0B1220`, secondaire `#5B6678` (5,5:1), accent texte ion foncé `#0B6E99` (5,3:1), graphisme `#0A8BC2` (3,6:1), **bouton principal ion foncé `#0B6E99` + texte blanc** (5,3:1 ; survol `#095B80`), flare réservé au bouton final et aux alertes. Matières sur papier : grilles et halos en ion doux (`--grid-a/b`), nuage de points `#0A8BC2` et balayage qui fonce au lieu de blanchir (`--field-rgb`, `--scan-rgb`, lus par `LightField` et `.scanline`) ; en bande sombre, elles gardent la lumière ion vive. L'en-tête, le sommaire collant et les menus sont papier (opaques : un fond translucide sur l'abysse du document tombait sous 4,5:1).
 
-Thèmes sémantiques : `.theme-dark` (abysse), `.theme-night` (nuit, défaut des sections publiques), `.theme-light` (papier). Les composants n'utilisent que les jetons sémantiques (`bg`, `surface`, `fg`, `accent`, `flare`…). Contrôle : `bun run --cwd web check:contrast` (35 paires).
+Thèmes sémantiques : `.theme-dark` (abysse), `.theme-night` (nuit, plus utilisé par les sections), `.theme-light` (papier, défaut des sections publiques). Les composants n'utilisent que les jetons sémantiques (`bg`, `surface`, `fg`, `accent`, `flare`…). Contrôle : `bun run --cwd web check:contrast` (50 paires).
 
 ## 4. Typographies
 

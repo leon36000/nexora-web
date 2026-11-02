@@ -14,7 +14,7 @@ export function Trust({
   t: Dictionary["home"]["trust"];
 }) {
   return (
-    <Section tone="dark" aria-labelledby="trust-title">
+    <Section tone="light" surface aria-labelledby="trust-title">
       <SectionHeader
         id="trust-title"
         label={t.label}

@@ -94,7 +94,7 @@ export default async function AgentsPage() {
         )}
       </Section>
 
-      <Section tone="dark" aria-labelledby="how-title">
+      <Section tone="light" surface aria-labelledby="how-title">
         <h2 id="how-title" className="text-h2 text-fg">
           {t.catalog.howTitle}
         </h2>

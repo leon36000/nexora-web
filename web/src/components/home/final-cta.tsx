@@ -14,7 +14,7 @@ export function FinalCta({
 }) {
   return (
     <Section
-      tone="light"
+      tone="dark"
       surface
       aria-labelledby="cta-title"
       background={

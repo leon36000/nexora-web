@@ -58,7 +58,7 @@ export function MotionToggle({
       onClick={toggle}
       aria-pressed={paused}
       className={cn(
-        "inline-flex min-h-11 items-center gap-2 rounded-md border border-line bg-abyss-950/50 px-3 font-mono text-label uppercase tracking-[0.08em] text-fg-muted backdrop-blur transition-colors duration-150 hover:border-line-strong hover:text-fg",
+        "inline-flex min-h-11 items-center gap-2 rounded-md border border-line bg-bg/50 px-3 font-mono text-label uppercase tracking-[0.08em] text-fg-muted backdrop-blur transition-colors duration-150 hover:border-line-strong hover:text-fg",
         className,
       )}
     >

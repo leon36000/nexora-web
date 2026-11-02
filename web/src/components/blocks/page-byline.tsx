@@ -23,7 +23,7 @@ export function PageByline({
   const { published, updated } = bylineDates(dates, lang);
   if (!published && !updated) return null;
   return (
-    <div className="theme-night border-b border-line bg-bg text-fg">
+    <div className="theme-light border-b border-line bg-bg text-fg">
       <p className="mx-auto flex w-full max-w-page flex-wrap gap-x-5 gap-y-1 px-gutter py-3 font-mono text-label uppercase text-fg-muted">
         <span>{fmt(t.by, { name: siteName })}</span>
         {published ? (
