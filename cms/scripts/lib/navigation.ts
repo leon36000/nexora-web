@@ -111,15 +111,22 @@ const INFRASTRUCTURE = [
     "Serveurs privés virtuels, avec l’application de votre choix.",
     "Virtual private servers, with the application of your choice.",
   ),
-  both(
-    "Modèles et API",
-    "Models and API",
-    "/modeles/",
-    "Une passerelle unique vers des modèles, avec la résidence des données affichée.",
-    "One gateway to many models, with data residency shown for each.",
-  ),
 ];
+const MODELS = both(
+  "Modèles et API",
+  "Models and API",
+  "/modeles/",
+  "Un compte, une API au format OpenAI, le catalogue des modèles et leur hébergement.",
+  "One account, one OpenAI-format API, the model catalogue and where each model runs.",
+);
 const TOOLS = [
+  both(
+    "Espace de travail",
+    "Workspace",
+    "/suite/",
+    "Agent de code, documents, agents et Creative, côte à côte dans le navigateur.",
+    "Coding agent, documents, agents and Creative, side by side in the browser.",
+  ),
   both(
     "Nexora Creative",
     "Nexora Creative",
@@ -183,10 +190,11 @@ const plain = (c: NonNullable<NavEntry["children"]>) =>
   }));
 
 export const NAVIGATION: NavEntry[] = [
-  // --- en-tête : Solutions ▾ · Infrastructure ▾ · Outils ▾ · Tarifs · Ressources ; Connexion ; bouton ---
+  // --- en-tête : Espace de travail ▾ · Solutions ▾ · Infrastructure ▾ · Modèles et API · Tarifs · Ressources ; Connexion ; bouton ---
+  menu("Espace de travail", "Workspace", TOOLS),
   menu("Solutions", "Solutions", SOLUTIONS),
   menu("Infrastructure", "Infrastructure", INFRASTRUCTURE),
-  menu("Outils", "Tools", TOOLS),
+  top("header", "link", MODELS),
   top("header", "link", both("Tarifs", "Pricing", "/tarifs/")),
   top("header", "link", both("Ressources", "Resources", "/ressources/")),
   top("header", "utility", both("Connexion", "Sign in", "/compte/")),
@@ -200,9 +208,13 @@ export const NAVIGATION: NavEntry[] = [
   menu("Solutions", "Solutions", plain(SOLUTIONS), "footer"),
   menu("Infrastructure", "Infrastructure", plain(INFRASTRUCTURE), "footer"),
   menu(
-    "Outils",
-    "Tools",
-    [...plain(TOOLS), both("Mes outils", "My tools", "/compte/")],
+    "Espace de travail",
+    "Workspace",
+    [
+      ...plain(TOOLS),
+      ...plain([MODELS]),
+      both("Mes outils", "My tools", "/compte/"),
+    ],
     "footer",
   ),
   menu(

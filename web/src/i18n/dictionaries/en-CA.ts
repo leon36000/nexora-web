@@ -43,6 +43,47 @@ export const enCA: Dictionary = {
     /** Header menus ("Signal" redesign, 2026-11-02): fallback when Directus does not provide the navigation. */
     menus: [
       {
+        label: "Workspace",
+        items: [
+          {
+            label: "Workspace",
+            description:
+              "Coding agent, documents, agents and Creative, side by side in the browser.",
+            href: "/suite",
+          },
+          {
+            label: "Nexora Creative",
+            description: "Image, video and sound: AI does the heavy lifting.",
+            href: "/apps/creative",
+          },
+          {
+            label: "WorkStudio",
+            description: "The studio for designing agents and workflows.",
+            href: "/workstudio",
+          },
+          {
+            label: "Nexora Code",
+            description: "A coding environment with AI, in your account.",
+            href: "/apps/code",
+          },
+          {
+            label: "Nexora RAG",
+            description: "Answers drawn from your own documents.",
+            href: "/apps/rag",
+          },
+          {
+            label: "WebPilot",
+            description: "A browser that AI drives for you.",
+            href: "/apps/webpilot",
+          },
+          {
+            label: "All applications",
+            description: "The state of each tool is shown.",
+            href: "/apps",
+          },
+        ],
+      },
+      {
         label: "Solutions",
         items: [
           {
@@ -96,41 +137,6 @@ export const enCA: Dictionary = {
             description:
               "One gateway to many models, with data residency shown for each.",
             href: "/modeles",
-          },
-        ],
-      },
-      {
-        label: "Tools",
-        items: [
-          {
-            label: "Nexora Creative",
-            description: "Image, video and sound: AI does the heavy lifting.",
-            href: "/apps/creative",
-          },
-          {
-            label: "WorkStudio",
-            description: "The studio for designing agents and workflows.",
-            href: "/workstudio",
-          },
-          {
-            label: "Nexora Code",
-            description: "A coding environment with AI, in your account.",
-            href: "/apps/code",
-          },
-          {
-            label: "Nexora RAG",
-            description: "Answers drawn from your own documents.",
-            href: "/apps/rag",
-          },
-          {
-            label: "WebPilot",
-            description: "A browser that AI drives for you.",
-            href: "/apps/webpilot",
-          },
-          {
-            label: "All applications",
-            description: "The state of each tool is shown.",
-            href: "/apps",
           },
         ],
       },
@@ -291,6 +297,8 @@ export const enCA: Dictionary = {
     },
     modules: { detail: "See details" },
     visuals: {
+      "espace-de-travail":
+        "Mock-up of the workspace in the browser: a coding agent proposes a change for review, your documents answer with their sources, a workflow waits for your approval, Creative prepares a video, credits are shared and the agent can run on your computer (in preparation).",
       "signal-accueil":
         "Mock-up of the virtual reception: an incoming call transcribed live, the reply offering a new appointment, and the feed of calls, emails and text messages already handled.",
       "signal-surveillance":

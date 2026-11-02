@@ -79,6 +79,7 @@ describe("variantes de composition (S3)", () => {
       "signal-accueil",
       "signal-surveillance",
       "signal-infrastructure",
+      "espace-de-travail",
     ]);
     expect(f.schema?.default_value).toBe("aucun");
   });

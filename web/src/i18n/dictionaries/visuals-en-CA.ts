@@ -240,5 +240,64 @@ export const visualsEnCA: VisualsDictionary = {
       stack: ["Your models", "Your applications", "Security", "Monitoring"],
     },
   },
+  workspace: {
+    address: "app.nexora · Workspace",
+    org: "Your organization",
+    tabs: ["Code", "Documents", "Flows", "Creative", "WebPilot"],
+    layout: "Layout: 4 panels",
+    code: {
+      title: "Coding agent",
+      prompt: "Add email validation to the contact form, with a test.",
+      file: "src/contact/schema.ts",
+      removed: ["  email: z.string(),"],
+      added: [
+        "  email: z.string().trim().email({",
+        '    message: "Invalid email address",',
+        "  }),",
+      ],
+      context: [
+        "export const contactSchema = z.object({",
+        "  name: z.string().min(1),",
+      ],
+      status: "Writing the test",
+      tests: "2 tests added · ready for review",
+      review: "Review the change",
+    },
+    rag: {
+      title: "Your documents",
+      question: "How many vacation days after three years?",
+      answer:
+        "After three years of service, the policy provides three weeks of paid vacation, to be taken between May and October unless agreed in writing.",
+      sources: [
+        "Vacation policy.pdf · p. 4",
+        "Employee handbook.docx · section 3",
+      ],
+      cited: "Cited sources",
+    },
+    flow: {
+      title: "Workflow",
+      nodes: ["Email received", "Classify", "Approval", "Reply"],
+      waiting: "Waiting for your approval",
+    },
+    creative: {
+      title: "Creative",
+      prompt: "Bakery storefront at sunrise, slow shot",
+      rendering: "Rendering the video",
+    },
+    usage: {
+      title: "Account credits",
+      text: "One balance for every tool.",
+      caps: "Monthly cap, keys and call log.",
+      items: ["Code", "Documents", "Flows", "Creative"],
+    },
+    machine: {
+      title: "Your computer",
+      text: "The agent can run the work on your machine.",
+      cloud: "Cloud",
+      local: "Your machine",
+      status: "In preparation",
+      device: "Your machine, linked to your account",
+    },
+  },
   notFound: { alt: "404" },
 };

@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
 import { CatalogView } from "@/components/gateway/catalog-view";
+import { ModelsHero } from "@/components/gateway/models-hero";
 import { JsonLd } from "@/components/seo/json-ld";
-import { PageHero } from "@/components/ui/page-hero";
 import { Section } from "@/components/ui/section";
 import { CatalogSkeleton } from "@/components/ui/skeleton";
 import { isLang, type Lang } from "@/i18n/config";
@@ -45,15 +45,21 @@ export default async function ModelsPage({
   const t = getModelsDictionary(lang);
   return (
     <>
-      <PageHero
-        titleId="models-title"
-        palette="ciel"
-        seed={4}
-        eyebrow={t.list.label}
-        title={t.list.title}
-        lead={t.list.lead}
-      />
-      <Section tone="light" joined="after" className="pt-8 md:pt-12">
+      <ModelsHero lang={lang} t={t.hero} titleId="models-title" />
+      <Section
+        tone="light"
+        id="catalogue"
+        aria-labelledby="catalogue-title"
+        className="scroll-mt-12 pt-14 md:pt-20"
+      >
+        <div className="mb-10 grid gap-4 md:mb-14 lg:grid-cols-12 lg:items-end lg:gap-16">
+          <h2 id="catalogue-title" className="text-h2 text-fg lg:col-span-7">
+            {t.list.title}
+          </h2>
+          <p className="max-w-xl text-lead text-fg-muted lg:col-span-5">
+            {t.list.lead}
+          </p>
+        </div>
         <Suspense fallback={<CatalogSkeleton />}>
           <CatalogBody lang={lang} searchParams={searchParams} />
         </Suspense>

@@ -68,6 +68,33 @@ export const modelsEnCA: ModelsDictionary = {
     unread: "Licence text not read",
   },
 
+  hero: {
+    label: "Models and API",
+    title: "One key. Every model in the catalogue.",
+    lead: "One account, one API in the OpenAI format: you switch models by changing one line. Each model page gives the price in Canadian dollars, the context, published benchmarks and where the model is hosted. The catalogue is in preview; API calls are not open yet.",
+    primary: "Browse the catalogue",
+    secondary: "API documentation",
+    points: [
+      {
+        title: "OpenAI format",
+        text: "Your current tools and libraries plug straight in.",
+      },
+      {
+        title: "Prices in Canadian dollars",
+        text: "Per million tokens, shown on every model page.",
+      },
+      {
+        title: "Hosting shown",
+        text: "You see where each model runs before you call it.",
+      },
+    ],
+    request: "Example call",
+    response: "Streaming response",
+    answer: "Hello! How can I help you?",
+    caption:
+      "Example call with a placeholder key and model; the response is illustrative.",
+  },
+
   list: {
     label: "Models",
     title: "Models, their prices and their benchmarks.",

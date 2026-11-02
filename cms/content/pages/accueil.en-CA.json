@@ -17,11 +17,12 @@
       "claims": [
         "CL-01",
         "CL-02",
+        "CL-E01",
+        "CL-E02",
+        "CL-IN01",
         "CL-RV01",
         "CL-SV01",
-        "CL-IN01",
-        "CL-E01",
-        "CL-E02"
+        "CL-WS01"
       ],
       "fields": {
         "variant": "sombre",
@@ -29,82 +30,73 @@
         "layout": "plein-ecran",
         "signature": "champ",
         "video": {
-          "asset": ["site-hero-boucle.mp4"],
+          "asset": [
+            "site-hero-boucle.mp4"
+          ],
           "optional": true
         },
         "media": {
-          "asset": ["site-hero-affiche.jpg"],
+          "asset": [
+            "site-hero-affiche.jpg"
+          ],
           "optional": true
         }
       },
       "translation": {
         "eyebrow": "Artificial intelligence for business",
         "headline": "AI that sees, listens and acts.",
-        "subheadline": "AI that works for your business. Under your control. A reception that answers every call, cameras that are finally watched, agents that carry out your tasks, installed at your site or on our servers.",
+        "subheadline": "AI that works for your business. Under your control. Your complete AI work environment, in the browser; a reception that answers every call and cameras that are finally watched, installed at your site or on our servers.",
         "primary_label": "Plan a consultation",
         "primary_href": "/en/contact/",
-        "secondary_label": "See solutions",
-        "secondary_href": "/en/solutions/"
+        "secondary_label": "Discover the workspace",
+        "secondary_href": "/en/suite/"
       }
     },
     {
-      "collection": "block_cards",
-      "role": "Trois piliers : automatiser, équiper, créer et bâtir (vitrine, images stables).",
+      "collection": "block_section",
+      "role": "Espace de travail dans le navigateur : la grande maquette (panneaux) et les six modules avec leur état ; premier récit de l'accueil.",
       "claims": [
-        "CL-RV01",
-        "CL-SV01",
-        "CL-IN01",
-        "CL-IN02",
-        "CL-CR01",
+        "CL-WS01",
+        "CL-WS02",
+        "CL-20",
         "CL-AP05",
         "CL-AP06",
-        "CL-AP07"
+        "CL-AP07",
+        "CL-CR01"
       ],
       "fields": {
-        "columns": "3",
-        "layout": "vitrine",
-        "tone": "clair",
-        "anchor_id": "piliers"
+        "media_position": "top",
+        "visual": "espace-de-travail",
+        "tone": "sombre",
+        "anchor_id": "espace-de-travail"
       },
       "translation": {
-        "title": "Automate. Equip. Create.",
-        "intro": "Three ways to put AI to work for you, with one team from start to finish.",
-        "cards": [
+        "title": "All your AI work, in one tab.",
+        "body": "<p>Your coding agent, your documents, your agents and workflows, Creative and WebPilot open side by side in the browser, as panels you arrange your way. One account, one credit balance. The work runs in the cloud, and your agents will also be able to use the power of your own computer.</p><p><a href=\"/en/suite/\">Discover the workspace</a></p>",
+        "items": [
           {
-            "label": "01 · Automate",
-            "title": "Reception, surveillance, agents.",
-            "text": "A virtual reception that answers calls, emails and text messages. Cameras monitored in real time. Agents and workflows (automated sequences of tasks) that act with your approval.",
-            "href": "/en/solutions/",
-            "link_label": "See solutions",
-            "image": {
-              "asset": ["site-pilier-automatiser.jpg"],
-              "optional": true
-            },
-            "visual": "onde"
+            "title": "Coding agent.",
+            "text": "It reads your code, changes it, writes the tests and shows you the change to review. Coming soon, no date."
           },
           {
-            "label": "02 · Equip",
-            "title": "Your AI infrastructure.",
-            "text": "Compact AI machines, AI workstations or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.",
-            "href": "/en/infrastructure/",
-            "link_label": "See infrastructure",
-            "image": {
-              "asset": ["site-pilier-equiper.jpg", "site-infra-racks.jpg"],
-              "optional": true
-            },
-            "visual": "infra"
+            "title": "Your documents, searchable.",
+            "text": "Ask a question: the answer draws on your files and cites its sources (RAG). Coming soon, no date."
           },
           {
-            "label": "03 · Create and build",
-            "title": "Creative, WorkStudio, Code.",
-            "text": "A studio for image, video and sound, a studio for agents, code, answers drawn from your documents. Creative, Code and RAG are in preparation.",
-            "href": "/en/apps/",
-            "link_label": "See the tools",
-            "image": {
-              "asset": ["site-pilier-creer.jpg"],
-              "optional": true
-            },
-            "visual": "champ"
+            "title": "Agents and workflows.",
+            "text": "WorkStudio designs and runs your agents; a step can wait for your approval before acting. Available."
+          },
+          {
+            "title": "Creative and WebPilot.",
+            "text": "Image, video and sound from a description; a browser that AI drives for you. In preparation."
+          },
+          {
+            "title": "One account, one balance.",
+            "text": "Every tool draws on the same credits, with your caps, your keys and your logs."
+          },
+          {
+            "title": "Your computer, put to work.",
+            "text": "Your agents will be able to run the work on your machine, linked to your account, instead of in the cloud. In preparation."
           }
         ]
       }
@@ -112,11 +104,14 @@
     {
       "collection": "block_section",
       "role": "Réception virtuelle : maquette (onde, conversations), lien vers la page.",
-      "claims": ["CL-RV01", "CL-RV02"],
+      "claims": [
+        "CL-RV01",
+        "CL-RV02"
+      ],
       "fields": {
         "media_position": "right",
         "visual": "signal-accueil",
-        "tone": "sombre",
+        "tone": "clair",
         "anchor_id": "reception"
       },
       "translation": {
@@ -127,11 +122,15 @@
     {
       "collection": "block_section",
       "role": "Surveillance IA : message clé du fondateur, maquette (détections, chronologie).",
-      "claims": ["CL-SV01", "CL-SV02", "CL-SV03"],
+      "claims": [
+        "CL-SV01",
+        "CL-SV02",
+        "CL-SV03"
+      ],
       "fields": {
         "media_position": "left",
         "visual": "signal-surveillance",
-        "tone": "clair",
+        "tone": "sable",
         "anchor_id": "surveillance"
       },
       "translation": {
@@ -142,7 +141,11 @@
     {
       "collection": "block_cards",
       "role": "Infrastructure : trois cartes avec photos (emplacements stables).",
-      "claims": ["CL-IN01", "CL-IN02", "CL-IN03"],
+      "claims": [
+        "CL-IN01",
+        "CL-IN02",
+        "CL-IN03"
+      ],
       "fields": {
         "columns": "3",
         "layout": "vitrine",
@@ -160,7 +163,9 @@
             "href": "/en/infrastructure/",
             "link_label": "Learn more",
             "image": {
-              "asset": ["site-infra-dgx-spark.jpg"],
+              "asset": [
+                "site-infra-dgx-spark.jpg"
+              ],
               "optional": true
             },
             "visual": "champ"
@@ -172,7 +177,9 @@
             "href": "/en/infrastructure/",
             "link_label": "Learn more",
             "image": {
-              "asset": ["site-infra-dgx-station.jpg"],
+              "asset": [
+                "site-infra-dgx-station.jpg"
+              ],
               "optional": true
             },
             "visual": "infra"
@@ -184,7 +191,9 @@
             "href": "/en/infrastructure/",
             "link_label": "Learn more",
             "image": {
-              "asset": ["site-infra-racks.jpg"],
+              "asset": [
+                "site-infra-racks.jpg"
+              ],
               "optional": true
             },
             "visual": "infra"
@@ -194,45 +203,44 @@
     },
     {
       "collection": "block_section",
-      "role": "Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue.",
-      "claims": ["CL-01"],
+      "role": "Modèles et API : un compte, une API au format OpenAI, le catalogue public ; vente non ouverte.",
+      "claims": [
+        "CL-27",
+        "CL-12",
+        "CL-T02"
+      ],
       "fields": {
-        "media_position": "top",
+        "media_position": "right",
+        "visual": "catalogue-modeles",
         "tone": "clair",
-        "anchor_id": "film",
-        "media": {
-          "asset": ["site-film-marque-fr.mp4"],
-          "optional": true
-        },
-        "poster": {
-          "asset": ["site-film-marque-affiche.jpg"],
-          "optional": true
-        }
+        "anchor_id": "modeles"
       },
       "translation": {
-        "title": "One minute to see us.",
-        "media_alt": "Nexora AI brand film, without dialogue, on original music.",
-        "media_lang": {
-          "asset": ["site-film-marque-en.mp4", "site-film-marque-fr.mp4"],
-          "optional": true
-        },
-        "body": "<p>Our brand film, without dialogue, on original music. Every shot was generated by AI, with the tools we install.</p>"
+        "title": "One key. Every model in the catalogue.",
+        "body": "<p>A single account gives you access to several AI models through an API in the OpenAI format, which most tools already understand. The catalogue shows each model's capabilities, where it is hosted and its price in credits. You can browse it now; sales are not open yet.</p><p><a href=\"/en/modeles/\">Browse the models</a> · <a href=\"/en/passerelle-api-modeles/\">The gateway in detail</a></p>"
       }
     },
     {
       "collection": "block_section",
       "role": "Nexora Creative mis en avant : bande-annonce, mode simple et mode pro ; statut honnête.",
-      "claims": ["CL-CR01", "CL-AP05"],
+      "claims": [
+        "CL-CR01",
+        "CL-AP05"
+      ],
       "fields": {
         "media_position": "left",
         "tone": "sombre",
         "anchor_id": "creative",
         "media": {
-          "asset": ["site-creative-promo.mp4"],
+          "asset": [
+            "site-creative-promo.mp4"
+          ],
           "optional": true
         },
         "poster": {
-          "asset": ["site-creative-affiche.jpg"],
+          "asset": [
+            "site-creative-affiche.jpg"
+          ],
           "optional": true
         }
       },
@@ -245,7 +253,13 @@
     {
       "collection": "block_section",
       "role": "Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ».",
-      "claims": ["CL-70", "CL-71", "CL-E02", "CL-02", "CL-E01"],
+      "claims": [
+        "CL-70",
+        "CL-71",
+        "CL-E02",
+        "CL-02",
+        "CL-E01"
+      ],
       "fields": {
         "media_position": "right",
         "visual": "signal-infrastructure",
@@ -260,7 +274,11 @@
     {
       "collection": "block_cards",
       "role": "Méthode : consultation, installation, exploitation et soutien.",
-      "claims": ["CL-03", "CL-04", "CL-14"],
+      "claims": [
+        "CL-03",
+        "CL-04",
+        "CL-14"
+      ],
       "fields": {
         "columns": "3",
         "layout": "etapes",
@@ -388,6 +406,42 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue.",
+      "claims": [
+        "CL-01"
+      ],
+      "fields": {
+        "media_position": "top",
+        "tone": "clair",
+        "anchor_id": "film",
+        "media": {
+          "asset": [
+            "site-film-marque-fr.mp4"
+          ],
+          "optional": true
+        },
+        "poster": {
+          "asset": [
+            "site-film-marque-affiche.jpg"
+          ],
+          "optional": true
+        }
+      },
+      "translation": {
+        "title": "One minute to see us.",
+        "media_alt": "Nexora AI brand film, without dialogue, on original music.",
+        "media_lang": {
+          "asset": [
+            "site-film-marque-en.mp4",
+            "site-film-marque-fr.mp4"
+          ],
+          "optional": true
+        },
+        "body": "<p>Our brand film, without dialogue, on original music. Every shot was generated by AI, with the tools we install.</p>"
+      }
+    },
+    {
       "collection": "block_faq",
       "role": "FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables.",
       "claims": [
@@ -505,7 +559,11 @@
     {
       "collection": "block_cta",
       "role": "CTA final : le seul point de chaleur de l'écran (bouton flare).",
-      "claims": ["CL-01", "CL-P02", "CL-PL03"],
+      "claims": [
+        "CL-01",
+        "CL-P02",
+        "CL-PL03"
+      ],
       "fields": {
         "tone": "sombre"
       },

@@ -75,3 +75,14 @@ ssh nexora-pile 'cd /srv/nexora/src && bash deploy/pile.sh run --rm -T -v /srv/n
 ## 7. Thème clair d'abord (3 novembre 2026)
 
 Verdict du fondateur : structure bonne, mais « trop sombre ». `<Section>` rend désormais le papier (`theme-light`) par défaut ; le sombre ne reste que pour le héros vidéo, les vitrines (vidéo, cartes `vitrine`), l'appel à l'action final et le pied de page (voir la charte, §3). Réglage par jetons (`globals.css`, `.theme-light`) et par `effectiveTone` (`blocks/tone.ts`) : aucun contenu Directus modifié, aucun média touché. Matières réteintées (grilles, halos, nuage de points, balayage, cadres de détection). Contrôles : `check:contrast` 50/50, axe sans violation (accueil de repli, tarifs, apps, agents, contact, modèles, VPS, docs API ; 390 et 1440 px).
+
+## 8. Refonte visuelle 2 : l'espace de travail d'abord (2 novembre 2026)
+
+Demande du fondateur : l'accueil ne parlait pas de la force principale (l'environnement de travail dans le navigateur) et la page « façon OpenRouter » était enfouie.
+
+- **Accueil** : juste sous le héros (médias `site-hero-*` intacts ; seuls le sous-titre et le second bouton changent), une bande sombre « Tout votre travail d'IA, en un onglet. » avec une grande maquette en code (`visual: "espace-de-travail"`, `media_position: "top"`) : agent de code qui propose un changement, documents avec sources, flux en attente d'approbation, Creative, crédits partagés, « Votre ordinateur » (en préparation). Puis réception, surveillance, infrastructure, **Modèles et API** (nouvelle section), Creative, souveraineté, méthode, la gamme et ses états, film, questions, appel à l'action. Le bloc des trois piliers est retiré.
+- **Page de l'espace de travail** : `/suite` (slug inchangé) devient « Votre environnement de travail IA, dans le navigateur. », avec la même scène et une section « Votre ordinateur, mis à profit. » (état : en préparation ; registre CL-WS01, CL-WS02, en revue).
+- **Navigation** : Espace de travail ▾ (ouvert par `/suite/`) · Solutions ▾ · Infrastructure ▾ · **Modèles et API** (`/modeles/`, premier niveau) · Tarifs · Ressources. L'ancien menu « Outils » est archivé par `seed.ts --aligner-navigation`.
+- **`/modeles`** : héros sombre (une clé, une API au format d'OpenAI, trois repères, fenêtre d'appel `POST /v1/chat/completions` avec clé et modèle fictifs), puis le catalogue sous un titre de section.
+- **Rendu** : un bloc section dont le schéma est « au-dessus » devient une scène de produit large et sombre (`tone.ts`) ; mouvements `ws-*` figés sous `prefers-reduced-motion` et par le bouton de pause.
+- Déploiement : `apply.ts` (nouveau choix du champ `visual`), `seed.ts --aligner-navigation`, puis `load-content.ts --approuver-et-publier --seulement=accueil` et `--seulement=suite` uniquement.

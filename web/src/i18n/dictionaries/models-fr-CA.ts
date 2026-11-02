@@ -68,6 +68,33 @@ export const modelsFrCA = {
     unread: "Texte de la licence non lu",
   },
 
+  hero: {
+    label: "Modèles et API",
+    title: "Une clé. Tous les modèles du catalogue.",
+    lead: "Un compte, une API au format d’OpenAI : vous changez de modèle en changeant une ligne. Chaque fiche donne le prix en dollars canadiens, le contexte, les mesures publiées et le lieu d’hébergement. Le catalogue est en aperçu ; l’appel par API n’est pas encore ouvert.",
+    primary: "Parcourir le catalogue",
+    secondary: "Documentation de l’API",
+    points: [
+      {
+        title: "Format d’OpenAI",
+        text: "Vos outils et vos bibliothèques actuels s’y branchent.",
+      },
+      {
+        title: "Prix en dollars canadiens",
+        text: "Par million de jetons, affiché sur chaque fiche.",
+      },
+      {
+        title: "Hébergement affiché",
+        text: "Vous voyez où tourne chaque modèle avant de l’appeler.",
+      },
+    ],
+    request: "Exemple d’appel",
+    response: "Réponse en continu",
+    answer: "Bonjour ! Comment puis-je vous aider ?",
+    caption:
+      "Exemple d’appel avec une clé et un modèle fictifs ; la réponse est figurée.",
+  },
+
   list: {
     label: "Modèles",
     title: "Les modèles, leurs prix et leurs benchmarks.",

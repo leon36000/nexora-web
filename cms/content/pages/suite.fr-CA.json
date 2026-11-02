@@ -5,28 +5,99 @@
   "noindex": false,
   "seo": {
     "slug": "suite",
-    "title": "Suite logicielle",
-    "seo_title": "Suite logicielle IA : un compte, des états réels",
-    "seo_description": "WorkStudio est disponible ; Nexora Code et RAG arrivent, sans date ; Corpus, Quanta et Helix n'en ont aucune. Un compte, des crédits, l'état de chaque outil.",
+    "title": "Espace de travail",
+    "seo_title": "Espace de travail IA dans le navigateur",
+    "seo_description": "Agent de code, documents interrogeables, agents et Creative : votre espace de travail IA dans le navigateur, un seul compte. L'état de chaque outil est indiqué.",
     "canonical": null
   },
   "blocks": [
     {
       "collection": "block_hero",
       "role": "Promesse de la suite : une idée commune, un compte, l'état réel de chaque nom.",
-      "claims": ["CL-20", "CL-28", "CL-P03", "CL-PL01"],
+      "claims": [
+        "CL-20",
+        "CL-28",
+        "CL-P03",
+        "CL-PL01",
+        "CL-WS01"
+      ],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
       },
       "translation": {
-        "eyebrow": "Suite logicielle",
-        "headline": "Une suite, pas une pile.",
-        "subheadline": "Une seule idée relie les produits de Nexora AI : une IA qui travaille pour vous, sous votre contrôle. Un compte, des crédits, tous vos outils. WorkStudio est livré ; pour chaque autre nom, voici l'état réel.",
+        "eyebrow": "Espace de travail",
+        "headline": "Votre environnement de travail IA, dans le navigateur.",
+        "subheadline": "Votre agent de code, vos documents, vos agents et Creative s'ouvrent côte à côte, en panneaux que vous disposez à votre façon. Un compte, des crédits, tous vos outils. WorkStudio est livré ; pour chaque autre outil, voici l'état réel.",
         "primary_label": "Voir WorkStudio",
         "primary_href": "/workstudio/",
-        "secondary_label": "Voir les tarifs à venir",
-        "secondary_href": "/tarifs/"
+        "secondary_label": "Planifier une consultation",
+        "secondary_href": "/contact/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "La grande maquette de l'espace de travail et les six modules avec leur état.",
+      "claims": [
+        "CL-WS01",
+        "CL-WS02",
+        "CL-20",
+        "CL-AP05",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-CR01"
+      ],
+      "fields": {
+        "media_position": "top",
+        "visual": "espace-de-travail",
+        "tone": "sombre",
+        "anchor_id": "espace"
+      },
+      "translation": {
+        "title": "Un onglet. Tous vos outils.",
+        "body": "<p>Chaque outil est un panneau : vous l'ouvrez, le déplacez, le mettez à côté d'un autre. Le travail s'exécute dans le nuage, sur nos serveurs ; vous n'installez rien pour commencer.</p>",
+        "items": [
+          {
+            "title": "Agent de code.",
+            "text": "Il lit votre code, le modifie, écrit les tests et vous présente le changement à relire. Bientôt, sans date."
+          },
+          {
+            "title": "Vos documents, interrogeables.",
+            "text": "Posez une question : la réponse s'appuie sur vos fichiers et cite ses sources (RAG). Bientôt, sans date."
+          },
+          {
+            "title": "Agents et flux de travaux.",
+            "text": "WorkStudio conçoit et pilote vos agents ; une étape peut attendre votre approbation avant d'agir. Disponible."
+          },
+          {
+            "title": "Creative et WebPilot.",
+            "text": "L'image, la vidéo et le son à partir d'une description ; un navigateur que l'IA pilote pour vous. En préparation."
+          },
+          {
+            "title": "Un compte, un solde.",
+            "text": "Chaque outil puise dans les mêmes crédits, avec vos plafonds, vos clés et vos journaux."
+          },
+          {
+            "title": "Votre ordinateur, mis à profit.",
+            "text": "Vos agents pourront exécuter le travail sur votre poste, relié à votre compte, plutôt que dans le nuage. En préparation."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Exécution sur l'ordinateur de la personne : la conception, et son état réel (en préparation).",
+      "claims": [
+        "CL-WS02"
+      ],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "ordinateur"
+      },
+      "translation": {
+        "title": "Votre ordinateur, mis à profit.",
+        "body": "<p>Le travail se fait dans le nuage par défaut. Nous préparons aussi l'inverse : relier votre ordinateur à votre compte, pour que vos agents y exécutent le travail avec sa puissance, ses fichiers et ses outils, et que vous gardiez sur place ce qui doit y rester.</p><p>État : en préparation, sans date. Le client de Nexora Code se relie déjà au compte par un code d'appareil ; l'exécution des agents de l'espace sur votre poste n'est pas encore livrée.</p>"
       }
     },
     {
@@ -142,7 +213,13 @@
     {
       "collection": "block_section",
       "role": "Nexora Code : bientôt, hébergé, plugins compatibles prévus ; ce qui est gratuit et ce qui consomme.",
-      "claims": ["CL-AP06", "CL-AP01", "CL-T04", "CL-T05", "CL-28"],
+      "claims": [
+        "CL-AP06",
+        "CL-AP01",
+        "CL-T04",
+        "CL-T05",
+        "CL-28"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -156,7 +233,11 @@
     {
       "collection": "block_section",
       "role": "Nexora RAG : bientôt, création en un clic, clé d'API, espace et jetons en crédits.",
-      "claims": ["CL-AP07", "CL-T05", "CL-T04"],
+      "claims": [
+        "CL-AP07",
+        "CL-T05",
+        "CL-T04"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -170,7 +251,12 @@
     {
       "collection": "block_section",
       "role": "Nexora Corpus : la vocation, deux destinations distinctes.",
-      "claims": ["CL-SU01", "CL-28", "CL-07", "CL-E03"],
+      "claims": [
+        "CL-SU01",
+        "CL-28",
+        "CL-07",
+        "CL-E03"
+      ],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -198,7 +284,9 @@
     {
       "collection": "block_cards",
       "role": "Quanta et Helix : ce que nous ne publions pas.",
-      "claims": ["CL-28"],
+      "claims": [
+        "CL-28"
+      ],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -281,7 +369,12 @@
     {
       "collection": "block_cta",
       "role": "CTA : discuter, voir OPSYS-AI.",
-      "claims": ["CL-12", "CL-AP06", "CL-AP07", "CL-T06"],
+      "claims": [
+        "CL-12",
+        "CL-AP06",
+        "CL-AP07",
+        "CL-T06"
+      ],
       "fields": {
         "tone": "sombre"
       },

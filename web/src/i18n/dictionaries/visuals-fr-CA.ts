@@ -260,6 +260,66 @@ export const visualsFrCA = {
       stack: ["Vos modèles", "Vos applications", "Sécurité", "Supervision"],
     },
   },
+  workspace: {
+    address: "app.nexora · Espace de travail",
+    org: "Votre organisation",
+    tabs: ["Code", "Documents", "Flux", "Creative", "WebPilot"],
+    layout: "Disposition : 4 panneaux",
+    code: {
+      title: "Agent de code",
+      prompt:
+        "Ajoute la validation du courriel au formulaire de contact, avec un test.",
+      file: "src/contact/schema.ts",
+      removed: ["  email: z.string(),"],
+      added: [
+        "  email: z.string().trim().email({",
+        '    message: "Adresse courriel invalide",',
+        "  }),",
+      ],
+      context: [
+        "export const contactSchema = z.object({",
+        "  name: z.string().min(1),",
+      ],
+      status: "Écrit le test",
+      tests: "2 tests ajoutés · à relire",
+      review: "Relire le changement",
+    },
+    rag: {
+      title: "Vos documents",
+      question: "Combien de jours de vacances après trois ans ?",
+      answer:
+        "Après trois ans de service, la politique prévoit trois semaines de vacances payées, à prendre entre mai et octobre sauf entente écrite.",
+      sources: [
+        "Politique des vacances.pdf · p. 4",
+        "Guide de l’employé.docx · section 3",
+      ],
+      cited: "Sources citées",
+    },
+    flow: {
+      title: "Flux de travaux",
+      nodes: ["Courriel reçu", "Classer", "Approbation", "Répondre"],
+      waiting: "Attend votre approbation",
+    },
+    creative: {
+      title: "Creative",
+      prompt: "Vitrine de boulangerie au lever du jour, plan lent",
+      rendering: "Rendu de la vidéo",
+    },
+    usage: {
+      title: "Crédits du compte",
+      text: "Un seul solde pour tous les outils.",
+      caps: "Plafond du mois, clés et journal des appels.",
+      items: ["Code", "Documents", "Flux", "Creative"],
+    },
+    machine: {
+      title: "Votre ordinateur",
+      text: "L’agent peut exécuter le travail sur votre poste.",
+      cloud: "Nuage",
+      local: "Votre poste",
+      status: "En préparation",
+      device: "Votre poste, relié à votre compte",
+    },
+  },
   notFound: { alt: "404" },
 };
 
