@@ -18,7 +18,7 @@ export function AuthShell({
   panel?: ReactNode;
 }) {
   return (
-    <Section tone="light" aria-labelledby="auth-title">
+    <Section tone="paper" aria-labelledby="auth-title">
       <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]">
         {panel ? <div className="hidden lg:block">{panel}</div> : null}
         <div className="mx-auto w-full max-w-md lg:order-2">

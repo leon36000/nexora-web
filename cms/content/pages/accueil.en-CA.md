@@ -6,203 +6,164 @@
 
 - Page : `accueil` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/` · slug : ``
-- Titre SEO (42 caractères) : Nexora AI: AI for small business in Quebec
-- Description SEO (158 caractères) : Nexora AI: agents you describe in plain language, one account and credits for all your tools. For Quebec small businesses, data on your premises or in Quebec.
+- Titre SEO (41 caractères) : Nexora AI: AI that sees, listens and acts
+- Description SEO (154 caractères) : Virtual reception, AI surveillance, agents and infrastructure: Nexora AI installs the AI that works for your business, at your site or on our own servers.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-PL01, CL-E01, CL-E02*
+*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-RV01, CL-SV01, CL-IN01, CL-E01, CL-E02*
 
-Réglages : `variant=sombre`, `perimeter_grid=true`
+Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `signature=champ`, `video=[object Object]`, `media=[object Object]`
 
-**Nexora AI · AI for Quebec small businesses**
+**Artificial intelligence for business**
 
-# Cutting-edge AI. Within your reach.
+# AI that sees, listens and acts.
 
-AI that works for your business. Under your control. Agents you describe in plain language, answers drawn from your documents, one account and credits for all your tools — and data that stays on your premises or in Quebec.
+AI that works for your business. Under your control. A reception that answers every call, cameras that are finally watched, agents that carry out your tasks, installed at your site or on our servers.
 
-[Describe my need](/en/contact/) · [See the solutions](/en/solutions/)
+[Plan a consultation](/en/contact/) · [See solutions](/en/solutions/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Entrée par problème : cinq situations, chacune vers sa solution. · Affirmations : CL-01, CL-132*
+*Trois piliers : automatiser, équiper, créer et bâtir (vitrine, images stables). · Affirmations : CL-RV01, CL-SV01, CL-IN01, CL-IN02, CL-CR01, CL-AP05, CL-AP06, CL-AP07*
 
-Réglages : `columns=3`, `layout=bento`, `tone=clair`
+Réglages : `columns=3`, `layout=vitrine`, `tone=clair`, `anchor_id=piliers`
 
-## Start from your problem.
+## Automate. Equip. Create.
 
-No need to know about language models. Tell us where your team loses time: we build from there.
+Three ways to put AI to work for you, with one team from start to finish.
 
-#### Requests nobody answers.
+#### Reception, surveillance, agents.
 
-Emails, forms, missed calls: everything arrives through different doors. A system gathers these requests, prepares a reply and hands it to the right person, with the context. Nothing gets lost.
+A virtual reception that answers calls, emails and text messages. Cameras monitored in real time. Agents and workflows (automated sequences of tasks) that act with your approval.
 
-→ [See the solution](/en/solutions/customer-service/)
+→ [See solutions](/en/solutions/)
 
-#### The same entry, twice.
+#### Your AI infrastructure.
 
-An invoice arrives by email, then is retyped into the accounting software. A system reads the document, proposes the fields and waits for your approval before writing anything.
+NVIDIA DGX Spark, DGX Station or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.
 
-→ [See the solution](/en/solutions/invoices/)
+→ [See infrastructure](/en/infrastructure/)
 
-#### Documents nobody can find.
+#### Creative, WorkStudio, Code.
 
-The right clause, the right quote, the right version: in which folder? Ask the question in plain language; the answer comes from your own documents.
+A studio for image, video and sound, a studio for agents, code, answers drawn from your documents. Creative, Code and RAG are in preparation.
 
-→ [See the solution](/en/solutions/documents/)
+→ [See the tools](/en/apps/)
 
-#### Follow-ups that get forgotten.
+### Bloc 3 — Section (`block_section`)
 
-A quote reminder, an appointment reminder, an email left in drafts. The system keeps the list, prepares the message and leaves the decision to send with you.
+*Réception virtuelle : maquette (onde, conversations), lien vers la page. · Affirmations : CL-RV01, CL-RV02*
 
-→ [See the solution](/en/solutions/email/)
+Réglages : `media_position=right`, `visual=signal-accueil`, `tone=sombre`, `anchor_id=reception`
 
-#### No overall view.
+## A reception that never sleeps.
 
-What is under way, what is blocked, what costs more than planned: the information exists, but it is scattered. We gather it into one readable view.
+It answers your calls, emails and text messages, day and night, in French and English. It books appointments, qualifies requests, transfers to the right person and leaves you a summary of every exchange.
 
-→ [See the solutions](/en/solutions/)
+[Discover the virtual reception](/en/solutions/virtual-reception/)
 
-### Bloc 3 — Cartes (`block_cards`)
+### Bloc 4 — Section (`block_section`)
 
-*Trois scénarios avant / après, étiquetés comme exemples construits. · Affirmations : CL-11, CL-21*
+*Surveillance IA : message clé du fondateur, maquette (détections, chronologie). · Affirmations : CL-SV01, CL-SV02, CL-SV03*
 
-Réglages : `columns=3`, `layout=grille`, `tone=sable`
+Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=clair`, `anchor_id=surveillance`
 
-## Before. After. Your decision.
+## Thousands of hours, finally watched.
 
-Three typical scenarios to show the principle. They are constructed examples, not results measured at customers.
+Even with the best cameras and huge storage, nobody watches hundreds or thousands of hours of video. Our AIs do, in real time. They spot suspicious behaviour, alert you according to your instructions and document every event.
 
-#### A supplier invoice arrives.
+[Discover AI surveillance](/en/solutions/ai-surveillance/)
 
-Before: someone opens it, retypes the amounts and looks for who must approve it.
-After: the system reads the invoice, proposes the fields and the category, then puts it in front of the right person.
-Your control: nothing is recorded in accounting without a person's approval.
+### Bloc 5 — Cartes (`block_cards`)
 
-#### A question about an old file.
+*Infrastructure : trois cartes avec photos (emplacements stables). · Affirmations : CL-IN01, CL-IN02, CL-IN03*
 
-Before: you dig through four folders and call a colleague.
-After: you ask the question in plain language; the answer relies on your documents and says clearly when it finds nothing.
-Your control: you choose which documents the agent may consult.
+Réglages : `columns=3`, `layout=vitrine`, `tone=sombre`, `anchor_id=infrastructure`
 
-#### A request comes in through the website.
+## Your AI infrastructure, turnkey.
 
-Before: it waits for someone to open the inbox.
-After: the system qualifies it, creates the file and alerts the person in charge with a summary.
-Your control: the reply to the client is approved by your team before it is sent.
+We sell, install and operate the hardware. At your site, or on our servers.
 
-### Bloc 4 — Cartes (`block_cards`)
+#### NVIDIA DGX Spark.
 
-*La pointe de l'IA rendue simple : six capacités, sans nommer le produit avant la définition de la souveraineté. · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-91, CL-92, CL-93, CL-25, CL-101, CL-102, CL-94, CL-23, CL-96, CL-97*
+A compact AI computer that sits on a desk.
 
-Réglages : `columns=3`, `layout=bento`, `tone=clair`
+→ [Learn more](/en/infrastructure/)
 
-## Cutting-edge AI, without the complexity.
+#### NVIDIA DGX Station.
 
-The most advanced things AI can do, within reach of a small-business leadership team: you describe, you review, you decide. Not a line of code, no jargon.
+An AI workstation in a tower format.
 
-#### Describe it. It gets built.
+→ [Learn more](/en/infrastructure/)
 
-Say in plain language what you want to automate: a builder assistant prepares a workflow (an automated sequence of tasks). You review it, try it step by step, launch it.
+#### Server racks.
 
-#### Agents that act.
+Rack servers, at your site or hosted with us.
 
-An agent is software that carries out a task with the tools and documents you allow it. It cites its sources and asks for your approval before writing or deleting.
-
-#### Your documents answer.
-
-Ask a question in plain language: the answer comes from your own documents, with its sources.
-
-#### It reads, listens and speaks.
-
-It reads scanned PDFs and images, pulls out the fields of an invoice, transcribes audio recordings and reads a text aloud. It does not answer the phone.
-
-#### Models, side by side.
-
-Compare several AI models on the same question, with the time and the tokens (the unit of text a model processes) of each answer. Each model shows whether it runs on your server, in Europe or at a third party.
-
-#### Measured, not assumed.
-
-Test sets check that an agent answers well and compare two versions before anything changes. Every call leaves a trace you can read: model, steps, duration, tokens.
-
-### Bloc 5 — Section (`block_section`)
-
-*Souveraineté définie en une phrase ; introduit les deux modes. · Affirmations : CL-70, CL-71*
-
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
-
-## At your site. Or at ours.
-
-An AI is sovereign when you know where it runs, who has access to it and where your data goes, and when you can leave it. Nexora AI offers two ways to get there. In both, your data stays yours.
+→ [Learn more](/en/infrastructure/)
 
 ### Bloc 6 — Section (`block_section`)
 
-*Mode sur place : schéma de périmètre, engagement 1 et lien vers le détail. · Affirmations : CL-E01, CL-02, CL-05, CL-77*
+*Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue. · Affirmations : CL-01*
 
-Réglages : `media_position=none`, `visual=perimetre-sur-place`, `tone=sombre`
+Réglages : `media_position=top`, `tone=clair`, `anchor_id=film`, `media=[object Object]`, `poster=[object Object]`
 
-## At your site.
+## One minute to see us.
 
-We install the system on your own server, in your premises or with the host of your choice. The hardware and the access are yours, and your data stays on your server: we access it only if you authorize it in writing, for a specific task, and every access is logged.
-
-Before go-live, we list what leaves the network, if anything does: updates, licences, an external model if you enable one.
-
-[See the on-premises mode](/en/deployment/on-premises/)
+Our brand film, without dialogue, on original music. Every shot was generated by AI, with the tools we install.
 
 ### Bloc 7 — Section (`block_section`)
 
-*Mode hébergé : schéma de périmètre, engagement 2 et lien vers le détail. · Affirmations : CL-E02, CL-05, CL-73*
+*Nexora Creative mis en avant : bande-annonce, mode simple et mode pro ; statut honnête. · Affirmations : CL-CR01, CL-AP05*
 
-Réglages : `media_position=left`, `visual=perimetre-heberge`, `tone=sombre`
+Réglages : `media_position=left`, `tone=sombre`, `anchor_id=creative`, `media=[object Object]`, `poster=[object Object]`
 
-## At ours, in Quebec.
+## Nexora Creative. AI does the heavy lifting.
 
-We host and run the system in our infrastructure, located in Quebec. You buy no server or hardware, and your data stays in Quebec, backups included. The only exceptions are services you enable yourself, all listed.
+Describe a scene in plain words: Creative produces the image, the video and the sound. An easy mode to go fast, a pro mode to control everything. This trailer was made with its engines.
 
-Where your data, backups and logs are, and who has access: we write it down in the deployment study.
-
-[See the hosted mode](/en/deployment/hosted-quebec/)
+Creative is in preparation, with no opening date. [See Nexora Creative](/en/apps/creative/)
 
 ### Bloc 8 — Section (`block_section`)
 
-*Les cinq engagements en un coup d'œil ; comparaison sobre avec les pratiques courantes ; renvoi vers Vos données. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-E07*
+*Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ». · Affirmations : CL-70, CL-71, CL-E02, CL-02, CL-E01*
 
-Réglages : `media_position=right`, `visual=engagements-donnees`, `tone=sable`
+Réglages : `media_position=right`, `visual=signal-infrastructure`, `tone=sable`, `anchor_id=souverainete`
 
-## Your data stays yours.
+## At your site. Or at ours.
 
-Five commitments, no fine print: on your premises or in Quebec, **never** used to train an AI, **never** sold, and no external model unless you have switched it on.
+AI is sovereign when you know where it runs, who can access it and where your data goes, and you can leave. We install it on your servers, or we host it on ours, in Quebec. Either way, your data stays yours.
 
-In some consumer AI services, sharing conversations to improve the models is a setting the user must switch off themselves. With us, that setting does not exist.
+[Installed at your site](/en/deployment/on-premises/) · [Hosted with us](/en/deployment/hosted-quebec/) · [Our approach](/en/sovereignty/) · [Your data](/en/your-data/) · [Our guides](/en/resources/)
 
-[Read the five commitments](/en/your-data/)
+### Bloc 9 — Cartes (`block_cards`)
 
-### Bloc 9 — Section (`block_section`)
+*Méthode : consultation, installation, exploitation et soutien. · Affirmations : CL-03, CL-04, CL-14*
 
-*Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`, `anchor_id=methode`
 
-Réglages : `media_position=right`, `visual=tableau-de-bord`, `tone=sombre`
+## Consult. Install. Operate.
 
-## Credits, space, one dashboard.
+#### Consultation.
 
-One Nexora AI account brings your tools together in the “My tools” panel: your credits, your storage and the real status of each product.
+We start from your problem, your tools and your rules. You receive a written proposal and estimate.
 
-A plan gives you credits every month and storage space; without a plan, you top up credits. Anything that calls an AI model uses credits, and tools that call no model use none.
+#### Installation.
 
-Sales are not open yet: no price is published. Prices will appear on the [Pricing](/en/pricing/) page once they are published.
+We install the system at your site or on our servers, connect it to your tools and put it to the test with your team.
 
-- **One account.** Your credits, your storage and your products in one place: the “My tools” panel.
-- **Credits.** One credit equals one Canadian cent of tokens, at the model catalogue price. Plan credits expire at the end of their period and are used first; top-up credits do not expire. When none are left, calls to models stop with a message that points to top-ups.
-- **Storage.** Every plan includes storage space, counted for your whole organization. When it is full, writing is refused with a clear message; reading and deleting stay allowed.
-- **Tools.** WorkStudio opens as long as you have a credit left. Nexora Code and Nexora RAG are in preparation: their status is shown, with no date.
+#### Operation and support.
+
+We monitor it, improve it and stay reachable. Your team learns to use it and oversee it.
 
 ### Bloc 10 — Cartes (`block_cards`)
 
 *Les produits présentés comme un ensemble ouvert depuis le même compte, chacun avec son état réel en étiquette. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28, CL-110, CL-G01, CL-G02, CL-G03, CL-V01, CL-V03, CL-P03, CL-PL01, CL-PL02, CL-AP01, CL-AP06, CL-AP07, CL-T04, CL-H01*
 
-Réglages : `columns=3`, `layout=liste`, `tone=clair`
+Réglages : `columns=3`, `layout=liste`, `tone=clair`, `anchor_id=produits`
 
 ## A suite, not a pile.
 
@@ -271,114 +232,11 @@ Status: no availability or date is announced at this stage.
 
 → [See the suite](/en/suite/)
 
-### Bloc 11 — Section (`block_section`)
-
-*Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31, CL-O01*
-
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
-
-## OPSYS-AI. Ten departments, one file.
-
-The intelligent operating system for small businesses, for construction and field services: ten virtual departments work on the same files, from the first request to the finished job. Nothing gets lost between two programs.
-
-It is not a chat robot, not a customer relationship management (CRM) system under a new name, and not ten isolated tools. Commitment actions — sending, paying, deciding — wait for a person's approval. OPSYS-AI is a product in development, partial: each department tells what is locally qualified from what remains to be completed, and nothing is presented as delivered in production.
-
-[Discover OPSYS-AI](/en/opsys-ai/)
-
-- **Sell.** Reception, customer relations, estimating and quoting.
-- **Deliver.** Scheduling, field work and materials.
-- **Invoice.** Draft invoice, accounts receivable and real costs.
-- **Steer.** Marketing, analytics, strategy and decision memory.
-
-### Bloc 12 — Section (`block_section`)
-
-*Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-12, CL-14, CL-T06*
-
-Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
-
-## Five steps. One case at a time.
-
-We start with one concrete problem, put into service and verified, before widening. We announce no universal timeline: it depends on your situation and is measured on a first case. You do not need to become an IT specialist: we install, we run it with you and we train your team.
-
-[Read the method](/en/method/)
-
-To go further: [Where to start with AI in a Quebec small business](/en/guides/ai-small-business-quebec/), [What is an AI agent](/en/guides/ai-agents-small-business/) and [Gateway or direct access](/en/guides/gateway-or-direct-access/).
-
-The tools around your models, servers and agents are gathered in [Nexora Apps](/en/apps/), each with its real state.
-
-Prefer to start with the platform? See how credits work on the [Pricing](/en/pricing/) page: prices will appear there once they are published.
-
-### Bloc 13 — Cartes (`block_cards`)
-
-*Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
-
-Réglages : `columns=3`, `layout=etapes`, `tone=clair`
-
-#### Understand.
-
-We observe how the work is done today: where time is lost, what information comes in, who decides.
-
-#### Integrate.
-
-We connect the software you already use, so information flows without being retyped.
-
-#### Verify.
-
-We test on your real cases, with your approvals, before anything goes live.
-
-#### Train.
-
-Your team learns to supervise, correct and decide, not to program.
-
-#### Run and improve.
-
-We run the system with you, follow what works and adjust the rest.
-
-### Bloc 14 — Cartes (`block_cards`)
-
-*Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31, CL-E03, CL-E04*
-
-Réglages : `columns=3`, `layout=bento`, `tone=sombre`
-
-## Verifiable commitments.
-
-No big words: precise commitments you can check before and after go-live.
-
-#### You know where your data goes.
-
-Before any go-live, we give you in writing the flow diagram: where data is stored, which external services are called, which backups exist.
-
-→ [Read about sovereignty](/en/sovereignty/)
-
-#### No external model without your activation.
-
-No call to an external AI service is set up without your explicit activation, recorded in writing. In WorkStudio, each model shows whether it runs on your server, in Europe or at a third party.
-
-#### Decisions stay human.
-
-A workflow can stop for a person's approval before acting. In OPSYS-AI, commitment actions — sending, paying, financial decisions — require approval.
-
-#### Personal information, spotted.
-
-A service installed on your server can spot names, emails and phone numbers to mask them in traces or before a call to an external model, according to the policy you choose.
-
-#### Never for training, never sold.
-
-We never use your data to train a model, or for another client, and we never sell it. Your documents, configurations and workflows stay exportable.
-
-→ [Read the five commitments](/en/your-data/)
-
-#### No claim without proof.
-
-We publish no testimonial, figure or certification that we cannot prove. When a capability is in pilot or planned, we write it.
-
-→ [See the trust centre](/en/trust-center/)
-
-### Bloc 15 — FAQ (`block_faq`)
+### Bloc 11 — FAQ (`block_faq`)
 
 *FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09, CL-PL04*
 
-Réglages : `emit_jsonld=true`, `tone=clair`
+Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Your questions. Our answers.
 
@@ -446,14 +304,14 @@ It depends on the case. At our site, you buy no server. At yours, we size the ha
 
 Software that carries out a task for you, with the tools and documents you allow it, and that asks for your approval before an important action.
 
-### Bloc 16 — Appel à l'action (`block_cta`)
+### Bloc 12 — Appel à l'action (`block_cta`)
 
-*CTA final. · Affirmations : CL-01, CL-P02, CL-PL03*
+*CTA final : le seul point de chaleur de l'écran (bouton flare). · Affirmations : CL-01, CL-P02, CL-PL03*
 
 Réglages : `tone=sombre`
 
-## Your first case starts here.
+## Let's talk about your project.
 
-Describe a concrete problem. We tell you what is feasible, in which mode, and where to begin.
+A consultation to understand what you want to automate, equip or create. You leave with a written proposal.
 
-[Describe my need](/en/contact/) · [Discover WorkStudio](/en/workstudio/)
+[Plan a consultation](/en/contact/) · [See pricing](/en/pricing/)

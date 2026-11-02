@@ -1,17 +1,21 @@
 import Link from "next/link";
-import { Logo, LogoMark } from "@/components/brand/logo";
+import { Logo } from "@/components/brand/logo";
+import { LightField } from "@/components/signal/light-field";
+import { MotionToggle } from "@/components/signal/motion";
 import { ArrowIcon } from "@/components/ui/button";
 import { type Lang, localizePath } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { getVisualsDictionary } from "@/i18n/visuals";
 import type { Alternates } from "@/lib/alternates";
+import { BRAND } from "@/lib/brand";
 import type { FooterModel } from "@/lib/chrome";
 import { LanguageSwitcher } from "./language-switcher";
 
 /**
- * Pied de page dense, sur fond papier et cadré par des filets : marque, quatre colonnes de liens (produits,
- * solutions, entreprise, centre de confiance), légal et sélecteur de langue. Aucune mention légale inventée : la
- * raison sociale et les numéros officiels seront fournis par le fondateur. Signature : le « N » en pixels posé sur la
- * bande braise (quatre barres franches) qu'un carré traverse lentement.
+ * Pied de page (identité « Signal ») : accès rapides, marque, quatre colonnes de liens (solutions, infrastructure,
+ * outils, entreprise), légal, langue et bouton de pause des animations. Aucune mention légale inventée : la raison
+ * sociale et les numéros officiels seront fournis par le fondateur. Signature : le nom de la marque, composé très grand
+ * au trait de lumière, posé sur un horizon de points (champ de lumière figé).
  */
 export function SiteFooter({
   lang,
@@ -25,6 +29,7 @@ export function SiteFooter({
   alternates: Alternates;
 }) {
   const { footer, a11y, language } = dict;
+  const motion = getVisualsDictionary(lang).signal.motion;
   const linkClass =
     "inline-flex min-h-11 min-w-11 items-center rounded-xs text-small text-fg-muted transition-colors duration-150 hover:text-fg hover:underline hover:underline-offset-4 md:min-h-9 md:min-w-0";
   const quick = [
@@ -34,7 +39,7 @@ export function SiteFooter({
   ];
 
   return (
-    <footer className="theme-light relative isolate overflow-hidden border-t border-line bg-bg text-fg">
+    <footer className="theme-dark relative isolate overflow-hidden border-t border-line bg-bg text-fg">
       <div aria-hidden="true" className="rails" />
       <div className="relative mx-auto w-full max-w-page px-gutter pt-10 sm:pt-14">
         <nav aria-label={footer.quick.title}>
@@ -44,7 +49,7 @@ export function SiteFooter({
                 <Link
                   href={localizePath(lang, item.href)}
                   prefetch={false}
-                  className="group/btn flex min-h-11 w-full flex-col justify-between gap-3 bg-bg p-5 transition-colors duration-200 hover:bg-surface sm:p-6"
+                  className="group/btn flex min-h-11 w-full flex-col justify-between gap-3 bg-surface p-5 transition-colors duration-200 hover:bg-surface-2 sm:p-6"
                 >
                   <span className="flex items-center justify-between gap-3 font-display text-h4 text-fg">
                     {item.label}
@@ -67,7 +72,7 @@ export function SiteFooter({
               aria-label={a11y.homeLink}
               className="inline-flex min-h-11 items-center rounded-xs"
             >
-              <Logo tone="light" />
+              <Logo tone="dark" />
             </Link>
             <p className="mt-5 max-w-xs font-display text-h4 text-fg">
               {footer.tagline}
@@ -129,19 +134,23 @@ export function SiteFooter({
               names={{ fr: language.fr, en: language.en }}
               alternates={alternates}
             />
+            <MotionToggle labels={motion} />
             <p className="text-small text-fg-muted">{footer.copyright}</p>
           </div>
         </div>
       </div>
 
-      {/* Signature : le « N » en pixels sur la bande braise ; un carré la traverse (mouvement réduit : immobile). */}
-      <div aria-hidden="true" className="relative mt-10 sm:mt-14">
-        <div className="relative z-10 mx-auto w-full max-w-page px-gutter">
-          <LogoMark tone="auto" className="-mb-px block size-24 sm:size-36" />
+      {/* Signature : le nom très grand au trait de lumière, sur un horizon de points (figé). */}
+      <div
+        aria-hidden="true"
+        className="relative mt-12 h-[clamp(7rem,22vw,20rem)] overflow-hidden sm:mt-16"
+      >
+        <div className="absolute inset-x-0 bottom-0 h-[70%] opacity-80 [mask-image:linear-gradient(to_top,#000,transparent)]">
+          <LightField animated={false} horizon={0.02} relief={0.08} cols={96} />
         </div>
-        <div className="stripes relative h-16 overflow-hidden">
-          <span className="stripe-cell absolute left-[12%] top-[25%] block size-4 bg-bone" />
-        </div>
+        <p className="absolute inset-x-0 bottom-[-0.18em] select-none text-center font-display text-[clamp(5rem,21vw,19rem)] font-semibold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1px_rgb(62_200_255/0.45)]">
+          {BRAND.wordmark.base}
+        </p>
       </div>
     </footer>
   );

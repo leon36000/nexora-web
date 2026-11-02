@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type { MosaicPalette } from "@/components/brand/mosaic";
 import { Stage } from "./frame";
 
 /**
@@ -13,13 +12,14 @@ export function PageIntro({
 }: {
   children: ReactNode;
   visual: ReactNode;
-  stage?: MosaicPalette;
+  /** Pose la maquette sur une scène « Signal » (la valeur, ancienne teinte, est ignorée). */
+  stage?: string;
 }) {
   return (
     <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14">
       <div>{children}</div>
       <div className="min-w-0">
-        {stage && visual ? <Stage palette={stage}>{visual}</Stage> : visual}
+        {stage && visual ? <Stage>{visual}</Stage> : visual}
       </div>
     </div>
   );

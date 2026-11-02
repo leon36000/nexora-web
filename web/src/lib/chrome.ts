@@ -104,16 +104,16 @@ export function buildChrome(
   // --- repli : exactement les dictionnaires (S1) ---
   const dictHeader: HeaderModel = {
     nav: [
-      { type: "link", ...dictLink(dict.nav.sovereignty) },
-      { type: "link", ...dictLink(dict.nav.solutions) },
-      {
-        type: "menu",
-        label: dict.nav.products.label,
-        items: dict.nav.products.items.map((i) => ({
-          ...i,
-          href: localizePath(lang, i.href),
-        })),
-      },
+      ...dict.nav.menus.map(
+        (m): HeaderNavItem => ({
+          type: "menu",
+          label: m.label,
+          items: m.items.map((i) => ({
+            ...i,
+            href: resolveHrefForLang(alt, lang, i.href),
+          })),
+        }),
+      ),
       { type: "link", ...dictLink(dict.nav.pricing) },
       { type: "link", ...dictLink(dict.nav.resources) },
     ],

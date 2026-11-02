@@ -464,10 +464,11 @@ describe("maillage et navigation", () => {
     for (const l of LOCALES) {
       const json = JSON.stringify(accueil[l].blocks);
       const fr = l === "fr-CA";
+      // lien de carte (« href ») ou lien dans le texte d'une section
       for (const p of fr
         ? ["/vision/", "/croissance/", "/vos-donnees/"]
         : ["/en/vision/", "/en/growth/", "/en/your-data/"])
-        expect(json, p).toContain(`"${p}"`);
+        expect(json, p).toContain(p);
       const suite = accueil[l].blocks.find(
         (b) =>
           b.translation.title ===

@@ -11,7 +11,13 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { assetRefName, type DesiredPage, type Fields } from "./content";
+import {
+  type AssetRef,
+  assetRef,
+  type DesiredPage,
+  type Fields,
+  type Json,
+} from "./content";
 import type { Directus, Entity } from "./directus";
 
 /** Nom d'un fichier : lettres, chiffres, point, tiret ; ni chemin, ni caché. */
@@ -21,7 +27,15 @@ const MIME: Record<string, string> = {
   mp4: "video/mp4",
   webm: "video/webm",
   vtt: "text/vtt",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  avif: "image/avif",
 };
+
+/** Fichier introuvable partout (dossiers et Directus) : le chargeur essaie alors le nom suivant d'une référence. */
+export class AssetMissingError extends Error {}
 
 /** Type MIME d'après l'extension ; les autres formats ne sont pas des actifs de contenu. */
 export function mimeOf(name: string): string {
@@ -29,7 +43,7 @@ export function mimeOf(name: string): string {
   const mime = MIME[ext];
   if (!ASSET_NAME.test(name) || !mime)
     throw new Error(
-      `actif « ${name} » : format non admis (mp4, webm ou vtt, nom simple)`,
+      `actif « ${name} » : format non admis (mp4, webm, vtt, jpg, png, webp ou avif, nom simple)`,
     );
   return mime;
 }
@@ -62,18 +76,26 @@ export const DRY_RUN_ID = "(à téléverser)";
 
 export async function resolveAsset(
   name: string,
-  opts: { store: AssetStore; dir: string; dryRun?: boolean },
+  opts: {
+    store: AssetStore;
+    dir: string;
+    /** Dossiers de médias supplémentaires (gros fichiers hors dépôt), cherchés après `dir`. */
+    extraDirs?: string[];
+    dryRun?: boolean;
+  },
 ): Promise<{ id: string; action: AssetAction }> {
   const mime = mimeOf(name);
-  const path = join(opts.dir, name);
+  const path = [opts.dir, ...(opts.extraDirs ?? [])]
+    .map((d) => join(d, name))
+    .find((p) => existsSync(p));
   const rows = await opts.store.find(name);
 
-  if (!existsSync(path)) {
+  if (!path) {
     const existing = rows[0];
     if (!existing)
-      throw new Error(
-        `fichier « ${name} » absent du dépôt (cms/content/assets) et introuvable dans Directus : ` +
-          "téléverser le fichier dans Directus (nom de fichier identique), puis relancer le chargement",
+      throw new AssetMissingError(
+        `fichier « ${name} » absent du dépôt (cms/content/assets), des dossiers de médias et de Directus : ` +
+          "téléverser le fichier dans Directus (nom de fichier identique) ou le poser dans un dossier de médias (--medias), puis relancer le chargement",
       );
     return { id: existing.id, action: "existant" };
   }
@@ -87,19 +109,57 @@ export async function resolveAsset(
   return { id, action: "televerse" };
 }
 
+/** Premier fichier trouvé d'une référence ; `null` si aucun n'existe et que la référence est facultative. */
+async function resolveRef(
+  ref: AssetRef,
+  resolve: (name: string) => Promise<string>,
+): Promise<string | null> {
+  let missing: unknown = null;
+  for (const name of ref.names) {
+    try {
+      return await resolve(name);
+    } catch (e) {
+      if (!(e instanceof AssetMissingError)) throw e;
+      missing = e;
+    }
+  }
+  if (ref.optional) return null;
+  throw missing;
+}
+
+/** Remplace les références d'une valeur, à toute profondeur (listes JSON comprises). */
+async function resolveValue(
+  v: Json,
+  key: string,
+  resolve: (name: string) => Promise<string>,
+): Promise<Json> {
+  const ref = assetRef(v);
+  if (ref === "invalide")
+    throw new Error(
+      `référence d'actif « ${key} » mal formée : seules les clés « asset » et « optional » sont admises`,
+    );
+  if (ref) return resolveRef(ref, resolve);
+  if (Array.isArray(v)) {
+    const out: Json[] = [];
+    for (const x of v) out.push(await resolveValue(x, key, resolve));
+    return out;
+  }
+  if (v && typeof v === "object") {
+    const out: Record<string, Json> = {};
+    for (const [k, x] of Object.entries(v))
+      out[k] = await resolveValue(x, k, resolve);
+    return out;
+  }
+  return v;
+}
+
 async function resolveFields(
   fields: Fields,
   resolve: (name: string) => Promise<string>,
 ): Promise<Fields> {
   const out: Fields = {};
-  for (const [k, v] of Object.entries(fields)) {
-    const name = assetRefName(v);
-    if (name === "invalide")
-      throw new Error(
-        `référence d'actif « ${k} » mal formée : seule la clé « asset » est admise`,
-      );
-    out[k] = name === null ? v : await resolve(name);
-  }
+  for (const [k, v] of Object.entries(fields))
+    out[k] = await resolveValue(v as Json, k, resolve);
   return out;
 }
 

@@ -9,6 +9,9 @@ import {
   type CardLayout,
   type CardStatus,
   type Cta,
+  type HeroSignature,
+  MATERIALS,
+  type Material,
   type MediaRef,
   type PageModel,
   SECTION_VISUALS,
@@ -43,7 +46,10 @@ const HeroItem = z.object({
   anchor_id: str,
   variant: str,
   perimeter_grid: z.boolean().nullish(),
+  layout: str,
+  signature: str,
   media: FileRef,
+  video: FileRef,
   translations: z
     .array(
       z.object({
@@ -67,6 +73,7 @@ const SectionItem = z.object({
   visual: str,
   media_position: str,
   media: FileRef,
+  poster: FileRef,
   translations: z
     .array(
       z.object({
@@ -75,6 +82,7 @@ const SectionItem = z.object({
         body: str,
         media_alt: str,
         media_captions: FileRef,
+        media_lang: FileRef,
         items: z.unknown(),
       }),
     )
@@ -215,6 +223,18 @@ function heroImage(m: MediaRef | null): MediaRef | null {
   return m?.kind === "image" ? m : null;
 }
 
+function heroVideo(m: MediaRef | null): MediaRef | null {
+  return m?.kind === "video" ? m : null;
+}
+
+/** Identifiant de fichier Directus (UUID) saisi dans une liste JSON ; tout le reste est ignoré. */
+function fileId(v: string | null | undefined): string | null {
+  return typeof v === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v)
+    ? v.toLowerCase()
+    : null;
+}
+
 /** Sous-titres (fichier WebVTT de la traduction) : seulement pour une vidéo, dans la langue de la traduction. */
 function captionsOf(
   file: z.infer<typeof FileRef>,
@@ -265,6 +285,8 @@ const CardList = ListOf({
   link_label: str,
   label: str,
   status: str,
+  image: str,
+  visual: str,
 });
 const PlanList = ListOf({
   name: str,
@@ -305,9 +327,16 @@ function normalizeBlock(
         key,
         anchorId: anchorOf(item.anchor_id),
         variant: toneOf(item.variant, "sombre"),
+        layout: oneOf(item.layout, ["standard", "plein-ecran"], "standard"),
+        signature: oneOf<HeroSignature>(
+          item.signature,
+          [...MATERIALS, "aucun"],
+          "champ",
+        ),
         perimeterGrid: item.perimeter_grid ?? true,
-        // le héros n'affiche que des images : une vidéo n'y figure pas
+        // `media` n'est qu'une image (ou l'affiche de la vidéo) ; la boucle vidéo est dans `video`
         media: heroImage(media(item.media)),
+        video: heroVideo(media(item.video)),
         eyebrow: txt(t.eyebrow),
         headline,
         subheadline: txt(t.subheadline),
@@ -321,7 +350,9 @@ function normalizeBlock(
       if (!t) return null;
       const body = txt(t.body);
       const parsed = body ? parseRichText(body) : [];
-      const mediaRef = media(item.media, t.media_alt);
+      // une vidéo propre à la langue (film de marque fr / en) remplace le média commun
+      const mediaRef =
+        media(t.media_lang, t.media_alt) ?? media(item.media, t.media_alt);
       return {
         type: "section",
         key,
@@ -332,6 +363,7 @@ function normalizeBlock(
         body: parsed.length > 0 ? parsed : null,
         media: mediaRef,
         captions: captionsOf(t.media_captions, code, mediaRef),
+        poster: heroImage(media(item.poster)),
         mediaPosition: oneOf(
           item.media_position,
           ["none", "left", "right", "top"],
@@ -354,7 +386,7 @@ function normalizeBlock(
         tone: toneOf(item.tone, "clair"),
         layout: oneOf<CardLayout>(
           item.layout,
-          ["grille", "liste", "etapes", "modules", "bento"],
+          ["grille", "liste", "etapes", "modules", "bento", "vitrine"],
           "grille",
         ),
         columns: columns === 2 || columns === 4 ? columns : 3,
@@ -380,6 +412,8 @@ function normalizeBlock(
                 ],
                 "",
               ) || null,
+            image: fileId(c.image),
+            visual: oneOf<Material | "">(c.visual, MATERIALS, "") || null,
           }))
           .filter((c) => c.title || c.text),
       };

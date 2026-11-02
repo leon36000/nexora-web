@@ -1,0 +1,182 @@
+{
+  "page": "ressources",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "ressources",
+    "title": "Ressources",
+    "seo_title": "Ressources : guides, gabarits et documentation",
+    "seo_description": "Guides pratiques sur l'IA en entreprise, gabarits de flux de travaux, documentation de l'API et réponses aux questions fréquentes, en français et en anglais.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Porte d'entrée des contenus de fond.",
+      "claims": ["CL-01"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "grille"
+      },
+      "translation": {
+        "eyebrow": "Ressources",
+        "headline": "Comprendre avant de choisir.",
+        "subheadline": "Des guides écrits pour les dirigeants et les équipes techniques, des gabarits prêts à adapter et la documentation de l'API.",
+        "primary_label": "Planifier une consultation",
+        "primary_href": "/contact/",
+        "secondary_label": "Questions fréquentes",
+        "secondary_href": "/faq/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les guides publiés, avec leur description SEO (affirmations citées par leurs héros).",
+      "claims": [
+        "CL-01",
+        "CL-03",
+        "CL-80",
+        "CL-128",
+        "CL-90",
+        "CL-93",
+        "CL-21",
+        "CL-82",
+        "CL-E08",
+        "CL-E09",
+        "CL-75",
+        "CL-70",
+        "CL-71",
+        "CL-S04",
+        "CL-M07",
+        "CL-27",
+        "CL-13",
+        "CL-12"
+      ],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair",
+        "anchor_id": "guides"
+      },
+      "translation": {
+        "title": "Les guides.",
+        "cards": [
+          {
+            "label": "Guide",
+            "title": "L'IA pour une PME du Québec.",
+            "text": "Guide pour une PME du Québec : choisir un cas précis, décider où vivent vos données, nommer qui valide, puis mesurer sur un pilote avant d'étendre.",
+            "href": "/guides/ia-pme-quebec/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Agents IA pour PME.",
+            "text": "Un agent IA suit vos consignes, utilise les outils et les documents autorisés, cite ses sources et agit sous validation humaine. Définitions et garde-fous.",
+            "href": "/guides/agents-ia-pour-pme/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Serveur d'IA sur place.",
+            "text": "Les cinq décisions avant d'acheter un serveur d'IA sur place : usagers, documents, modèle, outils, sauvegardes. Ce qui reste chez vous et ce qui sort.",
+            "href": "/guides/serveur-ia-sur-place/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Où sont vos données d'IA.",
+            "text": "Stockage, traitement et juridiction : trois questions pour savoir où sont vos données d'IA, et la liste des questions à poser à un fournisseur avant de signer.",
+            "href": "/guides/ou-sont-vos-donnees-ia/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "IA souveraine : liste de contrôle.",
+            "text": "Quatre couches de contrôle, douze questions, les preuves à demander et les pièges : la liste de contrôle d'une DSI pour juger une IA souveraine au Québec.",
+            "href": "/guides/ia-souveraine-liste-de-controle/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "API compatible OpenAI.",
+            "text": "Changez l'adresse de base et la clé de votre client OpenAI pour appeler Nexora AI API : exemples cURL, Python et JavaScript, erreurs et facturation.",
+            "href": "/guides/api-compatible-openai/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Passerelle ou accès direct.",
+            "text": "Une passerelle ajoute un intermédiaire utile pour comparer des modèles ou garder une seule clé. Critères, limites et cas où l'accès direct suffit.",
+            "href": "/guides/passerelle-ou-acces-direct/",
+            "link_label": "Lire le guide"
+          },
+          {
+            "label": "Guide",
+            "title": "VPS au Québec pour agents d'IA.",
+            "text": "Un serveur privé virtuel hébergé au Québec avec l'application d'IA de votre choix : applications prévues, plans, ce qui est inclus et l'état réel.",
+            "href": "/guides/vps-quebec-agents-ia/",
+            "link_label": "Lire le guide"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Autres ressources.",
+      "claims": [],
+      "fields": {
+        "columns": "2",
+        "layout": "grille",
+        "tone": "sombre",
+        "anchor_id": "autres"
+      },
+      "translation": {
+        "title": "Gabarits, documentation et confiance.",
+        "cards": [
+          {
+            "title": "Gabarits de flux de travaux.",
+            "text": "Des enchaînements de tâches prêts à adapter pour les PME : courriels, factures, rapports.",
+            "href": "/gabarits-flux-de-travaux/",
+            "link_label": "Voir les gabarits"
+          },
+          {
+            "title": "Documentation de l'API.",
+            "text": "Démarrage rapide, clés, crédits et exemples d'appels compatibles avec le format OpenAI.",
+            "href": "/docs/api/",
+            "link_label": "Lire la documentation"
+          },
+          {
+            "title": "Centre de confiance.",
+            "text": "Ce que nous affirmons, comment nous le prouvons, et ce que nous ne promettons pas.",
+            "href": "/centre-de-confiance/",
+            "link_label": "Ouvrir le centre"
+          },
+          {
+            "title": "Vos données.",
+            "text": "Où vont vos données, qui y accède et ce que nous nous engageons à ne jamais faire.",
+            "href": "/vos-donnees/",
+            "link_label": "Lire les engagements"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : consultation.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Une question, une réponse écrite.",
+        "text": "Décrivez votre situation : nous vous répondons par écrit, sans engagement.",
+        "primary_label": "Planifier une consultation",
+        "primary_href": "/contact/",
+        "secondary_label": "Voir les solutions",
+        "secondary_href": "/solutions/"
+      }
+    }
+  ]
+}

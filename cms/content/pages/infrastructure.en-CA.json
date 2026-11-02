@@ -1,0 +1,195 @@
+{
+  "page": "infrastructure",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "infrastructure",
+    "title": "AI infrastructure",
+    "seo_title": "AI infrastructure: DGX Spark, Station, racks",
+    "seo_description": "We sell and install your AI infrastructure: NVIDIA DGX Spark, DGX Station or server racks, at your site, or hosted on our servers in Quebec, fully managed.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse : la puissance de calcul chez vous, clé en main.",
+      "claims": ["CL-IN01", "CL-IN02"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "champ"
+      },
+      "translation": {
+        "eyebrow": "Infrastructure · Turnkey",
+        "headline": "The power of AI, at your site.",
+        "subheadline": "We sell and install complete AI infrastructure, from a compact computer on a desk to a server rack. Installed at your site with your models, your applications, security and monitoring, or hosted on our servers.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/?sujet=infrastructure",
+        "secondary_label": "See VPS",
+        "secondary_href": "/en/vps/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Matériel : trois formats, trois photos (emplacements stables, matière en attendant).",
+      "claims": ["CL-IN01", "CL-IN03"],
+      "fields": {
+        "columns": "3",
+        "layout": "vitrine",
+        "tone": "clair",
+        "anchor_id": "materiel"
+      },
+      "translation": {
+        "title": "Three formats, one service.",
+        "cards": [
+          {
+            "label": "Desk",
+            "title": "NVIDIA DGX Spark.",
+            "text": "A compact AI computer that sits on a desk. To run your models and agents on site, without a server room.",
+            "href": "/en/contact/?sujet=infrastructure",
+            "link_label": "Request a proposal",
+            "image": {
+              "asset": ["site-infra-dgx-spark.jpg"],
+              "optional": true
+            },
+            "visual": "champ"
+          },
+          {
+            "label": "Workstation",
+            "title": "NVIDIA DGX Station.",
+            "text": "An AI workstation in a tower format, for teams that fine-tune or serve heavier models.",
+            "href": "/en/contact/?sujet=infrastructure",
+            "link_label": "Request a proposal",
+            "image": {
+              "asset": ["site-infra-dgx-station.jpg"],
+              "optional": true
+            },
+            "visual": "infra"
+          },
+          {
+            "label": "Data centre",
+            "title": "Server racks.",
+            "text": "Rack servers sized for your workloads, installed in your room or hosted with us.",
+            "href": "/en/contact/?sujet=infrastructure",
+            "link_label": "Request a proposal",
+            "image": {
+              "asset": ["site-infra-racks.jpg"],
+              "optional": true
+            },
+            "visual": "infra"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Deux modes ; la mention du Québec a ici tout son sens (hébergement).",
+      "claims": ["CL-E01", "CL-E02", "CL-IN02"],
+      "fields": {
+        "media_position": "right",
+        "visual": "signal-infrastructure",
+        "tone": "sombre",
+        "anchor_id": "modes"
+      },
+      "translation": {
+        "title": "At your site, or with us.",
+        "body": "<p><strong>At your site:</strong> we deliver, install and configure the hardware on your premises, with the models, applications, security and monitoring. Your data stays on your server. <a href=\"/en/deployment/on-premises/\">The on-premises mode</a>.</p><p><strong>With us:</strong> your infrastructure runs on our servers, in Quebec, and our team operates it for you. It is the simplest option when you have no server room. <a href=\"/en/deployment/hosted-quebec/\">The hosted mode</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui est compris : modèles, applications, sécurité, supervision.",
+      "claims": ["CL-IN02", "CL-IN04"],
+      "fields": {
+        "columns": "4",
+        "layout": "grille",
+        "tone": "clair",
+        "anchor_id": "inclus"
+      },
+      "translation": {
+        "title": "Everything included, turnkey.",
+        "cards": [
+          {
+            "title": "The models.",
+            "text": "We choose and install the models suited to your uses and your hardware."
+          },
+          {
+            "title": "The applications.",
+            "text": "Agents, virtual reception, surveillance, search in your documents: we install what you need."
+          },
+          {
+            "title": "Security.",
+            "text": "Restricted access, updates, backups and firewall are configured from day one."
+          },
+          {
+            "title": "Monitoring.",
+            "text": "We track the state of the hardware and services, and warn you before a problem stops you."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Option légère : le VPS (jargon défini).",
+      "claims": ["CL-V01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "vps"
+      },
+      "translation": {
+        "title": "Lighter: a virtual private server.",
+        "body": "<p>For a first agent or an AI application, a virtual private server (VPS), that is, a server rented just for you, is often enough. <a href=\"/en/vps/\">See VPS</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Objections : format, matériel existant, entretien, coût.",
+      "claims": ["CL-IN04", "CL-10", "CL-PL03", "CL-T01", "CL-T06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions about infrastructure.",
+        "items": [
+          {
+            "question": "Which format should I choose?",
+            "answer": "It depends on your models, how many people use them and where your data must stay. The consultation determines it; you receive a written recommendation."
+          },
+          {
+            "question": "Can you install hardware I already own?",
+            "answer": "Often, yes, if it suits the target models. We check before any proposal."
+          },
+          {
+            "question": "Who handles maintenance?",
+            "answer": "We do, if you wish: updates, monitoring and support are part of the operations service."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. Two things are paid for: our services (a written estimate follows the consultation) and platform usage, in credits. Prices will appear on the Pricing page as soon as they are published."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : dimensionnement.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Let's size your infrastructure.",
+        "text": "Tell us what you want to run: we propose the format, the installation and the operation, in writing.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/?sujet=infrastructure",
+        "secondary_label": "See solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    }
+  ]
+}

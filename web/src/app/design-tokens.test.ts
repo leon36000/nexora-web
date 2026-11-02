@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 const css = readFileSync(new URL("./globals.css", import.meta.url), "utf8");
 
-describe("jetons de la direction « Instrument »", () => {
+describe("jetons de l'identité « Signal »", () => {
   it("toutes les paires de couleurs de texte et de graphisme passent leur seuil WCAG (script de contraste)", () => {
     const script = new URL("../../scripts/contrast.mjs", import.meta.url);
     // Le script sort en code 1 si une paire est sous son seuil : execFileSync lèverait alors une erreur.
@@ -16,29 +16,55 @@ describe("jetons de la direction « Instrument »", () => {
     expect(out.match(/^OK/gm)?.length).toBeGreaterThanOrEqual(25);
   });
 
-  it("une seule couleur d'accent : l'orange signal ; la rampe braise ne sert pas au texte", () => {
-    expect(css).toMatch(/--color-ember-500:\s*#ff5a1f/);
-    expect(css).toMatch(/--on-accent:\s*var\(--color-ink-950\)/);
-    // le jeton de texte d'accent est l'orange foncé (clair) ou l'orange clair (sombre), jamais la rampe
-    expect(css).toMatch(/--accent-text:\s*var\(--color-ember-700\)/);
-    expect(css).toMatch(/--accent-text:\s*var\(--color-ember-400\)/);
+  it("accent principal ion ; le flare (chaud) est un contrepoint rare, jamais l'accent des liens ni des focus", () => {
+    expect(css).toMatch(/--color-abyss-950:\s*#05070b/);
+    expect(css).toMatch(/--color-ion-400:\s*#3ec8ff/);
+    expect(css).toMatch(/--color-flare-500:\s*#ff6a2b/);
+    expect(css).toMatch(/--accent-text:\s*var\(--color-ion-400\)/);
+    expect(css).toMatch(/--accent-text:\s*var\(--color-ion-700\)/);
+    expect(css).toMatch(/--focus:\s*var\(--color-ion-400\)/);
+    expect(css).not.toMatch(/--accent-[a-z]+:\s*var\(--color-flare/);
   });
 
-  it("les angles sont francs : aucun rayon au-delà de 12 px", () => {
+  it("la mosaïque et la rampe braise ont disparu (elles faisaient penser à Mistral)", () => {
+    expect(css).not.toMatch(/mosa|braise|stripe|ember|mo-layer|mo-blink/i);
+    const root = new URL("..", import.meta.url).pathname;
+    const files = execFileSync("git", ["ls-files", "components", "app"], {
+      cwd: root,
+      encoding: "utf8",
+    })
+      .split("\n")
+      .filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f));
+    const offenders = files.filter((f) =>
+      /from "@\/components\/brand\/mosaic|<Mosaic\b/.test(
+        readFileSync(join(root, f), "utf8"),
+      ),
+    );
+    expect(offenders).toEqual([]);
+  });
+
+  it("des rayons de 2 à 10 px", () => {
     const radii = [...css.matchAll(/--radius-[a-z]+:\s*([0-9.]+)rem/g)].map(
       (m) => Number(m[1]) * 16,
     );
     expect(radii.length).toBe(5);
-    expect(Math.max(...radii)).toBeLessThanOrEqual(12);
+    expect(Math.max(...radii)).toBeLessThanOrEqual(10);
+    expect(Math.min(...radii)).toBeGreaterThanOrEqual(2);
   });
 
-  it("la mosaïque, le balayage et la bande braise ne bougent que sous prefers-reduced-motion: no-preference", () => {
+  it("le balayage, les ondes et les cadres de détection ne bougent que sous prefers-reduced-motion: no-preference", () => {
     const start = css.indexOf(
       "@media (prefers-reduced-motion: no-preference)",
-      css.indexOf(".mo-layer"),
+      css.indexOf(".wave-bar"),
     );
     const block = css.slice(start);
-    for (const cls of [".mo-animate .mo-layer", ".scan", ".stripe-cell"])
+    for (const cls of [
+      ".wave-animate .wave-bar",
+      ".scan-loop .scanline",
+      ".detect-animate",
+      ".live-dot",
+      '[data-motion="pause"]',
+    ])
       expect(block, cls).toContain(cls);
   });
 

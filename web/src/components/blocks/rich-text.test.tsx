@@ -64,6 +64,7 @@ describe("SectionBlockView : largeur du texte", () => {
     body: parseRichText(body),
     media: null,
     captions: null,
+    poster: null,
     mediaPosition: "none",
     items: [],
   });

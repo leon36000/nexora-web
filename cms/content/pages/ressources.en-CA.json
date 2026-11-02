@@ -1,0 +1,182 @@
+{
+  "page": "ressources",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "resources",
+    "title": "Resources",
+    "seo_title": "Resources: guides, templates and documentation",
+    "seo_description": "Practical guides on AI for business, workflow templates, API documentation and answers to frequently asked questions, in French and English, in one place.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Porte d'entrée des contenus de fond.",
+      "claims": ["CL-01"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "grille"
+      },
+      "translation": {
+        "eyebrow": "Resources",
+        "headline": "Understand before you choose.",
+        "subheadline": "Guides written for business leaders and technical teams, templates ready to adapt and the API documentation.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/",
+        "secondary_label": "Frequently asked questions",
+        "secondary_href": "/en/faq/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Les guides publiés, avec leur description SEO (affirmations citées par leurs héros).",
+      "claims": [
+        "CL-01",
+        "CL-03",
+        "CL-80",
+        "CL-128",
+        "CL-90",
+        "CL-93",
+        "CL-21",
+        "CL-82",
+        "CL-E08",
+        "CL-E09",
+        "CL-75",
+        "CL-70",
+        "CL-71",
+        "CL-S04",
+        "CL-M07",
+        "CL-27",
+        "CL-13",
+        "CL-12"
+      ],
+      "fields": {
+        "columns": "3",
+        "layout": "liste",
+        "tone": "clair",
+        "anchor_id": "guides"
+      },
+      "translation": {
+        "title": "Our guides.",
+        "cards": [
+          {
+            "label": "Guide",
+            "title": "AI for a Quebec small business.",
+            "text": "A guide for a Quebec small business: pick one precise case, decide where your data lives, name who approves, then measure on a pilot before expanding.",
+            "href": "/en/guides/ai-small-business-quebec/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "AI agents for small business.",
+            "text": "An AI agent follows your instructions, uses the tools and documents you allow, cites its sources and acts under human approval. Definitions and safeguards.",
+            "href": "/en/guides/ai-agents-small-business/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "On-premises AI server.",
+            "text": "The five decisions before buying an on-premises AI server: users, documents, model, tools and backups. What stays with you and what leaves your site.",
+            "href": "/en/guides/on-premises-ai-server/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Where your AI data is.",
+            "text": "Storage, processing and jurisdiction: three questions to know where your AI data is, and the questions to put to any AI provider before you sign.",
+            "href": "/en/guides/where-is-your-ai-data/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Sovereign AI checklist.",
+            "text": "Four layers of control, twelve questions, the evidence to request and the pitfalls: an IT department's checklist for judging a sovereign AI in Quebec.",
+            "href": "/en/guides/sovereign-ai-checklist/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "OpenAI-compatible API.",
+            "text": "Change the base address and key of your OpenAI client to call Nexora AI API. cURL, Python and JavaScript examples, plus errors, limits and how billing works.",
+            "href": "/en/guides/openai-compatible-api/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Gateway or direct access.",
+            "text": "A gateway adds a middleman that helps when comparing models or keeping one key. Criteria, limits, and the cases where direct access is enough.",
+            "href": "/en/guides/gateway-or-direct-access/",
+            "link_label": "Read the guide"
+          },
+          {
+            "label": "Guide",
+            "title": "Quebec VPS for AI agents.",
+            "text": "A virtual private server hosted in Quebec with the AI application of your choice: planned applications, plans, what is included and the real state of the offer.",
+            "href": "/en/guides/quebec-vps-ai-agents/",
+            "link_label": "Read the guide"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Autres ressources.",
+      "claims": [],
+      "fields": {
+        "columns": "2",
+        "layout": "grille",
+        "tone": "sombre",
+        "anchor_id": "autres"
+      },
+      "translation": {
+        "title": "Templates, documentation and trust.",
+        "cards": [
+          {
+            "title": "Workflow templates.",
+            "text": "Ready-to-adapt sequences of tasks for small businesses: email, invoices, reports.",
+            "href": "/en/workflow-templates/",
+            "link_label": "See the templates"
+          },
+          {
+            "title": "API documentation.",
+            "text": "Quick start, keys, credits and examples of calls compatible with the OpenAI format.",
+            "href": "/en/docs/api/",
+            "link_label": "Read the documentation"
+          },
+          {
+            "title": "Trust centre.",
+            "text": "What we claim, how we prove it, and what we do not promise.",
+            "href": "/en/trust-center/",
+            "link_label": "Open the centre"
+          },
+          {
+            "title": "Your data.",
+            "text": "Where your data goes, who can access it and what we commit never to do.",
+            "href": "/en/your-data/",
+            "link_label": "Read the commitments"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : consultation.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "One question, one written answer.",
+        "text": "Describe your situation: we answer in writing, with no commitment.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/",
+        "secondary_label": "See solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    }
+  ]
+}

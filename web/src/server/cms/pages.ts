@@ -10,8 +10,8 @@ import { normalizePage, parsePageResponse } from "./normalize";
 /* Champs demandés                                                              */
 /* -------------------------------------------------------------------------- */
 
-const FILE = (p: string) =>
-  `${p}.media.id,${p}.media.width,${p}.media.height,${p}.media.type,${p}.media.duration`;
+const FILE = (p: string, f = "media") =>
+  `${p}.${f}.id,${p}.${f}.width,${p}.${f}.height,${p}.${f}.type,${p}.${f}.duration`;
 
 /** Champs d'une page avec ses six types de blocs M2A (forme décrite dans docs/cms.md §3). */
 export const PAGE_FIELDS = [
@@ -32,7 +32,10 @@ export const PAGE_FIELDS = [
   "blocks.item:block_hero.variant",
   "blocks.item:block_hero.anchor_id",
   "blocks.item:block_hero.perimeter_grid",
+  "blocks.item:block_hero.layout",
+  "blocks.item:block_hero.signature",
   FILE("blocks.item:block_hero"),
+  FILE("blocks.item:block_hero", "video"),
   "blocks.item:block_hero.translations.*",
   "blocks.item:block_section.id",
   "blocks.item:block_section.media_position",
@@ -40,8 +43,14 @@ export const PAGE_FIELDS = [
   "blocks.item:block_section.visual",
   "blocks.item:block_section.anchor_id",
   FILE("blocks.item:block_section"),
+  FILE("blocks.item:block_section", "poster"),
   "blocks.item:block_section.translations.*",
   "blocks.item:block_section.translations.media_captions",
+  "blocks.item:block_section.translations.media_lang.id",
+  "blocks.item:block_section.translations.media_lang.width",
+  "blocks.item:block_section.translations.media_lang.height",
+  "blocks.item:block_section.translations.media_lang.type",
+  "blocks.item:block_section.translations.media_lang.duration",
   "blocks.item:block_cards.id",
   "blocks.item:block_cards.columns",
   "blocks.item:block_cards.layout",

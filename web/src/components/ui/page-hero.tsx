@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { MosaicPalette } from "@/components/brand/mosaic";
-import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
+import { SignalBackdrop } from "@/components/signal/materials";
 import { cn } from "@/lib/cn";
 import { Badge } from "./badge";
 import { Section } from "./section";
@@ -10,7 +9,7 @@ type PageHeroProps = {
   /** Identifiant du titre : la section est nommée par lui (`aria-labelledby`). */
   titleId: string;
   title: ReactNode;
-  /** Étiquette mono à pixel orange, au-dessus du titre. */
+  /** Étiquette mono à point de lumière, au-dessus du titre. */
   eyebrow?: ReactNode;
   lead?: ReactNode;
   /** Fil d'Ariane (un `<nav>` déjà nommé) : posé au-dessus du titre. */
@@ -21,8 +20,10 @@ type PageHeroProps = {
   children?: ReactNode;
   /** Bandeau de chiffres ou de repères, pleine largeur sous le texte. */
   aside?: ReactNode;
-  /** Rampe de la mosaïque : braise (défaut), ciel (modèles, API), or (serveurs), menthe (compte). */
-  palette?: MosaicPalette;
+  /** Ancienne teinte par famille (mosaïque retirée) : ignorée, l'identité « Signal » n'a qu'une lumière. */
+  palette?: string;
+  /** Matière de fond : grille de précision (défaut), champ de lumière, onde ou détection. */
+  material?: "grille" | "champ" | "onde" | "detection";
   seed?: number;
   /** Niveau du titre : `h1` (défaut) ou `h2` quand la page a déjà son h1. */
   as?: "h1" | "h2";
@@ -31,9 +32,8 @@ type PageHeroProps = {
 
 /**
  * En-tête commun des pages de l'application (Nexora Apps, modèles, comparateur, classements, agents, documentation de
- * l'API, contact) : une bande sombre à mosaïque, qui prolonge le héros de l'accueil en plus bas et plus calme. Une seule
- * grammaire pour toutes ces pages : fil d'Ariane, pastilles, titre h1, chapeau, actions, bandeau de repères. La mosaïque
- * est décorative (`aria-hidden`), elle prend la teinte du produit ; sur téléphone, elle devient un ruban sous le texte.
+ * l'API, contact) : une bande abysse à grille de précision (matière « Signal »), qui prolonge le héros de l'accueil en
+ * plus bas et plus calme. Une seule grammaire : fil d'Ariane, pastilles, titre h1, chapeau, actions, bandeau de repères.
  */
 export function PageHero({
   titleId,
@@ -44,8 +44,7 @@ export function PageHero({
   meta,
   children,
   aside,
-  palette = "braise",
-  seed = 5,
+  material = "grille",
   as: H = "h1",
   className,
 }: PageHeroProps) {
@@ -54,29 +53,8 @@ export function PageHero({
       tone="dark"
       flush
       aria-labelledby={titleId}
-      className={cn("pb-12 pt-8 md:pb-16 md:pt-10", className)}
-      background={
-        <>
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 hidden md:block"
-          >
-            <MosaicBackdrop
-              shape="wide"
-              palette={palette}
-              seed={seed}
-              rows={16}
-            />
-            <div className="ruler absolute inset-x-0 bottom-0" />
-          </div>
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 -z-10 h-16 md:hidden"
-          >
-            <MosaicBackdrop shape="compact" palette={palette} seed={seed} />
-          </div>
-        </>
-      }
+      className={cn("pb-14 pt-10 md:pb-20 md:pt-16", className)}
+      background={<SignalBackdrop variant={material} animated={false} />}
     >
       {breadcrumb ? <div className="mb-8 md:mb-10">{breadcrumb}</div> : null}
       <div className="max-w-3xl pb-6 md:pb-0">
@@ -88,7 +66,7 @@ export function PageHero({
         {eyebrow ? <Badge tone="accent">{eyebrow}</Badge> : null}
         <H
           id={titleId}
-          className={cn("text-h1 text-fg", eyebrow || meta ? "mt-4" : null)}
+          className={cn("text-h1 text-fg", eyebrow || meta ? "mt-5" : null)}
         >
           {title}
         </H>

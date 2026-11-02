@@ -467,18 +467,27 @@ const rich: Opt["options"] = {
 /** Motif de l'ancre d'un bloc (navigation ancrée des pages longues) : minuscules, chiffres, tirets, 40 au plus. */
 export const ANCHOR_PATTERN = "^[a-z0-9-]{0,40}$";
 
-/** Tons de section (S3) : sombre = fond encre forêt, clair = papier, sable = surface claire relevée. */
+/** Tons de section : identité « Signal » (sombre d'abord) : sombre = abysse, clair = nuit (fond courant), sable = surface relevée. */
 const TONES: [string, string][] = [
-  ["sombre", "Sombre"],
-  ["clair", "Clair"],
-  ["sable", "Sable"],
+  ["sombre", "Abysse (le plus profond)"],
+  ["clair", "Nuit (fond courant)"],
+  ["sable", "Surface relevée"],
 ];
 const CARD_LAYOUTS: [string, string][] = [
   ["grille", "Grille"],
   ["liste", "Liste (rangées pleine largeur)"],
   ["etapes", "Étapes numérotées"],
   ["modules", "Modules numérotés (M1…)"],
-  ["bento", "Mosaïque (tuiles de tailles variées)"],
+  ["bento", "Tuiles de tailles variées"],
+  ["vitrine", "Vitrine (grandes cartes avec image ou matière)"],
+];
+/** Matières « Signal » dessinées en code (décor d'un héros, emplacement d'image tant que le fichier manque). */
+const MATERIALS: [string, string][] = [
+  ["champ", "Champ de lumière (nuage de points)"],
+  ["onde", "Forme d’onde (voix)"],
+  ["detection", "Cadres de détection"],
+  ["infra", "Baie de serveurs (lignes de lumière)"],
+  ["grille", "Grille de précision seule"],
 ];
 const SECTION_VISUALS: [string, string][] = [
   ["aucun", "Aucun"],
@@ -492,6 +501,15 @@ const SECTION_VISUALS: [string, string][] = [
   ["vision-sur-place", "Schéma : analyse vidéo sur place (Nexora Vision)"],
   ["croissance-canaux", "Schéma : canaux de croissance (Nexora Croissance)"],
   ["engagements-donnees", "Schéma : les cinq engagements sur les données"],
+  ["signal-accueil", "Maquette : réception virtuelle (onde et conversations)"],
+  [
+    "signal-surveillance",
+    "Maquette : surveillance IA (caméra, détections, chronologie)",
+  ],
+  [
+    "signal-infrastructure",
+    "Schéma : infrastructure IA (chez vous ou chez nous)",
+  ],
 ];
 /** Statut d'une carte en disposition « modules » ; vide = aucun badge. */
 export const CARD_STATUSES = [
@@ -516,7 +534,7 @@ const tone = (def: "sombre" | "clair" | "sable", label = "Ton") =>
     label,
     def,
     width: "half",
-    note: "Sombre : fond encre forêt. Clair : papier. Sable : surface claire relevée.",
+    note: "Abysse : le noir le plus profond. Nuit : fond courant du site. Surface relevée : une bande légèrement plus claire.",
   });
 
 const anchorId = (): FieldDef => ({
@@ -1158,11 +1176,32 @@ export function buildSchema(): {
       }),
       anchorId(),
       bool("perimeter_grid", {
-        label: "Grille de périmètre",
+        label: "Matière de fond",
         def: true,
-        note: "Motif de fond signature.",
+        note: "Affiche la matière « Signal » choisie ci-dessous derrière le titre.",
       }),
-      file("media", { label: "Média" }),
+      select(
+        "layout",
+        [
+          ["standard", "Standard (titre sur la matière)"],
+          ["plein-ecran", "Plein écran (vidéo en boucle silencieuse)"],
+        ],
+        { label: "Disposition", def: "standard", width: "half" },
+      ),
+      select("signature", [...MATERIALS, ["aucun", "Aucune"]], {
+        label: "Matière de fond",
+        def: "champ",
+        width: "half",
+      }),
+      file("media", {
+        label: "Image (ou affiche de la vidéo)",
+        note: "Plein écran : image affichée avant la vidéo et à la place de la vidéo quand le mouvement est réduit.",
+      }),
+      file("video", {
+        label: "Vidéo en boucle (silencieuse)",
+        interface: "file",
+        note: "MP4 (H.264) ou WebM, 10 à 15 secondes, sans son ni texte incrusté. Chargée après l’affichage de la page.",
+      }),
     ],
     [
       str("eyebrow", { label: "Surtitre" }),
@@ -1188,6 +1227,7 @@ export function buildSchema(): {
     ],
   );
   toFiles("block_hero", "media");
+  toFiles("block_hero", "video");
 
   block(
     "block_section",
@@ -1222,6 +1262,10 @@ export function buildSchema(): {
         interface: "file",
         note: "Image (PNG, JPEG, WebP, AVIF, GIF) ou vidéo (MP4, WebM). Une vidéo s’affiche derrière une façade : elle ne se charge qu’au clic.",
       }),
+      file("poster", {
+        label: "Affiche de la vidéo",
+        note: "Image montrée sur la façade de la vidéo, avant le clic.",
+      }),
     ],
     [
       str("title", { label: "Titre" }),
@@ -1241,6 +1285,11 @@ export function buildSchema(): {
         interface: "file",
         note: "Fichier WebVTT (.vtt) dans la langue de cette traduction, pour une vidéo.",
       }),
+      file("media_lang", {
+        label: "Vidéo propre à cette langue",
+        interface: "file",
+        note: "Remplace le média de la section pour cette langue (ex. le film de marque en français ou en anglais).",
+      }),
       json("items", {
         label: "Liste",
         interface: "list",
@@ -1253,7 +1302,9 @@ export function buildSchema(): {
     ],
   );
   toFiles("block_section", "media");
+  toFiles("block_section", "poster");
   toFiles("block_section_translations", "media_captions");
+  toFiles("block_section_translations", "media_lang");
 
   block(
     "block_cards",
@@ -1304,6 +1355,17 @@ export function buildSchema(): {
             name: "Statut (modules)",
             type: "string",
             choices: CARD_STATUSES.map((v) => [v, CARD_STATUS_LABELS[v]]),
+          },
+          {
+            field: "image",
+            name: "Image (vitrine) : identifiant du fichier",
+            type: "string",
+          },
+          {
+            field: "visual",
+            name: "Matière tant que l’image manque (vitrine)",
+            type: "string",
+            choices: MATERIALS,
           },
         ]),
       }),

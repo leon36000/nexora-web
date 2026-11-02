@@ -78,7 +78,7 @@ async function AccountVpsContent({
     const bare = await getAuth().api.getSession({ headers: await headers() });
     if (!bare) redirect(localizePath(lang, "/compte/connexion"));
     return (
-      <Section tone="light" aria-labelledby="vps-title">
+      <Section tone="paper" aria-labelledby="vps-title">
         <h1 id="vps-title" className="text-h1 text-fg">
           {t.noOrganization.title}
         </h1>

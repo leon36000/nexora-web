@@ -1,0 +1,193 @@
+{
+  "page": "solutions-reception-virtuelle",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/virtual-reception",
+    "title": "Virtual reception",
+    "seo_title": "AI virtual reception, day and night",
+    "seo_description": "A virtual reception that answers calls, emails and text messages, books appointments and transfers to the right person, in French and English, day and night.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse : chaque demande reçoit une réponse ; trois canaux, deux langues.",
+      "claims": ["CL-RV01", "CL-RV02"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "onde"
+      },
+      "translation": {
+        "eyebrow": "Solution · Virtual reception",
+        "headline": "Every call gets an answer.",
+        "subheadline": "A virtual reception answers your calls, emails and text messages, day and night, in French and English. It books appointments, qualifies requests, transfers to the right person and summarizes every exchange.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/?sujet=reception-virtuelle",
+        "secondary_label": "See all solutions",
+        "secondary_href": "/en/solutions/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Aperçu : trois canaux au même endroit, la maquette en vis-à-vis.",
+      "claims": ["CL-RV01", "CL-RV02"],
+      "fields": {
+        "media_position": "right",
+        "visual": "signal-accueil",
+        "tone": "clair",
+        "anchor_id": "apercu"
+      },
+      "translation": {
+        "title": "One reception, three channels.",
+        "body": "<p>Phone calls, emails and text messages arrive in one place. The virtual reception understands the request, answers with your information (hours, services, policies) and acts: it adds the appointment to your calendar, updates your customer management tool or passes the call to the right person.</p><p>Every exchange ends with a written summary, sent to whoever you choose.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Fonctions : six capacités, sans chiffre.",
+      "claims": ["CL-RV01", "CL-RV02", "CL-RV03"],
+      "fields": {
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sombre",
+        "anchor_id": "fonctions"
+      },
+      "translation": {
+        "title": "What it does for you.",
+        "cards": [
+          {
+            "title": "Answer calls.",
+            "text": "It picks up, understands the request and answers with your information. It routes the call to the right person when needed."
+          },
+          {
+            "title": "Answer emails.",
+            "text": "It reads incoming emails, answers common questions and sends the follow-up messages you have planned."
+          },
+          {
+            "title": "Answer text messages.",
+            "text": "Appointment confirmation, arrival time, quick question: the answer goes out by text."
+          },
+          {
+            "title": "Book appointments.",
+            "text": "It checks your calendar, offers open slots and books the appointment; a reminder can go out the day before."
+          },
+          {
+            "title": "Qualify and transfer.",
+            "text": "It asks the right questions, recognizes an emergency and transfers to the right person, with the context."
+          },
+          {
+            "title": "Summarize every exchange.",
+            "text": "A clear summary after every call, email or text: who, what, what was done and what is left to do."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Connexions et contrôle : ligne, règles, données.",
+      "claims": ["CL-RV02", "CL-RV04", "CL-E01", "CL-E02"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "connexions"
+      },
+      "translation": {
+        "title": "Connected to your systems.",
+        "body": "<p>The virtual reception connects to what you already use: your phone line, your email, your calendar and your customer management tool. Possible connections are checked during the consultation, system by system.</p>",
+        "items": [
+          {
+            "title": "Your line.",
+            "text": "Your number stays yours; the reception takes calls according to the rules you set: hours, overflow, night."
+          },
+          {
+            "title": "Your rules.",
+            "text": "What it may say, what it must transfer, who to reach in an emergency: you decide, in writing."
+          },
+          {
+            "title": "Your data.",
+            "text": "Exchanges and summaries stay at your site or on our servers, depending on the mode you choose."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Méthode : trois temps.",
+      "claims": ["CL-03", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "sable",
+        "anchor_id": "methode"
+      },
+      "translation": {
+        "title": "From consultation to service.",
+        "cards": [
+          {
+            "title": "Consultation.",
+            "text": "We listen to your typical requests, your rules and your tools. You receive a written proposal."
+          },
+          {
+            "title": "Installation.",
+            "text": "We configure the reception, its answers and its connections, then put it to the test with you on real cases."
+          },
+          {
+            "title": "Operation.",
+            "text": "We monitor the quality of exchanges, adjust the answers and stay reachable."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Objections : transparence, limites, langues, coût.",
+      "claims": ["CL-RV05", "CL-RV02", "CL-10", "CL-PL03", "CL-T01", "CL-T06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions about the reception.",
+        "items": [
+          {
+            "question": "Do callers know they are talking to an AI?",
+            "answer": "Yes. The reception introduces itself as your company's virtual assistant, and callers can always ask to speak to a person."
+          },
+          {
+            "question": "What happens if it does not know the answer?",
+            "answer": "It says so, takes the contact details and transfers the request to the right person, with a summary. It does not make things up: its answers come from the information you give it."
+          },
+          {
+            "question": "Does it work in French and English?",
+            "answer": "Yes. It answers in the language of the person calling or writing."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. Two things are paid for: our services (a written estimate follows the consultation) and platform usage, in credits. Prices will appear on the Pricing page as soon as they are published."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Hear it answer.",
+        "text": "We prepare a demonstration with your most frequent questions, then we talk about your line, your tools and your rules.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/?sujet=reception-virtuelle",
+        "secondary_label": "See AI surveillance",
+        "secondary_href": "/en/solutions/ai-surveillance/"
+      }
+    }
+  ]
+}

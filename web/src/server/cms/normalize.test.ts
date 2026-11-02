@@ -397,4 +397,101 @@ describe("vidéo et sous-titres d'une section (S10)", () => {
     );
     expect(page?.blocks[0]?.type === "hero" && page.blocks[0].media).toBeNull();
   });
+
+  it("refonte « Signal » : la boucle vidéo du héros va dans `video`, l'image reste l'affiche ; disposition et matière", () => {
+    const poster = {
+      id: CAP_FR,
+      width: 2560,
+      height: 1440,
+      type: "image/jpeg",
+    };
+    const hero = normalizePage(
+      parsePageResponse(
+        pageJson("p", { fr: "x" }, [
+          heroBlock(1, 1, {
+            media: poster,
+            video: mp4,
+            layout: "plein-ecran",
+            signature: "onde",
+          }),
+        ]),
+      ),
+      FR,
+    )?.blocks[0];
+    expect(hero?.type === "hero" && hero.layout).toBe("plein-ecran");
+    expect(hero?.type === "hero" && hero.signature).toBe("onde");
+    expect(hero?.type === "hero" && hero.video?.kind).toBe("video");
+    expect(hero?.type === "hero" && hero.media?.id).toBe(CAP_FR);
+    // une image posée dans `video`, une valeur inconnue : écartées, défauts sûrs
+    const bad = normalizePage(
+      parsePageResponse(
+        pageJson("p", { fr: "x" }, [
+          heroBlock(1, 1, { video: poster, layout: "géant", signature: "x" }),
+        ]),
+      ),
+      FR,
+    )?.blocks[0];
+    expect(bad?.type === "hero" && bad.video).toBeNull();
+    expect(bad?.type === "hero" && bad.layout).toBe("standard");
+    expect(bad?.type === "hero" && bad.signature).toBe("champ");
+  });
+
+  it("une vidéo propre à la langue (film fr / en) remplace le média commun ; l'affiche de la façade est une image", () => {
+    const EN_VID = "5a1b0000-0000-4000-8000-000000000009";
+    const block = sectionBlock(1, 1, {
+      media: mp4,
+      poster: { id: CAP_EN, width: 1920, height: 1080, type: "image/jpeg" },
+      translations: [
+        { languages_code: FR, title: "Film", items: [] },
+        {
+          languages_code: EN,
+          title: "Film",
+          items: [],
+          media_lang: { ...mp4, id: EN_VID },
+        },
+      ],
+    });
+    expect(
+      sectionOf(block, FR)?.type === "section" && sectionOf(block, FR),
+    ).toMatchObject({
+      media: { id: VID },
+      poster: { id: CAP_EN, kind: "image" },
+    });
+    expect(sectionOf(block, EN)).toMatchObject({
+      media: { id: EN_VID, kind: "video" },
+    });
+  });
+});
+
+describe("cartes « vitrine » (refonte « Signal »)", () => {
+  it("une carte porte une image (identifiant de fichier) et une matière de repli ; le reste est ignoré", () => {
+    const UUID = "5a1b0000-0000-4000-8000-0000000000aa";
+    const cards = normalizePage(
+      parsePageResponse(
+        pageJson("p", { fr: "x" }, [
+          cardsBlock(1, 1, {
+            layout: "vitrine",
+            translations: [
+              {
+                languages_code: FR,
+                title: "Trois formats.",
+                cards: [
+                  { title: "Spark.", image: UUID, visual: "champ" },
+                  { title: "Station.", image: "../x.jpg", visual: "mosaique" },
+                ],
+              },
+            ],
+          }),
+        ]),
+      ),
+      FR,
+    )?.blocks[0];
+    expect(cards?.type === "cards" && cards.layout).toBe("vitrine");
+    expect(
+      cards?.type === "cards" && cards.cards.map((c) => [c.image, c.visual]),
+    ).toEqual([
+      [UUID, "champ"],
+      [null, null],
+    ]);
+  });
 });

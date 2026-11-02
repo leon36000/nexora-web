@@ -27,7 +27,7 @@ export function PanelShell({
   children: ReactNode;
 }) {
   return (
-    <Section tone="light" flush className="py-8 sm:py-10 lg:py-14">
+    <Section tone="paper" flush className="py-8 sm:py-10 lg:py-14">
       <div className="flex items-center justify-between gap-4 border-b border-line pb-5">
         <div className="min-w-0">
           <p className="hidden font-mono text-label uppercase text-fg-muted sm:block">

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { type Ref, useEffect, useRef, useState } from "react";
 import { buttonClasses } from "@/components/ui/button";
 import type { Lang } from "@/i18n/config";
@@ -51,6 +52,8 @@ type StageProps = {
   title: string | null;
   media: MediaRef;
   captions: Captions | null;
+  /** Affiche de la façade (image du CMS) ; sans elle, une matière en code. */
+  poster?: MediaRef | null;
   open: boolean;
   onOpen: () => void;
   frameRef?: Ref<HTMLDivElement>;
@@ -62,6 +65,7 @@ export function VideoStage({
   title,
   media,
   captions,
+  poster = null,
   open,
   onOpen,
   frameRef,
@@ -71,7 +75,7 @@ export function VideoStage({
     return (
       <div
         ref={frameRef}
-        className="relative aspect-video w-full overflow-hidden rounded-lg border border-line bg-black"
+        className="relative aspect-video w-full overflow-hidden rounded-frame border border-line bg-black"
       >
         {/* biome-ignore lint/a11y/useMediaCaption: la piste n'existe que si l'éditeur a fourni des sous-titres ; aucune transcription n'est inventée */}
         <video
@@ -80,6 +84,7 @@ export function VideoStage({
           autoPlay
           playsInline
           preload="auto"
+          poster={poster ? mediaPath(poster.id) : undefined}
           aria-label={title ?? undefined}
         >
           <source src={mediaPath(media.id)} type={media.mime ?? "video/mp4"} />
@@ -101,9 +106,30 @@ export function VideoStage({
   return (
     <div
       ref={frameRef}
-      className="relative flex aspect-video w-full flex-col items-center justify-center gap-4 overflow-hidden rounded-lg border border-line bg-surface p-6 text-center"
+      className="group/video relative isolate flex aspect-video w-full flex-col items-start justify-end overflow-hidden rounded-frame border border-line bg-abyss-950 p-5 sm:p-8"
     >
-      {title ? <p className="text-h4 text-fg">{title}</p> : null}
+      {poster ? (
+        <Image
+          src={mediaPath(poster.id)}
+          alt=""
+          fill
+          sizes="(min-width: 1280px) 1200px, 100vw"
+          className="-z-20 object-cover transition-transform duration-250 motion-safe:group-hover/video:scale-[1.02]"
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="grid-precision absolute inset-0 -z-20 bg-[radial-gradient(70%_70%_at_70%_30%,rgb(62_200_255/0.18),transparent_70%)]"
+        />
+      )}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(5_7_11/0.92),rgb(5_7_11/0.2)_55%,transparent)]"
+      />
+      <div
+        aria-hidden="true"
+        className="detect absolute inset-4 -z-10 opacity-60 sm:inset-6"
+      />
       <button
         type="button"
         onClick={onOpen}
@@ -118,6 +144,8 @@ export function VideoStage({
           <path d="M4 2.5v11l9-5.5z" fill="currentColor" />
         </svg>
         {text.play}
+        {/* le titre, déjà affiché au-dessus de la vidéo, précise le bouton pour les lecteurs d'écran */}
+        {title ? <span className="sr-only">{` — ${title}`}</span> : null}
         {duration ? (
           <span className="font-normal tabular-nums opacity-90">
             ({duration})
@@ -134,11 +162,13 @@ export function CmsVideo({
   title,
   media,
   captions,
+  poster = null,
 }: {
   lang: Lang;
   title: string | null;
   media: MediaRef;
   captions: Captions | null;
+  poster?: MediaRef | null;
 }) {
   const [open, setOpen] = useState(false);
   const frame = useRef<HTMLDivElement>(null);
@@ -151,6 +181,7 @@ export function CmsVideo({
       title={title}
       media={media}
       captions={captions}
+      poster={poster}
       open={open}
       onOpen={() => setOpen(true)}
       frameRef={frame}

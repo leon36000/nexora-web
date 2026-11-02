@@ -28,7 +28,7 @@ export default async function PanelLayout({
   return (
     <Suspense
       fallback={
-        <Section tone="light" flush className="py-8" aria-busy="true">
+        <Section tone="paper" flush className="py-8" aria-busy="true">
           <p className="text-fg-muted" role="status">
             {getAccountDictionary(lang).common.working}
           </p>

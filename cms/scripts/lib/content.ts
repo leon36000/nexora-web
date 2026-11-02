@@ -157,19 +157,58 @@ export function readPagePair(dir: string, page: string) {
 
 const same = (a: unknown, b: unknown) => canonical(a) === canonical(b);
 
-/** Nom d'un fichier de contenu : nom simple, format vidéo ou sous-titres (voir assets.ts). */
-const ASSET_FILE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(mp4|webm|vtt)$/;
+/** Nom d'un fichier de contenu : nom simple ; vidéo, sous-titres ou image matricielle (voir assets.ts). */
+const ASSET_FILE =
+  /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(mp4|webm|vtt|jpg|jpeg|png|webp|avif)$/;
 
 /**
- * Référence `{ "asset": "<nom>" }` d'une valeur de bloc : le nom, `null` si la valeur n'est pas une référence,
- * `"invalide"` si la forme est mauvaise (clé en trop, nom absent).
+ * Référence d'actif d'une valeur de bloc :
+ *  - `{ "asset": "<nom>" }` : un fichier obligatoire ;
+ *  - `{ "asset": ["<préféré>", "<repli>"], "optional": true }` : le premier fichier trouvé ; `optional` laisse le champ
+ *    vide (le site montre alors une matière en code) si aucun n'existe encore. Emplacements stables : le contenu
+ *    nomme le fichier attendu (ex. `hero-boucle.mp4`) avant qu'il soit produit.
+ * `null` si la valeur n'est pas une référence, `"invalide"` si la forme est mauvaise (clé en trop, nom absent).
  */
-export function assetRefName(v: Json | undefined): string | null | "invalide" {
+export type AssetRef = { names: string[]; optional: boolean };
+export function assetRef(v: Json | undefined): AssetRef | null | "invalide" {
   if (!v || typeof v !== "object" || Array.isArray(v) || !("asset" in v))
     return null;
-  const keys = Object.keys(v);
-  if (keys.length !== 1 || typeof v.asset !== "string") return "invalide";
-  return v.asset;
+  const keys = Object.keys(v).filter((k) => k !== "optional");
+  if (keys.length !== 1) return "invalide";
+  if ("optional" in v && typeof v.optional !== "boolean") return "invalide";
+  const names =
+    typeof v.asset === "string"
+      ? [v.asset]
+      : Array.isArray(v.asset) && v.asset.every((n) => typeof n === "string")
+        ? (v.asset as string[])
+        : null;
+  if (!names || names.length === 0) return "invalide";
+  return { names, optional: v.optional === true };
+}
+
+/** Premier nom d'une référence d'actif (compatibilité) ; voir `assetRef`. */
+export function assetRefName(v: Json | undefined): string | null | "invalide" {
+  const r = assetRef(v);
+  return r === null || r === "invalide" ? r : (r.names[0] ?? "invalide");
+}
+
+/** Toutes les références d'actif d'une valeur (y compris dans les listes JSON, ex. l'image d'une carte). */
+export function collectAssetRefs(
+  v: Json | undefined,
+  path: string,
+  out: { path: string; ref: AssetRef | "invalide" }[] = [],
+) {
+  const r = assetRef(v);
+  if (r !== null) {
+    out.push({ path, ref: r });
+    return out;
+  }
+  if (Array.isArray(v))
+    for (const [i, x] of v.entries()) collectAssetRefs(x, `${path}[${i}]`, out);
+  else if (v && typeof v === "object")
+    for (const [k, x] of Object.entries(v))
+      collectAssetRefs(x, `${path}.${k}`, out);
+  return out;
 }
 
 /** Valide un fichier de page contre le schéma ; renvoie la liste des erreurs (vide si tout va bien). */
@@ -201,14 +240,17 @@ export function validatePageFile(
       ...Object.entries(b.fields ?? {}),
       ...Object.entries(b.translation),
     ];
-    for (const [k, v] of refs) {
-      const name = assetRefName(v);
-      if (name === null) continue;
-      if (name === "invalide" || !ASSET_FILE.test(name))
-        at(
-          `${where} : actif « ${k} » mal formé (${name === "invalide" ? "clé en trop" : name}) : nom simple en .mp4, .webm ou .vtt`,
-        );
-    }
+    for (const [k, v] of refs)
+      for (const { path, ref } of collectAssetRefs(v, k)) {
+        const bad =
+          ref === "invalide"
+            ? null
+            : ref.names.find((n) => !ASSET_FILE.test(n));
+        if (ref === "invalide" || bad !== undefined)
+          at(
+            `${where} : actif « ${path} » mal formé (${ref === "invalide" ? "clé en trop" : bad}) : nom simple en .mp4, .webm, .vtt, .jpg, .png, .webp ou .avif`,
+          );
+      }
   }
   return errs;
 }

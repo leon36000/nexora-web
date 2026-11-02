@@ -6,203 +6,164 @@
 
 - Page : `accueil` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/` · slug : ``
-- Titre SEO (48 caractères) : Nexora AI : automatisation IA pour PME au Québec
-- Description SEO (160 caractères) : Nexora AI : des agents d'IA que vous décrivez en français, un compte et des crédits pour tous vos outils. Pour les PME du Québec, vos données restent chez vous.
+- Titre SEO (41 caractères) : Nexora AI : l'IA qui voit, écoute et agit
+- Description SEO (160 caractères) : Réception virtuelle, surveillance par IA, agents et infrastructure : Nexora AI installe l'IA qui travaille pour votre entreprise, chez vous ou sur nos serveurs.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse : la pointe de l'IA à la portée de tous ; message directeur et fil « un compte, des crédits, tous vos outils » dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-P01, CL-P02, CL-PL01, CL-E01, CL-E02*
+*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-RV01, CL-SV01, CL-IN01, CL-E01, CL-E02*
 
-Réglages : `variant=sombre`, `perimeter_grid=true`
+Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `signature=champ`, `video=[object Object]`, `media=[object Object]`
 
-**Nexora AI · IA pour les PME du Québec**
+**Intelligence artificielle pour les entreprises**
 
-# La pointe de l'IA. À votre portée.
+# L'IA qui voit, écoute et agit.
 
-L'IA qui travaille pour votre entreprise. Sous votre contrôle. Des agents que vous décrivez en français, des réponses tirées de vos documents, un seul compte et des crédits pour tous vos outils — et des données qui restent chez vous ou au Québec.
+L'IA qui travaille pour votre entreprise. Sous votre contrôle. Une réception qui répond à chaque appel, des caméras enfin regardées, des agents qui exécutent vos tâches, installés chez vous ou sur nos serveurs.
 
-[Décrire mon besoin](/contact/) · [Voir les solutions](/solutions/)
+[Planifier une consultation](/contact/) · [Voir les solutions](/solutions/)
 
 ### Bloc 2 — Cartes (`block_cards`)
 
-*Entrée par problème : cinq situations, chacune vers sa solution. · Affirmations : CL-01, CL-132*
+*Trois piliers : automatiser, équiper, créer et bâtir (vitrine, images stables). · Affirmations : CL-RV01, CL-SV01, CL-IN01, CL-IN02, CL-CR01, CL-AP05, CL-AP06, CL-AP07*
 
-Réglages : `columns=3`, `layout=bento`, `tone=clair`
+Réglages : `columns=3`, `layout=vitrine`, `tone=clair`, `anchor_id=piliers`
 
-## Partez de votre problème.
+## Automatiser. Équiper. Créer.
 
-Inutile de connaître les modèles de langage. Dites-nous où votre équipe perd du temps : nous construisons à partir de là.
+Trois façons de mettre l'IA au travail chez vous, avec une seule équipe du début à la fin.
 
-#### Des demandes sans réponse.
+#### Réception, surveillance, agents.
 
-Courriels, formulaires, appels manqués : tout arrive par des portes différentes. Un système rassemble ces demandes, prépare une réponse et transmet à la bonne personne, avec le contexte. Plus rien ne se perd.
-
-→ [Voir la solution](/solutions/service-client/)
-
-#### La même saisie, deux fois.
-
-Une facture arrive par courriel, puis est retapée dans la comptabilité. Un système lit le document, propose les champs et attend votre validation avant d'écrire quoi que ce soit.
-
-→ [Voir la solution](/solutions/factures/)
-
-#### Des documents introuvables.
-
-La bonne clause, le bon devis, la bonne version : dans quel dossier ? Posez la question en français ; la réponse part de vos propres documents.
-
-→ [Voir la solution](/solutions/documents/)
-
-#### Des suivis qui s'oublient.
-
-Une relance de soumission, un rappel de rendez-vous, un courriel resté en brouillon. Le système garde la liste, prépare le message et vous laisse décider de l'envoi.
-
-→ [Voir la solution](/solutions/courriels/)
-
-#### Pas de vue d'ensemble.
-
-Ce qui est en cours, ce qui est bloqué, ce qui coûte plus cher que prévu : l'information existe, mais elle est éparpillée. Nous la rassemblons dans une vue lisible.
+Une réception virtuelle qui répond aux appels, aux courriels et aux textos. Des caméras surveillées en temps réel. Des agents et des flux de travaux (des enchaînements automatisés de tâches) qui agissent avec votre approbation.
 
 → [Voir les solutions](/solutions/)
 
-### Bloc 3 — Cartes (`block_cards`)
+#### Votre infrastructure IA.
 
-*Trois scénarios avant / après, étiquetés comme exemples construits. · Affirmations : CL-11, CL-21*
+NVIDIA DGX Spark, DGX Station ou baies de serveurs, installés chez vous avec les modèles, la sécurité et la supervision, ou hébergés sur nos serveurs.
 
-Réglages : `columns=3`, `layout=grille`, `tone=sable`
+→ [Voir l'infrastructure](/infrastructure/)
 
-## Avant. Après. Votre décision.
+#### Creative, WorkStudio, Code.
 
-Trois scénarios types pour comprendre le principe. Ce sont des exemples construits, pas des résultats mesurés chez des clients.
+Un studio d'image, de vidéo et de son, un studio d'agents, du code, des réponses tirées de vos documents. Creative, Code et RAG sont en préparation.
 
-#### Une facture fournisseur arrive.
+→ [Voir les outils](/apps/)
 
-Avant : quelqu'un l'ouvre, retape les montants et cherche qui doit l'approuver.
-Après : le système lit la facture, propose les champs et la catégorie, puis la place devant la bonne personne.
-Votre contrôle : rien n'est enregistré en comptabilité sans l'approbation d'une personne.
+### Bloc 3 — Section (`block_section`)
 
-#### Une question sur un vieux dossier.
+*Réception virtuelle : maquette (onde, conversations), lien vers la page. · Affirmations : CL-RV01, CL-RV02*
 
-Avant : on fouille quatre dossiers et on appelle un collègue.
-Après : on pose la question en français ; la réponse s'appuie sur vos documents et dit clairement quand elle ne trouve rien.
-Votre contrôle : vous choisissez les documents que l'agent peut consulter.
+Réglages : `media_position=right`, `visual=signal-accueil`, `tone=sombre`, `anchor_id=reception`
 
-#### Une demande arrive par le site.
+## Une réception qui ne dort jamais.
 
-Avant : elle attend que quelqu'un ouvre la boîte de réception.
-Après : le système la qualifie, crée le dossier et avertit la personne responsable avec un résumé.
-Votre contrôle : la réponse au client est approuvée par votre équipe avant l'envoi.
+Elle répond à vos appels, à vos courriels et à vos textos, jour et nuit, en français et en anglais. Elle prend les rendez-vous, qualifie la demande, transfère à la bonne personne et vous laisse un résumé de chaque échange.
 
-### Bloc 4 — Cartes (`block_cards`)
+[Découvrir la réception virtuelle](/solutions/reception-virtuelle/)
 
-*La pointe de l'IA rendue simple : six capacités, sans nommer le produit avant la définition de la souveraineté. · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-91, CL-92, CL-93, CL-25, CL-101, CL-102, CL-94, CL-23, CL-96, CL-97*
+### Bloc 4 — Section (`block_section`)
 
-Réglages : `columns=3`, `layout=bento`, `tone=clair`
+*Surveillance IA : message clé du fondateur, maquette (détections, chronologie). · Affirmations : CL-SV01, CL-SV02, CL-SV03*
 
-## La pointe de l'IA, sans la complexité.
+Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=clair`, `anchor_id=surveillance`
 
-Ce que l'IA sait faire de plus avancé, mis à la portée d'une direction de PME : vous décrivez, vous relisez, vous décidez. Pas une ligne de code, pas de jargon.
+## Des milliers d'heures, enfin regardées.
 
-#### Décrivez-le. Il se construit.
+Même avec les meilleures caméras et un stockage immense, personne ne regarde des centaines ou des milliers d'heures de vidéo. Nos IA le font, en temps réel. Elles repèrent les comportements suspects, vous alertent selon vos consignes et documentent chaque événement.
 
-Dites en français ce que vous voulez automatiser : un assistant de création prépare un flux de travaux (des enchaînements automatisés de tâches). Vous le relisez, vous l'essayez pas à pas, vous le lancez.
+[Découvrir la surveillance IA](/solutions/surveillance-ia/)
 
-#### Des agents qui agissent.
+### Bloc 5 — Cartes (`block_cards`)
 
-Un agent est un logiciel qui accomplit une tâche avec les outils et les documents que vous lui autorisez. Il cite ses sources et demande votre accord avant d'écrire ou de supprimer.
+*Infrastructure : trois cartes avec photos (emplacements stables). · Affirmations : CL-IN01, CL-IN02, CL-IN03*
 
-#### Vos documents répondent.
+Réglages : `columns=3`, `layout=vitrine`, `tone=sombre`, `anchor_id=infrastructure`
 
-Posez une question en français : la réponse part de vos propres documents, avec ses sources.
+## Votre infrastructure IA, clé en main.
 
-#### Il lit, il écoute, il parle.
+Nous vendons, installons et exploitons le matériel. Chez vous, ou sur nos serveurs.
 
-Il lit des PDF scannés et des images, en extrait les champs d'une facture, transcrit des enregistrements audio et lit un texte à voix haute. Il ne répond pas au téléphone.
+#### NVIDIA DGX Spark.
 
-#### Les modèles, côte à côte.
+Un ordinateur d'IA compact, posé sur un bureau.
 
-Comparez plusieurs modèles d'IA sur la même question, avec le temps et les jetons (l'unité de texte que traite un modèle) de chaque réponse. Chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers.
+→ [En savoir plus](/infrastructure/)
 
-#### Mesuré, pas supposé.
+#### NVIDIA DGX Station.
 
-Des jeux de tests vérifient qu'un agent répond bien et comparent deux versions avant de changer. Chaque appel laisse une trace consultable : modèle, étapes, durée, jetons.
+Une station de travail d'IA en format tour.
 
-### Bloc 5 — Section (`block_section`)
+→ [En savoir plus](/infrastructure/)
 
-*Souveraineté définie en une phrase ; introduit les deux modes. · Affirmations : CL-70, CL-71*
+#### Baies de serveurs.
 
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
+Des serveurs en baie, chez vous ou hébergés chez nous.
 
-## Chez vous. Ou chez nous.
-
-Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nexora AI propose deux façons d'y arriver. Dans les deux, vos données restent à vous.
+→ [En savoir plus](/infrastructure/)
 
 ### Bloc 6 — Section (`block_section`)
 
-*Mode sur place : schéma de périmètre, engagement 1 et lien vers le détail. · Affirmations : CL-E01, CL-02, CL-05, CL-77*
+*Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue. · Affirmations : CL-01*
 
-Réglages : `media_position=none`, `visual=perimetre-sur-place`, `tone=sombre`
+Réglages : `media_position=top`, `tone=clair`, `anchor_id=film`, `media=[object Object]`, `poster=[object Object]`
 
-## Chez vous.
+## Une minute pour nous voir.
 
-Nous installons le système sur votre propre serveur, dans vos locaux ou chez l'hébergeur de votre choix. Le matériel et les accès sont à vous, et vos données restent sur votre serveur : nous n'y accédons que si vous l'autorisez par écrit, pour une tâche précise, et chaque accès est journalisé.
-
-Avant la mise en service, nous dressons la liste de ce qui sort du réseau, s'il y a lieu : mises à jour, licences, modèle externe si vous en activez un.
-
-[Voir le mode sur place](/deploiement/sur-place/)
+Notre film de marque, sans dialogue, sur une musique originale. Tous les plans ont été générés par IA, avec les outils que nous installons.
 
 ### Bloc 7 — Section (`block_section`)
 
-*Mode hébergé : schéma de périmètre, engagement 2 et lien vers le détail. · Affirmations : CL-E02, CL-05, CL-73*
+*Nexora Creative mis en avant : bande-annonce, mode simple et mode pro ; statut honnête. · Affirmations : CL-CR01, CL-AP05*
 
-Réglages : `media_position=left`, `visual=perimetre-heberge`, `tone=sombre`
+Réglages : `media_position=left`, `tone=sombre`, `anchor_id=creative`, `media=[object Object]`, `poster=[object Object]`
 
-## Chez nous, au Québec.
+## Nexora Creative. L'IA fait le gros œuvre.
 
-Nous hébergeons et exploitons le système dans notre infrastructure, située au Québec. Vous n'achetez ni serveur ni matériel, et vos données restent au Québec, sauvegardes comprises. Les seules exceptions sont les services que vous activez vous-même, tous listés.
+Décrivez une scène en français : Creative produit l'image, la vidéo et le son. Un mode simple pour aller vite, un mode pro pour tout régler. Cette bande-annonce a été créée avec ses moteurs.
 
-Où se trouvent vos données, vos sauvegardes et vos journaux, et qui y accède : nous l'écrivons dans l'étude de déploiement.
-
-[Voir le mode hébergé](/deploiement/heberge-quebec/)
+Creative est en préparation, sans date d'ouverture. [Voir Nexora Creative](/apps/creative/)
 
 ### Bloc 8 — Section (`block_section`)
 
-*Les cinq engagements en un coup d'œil ; comparaison sobre avec les pratiques courantes ; renvoi vers Vos données. · Affirmations : CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-E07*
+*Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ». · Affirmations : CL-70, CL-71, CL-E02, CL-02, CL-E01*
 
-Réglages : `media_position=right`, `visual=engagements-donnees`, `tone=sable`
+Réglages : `media_position=right`, `visual=signal-infrastructure`, `tone=sable`, `anchor_id=souverainete`
 
-## Vos données restent à vous.
+## Chez vous. Ou chez nous.
 
-Cinq engagements, sans petits caractères : chez vous ou au Québec, **jamais** utilisées pour entraîner une IA, **jamais** vendues, et aucun modèle externe sans que vous l'ayez activé.
+Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nous l'installons sur vos serveurs, ou nous l'hébergeons sur les nôtres, au Québec. Dans les deux cas, vos données restent à vous.
 
-Dans certains services d'IA grand public, le partage des conversations pour améliorer les modèles est un réglage que l'utilisateur doit désactiver lui-même. Chez nous, ce réglage n'existe pas.
+[Installée chez vous](/deploiement/sur-place/) · [Hébergée chez nous](/deploiement/heberge-quebec/) · [Notre approche](/souverainete/) · [Vos données](/vos-donnees/) · [Nos guides](/ressources/)
 
-[Lire les cinq engagements](/vos-donnees/)
+### Bloc 9 — Cartes (`block_cards`)
 
-### Bloc 9 — Section (`block_section`)
+*Méthode : consultation, installation, exploitation et soutien. · Affirmations : CL-03, CL-04, CL-14*
 
-*Fil conducteur : un compte, des crédits, tous vos outils ; le principe en quatre lignes, l'état réel de la vente. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-12*
+Réglages : `columns=3`, `layout=etapes`, `tone=clair`, `anchor_id=methode`
 
-Réglages : `media_position=right`, `visual=tableau-de-bord`, `tone=sombre`
+## Consulter. Installer. Exploiter.
 
-## Des crédits, de l'espace, un seul panneau.
+#### Consultation.
 
-Un seul compte Nexora AI réunit vos outils dans le panneau « Mes outils » : vos crédits, votre espace disque et l'état réel de chaque produit.
+Nous partons de votre problème, de vos outils et de vos règles. Vous recevez une proposition et une estimation écrites.
 
-Un abonnement donne des crédits chaque mois et de l'espace disque ; sans abonnement, vous rechargez des crédits. Tout ce qui appelle un modèle d'IA consomme des crédits, et les outils qui n'en appellent aucun n'en consomment pas.
+#### Installation.
 
-La vente n'est pas encore ouverte : aucun prix n'est publié. Les prix s'afficheront sur la page [Tarifs](/tarifs/) dès leur publication.
+Nous installons le système chez vous ou sur nos serveurs, le branchons à vos outils et le mettons à l'épreuve avec votre équipe.
 
-- **Un compte.** Vos crédits, votre espace et vos produits au même endroit : le panneau « Mes outils ».
-- **Des crédits.** Un crédit vaut un cent canadien de jetons, au prix du catalogue de modèles. Les crédits d'abonnement expirent à la fin de leur période et servent en premier ; ceux de recharge n'expirent pas. Quand il n'en reste plus, les appels aux modèles s'arrêtent avec un message qui renvoie vers la recharge.
-- **De l'espace.** Chaque abonnement inclut de l'espace disque, compté pour toute votre organisation. Quand il est plein, l'écriture est refusée avec un message clair ; lire et supprimer restent permis.
-- **Des outils.** WorkStudio s'ouvre tant qu'il reste un crédit. Nexora Code et Nexora RAG sont en préparation : leur état est affiché, sans date.
+#### Exploitation et soutien.
+
+Nous le supervisons, l'améliorons et restons joignables. Votre équipe apprend à s'en servir et à le surveiller.
 
 ### Bloc 10 — Cartes (`block_cards`)
 
 *Les produits présentés comme un ensemble ouvert depuis le même compte, chacun avec son état réel en étiquette. · Affirmations : CL-12, CL-13, CL-20, CL-21, CL-22, CL-27, CL-28, CL-110, CL-G01, CL-G02, CL-G03, CL-V01, CL-V03, CL-P03, CL-PL01, CL-PL02, CL-AP01, CL-AP06, CL-AP07, CL-T04, CL-H01*
 
-Réglages : `columns=3`, `layout=liste`, `tone=clair`
+Réglages : `columns=3`, `layout=liste`, `tone=clair`, `anchor_id=produits`
 
 ## Une suite, pas une pile.
 
@@ -271,114 +232,11 @@ Nexora Corpus pour préparer vos documents et vos données, et les modèles Quan
 
 → [Voir la suite](/suite/)
 
-### Bloc 11 — Section (`block_section`)
-
-*Mise en avant d'OPSYS-AI et de son cycle construction. · Affirmations : CL-30, CL-31, CL-O01*
-
-Réglages : `media_position=none`, `visual=aucun`, `tone=sombre`
-
-## OPSYS-AI. Dix départements, un dossier.
-
-Le système d'exploitation intelligent des PME, pour la construction et les services terrain : dix départements virtuels travaillent sur les mêmes dossiers, de la première demande au chantier terminé. Plus rien ne se perd entre deux logiciels.
-
-Ce n'est ni un robot de clavardage, ni un logiciel de relation client (CRM) rebaptisé, ni dix outils isolés. Les actions engageantes — envoyer, payer, décider — attendent l'approbation d'une personne. OPSYS-AI est un produit en développement, partiel : chaque département distingue ce qui est qualifié localement de ce qui reste à compléter, et rien n'est présenté comme livré en production.
-
-[Découvrir OPSYS-AI](/opsys-ai/)
-
-- **Vendre.** Réception, relation client, estimation et soumission.
-- **Réaliser.** Planification, terrain et matériel.
-- **Facturer.** Facture brouillon, comptes à recevoir et coûts réels.
-- **Piloter.** Marketing, analytique, stratégie et mémoire des décisions.
-
-### Bloc 12 — Section (`block_section`)
-
-*Méthode en cinq temps. · Affirmations : CL-03, CL-04, CL-12, CL-14, CL-T06*
-
-Réglages : `media_position=none`, `visual=aucun`, `tone=clair`
-
-## Cinq temps. Un cas à la fois.
-
-Nous commençons par un problème concret, mis en service et vérifié, avant d'élargir. Nous n'annonçons aucun délai universel : il dépend de votre situation et se mesure sur un premier cas. Vous n'avez pas à devenir informaticien : nous installons, nous exploitons avec vous et nous formons votre équipe.
-
-[Lire la méthode](/methode/)
-
-Pour aller plus loin : [Par où commencer avec l'IA dans une PME du Québec](/guides/ia-pme-quebec/), [Qu'est-ce qu'un agent IA](/guides/agents-ia-pour-pme/) et [Passerelle ou accès direct](/guides/passerelle-ou-acces-direct/).
-
-Les outils qui entourent vos modèles, vos serveurs et vos agents sont réunis dans [Nexora Apps](/apps/), chacun avec son état réel.
-
-Vous préférez commencer par la plateforme ? Voyez comment fonctionnent les crédits sur la page [Tarifs](/tarifs/) : les prix s'y afficheront à leur publication.
-
-### Bloc 13 — Cartes (`block_cards`)
-
-*Les cinq temps de la méthode, en frise numérotée. · Affirmations : CL-03, CL-04, CL-14*
-
-Réglages : `columns=3`, `layout=etapes`, `tone=clair`
-
-#### Comprendre.
-
-Nous observons comment le travail se fait aujourd'hui : où le temps se perd, quelles informations entrent, qui décide.
-
-#### Intégrer.
-
-Nous relions les logiciels que vous utilisez déjà, pour que l'information circule sans être retapée.
-
-#### Vérifier.
-
-Nous testons sur vos cas réels, avec vos validations, avant toute mise en service.
-
-#### Former.
-
-Votre équipe apprend à superviser, à corriger et à décider, pas à programmer.
-
-#### Exploiter et améliorer.
-
-Nous exploitons le système avec vous, suivons ce qui fonctionne et ajustons le reste.
-
-### Bloc 14 — Cartes (`block_cards`)
-
-*Confiance : engagements vérifiables, sans chiffre ni client. · Affirmations : CL-05, CL-06, CL-07, CL-08, CL-09, CL-21, CL-23, CL-24, CL-31, CL-E03, CL-E04*
-
-Réglages : `columns=3`, `layout=bento`, `tone=sombre`
-
-## Des engagements vérifiables.
-
-Pas de grands mots : des engagements précis, que vous pouvez contrôler avant et après la mise en service.
-
-#### Vous savez où vont vos données.
-
-Avant toute mise en service, nous vous remettons par écrit le schéma des flux : où les données sont stockées, quels services externes sont appelés, quelles sauvegardes existent.
-
-→ [Lire sur la souveraineté](/souverainete/)
-
-#### Aucun modèle externe sans votre activation.
-
-Aucun appel à un service d'IA externe n'est configuré sans votre activation explicite, consignée par écrit. Dans WorkStudio, chaque modèle indique s'il tourne sur votre serveur, en Europe ou chez un tiers.
-
-#### Les décisions restent humaines.
-
-Un flux de travaux peut s'arrêter sur la validation d'une personne avant d'agir. Dans OPSYS-AI, les actions engageantes — envoi, paiement, décision financière — demandent une approbation.
-
-#### Les renseignements personnels, repérés.
-
-Un service installé sur votre serveur peut repérer les noms, les courriels et les numéros de téléphone pour les masquer dans les traces ou avant un appel à un modèle externe, selon la politique que vous choisissez.
-
-#### Jamais pour entraîner, jamais vendues.
-
-Nous n'utilisons jamais vos données pour entraîner un modèle, ni pour un autre client, et nous ne les vendons jamais. Vos documents, vos configurations et vos flux de travaux restent exportables.
-
-→ [Lire les cinq engagements](/vos-donnees/)
-
-#### Pas d'affirmation sans preuve.
-
-Nous ne publions ni témoignage, ni chiffre, ni certification que nous ne pouvons pas prouver. Quand une capacité est en pilote ou prévue, nous l'écrivons.
-
-→ [Voir le centre de confiance](/centre-de-confiance/)
-
-### Bloc 15 — FAQ (`block_faq`)
+### Bloc 11 — FAQ (`block_faq`)
 
 *FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09, CL-PL04*
 
-Réglages : `emit_jsonld=true`, `tone=clair`
+Réglages : `emit_jsonld=true`, `tone=clair`, `anchor_id=questions`
 
 ## Vos questions. Nos réponses.
 
@@ -446,14 +304,14 @@ Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous d
 
 Un logiciel qui accomplit une tâche à votre place, avec les outils et les documents que vous lui autorisez, et qui demande votre validation avant une action importante.
 
-### Bloc 16 — Appel à l'action (`block_cta`)
+### Bloc 12 — Appel à l'action (`block_cta`)
 
-*CTA final. · Affirmations : CL-01, CL-P02, CL-PL03*
+*CTA final : le seul point de chaleur de l'écran (bouton flare). · Affirmations : CL-01, CL-P02, CL-PL03*
 
 Réglages : `tone=sombre`
 
-## Votre premier cas commence ici.
+## Parlons de votre projet.
 
-Décrivez-nous un problème concret. Nous vous disons ce qui est faisable, dans quel mode, et par où commencer.
+Une consultation pour comprendre ce que vous voulez automatiser, équiper ou créer. Vous repartez avec une proposition écrite.
 
-[Décrire mon besoin](/contact/) · [Découvrir WorkStudio](/workstudio/)
+[Planifier une consultation](/contact/) · [Voir les tarifs](/tarifs/)

@@ -1,0 +1,195 @@
+{
+  "page": "infrastructure",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "infrastructure",
+    "title": "Infrastructure IA",
+    "seo_title": "Infrastructure IA : DGX Spark, Station, baies",
+    "seo_description": "Nous vendons et installons votre infrastructure IA : NVIDIA DGX Spark, DGX Station ou baies de serveurs, chez vous, ou hébergée sur nos serveurs au Québec.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Promesse : la puissance de calcul chez vous, clé en main.",
+      "claims": ["CL-IN01", "CL-IN02"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "champ"
+      },
+      "translation": {
+        "eyebrow": "Infrastructure · Clé en main",
+        "headline": "La puissance de l'IA, chez vous.",
+        "subheadline": "Nous vendons et installons des infrastructures d'IA complètes, de l'ordinateur compact posé sur un bureau à la baie de serveurs. Installées chez vous avec vos modèles, vos applications, la sécurité et la supervision, ou hébergées sur nos serveurs.",
+        "primary_label": "Planifier une consultation",
+        "primary_href": "/contact/?sujet=infrastructure",
+        "secondary_label": "Voir les VPS",
+        "secondary_href": "/vps/"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Matériel : trois formats, trois photos (emplacements stables, matière en attendant).",
+      "claims": ["CL-IN01", "CL-IN03"],
+      "fields": {
+        "columns": "3",
+        "layout": "vitrine",
+        "tone": "clair",
+        "anchor_id": "materiel"
+      },
+      "translation": {
+        "title": "Trois formats, un même service.",
+        "cards": [
+          {
+            "label": "Bureau",
+            "title": "NVIDIA DGX Spark.",
+            "text": "Un ordinateur d'IA compact, posé sur un bureau. Pour faire tourner vos modèles et vos agents sur place, sans salle de serveurs.",
+            "href": "/contact/?sujet=infrastructure",
+            "link_label": "Demander une proposition",
+            "image": {
+              "asset": ["site-infra-dgx-spark.jpg"],
+              "optional": true
+            },
+            "visual": "champ"
+          },
+          {
+            "label": "Poste de travail",
+            "title": "NVIDIA DGX Station.",
+            "text": "Une station de travail d'IA en format tour, pour les équipes qui ajustent ou servent des modèles plus lourds.",
+            "href": "/contact/?sujet=infrastructure",
+            "link_label": "Demander une proposition",
+            "image": {
+              "asset": ["site-infra-dgx-station.jpg"],
+              "optional": true
+            },
+            "visual": "infra"
+          },
+          {
+            "label": "Centre de données",
+            "title": "Baies de serveurs.",
+            "text": "Des serveurs en baie, dimensionnés pour vos charges, installés dans votre salle ou hébergés chez nous.",
+            "href": "/contact/?sujet=infrastructure",
+            "link_label": "Demander une proposition",
+            "image": {
+              "asset": ["site-infra-racks.jpg"],
+              "optional": true
+            },
+            "visual": "infra"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Deux modes ; la mention du Québec a ici tout son sens (hébergement).",
+      "claims": ["CL-E01", "CL-E02", "CL-IN02"],
+      "fields": {
+        "media_position": "right",
+        "visual": "signal-infrastructure",
+        "tone": "sombre",
+        "anchor_id": "modes"
+      },
+      "translation": {
+        "title": "Chez vous, ou chez nous.",
+        "body": "<p><strong>Chez vous :</strong> nous livrons, installons et configurons le matériel dans vos locaux, avec les modèles, les applications, la sécurité et la supervision. Vos données restent sur votre serveur. <a href=\"/deploiement/sur-place/\">Le mode sur place</a>.</p><p><strong>Chez nous :</strong> votre infrastructure tourne sur nos serveurs, au Québec, et notre équipe l'exploite pour vous. C'est l'option la plus simple quand vous n'avez pas de salle de serveurs. <a href=\"/deploiement/heberge-quebec/\">Le mode hébergé</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Ce qui est compris : modèles, applications, sécurité, supervision.",
+      "claims": ["CL-IN02", "CL-IN04"],
+      "fields": {
+        "columns": "4",
+        "layout": "grille",
+        "tone": "clair",
+        "anchor_id": "inclus"
+      },
+      "translation": {
+        "title": "Tout est compris, clé en main.",
+        "cards": [
+          {
+            "title": "Les modèles.",
+            "text": "Nous choisissons et installons les modèles adaptés à vos usages et à votre matériel."
+          },
+          {
+            "title": "Les applications.",
+            "text": "Agents, réception virtuelle, surveillance, recherche dans vos documents : nous installons ce dont vous avez besoin."
+          },
+          {
+            "title": "La sécurité.",
+            "text": "Accès réservés, mises à jour, sauvegardes et pare-feu sont configurés dès l'installation."
+          },
+          {
+            "title": "La supervision.",
+            "text": "Nous suivons l'état du matériel et des services, et nous vous prévenons avant qu'un problème vous arrête."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Option légère : le VPS (jargon défini).",
+      "claims": ["CL-V01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "vps"
+      },
+      "translation": {
+        "title": "Plus léger : un serveur privé virtuel.",
+        "body": "<p>Pour un premier agent ou une application d'IA, un serveur privé virtuel (VPS), c'est-à-dire un serveur loué rien que pour vous, suffit souvent. <a href=\"/vps/\">Voir les VPS</a>.</p>"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Objections : format, matériel existant, entretien, coût.",
+      "claims": ["CL-IN04", "CL-10", "CL-PL03", "CL-T01", "CL-T06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions sur l'infrastructure.",
+        "items": [
+          {
+            "question": "Quel format choisir ?",
+            "answer": "Cela dépend de vos modèles, du nombre de personnes qui s'en servent et de l'endroit où vos données doivent rester. La consultation sert à le déterminer ; vous recevez une recommandation écrite."
+          },
+          {
+            "question": "Pouvez-vous installer du matériel que j'ai déjà ?",
+            "answer": "Souvent, oui, s'il convient aux modèles visés. Nous le vérifions avant toute proposition."
+          },
+          {
+            "question": "Qui s'occupe de l'entretien ?",
+            "answer": "Nous, si vous le souhaitez : les mises à jour, la supervision et le soutien font partie du service d'exploitation."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient : l'accompagnement (une estimation écrite suit la consultation) et l'usage de la plateforme, en crédits. Les prix paraîtront sur la page Tarifs dès leur publication."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : dimensionnement.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Dimensionnons votre infrastructure.",
+        "text": "Dites-nous ce que vous voulez faire tourner : nous proposons le format, l'installation et l'exploitation, par écrit.",
+        "primary_label": "Planifier une consultation",
+        "primary_href": "/contact/?sujet=infrastructure",
+        "secondary_label": "Voir les solutions",
+        "secondary_href": "/solutions/"
+      }
+    }
+  ]
+}

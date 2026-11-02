@@ -1,0 +1,179 @@
+{
+  "page": "solutions-surveillance-ia",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/ai-surveillance",
+    "title": "AI surveillance",
+    "seo_title": "AI surveillance for your cameras",
+    "seo_description": "Our AIs analyze your cameras in real time, spot suspicious behaviour, alert you according to your instructions and produce a report for every event.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Message clé du fondateur : personne ne regarde des milliers d'heures ; nos IA, oui.",
+      "claims": ["CL-SV01", "CL-SV02"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "detection"
+      },
+      "translation": {
+        "eyebrow": "Solution · AI surveillance",
+        "headline": "Nobody watches it all. Our AIs do.",
+        "subheadline": "Even with the best cameras and huge storage, nobody watches hundreds or thousands of hours of video. Our AIs do, in real time: they spot what is out of the ordinary and alert you right away.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/?sujet=surveillance-ia",
+        "secondary_label": "See the virtual reception",
+        "secondary_href": "/en/solutions/virtual-reception/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Aperçu : la vidéo enfin regardée, la maquette en vis-à-vis.",
+      "claims": ["CL-SV01", "CL-SV03"],
+      "fields": {
+        "media_position": "left",
+        "visual": "signal-surveillance",
+        "tone": "clair",
+        "anchor_id": "apercu"
+      },
+      "translation": {
+        "title": "Your cameras, finally watched.",
+        "body": "<p>Security systems record everything, but the video is only reviewed afterwards, often too late. Our AIs connect to your existing cameras and security system and analyze the images continuously.</p><p>When suspicious behaviour appears (presence in a closed area, intrusion after business hours, someone loitering), the alert goes out while the event is happening.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Fonctions : détecter, alerter, documenter.",
+      "claims": ["CL-SV01", "CL-SV03", "CL-SV04"],
+      "fields": {
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sombre",
+        "anchor_id": "fonctions"
+      },
+      "translation": {
+        "title": "Detect, alert, document.",
+        "cards": [
+          {
+            "title": "Connected to what you have.",
+            "text": "Your current cameras and security system are usually suitable; compatibility is checked during the consultation."
+          },
+          {
+            "title": "Real-time detection.",
+            "text": "Presence in a restricted area, movement after closing, a vehicle that lingers: the AI spots what you ask it to watch for."
+          },
+          {
+            "title": "Immediate alerts.",
+            "text": "By email, by text, on the dashboard or in the mobile app, depending on urgency and time of day."
+          },
+          {
+            "title": "Following your instructions.",
+            "text": "It can notify your security officers, your monitoring centre or the police, according to the rules you set in writing."
+          },
+          {
+            "title": "A report for every event.",
+            "text": "Every suspicious activity produces a report: the timeline, the video clips and the alerts sent."
+          },
+          {
+            "title": "Find the right clip.",
+            "text": "Across weeks of recordings, the timeline takes you straight to the moment that matters."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Vie privée et Nexora Vision : sur place, sans reconnaissance faciale.",
+      "claims": ["CL-SV05", "CL-V01", "CL-V03", "CL-E01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "vie-privee"
+      },
+      "translation": {
+        "title": "Watching without exposing everything.",
+        "body": "<p>The analysis can run on a server installed at your site: the images stay on site and only the written alert goes out. Surveillance is set zone by zone and hour by hour; it is not used to recognize faces.</p><p><a href=\"/en/vision/\">Nexora Vision</a>, our pilot project for on-site video analysis, follows the same principle.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Méthode : trois temps.",
+      "claims": ["CL-03", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "sable",
+        "anchor_id": "methode"
+      },
+      "translation": {
+        "title": "From consultation to monitoring.",
+        "cards": [
+          {
+            "title": "Consultation.",
+            "text": "We take stock of your cameras, your zones and your alert rules."
+          },
+          {
+            "title": "Installation.",
+            "text": "We connect the analysis to your cameras, at your site or on our servers, and tune the detections with you."
+          },
+          {
+            "title": "Operation.",
+            "text": "We follow the alerts, reduce false alarms and adjust the rules with you."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Objections : caméras, erreurs, destinataires, coût.",
+      "claims": ["CL-SV03", "CL-SV04", "CL-10", "CL-PL03", "CL-T01", "CL-T06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions about surveillance.",
+        "items": [
+          {
+            "question": "Do I need to replace my cameras?",
+            "answer": "Not necessarily. Most recent network cameras can be analyzed; the consultation checks this camera by camera."
+          },
+          {
+            "question": "Can the AI make mistakes?",
+            "answer": "Yes. It can flag a harmless event or miss one. The rules are tuned with you to reduce false alarms, and every alert comes with the video clip so you can judge quickly."
+          },
+          {
+            "question": "Who receives the alerts?",
+            "answer": "The people and services you designate: you, your officers, your monitoring centre or the police, depending on severity and time of day."
+          },
+          {
+            "question": "How much does it cost?",
+            "answer": "There is no public price yet. Two things are paid for: our services (a written estimate follows the consultation) and platform usage, in credits. Prices will appear on the Pricing page as soon as they are published."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "See your cameras differently.",
+        "text": "We prepare a demonstration on sample footage, then we look at your cameras, your zones and your instructions.",
+        "primary_label": "Plan a consultation",
+        "primary_href": "/en/contact/?sujet=surveillance-ia",
+        "secondary_label": "See AI infrastructure",
+        "secondary_href": "/en/infrastructure/"
+      }
+    }
+  ]
+}

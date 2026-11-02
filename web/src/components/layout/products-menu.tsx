@@ -82,22 +82,32 @@ export function ProductsMenu({ label, items, className }: ProductsMenuProps) {
       <div
         id={panelId}
         hidden={!open}
-        className="absolute left-0 top-full z-50 w-[min(40rem,calc(100vw-3rem))] border border-line bg-bg p-2 shadow-card"
+        className="theme-dark absolute left-0 top-full z-50 mt-px w-[min(42rem,calc(100vw-3rem))] overflow-hidden rounded-b-lg border border-t-0 border-line bg-abyss-900/95 p-2 shadow-pop backdrop-blur-xl"
       >
-        <ul className="grid gap-1 sm:grid-cols-2">
-          {items.map((item) => (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-graphic/70 to-transparent"
+        />
+        <ul className="grid gap-px sm:grid-cols-2">
+          {items.map((item, i) => (
             <li key={item.href}>
               <Link
                 href={item.href}
                 prefetch={false}
                 onClick={() => setOpen(false)}
-                className="block rounded-sm px-4 py-3 transition-colors duration-150 hover:bg-surface"
+                className="group/item block rounded-md px-4 py-3.5 transition-colors duration-150 hover:bg-fg/[0.05]"
               >
-                <span className="block text-[0.9375rem] font-medium text-fg">
+                <span className="flex items-baseline gap-3 text-[0.9375rem] font-medium text-fg">
+                  <span
+                    aria-hidden="true"
+                    className="font-mono text-[0.6875rem] text-fg-muted transition-colors duration-150 group-hover/item:text-accent-text"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   {item.label}
                 </span>
                 {item.description ? (
-                  <span className="mt-0.5 block text-small text-fg-muted">
+                  <span className="mt-1 block pl-8 text-small text-fg-muted">
                     {item.description}
                   </span>
                 ) : null}

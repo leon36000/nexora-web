@@ -1,10 +1,13 @@
-import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
+import { LightField } from "@/components/signal/light-field";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import type { CtaBlock } from "@/server/cms/model";
 import { anchorProps, toneProps } from "./tone";
 
-/** Bandeau d'appel à l'action (sombre, clair ou sable), avec la mosaïque braise qui se dissout vers le texte. */
+/**
+ * Appel à l'action de fin de page : titre très grand centré sur un horizon de lumière (champ figé) ; le bouton
+ * principal porte le seul point de chaleur de l'écran (flare).
+ */
 export function CtaBlockView({
   block,
   joined,
@@ -22,26 +25,43 @@ export function CtaBlockView({
       aria-labelledby={titleId}
       id={anchor.id}
       className={anchor.className}
+      scan
       background={
         <div
           aria-hidden="true"
-          className={`absolute inset-0 -z-10 hidden md:block ${dark ? "" : "opacity-80"}`}
+          className={`absolute inset-0 -z-10 ${dark ? "" : "opacity-70"}`}
         >
-          <MosaicBackdrop shape="wide" animated={false} seed={9} rows={14} />
+          <div className="grid-precision absolute inset-0" />
+          <div className="absolute inset-x-0 bottom-0 h-[60%] [mask-image:linear-gradient(to_top,#000_30%,transparent)]">
+            <LightField
+              animated={false}
+              horizon={0.05}
+              relief={0.1}
+              cols={80}
+            />
+          </div>
+          <div className="absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_45%,rgb(5_7_11/0.85),transparent_80%)]" />
         </div>
       }
     >
-      <div className="max-w-2xl py-6 md:py-10">
-        <h2 id={titleId} className="text-h1 text-fg">
+      <div className="mx-auto max-w-4xl py-10 text-center md:py-20">
+        <h2 id={titleId} className="text-display text-fg">
           {block.title}
         </h2>
         {block.text ? (
-          <p className="mt-5 text-lead text-fg-muted">{block.text}</p>
+          <p className="mx-auto mt-7 max-w-2xl text-lead text-fg-muted">
+            {block.text}
+          </p>
         ) : null}
         {block.primary || block.secondary ? (
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-11 flex flex-col justify-center gap-3 sm:flex-row">
             {block.primary ? (
-              <ButtonLink href={block.primary.href} size="lg">
+              <ButtonLink
+                href={block.primary.href}
+                size="lg"
+                variant={dark ? "flare" : "primary"}
+                arrow
+              >
                 {block.primary.label}
               </ButtonLink>
             ) : null}

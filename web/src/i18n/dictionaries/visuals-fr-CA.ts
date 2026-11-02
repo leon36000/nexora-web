@@ -155,6 +155,111 @@ export const visualsFrCA = {
     edit: "Modifier",
     footer: "Rien ne part sans vous.",
   },
+  signal: {
+    motion: {
+      pause: "Mettre les animations en pause",
+      play: "Relancer les animations",
+    },
+    detection: ["ZONE 02", "MOUVEMENT", "CAM 04", "ALERTE"],
+    reception: {
+      window: "Réception virtuelle",
+      live: "En ligne",
+      call: {
+        title: "Appel entrant",
+        time: "14 h 02",
+        caller: "Appelant",
+        ai: "Réception",
+        lines: [
+          {
+            who: "caller",
+            text: "Bonjour, j’aimerais déplacer mon rendez-vous de jeudi.",
+          },
+          {
+            who: "ai",
+            text: "Bien sûr. Je peux vous proposer vendredi à 10 h ou à 14 h.",
+          },
+          { who: "caller", text: "Vendredi à 10 h, parfait." },
+        ],
+      },
+      feed: {
+        title: "Conversations traitées",
+        items: [
+          {
+            channel: "call",
+            who: "Appel · Mme Tremblay",
+            summary: "Rendez-vous déplacé à vendredi",
+            state: "Fait",
+            done: true,
+          },
+          {
+            channel: "email",
+            who: "Courriel · Soumission",
+            summary: "Demande qualifiée, transmise aux ventes",
+            state: "Transféré",
+            done: false,
+          },
+          {
+            channel: "sms",
+            who: "Texto · Livraison",
+            summary: "Heure d’arrivée confirmée",
+            state: "Fait",
+            done: true,
+          },
+          {
+            channel: "call",
+            who: "Appel · Fournisseur",
+            summary: "Résumé envoyé à la comptabilité",
+            state: "Résumé",
+            done: false,
+          },
+        ],
+      },
+    },
+    surveillance: {
+      window: "Surveillance IA",
+      live: "En direct",
+      camera: "CAM 04 · Entrepôt",
+      timestamp: "02:14:37",
+      boxes: ["Présence · zone fermée", "Rayonnage B"],
+      timeline: "Activité de la nuit",
+      range: "22 h – 6 h",
+      alert: {
+        label: "Alerte envoyée",
+        title:
+          "Présence détectée dans une zone fermée, après les heures d’ouverture.",
+        channels: ["Texto", "Courriel", "Application", "Agent de sécurité"],
+      },
+      report: {
+        label: "Rapport de l’événement",
+        items: [
+          { time: "02:14", text: "Entrée par la porte de quai 3" },
+          { time: "02:15", text: "Passage dans l’allée B, extrait joint" },
+          { time: "02:17", text: "Alerte transmise selon vos consignes" },
+        ],
+      },
+    },
+    infrastructure: {
+      onsite: {
+        label: "Chez vous",
+        title: "Installée dans vos locaux",
+        items: [
+          "DGX Spark ou DGX Station",
+          "Baie de serveurs",
+          "Vos données restent sur place",
+        ],
+      },
+      hosted: {
+        label: "Chez nous",
+        title: "Hébergée sur nos serveurs",
+        items: [
+          "Au Québec",
+          "Supervisée par notre équipe",
+          "Accès réservé à votre entreprise",
+        ],
+      },
+      stack: ["Vos modèles", "Vos applications", "Sécurité", "Supervision"],
+    },
+  },
   notFound: { alt: "404" },
 };
 

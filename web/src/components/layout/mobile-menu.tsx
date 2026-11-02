@@ -9,7 +9,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { NavLink } from "./nav-link";
 import { SessionLabel } from "./session-label";
@@ -24,11 +23,13 @@ type MobileMenuProps = {
     closeMenu: string;
     title: string;
     nav: string;
-    products: string;
   };
   links: ReadonlyArray<NavItem>;
-  /** Entrées du menu Produits, affichées à plat dans le menu mobile. */
-  products: ReadonlyArray<{ label: string; description: string; href: string }>;
+  /** Menus de l'en-tête (Solutions, Infrastructure, Outils), dépliables dans le menu mobile. */
+  groups: ReadonlyArray<{
+    label: string;
+    items: ReadonlyArray<{ label: string; description: string; href: string }>;
+  }>;
   login: NavItem;
   accountLabel: string;
   cta: NavItem;
@@ -47,7 +48,7 @@ type MobileMenuProps = {
 export function MobileMenu({
   labels,
   links,
-  products,
+  groups,
   login,
   accountLabel,
   cta,
@@ -156,6 +157,51 @@ export function MobileMenu({
           </div>
 
           <nav aria-label={labels.nav} className="mt-8 flex-1">
+            <ul className="divide-y divide-line border-t border-line">
+              {groups.map((group) => (
+                <li key={group.label}>
+                  <details className="group/acc">
+                    <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between font-display text-h3 text-fg [&::-webkit-details-marker]:hidden">
+                      {group.label}
+                      <svg
+                        viewBox="0 0 12 12"
+                        aria-hidden="true"
+                        focusable="false"
+                        className="size-3.5 text-fg-muted transition-transform duration-200 group-open/acc:rotate-180"
+                      >
+                        <path
+                          d="M2 4.25 6 8l4-3.75"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    </summary>
+                    <ul className="mb-4 border-l border-line pl-4">
+                      {group.items.map((item) => (
+                        <li key={item.href}>
+                          <Link
+                            href={item.href}
+                            prefetch={false}
+                            onClick={closeMenu}
+                            className="block py-2.5"
+                          >
+                            <span className="block text-base font-medium text-fg">
+                              {item.label}
+                            </span>
+                            {item.description ? (
+                              <span className="mt-0.5 block text-small text-fg-muted">
+                                {item.description}
+                              </span>
+                            ) : null}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                </li>
+              ))}
+            </ul>
             <ul className="divide-y divide-line border-y border-line">
               {links.map((item) => (
                 <li key={item.href}>
@@ -170,33 +216,6 @@ export function MobileMenu({
                 </li>
               ))}
             </ul>
-
-            {products.length > 0 ? (
-              <div className="mt-8">
-                <Badge>{labels.products}</Badge>
-                <ul className="mt-3 divide-y divide-line border-y border-line">
-                  {products.map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        prefetch={false}
-                        onClick={closeMenu}
-                        className="block py-3.5"
-                      >
-                        <span className="block text-base font-medium text-fg">
-                          {item.label}
-                        </span>
-                        {item.description ? (
-                          <span className="mt-0.5 block text-small text-fg-muted">
-                            {item.description}
-                          </span>
-                        ) : null}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
           </nav>
 
           <div className="mt-10 flex flex-col gap-3">

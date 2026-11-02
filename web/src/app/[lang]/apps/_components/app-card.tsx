@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mosaic } from "@/components/brand/mosaic";
+import { SignalGlyph } from "@/components/signal/materials";
 import { CARD_LINK, Card } from "@/components/ui/card";
 import {
   type AppContent,
@@ -8,7 +8,7 @@ import {
   appPath,
 } from "@/i18n/apps";
 import { type Lang, localizePath } from "@/i18n/config";
-import { APP_PALETTE, appSeed } from "./palette";
+import { appSeed } from "./palette";
 import { StateBadge } from "./state-badge";
 
 /** Carte d'un outil dans la liste : état, nom (le lien couvre toute la carte), accroche, mode d'accès. */
@@ -25,14 +25,8 @@ export function AppCard({
 }) {
   return (
     <Card interactive as="article" className="flex h-full flex-col">
-      <Mosaic
-        cols={5}
-        rows={5}
+      <SignalGlyph
         seed={appSeed(app.slug)}
-        palette={APP_PALETTE[app.slug] ?? "braise"}
-        fade={0}
-        gap={0.1}
-        toward="center"
         className="absolute right-6 top-6 size-8 rounded-xs sm:right-8 sm:top-8"
       />
       <StateBadge state={app.state} t={t} />

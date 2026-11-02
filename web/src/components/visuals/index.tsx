@@ -9,6 +9,11 @@ import { FlowEditorMock } from "./flow-editor";
 import { VisualFigure } from "./frame";
 import { GrowthDiagram } from "./growth";
 import { ModelCatalogMock } from "./model-catalog";
+import {
+  InfrastructureDiagram,
+  ReceptionMock,
+  SurveillanceMock,
+} from "./signal";
 import { VisionDiagram } from "./vision";
 import { VpsConsoleMock } from "./vps-console";
 
@@ -113,6 +118,24 @@ export function SectionVisualFigure({
       return (
         <VisualFigure alt={alt}>
           <CommitmentsMap t={v.commitments} />
+        </VisualFigure>
+      );
+    case "signal-accueil":
+      return (
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="nuit">
+          <ReceptionMock t={v.signal.reception} />
+        </VisualFigure>
+      );
+    case "signal-surveillance":
+      return (
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="nuit">
+          <SurveillanceMock t={v.signal.surveillance} />
+        </VisualFigure>
+      );
+    case "signal-infrastructure":
+      return (
+        <VisualFigure alt={alt} caption={v.caption.concept}>
+          <InfrastructureDiagram t={v.signal.infrastructure} />
         </VisualFigure>
       );
   }

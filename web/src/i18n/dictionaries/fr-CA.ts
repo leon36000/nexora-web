@@ -42,6 +42,104 @@ export const frCA = {
   },
 
   nav: {
+    /** Menus de l'en-tête (refonte « Signal », 02/11/2026) : repli quand Directus ne fournit pas la navigation. */
+    menus: [
+      {
+        label: "Solutions",
+        items: [
+          {
+            label: "Réception virtuelle",
+            description:
+              "Appels, courriels et textos traités jour et nuit, en français et en anglais.",
+            href: "/solutions/reception-virtuelle",
+          },
+          {
+            label: "Surveillance IA",
+            description:
+              "Vos caméras analysées en temps réel ; alertes et rapports à chaque événement.",
+            href: "/solutions/surveillance-ia",
+          },
+          {
+            label: "Agents IA",
+            description:
+              "Des agents qui exécutent vos tâches, avec votre approbation.",
+            href: "/workstudio",
+          },
+          {
+            label: "Toutes les solutions",
+            description:
+              "Courriels, factures, documents, rendez-vous, comptabilité, service client.",
+            href: "/solutions",
+          },
+        ],
+      },
+      {
+        label: "Infrastructure",
+        items: [
+          {
+            label: "Infrastructure IA",
+            description:
+              "DGX Spark, DGX Station et baies de serveurs, installés chez vous.",
+            href: "/infrastructure",
+          },
+          {
+            label: "Hébergé chez nous",
+            description:
+              "Vos modèles et vos agents sur nos serveurs, au Québec.",
+            href: "/deploiement/heberge-quebec",
+          },
+          {
+            label: "VPS",
+            description:
+              "Serveurs privés virtuels, avec l’application de votre choix.",
+            href: "/vps",
+          },
+          {
+            label: "Modèles et API",
+            description:
+              "Une passerelle unique vers des modèles, avec la résidence des données affichée.",
+            href: "/modeles",
+          },
+        ],
+      },
+      {
+        label: "Outils",
+        items: [
+          {
+            label: "Nexora Creative",
+            description: "Image, vidéo et son : l’IA fait le gros du travail.",
+            href: "/apps/creative",
+          },
+          {
+            label: "WorkStudio",
+            description:
+              "Le studio pour concevoir des agents et des flux de travaux.",
+            href: "/workstudio",
+          },
+          {
+            label: "Nexora Code",
+            description:
+              "Un environnement de code avec l’IA, dans votre compte.",
+            href: "/apps/code",
+          },
+          {
+            label: "Nexora RAG",
+            description: "Des réponses tirées de vos propres documents.",
+            href: "/apps/rag",
+          },
+          {
+            label: "WebPilot",
+            description: "Un navigateur que l’IA pilote pour vous.",
+            href: "/apps/webpilot",
+          },
+          {
+            label: "Toutes les applications",
+            description: "L’état de chaque outil est indiqué.",
+            href: "/apps",
+          },
+        ],
+      },
+    ],
     sovereignty: { label: "IA souveraine", href: "/souverainete" },
     solutions: { label: "Solutions", href: "/solutions" },
     products: {
@@ -89,7 +187,7 @@ export const frCA = {
     resources: { label: "Ressources", href: "/ressources" },
     login: { label: "Connexion", href: "/compte" },
     accountLabel: "Mes outils",
-    cta: { label: "Planifier un diagnostic", href: "/contact" },
+    cta: { label: "Planifier une consultation", href: "/contact" },
   },
 
   footer: {
@@ -108,7 +206,7 @@ export const frCA = {
         href: "/tarifs",
       },
       contact: {
-        label: "Planifier un diagnostic",
+        label: "Planifier une consultation",
         text: "Parlons de votre projet, sans engagement.",
         href: "/contact",
       },
@@ -200,6 +298,12 @@ export const frCA = {
     modules: { detail: "Voir le détail" },
     // Textes alternatifs des schémas de section (`visual`) : le dessin décrit toujours ce que dit le texte voisin.
     visuals: {
+      "signal-accueil":
+        "Maquette de la réception virtuelle : un appel entrant transcrit en direct, la réponse qui propose un nouveau rendez-vous, et le fil des appels, courriels et textos déjà traités.",
+      "signal-surveillance":
+        "Maquette de la surveillance IA : l’image d’une caméra d’entrepôt la nuit, un cadre de détection sur une présence dans une zone fermée, l’alerte envoyée et le rapport de l’événement.",
+      "signal-infrastructure":
+        "Schéma de principe : la même pile (vos modèles, vos applications, la sécurité et la supervision) installée chez vous, ou hébergée sur nos serveurs au Québec.",
       "perimetre-sur-place":
         "Schéma : un seul périmètre entoure vos données, le modèle et le calcul, dans vos locaux. Une demande y entre par un point de passage contrôlé et y reste.",
       "perimetre-heberge":
@@ -374,7 +478,7 @@ export const frCA = {
       title: "L’IA qui travaille pour votre entreprise. Sous votre contrôle.",
       subtitle:
         "De la gestion de vos demandes à l’automatisation de vos opérations, Nexora AI conçoit des systèmes IA adaptés à votre métier. Un compte, des crédits, tous vos outils.",
-      primary: "Planifier un diagnostic",
+      primary: "Planifier une consultation",
       secondary: "Voir les solutions",
     },
 
@@ -570,7 +674,7 @@ export const frCA = {
     finalCta: {
       title: "Commençons par un cas concret.",
       text: "Un diagnostic pour cerner la tâche à automatiser et le mode de déploiement qui vous convient.",
-      primary: "Planifier un diagnostic",
+      primary: "Planifier une consultation",
       secondary: "Voir les solutions",
     },
   },

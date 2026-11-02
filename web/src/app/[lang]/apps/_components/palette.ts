@@ -1,4 +1,5 @@
-import type { MosaicPalette } from "@/components/brand/mosaic";
+/** Ancienne teinte de mosaïque (retirée par la refonte « Signal ») : gardée comme simple étiquette de famille. */
+type MosaicPalette = string;
 
 /** Teinte de la mosaïque d'un outil : une rampe par famille (code et infonuagique : ciel ; documents et protection : menthe ; bot et Web : or ; le reste : braise). */
 export const APP_PALETTE: Record<string, MosaicPalette> = {

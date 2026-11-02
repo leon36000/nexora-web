@@ -1,4 +1,4 @@
-import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
+import { SignalBackdrop } from "@/components/signal/materials";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -76,7 +76,7 @@ export function PricingPage({
             aria-hidden="true"
             className="absolute inset-0 -z-10 hidden opacity-40 md:block"
           >
-            <MosaicBackdrop shape="wide" animated={false} />
+            <SignalBackdrop animated={false} />
           </div>
         }
       >

@@ -16,6 +16,7 @@ const block = (
   body: null,
   media,
   captions,
+  poster: null,
   mediaPosition: "right",
   items: [],
 });

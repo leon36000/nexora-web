@@ -57,6 +57,7 @@ describe("variantes de composition (S3)", () => {
       "etapes",
       "modules",
       "bento",
+      "vitrine",
     ]);
     expect(f.schema?.default_value).toBe("grille");
   });
@@ -75,8 +76,42 @@ describe("variantes de composition (S3)", () => {
       "vision-sur-place",
       "croissance-canaux",
       "engagements-donnees",
+      "signal-accueil",
+      "signal-surveillance",
+      "signal-infrastructure",
     ]);
     expect(f.schema?.default_value).toBe("aucun");
+  });
+
+  test("refonte « Signal » : héros plein écran (vidéo + affiche), matière de fond, affiche de vidéo et vidéo par langue", () => {
+    expect(choices(field("block_hero", "layout"))).toEqual([
+      "standard",
+      "plein-ecran",
+    ]);
+    expect(choices(field("block_hero", "signature"))).toEqual([
+      "champ",
+      "onde",
+      "detection",
+      "infra",
+      "grille",
+      "aucun",
+    ]);
+    for (const [c, f] of [
+      ["block_hero", "video"],
+      ["block_section", "poster"],
+      ["block_section_translations", "media_lang"],
+    ] as const) {
+      expect(field(c, f).type, `${c}.${f}`).toBe("uuid");
+      expect(
+        buildSchema().relations.some(
+          (r) =>
+            r.collection === c &&
+            r.field === f &&
+            r.related_collection === "directus_files",
+        ),
+        `${c}.${f} relié aux fichiers`,
+      ).toBe(true);
+    }
   });
 
   test("anchor_id sur les six blocs, avec le motif ^[a-z0-9-]{0,40}$", () => {

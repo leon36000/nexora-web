@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Mosaic } from "@/components/brand/mosaic";
+import { MediaPlaceholder, SignalGlyph } from "@/components/signal/materials";
 import { Badge } from "@/components/ui/badge";
 import { ArrowIcon } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
+import { mediaPath } from "@/lib/media";
 import { isExternalHref } from "@/lib/safe-href";
 import type { CardsBlock } from "@/server/cms/model";
 import { CELL_GRID, cellClasses } from "./card-grid";
@@ -92,12 +94,14 @@ function List({ block }: { block: CardsBlock }) {
         return (
           <li
             key={cardKey(card)}
-            className="group/row relative grid items-start gap-3 border-b border-line py-7 transition-colors duration-150 hover:bg-surface has-[a:focus-visible]:bg-surface sm:grid-cols-[10rem_minmax(0,1fr)_auto] sm:gap-8 sm:px-4 sm:py-8"
+            className="group/row relative grid items-start gap-3 border-b border-line py-6 transition-colors duration-150 hover:bg-surface has-[a:focus-visible]:bg-surface sm:grid-cols-[11rem_minmax(0,1fr)_auto] sm:gap-8 sm:px-4"
           >
-            <Badge>{card.label ?? String(i + 1).padStart(2, "0")}</Badge>
+            <Badge className="sm:pt-1.5">
+              {card.label ?? String(i + 1).padStart(2, "0")}
+            </Badge>
             <div>
               {card.title ? (
-                <h3 className="text-h3 text-fg">
+                <h3 className="text-h4 text-fg md:text-[1.375rem]">
                   {card.href ? (
                     <CardAnchor card={card} label={label} />
                   ) : (
@@ -109,7 +113,7 @@ function List({ block }: { block: CardsBlock }) {
                 <CardText
                   text={card.text}
                   first={Boolean(card.title)}
-                  className="max-w-xl"
+                  className="max-w-3xl text-small"
                 />
               ) : null}
             </div>
@@ -154,28 +158,14 @@ export function bentoSpans(count: number): number[] {
   return spans;
 }
 
-/** Teinte de la pastille de chaque tuile : on fait tourner la rampe braise, or, ciel et menthe (un produit, une couleur). */
-const CHIP_PALETTES = ["braise", "or", "ciel", "menthe"] as const;
-
-/** Pastille de tuile : un petit champ de carrés teintés (5 × 5), décoratif, différent d'une tuile à l'autre. */
+/** Pastille de tuile : un petit spectre de lumière (matière « Signal »), différent d'une tuile à l'autre. */
 function TileChip({ i }: { i: number }) {
-  return (
-    <Mosaic
-      cols={5}
-      rows={5}
-      seed={i * 7 + 2}
-      palette={CHIP_PALETTES[i % CHIP_PALETTES.length] ?? "braise"}
-      fade={0}
-      gap={0.1}
-      toward="center"
-      className="size-9 shrink-0 rounded-sm"
-    />
-  );
+  return <SignalGlyph seed={i * 3 + 2} />;
 }
 
 /**
- * Mosaïque : tuiles de tailles variées sur six colonnes, la première mise en valeur (fond noir, mosaïque braise qui
- * se dissout dans son angle) ; pour présenter un ensemble sans le répéter à l'identique.
+ * Tuiles de tailles variées sur six colonnes, la première mise en valeur (abysse, halo ion et grille de précision) ;
+ * pour présenter un ensemble sans le répéter à l'identique.
  */
 function Bento({ block }: { block: CardsBlock }) {
   const spans = bentoSpans(block.cards.length);
@@ -201,25 +191,15 @@ function Bento({ block }: { block: CardsBlock }) {
               className={cn(
                 "flex w-full flex-col overflow-hidden",
                 feature
-                  ? "theme-dark isolate border-transparent bg-bg text-fg sm:pr-28"
+                  ? "theme-dark isolate border-accent-graphic/25 bg-abyss-950 bg-[radial-gradient(70%_80%_at_100%_0%,rgb(62_200_255/0.14),transparent_70%)] text-fg"
                   : "bg-bg",
-                !feature && i % 4 === 3 && "tex-dots",
               )}
             >
               {feature ? (
                 <div
                   aria-hidden="true"
-                  className="absolute inset-y-0 right-0 -z-10 hidden w-24 [-webkit-mask-image:linear-gradient(to_right,transparent,#000_70%)] [mask-image:linear-gradient(to_right,transparent,#000_70%)] sm:block"
-                >
-                  <Mosaic
-                    cols={4}
-                    rows={12}
-                    seed={5}
-                    toward="right"
-                    fade={1}
-                    className="size-full"
-                  />
-                </div>
+                  className="grid-precision absolute inset-0 -z-10 opacity-70"
+                />
               ) : null}
               <TileChip i={i} />
               {card.title ? (
@@ -242,6 +222,87 @@ function Bento({ block }: { block: CardsBlock }) {
                 </span>
               ) : null}
             </Card>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+const SHOWCASE_COLUMNS: Record<number, string> = {
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-2 lg:grid-cols-3",
+  4: "md:grid-cols-2 xl:grid-cols-4",
+};
+
+/**
+ * Vitrine : grandes cartes avec une image (photo de produit, rendu) au rapport stable ; tant que le fichier n'existe
+ * pas, la matière « Signal » choisie occupe l'emplacement (jamais d'image cassée). Libellé mono, titre, texte, lien.
+ */
+function Showcase({ block }: { block: CardsBlock }) {
+  return (
+    <ul
+      className={cn(
+        "grid gap-4 sm:gap-5",
+        SHOWCASE_COLUMNS[block.columns] ?? SHOWCASE_COLUMNS[3],
+        (block.title || block.intro) && "mt-14",
+      )}
+    >
+      {block.cards.map((card, i) => {
+        const label = card.title ?? card.linkLabel ?? "";
+        return (
+          <li
+            key={cardKey(card)}
+            className="reveal flex"
+            style={{ animationDelay: `${i * 60}ms` }}
+          >
+            <article className="group/show relative isolate flex w-full flex-col overflow-hidden rounded-card border border-line bg-surface transition-[border-color,background-color] duration-200 hover:border-line-strong has-[a:focus-visible]:border-line-strong">
+              <div className="relative aspect-[4/3] overflow-hidden border-b border-line">
+                {card.image ? (
+                  <Image
+                    src={mediaPath(card.image)}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1280px) 420px, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-250 motion-safe:group-hover/show:scale-[1.03]"
+                  />
+                ) : (
+                  <MediaPlaceholder
+                    material={card.visual ?? "champ"}
+                    className="size-full"
+                  />
+                )}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface/90 to-transparent"
+                />
+                {card.label ? (
+                  <span className="label-mono absolute left-4 top-4 rounded-xs border border-line bg-abyss-950/70 px-2 py-1 text-fg backdrop-blur">
+                    {card.label}
+                  </span>
+                ) : null}
+              </div>
+              <div className="flex flex-1 flex-col p-6 sm:p-7">
+                {card.title ? (
+                  <h3 className="text-h3 text-fg">
+                    {card.href ? (
+                      <CardAnchor card={card} label={label} />
+                    ) : (
+                      card.title
+                    )}
+                  </h3>
+                ) : null}
+                {card.text ? (
+                  <CardText text={card.text} first={Boolean(card.title)} />
+                ) : null}
+                {card.href && card.linkLabel ? (
+                  <span className="mt-auto inline-flex items-center gap-2 pt-7 text-[0.9375rem] font-medium text-accent-text">
+                    {card.linkLabel}
+                    <ArrowIcon />
+                  </span>
+                ) : null}
+              </div>
+            </article>
           </li>
         );
       })}
@@ -276,7 +337,7 @@ function Steps({ block }: { block: CardsBlock }) {
         >
           <span
             aria-hidden="true"
-            className="absolute -left-[5px] top-1 size-[9px] bg-accent-graphic lg:-top-[5px] lg:left-0"
+            className="absolute -left-[5px] top-1 size-[9px] rounded-full bg-accent-graphic shadow-[0_0_12px_2px_rgb(62_200_255/0.45)] lg:-top-[5px] lg:left-0"
           />
           <Badge>{String(i + 1).padStart(2, "0")}</Badge>
           {card.title ? (
@@ -411,6 +472,8 @@ export function CardsBlockView({
         <Modules block={block} t={t} />
       ) : layout === "bento" ? (
         <Bento block={block} />
+      ) : layout === "vitrine" ? (
+        <Showcase block={block} />
       ) : (
         <Grid block={block} />
       )}
