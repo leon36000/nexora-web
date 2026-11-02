@@ -37,15 +37,15 @@ export type CreativeShowcase = {
 };
 
 const PLANS = [
-  { image: "sabres-hangar", engine: "MiniMax H3" },
-  { image: "sabres-mer", engine: "MiniMax H3" },
-  { image: "terre-croiseur", engine: "MiniMax H3" },
-  { image: "p07", engine: "MiniMax H3" },
-  { image: "p04", engine: "MiniMax H3" },
+  { image: "parfum-goutte", engine: "MiniMax H3" },
+  { image: "parfum-contact", engine: "MiniMax H3" },
+  { image: "parfum-couronne", engine: "MiniMax H3" },
+  { image: "parfum-flacon", engine: "MiniMax H3" },
+  { image: "parfum-flacon-gouttes", engine: "MiniMax H3" },
 ] as const;
 
 const fr: CreativeShowcase = {
-  claims: ["CL-CR01", "CL-CR02", "CL-CR03", "CL-CR04", "CL-CR05"],
+  claims: ["CL-CR01", "CL-CR02", "CL-CR03", "CL-CR05"],
   eyebrow: "Bande-annonce",
   video: {
     title: "Bande-annonce de Nexora Creative",
@@ -105,39 +105,34 @@ const fr: CreativeShowcase = {
       text: "Titre, texte et mots-clics pour chaque réseau, avec la mention « généré par IA ».",
     },
   ],
-  plansTitle: "Une phrase par plan",
+  plansTitle: "Cinq plans du spot de parfum",
   plansLead:
-    "Chaque plan de la bande-annonce est né d’une phrase comme celles-ci.",
+    "Chaque plan vient du film Nexora Creative « Une phrase. Un film. » : ces cinq images sont tirées de son spot de parfum.",
   plans: [
     {
       ...PLANS[0],
-      alt: "Duel de sabres laser vert et bleu dans un hangar éclairé de rouge.",
-      phrase:
-        "Duel de sabres laser dans un hangar de vaisseau spatial éclairé de rouge : une lame verte, une lame bleue, des étincelles.",
+      alt: "Une goutte d’or tombe dans un halo doré, sur fond noir.",
+      phrase: "Une goutte d’or tombe.",
     },
     {
       ...PLANS[1],
-      alt: "Duel de sabres laser sur une plateforme de pierre au-dessus d’un océan, sous les éclairs.",
-      phrase:
-        "Duel de sabres laser sur une plateforme de pierre au-dessus d’un océan déchaîné, au crépuscule, sous les éclairs.",
+      alt: "Une goutte d’or et son reflet, au-dessus d’une surface dorée.",
+      phrase: "Une goutte et son reflet.",
     },
     {
       ...PLANS[2],
-      alt: "Un croiseur gigantesque glisse devant la Terre.",
-      phrase:
-        "Un croiseur gigantesque glisse devant la Terre pendant que d’autres vaisseaux sortent de l’hyperespace.",
+      alt: "Une couronne d’or se forme sur l’eau noire, des étincelles autour.",
+      phrase: "Une couronne d’or et des étincelles.",
     },
     {
       ...PLANS[3],
-      alt: "Duel d’épées d’énergie dans un temple au bord d’un volcan.",
-      phrase:
-        "Duel d’épées d’énergie dans un temple ancien au bord d’un volcan.",
+      alt: "Le haut d’un flacon de parfum taillé, sous une surface dorée.",
+      phrase: "Le flacon taillé, sous la surface.",
     },
     {
       ...PLANS[4],
-      alt: "Gros plan d’un coup de pied retourné qui fait gicler la pluie.",
-      phrase:
-        "Gros plan au ralenti : un coup de pied retourné fait gicler la pluie dans la lumière des lanternes.",
+      alt: "Un flacon de parfum taillé, entouré de gouttes argentées.",
+      phrase: "Le flacon et ses gouttes.",
     },
   ],
   featuresTitle: "Ce que le studio fait",
@@ -238,38 +233,34 @@ const en: CreativeShowcase = {
       text: "Title, text and hashtags for each network, with the “AI-generated” label.",
     },
   ],
-  plansTitle: "One sentence per shot",
-  plansLead: "Every shot in the trailer started from a sentence like these.",
+  plansTitle: "Five shots from the perfume spot",
+  plansLead:
+    "Each shot comes from the Nexora Creative film “One sentence. One film.”: these five images are taken from its perfume spot.",
   plans: [
     {
       ...PLANS[0],
-      alt: "Green and blue lightsaber duel in a red-lit hangar.",
-      phrase:
-        "Lightsaber duel in a red-lit spaceship hangar: a green blade, a blue blade, sparks.",
+      alt: "A drop of gold falls through a golden haze, on black.",
+      phrase: "A drop of gold falls.",
     },
     {
       ...PLANS[1],
-      alt: "Lightsaber duel on a stone platform above an ocean, under lightning.",
-      phrase:
-        "Lightsaber duel on a stone platform above a raging ocean, at dusk, under lightning.",
+      alt: "A drop of gold and its reflection, above a golden surface.",
+      phrase: "A drop and its reflection.",
     },
     {
       ...PLANS[2],
-      alt: "A gigantic cruiser glides in front of Earth.",
-      phrase:
-        "A gigantic cruiser glides in front of Earth while other ships drop out of hyperspace.",
+      alt: "A gold crown forms on dark water, with sparks around it.",
+      phrase: "A gold crown and sparks.",
     },
     {
       ...PLANS[3],
-      alt: "Energy sword duel in a temple at the edge of a volcano.",
-      phrase:
-        "Energy sword duel in an ancient temple at the edge of a volcano.",
+      alt: "The top of a cut perfume flacon, under a golden surface.",
+      phrase: "The cut flacon, under the surface.",
     },
     {
       ...PLANS[4],
-      alt: "Close-up of a spinning kick splashing rain.",
-      phrase:
-        "Slow-motion close-up: a spinning kick splashes the rain in the light of the lanterns.",
+      alt: "A cut perfume flacon, surrounded by silver drops.",
+      phrase: "The flacon and its drops.",
     },
   ],
   featuresTitle: "What the studio does",
