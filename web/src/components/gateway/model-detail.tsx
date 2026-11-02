@@ -323,6 +323,19 @@ export function ModelDetail({
                 <p className="mt-1 break-all font-mono text-body text-fg">
                   {model.id}
                 </p>
+                <p className="mt-6 max-w-2xl text-body text-fg-muted">
+                  {d.api.previewExample}
+                </p>
+                <div className="mt-4">
+                  <CodeSamples
+                    samples={apiSamples(baseUrl, model.id, model.kind, lang)}
+                    copy={{
+                      copy: d.api.copy,
+                      copied: d.api.copied,
+                      aria: d.api.copyAria,
+                    }}
+                  />
+                </div>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <ButtonLink href={notifyHref} arrow>
                     {d.api.notify}
@@ -350,6 +363,11 @@ export function ModelDetail({
                 <div className="mt-6">
                   <CodeSamples
                     samples={apiSamples(baseUrl, model.id, model.kind, lang)}
+                    copy={{
+                      copy: d.api.copy,
+                      copied: d.api.copied,
+                      aria: d.api.copyAria,
+                    }}
                   />
                 </div>
                 <div className="mt-6">

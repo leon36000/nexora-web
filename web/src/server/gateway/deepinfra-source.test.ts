@@ -354,4 +354,20 @@ describe("lecture sur disque", () => {
       "nexora/kimi-k3.1-pro",
     ]);
   });
+  it("catalogue livré : aucun problème, chaque mesure cite sa source https, prix converti au taux documenté (1,4025) avec 10 % de marge", () => {
+    const s = readSourceFromDisk();
+    expect(s.problems.filter((p) => p.kind !== "fiche_orpheline")).toEqual([]);
+    expect(s.entries.length).toBeGreaterThanOrEqual(33);
+    for (const e of s.entries)
+      for (const b of e.sheet.benchmarks ?? []) {
+        expect(b.sourceUrl, `${e.publicId} : ${b.name}`).toMatch(/^https:\/\//);
+        expect(b.publisher, `${e.publicId} : ${b.name}`).toBeTruthy();
+      }
+    // GLM 5.3 : 0,90 $ US en entrée à DeepInfra → ×1,4025×1,10 = 1,3885 $ CA le million de jetons (affiché sur la fiche).
+    const glm = s.entries.find((e) => e.publicId === "nexora/glm-5.3");
+    expect(glm).toBeDefined();
+    const sold = (usdMicro: bigint) =>
+      Math.round((Number(usdMicro) * 1.4025 * 1.1) / 1e4) / 100;
+    expect(sold(glm?.upstream.input ?? 0n)).toBe(1.39);
+  });
 });

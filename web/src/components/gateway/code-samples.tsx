@@ -1,17 +1,41 @@
+import { CopyButton } from "@/components/account/copy-button";
 import type { Sample } from "@/lib/api-samples";
+
+/** Libellés du bouton « Copier » ; `aria` contient `{label}` (nom du langage). */
+export interface CopyLabels {
+  copy: string;
+  copied: string;
+  aria: string;
+}
 
 /**
  * Exemples de code : un bloc par langage, sans JavaScript côté client. Chaque bloc est une région
  * défilable au clavier (le code ne coupe jamais, il défile).
  */
-export function CodeSamples({ samples }: { samples: Sample[] }) {
+export function CodeSamples({
+  samples,
+  copy,
+}: {
+  samples: Sample[];
+  copy?: CopyLabels;
+}) {
   return (
     <div className="grid gap-6">
       {samples.map((s) => (
         <figure key={s.id}>
-          <figcaption className="font-mono text-label uppercase text-fg-muted">
-            {s.label}
-          </figcaption>
+          <div className="flex items-center justify-between gap-3">
+            <figcaption className="font-mono text-label uppercase text-fg-muted">
+              {s.label}
+            </figcaption>
+            {copy ? (
+              <CopyButton
+                value={s.code}
+                label={copy.copy}
+                copiedLabel={copy.copied}
+                ariaLabel={copy.aria.replace("{label}", s.label)}
+              />
+            ) : null}
+          </div>
           <CodeBlock label={s.label} code={s.code} />
         </figure>
       ))}
