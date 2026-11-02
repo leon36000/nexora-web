@@ -42,7 +42,9 @@ Journal de la refonte demandée par le fondateur (mandat : `marketing/nexora/REF
 | `site-infra-dgx-spark.jpg` | `infra-dgx-spark` (photo produit du poste compact, même traitement) | en service |
 | `site-film-marque-{fr,en}.mp4` + affiche | film de marque 60 s (réencodé 1080p) | en service |
 | `site-creative-promo.mp4` + affiche | bande-annonce Creative existante | en service |
-| `site-{reception,surveillance,…}.jpg`, `site-film-{reception,surveillance,infrastructure,workstudio,code}.mp4` | à produire | non cités par les pages pour l'instant |
+| `site-{reception,surveillance,…}.jpg`, `site-film-surveillance-{fr,en}.mp4` + affiche | `reception-accueil`, `surveillance-entrepot`, `film-surveillance-*` | cités par les pages réception virtuelle et surveillance IA ; les autres restent à citer |
+
+Le script choisit toujours le fichier de base (16:9), jamais un recadrage `-4x5`/`-9x16` ni une taille `-1280`.
 
 Mettre à jour les médias en production :
 

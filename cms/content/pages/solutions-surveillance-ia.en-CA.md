@@ -29,7 +29,7 @@ Even with the best cameras and huge storage, nobody watches hundreds or thousand
 
 *Aperçu : la vidéo enfin regardée, la maquette en vis-à-vis. · Affirmations : CL-SV01, CL-SV03*
 
-Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=clair`, `anchor_id=apercu`
+Réglages : `media_position=left`, `tone=clair`, `anchor_id=apercu`, `visual=aucun`, `media=[object Object]`, `poster=[object Object]`
 
 ## Your cameras, finally watched.
 

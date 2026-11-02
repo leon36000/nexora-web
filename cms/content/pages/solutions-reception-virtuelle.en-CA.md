@@ -29,7 +29,7 @@ A virtual reception answers your calls, emails and text messages, day and night,
 
 *Aperçu : trois canaux au même endroit, la maquette en vis-à-vis. · Affirmations : CL-RV01, CL-RV02*
 
-Réglages : `media_position=right`, `visual=signal-accueil`, `tone=clair`, `anchor_id=apercu`
+Réglages : `media_position=right`, `visual=aucun`, `tone=clair`, `anchor_id=apercu`, `media=[object Object]`
 
 ## One reception, three channels.
 

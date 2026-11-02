@@ -29,7 +29,7 @@ Même avec les meilleures caméras et un stockage immense, personne ne regarde d
 
 *Aperçu : la vidéo enfin regardée, la maquette en vis-à-vis. · Affirmations : CL-SV01, CL-SV03*
 
-Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=clair`, `anchor_id=apercu`
+Réglages : `media_position=left`, `tone=clair`, `anchor_id=apercu`, `visual=aucun`, `media=[object Object]`, `poster=[object Object]`
 
 ## Vos caméras, enfin regardées.
 

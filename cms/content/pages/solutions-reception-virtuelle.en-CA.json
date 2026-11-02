@@ -37,13 +37,18 @@
       "claims": ["CL-RV01", "CL-RV02"],
       "fields": {
         "media_position": "right",
-        "visual": "signal-accueil",
+        "visual": "aucun",
         "tone": "clair",
-        "anchor_id": "apercu"
+        "anchor_id": "apercu",
+        "media": {
+          "asset": ["site-reception.jpg"],
+          "optional": true
+        }
       },
       "translation": {
         "title": "One reception, three channels.",
-        "body": "<p>Phone calls, emails and text messages arrive in one place. The virtual reception understands the request, answers with your information (hours, services, policies) and acts: it adds the appointment to your calendar, updates your customer management tool or passes the call to the right person.</p><p>Every exchange ends with a written summary, sent to whoever you choose.</p>"
+        "body": "<p>Phone calls, emails and text messages arrive in one place. The virtual reception understands the request, answers with your information (hours, services, policies) and acts: it adds the appointment to your calendar, updates your customer management tool or passes the call to the right person.</p><p>Every exchange ends with a written summary, sent to whoever you choose.</p>",
+        "media_alt": "A front desk where the voice answers, takes notes and passes things on."
       }
     },
     {

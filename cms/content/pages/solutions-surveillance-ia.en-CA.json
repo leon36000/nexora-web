@@ -37,13 +37,29 @@
       "claims": ["CL-SV01", "CL-SV03"],
       "fields": {
         "media_position": "left",
-        "visual": "signal-surveillance",
         "tone": "clair",
-        "anchor_id": "apercu"
+        "anchor_id": "apercu",
+        "visual": "aucun",
+        "media": {
+          "asset": ["site-film-surveillance-fr.mp4"],
+          "optional": true
+        },
+        "poster": {
+          "asset": ["site-film-surveillance-affiche.jpg"],
+          "optional": true
+        }
       },
       "translation": {
         "title": "Your cameras, finally watched.",
-        "body": "<p>Security systems record everything, but the video is only reviewed afterwards, often too late. Our AIs connect to your existing cameras and security system and analyze the images continuously.</p><p>When suspicious behaviour appears (presence in a closed area, intrusion after business hours, someone loitering), the alert goes out while the event is happening.</p>"
+        "body": "<p>Security systems record everything, but the video is only reviewed afterwards, often too late. Our AIs connect to your existing cameras and security system and analyze the images continuously.</p><p>When suspicious behaviour appears (presence in a closed area, intrusion after business hours, someone loitering), the alert goes out while the event is happening.</p>",
+        "media_alt": "AI surveillance film: a camera, a detection, an alert.",
+        "media_lang": {
+          "asset": [
+            "site-film-surveillance-en.mp4",
+            "site-film-surveillance-fr.mp4"
+          ],
+          "optional": true
+        }
       }
     },
     {
