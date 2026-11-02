@@ -21,3 +21,24 @@ b225d1b00d857798b94f3c4e06b0fea5acbdcd95:web/src/server/vps/connect-handlers.tes
 b225d1b00d857798b94f3c4e06b0fea5acbdcd95:web/src/server/vps/connect-handlers.test.ts:generic-api-key:307
 b6a4e8935b2ea35f0475c3762c4acb5d71baf9a2:web/src/server/agents/discovery.test.ts:generic-api-key:4
 c389af4639fc221a6950afee1d0991407644f1d2:docs/recette/securite.md:stripe-access-token:120
+
+# Faux positif : mot de passe factice dans un test de l'essai à blanc (packages/code).
+dc58a5c15f5e4062e785a3d6a2a1c25c1db2620e:packages/code/src/dry-run.test.ts:generic-api-key:16
+# Faux positif : clé factice d'un test des extraits RAG, retirée depuis.
+6636ea057938999e24a3e07b676b53b9e723175f:web/src/server/products/rag-connect.test.ts:generic-api-key:26
+# Faux positif : jeton d'exemple de la documentation (fr-CA), non réel.
+f5fcdccbbb1c6d29f3fbeec29a0e2bbe078849ba:cms/content/pages/guides-api-compatible-openai.fr-CA.md:curl-auth-header:48
+# Faux positif : jeton d'exemple de la documentation (en-CA), non réel.
+f5fcdccbbb1c6d29f3fbeec29a0e2bbe078849ba:cms/content/pages/guides-api-compatible-openai.en-CA.md:curl-auth-header:48
+# Faux positif : JWT factice d'un test du détecteur (signature de 11 caractères).
+35665bfe29b868694ca736eda2a472869cc179e3:web/src/server/privacy/detectors.test.ts:jwt:145
+# Faux positif : second JWT factice du même test du détecteur.
+22d8b1f5b418fe0cd856fd7f3ee307aa8e48f527:web/src/server/privacy/detectors.test.ts:jwt:144
+# Faux positif : faux bloc PEM de 12 octets dans un test du détecteur, pas une clé.
+22d8b1f5b418fe0cd856fd7f3ee307aa8e48f527:web/src/server/privacy/detectors.test.ts:private-key:148
+# Faux positif : identifiant UUID de test (constante KEY), pas un secret.
+bbe3ff2294e79abfefe9ac34ac5a8ec56950938a:web/src/components/account/activity-links.test.ts:generic-api-key:6
+# Faux positif : identifiant UUID de test (constante key), pas un secret.
+2bf8467dfd23c45b4148d06fb437d5e3c29eb03e:web/src/server/gateway/activity.test.ts:generic-api-key:117
+# Faux positif : valeur invalide volontaire, le test attend « invalid_key ».
+2bf8467dfd23c45b4148d06fb437d5e3c29eb03e:web/src/server/gateway/activity.test.ts:generic-api-key:130
