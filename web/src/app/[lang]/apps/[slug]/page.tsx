@@ -25,6 +25,7 @@ import {
   appSoftwareJsonLd,
 } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
+import { getCreativeFilm } from "../_components/creative-film";
 import { CreativeShowcase } from "../_components/creative-showcase";
 import { APP_PALETTE, appSeed } from "../_components/palette";
 import { StateBadge } from "../_components/state-badge";
@@ -62,6 +63,7 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
   const app = findApp(slug);
   const content = getAppContent(lang, slug);
   if (!app || !content) notFound();
+  const film = app.slug === "creative" ? await getCreativeFilm(lang) : null;
   const t = getAppsDictionary(lang);
   const d = t.detail;
   const cta = app.cta === "waitlist" ? d.waitlist : d.contact;
@@ -130,7 +132,9 @@ export default async function AppPage(props: PageProps<"/[lang]/apps/[slug]">) {
         </dl>
       </Section>
 
-      {app.slug === "creative" ? <CreativeShowcase lang={lang} /> : null}
+      {app.slug === "creative" ? (
+        <CreativeShowcase lang={lang} film={film} />
+      ) : null}
 
       <Section tone="light" surface>
         <div className="grid gap-10 md:grid-cols-2">

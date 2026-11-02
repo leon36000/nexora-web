@@ -2,13 +2,21 @@ import { Section } from "@/components/ui/section";
 import { StatStrip } from "@/components/ui/stat-strip";
 import type { Lang } from "@/i18n/config";
 import { getCreativeShowcase } from "@/i18n/dictionaries/creative-showcase";
+import { mediaPath } from "@/lib/media";
+import type { CreativeFilm } from "./creative-film";
 
 /**
- * Vitrine de la fiche Nexora Creative : la bande-annonce (aucun octet de vidéo avant le clic de lecture), les temps
+ * Vitrine de la fiche Nexora Creative : le film, lu dans Directus (aucun octet de vidéo avant le clic de lecture), les temps
  * mesurés, les étapes, une phrase par plan, les fonctions, et ce qui n'est pas encore là. Les textes et les chiffres
  * viennent de `creative-showcase.ts`, chaque chiffre est cité dans le registre d'affirmations.
  */
-export function CreativeShowcase({ lang }: { lang: Lang }) {
+export function CreativeShowcase({
+  lang,
+  film,
+}: {
+  lang: Lang;
+  film: CreativeFilm | null;
+}) {
   const t = getCreativeShowcase(lang);
   return (
     <>
@@ -19,20 +27,25 @@ export function CreativeShowcase({ lang }: { lang: Lang }) {
         <h2 id="trailer-title" className="mt-2 text-h2 text-fg">
           {t.video.title}
         </h2>
-        <div className="mt-8 overflow-hidden rounded-lg border border-line bg-black">
-          {/* biome-ignore lint/a11y/useMediaCaption: la bande-annonce n'a aucune parole ; la description écrite suit la vidéo */}
-          <video
-            className="aspect-video w-full"
-            controls
-            playsInline
-            preload="none"
-            poster="/creative-terre-flotte.jpg"
-            aria-label={t.video.label}
-          >
-            <source src="/creative-bande-annonce.mp4" type="video/mp4" />
-            {t.video.fallback}
-          </video>
-        </div>
+        {film ? (
+          <div className="mt-8 overflow-hidden rounded-lg border border-line bg-black">
+            {/* biome-ignore lint/a11y/useMediaCaption: le film n'a aucune parole ; la description écrite suit la vidéo */}
+            <video
+              className="aspect-video w-full"
+              controls
+              playsInline
+              preload="none"
+              poster={film.poster ? mediaPath(film.poster.id) : undefined}
+              aria-label={t.video.label}
+            >
+              <source
+                src={mediaPath(film.media.id)}
+                type={film.media.mime ?? "video/mp4"}
+              />
+              {t.video.fallback}
+            </video>
+          </div>
+        ) : null}
         <p className="mt-4 text-small text-fg-muted">{t.video.transcript}</p>
         <p className="mt-2 font-mono text-label uppercase text-fg-muted">
           {t.video.credit}

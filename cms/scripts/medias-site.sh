@@ -72,6 +72,14 @@ video() {
   echo "  + $1  ←  ${src/#$HOME/~}"
 }
 
+# Montage déjà encodé (H.264 + AAC) : flux recopiés sans réencodage, démarrage rapide, métadonnées retirées.
+remux() {
+  local out="$OUT/$1" src="$2"
+  fresh "$out" "$src" && { echo "  = $1"; return; }
+  ff -i "$src" -c copy -map_metadata -1 -movflags +faststart "$out"
+  echo "  + $1  ←  ${src/#$HOME/~}"
+}
+
 echo "Médias du site → ${OUT/#$HOME/~}"
 
 # --- héros : boucle silencieuse + affiche ---------------------------------------------------------------------------
@@ -99,11 +107,13 @@ for l in fr en; do
 done
 [ -f "$FILMS/film-marque-16x9-fr.mp4" ] && { fresh "$OUT/site-film-marque-affiche.jpg" "$FILMS/film-marque-16x9-fr.mp4" || { ff -ss 25.3 -i "$FILMS/film-marque-16x9-fr.mp4" -frames:v 1 -q:v 3 "$OUT/site-film-marque-affiche.jpg"; echo "  + site-film-marque-affiche.jpg"; }; }
 
-# --- Nexora Creative : bande-annonce et affiche -----------------------------------------------------------------------
-if s="$(first_src video creative-film creative-promo creative-)"; then video site-creative-promo.mp4 "$s" son 24
-elif [ -f "$PUBLIC/creative-bande-annonce.mp4" ]; then video site-creative-promo.mp4 "$PUBLIC/creative-bande-annonce.mp4" son 24; fi
-if s="$(first_src image creative-)"; then image site-creative-affiche.jpg "$s"
-elif [ -f "$PUBLIC/creative-p04.jpg" ]; then image site-creative-affiche.jpg "$PUBLIC/creative-p04.jpg"; fi
+# --- Nexora Creative : film de la page /apps/creative et de la carte de l'accueil ---------------------------------------
+# Film V4 de Nexora Creative (promo 60 s, « Une phrase. Un film. ») : une version par langue en 16:9 pour la page, et son affiche sans texte.
+# La version 9:16 n'est citée par aucune page ; elle n'est pas produite ici.
+for l in fr en; do
+  [ -f "$SRC/film-creative-16x9-$l.mp4" ] && remux "site-film-creative-$l.mp4" "$SRC/film-creative-16x9-$l.mp4"
+done
+[ -f "$SRC/film-creative-poster.jpg" ] && image site-film-creative-poster.jpg "$SRC/film-creative-poster.jpg"
 
 # --- piliers de l'accueil ---------------------------------------------------------------------------------------------
 if s="$(first_src image hero-ville reception-)"; then image site-pilier-automatiser.jpg "$s"

@@ -37,7 +37,6 @@ export type CreativeShowcase = {
 };
 
 const PLANS = [
-  { image: "terre-flotte", engine: "MiniMax H3" },
   { image: "sabres-hangar", engine: "MiniMax H3" },
   { image: "sabres-mer", engine: "MiniMax H3" },
   { image: "terre-croiseur", engine: "MiniMax H3" },
@@ -51,10 +50,10 @@ const fr: CreativeShowcase = {
   video: {
     title: "Bande-annonce de Nexora Creative",
     label:
-      "Bande-annonce de Nexora Creative : une flotte de vaisseaux sort de l’hyperespace au-dessus de la Terre, des duels au sabre laser, un dragon, un combat de karaté.",
+      "Film de Nexora Creative, « Une phrase. Un film. » : on tape une phrase dans le Producteur, il découpe, chiffre et tourne les plans, puis le film fini et six autres genres de plans.",
     credit: "Vidéo : MiniMax H3. Musique : MiniMax-Music3. Généré par IA.",
     transcript:
-      "Une minute, sans parole : une flotte sort de l’hyperespace au-dessus de la Terre, un croiseur passe devant la planète, trois duels au sabre laser, un coup de pied retourné sous la pluie, un dragon dans les nuages, puis le logo Nexora Creative.",
+      "Une minute, sans parole : une phrase est tapée dans le Producteur de Nexora Creative, qui prépare le plan, affiche le devis, tourne chaque plan, garde la meilleure prise et monte sur la musique. Suivent six genres de plans (ville la nuit, chevaux, chocolat, robe rouge, surf, village de papier), puis le carton « Une phrase. Un film. »",
     fallback: "Votre navigateur ne peut pas lire cette vidéo.",
   },
   statsTitle: "Des temps mesurés, pas promis",
@@ -112,36 +111,30 @@ const fr: CreativeShowcase = {
   plans: [
     {
       ...PLANS[0],
-      alt: "Une flotte de vaisseaux sort de l’hyperespace au-dessus de la Terre.",
-      phrase:
-        "Une immense flotte surgit de l’hyperespace au-dessus de la planète Terre ; onde de choc, traînées de lumière, la caméra recule au-dessus de l’armada.",
-    },
-    {
-      ...PLANS[1],
       alt: "Duel de sabres laser vert et bleu dans un hangar éclairé de rouge.",
       phrase:
         "Duel de sabres laser dans un hangar de vaisseau spatial éclairé de rouge : une lame verte, une lame bleue, des étincelles.",
     },
     {
-      ...PLANS[2],
+      ...PLANS[1],
       alt: "Duel de sabres laser sur une plateforme de pierre au-dessus d’un océan, sous les éclairs.",
       phrase:
         "Duel de sabres laser sur une plateforme de pierre au-dessus d’un océan déchaîné, au crépuscule, sous les éclairs.",
     },
     {
-      ...PLANS[3],
+      ...PLANS[2],
       alt: "Un croiseur gigantesque glisse devant la Terre.",
       phrase:
         "Un croiseur gigantesque glisse devant la Terre pendant que d’autres vaisseaux sortent de l’hyperespace.",
     },
     {
-      ...PLANS[4],
+      ...PLANS[3],
       alt: "Duel d’épées d’énergie dans un temple au bord d’un volcan.",
       phrase:
         "Duel d’épées d’énergie dans un temple ancien au bord d’un volcan.",
     },
     {
-      ...PLANS[5],
+      ...PLANS[4],
       alt: "Gros plan d’un coup de pied retourné qui fait gicler la pluie.",
       phrase:
         "Gros plan au ralenti : un coup de pied retourné fait gicler la pluie dans la lumière des lanternes.",
@@ -190,10 +183,10 @@ const en: CreativeShowcase = {
   video: {
     title: "Nexora Creative trailer",
     label:
-      "Nexora Creative trailer: a fleet of ships drops out of hyperspace above Earth, lightsaber duels, a dragon, a karate fight.",
+      "Nexora Creative film, “One sentence. One film.”: a sentence is typed into the Producer, which plans, quotes and shoots the shots, then the finished film and six more kinds of shots.",
     credit: "Video: MiniMax H3. Music: MiniMax-Music3. AI-generated.",
     transcript:
-      "One minute, no dialogue: a fleet drops out of hyperspace above Earth, a cruiser passes in front of the planet, three lightsaber duels, a spinning kick in the rain, a dragon in the clouds, then the Nexora Creative logo.",
+      "One minute, no dialogue: a sentence is typed into Nexora Creative’s Producer, which prepares the plan, shows the quote, shoots each shot, keeps the best take and cuts to the music. Six kinds of shots follow (city at night, horses, chocolate, red dress, surf, paper village), then the card “One sentence. One film.”",
     fallback: "Your browser cannot play this video.",
   },
   statsTitle: "Measured times, not promised ones",
@@ -250,36 +243,30 @@ const en: CreativeShowcase = {
   plans: [
     {
       ...PLANS[0],
-      alt: "A fleet of ships drops out of hyperspace above Earth.",
-      phrase:
-        "A huge fleet erupts from hyperspace above planet Earth; shockwave, light trails, the camera pulls back over the armada.",
-    },
-    {
-      ...PLANS[1],
       alt: "Green and blue lightsaber duel in a red-lit hangar.",
       phrase:
         "Lightsaber duel in a red-lit spaceship hangar: a green blade, a blue blade, sparks.",
     },
     {
-      ...PLANS[2],
+      ...PLANS[1],
       alt: "Lightsaber duel on a stone platform above an ocean, under lightning.",
       phrase:
         "Lightsaber duel on a stone platform above a raging ocean, at dusk, under lightning.",
     },
     {
-      ...PLANS[3],
+      ...PLANS[2],
       alt: "A gigantic cruiser glides in front of Earth.",
       phrase:
         "A gigantic cruiser glides in front of Earth while other ships drop out of hyperspace.",
     },
     {
-      ...PLANS[4],
+      ...PLANS[3],
       alt: "Energy sword duel in a temple at the edge of a volcano.",
       phrase:
         "Energy sword duel in an ancient temple at the edge of a volcano.",
     },
     {
-      ...PLANS[5],
+      ...PLANS[4],
       alt: "Close-up of a spinning kick splashing rain.",
       phrase:
         "Slow-motion close-up: a spinning kick splashes the rain in the light of the lanterns.",
