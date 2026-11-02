@@ -14,7 +14,7 @@ import type { CardsBlock } from "@/server/cms/model";
 import { CELL_GRID, cellClasses } from "./card-grid";
 import { CardText, textLines } from "./card-text";
 import { StatusBadge } from "./status-badge";
-import { anchorProps, toneProps } from "./tone";
+import { anchorProps, effectiveTone, toneProps } from "./tone";
 
 type CardItem = CardsBlock["cards"][number];
 type Joined = "after" | "before" | "both" | undefined;
@@ -452,7 +452,7 @@ export function CardsBlockView({
     ) : null;
   return (
     <Section
-      {...toneProps(block.tone)}
+      {...toneProps(effectiveTone(block))}
       joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
       id={anchor.id}

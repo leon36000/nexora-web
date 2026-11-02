@@ -12,7 +12,7 @@ import { cn } from "@/lib/cn";
 import { mediaPath } from "@/lib/media";
 import type { HeroBlock } from "@/server/cms/model";
 import { CmsImage } from "./cms-image";
-import { anchorProps, toneProps } from "./tone";
+import { anchorProps, effectiveTone, toneProps } from "./tone";
 
 type HeroProps = {
   block: HeroBlock;
@@ -177,7 +177,7 @@ export function HeroBlockView({
   const side = block.media || (showcase && material);
   return (
     <Section
-      {...toneProps(block.variant)}
+      {...toneProps(effectiveTone(block))}
       flush
       aria-labelledby={`${block.key}-title`}
       id={anchor.id}

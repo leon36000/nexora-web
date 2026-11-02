@@ -3,7 +3,7 @@ import type { Lang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getVisualsDictionary } from "@/i18n/visuals";
 import { buildToc } from "@/lib/toc";
-import type { Block, PageModel, Tone } from "@/server/cms/model";
+import type { Block, PageModel } from "@/server/cms/model";
 import { CardsBlockView } from "./cards-block";
 import { CtaBlockView } from "./cta-block";
 import { FaqBlockView } from "./faq-block";
@@ -11,13 +11,7 @@ import { HeroBlockView } from "./hero-block";
 import { PageToc } from "./page-toc";
 import { PricingBlockView } from "./pricing-block";
 import { SectionBlockView } from "./section-block";
-
-/** Ton d'un bloc ; défensif : un instantané antérieur à S3 n'a pas encore de ton. */
-function toneOf(block: Block): Tone {
-  if (block.type === "hero") return block.variant ?? "sombre";
-  if (block.type === "cta") return block.tone ?? "sombre";
-  return block.tone ?? "clair";
-}
+import { effectiveTone } from "./tone";
 
 /** Un bloc de contenu (ni héros ni appel à l'action) peut prolonger le précédent quand leur ton est le même. */
 const joinable = (block: Block | undefined): block is Block =>
@@ -56,9 +50,13 @@ export function PageBlocks({
         const prev = page.blocks[i - 1];
         const next = page.blocks[i + 1];
         const sameAsPrev =
-          joinable(block) && joinable(prev) && toneOf(prev) === toneOf(block);
+          joinable(block) &&
+          joinable(prev) &&
+          effectiveTone(prev) === effectiveTone(block);
         const sameAsNext =
-          joinable(block) && joinable(next) && toneOf(next) === toneOf(block);
+          joinable(block) &&
+          joinable(next) &&
+          effectiveTone(next) === effectiveTone(block);
         const joined = sameAsPrev
           ? sameAsNext
             ? ("both" as const)

@@ -10,7 +10,7 @@ import { CELL_GRID, cellClasses } from "./card-grid";
 import { CmsImage } from "./cms-image";
 import { CmsVideo } from "./cms-video";
 import { RichText } from "./rich-text";
-import { anchorProps, toneProps } from "./tone";
+import { anchorProps, effectiveTone, toneProps } from "./tone";
 
 /**
  * Section : titre, texte riche, média ou schéma (gauche, droite ou au-dessus) et liste de points.
@@ -81,7 +81,7 @@ export function SectionBlockView({
   if (visual && !block.title && !block.body && block.items.length === 0) {
     return (
       <Section
-        {...toneProps(block.tone)}
+        {...toneProps(effectiveTone(block))}
         joined={joined}
         id={anchor.id}
         className={anchor.className}
@@ -92,7 +92,7 @@ export function SectionBlockView({
   }
   return (
     <Section
-      {...toneProps(block.tone)}
+      {...toneProps(effectiveTone(block))}
       joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
       id={anchor.id}

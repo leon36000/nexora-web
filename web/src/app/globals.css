@@ -27,6 +27,7 @@
   --color-ion-300: #7bd9ff; /* survol du bouton (12,7:1) */
   --color-ion-700: #0b6e99; /* ion en texte sur papier (5,3:1) */
   --color-ion-600: #0a8bc2; /* ion en graphisme sur papier (3,6:1) */
+  --color-ion-800: #095b80; /* survol du bouton principal sur papier (blanc dessus : 7,6:1) */
 
   /* --- Contrepoint chaud, rare : « flare » (un seul point de chaleur par écran) --- */
   --color-flare-500: #ff6a2b; /* 7,1:1 sur abysse */
@@ -40,11 +41,12 @@
   --color-ok-700: #16794f; /* succès sur papier (5,0:1) */
 
   /* --- Papier (thème clair : espace client et pages qui le demandent) --- */
-  --color-paper-50: #f5f7fa;
-  --color-paper-100: #e9eef4;
-  --color-paper-200: #d9e0ea;
-  --color-graphite-900: #0b0f16;
-  --color-graphite-600: #4a5568;
+  --color-paper-50: #f7f9fc; /* fond « papier » : presque blanc, très légère teinte froide */
+  --color-paper-100: #ffffff; /* surface : cartes et panneaux */
+  --color-paper-200: #edf1f7; /* surface relevée, survol, bandes alternées */
+  --color-paper-line: #e3e8f0; /* filet sur papier */
+  --color-graphite-900: #0b1220;
+  --color-graphite-600: #5b6678; /* texte secondaire sur papier (5,5:1) */
 
   /* --- Polices (variables posées sur <html> par next/font/local, voir app/fonts.ts) --- */
   --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -166,6 +168,13 @@
   --line-strong: var(--color-steel);
   --focus: var(--color-ion-400);
   --grid-ink: rgb(238 243 250);
+  /* matières décoratives : plus claires sur fond sombre */
+  --grid-a: rgb(140 151 170 / 0.13);
+  --grid-b: rgb(140 151 170 / 0.05);
+  --field-rgb: 62 200 255; /* nuage de points */
+  --field-glow-rgb: 255 255 255; /* bande de balayage du nuage */
+  --scan-rgb: 62 200 255;
+  --scan-core: #fff;
   color-scheme: dark;
 }
 
@@ -180,17 +189,24 @@
   --fg: var(--color-graphite-900);
   --fg-muted: var(--color-graphite-600);
   --accent-text: var(--color-ion-700);
-  --accent-fill: var(--color-ion-400);
-  --accent-hover: var(--color-ion-300);
+  --accent-fill: var(--color-ion-700); /* bouton principal sur papier : ion foncé, texte blanc */
+  --accent-hover: var(--color-ion-800);
   --accent-graphic: var(--color-ion-600);
-  --on-accent: var(--color-abyss-950);
+  --on-accent: #ffffff;
   --flare: var(--color-flare-700);
   --alert: var(--color-alert-700);
   --success: var(--color-ok-700);
-  --line: rgb(11 15 22 / 0.13);
-  --line-strong: rgb(11 15 22 / 0.58);
+  --line: var(--color-paper-line);
+  --line-strong: rgb(11 18 32 / 0.58);
   --focus: var(--color-ion-700);
-  --grid-ink: rgb(11 15 22);
+  --grid-ink: rgb(11 18 32);
+  /* matières décoratives : ion doux sur papier (aucune pure lumière blanche) */
+  --grid-a: rgb(11 110 153 / 0.1);
+  --grid-b: rgb(11 110 153 / 0.045);
+  --field-rgb: 10 139 194;
+  --field-glow-rgb: 7 70 102;
+  --scan-rgb: 10 139 194;
+  --scan-core: var(--color-ion-700);
   color-scheme: light;
 }
 
@@ -460,10 +476,10 @@
 /* Grille de précision : filet fin tous les 24 px, filet marqué tous les 96 px, effacée vers les bords. */
 @utility grid-precision {
   background-image:
-    linear-gradient(to right, rgb(140 151 170 / 0.13) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(140 151 170 / 0.13) 1px, transparent 1px),
-    linear-gradient(to right, rgb(140 151 170 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(140 151 170 / 0.05) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-a) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-a) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-b) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-b) 1px, transparent 1px);
   background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
   background-position: center center;
   -webkit-mask-image: radial-gradient(60% 70% at 50% 45%, #000 20%, transparent 80%);
@@ -482,6 +498,12 @@
 
 @utility wash-paper {
   background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(11 110 153 / 0.06), transparent 68%);
+}
+
+/* Sur papier, les halos d'ion sont plus doux et plus larges (lumière du jour, pas de lueur). */
+.theme-light.wash-sand,
+.theme-light.wash-dark {
+  background-image: radial-gradient(54rem 20rem at 100% 0%, rgb(10 139 194 / 0.07), transparent 66%);
 }
 
 /* Cadre de détection : quatre crochets de 14 px aux angles, en ion (ou --detect-color). */
@@ -546,8 +568,8 @@
   height: 1px;
   pointer-events: none;
   opacity: 0;
-  background: linear-gradient(90deg, transparent, rgb(62 200 255 / 0.9) 30%, #fff 50%, rgb(62 200 255 / 0.9) 70%, transparent);
-  box-shadow: 0 0 18px 2px rgb(62 200 255 / 0.35);
+  background: linear-gradient(90deg, transparent, rgb(var(--scan-rgb) / 0.9) 30%, var(--scan-core) 50%, rgb(var(--scan-rgb) / 0.9) 70%, transparent);
+  box-shadow: 0 0 18px 2px rgb(var(--scan-rgb) / 0.35);
 }
 
 /* Barres d'une forme d'onde (voix, accueil) : au repos, la forme est figée. */

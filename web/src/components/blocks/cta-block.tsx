@@ -2,7 +2,7 @@ import { LightField } from "@/components/signal/light-field";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import type { CtaBlock } from "@/server/cms/model";
-import { anchorProps, toneProps } from "./tone";
+import { anchorProps, effectiveTone, toneProps } from "./tone";
 
 /**
  * Appel à l'action de fin de page : titre très grand centré sur un horizon de lumière (champ figé) ; le bouton
@@ -16,11 +16,11 @@ export function CtaBlockView({
   joined?: "after" | "before" | "both";
 }) {
   const titleId = `${block.key}-title`;
-  const dark = block.tone === "sombre";
+  const dark = effectiveTone(block) === "dark";
   const anchor = anchorProps(block.anchorId);
   return (
     <Section
-      {...toneProps(block.tone)}
+      {...toneProps(effectiveTone(block))}
       joined={joined}
       aria-labelledby={titleId}
       id={anchor.id}
@@ -40,7 +40,7 @@ export function CtaBlockView({
               cols={80}
             />
           </div>
-          <div className="absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_45%,rgb(5_7_11/0.85),transparent_80%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_45%,color-mix(in_oklab,var(--bg)_85%,transparent),transparent_80%)]" />
         </div>
       }
     >

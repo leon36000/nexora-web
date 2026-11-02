@@ -20,7 +20,7 @@ export function Deployment({
     { key: "hosted", mode: "hosted" as const, copy: t.hosted },
   ];
   return (
-    <Section tone="dark" aria-labelledby="deployment-title">
+    <Section tone="light" surface aria-labelledby="deployment-title">
       <SectionHeader
         id="deployment-title"
         label={t.label}

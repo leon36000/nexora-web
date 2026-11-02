@@ -31,7 +31,20 @@ type Props = {
   hotspot?: boolean;
 };
 
-const ION = [62, 200, 255] as const;
+const ION_DARK = [62, 200, 255] as const;
+const GLOW_DARK = [255, 255, 255] as const;
+
+/** Couleur d'un jeton « r g b » (ex. `--field-rgb`) lue sur le canvas : le nuage suit le thème de la bande. */
+function rgbToken(el: Element, name: string, fallback: readonly number[]) {
+  const parts = getComputedStyle(el)
+    .getPropertyValue(name)
+    .trim()
+    .split(/\s+/)
+    .map(Number);
+  return parts.length === 3 && parts.every((n) => Number.isFinite(n))
+    ? parts
+    : [...fallback];
+}
 
 export function LightField({
   className,
@@ -54,6 +67,10 @@ export function LightField({
     // sur un petit écran, le champ est dessiné une fois, immobile : batterie et fil principal épargnés
     const small = window.matchMedia("(max-width: 47.99rem)").matches;
     const moving = animated && !reduce && !small;
+    const ION = rgbToken(canvas, "--field-rgb", ION_DARK);
+    const GLOW = rgbToken(canvas, "--field-glow-rgb", GLOW_DARK);
+    // sur fond clair, la bande de balayage fonce (au lieu de blanchir) et les points restent plus discrets
+    const lightBg = GLOW[0] < 128;
     let raf = 0;
     let visible = true;
     let last = 0;
@@ -98,10 +115,11 @@ export function LightField({
           const a = Math.min(1, depthAlpha + glow * 0.8);
           if (glow > 0.15) {
             const m = glow;
-            ctx.fillStyle = `rgba(${Math.round(ION[0] + (255 - ION[0]) * m)},${Math.round(
-              ION[1] + (255 - ION[1]) * m,
-            )},255,${a})`;
-          } else ctx.fillStyle = `rgba(${ION[0]},${ION[1]},${ION[2]},${a})`;
+            ctx.fillStyle = `rgba(${Math.round(ION[0] + (GLOW[0] - ION[0]) * m)},${Math.round(
+              ION[1] + (GLOW[1] - ION[1]) * m,
+            )},${Math.round(ION[2] + (GLOW[2] - ION[2]) * m)},${a})`;
+          } else
+            ctx.fillStyle = `rgba(${ION[0]},${ION[1]},${ION[2]},${lightBg ? a * 0.75 : a})`;
           ctx.fillRect(sx - size / 2, sy - size / 2, size, size);
         }
       }

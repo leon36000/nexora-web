@@ -74,7 +74,7 @@ export function ProductFamily({ lang }: { lang: Lang }) {
   const apps = getAppsDictionary(lang);
   return (
     <Section
-      tone="dark"
+      tone="light"
       joined="after"
       aria-labelledby="family-title"
       className="pt-14 md:pt-20"

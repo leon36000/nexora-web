@@ -1,7 +1,7 @@
 import { Section } from "@/components/ui/section";
 import { SectionHeader } from "@/components/ui/section-header";
 import type { FaqBlock } from "@/server/cms/model";
-import { anchorProps, toneProps } from "./tone";
+import { anchorProps, effectiveTone, toneProps } from "./tone";
 
 /** Réponse en paragraphes (une ligne vide sépare deux paragraphes) : le même texte alimente le JSON-LD. */
 export function answerParagraphs(answer: string): string[] {
@@ -23,7 +23,7 @@ export function FaqBlockView({
   const anchor = anchorProps(block.anchorId);
   return (
     <Section
-      {...toneProps(block.tone)}
+      {...toneProps(effectiveTone(block))}
       joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
       id={anchor.id}

@@ -124,7 +124,7 @@ export function MobileMenu({
           setOpen(false);
           buttonRef.current?.focus();
         }}
-        className="theme-dark m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-bg p-0 text-fg"
+        className="theme-light m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-bg p-0 text-fg"
       >
         <div className="mx-auto flex min-h-full w-full max-w-xl flex-col px-gutter pb-10 pt-3">
           <div className="flex min-h-14 items-center justify-between">

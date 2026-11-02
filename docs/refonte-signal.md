@@ -69,3 +69,7 @@ ssh nexora-pile 'cd /srv/nexora/src && bash deploy/pile.sh run --rm -T -v /srv/n
 - Le film de marque et la bande-annonce Creative portent encore l'ancienne identité ou des plans à risque de ressemblance (voir §2).
 - SEO : `noindex` tant que l'essai est fermé ; logo définitif et nouveau nom à venir (`brand.ts`).
 - Les captures et mesures sont faites au 02/11/2026 ; les médias manquants (DGX Spark, piliers, films par solution) restent à produire.
+
+## 7. Thème clair d'abord (3 novembre 2026)
+
+Verdict du fondateur : structure bonne, mais « trop sombre ». `<Section>` rend désormais le papier (`theme-light`) par défaut ; le sombre ne reste que pour le héros vidéo, les vitrines (vidéo, cartes `vitrine`), l'appel à l'action final et le pied de page (voir la charte, §3). Réglage par jetons (`globals.css`, `.theme-light`) et par `effectiveTone` (`blocks/tone.ts`) : aucun contenu Directus modifié, aucun média touché. Matières réteintées (grilles, halos, nuage de points, balayage, cadres de détection). Contrôles : `check:contrast` 50/50, axe sans violation (accueil de repli, tarifs, apps, agents, contact, modèles, VPS, docs API ; 390 et 1440 px).

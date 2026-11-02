@@ -65,7 +65,7 @@ export function CreativeShowcase({ lang }: { lang: Lang }) {
         </ol>
       </Section>
 
-      <Section tone="dark" aria-labelledby="plans-title">
+      <Section tone="light" surface aria-labelledby="plans-title">
         <h2 id="plans-title" className="text-h2 text-fg">
           {t.plansTitle}
         </h2>

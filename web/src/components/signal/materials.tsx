@@ -109,9 +109,7 @@ export function DetectionBox({
         <span
           className={cn(
             "label-mono absolute -top-5 left-0 whitespace-nowrap px-1 text-[0.625rem] leading-4",
-            hot
-              ? "bg-flare-500 text-abyss-950"
-              : "bg-abyss-950/80 text-ion-400",
+            hot ? "bg-flare-500 text-abyss-950" : "bg-bg/85 text-accent-text",
           )}
         >
           {label}
@@ -248,7 +246,7 @@ export function MediaPlaceholder({
     <div
       aria-hidden={children ? undefined : true}
       className={cn(
-        "relative isolate overflow-hidden bg-abyss-950",
+        "relative isolate overflow-hidden bg-surface-2",
         "bg-[radial-gradient(80%_60%_at_70%_20%,rgb(62_200_255/0.16),transparent_70%),radial-gradient(60%_50%_at_10%_100%,rgb(62_200_255/0.08),transparent_70%)]",
         className,
       )}
@@ -304,7 +302,8 @@ function RackLines() {
             width="104"
             height="11"
             rx="1.5"
-            fill="rgb(238 243 250 / 0.03)"
+            fill="var(--fg)"
+            fillOpacity={0.03}
             stroke="var(--line)"
             strokeWidth="0.75"
           />

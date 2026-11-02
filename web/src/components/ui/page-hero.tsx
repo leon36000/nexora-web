@@ -32,7 +32,7 @@ type PageHeroProps = {
 
 /**
  * En-tête commun des pages de l'application (Nexora Apps, modèles, comparateur, classements, agents, documentation de
- * l'API, contact) : une bande abysse à grille de précision (matière « Signal »), qui prolonge le héros de l'accueil en
+ * l'API, contact) : une bande claire à grille de précision (matière « Signal »), qui prolonge le héros de l'accueil en
  * plus bas et plus calme. Une seule grammaire : fil d'Ariane, pastilles, titre h1, chapeau, actions, bandeau de repères.
  */
 export function PageHero({
@@ -50,7 +50,7 @@ export function PageHero({
 }: PageHeroProps) {
   return (
     <Section
-      tone="dark"
+      tone="light"
       flush
       aria-labelledby={titleId}
       className={cn("pb-14 pt-10 md:pb-20 md:pt-16", className)}

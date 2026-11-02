@@ -6,7 +6,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { PricingBlock } from "@/server/cms/model";
 import { CARD_GRID, cellClasses } from "./card-grid";
-import { anchorProps, toneProps } from "./tone";
+import { anchorProps, effectiveTone, toneProps } from "./tone";
 
 /**
  * Offres et tarifs. Aucun prix n'est inventé : on affiche ce que le CMS publie, et « Sur demande » (dictionnaire)
@@ -26,7 +26,7 @@ export function PricingBlockView({
   const cells = cellClasses(block.plans.length, 3);
   return (
     <Section
-      {...toneProps(block.tone)}
+      {...toneProps(effectiveTone(block))}
       joined={joined}
       aria-labelledby={block.title ? titleId : undefined}
       id={anchor.id}
