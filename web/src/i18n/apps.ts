@@ -130,15 +130,7 @@ export const APPS = [
     category: "BusinessApplication",
     cta: "waitlist",
     related: ["outils"],
-    claims: [
-      "CL-AP05",
-      "CL-T04",
-      "CL-CR01",
-      "CL-CR02",
-      "CL-CR03",
-      "CL-CR04",
-      "CL-CR05",
-    ],
+    claims: ["CL-AP05", "CL-T04", "CL-CR01", "CL-CR02", "CL-CR03", "CL-CR05"],
   },
   {
     slug: "outils",
