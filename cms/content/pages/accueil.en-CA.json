@@ -245,7 +245,7 @@
     {
       "collection": "block_section",
       "role": "Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ».",
-      "claims": ["CL-70", "CL-71", "CL-02", "CL-E02", "CL-E01"],
+      "claims": ["CL-70", "CL-71", "CL-E02", "CL-02", "CL-E01"],
       "fields": {
         "media_position": "right",
         "visual": "signal-infrastructure",
@@ -254,7 +254,7 @@
       },
       "translation": {
         "title": "At your site. Or at ours.",
-        "body": "<p>AI is sovereign when you know where it runs, who can access it and where your data goes, and you can leave. We install it on your servers, or we host it on ours, in Quebec. Either way, your data stays yours.</p><p><a href=\"/en/deployment/on-premises/\">Installed at your site</a> · <a href=\"/en/deployment/hosted-quebec/\">Hosted with us</a> · <a href=\"/en/sovereignty/\">Our approach</a> · <a href=\"/en/your-data/\">Your data</a></p>"
+        "body": "<p>AI is sovereign when you know where it runs, who can access it and where your data goes, and you can leave. We install it on your servers, or we host it on ours, in Quebec. Either way, your data stays yours.</p><p><a href=\"/en/deployment/on-premises/\">Installed at your site</a> · <a href=\"/en/deployment/hosted-quebec/\">Hosted with us</a> · <a href=\"/en/sovereignty/\">Our approach</a> · <a href=\"/en/your-data/\">Your data</a> · <a href=\"/en/resources/\">Our guides</a></p>"
       }
     },
     {

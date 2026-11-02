@@ -129,7 +129,7 @@ Creative est en préparation, sans date d'ouverture. [Voir Nexora Creative](/app
 
 ### Bloc 8 — Section (`block_section`)
 
-*Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ». · Affirmations : CL-70, CL-71, CL-02, CL-E02, CL-E01*
+*Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ». · Affirmations : CL-70, CL-71, CL-E02, CL-02, CL-E01*
 
 Réglages : `media_position=right`, `visual=signal-infrastructure`, `tone=sable`, `anchor_id=souverainete`
 
@@ -137,7 +137,7 @@ Réglages : `media_position=right`, `visual=signal-infrastructure`, `tone=sable`
 
 Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nous l'installons sur vos serveurs, ou nous l'hébergeons sur les nôtres, au Québec. Dans les deux cas, vos données restent à vous.
 
-[Installée chez vous](/deploiement/sur-place/) · [Hébergée chez nous](/deploiement/heberge-quebec/) · [Notre approche](/souverainete/) · [Vos données](/vos-donnees/)
+[Installée chez vous](/deploiement/sur-place/) · [Hébergée chez nous](/deploiement/heberge-quebec/) · [Notre approche](/souverainete/) · [Vos données](/vos-donnees/) · [Nos guides](/ressources/)
 
 ### Bloc 9 — Cartes (`block_cards`)
 

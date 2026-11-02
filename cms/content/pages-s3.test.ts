@@ -63,6 +63,7 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
     en: "solutions/ai-surveillance",
   },
   infrastructure: { fr: "infrastructure", en: "infrastructure" },
+  ressources: { fr: "ressources", en: "resources" },
   services: { fr: "services", en: "services" },
   "services-installation-serveurs-ia": {
     fr: "services/installation-serveurs-ia",
@@ -1069,9 +1070,9 @@ describe("chargement dans Directus", () => {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
       expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
     }
-    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 3 pages de la refonte « Signal » ;
+    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 4 pages de la refonte « Signal » ;
     // 5 gabarits juridiques + le comparatif nommé
-    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 3);
+    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 4);
     expect(DRAFTS).toHaveLength(6);
     expect(DRAFTS).toContain("guides-alternative-openrouter");
   });

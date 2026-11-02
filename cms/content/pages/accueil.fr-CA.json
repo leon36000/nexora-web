@@ -245,7 +245,7 @@
     {
       "collection": "block_section",
       "role": "Souveraineté et sécurité : une seule mention du Québec (hébergement) ; définition de « souveraine ».",
-      "claims": ["CL-70", "CL-71", "CL-02", "CL-E02", "CL-E01"],
+      "claims": ["CL-70", "CL-71", "CL-E02", "CL-02", "CL-E01"],
       "fields": {
         "media_position": "right",
         "visual": "signal-infrastructure",
@@ -254,7 +254,7 @@
       },
       "translation": {
         "title": "Chez vous. Ou chez nous.",
-        "body": "<p>Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nous l'installons sur vos serveurs, ou nous l'hébergeons sur les nôtres, au Québec. Dans les deux cas, vos données restent à vous.</p><p><a href=\"/deploiement/sur-place/\">Installée chez vous</a> · <a href=\"/deploiement/heberge-quebec/\">Hébergée chez nous</a> · <a href=\"/souverainete/\">Notre approche</a> · <a href=\"/vos-donnees/\">Vos données</a></p>"
+        "body": "<p>Une IA est souveraine quand vous savez où elle tourne, qui y accède et où vont vos données, et que vous pouvez la quitter. Nous l'installons sur vos serveurs, ou nous l'hébergeons sur les nôtres, au Québec. Dans les deux cas, vos données restent à vous.</p><p><a href=\"/deploiement/sur-place/\">Installée chez vous</a> · <a href=\"/deploiement/heberge-quebec/\">Hébergée chez nous</a> · <a href=\"/souverainete/\">Notre approche</a> · <a href=\"/vos-donnees/\">Vos données</a> · <a href=\"/ressources/\">Nos guides</a></p>"
       }
     },
     {
