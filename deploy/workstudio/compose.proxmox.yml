@@ -4,6 +4,12 @@
 # (raccourci : ws.sh). Ajoute : `front` (nginx, seul port publié, 80, filtré par ufw au réseau local) et `mailpit`
 # (courriel PROVISOIRE, profil `mail-provisoire`). Le domaine vient d'UNE variable de pile.env : NEXORA_DOMAINE.
 services:
+  # Liste d'hôtes internes autorisés pour les blocs API/HTTP (garde SSRF du produit, inchangée pour tout le reste) : on y ajoute
+  # UNIQUEMENT le courrier factice `mailpit` pour que le workflow de démonstration puisse « envoyer » sans rien sortir du réseau.
+  workstudio:
+    environment:
+      EGRESS_ALLOWED_HOSTS: nexora-api,nexora-connect,searxng,mailpit
+
   front:
     image: nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
     restart: unless-stopped
