@@ -50,6 +50,7 @@ export const SECTION_VISUALS = [
   "signal-accueil",
   "signal-surveillance",
   "signal-infrastructure",
+  "espace-de-travail",
 ] as const;
 export type SectionVisual = (typeof SECTION_VISUALS)[number];
 

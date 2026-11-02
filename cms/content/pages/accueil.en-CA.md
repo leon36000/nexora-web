@@ -13,7 +13,7 @@
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-RV01, CL-SV01, CL-IN01, CL-E01, CL-E02*
+*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-E01, CL-E02, CL-IN01, CL-RV01, CL-SV01, CL-WS01*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `signature=champ`, `video=[object Object]`, `media=[object Object]`
 
@@ -21,43 +21,34 @@ Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `sign
 
 # AI that sees, listens and acts.
 
-AI that works for your business. Under your control. A reception that answers every call, cameras that are finally watched, agents that carry out your tasks, installed at your site or on our servers.
+AI that works for your business. Under your control. Your complete AI work environment, in the browser; a reception that answers every call and cameras that are finally watched, installed at your site or on our servers.
 
-[Plan a consultation](/en/contact/) · [See solutions](/en/solutions/)
+[Plan a consultation](/en/contact/) · [Discover the workspace](/en/suite/)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
 
-*Trois piliers : automatiser, équiper, créer et bâtir (vitrine, images stables). · Affirmations : CL-RV01, CL-SV01, CL-IN01, CL-IN02, CL-CR01, CL-AP05, CL-AP06, CL-AP07*
+*Espace de travail dans le navigateur : la grande maquette (panneaux) et les six modules avec leur état ; premier récit de l'accueil. · Affirmations : CL-WS01, CL-WS02, CL-20, CL-AP05, CL-AP06, CL-AP07, CL-CR01*
 
-Réglages : `columns=3`, `layout=vitrine`, `tone=clair`, `anchor_id=piliers`
+Réglages : `media_position=top`, `visual=espace-de-travail`, `tone=sombre`, `anchor_id=espace-de-travail`
 
-## Automate. Equip. Create.
+## All your AI work, in one tab.
 
-Three ways to put AI to work for you, with one team from start to finish.
+Your coding agent, your documents, your agents and workflows, Creative and WebPilot open side by side in the browser, as panels you arrange your way. One account, one credit balance. The work runs in the cloud, and your agents will also be able to use the power of your own computer.
 
-#### Reception, surveillance, agents.
+[Discover the workspace](/en/suite/)
 
-A virtual reception that answers calls, emails and text messages. Cameras monitored in real time. Agents and workflows (automated sequences of tasks) that act with your approval.
-
-→ [See solutions](/en/solutions/)
-
-#### Your AI infrastructure.
-
-Compact AI machines, AI workstations or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.
-
-→ [See infrastructure](/en/infrastructure/)
-
-#### Creative, WorkStudio, Code.
-
-A studio for image, video and sound, a studio for agents, code, answers drawn from your documents. Creative, Code and RAG are in preparation.
-
-→ [See the tools](/en/apps/)
+- **Coding agent.** It reads your code, changes it, writes the tests and shows you the change to review. Coming soon, no date.
+- **Your documents, searchable.** Ask a question: the answer draws on your files and cites its sources (RAG). Coming soon, no date.
+- **Agents and workflows.** WorkStudio designs and runs your agents; a step can wait for your approval before acting. Available.
+- **Creative and WebPilot.** Image, video and sound from a description; a browser that AI drives for you. In preparation.
+- **One account, one balance.** Every tool draws on the same credits, with your caps, your keys and your logs.
+- **Your computer, put to work.** Your agents will be able to run the work on your machine, linked to your account, instead of in the cloud. In preparation.
 
 ### Bloc 3 — Section (`block_section`)
 
 *Réception virtuelle : maquette (onde, conversations), lien vers la page. · Affirmations : CL-RV01, CL-RV02*
 
-Réglages : `media_position=right`, `visual=signal-accueil`, `tone=sombre`, `anchor_id=reception`
+Réglages : `media_position=right`, `visual=signal-accueil`, `tone=clair`, `anchor_id=reception`
 
 ## A reception that never sleeps.
 
@@ -69,7 +60,7 @@ It answers your calls, emails and text messages, day and night, in French and En
 
 *Surveillance IA : message clé du fondateur, maquette (détections, chronologie). · Affirmations : CL-SV01, CL-SV02, CL-SV03*
 
-Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=clair`, `anchor_id=surveillance`
+Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=sable`, `anchor_id=surveillance`
 
 ## Thousands of hours, finally watched.
 
@@ -107,13 +98,15 @@ Rack servers, at your site or hosted with us.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue. · Affirmations : CL-01*
+*Modèles et API : un compte, une API au format OpenAI, le catalogue public ; vente non ouverte. · Affirmations : CL-27, CL-12, CL-T02*
 
-Réglages : `media_position=top`, `tone=clair`, `anchor_id=film`, `media=[object Object]`, `poster=[object Object]`
+Réglages : `media_position=right`, `visual=catalogue-modeles`, `tone=clair`, `anchor_id=modeles`
 
-## One minute to see us.
+## One key. Every model in the catalogue.
 
-Our brand film, without dialogue, on original music. Every shot was generated by AI, with the tools we install.
+A single account gives you access to several AI models through an API in the OpenAI format, which most tools already understand. The catalogue shows each model's capabilities, where it is hosted and its price in credits. You can browse it now; sales are not open yet.
+
+[Browse the models](/en/modeles/) · [The gateway in detail](/en/passerelle-api-modeles/)
 
 ### Bloc 7 — Section (`block_section`)
 
@@ -232,7 +225,17 @@ Status: no availability or date is announced at this stage.
 
 → [See the suite](/en/suite/)
 
-### Bloc 11 — FAQ (`block_faq`)
+### Bloc 11 — Section (`block_section`)
+
+*Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue. · Affirmations : CL-01*
+
+Réglages : `media_position=top`, `tone=clair`, `anchor_id=film`, `media=[object Object]`, `poster=[object Object]`
+
+## One minute to see us.
+
+Our brand film, without dialogue, on original music. Every shot was generated by AI, with the tools we install.
+
+### Bloc 12 — FAQ (`block_faq`)
 
 *FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09, CL-PL04*
 
@@ -304,7 +307,7 @@ It depends on the case. At our site, you buy no server. At yours, we size the ha
 
 Software that carries out a task for you, with the tools and documents you allow it, and that asks for your approval before an important action.
 
-### Bloc 12 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
 *CTA final : le seul point de chaleur de l'écran (bouton flare). · Affirmations : CL-01, CL-P02, CL-PL03*
 

@@ -286,6 +286,7 @@ const VISUALS = [
   "signal-accueil",
   "signal-surveillance",
   "signal-infrastructure",
+  "espace-de-travail",
 ];
 const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);

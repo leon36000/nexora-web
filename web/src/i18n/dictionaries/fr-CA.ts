@@ -45,6 +45,49 @@ export const frCA = {
     /** Menus de l'en-tête (refonte « Signal », 02/11/2026) : repli quand Directus ne fournit pas la navigation. */
     menus: [
       {
+        label: "Espace de travail",
+        items: [
+          {
+            label: "Espace de travail",
+            description:
+              "Agent de code, documents, agents et Creative, côte à côte dans le navigateur.",
+            href: "/suite",
+          },
+          {
+            label: "Nexora Creative",
+            description: "Image, vidéo et son : l’IA fait le gros du travail.",
+            href: "/apps/creative",
+          },
+          {
+            label: "WorkStudio",
+            description:
+              "Le studio pour concevoir des agents et des flux de travaux.",
+            href: "/workstudio",
+          },
+          {
+            label: "Nexora Code",
+            description:
+              "Un environnement de code avec l’IA, dans votre compte.",
+            href: "/apps/code",
+          },
+          {
+            label: "Nexora RAG",
+            description: "Des réponses tirées de vos propres documents.",
+            href: "/apps/rag",
+          },
+          {
+            label: "WebPilot",
+            description: "Un navigateur que l’IA pilote pour vous.",
+            href: "/apps/webpilot",
+          },
+          {
+            label: "Toutes les applications",
+            description: "L’état de chaque outil est indiqué.",
+            href: "/apps",
+          },
+        ],
+      },
+      {
         label: "Solutions",
         items: [
           {
@@ -99,43 +142,6 @@ export const frCA = {
             description:
               "Une passerelle unique vers des modèles, avec la résidence des données affichée.",
             href: "/modeles",
-          },
-        ],
-      },
-      {
-        label: "Outils",
-        items: [
-          {
-            label: "Nexora Creative",
-            description: "Image, vidéo et son : l’IA fait le gros du travail.",
-            href: "/apps/creative",
-          },
-          {
-            label: "WorkStudio",
-            description:
-              "Le studio pour concevoir des agents et des flux de travaux.",
-            href: "/workstudio",
-          },
-          {
-            label: "Nexora Code",
-            description:
-              "Un environnement de code avec l’IA, dans votre compte.",
-            href: "/apps/code",
-          },
-          {
-            label: "Nexora RAG",
-            description: "Des réponses tirées de vos propres documents.",
-            href: "/apps/rag",
-          },
-          {
-            label: "WebPilot",
-            description: "Un navigateur que l’IA pilote pour vous.",
-            href: "/apps/webpilot",
-          },
-          {
-            label: "Toutes les applications",
-            description: "L’état de chaque outil est indiqué.",
-            href: "/apps",
           },
         ],
       },
@@ -298,6 +304,8 @@ export const frCA = {
     modules: { detail: "Voir le détail" },
     // Textes alternatifs des schémas de section (`visual`) : le dessin décrit toujours ce que dit le texte voisin.
     visuals: {
+      "espace-de-travail":
+        "Maquette de l’espace de travail dans le navigateur : un agent de code propose un changement à relire, vos documents répondent avec leurs sources, un flux attend votre approbation, Creative prépare une vidéo, les crédits sont partagés et l’agent peut s’exécuter sur votre ordinateur (en préparation).",
       "signal-accueil":
         "Maquette de la réception virtuelle : un appel entrant transcrit en direct, la réponse qui propose un nouveau rendez-vous, et le fil des appels, courriels et textos déjà traités.",
       "signal-surveillance":

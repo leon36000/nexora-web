@@ -750,7 +750,66 @@
   }
 }
 
+@keyframes ws-dock {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ws-type {
+  0%,
+  8% {
+    clip-path: inset(0 100% 0 0);
+  }
+  30%,
+  92% {
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@keyframes ws-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes ws-progress {
+  from {
+    transform: scaleX(0.15);
+  }
+  to {
+    transform: scaleX(1.6);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .ws-dock {
+    animation: ws-dock 0.8s var(--ease-signal) both;
+    animation-delay: calc(var(--d, 0) * 110ms);
+  }
+
+  .ws-type {
+    animation: ws-type 9s steps(36, end) infinite;
+    animation-delay: calc(var(--d, 0) * 0.9s);
+  }
+
+  .ws-caret {
+    animation: ws-caret 1.05s steps(1, end) infinite;
+  }
+
+  .ws-progress {
+    transform-origin: left;
+    animation: ws-progress 7s var(--ease-out) infinite alternate;
+  }
+
   .rise {
     animation: rise-load 0.9s var(--ease-signal) both;
     animation-delay: calc(var(--d, 0) * 90ms);

@@ -510,6 +510,7 @@ const SECTION_VISUALS: [string, string][] = [
     "signal-infrastructure",
     "Schéma : infrastructure IA (chez vous ou chez nous)",
   ],
+  ["espace-de-travail", "Maquette : espace de travail dans le navigateur"],
 ];
 /** Statut d'une carte en disposition « modules » ; vide = aucun badge. */
 export const CARD_STATUSES = [

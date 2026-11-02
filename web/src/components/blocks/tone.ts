@@ -21,7 +21,14 @@ export function effectiveTone(block: Block): EffectiveTone {
     case "cta":
       return fromTone(block.tone ?? "sombre", true);
     case "section":
-      return fromTone(block.tone, block.media?.kind === "video");
+      // une vidéo, ou une scène de produit large (schéma « au-dessus »), est une vitrine
+      return fromTone(
+        block.tone,
+        block.media?.kind === "video" ||
+          (Boolean(block.visual) &&
+            block.visual !== "aucun" &&
+            block.mediaPosition === "top"),
+      );
     case "cards":
       return fromTone(block.tone, block.layout === "vitrine");
     default:

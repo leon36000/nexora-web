@@ -13,7 +13,7 @@
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-RV01, CL-SV01, CL-IN01, CL-E01, CL-E02*
+*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-E01, CL-E02, CL-IN01, CL-RV01, CL-SV01, CL-WS01*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `signature=champ`, `video=[object Object]`, `media=[object Object]`
 
@@ -21,43 +21,34 @@ Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `sign
 
 # L'IA qui voit, écoute et agit.
 
-L'IA qui travaille pour votre entreprise. Sous votre contrôle. Une réception qui répond à chaque appel, des caméras enfin regardées, des agents qui exécutent vos tâches, installés chez vous ou sur nos serveurs.
+L'IA qui travaille pour votre entreprise. Sous votre contrôle. Votre environnement de travail IA complet, dans le navigateur ; une réception qui répond à chaque appel et des caméras enfin regardées, installées chez vous ou sur nos serveurs.
 
-[Planifier une consultation](/contact/) · [Voir les solutions](/solutions/)
+[Planifier une consultation](/contact/) · [Découvrir l'espace de travail](/suite/)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
 
-*Trois piliers : automatiser, équiper, créer et bâtir (vitrine, images stables). · Affirmations : CL-RV01, CL-SV01, CL-IN01, CL-IN02, CL-CR01, CL-AP05, CL-AP06, CL-AP07*
+*Espace de travail dans le navigateur : la grande maquette (panneaux) et les six modules avec leur état ; premier récit de l'accueil. · Affirmations : CL-WS01, CL-WS02, CL-20, CL-AP05, CL-AP06, CL-AP07, CL-CR01*
 
-Réglages : `columns=3`, `layout=vitrine`, `tone=clair`, `anchor_id=piliers`
+Réglages : `media_position=top`, `visual=espace-de-travail`, `tone=sombre`, `anchor_id=espace-de-travail`
 
-## Automatiser. Équiper. Créer.
+## Tout votre travail d'IA, en un onglet.
 
-Trois façons de mettre l'IA au travail chez vous, avec une seule équipe du début à la fin.
+Votre agent de code, vos documents, vos agents et vos flux de travaux, Creative et WebPilot s'ouvrent côte à côte dans le navigateur, en panneaux que vous disposez à votre façon. Un seul compte, un seul solde de crédits. Le travail s'exécute dans le nuage, et vos agents pourront aussi mettre à profit la puissance de votre propre ordinateur.
 
-#### Réception, surveillance, agents.
+[Découvrir l'espace de travail](/suite/)
 
-Une réception virtuelle qui répond aux appels, aux courriels et aux textos. Des caméras surveillées en temps réel. Des agents et des flux de travaux (des enchaînements automatisés de tâches) qui agissent avec votre approbation.
-
-→ [Voir les solutions](/solutions/)
-
-#### Votre infrastructure IA.
-
-Postes d'IA compacts, stations d'IA ou baies de serveurs, installés chez vous avec les modèles, la sécurité et la supervision, ou hébergés sur nos serveurs.
-
-→ [Voir l'infrastructure](/infrastructure/)
-
-#### Creative, WorkStudio, Code.
-
-Un studio d'image, de vidéo et de son, un studio d'agents, du code, des réponses tirées de vos documents. Creative, Code et RAG sont en préparation.
-
-→ [Voir les outils](/apps/)
+- **Agent de code.** Il lit votre code, le modifie, écrit les tests et vous présente le changement à relire. Bientôt, sans date.
+- **Vos documents, interrogeables.** Posez une question : la réponse s'appuie sur vos fichiers et cite ses sources (RAG). Bientôt, sans date.
+- **Agents et flux de travaux.** WorkStudio conçoit et pilote vos agents ; une étape peut attendre votre approbation avant d'agir. Disponible.
+- **Creative et WebPilot.** L'image, la vidéo et le son à partir d'une description ; un navigateur que l'IA pilote pour vous. En préparation.
+- **Un compte, un solde.** Chaque outil puise dans les mêmes crédits, avec vos plafonds, vos clés et vos journaux.
+- **Votre ordinateur, mis à profit.** Vos agents pourront exécuter le travail sur votre poste, relié à votre compte, plutôt que dans le nuage. En préparation.
 
 ### Bloc 3 — Section (`block_section`)
 
 *Réception virtuelle : maquette (onde, conversations), lien vers la page. · Affirmations : CL-RV01, CL-RV02*
 
-Réglages : `media_position=right`, `visual=signal-accueil`, `tone=sombre`, `anchor_id=reception`
+Réglages : `media_position=right`, `visual=signal-accueil`, `tone=clair`, `anchor_id=reception`
 
 ## Une réception qui ne dort jamais.
 
@@ -69,7 +60,7 @@ Elle répond à vos appels, à vos courriels et à vos textos, jour et nuit, en 
 
 *Surveillance IA : message clé du fondateur, maquette (détections, chronologie). · Affirmations : CL-SV01, CL-SV02, CL-SV03*
 
-Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=clair`, `anchor_id=surveillance`
+Réglages : `media_position=left`, `visual=signal-surveillance`, `tone=sable`, `anchor_id=surveillance`
 
 ## Des milliers d'heures, enfin regardées.
 
@@ -107,13 +98,15 @@ Des serveurs en baie, chez vous ou hébergés chez nous.
 
 ### Bloc 6 — Section (`block_section`)
 
-*Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue. · Affirmations : CL-01*
+*Modèles et API : un compte, une API au format OpenAI, le catalogue public ; vente non ouverte. · Affirmations : CL-27, CL-12, CL-T02*
 
-Réglages : `media_position=top`, `tone=clair`, `anchor_id=film`, `media=[object Object]`, `poster=[object Object]`
+Réglages : `media_position=right`, `visual=catalogue-modeles`, `tone=clair`, `anchor_id=modeles`
 
-## Une minute pour nous voir.
+## Une clé. Tous les modèles du catalogue.
 
-Notre film de marque, sans dialogue, sur une musique originale. Tous les plans ont été générés par IA, avec les outils que nous installons.
+Un seul compte donne accès à plusieurs modèles d'IA par une API au format d'OpenAI, que la plupart des outils comprennent déjà. Le catalogue affiche, pour chaque modèle, ses capacités, son lieu d'hébergement et son prix en crédits. Il se consulte dès maintenant ; la vente n'est pas encore ouverte.
+
+[Parcourir les modèles](/modeles/) · [La passerelle en détail](/passerelle-api-modeles/)
 
 ### Bloc 7 — Section (`block_section`)
 
@@ -232,7 +225,17 @@ Nexora Corpus pour préparer vos documents et vos données, et les modèles Quan
 
 → [Voir la suite](/suite/)
 
-### Bloc 11 — FAQ (`block_faq`)
+### Bloc 11 — Section (`block_section`)
+
+*Vitrine du film de marque (60 s) : façade avec affiche, vidéo propre à chaque langue. · Affirmations : CL-01*
+
+Réglages : `media_position=top`, `tone=clair`, `anchor_id=film`, `media=[object Object]`, `poster=[object Object]`
+
+## Une minute pour nous voir.
+
+Notre film de marque, sans dialogue, sur une musique originale. Tous les plans ont été générés par IA, avec les outils que nous installons.
+
+### Bloc 12 — FAQ (`block_faq`)
 
 *FAQ : objections du rapport 06 §8.4, questions de la vague 2 et du modèle à crédits ; réponses vraies seulement, autonomes et citables. · Affirmations : CL-02, CL-04, CL-05, CL-06, CL-07, CL-08, CL-10, CL-12, CL-20, CL-21, CL-22, CL-23, CL-25, CL-AP01, CL-AP06, CL-AP07, CL-E01, CL-E02, CL-E03, CL-E04, CL-P02, CL-PL01, CL-PL02, CL-PL03, CL-S01, CL-S02, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T07, CL-T09, CL-PL04*
 
@@ -304,7 +307,7 @@ Cela dépend du cas. Chez nous, vous n'achetez pas de serveur. Chez vous, nous d
 
 Un logiciel qui accomplit une tâche à votre place, avec les outils et les documents que vous lui autorisez, et qui demande votre validation avant une action importante.
 
-### Bloc 12 — Appel à l'action (`block_cta`)
+### Bloc 13 — Appel à l'action (`block_cta`)
 
 *CTA final : le seul point de chaleur de l'écran (bouton flare). · Affirmations : CL-01, CL-P02, CL-PL03*
 

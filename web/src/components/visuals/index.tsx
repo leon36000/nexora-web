@@ -16,6 +16,7 @@ import {
 } from "./signal";
 import { VisionDiagram } from "./vision";
 import { VpsConsoleMock } from "./vps-console";
+import { WorkspaceMock } from "./workspace";
 
 type Shown = Exclude<SectionVisual, "aucun">;
 
@@ -78,6 +79,12 @@ export function SectionVisualFigure({
         </VisualFigure>
       );
     }
+    case "espace-de-travail":
+      return (
+        <VisualFigure alt={alt} caption={v.caption.mock}>
+          <WorkspaceMock t={v.workspace} />
+        </VisualFigure>
+      );
     case "flux-workstudio":
       return (
         <VisualFigure alt={alt} caption={v.caption.mock} stage="braise">

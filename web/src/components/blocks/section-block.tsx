@@ -77,6 +77,56 @@ export function SectionBlockView({
     </div>
   );
   const cells = cellClasses(block.items.length, 3);
+  // Scène large : un schéma « au-dessus » devient la vitrine d'un produit, sous un titre en deux colonnes.
+  if (visual && block.mediaPosition === "top") {
+    return (
+      <Section
+        {...toneProps(effectiveTone(block))}
+        joined={joined}
+        aria-labelledby={block.title ? titleId : undefined}
+        id={anchor.id}
+        className={cn(anchor.className, "overflow-hidden")}
+      >
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-16">
+          {block.title ? (
+            <div className="lg:col-span-7">
+              <SectionHeader id={titleId} title={block.title} narrow={false} />
+            </div>
+          ) : null}
+          {block.body ? (
+            <RichText
+              nodes={block.body}
+              demote={Boolean(block.title)}
+              className="max-w-xl text-lead text-fg-muted lg:col-span-5"
+            />
+          ) : null}
+        </div>
+        <div className="relative mt-12 md:mt-16">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-24 -top-24 bottom-1/3 -z-10 bg-[radial-gradient(60%_55%_at_50%_0%,rgb(62_200_255/0.22),transparent_72%)]"
+          />
+          {media}
+        </div>
+        {block.items.length > 0 ? (
+          <ul className="mt-12 grid gap-x-10 gap-y-8 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-3 md:mt-16">
+            {block.items.map((item) => (
+              <li key={`${item.title ?? ""}|${item.text ?? ""}`}>
+                {item.title ? (
+                  <h3 className="text-h4 text-fg">{item.title}</h3>
+                ) : null}
+                {item.text ? (
+                  <p className={cn("text-fg-muted", item.title && "mt-2")}>
+                    {item.text}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </Section>
+    );
+  }
   // Bloc « visuel seul » : ni titre, ni texte, ni points. La maquette occupe la bande, centrée (vitrine d'un produit).
   if (visual && !block.title && !block.body && block.items.length === 0) {
     return (

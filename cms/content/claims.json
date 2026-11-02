@@ -1,5 +1,5 @@
 {
-  "version": 11,
+  "version": 12,
   "date": "2026-11-02",
   "note": "Registre des affirmations sensibles utilisées par les pages du site (accueil, OPSYS-AI, pages du jalon S3 et pages de la vague 2 : Nexora Vision, Nexora Croissance, Vos données). Chaque entrée est chargée dans la collection privée `claims` de Directus avec l'état « en_revue » : seule une personne habilitée peut la passer à « approuvée ». Les formulations retirées sont dans `retirees`. Les entrées de type « a_completer » sont des points à fournir par le fondateur : elles ne sont citées par aucune page et restent à l'état « brouillon ». Version 5 (29/10/2026) : passerelle d'API de modèles et deux guides (IA pour PME, agents IA), affirmations CL-S01 à CL-S06. Version 7 (29/10/2026) : adaptation des fiches de gabarits au Québec (CL-M02 réécrite, CL-111 mise à jour, CL-M12 à CL-M15 ajoutées, formulations retirées R-54 à R-56). Version 8 (30/10/2026) : page Tarifs refaite pour le modèle à crédits (affirmations CL-T01 à CL-T10, citées par web/src/i18n/dictionaries/pricing-fr-CA.ts). Version 9 (30/10/2026) : panneau « Mes outils » et fiches Nexora Apps pour le modèle à crédits (CL-AP01 et CL-AP04 mises à jour, CL-AP06 à CL-AP08 ajoutées pour Nexora Code hébergé, le RAG et Nexora Bot, citées par web/src/i18n/apps.ts). Version 10 (30/10/2026) : polissage du contenu pour le modèle à crédits (CL-PL01 à CL-PL04 : un compte, deux voies, WorkStudio ouvert tant qu'il reste un crédit, solde à zéro ; CL-SU01 : vocation de Corpus ; CL-28 réduite à Corpus, Quanta et Helix), voir docs/marketing/audit-contenu-2026-10-30.md.",
   "claims": [
@@ -2747,6 +2747,30 @@
       "evidence": "Offre définie par le fondateur (§3.4, « monitoring ») ; aucun niveau de service chiffré.",
       "evidence_url": null,
       "source_version": "Mandat du fondateur du 02/11/2026, marketing/nexora/REFONTE-2026-11.md §3.4",
+      "approval_status": "en_revue",
+      "valid_from": "2026-11-02",
+      "valid_until": null
+    },
+    {
+      "id": "CL-WS01",
+      "kind": "produit",
+      "statement": "Nexora AI réunit ses outils (WorkStudio, Nexora Code, Nexora RAG, Creative, WebPilot) dans un même espace de travail ouvert dans le navigateur, avec un seul compte et un seul solde de crédits ; seul WorkStudio est disponible, les autres outils sont en préparation.",
+      "scope": "Espace de travail (accueil, page Suite).",
+      "evidence": "WorkStudio s'ouvre depuis « Mes outils » (docs/workstudio-integre.md) ; le panneau et les crédits partagés sont décrits dans docs/panneau-mes-outils.md et docs/credits-et-offres.md ; Code, RAG et Creative sont « bientôt » ou « en préparation ».",
+      "evidence_url": null,
+      "source_version": "Demande du fondateur du 02/11/2026 (refonte visuelle 2) ; docs/nexora-code.md ; docs/workstudio-integre.md",
+      "approval_status": "en_revue",
+      "valid_from": "2026-11-02",
+      "valid_until": null
+    },
+    {
+      "id": "CL-WS02",
+      "kind": "produit",
+      "statement": "Les agents de l'espace de travail pourront exécuter le travail sur l'ordinateur de la personne, relié à son compte ; cette fonction est en préparation.",
+      "scope": "Espace de travail : exécution sur le poste.",
+      "evidence": "Le client de Nexora Code (ligne de commande et application de bureau) se relie au compte par un code d'appareil, essayé de bout en bout (docs/nexora-code.md §1 et §7) ; l'exécution des agents de l'espace sur le poste n'est pas livrée.",
+      "evidence_url": null,
+      "source_version": "Demande du fondateur du 02/11/2026 (refonte visuelle 2) ; docs/nexora-code.md ; docs/workstudio-integre.md",
       "approval_status": "en_revue",
       "valid_from": "2026-11-02",
       "valid_until": null

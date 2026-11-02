@@ -1,4 +1,4 @@
-# Software suite — en-CA
+# Workspace — en-CA
 
 > Texte de relecture **généré** par `bun run cms/content/render-md.ts` à partir de `suite.en-CA.json`. Ne pas modifier à la main : corriger le JSON, puis régénérer.
 
@@ -6,26 +6,55 @@
 
 - Page : `suite` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/suite/` · slug : `suite`
-- Titre SEO (45 caractères) : AI software suite: one account, real statuses
-- Description SEO (148 caractères) : WorkStudio is available; Nexora Code and RAG are coming, no date; Corpus, Quanta and Helix have none. One account, credits, the status of each tool.
+- Titre SEO (32 caractères) : AI workspace in your web browser
+- Description SEO (159 caractères) : Coding agent, searchable documents, agents and workflows, Creative: your AI workspace in the browser, one account and one balance. Each tool's status is shown.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Promesse de la suite : une idée commune, un compte, l'état réel de chaque nom. · Affirmations : CL-20, CL-28, CL-P03, CL-PL01*
+*Promesse de la suite : une idée commune, un compte, l'état réel de chaque nom. · Affirmations : CL-20, CL-28, CL-P03, CL-PL01, CL-WS01*
 
 Réglages : `variant=sombre`, `perimeter_grid=true`
 
-**Software suite**
+**Workspace**
 
-# A suite, not a pile.
+# Your AI work environment, in the browser.
 
-One idea ties Nexora AI's products together: AI that works for you, under your control. One account, your credits, all your tools. WorkStudio is delivered; for every other name, here is the real status.
+Your coding agent, your documents, your agents and Creative open side by side, as panels you arrange your way. One account, your credits, all your tools. WorkStudio is delivered; for every other tool, here is the real status.
 
-[See WorkStudio](/en/workstudio/) · [See upcoming pricing](/en/pricing/)
+[See WorkStudio](/en/workstudio/) · [Plan a consultation](/en/contact/)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
+
+*La grande maquette de l'espace de travail et les six modules avec leur état. · Affirmations : CL-WS01, CL-WS02, CL-20, CL-AP05, CL-AP06, CL-AP07, CL-CR01*
+
+Réglages : `media_position=top`, `visual=espace-de-travail`, `tone=sombre`, `anchor_id=espace`
+
+## One tab. All your tools.
+
+Each tool is a panel: you open it, move it, put it next to another. The work runs in the cloud, on our servers; you install nothing to get started.
+
+- **Coding agent.** It reads your code, changes it, writes the tests and shows you the change to review. Coming soon, no date.
+- **Your documents, searchable.** Ask a question: the answer draws on your files and cites its sources (RAG). Coming soon, no date.
+- **Agents and workflows.** WorkStudio designs and runs your agents; a step can wait for your approval before acting. Available.
+- **Creative and WebPilot.** Image, video and sound from a description; a browser that AI drives for you. In preparation.
+- **One account, one balance.** Every tool draws on the same credits, with your caps, your keys and your logs.
+- **Your computer, put to work.** Your agents will be able to run the work on your machine, linked to your account, instead of in the cloud. In preparation.
+
+### Bloc 3 — Section (`block_section`)
+
+*Exécution sur l'ordinateur de la personne : la conception, et son état réel (en préparation). · Affirmations : CL-WS02*
+
+Réglages : `media_position=none`, `tone=sable`, `anchor_id=ordinateur`
+
+## Your computer, put to work.
+
+Work runs in the cloud by default. We are also preparing the reverse: linking your computer to your account, so your agents run the work there with its power, its files and its tools, and what must stay on site stays there.
+
+Status: in preparation, no date. The Nexora Code client already links to the account with a device code; running the workspace's agents on your machine is not delivered yet.
+
+### Bloc 4 — Cartes (`block_cards`)
 
 *Six noms, six états honnêtes : un livré, deux en préparation, trois sans date. · Affirmations : CL-20, CL-28, CL-12, CL-110, CL-P01, CL-PL02, CL-AP06, CL-AP07*
 
@@ -65,7 +94,7 @@ A model name. No availability or date is announced at this stage.
 
 A model name. No availability or date is announced at this stage.
 
-### Bloc 3 — Section (`block_section`)
+### Bloc 5 — Section (`block_section`)
 
 *Ce qui fait la cohérence d'une suite : mêmes règles d'accès, de budget, de validation et de données (déjà appliquées dans WorkStudio). · Affirmations : CL-22, CL-106, CL-21, CL-E03, CL-E04, CL-20, CL-PL01, CL-T01, CL-T04, CL-T05*
 
@@ -84,7 +113,7 @@ What makes a suite is not the number of names: it is working the same way everyw
 - **A person decides.** A step can wait for a person's approval before acting.
 - **Data that stays yours.** Never used to train a model, never sold.
 
-### Bloc 4 — Section (`block_section`)
+### Bloc 6 — Section (`block_section`)
 
 *Nexora Code : bientôt, hébergé, plugins compatibles prévus ; ce qui est gratuit et ce qui consomme. · Affirmations : CL-AP06, CL-AP01, CL-T04, CL-T05, CL-28*
 
@@ -98,7 +127,7 @@ It is planned to work with Claude Code and Codex plugins; anything that cannot b
 
 None of this is delivered and no date is announced. We announce no universal autonomy and no number of agents working together. [See the Nexora Code page](/en/apps/code/).
 
-### Bloc 5 — Section (`block_section`)
+### Bloc 7 — Section (`block_section`)
 
 *Nexora RAG : bientôt, création en un clic, clé d'API, espace et jetons en crédits. · Affirmations : CL-AP07, CL-T05, CL-T04*
 
@@ -110,7 +139,7 @@ Nexora RAG turns your documents into a knowledge base that AI queries, showing i
 
 You will pay for the storage it uses, counted in your plan's, and for the tokens that index your documents and rank the answers (embedding and rerank), in credits. None of this is delivered, no price is published and no date is announced. [See the Nexora RAG page](/en/apps/rag/).
 
-### Bloc 6 — Section (`block_section`)
+### Bloc 8 — Section (`block_section`)
 
 *Nexora Corpus : la vocation, deux destinations distinctes. · Affirmations : CL-SU01, CL-28, CL-07, CL-E03*
 
@@ -126,7 +155,7 @@ It will distinguish two destinations that must not be confused: updating a docum
 - **Data to specialize your own model.** Selection, quality, authorizations, usage rights, separation between training and evaluation, regression control.
 - **A starting rule.** An imported document does not authorize its use for training. No data goes automatically to both destinations, and Nexora AI never uses your data to train or fine-tune a model, except your own, at your written request.
 
-### Bloc 7 — Cartes (`block_cards`)
+### Bloc 9 — Cartes (`block_cards`)
 
 *Quanta et Helix : ce que nous ne publions pas. · Affirmations : CL-28*
 
@@ -152,7 +181,7 @@ Provenance of the base models, licence and deployment terms will be published wi
 
 No date and no availability promise at this stage.
 
-### Bloc 8 — FAQ (`block_faq`)
+### Bloc 10 — FAQ (`block_faq`)
 
 *FAQ de la suite. · Affirmations : CL-28, CL-12, CL-07, CL-E03, CL-AP06, CL-AP07, CL-T01, CL-T06, CL-PL01, CL-PL02*
 
@@ -184,7 +213,7 @@ No, never. Importing a document into a knowledge base does not authorize its use
 
 Nexora WorkStudio, as a demonstration on request. For construction and field services, OPSYS-AI, a product in development, with the availability level of each of its departments. The other tools (coding agent, RAG, bot, WebPilot, Privacy Router) are gathered in Nexora Apps, each with its real status.
 
-### Bloc 9 — Appel à l'action (`block_cta`)
+### Bloc 11 — Appel à l'action (`block_cta`)
 
 *CTA : discuter, voir OPSYS-AI. · Affirmations : CL-12, CL-AP06, CL-AP07, CL-T06*
 

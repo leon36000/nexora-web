@@ -10,17 +10,18 @@ import {
 describe("navigation du §6", () => {
   const header = NAVIGATION.filter((n) => n.placement === "header");
 
-  test("en-tête (refonte « Signal ») : Solutions ▾, Infrastructure ▾, Outils ▾, Tarifs, Ressources, puis Connexion et le bouton", () => {
+  test("en-tête (refonte visuelle 2) : Espace de travail ▾, Solutions ▾, Infrastructure ▾, Modèles et API, Tarifs, Ressources, puis Connexion et le bouton", () => {
     expect(header.map((n) => n.fr.label)).toEqual([
+      "Espace de travail",
       "Solutions",
       "Infrastructure",
-      "Outils",
+      "Modèles et API",
       "Tarifs",
       "Ressources",
       "Connexion",
       "Planifier une consultation",
     ]);
-    for (const m of ["Solutions", "Infrastructure", "Outils"])
+    for (const m of ["Espace de travail", "Solutions", "Infrastructure"])
       expect(header.find((n) => n.fr.label === m)?.fr.href).toBe("");
     expect(header.find((n) => n.fr.label === "Connexion")?.style).toBe(
       "utility",
@@ -30,12 +31,15 @@ describe("navigation du §6", () => {
     ).toBe("button");
   });
 
-  test("les nouvelles pages sont au premier rang de leur menu ; Creative ouvre le menu Outils", () => {
+  test("les nouvelles pages sont au premier rang de leur menu ; l'espace de travail ouvre son menu ; les modèles sont au premier niveau", () => {
     const first = (m: string) =>
       header.find((n) => n.fr.label === m)?.children?.[0]?.fr.href;
     expect(first("Solutions")).toBe("/solutions/reception-virtuelle/");
     expect(first("Infrastructure")).toBe("/infrastructure/");
-    expect(first("Outils")).toBe("/apps/creative/");
+    expect(first("Espace de travail")).toBe("/suite/");
+    expect(header.find((n) => n.fr.label === "Modèles et API")?.fr.href).toBe(
+      "/modeles/",
+    );
     const solutions = header.find((n) => n.fr.label === "Solutions");
     expect(solutions?.children?.map((c) => c.fr.href)).toContain(
       "/solutions/surveillance-ia/",
@@ -119,7 +123,7 @@ describe("rapprochement avec l'existant", () => {
       flat
         .filter((f) => f.parentLabel === null && f.placement === "header")
         .map((f) => f.sort),
-    ).toEqual([10, 20, 30, 40, 50, 60, 70]);
+    ).toEqual([10, 20, 30, 40, 50, 60, 70, 80]);
   });
 
   test("sans alignement, seules les entrées absentes sont créées ; rien n'est modifié", () => {
@@ -136,7 +140,7 @@ describe("rapprochement avec l'existant", () => {
   test("avec alignement, rang et lien sont réalignés ; un second passage ne change rien", () => {
     const plan = planNavigation([existingTarifs], flat, true);
     const upd = plan.updates.find((u) => u.id === "n1");
-    expect(upd?.body.sort).toBe(40);
+    expect(upd?.body.sort).toBe(50);
     expect(JSON.stringify(upd?.body.translations)).toContain("/en/tarifs/");
     // jamais un simple tableau (il remplacerait toutes les traductions et supprimerait les absentes)
     expect(Array.isArray(upd?.body.translations)).toBe(false);
@@ -144,7 +148,7 @@ describe("rapprochement avec l'existant", () => {
     expect(tr?.delete).toEqual([]);
     const aligned: ExistingNav = {
       ...existingTarifs,
-      sort: 40,
+      sort: 50,
       translations: existingTarifs.translations.map((t) => ({
         ...t,
         href: t.languages_code === "fr-CA" ? "/tarifs/" : "/en/tarifs/",
