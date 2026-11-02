@@ -8,6 +8,7 @@ const vues = [
   ["liste", "/modeles", "#catalogue"],
   ["filtre-code", "/modeles?etiquette=code&prix-entree=1&tri=prix-entree#catalogue", "#catalogue"],
   ["fiche", "/modeles/nexora/glm-5.3", "main"],
+  ["fiche-api", "/modeles/nexora/glm-5.3", "#api"],
   ["liste-en", "/en/modeles", "#catalogue"],
 ];
 const browser = await chromium.launch();
