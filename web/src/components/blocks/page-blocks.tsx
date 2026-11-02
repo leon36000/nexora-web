@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { ProductFamily } from "@/components/home/product-family";
 import type { Lang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getVisualsDictionary } from "@/i18n/visuals";
@@ -42,7 +41,8 @@ export function PageBlocks({
   const { cms } = getDictionary(lang);
   const visuals = getVisualsDictionary(lang);
   const hasHero = page.blocks.some((b) => b.type === "hero");
-  const toc = buildToc(page.blocks);
+  // L'accueil se lit d'un trait (pas de sommaire collant) ; les pages longues gardent le leur.
+  const toc = page.slug === "" ? null : buildToc(page.blocks);
   let heroSeen = false;
   const tocAfter = page.blocks[0]?.type === "hero" ? 0 : -1;
   const tocNode = toc ? (
@@ -76,6 +76,8 @@ export function PageBlocks({
                 block={block}
                 level={level}
                 showcase={page.slug === "" ? visuals.hero : undefined}
+                motion={visuals.signal.motion}
+                detectionLabels={visuals.signal.detection}
               />
             );
             break;
@@ -103,9 +105,6 @@ export function PageBlocks({
         return (
           <Fragment key={block.key}>
             {view}
-            {i === tocAfter && page.slug === "" ? (
-              <ProductFamily lang={lang} />
-            ) : null}
             {i === tocAfter ? byline : null}
             {i === tocAfter ? tocNode : null}
           </Fragment>

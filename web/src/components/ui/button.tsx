@@ -6,18 +6,21 @@ import type {
 } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "soft" | "link";
+type Variant = "primary" | "flare" | "secondary" | "soft" | "link";
 type Size = "md" | "lg";
 
 const BASE =
   "group/btn inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-sans font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTS: Record<Variant, string> = {
-  // Bouton d'accent : fond orange signal #FF5A1F, texte encre (6,3:1) ; survol orange clair #FF7A45 (7,6:1).
+  // Bouton d'accent : fond ion #3EC8FF, texte abysse (10,5:1) ; survol ion clair #7BD9FF (12,7:1), lueur retenue.
   primary:
-    "rounded-md bg-accent text-on-accent hover:bg-ember-400 active:translate-y-px",
+    "rounded-md bg-accent text-on-accent hover:bg-accent-hover hover:shadow-[var(--glow-ion)] active:translate-y-px",
+  // Le seul point de chaleur d'un écran (appel à l'action final) : fond flare #FF6A2B, texte abysse (7,1:1).
+  flare:
+    "rounded-md bg-flare-500 text-abyss-950 hover:bg-flare-400 active:translate-y-px",
   secondary:
-    "rounded-md border border-line-strong text-fg hover:bg-fg/10 active:translate-y-px",
+    "rounded-md border border-line-strong bg-fg/[0.03] text-fg backdrop-blur-sm hover:border-fg/60 hover:bg-fg/[0.08] active:translate-y-px",
   // Bouton discret « Découvrir › » : fond teinté à peine visible, flèche qui avance au survol.
   soft: "rounded-md bg-fg/[0.07] text-fg hover:bg-fg/[0.13]",
   link: "min-h-11 rounded-xs text-accent-text underline sm:min-h-8 decoration-1 underline-offset-[5px] hover:decoration-2",
@@ -25,6 +28,10 @@ const VARIANTS: Record<Variant, string> = {
 
 const SIZES: Record<Variant, Record<Size, string>> = {
   primary: {
+    md: "min-h-11 px-5 text-[0.9375rem]",
+    lg: "min-h-12 px-6 text-base",
+  },
+  flare: {
     md: "min-h-11 px-5 text-[0.9375rem]",
     lg: "min-h-12 px-6 text-base",
   },

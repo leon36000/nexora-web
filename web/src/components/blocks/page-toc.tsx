@@ -44,7 +44,7 @@ export function PageToc({ entries, label }: Props) {
   };
 
   return (
-    <div className="theme-light sticky top-16 z-30 border-b border-line bg-bg/95 text-fg backdrop-blur-md">
+    <div className="theme-dark sticky top-16 z-30 border-b border-line bg-abyss-950/80 text-fg backdrop-blur-xl">
       <nav aria-label={label} className="mx-auto w-full max-w-page px-gutter">
         <details ref={details} className="group md:hidden">
           <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 font-mono text-label uppercase text-fg [&::-webkit-details-marker]:hidden">

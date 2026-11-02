@@ -2,10 +2,11 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { connection } from "next/server";
-import { LOGO } from "@/components/brand/logo-geometry";
-import { mosaicLayers } from "@/components/brand/mosaic";
+import { SIGNAL_MARK } from "@/components/brand/logo";
+import { fieldPoints } from "@/components/signal/terrain";
 import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { BRAND } from "@/lib/brand";
 import { OG_SIZE } from "@/lib/seo/og";
 import { ogSafeTitle, resolveOgTarget, stripBrand } from "@/lib/seo/og-target";
 import { getPublicAgents } from "@/server/agents/read";
@@ -17,27 +18,32 @@ import { getPublicVps } from "@/server/vps/read";
  * Image Open Graph (1200 × 630) d'une page PUBLIÉE ou d'une route connue : `/og/fr`, `/og/en/opsys-ai`,
  * `/og/fr/modeles/nexora/glm-5-3`. Le titre vient de la page elle-même ; l'adresse ne peut pas injecter de texte.
  * Page inconnue ou non publiée : 404 (aucune image générique qui se ferait passer pour une page).
- * Couleurs : jetons de globals.css (ink-950, bone, ember-400, ember-500) ; polices : instantanés WOFF locaux (src/fonts/og).
- * Décor : la mosaïque braise (la même que sur le site) qui se dissout vers la gauche, hors de la zone du titre.
+ * Couleurs : jetons de globals.css (abysse, givre, brume, ion, flare) ; polices : instantanés WOFF locaux (src/fonts/og).
+ * Décor (identité « Signal ») : un champ de lumière en perspective sous la ligne d'horizon, une grille de précision.
  */
-const INK = "#0a0a0e";
-const BONE = "#f5f4ef";
-const MIST = "#a8a8b6";
-const EMBER = "#ff7a45";
-const LINE = "#2b2b38";
-const EMBER_FILL = "#ff5a1f";
+const ABYSS = "#05070b";
+const FROST = "#eef3fa";
+const HAZE = "#8c97aa";
+const ION = "#3ec8ff";
+const LINE = "#1c2433";
+const FLARE = "#ff6a2b";
 
-/** 40 × 21 cellules de 30 px : la mosaïque couvre l'image, sans toucher la colonne du titre (colonnes 0 à 26). */
-const OG_LAYERS = mosaicLayers({
-  cols: 40,
-  rows: 21,
-  seed: 11,
-  toward: "right",
-  fade: 1,
-  palette: "braise",
-  gap: 0.08,
-  keep: (c) => c.col >= 27,
-});
+/** Champ de lumière figé, en trois couches d'opacité (satori ne connaît pas l'opacité par point). */
+const OG_FIELD = (() => {
+  const tiers = ["", "", ""];
+  for (const [x, y, size, a] of fieldPoints({
+    w: 1200,
+    h: 630,
+    cols: 120,
+    horizon: 0.5,
+    relief: 0.16,
+  })) {
+    const k = a > 0.55 ? 2 : a > 0.25 ? 1 : 0;
+    const d = Math.max(1.2, size * 1.4).toFixed(1);
+    tiers[k] += `M${x.toFixed(1)} ${y.toFixed(1)}h${d}v${d}h-${d}z`;
+  }
+  return tiers;
+})();
 
 async function loadFonts() {
   const dir = join(process.cwd(), "src", "fonts", "og");
@@ -110,7 +116,7 @@ export async function GET(
   if (!isLang(lang)) return new Response("Not found", { status: 404 });
   const rawTitle = await titleOf(lang, slug);
   if (!rawTitle) return new Response("Not found", { status: 404 });
-  const title = ogSafeTitle(rawTitle) || "Nexora AI";
+  const title = ogSafeTitle(rawTitle) || BRAND.name;
 
   const clipped = title.length > 110 ? `${title.slice(0, 107)}…` : title;
   const size = clipped.length > 70 ? 56 : clipped.length > 40 ? 68 : 84;
@@ -124,36 +130,84 @@ export async function GET(
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        background: INK,
+        background: ABYSS,
         padding: "64px 72px",
         position: "relative",
         fontFamily: fonts ? "Inter" : "sans-serif",
       }}
     >
-      {/* Mosaïque braise : décor pur, rendu en PNG par satori (jamais du texte, aucune police). */}
+      {/* Champ de lumière : décor pur, rendu en PNG par satori (jamais du texte). */}
       {/* biome-ignore lint/a11y/noSvgWithoutTitle: dessin rendu en PNG par satori, jamais dans le DOM */}
       <svg
         width={1200}
         height={630}
-        viewBox="0 0 40 21"
+        viewBox="0 0 1200 630"
         style={{ position: "absolute", left: 0, top: 0 }}
       >
-        {OG_LAYERS.map((layer) => (
-          <path key={layer.tier} fill={layer.color} d={layer.d} />
+        {[96, 192, 288, 384, 480, 576].map((y) => (
+          <path key={y} d={`M0 ${y}H1200`} stroke={LINE} strokeWidth={1} />
         ))}
+        <path
+          d="M0 315H1200"
+          stroke={ION}
+          strokeOpacity={0.35}
+          strokeWidth={1}
+        />
+        {OG_FIELD.map((d, k) => (
+          <path
+            key={`t${String(k)}`}
+            d={d}
+            fill={ION}
+            fillOpacity={[0.18, 0.45, 0.85][k]}
+          />
+        ))}
+        <circle cx={880} cy={402} r={5} fill={FLARE} />
       </svg>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: 1200,
+          height: 630,
+          backgroundImage:
+            "linear-gradient(90deg, rgba(5,7,11,0.95) 0%, rgba(5,7,11,0.8) 48%, rgba(5,7,11,0) 85%)",
+        }}
+      />
+      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
         {/* biome-ignore lint/a11y/noSvgWithoutTitle: dessin rendu en PNG par satori, jamais dans le DOM */}
-        <svg
-          width={Math.round(56 * LOGO.lockupRatio)}
-          height={56}
-          viewBox={LOGO.lockupBox}
-        >
-          <path fill={BONE} d={LOGO.bars} />
-          <path fill={EMBER_FILL} d={LOGO.passage} />
-          <path fill={BONE} d={LOGO.nexora} />
-          <path fill={EMBER} d={LOGO.ai} />
+        <svg width={52} height={52} viewBox={SIGNAL_MARK.viewBox}>
+          <path
+            d={SIGNAL_MARK.brackets}
+            fill="none"
+            stroke={FROST}
+            strokeWidth={2.25}
+          />
+          <path
+            d={SIGNAL_MARK.scan}
+            stroke={ION}
+            strokeWidth={2.25}
+            strokeOpacity={0.6}
+          />
+          <circle
+            cx={SIGNAL_MARK.point.cx}
+            cy={SIGNAL_MARK.point.cy}
+            r={SIGNAL_MARK.point.r}
+            fill={ION}
+          />
         </svg>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: fonts ? "Geist" : "sans-serif",
+            fontWeight: 500,
+            fontSize: 38,
+            letterSpacing: -1,
+            color: FROST,
+          }}
+        >
+          {BRAND.name}
+        </div>
       </div>
       <div
         style={{
@@ -162,8 +216,8 @@ export async function GET(
           fontWeight: 500,
           fontSize: size,
           lineHeight: 1.08,
-          color: BONE,
-          maxWidth: 740,
+          color: FROST,
+          maxWidth: 900,
         }}
       >
         {clipped}
@@ -175,7 +229,7 @@ export async function GET(
           borderTop: `2px solid ${LINE}`,
           paddingTop: 24,
           width: 700,
-          color: MIST,
+          color: HAZE,
           fontSize: 28,
         }}
       >

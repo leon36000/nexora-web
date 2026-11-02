@@ -1,82 +1,88 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Système de design Nexora AI — direction « Instrument » (refonte d'octobre 2026)
-   Jetons primitifs -> thèmes sémantiques (sombre / clair) -> utilitaires.
-   Idées : toile papier et noir profond, filets d'un pixel qui cadrent la page (comme un instrument de mesure),
-   mosaïques de carrés « braise » (ambre -> orange -> framboise) pour la matière, un seul accent : l'orange signal.
-   Les rapports de contraste sont recalculés par `bun run check:contrast`.
+   Système de design — identité « Signal » (refonte du 2 novembre 2026)
+   Idée : une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA
+   voit, entend et calcule, montré en fines lignes de lumière, nuages de points, formes d'onde et cadres de détection.
+   Jetons primitifs -> thèmes sémantiques (abysse, nuit, papier) -> utilitaires et matières.
+   LA MARQUE SE CHANGE ICI (couleurs) + `web/src/lib/brand.ts` (nom, signature, logo) + `web/src/app/fonts.ts` (polices).
+   Contrastes recalculés par `bun run check:contrast`.
    ========================================================================== */
 
 @theme {
-  /* --- Noirs profonds (fonds sombres) --- */
-  --color-ink-950: #0a0a0e; /* fond sombre */
-  --color-ink-900: #121218; /* surface sombre */
-  --color-ink-800: #1b1b24; /* surface sombre élevée, survol */
-  --color-ink-700: #2b2b38; /* filets et séparations sombres */
-  --color-night-900: #11112a; /* bande « nuit » (pieds de section, appels à l'action) */
+  /* --- Marque : fonds « abysse » (sombre d'abord) --- */
+  --color-abyss-950: #05070b; /* fond le plus profond (héros, appels à l'action) */
+  --color-abyss-900: #0b0f16; /* surface */
+  --color-abyss-850: #080b11; /* bande « nuit » (fond courant des sections) */
+  --color-abyss-800: #111723; /* surface relevée, survol */
+  --color-hairline: #1c2433; /* filets d'un pixel */
+  --color-steel: #5b6678; /* filet fort, bordure de bouton (3,5:1 sur abysse) */
 
-  /* --- Papier (fonds clairs) --- */
-  --color-paper-50: #fbfbf8; /* fond clair */
-  --color-paper-100: #f3f2ec; /* surface claire */
-  --color-paper-200: #e4e2d9; /* filets et séparations claires */
+  /* --- Textes sur fond sombre --- */
+  --color-frost: #eef3fa; /* texte (18,1:1 sur abysse) */
+  --color-haze: #8c97aa; /* texte secondaire (6,8:1 sur abysse ; 6,1:1 sur surface relevée) */
 
-  /* --- Textes --- */
-  --color-bone: #f5f4ef; /* texte sur fond sombre */
-  --color-mist: #a8a8b6; /* texte secondaire sur fond sombre */
-  --color-graphite-900: #121218; /* texte sur fond clair */
-  --color-graphite-600: #54545f; /* texte secondaire sur fond clair */
+  /* --- Accent principal : « ion » (lumière, interactions, liens sur fond sombre) --- */
+  --color-ion-400: #3ec8ff; /* 10,5:1 sur abysse ; bouton : texte abysse 10,5:1 */
+  --color-ion-300: #7bd9ff; /* survol du bouton (12,7:1) */
+  --color-ion-700: #0b6e99; /* ion en texte sur papier (5,3:1) */
+  --color-ion-600: #0a8bc2; /* ion en graphisme sur papier (3,6:1) */
 
-  /* --- Accent unique : l'orange signal de Nexora --- */
-  --color-ember-500: #ff5a1f; /* remplissage de bouton (texte noir encre), graphisme sur fond sombre */
-  --color-ember-600: #f04a10; /* graphisme sur fond clair */
-  --color-ember-700: #b53a0a; /* accent en texte sur fond clair */
-  --color-ember-400: #ff7a45; /* accent en texte sur fond sombre, survol du bouton */
+  /* --- Contrepoint chaud, rare : « flare » (un seul point de chaleur par écran) --- */
+  --color-flare-500: #ff6a2b; /* 7,1:1 sur abysse */
+  --color-flare-400: #ff8a57;
+  --color-flare-700: #c2410c; /* sur papier (4,8:1) */
 
-  /* --- Rampe « braise » des mosaïques (jamais en texte) --- */
-  --color-amber-400: #ffc53d;
-  --color-flame-500: #ff8a1f;
-  --color-crimson-600: #d3201f;
-  --color-berry-700: #a8153a;
-  --color-sky-300: #a9ccff;
-  --color-sky-500: #4a87ff;
+  /* --- États --- */
+  --color-alert-400: #ff4d5e; /* alerte sur fond sombre (6,2:1) */
+  --color-alert-700: #c42235; /* alerte sur papier (5,4:1) */
+  --color-ok-400: #3fe0a5; /* succès sur fond sombre (11,9:1) */
+  --color-ok-700: #16794f; /* succès sur papier (5,0:1) */
 
-  /* --- Succès --- */
-  --color-mint-400: #4ade9b; /* sur fond sombre */
-  --color-mint-700: #17694a; /* sur fond clair */
+  /* --- Papier (thème clair : espace client et pages qui le demandent) --- */
+  --color-paper-50: #f5f7fa;
+  --color-paper-100: #e9eef4;
+  --color-paper-200: #d9e0ea;
+  --color-graphite-900: #0b0f16;
+  --color-graphite-600: #4a5568;
 
-  /* --- Polices (variables posées sur <html> par next/font/local) --- */
+  /* --- Polices (variables posées sur <html> par next/font/local, voir app/fonts.ts) --- */
   --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* --- Échelle typographique (titres Geist 500, grands et aérés) --- */
-  --text-display: clamp(2.75rem, 1.35rem + 5.6vw, 6rem);
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -0.03em;
+  /* --- Échelle typographique : titres Geist très grands et serrés --- */
+  --text-mega: clamp(3.25rem, 0.9rem + 8.4vw, 9rem);
+  --text-mega--line-height: 0.9;
+  --text-mega--letter-spacing: -0.052em;
+  --text-mega--font-weight: 500;
+
+  --text-display: clamp(2.75rem, 1rem + 5.8vw, 6.75rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.045em;
   --text-display--font-weight: 500;
 
-  --text-h1: clamp(2.5rem, 1.5rem + 3.4vw, 4.25rem);
-  --text-h1--line-height: 1.04;
-  --text-h1--letter-spacing: -0.028em;
+  --text-h1: clamp(2.5rem, 1.2rem + 4vw, 5rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.04em;
   --text-h1--font-weight: 500;
 
-  --text-h2: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
-  --text-h2--line-height: 1.08;
-  --text-h2--letter-spacing: -0.024em;
+  --text-h2: clamp(2rem, 1.15rem + 2.9vw, 4rem);
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.036em;
   --text-h2--font-weight: 500;
 
-  --text-h3: clamp(1.4rem, 1.2rem + 0.9vw, 2rem);
-  --text-h3--line-height: 1.18;
-  --text-h3--letter-spacing: -0.018em;
+  --text-h3: clamp(1.375rem, 1.15rem + 0.8vw, 1.875rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.022em;
   --text-h3--font-weight: 500;
 
   --text-h4: 1.125rem;
   --text-h4--line-height: 1.35;
-  --text-h4--letter-spacing: -0.01em;
+  --text-h4--letter-spacing: -0.012em;
   --text-h4--font-weight: 500;
 
-  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-lead: clamp(1.125rem, 1.04rem + 0.4vw, 1.375rem);
   --text-lead--line-height: 1.55;
 
   --text-body: 1rem;
@@ -87,30 +93,30 @@
 
   --text-label: 0.75rem;
   --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.06em;
+  --text-label--letter-spacing: 0.08em;
 
   /* --- Espacements de section et largeurs --- */
-  --spacing-section: clamp(4rem, 2.8rem + 4.6vw, 7.5rem);
-  --spacing-gutter: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
-  --container-page: 80rem;
+  --spacing-section: clamp(5rem, 3rem + 6vw, 10rem);
+  --spacing-gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --container-page: 84rem;
   --container-measure: 42rem;
 
-  /* --- Rayons : angles francs, comme un instrument --- */
+  /* --- Rayons : 2 à 10 px --- */
   --radius-xs: 0.125rem;
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  --radius-xl: 0.625rem;
 
-  /* --- Rôles des rayons : une seule définition pour les cartes, les cadres de grille et les fenêtres de maquette --- */
-  --radius-card: var(--radius-md);
-  --radius-frame: var(--radius-md);
+  /* --- Rôles des rayons --- */
+  --radius-card: var(--radius-lg);
+  --radius-frame: var(--radius-xl);
   --radius-chip: var(--radius-xs);
 
-  /* --- Ombres sobres --- */
-  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(10 10 14 / 0.22);
-  --shadow-lift: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 36px -18px rgb(10 10 14 / 0.32);
-  --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -20px rgb(0 0 0 / 0.6);
+  /* --- Ombres : aucune ombre décorative ; seulement les menus et fenêtres qui flottent --- */
+  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(5 7 11 / 0.22);
+  --shadow-lift: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 36px -18px rgb(5 7 11 / 0.32);
+  --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -20px rgb(0 0 0 / 0.7);
 
   /* --- Point de rupture de la navigation complète --- */
   --breakpoint-nav: 72rem;
@@ -118,58 +124,74 @@
 
 /* --------------------------------------------------------------------------
    Mouvement et espacements partagés : une seule échelle de durées (150, 200, 250 ms) pour les survols, les
-   focus et les transitions ; les composants utilisent `duration-150`, `duration-200` ou `duration-250`
-   (un test interdit toute autre durée dans les composants). Espacements internes d'une carte : un seul jeu.
+   focus et les transitions ; un test interdit toute autre durée dans les composants.
    -------------------------------------------------------------------------- */
 :root {
   --dur-fast: 150ms;
   --dur-base: 200ms;
   --dur-slow: 250ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-signal: cubic-bezier(0.16, 1, 0.3, 1);
   --pad-card: 1.5rem; /* 24 px sur téléphone */
   --pad-card-lg: 2rem; /* 32 px dès sm */
   --gap-grid: 1rem;
+  /* lueur retenue, réservée à l'accent ion */
+  --glow-ion: 0 0 0 1px rgb(62 200 255 / 0.35), 0 0 24px -4px rgb(62 200 255 / 0.45);
 }
 
 /* --------------------------------------------------------------------------
-   Thèmes sémantiques. Chaque section pose .theme-dark ou .theme-light ;
-   les composants n'utilisent que les jetons sémantiques (bg, surface, fg…).
+   Thèmes sémantiques. Les composants n'utilisent que les jetons sémantiques (bg, surface, fg…).
+   - .theme-dark  : abysse, le plus profond (héros, appels à l'action) ;
+   - .theme-night : nuit, le fond courant du site public (sombre d'abord) ;
+   - .theme-light : papier, réservé à l'espace client et aux pages qui le demandent.
+   Le document (:root) est en abysse : le site public est sombre d'abord.
    -------------------------------------------------------------------------- */
 :root,
+.theme-dark,
+.theme-night {
+  --bg: var(--color-abyss-950);
+  --surface: var(--color-abyss-900);
+  --surface-2: var(--color-abyss-800);
+  --fg: var(--color-frost);
+  --fg-muted: var(--color-haze);
+  --accent-text: var(--color-ion-400);
+  --accent-fill: var(--color-ion-400);
+  --accent-hover: var(--color-ion-300);
+  --accent-graphic: var(--color-ion-400);
+  --on-accent: var(--color-abyss-950);
+  --flare: var(--color-flare-500);
+  --alert: var(--color-alert-400);
+  --success: var(--color-ok-400);
+  --line: rgb(140 151 170 / 0.16);
+  --line-strong: var(--color-steel);
+  --focus: var(--color-ion-400);
+  --grid-ink: rgb(238 243 250);
+  color-scheme: dark;
+}
+
+.theme-night {
+  --bg: var(--color-abyss-850);
+}
+
 .theme-light {
   --bg: var(--color-paper-50);
   --surface: var(--color-paper-100);
   --surface-2: var(--color-paper-200);
   --fg: var(--color-graphite-900);
   --fg-muted: var(--color-graphite-600);
-  --accent-text: var(--color-ember-700);
-  --accent-fill: var(--color-ember-500);
-  --accent-graphic: var(--color-ember-600);
-  --on-accent: var(--color-ink-950);
-  --success: var(--color-mint-700);
-  --line: rgb(18 18 24 / 0.13);
-  --line-strong: rgb(18 18 24 / 0.58);
-  --focus: var(--color-ember-700);
-  --grid-ink: rgb(18 18 24);
+  --accent-text: var(--color-ion-700);
+  --accent-fill: var(--color-ion-400);
+  --accent-hover: var(--color-ion-300);
+  --accent-graphic: var(--color-ion-600);
+  --on-accent: var(--color-abyss-950);
+  --flare: var(--color-flare-700);
+  --alert: var(--color-alert-700);
+  --success: var(--color-ok-700);
+  --line: rgb(11 15 22 / 0.13);
+  --line-strong: rgb(11 15 22 / 0.58);
+  --focus: var(--color-ion-700);
+  --grid-ink: rgb(11 15 22);
   color-scheme: light;
-}
-
-.theme-dark {
-  --bg: var(--color-ink-950);
-  --surface: var(--color-ink-900);
-  --surface-2: var(--color-ink-800);
-  --fg: var(--color-bone);
-  --fg-muted: var(--color-mist);
-  --accent-text: var(--color-ember-400);
-  --accent-fill: var(--color-ember-500);
-  --accent-graphic: var(--color-ember-500);
-  --on-accent: var(--color-ink-950);
-  --success: var(--color-mint-400);
-  --line: rgb(245 244 239 / 0.14);
-  --line-strong: rgb(245 244 239 / 0.52);
-  --focus: var(--color-ember-400);
-  --grid-ink: rgb(245 244 239);
-  color-scheme: dark;
 }
 
 @theme inline {
@@ -180,8 +202,11 @@
   --color-fg-muted: var(--fg-muted);
   --color-accent-text: var(--accent-text);
   --color-accent: var(--accent-fill);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-graphic: var(--accent-graphic);
   --color-on-accent: var(--on-accent);
+  --color-flare: var(--flare);
+  --color-alert: var(--alert);
   --color-success: var(--success);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
@@ -196,6 +221,7 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scroll-padding-top: 5.5rem; /* en-tête collant */
+    background: var(--color-abyss-950);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -231,8 +257,8 @@
   }
 
   ::selection {
-    background: var(--color-ember-500);
-    color: var(--color-ink-950);
+    background: var(--color-ion-400);
+    color: var(--color-abyss-950);
   }
 
   /* Focus visible : 2 px, contraste >= 3:1 avec le fond du thème (WCAG 2.4.7 / 2.4.11) */
@@ -242,24 +268,22 @@
     border-radius: var(--radius-xs);
   }
 
-  /* Ancre-cible du lien d'évitement : pas de contour sur la zone principale */
   main:focus {
     outline: none;
   }
 
-  /* Défilement bloqué quand le menu mobile (dialog modal) est ouvert */
   html:has(dialog[open]) {
     overflow: hidden;
   }
 
   dialog::backdrop {
-    background: rgb(10 10 14 / 0.72);
+    background: rgb(5 7 11 / 0.78);
+    backdrop-filter: blur(6px);
   }
 }
 
 /* --------------------------------------------------------------------------
    Schéma de périmètre : animation discrète (flux entre deux étapes)
-   Désactivée par prefers-reduced-motion : l'état de repos est lisible seul.
    -------------------------------------------------------------------------- */
 @keyframes perimeter-trace {
   0%,
@@ -338,13 +362,37 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Libellé technique : JetBrains Mono, capitales, interlettrage large (les étiquettes d'un instrument). */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+}
+
+/* Verre : surface translucide à filet d'un pixel (aucune ombre décorative). */
+@utility glass {
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* Lueur retenue, seulement sur l'accent ion. */
+@utility glow-ion {
+  box-shadow: var(--glow-ion);
+}
+
 /* --------------------------------------------------------------------------
-   Matières (direction « Instrument »)
-   - rails : filets verticaux d'un pixel qui cadrent la colonne de la page, avec un nœud carré à chaque angle ;
-   - tex-grid : grille de mesure (filets tous les 4 rem) qui s'efface vers les bords ;
+   Matières « Signal »
+   - rails : filets verticaux d'un pixel qui cadrent la colonne de la page (graduations aux angles) ;
+   - tex-grid / grid-precision : grilles de précision à 1 px qui s'effacent vers les bords ;
    - tex-dots : trame de points ;
-   - wash-* : lueurs braise très douces qui coiffent une bande.
-   Mouvement : transform et opacité des décors seulement (jamais d'opacité sur du texte, pour ne pas retarder le LCP) ;
+   - wash-* : halos de lumière ion très doux en tête de bande ;
+   - scanline : ligne de balayage qui traverse un bloc quand il apparaît ;
+   - detect : cadre de détection (crochets aux quatre angles).
+   Mouvement : transform et opacité des décors seulement (jamais sur le texte du premier écran) ;
    tout est déclaré sous prefers-reduced-motion: no-preference.
    -------------------------------------------------------------------------- */
 .rails {
@@ -362,18 +410,18 @@
 .rails::after {
   content: "";
   position: absolute;
-  top: 0;
-  width: 5px;
-  height: 5px;
-  background: var(--fg);
+  top: -1px;
+  width: 9px;
+  height: 1px;
+  background: var(--line-strong);
 }
 
 .rails::before {
-  left: -2px;
+  left: -5px;
 }
 
 .rails::after {
-  right: -2px;
+  right: -5px;
 }
 
 @media (max-width: 47.99rem) {
@@ -382,7 +430,7 @@
   }
 }
 
-/* Règle graduée : une graduation tous les 8 px, une plus haute tous les 64 px (le bas d'un héros, comme un instrument). */
+/* Règle graduée : une graduation tous les 8 px, une plus haute tous les 64 px (le bas d'un héros). */
 .ruler {
   height: 10px;
   background-image:
@@ -391,6 +439,7 @@
   background-size: 64px 10px, 8px 5px;
   background-position: left bottom, left bottom;
   background-repeat: repeat-x;
+  opacity: 0.7;
 }
 
 @utility tex-dots {
@@ -408,45 +457,64 @@
   mask-image: radial-gradient(70% 90% at 50% 40%, #000 25%, transparent 78%);
 }
 
+/* Grille de précision : filet fin tous les 24 px, filet marqué tous les 96 px, effacée vers les bords. */
+@utility grid-precision {
+  background-image:
+    linear-gradient(to right, rgb(140 151 170 / 0.13) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(140 151 170 / 0.13) 1px, transparent 1px),
+    linear-gradient(to right, rgb(140 151 170 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(140 151 170 / 0.05) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  background-position: center center;
+  -webkit-mask-image: radial-gradient(60% 70% at 50% 45%, #000 20%, transparent 80%);
+  mask-image: radial-gradient(60% 70% at 50% 45%, #000 20%, transparent 80%);
+}
+
 @utility wash-dark {
   background-image:
-    radial-gradient(46rem 24rem at 100% -8%, rgb(255 90 31 / 0.2), transparent 64%),
-    radial-gradient(34rem 20rem at 0% 110%, rgb(74 135 255 / 0.1), transparent 68%);
+    radial-gradient(60rem 28rem at 78% -12%, rgb(62 200 255 / 0.09), transparent 64%),
+    radial-gradient(40rem 22rem at 0% 115%, rgb(62 200 255 / 0.05), transparent 68%);
 }
 
 @utility wash-sand {
-  background-image: radial-gradient(46rem 18rem at 100% 0%, rgb(255 138 31 / 0.1), transparent 66%);
+  background-image: radial-gradient(50rem 20rem at 100% 0%, rgb(62 200 255 / 0.06), transparent 66%);
 }
 
 @utility wash-paper {
-  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(255 90 31 / 0.05), transparent 68%);
+  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(11 110 153 / 0.06), transparent 68%);
 }
 
-/* Bande « braise » : quatre barres franches (ambre, orange, vermillon, framboise), signature du pied de page. */
-.stripes {
-  background-image: linear-gradient(
-    to bottom,
-    var(--color-amber-400) 0 25%,
-    var(--color-ember-500) 25% 50%,
-    var(--color-crimson-600) 50% 75%,
-    var(--color-berry-700) 75% 100%
-  );
+/* Cadre de détection : quatre crochets de 14 px aux angles, en ion (ou --detect-color). */
+@utility detect {
+  --dc: var(--detect-color, var(--accent-graphic));
+  background-image:
+    linear-gradient(var(--dc), var(--dc)), linear-gradient(var(--dc), var(--dc)),
+    linear-gradient(var(--dc), var(--dc)), linear-gradient(var(--dc), var(--dc)),
+    linear-gradient(var(--dc), var(--dc)), linear-gradient(var(--dc), var(--dc)),
+    linear-gradient(var(--dc), var(--dc)), linear-gradient(var(--dc), var(--dc));
+  background-repeat: no-repeat;
+  background-size:
+    14px 1.5px, 1.5px 14px, 14px 1.5px, 1.5px 14px,
+    14px 1.5px, 1.5px 14px, 14px 1.5px, 1.5px 14px;
+  background-position:
+    left top, left top, right top, right top,
+    left bottom, left bottom, right bottom, right bottom;
 }
 
-/* Filet orange en pointillés qui avance : le flux entre deux étapes. */
+/* Filet de flux en pointillés (étapes reliées). */
 .flow-line {
-  background-image: linear-gradient(to bottom, var(--color-ember-500) 0 5px, transparent 5px 11px);
-  background-size: 2px 11px;
+  background-image: linear-gradient(to bottom, var(--accent-graphic) 0 5px, transparent 5px 11px);
+  background-size: 1px 11px;
   background-repeat: repeat-y;
 }
 
 .flow-line-x {
-  background-image: linear-gradient(to right, var(--color-ember-500) 0 5px, transparent 5px 11px);
-  background-size: 11px 2px;
+  background-image: linear-gradient(to right, var(--accent-graphic) 0 5px, transparent 5px 11px);
+  background-size: 11px 1px;
   background-repeat: repeat-x;
 }
 
-/* Graduations d'une barre de score : un trait de la couleur du fond à la fin de chaque quart. */
+/* Graduations d'une barre de score. */
 .score-ticks {
   background-image: linear-gradient(
     to right,
@@ -456,14 +524,37 @@
   background-size: 25% 100%;
 }
 
-/* Mosaïque : une couche par teinte ; chaque couche respire à son rythme (opacité, jamais sur du texte). */
-.mo-layer {
-  opacity: var(--o, 1);
+/* Ligne de balayage : un filet de lumière horizontal, caché au repos, qui traverse le bloc quand il apparaît. */
+.scanline {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgb(62 200 255 / 0.9) 30%, #fff 50%, rgb(62 200 255 / 0.9) 70%, transparent);
+  box-shadow: 0 0 18px 2px rgb(62 200 255 / 0.35);
 }
 
-/* Pixel qui s'allume : invisible au repos (et sous prefers-reduced-motion), allumé un instant quand le mouvement est permis. */
-.mo-blink {
-  opacity: 0;
+/* Barres d'une forme d'onde (voix, accueil) : au repos, la forme est figée. */
+.wave-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Point vivant (« en direct », alerte) : statique au repos. */
+.live-dot {
+  box-shadow: 0 0 0 0 transparent;
+}
+
+/* Média qui apparaît en fondu quand il est prêt (vidéo de héros). */
+.fade-media {
+  transition: opacity 1.2s var(--ease-out);
+}
+
+/* Ligne de lecture d'une chronologie (surveillance) : figée au repos. */
+.playhead {
+  left: 62%;
 }
 
 @keyframes rise-load {
@@ -471,6 +562,17 @@
     transform: translateY(14px);
   }
   to {
+    transform: none;
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
     transform: none;
   }
 }
@@ -490,10 +592,20 @@
 @keyframes ring-soft {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(255 90 31 / 0.5);
+    box-shadow: 0 0 0 0 rgb(62 200 255 / 0.5);
   }
   55% {
-    box-shadow: 0 0 0 7px rgb(255 90 31 / 0);
+    box-shadow: 0 0 0 7px rgb(62 200 255 / 0);
+  }
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, currentColor 55%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 0 6px transparent;
   }
 }
 
@@ -506,13 +618,13 @@
   }
 }
 
-@keyframes mo-twinkle {
+@keyframes wave {
   0%,
   100% {
-    opacity: var(--o, 1);
+    transform: scaleY(1);
   }
   50% {
-    opacity: calc(var(--o, 1) * 0.5);
+    transform: scaleY(var(--amp, 0.35));
   }
 }
 
@@ -535,20 +647,6 @@
   }
 }
 
-@keyframes mo-blink {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  4%,
-  10% {
-    opacity: 0.95;
-  }
-  16% {
-    opacity: 0.2;
-  }
-}
-
 @keyframes scan-x {
   from {
     transform: translateX(-12%);
@@ -558,18 +656,67 @@
   }
 }
 
-@keyframes stripe-slide {
+@keyframes scan-y {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(var(--scan-h, 100%));
+  }
+}
+
+@keyframes scan-sweep {
+  0% {
+    opacity: 0;
+    top: 0%;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    top: 100%;
+  }
+}
+
+@keyframes playhead-move {
   from {
-    transform: translateX(-4rem);
+    left: 4%;
   }
   to {
-    transform: translateX(calc(100vw + 4rem));
+    left: 96%;
+  }
+}
+
+@keyframes detect-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  30% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .rise {
-    animation: rise-load 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: rise-load 0.9s var(--ease-signal) both;
     animation-delay: calc(var(--d, 0) * 90ms);
   }
 
@@ -585,36 +732,50 @@
     animation: ring-soft 3.2s ease-in-out infinite;
   }
 
+  .live-dot {
+    animation: live-pulse 2.4s ease-in-out infinite;
+  }
+
   .bar-grow {
     transform-origin: bottom;
-    animation: bar-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: bar-grow 0.9s var(--ease-signal) both;
     animation-delay: calc(var(--d, 0) * 40ms);
   }
 
-  .mo-animate .mo-layer {
-    animation: mo-twinkle 7s ease-in-out infinite;
-    animation-delay: calc(var(--i, 0) * -1.3s);
+  .wave-animate .wave-bar {
+    animation: wave 1.8s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * -73ms);
   }
 
   .skeleton {
     animation: skeleton-pulse 1.6s ease-in-out infinite;
   }
 
-  .mo-blink {
-    animation: mo-blink 9s ease-in-out infinite;
-    animation-delay: calc(var(--bd, 0s) * -1);
-  }
-
   .scan {
     animation: scan-x 11s linear infinite;
   }
 
-  .stripe-cell {
-    animation: stripe-slide 16s linear infinite;
+  .scan-loop .scanline {
+    animation: scan-sweep 6s var(--ease-out) infinite;
   }
 
-  /* Apparition au défilement : pur CSS (scroll-driven animations), sans JavaScript ; ignorée par les
-     navigateurs qui ne la connaissent pas (le contenu reste alors simplement visible). */
+  .playhead-animate {
+    animation: playhead-move 18s linear infinite;
+  }
+
+  .detect-animate {
+    animation: detect-in 0.9s var(--ease-signal) both;
+    animation-delay: calc(var(--d, 0) * 220ms);
+  }
+
+  /* Bouton de pause (WCAG 2.2.2) : toute animation en boucle se fige. */
+  [data-motion="pause"] *,
+  [data-motion="pause"] *::before,
+  [data-motion="pause"] *::after {
+    animation-play-state: paused !important;
+  }
+
+  /* Apparition au défilement : pur CSS (scroll-driven animations), ignorée là où elle n'existe pas. */
   @supports (animation-timeline: view()) {
     .score-fill {
       transform-origin: left;
@@ -624,9 +785,20 @@
     }
 
     .reveal {
-      animation: rise-load linear both;
+      animation: reveal-in linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 38%;
+      animation-range: entry 0% entry 42%;
+    }
+
+    /* La ligne de balayage traverse le bloc une fois, pendant qu'il entre dans l'écran. */
+    .scan-reveal {
+      view-timeline: --scan block;
+    }
+
+    .scan-reveal > .scanline {
+      animation: scan-sweep linear both;
+      animation-timeline: --scan;
+      animation-range: entry 15% cover 55%;
     }
   }
 }

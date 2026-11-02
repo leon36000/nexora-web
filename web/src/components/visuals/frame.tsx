@@ -1,41 +1,36 @@
 import type { ReactNode } from "react";
-import {
-  Mosaic,
-  type MosaicPalette,
-  PALETTES,
-} from "@/components/brand/mosaic";
 import { cn } from "@/lib/cn";
 
+/** Ancienne teinte de scène par produit ; l'identité « Signal » n'a qu'une lumière (ion), la valeur est ignorée. */
+type StageKind = "braise" | "ciel" | "or" | "menthe" | "nuit";
+
 /**
- * Scène d'une maquette : un champ de carrés teintés (la mosaïque) sur lequel la fenêtre du produit est posée, comme une
- * carte sur un aplat de couleur. Chaque produit a sa teinte. Décoratif : le dessin ne porte aucun sens à lui seul.
+ * Scène d'une maquette (identité « Signal ») : un fond abysse, une grille de précision à 1 px et un halo de lumière ion
+ * en biais, sur lequel la fenêtre du produit est posée. Décoratif : le dessin ne porte aucun sens à lui seul.
  */
 export function Stage({
-  palette,
   children,
   className,
 }: {
-  palette: MosaicPalette;
+  palette?: StageKind;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <div
       className={cn(
-        "relative isolate overflow-hidden rounded-md p-3 sm:p-8",
+        "theme-dark relative isolate overflow-hidden rounded-frame border border-line bg-abyss-950 p-3 sm:p-8",
+        "bg-[radial-gradient(70%_60%_at_85%_0%,rgb(62_200_255/0.16),transparent_70%),radial-gradient(50%_50%_at_0%_100%,rgb(62_200_255/0.07),transparent_70%)]",
         className,
       )}
-      style={{ background: PALETTES[palette][0] }}
     >
-      <Mosaic
-        cols={30}
-        rows={20}
-        seed={4}
-        palette={palette}
-        toward="right"
-        fade={0.55}
-        gap={0}
-        className="absolute inset-0 -z-10 size-full"
+      <div
+        aria-hidden="true"
+        className="grid-precision absolute inset-0 -z-10"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-accent-graphic/70 to-transparent"
       />
       {children}
     </div>
@@ -58,12 +53,12 @@ export function VisualFigure({
   caption?: string;
   children: ReactNode;
   className?: string;
-  stage?: MosaicPalette;
+  stage?: StageKind;
 }) {
   return (
     <figure className={cn("m-0", className)}>
       <div role="img" aria-label={alt}>
-        {stage ? <Stage palette={stage}>{children}</Stage> : children}
+        {stage ? <Stage>{children}</Stage> : children}
       </div>
       {caption ? (
         <figcaption className="mt-3 text-small text-fg-muted">
@@ -89,13 +84,13 @@ export function Window({
   return (
     <div
       className={cn(
-        "theme-dark overflow-hidden rounded-md border border-line bg-bg text-fg shadow-pop ring-1 ring-inset ring-white/5",
+        "theme-dark overflow-hidden rounded-lg border border-line bg-abyss-900/90 text-fg shadow-pop ring-1 ring-inset ring-white/5 backdrop-blur",
         className,
       )}
     >
       <div className="flex items-center justify-between gap-3 border-b border-line bg-surface px-4 py-2.5">
         <span className="flex min-w-0 items-center gap-2.5 font-mono text-label uppercase text-fg-muted">
-          <span className="size-2 shrink-0 bg-accent" />
+          <span className="size-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_8px_var(--accent-graphic)]" />
           <span className="truncate">{title}</span>
         </span>
         {status}

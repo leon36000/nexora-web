@@ -11,11 +11,10 @@ import { ProductsMenu } from "./products-menu";
 import { SessionLabel } from "./session-label";
 
 /**
- * En-tête collant, sur fond papier et cadré par des filets d'un pixel : le logo, chaque entrée de navigation et
- * chaque action occupent une « cellule » (comme le cadran d'un instrument) ; l'action principale est la dernière
- * cellule, pleine, en orange signal.
- * Navigation du §6 : IA souveraine · Solutions · Produits (menu) · Tarifs · Ressources ;
- * à droite : langue, « Connexion » (lien) et « Planifier un diagnostic » (bouton).
+ * En-tête collant en verre sombre (identité « Signal ») : le logo, la navigation, puis la langue, la connexion et
+ * l'action principale (bouton ion).
+ * Navigation (refonte du 02/11/2026) : Solutions ▾ · Infrastructure ▾ · Outils ▾ · Tarifs · Ressources ;
+ * à droite : langue, « Connexion » (lien) et « Planifier une consultation » (bouton).
  * Les entrées viennent de Directus (`navigation`), avec repli sur les dictionnaires (voir lib/chrome.ts).
  * Sous le point de rupture « nav » (72 rem), la navigation devient un menu modal.
  */
@@ -32,10 +31,9 @@ export function SiteHeader({
 }) {
   const { a11y, language } = dict;
   const { login, cta } = header;
-  // le menu mobile affiche les liens, puis le menu « Produits » à plat
+  // le menu mobile affiche les menus dépliables, puis les liens
   const links = header.nav.flatMap((n) => (n.type === "link" ? [n] : []));
-  const menu = header.nav.find((n) => n.type === "menu");
-  const products = menu?.type === "menu" ? menu : null;
+  const groups = header.nav.flatMap((n) => (n.type === "menu" ? [n] : []));
 
   const switcher = (
     <LanguageSwitcher
@@ -55,18 +53,18 @@ export function SiteHeader({
     />
   );
   const cell =
-    "inline-flex h-full min-h-14 items-center border-l border-line px-5 text-[0.9375rem] font-medium text-fg-muted transition-colors duration-150 hover:bg-fg/[0.05] hover:text-fg aria-[current=page]:text-fg aria-[current=page]:shadow-[inset_0_-2px_0_var(--accent-graphic)]";
+    "inline-flex h-full min-h-16 items-center px-3.5 text-[0.9375rem] font-medium text-fg-muted transition-colors duration-150 hover:text-fg aria-[current=page]:text-fg aria-[current=page]:shadow-[inset_0_-1px_0_var(--accent-graphic)]";
 
   return (
-    <header className="theme-light sticky top-0 z-40 border-b border-line bg-bg/95 text-fg backdrop-blur-md">
-      <div className="flex min-h-14 w-full items-stretch">
+    <header className="theme-dark sticky top-0 z-40 border-b border-line bg-abyss-950/72 text-fg backdrop-blur-xl backdrop-saturate-150">
+      <div className="mx-auto flex min-h-16 w-full max-w-[96rem] items-stretch pl-gutter">
         <Link
           href={localizePath(lang, "/")}
           prefetch={false}
           aria-label={a11y.homeLink}
-          className="flex items-center rounded-none px-gutter"
+          className="mr-6 flex items-center rounded-sm"
         >
-          <Logo tone="light" />
+          <Logo tone="dark" />
         </Link>
 
         <nav aria-label={a11y.mainNav} className="hidden nav:block">
@@ -92,10 +90,8 @@ export function SiteHeader({
         </nav>
 
         <div className="ml-auto flex items-stretch">
-          <div className="hidden items-stretch nav:flex">
-            <div className="flex items-center border-l border-line px-3">
-              {switcher}
-            </div>
+          <div className="hidden items-center gap-1 pr-gutter nav:flex">
+            <div className="flex items-center px-2">{switcher}</div>
             <NavLink href={login.href} path={login.path} className={cell}>
               <SessionLabel
                 label={login.label}
@@ -105,7 +101,7 @@ export function SiteHeader({
             <Link
               href={cta.href}
               prefetch={false}
-              className="inline-flex min-h-14 items-center bg-accent px-6 text-[0.9375rem] font-semibold text-on-accent transition-colors duration-150 hover:bg-ember-400"
+              className="ml-2 inline-flex min-h-10 items-center rounded-md bg-accent px-4 text-[0.9375rem] font-semibold text-on-accent transition-[background-color,box-shadow] duration-150 hover:bg-accent-hover hover:shadow-[var(--glow-ion)]"
             >
               {cta.label}
             </Link>
@@ -118,10 +114,9 @@ export function SiteHeader({
               closeMenu: a11y.closeMenu,
               title: a11y.menuTitle,
               nav: a11y.mobileNav,
-              products: products?.label ?? "",
             }}
             links={links}
-            products={products?.items ?? []}
+            groups={groups}
             login={login}
             accountLabel={dict.nav.accountLabel}
             cta={cta}

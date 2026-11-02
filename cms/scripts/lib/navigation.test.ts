@@ -10,56 +10,43 @@ import {
 describe("navigation du §6", () => {
   const header = NAVIGATION.filter((n) => n.placement === "header");
 
-  test("en-tête : IA souveraine, Solutions, Produits (6 entrées), Tarifs, Ressources, puis Connexion et le bouton", () => {
+  test("en-tête (refonte « Signal ») : Solutions ▾, Infrastructure ▾, Outils ▾, Tarifs, Ressources, puis Connexion et le bouton", () => {
     expect(header.map((n) => n.fr.label)).toEqual([
-      "IA souveraine",
       "Solutions",
-      "Produits",
+      "Infrastructure",
+      "Outils",
       "Tarifs",
       "Ressources",
       "Connexion",
-      "Planifier un diagnostic",
+      "Planifier une consultation",
     ]);
-    expect(
-      header.find((n) => n.fr.label === "Produits")?.children,
-    ).toHaveLength(6);
+    for (const m of ["Solutions", "Infrastructure", "Outils"])
+      expect(header.find((n) => n.fr.label === m)?.fr.href).toBe("");
     expect(header.find((n) => n.fr.label === "Connexion")?.style).toBe(
       "utility",
     );
     expect(
-      header.find((n) => n.fr.label === "Planifier un diagnostic")?.style,
+      header.find((n) => n.fr.label === "Planifier une consultation")?.style,
     ).toBe("button");
   });
 
-  test("OPSYS-AI et la souveraineté restent au premier niveau (D13)", () => {
-    expect(header.some((n) => n.fr.label === "IA souveraine")).toBe(true);
-    const produits = header.find((n) => n.fr.label === "Produits");
-    expect(produits?.children?.map((c) => c.fr.label)).toContain("OPSYS-AI");
-    // Le menu public « Produits » ne garde que six entrées (consigne du fondateur du 29/10/2026) : VPS, Modèles et API,
-    // WorkStudio, Nexora Apps, Suite logicielle, OPSYS-AI. Les agents hébergés vivent sur la page WorkStudio ;
-    // Croissance et Vision restent atteignables depuis le pied de page, l'accueil et leurs pages.
-    expect(produits?.children?.map((c) => c.fr.href)).toEqual([
-      "/vps/",
-      "/modeles/",
-      "/workstudio/",
-      "/apps/",
-      "/suite/",
-      "/opsys-ai/",
-    ]);
-    const hrefsPied = NAVIGATION.filter((n) => n.placement === "footer")
+  test("les nouvelles pages sont au premier rang de leur menu ; Creative ouvre le menu Outils", () => {
+    const first = (m: string) =>
+      header.find((n) => n.fr.label === m)?.children?.[0]?.fr.href;
+    expect(first("Solutions")).toBe("/solutions/reception-virtuelle/");
+    expect(first("Infrastructure")).toBe("/infrastructure/");
+    expect(first("Outils")).toBe("/apps/creative/");
+    const solutions = header.find((n) => n.fr.label === "Solutions");
+    expect(solutions?.children?.map((c) => c.fr.href)).toContain(
+      "/solutions/surveillance-ia/",
+    );
+    // OPSYS-AI reste atteignable depuis l'en-tête (D13) ; la souveraineté, depuis le pied de page et l'accueil
+    expect(solutions?.children?.map((c) => c.fr.href)).toContain("/opsys-ai/");
+    const pied = NAVIGATION.filter((n) => n.placement === "footer")
       .flatMap((n) => n.children ?? [])
       .map((c) => c.fr.href);
-    expect(hrefsPied).toEqual(
-      expect.arrayContaining(
-        ["/croissance/", "/vision/", "/agents/"].slice(0, 2),
-      ),
-    );
-    expect(produits?.children?.map((c) => c.fr.href)).not.toContain("/agents/");
-    const confiance = NAVIGATION.find(
-      (n) => n.placement === "footer" && n.fr.label === "Centre de confiance",
-    );
-    expect(confiance?.children?.map((c) => c.fr.href)).toContain(
-      "/vos-donnees/",
+    expect(pied).toEqual(
+      expect.arrayContaining(["/souverainete/", "/infrastructure/", "/vps/"]),
     );
   });
 
@@ -78,12 +65,12 @@ describe("navigation du §6", () => {
     }
   });
 
-  test("les entrées du menu Produits ont une description dans les deux langues", () => {
-    const produits = header.find((n) => n.fr.label === "Produits");
-    for (const c of produits?.children ?? []) {
-      expect(c.fr.description?.length ?? 0).toBeGreaterThan(10);
-      expect(c.en.description?.length ?? 0).toBeGreaterThan(10);
-    }
+  test("les entrées des menus de l'en-tête ont une description dans les deux langues", () => {
+    for (const m of header.filter((n) => n.children))
+      for (const c of m.children ?? []) {
+        expect(c.fr.description?.length ?? 0).toBeGreaterThan(10);
+        expect(c.en.description?.length ?? 0).toBeGreaterThan(10);
+      }
   });
 
   test("le pied de page a quatre colonnes ; le légal quatre liens", () => {
@@ -122,10 +109,10 @@ describe("rapprochement avec l'existant", () => {
 
   test("un parent précède ses enfants et le rang est propre à l'emplacement", () => {
     const iProduits = flat.findIndex(
-      (f) => f.fr.label === "Produits" && f.placement === "header",
+      (f) => f.fr.label === "Infrastructure" && f.placement === "header",
     );
     const iVps = flat.findIndex(
-      (f) => f.parentLabel === "Produits" && f.fr.label === "VPS",
+      (f) => f.parentLabel === "Infrastructure" && f.fr.label === "VPS",
     );
     expect(iProduits).toBeLessThan(iVps);
     expect(
@@ -165,5 +152,36 @@ describe("rapprochement avec l'existant", () => {
       })),
     };
     expect(planNavigation([aligned], flat, true).updates).toEqual([]);
+  });
+
+  test("avec alignement, une entrée que l'arbre ne connaît plus est archivée (jamais supprimée) ; sans alignement, rien", () => {
+    const old: ExistingNav = {
+      id: "vieux",
+      placement: "header",
+      style: "link",
+      sort: 10,
+      status: "published",
+      parent: null,
+      translations: [
+        {
+          id: 9,
+          languages_code: "fr-CA",
+          label: "IA souveraine",
+          href: "/souverainete/",
+          description: null,
+        },
+      ],
+    };
+    expect(planNavigation([old], flat, false).updates).toEqual([]);
+    expect(planNavigation([old], flat, true).updates).toContainEqual({
+      id: "vieux",
+      body: { status: "archived" },
+    });
+    const archived = { ...old, status: "archived" };
+    expect(
+      planNavigation([archived], flat, true).updates.some(
+        (u) => u.id === "vieux",
+      ),
+    ).toBe(false);
   });
 });

@@ -44,147 +44,180 @@ const top = (
   ...(children ? { children } : {}),
 });
 
+/** Menus de l'en-tête (refonte « Signal », 02/11/2026) : réutilisés par les colonnes du pied de page. */
+const SOLUTIONS = [
+  both(
+    "Réception virtuelle",
+    "Virtual reception",
+    "/solutions/reception-virtuelle/",
+    "Appels, courriels et textos traités jour et nuit, en français et en anglais.",
+    "Calls, emails and text messages handled day and night, in French and English.",
+  ),
+  both(
+    "Surveillance IA",
+    "AI surveillance",
+    "/solutions/surveillance-ia/",
+    "Vos caméras analysées en temps réel ; alertes et rapports à chaque événement.",
+    "Your cameras analyzed in real time; alerts and reports for every event.",
+  ),
+  both(
+    "Agents IA",
+    "AI agents",
+    "/workstudio/",
+    "Des agents qui exécutent vos tâches, avec votre approbation.",
+    "Agents that carry out your tasks, with your approval.",
+  ),
+  both(
+    "OPSYS-AI",
+    "OPSYS-AI",
+    "/opsys-ai/",
+    "Une équipe coordonnée pour la construction et les services terrain.",
+    "A coordinated team for construction and field services.",
+  ),
+  both(
+    "Toutes les solutions",
+    "All solutions",
+    "/solutions/",
+    "Courriels, factures, documents, rendez-vous, comptabilité, service client.",
+    "Email, invoices, documents, appointments, accounting, customer service.",
+  ),
+];
+const INFRASTRUCTURE = [
+  both(
+    "Infrastructure IA",
+    "AI infrastructure",
+    "/infrastructure/",
+    "DGX Spark, DGX Station et baies de serveurs, installés chez vous.",
+    "DGX Spark, DGX Station and server racks, installed at your site.",
+  ),
+  both(
+    "Hébergé chez nous",
+    "Hosted with us",
+    "/deploiement/heberge-quebec/",
+    "Vos modèles et vos agents sur nos serveurs, au Québec.",
+    "Your models and agents on our servers, in Quebec.",
+  ),
+  both(
+    "Installé chez vous",
+    "Installed at your site",
+    "/deploiement/sur-place/",
+    "Vos données ne quittent pas vos locaux.",
+    "Your data never leaves your premises.",
+  ),
+  both(
+    "VPS",
+    "VPS",
+    "/vps/",
+    "Serveurs privés virtuels, avec l’application de votre choix.",
+    "Virtual private servers, with the application of your choice.",
+  ),
+  both(
+    "Modèles et API",
+    "Models and API",
+    "/modeles/",
+    "Une passerelle unique vers des modèles, avec la résidence des données affichée.",
+    "One gateway to many models, with data residency shown for each.",
+  ),
+];
+const TOOLS = [
+  both(
+    "Nexora Creative",
+    "Nexora Creative",
+    "/apps/creative/",
+    "Image, vidéo et son : l’IA fait le gros du travail.",
+    "Image, video and sound: AI does the heavy lifting.",
+  ),
+  both(
+    "WorkStudio",
+    "WorkStudio",
+    "/workstudio/",
+    "Le studio pour concevoir des agents et des flux de travaux.",
+    "The studio for designing agents and workflows.",
+  ),
+  both(
+    "Nexora Code",
+    "Nexora Code",
+    "/apps/code/",
+    "Un environnement de code avec l’IA, dans votre compte.",
+    "A coding environment with AI, in your account.",
+  ),
+  both(
+    "Nexora RAG",
+    "Nexora RAG",
+    "/apps/rag/",
+    "Des réponses tirées de vos propres documents.",
+    "Answers drawn from your own documents.",
+  ),
+  both(
+    "WebPilot",
+    "WebPilot",
+    "/apps/webpilot/",
+    "Un navigateur que l’IA pilote pour vous.",
+    "A browser that AI drives for you.",
+  ),
+  both(
+    "Toutes les applications",
+    "All applications",
+    "/apps/",
+    "L’état de chaque outil est indiqué.",
+    "The state of each tool is shown.",
+  ),
+];
+const menu = (
+  fr: string,
+  en: string,
+  children: NonNullable<NavEntry["children"]>,
+  placement: NavEntry["placement"] = "header",
+) =>
+  top(
+    placement,
+    "link",
+    { fr: { label: fr, href: "" }, en: { label: en, href: "" } },
+    children,
+  );
+/** Une colonne du pied de page reprend un menu, sans les descriptions. */
+const plain = (c: NonNullable<NavEntry["children"]>) =>
+  c.map(({ fr, en }) => ({
+    fr: { label: fr.label, href: fr.href },
+    en: { label: en.label, href: en.href },
+  }));
+
 export const NAVIGATION: NavEntry[] = [
-  // --- en-tête : IA souveraine · Solutions · Produits (menu) · Tarifs · Ressources ; Connexion ; bouton ---
-  top(
-    "header",
-    "link",
-    both("IA souveraine", "Sovereign AI", "/souverainete/"),
-  ),
-  top("header", "link", both("Solutions", "Solutions", "/solutions/")),
-  top(
-    "header",
-    "link",
-    {
-      fr: { label: "Produits", href: "" },
-      en: { label: "Products", href: "" },
-    },
-    [
-      both(
-        "VPS",
-        "VPS",
-        "/vps/",
-        "Serveurs privés virtuels au Québec, avec l’application de votre choix.",
-        "Virtual private servers in Quebec, with the application of your choice.",
-      ),
-      both(
-        "Modèles et API",
-        "Models and API",
-        "/modeles/",
-        "Une passerelle unique vers des modèles, avec la résidence des données affichée.",
-        "One gateway to many models, with data residency shown for each.",
-      ),
-      both(
-        "WorkStudio",
-        "WorkStudio",
-        "/workstudio/",
-        "Le studio pour concevoir des agents et des flux de travaux.",
-        "The studio for designing agents and workflows.",
-      ),
-      both(
-        "Nexora Apps",
-        "Nexora Apps",
-        "/apps/",
-        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
-        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
-      ),
-      both(
-        "Suite logicielle",
-        "Software suite",
-        "/suite/",
-        "Code, Corpus et les modèles Quanta et Helix.",
-        "Code, Corpus, and the Quanta and Helix models.",
-      ),
-      both(
-        "OPSYS-AI",
-        "OPSYS-AI",
-        "/opsys-ai/",
-        "Une équipe coordonnée pour la construction et les services terrain.",
-        "A coordinated team for construction and field services.",
-      ),
-    ],
-  ),
+  // --- en-tête : Solutions ▾ · Infrastructure ▾ · Outils ▾ · Tarifs · Ressources ; Connexion ; bouton ---
+  menu("Solutions", "Solutions", SOLUTIONS),
+  menu("Infrastructure", "Infrastructure", INFRASTRUCTURE),
+  menu("Outils", "Tools", TOOLS),
   top("header", "link", both("Tarifs", "Pricing", "/tarifs/")),
   top("header", "link", both("Ressources", "Resources", "/ressources/")),
   top("header", "utility", both("Connexion", "Sign in", "/compte/")),
   top(
     "header",
     "button",
-    both("Planifier un diagnostic", "Book a diagnostic", "/contact/"),
+    both("Planifier une consultation", "Plan a consultation", "/contact/"),
   ),
 
   // --- pied de page : quatre colonnes ---
-  top(
+  menu("Solutions", "Solutions", plain(SOLUTIONS), "footer"),
+  menu("Infrastructure", "Infrastructure", plain(INFRASTRUCTURE), "footer"),
+  menu(
+    "Outils",
+    "Tools",
+    [...plain(TOOLS), both("Mes outils", "My tools", "/compte/")],
     "footer",
-    "link",
-    {
-      fr: { label: "Produits", href: "" },
-      en: { label: "Products", href: "" },
-    },
-    [
-      both("VPS", "VPS", "/vps/"),
-      both("Modèles et API", "Models and API", "/modeles/"),
-      both("WorkStudio", "WorkStudio", "/workstudio/"),
-      both("Nexora Apps", "Nexora Apps", "/apps/"),
-      both("Mes outils", "My tools", "/compte/"),
-      both("Suite logicielle", "Software suite", "/suite/"),
-      both("OPSYS-AI", "OPSYS-AI", "/opsys-ai/"),
-      both("Nexora Croissance", "Nexora Croissance", "/croissance/"),
-      both("Nexora Vision", "Nexora Vision", "/vision/"),
-    ],
   ),
-  top(
-    "footer",
-    "link",
-    {
-      fr: { label: "Solutions", href: "" },
-      en: { label: "Solutions", href: "" },
-    },
-    [
-      both("Toutes les solutions", "All solutions", "/solutions/"),
-      both("Courriels", "Email", "/solutions/courriels/"),
-      both("Factures", "Invoices", "/solutions/factures/"),
-      both("Service client", "Customer service", "/solutions/service-client/"),
-      both(
-        "Prise de rendez-vous",
-        "Appointment booking",
-        "/solutions/rendez-vous/",
-      ),
-      both("Comptabilité", "Accounting", "/solutions/comptabilite/"),
-      both("Documents", "Documents", "/solutions/documents/"),
-    ],
-  ),
-  top(
-    "footer",
-    "link",
-    {
-      fr: { label: "Entreprise", href: "" },
-      en: { label: "Company", href: "" },
-    },
+  menu(
+    "Entreprise",
+    "Company",
     [
       both("Services", "Services", "/services/"),
-      both("Modes de déploiement", "Deployment modes", "/deploiement/"),
       both("Méthode", "Method", "/methode/"),
       both("Entreprise", "About", "/entreprise/"),
-      both("Tarifs", "Pricing", "/tarifs/"),
-      both("Contact", "Contact", "/contact/"),
-    ],
-  ),
-  top(
-    "footer",
-    "link",
-    {
-      fr: { label: "Centre de confiance", href: "" },
-      en: { label: "Trust centre", href: "" },
-    },
-    [
       both("Souveraineté", "Sovereignty", "/souverainete/"),
-      both("Vos données", "Your data", "/vos-donnees/"),
-      both("Loi 25", "Law 25", "/souverainete/loi-25/"),
       both("Centre de confiance", "Trust centre", "/centre-de-confiance/"),
       both("Questions fréquentes", "Frequently asked questions", "/faq/"),
-      both("Ressources", "Resources", "/ressources/"),
+      both("Contact", "Contact", "/contact/"),
     ],
+    "footer",
   ),
 
   // --- mentions légales ---
@@ -287,6 +320,7 @@ export function planNavigation(
   creates: Flat[];
   updates: { id: string; body: Record<string, unknown> }[];
 } {
+  const matched = new Set<string>();
   const creates: Flat[] = [];
   const updates: { id: string; body: Record<string, unknown> }[] = [];
   const byId = new Map(existing.map((n) => [n.id, n]));
@@ -303,6 +337,7 @@ export function planNavigation(
       creates.push(d);
       continue;
     }
+    matched.add(cur.id);
     if (!align) continue;
     const body: Record<string, unknown> = {};
     if (cur.style !== d.style) body.style = d.style;
@@ -333,5 +368,11 @@ export function planNavigation(
       body.translations = { create, update, delete: [] };
     if (Object.keys(body).length) updates.push({ id: cur.id, body });
   }
+  // Avec `align`, une entrée que l'arbre ne connaît plus (ex. l'ancien menu « Produits ») est archivée, jamais
+  // supprimée : le site ne lit que les entrées publiées, et un éditeur peut la republier.
+  if (align)
+    for (const n of existing)
+      if (!matched.has(n.id) && n.status !== "archived")
+        updates.push({ id: n.id, body: { status: "archived" } });
   return { creates, updates };
 }

@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
   images: {
     // D11 : le SVG reste désactivé (valeur par défaut, écrite pour qu'elle ne change pas par mégarde).
     dangerouslyAllowSVG: false,
+    // AVIF d’abord (plus léger), WebP sinon : les photos du site (produits, infrastructure) sont lourdes.
+    formats: ["image/avif", "image/webp"],
     // Les images du CMS passent par /api/media/<id> (jeton lecteur côté serveur, raster seulement).
     localPatterns: [{ pathname: "/api/media/*" }],
   },

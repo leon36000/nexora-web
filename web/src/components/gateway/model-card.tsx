@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mosaic } from "@/components/brand/mosaic";
+import { SignalGlyph } from "@/components/signal/materials";
 import { CARD_LINK, Card } from "@/components/ui/card";
 import { fmt } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
@@ -44,17 +44,11 @@ export function ModelCard({
       id={modelAnchor(model.id)}
       className="flex h-full scroll-mt-24 flex-col"
     >
-      <Mosaic
-        cols={5}
-        rows={5}
+      <SignalGlyph
         seed={[...model.id].reduce(
           (a, ch) => (a * 31 + ch.charCodeAt(0)) % 997,
           5,
         )}
-        palette="ciel"
-        fade={0}
-        gap={0.1}
-        toward="center"
         className="absolute right-5 top-5 size-7 rounded-xs sm:right-7 sm:top-7"
       />
       <div className="flex min-h-6 flex-wrap items-center gap-x-4 gap-y-1 pr-10">

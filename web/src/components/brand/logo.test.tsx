@@ -1,56 +1,42 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { Logo, LogoMark } from "./logo";
-import { LOGO } from "./logo-geometry";
+import { BRAND } from "@/lib/brand";
+import { Logo, LogoMark, SIGNAL_MARK } from "./logo";
 
-describe("logo Nexora AI", () => {
-  it("dessine le logotype en contours : aucun texte, donc aucune police à charger", () => {
+describe("logo de la marque (identité « Signal »)", () => {
+  it("lit le nom dans la configuration de marque : un seul endroit à changer", () => {
     const html = renderToStaticMarkup(<Logo tone="dark" />);
-    expect(html).not.toMatch(/>\s*nexora/i);
-    expect(html).toContain(LOGO.nexora);
-    expect(html).toContain(LOGO.ai);
-    expect(html).toContain(`viewBox="${LOGO.lockupBox}"`);
+    expect(html).toContain(BRAND.wordmark.base);
+    if (BRAND.wordmark.suffix) expect(html).toContain(BRAND.wordmark.suffix);
   });
 
-  it("dessine un « N » en pixels : deux montants d'encre (un rectangle chacun) et une diagonale de trois carrés", () => {
-    expect(LOGO.bars.match(/M/g)).toHaveLength(2);
-    expect(LOGO.passage.match(/M/g)).toHaveLength(3);
+  it("la marque « signal » n'est pas le « N » en pixels : deux crochets, une ligne, un point, aucun carré", () => {
+    const html = renderToStaticMarkup(<LogoMark tone="dark" />);
+    expect(html).toContain(SIGNAL_MARK.brackets);
+    expect(html).toContain(SIGNAL_MARK.scan);
+    expect(html).toMatch(/<circle/);
+    expect(html).not.toMatch(/<rect|h10\.4/);
   });
 
-  it("garde l'orange signal pour la diagonale, plus soutenu sur fond clair", () => {
-    expect(renderToStaticMarkup(<Logo tone="dark" />)).toContain(
-      `fill="#ff5a1f"`,
-    );
-    expect(renderToStaticMarkup(<Logo tone="light" />)).toContain(
-      `fill="#f04a10"`,
-    );
+  it("prend l'accent ion : clair sur fond sombre, foncé (contraste AA) sur fond clair, ou celui du thème", () => {
+    expect(renderToStaticMarkup(<Logo tone="dark" />)).toContain("#3ec8ff");
+    expect(renderToStaticMarkup(<Logo tone="light" />)).toContain("#0b6e99");
     expect(renderToStaticMarkup(<Logo tone="auto" />)).toContain(
       "var(--accent-graphic)",
     );
   });
 
-  it("choisit pour « AI » un orange de texte qui passe le contraste AA sur son fond", () => {
-    expect(renderToStaticMarkup(<Logo tone="dark" />)).toContain("#ff7a45");
-    expect(renderToStaticMarkup(<Logo tone="light" />)).toContain("#b53a0a");
-    expect(renderToStaticMarkup(<Logo tone="auto" />)).toContain(
-      "var(--accent-text)",
-    );
-  });
-
   it("est décoratif par défaut (le lien qui le contient porte le nom), et nommé sur demande", () => {
     expect(renderToStaticMarkup(<Logo />)).toContain('aria-hidden="true"');
-    const named = renderToStaticMarkup(<Logo label="Nexora AI" />);
+    const named = renderToStaticMarkup(<Logo label={BRAND.name} />);
     expect(named).toContain('role="img"');
-    expect(named).toContain('aria-label="Nexora AI"');
-    expect(named).not.toContain("aria-hidden");
+    expect(named).toContain(`aria-label="${BRAND.name}"`);
+    expect(named).not.toContain('aria-hidden="true"><svg');
   });
 
-  it("le symbole seul reprend la même géométrie", () => {
-    const html = renderToStaticMarkup(<LogoMark />);
-    expect(html).toContain(LOGO.bars);
-    expect(html).toContain(`viewBox="${LOGO.symbolBox}"`);
+  it("le symbole seul ne porte pas le nom", () => {
     expect(renderToStaticMarkup(<Logo wordmark={false} />)).not.toContain(
-      LOGO.nexora,
+      BRAND.wordmark.base,
     );
   });
 });

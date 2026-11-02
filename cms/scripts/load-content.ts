@@ -131,6 +131,19 @@ const OPTIONS = {
     .find((a) => a.startsWith("--seulement="))
     ?.slice("--seulement=".length)
     .split(","),
+  /**
+   * Dossiers de médias (gros fichiers hors dépôt : images et vidéos du site), séparés par des virgules :
+   * `--medias=/srv/nexora/medias/web,/srv/nexora/medias/brut` ou la variable `NEXORA_MEDIA_DIRS`.
+   * Un fichier trouvé là est téléversé dans Directus (une seule fois, empreinte SHA-256).
+   */
+  mediaDirs: (
+    argv.find((a) => a.startsWith("--medias="))?.slice("--medias=".length) ??
+    process.env.NEXORA_MEDIA_DIRS ??
+    ""
+  )
+    .split(",")
+    .map((d) => d.trim())
+    .filter(Boolean),
 };
 
 // ---------- comptes ----------
@@ -375,11 +388,13 @@ async function processPage(
   }
   const merged = mergePage(pair);
   log(`Page « ${key} »`);
-  // vidéos et sous-titres : chaque référence `{ asset }` devient l'identifiant d'un fichier Directus
+  // images, vidéos et sous-titres : chaque référence `{ asset }` devient l'identifiant d'un fichier Directus (ou reste
+  // vide si elle est facultative et qu'aucun fichier n'existe encore : le site montre alors une matière en code)
   const want = await resolveAssetRefs(merged, async (name) => {
     const r = await resolveAsset(name, {
       store: ctx.assets,
       dir: ASSETS_DIR,
+      extraDirs: OPTIONS.mediaDirs,
       dryRun: OPTIONS.dryRun,
     });
     log(`  fichier « ${name} » : ${ASSET_ACTION[r.action]}`);

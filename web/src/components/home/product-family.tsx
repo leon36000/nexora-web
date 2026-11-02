@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { StateBadge } from "@/app/[lang]/apps/_components/state-badge";
 import { LogoMark } from "@/components/brand/logo";
-import { Mosaic, type MosaicPalette } from "@/components/brand/mosaic";
+import { SignalGlyph } from "@/components/signal/materials";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { CARD_LINK, Card } from "@/components/ui/card";
@@ -31,7 +31,7 @@ export const FAMILY: readonly {
   /** Identifiant de la fiche Nexora Apps dont on lit l'état ; sinon `state` fixe. */
   app?: string;
   state?: AppState;
-  palette: MosaicPalette;
+  palette: string;
 }[] = [
   {
     id: "workstudio",
@@ -127,14 +127,8 @@ export function ProductFamily({ lang }: { lang: Lang }) {
                 interactive
                 className="flex w-full flex-col p-5 sm:p-6"
               >
-                <Mosaic
-                  cols={5}
-                  rows={5}
+                <SignalGlyph
                   seed={i * 7 + 3}
-                  palette={entry.palette}
-                  fade={0}
-                  gap={0.1}
-                  toward="center"
                   className="size-8 shrink-0 rounded-xs"
                 />
                 <h3 className="mt-4 font-display text-h4 text-fg">

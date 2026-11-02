@@ -1,39 +1,38 @@
+import { BRAND } from "@/lib/brand";
 import { cn } from "@/lib/cn";
-import { LOGO } from "./logo-geometry";
 
 /**
- * Logo Nexora AI : un « N » dessiné en pixels (deux montants d'encre, une diagonale en orange signal : le point de
- * passage contrôlé), puis le logotype « Nexora AI » dessiné en contours (Geist 500, avec un I à empattements pour
- * qu'on ne lise jamais « Al »). Aucun texte, aucune police à charger : le logo ne provoque aucun saut de mise en page.
- * Géométrie générée par `docs/marque/outils/build-marque.mjs` ; règles d'usage dans `docs/marque/charte.md`.
+ * Logo de la marque, lu dans `web/src/lib/brand.ts` (un seul endroit à changer lors du changement de nom).
+ *
+ * Tant que le logo dessiné n'existe pas, le logo est TYPOGRAPHIQUE : la marque « signal » (un cadre de détection — deux
+ * crochets d'angle — traversé par une ligne de balayage qui s'arrête sur un point de lumière), puis le nom en Geist et
+ * le suffixe en JetBrains Mono (en Geist, « AI » se lirait « Al »). Aucun pixel, aucun « N ».
  *
  * `tone` choisit les couleurs indépendamment du thème :
- *  - "dark"  : pour les fonds sombres (os #F5F4EF, diagonale #FF5A1F, « AI » #FF7A45, 7,6:1) ;
- *  - "light" : pour les fonds clairs (graphite #121218, diagonale #F04A10, « AI » #B53A0A, 5,7:1) ;
- *  - "auto"  : suit la couleur de texte courante et les accents du thème de la section.
+ *  - "dark"  : fonds sombres (givre #EEF3FA, ion #3EC8FF) ;
+ *  - "light" : fonds clairs (graphite #0B0F16, ion foncé #0B6E99) ;
+ *  - "auto"  : suit la couleur de texte courante et l'accent du thème.
  *
  * Décoratif par défaut (le lien qui l'entoure porte le nom accessible) ; `label` en fait une image nommée.
  */
 type Tone = "dark" | "light" | "auto";
 
-type LogoProps = {
-  tone?: Tone;
-  /** Affiche le logotype à côté du symbole. */
-  wordmark?: boolean;
-  /** Nom accessible, quand le logo n'est pas déjà décrit par un lien ou un titre voisin. */
-  label?: string;
-  className?: string;
+const TONE: Record<Tone, { ink: string; ion: string }> = {
+  dark: { ink: "#eef3fa", ion: "#3ec8ff" },
+  light: { ink: "#0b0f16", ion: "#0b6e99" },
+  auto: { ink: "currentColor", ion: "var(--accent-graphic)" },
 };
 
-const TONE: Record<Tone, { ink: string; hot: string; ai: string }> = {
-  dark: { ink: "#f5f4ef", hot: "#ff5a1f", ai: "#ff7a45" },
-  light: { ink: "#121218", hot: "#f04a10", ai: "#b53a0a" },
-  auto: {
-    ink: "currentColor",
-    hot: "var(--accent-graphic)",
-    ai: "var(--accent-text)",
-  },
-};
+/** Géométrie de la marque « signal » (grille de 32 unités). Exportée pour l'icône et l'image Open Graph. */
+export const SIGNAL_MARK = {
+  viewBox: "0 0 32 32",
+  /** Crochets d'angle (haut-gauche, bas-droite) : le cadre de détection. */
+  brackets: "M4 12V4h8M28 20v8h-8",
+  /** Ligne de balayage. */
+  scan: "M4 16h17",
+  /** Le point de lumière : ce qui est détecté, entendu, calculé. */
+  point: { cx: 23.5, cy: 16, r: 3 },
+} as const;
 
 export function LogoMark({
   className,
@@ -45,17 +44,39 @@ export function LogoMark({
   label?: string;
 }) {
   const c = TONE[tone];
+  const { point } = SIGNAL_MARK;
   return (
     <svg
-      viewBox={LOGO.symbolBox}
+      viewBox={SIGNAL_MARK.viewBox}
       focusable="false"
-      className={cn("size-[1.75rem] shrink-0", className)}
+      className={cn("size-7 shrink-0", className)}
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >
-      <path fill={c.ink} d={LOGO.bars} />
-      <path fill={c.hot} d={LOGO.passage} />
+      <path
+        d={SIGNAL_MARK.brackets}
+        fill="none"
+        stroke={c.ink}
+        strokeWidth="2.25"
+        strokeLinecap="square"
+      />
+      <path
+        d={SIGNAL_MARK.scan}
+        fill="none"
+        stroke={c.ion}
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        opacity="0.55"
+      />
+      <circle
+        cx={point.cx}
+        cy={point.cy}
+        r={point.r + 3}
+        fill={c.ion}
+        opacity="0.18"
+      />
+      <circle cx={point.cx} cy={point.cy} r={point.r} fill={c.ion} />
     </svg>
   );
 }
@@ -65,24 +86,61 @@ export function Logo({
   wordmark = true,
   label,
   className,
-}: LogoProps) {
+}: {
+  tone?: Tone;
+  /** Affiche le nom à côté de la marque. */
+  wordmark?: boolean;
+  /** Nom accessible, quand le logo n'est pas déjà décrit par un lien ou un titre voisin. */
+  label?: string;
+  className?: string;
+}) {
+  const logo = BRAND.logo;
+  if (logo.kind === "svg") {
+    return (
+      // biome-ignore lint/performance/noImgElement: fichier SVG de marque servi tel quel (next/image refuse le SVG, D11)
+      <img
+        src={tone === "light" ? logo.light : logo.dark}
+        alt={label ?? ""}
+        className={cn("h-7 w-auto shrink-0", className)}
+        style={{ aspectRatio: logo.ratio }}
+      />
+    );
+  }
   if (!wordmark)
     return <LogoMark tone={tone} label={label} className={className} />;
   const c = TONE[tone];
-  return (
-    <svg
-      viewBox={LOGO.lockupBox}
-      focusable="false"
-      className={cn("h-7 w-auto shrink-0", className)}
-      style={{ aspectRatio: LOGO.lockupRatio }}
-      role={label ? "img" : undefined}
+  const classes = cn(
+    "inline-flex shrink-0 items-center gap-2.5 leading-none",
+    className,
+  );
+  const content = (
+    <>
+      <LogoMark tone={tone} className="size-7" />
+      <span className="whitespace-nowrap font-display text-[1.3125rem] font-semibold tracking-[-0.035em]">
+        {BRAND.wordmark.base}
+        {BRAND.wordmark.suffix ? (
+          <span
+            className="ml-1.5 align-[0.12em] font-mono text-[0.8125rem] font-medium tracking-[0.04em]"
+            style={{ color: c.ion }}
+          >
+            {BRAND.wordmark.suffix}
+          </span>
+        ) : null}
+      </span>
+    </>
+  );
+  return label ? (
+    <span
+      role="img"
       aria-label={label}
-      aria-hidden={label ? undefined : true}
+      className={classes}
+      style={{ color: c.ink }}
     >
-      <path fill={c.ink} d={LOGO.bars} />
-      <path fill={c.hot} d={LOGO.passage} />
-      <path fill={c.ink} d={LOGO.nexora} />
-      <path fill={c.ai} d={LOGO.ai} />
-    </svg>
+      {content}
+    </span>
+  ) : (
+    <span aria-hidden="true" className={classes} style={{ color: c.ink }}>
+      {content}
+    </span>
   );
 }

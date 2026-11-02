@@ -25,16 +25,20 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
     const chrome = buildChrome("fr", getDictionary("fr"), [], alt);
     const dict = getDictionary("fr");
     expect(chrome.fromCms).toBe(false);
-    // même ordre que le §6 : IA souveraine · Solutions · Produits (menu) · Tarifs · Ressources
+    // refonte « Signal » : Solutions ▾ · Infrastructure ▾ · Outils ▾ · Tarifs · Ressources
     expect(chrome.header.nav.map((n) => n.label)).toEqual([
-      dict.nav.sovereignty.label,
-      dict.nav.solutions.label,
-      dict.nav.products.label,
+      "Solutions",
+      "Infrastructure",
+      "Outils",
       dict.nav.pricing.label,
       dict.nav.resources.label,
     ]);
-    const menu = chrome.header.nav.find((n) => n.type === "menu");
-    expect(menu?.type === "menu" && menu.items).toHaveLength(6);
+    const menus = chrome.header.nav.filter((n) => n.type === "menu");
+    expect(menus).toHaveLength(3);
+    const solutions = menus[0];
+    expect(solutions?.type === "menu" && solutions.items[0]?.href).toBe(
+      "/solutions/reception-virtuelle",
+    );
     expect(chrome.header.login.href).toBe("/compte");
     expect(chrome.header.cta.href).toBe("/contact");
     expect(chrome.footer.columns).toHaveLength(4);

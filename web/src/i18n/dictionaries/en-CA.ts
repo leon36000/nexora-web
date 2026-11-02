@@ -40,6 +40,101 @@ export const enCA: Dictionary = {
   },
 
   nav: {
+    /** Header menus ("Signal" redesign, 2026-11-02): fallback when Directus does not provide the navigation. */
+    menus: [
+      {
+        label: "Solutions",
+        items: [
+          {
+            label: "Virtual reception",
+            description:
+              "Calls, emails and text messages handled day and night, in French and English.",
+            href: "/solutions/reception-virtuelle",
+          },
+          {
+            label: "AI surveillance",
+            description:
+              "Your cameras analyzed in real time; alerts and reports for every event.",
+            href: "/solutions/surveillance-ia",
+          },
+          {
+            label: "AI agents",
+            description:
+              "Agents that carry out your tasks, with your approval.",
+            href: "/workstudio",
+          },
+          {
+            label: "All solutions",
+            description:
+              "Email, invoices, documents, appointments, accounting, customer service.",
+            href: "/solutions",
+          },
+        ],
+      },
+      {
+        label: "Infrastructure",
+        items: [
+          {
+            label: "AI infrastructure",
+            description:
+              "DGX Spark, DGX Station and server racks, installed at your site.",
+            href: "/infrastructure",
+          },
+          {
+            label: "Hosted with us",
+            description: "Your models and agents on our servers, in Quebec.",
+            href: "/deploiement/heberge-quebec",
+          },
+          {
+            label: "VPS",
+            description:
+              "Virtual private servers, with the application of your choice.",
+            href: "/vps",
+          },
+          {
+            label: "Models and API",
+            description:
+              "One gateway to many models, with data residency shown for each.",
+            href: "/modeles",
+          },
+        ],
+      },
+      {
+        label: "Tools",
+        items: [
+          {
+            label: "Nexora Creative",
+            description: "Image, video and sound: AI does the heavy lifting.",
+            href: "/apps/creative",
+          },
+          {
+            label: "WorkStudio",
+            description: "The studio for designing agents and workflows.",
+            href: "/workstudio",
+          },
+          {
+            label: "Nexora Code",
+            description: "A coding environment with AI, in your account.",
+            href: "/apps/code",
+          },
+          {
+            label: "Nexora RAG",
+            description: "Answers drawn from your own documents.",
+            href: "/apps/rag",
+          },
+          {
+            label: "WebPilot",
+            description: "A browser that AI drives for you.",
+            href: "/apps/webpilot",
+          },
+          {
+            label: "All applications",
+            description: "The state of each tool is shown.",
+            href: "/apps",
+          },
+        ],
+      },
+    ],
     sovereignty: { label: "Sovereign AI", href: "/souverainete" },
     solutions: { label: "Solutions", href: "/solutions" },
     products: {
@@ -86,7 +181,7 @@ export const enCA: Dictionary = {
     resources: { label: "Resources", href: "/ressources" },
     login: { label: "Sign in", href: "/compte" },
     accountLabel: "My tools",
-    cta: { label: "Book an assessment", href: "/contact" },
+    cta: { label: "Plan a consultation", href: "/contact" },
   },
 
   footer: {
@@ -105,7 +200,7 @@ export const enCA: Dictionary = {
         href: "/tarifs",
       },
       contact: {
-        label: "Book an assessment",
+        label: "Plan a consultation",
         text: "Let’s talk about your project, no strings attached.",
         href: "/contact",
       },
@@ -196,6 +291,12 @@ export const enCA: Dictionary = {
     },
     modules: { detail: "See details" },
     visuals: {
+      "signal-accueil":
+        "Mock-up of the virtual reception: an incoming call transcribed live, the reply offering a new appointment, and the feed of calls, emails and text messages already handled.",
+      "signal-surveillance":
+        "Mock-up of AI surveillance: a warehouse camera image at night, a detection frame on a presence in a closed area, the alert sent and the event report.",
+      "signal-infrastructure":
+        "Conceptual diagram: the same stack (your models, your applications, security and monitoring) installed at your site, or hosted on our servers in Quebec.",
       "perimetre-sur-place":
         "Diagram: a single perimeter surrounds your data, the model and the compute, on your premises. A request enters through a controlled gateway and stays inside.",
       "perimetre-heberge":
@@ -368,7 +469,7 @@ export const enCA: Dictionary = {
       title: "AI that works for your business. Under your control.",
       subtitle:
         "From managing your requests to automating your operations, Nexora AI designs AI systems tailored to your trade. One account, your credits, all your tools.",
-      primary: "Book an assessment",
+      primary: "Plan a consultation",
       secondary: "See solutions",
     },
 
@@ -561,7 +662,7 @@ export const enCA: Dictionary = {
     finalCta: {
       title: "Let’s start with one concrete case.",
       text: "An assessment to pin down the task to automate and the deployment mode that suits you.",
-      primary: "Book an assessment",
+      primary: "Plan a consultation",
       secondary: "See solutions",
     },
   },

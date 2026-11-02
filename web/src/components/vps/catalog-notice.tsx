@@ -1,4 +1,4 @@
-import { Mosaic } from "@/components/brand/mosaic";
+import { MediaPlaceholder } from "@/components/signal/materials";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
@@ -37,13 +37,9 @@ export function CatalogNotice({
             </ButtonLink>
           </div>
         </div>
-        <Mosaic
-          cols={16}
-          rows={9}
-          seed={8}
-          toward="right"
-          fade={1}
-          className="mt-10 aspect-[16/9] w-full max-w-sm shrink-0 lg:ml-auto lg:mt-0"
+        <MediaPlaceholder
+          material="infra"
+          className="mt-10 aspect-[16/9] w-full max-w-sm shrink-0 lg:ml-auto lg:mt-0 relative rounded-card border border-line"
         />
       </div>
     </Section>

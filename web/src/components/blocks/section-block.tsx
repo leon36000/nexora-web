@@ -42,6 +42,7 @@ export function SectionBlockView({
       title={block.title}
       media={block.media}
       captions={block.captions}
+      poster={block.poster}
     />
   ) : withMedia && block.media ? (
     <div className="overflow-hidden rounded-frame border border-line">
@@ -104,8 +105,14 @@ export function SectionBlockView({
         </div>
       ) : (
         <>
-          {media ? <div className="mb-10 max-w-4xl">{media}</div> : null}
+          {/* une vidéo en vitrine (film) vient après son titre, sur toute la largeur ; une image reste au-dessus */}
+          {media && block.media?.kind !== "video" ? (
+            <div className="mb-12 max-w-4xl">{media}</div>
+          ) : null}
           {text}
+          {media && block.media?.kind === "video" ? (
+            <div className="reveal mt-12 md:mt-16">{media}</div>
+          ) : null}
         </>
       )}
       {block.items.length > 0 ? (

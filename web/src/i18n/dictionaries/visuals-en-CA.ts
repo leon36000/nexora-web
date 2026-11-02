@@ -136,5 +136,109 @@ export const visualsEnCA: VisualsDictionary = {
     edit: "Edit",
     footer: "Nothing leaves without you.",
   },
+  signal: {
+    motion: {
+      pause: "Pause animations",
+      play: "Resume animations",
+    },
+    detection: ["ZONE 02", "MOTION", "CAM 04", "ALERT"],
+    reception: {
+      window: "Virtual reception",
+      live: "Online",
+      call: {
+        title: "Incoming call",
+        time: "2:02 p.m.",
+        caller: "Caller",
+        ai: "Reception",
+        lines: [
+          {
+            who: "caller",
+            text: "Hello, I’d like to move my Thursday appointment.",
+          },
+          {
+            who: "ai",
+            text: "Of course. I can offer Friday at 10 a.m. or 2 p.m.",
+          },
+          { who: "caller", text: "Friday at 10 a.m. is perfect." },
+        ],
+      },
+      feed: {
+        title: "Conversations handled",
+        items: [
+          {
+            channel: "call",
+            who: "Call · Ms. Tremblay",
+            summary: "Appointment moved to Friday",
+            state: "Done",
+            done: true,
+          },
+          {
+            channel: "email",
+            who: "Email · Quote",
+            summary: "Request qualified, sent to sales",
+            state: "Transferred",
+            done: false,
+          },
+          {
+            channel: "sms",
+            who: "Text · Delivery",
+            summary: "Arrival time confirmed",
+            state: "Done",
+            done: true,
+          },
+          {
+            channel: "call",
+            who: "Call · Supplier",
+            summary: "Summary sent to accounting",
+            state: "Summary",
+            done: false,
+          },
+        ],
+      },
+    },
+    surveillance: {
+      window: "AI surveillance",
+      live: "Live",
+      camera: "CAM 04 · Warehouse",
+      timestamp: "02:14:37",
+      boxes: ["Presence · closed area", "Rack B"],
+      timeline: "Overnight activity",
+      range: "10 p.m. – 6 a.m.",
+      alert: {
+        label: "Alert sent",
+        title: "Presence detected in a closed area, after business hours.",
+        channels: ["Text", "Email", "App", "Security officer"],
+      },
+      report: {
+        label: "Event report",
+        items: [
+          { time: "02:14", text: "Entry through loading door 3" },
+          { time: "02:15", text: "Movement in aisle B, clip attached" },
+          { time: "02:17", text: "Alert sent according to your instructions" },
+        ],
+      },
+    },
+    infrastructure: {
+      onsite: {
+        label: "At your site",
+        title: "Installed on your premises",
+        items: [
+          "DGX Spark or DGX Station",
+          "Server rack",
+          "Your data stays on site",
+        ],
+      },
+      hosted: {
+        label: "With us",
+        title: "Hosted on our servers",
+        items: [
+          "In Quebec",
+          "Monitored by our team",
+          "Access restricted to your business",
+        ],
+      },
+      stack: ["Your models", "Your applications", "Security", "Monitoring"],
+    },
+  },
   notFound: { alt: "404" },
 };

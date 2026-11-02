@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
+import { SignalBackdrop } from "@/components/signal/materials";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
 import { Digits404, type ErrorCode } from "./digits-404";
-import { MosaicBackdrop } from "./mosaic-backdrop";
 
 /**
  * Écran d'erreur commun (404 : page absente ; 500 : erreur du serveur ; 503 : contenu momentanément illisible) : même
- * bande sombre, même mosaïque, mêmes chiffres en carrés, mêmes boutons. Une seule grammaire pour tous les états de
+ * bande sombre, même grille de précision, même code dans un cadre de détection, mêmes boutons. Une seule grammaire pour tous les états de
  * défaut du site. `children` : les actions (liens ou boutons).
  */
 export function ErrorScreen({
@@ -28,11 +28,8 @@ export function ErrorScreen({
       className="min-h-[70dvh]"
       containerClassName="flex min-h-[70dvh] flex-col justify-center"
       background={
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 hidden opacity-30 md:block"
-        >
-          <MosaicBackdrop />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 opacity-60">
+          <SignalBackdrop variant="grille" animated={false} />
         </div>
       }
     >

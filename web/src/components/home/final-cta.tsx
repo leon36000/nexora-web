@@ -1,4 +1,4 @@
-import { MosaicBackdrop } from "@/components/brand/mosaic-backdrop";
+import { SignalBackdrop } from "@/components/signal/materials";
 import { ButtonLink } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import { type Lang, localizePath } from "@/i18n/config";
@@ -22,7 +22,7 @@ export function FinalCta({
           aria-hidden="true"
           className="absolute inset-0 -z-10 hidden opacity-40 md:block"
         >
-          <MosaicBackdrop shape="wide" animated={false} />
+          <SignalBackdrop animated={false} />
         </div>
       }
     >

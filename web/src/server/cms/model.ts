@@ -9,7 +9,24 @@ export type Cta = { label: string; href: string };
 export type Tone = "sombre" | "clair" | "sable";
 /** Ancre facultative d'un bloc (`^[a-z0-9-]{0,40}$`), commune à tous les blocs. */
 type Anchored = { anchorId: string | null };
-export type CardLayout = "grille" | "liste" | "etapes" | "modules" | "bento";
+export type CardLayout =
+  | "grille"
+  | "liste"
+  | "etapes"
+  | "modules"
+  | "bento"
+  | "vitrine";
+/** Matière « Signal » dessinée en code : décor d'un héros, ou emplacement d'image tant que le fichier manque. */
+export const MATERIALS = [
+  "champ",
+  "onde",
+  "detection",
+  "infra",
+  "grille",
+] as const;
+export type Material = (typeof MATERIALS)[number];
+/** Signature d'un héros : la matière de fond (ou aucune). */
+export type HeroSignature = Material | "aucun";
 export type CardStatus =
   | "disponible"
   | "acces-anticipe"
@@ -30,6 +47,9 @@ export const SECTION_VISUALS = [
   "vision-sur-place",
   "croissance-canaux",
   "engagements-donnees",
+  "signal-accueil",
+  "signal-surveillance",
+  "signal-infrastructure",
 ] as const;
 export type SectionVisual = (typeof SECTION_VISUALS)[number];
 
@@ -56,8 +76,15 @@ export type HeroBlock = Anchored & {
   type: "hero";
   key: string;
   variant: Tone;
+  /** « standard » : titre sur la matière de fond ; « plein-ecran » : vidéo en boucle silencieuse (ou matière) plein écran. */
+  layout: "standard" | "plein-ecran";
+  /** Matière de fond (champ de lumière, onde, détection, grille) ; « aucun » = fond uni. */
+  signature: HeroSignature;
   perimeterGrid: boolean;
+  /** Image (ou affiche de la vidéo). */
   media: MediaRef | null;
+  /** Boucle vidéo silencieuse du héros plein écran. */
+  video: MediaRef | null;
   eyebrow: string | null;
   headline: string;
   subheadline: string | null;
@@ -75,6 +102,8 @@ export type SectionBlock = Anchored & {
   media: MediaRef | null;
   /** Sous-titres de la vidéo `media` ; null si le média n'est pas une vidéo ou n'a pas de sous-titres. */
   captions: Captions | null;
+  /** Affiche (image) d'une vidéo : la façade la montre avant le clic. */
+  poster: MediaRef | null;
   mediaPosition: "none" | "left" | "right" | "top";
   items: { title: string | null; text: string | null }[];
 };
@@ -96,6 +125,10 @@ export type CardsBlock = Anchored & {
     label: string | null;
     /** Statut (disposition « modules »). */
     status: CardStatus | null;
+    /** Image de la carte (disposition « vitrine ») : identifiant d'un fichier Directus. */
+    image: string | null;
+    /** Matière dessinée tant que l'image manque (disposition « vitrine »). */
+    visual: Material | null;
   }[];
 };
 

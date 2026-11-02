@@ -6,16 +6,12 @@ import { Digits404 } from "./digits-404";
 import { ErrorScreen } from "./error-screen";
 
 describe("écran d'erreur commun", () => {
-  it.each([
-    ["404", 30],
-    ["500", 35],
-    ["503", 34],
-  ] as const)(
-    "dessine %s en %i carrés, avec un seul point de passage, décoratif",
-    (code, squares) => {
+  it.each(["404", "500", "503"] as const)(
+    "dessine %s au trait de lumière, sans aucun carré (la mosaïque est retirée), décoratif",
+    (code) => {
       const html = renderToStaticMarkup(<Digits404 code={code} />);
-      expect(html.match(/<rect/g)).toHaveLength(squares);
-      expect(html.match(/fill="var\(--fg\)"/g)).toHaveLength(1);
+      expect(html).toContain(`>${code}</text>`);
+      expect(html).not.toMatch(/<rect/);
       expect(html).toContain('aria-hidden="true"');
     },
   );
