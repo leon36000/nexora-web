@@ -29,7 +29,7 @@ Une réception virtuelle répond à vos appels, à vos courriels et à vos texto
 
 *Aperçu : trois canaux au même endroit, la maquette en vis-à-vis. · Affirmations : CL-RV01, CL-RV02*
 
-Réglages : `media_position=right`, `visual=signal-accueil`, `tone=clair`, `anchor_id=apercu`
+Réglages : `media_position=right`, `visual=aucun`, `tone=clair`, `anchor_id=apercu`, `media=[object Object]`
 
 ## Une réception, trois canaux.
 

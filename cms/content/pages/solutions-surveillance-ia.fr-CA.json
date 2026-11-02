@@ -37,13 +37,26 @@
       "claims": ["CL-SV01", "CL-SV03"],
       "fields": {
         "media_position": "left",
-        "visual": "signal-surveillance",
         "tone": "clair",
-        "anchor_id": "apercu"
+        "anchor_id": "apercu",
+        "visual": "aucun",
+        "media": {
+          "asset": ["site-film-surveillance-fr.mp4"],
+          "optional": true
+        },
+        "poster": {
+          "asset": ["site-film-surveillance-affiche.jpg"],
+          "optional": true
+        }
       },
       "translation": {
         "title": "Vos caméras, enfin regardées.",
-        "body": "<p>Les systèmes de sécurité enregistrent tout, mais la vidéo n'est revue qu'après coup, souvent trop tard. Nos IA se branchent à vos caméras et à votre système de sécurité existants et analysent les images en continu.</p><p>Quand un comportement suspect apparaît (présence dans une zone fermée, intrusion après les heures d'ouverture, quelqu'un qui s'attarde), l'alerte part pendant que l'événement a lieu.</p>"
+        "body": "<p>Les systèmes de sécurité enregistrent tout, mais la vidéo n'est revue qu'après coup, souvent trop tard. Nos IA se branchent à vos caméras et à votre système de sécurité existants et analysent les images en continu.</p><p>Quand un comportement suspect apparaît (présence dans une zone fermée, intrusion après les heures d'ouverture, quelqu'un qui s'attarde), l'alerte part pendant que l'événement a lieu.</p>",
+        "media_alt": "Film de surveillance IA : une caméra, une détection, une alerte.",
+        "media_lang": {
+          "asset": ["site-film-surveillance-fr.mp4"],
+          "optional": true
+        }
       }
     },
     {

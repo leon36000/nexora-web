@@ -37,13 +37,18 @@
       "claims": ["CL-RV01", "CL-RV02"],
       "fields": {
         "media_position": "right",
-        "visual": "signal-accueil",
+        "visual": "aucun",
         "tone": "clair",
-        "anchor_id": "apercu"
+        "anchor_id": "apercu",
+        "media": {
+          "asset": ["site-reception.jpg"],
+          "optional": true
+        }
       },
       "translation": {
         "title": "Une réception, trois canaux.",
-        "body": "<p>Le téléphone, le courriel et le texto arrivent au même endroit. La réception virtuelle comprend la demande, répond avec vos informations (heures, services, politiques) et agit : elle inscrit le rendez-vous dans votre calendrier, met à jour votre outil de gestion de la clientèle ou passe l'appel à la bonne personne.</p><p>Chaque échange se termine par un résumé écrit, envoyé à qui vous voulez.</p>"
+        "body": "<p>Le téléphone, le courriel et le texto arrivent au même endroit. La réception virtuelle comprend la demande, répond avec vos informations (heures, services, politiques) et agit : elle inscrit le rendez-vous dans votre calendrier, met à jour votre outil de gestion de la clientèle ou passe l'appel à la bonne personne.</p><p>Chaque échange se termine par un résumé écrit, envoyé à qui vous voulez.</p>",
+        "media_alt": "Un accueil où la voix répond, note et transmet."
       }
     },
     {

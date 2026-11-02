@@ -40,9 +40,13 @@ first_src() {
     local base="${prefix%-}" e f
     for e in "${exts[@]}"; do [ -f "$SRC/$base.$e" ] && { printf '%s\n' "$SRC/$base.$e"; return 0; }; done
     for e in "${exts[@]}"; do [ -f "$SRC/$base-16x9.$e" ] && { printf '%s\n' "$SRC/$base-16x9.$e"; return 0; }; done
-    local re; re="\.($(IFS='|'; echo "${exts[*]}"))$"
-    f="$(find "$SRC" -maxdepth 1 -type f -iname "${prefix}*" 2>/dev/null | grep -Ei "$re" | grep -Evi 'apercu|preview|poster|9x16' | sort | head -n 1 || true)"
-    if [ -n "$f" ]; then printf '%s\n' "$f"; return 0; fi
+    # Déclinaison quelconque du préfixe : jamais un recadrage (-4x5, -9x16), une taille réduite (-1280), une affiche ni un
+    # aperçu ; à nom égal, le format d'origine (16:9) l'emporte, et les extensions sont essayées dans l'ordre de `exts`.
+    local stem
+    while IFS= read -r stem; do
+      for e in "${exts[@]}"; do [ -f "$stem.$e" ] && { printf '%s\n' "$stem.$e"; return 0; }; done
+    done < <(find "$SRC" -maxdepth 1 -type f -iname "${prefix}*" 2>/dev/null | sed -E 's/\.[^./]+$//' \
+      | grep -Evi 'apercu|preview|poster|9x16|4x5|-1280$' | sort -u)
   done
   return 1
 }
@@ -102,11 +106,11 @@ if s="$(first_src image creative-)"; then image site-creative-affiche.jpg "$s"
 elif [ -f "$PUBLIC/creative-p04.jpg" ]; then image site-creative-affiche.jpg "$PUBLIC/creative-p04.jpg"; fi
 
 # --- piliers de l'accueil ---------------------------------------------------------------------------------------------
-if s="$(first_src image reception- surveillance- hero-ville)"; then image site-pilier-automatiser.jpg "$s"
+if s="$(first_src image hero-ville reception-)"; then image site-pilier-automatiser.jpg "$s"
 elif [ -f "$PLANS/s04-ville-v1.mp4" ]; then
   fresh "$OUT/site-pilier-automatiser.jpg" "$PLANS/s04-ville-v1.mp4" || { ff -ss 2 -i "$PLANS/s04-ville-v1.mp4" -frames:v 1 -vf "scale=1664:-2:flags=lanczos" -q:v 3 "$OUT/site-pilier-automatiser.jpg"; echo "  + site-pilier-automatiser.jpg (PROVISOIRE : ville la nuit, film de marque)"; }
 fi
-if s="$(first_src image infra-racks hero-datacenter methode-)"; then image site-pilier-equiper.jpg "$s"
+if s="$(first_src image hero-datacenter infra-racks methode-)"; then image site-pilier-equiper.jpg "$s"
 elif [ -f "$FILMS/film-marque-16x9-fr.mp4" ]; then
   fresh "$OUT/site-pilier-equiper.jpg" "$FILMS/film-marque-16x9-fr.mp4" || { ff -ss 36.6 -i "$FILMS/film-marque-16x9-fr.mp4" -frames:v 1 -vf "$ION_GRADE" -q:v 3 "$OUT/site-pilier-equiper.jpg"; echo "  + site-pilier-equiper.jpg (PROVISOIRE : grille de lumière)"; }
 fi
@@ -127,5 +131,10 @@ done
 for slot in reception surveillance infrastructure workstudio code; do
   if s="$(first_src video "$slot-film" "film-$slot" "$slot-")"; then video "site-film-$slot.mp4" "$s" son 24; fi
 done
+# Film de la page Surveillance : une version par langue (film-surveillance-{fr,en}-16x9.mp4).
+for l in fr en; do
+  [ -f "$SRC/film-surveillance-$l-16x9.mp4" ] && video "site-film-surveillance-$l.mp4" "$SRC/film-surveillance-$l-16x9.mp4" son 24
+done
+[ -f "$SRC/film-surveillance-fr-16x9-poster.jpg" ] && image site-film-surveillance-affiche.jpg "$SRC/film-surveillance-fr-16x9-poster.jpg"
 
 echo "Terminé. Taille : $(du -sh "$OUT" | cut -f1)"
