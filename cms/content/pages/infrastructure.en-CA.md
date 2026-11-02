@@ -6,8 +6,8 @@
 
 - Page : `infrastructure` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/infrastructure/` · slug : `infrastructure`
-- Titre SEO (44 caractères) : AI infrastructure: DGX Spark, Station, racks
-- Description SEO (155 caractères) : We sell and install your AI infrastructure: NVIDIA DGX Spark, DGX Station or server racks, at your site, or hosted on our servers in Quebec, fully managed.
+- Titre SEO (44 caractères) : AI infrastructure: machines, stations, racks
+- Description SEO (160 caractères) : We sell and install your AI infrastructure: compact AI machine, AI workstation or server racks, at your site, or hosted on our servers in Quebec, fully managed.
 
 ## Contenu
 
@@ -33,13 +33,13 @@ Réglages : `columns=3`, `layout=vitrine`, `tone=clair`, `anchor_id=materiel`
 
 ## Three formats, one service.
 
-#### NVIDIA DGX Spark.
+#### Compact AI machine.
 
 A compact AI computer that sits on a desk. To run your models and agents on site, without a server room.
 
 → [Request a proposal](/en/contact/?sujet=infrastructure)
 
-#### NVIDIA DGX Station.
+#### AI workstation.
 
 An AI workstation in a tower format, for teams that fine-tune or serve heavier models.
 

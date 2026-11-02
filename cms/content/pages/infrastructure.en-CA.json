@@ -6,8 +6,8 @@
   "seo": {
     "slug": "infrastructure",
     "title": "AI infrastructure",
-    "seo_title": "AI infrastructure: DGX Spark, Station, racks",
-    "seo_description": "We sell and install your AI infrastructure: NVIDIA DGX Spark, DGX Station or server racks, at your site, or hosted on our servers in Quebec, fully managed.",
+    "seo_title": "AI infrastructure: machines, stations, racks",
+    "seo_description": "We sell and install your AI infrastructure: compact AI machine, AI workstation or server racks, at your site, or hosted on our servers in Quebec, fully managed.",
     "canonical": null
   },
   "blocks": [
@@ -46,7 +46,7 @@
         "cards": [
           {
             "label": "Desk",
-            "title": "NVIDIA DGX Spark.",
+            "title": "Compact AI machine.",
             "text": "A compact AI computer that sits on a desk. To run your models and agents on site, without a server room.",
             "href": "/en/contact/?sujet=infrastructure",
             "link_label": "Request a proposal",
@@ -58,7 +58,7 @@
           },
           {
             "label": "Workstation",
-            "title": "NVIDIA DGX Station.",
+            "title": "AI workstation.",
             "text": "An AI workstation in a tower format, for teams that fine-tune or serve heavier models.",
             "href": "/en/contact/?sujet=infrastructure",
             "link_label": "Request a proposal",

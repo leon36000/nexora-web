@@ -37,9 +37,9 @@ Journal de la refonte demandée par le fondateur (mandat : `marketing/nexora/REF
 | `site-hero-boucle.mp4` + `site-hero-affiche.jpg` | `hero-boucle-16x9` (allée de centre de données, MiniMax H3) | en service |
 | `site-pilier-automatiser.jpg` / `site-pilier-equiper.jpg` | `hero-ville` / `hero-datacenter` | en service |
 | `site-pilier-creer.jpg` | `creative-*` | **en attente** (matière) |
-| `site-infra-dgx-station.jpg` | `infra-dgx-station` | en service |
+| `site-infra-dgx-station.jpg` | `infra-dgx-station` (photo produit de la tour, fond studio clair 4:3 ; sources et détourées : `site-medias/photos-produits/`) | en service |
 | `site-infra-racks.jpg` | `infra-racks`, à défaut l'affiche de la boucle (allée de baies) | provisoire |
-| `site-infra-dgx-spark.jpg` | `infra-dgx-spark` | **en attente** (matière) |
+| `site-infra-dgx-spark.jpg` | `infra-dgx-spark` (photo produit du poste compact, même traitement) | en service |
 | `site-film-marque-{fr,en}.mp4` + affiche | film de marque 60 s (réencodé 1080p) | en service |
 | `site-creative-promo.mp4` + affiche | bande-annonce Creative existante | en service |
 | `site-{reception,surveillance,…}.jpg`, `site-film-{reception,surveillance,infrastructure,workstudio,code}.mp4` | à produire | non cités par les pages pour l'instant |

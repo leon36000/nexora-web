@@ -2706,9 +2706,9 @@
     {
       "id": "CL-IN01",
       "kind": "offre",
-      "statement": "Nexora AI vend et installe des infrastructures d'IA complètes : NVIDIA DGX Spark, NVIDIA DGX Station et baies de serveurs.",
+      "statement": "Nexora AI vend et installe des infrastructures d'IA complètes : postes d'IA compacts, stations d'IA et baies de serveurs.",
       "scope": "Infrastructure IA (page /infrastructure/), accueil.",
-      "evidence": "Offre définie par le fondateur (§3.4). Les descriptions de produits reprennent celles du fabricant ; aucune performance chiffrée.",
+      "evidence": "Offre définie par le fondateur (§3.4). Aucune performance chiffrée.",
       "evidence_url": null,
       "source_version": "Mandat du fondateur du 02/11/2026, marketing/nexora/REFONTE-2026-11.md §3.4",
       "approval_status": "en_revue",
@@ -2730,11 +2730,11 @@
     {
       "id": "CL-IN03",
       "kind": "fait",
-      "statement": "Le NVIDIA DGX Spark est un ordinateur d'IA compact qui se pose sur un bureau ; la DGX Station est une station de travail d'IA en format tour.",
+      "statement": "Un poste d'IA compact se pose sur un bureau ; une station d'IA est une station de travail en format tour.",
       "scope": "Infrastructure IA.",
-      "evidence": "Descriptions publiques du fabricant (pages produits NVIDIA, consultées le 02/11/2026).",
+      "evidence": "Descriptions publiques des fabricants (pages produits, consultées le 02/11/2026).",
       "evidence_url": null,
-      "source_version": "Pages produits NVIDIA DGX Spark et DGX Station, 02/11/2026",
+      "source_version": "Pages produits des fabricants, 02/11/2026",
       "approval_status": "en_revue",
       "valid_from": "2026-11-02",
       "valid_until": null

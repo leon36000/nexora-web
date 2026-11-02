@@ -87,8 +87,8 @@ const INFRASTRUCTURE = [
     "Infrastructure IA",
     "AI infrastructure",
     "/infrastructure/",
-    "DGX Spark, DGX Station et baies de serveurs, installés chez vous.",
-    "DGX Spark, DGX Station and server racks, installed at your site.",
+    "Postes d'IA compacts, stations d'IA et baies de serveurs, installés chez vous.",
+    "Compact AI machines, AI workstations and server racks, installed at your site.",
   ),
   both(
     "Hébergé chez nous",

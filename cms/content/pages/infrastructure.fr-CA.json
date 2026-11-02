@@ -6,8 +6,8 @@
   "seo": {
     "slug": "infrastructure",
     "title": "Infrastructure IA",
-    "seo_title": "Infrastructure IA : DGX Spark, Station, baies",
-    "seo_description": "Nous vendons et installons votre infrastructure IA : NVIDIA DGX Spark, DGX Station ou baies de serveurs, chez vous, ou hébergée sur nos serveurs au Québec.",
+    "seo_title": "Infrastructure IA : postes, stations, baies",
+    "seo_description": "Nous vendons et installons votre infrastructure IA : poste d'IA compact, station d'IA ou baies de serveurs, chez vous, ou hébergée sur nos serveurs au Québec.",
     "canonical": null
   },
   "blocks": [
@@ -46,7 +46,7 @@
         "cards": [
           {
             "label": "Bureau",
-            "title": "NVIDIA DGX Spark.",
+            "title": "Poste d'IA compact.",
             "text": "Un ordinateur d'IA compact, posé sur un bureau. Pour faire tourner vos modèles et vos agents sur place, sans salle de serveurs.",
             "href": "/contact/?sujet=infrastructure",
             "link_label": "Demander une proposition",
@@ -58,7 +58,7 @@
           },
           {
             "label": "Poste de travail",
-            "title": "NVIDIA DGX Station.",
+            "title": "Station d'IA.",
             "text": "Une station de travail d'IA en format tour, pour les équipes qui ajustent ou servent des modèles plus lourds.",
             "href": "/contact/?sujet=infrastructure",
             "link_label": "Demander une proposition",

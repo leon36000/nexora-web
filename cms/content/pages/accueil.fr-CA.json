@@ -85,7 +85,7 @@
           {
             "label": "02 · Équiper",
             "title": "Votre infrastructure IA.",
-            "text": "NVIDIA DGX Spark, DGX Station ou baies de serveurs, installés chez vous avec les modèles, la sécurité et la supervision, ou hébergés sur nos serveurs.",
+            "text": "Postes d'IA compacts, stations d'IA ou baies de serveurs, installés chez vous avec les modèles, la sécurité et la supervision, ou hébergés sur nos serveurs.",
             "href": "/infrastructure/",
             "link_label": "Voir l'infrastructure",
             "image": {
@@ -155,7 +155,7 @@
         "cards": [
           {
             "label": "Bureau",
-            "title": "NVIDIA DGX Spark.",
+            "title": "Poste d'IA compact.",
             "text": "Un ordinateur d'IA compact, posé sur un bureau.",
             "href": "/infrastructure/",
             "link_label": "En savoir plus",
@@ -167,7 +167,7 @@
           },
           {
             "label": "Poste de travail",
-            "title": "NVIDIA DGX Station.",
+            "title": "Station d'IA.",
             "text": "Une station de travail d'IA en format tour.",
             "href": "/infrastructure/",
             "link_label": "En savoir plus",

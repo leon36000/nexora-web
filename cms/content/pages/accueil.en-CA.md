@@ -43,7 +43,7 @@ A virtual reception that answers calls, emails and text messages. Cameras monito
 
 #### Your AI infrastructure.
 
-NVIDIA DGX Spark, DGX Station or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.
+Compact AI machines, AI workstations or server racks, installed at your site with the models, security and monitoring, or hosted on our servers.
 
 → [See infrastructure](/en/infrastructure/)
 
@@ -87,13 +87,13 @@ Réglages : `columns=3`, `layout=vitrine`, `tone=sombre`, `anchor_id=infrastruct
 
 We sell, install and operate the hardware. At your site, or on our servers.
 
-#### NVIDIA DGX Spark.
+#### Compact AI machine.
 
 A compact AI computer that sits on a desk.
 
 → [Learn more](/en/infrastructure/)
 
-#### NVIDIA DGX Station.
+#### AI workstation.
 
 An AI workstation in a tower format.
 

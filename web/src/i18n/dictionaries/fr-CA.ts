@@ -79,7 +79,7 @@ export const frCA = {
           {
             label: "Infrastructure IA",
             description:
-              "DGX Spark, DGX Station et baies de serveurs, installés chez vous.",
+              "Postes d'IA compacts, stations d'IA et baies de serveurs, installés chez vous.",
             href: "/infrastructure",
           },
           {
