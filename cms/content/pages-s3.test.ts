@@ -53,6 +53,16 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
     fr: "solutions/documents",
     en: "solutions/documents",
   },
+  // refonte « Signal » (02/11/2026) : nouvelles pages demandées par le fondateur
+  "solutions-reception-virtuelle": {
+    fr: "solutions/reception-virtuelle",
+    en: "solutions/virtual-reception",
+  },
+  "solutions-surveillance-ia": {
+    fr: "solutions/surveillance-ia",
+    en: "solutions/ai-surveillance",
+  },
+  infrastructure: { fr: "infrastructure", en: "infrastructure" },
   services: { fr: "services", en: "services" },
   "services-installation-serveurs-ia": {
     fr: "services/installation-serveurs-ia",
@@ -259,7 +269,7 @@ const route = (l: Locale, slug: string) =>
     : `/en/${slug}${slug ? "/" : ""}`;
 
 const TONES = ["sombre", "clair", "sable"];
-const LAYOUTS = ["grille", "liste", "etapes", "modules", "bento"];
+const LAYOUTS = ["grille", "liste", "etapes", "modules", "bento", "vitrine"];
 const VISUALS = [
   "aucun",
   "perimetre-sur-place",
@@ -272,6 +282,9 @@ const VISUALS = [
   "vision-sur-place",
   "croissance-canaux",
   "engagements-donnees",
+  "signal-accueil",
+  "signal-surveillance",
+  "signal-infrastructure",
 ];
 const STATUSES = ["disponible", "pilote", "prevu"];
 const PRESENTATION = new Set(["tone", "layout", "visual", "anchor_id"]);
@@ -1056,8 +1069,9 @@ describe("chargement dans Directus", () => {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
       expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
     }
-    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches ; 5 gabarits juridiques + le comparatif nommé
-    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29);
+    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 3 pages de la refonte « Signal » ;
+    // 5 gabarits juridiques + le comparatif nommé
+    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 3);
     expect(DRAFTS).toHaveLength(6);
     expect(DRAFTS).toContain("guides-alternative-openrouter");
   });

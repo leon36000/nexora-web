@@ -1,110 +1,99 @@
-# Charte de marque Nexora AI
+# Charte de marque — identité « Signal »
 
-Version du 27 octobre 2026 : refonte « Instrument » (le fondateur voulait un visuel plus proche de Mistral, qui « transpire l'avance technologique »). L'étude de mistral.ai et les principes retenus sont dans `refonte-mistral.md` ; la version précédente (deux périmètres qui se recouvrent, palette sable et encre forêt) est abandonnée.
+Version du 2 novembre 2026. Remplace la direction « Instrument » du 27 octobre (mosaïque de pixels orange, logo « N » en pixels, rampe « braise »), retirée du site public parce qu'elle faisait trop penser à Mistral. Mandat : `marketing/nexora/REFONTE-2026-11.md` (dépôt Nexora Creative). Journal de la refonte : `docs/refonte-signal.md`.
 
-## 1. Le nom
+**Idée.** Une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA voit, entend et calcule, montré en fines lignes de lumière, nuages de points, formes d'onde et cadres de détection. Cinématographique, silencieux, à grande échelle.
 
-- **Nexora AI** : l'entreprise et la marque. Écrit ainsi partout où le nom désigne l'entreprise (métadonnées, courriels, pied de page, données structurées, mentions légales).
-- Les **produits gardent leur nom** : Nexora WorkStudio, Nexora Vision, Nexora Croissance, Nexora Code, Nexora Corpus, Nexora Connect, OPSYS-AI, VPS, API et modèles. On n'écrit jamais « Nexora AI WorkStudio ».
-- Dans le code : `SITE_NAME` (`web/src/lib/site.ts`) pour les métadonnées ; `meta.siteName` dans les dictionnaires. Les identifiants techniques (`@nexora/*`, `NEXORA_*`, `nexora-cms`, `nexora/glm-5-3`) ne changent pas.
-- Titres de page : `Sujet | Nexora AI` (pages de l'application) ou `Sujet — Nexora AI` (pages du CMS, gabarit des réglages). Le titre avant le suffixe tient en 48 caractères au plus pour que le titre complet reste sous 60.
+## 1. La marque se change à UN endroit
 
-## 2. Le logo
+Le nom et le logo vont changer. Tout ce qui nomme ou dessine la marque est centralisé :
 
-**Idée.** Un « N » dessiné en pixels : deux montants d'encre, et une diagonale de trois carrés orange qui les relie. La diagonale est le **point de passage** : ce qui entre, ce qui est approuvé, ce qui est contrôlé. Les pixels sont l'unité de construction de toute la marque (mosaïques, pastilles, bande du pied de page) ; aucun robot, aucun cerveau.
-
-**Construction.** Grille de 64 unités, l'encre occupe 6 à 58. Cinq colonnes et cinq rangées de 10,4 unités, sans jeu. Les montants sont deux rectangles pleins (colonnes 1 et 5) ; la diagonale est faite des cellules (2, 2), (3, 3) et (4, 4), qui se touchent par un angle. Logotype : « Nexora » et le « A » en contours de Geist 500 (interlettrage -0,03 em, inchangés) ; le « I » est dessiné à la main avec des empattements, parce qu'en Geist le I majuscule et le l minuscule sont identiques et qu'on lirait « Al ». Hauteur des capitales : 36 unités, centrées sur le symbole. « AI » prend l'orange de texte du thème.
-
-**Versions** (dossier `docs/marque/logos/`, SVG optimisés, sans police) :
-
-| Fichier | Usage |
+| Quoi | Où |
 |---|---|
-| `nexora-ai-logo.svg` | logo complet sur fond clair (papier, crème) |
-| `nexora-ai-logo-sombre.svg` | logo complet sur fond sombre (noir profond) |
-| `nexora-ai-logo-noir.svg` / `-blanc.svg` | monochromes : gravure, tampon, fax, impression une couleur |
-| `nexora-ai-symbole.svg`, `-sombre`, `-noir`, `-blanc` | symbole seul |
-| `app/tuile-*.svg` | tuiles d'application (noir profond, symbole os) |
+| Nom complet, logotype (partie principale + suffixe), signature, type de logo | `web/src/lib/brand.ts` (`BRAND`) ; `SITE_NAME` (`web/src/lib/site.ts`) en dérive |
+| Couleurs | jetons de `web/src/app/globals.css` (`@theme`, section « Marque ») |
+| Polices | `web/src/app/fonts.ts` (fichiers dans `web/src/fonts/`) |
+| Logo dessiné (quand il existera) | SVG dans `web/public/marque/`, puis `BRAND.logo = { kind: "svg", dark, light, ratio }` |
+| Favicon | `web/src/app/icon.svg` |
+| Image Open Graph | `web/src/app/og/[lang]/[[...slug]]/route.tsx` (lit `BRAND` et la géométrie de la marque) |
 
-**Dans le site.** Composant `Logo` / `LogoMark` (`web/src/components/brand/logo.tsx`, géométrie générée dans `logo-geometry.ts`) ; `web/src/app/icon.svg` (favicon SVG : graphite et orange foncé sur fond clair, os et orange signal sur fond sombre, selon le thème du navigateur), `favicon.ico` (16, 32, 48 px), `apple-icon.png` (180 px), `web/public/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (manifeste `web/src/app/manifest.ts`), gabarit Open Graph de la route `/og/*` (fond noir, titre en Geist, mosaïque braise à droite).
+Changer de nom : modifier `BRAND`, puis chercher l'ancien nom dans les dictionnaires (`web/src/i18n/dictionaries/`) et dans Directus (pages, réglages du site). Les noms de produits (Nexora Creative, WorkStudio…) et les identifiants techniques (`@nexora/*`, `NEXORA_*`) ne dépendent pas de la marque d'entreprise.
 
-**Régénération.** `bun docs/marque/outils/build-marque.mjs <racine>` (SVG et module TypeScript ; avec `opentype.js` il redessine le logotype depuis Geist, sans lui il relit les contours déjà générés), puis `bun docs/marque/outils/rasteriser.mjs <racine>` (PNG et ICO, via Playwright).
+## 2. Le logo provisoire (typographique)
 
-**Zone de protection.** Un vide d'au moins la largeur d'un montant du symbole (10 unités, soit 0,2 fois la hauteur du symbole) sur les quatre côtés ; en pied de page, le symbole repose sur la bande braise (c'est la seule exception). Aucun texte, bord de page ni image ne l'entame.
+`Logo` / `LogoMark` (`web/src/components/brand/logo.tsx`) :
 
-**Tailles minimales.** Symbole seul : 16 px (favicon). Logo complet : 20 px de hauteur à l'écran (110 px de largeur) ; en impression, 18 mm de largeur. En dessous, utiliser le symbole seul.
+- **La marque « signal »** (grille de 32 unités, géométrie exportée `SIGNAL_MARK`) : deux crochets d'angle (haut-gauche, bas-droite), le cadre de détection ; une ligne de balayage horizontale ; un point de lumière ion, avec un halo à 18 %. Aucun pixel, aucun « N ».
+- **Le nom** : `BRAND.wordmark.base` en Geist 600, interlettrage -0,035 em ; le suffixe (« AI ») en JetBrains Mono 500, ion, pour qu'on ne lise jamais « Al ».
+- Tons : `dark` (givre #EEF3FA, ion #3EC8FF), `light` (graphite #0B0F16, ion foncé #0B6E99, 5,3:1), `auto` (couleur du texte et accent du thème).
+- Décoratif par défaut ; `label` en fait une image nommée. Taille minimale : 20 px de haut.
 
-**Contrastes** (WCAG 2.2, calculés par `bun run check:contrast`). « AI » en orange `#FF7A45` sur noir `#0A0A0E` = 7,6:1 ; `#B53A0A` sur papier `#FBFBF8` = 5,7:1. Graphisme : orange signal `#FF5A1F` sur noir = 6,3:1 ; orange `#F04A10` sur papier = 3,6:1 (au-dessus des 3:1 exigés pour un graphisme).
-
-**Usages interdits.**
-- Changer l'orange, ajouter un dégradé, une ombre, un contour ou un effet de lueur au logo.
-- Modifier la diagonale (nombre de carrés, sens), arrondir les carrés, pivoter ou incliner le symbole, le découper en pixels séparés.
-- Recomposer le logotype dans une autre police, mettre « AI » dans une autre couleur que l'orange de texte du thème (ou l'ensemble en monochrome), écrire « Nexora Ai » ou « NEXORA AI ».
-- Placer le logo en couleur sur une photo chargée, sur la mosaïque, sur de l'orange (utiliser la version blanche ou noire), ou à moins de 3:1 de contraste avec le fond.
-- Utiliser le symbole comme puce, motif répété ou décor de fond (la seule exception : le grand symbole du pied de page).
-- Accompagner le logo d'un robot, d'un cerveau lumineux ou d'une étincelle « IA » : la marque n'en a pas besoin.
+Les anciens fichiers du logo « N » (`docs/marque/logos/`) sont des archives : ils ne sont plus utilisés par le site.
 
 ## 3. Couleurs
 
-**Une seule teinte d'accent : l'orange signal.** Une rampe chaude (la « braise ») sert uniquement de matière dans les mosaïques et la bande du pied de page, jamais à du texte. Jetons dans `web/src/app/globals.css`, contrastes recalculés par `bun run check:contrast` (29 paires).
+Sombre d'abord. Une lumière principale (ion), un contrepoint chaud rare (flare).
 
-| Rôle | Sombre (noir profond) | Clair (papier) | Crème (« sable » dans le CMS) |
+| Rôle | Jeton | Valeur | Contraste |
 |---|---|---|---|
-| Fond | `#0A0A0E` | `#FBFBF8` | `#F3F2EC` |
-| Surface | `#121218` | `#F3F2EC` | `#E4E2D9` |
-| Texte | `#F5F4EF` (17,9:1) | `#121218` (18,0:1) | `#121218` |
-| Texte secondaire | `#A8A8B6` (8,4:1) | `#54545F` (7,2:1) | `#54545F` (6,7:1) |
-| Accent en texte | `#FF7A45` (7,6:1) | `#B53A0A` (5,7:1) | `#B53A0A` (5,2:1) |
-| Bouton d'accent | fond `#FF5A1F`, texte noir `#0A0A0E` (6,3:1) ; survol `#FF7A45` (7,6:1) | idem | idem |
-| Succès | `#4ADE9B` | `#17694A` | `#17694A` |
-| Bande « nuit » | `#11112A` (texte 16,8:1) | | |
+| Fond « abysse » (héros, appels à l'action) | `abyss-950` | `#05070B` | — |
+| Bande « nuit » (fond courant des sections) | `abyss-850` | `#080B11` | — |
+| Surface / surface relevée | `abyss-900` / `abyss-800` | `#0B0F16` / `#111723` | — |
+| Filets | `hairline`, `--line` | `#1C2433`, brume à 16 % | décoratif |
+| Filet fort, bordure de bouton | `steel` | `#5B6678` | 3,5:1 |
+| Texte | `frost` | `#EEF3FA` | 18,1:1 |
+| Texte secondaire | `haze` | `#8C97AA` | 6,8:1 (6,1:1 sur surface relevée) |
+| **Accent ion** : liens, focus, bouton principal, graphismes, lueur | `ion-400` | `#3EC8FF` | 10,5:1 ; bouton : texte abysse 10,5:1 |
+| Survol du bouton | `ion-300` | `#7BD9FF` | 12,7:1 |
+| **Flare** : un seul point de chaleur par écran (CTA final, alerte, point « en direct ») | `flare-500` | `#FF6A2B` | 7,1:1 ; bouton : texte abysse 7,1:1 |
+| Alerte / succès | `alert-400` / `ok-400` | `#FF4D5E` / `#3FE0A5` | 6,2:1 / 11,9:1 |
 
-**Rampe braise** (mosaïques, du bord qui se dissout au cœur) : `#FFD37A` · `#FFB11A` · `#FF8A1F` · `#FF5A1F` · `#E0341C` · `#B01A3C`. **Autres rampes** (une par maquette de produit, voir §6) : ciel `#E1EEFF` à `#2A54C4`, or `#FFF3C4` à `#D98505`, menthe `#DEF7EA` à `#238D5F`, nuit `#1B1B2C` à `#565688`. Le texte ne se pose jamais directement sur une mosaïque : elle est repoussée vers un bord ou une colonne vide.
+**Thème papier** (`.theme-light`, espace client et pages qui le demandent) : fond `#F5F7FA`, surface `#E9EEF4`, texte `#0B0F16`, secondaire `#4A5568` (7,0:1), accent texte ion foncé `#0B6E99` (5,3:1), graphisme `#0A8BC2` (3,6:1). Le panneau `/compte` garde ce thème (`<Section tone="paper">`).
 
-Le texte du bouton d'accent est **noir** (pas blanc) : sur un orange aussi vif, le blanc n'atteint que 3:1.
+Thèmes sémantiques : `.theme-dark` (abysse), `.theme-night` (nuit, défaut des sections publiques), `.theme-light` (papier). Les composants n'utilisent que les jetons sémantiques (`bg`, `surface`, `fg`, `accent`, `flare`…). Contrôle : `bun run --cwd web check:contrast` (35 paires).
 
 ## 4. Typographies
 
-Libres, servies localement (aucune requête externe) : **Geist** 500 pour les titres (interlignage serré, `text-wrap: balance`, interlettrage de -0,03 à -0,01 em selon la taille), **Inter** pour le texte, **JetBrains Mono** pour les libellés techniques (capitales, interlettrage +0,06 em) et le code. Le logotype n'utilise aucune police au chargement : il est en contours.
+Libres, servies localement : **Geist** (titres, très grands et serrés), **Inter** (texte), **JetBrains Mono** (libellés techniques en capitales, interlettrage +0,08 em ; utilitaire `label-mono`).
 
 | Niveau | Taille (fluide) | Interligne | Interlettrage |
 |---|---|---|---|
-| Affiche (héros) | 44 à 96 px | 1,0 | -0,03 em |
-| H1 | 40 à 68 px | 1,04 | -0,028 em |
-| H2 | 32 à 56 px | 1,08 | -0,024 em |
-| H3 | 22 à 32 px | 1,18 | -0,018 em |
-| H4 | 18 px | 1,35 | -0,01 em |
-| Chapeau | 18 à 21 px | 1,55 | 0 |
+| Méga (héros plein écran) | 52 à 144 px | 0,90 | -0,052 em |
+| Affiche (héros) | 44 à 108 px | 0,95 | -0,045 em |
+| H1 | 40 à 80 px | 1,0 | -0,04 em |
+| H2 | 32 à 64 px | 1,02 | -0,036 em |
+| H3 | 22 à 30 px | 1,15 | -0,022 em |
+| Chapeau | 18 à 22 px | 1,55 | 0 |
 | Texte | 16 px | 1,6 | 0 |
-| Libellé (mono) | 12 px | 1,4 | +0,06 em |
+| Libellé (mono) | 12 px | 1,4 | +0,08 em |
 
-## 5. Espacement, rayons, ombres
+## 5. Matières « Signal » (en code, jamais en image)
 
-- **Colonne** : 80 rem (1 280 px) au plus, gouttière fluide de 20 à 40 px ; chapeaux de lecture à 42 rem. **Rythme vertical** des sections : 64 à 120 px.
-- **Rayons** : 2, 4, 6, 8 et 12 px. Boutons : 6 px. Cartes : 6 px (ou cellules de grille à angle franc). Rien n'est « pilule ».
-- **Filets** : 1 px, `--line` (14 % de la couleur du texte). Les cartes sont séparées par des filets, pas par des ombres ; l'ombre n'est réservée qu'aux fenêtres de maquette et aux menus déroulants.
-- **Cadrage** : chaque section est fermée par un filet horizontal et bordée de deux filets verticaux (les « rails », masqués sur téléphone) qui portent un petit carré à chaque angle supérieur. L'en-tête est découpé en cellules par des filets ; l'action principale est sa dernière cellule, pleine, en orange signal.
+Composants dans `web/src/components/signal/`, tous décoratifs (`aria-hidden`), déterministes et figés sous `prefers-reduced-motion`.
 
-## 6. Matières, rythme et mouvement
+1. **Ligne de balayage** (`.scanline`) : un filet de lumière horizontal qui traverse un bloc quand il entre dans l'écran (`<Section scan>`, animation pilotée par le défilement) ou en boucle lente dans les héros (`.scan-loop`).
+2. **Champ de lumière** (`LightField`, `<canvas>`) : un nuage de points en perspective, comme un relevé lidar, qu'une bande de balayage parcourt ; un seul point flare facultatif. Démarre au repos (jamais avant le premier affichage), s'arrête hors écran, 30 images/s au plus. Relief partagé avec l'image Open Graph (`terrain.ts`).
+3. **Forme d'onde** (`Waveform`) : barres fines symétriques (voix, réception).
+4. **Cadres de détection** (`DetectionBox`, utilitaire `detect`) : crochets aux angles, libellé mono ; `hot` = flare (alerte).
+5. **Grilles de précision** (`grid-precision`, `tex-grid`) : filets d'un pixel tous les 24 et 96 px, effacés vers les bords ; règle graduée (`ruler`).
 
-- **Rythme des pages** : bandes sombre / clair / crème en alternance ; un héros sombre, un appel à l'action sombre en conclusion, puis un pied de page clair posé sur la bande braise. Une lueur d'accent très douce (radiale, 10 à 20 % d'orange) coiffe les bandes sombres et crème ; une bande qui en prolonge une autre de même ton n'en répète pas.
-- **La mosaïque** (`web/src/components/brand/mosaic.tsx`) : un champ de carrés dont la teinte suit une rampe et qui **se dissout en pixels** vers un côté, comme une image qui se calcule. Déterministe (même graine, même rendu serveur et client), une couche SVG par teinte (quelques nœuds, aucun fichier image), décorative (`aria-hidden`). Héros : la mosaïque occupe la moitié droite et s'éteint vers le texte ; chaque héros a sa graine. Maquettes : un champ de teintes (une rampe par produit : braise pour WorkStudio et les agents, ciel pour les modèles et l'API, or pour les VPS, menthe pour le tableau de bord) sur lequel la fenêtre noire du produit est posée. Pastille de tuile : une petite mosaïque de 5 × 5.
-- **Grille de mesure** (`tex-grid`) : filets tous les 4 rem qui s'effacent vers les bords, derrière les héros ; **règle graduée** (`ruler`) au bas des héros ; **bande braise** (`stripes`) de quatre barres en pied de page, qu'un carré traverse lentement.
-- **Cartes** : grille à filets (les cartes sont des cellules séparées d'un pixel) pour les dispositions « grille » ; liste éditoriale, étapes (pixel orange sur un filet), modules ; **mosaïque de tuiles** (`bento`) avec une tuile noire mise en valeur et une pastille colorée par tuile.
-- **Maquettes d'interface** : composants (`web/src/components/visuals/`), toujours en thème sombre comme l'interface produit, avec une légende qui dit « maquette illustrative, données d'exemple » ou « schéma de principe, pas une capture d'écran ». Aucun chiffre de performance, aucun client, aucune certification dans une maquette.
-- **Mouvement** : CSS seulement, aucune bibliothèque. Transformations et opacité de décors uniquement (jamais d'opacité sur le texte du premier écran, pour ne pas retarder le LCP). Apparition au défilement par `animation-timeline: view()` (ignorée là où elle n'existe pas) ; les couches de la mosaïque respirent, une ligne de balayage traverse la grille du héros. Tout est déclaré sous `@media (prefers-reduced-motion: no-preference)` ; un test (`visuals.test.tsx`) échoue si une animation en sort.
-- **Interdits de matière** : jamais de photo d'archive, jamais de robot ni de cerveau, jamais de faux client ni de logo de client sans accord écrit.
+`SignalBackdrop` assemble ces matières pour les héros (`champ`, `onde`, `detection`, `grille`) ; `MediaPlaceholder` les pose dans un emplacement d'image tant que le fichier n'existe pas (jamais d'image cassée) ; `SignalGlyph` remplace les pastilles de mosaïque.
 
-## 7. Composants disponibles pour les pages
+**Surfaces** : rayons de 2 à 10 px ; verre (`glass`) à filet d'un pixel ; aucune ombre décorative (seulement menus et fenêtres flottantes) ; lueur retenue (`glow-ion`) seulement sur l'accent ion.
 
-Champ `visual` d'un bloc « section » (Directus, versionné dans `cms/scripts/lib/schema.ts`) : `perimetre-sur-place`, `perimetre-heberge`, `flux-donnees`, `flux-workstudio`, `catalogue-modeles`, `console-vps`, `tableau-de-bord`, `vision-sur-place`, `croissance-canaux`, `engagements-donnees`. Une section sans titre ni texte mais avec un visuel devient une bande « vitrine » centrée. Dispositions de cartes : `grille`, `liste`, `etapes`, `modules`, `bento`. Tons : `sombre`, `clair`, `sable`. La galerie de développement (`/galerie-marque`, active seulement avec `NEXORA_GALERIE_MARQUE=1`) montre tous les visuels, tons et dispositions.
+## 6. Mouvement
 
-## 8. Polissage visuel du 30 octobre 2026
+Apparition au défilement (opacité + 16 px), balayage, ondes qui « parlent », cadres qui se posent, point « en direct » qui pulse, vidéos en boucle silencieuses. Tout est déclaré sous `@media (prefers-reduced-motion: no-preference)` (test `design-tokens.test.ts`). Le bouton **« Mettre les animations en pause »** (héros et pied de page, WCAG 2.2.2) fige toutes les boucles (`data-motion="pause"` sur `<html>`, mémorisé pour la visite) : vidéo, champ de lumière, ondes, balayages. Durées des transitions d'interface : 150, 200 ou 250 ms.
 
-Détail, mesures et décisions : `docs/recette/polissage-visuel-2026-10-30.md`. Ce qui s'ajoute à la charte :
+## 7. Médias (images et vidéos)
 
-- **En-tête de page** (`PageHero`, `web/src/components/ui/page-hero.tsx`) : bande sombre à mosaïque, une rampe par famille (ciel : modèles et API ; or : serveurs ; braise : le reste), fil d'Ariane, pastilles, h1, chapeau, actions et **bandeau de repères** (`StatStrip`). Utilisé par Nexora Apps, les fiches de modèles, le comparateur, les classements, les fiches VPS et le contact. Les pages du CMS gardent leur bloc « héros ».
-- **Famille de produits** (`ProductFamily`, accueil, sous le héros) : un compte, huit outils, l'état de chacun écrit en toutes lettres (lu au registre de Nexora Apps).
-- **Jetons** (`globals.css`) : rayons par rôle (`--radius-card`, `--radius-frame`, `--radius-chip`), durées de mouvement `--dur-fast/base/slow` (150, 200, 250 ms ; un test interdit les autres), espacement unique d'une carte (24 px, puis 32 px dès sm). L'anneau de focus d'une carte cliquable entoure toute la carte.
-- **Mouvement** : des pixels de la mosaïque s'allument un à un (`mo-blink`), les barres de score se déploient à l'entrée dans l'écran ; tout sous `prefers-reduced-motion: no-preference` (un test vérifie que **toute** animation CSS y est).
-- **Écrans de défaut** : `ErrorScreen` sert la 404, la 500 (`[lang]/error.tsx`) et « contenu indisponible » (503) ; les chiffres sont dessinés en carrés.
+- Images générées (Qwen-Image) et vidéos (MiniMax H3) : sans texte ni logo incrusté, palette « Signal » (sombre, lumière ion, un rare point chaud). Le texte est toujours posé en code.
+- **Emplacements stables** : les pages citent des noms fixes (`site-hero-boucle.mp4`, `site-infra-dgx-spark.jpg`…) ; `cms/scripts/medias-site.sh` prépare les fichiers web et `load-content.ts --medias=<dossier>` les téléverse dans Directus. Voir `docs/refonte-signal.md` §4.
+- **Interdits** : la mosaïque de pixels, les cascades de carrés orange, la rampe « braise » comme texture ; robots, cerveaux lumineux, étincelles « IA », dégradés violets, photos d'archive ; tout plan qui rappelle une franchise connue (personnages, sabres lumineux, vaisseaux reconnaissables) ou une marque.
 
+## 8. Composants disponibles pour les pages (Directus)
+
+- **Héros** : `layout` = `standard` (titre sur la matière) ou `plein-ecran` (boucle vidéo silencieuse + affiche, titre méga) ; `signature` = `champ`, `onde`, `detection`, `infra`, `grille`, `aucun` ; `video` (boucle) ; `media` (image ou affiche).
+- **Section** : `visual` (schémas et maquettes, dont `signal-accueil`, `signal-surveillance`, `signal-infrastructure`) ; `media` image ou vidéo ; `poster` (affiche de la façade vidéo) ; `media_lang` (vidéo propre à la langue, ex. film de marque fr/en). Une vidéo placée « au-dessus » devient une vitrine plein cadre après le titre.
+- **Cartes** : dispositions `grille`, `liste`, `etapes`, `modules`, `bento` et **`vitrine`** (grandes cartes à image au rapport stable ; champ de carte `image` = identifiant de fichier, `visual` = matière tant que l'image manque).
+- Tons : `sombre` (abysse), `clair` (nuit), `sable` (surface relevée). L'appel à l'action final porte le bouton flare.

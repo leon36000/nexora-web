@@ -336,3 +336,21 @@ Les réglages d'environnement de Directus (limitation de débit, durée des jeto
 - **Signature des guides** : `components/blocks/page-byline.tsx` affiche l'auteur (l'entreprise) et les dates **réelles** de publication et de mise à jour (`date_created`, `date_updated` de Directus, jour compté à l'heure de l'Est ; une mise à jour du jour de la publication n'est pas répétée) sous le héros des guides et des fiches de gabarits (`lib/byline.ts`). Même contenu que l'`Article` JSON-LD.
 - **`og:type = article`** pour ces pages, avec `article:published_time`, `article:modified_time` et l'auteur (`lib/seo.ts`).
 - **Chargement des pages** : voir `cms/content/README.md`, section 13.
+
+## 13. Refonte « Signal » (02/11/2026) : champs de composition, médias, navigation
+
+Sans licence, Directus Core plafonne à 25 collections et le schéma en compte déjà 25 : les « blocs » demandés par la refonte (héros vidéo, vitrine de produits, section vidéo) sont donc des **champs et dispositions des six blocs existants** (D5), pas de nouvelles collections. Schéma : `cms/scripts/lib/schema.ts` (tests : `schema.test.ts`) ; lecture : `web/src/server/cms/{pages,normalize,model}.ts` (tests : `normalize.test.ts`).
+
+| Champ | Bloc | Valeurs | Rendu |
+|---|---|---|---|
+| `layout` | héros | `standard` (défaut), `plein-ecran` | plein écran : boucle vidéo silencieuse (`video`) sur son affiche (`media`), titre méga, bouton de pause ; standard : titre sur la matière |
+| `signature` | héros | `champ` (défaut), `onde`, `detection`, `infra`, `grille`, `aucun` | matière « Signal » de fond (voir `docs/marque/charte.md` §5) |
+| `video` | héros | fichier (MP4, WebM) | chargée au repos, jamais sous mouvement réduit ; une image posée ici est ignorée |
+| `poster` | section | fichier image | affiche de la façade vidéo (aucun octet de vidéo avant le clic) |
+| `media_lang` | traduction de section | fichier vidéo | remplace `media` dans cette langue (film de marque fr / en) |
+| `layout = vitrine` | cartes | — | grandes cartes à image au rapport 4:3 ; carte : `image` (identifiant de fichier), `visual` (matière tant que l'image manque) |
+| `visual` | section | + `signal-accueil`, `signal-surveillance`, `signal-infrastructure` | maquettes de la réception virtuelle et de la surveillance IA, schéma de l'infrastructure |
+
+**Références d'actifs dans les fichiers de pages** (`cms/scripts/lib/{content,assets}.ts`, tests `assets.test.ts`) : `{ "asset": "nom.ext" }` (obligatoire) ou `{ "asset": ["préféré.ext", "repli.ext"], "optional": true }` (premier trouvé ; vide si aucun : le site dessine alors une matière). Formats : mp4, webm, vtt, jpg, png, webp, avif. Les références peuvent être imbriquées dans une liste JSON (image d'une carte). Les gros fichiers viennent d'un dossier de médias : `load-content.ts --medias=<dossier>[,<dossier>]` (ou `NEXORA_MEDIA_DIRS`) les téléverse une fois (empreinte SHA-256).
+
+**Navigation** (`cms/scripts/lib/navigation.ts`) : Solutions ▾ · Infrastructure ▾ · Outils ▾ · Tarifs · Ressources · Connexion · « Planifier une consultation ». `seed.ts --aligner-navigation` réaligne les entrées connues et **archive** (sans supprimer) celles que l'arbre ne connaît plus (ancien menu « Produits », « IA souveraine »…).

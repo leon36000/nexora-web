@@ -1,0 +1,179 @@
+{
+  "page": "solutions-surveillance-ia",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "solutions/surveillance-ia",
+    "title": "Surveillance IA",
+    "seo_title": "Surveillance de vos caméras par IA",
+    "seo_description": "Nos IA analysent vos caméras en temps réel, repèrent les comportements suspects, vous alertent selon vos consignes et documentent chaque événement.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Message clé du fondateur : personne ne regarde des milliers d'heures ; nos IA, oui.",
+      "claims": ["CL-SV01", "CL-SV02"],
+      "fields": {
+        "variant": "sombre",
+        "perimeter_grid": true,
+        "layout": "standard",
+        "signature": "detection"
+      },
+      "translation": {
+        "eyebrow": "Solution · Surveillance IA",
+        "headline": "Personne ne regarde tout. Nos IA, oui.",
+        "subheadline": "Même avec les meilleures caméras et un stockage immense, personne ne regarde des centaines ou des milliers d'heures de vidéo. Nos IA le font, en temps réel : elles repèrent ce qui sort de l'ordinaire et vous alertent aussitôt.",
+        "primary_label": "Planifier une consultation",
+        "primary_href": "/contact/?sujet=surveillance-ia",
+        "secondary_label": "Voir la réception virtuelle",
+        "secondary_href": "/solutions/reception-virtuelle/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Aperçu : la vidéo enfin regardée, la maquette en vis-à-vis.",
+      "claims": ["CL-SV01", "CL-SV03"],
+      "fields": {
+        "media_position": "left",
+        "visual": "signal-surveillance",
+        "tone": "clair",
+        "anchor_id": "apercu"
+      },
+      "translation": {
+        "title": "Vos caméras, enfin regardées.",
+        "body": "<p>Les systèmes de sécurité enregistrent tout, mais la vidéo n'est revue qu'après coup, souvent trop tard. Nos IA se branchent à vos caméras et à votre système de sécurité existants et analysent les images en continu.</p><p>Quand un comportement suspect apparaît (présence dans une zone fermée, intrusion après les heures d'ouverture, quelqu'un qui s'attarde), l'alerte part pendant que l'événement a lieu.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Fonctions : détecter, alerter, documenter.",
+      "claims": ["CL-SV01", "CL-SV03", "CL-SV04"],
+      "fields": {
+        "columns": "3",
+        "layout": "grille",
+        "tone": "sombre",
+        "anchor_id": "fonctions"
+      },
+      "translation": {
+        "title": "Détecter, alerter, documenter.",
+        "cards": [
+          {
+            "title": "Branchée sur l'existant.",
+            "text": "Vos caméras et votre système de sécurité actuels conviennent le plus souvent ; la compatibilité se vérifie à la consultation."
+          },
+          {
+            "title": "Détection en temps réel.",
+            "text": "Présence dans une zone interdite, mouvement après la fermeture, véhicule qui s'attarde : l'IA repère ce que vous lui demandez de surveiller."
+          },
+          {
+            "title": "Alertes immédiates.",
+            "text": "Par courriel, par texto, au tableau de bord ou dans l'application mobile, selon l'urgence et l'heure."
+          },
+          {
+            "title": "Selon vos consignes.",
+            "text": "Elle peut prévenir vos agents de sécurité, votre centrale de surveillance ou la police, d'après les règles que vous fixez par écrit."
+          },
+          {
+            "title": "Un rapport par événement.",
+            "text": "Chaque activité suspecte produit un rapport : la chronologie, les extraits vidéo et les alertes envoyées."
+          },
+          {
+            "title": "Retrouver le bon extrait.",
+            "text": "Dans des semaines d'enregistrement, la chronologie mène directement au moment qui compte."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Vie privée et Nexora Vision : sur place, sans reconnaissance faciale.",
+      "claims": ["CL-SV05", "CL-V01", "CL-V03", "CL-E01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "clair",
+        "anchor_id": "vie-privee"
+      },
+      "translation": {
+        "title": "Surveiller sans tout exposer.",
+        "body": "<p>L'analyse peut se faire sur un serveur installé chez vous : les images restent sur place et seule l'alerte écrite sort. La surveillance se règle zone par zone et heure par heure ; elle ne sert pas à reconnaître les visages.</p><p><a href=\"/vision/\">Nexora Vision</a>, notre projet pilote d'analyse vidéo sur place, suit le même principe.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Méthode : trois temps.",
+      "claims": ["CL-03", "CL-04"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "sable",
+        "anchor_id": "methode"
+      },
+      "translation": {
+        "title": "De la consultation à la veille.",
+        "cards": [
+          {
+            "title": "Consultation.",
+            "text": "Nous faisons l'inventaire de vos caméras, de vos zones et de vos règles d'alerte."
+          },
+          {
+            "title": "Installation.",
+            "text": "Nous branchons l'analyse à vos caméras, chez vous ou sur nos serveurs, et réglons les détections avec vous."
+          },
+          {
+            "title": "Exploitation.",
+            "text": "Nous suivons les alertes, réduisons les fausses alertes et ajustons les règles avec vous."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Objections : caméras, erreurs, destinataires, coût.",
+      "claims": ["CL-SV03", "CL-SV04", "CL-10", "CL-PL03", "CL-T01", "CL-T06"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "clair",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions sur la surveillance.",
+        "items": [
+          {
+            "question": "Faut-il changer mes caméras ?",
+            "answer": "Pas forcément. La plupart des caméras réseau récentes peuvent être analysées ; la consultation le vérifie caméra par caméra."
+          },
+          {
+            "question": "L'IA peut-elle se tromper ?",
+            "answer": "Oui. Elle peut signaler un événement anodin ou en manquer un. Les règles se règlent avec vous pour réduire les fausses alertes, et chaque alerte arrive avec l'extrait vidéo pour que vous jugiez vite."
+          },
+          {
+            "question": "Qui reçoit les alertes ?",
+            "answer": "Les personnes et les services que vous désignez : vous, vos agents, votre centrale ou la police, selon la gravité et l'heure."
+          },
+          {
+            "question": "Combien cela coûte-t-il ?",
+            "answer": "Il n'y a pas encore de prix public. Deux choses se paient : l'accompagnement (une estimation écrite suit la consultation) et l'usage de la plateforme, en crédits. Les prix paraîtront sur la page Tarifs dès leur publication."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA : démonstration.",
+      "claims": ["CL-01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Voyez vos caméras autrement.",
+        "text": "Nous préparons une démonstration sur des images d'exemple, puis nous regardons vos caméras, vos zones et vos consignes.",
+        "primary_label": "Planifier une consultation",
+        "primary_href": "/contact/?sujet=surveillance-ia",
+        "secondary_label": "Voir l'infrastructure IA",
+        "secondary_href": "/infrastructure/"
+      }
+    }
+  ]
+}

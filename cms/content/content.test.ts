@@ -95,10 +95,13 @@ describe("structure", () => {
     });
   }
 
-  test("l'accueil porte la promesse de la vague 2 dans le héros (la pointe de l'IA, à la portée de tous) et garde le message directeur dans le sous-titre", () => {
+  test("l'accueil porte la promesse de la refonte « Signal » dans un héros plein écran et garde le message directeur dans le sous-titre", () => {
     const hero = (l: Locale) => pairs.accueil[l].blocks[0]?.translation;
-    expect(hero("fr-CA")?.headline).toBe("La pointe de l'IA. À votre portée.");
-    expect(hero("en-CA")?.headline).toBe("Cutting-edge AI. Within your reach.");
+    expect(hero("fr-CA")?.headline).toBe("L'IA qui voit, écoute et agit.");
+    expect(hero("en-CA")?.headline).toBe("AI that sees, listens and acts.");
+    expect(pairs.accueil["fr-CA"].blocks[0]?.fields?.layout).toBe(
+      "plein-ecran",
+    );
     expect(String(hero("fr-CA")?.subheadline)).toMatch(
       /L'IA qui travaille pour votre entreprise\. Sous votre contrôle\./,
     );
@@ -195,20 +198,21 @@ describe("SEO", () => {
       }
   });
 
-  test("l'accueil renvoie aux futures pages de la conception §6", () => {
+  test("l'accueil renvoie aux pages de la structure « Signal » (02/11/2026) et aux pages de confiance", () => {
     const wanted = [
       "/solutions/",
+      "/solutions/reception-virtuelle/",
+      "/solutions/surveillance-ia/",
+      "/infrastructure/",
+      "/apps/creative/",
+      "/apps/",
       "/deploiement/sur-place/",
       "/deploiement/heberge-quebec/",
       "/workstudio/",
-      "/opsys-ai/",
       "/souverainete/",
       "/contact/",
-      "/methode/",
-      "/suite/",
       "/vps/",
       "/modeles/",
-      "/agents/",
     ];
     const hrefs = JSON.stringify(pairs.accueil["fr-CA"].blocks);
     for (const w of wanted)
