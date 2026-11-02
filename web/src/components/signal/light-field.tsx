@@ -12,7 +12,8 @@ import { terrain } from "./terrain";
  * bibliothèque) ; décoratif (`aria-hidden`).
  *
  * Sobriété : le dessin ne démarre qu'une fois la page au repos (le premier affichage n'attend jamais), s'arrête hors
- * de l'écran ou dans un onglet masqué, plafonne à 30 images par seconde et à une densité de 2. Sous
+ * de l'écran ou dans un onglet masqué, plafonne à 30 images par seconde et à une densité de 2 ; il reste immobile sur
+ * un téléphone. Sous
  * `prefers-reduced-motion: reduce`, le champ est dessiné une seule fois, immobile.
  */
 
@@ -50,7 +51,9 @@ export function LightField({
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const moving = animated && !reduce;
+    // sur un petit écran, le champ est dessiné une fois, immobile : batterie et fil principal épargnés
+    const small = window.matchMedia("(max-width: 47.99rem)").matches;
+    const moving = animated && !reduce && !small;
     let raf = 0;
     let visible = true;
     let last = 0;
@@ -147,7 +150,7 @@ export function LightField({
     io.observe(canvas);
 
     // Démarre au repos : le premier affichage (LCP) passe toujours avant le champ de lumière.
-    const cancelIdle = onIdle(start, 1200, 300);
+    const cancelIdle = onIdle(start, 2500, 600);
 
     return () => {
       cancelAnimationFrame(raf);

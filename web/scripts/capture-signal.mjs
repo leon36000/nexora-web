@@ -12,7 +12,10 @@ const paths = process.argv.slice(2).length
   ? process.argv.slice(2)
   : ["/", "/solutions/reception-virtuelle", "/solutions/surveillance-ia", "/infrastructure", "/apps/creative", "/en"];
 
-const browser = await chromium.launch();
+// PROXY=socks5://127.0.0.1:1055 : passer par le tailnet (pc6 est en mode « userspace »)
+const browser = await chromium.launch(
+  process.env.PROXY ? { proxy: { server: process.env.PROXY } } : {},
+);
 for (const path of paths) {
   for (const width of widths) {
     const context = await browser.newContext({
