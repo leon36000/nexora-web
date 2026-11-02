@@ -72,6 +72,14 @@ video() {
   echo "  + $1  ←  ${src/#$HOME/~}"
 }
 
+# Montage déjà encodé (H.264 + AAC) : flux recopiés sans réencodage, démarrage rapide, métadonnées retirées.
+remux() {
+  local out="$OUT/$1" src="$2"
+  fresh "$out" "$src" && { echo "  = $1"; return; }
+  ff -i "$src" -c copy -map_metadata -1 -movflags +faststart "$out"
+  echo "  + $1  ←  ${src/#$HOME/~}"
+}
+
 echo "Médias du site → ${OUT/#$HOME/~}"
 
 # --- héros : boucle silencieuse + affiche ---------------------------------------------------------------------------
@@ -104,6 +112,12 @@ if s="$(first_src video creative-film creative-promo creative-)"; then video sit
 elif [ -f "$PUBLIC/creative-bande-annonce.mp4" ]; then video site-creative-promo.mp4 "$PUBLIC/creative-bande-annonce.mp4" son 24; fi
 if s="$(first_src image creative-)"; then image site-creative-affiche.jpg "$s"
 elif [ -f "$PUBLIC/creative-p04.jpg" ]; then image site-creative-affiche.jpg "$PUBLIC/creative-p04.jpg"; fi
+# Film V3 de Nexora Creative (promo 60 s) : une version par langue en 16:9 pour la page, et son affiche sans texte.
+# La version 9:16 n'est citée par aucune page ; elle n'est pas produite ici.
+for l in fr en; do
+  [ -f "$SRC/film-creative-16x9-$l.mp4" ] && remux "site-film-creative-$l.mp4" "$SRC/film-creative-16x9-$l.mp4"
+done
+[ -f "$SRC/film-creative-poster.jpg" ] && image site-film-creative-poster.jpg "$SRC/film-creative-poster.jpg"
 
 # --- piliers de l'accueil ---------------------------------------------------------------------------------------------
 if s="$(first_src image hero-ville reception-)"; then image site-pilier-automatiser.jpg "$s"
