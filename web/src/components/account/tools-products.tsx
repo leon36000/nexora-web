@@ -5,6 +5,7 @@ import { type AccountDictionary, fmt } from "@/i18n/account";
 import { appContactHref, appPath } from "@/i18n/apps";
 import { type Lang, localizePath } from "@/i18n/config";
 import { cn } from "@/lib/cn";
+import { FORGE, forgeUrl } from "@/lib/forge";
 import type { ProductHint } from "@/server/products/panel-data";
 import type {
   ProductId,
@@ -235,6 +236,58 @@ export function ProductGroup({
             workstudioUrl={workstudioUrl}
           />
         ))}
+      </ul>
+    </section>
+  );
+}
+
+/**
+ * Entrée « dépôts de code » du panneau : GitLab aujourd'hui, Gitspace demain. Le nom, l'adresse et la mention
+ * « temporaire » viennent de `lib/forge.ts` : renommer en « Gitspace » se fait là, en une ligne.
+ */
+export function ForgeEntry({ lang, t }: { lang: Lang; t: AccountDictionary }) {
+  const f = t.panel.tools.forge;
+  const vars = { name: FORGE.label };
+  return (
+    <section aria-labelledby="tools-forge-title" data-testid="forge-entry">
+      <SectionTitle id="tools-forge-title">{f.title}</SectionTitle>
+      <p className="mt-2 max-w-2xl text-small text-fg-muted">
+        {fmt(f.lead, vars)}
+      </p>
+      <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+        <li>
+          <Card
+            as="article"
+            aria-labelledby="tool-forge-name"
+            className="flex h-full flex-col p-5 sm:p-6"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h3 id="tool-forge-name" className="font-display text-h4 text-fg">
+                {fmt(f.cardTitle, vars)}
+              </h3>
+              {FORGE.temporary ? (
+                <span className="shrink-0 rounded-xs border border-line-strong px-2 py-0.5 font-mono text-label uppercase text-fg">
+                  {f.temporary}
+                </span>
+              ) : null}
+            </div>
+            <p className="mt-3 text-small text-fg-muted">{f.text}</p>
+            <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-5">
+              <ButtonLink
+                href={forgeUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                arrow
+                aria-label={fmt(f.openLabel, vars)}
+              >
+                {fmt(f.open, vars)}
+              </ButtonLink>
+              <ButtonLink href={localizePath(lang, "/gitspace")} variant="link">
+                {f.about}
+              </ButtonLink>
+            </div>
+          </Card>
+        </li>
       </ul>
     </section>
   );

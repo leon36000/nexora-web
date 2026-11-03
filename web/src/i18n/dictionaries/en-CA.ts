@@ -297,6 +297,8 @@ export const enCA: Dictionary = {
     },
     modules: { detail: "See details" },
     visuals: {
+      "forge-agents":
+        "Mock-up of Gitspace: branches opened by agents, a merge request the code agent prepared (project memory read, tests run, continuous integration feedback received) and a human review required before merging.",
       "espace-de-travail":
         "Mock-up of the workspace in the browser: a coding agent proposes a change for review, your documents answer with their sources, a workflow waits for your approval, Creative prepares a video, credits are shared and the agent can run on your computer (in preparation).",
       "signal-accueil":

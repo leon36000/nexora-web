@@ -1,0 +1,182 @@
+{
+  "page": "gitspace",
+  "locale": "en-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "gitspace",
+    "title": "Gitspace",
+    "seo_title": "Gitspace: the forge built for agents",
+    "seo_description": "Gitspace is Nexora AI's code repository forge, designed so AI agents connect to it directly. In preparation: our repositories stay on GitLab in the meantime.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Ouverture sobre : ce qu'est Gitspace, en préparation, deux boutons.",
+      "claims": ["CL-GS01"],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false,
+        "layout": "standard",
+        "signature": "aucun"
+      },
+      "translation": {
+        "eyebrow": "In preparation",
+        "headline": "Gitspace, the forge built for agents.",
+        "subheadline": "A GitHub-style repository system designed from the start for AI agents. They connect to it directly, find the project's context there and propose their work, while you keep the decision.",
+        "primary_label": "Notify me",
+        "primary_href": "/en/contact/?sujet=apps-gitspace",
+        "secondary_label": "Our repositories, meanwhile",
+        "secondary_href": "/en/gitspace/depots/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Maquette de Gitspace et les six objectifs de conception ; tous en préparation.",
+      "claims": ["CL-GS01", "CL-GS02"],
+      "fields": {
+        "media_position": "top",
+        "visual": "forge-agents",
+        "tone": "sombre",
+        "anchor_id": "forge"
+      },
+      "translation": {
+        "title": "A forge where agents work.",
+        "body": "<p>Today's forges were drawn for people: a screen, notifications, discussions. Gitspace starts from somewhere else. Agents plug in directly, read and write in repositories like the other members of the team, and the final decision stays human.</p><p>These are our design goals. None has shipped yet, and the mock-up is an illustration.</p>",
+        "items": [
+          {
+            "title": "A direct connection.",
+            "text": "Agents drive repositories, branches and merge requests through a programming interface and through MCP, without going through a web page."
+          },
+          {
+            "title": "Project memory.",
+            "text": "Decisions, conventions and context stay in the repository. The agent reads them before acting and updates them afterwards."
+          },
+          {
+            "title": "Guardrails.",
+            "text": "What an agent may change, and what requires a human review before merging, is set project by project."
+          },
+          {
+            "title": "Tasks written for agents.",
+            "text": "A task carries its goal, the files involved and its success criteria, in a form an agent reads without guessing."
+          },
+          {
+            "title": "Continuous integration feedback.",
+            "text": "Test results go back to the agent, which fixes the problem before it asks for your attention."
+          },
+          {
+            "title": "Review, on the human side.",
+            "text": "You see what the agent read, changed and checked, then you merge, ask for a change or decline."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Pourquoi une forge de plus : les manques des agents, l'objectif, sans chiffre.",
+      "claims": ["CL-GS01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "pourquoi"
+      },
+      "translation": {
+        "title": "Why build a forge.",
+        "body": "<p>A code agent working in a forge made for people has to guess the project's context, rediscover its own decisions from one session to the next and wait to be told that a test failed. Those gaps are paid for in back-and-forth.</p><p>Gitspace aims to close them at the source, inside the forge itself. Our goal is to cut that back-and-forth and raise the odds that a project gets finished. We publish no figure: no measurement exists yet.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Le déroulement prévu d'une tâche confiée à un agent (illustration de conception).",
+      "claims": ["CL-GS02"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "clair",
+        "anchor_id": "deroulement"
+      },
+      "translation": {
+        "title": "One task, from reading to review.",
+        "cards": [
+          {
+            "title": "The agent reads.",
+            "text": "It opens the task and the project memory before touching the code."
+          },
+          {
+            "title": "It proposes and checks.",
+            "text": "It creates a branch, prepares the merge request and receives the test results."
+          },
+          {
+            "title": "You decide.",
+            "text": "You review, then merge, ask for a change or decline."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "En attendant : le bouton mène à GitLab par /gitspace/depots (adresse en configuration, jamais dans le contenu).",
+      "claims": ["CL-GS03"],
+      "fields": {
+        "tone": "clair",
+        "anchor_id": "en-attendant"
+      },
+      "translation": {
+        "title": "Meanwhile, our repositories are on GitLab.",
+        "text": "Gitspace is not open yet. Our code repositories currently live on a private GitLab, reachable on the team's private network. Gitspace will take its place when it is ready.",
+        "primary_label": "Open GitLab",
+        "primary_href": "/en/gitspace/depots/",
+        "secondary_label": "See the workspace",
+        "secondary_href": "/en/suite/"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions sur l'état et la portée de Gitspace ; réponses vraies seulement.",
+      "claims": ["CL-GS01", "CL-GS02", "CL-GS03"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Your questions. Our answers.",
+        "items": [
+          {
+            "question": "Is Gitspace available?",
+            "answer": "No. Gitspace is in preparation: no date and no price are announced. In the meantime, Nexora AI's repositories are on a private GitLab."
+          },
+          {
+            "question": "How does Gitspace differ from GitHub?",
+            "answer": "Gitspace is designed for AI agents: they connect to it directly, read the project memory and receive test results. These are design goals, not shipped features."
+          },
+          {
+            "question": "Can agents merge without my approval?",
+            "answer": "The design principle is the opposite: a human review remains the gate before merging, and you set what an agent may change."
+          },
+          {
+            "question": "Will I be more productive?",
+            "answer": "That is the goal, but we publish no figure until a measurement exists."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA final : liste d'attente.",
+      "claims": ["CL-GS01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Be notified when it opens.",
+        "text": "Leave us your address and we will write when Gitspace opens. Nothing else.",
+        "primary_label": "Notify me",
+        "primary_href": "/en/contact/?sujet=apps-gitspace",
+        "secondary_label": "See all applications",
+        "secondary_href": "/en/apps/"
+      }
+    }
+  ]
+}

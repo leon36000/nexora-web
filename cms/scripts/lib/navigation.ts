@@ -156,6 +156,13 @@ const TOOLS = [
     "Answers drawn from your own documents.",
   ),
   both(
+    "Gitspace",
+    "Gitspace",
+    "/gitspace/",
+    "La forge de dépôts pensée pour les agents. En préparation.",
+    "The repository forge built for agents. In preparation.",
+  ),
+  both(
     "WebPilot",
     "WebPilot",
     "/apps/webpilot/",

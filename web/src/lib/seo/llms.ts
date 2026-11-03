@@ -64,6 +64,7 @@ const MAIN_HEADS = new Set([
   "nexora-workstudio",
   "opsys-ai",
   "suite",
+  "gitspace",
   "vision",
   "croissance",
   "passerelle-api-modeles",
@@ -85,6 +86,7 @@ const MAIN_RANK: readonly string[] = [
   "tarifs",
   "agents",
   "suite",
+  "gitspace",
   "croissance",
   "vision",
 ];

@@ -31,10 +31,13 @@ function HeroText({
   block,
   level,
   mega,
+  opening,
 }: {
   block: HeroBlock;
   level: 1 | 2;
   mega?: boolean;
+  /** Ouverture sobre (accueil) : titre géant sur fond clair, rien d'autre ne concurrence le texte. */
+  opening?: boolean;
 }) {
   const H = level === 1 ? "h1" : "h2";
   return (
@@ -49,7 +52,11 @@ function HeroText({
         style={{ "--d": 1 } as React.CSSProperties}
         className={cn(
           "rise text-fg",
-          mega ? "max-w-[15ch] text-mega" : "max-w-[18ch] text-display",
+          opening
+            ? "max-w-[16ch] text-display"
+            : mega
+              ? "max-w-[15ch] text-mega"
+              : "max-w-[18ch] text-display",
           block.eyebrow && "mt-6 md:mt-8",
         )}
       >
@@ -58,7 +65,10 @@ function HeroText({
       {block.subheadline ? (
         <p
           style={{ "--d": 2 } as React.CSSProperties}
-          className="rise mt-7 max-w-2xl text-lead text-fg-muted md:mt-9"
+          className={cn(
+            "rise mt-7 text-lead text-fg-muted md:mt-9",
+            opening ? "max-w-[40rem]" : "max-w-2xl",
+          )}
         >
           {block.subheadline}
         </p>
@@ -132,8 +142,8 @@ function FullscreenHero({
           </div>
         ) : null}
         {/* voiles : lisibilité du texte en bas à gauche, quel que soit le plan de la vidéo */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--color-abyss-950)_2%,rgb(5_7_11/0.86)_24%,rgb(5_7_11/0.25)_62%,rgb(5_7_11/0.55))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_0%_100%,rgb(5_7_11/0.8),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--color-abyss-950)_2%,rgb(20_23_26/0.86)_24%,rgb(20_23_26/0.25)_62%,rgb(20_23_26/0.55))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_0%_100%,rgb(20_23_26/0.8),transparent_70%)]" />
         <div className="grid-precision absolute inset-0 opacity-60" />
         <div className="scan-loop absolute inset-0 overflow-hidden">
           <div className="scanline" />
@@ -175,6 +185,8 @@ export function HeroBlockView({
     block.perimeterGrid && block.signature !== "aucun" ? block.signature : null;
   const animated = material === "champ" || material === "onde";
   const side = block.media || (showcase && material);
+  // Sans média ni matière : ouverture sobre (très grand titre, deux boutons), sur un voile vert très léger.
+  const opening = !side && !material;
   return (
     <Section
       {...toneProps(effectiveTone(block))}
@@ -182,11 +194,15 @@ export function HeroBlockView({
       aria-labelledby={`${block.key}-title`}
       id={anchor.id}
       className={cn(
-        "pb-20 pt-20 md:pb-28 md:pt-32 lg:pb-36 lg:pt-40",
+        opening
+          ? "pb-20 pt-20 md:pb-28 md:pt-28 lg:pb-32 lg:pt-32"
+          : "pb-20 pt-20 md:pb-28 md:pt-32 lg:pb-36 lg:pt-40",
         anchor.className,
       )}
       background={
-        material ? (
+        opening ? (
+          <div aria-hidden="true" className="opening-wash absolute inset-0" />
+        ) : material ? (
           <SignalBackdrop
             variant={material === "infra" ? "grille" : material}
             labels={detectionLabels}
@@ -201,7 +217,7 @@ export function HeroBlockView({
         )}
       >
         <div>
-          <HeroText block={block} level={level} />
+          <HeroText block={block} level={level} opening={opening} />
           {animated ? (
             <div
               className="rise mt-12"

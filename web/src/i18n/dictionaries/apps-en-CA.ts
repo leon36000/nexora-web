@@ -137,24 +137,24 @@ export const appsEnCA: AppsDictionary = {
     gitspace: {
       name: "Nexora Gitspace",
       answer:
-        "Nexora Gitspace hosts your code repositories in your Nexora AI cloud space, with Forgejo or GitLab. It is planned as a subscription. It is not delivered yet: no price and no date are announced, and the exact hosting location will be stated before any subscription.",
-      hook: "Forgejo and GitLab built into your Nexora AI cloud space: host your code repositories alongside everything else. By subscription.",
+        "Nexora Gitspace is Nexora AI’s code repository forge, designed so AI agents connect to it directly. It is planned as a subscription. It is not delivered yet: no price and no date are announced, and the exact hosting location will be stated before any subscription.",
+      hook: "The code repository forge built for AI agents, which connect to it directly. By subscription.",
       audience:
-        "For teams that want to keep their code repositories in their company’s cloud space rather than with a third-party service.",
+        "For teams that want their agents to work in the same forge as their code, with a human review before every merge.",
       accessLabel: "By subscription (planned)",
       accessText:
         "Nexora Gitspace will be offered by subscription. No price is published today; it will be shown here before any sale.",
       ready: [],
       coming: [
-        "Forgejo, a code hosting software, built into your cloud space.",
-        "GitLab, for teams that prefer it, built into the same space.",
+        "Repositories, branches and merge requests that agents drive directly.",
+        "Project memory and guardrails, with a human review before merging.",
         "A subscription managed from your Nexora AI client area.",
       ],
       faq: [
         {
-          question: "What is the difference between Forgejo and GitLab?",
+          question: "How does Gitspace differ from GitHub or GitLab?",
           answer:
-            "They are two code hosting software products, each with its own features. Nexora Gitspace is designed to build both into your cloud space; the choice will be made with you. Details on each will be published when it ships.",
+            "Gitspace is designed so AI agents connect to it directly. These are design goals, not shipped features. The Gitspace page has the details. In the meantime, our repositories are on GitLab.",
         },
         {
           question: "Where will my repositories be hosted?",

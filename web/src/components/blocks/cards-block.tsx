@@ -191,7 +191,7 @@ function Bento({ block }: { block: CardsBlock }) {
               className={cn(
                 "flex w-full flex-col overflow-hidden",
                 feature
-                  ? "theme-dark isolate border-accent-graphic/25 bg-abyss-950 bg-[radial-gradient(70%_80%_at_100%_0%,rgb(62_200_255/0.14),transparent_70%)] text-fg"
+                  ? "theme-dark isolate border-accent-graphic/25 bg-abyss-950 bg-[radial-gradient(70%_80%_at_100%_0%,rgb(31_207_128/0.14),transparent_70%)] text-fg"
                   : "bg-bg",
               )}
             >
@@ -337,7 +337,7 @@ function Steps({ block }: { block: CardsBlock }) {
         >
           <span
             aria-hidden="true"
-            className="absolute -left-[5px] top-1 size-[9px] rounded-full bg-accent-graphic shadow-[0_0_12px_2px_rgb(62_200_255/0.45)] lg:-top-[5px] lg:left-0"
+            className="absolute -left-[5px] top-1 size-[9px] rounded-full bg-accent-graphic shadow-[0_0_12px_2px_rgb(31_207_128/0.45)] lg:-top-[5px] lg:left-0"
           />
           <Badge>{String(i + 1).padStart(2, "0")}</Badge>
           {card.title ? (

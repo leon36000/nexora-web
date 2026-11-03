@@ -21,12 +21,12 @@ import { getPublicVps } from "@/server/vps/read";
  * Couleurs : jetons de globals.css (abysse, givre, brume, ion, flare) ; polices : instantanés WOFF locaux (src/fonts/og).
  * Décor (identité « Signal ») : un champ de lumière en perspective sous la ligne d'horizon, une grille de précision.
  */
-const ABYSS = "#05070b";
-const FROST = "#eef3fa";
-const HAZE = "#8c97aa";
-const ION = "#3ec8ff";
-const LINE = "#1c2433";
-const FLARE = "#ff6a2b";
+const ABYSS = "#14171a";
+const FROST = "#f4f6f7";
+const HAZE = "#9aa4af";
+const ION = "#1fcf80";
+const LINE = "#343a40";
+const FLARE = "#ffffff";
 
 /** Champ de lumière figé, en trois couches d'opacité (satori ne connaît pas l'opacité par point). */
 const OG_FIELD = (() => {
@@ -171,7 +171,7 @@ export async function GET(
           width: 1200,
           height: 630,
           backgroundImage:
-            "linear-gradient(90deg, rgba(5,7,11,0.95) 0%, rgba(5,7,11,0.8) 48%, rgba(5,7,11,0) 85%)",
+            "linear-gradient(90deg, rgba(20,23,26,0.95) 0%, rgba(20,23,26,0.8) 48%, rgba(20,23,26,0) 85%)",
         }}
       />
       <div style={{ display: "flex", alignItems: "center", gap: 18 }}>

@@ -119,12 +119,12 @@ export function VideoStage({
       ) : (
         <div
           aria-hidden="true"
-          className="grid-precision absolute inset-0 -z-20 bg-[radial-gradient(70%_70%_at_70%_30%,rgb(62_200_255/0.18),transparent_70%)]"
+          className="grid-precision absolute inset-0 -z-20 bg-[radial-gradient(70%_70%_at_70%_30%,rgb(31_207_128/0.18),transparent_70%)]"
         />
       )}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(5_7_11/0.92),rgb(5_7_11/0.2)_55%,transparent)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(20_23_26/0.92),rgb(20_23_26/0.2)_55%,transparent)]"
       />
       <div
         aria-hidden="true"

@@ -80,6 +80,7 @@ describe("variantes de composition (S3)", () => {
       "signal-surveillance",
       "signal-infrastructure",
       "espace-de-travail",
+      "forge-agents",
     ]);
     expect(f.schema?.default_value).toBe("aucun");
   });

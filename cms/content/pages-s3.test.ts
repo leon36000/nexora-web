@@ -85,6 +85,7 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
   methode: { fr: "methode", en: "method" },
   workstudio: { fr: "workstudio", en: "workstudio" },
   suite: { fr: "suite", en: "suite" },
+  gitspace: { fr: "gitspace", en: "gitspace" },
   entreprise: { fr: "entreprise", en: "company" },
   "centre-de-confiance": { fr: "centre-de-confiance", en: "trust-center" },
   faq: { fr: "faq", en: "faq" },
@@ -273,6 +274,7 @@ const TONES = ["sombre", "clair", "sable"];
 const LAYOUTS = ["grille", "liste", "etapes", "modules", "bento", "vitrine"];
 const VISUALS = [
   "aucun",
+  "forge-agents",
   "perimetre-sur-place",
   "perimetre-heberge",
   "flux-donnees",
@@ -537,9 +539,12 @@ describe("S3 : SEO", () => {
               ? /^\/(?!en\/)[a-z0-9\-/]*\/$/
               : /^\/en\/[a-z0-9\-/]*\/$/,
           );
-          expect(known(l).has(path), `${k} ${l} : ${h} n'existe pas`).toBe(
-            true,
-          );
+          // routes servies par le code (redirection vers la forge), qui ne sont pas des pages du CMS
+          const code = ["/gitspace/depots/", "/en/gitspace/depots/"];
+          expect(
+            known(l).has(path) || code.includes(path),
+            `${k} ${l} : ${h} n'existe pas`,
+          ).toBe(true);
         }
       }
   });
@@ -1071,9 +1076,9 @@ describe("chargement dans Directus", () => {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
       expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
     }
-    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 4 pages de la refonte « Signal » ;
+    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 4 pages de la refonte « Signal » + Gitspace ;
     // 5 gabarits juridiques + le comparatif nommé
-    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 4);
+    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 4 + 1);
     expect(DRAFTS).toHaveLength(6);
     expect(DRAFTS).toContain("guides-alternative-openrouter");
   });

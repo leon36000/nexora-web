@@ -24,7 +24,7 @@ import {
   onboardingSteps,
 } from "./panel-logic";
 import { PanelHeading, SectionTitle, StatCard } from "./panel-ui";
-import { ProductGroup } from "./tools-products";
+import { ForgeEntry, ProductGroup } from "./tools-products";
 import { CreditsCard, PlanStrip, StorageCard } from "./tools-summary";
 
 type Role = "owner" | "member";
@@ -273,6 +273,7 @@ export function Overview({
         hints={hints}
         workstudioUrl={workstudioUrl}
       />
+      <ForgeEntry lang={lang} t={t} />
 
       <NowCards lang={lang} t={t} overview={overview} />
 

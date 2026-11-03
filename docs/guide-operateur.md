@@ -77,6 +77,7 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 | `NEXORA_VAULT_MASTER_KEY` (+ `_VERSION`, `_PREVIOUS`, `_PREVIOUS_VERSION`) | web, worker | oui | Clé maîtresse du Coffre, 32 octets en base64. Sa perte rend tous les secrets illisibles (§4) |
 | `BETTER_AUTH_SECRET` | web | oui | 32 caractères au moins ; signe sessions et jetons |
 | `SITE_URL`, `SITE_ENV` | web, worker | oui | Voir §2.2 |
+| `GITSPACE_FORGE_URL` | web | non | Adresse de la forge de dépôts de code (temporaire : GitLab, puis Gitspace). Vide = `https://pc4.tail0c55ff.ts.net`, le GitLab privé de l'équipe (tailnet seulement). Lue au rendu : redémarrer le site suffit. Le nom affiché (« GitLab »), l'adresse par défaut et la mention « temporaire » sont dans `web/src/lib/forge.ts` : le jour où Gitspace remplace GitLab, on change ce fichier (une ligne pour le nom, une pour l'adresse). Le bouton de `/gitspace` passe par `/gitspace/depots` (redirection) ; l'entrée « Dépôts de code » de `/compte` lit la même configuration |
 | `DIRECTUS_URL` | web, worker | oui | Adresse interne de Directus |
 | `DIRECTUS_READER_TOKEN`, `DIRECTUS_PUBLISHER_TOKEN` | web | oui | Jetons « Lecteur site » (lecture) et « Publication » (aperçu seulement), créés par `cms/scripts/apply.ts` |
 | `NEXORA_PREVIEW_SECRET` | web | pour l'aperçu | Signe les liens d'aperçu (10 minutes) **et la session d'aperçu de 30 minutes** (cookie `nexora_preview`) : passé ce délai, ou sans ce secret, le site efface le cookie du Draft Mode et sert les pages publiées |

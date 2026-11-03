@@ -95,19 +95,20 @@ describe("structure", () => {
     });
   }
 
-  test("l'accueil porte la promesse de la refonte « Signal » dans un héros plein écran et garde le message directeur dans le sous-titre", () => {
+  test("l'accueil s'ouvre sur l'environnement de travail IA complet (ouverture sobre, sans vidéo ni surveillance) et garde la promesse du sous-titre", () => {
     const hero = (l: Locale) => pairs.accueil[l].blocks[0]?.translation;
-    expect(hero("fr-CA")?.headline).toBe("L'IA qui voit, écoute et agit.");
-    expect(hero("en-CA")?.headline).toBe("AI that sees, listens and acts.");
-    expect(pairs.accueil["fr-CA"].blocks[0]?.fields?.layout).toBe(
-      "plein-ecran",
+    expect(hero("fr-CA")?.headline).toBe(
+      "Votre environnement de travail IA, au complet.",
     );
-    expect(String(hero("fr-CA")?.subheadline)).toMatch(
-      /L'IA qui travaille pour votre entreprise\. Sous votre contrôle\./,
-    );
-    expect(String(hero("en-CA")?.subheadline)).toMatch(
-      /AI that works for your business\. Under your control\./,
-    );
+    expect(hero("en-CA")?.headline).toBe("Your complete AI work environment.");
+    const fields = pairs.accueil["fr-CA"].blocks[0]?.fields;
+    expect(fields?.layout).toBe("standard");
+    expect(fields?.video).toBeUndefined();
+    expect(fields?.media).toBeUndefined();
+    for (const l of LOCALES)
+      expect(JSON.stringify(hero(l))).not.toMatch(/surveill|camera|caméra/i);
+    expect(String(hero("fr-CA")?.subheadline)).toMatch(/agent de code/i);
+    expect(String(hero("en-CA")?.subheadline)).toMatch(/code agent/i);
   });
 
   test("la page OPSYS-AI traite les dix départements, M1 à M10", () => {

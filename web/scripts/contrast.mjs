@@ -24,7 +24,7 @@ const mix = (fg, alpha, bg) => "#" + [1, 3, 5].map((i) => Math.round(parseInt(fg
 // [description, premier plan, arrière-plan, seuil, source]
 const T = token;
 const pairs = [
-  // --- identité « Signal » : site public sombre d'abord ---
+  // --- identité « Signal » : bandes charbon du site public ---
   ["Texte (givre) sur abysse", T.frost, T["abyss-950"], 4.5, ""],
   ["Texte sur bande nuit", T.frost, T["abyss-850"], 4.5, ""],
   ["Texte sur surface", T.frost, T["abyss-900"], 4.5, ""],
@@ -37,9 +37,9 @@ const pairs = [
   ["Accent ion en texte sur surface relevée", T["ion-400"], T["abyss-800"], 4.5, ""],
   ["Bouton principal : abysse sur ion", T["abyss-950"], T["ion-400"], 4.5, ""],
   ["Bouton principal au survol : abysse sur ion clair", T["abyss-950"], T["ion-300"], 4.5, ""],
-  ["Bouton flare (seul point chaud) : abysse sur flare", T["abyss-950"], T["flare-500"], 4.5, ""],
-  ["Bouton flare au survol", T["abyss-950"], T["flare-400"], 4.5, ""],
-  ["Flare en texte sur abysse (alerte, libellé)", T["flare-500"], T["abyss-950"], 4.5, ""],
+  ["Bouton blanc (flare) : abysse sur flare", T["abyss-950"], T["flare-500"], 4.5, ""],
+  ["Bouton blanc au survol", T["abyss-950"], T["flare-400"], 4.5, ""],
+  ["Flare (blanc) en texte sur abysse", T["flare-500"], T["abyss-950"], 4.5, ""],
   ["Alerte sur abysse", T["alert-400"], T["abyss-950"], 4.5, ""],
   ["Succès sur abysse", T["ok-400"], T["abyss-950"], 4.5, ""],
   ["Lien d'évitement : abysse sur ion", T["abyss-950"], T["ion-400"], 4.5, ""],
@@ -57,7 +57,7 @@ const pairs = [
   ["Accent en texte (ion foncé) sur surface claire", T["ion-700"], T["paper-100"], 4.5, ""],
   ["Succès sur papier", T["ok-700"], T["paper-50"], 4.5, ""],
   ["Alerte sur papier", T["alert-700"], T["paper-50"], 4.5, ""],
-  ["Flare foncé sur papier", T["flare-700"], T["paper-50"], 4.5, ""],
+  ["Flare (vert foncé) sur papier", T["flare-700"], T["paper-50"], 4.5, ""],
   ["Ion en graphisme sur papier", T["ion-600"], T["paper-50"], 3, "non textuel >= 3:1"],
   ["Anneau de focus sur papier", T["ion-700"], T["paper-50"], 3, "2.4.11 / 1.4.11"],
   ["Bordure de bouton secondaire sur papier", mix(T["graphite-900"], 0.58, T["paper-50"]), T["paper-50"], 3, "1.4.11"],
@@ -70,10 +70,10 @@ const pairs = [
   ["Lien (ion foncé) sur bande relevée", T["ion-700"], T["paper-200"], 4.5, ""],
   ["Bouton principal sur papier : blanc sur ion foncé", T.white, T["ion-700"], 4.5, ""],
   ["Bouton principal sur papier au survol", T.white, T["ion-800"], 4.5, ""],
-  ["Bouton flare sur papier : abysse sur flare", T["abyss-950"], T["flare-500"], 4.5, ""],
+  ["Bouton blanc sur papier : abysse sur flare", T["abyss-950"], T["flare-500"], 4.5, ""],
   ["Succès sur carte blanche", T["ok-700"], T["paper-100"], 4.5, ""],
   ["Alerte sur carte blanche", T["alert-700"], T["paper-100"], 4.5, ""],
-  ["Flare foncé sur carte blanche", T["flare-700"], T["paper-100"], 4.5, ""],
+  ["Flare (vert foncé) sur carte blanche", T["flare-700"], T["paper-100"], 4.5, ""],
   ["Anneau de focus sur carte blanche", T["ion-700"], T["paper-100"], 3, "2.4.11 / 1.4.11"],
   ["Ion en graphisme sur carte blanche", T["ion-600"], T["paper-100"], 3, "non textuel >= 3:1"],
   ["Bordure de bouton secondaire sur carte blanche", mix(T["graphite-900"], 0.58, T["paper-100"]), T["paper-100"], 3, "1.4.11"],
