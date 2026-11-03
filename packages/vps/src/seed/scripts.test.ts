@@ -12,7 +12,11 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { sha256Hex } from "../canonical.ts";
 import { PERMISSIVE_LICENSES } from "../catalog.ts";
-import { SEED_GUIDE_APPS, SEED_INSTALLABLE_APPS } from "./apps.ts";
+import {
+  SEED_BARE_APPS,
+  SEED_GUIDE_APPS,
+  SEED_INSTALLABLE_APPS,
+} from "./apps.ts";
 
 describe("applications du catalogue", () => {
   it("n'installe que des licences permissives ; n8n, Open WebUI et Dify sont des guides sans script", () => {
@@ -130,4 +134,23 @@ describe("scripts d'installation (bash)", () => {
       }
     });
   }
+});
+
+describe("serveur nu (produit de base)", () => {
+  const app = SEED_BARE_APPS[0];
+  it("n'installe rien, n'expose aucun port et vérifie son application", () => {
+    expect(app?.code).toBe("serveur-nu");
+    expect(PERMISSIVE_LICENSES as readonly string[]).toContain(app?.license);
+    expect(app?.ports).toEqual([]);
+    const script = app?.installScript ?? "";
+    expect(script).toContain("set -euo pipefail");
+    expect(script).not.toMatch(/apt-get|curl|wget|docker/);
+    expect(script).toContain('"$NEXORA_APP_CODE" != "serveur-nu"');
+    expect(script).toContain(`"$NEXORA_APP_VERSION" != "${app?.version}"`);
+  });
+  it("le script passe bash -n", async () => {
+    const { spawnSync } = await import("node:child_process");
+    const r = spawnSync("bash", ["-n"], { input: app?.installScript ?? "" });
+    expect(r.status).toBe(0);
+  });
 });

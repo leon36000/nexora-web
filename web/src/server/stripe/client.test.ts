@@ -51,6 +51,57 @@ describe("createStripeClient", () => {
   });
 });
 
+describe("simulateur Stripe d'une pile d'essai en production (STRIPE_TEST_MOCK_URL)", () => {
+  it("accepte le service stripe-mock du réseau interne avec une clé de test", () => {
+    expect(() =>
+      createStripeClient({
+        secretKey: "sk_test_x",
+        mockUrl: "http://stripe-mock:12111",
+      }),
+    ).not.toThrow();
+  });
+  it("refuse tout autre nom que la boucle locale et stripe-mock, et toute clé de production", () => {
+    expect(() =>
+      createStripeClient({
+        secretKey: "sk_test_x",
+        mockUrl: "http://api.stripe.com:12111",
+      }),
+    ).toThrow(StripeModeError);
+    expect(() =>
+      createStripeClient({
+        secretKey: "sk_live_x",
+        allowLive: true,
+        mockUrl: "http://stripe-mock:12111",
+      }),
+    ).toThrow(StripeModeError);
+  });
+  it("en production, n'est lu que dans STRIPE_TEST_MOCK_URL et jamais avec une clé de production", async () => {
+    const getSecret = async () => "sk_test_vault";
+    expect(
+      await resolveStripeConfig({
+        env: {
+          NODE_ENV: "production",
+          STRIPE_TEST_MOCK_URL: "http://stripe-mock:12111",
+          STRIPE_API_BASE_URL: "http://127.0.0.1:1",
+        },
+        getSecret,
+      }),
+    ).toEqual({
+      secretKey: "sk_test_vault",
+      mockUrl: "http://stripe-mock:12111",
+    });
+    const live = await resolveStripeConfig({
+      env: {
+        NODE_ENV: "production",
+        STRIPE_TEST_MOCK_URL: "http://stripe-mock:12111",
+      },
+      getSecret: async () => "sk_live_vault",
+      liveAllowed: async () => true,
+    });
+    expect(live.mockUrl).toBeUndefined();
+  });
+});
+
 describe("résolution des secrets", () => {
   const vault = (map: Record<string, string>) =>
     vi.fn(async (ref: string) => {

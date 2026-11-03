@@ -372,11 +372,7 @@ async function deleteVm(deps: EngineDeps, inst: Instance) {
       const st = await client.vmStatus(node, vmid);
       if (st.status === "running")
         await task(deps, client, await client.stopVm(node, vmid));
-      await task(
-        deps,
-        client,
-        await client.deleteVm(node, vmid, { skiplock: true }),
-      );
+      await task(deps, client, await client.deleteVm(node, vmid));
     } else if (cfg) {
       deps.log.error(
         "vps : suppression ignorée, la VM ne porte pas le nom attendu",
@@ -426,7 +422,7 @@ async function purgeOld(
     await task(
       deps,
       client,
-      await client.deleteVm(server.node, inst.previousVmid, { skiplock: true }),
+      await client.deleteVm(server.node, inst.previousVmid),
     );
   }
   await deps.db

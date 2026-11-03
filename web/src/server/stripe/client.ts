@@ -47,7 +47,17 @@ export function assertKeyAllowed(key: string, liveAllowed: boolean): void {
   );
 }
 
-const LOOPBACK = new Set(["127.0.0.1", "localhost", "[::1]", "::1"]);
+/**
+ * Hôtes admis pour le simulateur : la boucle locale, et le service `stripe-mock` du réseau interne de
+ * la pile d'essai (STRIPE_TEST_MOCK_URL). Rien d'autre : une clé de test ne part jamais vers un tiers.
+ */
+const LOOPBACK = new Set([
+  "127.0.0.1",
+  "localhost",
+  "[::1]",
+  "::1",
+  "stripe-mock",
+]);
 
 export interface StripeClientConfig {
   secretKey: string;
@@ -67,7 +77,7 @@ export function createStripeClient(config: StripeClientConfig): Stripe {
     const url = new URL(config.mockUrl);
     if (!LOOPBACK.has(url.hostname))
       throw new StripeModeError(
-        "Le simulateur Stripe doit être sur la boucle locale.",
+        "Le simulateur Stripe doit être sur la boucle locale ou le service stripe-mock.",
       );
     return new Stripe(config.secretKey, {
       host: url.hostname,
@@ -116,12 +126,26 @@ export async function resolveStripeConfig(
       ? await deps.liveAllowed()
       : false;
   assertKeyAllowed(secretKey, allowLive);
-  const dev = deps.env.NODE_ENV !== "production";
   return {
     secretKey,
-    mockUrl: dev ? deps.env.STRIPE_API_BASE_URL || undefined : undefined,
+    mockUrl: mockUrlFor(deps.env, secretKey),
     ...(allowLive ? { allowLive: true } : {}),
   };
+}
+
+/**
+ * Adresse du simulateur Stripe : en développement STRIPE_API_BASE_URL ; en production SEULEMENT
+ * STRIPE_TEST_MOCK_URL (pile d'essai, opt-in de l'opérateur) et jamais avec une clé de production.
+ */
+export function mockUrlFor(
+  env: Record<string, string | undefined>,
+  secretKey: string,
+): string | undefined {
+  if (stripeKeyMode(secretKey) !== "test") return undefined;
+  const dev = env.NODE_ENV !== "production";
+  return (
+    (dev ? env.STRIPE_API_BASE_URL : env.STRIPE_TEST_MOCK_URL) || undefined
+  );
 }
 
 /** Secret de signature des webhooks : coffre (`stripe.webhook_secret`) ou, en développement, STRIPE_WEBHOOK_SECRET. */

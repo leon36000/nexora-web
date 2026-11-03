@@ -540,6 +540,24 @@ describe("échecs honnêtes : cause lisible, action à faire, jamais « prêt »
     }
   });
 
+  it("le numéro 9000 est pris par une VM étrangère : le gabarit prend le suivant (Proxmox répond 400)", async () => {
+    const sim = newSim({ templates: [{ vmid: 9000, name: "autre-gabarit" }] });
+    const s = await sim.start();
+    try {
+      const c = await connected(sim, s.port);
+      const d = deps(createSimRunner(sim).runner);
+      const st = await startSetup(t.db, c.server.id, input(), {
+        client: d.proxmox,
+      });
+      const done = await runSetup(d, c.server.id, st.setup.runId);
+      expect(done.status).toBe("succeeded");
+      expect(sim.vms.get(9001)?.name).toBe("nexora-tpl-debian-12-ci");
+      expect(sim.vms.get(9000)?.name).toBe("autre-gabarit");
+    } finally {
+      await s.close();
+    }
+  });
+
   it("clé du worker absente : échec explicite, rien n'est créé sur Proxmox", async () => {
     const sim = newSim();
     const s = await sim.start();

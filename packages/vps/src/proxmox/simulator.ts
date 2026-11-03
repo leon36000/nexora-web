@@ -454,9 +454,11 @@ export class ProxmoxSimulator {
 
   private requireVm(vmid: number): SimVm {
     const vm = this.vms.get(vmid);
+    // Jeton limité à un pool (Proxmox VE 9.2 réel) : une VM inexistante ou hors du pool répond 403, pas 500.
     if (!vm)
-      throw fail500(
-        `Configuration file 'nodes/${this.node}/qemu-server/${vmid}.conf' does not exist`,
+      throw new HttpFail(
+        403,
+        `Permission check failed (/vms/${vmid}, VM.Audit)`,
       );
     return vm;
   }
@@ -518,7 +520,11 @@ export class ProxmoxSimulator {
     on("GET /cluster/nextid", ({ p }) => {
       if (p.vmid !== undefined) {
         const id = Number(p.vmid);
-        if (this.vms.has(id)) throw fail500(`VM ${id} already exists`);
+        // Proxmox réel : 400 « Parameter verification failed » avec l'erreur sur le champ vmid.
+        if (this.vms.has(id))
+          throw new HttpFail(400, "Parameter verification failed.", {
+            vmid: `VM ${id} already exists on node '${this.node}'`,
+          });
         return String(id);
       }
       let id = 100;
@@ -989,7 +995,12 @@ export class ProxmoxSimulator {
     for (const a of ["start", "stop", "shutdown", "reboot"] as const)
       on(`POST /nodes/{node}/qemu/{vmid}/status/${a}`, power(a));
 
-    on("DELETE /nodes/{node}/qemu/{vmid}", ({ vm }) => {
+    on("DELETE /nodes/{node}/qemu/{vmid}", ({ p, vm }) => {
+      // Proxmox réel : `skiplock` est réservé à root@pam (jamais le jeton de Nexora).
+      if (p.skiplock !== undefined)
+        throw new HttpFail(400, "Parameter verification failed.", {
+          skiplock: "Only root may use this option.",
+        });
       const v = vm();
       if (v.status === "running")
         throw fail500("VM is running - destroy failed");

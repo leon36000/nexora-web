@@ -21,7 +21,11 @@ import {
   updateServer,
   updateTemplate,
 } from "../servers.ts";
-import { SEED_GUIDE_APPS, SEED_INSTALLABLE_APPS } from "./apps.ts";
+import {
+  SEED_BARE_APPS,
+  SEED_GUIDE_APPS,
+  SEED_INSTALLABLE_APPS,
+} from "./apps.ts";
 
 /**
  * Chargement idempotent des applications (en BROUILLON : le fondateur les approuve et les publie
@@ -29,7 +33,11 @@ import { SEED_GUIDE_APPS, SEED_INSTALLABLE_APPS } from "./apps.ts";
  */
 export async function seedApps(db: Database): Promise<{ created: string[] }> {
   const created: string[] = [];
-  for (const app of [...SEED_INSTALLABLE_APPS, ...SEED_GUIDE_APPS]) {
+  for (const app of [
+    ...SEED_BARE_APPS,
+    ...SEED_INSTALLABLE_APPS,
+    ...SEED_GUIDE_APPS,
+  ]) {
     const [exists] = await db
       .select({ id: vpsApps.id })
       .from(vpsApps)
