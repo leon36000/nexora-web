@@ -3,9 +3,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CONTACT_SUBJECTS, resolveContactSubject } from "@/lib/contact-subject";
 import {
+  APP_REGISTRY,
   APP_SLUG,
   APP_STATES,
-  APP_REGISTRY,
   APPS,
   type AppDef,
   appContactHref,
