@@ -2,8 +2,11 @@ import type { Lang } from "@/i18n/config";
 import type { PageModel, SectionBlock } from "@/server/cms/model";
 import { getPage } from "@/server/cms/read";
 
-/** Page Directus qui porte le film de `/modeles` (le catalogue lui-même n'a pas de page dans le CMS). */
-export const MODELS_FILM_PAGE = "passerelle-api-modeles";
+/** Page Directus qui porte le film de `/modeles` (le catalogue lui-même n'a pas de page dans le CMS), son adresse par langue. */
+export const MODELS_FILM_PAGE: Record<Lang, string> = {
+  fr: "passerelle-api-modeles",
+  en: "model-gateway-api",
+};
 
 /** Ancre de la section qui porte le film (titre, phrase d'accompagnement, fichier par langue et affiche). */
 export const MODELS_FILM_ANCHOR = "film";
@@ -23,6 +26,6 @@ export function pickModelsFilm(page: PageModel): SectionBlock | null {
  * son affiche et ses textes. Si la page est illisible ou n'a pas le fichier, la bande n'est simplement pas affichée.
  */
 export async function getModelsFilm(lang: Lang): Promise<SectionBlock | null> {
-  const result = await getPage(lang, MODELS_FILM_PAGE);
+  const result = await getPage(lang, MODELS_FILM_PAGE[lang]);
   return result.status === "ok" ? pickModelsFilm(result.page) : null;
 }
