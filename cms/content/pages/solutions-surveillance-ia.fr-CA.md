@@ -37,6 +37,8 @@ Les systèmes de sécurité enregistrent tout, mais la vidéo n'est revue qu'apr
 
 Quand un comportement suspect apparaît (présence dans une zone fermée, intrusion après les heures d'ouverture, quelqu'un qui s'attarde), l'alerte part pendant que l'événement a lieu.
 
+Le film est une maquette illustrative : les plans sont générés par IA, les boîtes de détection et les libellés sont posés en code, et aucune statistique n'y figure.
+
 ### Bloc 3 — Cartes (`block_cards`)
 
 *Fonctions : détecter, alerter, documenter. · Affirmations : CL-SV01, CL-SV03, CL-SV04*

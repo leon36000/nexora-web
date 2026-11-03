@@ -25,7 +25,17 @@ Agents (software that completes a task using the tools you authorize), a Copilot
 
 [Request a demonstration](/en/contact/?sujet=demonstration) · [See the solutions](/en/solutions/)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
+
+*Film de WorkStudio : captures réelles de deux exécutions du flux « Tri du courrier entrant » (exemple fictif, boîte de test). · Affirmations : CL-21, CL-P01*
+
+Réglages : `media_position=top`, `tone=sombre`, `anchor_id=film`, `visual=aucun`, `media=[object Object]`, `poster=[object Object]`
+
+## WorkStudio at work, from email to send.
+
+Two complete runs of the “Incoming mail triage” workflow, captured in WorkStudio: the model sorts the email and writes a draft, the workflow pauses, a person gives approval, then the message is sent. The content is a fictitious example and the message goes to a test mailbox: nothing leaves the network. The slow motion stretches frames that were actually captured, since a run takes about three seconds.
+
+### Bloc 3 — Cartes (`block_cards`)
 
 *Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03). · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-92, CL-25, CL-101, CL-102, CL-94, CL-97, CL-21*
 
@@ -61,7 +71,7 @@ Your recordings are transcribed, with a meeting's speakers; a text can also be r
 
 Compare several models side by side, with the time and tokens (the unit of text a model processes) of each answer, then measure with test sets.
 
-### Bloc 3 — Section (`block_section`)
+### Bloc 4 — Section (`block_section`)
 
 *Maquette du flux de facture fournisseur (exemple construit) : du courriel à l'écriture, avec approbation. · Affirmations : CL-92, CL-91, CL-120, CL-121, CL-125, CL-21, CL-79, CL-11*
 
@@ -77,7 +87,7 @@ The workflow stops before writing: a person approves. [See this workflow in a de
 - **The maths gets checked.** The invoice is read, its fields extracted and its calculations checked; the workflow concludes “to pay” or “to verify”.
 - **A person approves.** The accounting entry is only made after a person approves. The connection to the accounting software is qualified with you.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
 *Scénario type : de la demande à la trace, six temps. · Affirmations : CL-90, CL-91, CL-21, CL-93, CL-96, CL-25*
 
@@ -111,7 +121,7 @@ Once, if it was authorized. Otherwise, nothing goes out.
 
 Who asked what, what was answered, with which model, in how much time.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Cartes (`block_cards`)
 
 *Concevoir : agents, flux, Copilote, connaissances, documents et voix. Statuts « disponible » définis (CL-110). · Affirmations : CL-90, CL-91, CL-92, CL-25, CL-101, CL-102, CL-110, CL-P01, CL-P02*
 
@@ -145,7 +155,7 @@ Reading of scanned PDFs and images, extraction of fields from an invoice, quote,
 
 Transcription of audio recordings, with a meeting's speakers, and reading a text aloud. No call-answering service is included.
 
-### Bloc 6 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *Contrôler : validation, garde-fous, gouvernance, lieu des modèles, engagements sur les données. · Affirmations : CL-21, CL-93, CL-24, CL-105, CL-22, CL-23, CL-104, CL-112, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-06*
 
@@ -181,7 +191,7 @@ On your own server, or with us in Quebec: your data never trains a model and is 
 
 → [Read the five commitments](/en/your-data/)
 
-### Bloc 7 — Cartes (`block_cards`)
+### Bloc 8 — Cartes (`block_cards`)
 
 *Mesurer et améliorer : Playground, consignes, traces, évaluations, lots, consommation. · Affirmations : CL-94, CL-95, CL-96, CL-97, CL-98, CL-106*
 
@@ -215,7 +225,7 @@ Have a table of several hundred rows processed in the background: progress, canc
 
 Tokens, runs and estimated carbon footprint, by model, workspace and person, with monthly caps.
 
-### Bloc 8 — Cartes (`block_cards`)
+### Bloc 9 — Cartes (`block_cards`)
 
 *Brancher : Nexora Connect, API, site, Assistant, délégation, installation. · Affirmations : CL-103, CL-27, CL-107, CL-100, CL-108, CL-26*
 
@@ -251,7 +261,7 @@ One command on a Docker server (a tool that packages software), on Linux or macO
 
 → [See installation](/en/services/ai-server-installation/)
 
-### Bloc 9 — Section (`block_section`)
+### Bloc 10 — Section (`block_section`)
 
 *Comment WorkStudio s'ouvre et ce qu'il consomme : un compte, des crédits (modèles), de l'espace ; la vente n'est pas ouverte. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T09, CL-22, CL-12*
 
@@ -266,7 +276,7 @@ WorkStudio opens from the “My tools” panel of your Nexora AI account, as lon
 - **No credits, nothing erased.** Calls to models stop with a message that points to top-ups and plans. Your agents, workflows and documents stay where they are; you top up, and everything resumes.
 - **Not on sale yet.** Accounts and payments only work in test mode. In the meantime, a demonstration on fictitious data shows the tool.
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Hosted agents: agents published in Nexora AI's catalogue are called through the API. The /agents page is no longer in the menus, WorkStudio links to it. · Affirmations : CL-27, CL-H01, CL-12*
 
@@ -280,7 +290,7 @@ An agent built in WorkStudio and published in Nexora AI's catalogue can also be 
 - **Hosting is shown.** Each agent's page says where its instance runs, what its limits are and how to call it.
 - **Not on sale yet.** Sales are not open: accounts and payments only work in test mode, and no price is published.
 
-### Bloc 11 — Section (`block_section`)
+### Bloc 12 — Section (`block_section`)
 
 *Limites dites franchement. · Affirmations : CL-83, CL-109, CL-111, CL-110, CL-103*
 
@@ -302,7 +312,7 @@ Nexora AI's other tools (code agent, RAG, WebPilot) are gathered in [Nexora Apps
 - **Starter templates are adapted to Quebec, to be validated.** They are written for Quebec (Canadian dollars, GST and QST), but do not guarantee any tax or legal compliance: your accountant or adviser validates the result.
 - **Connections are qualified.** Some services require an administrator to first register an application with the provider, and a public HTTPS address for the instance.
 
-### Bloc 12 — FAQ (`block_faq`)
+### Bloc 13 — FAQ (`block_faq`)
 
 *FAQ propre à WorkStudio. · Affirmations : CL-06, CL-10, CL-12, CL-20, CL-26, CL-27, CL-E03, CL-E04, CL-E05, CL-P02, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T04, CL-T06, CL-T09*
 
@@ -342,7 +352,7 @@ Yes, through connectors, an OpenAI-format API, or by displaying an agent on your
 
 Installation is one command on a Docker server; putting a case into service depends on your situation, with no universal timeline.
 
-### Bloc 13 — Appel à l'action (`block_cta`)
+### Bloc 14 — Appel à l'action (`block_cta`)
 
 *CTA : démonstration. · Affirmations : CL-12, CL-PL03*
 

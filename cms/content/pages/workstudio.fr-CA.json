@@ -30,6 +30,34 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Film de WorkStudio : captures réelles de deux exécutions du flux « Tri du courrier entrant » (exemple fictif, boîte de test).",
+      "claims": ["CL-21", "CL-P01"],
+      "fields": {
+        "media_position": "top",
+        "tone": "sombre",
+        "anchor_id": "film",
+        "visual": "aucun",
+        "media": {
+          "asset": ["site-film-workstudio-fr.mp4"],
+          "optional": true
+        },
+        "poster": {
+          "asset": ["site-film-workstudio-affiche.jpg"],
+          "optional": true
+        }
+      },
+      "translation": {
+        "title": "WorkStudio à l'œuvre, du courriel à l'envoi.",
+        "body": "<p>Deux exécutions complètes du flux « Tri du courrier entrant », captées dans WorkStudio : le modèle trie le courriel et rédige un brouillon, le flux s'arrête, une personne donne son accord, puis le message part. Le contenu est un exemple fictif et l'envoi se fait vers une boîte de test : rien ne sort du réseau. Le ralenti étire des images réellement captées, car l'exécution dure environ trois secondes.</p>",
+        "media_alt": "Film : WorkStudio trie un courriel, prépare un brouillon, attend l'accord d'une personne, puis envoie le message vers une boîte de test.",
+        "media_lang": {
+          "asset": ["site-film-workstudio-fr.mp4"],
+          "optional": true
+        }
+      }
+    },
+    {
       "collection": "block_cards",
       "role": "Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03).",
       "claims": [

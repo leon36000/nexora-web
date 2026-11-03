@@ -27,6 +27,16 @@ Nexora AI API est une passerelle de modèles au format OpenAI : changez l'adres
 
 ### Bloc 2 — Section (`block_section`)
 
+*Film du catalogue : captures réelles de la page Modèles et API (aperçu). · Affirmations : CL-S04*
+
+Réglages : `media_position=top`, `tone=sombre`, `anchor_id=film`, `visual=aucun`, `media=[object Object]`, `poster=[object Object]`
+
+## Le catalogue des modèles, en images.
+
+Aperçu : l'API n'est pas encore ouverte et le catalogue est en aperçu. Ce film reprend des captures réelles de la page Modèles et API : filtres, recherche, tri, fiche d'un modèle et exemple d'appel. La clé, l'adresse et la réponse sont figurées par la page : ce sont des valeurs d'exemple.
+
+### Bloc 3 — Section (`block_section`)
+
 *Réponse d'abord : ce qu'est une passerelle de modèles, définie en une phrase, avec le jeton défini au premier usage. · Affirmations : CL-27, CL-S04, CL-S03*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
@@ -43,7 +53,7 @@ Pour choisir entre une passerelle et un accès direct, voir le guide [Passerelle
 - **Un format connu.** Celui de l'API d'OpenAI, pour ne pas réécrire votre code.
 - **Une mesure claire.** Chaque réponse complète porte le coût de la requête.
 
-### Bloc 3 — Cartes (`block_cards`)
+### Bloc 4 — Cartes (`block_cards`)
 
 *Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API. · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-S06, CL-S02, CL-T02, CL-T04, CL-T09*
 
@@ -77,7 +87,7 @@ Les erreurs suivent le format d'OpenAI. Si le fournisseur du modèle est indispo
 
 Les événements d'usage ne contiennent que des métadonnées : le modèle, les jetons, le coût et la durée. Le contenu des requêtes et des réponses n'y figure jamais.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
 *Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test. · Affirmations : CL-27, CL-S01, CL-S05, CL-S04, CL-S03, CL-12, CL-PL01*
 
@@ -107,7 +117,7 @@ Même format qu'OpenAI : changez l'adresse de base et la clé.
 
 Requêtes, jetons et coût, par jour et par modèle, dans l'espace client. Votre solde de crédits se lit dans « Mes outils ».
 
-### Bloc 5 — Section (`block_section`)
+### Bloc 6 — Section (`block_section`)
 
 *Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données. · Affirmations : CL-S01, CL-E08, CL-E09, CL-75, CL-02, CL-M06, CL-AP03*
 
@@ -126,7 +136,7 @@ Avant chaque appel à un fournisseur, [Nexora Privacy Router](/apps/privacy-rout
 - **Ce que la fiche dit.** Le fournisseur, le lieu d'hébergement et la politique de données qu'il déclare.
 - **Ce qu'elle ne dit pas.** Qu'aucune loi étrangère ne s'applique : un hébergement au Québec n'écarte pas, à lui seul, les lois qui s'appliquent.
 
-### Bloc 6 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé. · Affirmations : CL-12, CL-S04, CL-86, CL-T01, CL-T03, CL-T06*
 
@@ -152,7 +162,7 @@ Une requête renvoie un seul choix, et les paramètres propres à un fournisseur
 
 La disponibilité et les délais de réponse se précisent au contrat.
 
-### Bloc 7 — FAQ (`block_faq`)
+### Bloc 8 — FAQ (`block_faq`)
 
 *Questions de la passerelle, réponse d'abord : définition, compatibilité, facturation, lieu, données, état de la vente, utilité d'une passerelle, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S03, CL-S01, CL-S02, CL-12, CL-80, CL-T01, CL-T02, CL-T03, CL-T06, CL-T09, CL-M06*
 
@@ -200,7 +210,7 @@ Un abonnement donne des crédits et de l'espace disque chaque mois ; sans abonn
 
 L'API refuse l'appel avant tout appel au modèle, avec l'erreur 402 insufficient_quota et un message qui renvoie vers la recharge et vers l'abonnement.
 
-### Bloc 8 — Appel à l'action (`block_cta`)
+### Bloc 9 — Appel à l'action (`block_cta`)
 
 *Appel à l'action : diagnostic, puis catalogue. · Affirmations : CL-80*
 

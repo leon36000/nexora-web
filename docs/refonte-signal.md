@@ -42,7 +42,10 @@ Journal de la refonte demandée par le fondateur (mandat : `marketing/nexora/REF
 | `site-infra-dgx-spark.jpg` | `infra-dgx-spark` (photo produit du poste compact, même traitement) | en service |
 | `site-film-marque-{fr,en}.mp4` + affiche | film de marque 60 s (réencodé 1080p) | en service |
 | `site-film-creative-{fr,en}.mp4` + `site-film-creative-poster.jpg` | film V4 Creative « Une phrase. Un film. » (60 s, 16:9, texte fr / en dans l'image) | en service : carte Creative de l'accueil (`media_lang`) **et** page `/apps/creative`, qui lit la section d'ancre `creative` de l'accueil ; l'ancienne bande-annonce « flotte spatiale » est retirée de `web/public` |
-| `site-{reception,surveillance,…}.jpg`, `site-film-surveillance-{fr,en}.mp4` + affiche | `reception-accueil`, `surveillance-entrepot`, `film-surveillance-*` | cités par les pages réception virtuelle et surveillance IA ; les autres restent à citer |
+| `site-{reception,surveillance,…}.jpg` | `reception-accueil`, `surveillance-entrepot` | cités par les pages réception virtuelle et surveillance IA ; les autres restent à citer |
+| `site-film-surveillance-{fr,en}.mp4` + `site-film-surveillance-affiche.jpg` | `film-surveillance-v2-*` (campagne du 02/11, maquette illustrative) | en service : `/solutions/surveillance-ia` |
+| `site-film-workstudio-{fr,en}.mp4` + `site-film-workstudio-affiche.jpg` | `film-workstudio-*` (captures réelles, exemple fictif) | en service : `/workstudio`, section d'ancre `film` |
+| `site-film-modeles-{fr,en}.mp4` + `site-film-modeles-affiche.jpg` | `film-modeles-*` (captures de la page, aperçu) | en service : section d'ancre `film` de la page `passerelle-api-modeles`, que lit aussi la bande sous le héros de `/modeles` |
 
 Le script choisit toujours le fichier de base (16:9), jamais un recadrage `-4x5`/`-9x16` ni une taille `-1280`.
 

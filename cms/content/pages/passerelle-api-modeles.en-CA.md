@@ -27,6 +27,16 @@ The Nexora AI API is a model gateway in the OpenAI format: change the base addre
 
 ### Bloc 2 — Section (`block_section`)
 
+*Film du catalogue : captures réelles de la page Modèles et API (aperçu). · Affirmations : CL-S04*
+
+Réglages : `media_position=top`, `tone=sombre`, `anchor_id=film`, `visual=aucun`, `media=[object Object]`, `poster=[object Object]`
+
+## The model catalogue, on screen.
+
+Preview: the API is not open yet and the catalogue is a preview. This film uses real captures of the Models and API page: filters, search, sorting, a model's page and a call example. The key, the address and the response are shown by the page: they are example values.
+
+### Bloc 3 — Section (`block_section`)
+
 *Réponse d'abord : ce qu'est une passerelle de modèles, définie en une phrase, avec le jeton défini au premier usage. · Affirmations : CL-27, CL-S04, CL-S03*
 
 Réglages : `media_position=none`, `tone=clair`, `anchor_id=reponse`
@@ -43,7 +53,7 @@ To choose between a gateway and direct access, see the guide [Gateway or direct 
 - **A familiar format.** The OpenAI API format, so you do not rewrite your code.
 - **A clear measure.** Each complete response carries the cost of the request.
 
-### Bloc 3 — Cartes (`block_cards`)
+### Bloc 4 — Cartes (`block_cards`)
 
 *Les six fonctions de la passerelle, chacune tirée de la documentation publique de l'API. · Affirmations : CL-S04, CL-S05, CL-S01, CL-S03, CL-S06, CL-S02, CL-T02, CL-T04, CL-T09*
 
@@ -77,7 +87,7 @@ Errors follow the OpenAI format. If the model's provider is unavailable, nothing
 
 Usage events contain only metadata: the model, the tokens, the cost and the duration. The content of requests and answers never appears in them.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
 *Quatre étapes de la clé au premier appel, avec l'état réel : comptes et paiements en mode test. · Affirmations : CL-27, CL-S01, CL-S05, CL-S04, CL-S03, CL-12, CL-PL01*
 
@@ -107,7 +117,7 @@ Same format as OpenAI: change the base address and the key.
 
 Requests, tokens and cost, by day and by model, in the customer area. Your credit balance appears in “My tools”.
 
-### Bloc 5 — Section (`block_section`)
+### Bloc 6 — Section (`block_section`)
 
 *Le lieu d'hébergement affiché : une information du catalogue, pas une garantie de résidence ; renvoi vers le déploiement et les engagements sur les données. · Affirmations : CL-S01, CL-E08, CL-E09, CL-75, CL-02, CL-M06, CL-AP03*
 
@@ -126,7 +136,7 @@ Before each call to a provider, [Nexora Privacy Router](/en/apps/privacy-router/
 - **What the sheet says.** The provider, the hosting location and the data policy it declares.
 - **What it does not say.** That no foreign law applies: hosting in Quebec does not, by itself, rule out the laws that apply.
 
-### Bloc 6 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *Limites à connaître : libre-service non ouvert, prix de développement, un seul choix par requête, pas de niveau de service annoncé. · Affirmations : CL-12, CL-S04, CL-86, CL-T01, CL-T03, CL-T06*
 
@@ -152,7 +162,7 @@ A request returns a single choice, and provider-specific parameters are ignored.
 
 Availability and response times are specified in the contract.
 
-### Bloc 7 — FAQ (`block_faq`)
+### Bloc 8 — FAQ (`block_faq`)
 
 *Questions de la passerelle, réponse d'abord : définition, compatibilité, facturation, lieu, données, état de la vente, utilité d'une passerelle, changement de modèle. · Affirmations : CL-27, CL-S04, CL-S03, CL-S01, CL-S02, CL-12, CL-80, CL-T01, CL-T02, CL-T03, CL-T06, CL-T09, CL-M06*
 
@@ -200,7 +210,7 @@ A plan gives you credits and storage every month; without a plan, you top up cre
 
 The API refuses the call before any call to the model, with a 402 insufficient_quota error and a message pointing to top-ups and plans.
 
-### Bloc 8 — Appel à l'action (`block_cta`)
+### Bloc 9 — Appel à l'action (`block_cta`)
 
 *Appel à l'action : diagnostic, puis catalogue. · Affirmations : CL-80*
 
