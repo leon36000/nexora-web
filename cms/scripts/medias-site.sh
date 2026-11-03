@@ -138,13 +138,27 @@ done
 for slot in reception surveillance workstudio code methode souverainete; do
   if s="$(first_src image "$slot-")"; then image "site-$slot.jpg" "$s"; fi
 done
-for slot in reception surveillance infrastructure workstudio code; do
+for slot in reception infrastructure code; do
   if s="$(first_src video "$slot-film" "film-$slot" "$slot-")"; then video "site-film-$slot.mp4" "$s" son 24; fi
 done
-# Film de la page Surveillance : une version par langue (film-surveillance-{fr,en}-16x9.mp4).
-for l in fr en; do
-  [ -f "$SRC/film-surveillance-$l-16x9.mp4" ] && video "site-film-surveillance-$l.mp4" "$SRC/film-surveillance-$l-16x9.mp4" son 24
-done
-[ -f "$SRC/film-surveillance-fr-16x9-poster.jpg" ] && image site-film-surveillance-affiche.jpg "$SRC/film-surveillance-fr-16x9-poster.jpg"
+
+# --- films de la campagne (02/11/2026) : montages déjà encodés dans SRC (`film-<nom>-{16x9,9x16}-{fr,en}[-30|-15].mp4`) ---------
+# Une version 16:9 par langue (la longue) et une affiche par film, aux noms stables que citent les pages :
+#   site-film-surveillance-{fr,en}.mp4 + site-film-surveillance-affiche.jpg  ←  film-surveillance-v2-* (page /solutions/surveillance-ia ;
+#                                                                              remplace l'ancien film-surveillance-{fr,en}-16x9)
+#   site-film-workstudio-{fr,en}.mp4   + site-film-workstudio-affiche.jpg    ←  film-workstudio-*   (page /workstudio)
+#   site-film-modeles-{fr,en}.mp4      + site-film-modeles-affiche.jpg       ←  film-modeles-*      (bande de /modeles, via la page passerelle-api-modeles)
+# Les coupes de 15 s et de 30 s et les versions 9:16 restent dans SRC : aucune page ne les cite pour l'instant.
+campagne() {
+  local slot="$1" src="$2" l
+  for l in fr en; do
+    [ -f "$SRC/film-$src-16x9-$l.mp4" ] && remux "site-film-$slot-$l.mp4" "$SRC/film-$src-16x9-$l.mp4"
+  done
+  [ -f "$SRC/film-$src-poster.jpg" ] && image "site-film-$slot-affiche.jpg" "$SRC/film-$src-poster.jpg"
+  return 0
+}
+campagne surveillance surveillance-v2
+campagne workstudio workstudio
+campagne modeles modeles
 
 echo "Terminé. Taille : $(du -sh "$OUT" | cut -f1)"

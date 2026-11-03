@@ -25,7 +25,17 @@ Des agents (des logiciels qui accomplissent une tâche avec les outils que vous 
 
 [Demander une démonstration](/contact/?sujet=demonstration) · [Voir les solutions](/solutions/)
 
-### Bloc 2 — Cartes (`block_cards`)
+### Bloc 2 — Section (`block_section`)
+
+*Film de WorkStudio : captures réelles de deux exécutions du flux « Tri du courrier entrant » (exemple fictif, boîte de test). · Affirmations : CL-21, CL-P01*
+
+Réglages : `media_position=top`, `tone=sombre`, `anchor_id=film`, `visual=aucun`, `media=[object Object]`, `poster=[object Object]`
+
+## WorkStudio à l'œuvre, du courriel à l'envoi.
+
+Deux exécutions complètes du flux « Tri du courrier entrant », captées dans WorkStudio : le modèle trie le courriel et rédige un brouillon, le flux s'arrête, une personne donne son accord, puis le message part. Le contenu est un exemple fictif et l'envoi se fait vers une boîte de test : rien ne sort du réseau. Le ralenti étire des images réellement captées, car l'exécution dure environ trois secondes.
+
+### Bloc 3 — Cartes (`block_cards`)
 
 *Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03). · Affirmations : CL-P01, CL-P02, CL-P03, CL-90, CL-92, CL-25, CL-101, CL-102, CL-94, CL-97, CL-21*
 
@@ -61,7 +71,7 @@ Vos enregistrements sont transcrits, avec les intervenants d'une réunion ; un 
 
 Comparez plusieurs modèles côte à côte, avec le temps et les jetons (l'unité de texte que traite un modèle) de chaque réponse, puis mesurez avec des jeux de tests.
 
-### Bloc 3 — Section (`block_section`)
+### Bloc 4 — Section (`block_section`)
 
 *Maquette du flux de facture fournisseur (exemple construit) : du courriel à l'écriture, avec approbation. · Affirmations : CL-92, CL-91, CL-120, CL-121, CL-125, CL-21, CL-79, CL-11*
 
@@ -77,7 +87,7 @@ Le flux s'arrête avant d'écrire : c'est une personne qui approuve. [Voir ce f
 - **Les calculs sont vérifiés.** La facture est lue, ses champs sont extraits et ses calculs contrôlés ; le flux conclut « à payer » ou « à vérifier ».
 - **Une personne approuve.** L'écriture en comptabilité n'est faite qu'après la validation d'une personne. La connexion au logiciel comptable se qualifie avec vous.
 
-### Bloc 4 — Cartes (`block_cards`)
+### Bloc 5 — Cartes (`block_cards`)
 
 *Scénario type : de la demande à la trace, six temps. · Affirmations : CL-90, CL-91, CL-21, CL-93, CL-96, CL-25*
 
@@ -111,7 +121,7 @@ Une seule fois, si elle a été autorisée. Sinon, rien ne part.
 
 Qui a demandé quoi, ce qui a été répondu, avec quel modèle, en combien de temps.
 
-### Bloc 5 — Cartes (`block_cards`)
+### Bloc 6 — Cartes (`block_cards`)
 
 *Concevoir : agents, flux, Copilote, connaissances, documents et voix. Statuts « disponible » définis (CL-110). · Affirmations : CL-90, CL-91, CL-92, CL-25, CL-101, CL-102, CL-110, CL-P01, CL-P02*
 
@@ -145,7 +155,7 @@ Lecture de PDF scannés et d'images, extraction de champs d'une facture, d'un de
 
 Transcription d'enregistrements audio, avec les intervenants d'une réunion, et lecture d'un texte à voix haute. Aucun service de réception d'appels n'est inclus.
 
-### Bloc 6 — Cartes (`block_cards`)
+### Bloc 7 — Cartes (`block_cards`)
 
 *Contrôler : validation, garde-fous, gouvernance, lieu des modèles, engagements sur les données. · Affirmations : CL-21, CL-93, CL-24, CL-105, CL-22, CL-23, CL-104, CL-112, CL-E01, CL-E02, CL-E03, CL-E04, CL-E05, CL-06*
 
@@ -181,7 +191,7 @@ Chez vous, sur votre serveur, ou chez nous, au Québec : vos données ne serven
 
 → [Lire les cinq engagements](/vos-donnees/)
 
-### Bloc 7 — Cartes (`block_cards`)
+### Bloc 8 — Cartes (`block_cards`)
 
 *Mesurer et améliorer : Playground, consignes, traces, évaluations, lots, consommation. · Affirmations : CL-94, CL-95, CL-96, CL-97, CL-98, CL-106*
 
@@ -215,7 +225,7 @@ Faites traiter une table de plusieurs centaines de lignes en arrière-plan : pr
 
 Jetons, exécutions et empreinte carbone estimée, par modèle, espace et personne, avec des plafonds mensuels.
 
-### Bloc 8 — Cartes (`block_cards`)
+### Bloc 9 — Cartes (`block_cards`)
 
 *Brancher : Nexora Connect, API, site, Assistant, délégation, installation. · Affirmations : CL-103, CL-27, CL-107, CL-100, CL-108, CL-26*
 
@@ -251,7 +261,7 @@ Une commande sur un serveur Docker (un outil qui empaquette les logiciels), sous
 
 → [Voir l'installation](/services/installation-serveurs-ia/)
 
-### Bloc 9 — Section (`block_section`)
+### Bloc 10 — Section (`block_section`)
 
 *Comment WorkStudio s'ouvre et ce qu'il consomme : un compte, des crédits (modèles), de l'espace ; la vente n'est pas ouverte. · Affirmations : CL-PL01, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T02, CL-T03, CL-T04, CL-T05, CL-T06, CL-T09, CL-22, CL-12*
 
@@ -266,7 +276,7 @@ WorkStudio s'ouvre depuis le panneau « Mes outils » de votre compte Nexora A
 - **Sans crédits, rien ne s'efface.** Les appels aux modèles s'arrêtent avec un message qui renvoie vers la recharge et l'abonnement. Vos agents, vos flux et vos documents restent là ; vous rechargez, et tout reprend.
 - **Pas encore en vente.** Les comptes et les paiements ne fonctionnent qu'en mode test. Une démonstration, sur des données fictives, montre l'outil en attendant.
 
-### Bloc 10 — Section (`block_section`)
+### Bloc 11 — Section (`block_section`)
 
 *Agents hébergés : les agents publiés au catalogue de Nexora AI s'appellent par l'API. La page /agents n'est plus dans les menus, WorkStudio y renvoie. · Affirmations : CL-27, CL-H01, CL-12*
 
@@ -280,7 +290,7 @@ Un agent conçu dans WorkStudio et publié au catalogue de Nexora AI s'appelle a
 - **L'hébergement est indiqué.** La fiche de chaque agent dit où tourne son instance, quelles sont ses limites et comment l'appeler.
 - **Pas encore en vente.** La vente n'est pas ouverte : les comptes et les paiements ne fonctionnent qu'en mode test, et aucun prix n'est publié.
 
-### Bloc 11 — Section (`block_section`)
+### Bloc 12 — Section (`block_section`)
 
 *Limites dites franchement. · Affirmations : CL-83, CL-109, CL-111, CL-110, CL-103*
 
@@ -302,7 +312,7 @@ Les autres outils de Nexora AI (agent de code, RAG, WebPilot) sont réunis dans 
 - **Les modèles de départ sont adaptés au Québec, à valider.** Ils sont rédigés pour le Québec (dollars canadiens, TPS et TVQ), mais ne garantissent aucune conformité fiscale ou légale : votre comptable ou votre conseiller valide le résultat.
 - **Les connexions se qualifient.** Certains services demandent qu'un administrateur enregistre d'abord une application chez le fournisseur, et une adresse HTTPS publique pour l'instance.
 
-### Bloc 12 — FAQ (`block_faq`)
+### Bloc 13 — FAQ (`block_faq`)
 
 *FAQ propre à WorkStudio. · Affirmations : CL-06, CL-10, CL-12, CL-20, CL-26, CL-27, CL-E03, CL-E04, CL-E05, CL-P02, CL-PL02, CL-PL03, CL-PL04, CL-T01, CL-T04, CL-T06, CL-T09*
 
@@ -342,7 +352,7 @@ Oui, par des connecteurs, par une API au format OpenAI, ou en affichant un agent
 
 L'installation tient en une commande sur un serveur Docker ; la mise en service d'un cas dépend de votre situation, sans délai universel.
 
-### Bloc 13 — Appel à l'action (`block_cta`)
+### Bloc 14 — Appel à l'action (`block_cta`)
 
 *CTA : démonstration. · Affirmations : CL-12, CL-PL03*
 

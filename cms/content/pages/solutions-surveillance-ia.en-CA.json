@@ -51,8 +51,8 @@
       },
       "translation": {
         "title": "Your cameras, finally watched.",
-        "body": "<p>Security systems record everything, but the video is only reviewed afterwards, often too late. Our AIs connect to your existing cameras and security system and analyze the images continuously.</p><p>When suspicious behaviour appears (presence in a closed area, intrusion after business hours, someone loitering), the alert goes out while the event is happening.</p>",
-        "media_alt": "AI surveillance film: a camera, a detection, an alert.",
+        "body": "<p>Security systems record everything, but the video is only reviewed afterwards, often too late. Our AIs connect to your existing cameras and security system and analyze the images continuously.</p><p>When suspicious behaviour appears (presence in a closed area, intrusion after business hours, someone loitering), the alert goes out while the event is happening.</p><p>The film is an illustrative mock-up: the shots are AI-generated, the detection boxes and labels are added in code, and no statistics appear in it.</p>",
+        "media_alt": "Illustrative mock-up: a camera, a detection, an alert.",
         "media_lang": {
           "asset": [
             "site-film-surveillance-en.mp4",

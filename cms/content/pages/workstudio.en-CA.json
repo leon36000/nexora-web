@@ -30,6 +30,37 @@
       }
     },
     {
+      "collection": "block_section",
+      "role": "Film de WorkStudio : captures réelles de deux exécutions du flux « Tri du courrier entrant » (exemple fictif, boîte de test).",
+      "claims": ["CL-21", "CL-P01"],
+      "fields": {
+        "media_position": "top",
+        "tone": "sombre",
+        "anchor_id": "film",
+        "visual": "aucun",
+        "media": {
+          "asset": ["site-film-workstudio-fr.mp4"],
+          "optional": true
+        },
+        "poster": {
+          "asset": ["site-film-workstudio-affiche.jpg"],
+          "optional": true
+        }
+      },
+      "translation": {
+        "title": "WorkStudio at work, from email to send.",
+        "body": "<p>Two complete runs of the “Incoming mail triage” workflow, captured in WorkStudio: the model sorts the email and writes a draft, the workflow pauses, a person gives approval, then the message is sent. The content is a fictitious example and the message goes to a test mailbox: nothing leaves the network. The slow motion stretches frames that were actually captured, since a run takes about three seconds.</p>",
+        "media_alt": "Film: WorkStudio sorts an email, prepares a draft, waits for a person's approval, then sends the message to a test mailbox.",
+        "media_lang": {
+          "asset": [
+            "site-film-workstudio-en.mp4",
+            "site-film-workstudio-fr.mp4"
+          ],
+          "optional": true
+        }
+      }
+    },
+    {
       "collection": "block_cards",
       "role": "Six gestes concrets de WorkStudio, en clair. La preuve est la liste (CL-P03).",
       "claims": [

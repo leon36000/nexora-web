@@ -37,6 +37,8 @@ Security systems record everything, but the video is only reviewed afterwards, o
 
 When suspicious behaviour appears (presence in a closed area, intrusion after business hours, someone loitering), the alert goes out while the event is happening.
 
+The film is an illustrative mock-up: the shots are AI-generated, the detection boxes and labels are added in code, and no statistics appear in it.
+
 ### Bloc 3 — Cartes (`block_cards`)
 
 *Fonctions : détecter, alerter, documenter. · Affirmations : CL-SV01, CL-SV03, CL-SV04*

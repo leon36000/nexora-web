@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { SectionBlockView } from "@/components/blocks/section-block";
 import { CatalogView } from "@/components/gateway/catalog-view";
 import { ModelsHero } from "@/components/gateway/models-hero";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -14,6 +15,7 @@ import { parseQuery } from "@/lib/models/query";
 import { appBreadcrumb } from "@/lib/seo/app-jsonld";
 import { SITE_NAME } from "@/lib/site";
 import { getPublicCatalog } from "@/server/gateway/read";
+import { getModelsFilm } from "./_components/models-film";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -43,9 +45,11 @@ export default async function ModelsPage({
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const t = getModelsDictionary(lang);
+  const film = await getModelsFilm(lang);
   return (
     <>
       <ModelsHero lang={lang} t={t.hero} titleId="models-title" />
+      {film ? <SectionBlockView block={film} lang={lang} /> : null}
       <Section
         tone="light"
         id="catalogue"

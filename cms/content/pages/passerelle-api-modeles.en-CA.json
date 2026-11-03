@@ -39,6 +39,34 @@
     },
     {
       "collection": "block_section",
+      "role": "Film du catalogue : captures réelles de la page Modèles et API (aperçu).",
+      "claims": ["CL-S04"],
+      "fields": {
+        "media_position": "top",
+        "tone": "sombre",
+        "anchor_id": "film",
+        "visual": "aucun",
+        "media": {
+          "asset": ["site-film-modeles-fr.mp4"],
+          "optional": true
+        },
+        "poster": {
+          "asset": ["site-film-modeles-affiche.jpg"],
+          "optional": true
+        }
+      },
+      "translation": {
+        "title": "The model catalogue, on screen.",
+        "body": "<p>Preview: the API is not open yet and the catalogue is a preview. This film uses real captures of the Models and API page: filters, search, sorting, a model's page and a call example. The key, the address and the response are shown by the page: they are example values.</p>",
+        "media_alt": "Preview film: the model catalogue, with filters, search, sorting, a model's page and a call example.",
+        "media_lang": {
+          "asset": ["site-film-modeles-en.mp4", "site-film-modeles-fr.mp4"],
+          "optional": true
+        }
+      }
+    },
+    {
+      "collection": "block_section",
       "role": "Réponse d'abord : ce qu'est une passerelle de modèles, définie en une phrase, avec le jeton défini au premier usage.",
       "claims": ["CL-27", "CL-S04", "CL-S03"],
       "fields": {
