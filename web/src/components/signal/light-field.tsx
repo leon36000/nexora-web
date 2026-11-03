@@ -31,7 +31,7 @@ type Props = {
   hotspot?: boolean;
 };
 
-const ION_DARK = [31, 207, 128] as const;
+const ION_DARK = [255, 102, 0] as const;
 const GLOW_DARK = [255, 255, 255] as const;
 
 /** Couleur d'un jeton « r g b » (ex. `--field-rgb`) lue sur le canvas : le nuage suit le thème de la bande. */

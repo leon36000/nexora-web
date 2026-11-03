@@ -60,7 +60,7 @@ export function ModelsHero({
           <div className="relative">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-16 -z-10 bg-[radial-gradient(50%_50%_at_60%_40%,rgb(31_207_128/0.2),transparent_70%)]"
+              className="pointer-events-none absolute -inset-16 -z-10 bg-[radial-gradient(50%_50%_at_60%_40%,rgb(255_102_0/0.2),transparent_70%)]"
             />
             <div className="overflow-hidden rounded-xl border border-line bg-abyss-900 shadow-pop ring-1 ring-inset ring-white/5">
               <div className="flex items-center justify-between gap-3 border-b border-line bg-abyss-950 px-4 py-2.5">
