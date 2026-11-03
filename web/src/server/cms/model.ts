@@ -51,6 +51,7 @@ export const SECTION_VISUALS = [
   "signal-surveillance",
   "signal-infrastructure",
   "espace-de-travail",
+  "forge-agents",
 ] as const;
 export type SectionVisual = (typeof SECTION_VISUALS)[number];
 

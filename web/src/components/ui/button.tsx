@@ -13,10 +13,10 @@ const BASE =
   "group/btn inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-sans font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTS: Record<Variant, string> = {
-  // Bouton d'accent : fond ion #3EC8FF, texte abysse (10,5:1) ; survol ion clair #7BD9FF (12,7:1), lueur retenue.
+  // Bouton d'accent : fond ion #1FCF80, texte charbon (8:1) ; survol ion clair #5BE2A5, lueur retenue.
   primary:
     "rounded-md bg-accent text-on-accent hover:bg-accent-hover hover:shadow-[var(--glow-ion)] active:translate-y-px",
-  // Le seul point de chaleur d'un écran (appel à l'action final) : fond flare #FF6A2B, texte abysse (7,1:1).
+  // Le seul point de chaleur d'un écran (appel à l'action final) : fond blanc (flare), texte charbon (17:1).
   flare:
     "rounded-md bg-flare-500 text-abyss-950 hover:bg-flare-400 active:translate-y-px",
   secondary:

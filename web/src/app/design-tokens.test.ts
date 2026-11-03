@@ -16,10 +16,11 @@ describe("jetons de l'identité « Signal »", () => {
     expect(out.match(/^OK/gm)?.length).toBeGreaterThanOrEqual(25);
   });
 
-  it("accent principal ion ; le flare (chaud) est un contrepoint rare, jamais l'accent des liens ni des focus", () => {
-    expect(css).toMatch(/--color-abyss-950:\s*#05070b/);
-    expect(css).toMatch(/--color-ion-400:\s*#3ec8ff/);
-    expect(css).toMatch(/--color-flare-500:\s*#ff6a2b/);
+  it("accent principal vert (ion) sur gris charbon ; le flare (blanc) est un point rare, jamais l'accent des liens ni des focus", () => {
+    expect(css).toMatch(/--color-abyss-950:\s*#14171a/);
+    expect(css).toMatch(/--color-ion-400:\s*#1fcf80/);
+    expect(css).not.toMatch(/#3ec8ff|#0b6e99|#ff6a2b/i);
+    expect(css).toMatch(/--color-flare-500:\s*#ffffff/);
     expect(css).toMatch(/--accent-text:\s*var\(--color-ion-400\)/);
     expect(css).toMatch(/--accent-text:\s*var\(--color-ion-700\)/);
     expect(css).toMatch(/--focus:\s*var\(--color-ion-400\)/);

@@ -54,6 +54,30 @@ export const visualsFrCA = {
       ],
     },
   },
+  gitspace: {
+    window: "Gitspace · projet-facturation",
+    status: "Maquette",
+    branchesTitle: "Branches",
+    branches: [
+      { name: "agent/corriger-calcul", agent: true },
+      { name: "agent/ajouter-tests", agent: true },
+      { name: "main", agent: false },
+    ],
+    mrTitle: "Corriger le calcul des crédits",
+    mrMeta: "Demande de fusion préparée par l’agent de code",
+    mrState: "À relire",
+    steps: [
+      { label: "Mémoire du projet lue", done: true },
+      { label: "Tests écrits et exécutés", done: true },
+      { label: "Retour de l’intégration continue reçu", done: true },
+      { label: "Revue humaine requise avant la fusion", done: false },
+    ],
+    memoryTitle: "Mémoire du projet",
+    memory: [
+      "Les montants sont toujours en cents.",
+      "Toute fusion passe par une revue.",
+    ],
+  },
   catalog: {
     window: "Catalogue de modèles",
     search: "Rechercher un modèle",

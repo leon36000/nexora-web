@@ -45,6 +45,30 @@ export const visualsEnCA: VisualsDictionary = {
       ],
     },
   },
+  gitspace: {
+    window: "Gitspace · billing-project",
+    status: "Mockup",
+    branchesTitle: "Branches",
+    branches: [
+      { name: "agent/fix-calculation", agent: true },
+      { name: "agent/add-tests", agent: true },
+      { name: "main", agent: false },
+    ],
+    mrTitle: "Fix the credit calculation",
+    mrMeta: "Merge request prepared by the code agent",
+    mrState: "To review",
+    steps: [
+      { label: "Project memory read", done: true },
+      { label: "Tests written and run", done: true },
+      { label: "Continuous integration feedback received", done: true },
+      { label: "Human review required before merging", done: false },
+    ],
+    memoryTitle: "Project memory",
+    memory: [
+      "Amounts are always in cents.",
+      "Every merge goes through a review.",
+    ],
+  },
   catalog: {
     window: "Model catalogue",
     search: "Search a model",

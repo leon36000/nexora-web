@@ -511,6 +511,7 @@ const SECTION_VISUALS: [string, string][] = [
     "Schéma : infrastructure IA (chez vous ou chez nous)",
   ],
   ["espace-de-travail", "Maquette : espace de travail dans le navigateur"],
+  ["forge-agents", "Maquette : Gitspace, la forge pensée pour les agents"],
 ];
 /** Statut d'une carte en disposition « modules » ; vide = aucun badge. */
 export const CARD_STATUSES = [

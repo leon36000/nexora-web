@@ -41,7 +41,9 @@ services:
       # (builder rattaché au réseau interne, identifiants en secrets de construction), pas par `compose build`.
       args:
         SITE_URL: *site-url
-        SITE_ENV: ${SITE_ENV:-}
+        # Forge de dépôts de code (GitLab, puis Gitspace) : adresse du bouton « Ouvrir GitLab » et du panneau ; vide = défaut.
+      GITSPACE_FORGE_URL: ${GITSPACE_FORGE_URL:-}
+      SITE_ENV: ${SITE_ENV:-}
         BUILD_DIRECTUS_URL: http://directus:8055
     depends_on:
       db: { condition: service_healthy }

@@ -455,6 +455,16 @@ export const accountEnCA: AccountDictionary = {
           lead: "The Web, the protection of your data and servers.",
         },
       },
+      forge: {
+        title: "Code repositories",
+        lead: "Our code repositories are on {name} for now. Gitspace, the forge built for agents, will take its place when it opens.",
+        cardTitle: "{name}",
+        text: "The team’s repositories, reachable on the Nexora AI private network. The address opens in a new tab.",
+        temporary: "Temporary",
+        open: "Open {name}",
+        openLabel: "Open {name} in a new tab",
+        about: "About Gitspace",
+      },
       states: {
         label: "Status",
         disponible: "Available",

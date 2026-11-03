@@ -1,0 +1,182 @@
+{
+  "page": "gitspace",
+  "locale": "fr-CA",
+  "status": "published",
+  "noindex": false,
+  "seo": {
+    "slug": "gitspace",
+    "title": "Gitspace",
+    "seo_title": "Gitspace : la forge pensée pour les agents",
+    "seo_description": "Gitspace est la forge de dépôts de code de Nexora AI, conçue pour que les agents d'IA s'y connectent directement. En préparation : nos dépôts sont sur GitLab.",
+    "canonical": null
+  },
+  "blocks": [
+    {
+      "collection": "block_hero",
+      "role": "Ouverture sobre : ce qu'est Gitspace, en préparation, deux boutons.",
+      "claims": ["CL-GS01"],
+      "fields": {
+        "variant": "clair",
+        "perimeter_grid": false,
+        "layout": "standard",
+        "signature": "aucun"
+      },
+      "translation": {
+        "eyebrow": "En préparation",
+        "headline": "Gitspace, la forge pensée pour les agents.",
+        "subheadline": "Un système de dépôts à la manière de GitHub, conçu dès le départ pour des agents d'IA. Ils s'y connectent directement, y trouvent le contexte du projet et y proposent leur travail, pendant que vous gardez la décision.",
+        "primary_label": "Me prévenir",
+        "primary_href": "/contact/?sujet=apps-gitspace",
+        "secondary_label": "Nos dépôts, en attendant",
+        "secondary_href": "/gitspace/depots/"
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Maquette de Gitspace et les six objectifs de conception ; tous en préparation.",
+      "claims": ["CL-GS01", "CL-GS02"],
+      "fields": {
+        "media_position": "top",
+        "visual": "forge-agents",
+        "tone": "sombre",
+        "anchor_id": "forge"
+      },
+      "translation": {
+        "title": "Une forge où les agents travaillent.",
+        "body": "<p>Les forges d'aujourd'hui ont été dessinées pour des personnes : un écran, des notifications, des discussions. Gitspace part d'un autre point de départ. Les agents s'y branchent directement, lisent et écrivent dans les dépôts comme les autres membres de l'équipe, et la décision finale reste humaine.</p><p>Voici nos objectifs de conception. Aucun n'est livré à ce jour, et la maquette est une illustration.</p>",
+        "items": [
+          {
+            "title": "Une connexion directe.",
+            "text": "Les agents pilotent dépôts, branches et demandes de fusion par une interface de programmation et par MCP, sans passer par une page web."
+          },
+          {
+            "title": "Une mémoire du projet.",
+            "text": "Décisions, conventions et contexte restent dans le dépôt. L'agent les lit avant d'agir et les met à jour après."
+          },
+          {
+            "title": "Des garde-fous.",
+            "text": "Ce qu'un agent peut modifier, et ce qui exige une revue humaine avant la fusion, se règle projet par projet."
+          },
+          {
+            "title": "Des tâches écrites pour les agents.",
+            "text": "Une tâche porte son objectif, les fichiers concernés et ses critères de réussite, sous une forme qu'un agent lit sans deviner."
+          },
+          {
+            "title": "Le retour de l'intégration continue.",
+            "text": "Le résultat des tests revient à l'agent, qui corrige avant de vous solliciter."
+          },
+          {
+            "title": "La revue, côté humain.",
+            "text": "Vous voyez ce que l'agent a lu, changé et vérifié, puis vous fusionnez, demandez un changement ou refusez."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_section",
+      "role": "Pourquoi une forge de plus : les manques des agents, l'objectif, sans chiffre.",
+      "claims": ["CL-GS01"],
+      "fields": {
+        "media_position": "none",
+        "tone": "sable",
+        "anchor_id": "pourquoi"
+      },
+      "translation": {
+        "title": "Pourquoi construire une forge.",
+        "body": "<p>Un agent de code qui travaille dans une forge faite pour les personnes doit deviner le contexte du projet, retrouver ses propres décisions d'une session à l'autre et attendre qu'on lui rapporte l'échec d'un test. Ces manques se paient en allers-retours.</p><p>Gitspace vise à les combler à la source, dans la forge elle-même. Notre objectif est de réduire ces allers-retours et d'augmenter les chances qu'un projet arrive au bout. Nous ne publions aucun chiffre : aucune mesure n'existe encore.</p>"
+      }
+    },
+    {
+      "collection": "block_cards",
+      "role": "Le déroulement prévu d'une tâche confiée à un agent (illustration de conception).",
+      "claims": ["CL-GS02"],
+      "fields": {
+        "columns": "3",
+        "layout": "etapes",
+        "tone": "clair",
+        "anchor_id": "deroulement"
+      },
+      "translation": {
+        "title": "De la lecture à la revue.",
+        "cards": [
+          {
+            "title": "L'agent lit.",
+            "text": "Il ouvre la tâche et la mémoire du projet avant de toucher au code."
+          },
+          {
+            "title": "Il propose et vérifie.",
+            "text": "Il crée une branche, prépare la demande de fusion et reçoit le retour des tests."
+          },
+          {
+            "title": "Vous décidez.",
+            "text": "Vous relisez, puis vous fusionnez, demandez un changement ou refusez."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "En attendant : le bouton mène à GitLab par /gitspace/depots (adresse en configuration, jamais dans le contenu).",
+      "claims": ["CL-GS03"],
+      "fields": {
+        "tone": "clair",
+        "anchor_id": "en-attendant"
+      },
+      "translation": {
+        "title": "Nos dépôts sont sur GitLab, en attendant.",
+        "text": "Gitspace n'est pas encore ouvert. Nos dépôts de code vivent pour l'instant sur un GitLab privé, accessible sur le réseau privé de l'équipe. Gitspace prendra sa place quand il sera prêt.",
+        "primary_label": "Ouvrir GitLab",
+        "primary_href": "/gitspace/depots/",
+        "secondary_label": "Voir l'espace de travail",
+        "secondary_href": "/suite/"
+      }
+    },
+    {
+      "collection": "block_faq",
+      "role": "Questions sur l'état et la portée de Gitspace ; réponses vraies seulement.",
+      "claims": ["CL-GS01", "CL-GS02", "CL-GS03"],
+      "fields": {
+        "emit_jsonld": true,
+        "tone": "sable",
+        "anchor_id": "questions"
+      },
+      "translation": {
+        "title": "Vos questions. Nos réponses.",
+        "items": [
+          {
+            "question": "Gitspace est-il disponible ?",
+            "answer": "Non. Gitspace est en préparation : aucune date ni aucun prix ne sont annoncés. En attendant, les dépôts de Nexora AI sont sur un GitLab privé."
+          },
+          {
+            "question": "Qu'est-ce qui distingue Gitspace de GitHub ?",
+            "answer": "Gitspace est pensé pour des agents d'IA : ils s'y connectent directement, lisent la mémoire du projet et reçoivent le retour des tests. Ce sont des objectifs de conception, pas des fonctions livrées."
+          },
+          {
+            "question": "Les agents peuvent-ils fusionner sans mon accord ?",
+            "answer": "Le principe de conception est inverse : une revue humaine reste la porte avant la fusion, et vous réglez ce qu'un agent peut modifier."
+          },
+          {
+            "question": "Gagnerai-je en productivité ?",
+            "answer": "C'est l'objectif, mais nous ne publions aucun chiffre tant qu'aucune mesure n'existe."
+          }
+        ]
+      }
+    },
+    {
+      "collection": "block_cta",
+      "role": "CTA final : liste d'attente.",
+      "claims": ["CL-GS01"],
+      "fields": {
+        "tone": "sombre"
+      },
+      "translation": {
+        "title": "Soyez prévenu à l'ouverture.",
+        "text": "Laissez-nous votre adresse : nous vous écrirons quand Gitspace ouvrira. Rien d'autre.",
+        "primary_label": "Me prévenir",
+        "primary_href": "/contact/?sujet=apps-gitspace",
+        "secondary_label": "Voir toutes les applications",
+        "secondary_href": "/apps/"
+      }
+    }
+  ]
+}

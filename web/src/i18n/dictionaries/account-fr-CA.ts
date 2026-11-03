@@ -468,6 +468,16 @@ export const accountFrCA = {
           lead: "Le Web, la protection de vos données et les serveurs.",
         },
       },
+      forge: {
+        title: "Dépôts de code",
+        lead: "Nos dépôts de code sont sur {name} pour le moment. Gitspace, la forge pensée pour les agents, prendra sa place à son ouverture.",
+        cardTitle: "{name}",
+        text: "Les dépôts de l’équipe, accessibles sur le réseau privé de Nexora AI. L’adresse s’ouvre dans un nouvel onglet.",
+        temporary: "Temporaire",
+        open: "Ouvrir {name}",
+        openLabel: "Ouvrir {name} dans un nouvel onglet",
+        about: "À propos de Gitspace",
+      },
       states: {
         label: "État",
         disponible: "Disponible",

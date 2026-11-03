@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Système de design — identité « Signal » (refonte du 2 novembre 2026)
-   Idée : une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA
+   Système de design — identité « Signal » (refonte du 2 novembre 2026), palette verte du 3 novembre 2026
+   Palette : vert technologique (ion), blanc et gris charbon. Idée : une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA
    voit, entend et calcule, montré en fines lignes de lumière, nuages de points, formes d'onde et cadres de détection.
    Jetons primitifs -> thèmes sémantiques (abysse, nuit, papier) -> utilitaires et matières.
    LA MARQUE SE CHANGE ICI (couleurs) + `web/src/lib/brand.ts` (nom, signature, logo) + `web/src/app/fonts.ts` (polices).
@@ -10,29 +10,29 @@
    ========================================================================== */
 
 @theme {
-  /* --- Marque : fonds « abysse » (sombre d'abord) --- */
-  --color-abyss-950: #05070b; /* fond le plus profond (héros, appels à l'action) */
-  --color-abyss-900: #0b0f16; /* surface */
-  --color-abyss-850: #080b11; /* bande « nuit » (fond courant des sections) */
-  --color-abyss-800: #111723; /* surface relevée, survol */
-  --color-hairline: #1c2433; /* filets d'un pixel */
-  --color-steel: #5b6678; /* filet fort, bordure de bouton (3,5:1 sur abysse) */
+  /* --- Marque : fonds « abysse » = gris charbon (bandes de vitrine, pied de page) --- */
+  --color-abyss-950: #14171a; /* charbon le plus profond (vitrines, appels à l'action) */
+  --color-abyss-900: #1b1f23; /* surface charbon */
+  --color-abyss-850: #171b1f; /* bande « nuit » (fond courant des sections) */
+  --color-abyss-800: #23282d; /* surface relevée, survol */
+  --color-hairline: #343a40; /* filets d'un pixel */
+  --color-steel: #6f7884; /* filet fort, bordure de bouton (4,0:1 sur abysse) */
 
   /* --- Textes sur fond sombre --- */
-  --color-frost: #eef3fa; /* texte (18,1:1 sur abysse) */
-  --color-haze: #8c97aa; /* texte secondaire (6,8:1 sur abysse ; 6,1:1 sur surface relevée) */
+  --color-frost: #f4f6f7; /* texte (16,6:1 sur abysse) */
+  --color-haze: #9aa4af; /* texte secondaire (7,1:1 sur abysse ; 5,9:1 sur surface relevée) */
 
-  /* --- Accent principal : « ion » (lumière, interactions, liens sur fond sombre) --- */
-  --color-ion-400: #3ec8ff; /* 10,5:1 sur abysse ; bouton : texte abysse 10,5:1 */
-  --color-ion-300: #7bd9ff; /* survol du bouton (12,7:1) */
-  --color-ion-700: #0b6e99; /* ion en texte sur papier (5,3:1) */
-  --color-ion-600: #0a8bc2; /* ion en graphisme sur papier (3,6:1) */
-  --color-ion-800: #095b80; /* survol du bouton principal sur papier (blanc dessus : 7,6:1) */
+  /* --- Accent principal : « ion » = vert technologique (interactions, liens sur fond charbon) --- */
+  --color-ion-400: #1fcf80; /* émeraude : 8,8:1 sur abysse ; bouton : texte charbon 8,8:1 */
+  --color-ion-300: #5be2a5; /* survol du bouton (11,0:1) */
+  --color-ion-700: #0b7a4b; /* vert en texte sur papier (5,0:1) */
+  --color-ion-600: #0f9b5f; /* vert en graphisme sur papier (3,3:1) */
+  --color-ion-800: #08603a; /* survol du bouton principal sur papier (blanc dessus : 7,7:1) */
 
-  /* --- Contrepoint chaud, rare : « flare » (un seul point de chaleur par écran) --- */
-  --color-flare-500: #ff6a2b; /* 7,1:1 sur abysse */
-  --color-flare-400: #ff8a57;
-  --color-flare-700: #c2410c; /* sur papier (4,8:1) */
+  /* --- Point blanc, rare : « flare » (un seul point blanc par écran sombre : bouton final, cadre d'alerte, point « en direct ») --- */
+  --color-flare-500: #ffffff; /* blanc : 16,6:1 sur abysse */
+  --color-flare-400: #e4e7ea;
+  --color-flare-700: #0b7a4b; /* sur papier : même vert que le texte d'accent (5,0:1) */
 
   /* --- États --- */
   --color-alert-400: #ff4d5e; /* alerte sur fond sombre (6,2:1) */
@@ -41,12 +41,12 @@
   --color-ok-700: #16794f; /* succès sur papier (5,0:1) */
 
   /* --- Papier (thème clair : espace client et pages qui le demandent) --- */
-  --color-paper-50: #f7f9fc; /* fond « papier » : presque blanc, très légère teinte froide */
+  --color-paper-50: #f6f7f8; /* fond « papier » : presque blanc, très légère teinte froide */
   --color-paper-100: #ffffff; /* surface : cartes et panneaux */
-  --color-paper-200: #edf1f7; /* surface relevée, survol, bandes alternées */
-  --color-paper-line: #e3e8f0; /* filet sur papier */
-  --color-graphite-900: #0b1220;
-  --color-graphite-600: #5b6678; /* texte secondaire sur papier (5,5:1) */
+  --color-paper-200: #eceff1; /* surface relevée, survol, bandes alternées */
+  --color-paper-line: #e4e7ea; /* filet sur papier */
+  --color-graphite-900: #14171a;
+  --color-graphite-600: #5b6470; /* texte secondaire sur papier (5,9:1) */
 
   /* --- Polices (variables posées sur <html> par next/font/local, voir app/fonts.ts) --- */
   --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -116,8 +116,8 @@
   --radius-chip: var(--radius-xs);
 
   /* --- Ombres : aucune ombre décorative ; seulement les menus et fenêtres qui flottent --- */
-  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(5 7 11 / 0.22);
-  --shadow-lift: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 36px -18px rgb(5 7 11 / 0.32);
+  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(20 23 26 / 0.22);
+  --shadow-lift: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 36px -18px rgb(20 23 26 / 0.32);
   --shadow-pop: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 60px -20px rgb(0 0 0 / 0.7);
 
   /* --- Point de rupture de la navigation complète --- */
@@ -138,7 +138,7 @@
   --pad-card-lg: 2rem; /* 32 px dès sm */
   --gap-grid: 1rem;
   /* lueur retenue, réservée à l'accent ion */
-  --glow-ion: 0 0 0 1px rgb(62 200 255 / 0.35), 0 0 24px -4px rgb(62 200 255 / 0.45);
+  --glow-ion: 0 0 0 1px rgb(31 207 128 / 0.35), 0 0 24px -4px rgb(31 207 128 / 0.45);
 }
 
 /* --------------------------------------------------------------------------
@@ -164,16 +164,16 @@
   --flare: var(--color-flare-500);
   --alert: var(--color-alert-400);
   --success: var(--color-ok-400);
-  --line: rgb(140 151 170 / 0.16);
+  --line: rgb(154 164 175 / 0.16);
   --line-strong: var(--color-steel);
   --focus: var(--color-ion-400);
-  --grid-ink: rgb(238 243 250);
+  --grid-ink: rgb(244 246 247);
   /* matières décoratives : plus claires sur fond sombre */
-  --grid-a: rgb(140 151 170 / 0.13);
-  --grid-b: rgb(140 151 170 / 0.05);
-  --field-rgb: 62 200 255; /* nuage de points */
+  --grid-a: rgb(154 164 175 / 0.13);
+  --grid-b: rgb(154 164 175 / 0.05);
+  --field-rgb: 31 207 128; /* nuage de points */
   --field-glow-rgb: 255 255 255; /* bande de balayage du nuage */
-  --scan-rgb: 62 200 255;
+  --scan-rgb: 31 207 128;
   --scan-core: #fff;
   color-scheme: dark;
 }
@@ -197,15 +197,15 @@
   --alert: var(--color-alert-700);
   --success: var(--color-ok-700);
   --line: var(--color-paper-line);
-  --line-strong: rgb(11 18 32 / 0.58);
+  --line-strong: rgb(20 23 26 / 0.58);
   --focus: var(--color-ion-700);
-  --grid-ink: rgb(11 18 32);
+  --grid-ink: rgb(20 23 26);
   /* matières décoratives : ion doux sur papier (aucune pure lumière blanche) */
-  --grid-a: rgb(11 110 153 / 0.1);
-  --grid-b: rgb(11 110 153 / 0.045);
-  --field-rgb: 10 139 194;
-  --field-glow-rgb: 7 70 102;
-  --scan-rgb: 10 139 194;
+  --grid-a: rgb(11 122 75 / 0.1);
+  --grid-b: rgb(11 122 75 / 0.045);
+  --field-rgb: 15 155 95;
+  --field-glow-rgb: 6 78 48;
+  --scan-rgb: 15 155 95;
   --scan-core: var(--color-ion-700);
   color-scheme: light;
 }
@@ -293,7 +293,7 @@
   }
 
   dialog::backdrop {
-    background: rgb(5 7 11 / 0.78);
+    background: rgb(20 23 26 / 0.78);
     backdrop-filter: blur(6px);
   }
 }
@@ -488,22 +488,29 @@
 
 @utility wash-dark {
   background-image:
-    radial-gradient(60rem 28rem at 78% -12%, rgb(62 200 255 / 0.09), transparent 64%),
-    radial-gradient(40rem 22rem at 0% 115%, rgb(62 200 255 / 0.05), transparent 68%);
+    radial-gradient(60rem 28rem at 78% -12%, rgb(31 207 128 / 0.09), transparent 64%),
+    radial-gradient(40rem 22rem at 0% 115%, rgb(31 207 128 / 0.05), transparent 68%);
 }
 
 @utility wash-sand {
-  background-image: radial-gradient(50rem 20rem at 100% 0%, rgb(62 200 255 / 0.06), transparent 66%);
+  background-image: radial-gradient(50rem 20rem at 100% 0%, rgb(31 207 128 / 0.06), transparent 66%);
 }
 
 @utility wash-paper {
-  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(11 110 153 / 0.06), transparent 68%);
+  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(11 122 75 / 0.06), transparent 68%);
+}
+
+/* Ouverture de l'accueil : un voile vert très léger, en haut à droite, sur le papier. */
+.opening-wash {
+  background-image:
+    radial-gradient(64rem 34rem at 88% -8%, rgb(31 207 128 / 0.13), transparent 66%),
+    radial-gradient(40rem 22rem at -6% 100%, rgb(15 155 95 / 0.06), transparent 70%);
 }
 
 /* Sur papier, les halos d'ion sont plus doux et plus larges (lumière du jour, pas de lueur). */
 .theme-light.wash-sand,
 .theme-light.wash-dark {
-  background-image: radial-gradient(54rem 20rem at 100% 0%, rgb(10 139 194 / 0.07), transparent 66%);
+  background-image: radial-gradient(54rem 20rem at 100% 0%, rgb(15 155 95 / 0.07), transparent 66%);
 }
 
 /* Cadre de détection : quatre crochets de 14 px aux angles, en ion (ou --detect-color). */
@@ -628,10 +635,10 @@
 @keyframes ring-soft {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(62 200 255 / 0.5);
+    box-shadow: 0 0 0 0 rgb(31 207 128 / 0.5);
   }
   55% {
-    box-shadow: 0 0 0 7px rgb(62 200 255 / 0);
+    box-shadow: 0 0 0 7px rgb(31 207 128 / 0);
   }
 }
 

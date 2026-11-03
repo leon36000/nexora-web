@@ -2762,6 +2762,42 @@
       "approval_status": "en_revue",
       "valid_from": "2026-11-02",
       "valid_until": null
+    },
+    {
+      "id": "CL-GS01",
+      "statement": "Gitspace est la forge de dépôts de code de Nexora AI, pensée pour que des agents d'IA s'y connectent directement ; elle est en préparation, sans date ni prix annoncés.",
+      "evidence": "Description du fondateur (03/11/2026). Aucune version livrée.",
+      "source_version": "Demande du fondateur du 03/11/2026 (thème vert et Gitspace)",
+      "kind": "produit",
+      "scope": "Page /gitspace.",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-11-03",
+      "valid_until": null
+    },
+    {
+      "id": "CL-GS02",
+      "statement": "Les fonctions décrites pour Gitspace (connexion des agents par interface de programmation et MCP, mémoire du projet, garde-fous et revue humaine, tâches écrites pour les agents, retour de l'intégration continue) sont des objectifs de conception ; aucune n'est livrée et aucun gain de productivité n'est chiffré.",
+      "evidence": "Vision du fondateur (03/11/2026) ; la page l'écrit comme un objectif et ne publie aucun chiffre.",
+      "source_version": "Demande du fondateur du 03/11/2026 (thème vert et Gitspace)",
+      "kind": "produit",
+      "scope": "Page /gitspace.",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-11-03",
+      "valid_until": null
+    },
+    {
+      "id": "CL-GS03",
+      "statement": "En attendant Gitspace, les dépôts de code de Nexora AI sont sur un GitLab privé, accessible sur le réseau privé de l'équipe ; ce choix est temporaire.",
+      "evidence": "GitLab de l'équipe (projet root/nexora-web) ; adresse en configuration (GITSPACE_FORGE_URL), docs/guide-operateur.md.",
+      "source_version": "Demande du fondateur du 03/11/2026 (thème vert et Gitspace)",
+      "kind": "produit",
+      "scope": "Page /gitspace.",
+      "evidence_url": null,
+      "approval_status": "en_revue",
+      "valid_from": "2026-11-03",
+      "valid_until": null
     }
   ],
   "retirees": [

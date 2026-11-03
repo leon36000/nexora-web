@@ -138,24 +138,24 @@ export const appsFrCA = {
     gitspace: {
       name: "Nexora Gitspace",
       answer:
-        "Nexora Gitspace héberge vos dépôts de code dans votre espace infonuagique Nexora AI, avec Forgejo ou GitLab. Il est prévu sur abonnement. Il n’est pas encore livré : aucun prix et aucune date ne sont annoncés, et le lieu d’hébergement exact sera indiqué avant toute souscription.",
-      hook: "Forgejo et GitLab intégrés à votre espace infonuagique Nexora AI : hébergez vos dépôts de code avec le reste. Sur abonnement.",
+        "Nexora Gitspace est la forge de dépôts de code de Nexora AI, pensée pour que des agents d’IA s’y connectent directement. Elle est prévue sur abonnement. Elle n’est pas encore livrée : aucun prix et aucune date ne sont annoncés, et le lieu d’hébergement exact sera indiqué avant toute souscription.",
+      hook: "La forge de dépôts de code pensée pour les agents d’IA, qui s’y connectent directement. Sur abonnement.",
       audience:
-        "Pour les équipes qui veulent garder leurs dépôts de code dans l’espace infonuagique de leur entreprise plutôt que chez un service tiers.",
+        "Pour les équipes qui veulent que leurs agents travaillent dans la même forge que leur code, avec une revue humaine avant chaque fusion.",
       accessLabel: "Sur abonnement (prévu)",
       accessText:
         "Nexora Gitspace sera offert sur abonnement. Aucun prix n’est publié à ce jour ; il sera affiché ici avant toute vente.",
       ready: [] as string[],
       coming: [
-        "Forgejo, un logiciel d’hébergement de code, intégré à votre espace infonuagique.",
-        "GitLab, pour les équipes qui le préfèrent, intégré au même espace.",
+        "Des dépôts, des branches et des demandes de fusion que les agents pilotent directement.",
+        "Une mémoire du projet et des garde-fous, avec une revue humaine avant la fusion.",
         "Un abonnement géré depuis votre espace client Nexora AI.",
       ],
       faq: [
         {
-          question: "Quelle différence entre Forgejo et GitLab ?",
+          question: "En quoi Gitspace diffère-t-il de GitHub ou de GitLab ?",
           answer:
-            "Ce sont deux logiciels d’hébergement de code, chacun avec ses fonctions. Nexora Gitspace est conçu pour intégrer les deux à votre espace infonuagique ; le choix se fera avec vous. Les détails de chacun seront publiés à la sortie.",
+            "Gitspace est conçu pour que des agents d’IA s’y connectent directement. Ce sont des objectifs de conception, pas des fonctions livrées. La page Gitspace en donne le détail. En attendant, nos dépôts sont sur GitLab.",
         },
         {
           question: "Où seront hébergés mes dépôts ?",

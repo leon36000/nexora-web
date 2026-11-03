@@ -31,7 +31,7 @@ type Props = {
   hotspot?: boolean;
 };
 
-const ION_DARK = [62, 200, 255] as const;
+const ION_DARK = [31, 207, 128] as const;
 const GLOW_DARK = [255, 255, 255] as const;
 
 /** Couleur d'un jeton « r g b » (ex. `--field-rgb`) lue sur le canvas : le nuage suit le thème de la bande. */
@@ -131,11 +131,11 @@ export function LightField({
         const sy = hy + (cam - terrain(x, z, t, relief)) * h * 0.95 * s - 10;
         const pulse = moving ? 0.5 + 0.5 * Math.sin(t * 2.2) : 0.6;
         const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, 26 + pulse * 10);
-        g.addColorStop(0, "rgba(255,106,43,0.55)");
-        g.addColorStop(1, "rgba(255,106,43,0)");
+        g.addColorStop(0, "rgba(255,255,255,0.55)");
+        g.addColorStop(1, "rgba(255,255,255,0)");
         ctx.fillStyle = g;
         ctx.fillRect(sx - 40, sy - 40, 80, 80);
-        ctx.fillStyle = "#ff6a2b";
+        ctx.fillStyle = "#ffffff";
         ctx.beginPath();
         ctx.arc(sx, sy, 3, 0, Math.PI * 2);
         ctx.fill();

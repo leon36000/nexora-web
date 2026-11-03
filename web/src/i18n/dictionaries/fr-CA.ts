@@ -304,6 +304,8 @@ export const frCA = {
     modules: { detail: "Voir le détail" },
     // Textes alternatifs des schémas de section (`visual`) : le dessin décrit toujours ce que dit le texte voisin.
     visuals: {
+      "forge-agents":
+        "Maquette de Gitspace : des branches ouvertes par des agents, une demande de fusion que l’agent de code a préparée (mémoire du projet lue, tests exécutés, retour de l’intégration continue) et une revue humaine requise avant la fusion.",
       "espace-de-travail":
         "Maquette de l’espace de travail dans le navigateur : un agent de code propose un changement à relire, vos documents répondent avec leurs sources, un flux attend votre approbation, Creative prépare une vidéo, les crédits sont partagés et l’agent peut s’exécuter sur votre ordinateur (en préparation).",
       "signal-accueil":

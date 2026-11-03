@@ -7,6 +7,7 @@ import { CommitmentsMap } from "./commitments";
 import { DashboardMock } from "./dashboard";
 import { FlowEditorMock } from "./flow-editor";
 import { VisualFigure } from "./frame";
+import { GitspaceMock } from "./gitspace";
 import { GrowthDiagram } from "./growth";
 import { ModelCatalogMock } from "./model-catalog";
 import {
@@ -83,6 +84,12 @@ export function SectionVisualFigure({
       return (
         <VisualFigure alt={alt} caption={v.caption.mock}>
           <WorkspaceMock t={v.workspace} />
+        </VisualFigure>
+      );
+    case "forge-agents":
+      return (
+        <VisualFigure alt={alt} caption={v.caption.mock} stage="nuit">
+          <GitspaceMock t={v.gitspace} />
         </VisualFigure>
       );
     case "flux-workstudio":

@@ -148,7 +148,7 @@ export function SiteFooter({
         <div className="absolute inset-x-0 bottom-0 h-[70%] opacity-80 [mask-image:linear-gradient(to_top,#000,transparent)]">
           <LightField animated={false} horizon={0.02} relief={0.08} cols={96} />
         </div>
-        <p className="absolute inset-x-0 bottom-[-0.18em] select-none text-center font-display text-[clamp(5rem,21vw,19rem)] font-semibold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1px_rgb(62_200_255/0.45)]">
+        <p className="absolute inset-x-0 bottom-[-0.18em] select-none text-center font-display text-[clamp(5rem,21vw,19rem)] font-semibold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1px_rgb(31_207_128/0.45)]">
           {BRAND.wordmark.base}
         </p>
       </div>

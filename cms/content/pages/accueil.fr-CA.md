@@ -6,22 +6,20 @@
 
 - Page : `accueil` · langue : `fr-CA` · statut visé : `published` · noindex : non
 - Route : `/` · slug : ``
-- Titre SEO (41 caractères) : Nexora AI : l'IA qui voit, écoute et agit
-- Description SEO (160 caractères) : Réception virtuelle, surveillance par IA, agents et infrastructure : Nexora AI installe l'IA qui travaille pour votre entreprise, chez vous ou sur nos serveurs.
+- Titre SEO (45 caractères) : Votre environnement de travail IA, au complet
+- Description SEO (159 caractères) : Agent de code, documents interrogeables et flux de travaux dans un seul onglet, avec réception virtuelle, surveillance par IA et infrastructure IA clé en main.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-E01, CL-E02, CL-IN01, CL-RV01, CL-SV01, CL-WS01*
+*Ouverture sobre (sans vidéo ni image) : l'environnement de travail IA complet en une phrase, un sous-titre, deux boutons. · Affirmations : CL-01, CL-02, CL-E01, CL-E02, CL-WS01*
 
-Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `signature=champ`, `video=[object Object]`, `media=[object Object]`
+Réglages : `variant=clair`, `perimeter_grid=false`, `layout=standard`, `signature=aucun`
 
-**Intelligence artificielle pour les entreprises**
+# Votre environnement de travail IA, au complet.
 
-# L'IA qui voit, écoute et agit.
-
-L'IA qui travaille pour votre entreprise. Sous votre contrôle. Votre environnement de travail IA complet, dans le navigateur ; une réception qui répond à chaque appel et des caméras enfin regardées, installées chez vous ou sur nos serveurs.
+Agent de code, documents interrogeables, flux de travaux et travail dans le nuage, réunis dans un seul onglet et sous un seul compte. Vos agents pourront aussi mettre à profit la puissance de votre ordinateur.
 
 [Planifier une consultation](/contact/) · [Découvrir l'espace de travail](/suite/)
 
@@ -36,6 +34,8 @@ Réglages : `media_position=top`, `visual=espace-de-travail`, `tone=sombre`, `an
 Votre agent de code, vos documents, vos agents et vos flux de travaux, Creative et WebPilot s'ouvrent côte à côte dans le navigateur, en panneaux que vous disposez à votre façon. Un seul compte, un seul solde de crédits. Le travail s'exécute dans le nuage, et vos agents pourront aussi mettre à profit la puissance de votre propre ordinateur.
 
 [Découvrir l'espace de travail](/suite/)
+
+Et pour le code : [Gitspace](/gitspace/), la forge que nous préparons pour que vos agents s'y connectent directement.
 
 - **Agent de code.** Il lit votre code, le modifie, écrit les tests et vous présente le changement à relire. Bientôt, sans date.
 - **Vos documents, interrogeables.** Posez une question : la réponse s'appuie sur vos fichiers et cite ses sources (RAG). Bientôt, sans date.

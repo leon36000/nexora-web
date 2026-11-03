@@ -9,8 +9,8 @@ import { cn } from "@/lib/cn";
  * le suffixe en JetBrains Mono (en Geist, « AI » se lirait « Al »). Aucun pixel, aucun « N ».
  *
  * `tone` choisit les couleurs indépendamment du thème :
- *  - "dark"  : fonds sombres (givre #EEF3FA, ion #3EC8FF) ;
- *  - "light" : fonds clairs (graphite #0B0F16, ion foncé #0B6E99) ;
+ *  - "dark"  : fonds sombres (givre #f4f6f7, ion #1fcf80) ;
+ *  - "light" : fonds clairs (graphite #1b1f23, ion foncé #0b7a4b) ;
  *  - "auto"  : suit la couleur de texte courante et l'accent du thème.
  *
  * Décoratif par défaut (le lien qui l'entoure porte le nom accessible) ; `label` en fait une image nommée.
@@ -18,8 +18,8 @@ import { cn } from "@/lib/cn";
 type Tone = "dark" | "light" | "auto";
 
 const TONE: Record<Tone, { ink: string; ion: string }> = {
-  dark: { ink: "#eef3fa", ion: "#3ec8ff" },
-  light: { ink: "#0b0f16", ion: "#0b6e99" },
+  dark: { ink: "#f4f6f7", ion: "#1fcf80" },
+  light: { ink: "#1b1f23", ion: "#0b7a4b" },
   auto: { ink: "currentColor", ion: "var(--accent-graphic)" },
 };
 

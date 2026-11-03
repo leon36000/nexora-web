@@ -274,9 +274,9 @@ export function WorkspaceMock({ t }: { t: T }) {
               className="hidden sm:flex lg:col-span-4"
             >
               <div className="p-3">
-                <div className="relative aspect-[16/7] overflow-hidden rounded-sm border border-line bg-[linear-gradient(160deg,#1b2a3f_0%,#2c3f57_35%,#c27a46_78%,#f2b06a_100%)]">
+                <div className="relative aspect-[16/7] overflow-hidden rounded-sm border border-line bg-[linear-gradient(160deg,#1b2326_0%,#24383a_35%,#2f7a62_78%,#79d9b0_100%)]">
                   <div className="absolute inset-x-[12%] bottom-0 h-[46%] rounded-t-sm bg-abyss-950/80" />
-                  <div className="absolute inset-x-[18%] bottom-[14%] h-[20%] rounded-xs bg-[#f6c27a]/70" />
+                  <div className="absolute inset-x-[18%] bottom-[14%] h-[20%] rounded-xs bg-[#b6f0d4]/70" />
                   <div className="scan absolute inset-y-0 w-px bg-white/60" />
                 </div>
                 <p className="mt-2 truncate text-small text-fg-muted">

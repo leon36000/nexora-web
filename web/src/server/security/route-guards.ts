@@ -746,6 +746,12 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     ],
   },
   {
+    route: "[lang]/gitspace/depots",
+    kind: "public",
+    why: "Redirection vers la forge de dépôts de code (GitLab, puis Gitspace), dont l'adresse est une configuration",
+    probes: [],
+  },
+  {
     route: "llms.txt",
     kind: "public",
     why: "Résumé public du site",

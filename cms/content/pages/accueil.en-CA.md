@@ -6,24 +6,22 @@
 
 - Page : `accueil` · langue : `en-CA` · statut visé : `published` · noindex : non
 - Route : `/en/` · slug : ``
-- Titre SEO (41 caractères) : Nexora AI: AI that sees, listens and acts
-- Description SEO (154 caractères) : Virtual reception, AI surveillance, agents and infrastructure: Nexora AI installs the AI that works for your business, at your site or on our own servers.
+- Titre SEO (33 caractères) : Your complete AI work environment
+- Description SEO (159 caractères) : A code agent, searchable documents, agents and workflows in one tab, plus virtual reception, AI surveillance and infrastructure at your site or on our servers.
 
 ## Contenu
 
 ### Bloc 1 — Héros (`block_hero`)
 
-*Héros plein écran (vidéo en boucle silencieuse) : la promesse en une phrase ; message directeur dans le sous-titre ; deux CTA. · Affirmations : CL-01, CL-02, CL-E01, CL-E02, CL-IN01, CL-RV01, CL-SV01, CL-WS01*
+*Plain opening (no video, no image): the complete AI work environment in one sentence, a sub-line, two buttons. · Affirmations : CL-01, CL-02, CL-E01, CL-E02, CL-WS01*
 
-Réglages : `variant=sombre`, `perimeter_grid=true`, `layout=plein-ecran`, `signature=champ`, `video=[object Object]`, `media=[object Object]`
+Réglages : `variant=clair`, `perimeter_grid=false`, `layout=standard`, `signature=aucun`
 
-**Artificial intelligence for business**
+# Your complete AI work environment.
 
-# AI that sees, listens and acts.
+A code agent, searchable documents, workflows and cloud execution, together in one tab and under one account. Your agents will also be able to put your own computer's power to work.
 
-AI that works for your business. Under your control. Your complete AI work environment, in the browser; a reception that answers every call and cameras that are finally watched, installed at your site or on our servers.
-
-[Plan a consultation](/en/contact/) · [Discover the workspace](/en/suite/)
+[Plan a consultation](/en/contact/) · [Explore the workspace](/en/suite/)
 
 ### Bloc 2 — Section (`block_section`)
 
@@ -36,6 +34,8 @@ Réglages : `media_position=top`, `visual=espace-de-travail`, `tone=sombre`, `an
 Your coding agent, your documents, your agents and workflows, Creative and WebPilot open side by side in the browser, as panels you arrange your way. One account, one credit balance. The work runs in the cloud, and your agents will also be able to use the power of your own computer.
 
 [Discover the workspace](/en/suite/)
+
+And for code: [Gitspace](/en/gitspace/), the forge we are preparing so your agents connect to it directly.
 
 - **Coding agent.** It reads your code, changes it, writes the tests and shows you the change to review. Coming soon, no date.
 - **Your documents, searchable.** Ask a question: the answer draws on your files and cites its sources (RAG). Coming soon, no date.

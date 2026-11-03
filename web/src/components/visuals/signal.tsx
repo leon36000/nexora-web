@@ -121,12 +121,12 @@ function WarehouseScene() {
     >
       <defs>
         <linearGradient id="sv-floor" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#0b1622" />
-          <stop offset="1" stopColor="#05070b" />
+          <stop offset="0" stopColor="#1b2126" />
+          <stop offset="1" stopColor="#14171a" />
         </linearGradient>
         <radialGradient id="sv-light" cx="0.5" cy="0.2" r="0.6">
-          <stop offset="0" stopColor="rgb(62 200 255 / 0.18)" />
-          <stop offset="1" stopColor="rgb(62 200 255 / 0)" />
+          <stop offset="0" stopColor="rgb(31 207 128 / 0.18)" />
+          <stop offset="1" stopColor="rgb(31 207 128 / 0)" />
         </radialGradient>
       </defs>
       <rect width="400" height="225" fill="url(#sv-floor)" />
@@ -139,7 +139,7 @@ function WarehouseScene() {
           y1={78}
           x2={200 + x * 1.6}
           y2={225}
-          stroke="rgb(140 151 170 / 0.25)"
+          stroke="rgb(154 164 175 / 0.25)"
           strokeWidth="0.8"
         />
       ))}
@@ -153,7 +153,7 @@ function WarehouseScene() {
               y1={y}
               x2={200 - half * 0.62}
               y2={y}
-              stroke="rgb(140 151 170 / 0.22)"
+              stroke="rgb(154 164 175 / 0.22)"
               strokeWidth="0.8"
             />
             <line
@@ -161,7 +161,7 @@ function WarehouseScene() {
               y1={y}
               x2={200 + half}
               y2={y}
-              stroke="rgb(140 151 170 / 0.22)"
+              stroke="rgb(154 164 175 / 0.22)"
               strokeWidth="0.8"
             />
           </g>
@@ -170,12 +170,12 @@ function WarehouseScene() {
       {/* rayonnages */}
       <path
         d="M30 40 L150 78 L150 160 L30 225 Z M370 40 L250 78 L250 160 L370 225 Z"
-        fill="rgb(17 23 35 / 0.7)"
-        stroke="rgb(140 151 170 / 0.3)"
+        fill="rgb(35 40 45 / 0.7)"
+        stroke="rgb(154 164 175 / 0.3)"
         strokeWidth="0.8"
       />
       {[0, 1, 2, 3].map((k) => (
-        <g key={k} stroke="rgb(140 151 170 / 0.28)" strokeWidth="0.7">
+        <g key={k} stroke="rgb(154 164 175 / 0.28)" strokeWidth="0.7">
           <line x1="30" y1={70 + k * 40} x2="150" y2={95 + k * 18} />
           <line x1="370" y1={70 + k * 40} x2="250" y2={95 + k * 18} />
         </g>
@@ -183,7 +183,7 @@ function WarehouseScene() {
       {/* silhouette générique (forme simple, sans traits) */}
       <path
         d="M226 118 a7 7 0 1 1 0.1 0 Z M216 130 h20 l3 34 h-8 l-2 22 h-6 l-2 -22 h-8 Z"
-        fill="rgb(238 243 250 / 0.22)"
+        fill="rgb(244 246 247 / 0.22)"
       />
     </svg>
   );
@@ -249,7 +249,7 @@ export function SurveillanceMock({ t }: { t: T["surveillance"] }) {
                           background:
                             i === 30
                               ? "var(--color-flare-500)"
-                              : `rgb(62 200 255 / ${v.toFixed(2)})`,
+                              : `rgb(31 207 128 / ${v.toFixed(2)})`,
                         }}
                       />
                     );
