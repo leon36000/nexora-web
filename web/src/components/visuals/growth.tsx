@@ -36,7 +36,7 @@ export function GrowthDiagram({ t }: { t: VisualsDictionary["growth"] }) {
           ))}
         </ul>
         {link}
-        <p className="rounded-md border border-success/50 bg-surface px-4 py-3 text-center text-small font-medium text-success">
+        <p className="rounded-md border border-accent/50 bg-surface px-4 py-3 text-center text-small font-medium text-accent-text">
           {t.to}
         </p>
       </div>

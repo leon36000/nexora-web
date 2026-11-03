@@ -46,7 +46,7 @@ export function ReceptionMock({ t }: { t: T["reception"] }) {
       title={t.window}
       status={
         <Chip tone="success">
-          <span className="live-dot size-1.5 rounded-full bg-success text-success" />
+          <span className="live-dot size-1.5 rounded-full bg-accent text-accent-text" />
           {t.live}
         </Chip>
       }

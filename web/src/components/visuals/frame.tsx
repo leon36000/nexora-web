@@ -116,7 +116,7 @@ export function Chip({
         "inline-flex shrink-0 items-center gap-1.5 rounded-xs border px-2 py-0.5 font-mono text-label uppercase",
         tone === "plain" && "border-line text-fg-muted",
         tone === "accent" && "border-accent/60 text-accent-text",
-        tone === "success" && "border-success/50 text-success",
+        tone === "success" && "border-accent/50 text-accent-text",
         className,
       )}
     >

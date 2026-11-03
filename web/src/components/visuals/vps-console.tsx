@@ -15,7 +15,7 @@ export function VpsConsoleMock({ t }: { t: VisualsDictionary["vps"] }) {
       title={t.window}
       status={
         <Chip tone="success">
-          <span className="size-1.5 bg-success" />
+          <span className="size-1.5 bg-accent" />
           {t.state}
         </Chip>
       }
