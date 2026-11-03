@@ -119,7 +119,7 @@ export function VideoStage({
       ) : (
         <div
           aria-hidden="true"
-          className="grid-precision absolute inset-0 -z-20 bg-[radial-gradient(70%_70%_at_70%_30%,rgb(31_207_128/0.18),transparent_70%)]"
+          className="grid-precision absolute inset-0 -z-20 bg-[radial-gradient(70%_70%_at_70%_30%,rgb(255_102_0/0.18),transparent_70%)]"
         />
       )}
       <div

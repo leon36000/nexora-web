@@ -104,7 +104,7 @@ export function SectionBlockView({
         <div className="relative mt-12 md:mt-16">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-24 -top-24 bottom-1/3 -z-10 bg-[radial-gradient(60%_55%_at_50%_0%,rgb(31_207_128/0.22),transparent_72%)]"
+            className="pointer-events-none absolute -inset-x-24 -top-24 bottom-1/3 -z-10 bg-[radial-gradient(60%_55%_at_50%_0%,rgb(255_102_0/0.22),transparent_72%)]"
           />
           {media}
         </div>

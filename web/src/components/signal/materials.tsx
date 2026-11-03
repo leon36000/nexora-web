@@ -247,7 +247,7 @@ export function MediaPlaceholder({
       aria-hidden={children ? undefined : true}
       className={cn(
         "relative isolate overflow-hidden bg-surface-2",
-        "bg-[radial-gradient(80%_60%_at_70%_20%,rgb(31_207_128/0.16),transparent_70%),radial-gradient(60%_50%_at_10%_100%,rgb(31_207_128/0.08),transparent_70%)]",
+        "bg-[radial-gradient(80%_60%_at_70%_20%,rgb(255_102_0/0.16),transparent_70%),radial-gradient(60%_50%_at_10%_100%,rgb(255_102_0/0.08),transparent_70%)]",
         className,
       )}
     >

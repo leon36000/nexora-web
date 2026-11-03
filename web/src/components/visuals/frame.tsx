@@ -20,7 +20,7 @@ export function Stage({
     <div
       className={cn(
         "theme-dark relative isolate overflow-hidden rounded-frame border border-line bg-abyss-950 p-3 sm:p-8",
-        "bg-[radial-gradient(70%_60%_at_85%_0%,rgb(31_207_128/0.16),transparent_70%),radial-gradient(50%_50%_at_0%_100%,rgb(31_207_128/0.07),transparent_70%)]",
+        "bg-[radial-gradient(70%_60%_at_85%_0%,rgb(255_102_0/0.16),transparent_70%),radial-gradient(50%_50%_at_0%_100%,rgb(255_102_0/0.07),transparent_70%)]",
         className,
       )}
     >
