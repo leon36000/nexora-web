@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { type AccountDictionary, fmt } from "@/i18n/account";
 import { type Lang, localizePath } from "@/i18n/config";
 import { formatInteger } from "@/i18n/gateway";
+import { gitspaceVisible } from "@/lib/gitspace-flag";
 import type { DashboardData } from "@/server/billing/dashboard";
 import type { SubscriptionPlan } from "@/server/billing/plans";
 import type { OverviewData } from "@/server/gateway/activity-overview";
@@ -273,7 +274,7 @@ export function Overview({
         hints={hints}
         workstudioUrl={workstudioUrl}
       />
-      <ForgeEntry lang={lang} t={t} />
+      {gitspaceVisible() ? <ForgeEntry lang={lang} t={t} /> : null}
 
       <NowCards lang={lang} t={t} overview={overview} />
 

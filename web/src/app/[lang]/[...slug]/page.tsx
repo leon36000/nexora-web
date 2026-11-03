@@ -5,6 +5,7 @@ import { CmsPage } from "@/components/blocks/cms-page";
 import { Unavailable } from "@/components/blocks/unavailable";
 import { isLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { gitspaceVisible } from "@/lib/gitspace-flag";
 import { notFoundMetadata } from "@/lib/metadata";
 import { normalizeSlug } from "@/lib/safe-href";
 import { buildCmsMetadata } from "@/lib/seo";
@@ -14,6 +15,11 @@ import {
   listPublishedSlugs,
 } from "@/server/cms/read";
 import { getSeoPages } from "@/server/cms/seo-read";
+
+/** Pages retirées du site public par un indicateur (Gitspace, tant que `GITSPACE_VISIBLE` n'est pas `true`) : 404 même si Directus les publie. */
+function isHiddenSlug(slug: string): boolean {
+  return slug === "gitspace" && !gitspaceVisible();
+}
 
 /**
  * Pages publiées connues au moment du build ; les autres se rendent à la demande puis restent en cache.
@@ -32,7 +38,7 @@ export async function generateMetadata(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const slug = normalizeSlug((await props.params).slug);
-  if (slug === null) return notFoundMetadata(lang);
+  if (slug === null || isHiddenSlug(slug)) return notFoundMetadata(lang);
   const result = await getPage(lang, slug);
   if (result.status === "not-found") return notFoundMetadata(lang);
   if (result.status === "unavailable")
@@ -63,7 +69,7 @@ export default async function CmsRoutePage(
   const lang = await getLang();
   if (!isLang(lang)) notFound();
   const slug = normalizeSlug((await props.params).slug);
-  if (slug === null) notFound();
+  if (slug === null || isHiddenSlug(slug)) notFound();
   const result = await getPage(lang, slug);
   if (result.status === "not-found") notFound();
   if (result.status === "unavailable")

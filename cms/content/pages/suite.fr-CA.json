@@ -14,13 +14,7 @@
     {
       "collection": "block_hero",
       "role": "Promesse de la suite : une idée commune, un compte, l'état réel de chaque nom.",
-      "claims": [
-        "CL-20",
-        "CL-28",
-        "CL-P03",
-        "CL-PL01",
-        "CL-WS01"
-      ],
+      "claims": ["CL-20", "CL-28", "CL-P03", "CL-PL01", "CL-WS01"],
       "fields": {
         "variant": "sombre",
         "perimeter_grid": true
@@ -87,9 +81,7 @@
     {
       "collection": "block_section",
       "role": "Exécution sur l'ordinateur de la personne : la conception, et son état réel (en préparation).",
-      "claims": [
-        "CL-WS02"
-      ],
+      "claims": ["CL-WS02"],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -213,13 +205,7 @@
     {
       "collection": "block_section",
       "role": "Nexora Code : bientôt, hébergé, plugins compatibles prévus ; ce qui est gratuit et ce qui consomme.",
-      "claims": [
-        "CL-AP06",
-        "CL-AP01",
-        "CL-T04",
-        "CL-T05",
-        "CL-28"
-      ],
+      "claims": ["CL-AP06", "CL-AP01", "CL-T04", "CL-T05", "CL-28"],
       "fields": {
         "media_position": "none",
         "tone": "sombre",
@@ -233,11 +219,7 @@
     {
       "collection": "block_section",
       "role": "Nexora RAG : bientôt, création en un clic, clé d'API, espace et jetons en crédits.",
-      "claims": [
-        "CL-AP07",
-        "CL-T05",
-        "CL-T04"
-      ],
+      "claims": ["CL-AP07", "CL-T05", "CL-T04"],
       "fields": {
         "media_position": "none",
         "tone": "clair",
@@ -251,12 +233,7 @@
     {
       "collection": "block_section",
       "role": "Nexora Corpus : la vocation, deux destinations distinctes.",
-      "claims": [
-        "CL-SU01",
-        "CL-28",
-        "CL-07",
-        "CL-E03"
-      ],
+      "claims": ["CL-SU01", "CL-28", "CL-07", "CL-E03"],
       "fields": {
         "media_position": "none",
         "tone": "sable",
@@ -284,9 +261,7 @@
     {
       "collection": "block_cards",
       "role": "Quanta et Helix : ce que nous ne publions pas.",
-      "claims": [
-        "CL-28"
-      ],
+      "claims": ["CL-28"],
       "fields": {
         "columns": "2",
         "tone": "sombre",
@@ -369,12 +344,7 @@
     {
       "collection": "block_cta",
       "role": "CTA : discuter, voir OPSYS-AI.",
-      "claims": [
-        "CL-12",
-        "CL-AP06",
-        "CL-AP07",
-        "CL-T06"
-      ],
+      "claims": ["CL-12", "CL-AP06", "CL-AP07", "CL-T06"],
       "fields": {
         "tone": "sombre"
       },

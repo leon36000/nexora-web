@@ -89,6 +89,15 @@ export function isPublishable(page: Pick<DesiredPage, "status">): boolean {
 }
 
 /**
+ * Retrait d'une page (statut `archived`) : une page publiée qu'on ne veut plus montrer (ici Gitspace, tant qu'il n'est pas
+ * prêt) passe par le même circuit que la publication (version, approbation du Relecteur, promotion par le compte
+ * Publication). Le contenu n'est jamais supprimé : repasser le fichier à `published` et recharger le rétablit.
+ */
+export function isRetirement(page: Pick<DesiredPage, "status">): boolean {
+  return page.status === "archived";
+}
+
+/**
  * Retire des fichiers de page les champs de bloc que le schéma ne connaît pas encore (par exemple `tone`, `layout`,
  * `visual`, `anchor_id` tant que les blocs enrichis ne sont pas fusionnés). Renvoie les champs retirés avec leur nombre.
  * Sans effet quand le schéma les connaît : le contenu est alors validé en entier.
@@ -499,7 +508,7 @@ async function processPage(
     );
     return;
   }
-  if (!isPublishable(want)) {
+  if (!isPublishable(want) && !isRetirement(want)) {
     log(
       `  page au statut « ${want.status} » : jamais approuvée ni promue par ce script, elle reste en brouillon`,
     );

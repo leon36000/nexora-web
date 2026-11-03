@@ -26,11 +26,11 @@ export function HeroApproval({ t }: { t: VisualsDictionary["hero"] }) {
         </div>
         <ul className="mt-3 space-y-2 text-small text-fg-muted">
           <li className="flex items-center gap-2">
-            <span className="size-2 bg-success" />
+            <span className="size-2 bg-accent" />
             {t.received}
           </li>
           <li className="flex items-center gap-2">
-            <span className="size-2 bg-success" />
+            <span className="size-2 bg-accent" />
             {t.prepared}
           </li>
         </ul>

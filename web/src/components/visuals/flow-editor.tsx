@@ -182,7 +182,7 @@ export function FlowEditorMock({ t }: { t: VisualsDictionary["flow"] }) {
                   <span
                     className={cn(
                       "size-2 shrink-0",
-                      done ? "bg-success" : "bg-accent",
+                      done ? "bg-accent" : "bg-accent",
                     )}
                   />
                   {line}

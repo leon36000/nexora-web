@@ -77,6 +77,7 @@ Jamais dans le dépôt : `.env*` est ignoré par git sauf `deploy/.env.example`.
 | `NEXORA_VAULT_MASTER_KEY` (+ `_VERSION`, `_PREVIOUS`, `_PREVIOUS_VERSION`) | web, worker | oui | Clé maîtresse du Coffre, 32 octets en base64. Sa perte rend tous les secrets illisibles (§4) |
 | `BETTER_AUTH_SECRET` | web | oui | 32 caractères au moins ; signe sessions et jetons |
 | `SITE_URL`, `SITE_ENV` | web, worker | oui | Voir §2.2 |
+| `GITSPACE_VISIBLE` | web | non | **Gitspace masqué par défaut** (décision du fondateur, 3 novembre 2026 : on le montre quand il sera construit, testé et conforme aux attentes). Vide ou `false` : `/gitspace` et `/en/gitspace` répondent 404, la redirection `/gitspace/depots`, la fiche et la carte `/apps/gitspace`, les entrées de `llms.txt` et du plan du site, et l'entrée « Dépôts de code » de `/compte` disparaissent. `true` rétablit le code (voir « Rétablir Gitspace » plus bas) |
 | `GITSPACE_FORGE_URL` | web | non | Adresse de la forge de dépôts de code (temporaire : GitLab, puis Gitspace). Vide = `https://pc4.tail0c55ff.ts.net`, le GitLab privé de l'équipe (tailnet seulement). Lue au rendu : redémarrer le site suffit. Le nom affiché (« GitLab »), l'adresse par défaut et la mention « temporaire » sont dans `web/src/lib/forge.ts` : le jour où Gitspace remplace GitLab, on change ce fichier (une ligne pour le nom, une pour l'adresse). Le bouton de `/gitspace` passe par `/gitspace/depots` (redirection) ; l'entrée « Dépôts de code » de `/compte` lit la même configuration |
 | `DIRECTUS_URL` | web, worker | oui | Adresse interne de Directus |
 | `DIRECTUS_READER_TOKEN`, `DIRECTUS_PUBLISHER_TOKEN` | web | oui | Jetons « Lecteur site » (lecture) et « Publication » (aperçu seulement), créés par `cms/scripts/apply.ts` |
@@ -507,3 +508,13 @@ Détail des constats, preuves et correctifs : `docs/recette/securite-vague2.md`.
 - **Paiements** : sessions Stripe de 30 minutes ; le champ « code promo » de la page Stripe est retiré tant qu'un code « un par client » est actif.
 - **Rejouer les contrôles** : `BASE_URL=http://localhost:<port> bun web/scripts/check-guards.ts` (gardes + en-têtes sur chaque type de réponse), `bun web/scripts/pentest-securite.ts` (essais d'intrusion ; **local seulement**, refuse toute autre adresse ; lancer le site avec `NEXORA_PASSWORD_BREACH_CHECK=off` pour qu'aucun service externe ne soit appelé), `bun web/scripts/e2e-2fa.ts` (parcours navigateur).
 - **Migration de base 0014** (tables `two_factors`, `auth_lockouts`, colonne `users.two_factor_enabled`) : appliquer `bun run db:migrate` avant de démarrer la nouvelle version.
+
+### Rétablir Gitspace
+
+Gitspace est masqué du site public et du panneau (`GITSPACE_VISIBLE`, voir le tableau des variables). Le code (`web/src/lib/forge.ts`, la page, la fiche `/apps/gitspace`, la redirection) et le contenu Directus sont conservés : rien n'est supprimé.
+
+1. Poser `GITSPACE_VISIBLE=true` dans `prod.env` ; la fiche `/apps/gitspace` est prérendue : reconstruire l'image du site (`pile.sh build site`) avec la variable, puis `pile.sh up -d site`.
+2. Dans `cms/content/pages/gitspace.fr-CA.json` et `.en-CA.json`, repasser `"status"` à `"published"` et `"noindex"` à `false`, puis rendre les textes (`bun run cms/content/render-md.ts`).
+3. Rétablir au registre les affirmations CL-GS01 à CL-GS03 (`approval_status` à `en_revue`, `valid_until` à `null`, retirer R-58) après les avoir relues contre la version réellement livrée.
+4. Recharger : `load-content.ts --approuver-et-publier --seulement=gitspace` (la page repasse par la version, l'approbation du Relecteur et la promotion).
+5. Remettre l'entrée « Gitspace » du menu « Espace de travail » dans `cms/scripts/lib/navigation.ts`, puis `seed.ts --aligner-navigation`.

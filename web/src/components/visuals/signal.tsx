@@ -46,7 +46,7 @@ export function ReceptionMock({ t }: { t: T["reception"] }) {
       title={t.window}
       status={
         <Chip tone="success">
-          <span className="live-dot size-1.5 rounded-full bg-success text-success" />
+          <span className="live-dot size-1.5 rounded-full bg-accent text-accent-text" />
           {t.live}
         </Chip>
       }
@@ -125,8 +125,8 @@ function WarehouseScene() {
           <stop offset="1" stopColor="#14171a" />
         </linearGradient>
         <radialGradient id="sv-light" cx="0.5" cy="0.2" r="0.6">
-          <stop offset="0" stopColor="rgb(31 207 128 / 0.18)" />
-          <stop offset="1" stopColor="rgb(31 207 128 / 0)" />
+          <stop offset="0" stopColor="rgb(255 102 0 / 0.18)" />
+          <stop offset="1" stopColor="rgb(255 102 0 / 0)" />
         </radialGradient>
       </defs>
       <rect width="400" height="225" fill="url(#sv-floor)" />
@@ -249,7 +249,7 @@ export function SurveillanceMock({ t }: { t: T["surveillance"] }) {
                           background:
                             i === 30
                               ? "var(--color-flare-500)"
-                              : `rgb(31 207 128 / ${v.toFixed(2)})`,
+                              : `rgb(255 102 0 / ${v.toFixed(2)})`,
                         }}
                       />
                     );

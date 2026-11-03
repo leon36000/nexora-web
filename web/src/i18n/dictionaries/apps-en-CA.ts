@@ -10,7 +10,7 @@ export const appsEnCA: AppsDictionary = {
     list: {
       title: "Nexora Apps: Nexora Code, RAG, WebPilot and more | Nexora AI",
       description:
-        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router and free tools: each page says what is ready and what is coming, with no invented dates.",
+        "Nexora Code, RAG, WebPilot, Privacy Router and free tools: each page says what is ready and what is coming, with no invented dates.",
     },
   },
 
@@ -177,8 +177,8 @@ export const appsEnCA: AppsDictionary = {
     cloud: {
       name: "Nexora Cloud",
       answer:
-        "Nexora Cloud is the Nexora AI cloud space, with a built-in code repository of your choice: GitLab, Nexora Gitspace or Forgejo. It is planned as a subscription. It is not delivered yet: no price and no date are announced, and the hosting location will be stated before any subscription.",
-      hook: "Your Nexora AI cloud space, with a built-in code repository: GitLab, Nexora Gitspace or Forgejo. As a subscription.",
+        "Nexora Cloud is the Nexora AI cloud space, with a built-in code repository of your choice: GitLab or Forgejo. It is planned as a subscription. It is not delivered yet: no price and no date are announced, and the hosting location will be stated before any subscription.",
+      hook: "Your Nexora AI cloud space, with a built-in code repository: GitLab or Forgejo. As a subscription.",
       audience:
         "For companies that want their work and their code in a space of their own, at Nexora AI, rather than across several third-party services.",
       accessLabel: "Subscription (planned)",
@@ -187,7 +187,7 @@ export const appsEnCA: AppsDictionary = {
       ready: [] as string[],
       coming: [
         "A cloud space managed from your Nexora AI customer area.",
-        "A built-in code repository, of your choice: GitLab, Nexora Gitspace or Forgejo.",
+        "A built-in code repository, of your choice: GitLab or Forgejo.",
         "A connection to Nexora AI’s RAG, to Nexora Code and to OPSYS-AI.",
       ],
       faq: [
@@ -197,9 +197,9 @@ export const appsEnCA: AppsDictionary = {
             "Nexora AI’s cloud space: a place of your own, managed from your customer area, where a code repository is built in. Nothing is delivered to date.",
         },
         {
-          question: "How does it differ from Nexora Gitspace?",
+          question: "Where will the code repository live?",
           answer:
-            "Nexora Gitspace is the code repository (Forgejo or GitLab). Nexora Cloud is the space that hosts it. Both are planned as subscriptions and neither is delivered.",
+            "The code repository (GitLab or Forgejo) will be built into your Nexora Cloud space. It is planned as a subscription along with the space, and nothing is delivered yet.",
         },
         {
           question: "Where will it be hosted?",

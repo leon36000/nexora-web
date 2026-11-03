@@ -50,7 +50,7 @@
       },
       "translation": {
         "title": "Tout votre travail d'IA, en un onglet.",
-        "body": "<p>Votre agent de code, vos documents, vos agents et vos flux de travaux, Creative et WebPilot s'ouvrent côte à côte dans le navigateur, en panneaux que vous disposez à votre façon. Un seul compte, un seul solde de crédits. Le travail s'exécute dans le nuage, et vos agents pourront aussi mettre à profit la puissance de votre propre ordinateur.</p><p><a href=\"/suite/\">Découvrir l'espace de travail</a></p><p>Et pour le code : <a href=\"/gitspace/\">Gitspace</a>, la forge que nous préparons pour que vos agents s'y connectent directement.</p>",
+        "body": "<p>Votre agent de code, vos documents, vos agents et vos flux de travaux, Creative et WebPilot s'ouvrent côte à côte dans le navigateur, en panneaux que vous disposez à votre façon. Un seul compte, un seul solde de crédits. Le travail s'exécute dans le nuage, et vos agents pourront aussi mettre à profit la puissance de votre propre ordinateur.</p><p><a href=\"/suite/\">Découvrir l'espace de travail</a></p>",
         "items": [
           {
             "title": "Agent de code.",

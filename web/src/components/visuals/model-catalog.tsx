@@ -111,7 +111,7 @@ export function ApiCallMock({ t }: { t: VisualsDictionary["catalog"] }) {
         {"\n"})
       </pre>
       <div className="flex items-center gap-3 border-t border-line bg-surface px-4 py-3 sm:px-5">
-        <span className="size-2 bg-success" />
+        <span className="size-2 bg-accent" />
         <span className="font-mono text-small text-fg-muted">200 OK</span>
       </div>
     </Window>

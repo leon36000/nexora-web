@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Système de design — identité « Signal » (refonte du 2 novembre 2026), palette verte du 3 novembre 2026
-   Palette : vert technologique (ion), blanc et gris charbon. Idée : une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA
+   Système de design — identité « Signal » (refonte du 2 novembre 2026), palette orange KTM du 3 novembre 2026
+   Palette : orange KTM (jeton « ion »), blanc et gris charbon. Idée : une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA
    voit, entend et calcule, montré en fines lignes de lumière, nuages de points, formes d'onde et cadres de détection.
    Jetons primitifs -> thèmes sémantiques (abysse, nuit, papier) -> utilitaires et matières.
    LA MARQUE SE CHANGE ICI (couleurs) + `web/src/lib/brand.ts` (nom, signature, logo) + `web/src/app/fonts.ts` (polices).
@@ -23,16 +23,17 @@
   --color-haze: #9aa4af; /* texte secondaire (7,1:1 sur abysse ; 5,9:1 sur surface relevée) */
 
   /* --- Accent principal : « ion » = vert technologique (interactions, liens sur fond charbon) --- */
-  --color-ion-400: #1fcf80; /* émeraude : 8,8:1 sur abysse ; bouton : texte charbon 8,8:1 */
-  --color-ion-300: #5be2a5; /* survol du bouton (11,0:1) */
-  --color-ion-700: #0b7a4b; /* vert en texte sur papier (5,0:1) */
-  --color-ion-600: #0f9b5f; /* vert en graphisme sur papier (3,3:1) */
-  --color-ion-800: #08603a; /* survol du bouton principal sur papier (blanc dessus : 7,7:1) */
+  --color-ion-400: #ff6600; /* orange KTM vif : 6,1:1 sur abysse ; bouton : texte charbon 6,1:1 */
+  --color-ion-300: #ff8533; /* survol du bouton sur abysse (texte charbon 7,4:1) */
+  --color-ion-500: #e85a00; /* survol du bouton sur papier (texte charbon 5,1:1) */
+  --color-ion-700: #bf3f00; /* orange foncé en texte sur papier (5,0:1 ; 4,6:1 sur bande relevée) */
+  --color-ion-600: #e85a00; /* orange en graphisme sur papier (3,3:1) */
+  --color-ion-800: #a33600; /* orange profond : texte au survol d'un lien sur papier (6,4:1) */
 
   /* --- Point blanc, rare : « flare » (un seul point blanc par écran sombre : bouton final, cadre d'alerte, point « en direct ») --- */
   --color-flare-500: #ffffff; /* blanc : 16,6:1 sur abysse */
   --color-flare-400: #e4e7ea;
-  --color-flare-700: #0b7a4b; /* sur papier : même vert que le texte d'accent (5,0:1) */
+  --color-flare-700: #bf3f00; /* sur papier : même orange foncé que le texte d'accent (5,0:1) */
 
   /* --- États --- */
   --color-alert-400: #ff4d5e; /* alerte sur fond sombre (6,2:1) */
@@ -138,7 +139,7 @@
   --pad-card-lg: 2rem; /* 32 px dès sm */
   --gap-grid: 1rem;
   /* lueur retenue, réservée à l'accent ion */
-  --glow-ion: 0 0 0 1px rgb(31 207 128 / 0.35), 0 0 24px -4px rgb(31 207 128 / 0.45);
+  --glow-ion: 0 0 0 1px rgb(255 102 0 / 0.35), 0 0 24px -4px rgb(255 102 0 / 0.45);
 }
 
 /* --------------------------------------------------------------------------
@@ -171,9 +172,9 @@
   /* matières décoratives : plus claires sur fond sombre */
   --grid-a: rgb(154 164 175 / 0.13);
   --grid-b: rgb(154 164 175 / 0.05);
-  --field-rgb: 31 207 128; /* nuage de points */
+  --field-rgb: 255 102 0; /* nuage de points */
   --field-glow-rgb: 255 255 255; /* bande de balayage du nuage */
-  --scan-rgb: 31 207 128;
+  --scan-rgb: 255 102 0;
   --scan-core: #fff;
   color-scheme: dark;
 }
@@ -189,10 +190,10 @@
   --fg: var(--color-graphite-900);
   --fg-muted: var(--color-graphite-600);
   --accent-text: var(--color-ion-700);
-  --accent-fill: var(--color-ion-700); /* bouton principal sur papier : ion foncé, texte blanc */
-  --accent-hover: var(--color-ion-800);
+  --accent-fill: var(--color-ion-400); /* bouton principal sur papier : orange KTM vif, texte charbon */
+  --accent-hover: var(--color-ion-500);
   --accent-graphic: var(--color-ion-600);
-  --on-accent: #ffffff;
+  --on-accent: var(--color-abyss-950);
   --flare: var(--color-flare-700);
   --alert: var(--color-alert-700);
   --success: var(--color-ok-700);
@@ -201,11 +202,11 @@
   --focus: var(--color-ion-700);
   --grid-ink: rgb(20 23 26);
   /* matières décoratives : ion doux sur papier (aucune pure lumière blanche) */
-  --grid-a: rgb(11 122 75 / 0.1);
-  --grid-b: rgb(11 122 75 / 0.045);
-  --field-rgb: 15 155 95;
-  --field-glow-rgb: 6 78 48;
-  --scan-rgb: 15 155 95;
+  --grid-a: rgb(191 63 0 / 0.1);
+  --grid-b: rgb(191 63 0 / 0.045);
+  --field-rgb: 232 90 0;
+  --field-glow-rgb: 120 40 0;
+  --scan-rgb: 232 90 0;
   --scan-core: var(--color-ion-700);
   color-scheme: light;
 }
@@ -488,29 +489,29 @@
 
 @utility wash-dark {
   background-image:
-    radial-gradient(60rem 28rem at 78% -12%, rgb(31 207 128 / 0.09), transparent 64%),
-    radial-gradient(40rem 22rem at 0% 115%, rgb(31 207 128 / 0.05), transparent 68%);
+    radial-gradient(60rem 28rem at 78% -12%, rgb(255 102 0 / 0.09), transparent 64%),
+    radial-gradient(40rem 22rem at 0% 115%, rgb(255 102 0 / 0.05), transparent 68%);
 }
 
 @utility wash-sand {
-  background-image: radial-gradient(50rem 20rem at 100% 0%, rgb(31 207 128 / 0.06), transparent 66%);
+  background-image: radial-gradient(50rem 20rem at 100% 0%, rgb(255 102 0 / 0.06), transparent 66%);
 }
 
 @utility wash-paper {
-  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(11 122 75 / 0.06), transparent 68%);
+  background-image: radial-gradient(44rem 16rem at 0% 0%, rgb(191 63 0 / 0.06), transparent 68%);
 }
 
 /* Ouverture de l'accueil : un voile vert très léger, en haut à droite, sur le papier. */
 .opening-wash {
   background-image:
-    radial-gradient(64rem 34rem at 88% -8%, rgb(31 207 128 / 0.13), transparent 66%),
-    radial-gradient(40rem 22rem at -6% 100%, rgb(15 155 95 / 0.06), transparent 70%);
+    radial-gradient(64rem 34rem at 88% -8%, rgb(255 102 0 / 0.13), transparent 66%),
+    radial-gradient(40rem 22rem at -6% 100%, rgb(232 90 0 / 0.06), transparent 70%);
 }
 
 /* Sur papier, les halos d'ion sont plus doux et plus larges (lumière du jour, pas de lueur). */
 .theme-light.wash-sand,
 .theme-light.wash-dark {
-  background-image: radial-gradient(54rem 20rem at 100% 0%, rgb(15 155 95 / 0.07), transparent 66%);
+  background-image: radial-gradient(54rem 20rem at 100% 0%, rgb(232 90 0 / 0.07), transparent 66%);
 }
 
 /* Cadre de détection : quatre crochets de 14 px aux angles, en ion (ou --detect-color). */
@@ -635,10 +636,10 @@
 @keyframes ring-soft {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(31 207 128 / 0.5);
+    box-shadow: 0 0 0 0 rgb(255 102 0 / 0.5);
   }
   55% {
-    box-shadow: 0 0 0 7px rgb(31 207 128 / 0);
+    box-shadow: 0 0 0 7px rgb(255 102 0 / 0);
   }
 }
 

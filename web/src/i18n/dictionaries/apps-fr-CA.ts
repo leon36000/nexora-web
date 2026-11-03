@@ -10,7 +10,7 @@ export const appsFrCA = {
     list: {
       title: "Nexora Apps : Nexora Code, RAG, WebPilot et plus | Nexora AI",
       description:
-        "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits : chaque fiche dit ce qui est prêt et ce qui vient, sans date inventée.",
+        "Nexora Code, RAG, WebPilot, Privacy Router et outils gratuits : chaque fiche dit ce qui est prêt et ce qui vient, sans date inventée.",
     },
   },
 
@@ -178,8 +178,8 @@ export const appsFrCA = {
     cloud: {
       name: "Nexora Cloud",
       answer:
-        "Nexora Cloud est l’espace infonuagique de Nexora AI, avec un dépôt de code intégré au choix : GitLab, Nexora Gitspace ou Forgejo. Il est prévu sur abonnement. Il n’est pas encore livré : aucun prix et aucune date ne sont annoncés, et le lieu d’hébergement sera indiqué avant toute souscription.",
-      hook: "Votre espace infonuagique Nexora AI, avec un dépôt de code intégré : GitLab, Nexora Gitspace ou Forgejo. Sur abonnement.",
+        "Nexora Cloud est l’espace infonuagique de Nexora AI, avec un dépôt de code intégré au choix : GitLab ou Forgejo. Il est prévu sur abonnement. Il n’est pas encore livré : aucun prix et aucune date ne sont annoncés, et le lieu d’hébergement sera indiqué avant toute souscription.",
+      hook: "Votre espace infonuagique Nexora AI, avec un dépôt de code intégré : GitLab ou Forgejo. Sur abonnement.",
       audience:
         "Pour les entreprises qui veulent regrouper leur travail et leur code dans un espace à elles, chez Nexora AI, plutôt que sur plusieurs services tiers.",
       accessLabel: "Sur abonnement (prévu)",
@@ -188,7 +188,7 @@ export const appsFrCA = {
       ready: [] as string[],
       coming: [
         "Un espace infonuagique géré depuis votre espace client Nexora AI.",
-        "Un dépôt de code intégré, au choix : GitLab, Nexora Gitspace ou Forgejo.",
+        "Un dépôt de code intégré, au choix : GitLab ou Forgejo.",
         "Un branchement au RAG de Nexora AI, à Nexora Code et à OPSYS-AI.",
       ],
       faq: [
@@ -198,9 +198,9 @@ export const appsFrCA = {
             "L’espace infonuagique de Nexora AI : un endroit à vous, géré depuis votre espace client, où s’intègre un dépôt de code. Rien n’est livré à ce jour.",
         },
         {
-          question: "Quelle différence avec Nexora Gitspace ?",
+          question: "Où sera le dépôt de code ?",
           answer:
-            "Nexora Gitspace est la fiche du dépôt de code (Forgejo ou GitLab). Nexora Cloud est l’espace qui l’accueille. Les deux sont prévus sur abonnement et aucun n’est livré.",
+            "Le dépôt de code (GitLab ou Forgejo) sera intégré à l’espace Nexora Cloud. Il est prévu sur abonnement, avec l’espace, et rien n’est livré à ce jour.",
         },
         {
           question: "Où sera-t-il hébergé ?",

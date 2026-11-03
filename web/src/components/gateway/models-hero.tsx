@@ -81,7 +81,7 @@ export function ModelsHero({
               </section>
               <div className="border-t border-line bg-abyss-950/60 p-4 sm:p-5">
                 <p className="flex items-center gap-2 text-small text-fg-muted">
-                  <span className="live-dot size-1.5 rounded-full bg-success" />
+                  <span className="live-dot size-1.5 rounded-full bg-accent" />
                   {t.response}
                 </p>
                 <p className="mt-2 break-all font-mono text-[0.8125rem] text-fg">

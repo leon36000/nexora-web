@@ -1,3 +1,4 @@
+import { gitspaceVisible } from "@/lib/gitspace-flag";
 import { SITE_NAME } from "@/lib/site";
 import { type Lang, localizePath } from "./config";
 import { appsEnCA } from "./dictionaries/apps-en-CA";
@@ -50,7 +51,8 @@ export type AppDef = {
   claims: readonly string[];
 };
 
-export const APPS = [
+/** Tout le registre, y compris les fiches masquées par un indicateur (Gitspace : `GITSPACE_VISIBLE`). */
+export const APP_REGISTRY = [
   {
     slug: "code",
     state: "bientot",
@@ -143,7 +145,11 @@ export const APPS = [
   },
 ] as const satisfies readonly AppDef[];
 
-type AppSlug = (typeof APPS)[number]["slug"];
+/** Les fiches visibles du site public : Gitspace n'y figure que si `GITSPACE_VISIBLE=true`. */
+export const APPS: readonly (typeof APP_REGISTRY)[number][] =
+  APP_REGISTRY.filter((a) => a.slug !== "gitspace" || gitspaceVisible());
+
+type AppSlug = (typeof APP_REGISTRY)[number]["slug"];
 export type AppContent = AppsDictionary["apps"][AppSlug];
 
 const dictionaries: Record<Lang, AppsDictionary> = {
@@ -179,7 +185,9 @@ export function legendStates(
 }
 
 /** Entrée du registre pour un identifiant d'adresse ; `undefined` pour tout autre texte (aucune propriété héritée). */
-export function findApp(slug: string): (typeof APPS)[number] | undefined {
+export function findApp(
+  slug: string,
+): (typeof APP_REGISTRY)[number] | undefined {
   return APPS.find((a) => a.slug === slug);
 }
 

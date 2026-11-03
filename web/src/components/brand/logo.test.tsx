@@ -19,8 +19,8 @@ describe("logo de la marque (identité « Signal »)", () => {
   });
 
   it("prend l'accent ion : clair sur fond sombre, foncé (contraste AA) sur fond clair, ou celui du thème", () => {
-    expect(renderToStaticMarkup(<Logo tone="dark" />)).toContain("#1fcf80");
-    expect(renderToStaticMarkup(<Logo tone="light" />)).toContain("#0b7a4b");
+    expect(renderToStaticMarkup(<Logo tone="dark" />)).toContain("#ff6600");
+    expect(renderToStaticMarkup(<Logo tone="light" />)).toContain("#bf3f00");
     expect(renderToStaticMarkup(<Logo tone="auto" />)).toContain(
       "var(--accent-graphic)",
     );

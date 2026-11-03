@@ -22,12 +22,16 @@ import {
 import {
   discoverPages,
   isPublishable,
+  isRetirement,
   stripUnknownFields,
 } from "../scripts/load-content";
 import { PAGES_DIR, renderMarkdown } from "./render-md";
 
 // clé de fichier -> slugs et statut attendus
-const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
+const EXPECTED: Record<
+  string,
+  { fr: string; en: string; draft?: boolean; archived?: boolean }
+> = {
   souverainete: { fr: "souverainete", en: "sovereignty" },
   "souverainete-loi-25": {
     fr: "souverainete/loi-25",
@@ -85,7 +89,8 @@ const EXPECTED: Record<string, { fr: string; en: string; draft?: boolean }> = {
   methode: { fr: "methode", en: "method" },
   workstudio: { fr: "workstudio", en: "workstudio" },
   suite: { fr: "suite", en: "suite" },
-  gitspace: { fr: "gitspace", en: "gitspace" },
+  // retirée du site public le 03/11/2026 (décision du fondateur) : archivée, jamais supprimée
+  gitspace: { fr: "gitspace", en: "gitspace", archived: true },
   entreprise: { fr: "entreprise", en: "company" },
   "centre-de-confiance": { fr: "centre-de-confiance", en: "trust-center" },
   faq: { fr: "faq", en: "faq" },
@@ -198,7 +203,10 @@ for (const [slug, en] of Object.entries(GABARIT_EN))
   };
 const KEYS = Object.keys(EXPECTED);
 const DRAFTS = KEYS.filter((k) => EXPECTED[k]?.draft);
-const PUBLISHED = KEYS.filter((k) => !EXPECTED[k]?.draft);
+const ARCHIVED = KEYS.filter((k) => EXPECTED[k]?.archived);
+const PUBLISHED = KEYS.filter(
+  (k) => !EXPECTED[k]?.draft && !EXPECTED[k]?.archived,
+);
 // Gabarits juridiques : les brouillons qui portent des marqueurs [À COMPLÉTER…]. Le guide Loi 25 et le comparatif
 // nommé (« à relire ») sont des brouillons rédigés en entier : ils n'en font pas partie.
 const LEGAL = DRAFTS.filter(
@@ -610,10 +618,14 @@ describe("S3 : SEO", () => {
     for (const k of KEYS)
       for (const l of LOCALES) {
         expect(page(k, l).status, `${k} ${l}`).toBe(
-          EXPECTED[k]?.draft ? "draft" : "published",
+          EXPECTED[k]?.draft
+            ? "draft"
+            : EXPECTED[k]?.archived
+              ? "archived"
+              : "published",
         );
         expect(Boolean(page(k, l).noindex), `${k} ${l}`).toBe(
-          Boolean(EXPECTED[k]?.draft),
+          Boolean(EXPECTED[k]?.draft || EXPECTED[k]?.archived),
         );
       }
   });
@@ -1074,11 +1086,15 @@ describe("chargement dans Directus", () => {
   test("seules les pages au statut published peuvent être promues : le guide Loi 25 et les gabarits juridiques ne le sont jamais", () => {
     for (const k of KEYS) {
       const want = mergePage(stripUnknownFields(raw[k] as never).pair);
-      expect(isPublishable(want), k).toBe(!EXPECTED[k]?.draft);
+      expect(isPublishable(want), k).toBe(
+        !EXPECTED[k]?.draft && !EXPECTED[k]?.archived,
+      );
+      expect(isRetirement(want), k).toBe(Boolean(EXPECTED[k]?.archived));
     }
-    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 4 pages de la refonte « Signal » + Gitspace ;
+    expect(ARCHIVED).toEqual(["gitspace"]);
+    // 26 pages d'origine + 6 guides + la synthèse des gabarits + 29 fiches + 4 pages de la refonte « Signal » (Gitspace est archivée) ;
     // 5 gabarits juridiques + le comparatif nommé
-    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 4 + 1);
+    expect(PUBLISHED).toHaveLength(26 + 6 + 1 + 29 + 4);
     expect(DRAFTS).toHaveLength(6);
     expect(DRAFTS).toContain("guides-alternative-openrouter");
   });
