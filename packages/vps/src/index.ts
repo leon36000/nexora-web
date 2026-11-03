@@ -11,6 +11,7 @@ export * from "./guard.ts";
 export type { InstallInput, InstallResult, InstallRunner } from "./install.ts";
 export * from "./ips.ts";
 export * from "./lifecycle.ts";
+export * from "./limits.ts";
 export * from "./operate.ts";
 export * from "./orders.ts";
 export * from "./provision.ts";

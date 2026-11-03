@@ -324,3 +324,22 @@ docker compose up -d
 write_access 3080 "Créez votre compte à la première visite, puis fermez les inscriptions :
   sudo sed -i 's/^ALLOW_REGISTRATION=.*/ALLOW_REGISTRATION=false/' $APP_DIR/.env && cd $APP_DIR && sudo docker compose up -d"`,
 });
+
+/**
+ * « Serveur nu » : Debian seule, accès SSH par clé, aucune application. C'est le produit de base du VPS
+ * (le client installe lui-même ce qu'il veut). Le script ne télécharge ni n'installe rien : il pose le
+ * témoin d'installation, ce qui économise le temps de mise en service et la bande passante.
+ */
+export const bareServerScript = `#!/usr/bin/env bash
+# Nexora AI — serveur nu (script 1). Exécuté par le worker, une fois, après le premier démarrage de la VM.
+set -euo pipefail
+
+: "\${NEXORA_APP_CODE:?variable absente}" "\${NEXORA_APP_VERSION:?variable absente}"
+if [ "$NEXORA_APP_CODE" != "serveur-nu" ] || [ "$NEXORA_APP_VERSION" != "1.0" ]; then
+  echo "script prévu pour serveur-nu 1.0, reçu $NEXORA_APP_CODE $NEXORA_APP_VERSION" >&2
+  exit 64
+fi
+install -d -m 0755 /var/lib/nexora
+printf '%s\\n' "1.0:1" > /var/lib/nexora/serveur-nu.installed
+echo "serveur nu prêt"
+`;

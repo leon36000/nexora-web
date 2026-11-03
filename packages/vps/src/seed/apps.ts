@@ -1,6 +1,7 @@
 import type { AppInput } from "../catalog.ts";
 import {
   anythingllmScript,
+  bareServerScript,
   hermesScript,
   librechatScript,
   ollamaAnythingScript,
@@ -219,5 +220,28 @@ export const SEED_GUIDE_APPS: AppInput[] = [
       "1. Order a VPS with at least 8 GB of memory and no application.\n2. Install Docker.\n3. Follow Dify's official documentation (docs.dify.ai) for a Docker Compose deployment.\n4. Do not expose its ports: SSH tunnel or a TLS proxy with authentication.",
     minRamMb: 8192,
     sort: 120,
+  },
+];
+
+/** Produit de base : un serveur Debian nu, sans application (le client installe ce qu'il veut). */
+export const SEED_BARE_APPS: AppInput[] = [
+  {
+    code: "serveur-nu",
+    name: "Serveur nu (Debian)",
+    taglineFr:
+      "Un serveur Debian propre, accès SSH par clé, sans rien d'installé.",
+    taglineEn: "A clean Debian server, SSH key access, nothing installed.",
+    descriptionFr:
+      "Un serveur privé virtuel Debian 12 livré tel quel : votre clé SSH est installée, le pare-feu n'ouvre que le SSH et vous en êtes l'administrateur (sudo). Vous y installez ce que vous voulez.",
+    descriptionEn:
+      "A Debian 12 virtual private server delivered as is: your SSH key is installed, the firewall only opens SSH and you are the administrator (sudo). Install whatever you want.",
+    version: "1.0",
+    upstreamUrl: "https://www.debian.org/",
+    license: "MIT",
+    licenseUrl: "https://opensource.org/license/mit",
+    installScript: bareServerScript,
+    ports: [],
+    minRamMb: 512,
+    sort: 5,
   },
 ];

@@ -1,0 +1,9 @@
+# Pont des VPS clients (Nexora) : NAT privé 10.77.0.0/24, isolé du LAN. Voir docs/vps/capacite-et-isolation-pc5.md
+auto vmbr1
+iface vmbr1 inet static
+	address 10.77.0.1/24
+	bridge-ports none
+	bridge-stp off
+	bridge-fd 0
+	post-up /usr/local/sbin/nexora-vps-net.sh
+#VPS clients (NAT prive)

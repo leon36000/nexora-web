@@ -27,6 +27,12 @@ import {
 } from "./engine-core.ts";
 import { recordVpsEvent, safeError } from "./events.ts";
 import { buildFirewallPlan, diffFirewallRules } from "./firewall.ts";
+import {
+  CLIENT_VM_LIMITS,
+  clientTags,
+  net0Spec,
+  throttleDiskSpec,
+} from "./limits.ts";
 import { findPlacement } from "./placement.ts";
 import { ProxmoxError } from "./proxmox/client.ts";
 
@@ -382,6 +388,17 @@ async function allocateVmid(
       floor = candidate + 1; // identifiant pris par une VM que nous ne connaissons pas
       continue;
     }
+    // Une VM hors du pool est invisible du jeton (403 = « introuvable ») : seul /cluster/nextid dit
+    // vraiment si le numéro est libre (400 « already exists » sinon).
+    try {
+      await client.nextId(candidate);
+    } catch (e) {
+      if (e instanceof ProxmoxError && e.code === "invalid_request") {
+        floor = candidate + 1;
+        continue;
+      }
+      throw e;
+    }
     try {
       await deps.db
         .update(vpsInstances)
@@ -496,10 +513,11 @@ async function stepConfigure(ctx: Ctx, inst: Instance): Promise<StepResult> {
     nameserver: pool.dns.join(" "),
     cores: inst.vcpu,
     memory: inst.ramMb,
-    net0: `virtio,bridge=${pool.bridge},firewall=1`,
+    net0: net0Spec(pool.bridge),
     agent: "enabled=1",
     onboot: 1,
-    tags: "nexora",
+    cpuunits: CLIENT_VM_LIMITS.cpuUnits,
+    tags: clientTags(inst.organizationId),
     description: `nexora-order:${inst.orderId}`,
   });
   const cfg = await client.getConfig(server.node, inst.vmid);
@@ -507,6 +525,10 @@ async function stepConfigure(ctx: Ctx, inst: Instance): Promise<StepResult> {
     (k) => DISK_KEY.test(k) && /size=\d+[GM]/.test(String(cfg[k])),
   );
   if (diskKey) {
+    // Plafonds d'entrées-sorties du disque (la taille est inchangée ici, elle est agrandie plus bas).
+    await client.setConfig(server.node, inst.vmid, {
+      [diskKey]: throttleDiskSpec(String(cfg[diskKey])),
+    });
     const m = /size=(\d+)([GM])/.exec(String(cfg[diskKey]));
     const currentGb = Number(m?.[1] ?? 0) / (m?.[2] === "M" ? 1024 : 1);
     if (currentGb < inst.diskGb)
@@ -854,9 +876,7 @@ export async function compensate(
             pollMs: deps.settings.taskPollMs,
           });
         }
-        const upid = await client.deleteVm(server.node, inst.vmid, {
-          skiplock: true,
-        });
+        const upid = await client.deleteVm(server.node, inst.vmid);
         await client.waitTask(upid, {
           timeoutMs: deps.settings.taskTimeoutMs,
           pollMs: deps.settings.taskPollMs,

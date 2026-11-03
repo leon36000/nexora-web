@@ -61,7 +61,7 @@ RUN --mount=type=bind,from=deps-prod,source=/app,target=/deps \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates \
+ && apt-get install -y --no-install-recommends ca-certificates openssh-client \
  && node /deps/worker/node_modules/playwright/cli.js install --with-deps chromium \
  && chmod -R a+rX /opt/ms-playwright \
  && ln -s "$(find /opt/ms-playwright -type f -path '*/chromium-[0-9]*/chrome-linux*/chrome' | head -n1)" /usr/local/bin/nexora-chromium \

@@ -195,7 +195,11 @@ export class ProxmoxClient {
     if (params && Object.keys(params).length > 0) {
       if (method === "GET" || method === "DELETE") {
         const qs = Object.entries(params)
-          .map(([k, v]) => `${q(k)}=${q(String(v))}`)
+          .map(
+            // Proxmox VE 9.2 réel : un booléen en chaîne de requête doit être 1 ou 0 (« true » est refusé).
+            ([k, v]) =>
+              `${q(k)}=${q(typeof v === "boolean" ? (v ? "1" : "0") : String(v))}`,
+          )
           .join("&");
         url += `?${qs}`;
       } else {
@@ -246,12 +250,18 @@ export class ProxmoxClient {
     }
     if (status >= 200 && status < 300) return (json?.data ?? null) as T;
     // Message court de Proxmox (première ligne, borné) : jamais le corps de la requête.
-    const detail = String(
-      json?.message ??
-        (typeof json?.errors === "object" ? "paramètres invalides" : ""),
-    )
-      .split("\n")[0]
-      ?.slice(0, 200);
+    // Les erreurs de validation de Proxmox (`errors`: champ → message) disent QUEL paramètre est refusé.
+    const fields =
+      json?.errors && typeof json.errors === "object"
+        ? Object.entries(json.errors as Record<string, unknown>)
+            .map(([k, v]) => `${k}: ${String(v)}`)
+            .join("; ")
+        : "";
+    const detail = `${
+      String(json?.message ?? (fields ? "paramètres invalides" : "")).split(
+        "\n",
+      )[0] ?? ""
+    }${fields ? ` (${fields})` : ""}`.slice(0, 300);
     const where = `${method} ${path.replace(/\/\d{3,9}(?=\/|$)/g, "/{vmid}")}`;
     const code: ProxmoxErrorCode =
       status === 401
@@ -381,7 +391,12 @@ export class ProxmoxClient {
       if (
         e instanceof ProxmoxError &&
         (e.code === "not_found" ||
-          (e.code === "server_error" && /does not exist/i.test(e.message)))
+          (e.code === "server_error" && /does not exist/i.test(e.message)) ||
+          // Jeton limité à un pool : VM inexistante ou hors du pool = 403 sur /vms/<id> (Proxmox VE 9.2 réel).
+          (e.code === "forbidden" &&
+            /Permission check failed \(\/vms\/\d+, VM\.Audit\)/.test(
+              e.message,
+            )))
       )
         return null;
       throw e;
@@ -475,15 +490,15 @@ export class ProxmoxClient {
   rebootVm(node: string, vmid: number): Promise<string> {
     return this.call("POST", `/nodes/${q(node)}/qemu/${vmid}/status/reboot`);
   }
-  deleteVm(
-    node: string,
-    vmid: number,
-    opts: { skiplock?: boolean } = {},
-  ): Promise<string> {
+  /**
+   * Supprime la VM ET ses disques (purge, disques non référencés) : le volume est libéré. Jamais de
+   * `skiplock` : Proxmox le réserve à root@pam (400 « Only root may use this option »), le jeton de
+   * Nexora n'est pas root ; une VM verrouillée s'attend (waitTask) au lieu de se forcer.
+   */
+  deleteVm(node: string, vmid: number): Promise<string> {
     return this.call("DELETE", `/nodes/${q(node)}/qemu/${vmid}`, {
       purge: true,
       "destroy-unreferenced-disks": true,
-      ...(opts.skiplock ? { skiplock: true } : {}),
     });
   }
 

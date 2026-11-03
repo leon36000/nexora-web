@@ -64,6 +64,11 @@ services:
       MAIL_FROM: ${MAIL_FROM:?définir MAIL_FROM}
       # Hôtes où une clé du Coffre peut partir vers le service Nexora Creative (la même valeur dans le site et le worker).
       NEXORA_SECRET_HOSTS_CREATIVE: ${NEXORA_SECRET_HOSTS_CREATIVE:-}
+      # VPS : hôte Proxmox qui peut recevoir le jeton du Coffre, réseau des VPS joignable par le worker, clé publique du worker.
+      NEXORA_SECRET_HOSTS_PROXMOX: ${NEXORA_SECRET_HOSTS_PROXMOX:-}
+      NEXORA_OUTBOUND_ALLOW: ${NEXORA_OUTBOUND_ALLOW:-}
+      VPS_WORKER_SSH_PUBLIC_KEY: ${VPS_WORKER_SSH_PUBLIC_KEY:-}
+      STRIPE_TEST_MOCK_URL: ${STRIPE_TEST_MOCK_URL:-}
       NEXORA_FILE_ENV: >-
         DATABASE_URL NEXORA_APP_ADMIN_TOKEN NEXORA_VAULT_MASTER_KEY BETTER_AUTH_SECRET DIRECTUS_READER_TOKEN
         DIRECTUS_PUBLISHER_TOKEN NEXORA_PREVIEW_SECRET LITELLM_MASTER_KEY WEBPILOT_BROWSER_SECRET
@@ -129,6 +134,11 @@ services:
       SMTP_FROM: ${MAIL_FROM}
       CONTACT_NOTIFY_TO: ${CONTACT_NOTIFY_TO:?définir CONTACT_NOTIFY_TO (adresse qui reçoit les demandes de contact)}
       NEXORA_SECRET_HOSTS_CREATIVE: ${NEXORA_SECRET_HOSTS_CREATIVE:-}
+      # VPS : hôte Proxmox qui peut recevoir le jeton du Coffre, réseau des VPS joignable par le worker, clé publique du worker.
+      NEXORA_SECRET_HOSTS_PROXMOX: ${NEXORA_SECRET_HOSTS_PROXMOX:-}
+      NEXORA_OUTBOUND_ALLOW: ${NEXORA_OUTBOUND_ALLOW:-}
+      VPS_WORKER_SSH_PUBLIC_KEY: ${VPS_WORKER_SSH_PUBLIC_KEY:-}
+      STRIPE_TEST_MOCK_URL: ${STRIPE_TEST_MOCK_URL:-}
       NEXORA_FILE_ENV: DATABASE_URL NEXORA_VAULT_MASTER_KEY NEXORA_APP_ADMIN_TOKEN WEBPILOT_BROWSER_SECRET
       DATABASE_URL_FILE: /run/secrets/app_database_url
       NEXORA_VAULT_MASTER_KEY_FILE: /run/secrets/nexora_vault_master_key
@@ -198,6 +208,19 @@ services:
       WEBPILOT_BROWSER_SECRET: !reset null
       WEBPILOT_BROWSER_SECRET_FILE: /run/secrets/webpilot_browser_secret
     secrets: [webpilot_browser_secret]
+
+  # PILE D'ESSAI SEULEMENT (profil « stripe-test », jamais dans NEXORA_PROFILES d'une vraie production) : simulateur
+  # officiel de l'API Stripe, réseau interne, aucun port, aucune clé réelle. Le site et le worker ne l'utilisent que si
+  # STRIPE_TEST_MOCK_URL=http://stripe-mock:12111 est posée ET que la clé du Coffre est une clé de TEST.
+  stripe-mock:
+    profiles: !override [stripe-test]
+    ports: !reset []
+    networks: [internal]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    mem_limit: 64m
+    pids_limit: 64
 
   # PROVISOIRE : boîte de courrier factice, tant qu'aucun SMTP réel n'existe. Réseau interne seulement (sans route vers
   # l'extérieur), aucun port publié, aucune interface exposée : rien ne sort. Les messages se lisent depuis l'hôte

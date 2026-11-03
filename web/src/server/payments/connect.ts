@@ -5,6 +5,7 @@ import { HANDLED_EVENT_TYPES } from "../billing/webhook";
 import {
   assertKeyAllowed,
   createStripeClient,
+  mockUrlFor,
   StripeModeError,
   stripeKeyMode,
 } from "../stripe/client";
@@ -431,9 +432,6 @@ export function productionClientFactory(
     createStripeClient({
       secretKey: key,
       allowLive,
-      mockUrl:
-        env.NODE_ENV !== "production" && stripeKeyMode(key) === "test"
-          ? env.STRIPE_API_BASE_URL || undefined
-          : undefined,
+      mockUrl: mockUrlFor(env, key),
     });
 }

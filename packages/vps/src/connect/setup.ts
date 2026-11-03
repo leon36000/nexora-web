@@ -609,7 +609,15 @@ async function pickTemplateVmid(
     try {
       return await client.nextId(id);
     } catch (e) {
-      if (!(e instanceof ProxmoxError && e.code === "server_error")) throw e;
+      // Numéro pris : Proxmox répond 400 (« VM 9000 already exists »), observé sur Proxmox VE 9.2 réel ;
+      // 500 reste admis pour les versions qui répondraient ainsi.
+      if (
+        !(
+          e instanceof ProxmoxError &&
+          (e.code === "invalid_request" || e.code === "server_error")
+        )
+      )
+        throw e;
     }
   }
   throw new StepFailure(
