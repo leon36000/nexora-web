@@ -24,7 +24,7 @@ import { getPublicVps } from "@/server/vps/read";
 const ABYSS = "#14171a";
 const FROST = "#f4f6f7";
 const HAZE = "#9aa4af";
-const ION = "#1fcf80";
+const ION = "#ff6600";
 const LINE = "#343a40";
 const FLARE = "#ffffff";
 

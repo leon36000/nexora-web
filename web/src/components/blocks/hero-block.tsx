@@ -185,7 +185,7 @@ export function HeroBlockView({
     block.perimeterGrid && block.signature !== "aucun" ? block.signature : null;
   const animated = material === "champ" || material === "onde";
   const side = block.media || (showcase && material);
-  // Sans média ni matière : ouverture sobre (très grand titre, deux boutons), sur un voile vert très léger.
+  // Sans média ni matière : ouverture sobre (très grand titre, deux boutons), sur un voile orange très léger.
   const opening = !side && !material;
   return (
     <Section

@@ -1,6 +1,6 @@
 # Charte de marque — identité « Signal »
 
-Version du 2 novembre 2026, thème clair d'abord (3 novembre). Remplace la direction « Instrument » du 27 octobre (mosaïque de pixels orange, logo « N » en pixels, rampe « braise »), retirée du site public parce qu'elle faisait trop penser à Mistral. Mandat : `marketing/nexora/REFONTE-2026-11.md` (dépôt Nexora Creative). Journal de la refonte : `docs/refonte-signal.md`.
+Version du 2 novembre 2026, thème clair d'abord, accent orange KTM (3 novembre). Remplace la direction « Instrument » du 27 octobre (mosaïque de pixels orange, logo « N » en pixels, rampe « braise »), retirée du site public parce qu'elle faisait trop penser à Mistral. Mandat : `marketing/nexora/REFONTE-2026-11.md` (dépôt Nexora Creative). Journal de la refonte : `docs/refonte-signal.md`.
 
 **Idée.** Une lumière précise dans le noir. L'univers d'un instrument de mesure et d'un centre de données : ce que l'IA voit, entend et calcule, montré en fines lignes de lumière, nuages de points, formes d'onde et cadres de détection. Cinématographique, silencieux, à grande échelle.
 
@@ -25,32 +25,42 @@ Changer de nom : modifier `BRAND`, puis chercher l'ancien nom dans les dictionna
 
 - **La marque « signal »** (grille de 32 unités, géométrie exportée `SIGNAL_MARK`) : deux crochets d'angle (haut-gauche, bas-droite), le cadre de détection ; une ligne de balayage horizontale ; un point de lumière ion, avec un halo à 18 %. Aucun pixel, aucun « N ».
 - **Le nom** : `BRAND.wordmark.base` en Geist 600, interlettrage -0,035 em ; le suffixe (« AI ») en JetBrains Mono 500, ion, pour qu'on ne lise jamais « Al ».
-- Tons : `dark` (givre #EEF3FA, ion #3EC8FF), `light` (graphite #0B0F16, ion foncé #0B6E99, 5,3:1), `auto` (couleur du texte et accent du thème).
+- Tons : `dark` (givre #F4F6F7, ion #FF6600), `light` (graphite #1B1F23, ion foncé #BF3F00, 5,0:1), `auto` (couleur du texte et accent du thème).
 - Décoratif par défaut ; `label` en fait une image nommée. Taille minimale : 20 px de haut.
 
 Les anciens fichiers du logo « N » (`docs/marque/logos/`) sont des archives : ils ne sont plus utilisés par le site.
 
 ## 3. Couleurs
 
-**Clair d'abord, sombre en contrepoint (décision du fondateur, 3 novembre 2026).** Le site public est fait de bandes « papier » aérées ; quatre moments sombres donnent le rythme : le héros vidéo de l'accueil, les vitrines vidéo et cartes « vitrine », l'appel à l'action final et le pied de page. Une lumière principale (ion), un contrepoint chaud rare (flare). Le ton `sombre` du CMS ne rend une bande sombre que pour une vitrine (héros plein écran, section à vidéo, cartes `vitrine`, appel à l'action) ; ailleurs il devient une bande claire (`effectiveTone`, `web/src/components/blocks/tone.ts`). `clair` = papier ; `sable` = bande blanche relevée.
+**Orange KTM, blanc et gris charbon (décision du fondateur, 3 novembre 2026).** Le vert précédent est retiré : la palette n'a plus ni bleu ni vert, sauf le vert de **statut** (succès), réservé aux états (`ok-*`), avec le rouge d'alerte. Le site public est fait de bandes « papier » aérées et de quelques moments en gris charbon (héros vidéo de l'accueil, vitrines vidéo et cartes « vitrine », appel à l'action final, pied de page). L'accent est un orange vif de sécurité et de course, la teinte KTM (≈ Pantone 021, `#FF6600`). Le jeton garde son nom historique « ion » : `ion-*` désigne l'accent, quelle qu'en soit la couleur. Le ton `sombre` du CMS ne rend une bande sombre que pour une vitrine ; ailleurs il devient une bande claire (`effectiveTone`, `web/src/components/blocks/tone.ts`). `clair` = papier ; `sable` = bande blanche relevée.
+
+**Règles d'emploi.**
+- Les **aplats et boutons** utilisent l'orange vif `#FF6600`, avec un texte **charbon** (`#14171A`), jamais blanc (le blanc sur `#FF6600` n'atteint que 2,9:1).
+- Le **texte et les liens sur fond clair** utilisent l'orange foncé `#BF3F00` (5,0:1 sur papier, 4,6:1 sur bande relevée), jamais l'orange vif (2,7:1).
+- Sur **charbon**, l'orange vif sert de texte, de lien et d'anneau de focus (6,1:1).
+- Le blanc et le gris charbon portent tout le reste ; le vert et le rouge ne signalent que des états.
 
 | Rôle | Jeton | Valeur | Contraste |
 |---|---|---|---|
-| Fond « abysse » (héros, appels à l'action) | `abyss-950` | `#05070B` | — |
-| Bande « nuit » (fond courant des sections) | `abyss-850` | `#080B11` | — |
-| Surface / surface relevée | `abyss-900` / `abyss-800` | `#0B0F16` / `#111723` | — |
-| Filets | `hairline`, `--line` | `#1C2433`, brume à 16 % | décoratif |
-| Filet fort, bordure de bouton | `steel` | `#5B6678` | 3,5:1 |
-| Texte | `frost` | `#EEF3FA` | 18,1:1 |
-| Texte secondaire | `haze` | `#8C97AA` | 6,8:1 (6,1:1 sur surface relevée) |
-| **Accent ion** : liens, focus, bouton principal, graphismes, lueur | `ion-400` | `#3EC8FF` | 10,5:1 ; bouton : texte abysse 10,5:1 |
-| Survol du bouton | `ion-300` | `#7BD9FF` | 12,7:1 |
-| **Flare** : un seul point de chaleur par écran (CTA final, alerte, point « en direct ») | `flare-500` | `#FF6A2B` | 7,1:1 ; bouton : texte abysse 7,1:1 |
-| Alerte / succès | `alert-400` / `ok-400` | `#FF4D5E` / `#3FE0A5` | 6,2:1 / 11,9:1 |
+| Fond « abysse » (héros, appels à l'action) | `abyss-950` | `#14171A` | — |
+| Bande « nuit » | `abyss-850` | `#171B1F` | — |
+| Surface / surface relevée | `abyss-900` / `abyss-800` | `#1B1F23` / `#23282D` | — |
+| Filets | `hairline`, `--line` | `#343A40`, brume à 16 % | décoratif |
+| Filet fort, bordure de bouton | `steel` | `#6F7884` | 4,0:1 |
+| Texte | `frost` | `#F4F6F7` | 16,6:1 |
+| Texte secondaire | `haze` | `#9AA4AF` | 7,1:1 (5,9:1 sur surface relevée) |
+| **Accent ion (orange KTM)** : liens, focus, bouton principal, graphismes, lueur | `ion-400` | `#FF6600` | 6,1:1 sur abysse ; bouton : texte abysse 6,1:1 |
+| Survol du bouton sur charbon | `ion-300` | `#FF8533` | 7,4:1 |
+| Survol du bouton sur papier | `ion-500` | `#E85A00` | texte abysse 5,1:1 |
+| Orange foncé : texte et liens sur papier | `ion-700` | `#BF3F00` | 5,0:1 (4,6:1 bande relevée) |
+| Orange en graphisme sur papier | `ion-600` | `#E85A00` | 3,3:1 |
+| Orange profond : lien au survol sur papier | `ion-800` | `#A33600` | 6,4:1 |
+| **Flare** : un seul point blanc par écran sombre (CTA final, point « en direct ») | `flare-500` | `#FFFFFF` | 16,6:1 ; bouton : texte abysse |
+| Alerte / succès (statuts seulement) | `alert-400` / `ok-400` | `#FF4D5E` / `#3FE0A5` | 6,2:1 / 11,9:1 |
 
-**Thème papier** (`.theme-light`, fond courant du site public, espace client) : fond `#F7F9FC`, cartes et bande relevée `#FFFFFF`, surface relevée `#EDF1F7`, filets `#E3E8F0`, texte `#0B1220`, secondaire `#5B6678` (5,5:1), accent texte ion foncé `#0B6E99` (5,3:1), graphisme `#0A8BC2` (3,6:1), **bouton principal ion foncé `#0B6E99` + texte blanc** (5,3:1 ; survol `#095B80`), flare réservé au bouton final et aux alertes. Matières sur papier : grilles et halos en ion doux (`--grid-a/b`), nuage de points `#0A8BC2` et balayage qui fonce au lieu de blanchir (`--field-rgb`, `--scan-rgb`, lus par `LightField` et `.scanline`) ; en bande sombre, elles gardent la lumière ion vive. L'en-tête, le sommaire collant et les menus sont papier (opaques : un fond translucide sur l'abysse du document tombait sous 4,5:1).
+**Thème papier** (`.theme-light`, fond courant du site public, espace client et administration) : fond `#F6F7F8`, cartes `#FFFFFF`, surface relevée `#ECEFF1`, filets `#E4E7EA`, texte `#14171A`, secondaire `#5B6470` (5,9:1), accent texte `#BF3F00`, graphisme `#E85A00` (3,3:1), **bouton principal orange vif `#FF6600` + texte charbon**, survol `#E85A00`. Matières sur papier : grilles et halos en orange doux (`--grid-a/b`), nuage de points `#E85A00` et balayage qui fonce au lieu de blanchir (`--field-rgb`, `--scan-rgb`, lus par `LightField` et `.scanline`) ; en bande sombre, elles gardent la lumière orange vive. L'en-tête, le sommaire collant et les menus sont papier (opaques : un fond translucide sur le charbon tombait sous 4,5:1).
 
-Thèmes sémantiques : `.theme-dark` (abysse), `.theme-night` (nuit, plus utilisé par les sections), `.theme-light` (papier, défaut des sections publiques). Les composants n'utilisent que les jetons sémantiques (`bg`, `surface`, `fg`, `accent`, `flare`…). Contrôle : `bun run --cwd web check:contrast` (50 paires).
+Thèmes sémantiques : `.theme-dark` (abysse), `.theme-night` (nuit), `.theme-light` (papier, défaut des sections publiques). Les composants n'utilisent que les jetons sémantiques (`bg`, `surface`, `fg`, `accent`, `flare`…). Contrôle : `bun run --cwd web check:contrast`.
 
 ## 4. Typographies
 
@@ -87,7 +97,7 @@ Apparition au défilement (opacité + 16 px), balayage, ondes qui « parlent »,
 
 ## 7. Médias (images et vidéos)
 
-- Images générées (Qwen-Image) et vidéos (MiniMax H3) : sans texte ni logo incrusté, palette « Signal » (sombre, lumière ion, un rare point chaud). Le texte est toujours posé en code.
+- Images générées (Qwen-Image) et vidéos (MiniMax H3) : sans texte ni logo incrusté, palette « Signal » (gris charbon, lumière orange KTM, un rare point blanc). Le texte est toujours posé en code.
 - **Emplacements stables** : les pages citent des noms fixes (`site-hero-boucle.mp4`, `site-infra-dgx-spark.jpg`…) ; `cms/scripts/medias-site.sh` prépare les fichiers web et `load-content.ts --medias=<dossier>` les téléverse dans Directus. Voir `docs/refonte-signal.md` §4.
 - **Interdits** : la mosaïque de pixels, les cascades de carrés orange, la rampe « braise » comme texture ; robots, cerveaux lumineux, étincelles « IA », dégradés violets, photos d'archive ; tout plan qui rappelle une franchise connue (personnages, sabres lumineux, vaisseaux reconnaissables) ou une marque.
 

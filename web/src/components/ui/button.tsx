@@ -13,7 +13,7 @@ const BASE =
   "group/btn inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-sans font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTS: Record<Variant, string> = {
-  // Bouton d'accent : fond ion #1FCF80, texte charbon (8:1) ; survol ion clair #5BE2A5, lueur retenue.
+  // Bouton d'accent : fond orange KTM #FF6600, texte charbon (6,1:1) ; survol orange clair #FF8533 (sombre) ou #E85A00 (papier), lueur retenue.
   primary:
     "rounded-md bg-accent text-on-accent hover:bg-accent-hover hover:shadow-[var(--glow-ion)] active:translate-y-px",
   // Le seul point de chaleur d'un écran (appel à l'action final) : fond blanc (flare), texte charbon (17:1).
