@@ -172,7 +172,7 @@ export const frCA = {
         {
           label: "Nexora Apps",
           description:
-            "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
+            "Nexora Code, RAG, WebPilot, Privacy Router et outils gratuits. L’état de chacun est indiqué.",
           href: "/apps",
         },
         {

@@ -35,8 +35,6 @@ Your coding agent, your documents, your agents and workflows, Creative and WebPi
 
 [Discover the workspace](/en/suite/)
 
-And for code: [Gitspace](/en/gitspace/), the forge we are preparing so your agents connect to it directly.
-
 - **Coding agent.** It reads your code, changes it, writes the tests and shows you the change to review. Coming soon, no date.
 - **Your documents, searchable.** Ask a question: the answer draws on your files and cites its sources (RAG). Coming soon, no date.
 - **Agents and workflows.** WorkStudio designs and runs your agents; a step can wait for your approval before acting. Available.

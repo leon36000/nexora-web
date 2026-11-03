@@ -50,7 +50,7 @@
       },
       "translation": {
         "title": "All your AI work, in one tab.",
-        "body": "<p>Your coding agent, your documents, your agents and workflows, Creative and WebPilot open side by side in the browser, as panels you arrange your way. One account, one credit balance. The work runs in the cloud, and your agents will also be able to use the power of your own computer.</p><p><a href=\"/en/suite/\">Discover the workspace</a></p><p>And for code: <a href=\"/en/gitspace/\">Gitspace</a>, the forge we are preparing so your agents connect to it directly.</p>",
+        "body": "<p>Your coding agent, your documents, your agents and workflows, Creative and WebPilot open side by side in the browser, as panels you arrange your way. One account, one credit balance. The work runs in the cloud, and your agents will also be able to use the power of your own computer.</p><p><a href=\"/en/suite/\">Discover the workspace</a></p>",
         "items": [
           {
             "title": "Coding agent.",

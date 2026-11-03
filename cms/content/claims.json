@@ -2226,9 +2226,9 @@
     {
       "id": "CL-AP04",
       "kind": "offre",
-      "statement": "Nexora Cloud (espace infonuagique avec dépôt de code), Nexora Gitspace et l'automatisation des plugins WordPress sont prévus sur abonnement ; aucun prix n'est publié et aucun n'est livré.",
+      "statement": "Nexora Cloud (espace infonuagique avec dépôt de code) et l'automatisation des plugins WordPress sont prévus sur abonnement ; aucun prix n'est publié et aucun n'est livré.",
       "scope": "Nexora Apps.",
-      "evidence": "Fiches /apps/cloud, /apps/gitspace et /apps/wordpress (accès « abonnement », état « Bientôt »). Vision dite par le fondateur le 29/10/2026. Nexora RAG n'y figure plus : il se paie à l'espace et aux jetons (CL-AP07).",
+      "evidence": "Fiches /apps/cloud et /apps/wordpress (accès « abonnement », état « Bientôt »). Vision dite par le fondateur le 29/10/2026. Nexora RAG n'y figure plus : il se paie à l'espace et aux jetons (CL-AP07).",
       "evidence_url": null,
       "source_version": "Dépôt NexoraSite, branche feat/panneau issue de main, commit 5a408da (30/10/2026), web/src/i18n/apps.ts et web/src/server/products/registry.ts",
       "approval_status": "en_revue",
@@ -2769,11 +2769,11 @@
       "evidence": "Description du fondateur (03/11/2026). Aucune version livrée.",
       "source_version": "Demande du fondateur du 03/11/2026 (thème vert et Gitspace)",
       "kind": "produit",
-      "scope": "Page /gitspace.",
+      "scope": "Page /gitspace (archivée le 03/11/2026, masquée du site public et du panneau jusqu'à ce que Gitspace soit construit, testé et conforme aux attentes).",
       "evidence_url": null,
-      "approval_status": "en_revue",
+      "approval_status": "retirée",
       "valid_from": "2026-11-03",
-      "valid_until": null
+      "valid_until": "2026-11-03"
     },
     {
       "id": "CL-GS02",
@@ -2781,11 +2781,11 @@
       "evidence": "Vision du fondateur (03/11/2026) ; la page l'écrit comme un objectif et ne publie aucun chiffre.",
       "source_version": "Demande du fondateur du 03/11/2026 (thème vert et Gitspace)",
       "kind": "produit",
-      "scope": "Page /gitspace.",
+      "scope": "Page /gitspace (archivée le 03/11/2026, masquée du site public et du panneau jusqu'à ce que Gitspace soit construit, testé et conforme aux attentes).",
       "evidence_url": null,
-      "approval_status": "en_revue",
+      "approval_status": "retirée",
       "valid_from": "2026-11-03",
-      "valid_until": null
+      "valid_until": "2026-11-03"
     },
     {
       "id": "CL-GS03",
@@ -2793,11 +2793,11 @@
       "evidence": "GitLab de l'équipe (projet root/nexora-web) ; adresse en configuration (GITSPACE_FORGE_URL), docs/guide-operateur.md.",
       "source_version": "Demande du fondateur du 03/11/2026 (thème vert et Gitspace)",
       "kind": "produit",
-      "scope": "Page /gitspace.",
+      "scope": "Page /gitspace (archivée le 03/11/2026, masquée du site public et du panneau jusqu'à ce que Gitspace soit construit, testé et conforme aux attentes).",
       "evidence_url": null,
-      "approval_status": "en_revue",
+      "approval_status": "retirée",
       "valid_from": "2026-11-03",
-      "valid_until": null
+      "valid_until": "2026-11-03"
     }
   ],
   "retirees": [
@@ -3142,6 +3142,12 @@
       "formulation": "« plans vidéo texte-vers-vidéo de MiniMax H3 » et « version publique sans aucun plan issu de Qwen-Image-2.1 » (ancienne affirmation CL-CR04, fiche /apps/creative).",
       "raison": "Le film V4 est animé à partir d'images clés générées par Qwen-Image (image vers vidéo) : la version publique contient donc des plans issus de ce moteur, et tous les plans ne sont pas texte vers vidéo. La formulation ne décrit plus le film publié.",
       "remplacement": "Mention « générés par IA » pour les images et les sons, avec « Vidéo : MiniMax H3 » et « Musique : MiniMax-Music3 », sans décrire la méthode de chaque plan."
+    },
+    {
+      "id": "R-58",
+      "formulation": "« Gitspace est la forge de dépôts de code de Nexora AI… » et les fonctions décrites pour Gitspace (anciennes affirmations CL-GS01 à CL-GS03), ainsi que toute mention publique de Gitspace (page /gitspace, menu, fiche /apps/gitspace, accueil, panneau /compte, llms.txt).",
+      "raison": "Décision du fondateur du 03/11/2026 : attendre que Gitspace soit construit, testé et conforme aux attentes avant de le montrer. Aucune version n'est livrée.",
+      "remplacement": "Aucune mention publique de Gitspace. Les dépôts de code restent sur le GitLab de l'équipe, hors du site public. Pour rétablir : indicateur GITSPACE_VISIBLE et page republiée (docs/guide-operateur.md)."
     }
   ]
 }

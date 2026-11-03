@@ -5,6 +5,7 @@ import { CONTACT_SUBJECTS, resolveContactSubject } from "@/lib/contact-subject";
 import {
   APP_SLUG,
   APP_STATES,
+  APP_REGISTRY,
   APPS,
   type AppDef,
   appContactHref,
@@ -70,7 +71,7 @@ describe("registre des Nexora Apps", () => {
       expect(en?.coming.length, app.slug).toBe(fr?.coming.length);
       expect(en?.faq.length, app.slug).toBe(fr?.faq.length);
     }
-    const registered = APPS.map((a) => a.slug).sort();
+    const registered = APP_REGISTRY.map((a) => a.slug).sort();
     for (const lang of LANGS)
       expect(Object.keys(getAppsDictionary(lang).apps).sort(), lang).toEqual(
         registered,
@@ -289,7 +290,7 @@ describe("La réponse en bref (GEO)", () => {
 });
 
 describe("Nexora Cloud", () => {
-  it("est au registre : sur abonnement, bientôt, liste d'attente, relié à Gitspace et à RAG", () => {
+  it("est au registre : sur abonnement, bientôt, liste d'attente, relié à RAG (et à Gitspace, masqué)", () => {
     const cloud = findApp("cloud");
     expect(cloud?.state).toBe("bientot");
     expect(cloud?.access).toBe("abonnement");
@@ -300,8 +301,7 @@ describe("Nexora Cloud", () => {
 
   it("dit les trois dépôts de code possibles sans en promettre la livraison", () => {
     const fr = JSON.stringify(getAppContent("fr", "cloud"));
-    for (const name of ["GitLab", "Gitspace", "Forgejo"])
-      expect(fr).toContain(name);
+    for (const name of ["GitLab", "Forgejo"]) expect(fr).toContain(name);
     expect(getAppContent("fr", "cloud")?.coming.length).toBeGreaterThanOrEqual(
       2,
     );

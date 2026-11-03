@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { gitspaceVisible } from "@/lib/gitspace-flag";
 import { cleanSlug } from "@/lib/safe-href";
 import type { CmsClient } from "./client";
 import { CmsContentError } from "./errors";
@@ -66,28 +67,36 @@ export async function fetchSeoPages(client: CmsClient): Promise<SeoPage[]> {
       "réponse Directus de forme inattendue (pages SEO)",
     );
   }
-  return rows
-    .filter((r) => r.status === "published")
-    .map((r) => ({
-      id: r.id,
-      noindex: r.noindex === true,
-      createdAt: r.date_created ?? null,
-      updatedAt: r.date_updated ?? null,
-      translations: (r.translations ?? []).flatMap((t) =>
-        (t.languages_code === "fr-CA" || t.languages_code === "en-CA") &&
-        t.title &&
-        cleanSlug(t.slug) !== null
-          ? [
-              {
-                code: t.languages_code as "fr-CA" | "en-CA",
-                slug: t.slug ?? "",
-                title: t.title,
-                seoTitle: t.seo_title ?? null,
-                seoDescription: t.seo_description ?? null,
-                canonical: t.canonical ?? null,
-              },
-            ]
-          : [],
-      ),
-    }));
+  return (
+    rows
+      .filter((r) => r.status === "published")
+      // Gitspace est masqué du plan du site et de llms.txt tant que `GITSPACE_VISIBLE` n'est pas `true`.
+      .filter(
+        (r) =>
+          gitspaceVisible() ||
+          !(r.translations ?? []).some((t) => t.slug === "gitspace"),
+      )
+      .map((r) => ({
+        id: r.id,
+        noindex: r.noindex === true,
+        createdAt: r.date_created ?? null,
+        updatedAt: r.date_updated ?? null,
+        translations: (r.translations ?? []).flatMap((t) =>
+          (t.languages_code === "fr-CA" || t.languages_code === "en-CA") &&
+          t.title &&
+          cleanSlug(t.slug) !== null
+            ? [
+                {
+                  code: t.languages_code as "fr-CA" | "en-CA",
+                  slug: t.slug ?? "",
+                  title: t.title,
+                  seoTitle: t.seo_title ?? null,
+                  seoDescription: t.seo_description ?? null,
+                  canonical: t.canonical ?? null,
+                },
+              ]
+            : [],
+        ),
+      }))
+  );
 }

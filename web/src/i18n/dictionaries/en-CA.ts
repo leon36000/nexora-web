@@ -166,7 +166,7 @@ export const enCA: Dictionary = {
         {
           label: "Nexora Apps",
           description:
-            "Nexora Code, Gitspace, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
+            "Nexora Code, RAG, WebPilot, Privacy Router and free tools. The state of each is shown.",
           href: "/apps",
         },
         {

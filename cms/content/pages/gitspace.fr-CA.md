@@ -4,7 +4,7 @@
 
 ## Métadonnées
 
-- Page : `gitspace` · langue : `fr-CA` · statut visé : `published` · noindex : non
+- Page : `gitspace` · langue : `fr-CA` · statut visé : `archived` · noindex : oui
 - Route : `/gitspace/` · slug : `gitspace`
 - Titre SEO (42 caractères) : Gitspace : la forge pensée pour les agents
 - Description SEO (158 caractères) : Gitspace est la forge de dépôts de code de Nexora AI, conçue pour que les agents d'IA s'y connectent directement. En préparation : nos dépôts sont sur GitLab.

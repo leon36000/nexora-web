@@ -35,8 +35,6 @@ Votre agent de code, vos documents, vos agents et vos flux de travaux, Creative 
 
 [Découvrir l'espace de travail](/suite/)
 
-Et pour le code : [Gitspace](/gitspace/), la forge que nous préparons pour que vos agents s'y connectent directement.
-
 - **Agent de code.** Il lit votre code, le modifie, écrit les tests et vous présente le changement à relire. Bientôt, sans date.
 - **Vos documents, interrogeables.** Posez une question : la réponse s'appuie sur vos fichiers et cite ses sources (RAG). Bientôt, sans date.
 - **Agents et flux de travaux.** WorkStudio conçoit et pilote vos agents ; une étape peut attendre votre approbation avant d'agir. Disponible.

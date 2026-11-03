@@ -1,8 +1,8 @@
 {
   "page": "gitspace",
   "locale": "fr-CA",
-  "status": "published",
-  "noindex": false,
+  "status": "archived",
+  "noindex": true,
   "seo": {
     "slug": "gitspace",
     "title": "Gitspace",

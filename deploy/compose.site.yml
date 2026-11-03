@@ -54,6 +54,8 @@ services:
       SITE_ENV: ${SITE_ENV:-}
       # Forge de dépôts de code (GitLab, puis Gitspace) : adresse du bouton « Ouvrir GitLab » et du panneau ; vide = défaut.
       GITSPACE_FORGE_URL: ${GITSPACE_FORGE_URL:-}
+      # Gitspace masqué tant que cette valeur n'est pas « true » (docs/guide-operateur.md, « Rétablir Gitspace »)
+      GITSPACE_VISIBLE: ${GITSPACE_VISIBLE:-}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       DIRECTUS_URL: http://directus:8055
       NEXORA_APP_INTERNAL_URL: ${NEXORA_APP_INTERNAL_URL:?définir NEXORA_APP_INTERNAL_URL (http://site:3500)}
