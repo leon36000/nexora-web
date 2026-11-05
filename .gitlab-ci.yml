@@ -31,3 +31,17 @@ trivy-critique:
     paths: [.trivycache/]
   script:
     - trivy fs --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 1 .
+
+nexora_sonar_developpement:
+  stage: .pre
+  image:
+    name: sonarsource/sonar-scanner-cli:12.3.0.4285_8.1.0@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7
+    entrypoint: [""]
+  variables:
+    SONAR_HOST_URL: "http://pc4-sonarqube-sonarqube.sonarqube.svc.cluster.local:9000"
+    GIT_DEPTH: "0"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "developpement"'
+  script:
+    - 'test "${SONAR_TOKEN:+present}" = present || { echo "SONAR_TOKEN absent"; exit 1; }'
+    - sonar-scanner -Dsonar.projectKey=gitlab-${CI_PROJECT_ID}-developpement -Dsonar.projectName=Nexora-Web-developpement -Dsonar.scm.revision=${CI_COMMIT_SHA} -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
