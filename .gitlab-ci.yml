@@ -32,6 +32,36 @@ trivy-critique:
   script:
     - trivy fs --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 1 .
 
+nexora_coverage_credits:
+  stage: .pre
+  image:
+    name: node@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53
+    entrypoint: [""]
+  services:
+    - name: pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+      command: ["-c", "listen_addresses=", "-c", "unix_socket_directories=/builds,/var/run/postgresql"]
+  variables:
+    POSTGRES_HOST_AUTH_METHOD: trust
+    POSTGRES_USER: nexora_ci
+    NEXORA_TEST_DATABASE_URL: "postgres://nexora_ci@localhost/postgres?host=/builds"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "developpement"'
+  script:
+    - npm install -g bun@1.4.2
+    - bun install --frozen-lockfile
+    - node packages/db/scripts/attendre-postgres-ci.mjs
+    - cd packages/db && node ../../node_modules/vitest/vitest.mjs run src/ledger.test.ts --coverage --coverage.reporter=lcov --coverage.reportsDirectory="$CI_PROJECT_DIR/coverage/db"
+    - cd "$CI_PROJECT_DIR/web" && node ../node_modules/vitest/vitest.mjs run src/server/creative/credits.test.ts src/server/security/route-guards.test.ts --coverage --coverage.reporter=lcov --coverage.reportsDirectory="$CI_PROJECT_DIR/coverage/web"
+    - cd "$CI_PROJECT_DIR"
+    - sed 's#^SF:#SF:packages/db/#' coverage/db/lcov.info > coverage/db-root.info
+    - sed 's#^SF:#SF:web/#' coverage/web/lcov.info > coverage/web-root.info
+    - test -s coverage/db-root.info && test -s coverage/web-root.info
+  artifacts:
+    when: always
+    paths: [coverage/db-root.info, coverage/web-root.info, coverage/db/lcov.info, coverage/web/lcov.info]
+    expire_in: 1 day
+
 nexora_sonar_developpement:
   stage: .pre
   image:
@@ -40,8 +70,11 @@ nexora_sonar_developpement:
   variables:
     SONAR_HOST_URL: "http://pc4-sonarqube-sonarqube.sonarqube.svc.cluster.local:9000"
     GIT_DEPTH: "0"
+  needs:
+    - job: nexora_coverage_credits
+      artifacts: true
   rules:
     - if: '$CI_COMMIT_BRANCH == "developpement"'
   script:
     - 'test "${SONAR_TOKEN:+present}" = present || { echo "SONAR_TOKEN absent"; exit 1; }'
-    - sonar-scanner -Dsonar.projectKey=gitlab-${CI_PROJECT_ID} -Dsonar.projectVersion=developpement -Dsonar.scm.revision=${CI_COMMIT_SHA} -Dsonar.analysis.ciPipelineUrl=${CI_PIPELINE_URL} -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
+    - sonar-scanner -Dsonar.projectKey=gitlab-${CI_PROJECT_ID} -Dsonar.projectVersion=developpement -Dsonar.scm.revision=${CI_COMMIT_SHA} -Dsonar.analysis.ciPipelineUrl=${CI_PIPELINE_URL} -Dsonar.javascript.lcov.reportPaths=coverage/db-root.info,coverage/web-root.info -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300

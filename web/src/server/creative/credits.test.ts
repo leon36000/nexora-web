@@ -333,6 +333,14 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       h.deps,
     );
     expect(badUuid.status).toBe(400);
+    for (const reservationId of [{}, ["00000000-0000-4000-8000-000000000001"], 1]) {
+      const response = await handleCreativeCredits(
+        post("settle", { reservationId, credits: 1 }),
+        "settle",
+        h.deps,
+      );
+      expect(response.status).toBe(400);
+    }
     expect(h.ledger.reserve).not.toHaveBeenCalled();
     expect(h.ledger.settle).not.toHaveBeenCalled();
   });

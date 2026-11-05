@@ -100,6 +100,10 @@ function isCredits(value: unknown, allowZero: boolean): value is number {
   );
 }
 
+function isReservationId(value: unknown): value is string {
+  return typeof value === "string" && UUID.test(value);
+}
+
 function idempotencyKey(value: unknown): value is string {
   return (
     typeof value === "string" &&
@@ -138,6 +142,128 @@ function ledgerErrorResponse(error: LedgerError): Response {
   }
 }
 
+type AuthenticatedContext = {
+  db: Database;
+  auth: Extract<AuthResult, { ok: true }>;
+};
+
+/**
+ * En-têtes et identité du service Creative. Fermé par défaut si le secret commun
+ * n'est pas configuré: une clé d'organisation est détenue par l'utilisateur, le
+ * service Creative doit aussi prouver son identité.
+ */
+function authenticateService(request: Request, deps: CreativeCreditsDeps): Response | null {
+  if (!deps.serviceToken || deps.serviceToken.length < 32)
+    return errorJson(503, "service_not_configured", "Service Creative non configuré.");
+  const presented = request.headers.get("x-nexora-creative-service-token") ?? "";
+  if (!safeEqual(presented, deps.serviceToken))
+    return errorJson(401, "invalid_service_token", "Authentification du service Creative invalide.");
+  return null;
+}
+
+/** Authentifie la clé API puis applique le quota de débit de l'organisation. */
+async function authenticateAndRateLimit(
+  request: Request,
+  deps: CreativeCreditsDeps,
+): Promise<AuthenticatedContext | Response> {
+  const db = deps.db();
+  const now = deps.now();
+  const auth = await deps.authenticate(db, request.headers.get("authorization"), now);
+  // Ne pas révéler si une clé absente, inconnue, révoquée ou expirée diffère.
+  if (!auth.ok)
+    return errorJson(401, "invalid_api_key", "Clé API invalide ou révoquée.", {
+      "www-authenticate": 'Bearer realm="nexora"',
+    });
+
+  const limited = await deps.rateLimit(db, `creative-credits:${auth.key.id}`, {
+    limit: 120,
+    windowSeconds: 60,
+    now,
+  });
+  if (!limited.allowed)
+    return errorJson(429, "rate_limited", "Trop de demandes.", {
+      "retry-after": String(limited.retryAfterSeconds),
+    });
+  return { db, auth };
+}
+
+async function handleReserve(
+  db: Database,
+  auth: Extract<AuthResult, { ok: true }>,
+  body: Record<string, unknown>,
+  deps: CreativeCreditsDeps,
+): Promise<Response> {
+  if (
+    !idempotencyKey(body.idempotencyKey) ||
+    !isCredits(body.credits, false) ||
+    !label(body.label)
+  )
+    return errorJson(400, "invalid_request", "Clé, crédits ou libellé invalide.");
+
+  const organizationId = auth.key.organizationId;
+  const result = await deps.reserve(db, {
+    organizationId,
+    apiKeyId: auth.key.id,
+    amountMicro: BigInt(body.credits) * 10_000n,
+    idempotencyKey: `creative:${organizationId}:${body.idempotencyKey}`,
+    configVersion: deps.configVersion(),
+    metadata: { product: "creative", label: body.label.trim() },
+  });
+  switch (result.status) {
+    case "insufficient_funds":
+    case "blocked":
+      return errorJson(402, "insufficient_quota", "Il ne vous reste pas assez de crédits.");
+    case "key_cap_exceeded":
+      return errorJson(
+        402,
+        "key_spend_cap_exceeded",
+        "Le plafond de dépenses de cette clé API est atteint.",
+      );
+    case "replayed":
+      if (result.reservation.status !== "open")
+        return errorJson(409, "reservation_closed", "Cette réservation est déjà close.");
+      break;
+  }
+  return json({ reservationId: result.reservation.id, credits: body.credits });
+}
+
+async function handleSettle(
+  db: Database,
+  auth: Extract<AuthResult, { ok: true }>,
+  body: Record<string, unknown>,
+  reservationId: string,
+  deps: CreativeCreditsDeps,
+): Promise<Response> {
+  if (!isCredits(body.credits, true))
+    return errorJson(400, "invalid_request", "Montant de crédits invalide.");
+  const actualMicro = BigInt(body.credits) * 10_000n;
+  const result = await deps.settle(db, {
+    organizationId: auth.key.organizationId,
+    reservationId,
+    actualMicro,
+  });
+  if (result.replayed && result.chargedMicro !== actualMicro)
+    return errorJson(
+      409,
+      "settlement_conflict",
+      "Cette réservation a déjà été réglée avec un autre montant.",
+    );
+  return json({ ok: true, replayed: result.replayed });
+}
+
+async function handleRelease(
+  db: Database,
+  auth: Extract<AuthResult, { ok: true }>,
+  reservationId: string,
+  deps: CreativeCreditsDeps,
+): Promise<Response> {
+  const result = await deps.release(db, {
+    organizationId: auth.key.organizationId,
+    reservationId,
+  });
+  return json({ ok: true, replayed: result.replayed });
+}
+
 export async function handleCreativeCredits(
   request: Request,
   action: string,
@@ -147,47 +273,15 @@ export async function handleCreativeCredits(
     return errorJson(404, "not_found", "Action de crédits introuvable.");
   if (request.method !== "POST") return methodNotAllowed("POST");
 
-  // Une clé d'organisation est détenue par l'utilisateur; le service Creative doit aussi prouver
-  // son identité. Fermé par défaut si le secret commun n'est pas configuré.
-  if (!deps.serviceToken || deps.serviceToken.length < 32)
-    return errorJson(503, "service_not_configured", "Service Creative non configuré.");
-  const presentedServiceToken =
-    request.headers.get("x-nexora-creative-service-token") ?? "";
-  if (!safeEqual(presentedServiceToken, deps.serviceToken))
-    return errorJson(401, "invalid_service_token", "Authentification du service Creative invalide.");
+  const serviceError = authenticateService(request, deps);
+  if (serviceError) return serviceError;
 
   try {
-    const db = deps.db();
-    const now = deps.now();
-    const auth = await deps.authenticate(
-      db,
-      request.headers.get("authorization"),
-      now,
-    );
-    // Ne pas révéler si une clé absente, inconnue, révoquée ou expirée diffère.
-    if (!auth.ok)
-      return errorJson(
-        401,
-        "invalid_api_key",
-        "Clé API invalide ou révoquée.",
-        { "www-authenticate": 'Bearer realm="nexora"' },
-      );
+    const context = await authenticateAndRateLimit(request, deps);
+    if (context instanceof Response) return context;
 
-    const limited = await deps.rateLimit(db, `creative-credits:${auth.key.id}`, {
-      limit: 120,
-      windowSeconds: 60,
-      now,
-    });
-    if (!limited.allowed)
-      return errorJson(429, "rate_limited", "Trop de demandes.", {
-        "retry-after": String(limited.retryAfterSeconds),
-      });
-
-    if (!/^application\/json(?:\s*;|\s*$)/i.test(
-      request.headers.get("content-type") ?? "",
-    ))
+    if (!/^application\/json(?:\s*;|\s*$)/i.test(request.headers.get("content-type") ?? ""))
       return errorJson(415, "unsupported_media_type", "Un corps JSON est requis.");
-
     const parsed = await readBoundedJson(request);
     if (!parsed.ok)
       return errorJson(
@@ -196,61 +290,17 @@ export async function handleCreativeCredits(
         parsed.status === 413 ? "Corps de requête trop volumineux." : "Corps JSON invalide.",
       );
     const body = parsed.value;
-    const organizationId = auth.key.organizationId;
 
-    if (action === "reserve") {
-      if (
-        !idempotencyKey(body.idempotencyKey) ||
-        !isCredits(body.credits, false) ||
-        !label(body.label)
-      )
-        return errorJson(400, "invalid_request", "Clé, crédits ou libellé invalide.");
+    if (action === "reserve")
+      return await handleReserve(context.db, context.auth, body, deps);
 
-      const result = await deps.reserve(db, {
-        organizationId,
-        apiKeyId: auth.key.id,
-        amountMicro: BigInt(body.credits) * 10_000n,
-        idempotencyKey: `creative:${organizationId}:${body.idempotencyKey}`,
-        configVersion: deps.configVersion(),
-        metadata: { product: "creative", label: body.label.trim() },
-      });
-      if (result.status === "insufficient_funds" || result.status === "blocked")
-        return errorJson(402, "insufficient_quota", "Il ne vous reste pas assez de crédits.");
-      if (result.status === "key_cap_exceeded")
-        return errorJson(
-          402,
-          "key_spend_cap_exceeded",
-          "Le plafond de dépenses de cette clé API est atteint.",
-        );
-      if (result.status === "replayed" && result.reservation.status !== "open")
-        return errorJson(409, "reservation_closed", "Cette réservation est déjà close.");
-      return json({ reservationId: result.reservation.id, credits: body.credits });
-    }
-
-    if (!UUID.test(String(body.reservationId ?? "")))
+    const reservationId = body.reservationId;
+    if (!isReservationId(reservationId))
       return errorJson(400, "invalid_request", "Identifiant de réservation invalide.");
 
-    if (action === "settle") {
-      if (!isCredits(body.credits, true))
-        return errorJson(400, "invalid_request", "Montant de crédits invalide.");
-      const result = await deps.settle(db, {
-        organizationId,
-        reservationId: body.reservationId as string,
-        actualMicro: BigInt(body.credits) * 10_000n,
-      });
-      if (
-        result.replayed &&
-        result.chargedMicro !== BigInt(body.credits) * 10_000n
-      )
-        return errorJson(409, "settlement_conflict", "Cette réservation a déjà été réglée avec un autre montant.");
-      return json({ ok: true, replayed: result.replayed });
-    }
-
-    const result = await deps.release(db, {
-      organizationId,
-      reservationId: body.reservationId as string,
-    });
-    return json({ ok: true, replayed: result.replayed });
+    return action === "settle"
+      ? await handleSettle(context.db, context.auth, body, reservationId, deps)
+      : await handleRelease(context.db, context.auth, reservationId, deps);
   } catch (error) {
     if (error instanceof LedgerError) return ledgerErrorResponse(error);
     deps.log.error("API crédits Creative indisponible", {
