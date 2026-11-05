@@ -44,4 +44,4 @@ nexora_sonar_developpement:
     - if: '$CI_COMMIT_BRANCH == "developpement"'
   script:
     - 'test "${SONAR_TOKEN:+present}" = present || { echo "SONAR_TOKEN absent"; exit 1; }'
-    - sonar-scanner -Dsonar.projectKey=gitlab-${CI_PROJECT_ID}-developpement -Dsonar.projectName=Nexora-Web-developpement -Dsonar.scm.revision=${CI_COMMIT_SHA} -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
+    - sonar-scanner -Dsonar.projectKey=gitlab-${CI_PROJECT_ID} -Dsonar.projectVersion=developpement -Dsonar.scm.revision=${CI_COMMIT_SHA} -Dsonar.analysis.ciPipelineUrl=${CI_PIPELINE_URL} -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
