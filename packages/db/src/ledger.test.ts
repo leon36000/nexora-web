@@ -115,6 +115,94 @@ describe("crédit", () => {
 });
 
 describe("réservation, règlement, libération", () => {
+  it("lie une réservation à sa clé créatrice et garde ses compteurs après rotation", async () => {
+    const org = await newOrg();
+    await fund(org, 2n);
+    const [keyA] = await t.db
+      .insert(apiKeys)
+      .values({
+        organizationId: org,
+        name: "Creative A",
+        prefix: "nxk_a",
+        keyHash: randomBytes(32).toString("hex"),
+        spendCapMicro: 2n * M,
+      })
+      .returning({ id: apiKeys.id });
+    const [keyB] = await t.db
+      .insert(apiKeys)
+      .values({
+        organizationId: org,
+        name: "Creative B",
+        prefix: "nxk_b",
+        keyHash: randomBytes(32).toString("hex"),
+      })
+      .returning({ id: apiKeys.id });
+    if (!keyA || !keyB) throw new Error("clés API attendues");
+
+    const r = await reserve(t.db, {
+      organizationId: org,
+      apiKeyId: keyA.id,
+      amountMicro: M,
+      idempotencyKey: "creative:key-bound",
+      configVersion: CFG,
+    });
+    if (r.status !== "reserved") throw new Error("réservation attendue");
+
+    const replay = await reserve(t.db, {
+      organizationId: org,
+      apiKeyId: keyA.id,
+      amountMicro: M,
+      idempotencyKey: "creative:key-bound",
+      configVersion: CFG,
+    });
+    expect(replay).toMatchObject({
+      status: "replayed",
+      reservation: { id: r.reservation.id },
+    });
+
+    await expect(
+      reserve(t.db, {
+        organizationId: org,
+        apiKeyId: keyB.id,
+        amountMicro: M,
+        idempotencyKey: "creative:key-bound",
+        configVersion: CFG,
+      }),
+    ).rejects.toMatchObject({ code: "idempotency_conflict" });
+    expect((await getAccount(t.db, org)).heldMicro).toBe(M);
+
+    const settled = await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 50_000n,
+    });
+    expect(settled.chargedMicro).toBe(50_000n);
+    expect((await getAccount(t.db, org)).heldMicro).toBe(0n);
+
+    const second = await reserve(t.db, {
+      organizationId: org,
+      apiKeyId: keyA.id,
+      amountMicro: M,
+      idempotencyKey: "creative:key-bound-release",
+      configVersion: CFG,
+    });
+    if (second.status !== "reserved") throw new Error("seconde réservation attendue");
+    await releaseReservation(t.db, {
+      organizationId: org,
+      reservationId: second.reservation.id,
+    });
+    const [spentA] = await t.db
+      .select({ spentMicro: apiKeys.spentMicro })
+      .from(apiKeys)
+      .where(eq(apiKeys.id, keyA.id));
+    const [spentB] = await t.db
+      .select({ spentMicro: apiKeys.spentMicro })
+      .from(apiKeys)
+      .where(eq(apiKeys.id, keyB.id));
+    expect(spentA?.spentMicro).toBe(50_000n);
+    expect(spentB?.spentMicro).toBe(0n);
+  });
+
   it("réserve, puis règle au coût réel et libère le surplus", async () => {
     const org = await newOrg();
     await fund(org, 10n);
@@ -388,7 +476,7 @@ describe("réservation, règlement, libération", () => {
     });
   });
 
-  it("un règlement à zéro après libération ne crée aucune écriture", async () => {
+  it("mémorise un règlement nul après libération sans créer de débit", async () => {
     const org = await newOrg();
     await fund(org, 1n);
     const r = await reserve(t.db, {
@@ -407,7 +495,26 @@ describe("réservation, règlement, libération", () => {
       reservationId: r.reservation.id,
       actualMicro: 0n,
     });
+    expect(out.replayed).toBe(false);
     expect(out.chargedMicro).toBe(0n);
+    const [row] = await t.db
+      .select({ settledMicro: creditReservations.settledMicro })
+      .from(creditReservations)
+      .where(eq(creditReservations.id, r.reservation.id));
+    expect(row?.settledMicro).toBe(0n);
+
+    const changedReplay = await settleReservation(t.db, {
+      organizationId: org,
+      reservationId: r.reservation.id,
+      actualMicro: 250n,
+    });
+    expect(changedReplay.replayed).toBe(true);
+    expect(changedReplay.chargedMicro).toBe(0n);
+    expect(
+      (await listEntries(t.db, org)).some(
+        (entry) => entry.kind === "overage" && entry.reservationId === r.reservation.id,
+      ),
+    ).toBe(false);
     expect((await getAccount(t.db, org)).balanceMicro).toBe(M);
   });
 

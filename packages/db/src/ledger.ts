@@ -319,6 +319,8 @@ export interface ReserveInput {
   amountMicro: bigint;
   idempotencyKey: string;
   configVersion: string;
+  /** Métadonnées internes de l'écriture de réservation (ex. libellé du produit). */
+  metadata?: Record<string, unknown>;
   /**
    * Clé API qui émet la requête. Si elle a un plafond de dépense, le montant y est retenu dans la même
    * transaction (et rendu au règlement ou à la libération) ; sinon seul le coût réglé s'y ajoute.
@@ -367,7 +369,8 @@ export async function reserve(
     if (existing) {
       if (
         existing.organizationId !== input.organizationId ||
-        existing.amountMicro !== input.amountMicro
+        existing.amountMicro !== input.amountMicro ||
+        existing.apiKeyId !== (input.apiKeyId ?? null)
       )
         throw new LedgerError("idempotency_conflict", "clé déjà utilisée");
       return { status: "replayed", reservation: existing };
@@ -421,6 +424,7 @@ export async function reserve(
       configVersion: input.configVersion,
       source: "usage",
       reservationId: reservation.id,
+      metadata: input.metadata,
     });
     return { status: "reserved", reservation, entry };
   });
@@ -506,7 +510,9 @@ export async function settleReservation(
           chargedMicro: -late.balanceDeltaMicro,
           replayed: true,
         };
-      if (input.actualMicro === 0n) {
+      if (res.settledMicro !== null) {
+        if (res.settledMicro !== 0n)
+          throw new LedgerError("not_found", "écriture de règlement absente");
         const released = await findEntryByKey(tx, `release:${res.id}`);
         if (!released)
           throw new LedgerError("not_found", "écriture de libération absente");
@@ -515,6 +521,21 @@ export async function settleReservation(
           overageEntry: null,
           chargedMicro: 0n,
           replayed: true,
+        };
+      }
+      if (input.actualMicro === 0n) {
+        const released = await findEntryByKey(tx, `release:${res.id}`);
+        if (!released)
+          throw new LedgerError("not_found", "écriture de libération absente");
+        await tx
+          .update(creditReservations)
+          .set({ settledMicro: 0n })
+          .where(eq(creditReservations.id, res.id));
+        return {
+          entry: released,
+          overageEntry: null,
+          chargedMicro: 0n,
+          replayed: false,
         };
       }
       const { entry } = await appendEntry(tx, acct, {
