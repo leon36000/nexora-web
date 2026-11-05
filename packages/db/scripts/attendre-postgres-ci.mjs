@@ -8,6 +8,12 @@ const sql = postgres("postgres://nexora_ci@localhost/postgres", {
   onnotice: () => {},
 });
 
+// Borne l'attente même si une tentative de connexion ne revient jamais.
+const deadline = setTimeout(() => {
+  console.error("PostgreSQL CI indisponible après 45 secondes.");
+  process.exit(1);
+}, 45_000);
+
 try {
   for (let attempt = 0; ; attempt++) {
     try {
@@ -20,4 +26,5 @@ try {
   }
 } finally {
   await sql.end({ timeout: 2 });
+  clearTimeout(deadline);
 }

@@ -39,10 +39,11 @@ nexora_coverage_credits:
     entrypoint: [""]
   services:
     - name: pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
-      command: ["-c", "listen_addresses=", "-c", "unix_socket_directories=/builds,/var/run/postgresql"]
+      entrypoint: ["sh", "-c"]
+      command: ["initdb -D /tmp/nexora-ci-pg -U nexora_ci -A trust && exec postgres -D /tmp/nexora-ci-pg -c listen_addresses= -c unix_socket_directories=/builds"]
+      kubernetes:
+        user: "999:999"
   variables:
-    POSTGRES_HOST_AUTH_METHOD: trust
-    POSTGRES_USER: nexora_ci
     NEXORA_TEST_DATABASE_URL: "postgres://nexora_ci@localhost/postgres?host=/builds"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
