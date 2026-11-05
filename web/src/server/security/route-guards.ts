@@ -217,6 +217,44 @@ export const ROUTE_GUARDS: RouteGuard[] = [
       },
     ],
   },
+  ...(
+    [
+      ["api/creative/credits/reserve", "POST", "/api/creative/credits/reserve"],
+      ["api/creative/credits/settle", "POST", "/api/creative/credits/settle"],
+      ["api/creative/credits/release", "POST", "/api/creative/credits/release"],
+    ] as const
+  ).map(
+    ([route, method, path]): RouteGuard => ({
+      route,
+      kind: "service-token",
+      why: "Crédits Nexora Creative : clé nxk_ de l'organisation et jeton du service Creative, requis tous les deux",
+      probes: [
+        {
+          label: "clé organisation seule",
+          method,
+          path,
+          headers: {
+            ...JSON_H,
+            authorization: `Bearer nxk_${"a".repeat(43)}`,
+          },
+          body: "{}",
+          expect: [401, 429, 503],
+        },
+        {
+          label: "jeton de service incorrect",
+          method,
+          path,
+          headers: {
+            ...JSON_H,
+            ...WRONG,
+            "x-nexora-creative-service-token": "jeton-service-faux",
+          },
+          body: "{}",
+          expect: [401, 429, 503],
+        },
+      ],
+    }),
+  ),
   {
     route: "api/code/credits",
     kind: "api-key",

@@ -14,9 +14,20 @@ export interface DbHandle {
 /** Ouvre un pool PostgreSQL. L'URL ne doit jamais être journalisée (elle contient le mot de passe). */
 export function createDb(
   url: string,
-  options: { max?: number } = {},
+  options: { max?: number; host?: string } = {},
 ): DbHandle {
-  const sql = postgres(url, { max: options.max ?? 10, onnotice: () => {} });
+  const connectionUrl = options.host
+    ? (() => {
+        const parsed = new URL(url);
+        parsed.searchParams.delete("host");
+        return parsed.toString();
+      })()
+    : url;
+  const sql = postgres(connectionUrl, {
+    max: options.max ?? 10,
+    ...(options.host ? { host: options.host } : {}),
+    onnotice: () => {},
+  });
   return {
     db: drizzle(sql, { schema }),
     sql,
