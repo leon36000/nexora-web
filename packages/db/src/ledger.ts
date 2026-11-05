@@ -806,10 +806,10 @@ export async function expireDue(
     const entries: Entry[] = [];
 
     for (const lot of lots) {
-      const used = minBigint(remainingConsumption, lot.balanceDeltaMicro);
+      const done = alreadyExpired.get(lot.id) ?? 0n;
+      const used = minBigint(remainingConsumption, lot.balanceDeltaMicro - done);
       remainingConsumption -= used;
       if (!lot.expiresAt || lot.expiresAt > input.now) continue;
-      const done = alreadyExpired.get(lot.id) ?? 0n;
       const unused = lot.balanceDeltaMicro - used - done;
       if (unused <= 0n) continue;
       const available = state.balanceMicro - state.heldMicro;

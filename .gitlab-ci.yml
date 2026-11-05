@@ -52,7 +52,7 @@ nexora_coverage_credits:
     - npm install -g bun@1.4.2
     - bun install --frozen-lockfile
     - node packages/db/scripts/attendre-postgres-ci.mjs
-    - cd packages/db && node ../../node_modules/vitest/vitest.mjs run src/ledger.test.ts --coverage --coverage.reporter=lcov --coverage.reportsDirectory="$CI_PROJECT_DIR/coverage/db"
+    - cd packages/db && node ../../node_modules/vitest/vitest.mjs run src/ledger.test.ts src/expiration-regression.test.ts --coverage --coverage.reporter=lcov --coverage.reportsDirectory="$CI_PROJECT_DIR/coverage/db"
     - cd "$CI_PROJECT_DIR/web" && node ../node_modules/vitest/vitest.mjs run src/server/creative/credits.test.ts src/server/security/route-guards.test.ts --coverage --coverage.reporter=lcov --coverage.reportsDirectory="$CI_PROJECT_DIR/coverage/web"
     - cd "$CI_PROJECT_DIR"
     - sed 's#^SF:#SF:packages/db/#' coverage/db/lcov.info > coverage/db-root.info
