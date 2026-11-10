@@ -14,6 +14,8 @@ workflow:
 
 # Le réseau de pc4 perd parfois la résolution du CDN de Docker Hub : un échec de préparation du pod est relancé.
 default:
+  tags:
+    - nexora-linux-docker
   retry:
     max: 2
     when: [runner_system_failure, unknown_failure, stuck_or_timeout_failure, scheduler_failure]
@@ -21,7 +23,7 @@ default:
 trivy-critique:
   stage: analyse
   image:
-    name: aquasec/trivy:0.75.0
+    name: aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb
     entrypoint: [""]
   variables:
     TRIVY_CACHE_DIR: .trivycache
@@ -38,7 +40,7 @@ nexora_sonar_developpement:
     name: sonarsource/sonar-scanner-cli:12.3.0.4285_8.1.0@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7
     entrypoint: [""]
   variables:
-    SONAR_HOST_URL: "http://pc4-sonarqube-sonarqube.sonarqube.svc.cluster.local:9000"
+    SONAR_HOST_URL: "https://pc4.tail0c55ff.ts.net:10000"
     GIT_DEPTH: "0"
   rules:
     - if: '$CI_COMMIT_BRANCH == "developpement"'
