@@ -14,6 +14,8 @@ workflow:
 
 # Le réseau de pc4 perd parfois la résolution du CDN de Docker Hub : un échec de préparation du pod est relancé.
 default:
+  tags:
+    - nexora-linux-docker
   retry:
     max: 2
     when: [runner_system_failure, unknown_failure, stuck_or_timeout_failure, scheduler_failure]
@@ -21,7 +23,7 @@ default:
 trivy-critique:
   stage: analyse
   image:
-    name: aquasec/trivy:0.75.0
+    name: aquasec/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
     entrypoint: [""]
   variables:
     TRIVY_CACHE_DIR: .trivycache
