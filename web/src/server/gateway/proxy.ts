@@ -1,6 +1,6 @@
-import { createHash } from "node:crypto";
-import type { Database } from "@nexora/db";
-import { reserve } from "@nexora/db";
+import { createHash, randomUUID } from "node:crypto";
+import type { Database, UsageSource } from "@nexora/db";
+import { recordIntent, reserve, usdToNano } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { readLimitedBytes } from "@nexora/net";
 import { parseRerankResults } from "@nexora/rag";
@@ -17,6 +17,7 @@ import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
 import { billingModeOf } from "./house";
+import { type InflightEntry, trackInflight } from "./inflight";
 import { type ApiKeyRow, type AuthResult, authenticateApiKey } from "./keys";
 import { routePositionOf } from "./litellm";
 import {
@@ -24,6 +25,8 @@ import {
   costMicro,
   formatMicro,
   type PerMillion,
+  requestCost,
+  requestCostNano,
 } from "./pricing";
 import { applyPrivacy } from "./privacy-gate";
 import { type PublicModel, toPublicModel } from "./public";
@@ -32,7 +35,11 @@ import type {
   SnapshotProvider,
   SnapshotRoute,
 } from "./snapshot";
-import { finalizeHouseRequest, finalizeRequest } from "./usage";
+import {
+  finalizeHouseRequest,
+  finalizeRequest,
+  type UpstreamTrace,
+} from "./usage";
 
 /**
  * Couche publique `/v1/*` compatible OpenAI (D1) : authentifie la clé Nexora, réserve le coût
@@ -398,8 +405,10 @@ interface Usage {
   cacheWrite?: number;
   /** Jetons de raisonnement (inclus dans `completion`). */
   reasoning?: number;
-  /** Coût rapporté par l'amont (OpenRouter : `usage.cost`), micro-USD ; jamais montré au client. */
-  reportedUsdMicro?: number;
+  /** Coût rapporté par l'amont (OpenRouter `usage.cost`, DeepInfra `usage.estimated_cost`), nano-USD ; jamais montré au client. */
+  reportedUsdNano?: bigint;
+  /** Ni `completion_tokens` ni `total_tokens` : la sortie est indéterminée (comptée 0 par défaut, jamais acceptée telle quelle). */
+  completionMissing?: boolean;
 }
 
 function readUsage(raw: unknown): Usage | null {
@@ -408,6 +417,8 @@ function readUsage(raw: unknown): Usage | null {
     typeof v === "number" && Number.isSafeInteger(v) && v >= 0 ? v : null;
   const prompt = nn(raw.prompt_tokens);
   if (prompt === null) return null;
+  const completionMissing =
+    nn(raw.completion_tokens) === null && nn(raw.total_tokens) === null;
   const completion =
     nn(raw.completion_tokens) ??
     Math.max(0, (nn(raw.total_tokens) ?? prompt) - prompt);
@@ -424,19 +435,89 @@ function readUsage(raw: unknown): Usage | null {
     nn(details.cache_creation_tokens) ??
     nn(raw.cache_creation_input_tokens) ??
     0;
-  const cost =
-    typeof raw.cost === "number" && Number.isFinite(raw.cost) && raw.cost >= 0
-      ? Math.round(raw.cost * 1_000_000)
-      : null;
+  // Coût amont en nano-USD, converti sans flottant (audit F-07) : « cost » (OpenRouter), à défaut « estimated_cost »
+  // (DeepInfra, jusqu'ici ignoré) ; un nombre ou une chaîne décimale ; null (jamais 0) si absent.
+  const cost = usdToNano(raw.cost ?? raw.estimated_cost);
   return {
     prompt,
     completion,
     cached,
     cacheWrite: Math.min(written, prompt - cached),
     reasoning: Math.min(nn(out.reasoning_tokens) ?? 0, completion),
-    ...(cost !== null && Number.isSafeInteger(cost)
-      ? { reportedUsdMicro: cost }
-      : {}),
+    ...(completionMissing ? { completionMissing: true } : {}),
+    ...(cost !== null ? { reportedUsdNano: cost } : {}),
+  };
+}
+
+const MAX_TRACE_LENGTH = 200;
+const traceText = (v: unknown): string | null =>
+  typeof v === "string" && v.trim().length > 0
+    ? v.trim().slice(0, MAX_TRACE_LENGTH)
+    : null;
+
+/** En-têtes de LiteLLM : identifiant d'appel (clé de `LiteLLM_SpendLogs`) et coût qu'il a calculé. */
+function captureLitellmHeaders(upstream: Response, trace: UpstreamTrace): void {
+  // L'en-tête renvoyé fait foi ; à défaut, l'identifiant que la passerelle a envoyé (déjà dans `trace`) reste.
+  trace.callId =
+    traceText(upstream.headers.get("x-litellm-call-id")) ??
+    trace.callId ??
+    null;
+  const cost = upstream.headers.get("x-litellm-response-cost");
+  trace.responseCostNano = cost === null ? null : usdToNano(cost);
+}
+
+/** Identifiant de génération (OpenRouter « gen-… ») et fournisseur servi : corps complet ou fragment d'un flux. */
+function captureGeneration(obj: Json, trace: UpstreamTrace): void {
+  trace.generationId ??= traceText(obj.id);
+  trace.provider ??= traceText(obj.provider);
+}
+
+/**
+ * Contrôle d'un bloc `usage` rapporté contre ce que la réponse a réellement livré (audit F-03). Un `usage` à zéro ou
+ * incomplet avec une réponse livrée n'est JAMAIS accepté comme exact : les jetons douteux sont remplacés par
+ * l'estimation de repli et la provenance l'indique (`estimated_missing`). Sans contenu livré (réponse vide), zéro est
+ * légitime. Le coût rapporté par l'amont (information) est toujours conservé.
+ */
+function checkUsage(
+  reported: Usage | null,
+  delivered: { chars: number; any: boolean },
+  plan: Plan,
+): { usage: Usage; source: UsageSource; fallback: boolean } {
+  const estimatedPrompt = plan.promptEstimate;
+  const estimatedCompletion = estimateOutputTokens(delivered.chars);
+  if (!reported)
+    return {
+      usage: {
+        prompt: estimatedPrompt,
+        completion: estimatedCompletion,
+        cached: 0,
+      },
+      source: "estimated_missing",
+      fallback: true,
+    };
+  if (!delivered.any)
+    return { usage: reported, source: "provider", fallback: false };
+  const promptBad = reported.prompt === 0 && estimatedPrompt > 0;
+  const completionBad =
+    delivered.chars > 0 &&
+    (reported.completion === 0 || reported.completionMissing === true);
+  if (!promptBad && !completionBad)
+    return { usage: reported, source: "provider", fallback: false };
+  const completion = completionBad ? estimatedCompletion : reported.completion;
+  return {
+    usage: {
+      prompt: promptBad ? estimatedPrompt : reported.prompt,
+      completion,
+      // Le détail du cache se rapporte à l'invite : il n'a plus de sens si l'invite elle-même est estimée.
+      cached: promptBad ? 0 : reported.cached,
+      cacheWrite: promptBad ? 0 : (reported.cacheWrite ?? 0),
+      reasoning: Math.min(reported.reasoning ?? 0, completion),
+      ...(reported.reportedUsdNano !== undefined
+        ? { reportedUsdNano: reported.reportedUsdNano }
+        : {}),
+    },
+    source: "estimated_missing",
+    fallback: true,
   };
 }
 
@@ -465,13 +546,14 @@ async function readBody(
   return { ok: true, text: new TextDecoder().decode(read.bytes) };
 }
 
-/** Jetons facturés quand le client annule avant la fin de la réponse : invite estimée (+ sortie demandée hors flux). */
+/**
+ * Jetons facturés quand le client annule avant d'avoir reçu la réponse : l'invite estimée, rien de plus (audit F-02).
+ * Supposer que l'amont « a pu continuer » jusqu'à `max_tokens` facturait un abandon jusqu'à 105 fois le coût de la
+ * même requête menée à terme ; l'appel amont est d'ailleurs coupé par le signal d'annulation. Ce que l'amont a
+ * réellement produit avant la coupure est connu par la réconciliation (identifiant d'appel), qui signale l'écart.
+ */
 function abortedTokens(plan: Plan): Usage {
-  return {
-    prompt: plan.promptEstimate,
-    completion: plan.stream ? 0 : plan.maxOutput,
-    cached: 0,
-  };
+  return { prompt: plan.promptEstimate, completion: 0, cached: 0 };
 }
 
 interface Plan {
@@ -756,6 +838,8 @@ interface Target {
   routes: SnapshotRoute[];
   /** Frais par exécution (agents), en plus des jetons. */
   runFee: bigint;
+  /** Taux USD → CAD du catalogue en vigueur (micro-CAD par dollar), figé dans l'événement ; null pour un agent. */
+  fxUsdToCadMicro: bigint | null;
 }
 
 const IGNORED_ROLES = new Set(["system", "developer"]);
@@ -911,6 +995,11 @@ async function handleInference(
   let settled = false;
   let target: Target | undefined;
   let streamHandedOff = false;
+  // Traces de l'appel amont (appel LiteLLM, génération, coût rapporté, fournisseur) : de quoi réconcilier l'événement.
+  const trace: UpstreamTrace = {};
+  // Requête en vol (arrêt propre) : retirée du registre au règlement ; `shuttingDown` : le serveur s'arrête.
+  let untrack: (() => void) | undefined;
+  let shuttingDown = false;
 
   const finalize = async (input: {
     status: "ok" | "error" | "aborted";
@@ -918,6 +1007,7 @@ async function handleInference(
     errorCode?: string;
     tokens: Usage;
     stream: boolean;
+    usageSource?: UsageSource;
   }) => {
     if (settled || !db || !key || !reservation || !target) return null;
     const settle = house ? finalizeHouseRequest : finalizeRequest;
@@ -933,6 +1023,9 @@ async function handleInference(
       httpStatus: input.httpStatus,
       errorCode: input.errorCode,
       tokens: input.tokens,
+      usageSource: input.usageSource,
+      upstream: trace,
+      fxUsdToCadMicro: target.fxUsdToCadMicro,
       price: target.price,
       upstreamPrice: routeUpstreamPrice(target, routePosition),
       priceWindow: target.window,
@@ -942,6 +1035,7 @@ async function handleInference(
       latencyMs: Math.round(performance.now() - started),
     });
     settled = true;
+    untrack?.();
     // Dérive de l'estimation : le coût réel (facturé en entier) dépasse fortement la réservation. Aucun contenu.
     if (!result.replayed && result.costMicro > reservation.amount * 2n)
       deps.log.warn("passerelle : coût réel très supérieur à la réservation", {
@@ -1074,6 +1168,7 @@ async function handleInference(
         window: null,
         routes: [],
         runFee: price.perRunCadMicro,
+        fxUsdToCadMicro: null,
       };
       // Le plafond d'exécution borne le montant RÉSERVÉ : exécution + plafond de jetons au prix le plus élevé. Le
       // règlement est au coût réel : un dépassement du plafond est facturé (ruling S7 « Nexora absorbe » abandonné).
@@ -1113,6 +1208,9 @@ async function handleInference(
         ...pricesAt(model, deps.now()),
         routes: model.routes ?? [],
         runFee: 0n,
+        fxUsdToCadMicro: version.snapshot.fx
+          ? BigInt(version.snapshot.fx.usdToCadMicro)
+          : null,
       };
     }
     const served = target;
@@ -1146,16 +1244,59 @@ async function handleInference(
     if (house) {
       reservation = { id: "house", amount: 0n };
     }
-    // Plafond de la clé et grand livre dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
+    // Journal d'intention (audit F-01) : l'identifiant d'appel est fixé ICI, envoyé à LiteLLM (`x-litellm-call-id`,
+    // honoré par la v1.106.2) et écrit AVANT l'appel, dans la transaction de la réservation. Un arrêt du serveur
+    // laisse donc une trace durable que la reprise du grand livre sait régler. Agents hébergés : aucune dépense LiteLLM.
+    const callId = served.kind === "model" ? randomUUID() : null;
+    trace.callId = callId;
+    const promptOnly = {
+      prompt: plan.promptEstimate,
+      completion: 0,
+      cached: 0,
+    };
+    const intentFor = (reservationId: string | null) => ({
+      requestId,
+      organizationId: caller.organizationId,
+      apiKeyId: caller.id,
+      reservationId,
+      modelPublicId: served.publicId,
+      endpoint,
+      configVersion: served.configVersion,
+      stream: plan.stream,
+      litellmCallId: callId,
+      promptEstimate: plan.promptEstimate,
+      // Ce que la reprise facture à une requête perdue : l'invite estimée, jamais plus que la réservation.
+      recoveryCostMicro:
+        reservationId === null || requestCost(promptOnly, price) <= amount
+          ? requestCost(promptOnly, price)
+          : amount,
+      recoveryUpstreamCostUsdNano: requestCostNano(
+        promptOnly,
+        routeUpstreamPrice(served, 0),
+      ),
+      priceInputMicro: price.input,
+      priceOutputMicro: price.output,
+      priceCacheMicro: price.cache,
+      priceCacheWriteMicro: price.cacheWrite ?? null,
+      priceWindow: served.window,
+      fxUsdToCadMicro: served.fxUsdToCadMicro,
+    });
+    // Plafond de la clé, grand livre et intention dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
     const reserved = house
       ? null
-      : await reserve(db, {
-          organizationId: key.organizationId,
-          amountMicro: amount,
-          idempotencyKey: `gw:${requestId}`,
-          configVersion: served.configVersion,
-          apiKeyId: key.id,
+      : await db.transaction(async (tx) => {
+          const result = await reserve(tx, {
+            organizationId: caller.organizationId,
+            amountMicro: amount,
+            idempotencyKey: `gw:${requestId}`,
+            configVersion: served.configVersion,
+            apiKeyId: caller.id,
+          });
+          if (result.status === "reserved")
+            await recordIntent(tx, intentFor(result.reservation.id));
+          return result;
         });
+    if (house) await recordIntent(db, intentFor(null));
     if (reserved) {
       if (reserved.status === "key_cap_exceeded") return E.keyCap(rateHeaders);
       if (
@@ -1178,6 +1319,17 @@ async function handleInference(
     // Appel de l'amont (LiteLLM avec la clé maîtresse, ou l'instance WorkStudio avec sa clé d'espace). Le client
     // ne voit jamais ces clés.
     const upstreamAbort = new AbortController();
+    // Arrêt propre : tant que l'appel amont n'a pas répondu, `shutdown` le coupe ; la requête se règle alors par le
+    // chemin « annulée » (invite estimée) avec le code « server_shutdown ». Un flux le remplace par le sien.
+    const flight: InflightEntry = {
+      requestId,
+      shutdown: async () => {
+        shuttingDown = true;
+        upstreamAbort.abort();
+        while (!settled) await new Promise((r) => setTimeout(r, 20));
+      },
+    };
+    untrack = trackInflight(flight);
     const signal = AbortSignal.any([
       request.signal,
       upstreamAbort.signal,
@@ -1195,6 +1347,7 @@ async function handleInference(
           authorization: upstreamAuthorization,
           "content-type": "application/json",
           accept: plan.stream ? "text/event-stream" : "application/json",
+          ...(callId ? { "x-litellm-call-id": callId } : {}),
         },
         body: JSON.stringify(plan.upstreamBody),
         signal,
@@ -1202,18 +1355,23 @@ async function handleInference(
         redirect: "error",
       });
     } catch {
-      const aborted = request.signal.aborted;
+      const aborted = request.signal.aborted || shuttingDown;
       await finalize({
         status: aborted ? "aborted" : "error",
-        httpStatus: aborted ? 499 : 502,
-        errorCode: aborted ? "client_closed" : "upstream_unreachable",
-        // Le client a annulé : l'amont a pu continuer à produire. On facture l'invite estimée (flux) ou l'invite plus
-        // la sortie demandée (non diffusé, bornée par max_tokens), comme pour un flux interrompu.
+        httpStatus: aborted ? (shuttingDown ? 503 : 499) : 502,
+        errorCode: aborted
+          ? shuttingDown
+            ? "server_shutdown"
+            : "client_closed"
+          : "upstream_unreachable",
+        // Le client a annulé : on facture l'invite estimée seulement (audit F-02), que la requête soit diffusée ou non.
         tokens: aborted
           ? abortedTokens(plan)
           : { prompt: 0, completion: 0, cached: 0 },
+        usageSource: aborted ? "estimated_aborted" : undefined,
         stream: plan.stream,
       });
+      if (shuttingDown) return E.unavailable(headers);
       return aborted
         ? new Response(null, { status: 499 })
         : E.upstream(
@@ -1230,6 +1388,7 @@ async function handleInference(
       served.kind === "model"
         ? routePositionOf(upstream.headers.get("x-litellm-model-id"))
         : 0;
+    if (served.kind === "model") captureLitellmHeaders(upstream, trace);
     if (!upstream.ok) {
       // Le corps de l'erreur amont n'est jamais relayé : on libère la connexion sans le lire.
       await upstream.body?.cancel().catch(() => undefined);
@@ -1262,6 +1421,8 @@ async function handleInference(
         started,
         requestId,
         key,
+        trace,
+        flight,
       });
     }
 
@@ -1273,17 +1434,23 @@ async function handleInference(
       json = null;
     }
     if (!isObject(json)) {
-      // Annulation du client pendant la lecture de la réponse : l'amont a répondu, la sortie est due.
-      const aborted = request.signal.aborted;
+      // Annulation du client pendant la lecture de la réponse : l'invite estimée seulement (audit F-02).
+      const aborted = request.signal.aborted || shuttingDown;
       await finalize({
         status: aborted ? "aborted" : "error",
-        httpStatus: aborted ? 499 : 502,
-        errorCode: aborted ? "client_closed" : "invalid_upstream_response",
+        httpStatus: aborted ? (shuttingDown ? 503 : 499) : 502,
+        errorCode: aborted
+          ? shuttingDown
+            ? "server_shutdown"
+            : "client_closed"
+          : "invalid_upstream_response",
         tokens: aborted
           ? abortedTokens(plan)
           : { prompt: 0, completion: 0, cached: 0 },
+        usageSource: aborted ? "estimated_aborted" : undefined,
         stream: false,
       });
+      if (shuttingDown) return E.unavailable(headers);
       if (aborted) return new Response(null, { status: 499 });
       return E.upstream(
         502,
@@ -1294,6 +1461,7 @@ async function handleInference(
         headers,
       );
     }
+    if (served.kind === "model") captureGeneration(json, trace);
     if (endpoint === "rerank" && plan.rerank) {
       const ranked = parseRerankResults(json, plan.rerank.documents.length);
       if (!ranked) {
@@ -1311,12 +1479,21 @@ async function handleInference(
           headers,
         );
       }
-      const tokens = readRerankTokens(json) ?? plan.promptEstimate;
+      // Un compte de jetons nul ou absent pour un classement livré n'est jamais accepté (audit F-03) : repli estimé.
+      const reportedTokens = readRerankTokens(json);
+      const tokens =
+        reportedTokens !== null && reportedTokens > 0
+          ? reportedTokens
+          : plan.promptEstimate;
       const usage: Usage = { prompt: tokens, completion: 0, cached: 0 };
       const result = await finalize({
         status: "ok",
         httpStatus: 200,
         tokens: usage,
+        usageSource:
+          reportedTokens !== null && reportedTokens > 0
+            ? "provider"
+            : "estimated_missing",
         stream: false,
       });
       logDone(deps, {
@@ -1355,29 +1532,28 @@ async function handleInference(
         },
       );
     }
-    // Règle de repli (agents et modèles) : usage absent → entrée estimée + réponse livrée. Agents : un usage à
-    // zéro avec une réponse livrée compte aussi comme absent (WorkStudio ne relève pas toujours les jetons).
-    const delivered = contentChars(json);
-    const reported = readUsage(json.usage);
-    const usable =
-      reported !== null &&
-      !(
-        served.kind === "agent" &&
-        reported.prompt + reported.completion === 0 &&
-        delivered > 0
-      );
-    const usage: Usage =
-      usable && reported
-        ? reported
-        : {
-            prompt: plan.promptEstimate,
-            completion: estimateOutputTokens(delivered),
-            cached: 0,
-          };
+    // Règle de repli (agents et modèles, audit F-03) : un usage absent, nul ou incomplet avec une réponse livrée n'est
+    // jamais accepté comme exact ; on retombe sur l'entrée estimée + la réponse livrée, et la provenance le dit.
+    const chars = contentChars(json);
+    const vectorsDelivered = Array.isArray(json.data) && json.data.length > 0;
+    const checked = checkUsage(
+      readUsage(json.usage),
+      { chars, any: chars > 0 || vectorsDelivered },
+      plan,
+    );
+    const usage: Usage = checked.usage;
+    if (checked.fallback && json.usage !== undefined)
+      deps.log.warn("passerelle : usage amont inexploitable, repli estimé", {
+        requestId,
+        model: served.publicId,
+        endpoint,
+        stream: false,
+      });
     const result = await finalize({
       status: "ok",
       httpStatus: 200,
       tokens: usage,
+      usageSource: checked.source,
       stream: false,
     });
     const clean = sanitize(json, served.publicId);
@@ -1574,11 +1750,15 @@ function streamResponse(ctx: {
     errorCode?: string;
     tokens: Usage;
     stream: boolean;
+    usageSource?: UsageSource;
   }) => Promise<{ costMicro: bigint; replayed: boolean } | null>;
   upstreamAbort: AbortController;
   started: number;
   requestId: string;
   key: ApiKeyRow;
+  trace: UpstreamTrace;
+  /** Requête en vol : le flux y installe son propre arrêt propre. */
+  flight: InflightEntry;
 }): Response {
   const { plan, deps, target } = ctx;
   const upstreamBody = ctx.upstream.body;
@@ -1589,44 +1769,57 @@ function streamResponse(ctx: {
   let buffer = "";
   let usage: Usage | null = null;
   let chars = 0;
-  let closed = false;
   let sawDone = false;
   /** Le client a fermé la connexion : prime sur la fin de lecture que cette fermeture provoque elle-même. */
   let clientCancelled = false;
   /** L'amont a signalé une erreur dans le flux (événement « error ») : un échec déclaré, pas une coupure. */
   let upstreamError = false;
+  /** Le serveur s'arrête (drain) : le flux est réglé de force, avec le code « server_shutdown ». */
+  let shuttingDown = false;
 
-  const settle = async (outcome: "done" | "cancelled" | "failed") => {
-    if (closed) return;
-    closed = true;
+  // Un seul règlement par flux ; tout appelant ultérieur (arrêt propre compris) attend CE règlement.
+  let settling: Promise<void> | null = null;
+  const settle = (outcome: "done" | "cancelled" | "failed" | "shutdown") =>
+    (settling ??= settleOnce(outcome));
+  const settleOnce = async (
+    outcome: "done" | "cancelled" | "failed" | "shutdown",
+  ) => {
     if (clientCancelled && outcome !== "done") outcome = "cancelled";
+    else if (shuttingDown && outcome !== "done") outcome = "shutdown";
     try {
       let status: "ok" | "error" | "aborted";
       let tokens: Usage;
-      // Agents : un usage à zéro avec une réponse livrée compte comme absent (règle de repli, voir handleInference).
-      const reportedUnusable =
-        usage !== null &&
-        target.kind === "agent" &&
-        usage.prompt + usage.completion === 0 &&
-        chars > 0;
-      if (usage && !reportedUnusable) {
-        status = outcome === "done" ? "ok" : "aborted";
-        tokens = usage;
-      } else if (upstreamError && chars === 0 && !usage) {
+      let usageSource: UsageSource | undefined;
+      if (upstreamError && chars === 0 && !usage) {
         // Échec déclaré par l'amont avant toute livraison : rien n'est facturé, la réservation est libérée.
         status = "error";
         tokens = { prompt: 0, completion: 0, cached: 0 };
       } else {
-        // Flux interrompu sans usage (ou usage inexploitable) : l'amont a répondu 200, donc l'invite a été consommée.
-        // On facture au minimum l'invite estimée, plus ce qui a été livré (texte, raisonnement, arguments d'outils),
-        // même si le client coupe ou si rien n'a été reçu : l'état « erreur à zéro » ne vaut que pour un échec avant
-        // la première réponse de l'amont.
-        status = reportedUnusable && outcome === "done" ? "ok" : "aborted";
-        tokens = {
-          prompt: plan.promptEstimate,
-          completion: estimateOutputTokens(chars),
-          cached: 0,
-        };
+        // Règle de repli (audit F-03, F-13) : un usage absent, nul ou incomplet avec du contenu livré n'est jamais
+        // accepté comme exact. Flux interrompu sans usage : l'amont a répondu 200, donc l'invite a été consommée ;
+        // on facture au minimum l'invite estimée plus ce qui a été livré (texte, raisonnement, arguments d'outils).
+        // Un flux complet (`[DONE]` vu) sans bloc d'usage est « ok » : seule la provenance des jetons le distingue.
+        const checked = checkUsage(usage, { chars, any: chars > 0 }, plan);
+        status = outcome === "done" ? "ok" : "aborted";
+        tokens = checked.usage;
+        usageSource =
+          checked.source === "provider"
+            ? "provider"
+            : outcome === "cancelled" || outcome === "shutdown"
+              ? "estimated_aborted"
+              : outcome === "failed"
+                ? "estimated_interrupted"
+                : "estimated_missing";
+        if (checked.fallback && usage)
+          deps.log.warn(
+            "passerelle : usage amont inexploitable, repli estimé",
+            {
+              requestId: ctx.requestId,
+              model: target.publicId,
+              endpoint: "chat.completions",
+              stream: true,
+            },
+          );
       }
       const finalInput = {
         status,
@@ -1636,8 +1829,11 @@ function streamResponse(ctx: {
             ? undefined
             : outcome === "cancelled"
               ? "client_closed"
-              : "upstream_interrupted",
+              : outcome === "shutdown"
+                ? "server_shutdown"
+                : "upstream_interrupted",
         tokens,
+        usageSource,
         stream: true,
       };
       // Le règlement est idempotent (par requête) : on réessaie après une panne brève de la base avant de
@@ -1691,6 +1887,7 @@ function streamResponse(ctx: {
       return null; // fragment illisible : on ne transmet pas ce qu'on ne comprend pas
     }
     if (!isObject(obj)) return null;
+    if (target.kind === "model") captureGeneration(obj, ctx.trace);
     if (isObject(obj.error)) upstreamError = true;
     const u = readUsage(obj.usage);
     if (u) usage = u;
@@ -1704,6 +1901,18 @@ function streamResponse(ctx: {
     return `data: ${JSON.stringify(sanitize(obj, target.publicId))}\n\n`;
   };
 
+  // Arrêt propre : coupe l'amont puis règle le flux (invite estimée + ce qui a été livré) AVANT que le serveur ne sorte.
+  ctx.flight.shutdown = async () => {
+    shuttingDown = true;
+    ctx.upstreamAbort.abort();
+    await reader.cancel().catch(() => undefined);
+    await settle("shutdown");
+  };
+  const shutdownEvent = () =>
+    encoder.encode(
+      `data: ${JSON.stringify({ error: { message: "Le service redémarre : le flux a été interrompu. Réessayez dans un instant.", type: "api_error", param: null, code: "server_shutdown" } })}\n\n`,
+    );
+
   const body = new ReadableStream<Uint8Array>({
     async pull(controller) {
       try {
@@ -1714,8 +1923,9 @@ function streamResponse(ctx: {
           if (done) {
             buffer += decoder.decode();
             const last = buffer.trim().length > 0 ? processEvent(buffer) : null;
-            await settle(usage ? "done" : "failed");
+            await settle(usage || sawDone ? "done" : "failed");
             if (last) controller.enqueue(encoder.encode(last));
+            if (shuttingDown) controller.enqueue(shutdownEvent());
             controller.close();
             return;
           }
@@ -1729,7 +1939,7 @@ function streamResponse(ctx: {
             if (piece) out += piece;
           }
           // Le règlement précède l'envoi de [DONE] : quand le client voit la fin du flux, le grand livre est à jour.
-          if (sawDone) await settle(usage ? "done" : "failed");
+          if (sawDone) await settle("done");
           if (out) {
             controller.enqueue(encoder.encode(out));
             return;
@@ -1741,9 +1951,11 @@ function streamResponse(ctx: {
         await settle(failed ? "failed" : "done");
         try {
           controller.enqueue(
-            encoder.encode(
-              `data: ${JSON.stringify({ error: { message: "Le flux a été interrompu par le fournisseur du modèle.", type: "api_error", param: null, code: "upstream_interrupted" } })}\n\n`,
-            ),
+            shuttingDown
+              ? shutdownEvent()
+              : encoder.encode(
+                  `data: ${JSON.stringify({ error: { message: "Le flux a été interrompu par le fournisseur du modèle.", type: "api_error", param: null, code: "upstream_interrupted" } })}\n\n`,
+                ),
           );
           controller.close();
         } catch {

@@ -37,7 +37,9 @@ afterAll(async () => {
 const M = 1_000_000n;
 // biome-ignore lint/suspicious/noExplicitAny: corps JSON de réponse, forme libre dans les essais
 const bodyOf = async (r: Response) => (await r.json()) as Record<string, any>;
-const T0 = Date.parse("2026-11-02T14:00:00.000Z");
+// Instant courant (arrondi à la seconde) et non une date fixe : les tarifs publiés par l'essai prennent effet à
+// l'instant de la publication, une horloge figée dans le passé les rendait « non publiés » (503) dès le lendemain.
+const T0 = Math.floor(Date.now() / 1000) * 1000;
 
 function setup(over: Partial<WebpilotDeps> = {}) {
   const browser = fakeBrowser();

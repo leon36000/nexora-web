@@ -218,6 +218,34 @@
       "when": 1793444035739,
       "tag": "0030_creative_reglages",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1794422511267,
+      "tag": "0031_facturation_provenance_jetons",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1794422944164,
+      "tag": "0032_facturation_rapprochement_amont",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1794423311581,
+      "tag": "0033_facturation_journal_intention",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1794427084140,
+      "tag": "0034_facturation_reconciliation_quotidienne",
+      "breakpoints": true
     }
   ]
 }

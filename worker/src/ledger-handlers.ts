@@ -2,7 +2,7 @@ import {
   type Database,
   expireAllDue,
   grantDueTranches,
-  releaseStaleReservations,
+  releaseStaleReservationsDetailed,
 } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import type { HandlerRegistry } from "./registry.ts";
@@ -10,9 +10,10 @@ import type { HandlerRegistry } from "./registry.ts";
 /**
  * Tâches périodiques du grand livre de crédits (D1/D7), déclarées par le planificateur :
  *
- * - `ledger.release-stale` (toutes les 10 minutes) : libère les réservations ouvertes depuis plus longtemps que
- *   `staleReservationAfterMs` (requête perdue : arrêt du serveur entre la réservation et le règlement). Le montant
- *   redevient disponible et la part retenue sur le plafond de la clé API est rendue.
+ * - `ledger.release-stale` (toutes les 10 minutes) : ferme les réservations ouvertes depuis plus longtemps que
+ *   `staleReservationAfterMs` (requête perdue : arrêt du serveur entre la réservation et le règlement). Une requête de la
+ *   passerelle est réglée à l'estimé grâce au journal d'intention, ou consignée en anomalie ; le montant redevient
+ *   disponible et la part retenue sur le plafond de la clé API est rendue.
  * - `ledger.grant-tranches` (une fois par heure) : verse les douzièmes mensuels des crédits inclus des offres annuelles à
  *   leur échéance (un abonnement terminé n'en reçoit plus, un abonnement impayé attend).
  * - `ledger.expire` (une fois par jour) : expire les crédits échus et non consommés (12 mois), pour toutes les
@@ -58,12 +59,16 @@ export function registerLedgerHandlers(
   const now = deps.now ?? (() => new Date());
   registry.register("ledger.release-stale", async () => {
     const afterMs = deps.staleAfterMs ?? staleReservationAfterMs();
-    const released = await releaseStaleReservations(deps.db, {
+    // Une requête de la passerelle perdue n'est jamais abandonnée sans trace (audit F-01) : réglée à l'estimé si son
+    // intention est connue, sinon libérée avec une anomalie visible dans `reconciliation_findings`.
+    const out = await releaseStaleReservationsDetailed(deps.db, {
       olderThan: new Date(now().getTime() - afterMs),
     });
-    if (released > 0)
-      deps.log.warn("grand livre : réservations perdues libérées", {
-        released,
+    if (out.released + out.recovered + out.anomalies > 0)
+      deps.log.warn("grand livre : réservations perdues fermées", {
+        released: out.released,
+        recovered: out.recovered,
+        anomalies: out.anomalies,
         afterMs,
       });
   });

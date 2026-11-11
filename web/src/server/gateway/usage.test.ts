@@ -300,7 +300,12 @@ describe("rapprochement du coût calculé et du coût rapporté par l'amont (G7)
     const withReported = {
       ...input(std, "req_rec_1"),
       modelPublicId: "nexora/rec",
-      tokens: { prompt: 100, completion: 50, cached: 0, reportedUsdMicro: 25 },
+      tokens: {
+        prompt: 100,
+        completion: 50,
+        cached: 0,
+        reportedUsdNano: 25_000n,
+      },
     };
     await finalizeRequest(t.db, withReported);
     const std2 = await setup();
@@ -313,7 +318,12 @@ describe("rapprochement du coût calculé et du coût rapporté par l'amont (G7)
     await finalizeHouseRequest(t.db, {
       ...houseInput,
       modelPublicId: "nexora/rec",
-      tokens: { prompt: 100, completion: 50, cached: 0, reportedUsdMicro: 18 },
+      tokens: {
+        prompt: 100,
+        completion: 50,
+        cached: 0,
+        reportedUsdNano: 18_000n,
+      },
     });
 
     const rows = await reconciliationByModel(t.db, 1);

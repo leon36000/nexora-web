@@ -25,6 +25,7 @@ import type { Logger } from "@nexora/log";
  *   toutes les 5 minutes  Nexora Code hébergé : arrêt après inactivité et mesure de l'espace des volumes (si activé, voir code/handlers.ts)
  *   chaque heure          versement des douzièmes mensuels des crédits inclus des offres annuelles
  *   02:00 chaque jour     expiration des crédits échus (12 mois)
+ *   03:00 chaque jour     réconciliation du grand livre du jour UTC précédent avec l'amont (reconcile.daily)
  */
 const TZ = "America/Toronto";
 /** Tranche de la libération des réservations perdues. */
@@ -191,6 +192,17 @@ export async function tickScheduler(deps: SchedulerDeps): Promise<string[]> {
     await enqueue(db, {
       type: "ledger.expire",
       idempotencyKey: `ledger-expire:${clock.date}`,
+      maxAttempts: 3,
+    });
+
+  // Réconciliation quotidienne : le jour UTC précédent est terminé à 03:00 à Toronto (07:00 ou 08:00 UTC).
+  if (clock.hour >= 3)
+    await enqueue(db, {
+      type: "reconcile.daily",
+      payload: {
+        day: new Date(nowMs - 86_400_000).toISOString().slice(0, 10),
+      },
+      idempotencyKey: `reconcile-daily:${clock.date}`,
       maxAttempts: 3,
     });
 
