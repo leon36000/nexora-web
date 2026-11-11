@@ -472,6 +472,27 @@ export const USAGE_STATUSES = ["ok", "error", "aborted"] as const;
 export type UsageStatus = (typeof USAGE_STATUSES)[number];
 
 /**
+ * D'où viennent les jetons facturés d'un événement d'usage (audit de précision F-02, F-03, F-13) :
+ * - `provider` : le bloc `usage` de l'amont, complet et cohérent ;
+ * - `estimated_missing` : usage absent, nul ou incomplet alors qu'une réponse a été livrée (repli estimé) ;
+ * - `estimated_aborted` : le client a annulé (ou le serveur s'est arrêté) avant la fin : invite estimée, rien de plus ;
+ * - `estimated_interrupted` : l'amont a coupé le flux sans bloc `usage` ni `[DONE]` ;
+ * - `settled_by_recovery` : requête perdue (arrêt du serveur entre la réservation et le règlement), réglée au repli
+ *   estimé (invite seule) par la reprise du grand livre ; la réconciliation compare ensuite à l'amont ;
+ * - `none` : aucune facturation (échec avant toute réponse de l'amont).
+ * NULL : événement antérieur à cette colonne (provenance inconnue).
+ */
+export const USAGE_SOURCES = [
+  "provider",
+  "estimated_missing",
+  "estimated_aborted",
+  "estimated_interrupted",
+  "settled_by_recovery",
+  "none",
+] as const;
+export type UsageSource = (typeof USAGE_SOURCES)[number];
+
+/**
  * Événements d'usage : MÉTADONNÉES seulement (jamais le contenu des requêtes ni des réponses).
  * Idempotence par `request_id`.
  */
@@ -522,6 +543,8 @@ export const usageEvents = pgTable(
     routePosition: integer("route_position").notNull().default(0),
     /** Coût rapporté par l'amont pour la requête (OpenRouter : `usage.cost`), micro-USD ; null = non rapporté. */
     reportedCostUsdMicro: micro("reported_cost_usd_micro"),
+    /** Provenance des jetons facturés (voir `USAGE_SOURCES`) ; null avant la migration. */
+    usageSource: text("usage_source").$type<UsageSource>(),
     latencyMs: integer("latency_ms").notNull().default(0),
     reservationId: uuid("reservation_id"),
     /** WebPilot : unités facturées (pages lues sans navigateur, pages rendues par navigateur, minutes de session). */
@@ -542,6 +565,10 @@ export const usageEvents = pgTable(
     check(
       "usage_events_status_check",
       sql`${t.status} IN (${inList(USAGE_STATUSES)})`,
+    ),
+    check(
+      "usage_events_usage_source_check",
+      sql`${t.usageSource} IS NULL OR ${t.usageSource} IN (${inList(USAGE_SOURCES)})`,
     ),
     check(
       "usage_events_nonneg",

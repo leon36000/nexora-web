@@ -1,0 +1,2 @@
+ALTER TABLE "usage_events" ADD COLUMN "usage_source" text;--> statement-breakpoint
+ALTER TABLE "usage_events" ADD CONSTRAINT "usage_events_usage_source_check" CHECK ("usage_events"."usage_source" IS NULL OR "usage_events"."usage_source" IN ('provider', 'estimated_missing', 'estimated_aborted', 'estimated_interrupted', 'settled_by_recovery', 'none'));

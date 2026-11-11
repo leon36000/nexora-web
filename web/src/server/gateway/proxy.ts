@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import type { Database } from "@nexora/db";
+import type { Database, UsageSource } from "@nexora/db";
 import { reserve } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { readLimitedBytes } from "@nexora/net";
@@ -400,6 +400,8 @@ interface Usage {
   reasoning?: number;
   /** Coût rapporté par l'amont (OpenRouter : `usage.cost`), micro-USD ; jamais montré au client. */
   reportedUsdMicro?: number;
+  /** Ni `completion_tokens` ni `total_tokens` : la sortie est indéterminée (comptée 0 par défaut, jamais acceptée telle quelle). */
+  completionMissing?: boolean;
 }
 
 function readUsage(raw: unknown): Usage | null {
@@ -408,6 +410,8 @@ function readUsage(raw: unknown): Usage | null {
     typeof v === "number" && Number.isSafeInteger(v) && v >= 0 ? v : null;
   const prompt = nn(raw.prompt_tokens);
   if (prompt === null) return null;
+  const completionMissing =
+    nn(raw.completion_tokens) === null && nn(raw.total_tokens) === null;
   const completion =
     nn(raw.completion_tokens) ??
     Math.max(0, (nn(raw.total_tokens) ?? prompt) - prompt);
@@ -434,9 +438,59 @@ function readUsage(raw: unknown): Usage | null {
     cached,
     cacheWrite: Math.min(written, prompt - cached),
     reasoning: Math.min(nn(out.reasoning_tokens) ?? 0, completion),
+    ...(completionMissing ? { completionMissing: true } : {}),
     ...(cost !== null && Number.isSafeInteger(cost)
       ? { reportedUsdMicro: cost }
       : {}),
+  };
+}
+
+/**
+ * Contrôle d'un bloc `usage` rapporté contre ce que la réponse a réellement livré (audit F-03). Un `usage` à zéro ou
+ * incomplet avec une réponse livrée n'est JAMAIS accepté comme exact : les jetons douteux sont remplacés par
+ * l'estimation de repli et la provenance l'indique (`estimated_missing`). Sans contenu livré (réponse vide), zéro est
+ * légitime. Le coût rapporté par l'amont (information) est toujours conservé.
+ */
+function checkUsage(
+  reported: Usage | null,
+  delivered: { chars: number; any: boolean },
+  plan: Plan,
+): { usage: Usage; source: UsageSource; fallback: boolean } {
+  const estimatedPrompt = plan.promptEstimate;
+  const estimatedCompletion = estimateOutputTokens(delivered.chars);
+  if (!reported)
+    return {
+      usage: {
+        prompt: estimatedPrompt,
+        completion: estimatedCompletion,
+        cached: 0,
+      },
+      source: "estimated_missing",
+      fallback: true,
+    };
+  if (!delivered.any)
+    return { usage: reported, source: "provider", fallback: false };
+  const promptBad = reported.prompt === 0 && estimatedPrompt > 0;
+  const completionBad =
+    delivered.chars > 0 &&
+    (reported.completion === 0 || reported.completionMissing === true);
+  if (!promptBad && !completionBad)
+    return { usage: reported, source: "provider", fallback: false };
+  const completion = completionBad ? estimatedCompletion : reported.completion;
+  return {
+    usage: {
+      prompt: promptBad ? estimatedPrompt : reported.prompt,
+      completion,
+      // Le détail du cache se rapporte à l'invite : il n'a plus de sens si l'invite elle-même est estimée.
+      cached: promptBad ? 0 : reported.cached,
+      cacheWrite: promptBad ? 0 : (reported.cacheWrite ?? 0),
+      reasoning: Math.min(reported.reasoning ?? 0, completion),
+      ...(reported.reportedUsdMicro !== undefined
+        ? { reportedUsdMicro: reported.reportedUsdMicro }
+        : {}),
+    },
+    source: "estimated_missing",
+    fallback: true,
   };
 }
 
@@ -918,6 +972,7 @@ async function handleInference(
     errorCode?: string;
     tokens: Usage;
     stream: boolean;
+    usageSource?: UsageSource;
   }) => {
     if (settled || !db || !key || !reservation || !target) return null;
     const settle = house ? finalizeHouseRequest : finalizeRequest;
@@ -933,6 +988,7 @@ async function handleInference(
       httpStatus: input.httpStatus,
       errorCode: input.errorCode,
       tokens: input.tokens,
+      usageSource: input.usageSource,
       price: target.price,
       upstreamPrice: routeUpstreamPrice(target, routePosition),
       priceWindow: target.window,
@@ -1212,6 +1268,7 @@ async function handleInference(
         tokens: aborted
           ? abortedTokens(plan)
           : { prompt: 0, completion: 0, cached: 0 },
+        usageSource: aborted ? "estimated_aborted" : undefined,
         stream: plan.stream,
       });
       return aborted
@@ -1282,6 +1339,7 @@ async function handleInference(
         tokens: aborted
           ? abortedTokens(plan)
           : { prompt: 0, completion: 0, cached: 0 },
+        usageSource: aborted ? "estimated_aborted" : undefined,
         stream: false,
       });
       if (aborted) return new Response(null, { status: 499 });
@@ -1311,12 +1369,21 @@ async function handleInference(
           headers,
         );
       }
-      const tokens = readRerankTokens(json) ?? plan.promptEstimate;
+      // Un compte de jetons nul ou absent pour un classement livré n'est jamais accepté (audit F-03) : repli estimé.
+      const reportedTokens = readRerankTokens(json);
+      const tokens =
+        reportedTokens !== null && reportedTokens > 0
+          ? reportedTokens
+          : plan.promptEstimate;
       const usage: Usage = { prompt: tokens, completion: 0, cached: 0 };
       const result = await finalize({
         status: "ok",
         httpStatus: 200,
         tokens: usage,
+        usageSource:
+          reportedTokens !== null && reportedTokens > 0
+            ? "provider"
+            : "estimated_missing",
         stream: false,
       });
       logDone(deps, {
@@ -1355,29 +1422,28 @@ async function handleInference(
         },
       );
     }
-    // Règle de repli (agents et modèles) : usage absent → entrée estimée + réponse livrée. Agents : un usage à
-    // zéro avec une réponse livrée compte aussi comme absent (WorkStudio ne relève pas toujours les jetons).
-    const delivered = contentChars(json);
-    const reported = readUsage(json.usage);
-    const usable =
-      reported !== null &&
-      !(
-        served.kind === "agent" &&
-        reported.prompt + reported.completion === 0 &&
-        delivered > 0
-      );
-    const usage: Usage =
-      usable && reported
-        ? reported
-        : {
-            prompt: plan.promptEstimate,
-            completion: estimateOutputTokens(delivered),
-            cached: 0,
-          };
+    // Règle de repli (agents et modèles, audit F-03) : un usage absent, nul ou incomplet avec une réponse livrée n'est
+    // jamais accepté comme exact ; on retombe sur l'entrée estimée + la réponse livrée, et la provenance le dit.
+    const chars = contentChars(json);
+    const vectorsDelivered = Array.isArray(json.data) && json.data.length > 0;
+    const checked = checkUsage(
+      readUsage(json.usage),
+      { chars, any: chars > 0 || vectorsDelivered },
+      plan,
+    );
+    const usage: Usage = checked.usage;
+    if (checked.fallback && json.usage !== undefined)
+      deps.log.warn("passerelle : usage amont inexploitable, repli estimé", {
+        requestId,
+        model: served.publicId,
+        endpoint,
+        stream: false,
+      });
     const result = await finalize({
       status: "ok",
       httpStatus: 200,
       tokens: usage,
+      usageSource: checked.source,
       stream: false,
     });
     const clean = sanitize(json, served.publicId);
@@ -1574,6 +1640,7 @@ function streamResponse(ctx: {
     errorCode?: string;
     tokens: Usage;
     stream: boolean;
+    usageSource?: UsageSource;
   }) => Promise<{ costMicro: bigint; replayed: boolean } | null>;
   upstreamAbort: AbortController;
   started: number;
@@ -1603,30 +1670,37 @@ function streamResponse(ctx: {
     try {
       let status: "ok" | "error" | "aborted";
       let tokens: Usage;
-      // Agents : un usage à zéro avec une réponse livrée compte comme absent (règle de repli, voir handleInference).
-      const reportedUnusable =
-        usage !== null &&
-        target.kind === "agent" &&
-        usage.prompt + usage.completion === 0 &&
-        chars > 0;
-      if (usage && !reportedUnusable) {
-        status = outcome === "done" ? "ok" : "aborted";
-        tokens = usage;
-      } else if (upstreamError && chars === 0 && !usage) {
+      let usageSource: UsageSource | undefined;
+      if (upstreamError && chars === 0 && !usage) {
         // Échec déclaré par l'amont avant toute livraison : rien n'est facturé, la réservation est libérée.
         status = "error";
         tokens = { prompt: 0, completion: 0, cached: 0 };
       } else {
-        // Flux interrompu sans usage (ou usage inexploitable) : l'amont a répondu 200, donc l'invite a été consommée.
-        // On facture au minimum l'invite estimée, plus ce qui a été livré (texte, raisonnement, arguments d'outils),
-        // même si le client coupe ou si rien n'a été reçu : l'état « erreur à zéro » ne vaut que pour un échec avant
-        // la première réponse de l'amont.
-        status = reportedUnusable && outcome === "done" ? "ok" : "aborted";
-        tokens = {
-          prompt: plan.promptEstimate,
-          completion: estimateOutputTokens(chars),
-          cached: 0,
-        };
+        // Règle de repli (audit F-03, F-13) : un usage absent, nul ou incomplet avec du contenu livré n'est jamais
+        // accepté comme exact. Flux interrompu sans usage : l'amont a répondu 200, donc l'invite a été consommée ;
+        // on facture au minimum l'invite estimée plus ce qui a été livré (texte, raisonnement, arguments d'outils).
+        // Un flux complet (`[DONE]` vu) sans bloc d'usage est « ok » : seule la provenance des jetons le distingue.
+        const checked = checkUsage(usage, { chars, any: chars > 0 }, plan);
+        status = outcome === "done" ? "ok" : "aborted";
+        tokens = checked.usage;
+        usageSource =
+          checked.source === "provider"
+            ? "provider"
+            : outcome === "cancelled"
+              ? "estimated_aborted"
+              : outcome === "failed"
+                ? "estimated_interrupted"
+                : "estimated_missing";
+        if (checked.fallback && usage)
+          deps.log.warn(
+            "passerelle : usage amont inexploitable, repli estimé",
+            {
+              requestId: ctx.requestId,
+              model: target.publicId,
+              endpoint: "chat.completions",
+              stream: true,
+            },
+          );
       }
       const finalInput = {
         status,
@@ -1638,6 +1712,7 @@ function streamResponse(ctx: {
               ? "client_closed"
               : "upstream_interrupted",
         tokens,
+        usageSource,
         stream: true,
       };
       // Le règlement est idempotent (par requête) : on réessaie après une panne brève de la base avant de
@@ -1714,7 +1789,7 @@ function streamResponse(ctx: {
           if (done) {
             buffer += decoder.decode();
             const last = buffer.trim().length > 0 ? processEvent(buffer) : null;
-            await settle(usage ? "done" : "failed");
+            await settle(usage || sawDone ? "done" : "failed");
             if (last) controller.enqueue(encoder.encode(last));
             controller.close();
             return;
@@ -1729,7 +1804,7 @@ function streamResponse(ctx: {
             if (piece) out += piece;
           }
           // Le règlement précède l'envoi de [DONE] : quand le client voit la fin du flux, le grand livre est à jour.
-          if (sawDone) await settle(usage ? "done" : "failed");
+          if (sawDone) await settle("done");
           if (out) {
             controller.enqueue(encoder.encode(out));
             return;

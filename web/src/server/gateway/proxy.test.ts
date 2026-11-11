@@ -651,8 +651,9 @@ describe("réservation, règlement et libération", () => {
     upstream = () =>
       upstreamOk({
         prompt_tokens: 1000,
-        completion_tokens: 0,
-        total_tokens: 1000,
+        // « Bonjour ! » est livré : une sortie à 0 serait refusée comme exacte (audit F-03), le bloc doit être cohérent.
+        completion_tokens: 3,
+        total_tokens: 1003,
         prompt_tokens_details: { cached_tokens: 400 },
       });
     // l'estimation d'entrée doit couvrir l'usage rapporté (elle est prudente : 1 jeton pour 3 octets)
@@ -663,8 +664,8 @@ describe("réservation, règlement et libération", () => {
       ),
       deps(),
     );
-    // pas de tarif de cache sur nexora/test-chat : l'entrée complète s'applique
-    expect(res.headers.get("x-nexora-cost-micro")).toBe("1000");
+    // pas de tarif de cache sur nexora/test-chat : l'entrée complète s'applique (1000 µCAD) + 3 jetons de sortie (9 µCAD)
+    expect(res.headers.get("x-nexora-cost-micro")).toBe("1009");
     const [ev] = await t.db
       .select()
       .from(usageEvents)

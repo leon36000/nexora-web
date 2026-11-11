@@ -5,6 +5,7 @@ import {
   releaseReservation,
   settleReservation,
   sql,
+  type UsageSource,
   type UsageStatus,
   usageEvents,
 } from "@nexora/db";
@@ -41,6 +42,8 @@ export interface FinalizeInput {
   upstreamPrice: PerMillion;
   /** Étiquette de la plage horaire appliquée, null = prix de base. */
   priceWindow?: string | null;
+  /** D'où viennent les jetons facturés (rapportés par l'amont ou estimés) ; « none » forcé pour un échec. */
+  usageSource?: UsageSource;
   /** Route qui a servi : 0 = principale, n = route de secours n. */
   routePosition?: number;
   reservationId: string;
@@ -59,6 +62,13 @@ export interface FinalizeResult {
   overageMicro: bigint;
   replayed: boolean;
 }
+
+/** Provenance des jetons : un échec ne facture rien (« none ») ; sans indication, inconnue (null). */
+const sourceOf = (input: {
+  status: string;
+  usageSource?: UsageSource;
+}): UsageSource | null =>
+  input.status === "error" ? "none" : (input.usageSource ?? null);
 
 /** Coût rapporté par l'amont, gardé à part du coût calculé ; null si l'amont n'en donne pas ou si la requête a échoué. */
 const reportedOf = (input: {
@@ -127,6 +137,7 @@ export async function finalizeRequest(
         priceWindow: input.priceWindow ?? null,
         routePosition: input.routePosition ?? 0,
         reportedCostUsdMicro: reportedOf(input),
+        usageSource: sourceOf(input),
         latencyMs: input.latencyMs,
         reservationId: input.reservationId,
       })
@@ -197,6 +208,7 @@ export async function finalizeHouseRequest(
         priceWindow: input.priceWindow ?? null,
         routePosition: input.routePosition ?? 0,
         reportedCostUsdMicro: reportedOf(input),
+        usageSource: sourceOf(input),
         latencyMs: input.latencyMs,
         reservationId: null,
       })
