@@ -2,6 +2,7 @@ import {
   type Database,
   eq,
   apiKeys as keysTable,
+  nanoToMicroRounded,
   releaseReservation,
   settleReservation,
   sql,
@@ -9,7 +10,7 @@ import {
   type UsageStatus,
   usageEvents,
 } from "@nexora/db";
-import { type PerMillion, requestCost } from "./pricing";
+import { type PerMillion, requestCost, requestCostNano } from "./pricing";
 
 /**
  * Règlement d'une requête (D1) : grand livre + événement d'usage, dans UNE transaction et de façon
@@ -18,6 +19,18 @@ import { type PerMillion, requestCost } from "./pricing";
  * clé (`spent_micro`) est ajustée par le grand livre, dans la même transaction. L'événement ne contient
  * que des métadonnées : jamais le contenu de la requête ni de la réponse.
  */
+
+/** Traces de l'appel amont : de quoi joindre l'événement à `LiteLLM_SpendLogs` et à la génération OpenRouter. */
+export interface UpstreamTrace {
+  /** `x-litellm-call-id` (clé de jointure vers `LiteLLM_SpendLogs.litellm_call_id`). */
+  callId?: string | null;
+  /** `id` de la génération amont (OpenRouter « gen-… »). */
+  generationId?: string | null;
+  /** `x-litellm-response-cost`, nano-USD. */
+  responseCostNano?: bigint | null;
+  /** Fournisseur servi (`provider` du corps de la réponse). */
+  provider?: string | null;
+}
 
 export interface FinalizeInput {
   requestId: string;
@@ -36,8 +49,13 @@ export interface FinalizeInput {
     cached: number;
     cacheWrite?: number;
     reasoning?: number;
-    reportedUsdMicro?: number;
+    /** Coût rapporté par l'amont (`usage.cost`, `usage.estimated_cost`), nano-USD, converti sans flottant. */
+    reportedUsdNano?: bigint;
   };
+  /** Ce qu'il faut pour rapprocher l'événement de l'amont (jamais montré au client). */
+  upstream?: UpstreamTrace;
+  /** Taux USD → CAD (micro-CAD par dollar) du catalogue en vigueur : figé par événement. */
+  fxUsdToCadMicro?: bigint | null;
   price: PerMillion;
   upstreamPrice: PerMillion;
   /** Étiquette de la plage horaire appliquée, null = prix de base. */
@@ -73,11 +91,34 @@ const sourceOf = (input: {
 /** Coût rapporté par l'amont, gardé à part du coût calculé ; null si l'amont n'en donne pas ou si la requête a échoué. */
 const reportedOf = (input: {
   status: string;
-  tokens: { reportedUsdMicro?: number };
+  tokens: { reportedUsdNano?: bigint };
 }): bigint | null =>
-  input.status === "error" || input.tokens.reportedUsdMicro === undefined
+  input.status === "error" || input.tokens.reportedUsdNano === undefined
     ? null
-    : BigInt(input.tokens.reportedUsdMicro);
+    : input.tokens.reportedUsdNano;
+
+/**
+ * Colonnes de rapprochement communes aux deux règlements : coût rapporté en nano-USD (et en micro-USD arrondi pour
+ * les lecteurs historiques), traces de l'appel amont, coût amont calculé en nano-USD et change figé.
+ */
+function reconciliationColumns(input: Omit<FinalizeInput, "reservationId">) {
+  const failed = input.status === "error";
+  const reported = reportedOf(input);
+  const trace = input.upstream;
+  return {
+    reportedCostUsdNano: reported,
+    reportedCostUsdMicro:
+      reported === null ? null : nanoToMicroRounded(reported),
+    upstreamCostUsdNano: failed
+      ? 0n
+      : requestCostNano(input.tokens, input.upstreamPrice),
+    litellmCallId: trace?.callId ?? null,
+    litellmResponseCostNano: failed ? null : (trace?.responseCostNano ?? null),
+    upstreamGenerationId: trace?.generationId ?? null,
+    upstreamProvider: trace?.provider ?? null,
+    fxUsdToCadMicro: input.fxUsdToCadMicro ?? null,
+  };
+}
 
 export async function finalizeRequest(
   db: Database,
@@ -136,7 +177,7 @@ export async function finalizeRequest(
         priceCacheWriteMicro: input.price.cacheWrite ?? null,
         priceWindow: input.priceWindow ?? null,
         routePosition: input.routePosition ?? 0,
-        reportedCostUsdMicro: reportedOf(input),
+        ...reconciliationColumns(input),
         usageSource: sourceOf(input),
         latencyMs: input.latencyMs,
         reservationId: input.reservationId,
@@ -207,7 +248,7 @@ export async function finalizeHouseRequest(
         priceCacheWriteMicro: input.price.cacheWrite ?? null,
         priceWindow: input.priceWindow ?? null,
         routePosition: input.routePosition ?? 0,
-        reportedCostUsdMicro: reportedOf(input),
+        ...reconciliationColumns(input),
         usageSource: sourceOf(input),
         latencyMs: input.latencyMs,
         reservationId: null,

@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import type { Database, UsageSource } from "@nexora/db";
-import { reserve } from "@nexora/db";
+import { reserve, usdToNano } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { readLimitedBytes } from "@nexora/net";
 import { parseRerankResults } from "@nexora/rag";
@@ -32,7 +32,11 @@ import type {
   SnapshotProvider,
   SnapshotRoute,
 } from "./snapshot";
-import { finalizeHouseRequest, finalizeRequest } from "./usage";
+import {
+  finalizeHouseRequest,
+  finalizeRequest,
+  type UpstreamTrace,
+} from "./usage";
 
 /**
  * Couche publique `/v1/*` compatible OpenAI (D1) : authentifie la clé Nexora, réserve le coût
@@ -398,8 +402,8 @@ interface Usage {
   cacheWrite?: number;
   /** Jetons de raisonnement (inclus dans `completion`). */
   reasoning?: number;
-  /** Coût rapporté par l'amont (OpenRouter : `usage.cost`), micro-USD ; jamais montré au client. */
-  reportedUsdMicro?: number;
+  /** Coût rapporté par l'amont (OpenRouter `usage.cost`, DeepInfra `usage.estimated_cost`), nano-USD ; jamais montré au client. */
+  reportedUsdNano?: bigint;
   /** Ni `completion_tokens` ni `total_tokens` : la sortie est indéterminée (comptée 0 par défaut, jamais acceptée telle quelle). */
   completionMissing?: boolean;
 }
@@ -428,10 +432,9 @@ function readUsage(raw: unknown): Usage | null {
     nn(details.cache_creation_tokens) ??
     nn(raw.cache_creation_input_tokens) ??
     0;
-  const cost =
-    typeof raw.cost === "number" && Number.isFinite(raw.cost) && raw.cost >= 0
-      ? Math.round(raw.cost * 1_000_000)
-      : null;
+  // Coût amont en nano-USD, converti sans flottant (audit F-07) : « cost » (OpenRouter), à défaut « estimated_cost »
+  // (DeepInfra, jusqu'ici ignoré) ; un nombre ou une chaîne décimale ; null (jamais 0) si absent.
+  const cost = usdToNano(raw.cost ?? raw.estimated_cost);
   return {
     prompt,
     completion,
@@ -439,10 +442,27 @@ function readUsage(raw: unknown): Usage | null {
     cacheWrite: Math.min(written, prompt - cached),
     reasoning: Math.min(nn(out.reasoning_tokens) ?? 0, completion),
     ...(completionMissing ? { completionMissing: true } : {}),
-    ...(cost !== null && Number.isSafeInteger(cost)
-      ? { reportedUsdMicro: cost }
-      : {}),
+    ...(cost !== null ? { reportedUsdNano: cost } : {}),
   };
+}
+
+const MAX_TRACE_LENGTH = 200;
+const traceText = (v: unknown): string | null =>
+  typeof v === "string" && v.trim().length > 0
+    ? v.trim().slice(0, MAX_TRACE_LENGTH)
+    : null;
+
+/** En-têtes de LiteLLM : identifiant d'appel (clé de `LiteLLM_SpendLogs`) et coût qu'il a calculé. */
+function captureLitellmHeaders(upstream: Response, trace: UpstreamTrace): void {
+  trace.callId = traceText(upstream.headers.get("x-litellm-call-id"));
+  const cost = upstream.headers.get("x-litellm-response-cost");
+  trace.responseCostNano = cost === null ? null : usdToNano(cost);
+}
+
+/** Identifiant de génération (OpenRouter « gen-… ») et fournisseur servi : corps complet ou fragment d'un flux. */
+function captureGeneration(obj: Json, trace: UpstreamTrace): void {
+  trace.generationId ??= traceText(obj.id);
+  trace.provider ??= traceText(obj.provider);
 }
 
 /**
@@ -485,8 +505,8 @@ function checkUsage(
       cached: promptBad ? 0 : reported.cached,
       cacheWrite: promptBad ? 0 : (reported.cacheWrite ?? 0),
       reasoning: Math.min(reported.reasoning ?? 0, completion),
-      ...(reported.reportedUsdMicro !== undefined
-        ? { reportedUsdMicro: reported.reportedUsdMicro }
+      ...(reported.reportedUsdNano !== undefined
+        ? { reportedUsdNano: reported.reportedUsdNano }
         : {}),
     },
     source: "estimated_missing",
@@ -811,6 +831,8 @@ interface Target {
   routes: SnapshotRoute[];
   /** Frais par exécution (agents), en plus des jetons. */
   runFee: bigint;
+  /** Taux USD → CAD du catalogue en vigueur (micro-CAD par dollar), figé dans l'événement ; null pour un agent. */
+  fxUsdToCadMicro: bigint | null;
 }
 
 const IGNORED_ROLES = new Set(["system", "developer"]);
@@ -966,6 +988,8 @@ async function handleInference(
   let settled = false;
   let target: Target | undefined;
   let streamHandedOff = false;
+  // Traces de l'appel amont (appel LiteLLM, génération, coût rapporté, fournisseur) : de quoi réconcilier l'événement.
+  const trace: UpstreamTrace = {};
 
   const finalize = async (input: {
     status: "ok" | "error" | "aborted";
@@ -990,6 +1014,8 @@ async function handleInference(
       errorCode: input.errorCode,
       tokens: input.tokens,
       usageSource: input.usageSource,
+      upstream: trace,
+      fxUsdToCadMicro: target.fxUsdToCadMicro,
       price: target.price,
       upstreamPrice: routeUpstreamPrice(target, routePosition),
       priceWindow: target.window,
@@ -1131,6 +1157,7 @@ async function handleInference(
         window: null,
         routes: [],
         runFee: price.perRunCadMicro,
+        fxUsdToCadMicro: null,
       };
       // Le plafond d'exécution borne le montant RÉSERVÉ : exécution + plafond de jetons au prix le plus élevé. Le
       // règlement est au coût réel : un dépassement du plafond est facturé (ruling S7 « Nexora absorbe » abandonné).
@@ -1170,6 +1197,9 @@ async function handleInference(
         ...pricesAt(model, deps.now()),
         routes: model.routes ?? [],
         runFee: 0n,
+        fxUsdToCadMicro: version.snapshot.fx
+          ? BigInt(version.snapshot.fx.usdToCadMicro)
+          : null,
       };
     }
     const served = target;
@@ -1287,6 +1317,7 @@ async function handleInference(
       served.kind === "model"
         ? routePositionOf(upstream.headers.get("x-litellm-model-id"))
         : 0;
+    if (served.kind === "model") captureLitellmHeaders(upstream, trace);
     if (!upstream.ok) {
       // Le corps de l'erreur amont n'est jamais relayé : on libère la connexion sans le lire.
       await upstream.body?.cancel().catch(() => undefined);
@@ -1319,6 +1350,7 @@ async function handleInference(
         started,
         requestId,
         key,
+        trace,
       });
     }
 
@@ -1352,6 +1384,7 @@ async function handleInference(
         headers,
       );
     }
+    if (served.kind === "model") captureGeneration(json, trace);
     if (endpoint === "rerank" && plan.rerank) {
       const ranked = parseRerankResults(json, plan.rerank.documents.length);
       if (!ranked) {
@@ -1646,6 +1679,7 @@ function streamResponse(ctx: {
   started: number;
   requestId: string;
   key: ApiKeyRow;
+  trace: UpstreamTrace;
 }): Response {
   const { plan, deps, target } = ctx;
   const upstreamBody = ctx.upstream.body;
@@ -1766,6 +1800,7 @@ function streamResponse(ctx: {
       return null; // fragment illisible : on ne transmet pas ce qu'on ne comprend pas
     }
     if (!isObject(obj)) return null;
+    if (target.kind === "model") captureGeneration(obj, ctx.trace);
     if (isObject(obj.error)) upstreamError = true;
     const u = readUsage(obj.usage);
     if (u) usage = u;

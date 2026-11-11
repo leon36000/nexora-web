@@ -39,6 +39,25 @@ export interface PerMillion {
 
 /** Coût d'une requête : une seule division, donc un seul arrondi. */
 export function requestCost(usage: Usage, price: PerMillion): bigint {
+  return requestCostDivided(usage, price, PER_MILLION);
+}
+
+/**
+ * Coût amont d'une requête en NANO-USD (prix amont en micro-USD par million de jetons) : mille fois plus fin que
+ * `requestCost`, donc comparable sans bruit d'arrondi au coût rapporté par l'amont (audit F-07).
+ */
+export function requestCostNano(
+  usage: Usage,
+  upstreamPrice: PerMillion,
+): bigint {
+  return requestCostDivided(usage, upstreamPrice, 1000n);
+}
+
+function requestCostDivided(
+  usage: Usage,
+  price: PerMillion,
+  divisor: bigint,
+): bigint {
   assertTokens(usage.prompt);
   assertTokens(usage.completion);
   assertTokens(usage.cached);
@@ -51,7 +70,7 @@ export function requestCost(usage: Usage, price: PerMillion): bigint {
     BigInt(cached) * (price.cache ?? price.input) +
     BigInt(written) * (price.cacheWrite ?? price.input) +
     BigInt(usage.completion) * price.output;
-  return ceilDiv(total, PER_MILLION);
+  return ceilDiv(total, divisor);
 }
 
 /**

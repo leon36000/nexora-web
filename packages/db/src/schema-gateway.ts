@@ -543,8 +543,26 @@ export const usageEvents = pgTable(
     routePosition: integer("route_position").notNull().default(0),
     /** Coût rapporté par l'amont pour la requête (OpenRouter : `usage.cost`), micro-USD ; null = non rapporté. */
     reportedCostUsdMicro: micro("reported_cost_usd_micro"),
+    /**
+     * Coût rapporté par l'amont (OpenRouter : `usage.cost` ; DeepInfra : `usage.estimated_cost`) en NANO-USD, converti
+     * sans flottant ; null = non rapporté (jamais 0 pour « absent »). Remplace `reported_cost_usd_micro` (arrondi, F-07),
+     * conservé pour les lecteurs existants et le retour arrière.
+     */
+    reportedCostUsdNano: micro("reported_cost_usd_nano"),
+    /** Coût amont calculé avec nos prix de route, en nano-USD (comparable au coût rapporté sans bruit d'arrondi). */
+    upstreamCostUsdNano: micro("upstream_cost_usd_nano"),
     /** Provenance des jetons facturés (voir `USAGE_SOURCES`) ; null avant la migration. */
     usageSource: text("usage_source").$type<UsageSource>(),
+    /** Identifiant d'appel LiteLLM (`x-litellm-call-id`) : clé de jointure vers `LiteLLM_SpendLogs.litellm_call_id`. */
+    litellmCallId: text("litellm_call_id"),
+    /** Coût rapporté par LiteLLM (`x-litellm-response-cost`), nano-USD ; second coût amont, indépendant de `usage.cost`. */
+    litellmResponseCostNano: micro("litellm_response_cost_nano"),
+    /** Identifiant de génération amont (OpenRouter « gen-… » : `id` du corps ou du premier fragment du flux). */
+    upstreamGenerationId: text("upstream_generation_id"),
+    /** Fournisseur réellement servi, tel que rapporté par l'amont (`provider` du corps) ; jamais montré au client. */
+    upstreamProvider: text("upstream_provider"),
+    /** Taux USD → CAD (micro-CAD par dollar) du catalogue en vigueur à la requête : change historisé par événement. */
+    fxUsdToCadMicro: micro("fx_usd_to_cad_micro"),
     latencyMs: integer("latency_ms").notNull().default(0),
     reservationId: uuid("reservation_id"),
     /** WebPilot : unités facturées (pages lues sans navigateur, pages rendues par navigateur, minutes de session). */
@@ -562,6 +580,18 @@ export const usageEvents = pgTable(
     uniqueIndex("usage_events_request_unique").on(t.requestId),
     index("usage_events_org_idx").on(t.organizationId, t.createdAt),
     index("usage_events_key_idx").on(t.apiKeyId, t.createdAt),
+    // Jointures de la réconciliation : seulement les lignes qui portent l'identifiant (les autres n'ont rien à joindre).
+    index("usage_events_generation_idx")
+      .on(t.upstreamGenerationId)
+      .where(sql`${t.upstreamGenerationId} IS NOT NULL`),
+    index("usage_events_litellm_call_idx")
+      .on(t.litellmCallId)
+      .where(sql`${t.litellmCallId} IS NOT NULL`),
+    index("usage_events_reconcilable_idx")
+      .on(t.createdAt)
+      .where(
+        sql`${t.status} <> 'error' AND (${t.litellmCallId} IS NOT NULL OR ${t.upstreamGenerationId} IS NOT NULL)`,
+      ),
     check(
       "usage_events_status_check",
       sql`${t.status} IN (${inList(USAGE_STATUSES)})`,
