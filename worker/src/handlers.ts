@@ -10,6 +10,10 @@ import { type CodeSweepDeps, registerCodeHandlers } from "./code/handlers.ts";
 import { createNotifyHandler, mailerFromEnv } from "./contact-notify.ts";
 import { registerLedgerHandlers } from "./ledger-handlers.ts";
 import { indexClientFromEnv, registerRagHandlers } from "./rag/handlers.ts";
+import {
+  reconcileSourcesFromEnv,
+  registerReconcileHandlers,
+} from "./reconcile-handlers.ts";
 import { HandlerRegistry } from "./registry.ts";
 import { registerSeoHandlers } from "./seo/handlers.ts";
 import { registerVpsHandlers } from "./vps-handlers.ts";
@@ -55,6 +59,22 @@ export function defaultRegistry(
     registerSeoHandlers(registry, { db: deps.db, log: deps.log });
   if (deps.db && deps.log)
     registerLedgerHandlers(registry, { db: deps.db, log: deps.log });
+  if (deps.db && deps.log) {
+    // Réconciliation quotidienne avec l'amont (audit de facturation) : sources selon l'environnement, alerte par courriel.
+    const mailer = mailerFromEnv();
+    const to = process.env.VPS_ALERT_TO ?? process.env.CONTACT_NOTIFY_TO;
+    const from = process.env.SMTP_FROM?.trim() || "site@nexora.dev";
+    registerReconcileHandlers(registry, {
+      db: deps.db,
+      log: deps.log,
+      ...reconcileSourcesFromEnv(deps.db, deps.log),
+      notify:
+        mailer && to
+          ? (subject, text) =>
+              mailer.send({ from, to, replyTo: from, subject, text })
+          : undefined,
+    });
+  }
   if (deps.db && deps.log)
     registerBalanceAlertHandler(registry, {
       db: deps.db,

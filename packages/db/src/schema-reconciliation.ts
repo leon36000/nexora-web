@@ -15,7 +15,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { organizations } from "./schema-auth.ts";
-import { apiKeys } from "./schema-gateway.ts";
+import { apiKeys, usageEvents } from "./schema-gateway.ts";
 
 const ts = (name: string) => timestamp(name, { withTimezone: true });
 const micro = (name: string) => bigint(name, { mode: "bigint" });
@@ -171,6 +171,89 @@ export const reconciliationFindings = pgTable(
     check(
       "reconciliation_findings_status_check",
       sql`${t.status} IN (${inList(FINDING_STATUSES)})`,
+    ),
+  ],
+);
+
+/**
+ * Résultat de la réconciliation d'un événement d'usage avec l'amont : conforme, écart (jetons ou coût) ou rien chez
+ * l'amont. Table à part : `usage_events` est en ajout seulement (déclencheur), on n'y réécrit jamais rien. Une ligne par
+ * événement (la dernière réconciliation), rejouable.
+ */
+export const RECONCILE_STATUSES = [
+  "ok",
+  "mismatch",
+  "missing_upstream",
+] as const;
+export type ReconcileStatus = (typeof RECONCILE_STATUSES)[number];
+
+export const UPSTREAM_SOURCES = ["openrouter", "litellm"] as const;
+export type UpstreamSource = (typeof UPSTREAM_SOURCES)[number];
+
+export const usageReconciliations = pgTable(
+  "usage_reconciliations",
+  {
+    usageEventId: uuid("usage_event_id")
+      .primaryKey()
+      .references(() => usageEvents.id, { onDelete: "cascade" }),
+    requestId: text("request_id").notNull(),
+    runId: uuid("run_id"),
+    status: text("status").$type<ReconcileStatus>().notNull(),
+    /** Source amont qui a servi à la comparaison ; null si rien n'a été trouvé. */
+    source: text("source").$type<UpstreamSource>(),
+    upstreamCostUsdNano: micro("upstream_cost_usd_nano"),
+    /** Jetons NATIFS de l'amont (OpenRouter `native_tokens_*`) ou ceux de LiteLLM (`LiteLLM_SpendLogs`). */
+    nativePromptTokens: integer("native_prompt_tokens"),
+    nativeCompletionTokens: integer("native_completion_tokens"),
+    nativeReasoningTokens: integer("native_reasoning_tokens"),
+    nativeCachedTokens: integer("native_cached_tokens"),
+    upstreamProvider: text("upstream_provider"),
+    /** Génération annulée côté amont (OpenRouter `cancelled`). */
+    cancelled: boolean("cancelled").notNull().default(false),
+    reconciledAt: ts("reconciled_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("usage_reconciliations_status_idx").on(t.status, t.reconciledAt),
+    check(
+      "usage_reconciliations_status_check",
+      sql`${t.status} IN (${inList(RECONCILE_STATUSES)})`,
+    ),
+  ],
+);
+
+export const RECONCILIATION_RUN_STATUSES = [
+  "running",
+  "ok",
+  "alert",
+  "failed",
+] as const;
+export type ReconciliationRunStatus =
+  (typeof RECONCILIATION_RUN_STATUSES)[number];
+
+/** Journal des exécutions du job `reconcile.daily` : une ligne par exécution (rejeu compris), avec son résumé sans contenu. */
+export const reconciliationRuns = pgTable(
+  "reconciliation_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Jour UTC réconcilié (AAAA-MM-JJ) : le jour de l'amont est UTC. */
+    day: date("day", { mode: "string" }).notNull(),
+    status: text("status")
+      .$type<ReconciliationRunStatus>()
+      .notNull()
+      .default("running"),
+    startedAt: ts("started_at").notNull().defaultNow(),
+    finishedAt: ts("finished_at"),
+    /** Comptes seulement : lignes comparées, écarts par type, sources indisponibles, alerte. */
+    summary: jsonb("summary")
+      .$type<Record<string, unknown>>()
+      .notNull()
+      .default({}),
+  },
+  (t) => [
+    index("reconciliation_runs_day_idx").on(t.day, t.startedAt),
+    check(
+      "reconciliation_runs_status_check",
+      sql`${t.status} IN (${inList(RECONCILIATION_RUN_STATUSES)})`,
     ),
   ],
 );
