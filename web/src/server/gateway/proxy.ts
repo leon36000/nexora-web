@@ -519,13 +519,14 @@ async function readBody(
   return { ok: true, text: new TextDecoder().decode(read.bytes) };
 }
 
-/** Jetons facturés quand le client annule avant la fin de la réponse : invite estimée (+ sortie demandée hors flux). */
+/**
+ * Jetons facturés quand le client annule avant d'avoir reçu la réponse : l'invite estimée, rien de plus (audit F-02).
+ * Supposer que l'amont « a pu continuer » jusqu'à `max_tokens` facturait un abandon jusqu'à 105 fois le coût de la
+ * même requête menée à terme ; l'appel amont est d'ailleurs coupé par le signal d'annulation. Ce que l'amont a
+ * réellement produit avant la coupure est connu par la réconciliation (identifiant d'appel), qui signale l'écart.
+ */
 function abortedTokens(plan: Plan): Usage {
-  return {
-    prompt: plan.promptEstimate,
-    completion: plan.stream ? 0 : plan.maxOutput,
-    cached: 0,
-  };
+  return { prompt: plan.promptEstimate, completion: 0, cached: 0 };
 }
 
 interface Plan {
@@ -1263,8 +1264,7 @@ async function handleInference(
         status: aborted ? "aborted" : "error",
         httpStatus: aborted ? 499 : 502,
         errorCode: aborted ? "client_closed" : "upstream_unreachable",
-        // Le client a annulé : l'amont a pu continuer à produire. On facture l'invite estimée (flux) ou l'invite plus
-        // la sortie demandée (non diffusé, bornée par max_tokens), comme pour un flux interrompu.
+        // Le client a annulé : on facture l'invite estimée seulement (audit F-02), que la requête soit diffusée ou non.
         tokens: aborted
           ? abortedTokens(plan)
           : { prompt: 0, completion: 0, cached: 0 },
@@ -1330,7 +1330,7 @@ async function handleInference(
       json = null;
     }
     if (!isObject(json)) {
-      // Annulation du client pendant la lecture de la réponse : l'amont a répondu, la sortie est due.
+      // Annulation du client pendant la lecture de la réponse : l'invite estimée seulement (audit F-02).
       const aborted = request.signal.aborted;
       await finalize({
         status: aborted ? "aborted" : "error",

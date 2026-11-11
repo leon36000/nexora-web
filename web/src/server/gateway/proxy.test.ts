@@ -1077,7 +1077,7 @@ describe("flux coupé avant le bloc d'usage : ce qui a été livré ou consommé
   });
 });
 
-describe("le client annule avant la réponse de l'amont : l'amont a pu continuer, l'invite est facturée", () => {
+describe("le client annule avant la réponse de l'amont : l'invite estimée est facturée (jamais max_tokens)", () => {
   const eventOf = async (org: string) =>
     (
       await t.db
@@ -1105,7 +1105,7 @@ describe("le client annule avant la réponse de l'amont : l'amont a pu continuer
       signal,
     });
 
-  it("requête non diffusée : invite estimée + max_tokens demandé", async () => {
+  it("requête non diffusée : invite estimée seulement, max_tokens n'est plus facturé (audit F-02)", async () => {
     const c = await client();
     hangingUpstream();
     const ac = new AbortController();
@@ -1121,18 +1121,20 @@ describe("le client annule avant la réponse de l'amont : l'amont a pu continuer
     expect(e?.status).toBe("aborted");
     expect(e?.errorCode).toBe("client_closed");
     expect(e?.promptTokens).toBeGreaterThan(0);
-    expect(e?.completionTokens).toBe(200);
+    // Test aligné : il figeait « invite + max_tokens (200) » sans mesure ; or l'appel amont est coupé et la même
+    // requête menée à terme ne produit en général qu'une fraction du plafond (surfacturation jusqu'à ×105 mesurée).
+    expect(e?.completionTokens).toBe(0);
     expect(e?.costMicro).toBe(
       requestCost(
         {
           prompt: e?.promptTokens ?? 0,
-          completion: 200,
+          completion: 0,
           cached: 0,
         },
         PRICE,
       ),
     );
-    expect(e?.costMicro).toBeGreaterThan(600n);
+    expect(e?.costMicro).toBeGreaterThan(0n);
     expect(await getAccount(t.db, c.org)).toMatchObject({
       balanceMicro: 10n * M - (e?.costMicro ?? 0n),
       heldMicro: 0n,
