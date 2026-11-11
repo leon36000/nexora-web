@@ -1,6 +1,6 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import type { Database, UsageSource } from "@nexora/db";
-import { reserve, usdToNano } from "@nexora/db";
+import { recordIntent, reserve, usdToNano } from "@nexora/db";
 import type { Logger } from "@nexora/log";
 import { readLimitedBytes } from "@nexora/net";
 import { parseRerankResults } from "@nexora/rag";
@@ -17,6 +17,7 @@ import { type CatalogVersion, getPublishedCatalog } from "./catalog";
 import { E, openAiError } from "./errors";
 import { estimateOutputTokens, estimateTokens } from "./estimate";
 import { billingModeOf } from "./house";
+import { type InflightEntry, trackInflight } from "./inflight";
 import { type ApiKeyRow, type AuthResult, authenticateApiKey } from "./keys";
 import { routePositionOf } from "./litellm";
 import {
@@ -24,6 +25,8 @@ import {
   costMicro,
   formatMicro,
   type PerMillion,
+  requestCost,
+  requestCostNano,
 } from "./pricing";
 import { applyPrivacy } from "./privacy-gate";
 import { type PublicModel, toPublicModel } from "./public";
@@ -454,7 +457,11 @@ const traceText = (v: unknown): string | null =>
 
 /** En-têtes de LiteLLM : identifiant d'appel (clé de `LiteLLM_SpendLogs`) et coût qu'il a calculé. */
 function captureLitellmHeaders(upstream: Response, trace: UpstreamTrace): void {
-  trace.callId = traceText(upstream.headers.get("x-litellm-call-id"));
+  // L'en-tête renvoyé fait foi ; à défaut, l'identifiant que la passerelle a envoyé (déjà dans `trace`) reste.
+  trace.callId =
+    traceText(upstream.headers.get("x-litellm-call-id")) ??
+    trace.callId ??
+    null;
   const cost = upstream.headers.get("x-litellm-response-cost");
   trace.responseCostNano = cost === null ? null : usdToNano(cost);
 }
@@ -990,6 +997,9 @@ async function handleInference(
   let streamHandedOff = false;
   // Traces de l'appel amont (appel LiteLLM, génération, coût rapporté, fournisseur) : de quoi réconcilier l'événement.
   const trace: UpstreamTrace = {};
+  // Requête en vol (arrêt propre) : retirée du registre au règlement ; `shuttingDown` : le serveur s'arrête.
+  let untrack: (() => void) | undefined;
+  let shuttingDown = false;
 
   const finalize = async (input: {
     status: "ok" | "error" | "aborted";
@@ -1025,6 +1035,7 @@ async function handleInference(
       latencyMs: Math.round(performance.now() - started),
     });
     settled = true;
+    untrack?.();
     // Dérive de l'estimation : le coût réel (facturé en entier) dépasse fortement la réservation. Aucun contenu.
     if (!result.replayed && result.costMicro > reservation.amount * 2n)
       deps.log.warn("passerelle : coût réel très supérieur à la réservation", {
@@ -1233,16 +1244,59 @@ async function handleInference(
     if (house) {
       reservation = { id: "house", amount: 0n };
     }
-    // Plafond de la clé et grand livre dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
+    // Journal d'intention (audit F-01) : l'identifiant d'appel est fixé ICI, envoyé à LiteLLM (`x-litellm-call-id`,
+    // honoré par la v1.106.2) et écrit AVANT l'appel, dans la transaction de la réservation. Un arrêt du serveur
+    // laisse donc une trace durable que la reprise du grand livre sait régler. Agents hébergés : aucune dépense LiteLLM.
+    const callId = served.kind === "model" ? randomUUID() : null;
+    trace.callId = callId;
+    const promptOnly = {
+      prompt: plan.promptEstimate,
+      completion: 0,
+      cached: 0,
+    };
+    const intentFor = (reservationId: string | null) => ({
+      requestId,
+      organizationId: caller.organizationId,
+      apiKeyId: caller.id,
+      reservationId,
+      modelPublicId: served.publicId,
+      endpoint,
+      configVersion: served.configVersion,
+      stream: plan.stream,
+      litellmCallId: callId,
+      promptEstimate: plan.promptEstimate,
+      // Ce que la reprise facture à une requête perdue : l'invite estimée, jamais plus que la réservation.
+      recoveryCostMicro:
+        reservationId === null || requestCost(promptOnly, price) <= amount
+          ? requestCost(promptOnly, price)
+          : amount,
+      recoveryUpstreamCostUsdNano: requestCostNano(
+        promptOnly,
+        routeUpstreamPrice(served, 0),
+      ),
+      priceInputMicro: price.input,
+      priceOutputMicro: price.output,
+      priceCacheMicro: price.cache,
+      priceCacheWriteMicro: price.cacheWrite ?? null,
+      priceWindow: served.window,
+      fxUsdToCadMicro: served.fxUsdToCadMicro,
+    });
+    // Plafond de la clé, grand livre et intention dans UNE transaction : un arrêt entre les deux ne laisse rien de gonflé.
     const reserved = house
       ? null
-      : await reserve(db, {
-          organizationId: key.organizationId,
-          amountMicro: amount,
-          idempotencyKey: `gw:${requestId}`,
-          configVersion: served.configVersion,
-          apiKeyId: key.id,
+      : await db.transaction(async (tx) => {
+          const result = await reserve(tx, {
+            organizationId: caller.organizationId,
+            amountMicro: amount,
+            idempotencyKey: `gw:${requestId}`,
+            configVersion: served.configVersion,
+            apiKeyId: caller.id,
+          });
+          if (result.status === "reserved")
+            await recordIntent(tx, intentFor(result.reservation.id));
+          return result;
         });
+    if (house) await recordIntent(db, intentFor(null));
     if (reserved) {
       if (reserved.status === "key_cap_exceeded") return E.keyCap(rateHeaders);
       if (
@@ -1265,6 +1319,17 @@ async function handleInference(
     // Appel de l'amont (LiteLLM avec la clé maîtresse, ou l'instance WorkStudio avec sa clé d'espace). Le client
     // ne voit jamais ces clés.
     const upstreamAbort = new AbortController();
+    // Arrêt propre : tant que l'appel amont n'a pas répondu, `shutdown` le coupe ; la requête se règle alors par le
+    // chemin « annulée » (invite estimée) avec le code « server_shutdown ». Un flux le remplace par le sien.
+    const flight: InflightEntry = {
+      requestId,
+      shutdown: async () => {
+        shuttingDown = true;
+        upstreamAbort.abort();
+        while (!settled) await new Promise((r) => setTimeout(r, 20));
+      },
+    };
+    untrack = trackInflight(flight);
     const signal = AbortSignal.any([
       request.signal,
       upstreamAbort.signal,
@@ -1282,6 +1347,7 @@ async function handleInference(
           authorization: upstreamAuthorization,
           "content-type": "application/json",
           accept: plan.stream ? "text/event-stream" : "application/json",
+          ...(callId ? { "x-litellm-call-id": callId } : {}),
         },
         body: JSON.stringify(plan.upstreamBody),
         signal,
@@ -1289,11 +1355,15 @@ async function handleInference(
         redirect: "error",
       });
     } catch {
-      const aborted = request.signal.aborted;
+      const aborted = request.signal.aborted || shuttingDown;
       await finalize({
         status: aborted ? "aborted" : "error",
-        httpStatus: aborted ? 499 : 502,
-        errorCode: aborted ? "client_closed" : "upstream_unreachable",
+        httpStatus: aborted ? (shuttingDown ? 503 : 499) : 502,
+        errorCode: aborted
+          ? shuttingDown
+            ? "server_shutdown"
+            : "client_closed"
+          : "upstream_unreachable",
         // Le client a annulé : on facture l'invite estimée seulement (audit F-02), que la requête soit diffusée ou non.
         tokens: aborted
           ? abortedTokens(plan)
@@ -1301,6 +1371,7 @@ async function handleInference(
         usageSource: aborted ? "estimated_aborted" : undefined,
         stream: plan.stream,
       });
+      if (shuttingDown) return E.unavailable(headers);
       return aborted
         ? new Response(null, { status: 499 })
         : E.upstream(
@@ -1351,6 +1422,7 @@ async function handleInference(
         requestId,
         key,
         trace,
+        flight,
       });
     }
 
@@ -1363,17 +1435,22 @@ async function handleInference(
     }
     if (!isObject(json)) {
       // Annulation du client pendant la lecture de la réponse : l'invite estimée seulement (audit F-02).
-      const aborted = request.signal.aborted;
+      const aborted = request.signal.aborted || shuttingDown;
       await finalize({
         status: aborted ? "aborted" : "error",
-        httpStatus: aborted ? 499 : 502,
-        errorCode: aborted ? "client_closed" : "invalid_upstream_response",
+        httpStatus: aborted ? (shuttingDown ? 503 : 499) : 502,
+        errorCode: aborted
+          ? shuttingDown
+            ? "server_shutdown"
+            : "client_closed"
+          : "invalid_upstream_response",
         tokens: aborted
           ? abortedTokens(plan)
           : { prompt: 0, completion: 0, cached: 0 },
         usageSource: aborted ? "estimated_aborted" : undefined,
         stream: false,
       });
+      if (shuttingDown) return E.unavailable(headers);
       if (aborted) return new Response(null, { status: 499 });
       return E.upstream(
         502,
@@ -1680,6 +1757,8 @@ function streamResponse(ctx: {
   requestId: string;
   key: ApiKeyRow;
   trace: UpstreamTrace;
+  /** Requête en vol : le flux y installe son propre arrêt propre. */
+  flight: InflightEntry;
 }): Response {
   const { plan, deps, target } = ctx;
   const upstreamBody = ctx.upstream.body;
@@ -1690,17 +1769,23 @@ function streamResponse(ctx: {
   let buffer = "";
   let usage: Usage | null = null;
   let chars = 0;
-  let closed = false;
   let sawDone = false;
   /** Le client a fermé la connexion : prime sur la fin de lecture que cette fermeture provoque elle-même. */
   let clientCancelled = false;
   /** L'amont a signalé une erreur dans le flux (événement « error ») : un échec déclaré, pas une coupure. */
   let upstreamError = false;
+  /** Le serveur s'arrête (drain) : le flux est réglé de force, avec le code « server_shutdown ». */
+  let shuttingDown = false;
 
-  const settle = async (outcome: "done" | "cancelled" | "failed") => {
-    if (closed) return;
-    closed = true;
+  // Un seul règlement par flux ; tout appelant ultérieur (arrêt propre compris) attend CE règlement.
+  let settling: Promise<void> | null = null;
+  const settle = (outcome: "done" | "cancelled" | "failed" | "shutdown") =>
+    (settling ??= settleOnce(outcome));
+  const settleOnce = async (
+    outcome: "done" | "cancelled" | "failed" | "shutdown",
+  ) => {
     if (clientCancelled && outcome !== "done") outcome = "cancelled";
+    else if (shuttingDown && outcome !== "done") outcome = "shutdown";
     try {
       let status: "ok" | "error" | "aborted";
       let tokens: Usage;
@@ -1720,7 +1805,7 @@ function streamResponse(ctx: {
         usageSource =
           checked.source === "provider"
             ? "provider"
-            : outcome === "cancelled"
+            : outcome === "cancelled" || outcome === "shutdown"
               ? "estimated_aborted"
               : outcome === "failed"
                 ? "estimated_interrupted"
@@ -1744,7 +1829,9 @@ function streamResponse(ctx: {
             ? undefined
             : outcome === "cancelled"
               ? "client_closed"
-              : "upstream_interrupted",
+              : outcome === "shutdown"
+                ? "server_shutdown"
+                : "upstream_interrupted",
         tokens,
         usageSource,
         stream: true,
@@ -1814,6 +1901,18 @@ function streamResponse(ctx: {
     return `data: ${JSON.stringify(sanitize(obj, target.publicId))}\n\n`;
   };
 
+  // Arrêt propre : coupe l'amont puis règle le flux (invite estimée + ce qui a été livré) AVANT que le serveur ne sorte.
+  ctx.flight.shutdown = async () => {
+    shuttingDown = true;
+    ctx.upstreamAbort.abort();
+    await reader.cancel().catch(() => undefined);
+    await settle("shutdown");
+  };
+  const shutdownEvent = () =>
+    encoder.encode(
+      `data: ${JSON.stringify({ error: { message: "Le service redémarre : le flux a été interrompu. Réessayez dans un instant.", type: "api_error", param: null, code: "server_shutdown" } })}\n\n`,
+    );
+
   const body = new ReadableStream<Uint8Array>({
     async pull(controller) {
       try {
@@ -1826,6 +1925,7 @@ function streamResponse(ctx: {
             const last = buffer.trim().length > 0 ? processEvent(buffer) : null;
             await settle(usage || sawDone ? "done" : "failed");
             if (last) controller.enqueue(encoder.encode(last));
+            if (shuttingDown) controller.enqueue(shutdownEvent());
             controller.close();
             return;
           }
@@ -1851,9 +1951,11 @@ function streamResponse(ctx: {
         await settle(failed ? "failed" : "done");
         try {
           controller.enqueue(
-            encoder.encode(
-              `data: ${JSON.stringify({ error: { message: "Le flux a été interrompu par le fournisseur du modèle.", type: "api_error", param: null, code: "upstream_interrupted" } })}\n\n`,
-            ),
+            shuttingDown
+              ? shutdownEvent()
+              : encoder.encode(
+                  `data: ${JSON.stringify({ error: { message: "Le flux a été interrompu par le fournisseur du modèle.", type: "api_error", param: null, code: "upstream_interrupted" } })}\n\n`,
+                ),
           );
           controller.close();
         } catch {

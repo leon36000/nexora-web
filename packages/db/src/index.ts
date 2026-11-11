@@ -22,6 +22,7 @@ export {
 export * from "./balance-alerts.ts";
 export { createDb, type Database, type DbHandle, type Sql } from "./client.ts";
 export { recordEventOnce } from "./events.ts";
+export * from "./intents.ts";
 export * from "./leads.ts";
 export * from "./ledger.ts";
 export { type EnqueueInput, enqueue, type Job } from "./queue.ts";

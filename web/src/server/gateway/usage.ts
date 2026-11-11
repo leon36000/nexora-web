@@ -4,6 +4,7 @@ import {
   apiKeys as keysTable,
   nanoToMicroRounded,
   releaseReservation,
+  resolveIntent,
   settleReservation,
   sql,
   type UsageSource,
@@ -184,6 +185,8 @@ export async function finalizeRequest(
       })
       .onConflictDoNothing({ target: usageEvents.requestId })
       .returning({ id: usageEvents.id, costMicro: usageEvents.costMicro });
+    // Journal d'intention : la requête est réglée (même transaction que le grand livre et l'événement).
+    await resolveIntent(tx, input.requestId);
     if (!inserted) {
       const [existing] = await tx
         .select({ costMicro: usageEvents.costMicro })
@@ -255,6 +258,7 @@ export async function finalizeHouseRequest(
       })
       .onConflictDoNothing({ target: usageEvents.requestId })
       .returning({ id: usageEvents.id });
+    await resolveIntent(tx, input.requestId);
     if (inserted)
       await tx
         .update(keysTable)

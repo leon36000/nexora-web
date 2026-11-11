@@ -6,6 +6,7 @@ import {
   getAccount,
   grantFirstTranche,
   organizations,
+  reconciliationFindings,
   reserve,
   subscriptionCreditGrants,
   subscriptionCreditTranches,
@@ -110,6 +111,32 @@ describe("tâches du grand livre", () => {
     });
     await handler(job("ledger.release-stale"), ctx); // rejeu : sans effet
     expect((await getAccount(t.db, id)).heldMicro).toBe(M);
+  });
+
+  it("ledger.release-stale ne laisse plus perdre une requête de la passerelle sans trace (audit F-01) et la journalise", async () => {
+    const id = await org();
+    await credit(t.db, {
+      organizationId: id,
+      amountMicro: 10n * M,
+      idempotencyKey: `f2:${id}`,
+      configVersion: "t",
+      source: "test",
+    });
+    await reserveAged(id, `gw:req_worker_${id}`, M, 31 * 60_000); // requête de la passerelle perdue, sans intention
+    const lines: string[] = [];
+    const registry = registerLedgerHandlers(new HandlerRegistry(), {
+      db: t.db,
+      log: createLogger({ name: "test", sink: (l) => lines.push(l) }),
+    });
+    const handler = registry.get("ledger.release-stale");
+    if (!handler) throw new Error("gestionnaire attendu");
+    await handler(job("ledger.release-stale"), ctx);
+    const findings = await t.db
+      .select()
+      .from(reconciliationFindings)
+      .where(eq(reconciliationFindings.organizationId, id));
+    expect(findings.map((f) => f.kind)).toEqual(["lost_reservation"]);
+    expect(lines.join("\n")).toContain("anomalies");
   });
 
   it("ledger.expire expire les lots échus, une seule fois", async () => {

@@ -232,6 +232,13 @@
       "when": 1794422944164,
       "tag": "0032_facturation_rapprochement_amont",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1794423311581,
+      "tag": "0033_facturation_journal_intention",
+      "breakpoints": true
     }
   ]
 }

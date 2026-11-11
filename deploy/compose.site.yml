@@ -33,6 +33,10 @@ services:
   site:
     <<: *durci
     image: nexora/site:${NEXORA_IMAGE_TAG:-local}
+    # Arrêt propre de la passerelle /v1 : au SIGTERM, les requêtes en vol ont GATEWAY_DRAIN_GRACE_MS (20 s par défaut) pour
+    # finir, puis sont réglées de force (server/gateway/drain.ts). Le délai de grâce du conteneur doit le dépasser ;
+    # sans lui, Docker tue le processus après 10 s au milieu d'un flux (audit de facturation F-01).
+    stop_grace_period: 45s
     build:
       context: ..
       dockerfile: deploy/Dockerfile.web

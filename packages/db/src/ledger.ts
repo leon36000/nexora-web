@@ -1,11 +1,14 @@
 import { and, asc, desc, eq, inArray, lt, sql } from "drizzle-orm";
 import type { Database } from "./client.ts";
+import { recordFinding } from "./intents.ts";
 import {
   apiKeys,
   creditAccounts,
   creditEntries,
   creditReservations,
   type EntryKind,
+  usageEvents,
+  usageIntents,
 } from "./schema.ts";
 
 /**
@@ -656,21 +659,187 @@ export async function releaseReservation(
   });
 }
 
+/** Résultat d'un passage de reprise : réservations libérées, requêtes perdues réglées à l'estimé, anomalies consignées. */
+export interface StaleOutcome {
+  /** Réservations hors passerelle (WebPilot, Creative…) libérées comme avant. */
+  released: number;
+  /** Requêtes de la passerelle perdues, réglées à l'estimé (invite seule) et consignées « recovered_in_flight ». */
+  recovered: number;
+  /** Réservations de la passerelle libérées sans règlement possible : consignées « lost_reservation ». */
+  anomalies: number;
+}
+
+/** Préfixe de la clé d'idempotence des réservations de la passerelle (`gw:<requestId>`). */
+const GATEWAY_KEY_PREFIX = "gw:";
+
+const ceilDiv = (a: bigint, b: bigint) => (a + b - 1n) / b;
+
 /**
- * Libère les réservations ouvertes depuis `olderThan` (requête perdue : plantage entre la
- * réservation et le règlement). À appeler périodiquement par le worker. Renvoie le nombre libéré.
- * Le seuil DOIT dépasser la durée maximale d'un flux : un règlement tardif est facturé au réel
- * (écriture « overage »), mais une libération trop hâtive prêterait gratuitement le disponible.
- * Le plafond de dépense de la clé est rendu avec la libération.
+ * Ferme une réservation ouverte et perdue. Passerelle (`gw:…`) : jamais « à zéro sans trace » (audit F-01).
+ * - intention en attente avec identifiant d'appel LiteLLM : règle à l'estimé (l'invite, au prix figé de l'intention),
+ *   écrit l'événement d'usage « settled_by_recovery » daté de la requête et consigne `recovered_in_flight` ;
+ * - sinon (antérieure au journal, agent hébergé) : libère et consigne `lost_reservation`.
+ * Ordre des verrous : compte, réservation, puis lignes de l'événement et de l'intention (comme le règlement normal).
  */
-export async function releaseStaleReservations(
+async function closeStaleReservation(
+  exec: Executor,
+  r: { id: string; organizationId: string; idempotencyKey: string },
+): Promise<"released" | "recovered" | "anomaly" | "skipped"> {
+  if (!r.idempotencyKey.startsWith(GATEWAY_KEY_PREFIX)) {
+    const out = await releaseReservation(exec, {
+      organizationId: r.organizationId,
+      reservationId: r.id,
+    });
+    return out.replayed ? "skipped" : "released";
+  }
+  const requestId = r.idempotencyKey.slice(GATEWAY_KEY_PREFIX.length);
+  return inTx(exec, async (tx) => {
+    await lockAccount(tx, r.organizationId);
+    const res = await lockReservation(tx, r.organizationId, r.id);
+    if (res.status !== "open") return "skipped";
+    const [intent] = await tx
+      .select()
+      .from(usageIntents)
+      .where(eq(usageIntents.requestId, requestId));
+    const ageSeconds = Math.round(
+      (Date.now() - res.createdAt.getTime()) / 1000,
+    );
+    if (intent && intent.status === "pending" && intent.litellmCallId) {
+      const settled = await settleReservation(tx, {
+        organizationId: r.organizationId,
+        reservationId: r.id,
+        actualMicro: minBigint(intent.recoveryCostMicro, res.amountMicro),
+      });
+      await insertRecoveryEvent(tx, intent, {
+        chargedMicro: settled.chargedMicro,
+        reservationId: r.id,
+      });
+      await tx
+        .update(usageIntents)
+        .set({ status: "recovered", resolvedAt: sql`now()` })
+        .where(
+          and(
+            eq(usageIntents.requestId, requestId),
+            eq(usageIntents.status, "pending"),
+          ),
+        );
+      await recordFinding(tx, {
+        dedupeKey: `recovered_in_flight:${requestId}`,
+        kind: "recovered_in_flight",
+        organizationId: r.organizationId,
+        requestId,
+        litellmCallId: intent.litellmCallId,
+        model: intent.modelPublicId,
+        day: intent.createdAt.toISOString().slice(0, 10),
+        detail: {
+          chargedMicro: settled.chargedMicro.toString(),
+          reservedMicro: res.amountMicro.toString(),
+          promptEstimate: intent.promptEstimate,
+          ageSeconds,
+          note: "réglée à l'estimé (invite seule) ; la réconciliation compare à la dépense réelle de l'amont",
+        },
+      });
+      return "recovered";
+    }
+    await releaseReservation(tx, {
+      organizationId: r.organizationId,
+      reservationId: r.id,
+    });
+    const reason = !intent
+      ? "no_intent"
+      : intent.status !== "pending"
+        ? "intent_not_pending"
+        : "no_call_id";
+    if (intent && intent.status === "pending")
+      await tx
+        .update(usageIntents)
+        .set({ status: "anomaly", resolvedAt: sql`now()` })
+        .where(
+          and(
+            eq(usageIntents.requestId, requestId),
+            eq(usageIntents.status, "pending"),
+          ),
+        );
+    await recordFinding(tx, {
+      dedupeKey: `lost_reservation:${requestId}`,
+      kind: "lost_reservation",
+      organizationId: r.organizationId,
+      requestId,
+      litellmCallId: intent?.litellmCallId ?? null,
+      model: intent?.modelPublicId ?? null,
+      day: (intent?.createdAt ?? res.createdAt).toISOString().slice(0, 10),
+      detail: {
+        reason,
+        reservedMicro: res.amountMicro.toString(),
+        ageSeconds,
+        note: "réservation libérée sans règlement : la consommation amont éventuelle n'est pas facturée",
+      },
+    });
+    return "anomaly";
+  });
+}
+
+type Intent = typeof usageIntents.$inferSelect;
+
+/** Événement d'usage d'une requête perdue, réglée à l'estimé (jamais plus que l'invite) ; daté de la requête. */
+async function insertRecoveryEvent(
+  tx: Tx,
+  intent: Intent,
+  settled: { chargedMicro: bigint; reservationId: string | null },
+): Promise<void> {
+  const house = settled.reservationId === null;
+  await tx
+    .insert(usageEvents)
+    .values({
+      requestId: intent.requestId,
+      organizationId: intent.organizationId,
+      apiKeyId: intent.apiKeyId,
+      modelPublicId: intent.modelPublicId,
+      endpoint: intent.endpoint,
+      configVersion: intent.configVersion,
+      status: "aborted",
+      httpStatus: 499,
+      errorCode: "lost_in_flight",
+      stream: intent.stream,
+      promptTokens: intent.promptEstimate,
+      completionTokens: 0,
+      costMicro: house ? 0n : settled.chargedMicro,
+      billed: !house,
+      valueMicro: house ? intent.recoveryCostMicro : settled.chargedMicro,
+      upstreamCostUsdMicro: ceilDiv(intent.recoveryUpstreamCostUsdNano, 1000n),
+      upstreamCostUsdNano: intent.recoveryUpstreamCostUsdNano,
+      priceInputMicro: intent.priceInputMicro,
+      priceOutputMicro: intent.priceOutputMicro,
+      priceCacheMicro: intent.priceCacheMicro,
+      priceCacheWriteMicro: intent.priceCacheWriteMicro,
+      priceWindow: intent.priceWindow,
+      usageSource: "settled_by_recovery",
+      litellmCallId: intent.litellmCallId,
+      fxUsdToCadMicro: intent.fxUsdToCadMicro,
+      reservationId: settled.reservationId,
+      createdAt: intent.createdAt,
+    })
+    .onConflictDoNothing({ target: usageEvents.requestId });
+}
+
+/**
+ * Ferme les réservations ouvertes depuis `olderThan` (requête perdue : plantage entre la réservation et le règlement)
+ * SANS jamais les abandonner sans trace (audit F-01) : une requête de la passerelle qui a une intention est réglée à
+ * l'estimé (invite seule, événement « settled_by_recovery »), une autre est libérée en laissant une anomalie visible
+ * (`reconciliation_findings`). Les organisations « maison », sans réservation, sont reprises par leur intention seule.
+ * Rejouable. À appeler périodiquement par le worker. Le seuil DOIT dépasser la durée maximale d'un flux : un règlement
+ * tardif est facturé au réel (écriture « overage ») mais une libération trop hâtive prêterait gratuitement le
+ * disponible. Le plafond de dépense de la clé est rendu avec la libération.
+ */
+export async function releaseStaleReservationsDetailed(
   exec: Executor,
   options: { olderThan: Date },
-): Promise<number> {
+): Promise<StaleOutcome> {
   const stale = await exec
     .select({
       id: creditReservations.id,
       organizationId: creditReservations.organizationId,
+      idempotencyKey: creditReservations.idempotencyKey,
     })
     .from(creditReservations)
     .where(
@@ -681,14 +850,13 @@ export async function releaseStaleReservations(
     )
     .orderBy(asc(creditReservations.createdAt))
     .limit(500);
-  let released = 0;
+  const out: StaleOutcome = { released: 0, recovered: 0, anomalies: 0 };
   for (const r of stale) {
     try {
-      const out = await releaseReservation(exec, {
-        organizationId: r.organizationId,
-        reservationId: r.id,
-      });
-      if (!out.replayed) released += 1;
+      const result = await closeStaleReservation(exec, r);
+      if (result === "released") out.released += 1;
+      else if (result === "recovered") out.recovered += 1;
+      else if (result === "anomaly") out.anomalies += 1;
     } catch (error) {
       // Réglée entre-temps : rien à libérer.
       if (
@@ -697,7 +865,77 @@ export async function releaseStaleReservations(
         throw error;
     }
   }
-  return released;
+  // Organisations « maison » : aucune réservation, seule l'intention garde la trace de l'usage perdu.
+  const houseStale = await exec
+    .select()
+    .from(usageIntents)
+    .where(
+      and(
+        eq(usageIntents.status, "pending"),
+        sql`${usageIntents.reservationId} IS NULL`,
+        lt(usageIntents.createdAt, options.olderThan),
+      ),
+    )
+    .orderBy(asc(usageIntents.createdAt))
+    .limit(500);
+  for (const intent of houseStale) {
+    const done = await inTx(exec, async (tx) => {
+      const claimed = await tx
+        .update(usageIntents)
+        .set({
+          status: intent.litellmCallId ? "recovered" : "anomaly",
+          resolvedAt: sql`now()`,
+        })
+        .where(
+          and(
+            eq(usageIntents.id, intent.id),
+            eq(usageIntents.status, "pending"),
+          ),
+        )
+        .returning({ id: usageIntents.id });
+      if (claimed.length === 0) return false;
+      if (intent.litellmCallId) {
+        await insertRecoveryEvent(tx, intent, {
+          chargedMicro: 0n,
+          reservationId: null,
+        });
+        await recordFinding(tx, {
+          dedupeKey: `recovered_in_flight:${intent.requestId}`,
+          kind: "recovered_in_flight",
+          organizationId: intent.organizationId,
+          requestId: intent.requestId,
+          litellmCallId: intent.litellmCallId,
+          model: intent.modelPublicId,
+          day: intent.createdAt.toISOString().slice(0, 10),
+          detail: { house: true, promptEstimate: intent.promptEstimate },
+        });
+      } else
+        await recordFinding(tx, {
+          dedupeKey: `lost_reservation:${intent.requestId}`,
+          kind: "lost_reservation",
+          organizationId: intent.organizationId,
+          requestId: intent.requestId,
+          model: intent.modelPublicId,
+          day: intent.createdAt.toISOString().slice(0, 10),
+          detail: { reason: "no_call_id", house: true },
+        });
+      return true;
+    });
+    if (done) {
+      if (intent.litellmCallId) out.recovered += 1;
+      else out.anomalies += 1;
+    }
+  }
+  return out;
+}
+
+/** Comme `releaseStaleReservationsDetailed`, en ne renvoyant que le nombre de réservations ou requêtes fermées. */
+export async function releaseStaleReservations(
+  exec: Executor,
+  options: { olderThan: Date },
+): Promise<number> {
+  const out = await releaseStaleReservationsDetailed(exec, options);
+  return out.released + out.recovered + out.anomalies;
 }
 
 export interface ExpireInput {

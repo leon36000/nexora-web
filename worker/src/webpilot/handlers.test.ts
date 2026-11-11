@@ -262,7 +262,12 @@ describe("tâches WebPilot du worker", () => {
 });
 
 describe("balayage des sessions de navigateur", () => {
-  const T0 = new Date("2026-11-03T09:00:00.000Z");
+  // Juste après l'instant courant et non une date fixe : les tarifs publiés par l'essai prennent effet à la publication.
+  // Calculé après la publication des tarifs (beforeAll du fichier), pas au chargement du module.
+  let T0 = new Date();
+  beforeAll(() => {
+    T0 = new Date(Math.ceil((Date.now() + 1000) / 1000) * 1000);
+  });
   const at = (seconds: number) => new Date(T0.getTime() + seconds * 1000);
 
   async function session(
