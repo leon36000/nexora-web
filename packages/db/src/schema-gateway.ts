@@ -12,7 +12,7 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
-import { organizations } from "./schema-auth.ts";
+import { organizations, users } from "./schema-auth.ts";
 
 const ts = (name: string) => timestamp(name, { withTimezone: true });
 const micro = (name: string) => bigint(name, { mode: "bigint" });
@@ -603,6 +603,143 @@ export const usageEvents = pgTable(
     check(
       "usage_events_nonneg",
       sql`${t.costMicro} >= 0 AND ${t.promptTokens} >= 0 AND ${t.completionTokens} >= 0`,
+    ),
+  ],
+);
+
+/** Produits natifs qui obtiennent un accès appareil (device grant) sur la passerelle. */
+export const DEVICE_GRANT_PRODUCTS = [
+  "lifecode",
+  "creative-studio",
+  "workstudio",
+  "webpilot",
+] as const;
+export type DeviceGrantProduct = (typeof DEVICE_GRANT_PRODUCTS)[number];
+
+/** Portée d'un accès appareil : modèles autorisés (null = tous) et plafond quotidien (micro-CAD). */
+export interface DeviceGrantScopes {
+  models?: string[];
+  daily_cap_micros?: number;
+}
+
+/**
+ * Codes d'autorisation OIDC (Authorization Code + PKCE S256) des clients natifs
+ * (`lifecode-desktop`, `creative-studio-desktop`). Seule l'empreinte SHA-256 du code est conservée ;
+ * un code est à usage unique (`consumed_at`) et de courte durée (`expires_at`).
+ */
+export const deviceOidcCodes = pgTable(
+  "device_oidc_codes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** SHA-256 hex du code d'autorisation (jamais le code en clair). */
+    codeHash: text("code_hash").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    clientId: text("client_id").notNull(),
+    redirectUri: text("redirect_uri").notNull(),
+    scope: text("scope").notNull(),
+    codeChallenge: text("code_challenge").notNull(),
+    codeChallengeMethod: text("code_challenge_method").notNull().default("S256"),
+    nonce: text("nonce"),
+    expiresAt: ts("expires_at").notNull(),
+    consumedAt: ts("consumed_at"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("device_oidc_codes_hash_unique").on(t.codeHash),
+    index("device_oidc_codes_user_idx").on(t.userId),
+    check("device_oidc_codes_method_check", sql`${t.codeChallengeMethod} = 'S256'`),
+  ],
+);
+
+/**
+ * Jetons d'accès OIDC courts (portée `device:grant`, TTL 15 min) échangés contre un code PKCE.
+ * Seule l'empreinte SHA-256 du jeton Bearer est conservée.
+ */
+export const deviceOidcTokens = pgTable(
+  "device_oidc_tokens",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** SHA-256 hex du jeton Bearer (jamais en clair). */
+    tokenHash: text("token_hash").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    clientId: text("client_id").notNull(),
+    scope: text("scope").notNull(),
+    expiresAt: ts("expires_at").notNull(),
+    revokedAt: ts("revoked_at"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("device_oidc_tokens_hash_unique").on(t.tokenHash),
+    index("device_oidc_tokens_org_idx").on(t.organizationId),
+  ],
+);
+
+/**
+ * Accès appareil d'un produit natif : lie un appareil à une clé cliente de la passerelle.
+ * Une seule clé par appareil et par produit (tant que l'accès n'est pas révoqué) ; la rotation
+ * crée une nouvelle clé et conserve l'ancienne jusqu'à `grace_expires_at`.
+ */
+export const gatewayDeviceGrants = pgTable(
+  "gateway_device_grants",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    createdByUserId: text("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    apiKeyId: uuid("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "cascade" }),
+    /** Clé précédente, encore valide jusqu'à la fin de la grâce après rotation. */
+    previousApiKeyId: uuid("previous_api_key_id").references(() => apiKeys.id, {
+      onDelete: "set null",
+    }),
+    graceExpiresAt: ts("grace_expires_at"),
+    deviceId: text("device_id").notNull(),
+    deviceLabel: text("device_label").notNull(),
+    product: text("product").$type<DeviceGrantProduct>().notNull(),
+    scopes: jsonb("scopes").$type<DeviceGrantScopes>().notNull().default({}),
+    issuedAt: ts("issued_at").notNull().defaultNow(),
+    expiresAt: ts("expires_at").notNull(),
+    /** Date à partir de laquelle l'appareil doit faire tourner sa clé. */
+    rotateAfter: ts("rotate_after").notNull(),
+    revokedAt: ts("revoked_at"),
+    revokeReason: text("revoke_reason"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    updatedAt: ts("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("gateway_device_grants_api_key_unique").on(t.apiKeyId),
+    uniqueIndex("gateway_device_grants_active_device_unique")
+      .on(t.organizationId, t.deviceId, t.product)
+      .where(sql`${t.revokedAt} IS NULL`),
+    index("gateway_device_grants_org_idx").on(t.organizationId, t.createdAt),
+    index("gateway_device_grants_prev_key_idx")
+      .on(t.previousApiKeyId)
+      .where(sql`${t.previousApiKeyId} IS NOT NULL`),
+    check(
+      "gateway_device_grants_product_check",
+      sql`${t.product} IN (${inList(DEVICE_GRANT_PRODUCTS)})`,
+    ),
+    check(
+      "gateway_device_grants_dates_check",
+      sql`${t.expiresAt} > ${t.issuedAt} AND ${t.rotateAfter} >= ${t.issuedAt} AND ${t.rotateAfter} <= ${t.expiresAt}`,
+    ),
+    check(
+      "gateway_device_grants_device_nonempty",
+      sql`length(trim(${t.deviceId})) > 0 AND length(trim(${t.deviceLabel})) > 0`,
     ),
   ],
 );

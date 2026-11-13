@@ -246,6 +246,13 @@
       "when": 1794427084140,
       "tag": "0034_facturation_reconciliation_quotidienne",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1794534927618,
+      "tag": "0035_device_grants",
+      "breakpoints": true
     }
   ]
 }
