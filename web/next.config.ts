@@ -35,6 +35,8 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: SECURITY_HEADERS },
       { source: "/api/:path*", headers: [...csp, API_CORP] },
       { source: "/v1/:path*", headers: [...csp, API_CORP] },
+      { source: "/oauth/:path*", headers: [...csp, API_CORP] },
+      { source: "/.well-known/:path*", headers: [...csp, API_CORP] },
       // Réponses qui ne sont pas des pages : images, texte, XML et icône n'ont besoin d'aucune ressource.
       { source: "/og/:path*", headers: csp },
       { source: "/llms.txt", headers: csp },

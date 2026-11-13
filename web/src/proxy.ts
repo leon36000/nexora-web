@@ -43,7 +43,7 @@ function isMalformedPath(pathname: string): boolean {
 }
 
 const DEDICATED_HOST = /^[0-9a-f]{32}\./i;
-const API_PREFIX = /^\/(?:api|v1|og|code\/ws)(?:\/|$)/;
+const API_PREFIX = /^\/(?:api|v1|oauth|\.well-known|og|code\/ws)(?:\/|$)/;
 const PAGE_REFUSED_METHODS = new Set(["PUT", "PATCH", "DELETE"]);
 
 export async function proxy(request: NextRequest) {
@@ -186,8 +186,8 @@ export const config = {
   // Un point plus loin dans le chemin reste une page : fiche d'un modèle `/modeles/openai/gpt-4.1`.
   // Tout nouveau préfixe non localisé (webhooks, etc.) doit être ajouté ici.
   matcher: [
-    "/((?!api|v1|og/|_next|[^/]+\\.[a-zA-Z0-9]+$).*)",
+    "/((?!api|v1|oauth|\\.well-known|og/|_next|[^/]+\\.[a-zA-Z0-9]+$).*)",
     // Seulement pour répondre 400 aux adresses mal formées (voir `proxy`).
-    "/(api|v1|og)(/.*)?",
+    "/(api|v1|oauth|\\.well-known|og)(/.*)?",
   ],
 };
