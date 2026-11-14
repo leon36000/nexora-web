@@ -21,7 +21,9 @@ import {
   type DeviceOidcSessionUser,
   handleDeviceOidcAuthorize,
   handleDeviceOidcDiscovery,
+  handleDeviceOidcRevoke,
   handleDeviceOidcToken,
+  handleDeviceOidcUserInfo,
   isValidLoopbackRedirectUri,
 } from "./device-oidc";
 
@@ -83,6 +85,8 @@ describe("handleDeviceOidcDiscovery", () => {
       authorization_endpoint: `${BASE}/oauth/authorize`,
       token_endpoint: `${BASE}/oauth/token`,
       jwks_uri: `${BASE}/api/auth/jwks`,
+      userinfo_endpoint: `${BASE}/api/auth/oauth2/userinfo`,
+      revocation_endpoint: `${BASE}/api/auth/oauth2/revoke`,
       response_types_supported: ["code"],
       grant_types_supported: ["authorization_code"],
       code_challenge_methods_supported: ["S256"],
@@ -590,6 +594,148 @@ describe.skipIf(!dbAvailable)("flux OIDC des clients natifs (PostgreSQL)", () =>
       .set({ revokedAt: new Date() })
       .where(eq(deviceOidcTokens.userId, user.id));
     expect(await authenticateDeviceOidcToken(t.db, access_token)).toBeNull();
+  });
+
+  /** Autorise, échange et renvoie le jeton `nxo_…` fraîchement émis. */
+  async function issueToken(
+    user: DeviceOidcSessionUser,
+    over: Record<string, string | null> = {},
+  ) {
+    const { res, verifier } = await authorize(user, over);
+    const code = new URL(res.headers.get("location") ?? "").searchParams.get(
+      "code",
+    ) ?? "";
+    const tokenRes = await exchange({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: REDIRECT,
+      client_id: "lifecode-desktop",
+      code_verifier: verifier,
+    });
+    expect(tokenRes.status).toBe(200);
+    const body = await tokenRes.json();
+    return String(body.access_token);
+  }
+
+  const userInfo = (authorization?: string) =>
+    handleDeviceOidcUserInfo(
+      new Request(`${BASE}/api/auth/oauth2/userinfo`, {
+        headers: authorization ? { authorization } : {},
+      }),
+      { db: t.db },
+    );
+
+  const revoke = (body: Record<string, string>, asJson = false) =>
+    handleDeviceOidcRevoke(
+      new Request(`${BASE}/api/auth/oauth2/revoke`, {
+        method: "POST",
+        headers: {
+          "content-type": asJson
+            ? "application/json"
+            : "application/x-www-form-urlencoded",
+        },
+        body: asJson ? JSON.stringify(body) : new URLSearchParams(body).toString(),
+      }),
+      { db: t.db },
+    );
+
+  it("userinfo : 200 avec l'identité du porteur, no-store", async () => {
+    const user = await seedUser();
+    const token = await issueToken(user);
+    const res = await userInfo(`Bearer ${token}`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get("cache-control")).toBe("no-store");
+    const [row] = await t.db
+      .select()
+      .from(deviceOidcTokens)
+      .where(eq(deviceOidcTokens.userId, user.id));
+    expect(await res.json()).toEqual({
+      sub: user.id,
+      email: user.email,
+      email_verified: false,
+      name: user.name,
+      organization_id: row?.organizationId,
+    });
+  });
+
+  it("userinfo : 401 invalid_token sans en-tête, jeton inconnu, expiré, révoqué ou sans portée", async () => {
+    for (const header of [
+      undefined,
+      "Bearer pas-un-jeton",
+      "Basic abc",
+      "Bearer nxo_inconnu",
+    ]) {
+      const res = await userInfo(header);
+      expect(res.status).toBe(401);
+      expect(await res.json()).toMatchObject({ error: "invalid_token" });
+    }
+
+    const user = await seedUser();
+    const token = await issueToken(user);
+    expect((await userInfo(`Bearer ${token}`)).status).toBe(200);
+
+    const expired = await handleDeviceOidcUserInfo(
+      new Request(`${BASE}/api/auth/oauth2/userinfo`, {
+        headers: { authorization: `Bearer ${token}` },
+      }),
+      { db: t.db, now: () => new Date(Date.now() + 16 * 60 * 1000) },
+    );
+    expect(expired.status).toBe(401);
+    expect(await expired.json()).toMatchObject({ error: "invalid_token" });
+
+    // sans `openid` ni `device:grant`… impossible via le flux (device:grant obligatoire) :
+    // on retire la portée en base pour vérifier le contrôle.
+    await t.db
+      .update(deviceOidcTokens)
+      .set({ scope: "profile" })
+      .where(eq(deviceOidcTokens.userId, user.id));
+    expect((await userInfo(`Bearer ${token}`)).status).toBe(401);
+
+    await t.db
+      .update(deviceOidcTokens)
+      .set({ scope: "openid profile device:grant", revokedAt: new Date() })
+      .where(eq(deviceOidcTokens.userId, user.id));
+    expect((await userInfo(`Bearer ${token}`)).status).toBe(401);
+  });
+
+  it("revoke : révoque effectivement le jeton, idempotent, refuse client inconnu et token absent", async () => {
+    const user = await seedUser();
+    const token = await issueToken(user);
+    expect(await authenticateDeviceOidcToken(t.db, token)).not.toBeNull();
+
+    for (const asJson of [false, true]) {
+      const res = await revoke(
+        { token, client_id: "lifecode-desktop" },
+        asJson,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ ok: true });
+      expect(res.headers.get("cache-control")).toBe("no-store");
+    }
+
+    expect(await authenticateDeviceOidcToken(t.db, token)).toBeNull();
+    expect((await userInfo(`Bearer ${token}`)).status).toBe(401);
+    const [row] = await t.db
+      .select()
+      .from(deviceOidcTokens)
+      .where(eq(deviceOidcTokens.userId, user.id));
+    expect(row?.revokedAt).not.toBeNull();
+
+    const unknownClient = await revoke({
+      token,
+      client_id: "evil-client",
+    });
+    expect(unknownClient.status).toBe(401);
+    expect(await unknownClient.json()).toMatchObject({ error: "invalid_client" });
+
+    const missing = await revoke({ client_id: "lifecode-desktop" });
+    expect(missing.status).toBe(400);
+    expect(await missing.json()).toMatchObject({ error: "invalid_request" });
+
+    // Jeton inconnu : 200 malgré tout (pas d'oracle d'existence, RFC 7009).
+    const ghost = await revoke({ token: "nxo_inexistant" });
+    expect(ghost.status).toBe(200);
+    expect(await ghost.json()).toEqual({ ok: true });
   });
 
   it("les clients natifs autorisés couvrent LifeCode (desktop/CLI) et Creative Studio", () => {

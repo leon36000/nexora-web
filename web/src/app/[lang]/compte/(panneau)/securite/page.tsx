@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { lang as getLang } from "next/root-params";
 import { Suspense } from "react";
+import { ConnectedDevicesSection } from "@/components/account/connected-devices-section";
 import { PanelLoading } from "@/components/account/panel-ui";
 import { SecurityPanel } from "@/components/account/security-panel";
 import { isLang, localizePath } from "@/i18n/config";
 import { getSecurityDictionary } from "@/i18n/security";
 import { buildPageMetadata } from "@/lib/metadata";
 import { SITE_NAME } from "@/lib/site";
+import { getDb } from "@/server/db";
+import { listDeviceGrants } from "@/server/gateway/device-grants";
 import { getPanelSession } from "../_lib/session";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,6 +45,23 @@ async function SecurityContent({ lang }: { lang: "fr" | "en" }) {
   const session = await getPanelSession();
   if (!session) redirect(localizePath(lang, "/compte/connexion"));
   const t = getSecurityDictionary(lang);
+  const rawGrants = await listDeviceGrants(getDb(), {
+    organizationId: session.organizationId,
+    includeRevoked: false,
+  });
+  const initialGrants = rawGrants.map((g) => ({
+    id: g.grant_id,
+    deviceLabel: g.device_label,
+    client: g.product,
+    keyPrefix: g.key_prefix,
+    scopes: [
+      ...(g.scopes.models.length > 0 ? ["models"] : []),
+      ...(g.scopes.webpilot.length > 0 ? ["webpilot"] : []),
+    ],
+    spendCapCad: g.spend_cap_cad,
+    lastUsedAt: g.last_used_at,
+    revokedAt: g.revoked_at,
+  }));
   return (
     <div className="max-w-2xl space-y-8">
       <div>
@@ -64,6 +84,7 @@ async function SecurityContent({ lang }: { lang: "fr" | "en" }) {
         twoFactorEnabled={session.twoFactorEnabled}
         isStaff={session.isStaff}
       />
+      <ConnectedDevicesSection initialGrants={initialGrants} lang={lang} />
     </div>
   );
 }

@@ -16,7 +16,16 @@ export function createDb(
   url: string,
   options: { max?: number; host?: string } = {},
 ): DbHandle {
-  const connectionUrl = options.host
+  let effectiveHost = options.host;
+  if (!effectiveHost) {
+    try {
+      const candidate = new URL(url).searchParams.get("host");
+      if (candidate?.startsWith("/")) effectiveHost = candidate;
+    } catch {
+      // Laisse postgres.js signaler toute URL mal formée.
+    }
+  }
+  const connectionUrl = effectiveHost
     ? (() => {
         const parsed = new URL(url);
         parsed.searchParams.delete("host");
@@ -25,7 +34,7 @@ export function createDb(
     : url;
   const sql = postgres(connectionUrl, {
     max: options.max ?? 10,
-    ...(options.host ? { host: options.host } : {}),
+    ...(effectiveHost ? { host: effectiveHost } : {}),
     onnotice: () => {},
   });
   return {

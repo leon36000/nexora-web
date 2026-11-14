@@ -8,7 +8,7 @@ import {
   handleActivity,
   handleActivityExport,
 } from "./activity-handlers";
-import { createApiKey } from "./keys";
+import { createApiKey, revokeApiKey } from "./keys";
 import { newOrganization } from "./test-support";
 
 const SITE = "http://localhost:3500";
@@ -301,6 +301,92 @@ describe("GET /api/account/activity", () => {
     for (let i = 0; i < 130; i++)
       last = (await handleActivity(get("/api/account/activity"), d)).status;
     expect(last).toBe(429);
+  });
+});
+
+describe("Authorization: Bearer nxk_… (clé API)", () => {
+  /** Clé active de l'organisation A, avec sa valeur en clair. */
+  let keyA: string;
+  beforeAll(async () => {
+    const created = await createApiKey(t.db, {
+      organizationId: a.org,
+      name: "Robot",
+    });
+    keyA = created.key;
+  });
+  const bearer = (key: string) => ({ authorization: `Bearer ${key}` });
+
+  it("403 sans Authorization sur une origine étrangère", async () => {
+    for (const handler of [handleActivity, handleActivityExport]) {
+      const res = await handler(
+        new Request(`${SITE}/api/account/activity`, {
+          headers: { origin: "https://evil.example" },
+        }),
+        deps(ctxOf(a)),
+      );
+      expect(res.status).toBe(403);
+      expect(await res.json()).toEqual({ error: "invalid_origin" });
+    }
+  });
+
+  it("200 avec une clé API, même sans Origin ni session (JSON)", async () => {
+    const res = await handleActivity(
+      new Request(`${SITE}/api/account/activity?period=30d`, {
+        headers: bearer(keyA),
+      }),
+      deps(null),
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.summary.requests).toBe(3);
+    const text = JSON.stringify(body);
+    expect(text).not.toContain("b-prive");
+    expect(text).not.toContain("123456");
+  });
+
+  it("200 avec une clé API pour l'export, isolé par organisation", async () => {
+    const res = await handleActivityExport(
+      new Request(`${SITE}/api/account/activity/export?period=30d`, {
+        headers: bearer(keyA),
+      }),
+      deps(null),
+    );
+    expect(res.status).toBe(200);
+    const { lines, text } = await readCsv(res);
+    expect(lines).toHaveLength(4);
+    expect(text).not.toContain("b-prive");
+    expect(text).not.toContain("Clé secrète de B");
+  });
+
+  it("401 si la clé est inconnue, mal formée ou révoquée", async () => {
+    const cases: Record<string, string>[] = [
+      bearer("nxk_inconnue"),
+      { authorization: "Basic abc" },
+      { authorization: "Bearer" },
+    ];
+    for (const headers of cases) {
+      const res = await handleActivity(
+        new Request(`${SITE}/api/account/activity`, { headers }),
+        deps(ctxOf(a)),
+      );
+      expect(res.status).toBe(401);
+      expect(await res.json()).toEqual({ error: "unauthenticated" });
+    }
+    const revoked = await createApiKey(t.db, {
+      organizationId: a.org,
+      name: "Révoquée",
+    });
+    await revokeApiKey(t.db, a.org, revoked.record.id, NOW);
+    for (const handler of [handleActivity, handleActivityExport]) {
+      const res = await handler(
+        new Request(`${SITE}/api/account/activity`, {
+          headers: bearer(revoked.key),
+        }),
+        deps(ctxOf(a)),
+      );
+      expect(res.status).toBe(401);
+      expect(await res.json()).toEqual({ error: "unauthenticated" });
+    }
   });
 });
 

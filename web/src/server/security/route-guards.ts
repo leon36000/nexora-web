@@ -807,4 +807,160 @@ export const ROUTE_GUARDS: RouteGuard[] = [
     why: "Images Open Graph des pages publiques",
     probes: [],
   },
+  {
+    route: ".well-known/openid-configuration",
+    kind: "public",
+    why: "Métadonnées de découverte OpenID Connect : adresses publiques seulement, aucun secret",
+    probes: [],
+  },
+  ...(
+    [
+      ["oauth/authorize", "/oauth/authorize"],
+      ["v1/account/authorize", "/v1/account/authorize"],
+    ] as const
+  ).map(
+    ([route, path]): RouteGuard => ({
+      route,
+      kind: "oidc-token",
+      why: "Point d'autorisation OpenID Connect : jeton d'accès OIDC du client WorkStudio, requête incomplète refusée",
+      probes: [{ label: "sans paramètres", method: "GET", path, expect: [400] }],
+    }),
+  ),
+  ...(
+    [
+      ["oauth/token", "/oauth/token"],
+      ["v1/account/token", "/v1/account/token"],
+    ] as const
+  ).map(
+    ([route, path]): RouteGuard => ({
+      route,
+      kind: "oidc-token",
+      why: "Point de jeton OpenID Connect : identifiants du client (WorkStudio) vérifiés, requête invalide refusée",
+      probes: [
+        {
+          label: "corps vide",
+          method: "POST",
+          path,
+          headers: JSON_H,
+          body: "{}",
+          expect: [400, 401],
+        },
+      ],
+    }),
+  ),
+  ...(
+    [
+      "v1/account/balance",
+      "v1/account/credit-balance",
+      "v1/account/usage",
+    ] as const
+  ).map(
+    (route): RouteGuard => ({
+      route,
+      kind: "api-key",
+      why: "Information du compte lue par le client : clé cliente nxk_ (organisation = celle de la clé), même réponse pour une clé absente ou inconnue",
+      probes: [
+        { label: "sans clé", method: "GET", path: `/${route}`, expect: [401] },
+        {
+          label: "clé inconnue",
+          method: "GET",
+          path: `/${route}`,
+          headers: { authorization: "Bearer nxk_inconnue" },
+          expect: [401],
+        },
+      ],
+    }),
+  ),
+  ...(
+    [
+      ["v1/account/device-grants", ["GET", "POST", "DELETE"]],
+      ["v1/device-grants", ["GET", "POST", "DELETE"]],
+    ] as const
+  ).map(
+    ([route, methods]): RouteGuard => ({
+      route,
+      kind: "api-key",
+      why: "Appareils autorisés : clé cliente nxk_ valide (organisation = celle de la clé), mêmes réponses pour une clé absente ou inconnue",
+      probes: methods.flatMap((method) => [
+        {
+          label: `${method} sans clé`,
+          method,
+          path: `/${route}`,
+          ...(method === "POST" ? { headers: JSON_H, body: "{}" } : {}),
+          expect: [401],
+        },
+        {
+          label: `${method} clé inconnue`,
+          method,
+          path: `/${route}`,
+          headers: {
+            ...(method === "POST" ? JSON_H : {}),
+            authorization: "Bearer nxk_inconnue",
+          },
+          ...(method === "POST" ? { body: "{}" } : {}),
+          expect: [401],
+        },
+      ]),
+    }),
+  ),
+  ...(
+    [
+      ["v1/account/device-grants/[id]", ["GET", "DELETE"]],
+      ["v1/device-grants/[id]", ["GET", "DELETE"]],
+    ] as const
+  ).map(
+    ([route, methods]): RouteGuard => ({
+      route,
+      kind: "api-key",
+      why: "Appareil autorisé (lecture, révocation) : clé cliente nxk_ valide, appareil de l'organisation seulement",
+      probes: methods.flatMap((method) => [
+        {
+          label: `${method} sans clé`,
+          method,
+          path: `/${route.replace("[id]", ZERO)}`,
+          expect: [401],
+        },
+        {
+          label: `${method} clé inconnue`,
+          method,
+          path: `/${route.replace("[id]", ZERO)}`,
+          headers: { authorization: "Bearer nxk_inconnue" },
+          expect: [401],
+        },
+      ]),
+    }),
+  ),
+  ...(
+    [
+      "v1/account/device-grants/[id]/rotate",
+      "v1/device-grants/[id]/rotate",
+      "v1/account/device-grants/rotate",
+      "v1/device-grants/rotate",
+      "v1/account/device-grants/[id]/revoke",
+      "v1/device-grants/[id]/revoke",
+      "v1/account/device-grants/revoke",
+      "v1/device-grants/revoke",
+    ] as const
+  ).map(
+    (route): RouteGuard => ({
+      route,
+      kind: "api-key",
+      why: "Rotation ou révocation d'un appareil autorisé : clé cliente nxk_ valide, appareil de l'organisation seulement",
+      probes: [
+        {
+          label: "POST sans clé",
+          method: "POST",
+          path: `/${route.replace("[id]", ZERO)}`,
+          expect: [401],
+        },
+        {
+          label: "POST clé inconnue",
+          method: "POST",
+          path: `/${route.replace("[id]", ZERO)}`,
+          headers: { authorization: "Bearer nxk_inconnue" },
+          expect: [401],
+        },
+      ],
+    }),
+  ),
 ];

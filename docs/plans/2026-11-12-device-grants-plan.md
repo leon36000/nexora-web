@@ -29,3 +29,15 @@ Implémenter dans `root/nexora-web` le flux complet de **device grants** (clés 
    - `biome check`, `typecheck`, `vitest`, `check:contrast`.
 7. **Documentation du contrat HTTP** :
    - `docs/CONTRAT-DEVICE-GRANTS.md` + rapport final `RAPPORT-SITE-DEVICE-GRANTS.md`.
+
+## 3. Journal d'exécution — Relance n°7
+- **État repris** :
+  - Commit `23a0c19` : schéma Drizzle + migration non destructive `0035_device_grants.sql` (`gateway_device_grants`, `device_oidc_codes`, `device_oidc_tokens`).
+  - Commit `806abf2` : flux OIDC PKCE S256 (`/.well-known/openid-configuration`, `/oauth/{authorize,token}`, `/v1/account/{authorize,token}`) testé (`device-oidc.test.ts`, `safe-next.test.ts`).
+  - Présents non commités (produits par sous-agents `terra`) : `device-grants.ts`, `device-grants-http.ts`, `device-grants-runtime.ts`, et routes `/v1/account/{device-grants,balance,usage}` + alias `/v1/device-grants`.
+- **Alerte Chef de projet respectée** : DeepInfra 402 épuisé → zéro appel `deepseek`/`eco-deepseek`. Délégation du volume à `muse` (lectures ≥ 2 000 jetons, brouillons) et `carbon` (code, tests, script E2E).
+- **Suite immédiate jusqu'à `FINI`** :
+  1. Vérifier l'alignement exact avec `par/b1-compte/src/core/account/{contract,client,session}.js` et `web/src/server/gateway/proxy.ts`.
+  2. Lancer un essaim `muse` + `carbon` pour : (a) tests complets `device-grants.test.ts` et `device-grants-http.test.ts`, (b) contrat `docs/CONTRAT-DEVICE-GRANTS.md`, (c) script E2E local avec le vrai client `par/b1-compte`.
+  3. Passer toute la suite `vitest`, `typecheck`, `biome` au vert et commiter atomiquement.
+  4. Exécuter le test E2E local sur base de test jetable, copier le contrat dans `par/b1-compte/docs/premium/CONTRAT-COMPTE-NEXORA-SITE.md`, commiter `docs/RAPPORT-DEVICE-GRANTS.md`, et créer `FINI`.

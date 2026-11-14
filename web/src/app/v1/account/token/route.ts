@@ -5,9 +5,11 @@ import { getDb } from "@/server/db";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request): Promise<Response> {
+  const signingSecret = process.env.BETTER_AUTH_SECRET;
+  if (!signingSecret) throw new Error("BETTER_AUTH_SECRET est absent");
   return handleDeviceOidcToken(request, {
     db: getDb(),
     baseUrl: SITE_URL,
-    signingSecret: process.env.BETTER_AUTH_SECRET ?? "dev-only-secret-change-me",
+    signingSecret,
   });
 }

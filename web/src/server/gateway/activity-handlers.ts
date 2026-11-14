@@ -14,6 +14,7 @@ import {
   parseActivityParams,
 } from "./activity";
 import { activityCsvHeader, activityCsvRow, CSV_BOM } from "./activity-csv";
+import { authenticateApiKey } from "./keys";
 
 /**
  * Activité de l'espace client :
@@ -21,7 +22,8 @@ import { activityCsvHeader, activityCsvRow, CSV_BOM } from "./activity-csv";
  *  - `GET /api/account/activity/export` : le journal en CSV.
  *
  * Mêmes règles que les clés d'API (`account-handlers.ts`) : contrôle d'origine (CSRF), session confrontée aux
- * adhésions, l'organisation vient de la session et jamais de l'adresse. Contrairement aux clés, tout membre
+ * adhésions, l'organisation vient de la session et jamais de l'adresse. Un appel serveur à serveur portant
+ * `Authorization: Bearer nxk_…` remplace session et contrôle d'origine : l'organisation vient de la clé. Contrairement aux clés, tout membre
  * de l'organisation peut LIRE son activité (la page « Clés » la montrait déjà à tous). Les lectures ne contiennent
  * que des métadonnées de `usage_events` : jamais le contenu d'une requête.
  *
@@ -50,10 +52,32 @@ async function authorize(
   deps: ActivityDeps,
   bucket: "read" | "export",
 ): Promise<Authorized> {
-  if (!isSameOriginRequest(request, deps.siteUrl))
-    return { response: json({ error: "invalid_origin" }, 403) };
-  const ctx = await deps.getContext(request.headers);
-  if (!ctx) return { response: json({ error: "unauthenticated" }, 401) };
+  let ctx: AccountContext;
+  // Appel serveur à serveur : une clé API (`Authorization: Bearer nxk_…`) remplace session et contrôle d'origine.
+  const authorization = request.headers.get("authorization");
+  if (authorization && authorization.trim() !== "") {
+    const match = /^Bearer\s+(nxk_\S+)$/i.exec(authorization);
+    if (!match?.[1])
+      return { response: json({ error: "unauthenticated" }, 401) };
+    const principal = await authenticateApiKey(
+      deps.db(),
+      match[1],
+      deps.now(),
+    );
+    if (!principal.ok)
+      return { response: json({ error: "unauthenticated" }, 401) };
+    ctx = {
+      userId: `key:${principal.key.id}`,
+      organizationId: principal.key.organizationId,
+      role: "member",
+    };
+  } else {
+    if (!isSameOriginRequest(request, deps.siteUrl))
+      return { response: json({ error: "invalid_origin" }, 403) };
+    const session = await deps.getContext(request.headers);
+    if (!session) return { response: json({ error: "unauthenticated" }, 401) };
+    ctx = session;
+  }
   const limit = await consumeRateLimit(
     deps.db(),
     `acct-activity-${bucket}:${ctx.userId}`,

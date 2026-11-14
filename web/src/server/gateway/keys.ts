@@ -81,6 +81,7 @@ export interface CreateApiKeyInput {
   createdBy?: string | null;
   /** Refuse (ApiKeyLimitError) si l'organisation a déjà autant de clés actives ; décompte et insertion sous verrou. */
   maxActiveKeys?: number;
+  now?: Date;
 }
 
 const positiveInt = (v: number | null | undefined) =>
@@ -136,7 +137,7 @@ export async function createApiKey(
         prefix,
         keyHash: hash,
         allowedModels:
-          input.allowedModels && input.allowedModels.length > 0
+          input.allowedModels !== undefined && input.allowedModels !== null
             ? input.allowedModels
             : null,
         webpilotOperations:
@@ -149,6 +150,7 @@ export async function createApiKey(
         tpmLimit: input.tpmLimit ?? null,
         expiresAt: input.expiresAt ?? null,
         createdBy: input.createdBy ?? null,
+        ...(input.now ? { createdAt: input.now } : {}),
       })
       .returning();
     return inserted;

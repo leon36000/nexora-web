@@ -1,4 +1,9 @@
-import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import {
+  createHash,
+  createHmac,
+  randomBytes,
+  timingSafeEqual,
+} from "node:crypto";
 import {
   and,
   type Database,
@@ -25,7 +30,7 @@ export const ALLOWED_NATIVE_CLIENTS = new Set([
   "creative-studio-desktop",
 ]);
 
-/** Portées canoniques publiées ; `device:grant` (ou l'alias `nexora:device-grants`) est obligatoire. */
+/** Portées canoniques publiées ; `device:grant` (ou les alias `nexora:device-grants` / `lifecode:device-grant`) est obligatoire. */
 export const RECOGNIZED_SCOPES = [
   "openid",
   "profile",
@@ -35,6 +40,7 @@ export const RECOGNIZED_SCOPES = [
 
 const ACCEPTED_SCOPE_ALIASES: Readonly<Record<string, string>> = {
   "nexora:device-grants": "device:grant",
+  "lifecode:device-grant": "device:grant",
 };
 
 /** Portée exigée pour obtenir un jeton d'appareil. */
@@ -86,10 +92,7 @@ function base64urlJson(value: unknown): string {
 }
 
 /** JWT HS256 compact (RFC 7519 §3.1). */
-function signHs256(
-  payload: Record<string, unknown>,
-  secret: string,
-): string {
+function signHs256(payload: Record<string, unknown>, secret: string): string {
   const header = base64urlJson({ alg: "HS256", typ: "JWT" });
   const body = base64urlJson(payload);
   return `${header}.${body}.${hmacSha256(`${header}.${body}`, secret)}`;
@@ -176,7 +179,12 @@ function prefersEnglish(headers: Headers, url: URL): boolean {
   return /^\s*en(?:\s*[-_,;]|\s*$)/.test(langs);
 }
 
-function accountPath(baseUrl: string, headers: Headers, url: URL, page: string) {
+function accountPath(
+  baseUrl: string,
+  headers: Headers,
+  url: URL,
+  page: string,
+) {
   return `${baseUrl}/${prefersEnglish(headers, url) ? "en" : "fr"}/compte/${page}`;
 }
 
@@ -189,6 +197,8 @@ export function handleDeviceOidcDiscovery(baseUrl: string): Response {
       authorization_endpoint: `${issuer}/oauth/authorize`,
       token_endpoint: `${issuer}/oauth/token`,
       jwks_uri: `${issuer}/api/auth/jwks`,
+      userinfo_endpoint: `${issuer}/api/auth/oauth2/userinfo`,
+      revocation_endpoint: `${issuer}/api/auth/oauth2/revoke`,
       response_types_supported: ["code"],
       grant_types_supported: ["authorization_code"],
       code_challenge_methods_supported: ["S256"],
@@ -342,7 +352,10 @@ export async function handleDeviceOidcToken(
   const codeVerifier = str(body.code_verifier);
 
   if (grantType !== "authorization_code")
-    return oauthError("unsupported_grant_type", "grant_type must be authorization_code.");
+    return oauthError(
+      "unsupported_grant_type",
+      "grant_type must be authorization_code.",
+    );
   if (!rawCode || !redirectUri || !clientId || !codeVerifier)
     return oauthError(
       "invalid_request",
@@ -382,9 +395,7 @@ export async function handleDeviceOidcToken(
     return oauthError("invalid_grant", "redirect_uri mismatch.");
   if (!CODE_VERIFIER.test(codeVerifier))
     return oauthError("invalid_grant", "Invalid code_verifier.");
-  const computed = createHash("sha256")
-    .update(codeVerifier, "ascii")
-    .digest();
+  const computed = createHash("sha256").update(codeVerifier, "ascii").digest();
   const expected = Buffer.from(row.codeChallenge, "base64url");
   if (
     computed.length !== expected.length ||
@@ -397,8 +408,7 @@ export async function handleDeviceOidcToken(
     .from(users)
     .where(eq(users.id, row.userId))
     .limit(1);
-  if (!user)
-    return oauthError("invalid_grant", "Unknown account.");
+  if (!user) return oauthError("invalid_grant", "Unknown account.");
 
   const accessToken = `nxo_${randomBytes(32).toString("base64url")}`;
   const expiresAt = new Date(now.getTime() + TOKEN_TTL_SECONDS * 1000);
@@ -444,6 +454,102 @@ export async function handleDeviceOidcToken(
     200,
     { pragma: "no-cache" },
   );
+}
+
+export interface DeviceOidcUserInfoDeps {
+  db: Database;
+  now?: () => Date;
+}
+
+interface RevokeRequestFields {
+  token?: unknown;
+  client_id?: unknown;
+}
+
+const USERINFO_SCOPES = ["openid", DEVICE_GRANT_SCOPE] as const;
+
+/** Jeton `Bearer nxo_…` de l'en-tête `Authorization`, ou `null`. */
+function bearerToken(request: Request): string | null {
+  const header = request.headers.get("authorization") ?? "";
+  const match = /^Bearer\s+(\S+)$/i.exec(header.trim());
+  return match?.[1] ?? null;
+}
+
+/** `GET /api/auth/oauth2/userinfo` : identité du porteur du jeton `nxo_…` actif (portée openid ou device:grant). */
+export async function handleDeviceOidcUserInfo(
+  request: Request,
+  deps: DeviceOidcUserInfoDeps,
+): Promise<Response> {
+  const now = (deps.now ?? (() => new Date()))();
+  const token = bearerToken(request);
+  if (!token || !token.startsWith("nxo_"))
+    return oauthError("invalid_token", "Missing or malformed access token.", 401);
+
+  const [row] = await deps.db
+    .select({
+      userId: deviceOidcTokens.userId,
+      organizationId: deviceOidcTokens.organizationId,
+      scope: deviceOidcTokens.scope,
+      expiresAt: deviceOidcTokens.expiresAt,
+      revokedAt: deviceOidcTokens.revokedAt,
+      email: users.email,
+      emailVerified: users.emailVerified,
+      name: users.name,
+    })
+    .from(deviceOidcTokens)
+    .innerJoin(users, eq(users.id, deviceOidcTokens.userId))
+    .where(eq(deviceOidcTokens.tokenHash, sha256Hex(token)))
+    .limit(1);
+  if (!row || row.revokedAt !== null)
+    return oauthError("invalid_token", "Unknown or revoked access token.", 401);
+  if (row.expiresAt.getTime() <= now.getTime())
+    return oauthError("invalid_token", "Expired access token.", 401);
+  const scopes = row.scope.split(/\s+/).filter((s) => s.length > 0);
+  if (!USERINFO_SCOPES.some((s) => scopes.includes(s)))
+    return oauthError("invalid_token", "Insufficient scope.", 401);
+
+  return json(
+    {
+      sub: row.userId,
+      email: row.email,
+      email_verified: Boolean(row.emailVerified),
+      name: row.name,
+      organization_id: row.organizationId,
+    },
+    200,
+  );
+}
+
+/**
+ * `POST /api/auth/oauth2/revoke` (RFC 7009) : révoque un jeton d'accès `nxo_…`. Réponse 200 `{ ok: true }`
+ * même si le jeton est inconnu (pas d'oracle d'existence).
+ */
+export async function handleDeviceOidcRevoke(
+  request: Request,
+  deps: DeviceOidcUserInfoDeps,
+): Promise<Response> {
+  const now = (deps.now ?? (() => new Date()))();
+  const body: RevokeRequestFields | null = await readTokenRequest(request);
+  if (!body) return oauthError("invalid_request", "Malformed or unsupported body.");
+
+  const token = str(body.token);
+  const clientId = str(body.client_id);
+  if (!token) return oauthError("invalid_request", "token is required.");
+  if (clientId !== null && !ALLOWED_NATIVE_CLIENTS.has(clientId))
+    return oauthError("invalid_client", "Unknown client_id.", 401);
+
+  if (token.startsWith("nxo_")) {
+    await deps.db
+      .update(deviceOidcTokens)
+      .set({ revokedAt: now })
+      .where(
+        and(
+          eq(deviceOidcTokens.tokenHash, sha256Hex(token)),
+          isNull(deviceOidcTokens.revokedAt),
+        ),
+      );
+  }
+  return json({ ok: true }, 200);
 }
 
 /** `authenticateDeviceOidcToken` : jeton Bearer `nxo_…` actif et porteur de la portée exigée. */
