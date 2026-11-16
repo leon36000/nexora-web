@@ -212,6 +212,8 @@ nexora_sonar_developpement:
   needs:
     - job: web-verification
       artifacts: true
+    - job: sonar-freshness-guard-tests
+      artifacts: true
   image:
     name: sonarsource/sonar-scanner-cli:12.3.0.4285_8.1.0@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7
     entrypoint: [""]
@@ -244,14 +246,16 @@ nexora_sonar_developpement:
             -Dsonar.host.url=https://pc4.tail0c55ff.ts.net:10000 \
             -Dsonar.projectKey=gitlab-6 -Dsonar.projectName="Nexora Web" \
             -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.python.version=3.13 \
             -Dsonar.projectVersion=developpement -Dsonar.scm.revision="$3" \
             -Dproject.settings="$2/settings.properties" -Dsonar.projectBaseDir="$1" \
             -Dsonar.sources=web/src,cms,packages,worker/src,scripts \
             -Dsonar.exclusions="**/node_modules/**,**/.next/**,**/dist/**,**/coverage/**,**/*.test.ts,**/*.test.tsx,**/*.e2e.test.ts,cms/content/**,**/migrations/meta/**" \
-            -Dsonar.tests=web/src,cms,packages,worker/src \
-            -Dsonar.test.inclusions="**/*.test.ts,**/*.test.tsx" \
+            -Dsonar.tests=web/src,cms,packages,worker/src,scripts \
+            -Dsonar.test.inclusions="**/*.test.ts,**/*.test.tsx,**/test_*.py" \
             -Dsonar.test.exclusions="**/node_modules/**" \
             -Dsonar.javascript.lcov.reportPaths=.ci-reports/coverage-web/lcov.info,.ci-reports/coverage-log/lcov.info,.ci-reports/coverage-net/lcov.info,.ci-reports/coverage-code/lcov.info,.ci-reports/coverage-db/lcov.info \
+            -Dsonar.python.coverage.reportPaths=.ci-reports/coverage-python.xml \
             -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
         ' scanner "$CI_PROJECT_DIR" "$scratch" "$CI_COMMIT_SHA"
 
@@ -262,15 +266,44 @@ sonar-freshness-guard-tests:
     name: sonarsource/sonar-scanner-cli:12.3.0.4285_8.1.0@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7
     entrypoint: [""]
   timeout: 3m
+  cache:
+    key: python-coverage-7-17-3
+    paths: [.ci-cache/coverage/]
   script:
     - |
       set -eu
       python3 --version
-      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 -m unittest discover -s scripts/ci -p test_sonar_head_guard.py -v
+      wheel=".ci-cache/coverage/coverage-7.17.3-py3-none-any.whl"
+      wheel_sha="21745c08f2835b847a16887b748d3084dddeb0571ae2a0d62e33644413568b99"
+      mkdir -p .ci-cache/coverage .ci-reports
+      if ! printf '%s  %s\n' "$wheel_sha" "$wheel" | sha256sum --check --status 2>/dev/null; then
+        download="$(mktemp)"
+        trap 'rm -f "$download"' EXIT
+        curl --fail --silent --show-error --location --retry 2 --connect-timeout 15 --max-time 120 \
+          'https://files.pythonhosted.org/packages/d1/8e/f7d7e69e2ad34ce08595b787eb578f669c00fd57d432ed4c7cfd71666f36/coverage-7.17.3-py3-none-any.whl' -o "$download"
+        printf '%s  %s\n' "$wheel_sha" "$download" | sha256sum --check --status
+        mv "$download" "$wheel"
+        trap - EXIT
+      fi
+      pythonpath="$CI_PROJECT_DIR/$wheel:$CI_PROJECT_DIR/scripts/ci"
+      coverage_file="$CI_PROJECT_DIR/.ci-reports/python.coverage"
+      printf '[run]\nrelative_files = true\nbranch = true\nsource = scripts/ci\n[report]\ninclude = scripts/ci/sonar_head_guard.py\n' > .ci-reports/python-coverage.ini
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+        PYTHONPATH="$pythonpath" COVERAGE_FILE="$coverage_file" \
+        python3 -m coverage run --timid --rcfile=.ci-reports/python-coverage.ini \
+        -m unittest discover -s scripts/ci -p test_sonar_head_guard.py -v
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+        PYTHONPATH="$pythonpath" COVERAGE_FILE="$coverage_file" \
+        python3 -m coverage xml --rcfile=.ci-reports/python-coverage.ini -o .ci-reports/coverage-python.xml
+      test -s .ci-reports/coverage-python.xml
       set +x
       exec 3<<<"$CI_JOB_TOKEN"
       env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 scripts/ci/sonar_head_guard.py --probe --token-fd 3
       exec 3<&-
+  artifacts:
+    when: always
+    expire_in: 14 days
+    paths: [.ci-reports/coverage-python.xml]
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "developpement"'

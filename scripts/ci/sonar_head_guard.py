@@ -9,7 +9,7 @@ import os
 import re
 import ssl
 import sys
-from urllib.error import HTTPError, URLError
+from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import (
     HTTPSHandler,
@@ -46,10 +46,13 @@ class _RejectRedirect(HTTPRedirectHandler):
 
 
 def _open_without_proxy_or_redirect(request: Request, timeout: int):
+    context = ssl.create_default_context()
+    if context.minimum_version < ssl.TLSVersion.TLSv1_2:
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
     opener = build_opener(
         ProxyHandler({}),
         _RejectRedirect(),
-        HTTPSHandler(context=ssl.create_default_context()),
+        HTTPSHandler(context=context),
     )
     return opener.open(request, timeout=timeout)
 
@@ -97,7 +100,7 @@ def read_development_head(job_token: str, opener=None) -> str:
         raise GitLabAccessError(
             f"GitLab branches API returned HTTP {error.code}; refusing the Sonar analysis."
         ) from None
-    except (URLError, TimeoutError, OSError, ValueError):
+    except (OSError, ValueError):
         raise GitLabAccessError(
             "GitLab branches API request failed; refusing the Sonar analysis."
         ) from None
