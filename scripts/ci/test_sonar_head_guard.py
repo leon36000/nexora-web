@@ -306,18 +306,20 @@ class LoopbackTlsTests(unittest.TestCase):
         return ssl.create_default_context(cafile=str(self.ca))
 
     def test_unknown_ca_rejected(self) -> None:
+        request = Request(self.url())
         def untrusted():
             return ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         with patch.object(guard.ssl, "create_default_context", side_effect=untrusted):
             with self.assertRaises(URLError):
-                guard._open_without_proxy_or_redirect(Request(self.url()), timeout=3)
+                guard._open_without_proxy_or_redirect(request, timeout=3)
         self.assertEqual(self.handler.requests, [])
 
     def test_wrong_hostname_rejected_even_when_ca_trusted(self) -> None:
+        request = Request(self.url("127.0.0.1"))
         trusted = self.trusted_factory()
         with patch.object(guard.ssl, "create_default_context", return_value=trusted):
             with self.assertRaises(OSError):
-                guard._open_without_proxy_or_redirect(Request(self.url("127.0.0.1")), timeout=3)
+                guard._open_without_proxy_or_redirect(request, timeout=3)
         self.assertEqual(self.handler.requests, [])
 
     def test_approved_ca_and_hostname_accepted(self) -> None:
@@ -338,10 +340,11 @@ class LoopbackTlsTests(unittest.TestCase):
         self.assertEqual(trusted.minimum_version, ssl.TLSVersion.TLSv1_3)
 
     def test_redirect_rejected(self) -> None:
+        request = Request(self.url(path="/redirect"))
         trusted = self.trusted_factory()
         with patch.object(guard.ssl, "create_default_context", return_value=trusted):
             with self.assertRaises(HTTPError) as raised:
-                guard._open_without_proxy_or_redirect(Request(self.url(path="/redirect")), timeout=3)
+                guard._open_without_proxy_or_redirect(request, timeout=3)
         self.assertEqual(raised.exception.code, 302)
         self.assertEqual(self.handler.requests, ["/redirect"])
 
