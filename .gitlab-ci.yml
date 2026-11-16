@@ -203,6 +203,9 @@ web-verification:
 
 nexora_sonar_developpement:
   stage: qualite
+  environment:
+    name: sonarqube
+    action: verify
   needs:
     - job: web-verification
       artifacts: true
