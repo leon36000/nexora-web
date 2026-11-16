@@ -267,7 +267,10 @@ export async function handleCreativeCredits(
       });
     }
 
-    if (!UUID.test(String(body.reservationId ?? "")))
+    if (
+      typeof body.reservationId !== "string" ||
+      !UUID.test(body.reservationId)
+    )
       return errorJson(
         400,
         "invalid_request",
@@ -283,7 +286,7 @@ export async function handleCreativeCredits(
         );
       const result = await deps.settle(db, {
         organizationId,
-        reservationId: body.reservationId as string,
+        reservationId: body.reservationId,
         actualMicro: BigInt(body.credits) * 10_000n,
       });
       if (
@@ -300,7 +303,7 @@ export async function handleCreativeCredits(
 
     const result = await deps.release(db, {
       organizationId,
-      reservationId: body.reservationId as string,
+      reservationId: body.reservationId,
     });
     return json({ ok: true, replayed: result.replayed });
   } catch (error) {
