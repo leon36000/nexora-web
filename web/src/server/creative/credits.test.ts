@@ -10,6 +10,14 @@ const TOKENS = {
   c: `nxk_${"c".repeat(43)}`,
   revoked: `nxk_${"r".repeat(43)}`,
 };
+const LEDGER_REJECTION_BODIES = {
+  reserve: { idempotencyKey: "async-rejection", credits: 1, label: "Image" },
+  settle: {
+    reservationId: "00000000-0000-4000-8000-000000000001",
+    credits: 1,
+  },
+  release: { reservationId: "00000000-0000-4000-8000-000000000001" },
+} as const;
 const SERVICE_TOKEN = "service-token-for-creative-tests-0123456789";
 const MAX_CREDITS = Number(9_223_372_036_854_775_807n / 10_000n);
 const INT64_MAX = 9_223_372_036_854_775_807n;
@@ -902,4 +910,78 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
     expect(h.ledger.debited.get(KEYS.a.organizationId) ?? 0n).toBe(0n);
     expect(h.ledger.reservations.get(id)?.settledMicro).toBe(0n);
   });
+
+  it.each(["reserve", "settle", "release"] as const)(
+    "convertit un rejet asynchrone de %s en 503 sans divulguer son détail",
+    async (action) => {
+      const privateDetail = `détail interne ${action}`;
+      const logError = vi.fn();
+      h.deps.log = { error: logError };
+      h.deps[action].mockRejectedValueOnce(new Error(privateDetail));
+
+      const response = await handleCreativeCredits(
+        post(action, LEDGER_REJECTION_BODIES[action]),
+        action,
+        h.deps,
+      );
+      const body = await response.json();
+
+      expect(response.status).toBe(503);
+      expect(body).toMatchObject({
+        error: {
+          code: "unavailable",
+          message: "Service de crédits indisponible. Réessayez.",
+        },
+      });
+      expect(JSON.stringify(body)).not.toContain(privateDetail);
+      expect(logError).toHaveBeenCalledWith(
+        "API crédits Creative indisponible",
+        { action, errorName: "Error" },
+      );
+      expect(JSON.stringify(logError.mock.calls)).not.toContain(privateDetail);
+    },
+  );
+
+  it.each([
+    {
+      action: "reserve",
+      ledgerCode: "idempotency_conflict",
+      status: 409,
+      responseCode: "idempotency_conflict",
+    },
+    {
+      action: "settle",
+      ledgerCode: "reservation_closed",
+      status: 409,
+      responseCode: "reservation_closed",
+    },
+    {
+      action: "release",
+      ledgerCode: "not_found",
+      status: 404,
+      responseCode: "reservation_not_found",
+    },
+  ] as const)(
+    "mappe le rejet LedgerError de $action sans divulguer son détail",
+    async ({ action, ledgerCode, status, responseCode }) => {
+      const privateDetail = `détail ledger ${action}`;
+      const logError = vi.fn();
+      h.deps.log = { error: logError };
+      h.deps[action].mockRejectedValueOnce(
+        new LedgerError(ledgerCode, privateDetail),
+      );
+
+      const response = await handleCreativeCredits(
+        post(action, LEDGER_REJECTION_BODIES[action]),
+        action,
+        h.deps,
+      );
+      const body = await response.json();
+
+      expect(response.status).toBe(status);
+      expect(body).toMatchObject({ error: { code: responseCode } });
+      expect(JSON.stringify(body)).not.toContain(privateDetail);
+      expect(logError).not.toHaveBeenCalled();
+    },
+  );
 });
