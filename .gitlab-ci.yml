@@ -95,7 +95,7 @@ web-verification:
       alias: mailpit
     - name: stripe/stripe-mock@sha256:aeb96b83e87a893d2ac005e363ac01ffa6e59a5ad85b49c155dfc9129de02e78
       alias: stripe-mock
-  tags: [nexora-linux-docker]
+  tags: [nexora-fast-docker]
   interruptible: false
   timeout: 30m
   variables:
