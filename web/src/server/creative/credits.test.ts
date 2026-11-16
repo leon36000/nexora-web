@@ -1,8 +1,8 @@
 import { LedgerError } from "@nexora/db";
 import { createLogger } from "@nexora/log";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { creativeCreditsDeps } from "./credits-deps";
 import { handleCreativeCredits } from "./credits";
+import { creativeCreditsDeps } from "./credits-deps";
 
 const TOKENS = {
   a: `nxk_${"a".repeat(43)}`,
@@ -36,7 +36,8 @@ class MemoryCreditsLedger {
   held = new Map<string, bigint>();
   debited = new Map<string, bigint>();
   writes = { reserve: 0, settle: 0, release: 0 };
-  forcedReserve: "key_cap_exceeded" | "insufficient_funds" | "blocked" | null = null;
+  forcedReserve: "key_cap_exceeded" | "insufficient_funds" | "blocked" | null =
+    null;
   private nextId = 1;
 
   private row(row: FakeReservation) {
@@ -83,7 +84,11 @@ class MemoryCreditsLedger {
       (this.held.get(input.organizationId) ?? 0n) + input.amountMicro,
     );
     this.writes.reserve += 1;
-    return { status: "reserved", reservation: this.row(reservation), entry: {} };
+    return {
+      status: "reserved",
+      reservation: this.row(reservation),
+      entry: {},
+    };
   });
 
   settle = vi.fn(async (_db: unknown, input: Record<string, any>) => {
@@ -209,13 +214,19 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
   it("répond 401 de façon uniforme sans clé, avec une clé inconnue ou révoquée", async () => {
     for (const token of ["", TOKENS.revoked, "pas-une-cle"]) {
       const response = await handleCreativeCredits(
-        post("reserve", { idempotencyKey: "r1", credits: 10, label: "Vidéo" }, token),
+        post(
+          "reserve",
+          { idempotencyKey: "r1", credits: 10, label: "Vidéo" },
+          token,
+        ),
         "reserve",
         h.deps,
       );
       expect({ status: response.status, body: await response.json() }).toEqual({
         status: 401,
-        body: { error: { code: "invalid_api_key", message: expect.any(String) } },
+        body: {
+          error: { code: "invalid_api_key", message: expect.any(String) },
+        },
       });
     }
     expect(h.ledger.reserve).not.toHaveBeenCalled();
@@ -223,16 +234,31 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("refuse la clé d'organisation seule et échoue fermé si le jeton de service manque", async () => {
     const noServiceToken = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "org-key-only", credits: 1, label: "Image" }, TOKENS.a, "application/json", null),
+      post(
+        "reserve",
+        { idempotencyKey: "org-key-only", credits: 1, label: "Image" },
+        TOKENS.a,
+        "application/json",
+        null,
+      ),
       "reserve",
       h.deps,
     );
     const wrongServiceToken = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "wrong-service", credits: 1, label: "Image" }, TOKENS.a, "application/json", "incorrect"),
+      post(
+        "reserve",
+        { idempotencyKey: "wrong-service", credits: 1, label: "Image" },
+        TOKENS.a,
+        "application/json",
+        "incorrect",
+      ),
       "reserve",
       h.deps,
     );
-    expect({ status: noServiceToken.status, body: await noServiceToken.json() }).toEqual({
+    expect({
+      status: noServiceToken.status,
+      body: await noServiceToken.json(),
+    }).toEqual({
       status: wrongServiceToken.status,
       body: await wrongServiceToken.json(),
     });
@@ -256,7 +282,13 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
     try {
       const deps = creativeCreditsDeps();
       const response = await handleCreativeCredits(
-        post("reserve", { idempotencyKey: "closed-config", credits: 1, label: "Image" }, TOKENS.a, "application/json", null),
+        post(
+          "reserve",
+          { idempotencyKey: "closed-config", credits: 1, label: "Image" },
+          TOKENS.a,
+          "application/json",
+          null,
+        ),
         "reserve",
         deps,
       );
@@ -279,12 +311,23 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
         ...production,
         db: () => ({}),
         authenticate: async () => ({ ok: true, key: KEYS.a }),
-        rateLimit: async () => ({ allowed: true, count: 1, retryAfterSeconds: 60 }),
+        rateLimit: async () => ({
+          allowed: true,
+          count: 1,
+          retryAfterSeconds: 60,
+        }),
         reserve,
-        log: createLogger({ name: "creative-credits-config-test", sink: () => {} }),
+        log: createLogger({
+          name: "creative-credits-config-test",
+          sink: () => {},
+        }),
       } as any;
       const response = await handleCreativeCredits(
-        post("reserve", { idempotencyKey: "invalid-config", credits: 1, label: "Image" }),
+        post("reserve", {
+          idempotencyKey: "invalid-config",
+          credits: 1,
+          label: "Image",
+        }),
         "reserve",
         deps,
       );
@@ -303,9 +346,27 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       method: "GET",
       headers: { authorization: `Bearer ${TOKENS.a}` },
     });
-    expect((await handleCreativeCredits(get, "reserve", h.deps)).status).toBe(405);
-    expect((await handleCreativeCredits(post("reserve", {}, TOKENS.a, "text/plain"), "reserve", h.deps)).status).toBe(415);
-    expect((await handleCreativeCredits(post("reserve", "{bad json"), "reserve", h.deps)).status).toBe(400);
+    expect((await handleCreativeCredits(get, "reserve", h.deps)).status).toBe(
+      405,
+    );
+    expect(
+      (
+        await handleCreativeCredits(
+          post("reserve", {}, TOKENS.a, "text/plain"),
+          "reserve",
+          h.deps,
+        )
+      ).status,
+    ).toBe(415);
+    expect(
+      (
+        await handleCreativeCredits(
+          post("reserve", "{bad json"),
+          "reserve",
+          h.deps,
+        )
+      ).status,
+    ).toBe(400);
     expect(
       (
         await handleCreativeCredits(
@@ -320,11 +381,18 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       { idempotencyKey: "", credits: 10, label: "Vidéo" },
       { idempotencyKey: "k", credits: 0, label: "Vidéo" },
       { idempotencyKey: "k", credits: 1.5, label: "Vidéo" },
-      { idempotencyKey: "k", credits: Number.MAX_SAFE_INTEGER + 1, label: "Vidéo" },
+      {
+        idempotencyKey: "k",
+        credits: Number.MAX_SAFE_INTEGER + 1,
+        label: "Vidéo",
+      },
       { idempotencyKey: "k", credits: MAX_CREDITS + 1, label: "Vidéo" },
       { idempotencyKey: "k", credits: 10, label: "" },
     ]) {
-      expect((await handleCreativeCredits(post("reserve", body), "reserve", h.deps)).status).toBe(400);
+      expect(
+        (await handleCreativeCredits(post("reserve", body), "reserve", h.deps))
+          .status,
+      ).toBe(400);
     }
 
     const badUuid = await handleCreativeCredits(
@@ -344,7 +412,11 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       retryAfterSeconds: 17,
     });
     const response = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "limited", credits: 1, label: "Image" }),
+      post("reserve", {
+        idempotencyKey: "limited",
+        credits: 1,
+        label: "Image",
+      }),
       "reserve",
       h.deps,
     );
@@ -382,7 +454,11 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
   it("relie la réservation à la clé API et transforme un refus de plafond en 402", async () => {
     h.ledger.forcedReserve = "key_cap_exceeded";
     const response = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "key-cap", credits: 1, label: "Image" }),
+      post("reserve", {
+        idempotencyKey: "key-cap",
+        credits: 1,
+        label: "Image",
+      }),
       "reserve",
       h.deps,
     );
@@ -398,7 +474,11 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
     const configVersion = vi.fn(() => "cfg-test");
     h.deps.configVersion = configVersion;
     const reservation = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "settle-snapshot", credits: 5, label: "Vidéo" }),
+      post("reserve", {
+        idempotencyKey: "settle-snapshot",
+        credits: 5,
+        label: "Vidéo",
+      }),
       "reserve",
       h.deps,
     );
@@ -417,17 +497,25 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("borne la conversion avant le bigint signé de PostgreSQL", async () => {
     const response = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "bigint-limit", credits: MAX_CREDITS, label: "Vidéo" }),
+      post("reserve", {
+        idempotencyKey: "bigint-limit",
+        credits: MAX_CREDITS,
+        label: "Vidéo",
+      }),
       "reserve",
       h.deps,
     );
     expect(response.status).toBe(200);
-    const amountMicro = h.ledger.reserve.mock.calls[0]?.[1].amountMicro as bigint;
+    const amountMicro = h.ledger.reserve.mock.calls[0]?.[1]
+      .amountMicro as bigint;
     expect(amountMicro).toBe(BigInt(MAX_CREDITS) * 10_000n);
     expect(amountMicro <= INT64_MAX).toBe(true);
 
     const settleTooLarge = await handleCreativeCredits(
-      post("settle", { reservationId: "00000000-0000-4000-8000-000000000001", credits: MAX_CREDITS + 1 }),
+      post("settle", {
+        reservationId: "00000000-0000-4000-8000-000000000001",
+        credits: MAX_CREDITS + 1,
+      }),
       "settle",
       h.deps,
     );
@@ -437,25 +525,47 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("scinde les mêmes clés d'idempotence par organisation et rejoue un hold ouvert sans le doubler", async () => {
     const body = { idempotencyKey: "same-key", credits: 7, label: "Image" };
-    const first = await handleCreativeCredits(post("reserve", body), "reserve", h.deps);
-    const replay = await handleCreativeCredits(post("reserve", body), "reserve", h.deps);
+    const first = await handleCreativeCredits(
+      post("reserve", body),
+      "reserve",
+      h.deps,
+    );
+    const replay = await handleCreativeCredits(
+      post("reserve", body),
+      "reserve",
+      h.deps,
+    );
     expect(replay.status).toBe(200);
     expect(await replay.json()).toEqual(await first.clone().json());
     expect(h.ledger.writes.reserve).toBe(1);
     expect(h.ledger.held.get(KEYS.a.organizationId)).toBe(70_000n);
 
-    const otherOrg = await handleCreativeCredits(post("reserve", body, TOKENS.b), "reserve", h.deps);
+    const otherOrg = await handleCreativeCredits(
+      post("reserve", body, TOKENS.b),
+      "reserve",
+      h.deps,
+    );
     expect(otherOrg.status).toBe(200);
-    expect((await otherOrg.json()).reservationId).not.toBe((await first.json()).reservationId);
+    expect((await otherOrg.json()).reservationId).not.toBe(
+      (await first.json()).reservationId,
+    );
     expect(h.ledger.writes.reserve).toBe(2);
     expect(h.ledger.held.get(KEYS.b.organizationId)).toBe(70_000n);
   });
 
   it("refuse le rejeu d'un hold de la même organisation par une autre clé API", async () => {
     const body = { idempotencyKey: "same-org-key", credits: 7, label: "Image" };
-    const first = await handleCreativeCredits(post("reserve", body, TOKENS.a), "reserve", h.deps);
+    const first = await handleCreativeCredits(
+      post("reserve", body, TOKENS.a),
+      "reserve",
+      h.deps,
+    );
     expect(first.status).toBe(200);
-    const otherKey = await handleCreativeCredits(post("reserve", body, TOKENS.c), "reserve", h.deps);
+    const otherKey = await handleCreativeCredits(
+      post("reserve", body, TOKENS.c),
+      "reserve",
+      h.deps,
+    );
     expect(otherKey.status).toBe(409);
     expect(await otherKey.json()).toMatchObject({
       error: { code: "idempotency_conflict" },
@@ -476,13 +586,19 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       h.deps,
     );
     expect(conflict.status).toBe(409);
-    expect(JSON.stringify(await conflict.json())).not.toContain(KEYS.a.organizationId);
+    expect(JSON.stringify(await conflict.json())).not.toContain(
+      KEYS.a.organizationId,
+    );
     expect(h.ledger.writes.reserve).toBe(1);
   });
 
   it("masque les réservations inter-org comme des identifiants inexistants", async () => {
     const reservation = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "cross-org", credits: 8, label: "Vidéo" }, TOKENS.a),
+      post(
+        "reserve",
+        { idempotencyKey: "cross-org", credits: 8, label: "Vidéo" },
+        TOKENS.a,
+      ),
       "reserve",
       h.deps,
     );
@@ -493,7 +609,11 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       h.deps,
     );
     const missingSettle = await handleCreativeCredits(
-      post("settle", { reservationId: "00000000-0000-4000-8000-999999999999", credits: 8 }, TOKENS.b),
+      post(
+        "settle",
+        { reservationId: "00000000-0000-4000-8000-999999999999", credits: 8 },
+        TOKENS.b,
+      ),
       "settle",
       h.deps,
     );
@@ -503,15 +623,25 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
       h.deps,
     );
     const missingRelease = await handleCreativeCredits(
-      post("release", { reservationId: "00000000-0000-4000-8000-999999999998" }, TOKENS.b),
+      post(
+        "release",
+        { reservationId: "00000000-0000-4000-8000-999999999998" },
+        TOKENS.b,
+      ),
       "release",
       h.deps,
     );
-    expect({ status: foreignSettle.status, body: await foreignSettle.json() }).toEqual({
+    expect({
+      status: foreignSettle.status,
+      body: await foreignSettle.json(),
+    }).toEqual({
       status: missingSettle.status,
       body: await missingSettle.json(),
     });
-    expect({ status: foreignRelease.status, body: await foreignRelease.json() }).toEqual({
+    expect({
+      status: foreignRelease.status,
+      body: await foreignRelease.json(),
+    }).toEqual({
       status: missingRelease.status,
       body: await missingRelease.json(),
     });
@@ -522,7 +652,11 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("permet à une nouvelle clé de la même organisation de solder un rendu en cours", async () => {
     const reservedForSettle = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "rotate-settle", credits: 6, label: "Vidéo" }, TOKENS.a),
+      post(
+        "reserve",
+        { idempotencyKey: "rotate-settle", credits: 6, label: "Vidéo" },
+        TOKENS.a,
+      ),
       "reserve",
       h.deps,
     );
@@ -537,7 +671,11 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
     expect(h.ledger.reservations.get(settleId)?.apiKeyId).toBe(KEYS.a.id);
 
     const reservedForRelease = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "rotate-release", credits: 3, label: "Image" }, TOKENS.a),
+      post(
+        "reserve",
+        { idempotencyKey: "rotate-release", credits: 3, label: "Image" },
+        TOKENS.a,
+      ),
       "reserve",
       h.deps,
     );
@@ -556,40 +694,96 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("rejoue settle et release sans double écriture et refuse release après settle", async () => {
     const settled = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "settle-1", credits: 20, label: "Vidéo" }),
+      post("reserve", {
+        idempotencyKey: "settle-1",
+        credits: 20,
+        label: "Vidéo",
+      }),
       "reserve",
       h.deps,
     );
     const settledId = (await settled.json()).reservationId;
-    const settle1 = await handleCreativeCredits(post("settle", { reservationId: settledId, credits: 15 }), "settle", h.deps);
-    const settle2 = await handleCreativeCredits(post("settle", { reservationId: settledId, credits: 15 }), "settle", h.deps);
+    const settle1 = await handleCreativeCredits(
+      post("settle", { reservationId: settledId, credits: 15 }),
+      "settle",
+      h.deps,
+    );
+    const settle2 = await handleCreativeCredits(
+      post("settle", { reservationId: settledId, credits: 15 }),
+      "settle",
+      h.deps,
+    );
     expect(settle1.status).toBe(200);
     expect(settle2.status).toBe(200);
     expect(h.ledger.writes.settle).toBe(1);
     expect(h.ledger.debited.get(KEYS.a.organizationId)).toBe(150_000n);
-    const changedSettle = await handleCreativeCredits(post("settle", { reservationId: settledId, credits: 16 }), "settle", h.deps);
+    const changedSettle = await handleCreativeCredits(
+      post("settle", { reservationId: settledId, credits: 16 }),
+      "settle",
+      h.deps,
+    );
     expect(changedSettle.status).toBe(409);
     expect(h.ledger.debited.get(KEYS.a.organizationId)).toBe(150_000n);
-    expect((await handleCreativeCredits(post("release", { reservationId: settledId }), "release", h.deps)).status).toBe(409);
+    expect(
+      (
+        await handleCreativeCredits(
+          post("release", { reservationId: settledId }),
+          "release",
+          h.deps,
+        )
+      ).status,
+    ).toBe(409);
 
     const released = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "release-1", credits: 10, label: "Image" }),
+      post("reserve", {
+        idempotencyKey: "release-1",
+        credits: 10,
+        label: "Image",
+      }),
       "reserve",
       h.deps,
     );
     const releasedId = (await released.json()).reservationId;
-    expect((await handleCreativeCredits(post("release", { reservationId: releasedId }), "release", h.deps)).status).toBe(200);
-    expect((await handleCreativeCredits(post("release", { reservationId: releasedId }), "release", h.deps)).status).toBe(200);
+    expect(
+      (
+        await handleCreativeCredits(
+          post("release", { reservationId: releasedId }),
+          "release",
+          h.deps,
+        )
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await handleCreativeCredits(
+          post("release", { reservationId: releasedId }),
+          "release",
+          h.deps,
+        )
+      ).status,
+    ).toBe(200);
     expect(h.ledger.writes.release).toBe(1);
     expect(h.ledger.held.get(KEYS.a.organizationId)).toBe(0n);
   });
 
   it("ne traite pas le rejeu d'une réservation close comme un nouveau hold", async () => {
     const body = { idempotencyKey: "closed-1", credits: 9, label: "Vidéo" };
-    const first = await handleCreativeCredits(post("reserve", body), "reserve", h.deps);
+    const first = await handleCreativeCredits(
+      post("reserve", body),
+      "reserve",
+      h.deps,
+    );
     const id = (await first.json()).reservationId;
-    await handleCreativeCredits(post("release", { reservationId: id }), "release", h.deps);
-    const retry = await handleCreativeCredits(post("reserve", body), "reserve", h.deps);
+    await handleCreativeCredits(
+      post("release", { reservationId: id }),
+      "release",
+      h.deps,
+    );
+    const retry = await handleCreativeCredits(
+      post("reserve", body),
+      "reserve",
+      h.deps,
+    );
     expect(retry.status).toBe(409);
     expect(h.ledger.held.get(KEYS.a.organizationId)).toBe(0n);
     expect(h.ledger.writes.reserve).toBe(1);
@@ -597,14 +791,30 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("autorise un règlement tardif après libération et reste idempotent", async () => {
     const reserved = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "late-1", credits: 12, label: "Vidéo" }),
+      post("reserve", {
+        idempotencyKey: "late-1",
+        credits: 12,
+        label: "Vidéo",
+      }),
       "reserve",
       h.deps,
     );
     const id = (await reserved.json()).reservationId;
-    await handleCreativeCredits(post("release", { reservationId: id }), "release", h.deps);
-    const late1 = await handleCreativeCredits(post("settle", { reservationId: id, credits: 7 }), "settle", h.deps);
-    const late2 = await handleCreativeCredits(post("settle", { reservationId: id, credits: 7 }), "settle", h.deps);
+    await handleCreativeCredits(
+      post("release", { reservationId: id }),
+      "release",
+      h.deps,
+    );
+    const late1 = await handleCreativeCredits(
+      post("settle", { reservationId: id, credits: 7 }),
+      "settle",
+      h.deps,
+    );
+    const late2 = await handleCreativeCredits(
+      post("settle", { reservationId: id, credits: 7 }),
+      "settle",
+      h.deps,
+    );
     expect(late1.status).toBe(200);
     expect(late2.status).toBe(200);
     expect(h.ledger.writes.settle).toBe(1);
@@ -613,12 +823,20 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
 
   it("fige aussi un coût nul après libération pour empêcher un rejeu différent", async () => {
     const reserved = await handleCreativeCredits(
-      post("reserve", { idempotencyKey: "late-zero", credits: 2, label: "Vidéo" }),
+      post("reserve", {
+        idempotencyKey: "late-zero",
+        credits: 2,
+        label: "Vidéo",
+      }),
       "reserve",
       h.deps,
     );
     const id = (await reserved.json()).reservationId;
-    await handleCreativeCredits(post("release", { reservationId: id }), "release", h.deps);
+    await handleCreativeCredits(
+      post("release", { reservationId: id }),
+      "release",
+      h.deps,
+    );
     const zero = await handleCreativeCredits(
       post("settle", { reservationId: id, credits: 0 }),
       "settle",

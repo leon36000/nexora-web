@@ -16,6 +16,11 @@ import {
 } from "../stripe/checkout";
 import { createStripeClient } from "../stripe/client";
 import { publishPlanToStripe } from "../stripe/publish-plan";
+import {
+  e2eHttpReady,
+  e2eLocalUrl,
+  REQUIRE_E2E,
+} from "../testing/e2e-services";
 import { loadKeyring } from "../vault/crypto";
 import { connectStripe } from "./connect";
 import { createPromo } from "./promo";
@@ -26,21 +31,25 @@ import {
 } from "./promo-sync";
 import { dbVault } from "./vault";
 
-const MOCK = "http://127.0.0.1:12111";
-const up = await fetch(`${MOCK}/v1/customers`, {
-  signal: AbortSignal.timeout(1500),
-})
-  .then((r) => r.status < 500 || r.status === 401)
-  .catch(() => false);
+const MOCK_URL = e2eLocalUrl(
+  process.env.NEXORA_E2E_STRIPE_MOCK_URL ?? "http://127.0.0.1:12111",
+  "http:",
+  ["127.0.0.1", "localhost", "stripe-mock"],
+  "stripe-mock",
+);
+const up = await e2eHttpReady(MOCK_URL, "/v1/customers", true);
+if (!up && REQUIRE_E2E)
+  throw new Error("NEXORA_CI_REQUIRE_E2E=1 mais stripe-mock est injoignable.");
 if (!up)
-  console.warn(
-    "e2e paiements/stripe-mock ignoré : stripe-mock (12111) injoignable.",
-  );
+  console.warn("e2e paiements/stripe-mock ignoré : stripe-mock injoignable.");
 const d = up ? describe : describe.skip;
 
 let t: TestDatabase;
 const stripe = () =>
-  createStripeClient({ secretKey: "sk_test_mockmockmock", mockUrl: MOCK });
+  createStripeClient({
+    secretKey: "sk_test_mockmockmock",
+    mockUrl: MOCK_URL.origin,
+  });
 const keyring = loadKeyring({
   NEXORA_VAULT_MASTER_KEY: randomBytes(32).toString("base64"),
 });

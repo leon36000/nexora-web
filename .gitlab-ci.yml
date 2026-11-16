@@ -1,9 +1,9 @@
-# Complète la chaîne de sécurité commune de pc4 (root/pc4-ci-securite : gitleaks, Semgrep, Trivy et SonarQube en
-# .pre) par les contrôles propres à ce dépôt. gitleaks lit .gitleaksignore, la liste des alertes déjà examinées.
-# Bloquant ici : une faille critique corrigeable dans les dépendances (Trivy).
+# Contrôle les nouveaux secrets et les vulnérabilités critiques corrigibles,
+# puis vérifie le code et les parcours web sur des services de test isolés.
 
 stages:
   - analyse
+  - verification
 
 workflow:
   rules:
@@ -14,14 +14,63 @@ workflow:
 
 # Le réseau de pc4 perd parfois la résolution du CDN de Docker Hub : un échec de préparation du pod est relancé.
 default:
-  tags:
-    - nexora-linux-docker
+  tags: [nexora-linux-docker]
   retry:
     max: 2
     when: [runner_system_failure, unknown_failure, stuck_or_timeout_failure, scheduler_failure]
 
+gitleaks-nouveaux-secrets:
+  stage: analyse
+  tags: [nexora-fast-docker]
+  image: node@sha256:aca79828f8a4afc627f189387c965625bcc419233946210a3b9522d90a59b5c6
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - |
+      set -eu
+      archive="$(mktemp)"
+      trap 'rm -f "$archive"' EXIT
+      curl --fail --silent --show-error --location --retry 2 --connect-timeout 15 --max-time 180 \
+        'https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz' -o "$archive"
+      printf '%s  %s\n' '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb' "$archive" | sha256sum --check --status
+      mkdir -p .ci-tools
+      tar -xzf "$archive" -C .ci-tools gitleaks
+      head="${CI_COMMIT_SHA:?Commit de pipeline absent}"
+      printf '%s\n' "$head" | grep -Eq '^[0-9a-f]{40}$'
+      test "$(git rev-parse HEAD)" = "$head"
+      if [ "${CI_PIPELINE_SOURCE:-}" = merge_request_event ]; then
+        base="${CI_MERGE_REQUEST_TARGET_BRANCH_SHA:-${CI_MERGE_REQUEST_DIFF_BASE_SHA:-}}"
+        if [ -z "$base" ]; then
+          echo 'Base de la merge request absente.' >&2
+          exit 1
+        fi
+      else
+        base="${CI_COMMIT_BEFORE_SHA:-}"
+        case "$base" in ''|0000000000000000000000000000000000000000)
+          base="${CI_COMMIT_DEFAULT_BRANCH_BASE_SHA:-}"
+          if [ -z "$base" ] && [ "${CI_COMMIT_BRANCH:-}" = "${CI_DEFAULT_BRANCH:-}" ]; then
+            base="$(git rev-parse --verify "$head^" 2>/dev/null || true)"
+          fi
+          ;;
+        esac
+      fi
+      if [ -n "$base" ]; then
+        printf '%s\n' "$base" | grep -Eq '^[0-9a-f]{40}$'
+        git cat-file -e "$base^{commit}"
+        git merge-base --is-ancestor "$base" "$head"
+        range="$base..$head"
+      elif [ -n "${CI_COMMIT_BRANCH:-}" ] && [ "$CI_COMMIT_BRANCH" = "${CI_DEFAULT_BRANCH:-}" ] && ! git rev-parse --verify "$head^" >/dev/null 2>&1; then
+        range="$head"
+      else
+        echo 'Impossible de déterminer la base des changements à analyser.' >&2
+        exit 1
+      fi
+      .ci-tools/gitleaks git --no-banner --redact=100 --exit-code 1 \
+        --log-opts="--diff-merges=first-parent $range" .
+
 trivy-critique:
   stage: analyse
+  tags: [nexora-fast-docker]
   image:
     name: aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb
     entrypoint: [""]
@@ -33,6 +82,104 @@ trivy-critique:
     paths: [.trivycache/]
   script:
     - trivy fs --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 1 .
+
+web-verification:
+  stage: verification
+  # Node 24.22.3 complet : les tests exigent aussi Git et curl.
+  image: node@sha256:aca79828f8a4afc627f189387c965625bcc419233946210a3b9522d90a59b5c6
+  services:
+    - name: pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+      alias: postgres
+    - name: axllent/mailpit@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
+      alias: mailpit
+    - name: stripe/stripe-mock@sha256:aeb96b83e87a893d2ac005e363ac01ffa6e59a5ad85b49c155dfc9129de02e78
+      alias: stripe-mock
+  tags: [nexora-linux-docker]
+  interruptible: false
+  timeout: 30m
+  variables:
+    BUN_INSTALL_CACHE_DIR: "$CI_PROJECT_DIR/.bun-cache"
+    FF_NETWORK_PER_BUILD: "1"
+    # Identifiants fictifs pour ce service jetable, jamais utilisés en production.
+    POSTGRES_USER: "nexora_ci"
+    POSTGRES_PASSWORD: "nexora_fictif_ci"
+    POSTGRES_DB: "nexora_ci"
+    DATABASE_URL: "postgresql://nexora_ci:nexora_fictif_ci@postgres:5432/nexora_ci"
+    NEXORA_CI_REQUIRE_E2E: "1"
+    NEXORA_E2E_MAILPIT_API_URL: "http://mailpit:8025"
+    NEXORA_E2E_MAILPIT_SMTP_URL: "smtp://mailpit:1025"
+    NEXORA_E2E_STRIPE_MOCK_URL: "http://stripe-mock:12111"
+  cache:
+    key:
+      files: [bun.lock]
+      prefix: "nexora-web-bun"
+    paths: [.bun-cache/]
+    policy: pull-push
+  script:
+    - |
+      test "$(uname -m)" = x86_64
+      mkdir -p .bun-cache/tool .ci-tools
+      archive="$CI_PROJECT_DIR/.bun-cache/tool/bun-1.4.2-linux-x64.tgz"
+      checksum="f7f13f517393a52a3762c57983e161b5377fa93a625a82aec52d7672ab6e600d6cb2ef5f440a0f4278a91601b2724ded58eeb7894771062ca0abe9042c56b09e"
+      if ! printf '%s  %s\n' "$checksum" "$archive" | sha512sum --check --status; then
+        curl --fail --silent --show-error --location --retry 2 --connect-timeout 15 --max-time 180 \
+          'https://registry.npmjs.org/@oven/bun-linux-x64/-/bun-linux-x64-1.4.2.tgz' -o "$archive.tmp"
+        printf '%s  %s\n' "$checksum" "$archive.tmp" | sha512sum --check --status
+        mv "$archive.tmp" "$archive"
+      fi
+      tar -xzf "$archive" --strip-components=2 -C .ci-tools package/bin/bun
+      export PATH="$CI_PROJECT_DIR/.ci-tools:$PATH"
+    - bun --version
+    - node --version
+    - git --version
+    - bun install --frozen-lockfile
+    - bun run lint
+    - bun run --cwd web typecheck
+    - |
+      bun --cwd packages/db -e '
+      import postgres from "postgres";
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const sql = postgres(process.env.DATABASE_URL, { max: 1, connect_timeout: 1 });
+        try {
+          await sql.unsafe("SELECT 1");
+          await sql.end({ timeout: 1 });
+          console.log("Base de test isolée prête");
+          process.exit(0);
+        } catch {
+          await sql.end({ timeout: 1 });
+          await Bun.sleep(1000);
+        }
+      }
+      throw new Error("La base de test isolée ne répond pas après 30 tentatives");
+      '
+    - |
+      bun -e '
+      import { e2eHttpReady, e2eLocalUrl, e2eSmtpReady } from "./web/src/server/testing/e2e-services.ts";
+      const api = e2eLocalUrl(process.env.NEXORA_E2E_MAILPIT_API_URL, "http:", ["mailpit"], "Mailpit API");
+      const smtp = e2eLocalUrl(process.env.NEXORA_E2E_MAILPIT_SMTP_URL, "smtp:", ["mailpit"], "Mailpit SMTP");
+      const stripe = e2eLocalUrl(process.env.NEXORA_E2E_STRIPE_MOCK_URL, "http:", ["stripe-mock"], "stripe-mock");
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const ready = await Promise.all([
+          e2eHttpReady(api, "/api/v1/info"), e2eSmtpReady(smtp),
+          e2eHttpReady(stripe, "/v1/customers", true),
+        ]);
+        if (ready.every(Boolean)) {
+          console.log("Simulateurs de courrier et de paiement prêts");
+          process.exit(0);
+        }
+        await Bun.sleep(1000);
+      }
+      throw new Error("Les simulateurs isolés ne répondent pas après 30 tentatives");
+      '
+    - mkdir -p .ci-reports
+    - bun run --cwd web test --maxWorkers=2 --reporter=default --reporter=junit --outputFile.junit=../.ci-reports/web-junit.xml
+  artifacts:
+    when: always
+    expire_in: 14 days
+    reports:
+      junit: .ci-reports/web-junit.xml
+    paths:
+      - .ci-reports/web-junit.xml
 
 nexora_sonar_developpement:
   stage: .pre

@@ -25,17 +25,21 @@ describe("en-tête, pied de page et légal depuis Directus", () => {
     const chrome = buildChrome("fr", getDictionary("fr"), [], alt);
     const dict = getDictionary("fr");
     expect(chrome.fromCms).toBe(false);
-    // refonte « Signal » : Solutions ▾ · Infrastructure ▾ · Outils ▾ · Tarifs · Ressources
+    // Le repli reste aligné sur les menus publics actuels lorsque Directus ne répond pas.
     expect(chrome.header.nav.map((n) => n.label)).toEqual([
+      "Espace de travail",
       "Solutions",
       "Infrastructure",
-      "Outils",
       dict.nav.pricing.label,
       dict.nav.resources.label,
     ]);
     const menus = chrome.header.nav.filter((n) => n.type === "menu");
     expect(menus).toHaveLength(3);
-    const solutions = menus[0];
+    const workspace = menus.find((n) => n.label === "Espace de travail");
+    expect(workspace?.type === "menu" && workspace.items[0]?.href).toBe(
+      "/suite",
+    );
+    const solutions = menus.find((n) => n.label === "Solutions");
     expect(solutions?.type === "menu" && solutions.items[0]?.href).toBe(
       "/solutions/reception-virtuelle",
     );

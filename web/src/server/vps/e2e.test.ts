@@ -56,6 +56,12 @@ import {
   webhookRequest,
 } from "../stripe/testing";
 import { handleStripeWebhook } from "../stripe/webhook-route";
+import {
+  e2eHttpReady,
+  e2eLocalUrl,
+  e2eSmtpReady,
+  REQUIRE_E2E,
+} from "../testing/e2e-services";
 import { handleVpsAdmin, type VpsAdminDeps } from "./admin-handlers";
 import {
   handleVpsAction,
@@ -64,26 +70,38 @@ import {
 } from "./customer-handlers";
 
 const SITE = "http://localhost:3500";
-const MAILPIT_API = "http://127.0.0.1:8026";
-const STRIPE_MOCK = "http://127.0.0.1:12111";
+const MAILPIT_API = e2eLocalUrl(
+  process.env.NEXORA_E2E_MAILPIT_API_URL ?? "http://127.0.0.1:8026",
+  "http:",
+  ["127.0.0.1", "localhost", "mailpit"],
+  "Mailpit API",
+);
+const MAILPIT_SMTP = e2eLocalUrl(
+  process.env.NEXORA_E2E_MAILPIT_SMTP_URL ?? "smtp://127.0.0.1:1026",
+  "smtp:",
+  ["127.0.0.1", "localhost", "mailpit"],
+  "Mailpit SMTP",
+);
+const STRIPE_MOCK = e2eLocalUrl(
+  process.env.NEXORA_E2E_STRIPE_MOCK_URL ?? "http://127.0.0.1:12111",
+  "http:",
+  ["127.0.0.1", "localhost", "stripe-mock"],
+  "stripe-mock",
+);
 const PASSWORD = "un-mot-de-passe-solide-42";
 const ADMIN = "e".repeat(40);
 const DAY = 86_400_000;
-
-async function reachable(url: string): Promise<boolean> {
-  try {
-    const r = await fetch(url, { signal: AbortSignal.timeout(1500) });
-    return r.status < 500 || r.status === 401;
-  } catch {
-    return false;
-  }
-}
 const stackUp =
-  (await reachable(`${MAILPIT_API}/api/v1/info`)) &&
-  (await reachable(`${STRIPE_MOCK}/v1/customers`));
+  (await e2eHttpReady(MAILPIT_API, "/api/v1/info")) &&
+  (await e2eSmtpReady(MAILPIT_SMTP)) &&
+  (await e2eHttpReady(STRIPE_MOCK, "/v1/customers", true));
+if (!stackUp && REQUIRE_E2E)
+  throw new Error(
+    "NEXORA_CI_REQUIRE_E2E=1 mais Mailpit HTTP/SMTP ou stripe-mock est injoignable.",
+  );
 if (!stackUp)
   console.warn(
-    "e2e S6 ignoré : Mailpit (8026) ou stripe-mock (12111) injoignable. Démarrer la pile de développement.",
+    "e2e S6 ignoré : Mailpit HTTP/SMTP ou stripe-mock injoignable. Démarrer la pile de développement.",
   );
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -266,14 +284,14 @@ describe.skipIf(!stackUp)(
       for (let i = 0; i < 25; i++) {
         const search = (await (
           await fetch(
-            `${MAILPIT_API}/api/v1/search?query=${encodeURIComponent(`to:${to}`)}`,
+            `${MAILPIT_API.origin}/api/v1/search?query=${encodeURIComponent(`to:${to}`)}`,
           )
         ).json()) as { messages?: Array<{ ID: string }> };
         const id = search.messages?.[0]?.ID;
         if (id)
           return (
             (await (
-              await fetch(`${MAILPIT_API}/api/v1/message/${id}`)
+              await fetch(`${MAILPIT_API.origin}/api/v1/message/${id}`)
             ).json()) as { Text: string }
           ).Text;
         await sleep(200);
@@ -299,14 +317,14 @@ describe.skipIf(!stackUp)(
         secret: randomBytes(32).toString("hex"),
         baseURL: SITE,
         mailer: createSmtpMailer({
-          url: "smtp://127.0.0.1:1026",
+          url: MAILPIT_SMTP.href,
           from: "Nexora <no-reply@nexora.test>",
         }),
         rateLimit: { enabled: false },
       });
       stripeClient = createStripeClient({
         secretKey: "sk_test_e2e",
-        mockUrl: STRIPE_MOCK,
+        mockUrl: STRIPE_MOCK.origin,
       });
       // Enregistre les paramètres envoyés à Stripe : stripe-mock les valide contre le schéma OpenAPI officiel.
       const sessions = stripeClient.checkout.sessions;

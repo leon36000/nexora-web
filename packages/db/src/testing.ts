@@ -45,9 +45,7 @@ function isolatedLabConnection(value: string): {
 export async function createTestDatabase(): Promise<TestDatabase> {
   const explicitLabUrl = process.env.NEXORA_TEST_DATABASE_URL;
   const lab =
-    explicitLabUrl !== undefined
-      ? isolatedLabConnection(explicitLabUrl)
-      : null;
+    explicitLabUrl !== undefined ? isolatedLabConnection(explicitLabUrl) : null;
   let adminUrl: string | undefined;
   if (lab) {
     adminUrl = lab.url;

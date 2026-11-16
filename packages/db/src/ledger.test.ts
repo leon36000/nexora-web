@@ -186,7 +186,8 @@ describe("réservation, règlement, libération", () => {
       idempotencyKey: "creative:key-bound-release",
       configVersion: CFG,
     });
-    if (second.status !== "reserved") throw new Error("seconde réservation attendue");
+    if (second.status !== "reserved")
+      throw new Error("seconde réservation attendue");
     await releaseReservation(t.db, {
       organizationId: org,
       reservationId: second.reservation.id,
@@ -512,7 +513,8 @@ describe("réservation, règlement, libération", () => {
     expect(changedReplay.chargedMicro).toBe(0n);
     expect(
       (await listEntries(t.db, org)).some(
-        (entry) => entry.kind === "overage" && entry.reservationId === r.reservation.id,
+        (entry) =>
+          entry.kind === "overage" && entry.reservationId === r.reservation.id,
       ),
     ).toBe(false);
     expect((await getAccount(t.db, org)).balanceMicro).toBe(M);

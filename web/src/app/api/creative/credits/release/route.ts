@@ -1,6 +1,6 @@
 import { connection } from "next/server";
-import { creativeCreditsDeps } from "@/server/creative/credits-deps";
 import { handleCreativeCredits } from "@/server/creative/credits";
+import { creativeCreditsDeps } from "@/server/creative/credits-deps";
 
 export async function POST(request: Request) {
   await connection();
