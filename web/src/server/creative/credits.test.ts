@@ -201,6 +201,56 @@ describe("POST /api/creative/credits/{reserve,settle,release}", () => {
     h = harness();
   });
 
+  it.each(["settle", "release"] as const)(
+    "rejette les identifiants de réservation non textuels ou invalides pour %s",
+    async (action) => {
+      const uuid = "00000000-0000-4000-8000-000000000001";
+      for (const reservationId of [
+        [uuid],
+        123,
+        null,
+        { toString: null },
+        "invalide",
+      ]) {
+        const response = await handleCreativeCredits(
+          post(action, { reservationId, credits: 1 }),
+          action,
+          h.deps,
+        );
+        expect(response.status).toBe(400);
+        expect((await response.json()).error.code).toBe("invalid_request");
+      }
+      expect(h.ledger.settle).not.toHaveBeenCalled();
+      expect(h.ledger.release).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(["settle", "release"] as const)(
+    "transmet un identifiant UUID textuel valide pour %s",
+    async (action) => {
+      const created = await handleCreativeCredits(
+        post("reserve", {
+          idempotencyKey: "uuid-valide",
+          credits: 2,
+          label: "Image",
+        }),
+        "reserve",
+        h.deps,
+      );
+      const { reservationId } = await created.json();
+      const response = await handleCreativeCredits(
+        post(action, { reservationId, credits: 1 }),
+        action,
+        h.deps,
+      );
+      expect(response.status).toBe(200);
+      expect(h.ledger[action]).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ reservationId }),
+      );
+    },
+  );
+
   it("refuse une action de crédits inconnue sans authentification", async () => {
     const response = await handleCreativeCredits(
       post("unknown", {}),
