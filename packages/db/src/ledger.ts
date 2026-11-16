@@ -467,6 +467,73 @@ export interface SettleResult {
   replayed: boolean;
 }
 
+async function settleReleasedReservation(
+  tx: Tx,
+  acct: Awaited<ReturnType<typeof lockAccount>>,
+  res: Reservation,
+  input: SettleInput,
+): Promise<SettleResult> {
+  const late = await findEntryByKey(tx, `overage:${res.id}`);
+  if (late)
+    return {
+      entry: late,
+      overageEntry: late,
+      chargedMicro: -late.balanceDeltaMicro,
+      replayed: true,
+    };
+  if (res.settledMicro !== null) {
+    if (res.settledMicro !== 0n)
+      throw new LedgerError("not_found", "écriture de règlement absente");
+    const released = await findEntryByKey(tx, `release:${res.id}`);
+    if (!released)
+      throw new LedgerError("not_found", "écriture de libération absente");
+    return {
+      entry: released,
+      overageEntry: null,
+      chargedMicro: 0n,
+      replayed: true,
+    };
+  }
+  if (input.actualMicro === 0n) {
+    const released = await findEntryByKey(tx, `release:${res.id}`);
+    if (!released)
+      throw new LedgerError("not_found", "écriture de libération absente");
+    await tx
+      .update(creditReservations)
+      .set({ settledMicro: 0n })
+      .where(eq(creditReservations.id, res.id));
+    return {
+      entry: released,
+      overageEntry: null,
+      chargedMicro: 0n,
+      replayed: false,
+    };
+  }
+  const { entry } = await appendEntry(tx, acct, {
+    organizationId: input.organizationId,
+    kind: "overage",
+    balanceDeltaMicro: -input.actualMicro,
+    heldDeltaMicro: 0n,
+    idempotencyKey: `overage:${res.id}`,
+    configVersion: input.configVersion ?? res.configVersion,
+    source: "usage",
+    reservationId: res.id,
+    metadata: { overageMicro: input.actualMicro.toString(), late: true },
+  });
+  await tx
+    .update(creditReservations)
+    .set({ settledMicro: input.actualMicro })
+    .where(eq(creditReservations.id, res.id));
+  // La libération avait déjà rendu la part retenue sur le plafond de la clé : tout le coût s'y ajoute.
+  await adjustKeySpend(tx, res.apiKeyId, input.actualMicro);
+  return {
+    entry,
+    overageEntry: entry,
+    chargedMicro: input.actualMicro,
+    replayed: false,
+  };
+}
+
 /**
  * Règle une réservation au coût RÉEL (D1). Jusqu'au montant réservé : une écriture « settle » qui libère
  * le surplus. Au-delà : une écriture « overage » supplémentaire, dans la même transaction, qui peut
@@ -501,67 +568,8 @@ export async function settleReservation(
         replayed: true,
       };
     }
-    if (res.status === "released") {
-      const late = await findEntryByKey(tx, `overage:${res.id}`);
-      if (late)
-        return {
-          entry: late,
-          overageEntry: late,
-          chargedMicro: -late.balanceDeltaMicro,
-          replayed: true,
-        };
-      if (res.settledMicro !== null) {
-        if (res.settledMicro !== 0n)
-          throw new LedgerError("not_found", "écriture de règlement absente");
-        const released = await findEntryByKey(tx, `release:${res.id}`);
-        if (!released)
-          throw new LedgerError("not_found", "écriture de libération absente");
-        return {
-          entry: released,
-          overageEntry: null,
-          chargedMicro: 0n,
-          replayed: true,
-        };
-      }
-      if (input.actualMicro === 0n) {
-        const released = await findEntryByKey(tx, `release:${res.id}`);
-        if (!released)
-          throw new LedgerError("not_found", "écriture de libération absente");
-        await tx
-          .update(creditReservations)
-          .set({ settledMicro: 0n })
-          .where(eq(creditReservations.id, res.id));
-        return {
-          entry: released,
-          overageEntry: null,
-          chargedMicro: 0n,
-          replayed: false,
-        };
-      }
-      const { entry } = await appendEntry(tx, acct, {
-        organizationId: input.organizationId,
-        kind: "overage",
-        balanceDeltaMicro: -input.actualMicro,
-        heldDeltaMicro: 0n,
-        idempotencyKey: `overage:${res.id}`,
-        configVersion: input.configVersion ?? res.configVersion,
-        source: "usage",
-        reservationId: res.id,
-        metadata: { overageMicro: input.actualMicro.toString(), late: true },
-      });
-      await tx
-        .update(creditReservations)
-        .set({ settledMicro: input.actualMicro })
-        .where(eq(creditReservations.id, res.id));
-      // La libération avait déjà rendu la part retenue sur le plafond de la clé : tout le coût s'y ajoute.
-      await adjustKeySpend(tx, res.apiKeyId, input.actualMicro);
-      return {
-        entry,
-        overageEntry: entry,
-        chargedMicro: input.actualMicro,
-        replayed: false,
-      };
-    }
+    if (res.status === "released")
+      return settleReleasedReservation(tx, acct, res, input);
 
     const cost = minBigint(input.actualMicro, res.amountMicro);
     const overage = input.actualMicro - cost;
