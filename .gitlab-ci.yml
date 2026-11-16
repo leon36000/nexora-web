@@ -1,6 +1,5 @@
-# Complète la chaîne de sécurité commune de pc4 (root/pc4-ci-securite : gitleaks, Semgrep, Trivy et SonarQube en
-# .pre) par les contrôles propres à ce dépôt. gitleaks lit .gitleaksignore, la liste des alertes déjà examinées.
-# Bloquant ici : une faille critique corrigeable dans les dépendances (Trivy).
+# Bloque les vulnérabilités critiques corrigibles avec Trivy, puis vérifie le
+# code et les parcours web sur des services de test isolés.
 
 stages:
   - analyse
@@ -22,6 +21,7 @@ default:
 
 trivy-critique:
   stage: analyse
+  tags: [nexora-fast-docker]
   image:
     name: aquasec/trivy@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
     entrypoint: [""]
