@@ -24,7 +24,7 @@ BRANCHES_ENDPOINT = (
     "https://gitlab-nexora.tail0c55ff.ts.net/"
     "api/v4/projects/9/repository/branches"
 )
-SHA_PATTERN = re.compile(r"[0-9a-f]{40}\\Z")
+SHA_PATTERN = re.compile(r"[0-9a-f]{40}\Z")
 RESPONSE_LIMIT = 1_000_000
 
 
