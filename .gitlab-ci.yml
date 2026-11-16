@@ -205,6 +205,7 @@ web-verification:
 
 nexora_sonar_developpement:
   stage: qualite
+  tags: [nexora-fast-docker]
   resource_group: sonar-gitlab-6
   environment:
     name: sonarqube
