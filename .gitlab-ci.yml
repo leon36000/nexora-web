@@ -222,6 +222,7 @@ nexora_sonar_developpement:
   script:
     - |
       set -eu
+      set +x
       exec 3<<<"$CI_JOB_TOKEN"
       env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 CI_COMMIT_SHA="$CI_COMMIT_SHA" CI_COMMIT_BRANCH="$CI_COMMIT_BRANCH" python3 scripts/ci/sonar_head_guard.py --token-fd 3
       exec 3<&-
@@ -266,6 +267,7 @@ sonar-freshness-guard-tests:
       set -eu
       python3 --version
       env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 -m unittest discover -s scripts/ci -p test_sonar_head_guard.py -v
+      set +x
       exec 3<<<"$CI_JOB_TOKEN"
       env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 scripts/ci/sonar_head_guard.py --probe --token-fd 3
       exec 3<&-

@@ -172,8 +172,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    token = read_job_token_fd(args.token_fd)
     try:
+        token = read_job_token_fd(args.token_fd)
         if args.probe:
             sha = read_development_head(token)
             print(f"Lecture vérifiée : {BRANCH} à {sha}.")

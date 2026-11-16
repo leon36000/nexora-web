@@ -40,6 +40,10 @@ def branches_payload(sha: str) -> bytes:
 
 
 class SonarHeadGuardTests(unittest.TestCase):
+    def test_invalid_private_descriptor_fails_with_controlled_error(self) -> None:
+        with self.assertRaises(guard.GitLabAccessError) as raised:
+            guard.read_job_token_fd(999999)
+        self.assertIn("private descriptor", str(raised.exception))
     def test_job_token_is_read_from_private_descriptor(self) -> None:
         read_fd, write_fd = os.pipe()
         try:
