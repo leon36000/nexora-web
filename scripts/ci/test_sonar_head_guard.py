@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import unittest
 from urllib.error import HTTPError
 
@@ -39,6 +40,17 @@ def branches_payload(sha: str) -> bytes:
 
 
 class SonarHeadGuardTests(unittest.TestCase):
+    def test_job_token_is_read_from_private_descriptor(self) -> None:
+        read_fd, write_fd = os.pipe()
+        try:
+            os.write(write_fd, TEST_TOKEN.encode("ascii") + bytes((10,)))
+            os.close(write_fd)
+            write_fd = -1
+            self.assertEqual(guard.read_job_token_fd(read_fd), TEST_TOKEN)
+        finally:
+            os.close(read_fd)
+            if write_fd >= 0:
+                os.close(write_fd)
     def test_current_commit_is_allowed_and_token_is_header_only(self) -> None:
         captured = {}
 

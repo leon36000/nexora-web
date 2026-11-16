@@ -54,12 +54,29 @@ def _open_without_proxy_or_redirect(request: Request, timeout: int):
     return opener.open(request, timeout=timeout)
 
 
+def read_job_token_fd(file_descriptor: int) -> str:
+    """Read CI_JOB_TOKEN from an inherited private descriptor, never argv/env."""
+    try:
+        token_bytes = os.read(file_descriptor, 4097)
+    except OSError:
+        raise GitLabAccessError("Could not read CI_JOB_TOKEN from its private descriptor.") from None
+    if len(token_bytes) > 4096:
+        raise GitLabAccessError("CI_JOB_TOKEN exceeded the safe descriptor size.")
+    token_bytes = token_bytes.rstrip(bytes((10, 13)))
+    if not token_bytes:
+        raise GitLabAccessError("CI_JOB_TOKEN absent from its private descriptor.")
+    try:
+        return token_bytes.decode("ascii")
+    except UnicodeDecodeError:
+        raise GitLabAccessError("CI_JOB_TOKEN was not valid ASCII.") from None
+
+
 def read_development_head(job_token: str, opener=None) -> str:
     """Read the exact developpement head with a job token in a header only."""
     if not job_token:
         raise GitLabAccessError("CI_JOB_TOKEN absent; refusing the Sonar analysis.")
 
-    query = urlencode({"search": BRANCH, "per_page": 100})
+    query = urlencode({"regex": "^developpement$", "per_page": 100})
     try:
         request = Request(
             f"{BRANCHES_ENDPOINT}?{query}",
@@ -143,13 +160,19 @@ def assert_current_commit(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--token-fd",
+        type=int,
+        required=True,
+        help="inherited file descriptor containing CI_JOB_TOKEN",
+    )
+    parser.add_argument(
         "--probe",
         action="store_true",
         help="read and print the branch SHA without comparing a job commit",
     )
     args = parser.parse_args(argv)
 
-    token = os.environ.get("CI_JOB_TOKEN", "")
+    token = read_job_token_fd(args.token_fd)
     try:
         if args.probe:
             sha = read_development_head(token)

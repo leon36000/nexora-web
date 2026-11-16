@@ -221,7 +221,10 @@ nexora_sonar_developpement:
     - if: '$CI_COMMIT_BRANCH == "developpement"'
   script:
     - |
-      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 CI_JOB_TOKEN="$CI_JOB_TOKEN" CI_COMMIT_SHA="$CI_COMMIT_SHA" CI_COMMIT_BRANCH="$CI_COMMIT_BRANCH" python3 scripts/ci/sonar_head_guard.py
+      set -eu
+      exec 3<<<"$CI_JOB_TOKEN"
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 CI_COMMIT_SHA="$CI_COMMIT_SHA" CI_COMMIT_BRANCH="$CI_COMMIT_BRANCH" python3 scripts/ci/sonar_head_guard.py --token-fd 3
+      exec 3<&-
       test "${SONAR_TOKEN:+present}" = present || { echo "SONAR_TOKEN absent"; exit 1; }
       printf '%s\n' "$CI_COMMIT_SHA" | grep -Eq '^[0-9a-f]{40}$'
       export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -263,7 +266,9 @@ sonar-freshness-guard-tests:
       set -eu
       python3 --version
       env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 -m unittest discover -s scripts/ci -p test_sonar_head_guard.py -v
-      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 CI_JOB_TOKEN="$CI_JOB_TOKEN" python3 scripts/ci/sonar_head_guard.py --probe
+      exec 3<<<"$CI_JOB_TOKEN"
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 scripts/ci/sonar_head_guard.py --probe --token-fd 3
+      exec 3<&-
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "developpement"'
