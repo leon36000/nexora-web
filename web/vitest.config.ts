@@ -2,6 +2,8 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  // Les tests n'ont jamais besoin de charger de fichiers `.env`.
+  envDir: false,
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

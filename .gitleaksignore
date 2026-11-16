@@ -23,3 +23,18 @@ b225d1b00d857798b94f3c4e06b0fea5acbdcd95:web/src/server/vps/connect-handlers.tes
 b225d1b00d857798b94f3c4e06b0fea5acbdcd95:web/src/server/vps/connect-handlers.test.ts:generic-api-key:307
 b6a4e8935b2ea35f0475c3762c4acb5d71baf9a2:web/src/server/agents/discovery.test.ts:generic-api-key:4
 c389af4639fc221a6950afee1d0991407644f1d2:docs/recette/securite.md:stripe-access-token:120
+
+# 2026-11-04 : empreintes historiques relues, aucune exclusion globale.
+# Constante injectee au client Docker simule (test de caviardage, pas de lecture env);
+# nxk_ trop court; placeholders example.com; JWT HS256 tronques; PEM invalide; UUID de filtres publics.
+# Controles structurels sans affichage des valeurs ni comparaison avec les secrets locaux.
+dc58a5c15f5e4062e785a3d6a2a1c25c1db2620e:packages/code/src/dry-run.test.ts:generic-api-key:16
+6636ea057938999e24a3e07b676b53b9e723175f:web/src/server/products/rag-connect.test.ts:generic-api-key:26
+f5fcdccbbb1c6d29f3fbeec29a0e2bbe078849ba:cms/content/pages/guides-api-compatible-openai.fr-CA.md:curl-auth-header:48
+f5fcdccbbb1c6d29f3fbeec29a0e2bbe078849ba:cms/content/pages/guides-api-compatible-openai.en-CA.md:curl-auth-header:48
+35665bfe29b868694ca736eda2a472869cc179e3:web/src/server/privacy/detectors.test.ts:jwt:145
+22d8b1f5b418fe0cd856fd7f3ee307aa8e48f527:web/src/server/privacy/detectors.test.ts:private-key:148
+22d8b1f5b418fe0cd856fd7f3ee307aa8e48f527:web/src/server/privacy/detectors.test.ts:jwt:144
+bbe3ff2294e79abfefe9ac34ac5a8ec56950938a:web/src/components/account/activity-links.test.ts:generic-api-key:6
+2bf8467dfd23c45b4148d06fb437d5e3c29eb03e:web/src/server/gateway/activity.test.ts:generic-api-key:117
+2bf8467dfd23c45b4148d06fb437d5e3c29eb03e:web/src/server/gateway/activity.test.ts:generic-api-key:130
