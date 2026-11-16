@@ -24,6 +24,11 @@ describe("répartition des cartes en bureau", () => {
     expect(desktopRows(0, 3)).toEqual([]);
   });
 
+  it("limite le nombre de colonnes aux valeurs prises en charge", () => {
+    expect(desktopRows(6, 0)).toEqual([2, 2, 2]);
+    expect(desktopRows(8, 5)).toEqual([4, 4]);
+  });
+
   it("répartit sans déséquilibre : les rangées diffèrent d'une carte au plus", () => {
     expect(desktopRows(7, 3)).toEqual([3, 2, 2]);
     expect(desktopRows(7, 4)).toEqual([4, 3]);

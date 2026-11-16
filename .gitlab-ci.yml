@@ -4,6 +4,7 @@
 
 stages:
   - analyse
+  - verification
 
 workflow:
   rules:
@@ -21,7 +22,7 @@ default:
 trivy-critique:
   stage: analyse
   image:
-    name: aquasec/trivy:0.75.0
+    name: aquasec/trivy@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
     entrypoint: [""]
   variables:
     TRIVY_CACHE_DIR: .trivycache
@@ -31,3 +32,85 @@ trivy-critique:
     paths: [.trivycache/]
   script:
     - trivy fs --scanners vuln --severity CRITICAL --ignore-unfixed --exit-code 1 .
+
+web-verification:
+  stage: verification
+  image: oven/bun@sha256:9114c058aeae42162ee16dd5084b95fe9473970bb6bcb5b232ab1630f0546895
+  services:
+    - name: pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+      alias: postgres
+    - name: axllent/mailpit@sha256:0790692be935ea4420d085694f7985b1f692ca6a8771ab0e0bd8ba75ac180498
+      alias: mailpit
+    - name: stripe/stripe-mock@sha256:aeb96b83e87a893d2ac005e363ac01ffa6e59a5ad85b49c155dfc9129de02e78
+      alias: stripe-mock
+  tags: [nexora-linux-docker]
+  interruptible: false
+  timeout: 30m
+  variables:
+    BUN_INSTALL_CACHE_DIR: "$CI_PROJECT_DIR/.bun-cache"
+    FF_NETWORK_PER_BUILD: "1"
+    # Identifiants fictifs pour ce service jetable, jamais utilisés en production.
+    POSTGRES_USER: "nexora_ci"
+    POSTGRES_PASSWORD: "nexora_fictif_ci"
+    POSTGRES_DB: "nexora_ci"
+    DATABASE_URL: "postgresql://nexora_ci:nexora_fictif_ci@postgres:5432/nexora_ci"
+    NEXORA_CI_REQUIRE_E2E: "1"
+    NEXORA_E2E_MAILPIT_API_URL: "http://mailpit:8025"
+    NEXORA_E2E_MAILPIT_SMTP_URL: "smtp://mailpit:1025"
+    NEXORA_E2E_STRIPE_MOCK_URL: "http://stripe-mock:12111"
+  cache:
+    key:
+      files: [bun.lock]
+      prefix: "nexora-web-bun"
+    paths: [.bun-cache/]
+    policy: pull-push
+  script:
+    - bun --version
+    - bun install --frozen-lockfile
+    - bun run lint
+    - bun run --cwd web typecheck
+    - |
+      bun --cwd packages/db -e '
+      import postgres from "postgres";
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const sql = postgres(process.env.DATABASE_URL, { max: 1, connect_timeout: 1 });
+        try {
+          await sql.unsafe("SELECT 1");
+          await sql.end({ timeout: 1 });
+          console.log("Base de test isolée prête");
+          process.exit(0);
+        } catch {
+          await sql.end({ timeout: 1 });
+          await Bun.sleep(1000);
+        }
+      }
+      throw new Error("La base de test isolée ne répond pas après 30 tentatives");
+      '
+    - |
+      bun -e '
+      import { e2eHttpReady, e2eLocalUrl, e2eSmtpReady } from "./web/src/server/testing/e2e-services.ts";
+      const api = e2eLocalUrl(process.env.NEXORA_E2E_MAILPIT_API_URL, "http:", ["mailpit"], "Mailpit API");
+      const smtp = e2eLocalUrl(process.env.NEXORA_E2E_MAILPIT_SMTP_URL, "smtp:", ["mailpit"], "Mailpit SMTP");
+      const stripe = e2eLocalUrl(process.env.NEXORA_E2E_STRIPE_MOCK_URL, "http:", ["stripe-mock"], "stripe-mock");
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const ready = await Promise.all([
+          e2eHttpReady(api, "/api/v1/info"), e2eSmtpReady(smtp),
+          e2eHttpReady(stripe, "/v1/customers", true),
+        ]);
+        if (ready.every(Boolean)) {
+          console.log("Simulateurs de courrier et de paiement prêts");
+          process.exit(0);
+        }
+        await Bun.sleep(1000);
+      }
+      throw new Error("Les simulateurs isolés ne répondent pas après 30 tentatives");
+      '
+    - mkdir -p .ci-reports
+    - bun run --cwd web test --maxWorkers=2 --reporter=default --reporter=junit --outputFile.junit=../.ci-reports/web-junit.xml
+  artifacts:
+    when: always
+    expire_in: 14 days
+    reports:
+      junit: .ci-reports/web-junit.xml
+    paths:
+      - .ci-reports/web-junit.xml

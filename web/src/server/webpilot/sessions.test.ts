@@ -25,10 +25,14 @@ import type { WebpilotDeps } from "./types";
 let t: TestDatabase;
 beforeAll(async () => {
   t = await createTestDatabase();
-  await publishPrices(t.db, {
-    browser_minute: { sell: 2000n, upstream: 100n },
-    page_static: { sell: 1000n },
-  });
+  await publishPrices(
+    t.db,
+    {
+      browser_minute: { sell: 2000n, upstream: 100n },
+      page_static: { sell: 1000n },
+    },
+    new Date(T0 - 60_000),
+  );
 });
 afterAll(async () => {
   await t.drop();
