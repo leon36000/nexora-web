@@ -45,7 +45,7 @@ gitleaks-nouveaux-secrets:
         case "$base" in ''|0000000000000000000000000000000000000000)
           base="${CI_COMMIT_DEFAULT_BRANCH_BASE_SHA:-}"
           if [ -z "$base" ] && [ "${CI_COMMIT_BRANCH:-}" = "${CI_DEFAULT_BRANCH:-}" ]; then
-            base="$(git rev-parse "$head^" 2>/dev/null || true)"
+            base="$(git rev-parse --verify "$head^" 2>/dev/null || true)"
           fi
           ;;
         esac
@@ -55,7 +55,7 @@ gitleaks-nouveaux-secrets:
         git cat-file -e "$base^{commit}"
         git merge-base --is-ancestor "$base" "$head"
         range="$base..$head"
-      elif [ "${CI_COMMIT_BRANCH:-}" = "${CI_DEFAULT_BRANCH:-}" ] && ! git rev-parse "$head^" >/dev/null 2>&1; then
+      elif [ -n "${CI_COMMIT_BRANCH:-}" ] && [ "$CI_COMMIT_BRANCH" = "${CI_DEFAULT_BRANCH:-}" ] && ! git rev-parse --verify "$head^" >/dev/null 2>&1; then
         range="$head"
       else
         echo 'Impossible de déterminer la base des changements à analyser.' >&2
