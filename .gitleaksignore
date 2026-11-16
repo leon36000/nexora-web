@@ -1,5 +1,7 @@
 # Alertes gitleaks examinées le 2026-10-28 : valeurs factices de tests, marqueurs PEM dans le code, noms de variables, identifiants publics.
 # Aucune n'est un secret réel (vérifié contre les secrets locaux). Une nouvelle alerte fait échouer la CI.
+# Clé Stripe de test fictive utilisée exclusivement avec le serveur stripe-mock.
+08aa72e37018c14d087a4564bcf8ab1995b10a77:web/src/server/payments/stripe-mock.e2e.test.ts:stripe-access-token:50
 148c286255bc1e6315e41b58620a1f18d3185ce3:web/src/components/vps/logic.test.ts:private-key:200
 18b432c34a00f61e44f9f9adfe15e0924d78c1b0:web/src/server/auth/auth-security.test.ts:generic-api-key:201
 18b432c34a00f61e44f9f9adfe15e0924d78c1b0:web/src/server/auth/password-policy.test.ts:generic-api-key:31

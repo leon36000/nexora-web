@@ -1,5 +1,5 @@
-# Bloque les vulnérabilités critiques corrigibles avec Trivy, puis vérifie le
-# code et les parcours web sur des services de test isolés.
+# Contrôle les nouveaux secrets et les vulnérabilités critiques corrigibles,
+# puis vérifie le code et les parcours web sur des services de test isolés.
 
 stages:
   - analyse
@@ -18,6 +18,51 @@ default:
   retry:
     max: 2
     when: [runner_system_failure, unknown_failure, stuck_or_timeout_failure, scheduler_failure]
+
+gitleaks-nouveaux-secrets:
+  stage: analyse
+  tags: [nexora-fast-docker]
+  image: node@sha256:aca79828f8a4afc627f189387c965625bcc419233946210a3b9522d90a59b5c6
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - |
+      set -eu
+      archive="$(mktemp)"
+      trap 'rm -f "$archive"' EXIT
+      curl --fail --silent --show-error --location --retry 2 --connect-timeout 15 --max-time 180 \
+        'https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz' -o "$archive"
+      printf '%s  %s\n' '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb' "$archive" | sha256sum --check --status
+      mkdir -p .ci-tools
+      tar -xzf "$archive" -C .ci-tools gitleaks
+      head="${CI_COMMIT_SHA:?Commit de pipeline absent}"
+      printf '%s\n' "$head" | grep -Eq '^[0-9a-f]{40}$'
+      test "$(git rev-parse HEAD)" = "$head"
+      if [ "${CI_PIPELINE_SOURCE:-}" = merge_request_event ]; then
+        base="${CI_MERGE_REQUEST_DIFF_BASE_SHA:?Base de la merge request absente}"
+      else
+        base="${CI_COMMIT_BEFORE_SHA:-}"
+        case "$base" in ''|0000000000000000000000000000000000000000)
+          base="${CI_COMMIT_DEFAULT_BRANCH_BASE_SHA:-}"
+          if [ -z "$base" ] && [ "${CI_COMMIT_BRANCH:-}" = "${CI_DEFAULT_BRANCH:-}" ]; then
+            base="$(git rev-parse "$head^" 2>/dev/null || true)"
+          fi
+          ;;
+        esac
+      fi
+      if [ -n "$base" ]; then
+        printf '%s\n' "$base" | grep -Eq '^[0-9a-f]{40}$'
+        git cat-file -e "$base^{commit}"
+        git merge-base --is-ancestor "$base" "$head"
+        range="$base..$head"
+      elif [ "${CI_COMMIT_BRANCH:-}" = "${CI_DEFAULT_BRANCH:-}" ] && ! git rev-parse "$head^" >/dev/null 2>&1; then
+        range="$head"
+      else
+        echo 'Impossible de déterminer la base des changements à analyser.' >&2
+        exit 1
+      fi
+      .ci-tools/gitleaks git --no-banner --redact=100 --exit-code 1 \
+        --log-opts="--diff-merges=first-parent $range" .
 
 trivy-critique:
   stage: analyse
