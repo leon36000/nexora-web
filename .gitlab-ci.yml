@@ -205,6 +205,7 @@ web-verification:
 
 nexora_sonar_developpement:
   stage: qualite
+  resource_group: sonar-gitlab-6
   environment:
     name: sonarqube
     action: verify
@@ -220,6 +221,11 @@ nexora_sonar_developpement:
     - if: '$CI_COMMIT_BRANCH == "developpement"'
   script:
     - |
+      set -eu
+      set +x
+      exec 3<<<"$CI_JOB_TOKEN"
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 CI_COMMIT_SHA="$CI_COMMIT_SHA" CI_COMMIT_BRANCH="$CI_COMMIT_BRANCH" python3 scripts/ci/sonar_head_guard.py --token-fd 3
+      exec 3<&-
       test "${SONAR_TOKEN:+present}" = present || { echo "SONAR_TOKEN absent"; exit 1; }
       printf '%s\n' "$CI_COMMIT_SHA" | grep -Eq '^[0-9a-f]{40}$'
       export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -248,3 +254,23 @@ nexora_sonar_developpement:
             -Dsonar.javascript.lcov.reportPaths=.ci-reports/coverage-web/lcov.info,.ci-reports/coverage-log/lcov.info,.ci-reports/coverage-net/lcov.info,.ci-reports/coverage-code/lcov.info,.ci-reports/coverage-db/lcov.info \
             -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
         ' scanner "$CI_PROJECT_DIR" "$scratch" "$CI_COMMIT_SHA"
+
+sonar-freshness-guard-tests:
+  stage: analyse
+  tags: [nexora-fast-docker]
+  image:
+    name: sonarsource/sonar-scanner-cli:12.3.0.4285_8.1.0@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7
+    entrypoint: [""]
+  timeout: 3m
+  script:
+    - |
+      set -eu
+      python3 --version
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 -m unittest discover -s scripts/ci -p test_sonar_head_guard.py -v
+      set +x
+      exec 3<<<"$CI_JOB_TOKEN"
+      env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 python3 scripts/ci/sonar_head_guard.py --probe --token-fd 3
+      exec 3<&-
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "developpement"'
