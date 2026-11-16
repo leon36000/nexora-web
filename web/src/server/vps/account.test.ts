@@ -16,7 +16,7 @@ import {
   newOrg,
   seedFixture,
 } from "@nexora/vps/testing";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   ACCOUNT_VPS_EVENT_LIMIT,
   loadAccountVps,
@@ -35,6 +35,7 @@ afterAll(async () => {
 });
 
 const uid = () => randomBytes(4).toString("hex");
+let numeroInstance = 0;
 
 async function order(
   organizationId: string,
@@ -65,6 +66,7 @@ async function instance(
     stripeSubscriptionId: `sub_${uid()}`,
     ...orderOver,
   });
+  const numero = numeroInstance++;
   const [row] = await t.db
     .insert(vpsInstances)
     .values({
@@ -79,8 +81,8 @@ async function instance(
       catalogVersionId: fx.catalogVersionId,
       vmName: `nx-${o.id.slice(0, 8)}`,
       serverId: fx.serverId,
-      vmid: 10_000 + Math.floor(Math.random() * 100_000),
-      ipv4: `10.20.${Math.floor(Math.random() * 200)}.${Math.floor(Math.random() * 200) + 10}`,
+      vmid: 10_000 + numero,
+      ipv4: `10.20.${Math.floor(numero / 254)}.${(numero % 254) + 1}`,
       status,
       step: "done",
       power: "running",
@@ -95,6 +97,18 @@ async function instance(
 }
 
 describe("loadAccountVps", () => {
+  it("crée des fixtures distinctes même si le générateur aléatoire répète sa valeur", async () => {
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.5);
+    try {
+      const org = await newOrg(t.db);
+      const premier = await instance(org, "active");
+      const second = await instance(org, "active");
+      expect(premier.inst.vmid).not.toBe(second.inst.vmid);
+      expect(premier.inst.ipv4).not.toBe(second.inst.ipv4);
+    } finally {
+      random.mockRestore();
+    }
+  });
   it("renvoie les VPS de l'organisation seulement, avec plan, application, accès et dates", async () => {
     const a = await newOrg(t.db);
     const b = await newOrg(t.db);
