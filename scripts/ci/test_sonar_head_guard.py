@@ -61,7 +61,7 @@ class SonarHeadGuardTests(unittest.TestCase):
         self.assertEqual(captured["timeout"], 15)
 
     def test_outdated_commit_fails_closed(self) -> None:
-        def opener(_request, _timeout):
+        def opener(_request, timeout):
             return FakeResponse(branches_payload(NEWER_SHA))
 
         with self.assertRaises(guard.StaleCommitError) as raised:
@@ -74,7 +74,7 @@ class SonarHeadGuardTests(unittest.TestCase):
         self.assertNotIn(TEST_TOKEN, str(raised.exception))
 
     def test_api_access_error_fails_closed_without_token_in_error(self) -> None:
-        def opener(request, _timeout):
+        def opener(request, timeout):
             raise HTTPError(request.full_url, 403, "Forbidden", None, None)
 
         with self.assertRaises(guard.GitLabAccessError) as raised:
@@ -95,7 +95,7 @@ class SonarHeadGuardTests(unittest.TestCase):
 
         with self.assertRaises(guard.GitLabAccessError):
             guard.read_development_head(
-                TEST_TOKEN, opener=lambda _request, _timeout: FakeResponse(body)
+                TEST_TOKEN, opener=lambda _request, timeout: FakeResponse(body)
             )
 
     def test_incomplete_branch_sha_is_an_error(self) -> None:
@@ -105,7 +105,7 @@ class SonarHeadGuardTests(unittest.TestCase):
 
         with self.assertRaises(guard.GitLabAccessError):
             guard.read_development_head(
-                TEST_TOKEN, opener=lambda _request, _timeout: FakeResponse(body)
+                TEST_TOKEN, opener=lambda _request, timeout: FakeResponse(body)
             )
 
 
