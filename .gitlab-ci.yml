@@ -36,7 +36,7 @@ trivy-critique:
 
 web-verification:
   stage: verification
-  image: oven/bun@sha256:9114c058aeae42162ee16dd5084b95fe9473970bb6bcb5b232ab1630f0546895
+  image: node@sha256:0e2646ab57e77b7a384a0cb59b6815b182c77e1f9c3ba36bd8435bd9c4e6680e
   services:
     - name: pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
       alias: postgres
@@ -66,7 +66,22 @@ web-verification:
     paths: [.bun-cache/]
     policy: pull-push
   script:
+    - |
+      test "$(uname -m)" = x86_64
+      mkdir -p .bun-cache/tool .ci-tools
+      archive="$CI_PROJECT_DIR/.bun-cache/tool/bun-1.4.2-linux-x64.tgz"
+      checksum="f7f13f517393a52a3762c57983e161b5377fa93a625a82aec52d7672ab6e600d6cb2ef5f440a0f4278a91601b2724ded58eeb7894771062ca0abe9042c56b09e"
+      if ! printf '%s  %s\n' "$checksum" "$archive" | sha512sum --check --status; then
+        curl --fail --silent --show-error --location --retry 2 --connect-timeout 15 --max-time 180 \
+          'https://registry.npmjs.org/@oven/bun-linux-x64/-/bun-linux-x64-1.4.2.tgz' -o "$archive.tmp"
+        printf '%s  %s\n' "$checksum" "$archive.tmp" | sha512sum --check --status
+        mv "$archive.tmp" "$archive"
+      fi
+      tar -xzf "$archive" --strip-components=2 -C .ci-tools package/bin/bun
+      export PATH="$CI_PROJECT_DIR/.ci-tools:$PATH"
     - bun --version
+    - node --version
+    - git --version
     - bun install --frozen-lockfile
     - bun run lint
     - bun run --cwd web typecheck

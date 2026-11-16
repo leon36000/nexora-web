@@ -11,4 +11,5 @@ coverage/
 *.tsbuildinfo
 .cache/
 .bun-cache/
+.ci-tools/
 .ci-reports/
