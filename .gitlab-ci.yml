@@ -1,7 +1,8 @@
-# Preuve isolée : ne démarre que lors d'un lancement manuel sur cette branche.
+# Preuve isolée : seuls les lancements web ou API sur cette branche sont permis.
 workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == "proof/sonar-token-environment-scope-20261116" && $CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_COMMIT_BRANCH == "proof/sonar-token-environment-scope-20261116" && $CI_PIPELINE_SOURCE == "api"'
     - when: never
 
 stages:
