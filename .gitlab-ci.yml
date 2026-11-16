@@ -36,7 +36,8 @@ trivy-critique:
 
 web-verification:
   stage: verification
-  image: node@sha256:0e2646ab57e77b7a384a0cb59b6815b182c77e1f9c3ba36bd8435bd9c4e6680e
+  # Node 24.22.3 complet : les tests exigent aussi Git et curl.
+  image: node@sha256:aca79828f8a4afc627f189387c965625bcc419233946210a3b9522d90a59b5c6
   services:
     - name: pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
       alias: postgres
