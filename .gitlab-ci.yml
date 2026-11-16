@@ -175,11 +175,11 @@ web-verification:
     - mkdir -p .ci-reports
     - bun run --cwd web test --maxWorkers=2 --coverage --coverage.reporter=lcov --coverage.reportsDirectory=../.ci-reports/coverage-web --reporter=default --reporter=junit --outputFile.junit=../.ci-reports/web-junit.xml
     - |
-      for paquet in log net code; do
+      for paquet in log net code db; do
         bun run --cwd "packages/$paquet" test --maxWorkers=2 --coverage --coverage.reporter=lcov --coverage.reportsDirectory="../../.ci-reports/coverage-$paquet"
       done
     - |
-      for cible in web packages/log packages/net packages/code; do
+      for cible in web packages/log packages/net packages/code packages/db; do
         nom="${cible##*/}"
         rapport=".ci-reports/coverage-$nom/lcov.info"
         test -s "$rapport"
@@ -200,6 +200,7 @@ web-verification:
       - .ci-reports/coverage-log/lcov.info
       - .ci-reports/coverage-net/lcov.info
       - .ci-reports/coverage-code/lcov.info
+      - .ci-reports/coverage-db/lcov.info
 
 nexora_sonar_developpement:
   stage: qualite
@@ -243,6 +244,6 @@ nexora_sonar_developpement:
             -Dsonar.tests=web/src,cms,packages,worker/src \
             -Dsonar.test.inclusions="**/*.test.ts,**/*.test.tsx" \
             -Dsonar.test.exclusions="**/node_modules/**" \
-            -Dsonar.javascript.lcov.reportPaths=.ci-reports/coverage-web/lcov.info,.ci-reports/coverage-log/lcov.info,.ci-reports/coverage-net/lcov.info,.ci-reports/coverage-code/lcov.info \
+            -Dsonar.javascript.lcov.reportPaths=.ci-reports/coverage-web/lcov.info,.ci-reports/coverage-log/lcov.info,.ci-reports/coverage-net/lcov.info,.ci-reports/coverage-code/lcov.info,.ci-reports/coverage-db/lcov.info \
             -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300
         ' scanner "$CI_PROJECT_DIR" "$scratch" "$CI_COMMIT_SHA"
