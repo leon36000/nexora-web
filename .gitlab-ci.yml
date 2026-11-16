@@ -20,18 +20,18 @@ sonarqube-environment-token-present:
   script:
     - |
       set -eu
-      if [ "${SONAR_TOKEN+x}" = x ]; then
-        printf '%s\n' 'SONAR_TOKEN_PRESENT=yes'
-      else
-        printf '%s\n' 'SONAR_TOKEN_PRESENT=no'
-        exit 1
-      fi
+      test "${CI_COMMIT_REF_PROTECTED:-}" = true
+      test "${CI_ENVIRONMENT_NAME:-}" = sonarqube
+      test -n "${SONAR_TOKEN:-}"
+      printf '%s\n' 'SONAR_TOKEN_PRESENT=yes'
 
 no-environment-token-absent:
   stage: preuve
   script:
     - |
       set -eu
+      test "${CI_COMMIT_REF_PROTECTED:-}" = true
+      test -z "${CI_ENVIRONMENT_NAME:-}"
       if [ "${SONAR_TOKEN+x}" = x ]; then
         printf '%s\n' 'SONAR_TOKEN_ABSENT=no'
         exit 1
