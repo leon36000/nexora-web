@@ -39,7 +39,11 @@ gitleaks-nouveaux-secrets:
       printf '%s\n' "$head" | grep -Eq '^[0-9a-f]{40}$'
       test "$(git rev-parse HEAD)" = "$head"
       if [ "${CI_PIPELINE_SOURCE:-}" = merge_request_event ]; then
-        base="${CI_MERGE_REQUEST_DIFF_BASE_SHA:?Base de la merge request absente}"
+        base="${CI_MERGE_REQUEST_TARGET_BRANCH_SHA:-${CI_MERGE_REQUEST_DIFF_BASE_SHA:-}}"
+        if [ -z "$base" ]; then
+          echo 'Base de la merge request absente.' >&2
+          exit 1
+        fi
       else
         base="${CI_COMMIT_BEFORE_SHA:-}"
         case "$base" in ''|0000000000000000000000000000000000000000)
